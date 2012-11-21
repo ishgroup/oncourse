@@ -9,33 +9,7 @@
 		<t:form t:id="addContactForm">
 			<fieldset>
 				<br/>
-				<p>
-					<label for="firstName">
-						First Name<em title="${message:required}">*</em>
-					</label>
-					<span class="${validateHandler.validateClass('firstName')}">
-						<t:textfield value="delegate.contactCredentials.firstName" t:id="firstName" class="input-fixed contact-field ${validateHandler.errorClass('firstName')}"/>
-						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('firstName')}"/>
-					</span>
-				</p>
-				<p>
-					<label for="lastName">
-						Last Name<em title="${message:required}">*</em>
-					</label>
-					<span class="${validateHandler.validateClass('lastName')}">
-						<t:textfield value="delegate.contactCredentials.lastName" t:id="lastName" class="input-fixed contact-field ${validateHandler.errorClass('lastName')}"/>
-						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('lastName')}"/>
-					</span>
-				</p>
-				<p>
-					<label for="email">
-						Email<em title="${message:required}">*</em>
-					</label>
-					<span class="${validateHandler.validateClass('email')}">
-						<t:textfield value="delegate.contactCredentials.email" t:id="email" class="input-fixed contact-field ${validateHandler.errorClass('email')}"/>
-						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('email')}"/>
-					</span>
-				</p>
+				<span t:type="checkout/contact/addcontactfieldset" delegate="delegate" validateHandler="validateHandler"/>
 			</fieldset>
 			<p class="note">
 				<strong class="alert">Note</strong>: ${message:noteSameEmail}

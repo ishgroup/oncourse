@@ -12,28 +12,7 @@
 	<t:block t:id="contactFields">
 		<fieldset id="student_enrol_details">
 			<br/>
-
-			<t:loop source="visibleFields" value="fieldName">
-				<p>
-					<label for="${fieldName}">${label(fieldName)}<t:if test="required(fieldName)"><em title="${message:required}">*</em></t:if></label>
-					<span class="${validateHandler.validateClass(fieldName)}">
-						<t:textfield value="${value(fieldName)}" class="${fieldName} input-fixed ${validateHandler.errorClass(fieldName)}"/>
-						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error(fieldName)}"/>
-					</span>
-				</p>
-			</t:loop>
-
-			<t:if test="fillRequiredProperties" negate="true">
-				<p>
-					<label>Gender</label>
-					<div class="radio-list">
-						<t:radiogroup t:id="isMale" t:value="contact.isMale">
-							<input type="radio" t:type="radio" t:value="true"/> Male
-							<input type="radio" t:type="radio" t:value="false"/> Female
-						</t:radiogroup>
-					</div>
-				</p>
-			</t:if>
+			<span t:type="checkout/contact/contacteditorfieldset" delegate="delegate" validateHandler="validateHandler" messages="messages"/>
 		</fieldset>
 	</t:block>
 

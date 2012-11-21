@@ -14,9 +14,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.text.DateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import static ish.oncourse.enrol.checkout.contact.ContactEditorParser.LABEL_TEMPLATE;
 import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 
 public class ContactEditor {
@@ -35,13 +36,11 @@ public class ContactEditor {
 	private ContactFieldHelper contactFieldHelper = new ContactFieldHelper(preferenceController);
 
 	@Inject
+	@Property
 	private Messages messages;
 
 	@Inject
 	private Request request;
-
-	@Property
-	private String fieldName;
 
 	@Property
 	private ValidateHandler validateHandler;
@@ -62,38 +61,6 @@ public class ContactEditor {
 
 	public Contact getContact() {
 		return delegate.getContact();
-	}
-
-	public List<String> getVisibleFields()
-	{
-		return delegate.getVisibleFields();
-	}
-
-
-	public boolean required(String fieldName)
-	{
-		return contactFieldHelper.isRequiredField(ContactFieldHelper.FieldDescriptor.valueOf(fieldName));
-	}
-
-	public String label(String fieldName)
-	{
-		return messages.get(String.format(LABEL_TEMPLATE, fieldName));
-	}
-
-	public String error(String fieldName)
-	{
-		return validateHandler.error(fieldName);
-	}
-
-
-	public String value(String fieldName)
-	{
-		ContactFieldHelper.FieldDescriptor fieldDescriptor = ContactFieldHelper.FieldDescriptor.valueOf(fieldName);
-
-		Object value = getContact().readProperty(fieldName);
-		if (fieldDescriptor.propertyClass == Date.class && value != null)
-			value = getDateFormat().format((Date) value);
-		return value == null ? FormatUtils.EMPTY_STRING: value.toString();
 	}
 
 	@OnEvent(value = "saveContactEvent")
