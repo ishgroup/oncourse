@@ -21,7 +21,7 @@
 							<td>
 								<div class="input-append">
 									<t:select t:id="siteSelect" class="siteSelect" model="siteSelectModel" blankOption="never" context="currentDomain.name" value="selectedSite"/>
-									<t:actionlink t:id="deleteDomain" class="btn btn-danger" context="currentDomain.getName()">×</t:actionlink>
+									<t:actionlink t:id="deleteDomain" class="btn" context="currentDomain.getName()"><i class="icon-trash"></i></t:actionlink>
 								</div>
 							</td>
 						</tr>
@@ -33,7 +33,7 @@
 						<td>
 							<div class="input-append">
 								<t:select t:id="newDomainSiteSelect" model="siteSelectModel" blankOption="never" value="newDomainSite"/>
-								<t:submit t:id="addNewDomain" class="btn btn-success" value="+"/>
+								<t:submit t:id="addNewDomain" class="btn btn-success" value="Add"/>
 							</div>
 						</td>
 					</tr>
@@ -63,7 +63,7 @@
 							<td>
 								<div class="input-append">
 									<t:textfield t:id="currentWebSiteKey" value="currentWebSite.googleAnalyticsAccount"/>
-									<t:actionlink t:id="deleteSite" class="btn btn-danger" context="currentWebSite.siteKey">×</t:actionlink>
+									<t:actionlink t:id="deleteSite" class="btn" context="currentWebSite.siteKey"><i class="icon-trash"></i></t:actionlink>
 								</div>
 							</td>
 						</tr>
@@ -79,7 +79,7 @@
 					<td>
 						<div class="input-append">
 							<t:textfield t:id="newSiteGoogeAnalytics" value="newSiteGoogleAnalyticsValue"/>
-							<t:submit t:id="addNewSite" class="btn btn-success" value="+"/>
+							<t:submit t:id="addNewSite" class="btn btn-success" value="Add"/>
 						</div>
 					</td>
 					<td></td>
@@ -105,7 +105,7 @@
 						<td>********</td>
 						<td>${currentUser.firstName}</td>
 						<td>${currentUser.lastName}</td>
-						<td><t:actionlink t:id="deleteUser" class="btn btn-danger" context="currentUser.email">×</t:actionlink></td>
+						<td><t:actionlink t:id="deleteUser" class="btn" context="currentUser.email"><i class="icon-trash"></i></t:actionlink></td>
 					</tr>
 				</t:loop>
 				<t:form t:id="cmsUsersForm">
@@ -114,7 +114,7 @@
 					<td><t:passwordfield t:id="newUserPassword" t:validate="required" value="newUserPasswordValue"/></td>
 					<td><t:textfield t:id="newUserFirstName" t:validate="required" value="newUserFirstNameValue"/></td>
 					<td><t:textfield t:id="newUserLastName" t:validate="required" value="newUserLastNameValue"/></td>
-					<td><t:submit t:id="addNewUser" class="btn btn-success" value="+"/></td>
+					<td><t:submit t:id="addNewUser" class="btn btn-success" value="Add"/></td>
 				</tr>
 				</t:form>
 			</tbody>
