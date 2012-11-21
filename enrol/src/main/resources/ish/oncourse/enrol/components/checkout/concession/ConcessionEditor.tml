@@ -3,12 +3,7 @@
 <div class="concessionEditor">
 	<h3>Edit concession for ${student.fullName}</h3>
 	<t:delegate to="block:concessionEditor"/>
-	<t:delegate to="block:concessions"/>
 </div>
-
-<t:block t:id="concessions">
-	<span t:type="checkout/concession/concessionlist" student="student" delegate="delegate"/>
-</t:block>
 
 <t:block t:id="concessionEditor">
 	<p>
