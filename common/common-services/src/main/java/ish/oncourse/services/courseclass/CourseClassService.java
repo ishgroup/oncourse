@@ -11,6 +11,7 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -303,4 +304,21 @@ public class CourseClassService implements ICourseClassService {
     public List<CourseClass> getContactCourseClasses(Contact contact) {
         return getContactCourseClasses(contact, CourseClassFilter.ALL);
     }
+
+
+	public List<Survey> getSurveysFor(Tutor tutor)
+	{
+		Expression expr = ExpressionFactory.matchExp(StringUtils.join(new String[]{Survey.ENROLMENT_PROPERTY, Enrolment.COURSE_CLASS_PROPERTY, CourseClass.TUTOR_ROLES_PROPERTY, TutorRole.TUTOR_PROPERTY}, "."),tutor);
+		SelectQuery q = new SelectQuery(Survey.class, expr);
+		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	public List<Survey> getSurveysFor(CourseClass courseClass) {
+		Expression surveyExp = ExpressionFactory.matchExp(Survey.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass);
+		SelectQuery query = new SelectQuery(Survey.class, surveyExp);
+
+		return cayenneService.sharedContext().performQuery(query);
+	}
+
+
 }

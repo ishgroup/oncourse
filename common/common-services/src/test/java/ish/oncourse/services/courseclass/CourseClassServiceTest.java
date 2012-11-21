@@ -3,6 +3,7 @@ package ish.oncourse.services.courseclass;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
+import ish.oncourse.model.Survey;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
@@ -104,7 +105,31 @@ public class CourseClassServiceTest extends ServiceTest {
         contact = Cayenne.objectForPK(objectContext, Contact.class, 3);
         list =  service.getContactSessions(contact);
         assertEquals("2 correct, 2 old, 1 canceled, 1 failed", 2, list.size());
-
     }
+
+
+	@Test
+	public void testGetSurveysForTutor()
+	{
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		ObjectContext objectContext = cayenneService.sharedContext();
+
+		CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1);
+		ICourseClassService service = getService(ICourseClassService.class);
+		List<Survey> surveys = service.getSurveysFor(courseClass);
+		assertEquals(1, surveys.size());
+	}
+
+	@Test
+	public void testGetSurveysForClass()
+	{
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		ObjectContext objectContext = cayenneService.sharedContext();
+
+		Contact tutor = Cayenne.objectForPK(objectContext, Contact.class, 1);
+		ICourseClassService service = getService(ICourseClassService.class);
+		List<Survey> surveys = service.getSurveysFor(tutor.getTutor());
+		assertEquals(6, surveys.size());
+	}
 
 }

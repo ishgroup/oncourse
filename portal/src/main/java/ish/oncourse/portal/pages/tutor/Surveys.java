@@ -1,30 +1,30 @@
 package ish.oncourse.portal.pages.tutor;
 
-import java.util.List;
-
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
-
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Survey;
 import ish.oncourse.model.TutorRole;
+import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
+import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+
+import java.util.List;
 
 @UserRole("tutor")
 public class Surveys {
 	
 	@Property
 	private CourseClass courseClass;
+
+	@Property
+	private Contact tutorContact;
 
 	@Property
 	private TutorRole tutorRole;
@@ -46,12 +46,24 @@ public class Surveys {
 
 	@Inject
 	private Request request;
+
+	@Inject
+	private IAuthenticationService authService;
 	
 	private double courseAverage;
 	
 	private double tutorAverage;
 	
 	private double venueAverage;
+
+	Object onActivate() {
+		if (courseClass == null)
+		{
+			tutorContact = authService.getUser();
+			this.surveys = courseClassService.getSurveysFor(tutorContact.getTutor());
+		}
+		return null;
+	}
 
 	Object onActivate(String id) {
 		if (id != null && id.length() > 0 && id.matches("\\d+")) {
@@ -61,7 +73,7 @@ public class Surveys {
 				return pageNotFound;
 			this.courseClass =  list.get(0);
 			
-			this.surveys = getSurveysForClass(courseClass);
+			this.surveys = courseClassService.getSurveysFor(this.courseClass);
 			
 			calculateAverage();
 			
@@ -135,10 +147,4 @@ public class Surveys {
 		return tutorRole.getTutor().getContact().getFullName();
 	}
 
-	private List<Survey> getSurveysForClass(CourseClass courseClass) {
-		Expression surveyExp = ExpressionFactory.matchExp(Survey.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass);
-		SelectQuery query = new SelectQuery(Survey.class, surveyExp);
-		
-		return cayenneService.sharedContext().performQuery(query);
-	}
 }

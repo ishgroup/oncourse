@@ -1,12 +1,9 @@
 package ish.oncourse.services.courseclass;
 
+import ish.oncourse.model.*;
+
 import java.util.Date;
 import java.util.List;
-
-import ish.oncourse.model.Attendance;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Session;
 
 /**
  * 
@@ -67,4 +64,14 @@ public interface ICourseClassService {
     public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter period);
 
     Attendance loadAttendanceById(Object ids);
+
+	/**
+	 * Returns all surveys  for this tutor
+	 */
+	public List<Survey> getSurveysFor(Tutor tutor);
+
+	/**
+	 * Returns all surveys  for this courseClass
+	 */
+	public List<Survey> getSurveysFor(CourseClass courseClass);
 }
