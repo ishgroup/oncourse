@@ -56,6 +56,8 @@ public class Surveys {
 	
 	private double venueAverage;
 
+	private double totalAverage;
+
 	Object onActivate() {
 		if (courseClass == null)
 		{
@@ -96,7 +98,9 @@ public class Surveys {
 		
 		courseAverage = courseRating / surveys.size();
 		tutorAverage = tutorRating / surveys.size();
-		venueAverage = venueRating / surveys.size();	
+		venueAverage = venueRating / surveys.size();
+
+		totalAverage = (courseAverage + tutorRating + venueRating)/3;
 	}
 	
 	public String getCourseAverage() {
@@ -110,7 +114,12 @@ public class Surveys {
 	public String getVenueAverage() {
 		return Double.isNaN(venueAverage) ? "" : String.format("%.1f", venueAverage);
 	}
-	
+
+	public String getTotalAverage() {
+		return Double.isNaN(totalAverage) ? "" : String.format("%.1f", totalAverage);
+	}
+
+
 	public Long getRoundedCourseAverage() {
 		return Math.round(courseAverage);
 	}

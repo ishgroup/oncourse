@@ -1,6 +1,7 @@
 package ish.oncourse.portal.components;
 
 import ish.oncourse.portal.services.ValueChangeDelegate;
+import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Component;
@@ -30,6 +31,9 @@ public class Rating {
 
 	@Inject
 	private Request request;
+
+	@Parameter
+	private boolean editable;
 
 	public Integer getValue() {
 		if (value == null)
@@ -71,6 +75,11 @@ public class Rating {
 	public String getRatingChoiceClass() {
 		return loopValue < getValue() ? "rating-choice-selected" : "rating-choice";
 	}
+
+	public String getEditableClass() {
+		return editable ? FormatUtils.EMPTY_STRING : "readonly";
+	}
+
 
 	StreamResponse onActionFromUpdate(String value) {
 		if (request.isXHR() && StringUtils.isNumeric(value))

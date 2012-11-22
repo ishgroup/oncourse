@@ -17,7 +17,7 @@
 				</div>
 			</td>
 			<td>
-				<span t:type="rating" t:id="ratingCourse" delegate="courseRatingDelegate" value="survey.courseScore"/>
+				<span t:type="rating" t:id="ratingCourse" delegate="courseRatingDelegate" value="survey.courseScore" editable="true"/>
 			</td>
 		</tr>
 		<tr>
@@ -28,7 +28,7 @@
 				</t:loop>
 			</td>
 			<td>
-				<span t:type="rating" t:id="ratingTutor" delegate="tutorRatingDelegate" value="survey.tutorScore"/>
+				<span t:type="rating" t:id="ratingTutor" delegate="tutorRatingDelegate" value="survey.tutorScore" editable="true"/>
 			</td>
 		</tr>
 		<tr>
@@ -37,7 +37,7 @@
 				<label>Venue:</label><div class="light">${room}</div>
 			</td>
 			<td>
-				<span t:type="rating" t:id="ratingVenue" delegate="venueRatingDelegate" value="survey.venueScore"/>
+				<span t:type="rating" t:id="ratingVenue" delegate="venueRatingDelegate" value="survey.venueScore" editable="true"/>
 			</td>
 		</tr>
 		<tr>

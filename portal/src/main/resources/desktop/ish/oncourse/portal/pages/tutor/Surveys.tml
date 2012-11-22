@@ -29,7 +29,7 @@
 				</div>
 			</td>
 			<td>
-				<span t:type="rating" id="ratingCourse" value="roundedCourseAverage"/>
+				<span t:type="rating" id="ratingCourse" value="roundedCourseAverage" editable="false"/>
 			</td>
 			<td>${courseAverage}</td>
 		</tr>
@@ -41,7 +41,7 @@
 				</t:loop>
 			</td>
 			<td>
-				<span t:type="rating" id="ratingTutor" value="roundedTutorAverage"/>
+				<span t:type="rating" id="ratingTutor" value="roundedTutorAverage" editable="false"/>
 			</td>
 			<td>${tutorAverage}</td>
 		</tr>
@@ -51,7 +51,7 @@
 				<div class="light">${room}</div>
 			</td>
 			<td>
-				<span t:type="rating" id="ratingVenue" value="roundedVenueAverage"/>
+				<span t:type="rating" id="ratingVenue" value="roundedVenueAverage" editable="false"/>
 			</td>
 			<td>${venueAverage}</td>
 		</tr>
