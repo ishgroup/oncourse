@@ -1,13 +1,8 @@
 <html t:type="pagestructure" title="literal:Class" bodyClass="literal:detail-wrapper"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_classes">
-	
-	<div class="class-info-title">
-		<a href="#" class="back-class">Classes</a>
-		<span>${courseClass.course.name}</span>
-		<div class="clear"></div>
-		<span t:type="classTabs" courseClass="courseClass" selected="literal:classInfo"/>
-	</div>
-	
+
+	<span t:type="classinfotitle" courseClass="courseClass" selected="literal:classInfo"/>
+
 	<div class="class-details">
 		<t:outputraw value="details"/>
 		<t:if test="hidden" negate="true">
