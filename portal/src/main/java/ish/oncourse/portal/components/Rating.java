@@ -1,17 +1,13 @@
 package ish.oncourse.portal.components;
 
+import ish.oncourse.portal.services.ValueChangeDelegate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.corelib.base.AbstractField;
 import org.apache.tapestry5.corelib.components.Loop;
-import org.apache.tapestry5.corelib.components.RadioGroup;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-
-import ish.oncourse.portal.services.ValueChangeDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +68,8 @@ public class Rating {
 		this.loopValue = loopValue;
 	}
 	
-	public String getDivClass() {
-		return loopValue < value ? "rating-choice-selected" : "rating-choice";
+	public String getRatingChoiceClass() {
+		return loopValue < getValue() ? "rating-choice-selected" : "rating-choice";
 	}
 
 	StreamResponse onActionFromUpdate(String value) {

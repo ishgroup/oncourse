@@ -1,8 +1,10 @@
-<div class="rating" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<t:loop t:id="loop">
-		<div class="${divClass}">
-			<div class="rating-choice-input"/>
-		</div>
-	</t:loop>
-	<t:actionlink t:id="update"/>
-</div>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="rating">
+		<t:loop t:id="loop">
+			<div class="${ratingChoiceClass}">
+				<div class="rating-choice-input"/>
+			</div>
+		</t:loop>
+		<t:actionlink t:id="update"/>
+	</div>
+</t:container>
