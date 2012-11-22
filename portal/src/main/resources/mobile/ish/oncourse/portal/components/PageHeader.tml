@@ -22,6 +22,7 @@
 	<link rel="stylesheet" media="all" href="/s/portal/css/bootstrap.css"/>
 	<link rel="stylesheet" media="all" href="/s/portal/css/mobile.css"/>
 	<script type="text/javascript" src="/s/portal/js/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 	<script type="text/javascript" src="/s/portal/js/slider.js"></script>
 	<script type="text/javascript" src="/s/portal/js/scroller.js"></script>
 	<script type="text/javascript" src="/s/portal/js/jquery.ui.datepicker.js"></script>
