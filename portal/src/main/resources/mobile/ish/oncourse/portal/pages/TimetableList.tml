@@ -19,7 +19,7 @@
 						<div class="day-info">
 							<div class="left-info">
 								<p class="${dayClass}">${day}-${month}   ${time}.<t:if test="today"><i>today</i></t:if></p>
-								<strong><a href="#">${name}</a></strong>
+								<strong><t:pagelink page="class" context="session.courseClass.id">${name}</t:pagelink></strong>
 							</div>
 							<div class="right-info">
 								<i class="icon icon-user"></i><span>7/15</span>
