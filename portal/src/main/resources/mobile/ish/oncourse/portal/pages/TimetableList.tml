@@ -18,7 +18,7 @@
 					<t:loop source="currentBucket.value" value="session">
 						<div class="day-info">
 							<div class="left-info">
-								<p>${time}.</p>
+								<p class="${dayClass}">${day}-${month} - ${time}.<t:if test="today"><i>today</i></t:if></p>
 								<strong><a href="#">${name}</a></strong>
 							</div>
 							<div class="right-info">
