@@ -1,30 +1,20 @@
 package ish.oncourse.portal.pages.student;
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Survey;
-import ish.oncourse.model.TutorRole;
+import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
-import ish.oncourse.portal.components.Rating;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.portal.services.ValueChangeDelegate;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.util.SecurityUtil;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -65,6 +55,14 @@ public class Surveys {
 
 	@Inject
 	private Request request;
+
+	Object onActivate()
+	{
+		 if (courseClass == null)
+			 return pageNotFound;
+		else
+			 return null;
+	}
 
 	Object onActivate(String id) {
 		if (id != null && id.length() > 0 && id.matches("\\d+")) {

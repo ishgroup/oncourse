@@ -27,4 +27,5 @@
 	<script type="text/javascript" src="/s/portal/js/scroller.js"></script>
 	<script type="text/javascript" src="/s/portal/js/jquery.ui.datepicker.js"></script>
 	<script type="text/javascript" src="/s/portal/js/calendar.js"></script>
+	<script type="text/javascript" src="/s/portal/js/rating.js"></script>
 </t:container>
