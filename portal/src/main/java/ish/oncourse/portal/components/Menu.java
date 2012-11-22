@@ -5,6 +5,7 @@ import ish.oncourse.portal.pages.WaitingLists;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class Menu {
 
@@ -13,6 +14,9 @@ public class Menu {
 
 	@Inject
 	private IDiscussionService discussionService;
+
+	@Inject
+	private Request request;
 
 	public boolean isHasNewMessages() {
 		return getNumberOfNewMessages() > 0;
@@ -66,5 +70,8 @@ public class Menu {
         return WaitingLists.class.getSimpleName();
     }
 
+	public String getContextPath() {
+		return request.getContextPath();
+	}
 
 }
