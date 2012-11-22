@@ -17,7 +17,7 @@
 								<div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>
 								<div class="class-place light">${room}</div>
 								
-								<t:if test="tutors.empty" negate="true"><span class="class-man">7 enrolments | 4 places available</span></t:if>
+								<span class="class-man">7 enrolments | 4 places available</span>
 							</td>
 						</tr>
 					</t:loop> 
