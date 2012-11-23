@@ -278,6 +278,38 @@ public class MergeContactTest extends ServiceTest {
 		}
 	}
 	
+	@Test
+	public void testNullSetter() {
+		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
+		List<Contact> data = getSecondTwoContacts(objectContext);
+		Contact contact1 = data.get(0);
+		Contact contact2 = data.get(1);
+		Student student1 = contact1.getStudent();
+		Student student2 = contact2.getStudent();
+		objectContext.commitChanges();
+		assertNotNull("contact 1 linked with the student 1", contact1.getStudent());
+		assertNotNull("student 1 linked with the contact 1", student1.getContact());
+		assertNotNull("contact 2 linked with the student 2", contact2.getStudent());
+		assertNotNull("student 2 linked with the contact 2", student2.getContact());
+		
+		boolean commitFailed = false;
+		try {
+			//contact1.setToOneTarget(Contact.STUDENT_PROPERTY, null, true);
+			contact1.setStudent(null);
+		} catch (Throwable t) {
+			commitFailed = true;
+		}
+		assertFalse(commitFailed);
+		try {
+			objectContext.commitChanges();
+		} catch (Throwable t) {
+			commitFailed = true;
+		} finally {
+			objectContext.rollbackChanges();
+		}
+		assertFalse(commitFailed);
+	}
+	
 	private List<Contact> getFirstTwoContacts(final ObjectContext objectContext) {
 		Contact contact1 = (Contact) objectContext.performQuery(
 			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))).get(0);		
