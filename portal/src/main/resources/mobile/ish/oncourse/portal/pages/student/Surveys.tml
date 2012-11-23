@@ -1,4 +1,4 @@
-<html t:type="pagestructure" title="literal:Class"
+<html t:type="pagestructure" title="literal:Class" bodyClass="literal:survey-wrapper"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
 
 	<span t:type="classinfotitle" courseClass="courseClass" selected="literal:classSurvey"/>
