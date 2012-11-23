@@ -151,7 +151,7 @@ public class ContactEditorParser {
 
 					Integer age = Years.yearsBetween(new DateTime(date.getTime()), new DateTime(new Date().getTime())).getYears();
 					if (minAge > age)
-						return messages.get(KEY_ERROR_dateOfBirth_youngAge);
+						return messages.format(KEY_ERROR_dateOfBirth_youngAge, minAge);
 
 				}
 				return error;
