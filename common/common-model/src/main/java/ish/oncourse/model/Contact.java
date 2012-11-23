@@ -387,7 +387,7 @@ public class Contact extends _Contact implements Queueable {
 		final CayenneDataObject object) {
 		final DataObject oldValue = (DataObject) object.readProperty(relationshipName);
 		DataObject oldObject = null;
-		if ((oldValue != null && !oldValue.equals(value)) || (oldValue == null && value != null)) {
+		if ((oldValue != null && !oldValue.equals(value)) && value != null || (oldValue == null && value != null)) {
 			oldObject = getObjectReverseRelationShip(relationshipName, value, object);
 			if (oldObject != null && object.equals(oldObject)) {
 				oldObject = null;
