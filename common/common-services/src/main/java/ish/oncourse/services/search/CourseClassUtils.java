@@ -18,7 +18,7 @@ import static ish.oncourse.services.search.SearchParamsParser.*;
  */
 public class CourseClassUtils {
 	/**
-	 * Haversine formula: R = earth�s radius (mean radius = 6,371km) dLat =
+	 * Haversine formula: R = earth's radius (mean radius = 6,371km) dLat =
 	 * lat2 - lat1 dLon = lon2 - lon1 a = (sin(dLat/2))^2 +
 	 * cos(lat1)*cos(lat2)*(sin(dLat/2))^2 c = 2*atan2(sqrt(a), sqrt(1-a)) d =
 	 * R*c
