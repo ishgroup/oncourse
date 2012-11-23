@@ -1,64 +1,76 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-  <luceneMatchVersion>LUCENE_CURRENT</luceneMatchVersion>
+  <luceneMatchVersion>LUCENE_40</luceneMatchVersion>
 
-  <lib dir="../../contrib/extraction/lib" />
-  <lib dir="../../dist/" regex="apache-solr-cell-\d.*\.jar" />
-  <lib dir="../../dist/" regex="apache-solr-clustering-\d.*\.jar" />
-  <lib dir="../../contrib/clustering/lib/" />
-  <lib dir="/total/crap/dir/ignored" /> 
+	<lib dir="../../contrib/extraction/lib" regex=".*\.jar"/>
+	<lib dir="../../dist/" regex="apache-solr-cell-\d.*\.jar" />
+	
+	<lib dir="../../contrib/clustering/lib/" regex=".*\.jar"/>
+	<lib dir="../../dist/" regex="apache-solr-clustering-\d.*\.jar" />
+	
+	<lib dir="../../contrib/langid/lib/" regex=".*\.jar" />
+	<lib dir="../../dist/" regex="apache-solr-langid-\d.*\.jar" />
+	
+	<lib dir="../../contrib/velocity/lib" regex=".*\.jar" />
+	<lib dir="../../dist/" regex="apache-solr-velocity-\d.*\.jar" />
+
+	<lib dir="/total/crap/dir/ignored" /> 
 
   <dataDir>${SOLR_DATA}/suburbs</dataDir>
   <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 
-  <indexDefaults>
-   <!-- Values here affect all index writers and act as a default unless overridden. -->
-    <useCompoundFile>false</useCompoundFile>
+  <indexConfig>
+		<writeLockTimeout>1000</writeLockTimeout>
+		<maxIndexingThreads>8</maxIndexingThreads>
+		<useCompoundFile>false</useCompoundFile>
+		<ramBufferSizeMB>32</ramBufferSizeMB>
+		<maxBufferedDocs>1000</maxBufferedDocs>
+		
+		<mergePolicy class="org.apache.lucene.index.TieredMergePolicy">
+			<int name="maxMergeAtOnce">10</int>
+			<int name="segmentsPerTier">10</int>
+		</mergePolicy>
+		
+		<mergeFactor>10</mergeFactor>
+		
+		<mergeScheduler class="org.apache.lucene.index.ConcurrentMergeScheduler"/>
+		
+		<lockType>simple</lockType>
+		<unlockOnStartup>true</unlockOnStartup>
+		
+		<termIndexInterval>128</termIndexInterval>
+		
+		<reopenReaders>true</reopenReaders>
+		
+		<deletionPolicy class="solr.SolrDeletionPolicy">
+		<!-- The number of commit points to be kept -->
+		<str name="maxCommitsToKeep">1</str>
+		<!-- The number of optimized commit points to be kept -->
+		<str name="maxOptimizedCommitsToKeep">0</str>
+		<!--
+	          Delete all commit points once they have reached the given age.
+	          Supports DateMathParser syntax e.g.
+		-->
+		<!--
+		<str name="maxCommitAge">30MINUTES</str>
+		<str name="maxCommitAge">1DAY</str>
+		-->
+	    </deletionPolicy>
+	
+		<!-- Lucene Infostream
+		To aid in advanced debugging, Lucene provides an "InfoStream"
+		of detailed information when indexing.
 
-    <mergeFactor>10</mergeFactor>
-    <!-- If both ramBufferSizeMB and maxBufferedDocs is set, then Lucene will flush
-     based on whichever limit is hit first.  -->
-    <!--<maxBufferedDocs>1000</maxBufferedDocs>-->
-
-    <!-- Sets the amount of RAM that may be used by Lucene indexing
-      for buffering added documents and deletions before they are
-      flushed to the Directory.  -->
-    <ramBufferSizeMB>32</ramBufferSizeMB>
-    <!-- <maxMergeDocs>2147483647</maxMergeDocs> -->
-    <maxFieldLength>10000</maxFieldLength>
-    <writeLockTimeout>60000</writeLockTimeout>
-    <commitLockTimeout>60000</commitLockTimeout>
-    <lockType>simple</lockType>
-  </indexDefaults>
-
-  <mainIndex>
-    <!-- options specific to the main on-disk lucene index -->
-    <useCompoundFile>false</useCompoundFile>
-    <ramBufferSizeMB>32</ramBufferSizeMB>
-    <mergeFactor>10</mergeFactor>
-    <unlockOnStartup>true</unlockOnStartup>
-    <reopenReaders>true</reopenReaders>
-    
-    <deletionPolicy class="solr.SolrDeletionPolicy">
-      <!-- The number of commit points to be kept -->
-      <str name="maxCommitsToKeep">1</str>
-      <!-- The number of optimized commit points to be kept -->
-      <str name="maxOptimizedCommitsToKeep">0</str>
-      <!--
-          Delete all commit points once they have reached the given age.
-          Supports DateMathParser syntax e.g.
-          
-          <str name="maxCommitAge">30MINUTES</str>
-          <str name="maxCommitAge">1DAY</str>
-      -->
-    </deletionPolicy>
-
-    <!--  To aid in advanced debugging, you may turn on IndexWriter debug logging.
-      Setting to true will set the file that the underlying Lucene IndexWriter
-      will write its debug infostream to.  -->
-     <infoStream file="INFOSTREAM.txt">false</infoStream> 
-
-  </mainIndex>
+		Setting The value to true will instruct the underlying Lucene
+		IndexWriter to write its debugging info the specified file
+		-->
+		<infoStream file="INFOSTREAM.txt">false</infoStream>
+		
+	    <!-- maxFieldLength was removed in 4.0. To get similar behavior, include a 
+	         LimitTokenCountFilterFactory in your fieldType definition. E.g. 
+	     <filter class="solr.LimitTokenCountFilterFactory" maxTokenCount="10000"/>
+	    -->
+	</indexConfig>
 
   <jmx />
 
@@ -392,8 +404,8 @@
     </arr>
   </requestHandler>
   
-  <requestHandler name="/update" class="solr.XmlUpdateRequestHandler" />
-  <requestHandler name="/update/javabin" class="solr.BinaryUpdateRequestHandler" />
+  <requestHandler name="/update" class="solr.UpdateRequestHandler" />
+  <requestHandler name="/update/javabin" class="solr.UpdateRequestHandler" />
   <requestHandler name="/analysis/document" class="solr.DocumentAnalysisRequestHandler" />
   <requestHandler name="/analysis/field" class="solr.FieldAnalysisRequestHandler" />
 
@@ -512,7 +524,7 @@
   </queryResponseWriter>
 
   <admin>
-    <defaultQuery>solr</defaultQuery>
+    <defaultQuery>*:*</defaultQuery>
   </admin>
  
 </config>

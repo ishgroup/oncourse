@@ -7,8 +7,18 @@
 		<fieldType name="location" class="solr.LatLonType"
 			subFieldSuffix="_coordinate" />
 
-		<fieldtype name="geohash" class="solr2155.solr.schema.GeoHashField"
-			length="12" />
+		<!--fieldtype name="geohash" class="solr2155.solr.schema.GeoHashField" length="12"/-->
+		
+		<!-- 
+		geo="true": Wether the spatial fields' coordinates are latitude / longitude WGS84 based (if true) or whether they are pure 
+		Euclidean / Cartesian based. It defaults to true. When set to false, you should indicate worldBounds and probably maxDistErr as well.
+		
+		distCalculator="haversine": Set the distance calculation algorithm. If geo="true" then haversine is the default, otherwise cartesian is. 
+		The possible values are: haversine, lawOfCosines (warning: faulty), vincentySphere, cartesian, and cartesian^2.
+		-->	
+		<fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
+			spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory" 
+			distErrPct="0.025" maxDistErr="0.000009" units="degrees" geo="true" distCalculator="haversine"/>
 
 		<fieldType name="string" class="solr.StrField"
 			sortMissingLast="true" omitNorms="true" />
@@ -200,7 +210,7 @@
         <field name="class_start" type="date" indexed="true" stored="true"
                multiValued="true" omitNorms="false" boost="5.0" />
 
-        <field name="course_loc" type="geohash" indexed="true" stored="true" multiValued="true" boost="5.0"/>
+        <field name="course_loc" type="location_rpt" indexed="true" stored="true" multiValued="true" boost="5.0"/>
 
 		<field name="course_suburb" type="textgen" indexed="true"
 			omitNorms="false" stored="true" multiValued="true" boost="5.0" />
