@@ -36,10 +36,13 @@ public class ContactEditorFieldSet {
 	@Property
 	private String fieldName;
 
-	@Parameter(required = true)
-	@Property
+	@Inject
 	private Messages messages;
 
+	public Messages getMessages()
+	{
+		return messages;
+	}
 	public boolean required(String fieldName)
 	{
 		return contactFieldHelper.isRequiredField(ContactFieldHelper.FieldDescriptor.valueOf(fieldName));

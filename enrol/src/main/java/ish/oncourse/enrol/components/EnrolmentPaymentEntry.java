@@ -25,11 +25,13 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+@Deprecated
 public class EnrolmentPaymentEntry {
 	public static final Logger LOGGER = Logger.getLogger(EnrolmentPaymentEntry.class);
 	/**

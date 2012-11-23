@@ -27,6 +27,7 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
 
+@Deprecated
 public class EnrolmentContactEntry {
 
 	/**

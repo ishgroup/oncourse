@@ -8,7 +8,7 @@ import java.util.Map;
 public class ValidateHandler {
 
 	public static final String HTML_CLASS_validate = "validate";
-	public static final String HTML_CLASS_valid = "validate";
+	public static final String HTML_CLASS_valid = "valid";
 
 	public static final String HTML_CLASS_error = "t-error";
 

@@ -3,13 +3,13 @@ package ish.oncourse.enrol.components;
 import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.enrol.utils.EnrolCoursesController;
 import ish.oncourse.services.discount.IDiscountService;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+@Deprecated
 public class EnrolmentPaymentProcessing {
 
     private static final Logger LOGGER = Logger.getLogger(EnrolmentPaymentProcessing.class);

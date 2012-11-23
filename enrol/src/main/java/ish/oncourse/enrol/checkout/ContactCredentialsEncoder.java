@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
+import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import org.apache.cayenne.ObjectContext;
@@ -8,19 +9,20 @@ import org.apache.cayenne.ObjectContext;
 public class ContactCredentialsEncoder {
 
 	private ContactCredentials contactCredentials;
-	private PurchaseController purchaseController;
+	private College college;
+	private ObjectContext objectContext;
+	private IStudentService studentService;
 
 	private Contact contact;
 
 
 	public void encode()
 	{
-		contact = purchaseController.getStudentService().getStudentContact(contactCredentials.getFirstName(), contactCredentials.getLastName(), contactCredentials.getEmail());
+		contact = studentService.getStudentContact(contactCredentials.getFirstName(), contactCredentials.getLastName(), contactCredentials.getEmail());
 
 		/**
 		 * The following changes can be canceled, so we needs child context to do it
 		 */
-		ObjectContext objectContext = purchaseController.getModel().getObjectContext().createChildContext();
 
 		if (contact != null) {
 			contact = (Contact) objectContext.localObject(contact.getObjectId(), null);
@@ -30,7 +32,7 @@ public class ContactCredentialsEncoder {
 		} else {
 			contact = objectContext.newObject(Contact.class);
 
-			contact.setCollege((College)objectContext.localObject(purchaseController.getModel().getCollege().getObjectId(),null));
+			contact.setCollege((College)objectContext.localObject(college.getObjectId(),null));
 
 			contact.setGivenName(contactCredentials.getFirstName());
 			contact.setFamilyName(contactCredentials.getLastName());
@@ -43,10 +45,6 @@ public class ContactCredentialsEncoder {
 
 	}
 
-	public ContactCredentials getContactCredentials() {
-		return contactCredentials;
-	}
-
 	public void setContactCredentials(ContactCredentials contactCredentials) {
 		this.contactCredentials = contactCredentials;
 	}
@@ -55,18 +53,15 @@ public class ContactCredentialsEncoder {
 		return contact;
 	}
 
-	public PurchaseController getPurchaseController() {
-		return purchaseController;
+	public void setObjectContext(ObjectContext objectContext) {
+		this.objectContext = objectContext;
 	}
 
-	public void setPurchaseController(PurchaseController purchaseController) {
-		this.purchaseController = purchaseController;
+	public void setStudentService(IStudentService studentService) {
+		this.studentService = studentService;
 	}
 
-
-	public static enum ERRORS
-	{
-		ALREADY_CONTAINS,
-
+	public void setCollege(College college) {
+		this.college = college;
 	}
 }

@@ -4,7 +4,6 @@ import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -16,6 +15,7 @@ import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.util.List;
 
+@Deprecated
 public class ContactEnrolmentList {
 
     @Inject

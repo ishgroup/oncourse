@@ -87,11 +87,11 @@ public class Checkout {
 
 	@SetupRender
 	void beforeRender() {
-		if (unexpectedThrowable != null) {
-			handleUnexpectedThrowable();
-		}
-
 		synchronized (this) {
+			if (unexpectedThrowable != null) {
+				handleUnexpectedThrowable();
+			}
+
 			initPaymentController();
 		}
 	}

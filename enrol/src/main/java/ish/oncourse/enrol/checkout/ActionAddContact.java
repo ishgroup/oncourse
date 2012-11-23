@@ -38,7 +38,9 @@ public class ActionAddContact extends APurchaseAction {
 				contactCredentials = getParameter().getValue(ContactCredentials.class);
 				ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
 				contactCredentialsEncoder.setContactCredentials(contactCredentials);
-				contactCredentialsEncoder.setPurchaseController(getController());
+				contactCredentialsEncoder.setCollege(getModel().getCollege());
+				contactCredentialsEncoder.setObjectContext(getModel().getObjectContext().createChildContext());
+				contactCredentialsEncoder.setStudentService(getController().getStudentService());
 				contactCredentialsEncoder.encode();
 				contact = contactCredentialsEncoder.getContact();
 			} else {

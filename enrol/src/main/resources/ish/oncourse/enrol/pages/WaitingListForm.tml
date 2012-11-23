@@ -1,141 +1,122 @@
-<html t:type="ui/dialogstructure" title="literal:Add to Waiting List"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
-	<t:if test="course">
-			<t:if test="submittedSuccessfully">
-				<div class="message">
-					<p class="feedback">
-						Thank you for your request.
-						<br/> 
-						The student <b>${contact.givenName} ${contact.familyName}</b> (<b>${waitingList.potentialStudents}</b> potential places)
-						<br/> 
-						was successfully added to waiting list for course <b>${course.name}</b>.
-					</p>
-				</div>
+<html t:type="ui/internal/pagestructure" bodyId="literal:EnrolmentEntry"
+	  bodyClass="literal:internal-page"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	  xmlns:p="tapestry:parameter">
+
+	<div id="waitingListBlock">
+		<t:delegate to="block:waitingListBlock"/>
+	</div>
+
+	<t:block t:id="waitingListBlock">
+		<t:delegate to="block:exceptionHandling"/>
+		<t:if test="controller">
+			<t:if test="controller.finished">
+				<t:delegate to="block:finished"/>
 				<p:else>
-					<p>To join the waiting list, please complete the following form:</p>
-					<t:form t:id="waitingListForm">
-						<t:errors/>
-						<dl>
-							<dt>First Name:</dt>
-							<dd>
-								<t:textfield t:id="waitlistFirstName" validate="required"
-										t:value="newContact.givenName" />
-							</dd>
-							<dt>Last Name:</dt>
-							<dd>
-								<t:textfield t:id="waitlistLastName" validate="required"
-										t:value="newContact.familyName" />
-							</dd>
-							<dt>E-Mail address:</dt>
-							<dd>
-								<t:textfield t:id="waitlistEmail" validate="required"
-										t:value="newContact.emailAddress" />
-							</dd>
-							<t:if test="showAdditionalDetails">
-								<t:if test="showAddress">
-									<dt>Address<t:if test="requireAddress"><em title="${message:required}">*</em></t:if>:</dt>
-									<dd>
-										<t:textfield value="contact.street" class="input-fixed"
-											clientId="street" t:id="street" />
-									</dd>
-								</t:if>
-								<t:if test="showSuburb">
-									<dt>Suburb<t:if test="requireSuburb"><em title="${message:required}">*</em></t:if>:</dt>
-									<dd>
-										<script type="text/javascript">
-											initSuburbAutoComplete();
-										</script>
-										<t:textfield value="contact.suburb" class="suburb-autocomplete input-fixed"
-												clientId="suburb" t:id="suburb" default="postcode or suburb" size="18"
-												autocomplete="off" />
-										<span t:type="ui/HintComponent" validationMessage="suburbErrorMessage" />
-									</dd>
-								</t:if>
-								<t:if test="showPostcode">
-									<dt>Postcode<t:if test="requirePostcode"><em title="${message:required}">*</em></t:if>:</dt>
-									<dd>
-										<t:textfield value="contact.postcode" class="input-fixed"
-											clientId="postcode" t:id="postcode" />
-										<span t:type="ui/HintComponent" validationMessage="postcodeErrorMessage"
-											hint="message:postcode-hint" />
-									</dd>
-								</t:if>
-								<t:if test="showState">
-									<dt>State<t:if test="requireState"><em title="${message:required}">*</em></t:if>:</dt>
-									<dd>
-										<t:textfield value="contact.state" class="input-fixed"
-											clientId="state" t:id="state" />
-										<span t:type="ui/HintComponent" validationMessage="stateErrorMessage"
-											hint="message:state-hint" />
-									</dd>
-								</t:if>
-								<t:if test="showHomePhone">
-									<dt>Home Phone<t:if test="requireHomePhone"><em title="${message:required}">*</em></t:if>:</dt>
-									<dd>
-										<t:textfield value="contact.homePhoneNumber" class="input-fixed"
-											clientId="homephone" t:id="homePhone" />
-										<span t:type="ui/HintComponent" validationMessage="homePhoneErrorMessage"
-											hint="message:home-phone-hint" />
-									</dd>
-								</t:if>
-								<t:if test="showMobile">
-									<dt>Mobile Phone<t:if test="requireMobile"><em title="${message:required}">*</em></t:if>:</dt>
-									<dd>
-										<t:textfield value="contact.mobilePhoneNumber" class="input-fixed"
-											clientId="mobilephone" t:id="mobilePhone" />
-										<span t:type="ui/HintComponent" validationMessage="mobilePhoneErrorMessage"
-											hint="message:mobile-phone-hint" />
-									</dd>
-								</t:if>
-								<t:if test="showBusinessPhone">
-									<dt>Work Phone<t:if test="requireBusinessPhone"><em title="${message:required}">*</em></t:if>:</dt>
-									<dd>
-										<t:textfield value="contact.businessPhoneNumber" class="input-fixed"
-											clientId="businessphone" t:id="businessPhone" />
-										<span t:type="ui/HintComponent" validationMessage="businessPhoneErrorMessage"
-											hint="message:business-phone-hint" />
-									</dd>
-								</t:if>
-								<t:if test="showFax">
-									<dt>Fax<t:if test="requireFax"><em title="${message:required}">*</em>:</t:if></dt>
-									<dd>
-										<t:textfield value="contact.faxNumber" class="input-fixed"
-											clientId="facsimile" t:id="fax" />
-										<span t:type="ui/HintComponent" validationMessage="faxErrorMessage"
-											hint="message:fax-hint" />
-									</dd>
-								</t:if>
-								<t:if test="showDateOfBirth">
-									<dt>Date of birth<t:if test="requireDateOfBirth"><em title="${message:required}">*</em></t:if>:</dt>
-									<dd>
-										<t:textField value="birthDateProperty" class="input-fixed"
-											clientId="birthdate" t:id="birthDate" />
-										<span t:type="ui/HintComponent" validationMessage="birthDateErrorMessage"
-											hint="message:birthdate-hint" />
-									</dd>
-								</t:if>
-							</t:if>
-							<dt>
-								What you'd like:
-								<span class="description">
-									Please tell us your preferences, eg on Tuesdays, in Newtown, etc.
-								</span>
-							</dt>
-							<dd>
-								<t:textarea t:id="waitlistNotes" t:value="waitingList.detail"
-										cols="30" rows="4" />
-							</dd>
-							<dt>Number of students (including you):</dt>
-							<dd>
-								<t:textfield t:id="numberOfStudents" validate="required"
-										t:value="waitingList.potentialStudents" />
-							</dd>
-							<t:submit t:value="Add to waiting list"/>
-						</dl>
-					</t:form>
+					<t:delegate to="block:editor"/>
 				</p:else>
 			</t:if>
-		<p:else>Sorry, the course is not defined.</p:else>
-	</t:if>	
-</html>	
+		</t:if>
+	</t:block>
+
+
+
+	<t:block t:id="addContact">
+		<p>To join the waiting list for course ${controller.course.name}, please complete the following form:</p>
+		<fieldset>
+			<span t:type="checkout/contact/addcontactfieldset" delegate="controller" validateHandler="validateHandler"/>
+		</fieldset>
+	</t:block>
+
+	<t:block t:id="editContact">
+		<p>Thank you ${controller.contact.fullName} for your request. Please fill additional information about you:</p>
+		<fieldset>
+			<span t:type="checkout/contact/contacteditorfieldset" delegate="controller" validateHandler="validateHandler"/>
+		</fieldset>
+	</t:block>
+
+	<t:block t:id="editDescription">
+		<fieldset>
+			<p>
+				<label for="detail">
+					What you'd like:
+										<span class="description">
+											Please tell us your preferences, eg on Tuesdays, in Newtown, etc.
+										</span>
+				</label>
+				<t:textarea t:id="detail" t:value="controller.waitingList.detail"
+							cols="30" rows="4" />
+			</p>
+			<p>
+				<label for="potentialStudents">Number of students (including you)<em title="${message:required}">*</em></label>
+				<span class="${validateHandler.validateClass('potentialStudents')}">
+					<t:textfield t:id="potentialStudents"
+							 t:value="controller.waitingList.potentialStudents" class="input-fixed ${validateHandler.errorClass('potentialStudents')}"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('potentialStudents')}"/>
+				</span>
+			</p>
+		</fieldset>
+	</t:block>
+
+	<t:block t:id="finished">
+		<div class="message">
+			<p class="feedback">
+				Thank you for your request.
+				<br/>
+				The student <b>${controller.contact.fullName}</b> (<b>${controller.waitingList.potentialStudents}</b> potential places)
+				<br/>
+				was successfully added to waiting list for course <b>${controller.course.name}${resetController()}</b>.
+			</p>
+		</div>
+	</t:block>
+
+	<t:block t:id="editor">
+		<t:form t:id="waitingListForm">
+			<t:if test="controller.errors.isEmpty()" negate="true">
+				<t:delegate to="block:errors"/>
+			</t:if>
+			<t:if test="controller.addContact">
+				<t:delegate to="block:addContact"/>
+			</t:if>
+			<t:if test="controller.editContact">
+				<t:delegate to="block:editContact"/>
+			</t:if>
+			<t:delegate to="block:editDescription"/>
+		</t:form>
+		<button id="addWaitingList">Add to waiting list</button>
+		<t:eventlink t:id="addWaitingListEvent" style="display: none"/>
+	</t:block>
+
+
+	<t:block t:id="errors">
+		<div class="validation">
+			<div>${message:error-commonHeader}</div>
+			<ul>
+				<t:loop source="controller.errors.values()" value="error">
+					<li>${error}</li>
+				</t:loop>
+			</ul>
+		</div>
+	</t:block>
+
+	<t:block t:id="exceptionHandling">
+		<t:if test="unknownCourse">
+			Sorry, the course is not defined.
+		</t:if>
+		<t:if test="expired">
+			<div class="error">
+				<p>${message:error-sessionExpired}</p>
+			</div>
+		</t:if>
+		<t:if test="unexpectedThrowable">
+			<script type="text/javascript">
+				setTimeout("window.location.href='/enrol/waitinglistform'", 100);
+			</script>
+		</t:if>
+	</t:block>
+
+
+
+	<script type="text/javascript" src="${asset:context:js/jquery.blockUI.js}"/>
+<script type="text/javascript" src="${asset:context:js/_waitinglist.js}"/>
+</html>

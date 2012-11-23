@@ -12,12 +12,8 @@
 	<t:block t:id="contactFields">
 		<fieldset id="student_enrol_details">
 			<br/>
-			<span t:type="checkout/contact/contacteditorfieldset" delegate="delegate" validateHandler="validateHandler" messages="messages"/>
+			<span t:type="checkout/contact/contacteditorfieldset" delegate="delegate" validateHandler="validateHandler"/>
 		</fieldset>
-	</t:block>
-
-	<t:block t:id="concessionsEditor">
-		<!-- todo -->
 	</t:block>
 
 	<t:block t:id="avetmissEditor">

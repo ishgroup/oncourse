@@ -4,18 +4,14 @@ import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.enrol.utils.EnrolCoursesModel;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
-
+@Deprecated
 public class EnrolmentListItem {
 
     static final Logger LOGGER = Logger.getLogger(EnrolmentListItem.class);

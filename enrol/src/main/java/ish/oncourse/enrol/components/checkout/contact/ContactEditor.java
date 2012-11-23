@@ -9,7 +9,6 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -36,10 +35,6 @@ public class ContactEditor {
 	private ContactFieldHelper contactFieldHelper = new ContactFieldHelper(preferenceController);
 
 	@Inject
-	@Property
-	private Messages messages;
-
-	@Inject
 	private Request request;
 
 	@Property
@@ -47,6 +42,9 @@ public class ContactEditor {
 
 	@InjectComponent
 	private AvetmissEditor avetmissEditor;
+
+	@InjectComponent
+	private ContactEditorFieldSet contactEditorFieldSet;
 
 
 	@SetupRender
@@ -74,7 +72,7 @@ public class ContactEditor {
 			contactEditorValidator.setRequest(request);
 			contactEditorValidator.setContact(delegate.getContact());
 			contactEditorValidator.setContactFieldHelper(contactFieldHelper);
-			contactEditorValidator.setMessages(messages);
+			contactEditorValidator.setMessages(contactEditorFieldSet.getMessages());
 			contactEditorValidator.setVisibleFields(delegate.getVisibleFields());
 			contactEditorValidator.setDateFormat(getDateFormat());
 			contactEditorValidator.parse();

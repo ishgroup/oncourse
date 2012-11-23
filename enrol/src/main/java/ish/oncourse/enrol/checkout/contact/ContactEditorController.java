@@ -7,7 +7,6 @@ import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.ContactFieldHelper.FieldDescriptor;
 import org.apache.cayenne.ObjectContext;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContactEditorController extends ADelegate implements ContactEditorDelegate {
@@ -53,13 +52,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	public List<String> getVisibleFields() {
 		if (visibleFields == null) {
-			visibleFields = new ArrayList<String>();
-
-			FieldDescriptor[] fieldDescriptors = ContactFieldHelper.FieldDescriptor.values();
-			for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
-				if (isVisible(fieldDescriptor))
-					visibleFields.add(fieldDescriptor.propertyName);
-			}
+			visibleFields = contactFieldHelper.getVisibleFields(contact, isFillRequiredProperties());
 		}
 		if (visibleFields.size() < 1)
 			throw new IllegalArgumentException();

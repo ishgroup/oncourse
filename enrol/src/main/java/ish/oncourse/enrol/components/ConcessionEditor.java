@@ -4,29 +4,20 @@ import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
+import org.apache.tapestry5.Field;
+import org.apache.tapestry5.ValidationTracker;
+import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.corelib.components.*;
+import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.tapestry5.Field;
-import org.apache.tapestry5.ValidationTracker;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.corelib.components.DateField;
-import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.Hidden;
-import org.apache.tapestry5.corelib.components.Select;
-import org.apache.tapestry5.corelib.components.TextField;
-import org.apache.tapestry5.ioc.Messages;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
-
+@Deprecated
 public class ConcessionEditor {
 
     @Property

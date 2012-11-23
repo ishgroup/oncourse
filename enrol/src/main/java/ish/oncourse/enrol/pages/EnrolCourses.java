@@ -27,6 +27,7 @@ import org.apache.tapestry5.services.RequestGlobals;
 
 import java.util.List;
 
+@Deprecated
 public class EnrolCourses {
     public static final Logger LOGGER = Logger.getLogger(EnrolCourses.class);
     public static final String HTTP_PROTOCOL = "http://";
