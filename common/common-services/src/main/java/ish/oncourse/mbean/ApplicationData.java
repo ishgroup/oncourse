@@ -17,6 +17,17 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.services.ApplicationGlobals;
 
 public class ApplicationData extends NotificationBroadcasterSupport implements ApplicationDataMBean {
+	private static final String ATTRIBUTE_MBEAN_CHANGED_NOTIFICATION_MESSAGE = "An attribute of this MBean has changed";
+	private static final String CANCELED_TYPE_MESSAGE = "canceled";
+	private static final String REFUNDED_TYPE_MESSAGE = "refunded";
+	private static final String IN_TRANSACTION_TYPE_MESSAGE = "in transaction";
+	private static final String SUCCESS_TYPE_MESSAGE = "success";
+	private static final String ENROLMENT_CANCELED_STATUS = "8";
+	private static final String ENROLMENT_REFUND_STATUS = "9";
+	private static final String ENROLMENT_IN_TRANSACTION_STATUS = "2";
+	private static final String ENROLMENT_SUCCESS_STATUS = "3";
+	private static final String FAILED_TO_LOAD_ENROLMENTS_COUNT_MESSAGE = "Failed to load %s enrolments count due the errors";
+	private static final String SELECT_ENROLMENTS_BY_STATUS_STRING = "select count(*) from Enrolment where status=%s;";
 	private static final String MANIFEST_FILE_PATH = "/META-INF/MANIFEST.MF";
 	private static final String HUDSON_RELEASE_VERSION = "Implementation-Version";
 	private static Logger LOGGER = Logger.getLogger(ApplicationData.class);	
@@ -68,8 +79,27 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 	
 	@Override
 	public String getTotalSuccessEnrolments() {
-		final String enrolmentsCount = evaluateEnrolmentsCount();
-		return enrolmentsCount != null ? enrolmentsCount : "Failed to load success enrolments count due the errors";
+		return getEnrolmentsCountForStatus(ENROLMENT_SUCCESS_STATUS, SUCCESS_TYPE_MESSAGE);
+	}
+	
+	@Override
+	public String getTotalInTransactionEnrolments() {
+		return getEnrolmentsCountForStatus(ENROLMENT_IN_TRANSACTION_STATUS, IN_TRANSACTION_TYPE_MESSAGE);
+	}
+
+	@Override
+	public String getTotalRefundedEnrolments() {
+		return getEnrolmentsCountForStatus(ENROLMENT_REFUND_STATUS, REFUNDED_TYPE_MESSAGE);
+	}
+
+	@Override
+	public String getTotalCanceledEnrolments() {
+		return getEnrolmentsCountForStatus(ENROLMENT_CANCELED_STATUS, CANCELED_TYPE_MESSAGE);
+	}
+	
+	private String getEnrolmentsCountForStatus(String status, String enrolmentType) {
+		final String enrolmentsCount = evaluateEnrolmentsCountByStatus(status);
+		return enrolmentsCount != null ? enrolmentsCount : String.format(FAILED_TO_LOAD_ENROLMENTS_COUNT_MESSAGE, enrolmentType);
 	}
 	
 	private Statement takeStatement() throws NamingException, SQLException {
@@ -79,7 +109,7 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 		return null;
 	}
 	
-	private String evaluateEnrolmentsCount() {
+	private String evaluateEnrolmentsCountByStatus(String status) {
 		try {
 			Statement statement = takeStatement();
 			if (statement == null) {
@@ -87,7 +117,7 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 			}
 			ResultSet result = null;
 			try {
-				result = statement.executeQuery("select count(*) from Enrolment where status=3;");
+				result = statement.executeQuery(String.format(SELECT_ENROLMENTS_BY_STATUS_STRING, status));
 				if (result != null) {
 					result.beforeFirst();
 					result.next();
@@ -113,7 +143,7 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
     public MBeanNotificationInfo[] getNotificationInfo() {
 		String[] types = new String[] {AttributeChangeNotification.ATTRIBUTE_CHANGE};
 		String name = AttributeChangeNotification.class.getName();
-		String description = "An attribute of this MBean has changed";
+		String description = ATTRIBUTE_MBEAN_CHANGED_NOTIFICATION_MESSAGE;
 		MBeanNotificationInfo info = new MBeanNotificationInfo(types, name, description);
 		return new MBeanNotificationInfo[] {info};
     }
