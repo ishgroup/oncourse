@@ -6,7 +6,7 @@
 
 	<t:form t:id="surveyForm">
 		<t:errors/>
-		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="survey-table">
+		<table align="center" border="0" cellspacing="0" cellpadding="0" class="survey-table">
 			<tr>
 				<td><div class="book"><img src="${contextPath}/img/ico-course-b.png" alt="" /></div></td>
 				<td>
