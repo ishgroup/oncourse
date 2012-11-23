@@ -15,10 +15,12 @@
 		
 		distCalculator="haversine": Set the distance calculation algorithm. If geo="true" then haversine is the default, otherwise cartesian is. 
 		The possible values are: haversine, lawOfCosines (warning: faulty), vincentySphere, cartesian, and cartesian^2.
-		-->	
-		<fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
+		-->
+		<!-- this field type definition commented before resolve the issue with distance calculation for #16149 
+		because this definition required additional JTS library to init-->	
+		<!--fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
 			spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory" 
-			distErrPct="0.025" maxDistErr="0.000009" units="degrees" geo="true" distCalculator="haversine"/>
+			distErrPct="0.025" maxDistErr="0.000009" units="degrees" geo="true" distCalculator="haversine"/-->
 
 		<fieldType name="string" class="solr.StrField"
 			sortMissingLast="true" omitNorms="true" />
@@ -210,7 +212,8 @@
         <field name="class_start" type="date" indexed="true" stored="true"
                multiValued="true" omitNorms="false" boost="5.0" />
 
-        <field name="course_loc" type="location_rpt" indexed="true" stored="true" multiValued="true" boost="5.0"/>
+        <field name="course_loc" type="location" indexed="true" stored="true" multiValued="true" boost="5.0"/>
+        <!--field name="course_loc" type="location_rpt" indexed="true" stored="true" multiValued="true" boost="5.0"/-->
 
 		<field name="course_suburb" type="textgen" indexed="true"
 			omitNorms="false" stored="true" multiValued="true" boost="5.0" />
