@@ -2,6 +2,9 @@
 
 	<div id="wrapper">
 		<div id="scroller">
+			<t:if t:test="userInSession">
+				<a href="#" t:type="ActionLink" t:id="logout" class="btn-log">Logout</a>
+			</t:if>
 			<div class="content-container">
 				<t:body/>
 			</div>
