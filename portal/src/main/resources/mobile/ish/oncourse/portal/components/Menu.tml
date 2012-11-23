@@ -29,7 +29,7 @@
 			</t:pagelink>
 		</li>
 		<li>
-			<a href="#" t:type="ActionLink">
+			<a href="#" t:type="ActionLink" t:id="logout-link" class="btn-log">
 				<img src="/s/portal/img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
 				<span>Logout</span>
 			</a>
