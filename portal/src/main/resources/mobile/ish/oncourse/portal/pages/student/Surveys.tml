@@ -8,7 +8,7 @@
 		<t:errors/>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="survey-table">
 			<tr>
-				<td width="64"><div class="book"><img src="${contextPath}/img/ico-course-b.png" alt="" /></div></td>
+				<td><div class="book"><img src="${contextPath}/img/ico-course-b.png" alt="" /></div></td>
 				<td>
 
 					<div class="class-name">
@@ -20,10 +20,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td width="64"><div class="book"><img src="${contextPath}/img/ico-tutor-b.png" alt="" width="46" height="50"/></div></td>
+				<td><div class="book"><img src="${contextPath}/img/ico-tutor-b.png" alt="" width="46" height="50"/></div></td>
 				<td>
 					<t:loop  source="tutorRoles" value="tutorRole" formState="none">
-						<label>Tutor:</label><div>${tutorRoleName} </div>
+						<label>Tutor:</label><div class="tutor-list">${tutorRoleName} </div>
 					</t:loop>
 				</td>
 				<td>
@@ -31,9 +31,9 @@
 				</td>
 			</tr>
 			<tr>
-				<td width="64"><div class="book"><img src="${contextPath}/img/ico-venue-b.png" alt="" width="46" height="50"/></div></td>
+				<td><div class="book"><img src="${contextPath}/img/ico-venue-b.png" alt="" width="46" height="50"/></div></td>
 				<td>
-					<label>Venue:</label><div class="light">${room}</div>
+					<label>Venue:</label><div class="venue-list">${room}</div>
 				</td>
 				<td>
 					<span t:type="rating" t:id="ratingVenue" delegate="venueRatingDelegate" value="survey.venueScore" editable="true"/>
