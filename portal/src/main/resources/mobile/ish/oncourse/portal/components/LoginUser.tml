@@ -3,7 +3,7 @@
 	<div class="logged">
 		<a href="#" t:type="ActionLink" t:id="logout" class="btn-log">
 			<img src="/s/portal/img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
-			<span>Logout</spna>
+			<span>Logout</span>
 		</a>
 	</div>
 
