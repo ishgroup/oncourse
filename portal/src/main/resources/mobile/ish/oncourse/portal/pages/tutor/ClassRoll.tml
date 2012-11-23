@@ -2,8 +2,6 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
 
 <t:if test="courseClass">
-    <h1>${courseClass.course.name}</h1>
-
 	<span t:type="classinfotitle" courseClass="courseClass" selected="literal:classroll"/>
 
 	<div class="date-time-info">
