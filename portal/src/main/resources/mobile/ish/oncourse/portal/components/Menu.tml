@@ -17,7 +17,7 @@
 			</t:pagelink>
 		</li>
 		<li>
-			<t:pagelink id="m_surveys" page="prop:surveysPageName">
+			<t:pagelink id="m_surveys" page="prop:classSurveyPageName">
 				<img src="/s/portal/img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
 				<span>Surveys</span>
 			</t:pagelink>
