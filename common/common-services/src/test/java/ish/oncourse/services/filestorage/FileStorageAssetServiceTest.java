@@ -28,8 +28,7 @@ import static org.junit.Assert.*;
 public class FileStorageAssetServiceTest extends ServiceTest {
 
     private File rootDir;
-    @SuppressWarnings("deprecation")
-	private FileStorageAssetService fileStorageAssetService;
+    private FileStorageAssetService fileStorageAssetService;
     private ICayenneService cayenneService;
 
     @Before
@@ -41,8 +40,7 @@ public class FileStorageAssetServiceTest extends ServiceTest {
         initFileStorageAssetService();
     }
 
-    @SuppressWarnings("deprecation")
-	private void initFileStorageAssetService() throws NamingException {
+    private void initFileStorageAssetService() throws NamingException {
         rootDir = new File(System.getProperty("user.dir"), "FileStorageServiceTest");
         boolean result = rootDir.mkdirs();
         if (!result) {
@@ -58,8 +56,7 @@ public class FileStorageAssetServiceTest extends ServiceTest {
 
 
 
-    @SuppressWarnings("deprecation")
-	@Test
+    @Test
     public void test() throws Exception
     {
         InputStream inputStream = FileStorageAssetService.class.getResourceAsStream("FileStorageAssetService.class");
