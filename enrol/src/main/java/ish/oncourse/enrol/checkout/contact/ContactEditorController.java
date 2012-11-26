@@ -52,7 +52,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	public List<String> getVisibleFields() {
 		if (visibleFields == null) {
-			visibleFields = contactFieldHelper.getVisibleFields(contact, isFillRequiredProperties());
+			visibleFields = getContactFieldHelper().getVisibleFields(contact, isFillRequiredProperties());
 		}
 		if (visibleFields.size() < 1)
 			throw new IllegalArgumentException();
