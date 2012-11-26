@@ -52,9 +52,9 @@
 					</t:loop>
 					<li class="shortListOrderEnrol">
 						<t:if test="hasItems">
-							<a href="/enrol/checkout" class="shortlistLinkEnrol">Enrol</a>
+							<a href="/enrol/" class="shortlistLinkEnrol">Enrol</a>
 							<p:else>
-								<a href="/enrol/checkout" class="shortlistLinkEnrol">Purchase</a>
+								<a href="/enrol/" class="shortlistLinkEnrol">Purchase</a>
 							</p:else>
 						</t:if>
 					</li>
@@ -75,9 +75,9 @@
 					</t:if>
 					<li class="shortlistActionEnrol">
 						<t:if test="hasItems">
-							<a href="/enrol/checkout">Enrol</a>
+							<a href="/enrol/">Enrol</a>
 							<p:else>
-								<a href="/enrol/checkout">Purchase</a>
+								<a href="/enrol/">Purchase</a>
 							</p:else>
 						</t:if>
 					</li>

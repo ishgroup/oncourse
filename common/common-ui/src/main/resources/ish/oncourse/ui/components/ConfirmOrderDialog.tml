@@ -7,7 +7,7 @@
 				<div class="classDate" />
 			</p>
 			<p class="confirm-proseed">
-				<a href="/enrol/checkout" class="button">Proceed to Checkout</a>
+				<a href="/enrol/" class="button">Proceed to Checkout</a>
 			</p>
 			<p class="confirm-close-wrapper">
 				<a href="#" class="button closeButton">Continue browsing</a>
