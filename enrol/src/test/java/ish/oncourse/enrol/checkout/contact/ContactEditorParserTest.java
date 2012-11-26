@@ -46,7 +46,7 @@ public class ContactEditorParserTest {
 		Messages messages = mock(Messages.class);
 		when(contactFieldHelper.getPreferenceController()).thenReturn(preferenceController);
 		when(preferenceController.getEnrolmentMinAge()).thenReturn(18);
-		when(messages.get(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge)).thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge);
+		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge,18)).thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge);
 		ContactEditorParser parser = new ContactEditorParser();
 		parser.setContact(contact);
 		parser.setContactFieldHelper(contactFieldHelper);
