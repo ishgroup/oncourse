@@ -72,11 +72,12 @@ public class JMXInitService implements IJMXInitService, RegistryShutdownListener
 	@Override
 	public void registryDidShutdown() {
 		LOGGER.info("JMX service shutdown requested.");
-		if (applicationDataInstance != null && isObjectNameRegistered(applicationDataInstance)) {
+		//comment mbean unregister because on init we unregister old instance
+		/*if (applicationDataInstance != null && isObjectNameRegistered(applicationDataInstance)) {
 			LOGGER.info("Unregister " + applicationDataInstance.getCanonicalName());
 			unregisterObjectName(applicationDataInstance);
 			LOGGER.info("Unregister " + applicationDataInstance.getCanonicalName() + " complete.");
-		}
+		}*/
 		LOGGER.info("JMX service shutdown complete.");
 	}
 	
