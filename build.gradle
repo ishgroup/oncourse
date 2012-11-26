@@ -196,19 +196,19 @@ apply plugin: 'sonar'
 
 sonar {
     server {
-        url = "http://sonar.ish.com.au"
+        url = 'http://sonar.ish.com.au'
     }
     database {
-        url = "jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&amp;characterEncoding=utf8"
-        driverClassName = "com.mysql.jdbc.Driver"
-        username = "sonar"
-        password = sonarPassword
+        url = 'jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&characterEncoding=utf8'
+        driverClassName = 'com.mysql.jdbc.Driver'
+        username = 'sonar'
+        password = 'sonarPassword'
     }
 	project {
 		coberturaReportPath = file("$buildDir/reports/cobertura/coverage.xml")
-        dynamicAnalysis  = "reuseReports"
+        dynamicAnalysis  = 'reuseReports'
         withProjectProperties { props ->
-            props["sonar.core.codeCoveragePlugin"] = "jacoco"
+            props["sonar.core.codeCoveragePlugin"] = 'jacoco'
             props["sonar.jacoco.reportPath"]  = "${buildDir}/jacoco.exec"
         }
     }
