@@ -12,7 +12,13 @@ public class FileStorageReplicationService {
 
     public void replicate(File file) {
 
-        LOGGER.debug(String.format("Start FileStorageReplicationService.replicate with parameters: syncScriptPath=%s, file=%s", syncScriptPath, file.getAbsolutePath()));
+		if (syncScriptPath == null)
+		{
+			LOGGER.error("syncScriptPath is not defined");
+			return;
+		}
+
+		LOGGER.debug(String.format("Start FileStorageReplicationService.replicate with parameters: syncScriptPath=%s, file=%s", syncScriptPath, file.getAbsolutePath()));
         ProcessBuilder processBuilder = new ProcessBuilder(syncScriptPath, file.getAbsolutePath());
         try {
             processBuilder.start();
