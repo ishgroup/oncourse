@@ -199,7 +199,7 @@ sonar {
         url = 'http://sonar.ish.com.au'
     }
     database {
-        url = 'jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&characterEncoding=utf8'
+        url = 'jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&amp;characterEncoding=utf8'
         driverClassName = 'com.mysql.jdbc.Driver'
         username = 'sonar'
         password = 'sonarPassword'
