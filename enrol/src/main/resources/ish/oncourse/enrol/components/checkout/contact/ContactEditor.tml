@@ -35,7 +35,6 @@
 		<t:delegate to="block:message"/>
 		<t:delegate to="block:contactFields"/>
 		<t:if test="fillRequiredProperties" negate="true">
-			<t:delegate to="block:concessionsEditor"/>
 			<t:if test = "delegate.contact.college.requiresAvetmiss">
 				<t:delegate to="block:avetmissEditor"/>
 			</t:if>
