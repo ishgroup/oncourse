@@ -144,9 +144,6 @@ public class PaymentEditor {
 	@OnEvent(value = "paymentSubmitEvent")
 	public Object makePayment()
 	{
-		if (!request.isXHR())
-			return null;
-
 		PaymentEditorParser paymentEditorParser = new PaymentEditorParser();
 		paymentEditorParser.setRequest(request);
 		paymentEditorParser.setContacts(delegate.getContacts());
@@ -155,6 +152,6 @@ public class PaymentEditor {
 		paymentEditorParser.parse();
 		delegate.setErrors(paymentEditorParser.getErrors());
 		delegate.makePayment();
-		return checkout.getCheckoutBlock();
+		return checkout;
 	}
 }

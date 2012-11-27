@@ -1,7 +1,11 @@
-<html t:type="ui/internal/pagestructure" bodyId="literal:EnrolmentEntry"
-	bodyClass="literal:internal-page"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
-	<script t:type="ui/jsassetgroup" group="literal:core-enrol" />
+<html t:type="ui/internal/pagestructure" bodyId="literal:PaymentPage"
+	  bodyClass="literal:internal-page"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<div id="payment">
+	<t:delegate to="block:paymentEditor"/>
+</div>
 
+<t:block t:id="paymentEditor">
+	<span t:type="checkout/payment/paymenteditor" delegate="purchaseController.paymentEditorDelegate"/>
+</t:block>
 </html>

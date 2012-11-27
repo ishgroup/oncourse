@@ -160,7 +160,7 @@ public class PurchaseController {
 	/**
 	 * Single entry point to perform all actions. {@link Action} and {@link ActionParameter} values should be specified.
 	 */
-	public void performAction(ActionParameter param) {
+	public synchronized void performAction(ActionParameter param) {
 
 		illegalState = false;
 		illegalModel = false;
@@ -300,37 +300,37 @@ public class PurchaseController {
 		return illegalState;
 	}
 
-	public boolean isEditCheckout() {
+	public synchronized boolean isEditCheckout() {
 		return state == editCheckout;
 	}
 
-	public boolean isEditContact() {
+	public synchronized boolean isEditContact() {
 		return state == editContact;
 	}
 
-	public boolean isEditConcession() {
+	public synchronized boolean isEditConcession() {
 		return state == State.editConcession;
 	}
 
-	public boolean isAddContact() {
+	public synchronized boolean isAddContact() {
 		return state == State.addContact;
 	}
 
-	public boolean isActiveConcessionTypes() {
+	public synchronized boolean isActiveConcessionTypes() {
 		return concessionsService.hasActiveConcessionTypes();
 	}
 
-	public boolean isEditPayment() {
+	public synchronized boolean isEditPayment() {
 		return state == editPayment;
 	}
 
 	//return true when the payment process has a result.
-	public boolean isFinalized() {
+	public synchronized boolean isFinalized() {
 		return state == finalized;
 	}
 
 	//return true when the payment process was finished
-	public boolean isFinished()
+	public synchronized boolean isFinished()
 	{
 		return state == finalized && paymentEditorController != null &&
 				paymentEditorController.getPaymentProcessController().isProcessFinished();

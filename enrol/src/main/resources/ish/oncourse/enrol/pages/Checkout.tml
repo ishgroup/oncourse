@@ -1,4 +1,4 @@
-<html t:type="ui/internal/pagestructure" bodyId="literal:EnrolmentEntry"
+<html t:type="ui/internal/pagestructure" bodyId="literal:CheckoutPage"
 	  bodyClass="literal:internal-page"
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
@@ -67,8 +67,7 @@
 	<div class="amount-container">
 		<span t:type="checkout/addcode" purchaseController="purchaseController"/>
 		<span t:type="checkout/amount" purchaseController="purchaseController"/>
-		<button id="proceedToPayment" class="btn btn-primary">Proceed to Payment</button>
-		<t:eventlink t:id="proceedToPaymentEvent" style="{display:none}"/>
+		<t:eventlink t:id="proceedToPaymentEvent" class="btn btn-primary">Proceed to Payment</t:eventlink>
 	</div>
 </t:block>
 
@@ -77,7 +76,7 @@
 </t:block>
 
 <t:block t:id="addContact">
-	<span t:type="checkout/contact/addcontact" delegate="purchaseController.addContactDelegate" blockToRefresh="checkoutBlock"/>
+	<span t:type="checkout/contact/addcontact" delegate="purchaseController.addContactDelegate" resultPage="this"/>
 </t:block>
 
 <t:block t:id="contactEditor">

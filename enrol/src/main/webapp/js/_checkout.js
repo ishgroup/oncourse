@@ -235,11 +235,11 @@ function initCreditAccessHandle()
 
 function initProceedToPaymentHandle()
 {
-	$j("#proceedToPayment").click(function()
-	{
-		var actionLink = $j(this).next('a')[0].pathname ;
-		sendAjax(actionLink);
-	});
+//	$j("#proceedToPayment").click(function()
+//	{
+//		var actionLink = $j(this).next('a')[0].pathname ;
+//		sendAjax(actionLink);
+//	});
 
 	$j("#paymentSubmit").click(function()
 	{

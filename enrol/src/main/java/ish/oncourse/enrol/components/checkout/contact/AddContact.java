@@ -3,7 +3,6 @@ package ish.oncourse.enrol.components.checkout.contact;
 import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
 import ish.oncourse.enrol.checkout.contact.AddContactParser;
-import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -23,10 +22,12 @@ public class AddContact {
 	private ValidateHandler validateHandler;
 
 	@Parameter (required =  false)
-	private Block blockToRefresh;
+	private Object resultPage;
 
 	@Inject
 	private Request request;
+
+	private boolean reset;
 
 	@SetupRender
 	void beforeRender() {
@@ -34,26 +35,19 @@ public class AddContact {
 		validateHandler.setErrors(delegate.getErrors());
 	}
 
-	@OnEvent(value = "cancelContactEvent")
-	public Object cancelContact() {
-		if (!request.isXHR())
-			return null;
 
+	@OnEvent(component = "cancelContact", value = "selected")
+	public Object cancelContact() {
 		if (delegate != null)
 		{
 			delegate.setErrors(Collections.EMPTY_MAP);
 			delegate.cancelEditing();
-			if (blockToRefresh != null)
-				return blockToRefresh;
 		}
-		return null;
+		return resultPage;
 	}
 
-	@OnEvent(value = "saveContactEvent")
+	@OnEvent(component = "saveContact", value = "selected")
 	public Object saveContact() {
-		if (!request.isXHR())
-			return null;
-
 		if (delegate != null)
 		{
 			AddContactParser addContactValidator = new AddContactParser();
@@ -62,9 +56,7 @@ public class AddContact {
 			addContactValidator.parse();
 			delegate.setErrors(addContactValidator.getErrors());
 			delegate.saveEditing();
-			if (blockToRefresh != null)
-				return blockToRefresh;
 		}
-		return null;
+		return resultPage;
 	}
 }

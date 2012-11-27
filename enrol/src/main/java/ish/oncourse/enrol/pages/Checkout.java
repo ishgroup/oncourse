@@ -60,7 +60,7 @@ public class Checkout {
 	@Inject
 	private Messages messages;
 
-	@Persist
+	@SessionState(create=false)
 	private PurchaseController purchaseController;
 
 
@@ -75,6 +75,9 @@ public class Checkout {
 
 	@Property
 	private String error;
+
+	@InjectPage
+	private Payment payment;
 
 
 	/**
@@ -161,12 +164,20 @@ public class Checkout {
 
 	@OnEvent(value = "proceedToPaymentEvent")
 	public Object proceedToPayment() {
-		if (!request.isXHR())
-			return null;
 		ActionParameter actionParameter = new ActionParameter(Action.proceedToPayment);
+		System.out.println(purchaseController);
 		actionParameter.setValue(purchaseController.getModel().getPayment());
 		purchaseController.performAction(actionParameter);
-		return checkoutBlock;
+
+		if (purchaseController.getErrors().isEmpty())
+		{
+			payment.setPurchaseController(purchaseController);
+			return payment;
+		}
+		else
+		{
+			return this;
+		}
 	}
 
 	public Object onException(Throwable cause) {
