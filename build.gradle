@@ -20,7 +20,7 @@ buildscript {
 apply plugin: 'release'
 release {
 	//use subversion scm, unless otherwise specified in with -PscmFlavour= or in users gradle properties
-	scm = project.hasProperty('scmFlavour') ? project.scmFlavour:'svn'
+	scm = 'git'
 	failOnSnapshotDependencies = true
 
 	//properties for svn access
@@ -202,7 +202,8 @@ sonar {
         url = 'jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&amp;characterEncoding=utf8'
         driverClassName = 'com.mysql.jdbc.Driver'
         username = 'sonar'
-        password = 'sonarPassword'
+        // sonar password comes from users gradle.properties file
+        password = sonarPassword
     }
 	project {
 		coberturaReportPath = file("$buildDir/reports/cobertura/coverage.xml")
