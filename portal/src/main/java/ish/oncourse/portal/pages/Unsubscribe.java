@@ -1,9 +1,7 @@
 package ish.oncourse.portal.pages;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.Taggable;
@@ -12,10 +10,6 @@ import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.tag.ITagService;
 
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -29,11 +23,9 @@ public class Unsubscribe {
 	private static final String PARAM_DELIMETER = "-";
 	
 	@Property
-	@Persist
 	private Tag mailingList;
 	
 	@Property
-	@Persist
 	private Contact contact;
 	
 	@Property
