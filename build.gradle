@@ -20,7 +20,7 @@ buildscript {
 apply plugin: 'release'
 release {
 	//use subversion scm, unless otherwise specified in with -PscmFlavour= or in users gradle properties
-	scm = 'git'
+	scm = project.hasProperty('scmFlavour') ? project.scmFlavour:'svn'
 	failOnSnapshotDependencies = true
 
 	//properties for svn access
@@ -206,8 +206,7 @@ sonar {
         password = sonarPassword
     }
 	project {
-		coberturaReportPath = file("$buildDir/reports/cobertura/coverage.xml")
-        dynamicAnalysis  = 'reuseReports'
+		dynamicAnalysis  = 'reuseReports'
         withProjectProperties { props ->
             props["sonar.core.codeCoveragePlugin"] = 'jacoco'
             props["sonar.jacoco.reportPath"]  = "${buildDir}/jacoco.exec"
