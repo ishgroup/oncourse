@@ -167,10 +167,8 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 	include 'onCourse.jnlp'
 	include 'Libraries/*'
 	
-	classifier = 'webstart'
-	version = ''
 	destinationDir = file("${distsDir}/webstart/")
-	extension='zip'
+	archiveName='onCourse-webstart.zip'
 }
 
 task installer_win(dependsOn: [bundle_win, prepareKeychains], type: au.com.ish.NsisTask) {
