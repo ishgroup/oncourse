@@ -23,9 +23,11 @@ public class Unsubscribe {
 	private static final String PARAM_DELIMETER = "-";
 	
 	@Property
+	@Persist
 	private Tag mailingList;
 	
 	@Property
+	@Persist
 	private Contact contact;
 	
 	@Property
