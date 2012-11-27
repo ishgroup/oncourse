@@ -96,31 +96,28 @@ task installer_osx(dependsOn: [codeSign, createDmg]) {
 }
 
 project.ext.webstartFiles = copySpec {
+	into('Libraries') {
+		from file("${libsDir}/${project.name}-${project.version}-all.jar")
+	}
+
 	into('.') {
 		from("${projectDir}/src/packaging/webstart/onCourse.jnlp")
+		from("${projectDir}/src/packaging/webstart/onCourseDemo.jnlp")
 
 		expand([
-			webstartCodebase: project.webstartCodebase,
-			webstartOncourseServerUri: project.webstartOncourseServerUri,
-			webstartOncourseServerPort: project.webstartOncourseServerPort,
-			webstartOncourseServerUseSSL: project.webstartOncourseServerUseSSL,
-			sourceCompatibility: project.sourceCompatibility,
-			classpath: project.configurations.default.collect{it.name}.sort(),
-			mainJarClasspath : configurations.default.allArtifacts.files.singleFile.name,
-			version: version
+			webstartCodebase: 				project.webstartCodebase,
+			webstartOncourseServerUri: 		project.webstartOncourseServerUri,
+			webstartOncourseServerPort: 	project.webstartOncourseServerPort,
+			webstartOncourseServerUseSSL: 	project.webstartOncourseServerUseSSL,
+			sourceCompatibility: 			project.sourceCompatibility,
+			mainJarClasspath : 				"${project.name}-${project.version}-all.jar",
+			version: 						version
 		])
 		
 		from("${projectDir}/src/main/resources/resources") {
 			include '*.ico'
 			include '*.icns'
 		}
-	}
-
-	into('Libraries') {
-		from configurations.runtime
-		from configurations.default.allArtifacts.files
-		exclude '*-sources.jar'
-		exclude '*-javadoc.jar'
 	}
 }
 
@@ -136,7 +133,7 @@ task bundle_win(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
 	}
 }
 
-task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
+task bundle_webstart(dependsOn: [fatJar, prepareKeychains], type: Copy) {
 	description "Create the webstart application executable."
 	doFirst {
 		logger.lifecycle("Creating the webstart application executable for $project.name")
