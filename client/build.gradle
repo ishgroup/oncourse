@@ -117,7 +117,7 @@ project.ext.webstartFiles = copySpec {
 	}
 
 	into('Libraries') {
-		from configurations.default
+		from configurations.runtime
 		from configurations.default.allArtifacts.files
 		exclude '*-sources.jar'
 		exclude '*-javadoc.jar'
@@ -167,8 +167,8 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 	include 'onCourse.jnlp'
 	include 'Libraries/*'
 	
-	classifier = "webstart"
-	version = project.version
+	classifier = 'webstart'
+	version = ''
 	destinationDir = file("${distsDir}/webstart/")
 	extension='zip'
 }
