@@ -147,7 +147,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		delegate.getPaymentIn().setCreditCardType(CreditCardType.VISA);
 		delegate.makePayment();
 
-		assertEquals(State.finalized, controller.getState());
+		assertEquals(State.paymentResult, controller.getState());
 		assertEquals(2, controller.getModel().getAllEnrolments(controller.getModel().getPayer()).size());
 		assertEquals(1, controller.getModel().getAllProductItems(controller.getModel().getPayer()).size());
 		assertEquals(1, controller.getModel().getPayment().getPaymentInLines().size());
@@ -172,7 +172,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		delegate.getPaymentIn().setCreditCardType(CreditCardType.MASTERCARD);
 		delegate.makePayment();
 
-		assertEquals(State.finalized, controller.getState());
+		assertEquals(State.paymentResult, controller.getState());
 		assertEquals(2, controller.getModel().getAllEnrolments(controller.getModel().getPayer()).size());
 		assertEquals(1, controller.getModel().getAllProductItems(controller.getModel().getPayer()).size());
 		assertEquals(1, controller.getModel().getPayment().getPaymentInLines().size());
@@ -190,7 +190,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		PurchaseModel model = createModel(context, college, Collections.EMPTY_LIST, Collections.EMPTY_LIST, null, null);
 		PurchaseController purchaseController = purchaseControllerBuilder.build(model);
 		purchaseController.performAction(new ActionParameter(Action.init));
-		assertEquals(State.finalized, purchaseController.getState());
+		assertEquals(State.paymentResult, purchaseController.getState());
 		assertNotNull(purchaseController.getErrors().get(PurchaseController.Error.noSelectedItemForPurchase.name()));
 	}
 

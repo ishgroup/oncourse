@@ -17,7 +17,7 @@ public class ActionInit extends APurchaseAction {
 		if (getModel().getClasses().size() < 1 && getModel().getProducts().size() < 1)
 		{
 			getController().addError(PurchaseController.Error.noSelectedItemForPurchase);
-			getController().setState(PurchaseController.State.finalized);
+			getController().setState(PurchaseController.State.paymentResult);
 			return false;
 		}
 		return true;

@@ -21,4 +21,20 @@ public class Payment {
 	public PurchaseController getPurchaseController() {
 		return checkoutPage.getPurchaseController();
 	}
+
+    public boolean isEditPayment()
+    {
+        return getPurchaseController() != null && getPurchaseController().isEditPayment();
+    }
+
+    public boolean isPaymentResult()
+    {
+        return getPurchaseController() != null && getPurchaseController().isPaymentResult();
+    }
+
+    public boolean isPaymentProgress()
+    {
+        return getPurchaseController() != null && getPurchaseController().isPaymentProgress();
+    }
+
 }

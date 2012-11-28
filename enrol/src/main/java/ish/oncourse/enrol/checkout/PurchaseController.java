@@ -18,8 +18,10 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
 import java.util.*;
 
@@ -41,7 +43,7 @@ public class PurchaseController {
 			disableEnrolment, disableProductItem,
 			setVoucherPrice, addDiscount, addVoucher,
 			startConcessionEditor, startAddContact,
-			owingApply, creditAccess, proceedToPayment,changePayer));
+			owingApply, creditAccess, changePayer));
 
 	private PurchaseModel model;
 
@@ -75,8 +77,9 @@ public class PurchaseController {
 	private PaymentEditorController paymentEditorController;
 
 	private Map<String, String> errors = new HashMap<String, String>();
+    private ParallelExecutor parallelExecutor;
 
-	/**
+    /**
 	 * @return the current state
 	 */
 	public synchronized State getState() {
@@ -198,7 +201,8 @@ public class PurchaseController {
 			return true;
 		switch (state) {
 			case editPayment:
-			case finalized:
+			case paymentProgress:
+            case paymentResult:
 				ActionParameter parameter = new ActionParameter(backToEditCheckout);
 				parameter.setValue(action);
 				ActionBackToEditCheckout actionBackToEditCheckout = backToEditCheckout.createAction(this, parameter);
@@ -360,13 +364,17 @@ public class PurchaseController {
 	}
 
 	//return true when the payment process has a result.
-	public synchronized boolean isFinalized() {
-		return state == finalized;
+	public synchronized boolean isPaymentResult() {
+		return state == paymentResult;
 	}
 
-	//return true when the payment process was finished
+    public synchronized boolean isPaymentProgress() {
+        return state == paymentProgress;
+    }
+
+    //return true when the payment process was finished
 	public synchronized boolean isFinished() {
-		return state == finalized && paymentEditorController != null &&
+		return state == paymentResult && paymentEditorController != null &&
 				paymentEditorController.getPaymentProcessController().isProcessFinished();
 	}
 
@@ -497,17 +505,29 @@ public class PurchaseController {
 	}
 
 	public boolean isPaymentState() {
-		return (state == State.editPayment || state == State.finalized);
+		return (state == State.editPayment ||
+                state == State.paymentResult ||
+                state == State.paymentProgress);
 	}
 
-	public static enum State {
+    public void setParallelExecutor(ParallelExecutor parallelExecutor) {
+
+       this.parallelExecutor = parallelExecutor;
+    }
+
+    public ParallelExecutor getParallelExecutor() {
+        return parallelExecutor;
+    }
+
+    public static enum State {
 		init(Action.init, Action.startAddContact),
-		editCheckout((Action[])COMMON_ACTIONS.toArray()),
+		editCheckout((Action[]) ArrayUtils.add(COMMON_ACTIONS.toArray(),proceedToPayment)),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, cancelAddContact),
 		editContact(Action.addContact, cancelAddContact),
-		editPayment(showPaymentResult, backToEditCheckout),
-		finalized(proceedToPayment);
+		editPayment(makePayment, backToEditCheckout),
+        paymentProgress(showPaymentResult),
+		paymentResult(proceedToPayment);
 
 		private List<Action> allowedActions;
 
@@ -546,7 +566,8 @@ public class PurchaseController {
 		creditAccess(ActionCreditAccess.class, String.class),
 		owingApply(ActionOwingApply.class),
 		proceedToPayment(ActionProceedToPayment.class),
-		showPaymentResult(ActionShowPaymentResult.class),
+		makePayment(ActionMakePayment.class),
+        showPaymentResult(ActionShowPaymentResult.class),
 		backToEditCheckout(ActionBackToEditCheckout.class);
 
 		private Class<? extends APurchaseAction> actionClass;

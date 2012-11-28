@@ -27,41 +27,52 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 		return paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
 	}
 
+    public void updatePaymentStatus()
+    {
+        paymentProcessController.processAction(PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS);
+        if (paymentProcessController.isFinalState())
+        {
+            finalizeProcess();
+        }
+    }
+
 	public void makePayment()
 	{
 		purchaseController.setErrors(errors);
 		boolean changePayerResult = true;
 		if (errors.isEmpty())
 		{
-			if (! getPaymentIn().getContact().getId().equals(purchaseController.getModel().getPayer().getId()))
+			if (!getPaymentIn().getContact().getId().equals(purchaseController.getModel().getPayer().getId()))
 			{
 				ActionChangePayer payer = PurchaseController.Action.changePayer.createAction(purchaseController);
 				payer.setContact(getPaymentIn().getContact());
 				changePayerResult = payer.action();
-
 			}
 			if (changePayerResult)
 			{
-				purchaseController.getModel().getObjectContext().commitChanges();
-				paymentProcessController.processAction(MAKE_PAYMENT);
-				paymentProcessController.processAction(PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS);
-				finalizeProcess();
-			}
+                PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
+                purchaseController.performAction(actionParameter);
+                if (purchaseController.getErrors().isEmpty())
+                {
+                    purchaseController.getModel().getObjectContext().commitChanges();
+                    paymentProcessController.processAction(MAKE_PAYMENT);
+                }
+            }
 		}
 	}
 
 	private void finalizeProcess() {
-		PurchaseController.ActionParameter ap = new PurchaseController.ActionParameter(PurchaseController.Action.showPaymentResult);
-		ap.setErrors(errors);
-		purchaseController.performAction(ap);
-	}
+        PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.showPaymentResult);
+        actionParameter.setErrors(errors);
+        purchaseController.performAction(actionParameter);
+    }
 
 	public void tryAgain()
 	{
-		paymentProcessController.processAction(TRY_ANOTHER_CARD);
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
-		actionParameter.setValue(paymentProcessController.getPaymentIn());
-		purchaseController.performAction(actionParameter);
+        paymentProcessController.processAction(TRY_ANOTHER_CARD);
+        PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
+        actionParameter.setValue(paymentProcessController.getPaymentIn());
+        purchaseController.performAction(actionParameter);
 	}
 
 	public void abandon(){

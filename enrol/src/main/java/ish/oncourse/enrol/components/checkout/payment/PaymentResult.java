@@ -5,7 +5,10 @@ import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.pages.Payment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.preference.PreferenceController;
-import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -60,12 +63,6 @@ public class PaymentResult {
 	{
 		delegate.tryAgain();
 		return payment;
-	}
-
-	@AfterRender
-	public void afterRender() {
-		if (checkout.getPurchaseController() != null && checkout.getPurchaseController().isFinished())
-			checkout.resetPersistProperties();
 	}
 
 	public String getMessageThanksForEnrolment()

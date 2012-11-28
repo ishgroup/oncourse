@@ -19,6 +19,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
+import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
 import java.util.List;
 
@@ -59,7 +60,11 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 	@Inject
 	private ITagService tagService;
 
-	@Override
+    @Inject
+    private ParallelExecutor parallelExecutor;
+
+
+    @Override
 	public PurchaseController build(PurchaseModel model) {
 		PurchaseController purchaseController = new PurchaseController();
 		purchaseController.setModel(model);
@@ -74,6 +79,7 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		purchaseController.setPaymentGatewayServiceBuilder(paymentGatewayServiceBuilder);
 		purchaseController.setWebSiteService(webSiteService);
 		purchaseController.setTagService(tagService);
+        purchaseController.setParallelExecutor(parallelExecutor);
 		return purchaseController;
 	}
 

@@ -28,5 +28,5 @@ public interface PaymentEditorDelegate {
 	public Transaction getAnalyticsTransaction();
 
 
-
+    void updatePaymentStatus();
 }
