@@ -141,20 +141,20 @@ task bundle_webstart(dependsOn: [fatJar, prepareKeychains], type: Copy) {
 	with webstartFiles
 	into file("${distsDir}/webstart")
 	doLast {
-				//if (project.hasProperty('osxKeychainPassword')) {
-				//	ant.signjar(
-				//		keystore:				project.codeSigningTemporaryKeystore, 
-				//		storetype:				'pkcs12',
-				//		storepass:				project.codeSigningTemporaryPassword,
-				//		alias:					'oncourse', 
-				//		keypass:				project.codeSigningTemporaryPassword,
-				//		lazy: 					"true",
-				//		preservelastmodified:	"true") {
-				//			fileset(dir: "${distsDir}/webstart/Libraries/") {
-				//				include(name: '*.jar')
-				//			}
-				//		}
-				//}
+				if (project.hasProperty('osxKeychainPassword')) {
+					ant.signjar(
+						keystore:				project.codeSigningTemporaryKeystore, 
+						storetype:				'pkcs12',
+						storepass:				project.codeSigningTemporaryPassword,
+						alias:					'oncourse', 
+						keypass:				project.codeSigningTemporaryPassword,
+						lazy: 					"true",
+						preservelastmodified:	"true") {
+							fileset(dir: "${distsDir}/webstart/Libraries/") {
+								include(name: '*.jar')
+							}
+						}
+				}
 	}
 }
 
