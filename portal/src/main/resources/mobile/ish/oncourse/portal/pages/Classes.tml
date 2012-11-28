@@ -19,7 +19,7 @@
 								<div>
 									<t:if test="${currentContactStudent}">
 										<t:loop  source="tutorRoles" value="tutorRole">
-											<div class="class-man">${tutorRoleName} </div>
+											<div class="class-man"><i class="icon icon-user"></i>${tutorRoleName} </div>
 										</t:loop>
 									</t:if>
 								</div>
