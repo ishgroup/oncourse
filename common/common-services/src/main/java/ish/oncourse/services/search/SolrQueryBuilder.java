@@ -114,6 +114,7 @@ public class SolrQueryBuilder {
         setFiltersTo(q,filters);
         q.addSortField(FIELD_score, ORDER.desc);
         q.addSortField(FIELD_startDate, ORDER.asc);
+        q.addSortField(FIELD_name, SolrQuery.ORDER.asc);
         return q;
     }
 
@@ -213,16 +214,11 @@ public class SolrQueryBuilder {
     {
         List<Suburb> suburbs = params.getSuburbs();
         Suburb suburb = suburbs.get(0);
-        //TODO: switch to commented suburbs filtering after migration to solr4 will be finished
-        //query.addSortField("score", SolrQuery.ORDER.asc);
-        //query.addFilterQuery("{! score=distance}course_loc:\"Intersects(Circle("+suburb.getLocation() +" d="+suburb.getDistance().toString()+"))\"");
-        //&sort=score asc&q={! score=distance}geo:"Intersects(Circle(54.729696,-98.525391 d=10))"
         query.addFilterQuery(FILTER_TEMPLATE_geofilt);
         query.add(PARAMETER_sfield, PARAMETER_VALUE_sfield);
         query.add(PARAMETER_pt, suburb.getLocation());
         query.add(PARAMETER_d, suburb.getDistance().toString());
         query.addSortField(QUERY_SORT_FIELD_geodist, SolrQuery.ORDER.asc);
-        query.addSortField(FIELD_name, SolrQuery.ORDER.asc);
         query.setQuery(String.format(QUERY_brackets,convert(filters)));
     }
 
