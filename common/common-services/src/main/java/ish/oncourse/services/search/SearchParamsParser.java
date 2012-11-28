@@ -37,7 +37,6 @@ public class SearchParamsParser
 
     private SearchParams searchParams = new SearchParams();
 
-
     public SearchParamsParser(Request request, ISearchService searchService, ITagService tagService) {
         this.request = request;
         this.searchService = searchService;
@@ -121,8 +120,15 @@ public class SearchParamsParser
         }
     }
 
-    private Double parseKm(String parameter) {
-        return  StringUtils.isNumeric(parameter) ? Double.valueOf(parameter):null;
+    Double parseKm(String parameter) {
+    	if (StringUtils.isNumeric(parameter)) {
+    		Double km = Double.valueOf(parameter);
+    		if (km != null && SearchService.MAX_DISTANCE < km) {
+    			km = SearchService.MAX_DISTANCE;
+    		}
+    		return km;
+    	}
+    	return null;
     }
 
     private String parseTime(String parameter) {

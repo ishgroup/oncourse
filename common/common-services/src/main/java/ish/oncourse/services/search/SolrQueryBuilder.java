@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SolrQueryBuilder {
 
-    private static final String SOLR_SYNTAX_CHARACTERS_STRING = "[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]";
+	private static final String SOLR_SYNTAX_CHARACTERS_STRING = "[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]";
 
 	static final String QUERY_TYPE = "standard";
 
@@ -20,7 +20,7 @@ public class SolrQueryBuilder {
     static final String PARAMETER_pt = "pt";
     static final String PARAMETER_d = "d";
     public static final String PARAMETER_loc = "loc";
-    static final String PARAMETER_dateboost = "dateboost";
+    static final String BOOST_FUNCTION_PARAMETER = "boostfunction";
     static final String PARAMETER_qq = "qq";
 
     public static final String FIELD_score = "score";
@@ -57,11 +57,10 @@ public class SolrQueryBuilder {
     static final String QUERY_OR = "||";
     static final String QUERY_DELIMITER = " ";
 
-    static final String QUERY_SORT_FIELD_geodist = "geodist()";
-
-    private static final String DATE_BOOST_STM = "{!boost b=$dateboost v=$qq}";
+    private static final String BOOST_STATEMENT = "{!boost b=$boostfunction v=$qq}";
     //here we can use the date in format like 2008-01-01T00:00:00Z, but I hope then will no classes longs more then 1 years
     private static final String DATE_BOOST_FUNCTION = "recip(max(ms(NOW-1YEAR/DAY, startDate), 0),1.15e-8,1,1)";
+    private static final String GEODIST_BOOST_FUNCTION = "recip(geodist(),1,10,5)";
 
     private SearchParams params;
     private String collegeId;
@@ -218,8 +217,9 @@ public class SolrQueryBuilder {
         query.add(PARAMETER_sfield, PARAMETER_VALUE_sfield);
         query.add(PARAMETER_pt, suburb.getLocation());
         query.add(PARAMETER_d, suburb.getDistance().toString());
-        query.addSortField(QUERY_SORT_FIELD_geodist, SolrQuery.ORDER.asc);
-        query.setQuery(String.format(QUERY_brackets,convert(filters)));
+        query.setQuery(BOOST_STATEMENT);
+        query.setParam(BOOST_FUNCTION_PARAMETER, GEODIST_BOOST_FUNCTION);
+        query.setParam(PARAMETER_qq, String.format(QUERY_brackets,convert(filters)));
     }
 
     void setFiltersTo(SolrQuery query,List<String> filters)
@@ -230,8 +230,8 @@ public class SolrQueryBuilder {
         }
         else
         {
-            query.setQuery(DATE_BOOST_STM);
-            query.setParam(PARAMETER_dateboost, DATE_BOOST_FUNCTION);
+            query.setQuery(BOOST_STATEMENT);
+            query.setParam(BOOST_FUNCTION_PARAMETER, DATE_BOOST_FUNCTION);
             query.setParam(PARAMETER_qq, String.format(QUERY_brackets,convert(filters)));
         }
     }
