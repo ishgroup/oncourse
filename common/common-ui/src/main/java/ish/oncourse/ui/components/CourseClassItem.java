@@ -10,7 +10,6 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.TimestampUtilities;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -167,7 +166,7 @@ public class CourseClassItem {
 	
 	public String getExpectedHours() {
 		return (courseClass.getIsDistantLearningCourse() && courseClass.getExpectedHours() != null) ? 
-				String.format("Approximately %.2f hours", courseClass.getExpectedHours().doubleValue()) : "";
+				String.format("Approximately %.0f hours", courseClass.getExpectedHours().doubleValue()) : "";
 	}
 
 	public String getCssTableClass() {
