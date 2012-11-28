@@ -1,4 +1,4 @@
 package ish.oncourse.enrol.components.checkout.payment;
 
-public class PaymentProcess {
+public class PaymentProgress {
 }

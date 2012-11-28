@@ -50,7 +50,7 @@ function initSelectPayerHandle(){
 
 function initEnrolmentListHandle()
 {
-	$j('.enrolmentCheckbox').click(function()
+	$j('.enrolmentSelect').click(function()
 	{
 		var $actionLink = $j(this).next('a.selectEnrolmentLink')[0].pathname;
 		sendAjax($actionLink);
@@ -272,7 +272,12 @@ function sendAjaxWithData($actionLink,$data)
 	$j('#checkout').block({
 		fadeIn: 700,
 		fadeOut: 700,
-		showOverlay: true
+		showOverlay: true,
+		message:null,
+		overlayCSS:  {
+			opacity:         0,
+			cursor:          'wait'
+		}
 	});
 	$j.ajax({
 		type: "GET",

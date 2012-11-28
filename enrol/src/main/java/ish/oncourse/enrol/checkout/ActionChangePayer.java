@@ -18,7 +18,9 @@ public class ActionChangePayer extends  APurchaseAction{
 	@Override
 	protected boolean validate()
 	{
-		return getController().getModel().getContacts().contains(contact);
+		if (!getController().getModel().getContacts().contains(contact))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -38,7 +40,6 @@ public class ActionChangePayer extends  APurchaseAction{
 			actionEnableProductItem.setProductItem(productItem);
 			actionEnableProductItem.action();
 		}
-
 	}
 
 	public Contact getContact() {

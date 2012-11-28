@@ -6,9 +6,9 @@
 		<td>
 			<label>
 				<t:if test="checked">
-					<input type="checkbox" class="enrolmentCheckbox" checked="${checked}"/>
+					<input type="checkbox" class="enrolmentSelect" checked="${checked}"/>
 				<p:else>
-					<input type="checkbox" class="enrolmentCheckbox"/>
+					<input type="checkbox" class="enrolmentSelect"/>
 				</p:else>
 				</t:if>
 				${enrolment.courseClass.course.name}
