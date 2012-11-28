@@ -569,11 +569,6 @@
     <int name="xsltCacheLifetimeSeconds">5</int>
   </queryResponseWriter>
 
-  <!-- an alternative query parser to geofilt() (notably allows a specific lat-lon box) -->
-  <!--queryParser name="gh_geofilt" class="solr2155.solr.search.SpatialGeoHashFilterQParser$Plugin" /-->
-  <!-- overwrite built-in geodist() with our own modified one -->
-  <!--valueSourceParser name="geodist" class="solr2155.solr.search.function.distance.HaversineConstFunction$HaversineValueSourceParser" /-->
-
   <admin>
     <defaultQuery>*:*</defaultQuery>
   </admin>
