@@ -15,11 +15,11 @@
 									<span id="class-code" style="margin-left:10px;font-size:9px;">${courseClassCode}</span>
 								</div>
 								<div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>
-								<div class="class-place light"><i class="icon icon-map-marker"></i>${room}</div>
+								<div class="class-place light"><i class="icon icon-map-marker"></i> ${room}</div>
 								<div>
 									<t:if test="${currentContactStudent}">
 										<t:loop  source="tutorRoles" value="tutorRole">
-											<div class="class-man"><i class="icon icon-user"></i>${tutorRoleName} </div>
+											<div class="class-man"><i class="icon icon-user"></i> ${tutorRoleName} </div>
 										</t:loop>
 									</t:if>
 								</div>
