@@ -70,7 +70,7 @@ public class PurchaseControllerTest extends ServiceTest {
 	}
 
 	@Test
-	public void allActionsTests() {
+	public void allActionsTests() throws InterruptedException {
 		PurchaseController controller = init(false);
 
 		Contact contact = Cayenne.objectForPK(controller.getModel().getObjectContext(), Contact.class, 1189158);
@@ -146,8 +146,14 @@ public class PurchaseControllerTest extends ServiceTest {
 		delegate.getPaymentIn().setCreditCardNumber("9999990000000378");
 		delegate.getPaymentIn().setCreditCardType(CreditCardType.VISA);
 		delegate.makePayment();
+        assertEquals(State.paymentProgress, controller.getState());
 
-		assertEquals(State.paymentResult, controller.getState());
+        delegate.updatePaymentStatus();
+        Thread.sleep(20000);
+        delegate.updatePaymentStatus();
+
+
+        assertEquals(State.paymentResult, controller.getState());
 		assertEquals(2, controller.getModel().getAllEnrolments(controller.getModel().getPayer()).size());
 		assertEquals(1, controller.getModel().getAllProductItems(controller.getModel().getPayer()).size());
 		assertEquals(1, controller.getModel().getPayment().getPaymentInLines().size());
@@ -171,8 +177,13 @@ public class PurchaseControllerTest extends ServiceTest {
 		delegate.getPaymentIn().setCreditCardNumber("9999990000000378");
 		delegate.getPaymentIn().setCreditCardType(CreditCardType.MASTERCARD);
 		delegate.makePayment();
+        assertEquals(State.paymentProgress, controller.getState());
 
-		assertEquals(State.paymentResult, controller.getState());
+        delegate.updatePaymentStatus();
+        Thread.sleep(20000);
+        delegate.updatePaymentStatus();
+
+        assertEquals(State.paymentResult, controller.getState());
 		assertEquals(2, controller.getModel().getAllEnrolments(controller.getModel().getPayer()).size());
 		assertEquals(1, controller.getModel().getAllProductItems(controller.getModel().getPayer()).size());
 		assertEquals(1, controller.getModel().getPayment().getPaymentInLines().size());
