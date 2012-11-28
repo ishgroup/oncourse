@@ -96,6 +96,10 @@ task installer_osx(dependsOn: [codeSign, createDmg]) {
 }
 
 project.ext.webstartFiles = copySpec {
+	into('images') {
+		from file("${projectDir}/src/main/resources/resources/images/onCourse.png")
+	}
+
 	into('Libraries') {
 		from file("${libsDir}/${project.name}-${project.version}-all.jar")
 	}
@@ -148,6 +152,8 @@ task bundle_webstart(dependsOn: [fatJar, prepareKeychains], type: Copy) {
 						storepass:				project.codeSigningTemporaryPassword,
 						alias:					"oncourse", 
 						keypass:				project.codeSigningTemporaryPassword,
+						sigalg:					"MD5withRSA",
+						digestalg:				"SHA1",
 						lazy: 					"true",
 						preservelastmodified:	"true") {
 							fileset(dir: "${distsDir}/webstart/Libraries/") {
