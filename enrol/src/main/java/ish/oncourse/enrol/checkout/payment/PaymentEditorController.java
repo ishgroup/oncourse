@@ -22,11 +22,6 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 	private PaymentProcessController paymentProcessController;
 	private Map<String,String>  errors = new HashMap<String, String>();
 
-	@Override
-	public boolean isResultState() {
-		return paymentProcessController.isFinalState();
-	}
-
 	public boolean isPaymentSuccess()
 	{
 		return paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
@@ -34,6 +29,7 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 
 	public void makePayment()
 	{
+		purchaseController.setErrors(errors);
 		boolean changePayerResult = true;
 		if (errors.isEmpty())
 		{
@@ -49,13 +45,14 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 				purchaseController.getModel().getObjectContext().commitChanges();
 				paymentProcessController.processAction(MAKE_PAYMENT);
 				paymentProcessController.processAction(PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS);
+				finalizeProcess();
 			}
 		}
-		finalizeProcess();
 	}
 
 	private void finalizeProcess() {
 		PurchaseController.ActionParameter ap = new PurchaseController.ActionParameter(PurchaseController.Action.showPaymentResult);
+		ap.setErrors(errors);
 		purchaseController.performAction(ap);
 	}
 
@@ -89,14 +86,6 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 	public PaymentIn getPaymentIn() {
 		return paymentProcessController.getPaymentIn();
 	}
-
-	public void changePayer(Contact contact)
-	{
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.changePayer);
-		actionParameter.setValue(contact);
-		purchaseController.performAction(actionParameter);
-	}
-
 
 	public void setPurchaseController(PurchaseController purchaseController) {
 		this.purchaseController = purchaseController;

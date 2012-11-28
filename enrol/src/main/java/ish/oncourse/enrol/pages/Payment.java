@@ -1,27 +1,24 @@
 package ish.oncourse.enrol.pages;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
-import org.apache.tapestry5.annotations.Persist;
+import org.apache.tapestry5.annotations.InjectPage;
 
 public class Payment {
 
-	@Persist
-	private PurchaseController purchaseController;
+	@InjectPage
+	private Checkout checkoutPage;
 
-	String onActivate(){
-		if (purchaseController == null)
+	String onActivate() {
+		if (getPurchaseController() == null)
 			return Checkout.class.getSimpleName();
-		else
+		else if (getPurchaseController().isEditCheckout()) {
+			getPurchaseController().addError(PurchaseController.Error.illegalState);
+			return Checkout.class.getSimpleName();
+		} else
 			return null;
-
 	}
 
-
-	public synchronized PurchaseController getPurchaseController() {
-		return purchaseController;
-	}
-
-	public synchronized void setPurchaseController(PurchaseController purchaseController) {
-		this.purchaseController = purchaseController;
+	public PurchaseController getPurchaseController() {
+		return checkoutPage.getPurchaseController();
 	}
 }

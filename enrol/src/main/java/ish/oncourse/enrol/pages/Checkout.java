@@ -73,12 +73,9 @@ public class Checkout {
 	@Property
 	private Block blockConcession;
 
-	@Property
-	private String error;
 
 	@InjectPage
-	private Payment payment;
-
+	private Payment paymentPage;
 
 	/**
 	 * The property is true when session for the payment was expired.
@@ -88,16 +85,21 @@ public class Checkout {
 	@Persist
 	private Throwable unexpectedThrowable;
 
-	@SetupRender
-	void beforeRender() {
+	String onActivate(){
 		synchronized (this) {
+
 			if (unexpectedThrowable != null) {
 				handleUnexpectedThrowable();
 			}
-
 			initPaymentController();
+			if (purchaseController.isPaymentState() && !purchaseController.adjustState(Action.enableEnrolment))
+			{
+				return Payment.class.getSimpleName();
+			}
+			return null;
 		}
 	}
+
 
 	private void handleUnexpectedThrowable() {
 		IllegalArgumentException exception = new IllegalArgumentException(unexpectedThrowable);
@@ -116,7 +118,7 @@ public class Checkout {
 		}
 	}
 
-	public PurchaseController getPurchaseController() {
+	public synchronized PurchaseController  getPurchaseController() {
 		return purchaseController;
 	}
 
@@ -165,19 +167,12 @@ public class Checkout {
 	@OnEvent(value = "proceedToPaymentEvent")
 	public Object proceedToPayment() {
 		ActionParameter actionParameter = new ActionParameter(Action.proceedToPayment);
-		System.out.println(purchaseController);
 		actionParameter.setValue(purchaseController.getModel().getPayment());
 		purchaseController.performAction(actionParameter);
-
 		if (purchaseController.getErrors().isEmpty())
-		{
-			payment.setPurchaseController(purchaseController);
-			return payment;
-		}
+			return paymentPage;
 		else
-		{
 			return this;
-		}
 	}
 
 	public Object onException(Throwable cause) {

@@ -2,6 +2,7 @@ package ish.oncourse.enrol.components.checkout.payment;
 
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.pages.Checkout;
+import ish.oncourse.enrol.pages.Payment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.tapestry5.annotations.*;
@@ -25,6 +26,9 @@ public class PaymentResult {
 	private Messages messages;
 
 	@InjectPage
+	private Payment payment;
+
+	@InjectPage
 	private Checkout checkout;
 
 	public PaymentResult() {
@@ -44,22 +48,18 @@ public class PaymentResult {
 		return url != null ? url : getCoursesLink();
 	}
 
-	@OnEvent(value = "abandonEvent")
+	@OnEvent(value = "abandon")
 	public Object abandon()
 	{
-		if (!request.isXHR())
-			return null;
 		delegate.abandon();
-		return checkout.getCheckoutBlock();
+		return payment;
 	}
 
-	@OnEvent(value = "tryAgainEvent")
+	@OnEvent(value = "tryAgain")
 	public Object tryAgain()
 	{
-		if (!request.isXHR())
-			return null;
 		delegate.tryAgain();
-		return checkout.getCheckoutBlock();
+		return payment;
 	}
 
 	@AfterRender

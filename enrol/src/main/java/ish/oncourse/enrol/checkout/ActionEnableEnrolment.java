@@ -30,16 +30,21 @@ public class ActionEnableEnrolment extends APurchaseAction {
 
 	boolean validateEnrolment()
 	{
-		if (enrolment.isDuplicated()) {
-			getController().addError(duplicatedEnrolment, enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getName());
-			return false;
-		}
+		/**
+		 * If enrolment was committed so we should not check these conditions
+		 */
+		if (enrolment.getObjectId().isTemporary())
+		{
+			if (enrolment.isDuplicated()) {
+				getController().addError(duplicatedEnrolment, enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getName());
+				return false;
+			}
 
-		if (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
-			getController().addError(noCourseClassPlaces, enrolment);
-			return false;
+			if (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
+				getController().addError(noCourseClassPlaces, enrolment);
+				return false;
+			}
 		}
-
 		if (enrolment.getCourseClass().hasEnded()) {
 			getController().addError(courseClassEnded, enrolment.getCourseClass());
 			return false;

@@ -35,6 +35,14 @@ import static java.util.Arrays.asList;
 public class PurchaseController {
 	private static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
 
+
+	public static final List<Action> COMMON_ACTIONS = Collections.unmodifiableList(Arrays.asList(
+			enableEnrolment, enableProductItem,
+			disableEnrolment, disableProductItem,
+			setVoucherPrice, addDiscount, addVoucher,
+			startConcessionEditor, startAddContact,
+			owingApply, creditAccess, proceedToPayment,changePayer));
+
 	private PurchaseModel model;
 
 
@@ -166,6 +174,8 @@ public class PurchaseController {
 		illegalModel = false;
 		errors.clear();
 
+
+		adjustState(param.action);
 		if (!state.allowedActions.contains(param.action)) {
 			addError(Error.illegalState);
 			illegalState = true;
@@ -178,6 +188,31 @@ public class PurchaseController {
 		}
 	}
 
+
+	/**
+	 * The method is used to adjust current state when user uses browser action like back,forward
+	 * @return  true state was changed.
+	 */
+	public synchronized boolean adjustState(Action action) {
+		if (!COMMON_ACTIONS.contains(action))
+			return true;
+		switch (state) {
+			case editPayment:
+			case finalized:
+				ActionParameter parameter = new ActionParameter(backToEditCheckout);
+				parameter.setValue(action);
+				ActionBackToEditCheckout actionBackToEditCheckout = backToEditCheckout.createAction(this, parameter);
+				return actionBackToEditCheckout.action();
+			case init:
+			case addContact:
+			case editConcession:
+			case editContact:
+			case editCheckout:
+				return false;
+			default:
+				throw new IllegalArgumentException();
+		}
+	}
 
 	public PurchaseModel getModel() {
 		return model;
@@ -330,8 +365,7 @@ public class PurchaseController {
 	}
 
 	//return true when the payment process was finished
-	public synchronized boolean isFinished()
-	{
+	public synchronized boolean isFinished() {
 		return state == finalized && paymentEditorController != null &&
 				paymentEditorController.getPaymentProcessController().isProcessFinished();
 	}
@@ -452,26 +486,30 @@ public class PurchaseController {
 		this.tagService = tagService;
 	}
 
+
 	public void addError(Error error, Object... params) {
 		errors.put(error.name(), error.getMessage(messages, params));
 	}
 
+	public void setErrors(Map<String,String> errors) {
+		this.errors.clear();
+		this.errors.putAll(errors);
+	}
+
+	public boolean isPaymentState() {
+		return (state == State.editPayment || state == State.finalized);
+	}
+
 	public static enum State {
 		init(Action.init, Action.startAddContact),
-		editCheckout(changePayer,
-				enableEnrolment, enableProductItem,
-				disableEnrolment, disableProductItem,
-				setVoucherPrice, addDiscount, addVoucher,
-				startConcessionEditor, startAddContact,
-				owingApply, creditAccess, proceedToPayment),
+		editCheckout((Action[])COMMON_ACTIONS.toArray()),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, cancelAddContact),
 		editContact(Action.addContact, cancelAddContact),
-		editPayment(changePayer, showPaymentResult),
+		editPayment(showPaymentResult, backToEditCheckout),
 		finalized(proceedToPayment);
 
 		private List<Action> allowedActions;
-
 
 		State(Action... allowedActions) {
 			this.allowedActions = Arrays.asList(allowedActions);
@@ -508,7 +546,8 @@ public class PurchaseController {
 		creditAccess(ActionCreditAccess.class, String.class),
 		owingApply(ActionOwingApply.class),
 		proceedToPayment(ActionProceedToPayment.class),
-		showPaymentResult(ActionShowPaymentResult.class);
+		showPaymentResult(ActionShowPaymentResult.class),
+		backToEditCheckout(ActionBackToEditCheckout.class);
 
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
@@ -537,7 +576,6 @@ public class PurchaseController {
 			action.setParameter(actionParameter);
 			return action;
 		}
-
 	}
 
 	/**

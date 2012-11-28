@@ -23,26 +23,11 @@
 		<t:if test="purchaseController.editContact">
 			<t:delegate to="block:contactEditor"/>
 		</t:if>
-		<t:if test="purchaseController.editPayment">
-			<t:delegate to="block:paymentEditor"/>
-		</t:if>
-		<t:if test="purchaseController.finalized">
-			<t:delegate to="block:paymentResult"/>
-		</t:if>
 	</t:if>
 </t:block>
 
 <t:block t:id="errors">
-	<t:if test="purchaseController.errors.isEmpty()" negate="true">
-		<div class="validation">
-			<div>${message:error-commonHeader}</div>
-			<ul>
-				<t:loop source="purchaseController.errors.values()" value="error">
-					<li>${error}</li>
-				</t:loop>
-			</ul>
-		</div>
-	</t:if>
+	<span t:type="checkout/errors" errors="purchaseController.errors"/>
 </t:block>
 
 <t:block t:id="payments">

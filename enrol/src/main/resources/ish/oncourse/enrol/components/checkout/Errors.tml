@@ -1,0 +1,12 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<t:if test="errors.isEmpty()" negate="true">
+		<div class="validation">
+			<div>${message:error-commonHeader}</div>
+			<ul>
+				<t:loop source="errors.values()" value="error">
+					<li>${error}</li>
+				</t:loop>
+			</ul>
+		</div>
+	</t:if>
+</t:container>

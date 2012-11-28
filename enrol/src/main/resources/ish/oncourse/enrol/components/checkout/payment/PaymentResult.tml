@@ -43,9 +43,8 @@
 				<p>${message:checkCreditCard}</p>
 			</p:else>
 		</t:if>
-		<button id="tryAgain">Try again with another card or reenter details</button>.
-		<t:eventlink t:id="tryAgainEvent" style="display:none"/>
-		Or <button id="abandon">Abandon</button> this enrolment.
-		<t:eventlink t:id="abandonEvent" style="display:none"/>
+		<t:eventlink t:id="tryAgain" title="Proceed with this enrolment">Try again with another card or reenter details</t:eventlink>
+		Or <t:eventlink t:id="abandon">Abandon</t:eventlink> this enrolment.
+
 	</t:block>
 </t:container>

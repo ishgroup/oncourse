@@ -2,6 +2,7 @@ package ish.oncourse.enrol.components.checkout.payment;
 
 import ish.common.types.CreditCardType;
 import ish.math.Money;
+import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorParser;
 import ish.oncourse.enrol.pages.Checkout;
@@ -37,17 +38,15 @@ public class PaymentEditor {
 	@Property
 	private PaymentEditorDelegate delegate;
 
-	@Property
 	private ListSelectModel<Contact> payersModel;
 
-	@Property
 	private ListValueEncoder<Contact> payersEncoder;
 
-	@Property
 	private ISHEnumSelectModel cardTypeModel;
 
-	@Property
 	private List<Integer> years;
+
+	private ValidateHandler validateHandler;
 
 	@Property
 	private Boolean userAgreed;
@@ -76,26 +75,60 @@ public class PaymentEditor {
 
 	@SetupRender
 	void beforeRender() {
-
-		payersModel = new ListSelectModel<Contact>(delegate.getContacts(), "fullName",propertyAccess);
-		payersEncoder =  new ListValueEncoder<Contact>(delegate.getContacts(), "id", propertyAccess);
-
-
-		cardTypeModel = new ISHEnumSelectModel(CreditCardType.class, messages, CommonPreferenceController
-				.getCCAvailableTypes(preferenceController).values().toArray(new CreditCardType[] {}));
-
-		initYears();
 		userAgreed = false;
 	}
 
-
-	private void initYears() {
-		years = new ArrayList<Integer>();
-		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-
-		for (int i = 0; i < EXPIRE_YEAR_INTERVAL; i++) {
-			years.add(currentYear + i);
+	public ValidateHandler getValidateHandler()
+	{
+		if (validateHandler == null)
+		{
+			validateHandler = new ValidateHandler();
+			validateHandler.setErrors(delegate.getErrors());
 		}
+		return validateHandler;
+	}
+
+	public ListSelectModel<Contact> getPayersModel()
+	{
+		if (payersModel == null)
+		{
+			payersModel = new ListSelectModel<Contact>(delegate.getContacts(), "fullName",propertyAccess);
+		}
+		return payersModel;
+	}
+
+	public  ListValueEncoder<Contact> getPayersEncoder()
+	{
+		if (payersEncoder == null)
+		{
+			payersEncoder =  new ListValueEncoder<Contact>(delegate.getContacts(), "id", propertyAccess);
+		}
+		return payersEncoder;
+	}
+
+	public ISHEnumSelectModel getCardTypeModel()
+	{
+		if (cardTypeModel == null)
+		{
+			cardTypeModel = new ISHEnumSelectModel(CreditCardType.class, messages, CommonPreferenceController
+					.getCCAvailableTypes(preferenceController).values().toArray(new CreditCardType[] {}));
+		}
+		return cardTypeModel;
+	}
+
+
+	public List<Integer> getYears()
+	{
+		if (years == null)
+		{
+			years = new ArrayList<Integer>();
+			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+			for (int i = 0; i < EXPIRE_YEAR_INTERVAL; i++) {
+				years.add(currentYear + i);
+			}
+		}
+		return years;
 	}
 
 	public PaymentIn getPaymentIn()
@@ -127,21 +160,7 @@ public class PaymentEditor {
 		return FormatUtils.chooseMoneyFormat(Money.valueOf(delegate.getPaymentIn().getAmount()));
 	}
 
-	public String error(String fieldName)
-	{
-		return delegate.getErrors().get(fieldName);
-	}
-
-	public String className(String fieldName)
-	{
-		if (delegate.getErrors().containsKey(fieldName))
-			return "validate";
-		else
-			return "valid";
-	}
-
-
-	@OnEvent(value = "paymentSubmitEvent")
+	@OnEvent(component = "paymentSubmit", value = "selected")
 	public Object makePayment()
 	{
 		PaymentEditorParser paymentEditorParser = new PaymentEditorParser();
@@ -152,6 +171,7 @@ public class PaymentEditor {
 		paymentEditorParser.parse();
 		delegate.setErrors(paymentEditorParser.getErrors());
 		delegate.makePayment();
-		return checkout;
+		getValidateHandler().setErrors(delegate.getErrors());
+		return this;
 	}
 }

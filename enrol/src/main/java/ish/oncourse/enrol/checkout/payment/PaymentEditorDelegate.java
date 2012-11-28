@@ -13,7 +13,6 @@ public interface PaymentEditorDelegate {
 
 	public void tryAgain();
 	public void abandon();
-	public void changePayer(Contact contact);
 	public List<Contact> getContacts();
 
 	public PaymentIn getPaymentIn();
@@ -23,7 +22,6 @@ public interface PaymentEditorDelegate {
 	public void setErrors(Map<String, String> errors);
 
 	public boolean isNeedConcessionReminder();
-	public boolean isResultState();
 	public boolean isEnrolmentFailedNoPlaces();
 	public boolean isPaymentSuccess();
 

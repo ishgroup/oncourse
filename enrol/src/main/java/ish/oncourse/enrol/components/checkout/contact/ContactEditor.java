@@ -7,7 +7,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
-import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -26,7 +25,7 @@ public class ContactEditor {
 	private ContactEditorDelegate delegate;
 
 	@Parameter
-	private Block blockToRefresh;
+	private Object returnPage;
 
 	@Inject
 	private PreferenceController preferenceController;
@@ -61,11 +60,9 @@ public class ContactEditor {
 		return delegate.getContact();
 	}
 
-	@OnEvent(value = "saveContactEvent")
+	@OnEvent(component = "saveContact", value = "selected")
 	public  Object save() {
 
-		if (!request.isXHR())
-			return null;
 		if (delegate != null)
 		{
 			ContactEditorParser contactEditorValidator = new ContactEditorParser();
@@ -83,7 +80,7 @@ public class ContactEditor {
 
 			delegate.setErrors(errors);
 			delegate.saveContact();
-			return blockToRefresh;
+			return returnPage;
 		}
 		return null;
 	}
@@ -93,7 +90,7 @@ public class ContactEditor {
 		return  FormatUtils.getDateFormat(DATE_FIELD_FORMAT, getContact().getCollege().getTimeZone());
 	}
 
-	@OnEvent(value = "cancelContactEvent")
+	@OnEvent(component = "saveContact", value = "selected")
 	public Object cancel() {
 		if (!request.isXHR())
 			return null;
@@ -101,8 +98,7 @@ public class ContactEditor {
 		{
 			delegate.setErrors(Collections.EMPTY_MAP);
 			delegate.cancelContact();
-			return blockToRefresh;
 		}
-		return null;
+		return returnPage;
 	}
 }

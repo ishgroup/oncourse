@@ -6,7 +6,6 @@
 				<p>${message:requireAdditionalInfo}</p>
 			</div>
 		</t:if>
-		<p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
 	</t:block>
 
 	<t:block t:id="contactFields">
@@ -40,11 +39,10 @@
 			</t:if>
 			<t:delegate to="block:options"/>
 		</t:if>
+		<p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
+		<div class="form-controls">
+			<t:submit t:id="saveContact" value="Checkout" class="btn btn-primary"/>
+			<t:submit t:id="cancelContact" value="Reset" class="btn btn-info"/>
+		</div>
 	</t:form>
-	<div class="form-controls">
-			<div id="saveEditContact" class="button">Checkout</div>
-			<t:eventlink t:id="saveContactEvent" style="{display:none}"/>
-			<div id="cancelEditContact" class="button">Reset</div>
-			<t:eventlink t:id="cancelContactEvent"  style="{display:none}"/>
-	</div>
 </t:container>
