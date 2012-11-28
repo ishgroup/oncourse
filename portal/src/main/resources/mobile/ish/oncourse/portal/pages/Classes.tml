@@ -15,9 +15,14 @@
 									<span id="class-code" style="margin-left:10px;font-size:9px;">${courseClassCode}</span>
 								</div>
 								<div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>
-								<div class="class-place light">${room}</div>
-								
-								<span class="class-man">7 enrolments | 4 places available</span>
+								<div class="class-place light"><i class="icon icon-map-marker"></i>${room}</div>
+								<div>
+									<t:if test="${currentContactStudent}">
+										<t:loop  source="tutorRoles" value="tutorRole">
+											<div class="class-man">${tutorRoleName} </div>
+										</t:loop>
+									</t:if>
+								</div>
 							</td>
 						</tr>
 					</t:loop> 
