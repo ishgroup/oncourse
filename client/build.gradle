@@ -146,7 +146,7 @@ task bundle_webstart(dependsOn: [fatJar, prepareKeychains], type: Copy) {
 						keystore:				project.codeSigningTemporaryKeystore, 
 						storetype:				'pkcs12',
 						storepass:				project.codeSigningTemporaryPassword,
-						alias:					'oncourse', 
+						alias:					"ish group pty ltd's comodo ca limited id", 
 						keypass:				project.codeSigningTemporaryPassword,
 						lazy: 					"true",
 						preservelastmodified:	"true") {
