@@ -27,6 +27,21 @@
 						</tr>
 					</t:loop> 
 				</table>
+				<p:else>
+				   <t:if test="filterCurrent">
+					   You have no currently scheduled classes.
+						<p:else>
+							<t:if test="filterPast">
+								You have no scheduled classes in past.
+								<p:else>
+									<t:if test="filterUnconfirmed">
+										You have no unconfirmed classes.
+									</t:if>
+								</p:else>
+							</t:if>
+						</p:else>
+				   </t:if>
+				</p:else>
 			</t:if>
 	</div>
 
