@@ -20,7 +20,7 @@ public class SolrQueryBuilder {
     static final String PARAMETER_pt = "pt";
     static final String PARAMETER_d = "d";
     public static final String PARAMETER_loc = "loc";
-    static final String BOOST_FUNCTION_PARAMETER = "boostfunction";
+    static final String PARAMETER_BOOST_FUNCTION = "boostfunction";
     static final String PARAMETER_qq = "qq";
 
     public static final String FIELD_score = "score";
@@ -218,7 +218,7 @@ public class SolrQueryBuilder {
         query.add(PARAMETER_pt, suburb.getLocation());
         query.add(PARAMETER_d, suburb.getDistance().toString());
         query.setQuery(BOOST_STATEMENT);
-        query.setParam(BOOST_FUNCTION_PARAMETER, GEODIST_BOOST_FUNCTION);
+        query.setParam(PARAMETER_BOOST_FUNCTION, GEODIST_BOOST_FUNCTION);
         query.setParam(PARAMETER_qq, String.format(QUERY_brackets,convert(filters)));
     }
 
@@ -231,7 +231,7 @@ public class SolrQueryBuilder {
         else
         {
             query.setQuery(BOOST_STATEMENT);
-            query.setParam(BOOST_FUNCTION_PARAMETER, DATE_BOOST_FUNCTION);
+            query.setParam(PARAMETER_BOOST_FUNCTION, DATE_BOOST_FUNCTION);
             query.setParam(PARAMETER_qq, String.format(QUERY_brackets,convert(filters)));
         }
     }
