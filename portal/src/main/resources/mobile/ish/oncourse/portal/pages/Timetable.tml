@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Timetable page" bodyClass="literal:login-wrapper"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
 	
 	<h1>Timetable</h1>
 	
