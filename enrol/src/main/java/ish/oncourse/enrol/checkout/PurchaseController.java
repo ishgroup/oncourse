@@ -331,11 +331,11 @@ public class PurchaseController {
 		this.model = model;
 	}
 
-	public boolean isIllegalModel() {
+	public synchronized boolean isIllegalModel() {
 		return illegalModel;
 	}
 
-	public boolean isIllegalState() {
+	public synchronized boolean isIllegalState() {
 		return illegalState;
 	}
 
@@ -374,8 +374,13 @@ public class PurchaseController {
 
     //return true when the payment process was finished
 	public synchronized boolean isFinished() {
-		return state == paymentResult && paymentEditorController != null &&
-				paymentEditorController.getPaymentProcessController().isProcessFinished();
+		if (state == paymentResult)
+		{
+			if (paymentEditorController != null)
+				return paymentEditorController.getPaymentProcessController().isProcessFinished();
+			return illegalModel;
+		}
+		return false;
 	}
 
 

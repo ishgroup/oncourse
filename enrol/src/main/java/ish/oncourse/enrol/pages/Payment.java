@@ -1,12 +1,20 @@
 package ish.oncourse.enrol.pages;
 
+import ish.oncourse.enrol.checkout.HTMLUtils;
 import ish.oncourse.enrol.checkout.PurchaseController;
+import ish.oncourse.ui.pages.Courses;
 import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class Payment {
 
 	@InjectPage
 	private Checkout checkoutPage;
+
+	@Inject
+	private Request request;
+
 
 	String onActivate() {
 		if (getPurchaseController() == null)
@@ -37,4 +45,7 @@ public class Payment {
         return getPurchaseController() != null && getPurchaseController().isPaymentProgress();
     }
 
+	public String getCoursesLink() {
+		return HTMLUtils.getUrlBy(request, Courses.class);
+	}
 }

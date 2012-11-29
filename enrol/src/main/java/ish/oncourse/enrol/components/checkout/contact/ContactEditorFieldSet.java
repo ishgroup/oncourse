@@ -26,7 +26,6 @@ public class ContactEditorFieldSet {
 	@Property
 	private ContactEditorDelegate delegate;
 
-
 	@Inject
 	private PreferenceController preferenceController;
 
@@ -39,24 +38,41 @@ public class ContactEditorFieldSet {
 	@Inject
 	private Messages messages;
 
+
 	public Messages getMessages()
 	{
 		return messages;
 	}
+
 	public boolean required(String fieldName)
 	{
 		return contactFieldHelper.isRequiredField(ContactFieldHelper.FieldDescriptor.valueOf(fieldName));
 	}
 
 
-	public String value(String fieldName)
+	public String getValue()
 	{
 		ContactFieldHelper.FieldDescriptor fieldDescriptor = ContactFieldHelper.FieldDescriptor.valueOf(fieldName);
 
 		Object value = delegate.getContact().readProperty(fieldName);
 		if (fieldDescriptor.propertyClass == Date.class && value != null)
 			value = getDateFormat().format((Date) value);
-		return value == null ? FormatUtils.EMPTY_STRING: value.toString();
+		return value == null ? FormatUtils.EMPTY_STRING : value.toString();
+	}
+
+
+	public String getDateOfBirth() {
+		Date dateOfBirth = delegate.getContact().getDateOfBirth();
+		if (dateOfBirth == null) {
+			return null;
+		}
+		return getDateFormat().format(dateOfBirth);
+	}
+
+	/**
+	 * The method needs only to allow use the property as value parameter in tapestry textfield.
+	 */
+	public void setDateOfBirth(String dateOfBirth) {
 	}
 
 	public String label(String fieldName)
@@ -69,7 +85,4 @@ public class ContactEditorFieldSet {
 	{
 		return  FormatUtils.getDateFormat(DATE_FIELD_FORMAT, delegate.getContact().getCollege().getTimeZone());
 	}
-
-
-
 }

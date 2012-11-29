@@ -7,6 +7,9 @@ import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.enrol.checkout.PurchaseModel;
 import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
+import ish.oncourse.enrol.services.student.IStudentService;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Discount;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -16,6 +19,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.ui.pages.Courses;
 import ish.oncourse.util.FormatUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
@@ -32,6 +36,9 @@ public class Checkout {
 
 	@Inject
 	private ICookiesService cookiesService;
+
+	@Inject
+	private IStudentService studentService;
 
 	@Inject
 	private ICourseClassService courseClassService;
@@ -60,7 +67,7 @@ public class Checkout {
 	@Inject
 	private Messages messages;
 
-	@SessionState(create=false)
+	@SessionState(create = false)
 	private PurchaseController purchaseController;
 
 
@@ -82,59 +89,38 @@ public class Checkout {
 	 */
 	private boolean expired;
 
-	@Persist
-	private Throwable unexpectedThrowable;
-
-	String onActivate(){
+	String onActivate() {
 		synchronized (this) {
-
-			if (unexpectedThrowable != null) {
-				handleUnexpectedThrowable();
-			}
-			initPaymentController();
-			if (purchaseController.isPaymentState() && !purchaseController.adjustState(Action.enableEnrolment))
-			{
+			if (purchaseController == null) {
+				purchaseController = buildPaymentController();
+				if (purchaseController.isPaymentResult())
+					return Payment.class.getSimpleName();
+			} else if (purchaseController.isPaymentState() && !purchaseController.adjustState(Action.enableEnrolment))
 				return Payment.class.getSimpleName();
-			}
 			return null;
 		}
 	}
 
 
-	private void handleUnexpectedThrowable() {
-		IllegalArgumentException exception = new IllegalArgumentException(unexpectedThrowable);
-		if (purchaseController != null) {
-			purchaseController.getModel().getObjectContext().rollbackChanges();
-			resetPersistProperties();
-		}
-		throw exception;
-	}
-
-
-	@AfterRender
-	public void afterRender() {
-		if (purchaseController != null && purchaseController.isFinished()) {
-			resetPersistProperties();
-		}
-	}
-
-	public synchronized PurchaseController  getPurchaseController() {
+	public synchronized PurchaseController getPurchaseController() {
 		return purchaseController;
 	}
 
-	public void resetPersistProperties()
-	{
+	public void resetPersistProperties() {
+
+		cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
+		cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, StringUtils.EMPTY);
+		studentService.clearStudentsShortList();
+
 		expired = false;
-		unexpectedThrowable = null;
 		purchaseController = null;
 	}
 
-	private void initPaymentController() {
-		if (purchaseController == null) {
-			PurchaseModel model = purchaseControllerBuilder.build();
-			purchaseController = purchaseControllerBuilder.build(model);
-			purchaseController.performAction(new ActionParameter(Action.init));
-		}
+	private PurchaseController buildPaymentController() {
+		PurchaseModel model = purchaseControllerBuilder.build();
+		PurchaseController purchaseController = purchaseControllerBuilder.build(model);
+		purchaseController.performAction(new ActionParameter(Action.init));
+		return purchaseController;
 	}
 
 	/**
@@ -177,24 +163,18 @@ public class Checkout {
 
 	public Object onException(Throwable cause) {
 		if (purchaseController != null) {
-			unexpectedThrowable = cause;
+			throw new IllegalArgumentException(cause);
 		} else {
 			expired = true;
-			LOGGER.warn("Persist properties have been cleared. User used two or more tabs or session was expired", cause);
 		}
-		return checkoutBlock;
+		return paymentPage;
 	}
 
 	public boolean isExpired() {
 		return expired;
 	}
 
-	public Throwable getUnexpectedThrowable() {
-		return unexpectedThrowable;
-	}
-
-	public Format moneyFormat(Money money)
-	{
+	public Format moneyFormat(Money money) {
 		return FormatUtils.chooseMoneyFormat(money);
 	}
 }

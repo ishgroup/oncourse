@@ -5,10 +5,7 @@ import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.pages.Payment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.preference.PreferenceController;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -32,7 +29,7 @@ public class PaymentResult {
 	private Payment payment;
 
 	@InjectPage
-	private Checkout checkout;
+	private Checkout checkoutPage;
 
 	public PaymentResult() {
 	}
@@ -43,7 +40,7 @@ public class PaymentResult {
 	}
 
 	public String getCoursesLink() {
-		return checkout.getCoursesLink();
+		return checkoutPage.getCoursesLink();
 	}
 
 	public String getSuccessUrl() {
@@ -79,4 +76,25 @@ public class PaymentResult {
 	{
 		return messages.format("paymentFailed", getPaymentIn().getCollege().getName());
 	}
+
+	public boolean isExpired()
+	{
+		return checkoutPage.isExpired();
+	}
+
+
+	public void onException(Throwable throwable)
+	{
+		 checkoutPage.onException(throwable);
+	}
+
+
+	@AfterRender
+	public void afterRender() {
+		//when the process if finished we should reset all persists properties to allow the next purchase process
+		if (checkoutPage.getPurchaseController() != null && checkoutPage.getPurchaseController().isFinished()) {
+			checkoutPage.resetPersistProperties();
+		}
+	}
+
 }
