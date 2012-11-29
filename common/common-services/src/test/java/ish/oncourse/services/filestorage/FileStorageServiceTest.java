@@ -49,6 +49,7 @@ public class FileStorageServiceTest {
     @Test
     public void testGet() throws Exception {
         try {
+			testPut();
             byte[] data = fileStorageService.get("test1/FileStorageServiceTest.class");
             File file = new File(fileStorageService.getRootDir(),"test1/FileStorageServiceTest.class");
             assertNotNull("Data is not empty", data);
@@ -59,6 +60,7 @@ public class FileStorageServiceTest {
 
     @Test
     public void testDelete() throws Exception {
+			testPut();
             fileStorageService.delete("test1/FileStorageServiceTest.class");
             File file = new File(fileStorageService.getRootDir(),"test1/FileStorageServiceTest.class");
             assertTrue("File does not exist", !file.exists());
