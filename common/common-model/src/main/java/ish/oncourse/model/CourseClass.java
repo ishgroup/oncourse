@@ -188,7 +188,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	public List<Enrolment> getValidEnrolments() {
 		SelectQuery query = new SelectQuery(Enrolment.class, ExpressionFactory.matchExp(
 				Enrolment.COURSE_CLASS_PROPERTY, this).andExp(
-				ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, Enrolment.VALID_ENROLMENTS)));
+				ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, Arrays.asList(Enrolment.VALID_ENROLMENTS))));
 		return getObjectContext().performQuery(query);
 	}
 

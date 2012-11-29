@@ -2,13 +2,13 @@ package ish.oncourse.services.location;
 
 import ish.oncourse.model.PostcodeDb;
 import ish.oncourse.services.persistence.ICayenneService;
-
-import java.util.List;
-
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class PostCodeDbService implements IPostCodeDbService {
 	
@@ -18,7 +18,7 @@ public class PostCodeDbService implements IPostCodeDbService {
 	@SuppressWarnings("unchecked")
 	public List<PostcodeDb> findBySuburb(String... suburbs) {
 		SelectQuery q = new SelectQuery(PostcodeDb.class);
-		q.andQualifier(ExpressionFactory.inExp(PostcodeDb.SUBURB_PROPERTY, suburbs));
+		q.andQualifier(ExpressionFactory.inExp(PostcodeDb.SUBURB_PROPERTY, Arrays.asList(suburbs)));
 		return cayenneService.sharedContext().performQuery(q);
 	}
 	
