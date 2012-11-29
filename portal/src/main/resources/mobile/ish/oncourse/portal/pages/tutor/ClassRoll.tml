@@ -15,7 +15,7 @@
 		</div>
 		<a href="#" id="nextSession"><i class="icon-chevron-right pull-right"></i></a>
 	</div>
-	<h4 class="heading">Current students (5)</h4>
+	<h4 class="heading">Current students (${enrolmentsCount})</h4>
 	<ul class="class-roll-info">
 		<t:loop source="sessions" value="currentSession">
 			<t:loop source="currentSession.attendances" value="attendance" >
