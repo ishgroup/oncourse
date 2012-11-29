@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Class" bodyClass="literal:survey-wrapper"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_CurrentClasses">
 
 	<span t:type="classinfotitle" courseClass="courseClass" selected="literal:classSurvey"/>
 	<h1>${courseClass.course.name}</h1>
