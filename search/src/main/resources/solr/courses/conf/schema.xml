@@ -86,13 +86,8 @@
 				"I.B.M.", "Solr" ==> "i.b.m.", "solr".
 				 -->
 				<filter class="solr.LowerCaseFilterFactory" />
-				<!-- 
-				Solr includes three stemmers for English: the original Porter stemmer via solr.PorterStemFilterFactory, 
-				the Porter2 stemmer via solr.SnowballPorterFilterFactory, 
-				and a plural-only stemmer <!> Solr3.1 via solr.EnglishMinimalStemFilterFactory. 
-				 -->
-				<filter class="solr.SnowballPorterFilterFactory" language="English"
-					protected="protwords.txt" />
+				
+				<filter class="solr.HunspellStemFilterFactory" dictionary="en_AU.dic" affix="en_AU.aff" ignoreCase="true" />
 				<!-- 
 				Applies a regexp pattern to string in char stream, replacing match occurances with the specified replacement string. 
 				Useless if we replace the syntax characters from the solr-query because nothing to replace
@@ -120,8 +115,7 @@
 					generateWordParts="1" generateNumberParts="1" catenateWords="0"
 					catenateNumbers="0" catenateAll="0" splitOnCaseChange="1" />
 				<filter class="solr.LowerCaseFilterFactory" />
-				<filter class="solr.SnowballPorterFilterFactory" language="English"
-					protected="protwords.txt" />
+				<filter class="solr.HunspellStemFilterFactory" dictionary="en_AU.dic" affix="en_AU.aff" ignoreCase="true" />
 			</analyzer>
 		</fieldType>
 
@@ -144,6 +138,7 @@
 					generateWordParts="1" generateNumberParts="1" catenateWords="1"
 					catenateNumbers="1" catenateAll="0" splitOnCaseChange="0" />
 				<filter class="solr.LowerCaseFilterFactory" />
+				<filter class="solr.HunspellStemFilterFactory" dictionary="en_AU.dic" affix="en_AU.aff" ignoreCase="true" />
 			</analyzer>
 			
 			<analyzer type="query">
@@ -156,6 +151,7 @@
 					generateWordParts="1" generateNumberParts="1" catenateWords="0"
 					catenateNumbers="0" catenateAll="0" splitOnCaseChange="0" />
 				<filter class="solr.LowerCaseFilterFactory" />
+				<filter class="solr.HunspellStemFilterFactory" dictionary="en_AU.dic" affix="en_AU.aff" ignoreCase="true" />
 			</analyzer>
 		</fieldType>
 	</types>
