@@ -1,8 +1,6 @@
 package ish.oncourse.enrol.pages;
 
-import ish.oncourse.enrol.checkout.HTMLUtils;
 import ish.oncourse.enrol.checkout.PurchaseController;
-import ish.oncourse.ui.pages.Courses;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -46,6 +44,18 @@ public class Payment {
     }
 
 	public String getCoursesLink() {
-		return HTMLUtils.getUrlBy(request, Courses.class);
+		return checkoutPage.getCoursesLink();
 	}
+
+	public boolean isExpired()
+	{
+		return checkoutPage.isExpired();
+	}
+
+
+	public void onException(Throwable throwable)
+	{
+		checkoutPage.onException(throwable);
+	}
+
 }

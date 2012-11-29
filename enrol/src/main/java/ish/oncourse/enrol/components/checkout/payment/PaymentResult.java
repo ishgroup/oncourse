@@ -77,18 +77,6 @@ public class PaymentResult {
 		return messages.format("paymentFailed", getPaymentIn().getCollege().getName());
 	}
 
-	public boolean isExpired()
-	{
-		return checkoutPage.isExpired();
-	}
-
-
-	public void onException(Throwable throwable)
-	{
-		 checkoutPage.onException(throwable);
-	}
-
-
 	@AfterRender
 	public void afterRender() {
 		//when the process if finished we should reset all persists properties to allow the next purchase process
