@@ -46,6 +46,8 @@ public class PaymentProcessController {
 
     private List<Invoice> invoices;
 
+    private boolean startWatcher = true;
+
 
     public void setParallelExecutor(ParallelExecutor parallelExecutor) {
         this.parallelExecutor = parallelExecutor;
@@ -117,7 +119,7 @@ public class PaymentProcessController {
             stackedPaymentMonitorFuture = null;
         }
         
-        if (!isProcessFinished()) {
+        if (!isProcessFinished() && startWatcher) {
         	//we should not fire watchdog in case if payment already success or canceled for any reasons.
         	stackedPaymentMonitorFuture = parallelExecutor.invoke(new StackedPaymentMonitor(this));
         }
@@ -321,7 +323,18 @@ public class PaymentProcessController {
 		this.cayenneService = cayenneService;
 	}
 
-	public static enum PaymentProcessState {
+    /**
+     * If the property is false stackedPaymentMonitor is not started.
+     */
+    public boolean isStartWatcher() {
+        return startWatcher;
+    }
+
+    public void setStartWatcher(boolean startWatcher) {
+        this.startWatcher = startWatcher;
+    }
+
+    public static enum PaymentProcessState {
 		INIT, //initial state of the controller
 		FILL_PAYMENT_DETAILS, //payment form is opened
         PROCESSING_PAYMENT, //payment gateway is processing the payment
