@@ -14,7 +14,9 @@ public class UserAgentDetectorImpl implements IUserAgentDetector {
 
 	public UserAgent getUserAgent() {
 
-		return UserAgent.valueByAgentId(getUserAgentAsString());
+		//todo uncomment this line when we will be ready to continue portal-mobile skin developing
+		//return UserAgent.valueByAgentId(getUserAgentAsString());
+		return UserAgent.DESKTOP;
 	}
 
 	/**
