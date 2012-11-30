@@ -6,6 +6,13 @@ buildscript {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/ish'
 		}
+		maven {
+			url 'http://repo.ish.com.au/content/groups/ish'
+		}
+		maven {
+			//TODO: remove once we move the release plugin to a final release
+			url 'https://oss.sonatype.org/content/repositories/snapshots'
+		}
 		add(new org.apache.ivy.plugins.resolver.URLResolver()) {
 			name = 'GitHub cargo'
 			addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
@@ -18,24 +25,25 @@ buildscript {
 		classpath 'bmuschko:gradle-cargo-plugin:0.5.6'
 		classpath 'org.codehaus.cargo:cargo-core-uberjar:1.2.2'
 		classpath 'org.codehaus.cargo:cargo-ant:1.2.2'
-        classpath 'au.com.ish.gradle:release:2.0'
+		classpath 'au.com.ish.gradle:release:2.1-SNAPSHOT'
 	}
 }
 
 apply plugin: 'release'
 release {
-    //use subversion scm, unless otherwise specified in with -PscmFlavour= or in users gradle properties
-    scm = project.hasProperty('scmFlavour') ? project.scmFlavour:'svn'
-    failOnSnapshotDependencies = true
+	//use subversion scm, unless otherwise specified in with -PscmFlavour= or in users gradle properties
+	scm = project.hasProperty('scmFlavour') ? project.scmFlavour:'svn'
+	failOnSnapshotDependencies = true
 
-    //properties for svn access
-    username = project.hasProperty('username') ? project.username : ''
-    password = project.hasProperty('password') ? project.password : ''
+	//properties for svn access
+	username = project.hasProperty('username') ? project.username : ''
+	password = project.hasProperty('password') ? project.password : ''
 
-    //the following two params have to be converted from string to boolean
-    releaseDryRun = project.hasProperty('releaseDryRun') ? project.releaseDryRun=='true' : ''
-    allowLocalModifications = project.hasProperty('allowLocalModifications') ? project.allowLocalModifications='true' : ''
+	//the following two params have to be converted from string to boolean
+	releaseDryRun = project.hasProperty('releaseDryRun') ? project.releaseDryRun=='true' : ''
+	allowLocalModifications = project.hasProperty('allowLocalModifications') ? project.allowLocalModifications='true' : ''
 }
+version = release.projectVersion
 
 allprojects {
 	apply plugin: 'java'
@@ -105,39 +113,68 @@ allprojects {
 		ignoreFailures = true  // ignore test failures so that the test aggregate still works
 	}
 
-    if (project.gradle.getStartParameter().getTaskNames().contains("tasks")) {
-        task cobertura << {
-            throw new IllegalStateException("Because of a bug in Gradle, you can't run cobertura and tasks together")
-        }
+	if (project.gradle.getStartParameter().getTaskNames().contains("tasks")) {
+		task cobertura << {
+			throw new IllegalStateException("Because of a bug in Gradle, you can't run cobertura and tasks together")
+		}
 
-        cobertura.description = """Generate Cobertura code coverage report
+		cobertura.description = """Generate Cobertura code coverage report
 		======================== NOTE ==========================
 		There is a workaround that has to do with gradle issue 2023 in the build file.
 		https://github.com/valkolovos/gradle_cobertura/issues/18
 		http://issues.gradle.org//browse/GRADLE-2023
 		"""
-    } else {
-        apply plugin: 'cobertura'
-        cobertura {
-            coverageFormat = 'xml'
-        }
-    }
+	} else {
+		apply plugin: 'cobertura'
+		cobertura {
+			coverageFormat = 'xml'
+		}
+	}
 
 }
 
 apply plugin: 'sonar'
 
 sonar {
-    server {
-        url = "http://sonar.ish.com.au"
-    }
-    database {
-        url = "jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&amp;characterEncoding=utf8"
-        driverClassName = "com.mysql.jdbc.Driver"
-        username = "sonar"
-        password = sonarPassword
-    }
+	server {
+		url = "http://sonar.ish.com.au"
+	}
+	database {
+		url = "jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&amp;characterEncoding=utf8"
+		driverClassName = "com.mysql.jdbc.Driver"
+		username = "sonar"
+		password = sonarPassword
+	}
 	project {
 		coberturaReportPath = file("$buildDir/reports/cobertura/coverage.xml")
+	}
+}
+
+task aggregateTestReports(type: TestReportAggregator) {
+	testReportDir = file("${reporting.baseDir}/tests")
+	testResultsDir = file("${buildDir}/test-results")
+	projects = subprojects
+}
+
+class TestReportAggregator extends Copy {
+	def projects
+	File testResultsDir
+	@OutputDirectory
+	File testReportDir
+	def TestReportAggregator() {
+		dependsOn { testTasks }
+		from { inputTestResultDirs }
+		into { testResultsDir }
+	}
+	@TaskAction
+	def aggregate() {
+		def report = new org.gradle.api.internal.tasks.testing.junit.report.DefaultTestReport(testReportDir: testReportDir, testResultsDir: testResultsDir)
+		report.generateReport()
+	}
+	def getTestTasks() {
+		projects.collect { it.tasks.withType(Test) }.flatten()
+	}
+	def getInputTestResultDirs() {
+		testTasks*.testResultsDir
 	}
 }
