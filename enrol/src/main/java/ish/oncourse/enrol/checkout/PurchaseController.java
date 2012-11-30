@@ -252,7 +252,6 @@ public class PurchaseController {
 			action.setEnrolment(enrolment);
 			action.action();
 		}
-
 	}
 
 
@@ -276,7 +275,7 @@ public class PurchaseController {
 	 * Creates the new {@link Enrolment} entity for the given courseClass and
 	 * Student.
 	 */
-	private Enrolment createEnrolment(CourseClass courseClass, Student student) {
+	Enrolment createEnrolment(CourseClass courseClass, Student student) {
 		Enrolment enrolment = model.getObjectContext().newObject(Enrolment.class);
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setSource(PaymentSource.SOURCE_WEB);

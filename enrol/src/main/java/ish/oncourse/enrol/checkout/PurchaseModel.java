@@ -195,10 +195,27 @@ public class PurchaseModel {
 	}
 
 
-	public Enrolment getEnrolmentBy(Contact contact, Integer index) {
-		return getAllEnrolments(contact).get(index);
+	public Enrolment getEnrolmentBy(Contact contact, CourseClass courseClass)
+	{
+		List<Enrolment> enrolments = getContactNode(contact).getAllEnrolments();
+		for (Enrolment enrolment : enrolments) {
+			if (enrolment.getCourseClass().getId().equals(courseClass.getId()))
+				return enrolment;
+		}
+		return null;
 	}
-	
+
+	public ProductItem getProductItemBy(Contact contact, ProductItem productItem)
+	{
+//		List<Enrolment> enrolments = getContactNode(contact).getAllProductItems();
+//		for (Enrolment enrolment : enrolments) {
+//			if (enrolment.getCourseClass().getId().equals(courseClass.getId()))
+//				return enrolment;
+//		}
+		return null;
+	}
+
+
 	public boolean isEnrolmentEnabled(Enrolment enrolment) {
 		return getEnabledEnrolments(enrolment.getStudent().getContact()).contains(enrolment);
 	}
@@ -350,14 +367,14 @@ public class PurchaseModel {
 		}
 	}
 
-	private void deleteDisabledProductItems(Contact contact) {
+	void deleteDisabledProductItems(Contact contact) {
 		List<ProductItem> productItems = new ArrayList<ProductItem>(getDisabledProductItems(contact));
 		for (ProductItem productItem : productItems) {
 			removeProductItem(contact, productItem);
 		}
 	}
 
-	private void deleteDisabledEnrollments(Contact contact) {
+	void deleteDisabledEnrollments(Contact contact) {
 		List<Enrolment> enrolments = new ArrayList<Enrolment>(getDisabledEnrolments(contact));
 		for (Enrolment enrolment : enrolments) {
 			removeEnrolment(enrolment);

@@ -30,9 +30,6 @@ public class ContactEditorParser {
 
 	static final String KEY_ERROR_dateOfBirth_youngAge = "error-dateOfBirth-youngAge";
 
-	private static final String DYNAMIC_FIELD_NAME_PREFIX = "textfield";
-	private static final String DYNAMIC_FIELD_NAME_TEMPLATE = "%s_%d";
-
 	private List<String> visibleFields;
 
 	private Map<String, String> errors = new HashMap<String, String>();
@@ -59,7 +56,7 @@ public class ContactEditorParser {
 	private void parseContactFields() {
 		for (String visibleField : visibleFields) {
 			ContactFieldHelper.FieldDescriptor fieldDescriptor = ContactFieldHelper.FieldDescriptor.valueOf(visibleField);
-			String value = StringUtils.trimToNull(request.getParameter(getDynamicFieldNameBy(visibleField)));
+			String value = StringUtils.trimToNull(request.getParameter(visibleField));
 			if (value == null) {
 				if (contactFieldHelper.isRequiredField(fieldDescriptor))
 					errors.put(fieldDescriptor.propertyName, getRequiredMessage(fieldDescriptor));
@@ -79,12 +76,6 @@ public class ContactEditorParser {
 			}
 		}
 	}
-
-	public String getDynamicFieldNameBy(String fieldName) {
-		int index = visibleFields.indexOf(fieldName);
-		return index == 0 ? DYNAMIC_FIELD_NAME_PREFIX : String.format(DYNAMIC_FIELD_NAME_TEMPLATE, DYNAMIC_FIELD_NAME_PREFIX, index - 1);
-	}
-
 
 	private String getRequiredMessage(ContactFieldHelper.FieldDescriptor fieldDescriptor) {
 		return messages.format(KEY_ERROR_MESSAGE_required, messages.get(String.format(LABEL_TEMPLATE, fieldDescriptor.propertyName)));

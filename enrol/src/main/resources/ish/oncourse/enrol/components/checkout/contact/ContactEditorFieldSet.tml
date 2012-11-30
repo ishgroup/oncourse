@@ -4,7 +4,7 @@
 		<p>
 		<label for="street">${label('street')}<t:if test="required('street')"><em title="${message:required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('street')}">
-			<t:textfield value="delegate.contact.street" class="street input-fixed ${validateHandler.errorClass('street')}"/>
+			<t:textfield t:id="street" value="delegate.contact.street" class="street input-fixed ${validateHandler.errorClass('street')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('street')}"/>
 		</span>
 		</p>
@@ -14,7 +14,7 @@
 		<p>
 		<label for="suburb">${label('suburb')}<t:if test="required('suburb')"><em title="${message:required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('suburb')}">
-			<t:textfield value="delegate.contact.suburb" class="suburb input-fixed ${validateHandler.errorClass('suburb')}"/>
+			<t:textfield t:id="suburb" value="delegate.contact.suburb" class="suburb input-fixed ${validateHandler.errorClass('suburb')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('suburb')}"/>
 		</span>
 		</p>
@@ -24,7 +24,7 @@
 		<p>
 		<label for="street">${label('postcode')}<t:if test="required('postcode')"><em title="${message:required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('postcode')}">
-			<t:textfield value="delegate.contact.postcode" class="postcode input-fixed ${validateHandler.errorClass('postcode')}"/>
+			<t:textfield t:id="postcode" value="delegate.contact.postcode" class="postcode input-fixed ${validateHandler.errorClass('postcode')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('postcode')}"/>
 		</span>
 		</p>
@@ -35,7 +35,7 @@
 		<p>
 		<label for="state">${label('state')}<t:if test="required('state')"><em title="${message:required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('state')}">
-			<t:textfield value="delegate.contact.state" class="state input-fixed ${validateHandler.errorClass('state')}"/>
+			<t:textfield t:id="state" value="delegate.contact.state" class="state input-fixed ${validateHandler.errorClass('state')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('state')}"/>
 		</span>
 		</p>
@@ -46,7 +46,7 @@
 		<p>
 		<label for="homePhoneNumber">${label('homePhoneNumber')}<t:if test="required('homePhoneNumber')"><em title="${message:required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('homePhoneNumber')}">
-			<t:textfield value="delegate.contact.homePhoneNumber" class="homePhoneNumber input-fixed ${validateHandler.errorClass('homePhoneNumber')}"/>
+			<t:textfield t:id="homePhoneNumber" value="delegate.contact.homePhoneNumber" class="homePhoneNumber input-fixed ${validateHandler.errorClass('homePhoneNumber')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('homePhoneNumber')}"/>
 		</span>
 		</p>
@@ -56,7 +56,7 @@
 		<p>
 		<label for="businessPhoneNumber">${label('businessPhoneNumber')}<t:if test="required('businessPhoneNumber')"><em title="${message:required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('businessPhoneNumber')}">
-			<t:textfield value="delegate.contact.businessPhoneNumber" class="businessPhoneNumber input-fixed ${validateHandler.errorClass('businessPhoneNumber')}"/>
+			<t:textfield t:id="businessPhoneNumber" value="delegate.contact.businessPhoneNumber" class="businessPhoneNumber input-fixed ${validateHandler.errorClass('businessPhoneNumber')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('businessPhoneNumber')}"/>
 		</span>
 		</p>
@@ -66,7 +66,7 @@
 		<p>
 		<label for="faxNumber">${label('faxNumber')}<t:if test="required('faxNumber')"><em title="${message:required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('faxNumber')}">
-			<t:textfield value="delegate.contact.faxNumber" class="faxNumber input-fixed ${validateHandler.errorClass('faxNumber')}"/>
+			<t:textfield t:id="faxNumber" value="delegate.contact.faxNumber" class="faxNumber input-fixed ${validateHandler.errorClass('faxNumber')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('faxNumber')}"/>
 		</span>
 		</p>
@@ -76,7 +76,7 @@
 		<p>
 		<label for="mobilePhoneNumber">${label('mobilePhoneNumber')}<t:if test="required('street')"><em title="${message:required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('mobilePhoneNumber')}">
-			<t:textfield value="delegate.contact.mobilePhoneNumber" class="mobilePhoneNumber input-fixed ${validateHandler.errorClass('mobilePhoneNumber')}"/>
+			<t:textfield  t:id="mobilePhoneNumber" value="delegate.contact.mobilePhoneNumber" class="mobilePhoneNumber input-fixed ${validateHandler.errorClass('mobilePhoneNumber')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('mobilePhoneNumber')}"/>
 		</span>
 		</p>
@@ -86,7 +86,7 @@
 		<p>
 		<label for="dateOfBirth">${label('dateOfBirth')}<t:if test="required('dateOfBirth')"><em title="${message:required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('dateOfBirth')}">
-			<t:textfield value="dateOfBirth" class="dateOfBirth input-fixed ${validateHandler.errorClass('dateOfBirth')}"/>
+			<t:textfield  t:id="dateOfBirth" value="dateOfBirth" class="dateOfBirth input-fixed ${validateHandler.errorClass('dateOfBirth')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('dateOfBirth')}"/>
 		</span>
 		</p>
