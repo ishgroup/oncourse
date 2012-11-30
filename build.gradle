@@ -131,6 +131,11 @@ allprojects {
 		}
 	}
 
+	task aggregateTestReports(type: TestReportAggregator) {
+		testReportDir = file("${reporting.baseDir}/tests")
+		testResultsDir = file("${buildDir}/test-results")
+		projects = subprojects
+	}
 }
 
 apply plugin: 'sonar'
@@ -148,12 +153,6 @@ sonar {
 	project {
 		coberturaReportPath = file("$buildDir/reports/cobertura/coverage.xml")
 	}
-}
-
-task aggregateTestReports(type: TestReportAggregator) {
-	testReportDir = file("${reporting.baseDir}/tests")
-	testResultsDir = file("${buildDir}/test-results")
-	projects = subprojects
 }
 
 class TestReportAggregator extends Copy {
