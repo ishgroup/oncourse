@@ -43,7 +43,12 @@ function sendAjaxWithData($actionLink,$data)
 	$j('#waitingListBlock').block({
 		fadeIn: 700,
 		fadeOut: 700,
-		showOverlay: true
+		showOverlay: true,
+		message:null,
+		overlayCSS:  {
+			opacity:         0,
+			cursor:          'wait'
+		}
 	});
 	$j.ajax({
 		type: "GET",
