@@ -195,7 +195,7 @@ public class PurchaseModel {
 	}
 
 
-	public Enrolment getEnrolmentBy(Contact contact, CourseClass courseClass)
+	Enrolment getEnrolmentBy(Contact contact, CourseClass courseClass)
 	{
 		List<Enrolment> enrolments = getContactNode(contact).getAllEnrolments();
 		for (Enrolment enrolment : enrolments) {
@@ -205,13 +205,13 @@ public class PurchaseModel {
 		return null;
 	}
 
-	public ProductItem getProductItemBy(Contact contact, ProductItem productItem)
+	ProductItem getProductItemBy(Contact contact, Product product)
 	{
-//		List<Enrolment> enrolments = getContactNode(contact).getAllProductItems();
-//		for (Enrolment enrolment : enrolments) {
-//			if (enrolment.getCourseClass().getId().equals(courseClass.getId()))
-//				return enrolment;
-//		}
+		List<ProductItem> productItems = getContactNode(contact).getAllProductItems();
+		for (ProductItem productItem : productItems ) {
+			if (productItem.getProduct().getId().equals(product.getId()))
+				return productItem;
+		}
 		return null;
 	}
 
@@ -361,7 +361,6 @@ public class PurchaseModel {
 			for (Enrolment e : getEnabledEnrolments(contact)) {
 				e.setStatus(EnrolmentStatus.IN_TRANSACTION);
 			}
-
 			deleteDisabledEnrollments(contact);
 			deleteDisabledProductItems(contact);
 		}

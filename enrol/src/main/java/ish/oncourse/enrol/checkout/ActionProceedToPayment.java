@@ -22,6 +22,7 @@ public class ActionProceedToPayment extends APurchaseAction {
 			getModel().getObjectContext().commitChanges();
 
 			PaymentProcessController paymentProcessController = new PaymentProcessController();
+            paymentProcessController.setStartWatcher(false);
 			paymentProcessController.setObjectContext(getModel().getObjectContext());
 			paymentProcessController.setPaymentIn(getModel().getPayment());
 			paymentProcessController.setCayenneService(getController().getCayenneService());
