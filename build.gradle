@@ -6,13 +6,6 @@ buildscript {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/ish'
 		}
-		maven {
-			url 'http://repo.ish.com.au/content/groups/ish'
-		}
-		maven {
-			//TODO: remove once we move the release plugin to a final release
-			url 'https://oss.sonatype.org/content/repositories/snapshots'
-		}
 		add(new org.apache.ivy.plugins.resolver.URLResolver()) {
 			name = 'GitHub cargo'
 			addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
@@ -25,7 +18,7 @@ buildscript {
 		classpath 'bmuschko:gradle-cargo-plugin:0.5.6'
 		classpath 'org.codehaus.cargo:cargo-core-uberjar:1.2.2'
 		classpath 'org.codehaus.cargo:cargo-ant:1.2.2'
-		classpath 'au.com.ish.gradle:release:2.1-SNAPSHOT'
+		classpath 'au.com.ish.gradle:release:2.1'
 	}
 }
 
