@@ -13,20 +13,14 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
-
-import java.util.Date;
-import java.util.List;
-
 import org.apache.cayenne.ObjectContext;
-import org.apache.tapestry5.annotations.Component;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextArea;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.Date;
+import java.util.List;
 
 @UserRole("tutor")
 public class ClassApproval {
@@ -115,7 +109,8 @@ public class ClassApproval {
 						c.getFamilyName(), courseClass.getCourse().getCode(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);
 	
 				EmailBuilder email = new EmailBuilder();
-				email.setFromEmail(FROM_EMAIL);
+				String tutorEmail = c.getEmailAddress();
+				email.setFromEmail(tutorEmail != null? tutorEmail: FROM_EMAIL);
 				email.setSubject(subject);
 				email.setBody(body);
 				email.setToEmails(getTutorFeedbackEmail());
