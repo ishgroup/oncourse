@@ -13,7 +13,8 @@ public enum ImageTextileAttributes {
 	IMAGE_PARAM_TITLE("title:"),
 	IMAGE_PARAM_WIDTH("width:"),
 	IMAGE_PARAM_HEIGHT("height:"),
-	IMAGE_PARAM_NAME("name:");
+	IMAGE_PARAM_NAME("name:"),
+	IMAGE_PARAM_ATTACHMENT("attachment:");
 	
 	private String value;
 

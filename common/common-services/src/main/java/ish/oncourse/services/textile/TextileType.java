@@ -1,16 +1,25 @@
 package ish.oncourse.services.textile;
 
-import static ish.oncourse.services.textile.TextileUtil.*;
-
 import ish.oncourse.services.textile.attrs.*;
 
 import java.util.List;
 
+import static ish.oncourse.services.textile.TextileUtil.*;
+
 public enum TextileType {
-	IMAGE("\\{image([^}]*)}", "\\{image(.+?((name:" + STR_WHITESPACE + ")" + "|(id:" + DIGIT_IN_QUOTS + ")"
-			+ "|(align:" + inQuots("(right|left|center)", false) + ")" + "|(caption:" + STR_WHITESPACE + ")" + "|(alt:"
-			+ STR_WHITESPACE + ")" + "|(link:" + STR_IN_QUOTS + ")" + "|(title:" + STR_WHITESPACE + ")" + "|(width:"
-			+ PIXELS_IN_QUOTS + ")" + "|(height:" + PIXELS_IN_QUOTS + ")" + "|(class:" + STR_WHITESPACE + "))){0,10}}",
+	IMAGE("\\{image([^}]*)}", "\\{image(.+?((" +
+				"name:" + STR_WHITESPACE + ")" +
+				"|(id:" + DIGIT_IN_QUOTS + ")" +
+			    "|(align:" + inQuots("(right|left|center)", false) + ")" +
+			    "|(caption:" + STR_WHITESPACE + ")" +
+			    "|(alt:" + STR_WHITESPACE + ")" +
+			    "|(link:" + STR_IN_QUOTS + ")" +
+			    "|(title:" + STR_WHITESPACE + ")" +
+			    "|(width:" + PIXELS_IN_QUOTS + ")" +
+			    "|(height:" + PIXELS_IN_QUOTS + ")" +
+			    "|(class:" + STR_WHITESPACE + ")" +
+				"|(attachment:" + STR_WHITESPACE + ")" +
+			")){0,11}}",
 			ImageTextileAttributes.getAttrValues()),
 
 	VIDEO("\\{video([^}]*)}", "\\{video(.+?((id:" + STR_IN_QUOTS + ")" + "|(type:" + STR_IN_QUOTS + ")" + "|(width:"

@@ -20,7 +20,7 @@ public class TextileImage {
 
 	@Inject
 	private IBinaryDataService binaryDataService;
-	
+
 	@SuppressWarnings("all")
 	@Inject
 	private IWebSiteService webSiteService;
@@ -75,15 +75,10 @@ public class TextileImage {
 		String width = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_WIDTH.getValue());
 		String height = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_HEIGHT.getValue());
 		String cssClass = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_CLASS.getValue());
+		String attachment = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ATTACHMENT.getValue());
 
-		BinaryInfo imageBinaryInfo = null;
-		if (id != null) {
-			imageBinaryInfo = binaryDataService.getBinaryInfoByReferenceNumber(id);
-		} else if (name != null) {
-			imageBinaryInfo = binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, name);
-		} else {
-			imageBinaryInfo = binaryDataService.getRandomImage();
-		}
+		BinaryInfo imageBinaryInfo = getBinaryInfoBy(id, name);
+		BinaryInfo attachmentBinaryInfo = getBinaryInfoBy(attachment);
 
 		imagePath = imageBinaryInfo != null ? (imageBinaryInfo.getContextPath()) : StringUtils.EMPTY;
 		imageAlign = align != null ? align : StringUtils.EMPTY;
@@ -93,7 +88,12 @@ public class TextileImage {
 		imageHeight = height != null ? height : (imageBinaryInfo.getPixelHeight() + "px");
 		imageClass = cssClass != null ? cssClass : StringUtils.EMPTY;
 		imageCaption = caption;
-		imageLink = link != null ? link : StringUtils.EMPTY;
+		if (link != null)
+			imageLink = link;
+		else if (attachmentBinaryInfo != null)
+			imageLink = attachmentBinaryInfo.getContextPath();
+		else
+			imageLink = StringUtils.EMPTY;
 
 		ArrayList<Long> ids = (ArrayList<Long>) request.getAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS);
 		if (ids == null) {
@@ -101,6 +101,22 @@ public class TextileImage {
 		}
 		ids.add(imageBinaryInfo.getId());
 		request.setAttribute("displayedImagesIds", ids);
+	}
+
+	private BinaryInfo getBinaryInfoBy(String name) {
+		return getBinaryInfoBy(null, name);
+	}
+
+	private BinaryInfo getBinaryInfoBy(String id, String name) {
+		BinaryInfo imageBinaryInfo = null;
+		if (id != null) {
+			imageBinaryInfo = binaryDataService.getBinaryInfoByReferenceNumber(id);
+		} else if (name != null) {
+			imageBinaryInfo = binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, name);
+		} else {
+			imageBinaryInfo = binaryDataService.getRandomImage();
+		}
+		return imageBinaryInfo;
 	}
 
 }
