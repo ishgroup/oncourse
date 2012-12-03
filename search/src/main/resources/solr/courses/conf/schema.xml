@@ -32,6 +32,25 @@
 		<fieldType name="sfloat" class="solr.SortableFloatField"
 			sortMissingLast="true" omitNorms="true" />
 
+		<fieldType name="exacttext" class="solr.TextField"
+			positionIncrementGap="100">
+			<analyzer type="index">
+				<tokenizer class="solr.WhitespaceTokenizerFactory" />
+				<filter class="solr.WordDelimiterFilterFactory"
+					generateWordParts="1" generateNumberParts="1" catenateWords="1"
+					catenateNumbers="1" catenateAll="0" splitOnCaseChange="0" />
+				<filter class="solr.LowerCaseFilterFactory" />
+			</analyzer>
+			
+			<analyzer type="query">
+				<tokenizer class="solr.WhitespaceTokenizerFactory" />
+				<filter class="solr.WordDelimiterFilterFactory"
+					generateWordParts="1" generateNumberParts="1" catenateWords="0"
+					catenateNumbers="0" catenateAll="0" splitOnCaseChange="0" />
+				<filter class="solr.LowerCaseFilterFactory" />
+			</analyzer>
+		</fieldType>
+		
 		<fieldType name="text" class="solr.TextField"
 			positionIncrementGap="100">
 
@@ -169,19 +188,19 @@
 		<field name="name" type="textgen" indexed="true" stored="true"
 			omitNorms="false" boost="20.0" />
 
-		<field name="course_code" type="textgen" indexed="true" stored="true"
+		<field name="course_code" type="exacttext" indexed="true" stored="true"
 			omitNorms="false" boost="30.0" />
 
 		<field name="detail" type="text" indexed="true" stored="true"
 			omitNorms="false" boost="1.0" />
 
-		<field name="class_code" type="text" indexed="true" stored="true"
+		<field name="class_code" type="exacttext" indexed="true" stored="true"
 			multiValued="true" omitNorms="false" boost="10.0" />
 
 		<field name="tutor" type="textgen" indexed="true" stored="true"
 			omitNorms="false" multiValued="true" boost="5.0" />
 
-		<field name="when" type="textgen" indexed="true" stored="true"
+		<field name="when" type="string" indexed="true" stored="true"
 			omitNorms="false" multiValued="true" boost="5.0" />
 
 		<field name="startDate" type="date" indexed="true" stored="true"
