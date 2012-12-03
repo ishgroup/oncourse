@@ -9,6 +9,7 @@ import ish.oncourse.util.ValidationErrors;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.annotations.Persist;
@@ -87,10 +88,17 @@ public class Courses {
 	 */
 	@Property
 	private String sitesParameter;
+	
+	@Property
+	private String debugInfo;
 
 	private List<Long> sitesIds;
 	
 	private List<Long> loadedCoursesIds;
+	
+	public boolean isDebugRequest() {
+		return StringUtils.trimToNull(debugInfo) != null;
+	}
 
 	public List<Long> getPreviouslyLoadedCourseIds() {
 		List<Long> loadedCourses = new ArrayList<Long>(coursesIds.size() + loadedCoursesIds.size());
@@ -250,14 +258,18 @@ public class Courses {
 	}
 	
 	private List<Course> searchCourses(int start, int rows) {
-		SolrDocumentList results = searchService.searchCourses(searchParams, start, rows);
-		LOGGER.info(String.format("The number of courses found: %s", results.size()));
+		QueryResponse results = searchService.searchCourses(searchParams, start, rows);
+		SolrDocumentList list = results.getResults();
+		LOGGER.info(String.format("The number of courses found: %s", list.size()));
 		if (coursesCount == null) {
-			coursesCount = ((Number) results.getNumFound()).intValue();
+			coursesCount = ((Number) list.getNumFound()).intValue();
 		}
-		List<String> ids = new ArrayList<String>(results.size());
-		for (SolrDocument doc : results) {
+		List<String> ids = new ArrayList<String>(list.size());
+		for (SolrDocument doc : list) {
 			ids.add((String) doc.getFieldValue(SOLR_DOCUMENT_ID_FIELD));
+		}
+		if (results.getDebugMap() != null) {
+			debugInfo = results.getDebugMap().toString();
 		}
 		return courseService.loadByIds(ids.toArray());
 	}

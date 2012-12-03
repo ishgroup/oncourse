@@ -19,14 +19,14 @@ public class SearchParams {
     private Date after;
     private Date before;
     private List<Suburb> suburbs;
-    private Boolean withDirectSearch = Boolean.FALSE;
+    private Boolean debugQuery = Boolean.FALSE;
     
-	public Boolean getWithDirectSearch() {
-		return withDirectSearch;
+	public Boolean getDebugQuery() {
+		return Boolean.TRUE.equals(debugQuery);
 	}
 
-	public void setWithDirectSearch(Boolean withDirectSearch) {
-		this.withDirectSearch = withDirectSearch;
+	public void setDebugQuery(Boolean debugQuery) {
+		this.debugQuery = debugQuery;
 	}
 
 	public String getS() {

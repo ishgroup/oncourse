@@ -1,6 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<t:if test="XHR">
+		<t:if test="DebugRequest">
+			<t:outputraw value="${debugInfo}"/>
+		</t:if>
 		<span t:type="ui/CoursesList" courses="courses" coursesCount="coursesCount" loadedCoursesIds="previouslyLoadedCourseIds"
 			itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams"/>
 		<p:else>
@@ -30,6 +33,9 @@
 						<t:if t:test="hasAnyItems" negate="true">
 							<h2>No results</h2>
 							<p:else>
+								<t:if test="DebugRequest">
+									<t:outputraw value="${debugInfo}"/>
+								</t:if>
 								<span t:type="ui/CoursesList" courses="courses" loadedCoursesIds="previouslyLoadedCourseIds"
 									coursesCount="coursesCount" itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams"/>
 							</p:else>

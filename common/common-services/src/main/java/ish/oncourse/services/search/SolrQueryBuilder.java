@@ -5,12 +5,14 @@ import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
+import org.apache.solr.common.params.CommonParams;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SolrQueryBuilder {
 
+	private static final String SPACE_REPLACEMENT_CHARACTER = " ";
 	private static final String SOLR_SYNTAX_CHARACTERS_STRING = "[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]";
 
 	static final String QUERY_TYPE = "standard";
@@ -55,7 +57,7 @@ public class SolrQueryBuilder {
     static final String QUERY_brackets = "(%s)";
     static final String QUERY_AND = "AND";
     static final String QUERY_OR = "||";
-    static final String QUERY_DELIMITER = " ";
+    static final String QUERY_DELIMITER = SPACE_REPLACEMENT_CHARACTER;
 
     private static final String BOOST_STATEMENT = "{!boost b=$boostfunction v=$qq}";
     //here we can use the date in format like 2008-01-01T00:00:00Z, but I hope then will no classes longs more then 1 years
@@ -114,6 +116,9 @@ public class SolrQueryBuilder {
         q.addSortField(FIELD_score, ORDER.desc);
         q.addSortField(FIELD_startDate, ORDER.asc);
         q.addSortField(FIELD_name, SolrQuery.ORDER.asc);
+        if (params.getDebugQuery()) {
+        	q.set(CommonParams.DEBUG_QUERY, "on");//solr 4 use on and off instead of true or false
+        }
         return q;
     }
 
@@ -237,13 +242,12 @@ public class SolrQueryBuilder {
     }
 
 
-    String convert(List<String> filters)
-    {
+    String convert(List<String> filters) {
         return StringUtils.join(filters.toArray(), QUERY_DELIMITER);
     }
     
     static String replaceSOLRSyntaxisCharacters(String original) {
-    	String resultString = original.replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, " ");
+    	String resultString = original.replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, SPACE_REPLACEMENT_CHARACTER);
     	return resultString;
     }
 }

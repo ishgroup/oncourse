@@ -89,9 +89,9 @@ public class SearchParamsParser
                         searchParams.setBefore(parseAfter(parameter));
                         value = searchParams.getBefore();
                         break;
-                    case directSearch:
-                    	searchParams.setWithDirectSearch(Boolean.valueOf(parameter));
-                    	value = searchParams.getWithDirectSearch();
+                    case debugQuery:
+                    	searchParams.setDebugQuery(Boolean.valueOf(parameter));
+                    	value = searchParams.getDebugQuery();
                     	break;
                     default:
                         LOGGER.warn(String.format("Parser is not defined for SearchParam \"%s\"", name));
