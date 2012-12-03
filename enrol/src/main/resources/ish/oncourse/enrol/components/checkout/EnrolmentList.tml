@@ -6,6 +6,7 @@
 			  enrolmentIndex="index"
 			  contactIndex="contactIndex"
 			  checked="checked"
-			  delegate="enrolmentItemDelegate" blockToRefresh="blockToRefresh"/>
+			  delegate="enrolmentItemDelegate" blockToRefresh="blockToRefresh"
+              error="enrolmentError"/>
 	</t:loop>
 </t:container>

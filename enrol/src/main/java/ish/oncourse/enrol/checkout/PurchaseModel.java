@@ -400,6 +400,18 @@ public class PurchaseModel {
 		return result;
 	}
 
+    public String setErrorFor(Enrolment enrolment, String error)
+    {
+        ContactNode contactNode = contacts.get(enrolment.getStudent().getContact());
+        return contactNode.setErrorFor(enrolment, error);
+    }
+
+    public String getErrorBy(Enrolment enrolment)
+    {
+        ContactNode contactNode = contacts.get(enrolment.getStudent().getContact());
+        return contactNode.getErrorBy(enrolment);
+    }
+
 	public WebSite getWebSite() {
 		return webSite;
 	}
@@ -411,6 +423,11 @@ public class PurchaseModel {
 	private class ContactNode {
 		
 		private List<ConcessionType> concessions;
+
+        /**
+         * map contains error for by course class id. we use courseClassId as key because Enrolment can be recreated
+         */
+        private Map<Long, String> courseClassErrors = new HashMap<Long, String>();
 
 		private List<Enrolment> enabledEnrolments;
 		private List<Enrolment> disabledEnrolments;
@@ -471,6 +488,7 @@ public class PurchaseModel {
 		}
 		
 		public void enableEnrolment(Enrolment e) {
+            courseClassErrors.remove(e.getCourseClass().getId());
 			if (disabledEnrolments.contains(e)) {
 				disabledEnrolments.remove(e);
 				enabledEnrolments.add(e);
@@ -497,6 +515,15 @@ public class PurchaseModel {
 				disabledProductItems.add(p);
 			}
 		}
-	}
+
+        public String getErrorBy(Enrolment enrolment)
+        {
+            return courseClassErrors.get(enrolment.getCourseClass().getId());
+        }
+
+        public String setErrorFor(Enrolment enrolment, String error) {
+            return courseClassErrors.put(enrolment.getCourseClass().getId(),error);
+        }
+    }
 
 }

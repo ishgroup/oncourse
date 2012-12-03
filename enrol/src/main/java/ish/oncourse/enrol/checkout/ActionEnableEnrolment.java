@@ -36,17 +36,20 @@ public class ActionEnableEnrolment extends APurchaseAction {
 		if (enrolment.getObjectId().isTemporary())
 		{
 			if (enrolment.isDuplicated()) {
-				getController().addError(duplicatedEnrolment, enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getName());
+				getController().getModel().setErrorFor(enrolment,
+                        duplicatedEnrolment.getMessage(getController().getMessages(), enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getName()));
 				return false;
 			}
 
 			if (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
-				getController().addError(noCourseClassPlaces, enrolment);
+                getController().getModel().setErrorFor(enrolment,
+                        noCourseClassPlaces.getMessage(getController().getMessages(), enrolment));
 				return false;
 			}
 		}
 		if (enrolment.getCourseClass().hasEnded()) {
-			getController().addError(courseClassEnded, enrolment.getCourseClass());
+            getController().getModel().setErrorFor(enrolment,
+                    courseClassEnded.getMessage(getController().getMessages(), enrolment.getCourseClass()));
 			return false;
 		}
 		return true;

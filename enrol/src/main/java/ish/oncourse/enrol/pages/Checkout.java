@@ -165,6 +165,7 @@ public class Checkout {
 		if (purchaseController != null) {
 			throw new IllegalArgumentException(cause);
 		} else {
+            LOGGER.warn("",cause);
 			expired = true;
 		}
 		return paymentPage;

@@ -14,6 +14,13 @@
 				${enrolment.courseClass.course.name}
 				<t:eventlink t:id="selectEnrolmentEvent" style="{display: none;}" class="selectEnrolmentLink" context="actionContext"/>
 			</label>
+            <t:if test="error">
+                <span class="disabled">(${error})</span>
+            </t:if>
+            <t:if test="commenced">
+                <span>(Note: This class has already commenced)</span>
+            </t:if>
+            <br/>
 	  		<em>
 	  			<t:if test="enrolment.courseClass.hasRoom">
 	  				<span t:type="ui/RoomLocation" room="enrolment.courseClass.room" withRoomName="false" disabledLink="true" />

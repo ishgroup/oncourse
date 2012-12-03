@@ -29,6 +29,7 @@ public class ContactEditorParser {
 	private static final String KEY_ERROR_MESSAGE_birthdate_hint = "birthdate-hint";
 
 	static final String KEY_ERROR_dateOfBirth_youngAge = "error-dateOfBirth-youngAge";
+    static final String KEY_ERROR_dateOfBirth_shouldBeInPast = "error-dateOfBirth-shouldBeInPast";
 
 	private List<String> visibleFields;
 
@@ -42,7 +43,7 @@ public class ContactEditorParser {
 	}
 
 
-	private void parseMarketingFields() {
+	void parseMarketingFields() {
 		contact.writeProperty(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY));
 		contact.writeProperty(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY));
 		contact.writeProperty(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY));
@@ -53,27 +54,27 @@ public class ContactEditorParser {
 	}
 
 
-	private void parseContactFields() {
+	void parseContactFields() {
 		for (String visibleField : visibleFields) {
 			ContactFieldHelper.FieldDescriptor fieldDescriptor = ContactFieldHelper.FieldDescriptor.valueOf(visibleField);
-			String value = StringUtils.trimToNull(request.getParameter(visibleField));
-			if (value == null) {
+			String stringValue = StringUtils.trimToNull(request.getParameter(visibleField));
+            Object value = stringValue;
+			if (stringValue == null) {
 				if (contactFieldHelper.isRequiredField(fieldDescriptor))
 					errors.put(fieldDescriptor.propertyName, getRequiredMessage(fieldDescriptor));
 			} else if (fieldDescriptor.propertyClass == Date.class) {
 				try {
-					Date date = dateFormat.parse(value);
-					contact.writeProperty(fieldDescriptor.propertyName, date);
+					value = dateFormat.parse(stringValue);
 				} catch (ParseException e) {
+                    value = null;
 					errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
 				}
-			} else {
-				contact.writeProperty(fieldDescriptor.propertyName, value);
-				String error = validate(fieldDescriptor);
-				if (error != null) {
-					errors.put(fieldDescriptor.propertyName, error);
-				}
 			}
+            contact.writeProperty(fieldDescriptor.propertyName, value);
+            String error = validate(fieldDescriptor);
+            if (error != null) {
+                errors.put(fieldDescriptor.propertyName, error);
+            }
 		}
 	}
 
@@ -89,6 +90,11 @@ public class ContactEditorParser {
 	public void setContact(Contact contact) {
 		this.contact = contact;
 	}
+
+    Contact getContact()
+    {
+        return contact;
+    }
 
 	public Map<String, String> getErrors() {
 		return errors;
@@ -137,13 +143,16 @@ public class ContactEditorParser {
 				if (error == null)
 				{
 					Date date  = contact.getDateOfBirth();
+                    if (date != null)
+                    {
+                        Integer minAge = contactFieldHelper.getPreferenceController().getEnrolmentMinAge();
 
-					Integer minAge = contactFieldHelper.getPreferenceController().getEnrolmentMinAge();
-
-					Integer age = Years.yearsBetween(new DateTime(date.getTime()), new DateTime(new Date().getTime())).getYears();
-					if (minAge > age)
-						return messages.format(KEY_ERROR_dateOfBirth_youngAge, minAge);
-
+                        Integer age = Years.yearsBetween(new DateTime(date.getTime()), new DateTime(new Date().getTime())).getYears();
+                        if (minAge > age)
+                            return messages.format(KEY_ERROR_dateOfBirth_youngAge, minAge);
+                        if (date.compareTo(new Date()) > -1)
+                            return messages.format(KEY_ERROR_dateOfBirth_shouldBeInPast);
+                    }
 				}
 				return error;
 			default:

@@ -46,6 +46,11 @@ public class EnrolmentList {
 		return  purchaseController.getModel().isEnrolmentEnabled(enrolment);
 	}
 
+    public String getEnrolmentError()
+    {
+        return purchaseController.getModel().getErrorBy(enrolment);
+    }
+
 	public List<Enrolment> getEnrolments() {
 		return purchaseController.getModel().getAllEnrolments(contact);
 	}

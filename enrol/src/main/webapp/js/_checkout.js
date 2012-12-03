@@ -260,9 +260,6 @@ function initProceedToPaymentHandle()
 		var actionLink = $j(this).next('a')[0].pathname ;
 		sendAjax(actionLink);
 	});
-
-	initHints($j("[id*=paymentform]").attr('id'));
-
 }
 
 
@@ -311,6 +308,11 @@ function initHandles()
 	initCreditAccessHandle();
 	initProceedToPaymentHandle();
 	initAvetmissEditorHandle();
+
+    initHints($j("[id*=paymentform]").attr('id'));
+    initHints($j("[id*=addContactForm]").attr('id'));
+    initHints($j("[id*=contactEditorForm]").attr('id'));
+    initHints($j("[id*=concessionForm]").attr('id'));
 }
 
 

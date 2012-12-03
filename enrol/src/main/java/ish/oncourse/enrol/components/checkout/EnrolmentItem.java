@@ -36,7 +36,12 @@ public class EnrolmentItem {
 	@Parameter(required = true)
 	private Boolean checked;
 
-	@Property
+    @Property
+    @Parameter(required = false)
+    private String error;
+
+
+    @Property
 	private DateFormat dateFormat;
 
 	@Inject
@@ -67,7 +72,12 @@ public class EnrolmentItem {
 		return null;
 	}
 
-	public static interface EnrolmentItemDelegate {
+    public boolean isCommenced() {
+        return enrolment.getCourseClass().hasStarted() && !enrolment.getCourseClass().hasEnded();
+    }
+
+
+    public static interface EnrolmentItemDelegate {
 		public void onChange(Integer contactIndex, Integer enrolmentIndex);
 	}
 }

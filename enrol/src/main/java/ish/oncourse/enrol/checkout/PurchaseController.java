@@ -652,6 +652,7 @@ public class PurchaseController {
 
 	public static enum Error {
 		noSelectedItemForPurchase,
+        noEnabledItemForPurchase,
 		contactAlreadyAdded,
 		discountNotFound,
 		creditAccessPasswordIsWrong,
@@ -665,7 +666,8 @@ public class PurchaseController {
 		voucherExpired,
 		voucherRedeemed,
 		voucherLockedAnotherUser,
-		concessionAlreadyAdded;
+		concessionAlreadyAdded,
+        payerHadUnfinishedPayment;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("error-%s", name()), params);
