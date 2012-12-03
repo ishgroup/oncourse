@@ -37,6 +37,7 @@
 		<fieldType name="textgen" class="solr.TextField"
 			positionIncrementGap="100">
 			<analyzer type="index">
+				<tokenizer class="solr.WhitespaceTokenizerFactory" />
 				<filter class="solr.RemoveDuplicatesTokenFilterFactory" />
 				<filter class="solr.WordDelimiterFilterFactory"
 					generateWordParts="1" generateNumberParts="1" catenateWords="1"
