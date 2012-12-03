@@ -25,7 +25,7 @@
 			<td>
 
 				<div class="class-name">
-					<span>${courseName}</span>
+					<label>Course:</label><span>${courseName}</span>
 				</div>
 			</td>
 			<td>
@@ -37,7 +37,7 @@
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-tutor-b.png" alt="" width="46" height="50"/></div></td>
 			<td>
 				<t:loop  source="tutorRoles" value="tutorRole">
-					<div>${tutorRoleName} </div>
+					<label>Tutor:</label><div>${tutorRoleName} </div>
 				</t:loop>
 			</td>
 			<td>
@@ -48,7 +48,7 @@
 		<tr>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-venue-b.png" alt="" width="46" height="50"/></div></td>
 			<td>
-				<div class="light">${room}</div>
+				<label>Venue:</label><div class="light">${room}</div>
 			</td>
 			<td>
 				<span t:type="rating" id="ratingVenue" value="roundedVenueAverage" editable="false"/>
