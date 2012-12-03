@@ -98,7 +98,7 @@ public class SearchService implements ISearchService {
         SolrServerException exception = null;
         while (count < 3) {
             try {
-                return getSolrServer(core).query(q);//.getResults();
+                return getSolrServer(core).query(q);
             } catch (SolrServerException e) {
                 exception = e;
                 count++;
