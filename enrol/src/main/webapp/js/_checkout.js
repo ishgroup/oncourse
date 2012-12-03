@@ -159,7 +159,11 @@ function initContactEditorHandle()
 		sendAjax($actionLink);
 	});
 
-	$j('.dateOfBirth').datepicker();
+	$j('.dateOfBirth').datepicker({
+		changeMonth: true,
+		changeYear: true,
+		maxDate: '0'
+	});
 
 
 	if ($j(".suburb")) {
