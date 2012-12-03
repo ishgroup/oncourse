@@ -11,6 +11,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.log4j.Logger;
@@ -22,6 +23,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +58,8 @@ public class ClassRoll {
 	
 	@Property
 	private Session currentSession;
+
+	private Session nearestSession;
 
 	@Inject
 	private ICourseClassService courseClassService;
@@ -122,6 +126,41 @@ public class ClassRoll {
 
 		return String.format(key, formatterWeakDay.format(start), formatter.format(start),
 				formatter.format(end));
+	}
+
+	public boolean isNearestSession()
+	{
+		nearestSession = getNearestSession();
+		return nearestSession != null && nearestSession.getId().equals(currentSession.getId());
+	}
+
+	public Session getNearestSession()
+	{
+		if (nearestSession == null)
+		{
+			if (sessions.size() == 1)
+				return sessions.get(0);
+
+			Date date = new Date();
+			Expression expression = ExpressionFactory.greaterOrEqualExp(Session.START_DATE_PROPERTY, date);
+			List<Session> list = expression.filterObjects(sessions);
+			if (!list.isEmpty())
+			{
+				Ordering.orderList(list, Arrays.asList(new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING)));
+				nearestSession = list.get(0);
+			}
+			else
+			{
+				expression = ExpressionFactory.lessOrEqualExp(Session.START_DATE_PROPERTY, date);
+				list = expression.filterObjects(sessions);
+				if (!list.isEmpty())
+				{
+					Ordering.orderList(list, Arrays.asList(new Ordering(Session.START_DATE_PROPERTY, SortOrder.DESCENDING)));
+					nearestSession = list.get(0);
+				}
+			}
+		}
+		return nearestSession;
 	}
 	
 	public String getRoomName() {
