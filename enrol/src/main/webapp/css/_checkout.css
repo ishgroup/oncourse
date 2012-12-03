@@ -333,8 +333,9 @@ div.amount-container .btn-primary {
 	border-width: 1px;
 	border-color: #04C #04C #002A80;
 	border-style: solid;
-	margin-top: 40px;
 	cursor: pointer;
+	display: block;
+	width: 110px;
 }
 
 .payments tbody td.alignright span.fullPrice, .payments tbody td.alignright span.totalPrice {
