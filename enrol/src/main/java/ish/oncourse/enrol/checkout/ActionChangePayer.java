@@ -55,7 +55,11 @@ public class ActionChangePayer extends  APurchaseAction{
             getController().addError(PurchaseController.Error.payerHadUnfinishedPayment);
         }
 
+        PaymentIn current = getModel().getPayment();
         for (PaymentIn p : payments) {
+            if (!current.getObjectId().isTemporary() &&
+                    current.getId().equals(p.getId()))
+                continue;
             p.abandonPayment();
         }
 
