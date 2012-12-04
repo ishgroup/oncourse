@@ -123,7 +123,7 @@ public class Contact extends _Contact implements Queueable {
 	 */
 	public static String validateFamilyName(String entityName, String familyName) {
 		if (familyName == null || "".equals(familyName)) {
-			return getEmptyEmailMessage(entityName);
+			return "The " + entityName + "'s family name is required.";
 		}
 		if (familyName.split("\\d").length != 1) {
 			return "The family name cannot contain number characters.";
