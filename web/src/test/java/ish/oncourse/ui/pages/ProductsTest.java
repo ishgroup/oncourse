@@ -1,12 +1,9 @@
 package ish.oncourse.ui.pages;
 
 
-import static org.junit.Assert.*;
-
-import java.io.InputStream;
-
-import javax.sql.DataSource;
-
+import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.test.ServiceTest;
+import ish.oncourse.ui.services.TestModule;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.dbunit.database.DatabaseConnection;
@@ -16,15 +13,17 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Test;
 
-import ish.oncourse.services.voucher.IVoucherService;
-import ish.oncourse.test.ServiceTest;
-import ish.oncourse.ui.services.TestModule;
+import javax.sql.DataSource;
+import java.io.InputStream;
+
+import static org.junit.Assert.*;
 
 public class ProductsTest extends ServiceTest {
 	private static final String NO_PRODUCTS_AVAILABLE_CONTENT_BODY = "<h2>No products available</h2>";
 	private static final String CONTENT_ELEMENT_ID = "content";
 	private static final String PRODUCTS_PAGE = "ui/Products";
 	private static final String AVAILABLE_FOR_PRODUCT_RENDER_VERSION = "4.0-development";
+	private static final String AVAILABLE_FOR_PRODUCT_RENDER_BETA_VERSION = "4.0b3";
 	private static final String UNAVAILABLE_FOR_PRODUCT_RENDER_VERSION = "3.0-SNAPSHOT";
 	private static final String PAGE_NOT_FOUND_CONTENT_BODY = "<h2>Page Not Found</h2><p>The page you are looking for was not found. You may have used an outdated link or may have typed the address (URL) incorrectly.</p>";
 	public static final String APP_PACKAGE = "ish.oncourse.website";
@@ -45,6 +44,12 @@ public class ProductsTest extends ServiceTest {
 		IVoucherService voucherService = getService("IVoucherServiceOverride", IVoucherService.class);
 		assertNotNull("Voucher service should be inited", voucherService);
 		assertTrue("4.0-development is a correct for render version", voucherService.isAbleToPurchaseProductsOnline());
+
+		System.setProperty(TestModule.TEST_COLLEGE_ANGEL_VERSION_PROPERTY, AVAILABLE_FOR_PRODUCT_RENDER_BETA_VERSION);
+		setup();
+		voucherService = getService("IVoucherServiceOverride", IVoucherService.class);
+		assertNotNull("Voucher service should be inited", voucherService);
+		assertTrue("4.0b3 is a correct for render version", voucherService.isAbleToPurchaseProductsOnline());
 	}
 	
 	@Test

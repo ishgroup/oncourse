@@ -21,24 +21,25 @@ import java.util.*;
 public class VoucherService implements IVoucherService {
 	private static final String OBJECT_RELATIONSHIP_SEPARATOR_STRING = ".";
 	private static final Logger LOGGER = Logger.getLogger(VoucherService.class);
-	private final String VOUCHER_OWNER_RELATION = Voucher.INVOICE_LINE_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING + InvoiceLine.INVOICE_PROPERTY 
-		+ OBJECT_RELATIONSHIP_SEPARATOR_STRING + Invoice.PAYMENT_IN_LINES_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING 
-		+ PaymentInLine.PAYMENT_IN_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING + PaymentIn.STUDENT_PROPERTY 
-		+ OBJECT_RELATIONSHIP_SEPARATOR_STRING + Student.CONTACT_PROPERTY;
-	
+	private final String VOUCHER_OWNER_RELATION = Voucher.INVOICE_LINE_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING + InvoiceLine.INVOICE_PROPERTY
+			+ OBJECT_RELATIONSHIP_SEPARATOR_STRING + Invoice.PAYMENT_IN_LINES_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING
+			+ PaymentInLine.PAYMENT_IN_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING + PaymentIn.STUDENT_PROPERTY
+			+ OBJECT_RELATIONSHIP_SEPARATOR_STRING + Student.CONTACT_PROPERTY;
+
 	@Inject
 	private IWebSiteService webSiteService;
 
 	@Inject
 	private ICayenneService cayenneService;
-	
-	public VoucherService() {}
-	
+
+	public VoucherService() {
+	}
+
 	public VoucherService(IWebSiteService webSiteService, ICayenneService cayenneService) {
 		this.webSiteService = webSiteService;
 		this.cayenneService = cayenneService;
 	}
-	
+
 	protected IWebSiteService takeWebSiteService() {
 		return webSiteService;
 	}
@@ -47,39 +48,39 @@ public class VoucherService implements IVoucherService {
 	public List<Product> getAvailableProducts() {
 		return getAvailableProducts(null, null);
 	}
-	
+
 	@Override
 	public Product loadAvailableVoucherProductBySKU(String sku) {
 		College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Product.COLLEGE_PROPERTY, currentCollege)
-			.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
-			.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE))
-			.andExp(ExpressionFactory.matchExp(Product.SKU_PROPERTY, sku));
+				.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
+				.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE))
+				.andExp(ExpressionFactory.matchExp(Product.SKU_PROPERTY, sku));
 		SelectQuery query = new SelectQuery(Product.class, qualifier);
 		@SuppressWarnings("unchecked")
 		List<Product> results = cayenneService.sharedContext().performQuery(query);
-		return !results.isEmpty()? results.get(0) : null;
+		return !results.isEmpty() ? results.get(0) : null;
 	}
-	
+
 	@Override
 	public Product loadAvailableVoucherProductById(Long id) {
 		College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Product.COLLEGE_PROPERTY, currentCollege)
-			.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
-			.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE))
-			.andExp(ExpressionFactory.matchDbExp(Product.ID_PK_COLUMN, id));
+				.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
+				.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE))
+				.andExp(ExpressionFactory.matchDbExp(Product.ID_PK_COLUMN, id));
 		SelectQuery query = new SelectQuery(Product.class, qualifier);
 		@SuppressWarnings("unchecked")
 		List<Product> results = cayenneService.sharedContext().performQuery(query);
-		return !results.isEmpty()? results.get(0) : null;
+		return !results.isEmpty() ? results.get(0) : null;
 	}
-	
+
 	@Override
 	public List<Product> getAvailableProducts(Integer startDefault, Integer rowsDefault) {
 		College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Product.COLLEGE_PROPERTY, currentCollege)
-			.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
-			.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE));
+				.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
+				.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE));
 		SelectQuery query = new SelectQuery(Product.class, qualifier);
 		if (startDefault != null && rowsDefault != null) {
 			query.setFetchOffset(startDefault);
@@ -94,39 +95,39 @@ public class VoucherService implements IVoucherService {
 		Ordering.orderList(results, orderings);
 		return results;
 	}
-	
+
 	@Override
 	public Voucher getVoucherByCode(String code) {
 		College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Voucher.CODE_PROPERTY, code)
-			.andExp(ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege))
-			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
-			.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO)
-			.andExp(ExpressionFactory.matchExp(Voucher.STATUS_PROPERTY, ProductStatus.ACTIVE)));
+				.andExp(ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege))
+				.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
+				.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO)
+						.andExp(ExpressionFactory.matchExp(Voucher.STATUS_PROPERTY, ProductStatus.ACTIVE)));
 		@SuppressWarnings("unchecked")
 		List<Voucher> results = cayenneService.sharedContext().performQuery(new SelectQuery(Voucher.class, qualifier));
 		LOGGER.info(String.format("%s found for code %s for college %s", results.size(), code, currentCollege.getId()));
 		if (results.size() > 1) {
-			LOGGER.warn(String.format("%s vouchers found for code %s for college %s. Maybe we need to enlarge the code size?", results.size(), code, 
-				currentCollege.getId()));
+			LOGGER.warn(String.format("%s vouchers found for code %s for college %s. Maybe we need to enlarge the code size?", results.size(), code,
+					currentCollege.getId()));
 		}
 		return !results.isEmpty() ? results.get(0) : null;
 	}
-	
+
 	@Override
 	public List<Voucher> getAvailableVouchersForUser(Contact contact) {
 		College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege)
-			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
-			.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO))
-			.andExp(ExpressionFactory.matchExp(Voucher.PRODUCT_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING 
-				+ VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
-			.andExp(ExpressionFactory.matchExp(Voucher.CONTACT_PROPERTY, contact).orExp(ExpressionFactory.matchExp(VOUCHER_OWNER_RELATION, contact)));
+				.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
+				.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO))
+				.andExp(ExpressionFactory.matchExp(Voucher.PRODUCT_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING
+						+ VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
+				.andExp(ExpressionFactory.matchExp(Voucher.CONTACT_PROPERTY, contact).orExp(ExpressionFactory.matchExp(VOUCHER_OWNER_RELATION, contact)));
 		@SuppressWarnings("unchecked")
 		List<Voucher> results = cayenneService.sharedContext().performQuery(new SelectQuery(Voucher.class, qualifier));
 		return results;
 	}
-	
+
 	@Override
 	public Voucher createVoucher(VoucherProduct voucherProduct, Contact contact, Money voucherPrice) {
 		Voucher voucher = voucherProduct.getObjectContext().newObject(Voucher.class);
@@ -138,7 +139,7 @@ public class VoucherService implements IVoucherService {
 		voucher.setExpiryDate(ProductUtil.calculateExpiryDate(new Date(), voucherProduct.getExpiryType(), voucherProduct.getExpiryDays()));
 		if (!Money.isZeroOrEmpty(voucherProduct.getPriceExTax()) && Money.ZERO.isLessThan(voucherProduct.getPriceExTax())) {
 			voucher.setRedemptionValue(voucherProduct.getPriceExTax());
-		} else if (!Money.isZeroOrEmpty(voucherPrice) && Money.ZERO.isLessThan(voucherPrice)){
+		} else if (!Money.isZeroOrEmpty(voucherPrice) && Money.ZERO.isLessThan(voucherPrice)) {
 			voucher.setRedemptionValue(voucherPrice);
 		} else {
 			throw new IllegalArgumentException("Voucher price can't be null, zero or negative when we purchase voucher.");
@@ -147,44 +148,45 @@ public class VoucherService implements IVoucherService {
 		voucher.setStatus(ProductStatus.NEW);
 		voucher.setProduct(voucherProduct);
 		voucher.setRedeemedCoursesCount(0);
-		
+
 		return voucher;
 	}
-	
-    @SuppressWarnings("unchecked")
-    @Override
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<Product> loadByIds(List<Long> ids) {
-    	if (ids == null || ids.isEmpty()) {
-    		return Collections.emptyList();
-    	}
-    	SelectQuery q = new SelectQuery(Product.class, ExpressionFactory.inDbExp(Product.ID_PK_COLUMN, ids));
-    	return cayenneService.sharedContext().performQuery(q);
-    }
-	
-    @Override
+		if (ids == null || ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+		SelectQuery q = new SelectQuery(Product.class, ExpressionFactory.inDbExp(Product.ID_PK_COLUMN, ids));
+		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<Product> loadByIds(Object... ids) {
 		if (ids.length == 0) {
-            return Collections.emptyList();
-        }
-        List<Object> params = Arrays.asList(ids);
-        SelectQuery q = new SelectQuery(Product.class, ExpressionFactory.inDbExp(VoucherProduct.ID_PK_COLUMN, params));
-        return cayenneService.sharedContext().performQuery(q);
+			return Collections.emptyList();
+		}
+		List<Object> params = Arrays.asList(ids);
+		SelectQuery q = new SelectQuery(Product.class, ExpressionFactory.inDbExp(VoucherProduct.ID_PK_COLUMN, params));
+		return cayenneService.sharedContext().performQuery(q);
 	}
-    
-    @Override
-    public boolean isAbleToPurchaseProductsOnline() {
-    	String angelVersion = takeWebSiteService().getCurrentCollege().getAngelVersion();
-    	if ("development".equalsIgnoreCase(angelVersion)) {
-    		LOGGER.info("pass the gradle development version");
-    		return true;
-    	}
-    	String [] splitedVersion = angelVersion.replaceAll("-", ".").split("\\.");
-    	if (splitedVersion.length >= 2 && splitedVersion[0].matches("\\d+") && splitedVersion[1].matches("\\d+")) {
-    		return Long.parseLong(splitedVersion[0]) >=4l;
-    	} else {
-    		LOGGER.warn(String.format("Unsupported for products web purchase angel version detected with identifier : %s", angelVersion));
-    		return false;
-    	}
-    }
+
+	@Override
+	public boolean isAbleToPurchaseProductsOnline() {
+		String angelVersion = takeWebSiteService().getCurrentCollege().getAngelVersion();
+		if ("development".equalsIgnoreCase(angelVersion)) {
+			LOGGER.info("pass the gradle development version");
+			return true;
+		}
+		String[] splitedVersion = angelVersion.replaceAll("-", ".").split("\\.");
+		if (splitedVersion.length >= 2 && splitedVersion[0].matches("\\d+"))
+			return Long.parseLong(splitedVersion[0]) >= 4l;
+		else
+		{
+			LOGGER.warn(String.format("Unsupported for products web purchase angel version detected with identifier : %s", angelVersion));
+			return false;
+		}
+	}
 }
