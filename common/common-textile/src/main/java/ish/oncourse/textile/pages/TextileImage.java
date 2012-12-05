@@ -78,7 +78,6 @@ public class TextileImage {
 		String attachment = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ATTACHMENT.getValue());
 
 		BinaryInfo imageBinaryInfo = getBinaryInfoBy(id, name);
-		BinaryInfo attachmentBinaryInfo = getBinaryInfoBy(attachment);
 
 		imagePath = imageBinaryInfo != null ? (imageBinaryInfo.getContextPath()) : StringUtils.EMPTY;
 		imageAlign = align != null ? align : StringUtils.EMPTY;
@@ -90,8 +89,11 @@ public class TextileImage {
 		imageCaption = caption;
 		if (link != null)
 			imageLink = link;
-		else if (attachmentBinaryInfo != null)
-			imageLink = attachmentBinaryInfo.getContextPath();
+		else if (attachment != null)
+		{
+			BinaryInfo attachmentBinaryInfo = getBinaryInfoBy(attachment);
+			imageLink = attachmentBinaryInfo != null ? attachmentBinaryInfo.getContextPath():StringUtils.EMPTY;
+		}
 		else
 			imageLink = StringUtils.EMPTY;
 
