@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Student Timetable"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
 
 <t:if test="courseClass">
     <h1>${courseClass.course.name}</h1>
@@ -14,16 +14,16 @@
             <div id='classes_inner'>
                 <ul id='classes_ul'>
                     <t:loop source="sessions" value="currentSession">
-                      <li id="effect_date" class="date1">
-                        <div class="date-day">
-                            <span>${day}</span> ${month}
-                            <t:if test="today">
-                                <i>today</i>
-                            </t:if>
-                        </div>
-                        ${sessionIntervalInfo}
-                        <span>${roomName}</span>
-                     </li>
+						<li id="effect_date" class="date1 ${nearestClass}">
+							<div class="date-day">
+								<span>${day}</span> ${month}
+								<t:if test="today">
+									<i>today</i>
+								</t:if>
+							</div>
+							${sessionIntervalInfo}
+							<span>${roomName}</span>
+						 </li>
                     </t:loop>
                 </ul>
             </div>

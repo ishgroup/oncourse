@@ -14,6 +14,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -38,7 +39,10 @@ public class ClassRoll {
     private static final String DATE_FORMAT_E = "E ";
     private static final String DATE_FORMAT_HH_mm_a = "HH:mm a";
 
-    @Inject
+	private static final String NEAREST_SESSION_CLASS = "nearest";
+
+
+	@Inject
 	private Request request;
 
 	@Property
@@ -128,9 +132,14 @@ public class ClassRoll {
 				formatter.format(end));
 	}
 
+	public String getNearestClass()
+	{
+		return isNearestSession() ? NEAREST_SESSION_CLASS: StringUtils.EMPTY;
+	}
+
 	public boolean isNearestSession()
 	{
-		nearestSession = getNearestSession();
+		Session nearestSession = getNearestSession();
 		return nearestSession != null && nearestSession.getId().equals(currentSession.getId());
 	}
 
