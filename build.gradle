@@ -12,10 +12,10 @@ buildscript {
 		classpath 'edu.sc.seis:gradle-macappbundle:1.0.8-b3'
 		classpath 'gradle_cobertura:gradle_cobertura:1.2'
 		classpath 'eu.appsatori:gradle-fatjar-plugin:0.1.2'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.1'
         classpath 'au.com.ish.gradle:release:2.1'
 	}
 }
-
 
 apply plugin: 'release'
 release {
@@ -39,6 +39,7 @@ allprojects {
 	
 	apply plugin: 'java'
 	apply plugin: 'maven'
+	apply plugin: 'versions' // adds the task 'dependencyUpdates'
 
 	configurations {
 		deployerJars {
