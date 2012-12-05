@@ -2,7 +2,9 @@
 		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 		>
 	<div class="amount-content">
-		<p><label class="first">Credit available</label><span id="creditAccessLink" class="action-link">Access</span></p>
+        <t:if test="purchaseController.creditAvailable">
+		    <p><label class="first">Credit available</label><span id="creditAccessLink" class="action-link">Access</span></p>
+        </t:if>
 
         <t:if test="purchaseController.totalVoucherPayments.isZero()" negate="true">
         <p><label>Voucher</label> <span>
