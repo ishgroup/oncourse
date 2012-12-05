@@ -438,3 +438,27 @@ div.concessionEditor .saveConcession
 	color: #333;
 	white-space: nowrap;
 }
+
+
+.payments > thead > tr:first-child > th {
+	color: #345;
+	font-size: 18px;
+	padding: 0;
+	width: 100%;
+	border: none;
+	border-bottom: 3px solid #CCC;
+}
+
+.student {
+	color: #345;
+	font-size: 18px;
+	padding: 0;
+	width: 100%;
+	border: none;
+}
+
+.student span {
+	  color: #AAA;
+	  font-size: 13px;
+	  vertical-align: middle;
+}

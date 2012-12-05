@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<t:block t:id="message">
-		<div class="left">${contact.fullName} <span>- ${contact.emailAddress}</span></div>
+		<div class="student">${contact.fullName} <span>- ${contact.emailAddress}</span></div>
 		<div class="message">
 			<p>${message:requireAdditionalInfo}</p>
 		</div>
@@ -34,10 +34,10 @@
 		<t:delegate to="block:message"/>
 		<t:delegate to="block:contactFields"/>
 		<t:if test="fillRequiredProperties" negate="true">
+			<t:delegate to="block:options"/>
 			<t:if test = "delegate.contact.college.requiresAvetmiss">
 				<t:delegate to="block:avetmissEditor"/>
 			</t:if>
-			<t:delegate to="block:options"/>
 		</t:if>
 		<div class="form-controls">
 			<t:submit t:id="saveContact" value="Checkout" class="btn btn-primary"/>
