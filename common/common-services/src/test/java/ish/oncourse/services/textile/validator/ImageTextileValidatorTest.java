@@ -153,8 +153,7 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 	public void notFoundBinaryDataTest() {
 		String tag = "{image id:\"" + REF_NUM_OF_EMPTY_BINARY_INFO + "\"}";
 		validator.validate(tag, errors);
-		assertTrue(errors.hasFailures());
-		assertTrue(errors.contains(((ImageTextileValidator) validator).getNotFoundContentMessage()));
+		assertFalse(errors.hasFailures());
 	}
 	
 	/**

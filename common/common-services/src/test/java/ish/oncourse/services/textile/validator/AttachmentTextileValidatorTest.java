@@ -13,6 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -80,13 +81,12 @@ public class AttachmentTextileValidatorTest extends CommonValidatorTest {
 		assertTrue(errors.contains(((AttachmentTextileValidator) validator)
 				.getNotFoundMessage(NOT_EXISTING_ATTACHMENT_NAME)));
 	}
-	
+
 	@Test
 	public void testBinaryDataNotFound() {
 		String tag = "{attachment name:\"" + EMPTY_BINARY_INFO_ATTACHMENT_NAME + "\"}";
 		validator.validate(tag, errors);
-		assertTrue(errors.hasFailures());
-		assertTrue(errors.contains(((AttachmentTextileValidator) validator).getNotFoundContentMessage()));
+		assertFalse(errors.hasFailures());
 	}
 
 }
