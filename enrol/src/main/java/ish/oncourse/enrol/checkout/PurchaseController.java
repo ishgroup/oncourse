@@ -77,6 +77,8 @@ public class PurchaseController {
 	private PaymentEditorController paymentEditorController;
 
 	private Map<String, String> errors = new HashMap<String, String>();
+    private Map<String, String> warnings = new HashMap<String, String>();
+
     private ParallelExecutor parallelExecutor;
 
     /**
@@ -176,11 +178,12 @@ public class PurchaseController {
 		illegalState = false;
 		illegalModel = false;
 		errors.clear();
+        warnings.clear();
 
 
 		adjustState(param.action);
 		if (!state.allowedActions.contains(param.action)) {
-			addError(Error.illegalState);
+			addError(Message.illegalState);
 			illegalState = true;
 			return;
 		}
@@ -235,7 +238,7 @@ public class PurchaseController {
 			contactEditorController.setFillRequiredProperties(fillRequiredProperties);
 	}
 
-	void addContactToModel(Contact contact) {
+	void  addContactToModel(Contact contact) {
 		contact = getModel().localizeObject(contact);
 		model.addContact(contact);
 		//add the first contact
@@ -245,12 +248,9 @@ public class PurchaseController {
 			actionChangePayer.action();
 		}
 		for (CourseClass cc : model.getClasses()) {
-			Enrolment enrolment = createEnrolment(cc, contact.getStudent());
-			model.addEnrolment(enrolment);
-
-			ActionEnableEnrolment action = enableEnrolment.createAction(this);
-			action.setEnrolment(enrolment);
-			action.action();
+            ActionAddCourseClass actionAddCourseClass = Action.addCourseClass.createAction(this);
+            actionAddCourseClass.setCourseClass(cc);
+            actionAddCourseClass.action();
 		}
 	}
 
@@ -382,6 +382,12 @@ public class PurchaseController {
 		return false;
 	}
 
+    //return true when current payer can get credit
+    public synchronized boolean isCreditAvailable()
+    {
+        return getModel().getPayer() != null && getModel().getPayer().getObjectId().isTemporary();
+    }
+
 
 	public ConcessionDelegate getConcessionDelegate() {
 		return concessionEditorController;
@@ -419,15 +425,11 @@ public class PurchaseController {
 		return contactEditorController;
 	}
 
-	public Map<String, String> getErrors() {
-		return errors;
-	}
-
 	public Messages getMessages() {
 		return messages;
 	}
 
-	public boolean isNeedConcessionReminder() {
+	public synchronized boolean isNeedConcessionReminder() {
 		if (getPreferenceController().getFeatureConcessionsInEnrolment()) {
 			for (Contact contact : model.getContacts())
 				if (contact.getStudent().getStudentConcessions().isEmpty()) {
@@ -499,11 +501,23 @@ public class PurchaseController {
 	}
 
 
-	public void addError(Error error, Object... params) {
-		errors.put(error.name(), error.getMessage(messages, params));
+	public synchronized void addError(Message message, Object... params) {
+		errors.put(message.name(), message.getMessage(messages, params));
 	}
 
-	public void setErrors(Map<String,String> errors) {
+    public synchronized Map<String, String> getErrors() {
+        return errors;
+    }
+
+    public synchronized Map<String, String> getWarnings() {
+        return warnings;
+    }
+
+    public synchronized void addWarning(Message message, Object... params) {
+        warnings.put(message.name(), message.getMessage(messages, params));
+    }
+
+    public void setErrors(Map<String,String> errors) {
 		this.errors.clear();
 		this.errors.putAll(errors);
 	}
@@ -525,7 +539,7 @@ public class PurchaseController {
 
     public static enum State {
 		init(Action.init, Action.startAddContact),
-		editCheckout((Action[]) ArrayUtils.add(COMMON_ACTIONS.toArray(),proceedToPayment)),
+		editCheckout(COMMON_ACTIONS, proceedToPayment, addCourseClass),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, cancelAddContact),
 		editContact(Action.addContact, cancelAddContact),
@@ -534,6 +548,13 @@ public class PurchaseController {
 		paymentResult(proceedToPayment);
 
 		private List<Action> allowedActions;
+
+
+        State(List<Action> commonAction,Action...   allowedActions)
+        {
+            this.allowedActions = new ArrayList<Action>(commonAction);
+            Collections.addAll(this.allowedActions, allowedActions);
+        }
 
 		State(Action... allowedActions) {
 			this.allowedActions = Arrays.asList(allowedActions);
@@ -572,7 +593,8 @@ public class PurchaseController {
 		proceedToPayment(ActionProceedToPayment.class),
 		makePayment(ActionMakePayment.class),
         showPaymentResult(ActionShowPaymentResult.class),
-		backToEditCheckout(ActionBackToEditCheckout.class);
+		backToEditCheckout(ActionBackToEditCheckout.class),
+        addCourseClass(ActionAddCourseClass.class,CourseClass.class);
 
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
@@ -650,7 +672,7 @@ public class PurchaseController {
 		}
 	}
 
-	public static enum Error {
+	public static enum Message {
 		noSelectedItemForPurchase,
         noEnabledItemForPurchase,
 		contactAlreadyAdded,
@@ -668,10 +690,13 @@ public class PurchaseController {
 		voucherLockedAnotherUser,
 		concessionAlreadyAdded,
         payerHadUnfinishedPayment,
-		codeEmpty;
+		codeEmpty,
+        classAlreadyAdded,
+        productAlreadyAdded,
+        itemsWasAddedFromShoppingBasket;
 
 		public String getMessage(Messages messages, Object... params) {
-			return messages.format(String.format("error-%s", name()), params);
+			return messages.format(String.format("message-%s", name()), params);
 		}
 
 	}

@@ -7,4 +7,10 @@ public interface IPurchaseControllerBuilder {
 
 	public PurchaseController build(PurchaseModel model);
 	public PurchaseModel build();
+
+    /**
+     * method returns true if new items were added to this <code>purchaseController</code>
+     */
+    public void updatePurchaseItems(PurchaseController purchaseController);
+
 }

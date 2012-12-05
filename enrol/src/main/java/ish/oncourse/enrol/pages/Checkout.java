@@ -26,158 +26,169 @@ import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 
 import java.text.Format;
 
 public class Checkout {
-	public static final String DATE_FIELD_FORMAT = "MM/dd/yyyy";
+    public static final String DATE_FIELD_FORMAT = "MM/dd/yyyy";
 
-	public static final Logger LOGGER = Logger.getLogger(Checkout.class);
+    public static final Logger LOGGER = Logger.getLogger(Checkout.class);
 
-	@Inject
-	private ICookiesService cookiesService;
+    @Inject
+    private ICookiesService cookiesService;
 
-	@Inject
-	private IStudentService studentService;
+    @Inject
+    private IStudentService studentService;
 
-	@Inject
-	private ICourseClassService courseClassService;
+    @Inject
+    private ICourseClassService courseClassService;
 
-	@Inject
-	private PreferenceController preferenceController;
+    @Inject
+    private PreferenceController preferenceController;
 
-	@Inject
-	private IVoucherService voucherService;
+    @Inject
+    private IVoucherService voucherService;
 
-	@Inject
-	private ITagService tagService;
+    @Inject
+    private ITagService tagService;
 
-	@Inject
-	private ICayenneService cayenneService;
+    @Inject
+    private ICayenneService cayenneService;
 
-	@Inject
-	private IWebSiteService webSiteService;
+    @Inject
+    private IWebSiteService webSiteService;
 
-	@Inject
-	private IPurchaseControllerBuilder purchaseControllerBuilder;
+    @Inject
+    private IPurchaseControllerBuilder purchaseControllerBuilder;
 
-	@Inject
-	private Request request;
+    @Inject
+    private Request request;
 
-	@Inject
-	private Messages messages;
+    @Inject
+    private Messages messages;
 
-	@SessionState(create = false)
-	private PurchaseController purchaseController;
-
-
-	@Inject
-	@Id("checkout")
-	private Block checkoutBlock;
-
-	@Inject
-	@Id("concession")
-	@Property
-	private Block blockConcession;
+    @SessionState(create = false)
+    private PurchaseController purchaseController;
 
 
-	@InjectPage
-	private Payment paymentPage;
+    @Inject
+    @Id("checkout")
+    private Block checkoutBlock;
 
-	/**
-	 * The property is true when session for the payment was expired.
-	 */
-	private boolean expired;
-
-	String onActivate() {
-		synchronized (this) {
-			if (purchaseController == null) {
-				purchaseController = buildPaymentController();
-				if (purchaseController.isPaymentResult())
-					return Payment.class.getSimpleName();
-			} else if (purchaseController.isPaymentState() && !purchaseController.adjustState(Action.enableEnrolment))
-				return Payment.class.getSimpleName();
-			return null;
-		}
-	}
+    @Inject
+    @Id("concession")
+    @Property
+    private Block blockConcession;
 
 
-	public synchronized PurchaseController getPurchaseController() {
-		return purchaseController;
-	}
+    @InjectPage
+    private Payment paymentPage;
 
-	public void resetPersistProperties() {
+    /**
+     * The property is true when session for the payment was expired.
+     */
+    private boolean expired;
 
-		cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
-		cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, StringUtils.EMPTY);
-		studentService.clearStudentsShortList();
-
-		expired = false;
-		purchaseController = null;
-	}
-
-	private PurchaseController buildPaymentController() {
-		PurchaseModel model = purchaseControllerBuilder.build();
-		PurchaseController purchaseController = purchaseControllerBuilder.build(model);
-		purchaseController.performAction(new ActionParameter(Action.init));
-		return purchaseController;
-	}
-
-	/**
-	 * Checks if the payment gateway processing is enabled for the current
-	 * college. If not, the enrolling is impossible.
-	 *
-	 * @return true if payment gateway is enabled.
-	 */
-	public boolean isPaymentGatewayEnabled() {
-		return preferenceController.isPaymentGatewayEnabled();
-	}
+    String setupRender() {
+        synchronized (this) {
+            if (purchaseController == null) {
+                purchaseController = buildPaymentController();
+                if (purchaseController.isPaymentResult())
+                    return Payment.class.getSimpleName();
+            } else if (purchaseController.isPaymentState() && !purchaseController.adjustState(Action.enableEnrolment))
+                //browser back-button handle
+                return Payment.class.getSimpleName();
+            else if (purchaseController.isEditCheckout())
+                //add new items from shopping basket
+                updateCheckoutItems();
+            return null;
+        }
+    }
 
 
-	public Block getCheckoutBlock() {
-		return checkoutBlock;
-	}
+    public synchronized PurchaseController getPurchaseController() {
+        return purchaseController;
+    }
 
-	public String getCoursesLink() {
-		return HTMLUtils.getUrlBy(request, Courses.class);
-	}
+    public void resetPersistProperties() {
 
-	@OnEvent(value = "addContactEvent")
-	public Object addContact() {
-		if (!request.isXHR())
-			return null;
-		purchaseController.performAction(new ActionParameter(Action.startAddContact));
-		return checkoutBlock;
-	}
+        cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
+        cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, StringUtils.EMPTY);
+        studentService.clearStudentsShortList();
 
-	@OnEvent(value = "proceedToPaymentEvent")
-	public Object proceedToPayment() {
-		ActionParameter actionParameter = new ActionParameter(Action.proceedToPayment);
-		actionParameter.setValue(purchaseController.getModel().getPayment());
-		purchaseController.performAction(actionParameter);
-		if (purchaseController.getErrors().isEmpty())
-			return paymentPage;
-		else
-			return this;
-	}
+        expired = false;
+        purchaseController = null;
+    }
 
-	public Object onException(Throwable cause) {
-		if (purchaseController != null) {
-			expired = false;
-			purchaseController = null;
-			throw new IllegalArgumentException(cause);
-		} else {
-            LOGGER.warn("",cause);
-			expired = true;
-		}
-		return paymentPage;
-	}
+    private PurchaseController buildPaymentController() {
+        PurchaseModel model = purchaseControllerBuilder.build();
+        PurchaseController purchaseController = purchaseControllerBuilder.build(model);
+        purchaseController.performAction(new ActionParameter(Action.init));
+        return purchaseController;
+    }
 
-	public boolean isExpired() {
-		return expired;
-	}
+    /**
+     * Checks if the payment gateway processing is enabled for the current
+     * college. If not, the enrolling is impossible.
+     *
+     * @return true if payment gateway is enabled.
+     */
+    public boolean isPaymentGatewayEnabled() {
+        return preferenceController.isPaymentGatewayEnabled();
+    }
 
-	public Format moneyFormat(Money money) {
-		return FormatUtils.chooseMoneyFormat(money);
-	}
+
+    public Block getCheckoutBlock() {
+        return checkoutBlock;
+    }
+
+    public String getCoursesLink() {
+        return HTMLUtils.getUrlBy(request, Courses.class);
+    }
+
+    @OnEvent(value = "addContactEvent")
+    public Object addContact() {
+        if (!request.isXHR())
+            return null;
+        purchaseController.performAction(new ActionParameter(Action.startAddContact));
+        return checkoutBlock;
+    }
+
+    @OnEvent(value = "proceedToPaymentEvent")
+    public Object proceedToPayment() {
+        ActionParameter actionParameter = new ActionParameter(Action.proceedToPayment);
+        actionParameter.setValue(purchaseController.getModel().getPayment());
+        purchaseController.performAction(actionParameter);
+        if (purchaseController.getErrors().isEmpty())
+            return paymentPage;
+        else
+            return this;
+    }
+
+    public void updateCheckoutItems() {
+        if (purchaseController != null) {
+            purchaseControllerBuilder.updatePurchaseItems(purchaseController);
+        }
+    }
+
+    public Object onException(Throwable cause) {
+        if (purchaseController == null) {
+            LOGGER.warn("", cause);
+            expired = true;
+        } else {
+            expired = false;
+            purchaseController = null;
+            throw new IllegalArgumentException(cause);
+        }
+        return paymentPage;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public Format moneyFormat(Money money) {
+        return FormatUtils.chooseMoneyFormat(money);
+    }
 }

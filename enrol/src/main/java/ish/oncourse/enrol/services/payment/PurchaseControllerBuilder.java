@@ -99,4 +99,33 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		model.setWebSite(model.localizeObject(webSiteService.getCurrentWebSite()));
 		return model;
 	}
+
+    @Override
+    public void updatePurchaseItems(PurchaseController purchaseController) {
+        boolean result = updateCourseClasses(purchaseController);
+        //todo
+        List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
+        //todo wait answer on 16397
+//        if (result)
+//            purchaseController.addWarning(PurchaseController.Message.itemsWasAddedFromShoppingBasket);
+    }
+
+    private boolean updateCourseClasses(PurchaseController purchaseController) {
+        boolean result = false;
+        List<Long> orderedClassesIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
+        for (Long classId: orderedClassesIds) {
+            boolean value = purchaseController.getModel().containsClassWith(classId);
+            if (!value)
+            {
+                CourseClass courseClass = purchaseController.getModel().localizeObject(
+                        courseClassService.loadByIds(classId).get(0));
+                purchaseController.getModel().addClass(courseClass);
+                PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addCourseClass);
+                parameter.setValue(courseClass);
+                purchaseController.performAction(parameter);
+                result = true;
+            }
+        }
+        return result;
+    }
 }

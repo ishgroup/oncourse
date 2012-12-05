@@ -260,12 +260,19 @@ public class PurchaseModel {
 	}
 
 	public List<CourseClass> getClasses() {
-		return classes;
+		return Collections.unmodifiableList(classes);
 	}
 
 	public void setClasses(List<CourseClass> classes) {
-		this.classes = classes;
+		this.classes = new ArrayList<CourseClass>(classes);
 	}
+
+    public void addClass(CourseClass courseClass)
+    {
+        this.classes.add(courseClass);
+    }
+
+
 
 	public List<Discount> getDiscounts() {
 		return discounts;
@@ -420,7 +427,15 @@ public class PurchaseModel {
 		this.webSite = webSite;
 	}
 
-	private class ContactNode {
+    public boolean containsClassWith(Long classId) {
+        for (CourseClass courseClass : classes) {
+            if (courseClass.getId().equals(classId))
+                return true;
+        }
+        return false;
+    }
+
+    private class ContactNode {
 		
 		private List<ConcessionType> concessions;
 
