@@ -101,7 +101,7 @@ public class BinaryDataService implements IBinaryDataService {
 		BinaryInfo randomResult = null;
 		int attempt = 0;
 		if (count > 0) {
-			while ((randomResult == null || !fileStorageAssetService.contains(randomResult) ) && attempt++ < 5) {
+			while (randomResult == null && attempt++ < 5) {
 				int random = new Random().nextInt(count.intValue());
 
 				SelectQuery query = new SelectQuery(BinaryInfo.class, qualifier);

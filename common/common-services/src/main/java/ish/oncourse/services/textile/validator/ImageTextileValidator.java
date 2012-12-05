@@ -46,10 +46,6 @@ public class ImageTextileValidator extends AbstractTextileValidator {
 				errors.addFailure(getNotFoundByNameMessage(name), ValidationFailureType.CONTENT_NOT_FOUND);
 			}
 		}
-
-		if (result != null && !fileStorageAssetService.contains(result)) {
-			errors.addFailure(getNotFoundContentMessage(), ValidationFailureType.CONTENT_NOT_FOUND);
-		}
 	}
 
 	/**

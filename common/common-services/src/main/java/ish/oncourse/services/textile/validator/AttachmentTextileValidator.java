@@ -39,10 +39,6 @@ public class AttachmentTextileValidator extends AbstractTextileValidator {
 				errors.addFailure(getNotFoundMessage(name), ValidationFailureType.CONTENT_NOT_FOUND);
 			}
 		}
-		
-		if (result != null && !fileStorageAssetService.contains(result)) {
-			errors.addFailure(getNotFoundContentMessage(), ValidationFailureType.CONTENT_NOT_FOUND);
-		}
 	}
 	
 	public String getNotFoundMessage(String name) {
