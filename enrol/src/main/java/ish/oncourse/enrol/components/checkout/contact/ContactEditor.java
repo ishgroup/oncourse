@@ -24,6 +24,10 @@ public class ContactEditor {
 	@Property
 	private ContactEditorDelegate delegate;
 
+    @Parameter
+    @Property
+    private boolean showCancelLink = false;
+
 	@Parameter
 	private Object returnPage;
 
