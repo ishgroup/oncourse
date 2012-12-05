@@ -59,7 +59,7 @@ allprojects {
 	dependencies {
 		testCompile 'junit:junit:4.11'
 		compile 'log4j:log4j:1.2.17'
-		deployerJars 'org.apache.maven.wagon:wagon-http:2.2'
+		deployerJars 'org.apache.maven.wagon:wagon-http:2.3'
 	}
 
 	uploadArchives.dependsOn install
