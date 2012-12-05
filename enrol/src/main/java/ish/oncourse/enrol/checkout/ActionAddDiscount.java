@@ -25,11 +25,11 @@ public class ActionAddDiscount extends APurchaseAction {
 	@Override
 	protected boolean validate() {
 		if (discountCode == null) {
-			getController().addError(PurchaseController.Error.codeEmpty, discountCode);
+			getController().addError(PurchaseController.Message.codeEmpty, discountCode);
 			return false;
 		}
 		if (discount == null) {
-			getController().addError(PurchaseController.Error.discountNotFound, discountCode);
+			getController().addError(PurchaseController.Message.discountNotFound, discountCode);
 			return false;
 		} else
 			return true;

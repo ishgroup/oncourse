@@ -17,7 +17,7 @@ public class ActionCancelAddContact extends APurchaseAction{
 	protected boolean validate() {
 		if (getModel().getContacts().size() == 0)
 		{
-			getController().addError(PurchaseController.Error.payerNotDefined);
+			getController().addError(PurchaseController.Message.payerNotDefined);
 			return false;
 		}
 		return true;

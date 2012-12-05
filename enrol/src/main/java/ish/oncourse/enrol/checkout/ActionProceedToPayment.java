@@ -64,7 +64,7 @@ public class ActionProceedToPayment extends APurchaseAction {
 				int size = getModel().getAllEnabledEnrolments().size() + getModel().getAllEnabledEnrolments().size();
 				if (size < 1)
 				{
-					getController().addError(PurchaseController.Error.noEnabledItemForPurchase);
+					getController().addError(PurchaseController.Message.noEnabledItemForPurchase);
 					result = false;
 				}
 			}

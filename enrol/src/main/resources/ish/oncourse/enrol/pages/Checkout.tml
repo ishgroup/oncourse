@@ -26,7 +26,7 @@
 </t:block>
 
 <t:block t:id="errors">
-	<span t:type="checkout/errors" errors="purchaseController.errors"/>
+	<span t:type="checkout/errors" errors="purchaseController.errors" warnings="purchaseController.warnings"/>
 </t:block>
 
 <t:block t:id="payments">

@@ -4,7 +4,7 @@ import ish.oncourse.model.*;
 
 import java.util.List;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Error.illegalState;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.illegalState;
 
 public class ActionBackToEditCheckout extends APurchaseAction {
 

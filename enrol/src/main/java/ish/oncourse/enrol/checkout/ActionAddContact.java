@@ -4,7 +4,7 @@ import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Error.contactAlreadyAdded;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.contactAlreadyAdded;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.*;
 
 public class ActionAddContact extends APurchaseAction {

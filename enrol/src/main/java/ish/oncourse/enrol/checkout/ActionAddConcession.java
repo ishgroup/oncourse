@@ -38,7 +38,7 @@ public class ActionAddConcession extends APurchaseAction {
 					isSameNumber(number, concession) &&
 					isSameExpiresOn(date, concession))
 			{
-				getController().addError(PurchaseController.Error.concessionAlreadyAdded, concession);
+				getController().addError(PurchaseController.Message.concessionAlreadyAdded, concession);
 				return false;
 			}
 		}

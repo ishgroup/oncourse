@@ -29,20 +29,23 @@
 	<span t:type="checkout/payment/paymentresult" delegate="purchaseController.paymentEditorDelegate"/>
 </t:block>
 <t:block t:id="errors">
-	<span t:type="checkout/errors" errors="purchaseController.errors"/>
-	<t:if test="purchaseController.illegalModel">
-		<script type="text/javascript">
-			setTimeout("window.location.href='${coursesLink}'", 10000);
-		</script>
-	</t:if>
-	<t:if test="expired">
-		<div class="error">
-			<p>${message:error-sessionExpired}</p>
-			<script type="text/javascript">
-				setTimeout("window.location.href='${coursesLink}'", 5000);
-			</script>
-		</div>
-	</t:if>
+    <t:if test="purchaseController">
+        <span t:type="checkout/errors" errors="purchaseController.errors" warnings="purchaseController.warnings"/>
+        <t:if test="purchaseController.illegalModel">
+            <script type="text/javascript">
+                setTimeout("window.location.href='${coursesLink}'", 10000);
+            </script>
+        </t:if>
+    </t:if>
+
+    <t:if test="expired">
+        <div class="error">
+            <p>${message:error-sessionExpired}</p>
+            <script type="text/javascript">
+                setTimeout("window.location.href='${coursesLink}'", 5000);
+            </script>
+        </div>
+    </t:if>
 
 </t:block>
 

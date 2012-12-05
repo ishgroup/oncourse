@@ -8,7 +8,7 @@ import ish.oncourse.model.Voucher;
 import java.util.Date;
 import java.util.List;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Error.*;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
 
 public class ActionAddVoucher extends APurchaseAction {
 

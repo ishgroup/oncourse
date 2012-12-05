@@ -13,7 +13,7 @@ public class ActionCreditAccess extends APurchaseAction{
 
 	@Override
 	protected boolean validate() {
-		getController().addError(PurchaseController.Error.creditAccessPasswordIsWrong);
+		getController().addError(PurchaseController.Message.creditAccessPasswordIsWrong);
 		return false;
 	}
 }

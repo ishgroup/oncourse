@@ -3,7 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Error.*;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
 
 public class ActionEnableEnrolment extends APurchaseAction {
 
@@ -43,7 +43,7 @@ public class ActionEnableEnrolment extends APurchaseAction {
 
 			if (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
                 getController().getModel().setErrorFor(enrolment,
-                        noCourseClassPlaces.getMessage(getController().getMessages(), enrolment));
+                        noCourseClassPlaces.getMessage(getController().getMessages(), enrolment.getCourseClass()));
 				return false;
 			}
 		}

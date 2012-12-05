@@ -11,7 +11,15 @@ public class Errors {
 	@Property
 	private Map<String,String> errors;
 
+    @Parameter(required = true)
+    @Property
+    private Map<String,String> warnings;
 
-	@Property
+
+    @Property
 	private String error;
+
+    @Property
+    private String warning;
+
 }

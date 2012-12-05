@@ -202,7 +202,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		PurchaseController purchaseController = purchaseControllerBuilder.build(model);
 		purchaseController.performAction(new ActionParameter(Action.init));
 		assertEquals(State.paymentResult, purchaseController.getState());
-		assertNotNull(purchaseController.getErrors().get(PurchaseController.Error.noSelectedItemForPurchase.name()));
+		assertNotNull(purchaseController.getErrors().get(PurchaseController.Message.noSelectedItemForPurchase.name()));
 	}
 
 	private PurchaseModel createModel(ObjectContext context, College college,

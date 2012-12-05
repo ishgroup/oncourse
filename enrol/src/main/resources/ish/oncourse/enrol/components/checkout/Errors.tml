@@ -9,4 +9,12 @@
 			</ul>
 		</div>
 	</t:if>
+
+    <t:if test="warnings.isEmpty()" negate="true">
+        <div class="message">
+            <t:loop source="warnings.values()" value="warning">
+                <p>${warning}</p>
+            </t:loop>
+        </div>
+    </t:if>
 </t:container>

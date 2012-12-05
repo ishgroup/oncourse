@@ -14,11 +14,11 @@ public class Payment {
 	private Request request;
 
 
-	String onActivate() {
+	String setupRender() {
 		if (getPurchaseController() == null)
 			return Checkout.class.getSimpleName();
 		else if (getPurchaseController().isEditCheckout()) {
-			getPurchaseController().addError(PurchaseController.Error.illegalState);
+			getPurchaseController().addError(PurchaseController.Message.illegalState);
 			return Checkout.class.getSimpleName();
 		} else
 			return null;
