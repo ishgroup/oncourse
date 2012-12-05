@@ -31,12 +31,15 @@ public class PaymentEditorParser implements IFieldsParser {
 			parse(Field.values());
 			String expiryMonth = StringUtils.trimToNull(request.getParameter(Field.expiryMonth.name()));
 			String expiryYear = StringUtils.trimToNull(request.getParameter(Field.expiryYear.name()));
-			if (expiryMonth == null || expiryYear == null)
-				errors.put(Field.expiryMonth.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, Field.expiryMonth.name())));
-			paymentIn.setCreditCardExpiry(expiryMonth + "/" + expiryYear);
-			if (!paymentIn.validateCCExpiry())
-				errors.put(Field.expiryMonth.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, Field.expiryMonth.name())));
-		}
+			if (expiryMonth != null && expiryYear != null)
+            {
+                paymentIn.setCreditCardExpiry(expiryMonth + "/" + expiryYear);
+                if (!paymentIn.validateCCExpiry())
+                    errors.put(Field.expiryMonth.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, Field.expiryMonth.name())));
+            }
+            else
+                errors.put(Field.expiryMonth.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, Field.expiryMonth.name())));
+        }
 	}
 
 	private void parse(Field[] fields)
