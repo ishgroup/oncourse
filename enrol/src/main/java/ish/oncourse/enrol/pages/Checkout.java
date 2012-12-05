@@ -163,6 +163,8 @@ public class Checkout {
 
 	public Object onException(Throwable cause) {
 		if (purchaseController != null) {
+			expired = false;
+			purchaseController = null;
 			throw new IllegalArgumentException(cause);
 		} else {
             LOGGER.warn("",cause);

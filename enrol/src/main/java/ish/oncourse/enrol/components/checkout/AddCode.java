@@ -27,15 +27,10 @@ public class AddCode {
 		if (!request.isXHR())
 			return null;
 
-		String code = StringUtils.trimToNull(request.getParameter(FIELD_ADD_CODE));
-		if (code != null)
-		{
-			PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addDiscount);
-			actionParameter.setValue(code);
-			purchaseController.performAction(actionParameter);
-			return checkout.getCheckoutBlock();
-		}
-		return null;
-
+		String code = StringUtils.trimToEmpty(request.getParameter(FIELD_ADD_CODE));
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addDiscount);
+		actionParameter.setValue(code);
+		purchaseController.performAction(actionParameter);
+		return checkout.getCheckoutBlock();
 	}
 }

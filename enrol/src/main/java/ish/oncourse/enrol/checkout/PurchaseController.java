@@ -667,7 +667,8 @@ public class PurchaseController {
 		voucherRedeemed,
 		voucherLockedAnotherUser,
 		concessionAlreadyAdded,
-        payerHadUnfinishedPayment;
+        payerHadUnfinishedPayment,
+		codeEmpty;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("error-%s", name()), params);
