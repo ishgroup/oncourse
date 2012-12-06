@@ -15,7 +15,7 @@
 				<t:eventlink t:id="selectEnrolmentEvent" style="{display: none;}" class="selectEnrolmentLink" context="actionContext"/>
 			</label>
             <t:if test="error">
-                <span class="disabled">(${error})</span>
+                <span class="disabled">(<t:outputraw value="${error}"/>)</span>
             </t:if>
             <t:if test="commenced">
                 <span>(Note: This class has already commenced)</span>

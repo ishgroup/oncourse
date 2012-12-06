@@ -42,16 +42,20 @@ public class ActionEnableEnrolment extends APurchaseAction {
 				return false;
 			}
 
-			if (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
+			if (enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
                 getController().getModel().setErrorFor(enrolment,
-                        noCourseClassPlaces.getMessage(getController().getMessages(), getClassName(enrolment.getCourseClass())));
+                        noCourseClassPlaces.getMessage(getController().getMessages(),
+                                getClassName(enrolment.getCourseClass()),
+                                enrolment.getCourseClass().getCourse().getCode()));
 				return false;
 			}
 		}
 		if (enrolment.getCourseClass().hasEnded()) {
             getController().getModel().setErrorFor(enrolment,
-                    courseClassEnded.getMessage(getController().getMessages(), getClassName(enrolment.getCourseClass())));
-			return false;
+                    courseClassEnded.getMessage(getController().getMessages(),
+                            getClassName(enrolment.getCourseClass()),
+                            enrolment.getCourseClass().getCourse().getCode()));
+            return false;
 		}
 		return true;
 	}
@@ -67,6 +71,6 @@ public class ActionEnableEnrolment extends APurchaseAction {
 
 	private String getClassName(CourseClass courseClass)
 	{
-		return String.format("%s (%s-%s)", courseClass.getCourse().getName(), courseClass.getCourse().getCode(), courseClass.getCourse().getCode());
+		return String.format("%s (%s-%s)", courseClass.getCourse().getName(), courseClass.getCourse().getCode(), courseClass.getCode());
 	}
 }
