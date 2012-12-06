@@ -4,7 +4,7 @@
 			<div>${message:error-commonHeader}</div>
 			<ul>
 				<t:loop source="errors.values()" value="error">
-					<li>${error}</li>
+					<li><t:outputraw value="${error}"/></li>
 				</t:loop>
 			</ul>
 		</div>
@@ -13,7 +13,7 @@
     <t:if test="warnings.isEmpty()" negate="true">
         <div class="message">
             <t:loop source="warnings.values()" value="warning">
-                <p>${warning}</p>
+                <p><t:outputraw value="${warning}"/></p>
             </t:loop>
         </div>
     </t:if>

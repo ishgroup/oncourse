@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 
@@ -43,13 +44,13 @@ public class ActionEnableEnrolment extends APurchaseAction {
 
 			if (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
                 getController().getModel().setErrorFor(enrolment,
-                        noCourseClassPlaces.getMessage(getController().getMessages(), enrolment.getCourseClass()));
+                        noCourseClassPlaces.getMessage(getController().getMessages(), getClassName(enrolment.getCourseClass())));
 				return false;
 			}
 		}
 		if (enrolment.getCourseClass().hasEnded()) {
             getController().getModel().setErrorFor(enrolment,
-                    courseClassEnded.getMessage(getController().getMessages(), enrolment.getCourseClass()));
+                    courseClassEnded.getMessage(getController().getMessages(), getClassName(enrolment.getCourseClass())));
 			return false;
 		}
 		return true;
@@ -61,5 +62,11 @@ public class ActionEnableEnrolment extends APurchaseAction {
 
 	public void setEnrolment(Enrolment enrolment) {
 		this.enrolment = enrolment;
+	}
+
+
+	private String getClassName(CourseClass courseClass)
+	{
+		return String.format("%s (%s-%s)", courseClass.getCourse().getName(), courseClass.getCourse().getCode(), courseClass.getCourse().getCode());
 	}
 }
