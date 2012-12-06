@@ -1,7 +1,6 @@
 package ish.oncourse.services.filestorage;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -19,11 +18,20 @@ public class FileStorageService {
 
     private FileStorageReplicationService replicationService;
 
+
+    /**
+     * @param relatedPath cannot be null
+     */
     public boolean contains(String relatedPath) {
-        File targetFile = new File(getRootDir(),StringUtils.trimToNull(relatedPath) != null ? relatedPath : StringUtils.EMPTY);
+        File targetFile = new File(relatedPath);
         return targetFile.exists();
     }
 
+    /**
+     *
+     * @param data cannot be null
+     * @param relatedPath cannot be null
+     */
     public void put(byte[] data, String relatedPath)
     {
         File targetFile = new File(getRootDir(),relatedPath);
@@ -49,6 +57,9 @@ public class FileStorageService {
     }
 
 
+    /**
+     * @param relatedPath cannot be null
+     */
     public byte[] get(String relatedPath)
     {
         File sourceFile = new File(getRootDir(),relatedPath);
@@ -61,6 +72,9 @@ public class FileStorageService {
         }
     }
 
+    /**
+     * @param relatedPath cannot be null
+     */
     public void delete(String relatedPath)
     {
         Exception exception = null;
