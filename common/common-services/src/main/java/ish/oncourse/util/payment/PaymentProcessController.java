@@ -46,6 +46,9 @@ public class PaymentProcessController {
 
     private List<Invoice> invoices;
 
+	/**
+	 * If the property is true StackedPaymentMonitor is being started. If we don't need start the process just set the property false.
+	 */
     private boolean startWatcher = true;
 
 
