@@ -42,7 +42,7 @@ public class ActionEnableEnrolment extends APurchaseAction {
 				return false;
 			}
 
-			if (enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
+			if (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
                 getController().getModel().setErrorFor(enrolment,
                         noCourseClassPlaces.getMessage(getController().getMessages(),
                                 getClassName(enrolment.getCourseClass()),
