@@ -168,6 +168,7 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 	
 	from file("${distsDir}/webstart/") 
 	include 'onCourse.jnlp'
+	include 'onCourseDemo.jnlp'
 	include 'Libraries/*'
 	
 	destinationDir = file("${distsDir}/webstart/")
