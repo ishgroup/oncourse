@@ -17,5 +17,4 @@ public interface ContactEditorDelegate extends IDelegate {
 
 	void cancelContact();
 
-
 }

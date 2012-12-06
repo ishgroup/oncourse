@@ -18,11 +18,15 @@ public class AddContact {
 	@Property
 	private AddContactDelegate delegate;
 
+    @Parameter
+    @Property
+    private boolean showCancelLink;
+
 	@Property
 	private ValidateHandler validateHandler;
 
-	@Parameter (required =  false)
-	private Object resultPage;
+	@Parameter
+	private Object returnPage;
 
 	@Inject
 	private Request request;
@@ -36,14 +40,14 @@ public class AddContact {
 	}
 
 
-	@OnEvent(component = "cancelContact", value = "selected")
+	@OnEvent(value = "cancelContact")
 	public Object cancelContact() {
 		if (delegate != null)
 		{
 			delegate.setErrors(Collections.EMPTY_MAP);
 			delegate.cancelEditing();
 		}
-		return resultPage;
+		return returnPage;
 	}
 
 	@OnEvent(component = "saveContact", value = "selected")
@@ -57,6 +61,6 @@ public class AddContact {
 			delegate.setErrors(addContactValidator.getErrors());
 			delegate.saveEditing();
 		}
-		return resultPage;
+		return returnPage;
 	}
 }

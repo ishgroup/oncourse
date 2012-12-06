@@ -60,11 +60,11 @@
 </t:block>
 
 <t:block t:id="addContact">
-	<span t:type="checkout/contact/addcontact" delegate="purchaseController.addContactDelegate" resultPage="this"/>
+	<span t:type="checkout/contact/addcontact" delegate="purchaseController.addContactDelegate" returnPage="this" showCancelLink="purchaseController.payerInitialized"/>
 </t:block>
 
 <t:block t:id="contactEditor">
-	<span t:type="checkout/contact/contacteditor" delegate="purchaseController.contactEditorDelegate" blockToRefresh="checkoutBlock"/>
+	<span t:type="checkout/contact/contacteditor" delegate="purchaseController.contactEditorDelegate" returnPage="this" showCancelLink="purchaseController.payerInitialized"/>
 </t:block>
 
 <t:block t:id="paymentEditor">

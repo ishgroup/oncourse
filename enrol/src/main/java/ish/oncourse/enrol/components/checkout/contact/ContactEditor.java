@@ -26,7 +26,7 @@ public class ContactEditor {
 
     @Parameter
     @Property
-    private boolean showCancelLink = false;
+    private boolean showCancelLink;
 
 	@Parameter
 	private Object returnPage;
@@ -84,9 +84,8 @@ public class ContactEditor {
 
 			delegate.setErrors(errors);
 			delegate.saveContact();
-			return returnPage;
 		}
-		return null;
+		return returnPage;
 	}
 
 	public DateFormat getDateFormat()
@@ -94,10 +93,8 @@ public class ContactEditor {
 		return  FormatUtils.getDateFormat(DATE_FIELD_FORMAT, getContact().getCollege().getTimeZone());
 	}
 
-	@OnEvent(component = "saveContact", value = "selected")
+	@OnEvent(value = "cancelContact")
 	public Object cancel() {
-		if (!request.isXHR())
-			return null;
 		if (delegate != null)
 		{
 			delegate.setErrors(Collections.EMPTY_MAP);

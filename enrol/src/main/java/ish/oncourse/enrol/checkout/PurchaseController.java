@@ -382,10 +382,20 @@ public class PurchaseController {
 		return false;
 	}
 
-    //return true when current payer can get credit
+    /**
+     * returns true when current payer can get credit
+     */
     public synchronized boolean isCreditAvailable()
     {
         return getModel().getPayer() != null && getModel().getPayer().getObjectId().isTemporary();
+    }
+
+    /**
+     * the method retuns true if payer alread is set. the method used to define show reset button for contact editor dialog
+     */
+    public synchronized boolean isPayerInitialized()
+    {
+        return getModel().getPayer() != null;
     }
 
 
