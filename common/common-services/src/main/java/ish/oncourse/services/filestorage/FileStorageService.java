@@ -1,6 +1,7 @@
 package ish.oncourse.services.filestorage;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -18,9 +19,8 @@ public class FileStorageService {
 
     private FileStorageReplicationService replicationService;
 
-    public boolean contains(String relatedPath)
-    {
-        File targetFile = new File(getRootDir(),relatedPath);
+    public boolean contains(String relatedPath) {
+        File targetFile = new File(getRootDir(),StringUtils.trimToNull(relatedPath) != null ? relatedPath : StringUtils.EMPTY);
         return targetFile.exists();
     }
 
