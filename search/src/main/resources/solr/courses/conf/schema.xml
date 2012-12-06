@@ -31,25 +31,9 @@
 
 		<fieldType name="sfloat" class="solr.SortableFloatField"
 			sortMissingLast="true" omitNorms="true" />
-
-		<fieldType name="exacttext" class="solr.TextField"
-			positionIncrementGap="100">
-			<analyzer type="index">
-				<tokenizer class="solr.WhitespaceTokenizerFactory" />
-				<filter class="solr.WordDelimiterFilterFactory"
-					generateWordParts="1" generateNumberParts="1" catenateWords="1"
-					catenateNumbers="1" catenateAll="0" splitOnCaseChange="0" />
-				<filter class="solr.LowerCaseFilterFactory" />
-			</analyzer>
-			
-			<analyzer type="query">
-				<tokenizer class="solr.WhitespaceTokenizerFactory" />
-				<filter class="solr.WordDelimiterFilterFactory"
-					generateWordParts="1" generateNumberParts="1" catenateWords="0"
-					catenateNumbers="0" catenateAll="0" splitOnCaseChange="0" />
-				<filter class="solr.LowerCaseFilterFactory" />
-			</analyzer>
-		</fieldType>
+		
+		<fieldType name="exacttext" class="solr.StrField"
+			sortMissingLast="true" omitNorms="true" />
 		
 		<fieldType name="text" class="solr.TextField"
 			positionIncrementGap="100">
