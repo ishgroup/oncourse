@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div class="vevent courseItem">
+	<div class="vevent courseItem producItem">
 		<t:if t:test="isList" negate="true">
 			<h2>
 				<a href="/product/${product.sku}" class="url">${product.name}</a>
