@@ -462,3 +462,7 @@ div.concessionEditor .saveConcession
 	  font-size: 13px;
 	  vertical-align: middle;
 }
+
+.disabled {
+    color: #888;
+}

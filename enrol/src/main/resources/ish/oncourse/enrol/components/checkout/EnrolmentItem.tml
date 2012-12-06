@@ -2,7 +2,7 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 
-	<tr class="enrolmentItem">
+	<tr class="enrolmentItem ${enrolmentClass}">
 		<td>
 			<label>
 				<t:if test="checked">
@@ -36,7 +36,7 @@
 		  			</p:else>
 	  			</t:if>
 	 	  	</em>
-		</td>
+        </td>
 		<td></td>
 		<td class="alignright">
 			<span t:type="EnrolmentPrice" enrolment="enrolment" courseClass="enrolment.courseClass" index="enrolment.id"/>

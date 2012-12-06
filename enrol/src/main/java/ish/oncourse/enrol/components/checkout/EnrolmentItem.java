@@ -2,6 +2,7 @@ package ish.oncourse.enrol.components.checkout;
 
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.util.FormatUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -15,26 +16,26 @@ import java.text.DateFormat;
 
 
 public class EnrolmentItem {
-	static final Logger LOGGER = Logger.getLogger(EnrolmentItem.class);
+    static final Logger LOGGER = Logger.getLogger(EnrolmentItem.class);
 
-	@Parameter(required = true)
-	@Property
-	private Enrolment enrolment;
+    @Parameter(required = true)
+    @Property
+    private Enrolment enrolment;
 
-	@Parameter(required = true)
-	@Property
-	private Integer contactIndex;
+    @Parameter(required = true)
+    @Property
+    private Integer contactIndex;
 
-	@Parameter(required = true)
-	@Property
-	private Integer enrolmentIndex;
+    @Parameter(required = true)
+    @Property
+    private Integer enrolmentIndex;
 
-	@Parameter(required = false)
-	private EnrolmentItemDelegate delegate;
+    @Parameter(required = false)
+    private EnrolmentItemDelegate delegate;
 
-	@Property
-	@Parameter(required = true)
-	private Boolean checked;
+    @Property
+    @Parameter(required = true)
+    private Boolean checked;
 
     @Property
     @Parameter(required = false)
@@ -42,35 +43,39 @@ public class EnrolmentItem {
 
 
     @Property
-	private DateFormat dateFormat;
+    private DateFormat dateFormat;
 
-	@Inject
-	private Request request;
+    @Inject
+    private Request request;
 
-	@Parameter(required = false)
-	private Block blockToRefresh;
+    @Parameter(required = false)
+    private Block blockToRefresh;
 
-	@SetupRender
-	void beforeRender() {
-		dateFormat = FormatUtils.getDateFormat("EEE d MMM yy h:mm a", enrolment.getCourseClass().getTimeZone());
-	}
+    @SetupRender
+    void beforeRender() {
+        dateFormat = FormatUtils.getDateFormat("EEE d MMM yy h:mm a", enrolment.getCourseClass().getTimeZone());
+    }
 
-	public Integer[] getActionContext() {
-		return new Integer[]{contactIndex, enrolmentIndex};
-	}
+    public Integer[] getActionContext() {
+        return new Integer[]{contactIndex, enrolmentIndex};
+    }
+
+    public String getEnrolmentClass() {
+        return error != null ? "disabled" : StringUtils.EMPTY;
+    }
 
 
-	@OnEvent(value = "selectEnrolmentEvent")
-	public Object selectEnrolment(Integer contactIndex, Integer enrolmentIndex) {
-		if (!request.isXHR())
-			return null;
-		if (delegate != null) {
-			delegate.onChange(contactIndex, enrolmentIndex);
-			if (blockToRefresh != null)
-				return blockToRefresh;
-		}
-		return null;
-	}
+    @OnEvent(value = "selectEnrolmentEvent")
+    public Object selectEnrolment(Integer contactIndex, Integer enrolmentIndex) {
+        if (!request.isXHR())
+            return null;
+        if (delegate != null) {
+            delegate.onChange(contactIndex, enrolmentIndex);
+            if (blockToRefresh != null)
+                return blockToRefresh;
+        }
+        return null;
+    }
 
     public boolean isCommenced() {
         return enrolment.getCourseClass().hasStarted() && !enrolment.getCourseClass().hasEnded();
@@ -78,6 +83,6 @@ public class EnrolmentItem {
 
 
     public static interface EnrolmentItemDelegate {
-		public void onChange(Integer contactIndex, Integer enrolmentIndex);
-	}
+        public void onChange(Integer contactIndex, Integer enrolmentIndex);
+    }
 }
