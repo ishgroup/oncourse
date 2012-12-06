@@ -99,11 +99,11 @@ public class Contact extends _Contact implements Queueable {
 	 */
 	public static String validateGivenName(String entityName, String givenName) {
 		if (givenName == null || "".equals(givenName)) {
-			return "The " + entityName + "'s given name is required.";
+			return "The " + entityName + "'s first name is required.";
 		}
 
 		if (givenName.split("\\d").length != 1) {
-			return "The given name cannot contain number characters.";
+			return "The first name cannot contain number characters.";
 		}
 
 		return null;
@@ -126,7 +126,7 @@ public class Contact extends _Contact implements Queueable {
 			return "The " + entityName + "'s last name is required.";
 		}
 		if (familyName.split("\\d").length != 1) {
-			return "The family name cannot contain number characters.";
+			return "The last name cannot contain number characters.";
 		}
 		return null;
 	}
