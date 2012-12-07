@@ -23,7 +23,7 @@ public class FileStorageService {
      * @param relatedPath cannot be null
      */
     public boolean contains(String relatedPath) {
-        File targetFile = new File(relatedPath);
+        File targetFile = new File(getRootDir(),relatedPath);
         return targetFile.exists();
     }
 
