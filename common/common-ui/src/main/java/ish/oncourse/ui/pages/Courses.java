@@ -259,7 +259,7 @@ public class Courses {
 	
 	private List<Course> searchCourses(int start, int rows) {
 		QueryResponse results = searchService.searchCourses(searchParams, start, rows);
-		SolrDocumentList list = results.getResults();
+		SolrDocumentList list = results.getResults() != null ? results.getResults() : new SolrDocumentList();
 		LOGGER.info(String.format("The number of courses found: %s", list.size()));
 		if (coursesCount == null) {
 			coursesCount = ((Number) list.getNumFound()).intValue();
