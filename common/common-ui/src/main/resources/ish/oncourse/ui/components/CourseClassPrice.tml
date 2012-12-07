@@ -1,45 +1,70 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	
+
 	<t:if test="hasFee">
 		<t:if test="hasDiscountValue">
 			<span class="fee-disabled">
-				<t:output value="fee" format="feeFormat" />
+				<t:output value="fee" format="feeFormat"/>
 			</span>
 			<span class="fee-discounted">
 				<acronym title="${appliedDiscountsTitle}">
-					<t:output value="discountedFee" format="feeFormat" />
+					<t:output value="discountedFee" format="feeFormat"/>
 				</acronym>
 			</span>
-			<p:else><t:output value="fee" format="feeFormat" /></p:else>
+			<p:else>
+				<t:output value="fee" format="feeFormat"/>
+			</p:else>
 		</t:if>
 
 		<t:if test="showTax">
 			<span class="gst">
-				<t:if test="taxExempt" negate="true"> inc </t:if><acronym title="Goods and Services Tax">GST</acronym><t:if test="taxExempt"> exempt</t:if>
+				<t:if test="taxExempt" negate="true"> inc</t:if><acronym title="Goods and Services Tax">GST</acronym><t:if
+					test="taxExempt"> exempt
+			</t:if>
 			</span>
 		</t:if>
 		<t:if test="hasDiscountValue">
-			<t:if test="discountExpiryDate">(until <t:output format="dateFormat" value="discountExpiryDate"/>
-				<t:if test="discountEligibility">, ${discountEligibility}
-				</t:if>)
+			<t:if test="discountExpiryDate">(until
+				<t:output format="dateFormat" value="discountExpiryDate"/>
+				<t:if test="isEligibility()">, </t:if>
+				<t:delegate to="block:eligibility"/>
+				)
 				<p:else>
-					<t:if test="discountEligibility"> ${discountEligibility}
-					</t:if>
+					<t:delegate to="block:eligibility"/>
 				</p:else>
 			</t:if>
-		</t:if> 
+		</t:if>
 		<t:if t:test="paymentGatewayEnabled">
 			<t:loop source="discountsWithConcessions" value="discountItem">
 				<span class="discount-price">/</span>
 				<acronym class="discount-price" title="${discountItem.name}">
-					<t:output value="discountItemFeeIncTax" format="feeFormat" />
+					<t:output value="discountItemFeeIncTax" format="feeFormat"/>
 				</acronym>
 			</t:loop>
-		</t:if>	
+		</t:if>
 
 		<p:else>
 			<acronym title="To Be Advised">TBA</acronym>
 		</p:else>
-	
-	</t:if>	
+
+	</t:if>
+
+
+	<t:block t:id="eligibility">
+		<span class="discount-price">
+			<t:if test="memberships.isEmpty()" negate="true">
+				For students with memberships(s):
+				<t:loop source="memberships" value="membership">
+					<acronym title="${membership.name}">
+						<span class="discount-price">${membership.name}</span>
+					</acronym>
+					<t:if test="isLastMembership()">, </t:if>
+				</t:loop>
+			</t:if>
+			<t:if test="memberships.isEmpty()" negate="true">
+				<t:if test="discountEligibility">
+					, ${discountEligibility}
+				</t:if>
+			</t:if>
+		</span>
+	</t:block>
 </t:container>

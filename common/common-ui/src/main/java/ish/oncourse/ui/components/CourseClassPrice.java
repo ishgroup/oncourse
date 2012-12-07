@@ -3,12 +3,13 @@ package ish.oncourse.ui.components;
 import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.MembershipProduct;
 import ish.oncourse.model.PotentialDiscountsPolicy;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.utils.DiscountUtils;
-
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
@@ -24,6 +25,9 @@ import java.util.Date;
 import java.util.List;
 
 public class CourseClassPrice {
+
+	@Inject
+	private ICayenneService cayenneService;
 
 	@Inject
 	private IDiscountService discountService;
@@ -50,23 +54,26 @@ public class CourseClassPrice {
 	private List<Discount> discountsWithConcessions;
 
 	@Property
+	private List<MembershipProduct> memberships;
+
+	@Property
+	private MembershipProduct membership;
+
+
+	@Property
 	private Money discountValue;
 
 	private List<Discount> applicableDiscounts;
 
-	@SuppressWarnings("all")
 	@Property
 	private Date discountExpiryDate;
 
-	@SuppressWarnings("all")
 	@Property
 	private String discountEligibility;
 
-	@SuppressWarnings("all")
 	@Property
 	private Format dateFormat;
 
-	@SuppressWarnings("all")
 	@Property
 	private String appliedDiscountsTitle;
 
@@ -100,8 +107,26 @@ public class CourseClassPrice {
 		Ordering ordering = new Ordering(Discount.NAME_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(discountsWithConcessions);
 
+		memberships = discountService.getMemberships(applicableDiscounts);
+
 		dateFormat = FormatUtils.getShortDateFormat(courseClass.getCollege().getTimeZone());
 	}
+
+
+	/**
+	 * @return true if current membership is not last
+	 */
+	public boolean isLastMembership()
+	{
+		return (memberships.indexOf(membership) < memberships.size() - 1);
+	}
+
+	public boolean isEligibility()
+	{
+		return discountEligibility != null || !memberships.isEmpty();
+	}
+
+
 
 	public boolean isHasFee() {
 		return courseClass.getFeeExGst() != null;

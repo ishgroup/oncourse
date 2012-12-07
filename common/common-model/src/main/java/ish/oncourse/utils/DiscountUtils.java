@@ -4,17 +4,15 @@ import ish.common.types.DiscountType;
 import ish.math.Money;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
-import ish.oncourse.model.DiscountMembership;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
-
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Util class for calculating discounts applying results.
@@ -237,17 +235,6 @@ public class DiscountUtils {
 			for (DiscountConcessionType type : discount.getDiscountConcessionTypes()) {
 				result.append(SPACE_CHARACTER).append(type.getConcessionType().getName())
 					.append(discount.getDiscountConcessionTypes().indexOf(type) < (discount.getDiscountConcessionTypes().size() -1) 
-						? COMMA_CHARACTER : StringUtils.EMPTY);
-			}
-		}
-		if (discount.getDiscountMembershipProducts() != null && !discount.getDiscountMembershipProducts().isEmpty()) {
-			if (result.length() != 0) {
-				result.append(COMMA_CHARACTER);
-			}
-			result.append(WITH_MEMBERSHIPS_CONDITION_TEXT);
-			for (DiscountMembership membership : discount.getDiscountMembershipProducts()) {
-				result.append(SPACE_CHARACTER).append(membership.getMembershipProduct().getName())
-					.append(discount.getDiscountMembershipProducts().indexOf(membership) < (discount.getDiscountMembershipProducts().size() -1) 
 						? COMMA_CHARACTER : StringUtils.EMPTY);
 			}
 		}
