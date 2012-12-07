@@ -13,10 +13,15 @@ function initAddWaitingListHandle()
 		sendAjaxWithData(actionLink,data);
 	});
 
-	$j('.dateOfBirth').datepicker();
+    $j('.dateOfBirth').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        maxDate: '0'
+    });
 
 
-	if ($j(".suburb")) {
+
+    if ($j(".suburb")) {
 		$j(".suburb").autocomplete({source: '/ui/internal/autocomplete.sub', minLength: 3,
 			select: function(event, ui) {
 				var value = ui.item.value;
