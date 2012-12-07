@@ -269,7 +269,7 @@ public class Courses {
 			ids.add((String) doc.getFieldValue(SOLR_DOCUMENT_ID_FIELD));
 		}
 		if (results.getDebugMap() != null) {
-			debugInfo = results.getDebugMap().toString();
+			debugInfo = results.getDebugMap().get("explain").toString();
 		}
 		return courseService.loadByIds(ids.toArray());
 	}
