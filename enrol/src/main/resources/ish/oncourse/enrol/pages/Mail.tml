@@ -10,13 +10,16 @@
         <p:else>
             <h3>Sorry, there are no mailing lists available for online
                 subscription now.</h3>
+            <script type="text/javascript">
+                setTimeout("window.location.href='${coursesLink}'", 10000);
+            </script>
         </p:else>
     </t:if>
 </div>
 
 <t:block t:id="editor">
     <t:delegate to="block:errors"/>
-    <t:if test="expiered" negate="true">
+    <t:if test="controller">
         <t:form t:id="mailingListForm">
             <t:if test="controller.addContact">
                 <t:delegate to="block:mailingLists"/>
@@ -59,6 +62,9 @@
             <li><strong>${currentMailingList.name}</strong></li>
         </t:loop>
     </ul>
+    <script type="text/javascript">
+        setTimeout("window.location.href='${coursesLink}'", 10000);
+    </script>
 </t:block>
 
 <t:block t:id="mailingLists">
@@ -66,11 +72,11 @@
 </t:block>
 
 <t:block t:id="errors">
-    <t:if test="expiered">
+    <t:if test="expired">
         <div class="error">
             <p>${message:message-sessionExpired}</p>
             <script type="text/javascript">
-                setTimeout("window.location.href='/enrol/mail'", 5000);
+                setTimeout("window.location.href='${coursesLink}'", 10000);
             </script>
         </div>
         <p:else>
@@ -91,13 +97,12 @@
 
 <t:block t:id="editContact">
     <div class="student">${controller.contact.fullName} <span>- ${controller.contact.emailAddress}</span></div>
+    <p>Thank you ${controller.contact.fullName} for your request. Please fill additional information about you:</p>
     <fieldset>
         <span t:type="checkout/contact/contacteditorfieldset" delegate="controller" validateHandler="validateHandler"/>
     </fieldset>
 </t:block>
 
 
-<script type="text/javascript" src="${asset:context:js/jquery.blockUI.js}"/>
-<script type="text/javascript" src="${asset:context:js/_common.js}"/>
-<script type="text/javascript" src="${asset:context:js/_mailinglist.js}"/>
+<link href="${asset:context:css/_checkout.css}" media="screen, print" rel="stylesheet" />
 </html>

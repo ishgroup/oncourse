@@ -14,8 +14,6 @@ public class WaitingListController extends AContactController {
 
 	public static final String KEY_ERROR_alreadyAdded = "error-alreadyAdded";
 
-	private Contact contact;
-
     private Course course;
     private WaitingList waitingList;
 
@@ -46,12 +44,13 @@ public class WaitingListController extends AContactController {
 		contactCredentialsEncoder.setObjectContext(getObjectContext());
 		contactCredentialsEncoder.setStudentService(getStudentService());
 		contactCredentialsEncoder.encode();
-		contact = contactCredentialsEncoder.getContact();
 
+        Contact contact = contactCredentialsEncoder.getContact();
+        setContact(contact);
 		waitingList.setStudent(contact.getStudent());
 
 
-		if (contact.getObjectId().isTemporary()) {
+		if (getContact().getObjectId().isTemporary()) {
 			setVisibleFields(getContactFieldHelper().getVisibleFields(contact, false));
 			setState(State.EDIT_CONTACT);
 		} else {
@@ -63,7 +62,7 @@ public class WaitingListController extends AContactController {
 
 			setFillRequiredProperties(!(getContactFieldHelper().isAllRequiredFieldFilled(contact)));
 			if (isFillRequiredProperties()) {
-                setVisibleFields(getContactFieldHelper().getVisibleFields(contact, false));
+                setVisibleFields(getContactFieldHelper().getVisibleFields(contact, true));
 				setState(State.EDIT_CONTACT);
 			} else {
 				saveContact();
@@ -73,11 +72,11 @@ public class WaitingListController extends AContactController {
 	}
 
 	private boolean alreadyAdded() {
-		if (contact.getStudent().getObjectId().isTemporary())
+		if (getContact().getStudent().getObjectId().isTemporary())
 			return false;
 		SelectQuery selectQuery = new SelectQuery(WaitingList.class);
 
-		Expression exp = ExpressionFactory.matchExp(WaitingList.STUDENT_PROPERTY, contact.getStudent());
+		Expression exp = ExpressionFactory.matchExp(WaitingList.STUDENT_PROPERTY, getContact().getStudent());
 		exp = exp.andExp(ExpressionFactory.matchExp(WaitingList.COURSE_PROPERTY, course));
 		selectQuery.setQualifier(exp);
 		List<WaitingList> waitingLists = getObjectContext().performQuery(selectQuery);

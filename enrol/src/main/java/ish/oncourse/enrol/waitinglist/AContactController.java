@@ -64,7 +64,7 @@ public abstract class AContactController implements AddContactDelegate, ContactE
         } else {
             isFillRequiredProperties = !(contactFieldHelper.isAllRequiredFieldFilled(contact));
             if (isFillRequiredProperties) {
-                visibleFields = contactFieldHelper.getVisibleFields(contact, false);
+                visibleFields = contactFieldHelper.getVisibleFields(contact, true);
                 state = State.EDIT_CONTACT;
             } else {
                 saveContact();
@@ -86,6 +86,11 @@ public abstract class AContactController implements AddContactDelegate, ContactE
     @Override
     public Contact getContact() {
         return contact;
+    }
+
+    protected void setContact(Contact contact)
+    {
+        this.contact = contact;
     }
 
     @Override

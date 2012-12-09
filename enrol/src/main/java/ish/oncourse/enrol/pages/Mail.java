@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.pages;
 
+import ish.oncourse.enrol.checkout.HTMLUtils;
 import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.contact.AddContactParser;
 import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
@@ -14,6 +15,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.ui.pages.Courses;
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.*;
@@ -66,12 +68,17 @@ public class Mail {
     private ValidateHandler validateHandler;
 
     @Persist
-    private boolean expiered;
+    @Property
+    private boolean expired;
+
+    @Property
+    @Persist
+    private String refererUrl;
 
     @SetupRender
     Object setupRender() {
 
-        if (expiered)
+        if (expired)
             return null;
 
         synchronized (this) {
@@ -85,19 +92,12 @@ public class Mail {
                 controller.setTagService(tagService);
                 controller.setCollege((College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null));
                 controller.init();
+                refererUrl = request.getHeader("referer");
             }
         }
         validateHandler = new ValidateHandler();
         validateHandler.setErrors(controller.getErrors());
         return null;
-    }
-
-    @AfterRender
-    void afterRender() {
-        if (controller != null && controller.isFinished()) {
-            controller = null;
-        }
-        expiered = false;
     }
 
     @OnEvent(component = "addMailingList", value = "selected")
@@ -142,18 +142,34 @@ public class Mail {
     public void setContact(Contact contact) {
     }
 
+    public void resetPersistProperties()
+    {
+        expired = false;
+        controller = null;
+        refererUrl = null;
+    }
+
+    @AfterRender
+    void afterRender() {
+        if (controller != null && controller.isFinished()) {
+            resetPersistProperties();
+        }
+        expired = false;
+    }
+
     public Object onException(Throwable cause) {
         if (controller == null) {
             LOGGER.warn("", cause);
-            expiered = true;
+            expired = true;
         } else {
-            controller = null;
+            resetPersistProperties();
             throw new IllegalArgumentException(cause);
         }
         return this;
     }
 
-    public boolean isExpiered() {
-        return expiered;
+    public String getCoursesLink() {
+        return (refererUrl != null) ? refererUrl : HTMLUtils.getUrlBy(request, Courses.class);
     }
+
 }

@@ -1,25 +1,68 @@
 <html t:type="ui/internal/pagestructure" bodyId="literal:EnrolmentEntry"
-	  bodyClass="literal:internal-page"
-	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	  xmlns:p="tapestry:parameter">
+      bodyClass="literal:internal-page"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+        >
 
 	<div id="waitingListBlock">
-		<t:delegate to="block:waitingListBlock"/>
+        <t:delegate to="block:editor"/>
 	</div>
 
-	<t:block t:id="waitingListBlock">
-		<t:delegate to="block:exceptionHandling"/>
-		<t:if test="controller">
-			<t:if test="controller.finished">
-				<t:delegate to="block:finished"/>
-				<p:else>
-					<t:delegate to="block:editor"/>
-				</p:else>
-			</t:if>
-		</t:if>
-	</t:block>
+    <t:block t:id="editor">
+        <t:delegate to="block:errors"/>
+        <t:if test="controller">
+            <t:form t:id="waitingListForm">
+                <t:if test="controller.addContact">
+                    <t:delegate to="block:addContact"/>
+                    <t:delegate to="block:editDescription"/>
+                    <t:delegate to="block:notes"/>
+                    <t:delegate to="block:control"/>
+                </t:if>
+                <t:if test="controller.editContact">
+                    <t:delegate to="block:editContact"/>
+                    <t:delegate to="block:editDescription"/>
+                    <t:delegate to="block:notes"/>
+                    <t:delegate to="block:control"/>
+                </t:if>
+            </t:form>
+            <t:if test="controller.finished">
+                <t:delegate to="block:result"/>
+            </t:if>
+        </t:if>
+    </t:block>
 
-	<t:block t:id="addContact">
+    <t:block t:id="control">
+        <div class="form-controls">
+            <t:submit t:id="addWaitingList" value="Add to waiting list" class="btn btn-primary"/>
+        </div>
+    </t:block>
+
+
+    <t:block t:id="notes">
+        <p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
+        <p class="note">
+            <strong class="alert">Note</strong>: ${message:noteSameEmail}
+        </p>
+    </t:block>
+
+    <t:block t:id="errors">
+        <t:if test="unknownCourse">
+            Sorry, the course is not defined.
+        </t:if>
+        <t:if test="expired">
+            <div class="error">
+                <p>${message:message-sessionExpired}</p>
+                <script type="text/javascript">
+                    setTimeout("window.location.href='${coursesLink}'", 10000);
+                </script>
+            </div>
+        </t:if>
+        <t:if test="controller">
+            <span t:type="checkout/errors" errors="controller.errors" warnings="controller.warnings"/>
+        </t:if>
+    </t:block>
+
+
+    <t:block t:id="addContact">
 		<p>To join the waiting list for course ${controller.course.name}, please complete the following form:</p>
 		<fieldset>
 			<span t:type="checkout/contact/addcontactfieldset" delegate="controller" validateHandler="validateHandler"/>
@@ -56,69 +99,21 @@
 		</fieldset>
 	</t:block>
 
-	<t:block t:id="finished">
+	<t:block t:id="result">
 		<div class="message">
 			<p class="feedback">
 				Thank you for your request.
 				<br/>
 				The student <b>${controller.contact.fullName}</b> (<b>${controller.waitingList.potentialStudents}</b> potential places)
 				<br/>
-				was successfully added to waiting list for course <b>${controller.course.name}${resetController()}</b>.
+				was successfully added to waiting list for course <b>${controller.course.name}</b>.
 			</p>
 		</div>
-	</t:block>
-
-	<t:block t:id="editor">
-		<t:form t:id="waitingListForm">
-			<t:if test="controller.errors.isEmpty()" negate="true">
-				<t:delegate to="block:errors"/>
-			</t:if>
-			<t:if test="controller.addContact">
-				<t:delegate to="block:addContact"/>
-                <t:delegate to="block:notes"/>
-            </t:if>
-			<t:if test="controller.editContact">
-				<t:delegate to="block:editContact"/>
-                <t:delegate to="block:notes"/>
-            </t:if>
-			<t:delegate to="block:editDescription"/>
-		</t:form>
-		<button id="addWaitingList">Add to waiting list</button>
-		<t:eventlink t:id="addWaitingListEvent" style="display: none"/>
-	</t:block>
-
-
-    <t:block t:id="notes">
-        <p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
-        <p class="note">
-            <strong class="alert">Note</strong>: ${message:noteSameEmail}
-        </p>
-    </t:block>
-
-    <t:block t:id="errors">
-        <span t:type="checkout/errors" errors="controller.errors" warnings="controller.warnings"/>
+        <script type="text/javascript">
+            setTimeout("window.location.href='${coursesLink}'", 10000);
+        </script>
     </t:block>
 
 
-    <t:block t:id="exceptionHandling">
-		<t:if test="unknownCourse">
-			Sorry, the course is not defined.
-		</t:if>
-		<t:if test="expired">
-			<div class="error">
-				<p>${message:error-sessionExpired}</p>
-			</div>
-		</t:if>
-		<t:if test="unexpectedThrowable">
-			<script type="text/javascript">
-				setTimeout("window.location.href='/enrol/waitinglistform'", 100);
-			</script>
-		</t:if>
-	</t:block>
-
-
-
-	<script type="text/javascript" src="${asset:context:js/jquery.blockUI.js}"/>
-    <script type="text/javascript" src="${asset:context:js/_common.js}"/>
-    <script type="text/javascript" src="${asset:context:js/_waitinglist.js}"/>
+    <link href="${asset:context:css/_checkout.css}" media="screen, print" rel="stylesheet" />
 </html>

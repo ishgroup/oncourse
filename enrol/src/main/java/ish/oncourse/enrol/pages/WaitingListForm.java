@@ -15,16 +15,15 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.Courses;
-import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -50,7 +49,10 @@ public class WaitingListForm {
 	@Inject
 	private Request request;
 
-	@Inject
+    @Inject
+    private HttpServletRequest httpRequest;
+
+    @Inject
 	private ICayenneService cayenneService;
 
 	@Inject
@@ -69,23 +71,17 @@ public class WaitingListForm {
 	@Property
 	private Messages messages;
 
-	@InjectComponent
+    @InjectComponent
 	private ContactEditorFieldSet contactEditorFieldSet;
-
-	@Inject
-	@Id("waitingListBlock")
-	private Block waitingListBlock;
-
-	@Property
-	private String error;
-
-	@Property
-	@Persist
-	private Throwable unexpectedThrowable;
 
 	@Property
 	@Persist
 	private boolean expired;
+
+    @Property
+    @Persist
+    private String refererUrl;
+
 
 	@Property
 	private boolean unknownCourse;
@@ -93,17 +89,23 @@ public class WaitingListForm {
 	@SetupRender
 	void beforeRender() {
 
-		synchronized (this)
-		{
-			if (unexpectedThrowable != null)
-				handleUnexpectedThrowable();
 
+        if (expired)
+            return;
+
+        synchronized (this)
+		{
 			if (controller == null)
 			{
-				String courseId = request.getParameter("courseId");
-				List<Course> result = courseService.loadByIds(courseId);
-				if (!result.isEmpty()) {
-					ObjectContext context = cayenneService.newContext();
+                String courseId = request.getParameter("courseId");
+                List<Course> result = courseService.loadByIds(courseId);
+                if (result.isEmpty())
+                {
+                    unknownCourse = true;
+                    return;
+                }
+
+                ObjectContext context = cayenneService.newContext();
 					controller = new WaitingListController();
 					controller.setPreferenceController(preferenceController);
 					controller.setStudentService(studentService);
@@ -113,29 +115,16 @@ public class WaitingListForm {
 					controller.setCourse((Course)context.localObject(result.get(0).getObjectId(), null));
 					controller.init();
 
-					validateHandler = new ValidateHandler();
-				}
-				else
-					unknownCourse = true;
-
-			}
+                refererUrl = request.getHeader("referer");
+            }
 		}
-	}
-	
-	public String resetController() {
-		if (controller.isFinished()) {
-			controller = null;
-		}
-		return FormatUtils.EMPTY_STRING;
-	}
+        validateHandler = new ValidateHandler();
+        validateHandler.setErrors(controller.getErrors());
+    }
 
-
-	@OnEvent(value = "addWaitingListEvent")
+	@OnEvent(component = "addWaitingList",value = "selected")
 	public Object addWaitingList()
 	{
-		if (!request.isXHR())
-			return null;
-
 		if (controller.isAddContact())
 		{
 			AddContactParser addContactValidator = new AddContactParser();
@@ -167,45 +156,44 @@ public class WaitingListForm {
 		value = StringUtils.trimToNull(request.getParameter(WaitingList.DETAIL_PROPERTY));
 		if (value != null)
 			controller.getWaitingList().setDetail(value);
-
-		validateHandler.setErrors(controller.getErrors());
 		controller.addWaitingList();
-		return waitingListBlock;
+		return this;
 	}
 
-
-	public Object onException(Throwable cause) {
-		if (controller != null) {
-			unexpectedThrowable = cause;
-		} else {
-			expired = true;
-			LOGGER.warn("Persist properties have been cleared. User used two or more tabs or session was expired", cause);
-		}
-		return waitingListBlock;
-	}
-
-
-
-	private void handleUnexpectedThrowable() {
-		IllegalArgumentException exception = new IllegalArgumentException(unexpectedThrowable);
-		if (controller != null) {
-			controller.getObjectContext().rollbackChanges();
-			resetPersistProperties();
-		}
-		throw exception;
-	}
 
 	public void resetPersistProperties()
 	{
 		expired = false;
-		unexpectedThrowable = null;
 		controller = null;
+        refererUrl = null;
 	}
 
 
 	public String getCoursesLink() {
-		return HTMLUtils.getUrlBy(request, Courses.class);
+        return (refererUrl != null) ? refererUrl : HTMLUtils.getUrlBy(request, Courses.class);
 	}
 
+
+    @AfterRender
+    void afterRender() {
+        if (controller != null && controller.isFinished()) {
+           resetPersistProperties();
+        }
+        expired = false;
+    }
+
+    public Object onException(Throwable cause) {
+        if (controller == null) {
+            LOGGER.warn("", cause);
+            expired = true;
+        } else {
+            if (controller != null) {
+                controller.getObjectContext().rollbackChanges();
+            }
+            resetPersistProperties();
+            throw new IllegalArgumentException(cause);
+        }
+        return this;
+    }
 
 }
