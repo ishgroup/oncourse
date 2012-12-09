@@ -246,8 +246,8 @@ public class DiscountUtils {
 			result.append(WITH_MEMBERSHIPS_CONDITION_TEXT);
 			for (DiscountMembership membership : discount.getDiscountMembershipProducts()) {
 				result.append(SPACE_CHARACTER).append(membership.getMembershipProduct().getName())
-					.append(discount.getDiscountMembershipProducts().indexOf(membership) < (discount.getDiscountMembershipProducts().size() - 1)
-                            ? COMMA_CHARACTER : StringUtils.EMPTY);
+					.append(discount.getDiscountMembershipProducts().indexOf(membership) < (discount.getDiscountMembershipProducts().size() -1)
+						? COMMA_CHARACTER : StringUtils.EMPTY);
 			}
 		}
 		if (discount.getStudentPostcodes() != null) {
