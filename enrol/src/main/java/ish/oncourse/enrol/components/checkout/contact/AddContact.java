@@ -50,7 +50,7 @@ public class AddContact {
 		return returnPage;
 	}
 
-	@OnEvent(component = "addContact", value = "selected")
+	@OnEvent(component = "checkout", value = "selected")
 	public Object addContact() {
 		if (delegate != null)
 		{
