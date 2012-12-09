@@ -2,7 +2,9 @@ package ish.oncourse.enrol.pages;
 
 import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.contact.AddContactParser;
+import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.enrol.components.MailingListBox;
+import ish.oncourse.enrol.components.checkout.contact.ContactEditorFieldSet;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.waitinglist.MailingListController;
 import ish.oncourse.model.College;
@@ -51,6 +53,11 @@ public class Mail {
 
     @InjectComponent
     private MailingListBox mailingListBox;
+
+    @InjectComponent
+    private ContactEditorFieldSet contactEditorFieldSet;
+
+
 
     @Property
     @Persist
@@ -106,6 +113,20 @@ public class Mail {
             addContactParser.parse();
 
             controller.setErrors(addContactParser.getErrors());
+            controller.setSelectedMailingLists(mailingListBox.getSelectedMailingLists());
+            controller.addMailingList();
+        }
+        if (controller.isEditContact())
+        {
+            ContactEditorParser parser = new ContactEditorParser();
+            parser.setMessages(messages);
+            parser.setContact(controller.getContact());
+            parser.setVisibleFields(controller.getVisibleFields());
+            parser.setContactFieldHelper(controller.getContactFieldHelper());
+            parser.setDateFormat(contactEditorFieldSet.getDateFormat());
+            parser.setRequest(request);
+            parser.parse();
+            controller.setErrors(parser.getErrors());
             controller.setSelectedMailingLists(mailingListBox.getSelectedMailingLists());
             controller.addMailingList();
         }
