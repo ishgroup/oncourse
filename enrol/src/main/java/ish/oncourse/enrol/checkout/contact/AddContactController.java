@@ -10,12 +10,12 @@ public class AddContactController extends ADelegate implements AddContactDelegat
 
 
 	@Override
-	public void cancelEditing() {
+	public void resetContact() {
 		getPurchaseController().performAction(new PurchaseController.ActionParameter(PurchaseController.Action.cancelAddContact));
 	}
 
 	@Override
-	public void saveEditing() {
+	public void addContact() {
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
 		actionParameter.setErrors(getErrors());
 		actionParameter.setValue(contactCredentials);

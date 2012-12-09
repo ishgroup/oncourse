@@ -40,18 +40,18 @@ public class AddContact {
 	}
 
 
-	@OnEvent(value = "cancelContact")
-	public Object cancelContact() {
+	@OnEvent(value = "resetContact")
+	public Object resetContact() {
 		if (delegate != null)
 		{
 			delegate.setErrors(Collections.EMPTY_MAP);
-			delegate.cancelEditing();
+			delegate.resetContact();
 		}
 		return returnPage;
 	}
 
-	@OnEvent(component = "saveContact", value = "selected")
-	public Object saveContact() {
+	@OnEvent(component = "addContact", value = "selected")
+	public Object addContact() {
 		if (delegate != null)
 		{
 			AddContactParser addContactValidator = new AddContactParser();
@@ -59,7 +59,7 @@ public class AddContact {
 			addContactValidator.setRequest(request);
 			addContactValidator.parse();
 			delegate.setErrors(addContactValidator.getErrors());
-			delegate.saveEditing();
+			delegate.addContact();
 		}
 		return returnPage;
 	}

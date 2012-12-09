@@ -4,7 +4,7 @@ import ish.oncourse.enrol.checkout.IDelegate;
 
 public interface AddContactDelegate extends IDelegate
 {
-	void cancelEditing();
-	void saveEditing();
+	void resetContact();
+	void addContact();
 	ContactCredentials getContactCredentials();
 }

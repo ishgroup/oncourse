@@ -4,36 +4,100 @@
 	xmlns:p="tapestry:parameter">
 
 <div id="addstudent-block" class="show">
-	<t:zone t:id="addStudentBlock" t:update="show">
 
-		<t:if test="submissionSucceded">
-			<h3>You have been successfully subscribed to the following
-				mailing lists:</h3>
-
-			<ul>
-				<t:loop t:source="selectedMailingLists" value="currentMailingList">
-					<li><strong>${currentMailingList.name}</strong></li>
-				</t:loop>
-			</ul>
-
-			<p:else>
-				<t:if test="hasMailingLists">
-
-					<span t:type="mailingListContactEntry" parentZone="addStudentBlock" />
-
-					<p:else>
-						<h3>Sorry, there are no mailing lists available for online
-							subscription now.</h3>
-					</p:else>
-				</t:if>
-			</p:else>
-		</t:if>
-	</t:zone>
+    <t:if test="hasMailingLists()">
+        <t:delegate to="block:editor"/>
+        <p:else>
+            <h3>Sorry, there are no mailing lists available for online
+                subscription now.</h3>
+        </p:else>
+    </t:if>
 </div>
-<script type="text/javascript">
-	Event.observe('addStudentBlock', Tapestry.ZONE_UPDATED_EVENT, function() {
-		initHints("addStudentBlock");
-	});
-</script>
 
+<t:block t:id="editor">
+    <t:delegate to="block:errors"/>
+    <t:if test="expiered" negate="true">
+        <t:form t:id="mailingListForm">
+            <t:if test="controller.addContact">
+                <t:delegate to="block:mailingLists"/>
+                <t:delegate to="block:addContact"/>
+                <t:delegate to="block:notes"/>
+                <t:delegate to="block:control"/>
+            </t:if>
+            <t:if test="controller.editContact">
+                <t:delegate to="block:mailingLists"/>
+                <t:delegate to="block:editContact"/>
+                <t:delegate to="block:notes"/>
+                <t:delegate to="block:control"/>
+            </t:if>
+        </t:form>
+        <t:if test="controller.finished">
+            <t:delegate to="block:result"/>
+        </t:if>
+    </t:if>
+</t:block>
+
+<t:block t:id="control">
+    <div class="form-controls">
+        <t:submit t:id="addMailingList" value="Subscribe" class="btn btn-primary"/>
+    </div>
+</t:block>
+
+<t:block t:id="notes">
+    <p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
+    <p class="note">
+        <strong class="alert">Note</strong>: ${message:noteSameEmail}
+    </p>
+</t:block>
+
+<t:block t:id="result">
+    <h3>You have been successfully subscribed to the following
+        mailing lists:</h3>
+
+    <ul>
+        <t:loop t:source="selectedMailingLists" value="currentMailingList">
+            <li><strong>${currentMailingList.name}</strong></li>
+        </t:loop>
+    </ul>
+</t:block>
+
+<t:block t:id="mailingLists">
+    <t:mailinglistbox/>
+</t:block>
+
+<t:block t:id="errors">
+    <t:if test="expiered">
+        <div class="error">
+            <p>${message:message-sessionExpired}</p>
+            <script type="text/javascript">
+                setTimeout("window.location.href='/enrol/mail'", 5000);
+            </script>
+        </div>
+        <p:else>
+           <span t:type="checkout/errors" errors="controller.errors" warnings="controller.warnings"/>
+        </p:else>
+    </t:if>
+</t:block>
+
+
+<t:block t:id="addContact">
+    <div class="message">
+        <p>To continue, please enter the details of a person to subscribe.</p>
+    </div>
+    <fieldset>
+        <span t:type="checkout/contact/addcontactfieldset" delegate="controller" validateHandler="validateHandler"/>
+    </fieldset>
+</t:block>
+
+<t:block t:id="editContact">
+    <div class="student">${controller.contact.fullName} <span>- ${controller.contact.emailAddress}</span></div>
+    <fieldset>
+        <span t:type="checkout/contact/contacteditorfieldset" delegate="controller" validateHandler="validateHandler"/>
+    </fieldset>
+</t:block>
+
+
+<script type="text/javascript" src="${asset:context:js/jquery.blockUI.js}"/>
+<script type="text/javascript" src="${asset:context:js/_common.js}"/>
+<script type="text/javascript" src="${asset:context:js/_mailinglist.js}"/>
 </html>

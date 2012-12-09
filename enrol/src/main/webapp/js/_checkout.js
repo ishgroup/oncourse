@@ -120,79 +120,6 @@ function initCheckoutHandle()
 }
 
 
-function initAddContactHandle()
-{
-
-	$j('#saveAddContact').click(function()
-	{
-
-		var f = $j("[id*=addContactForm]")[0];
-		var data = $j(f).serialize();
-		var actionLink = $j(this).next('a')[0].pathname;
-
-		sendAjaxWithData(actionLink,data);
-	});
-
-	$j('#cancelAddContact').click(function()
-	{
-		var $actionLink = $j(this).next('a')[0].pathname ;
-		sendAjax($actionLink);
-	});
-
-}
-
-
-function initContactEditorHandle()
-{
-	$j('#saveEditContact').click(function()
-	{
-		var actionLink = $j(this).next('a')[0].pathname ;
-		var f = $j("[id*=contactEditorForm]")[0];
-		var data = $j(f).serialize();
-
-		sendAjaxWithData(actionLink,data);
-	});
-
-	$j('#cancelEditContact').click(function()
-	{
-		var $actionLink = $j(this).next('a')[0].pathname ;
-		sendAjax($actionLink);
-	});
-
-	$j('.dateOfBirth').datepicker({
-		changeMonth: true,
-		changeYear: true,
-		maxDate: '0'
-	});
-
-
-	if ($j(".suburb")) {
-		$j(".suburb").autocomplete({source: '/ui/internal/autocomplete.sub', minLength: 3,
-			select: function(event, ui) {
-				var value = ui.item.value;
-				var suburb = suburbFromString(value);
-				var postcode = postcodeFromString(value); // otherwise it thinks it's a number
-				var state = postcode.length==0 ? '' : stateFromPostcode(postcode);
-				$j(this).attr("value",suburb);
-				$j(".postcode").attr("value",postcode);
-				$j(".state").attr("value",state);
-
-			},
-			close: function(event, ui) {
-				var value = $j(this).attr("value");
-				var suburb = suburbFromString(value);
-				$j(this).attr("value",suburb);
-			}
-		});
-	}
-}
-
-function initAvetmissEditorHandle()
-{
-	$j("[id*=countryOfBirth]").autocomplete({source: '/ui/internal/autocomplete.country', minLength: 2});
-}
-
-
 function initAddCodeHandle()
 {
 	$j('#addCode').click(function()
@@ -237,66 +164,34 @@ function initCreditAccessHandle()
 	});
 }
 
-function initProceedToPaymentHandle()
-{
-//	$j("#proceedToPayment").click(function()
-//	{
-//		var actionLink = $j(this).next('a')[0].pathname ;
-//		sendAjax(actionLink);
-//	});
-
-	$j("#paymentSubmit").click(function()
-	{
-		var actionLink = $j(this).next('a')[0].pathname ;
-		var f = $j("[id*=paymentform]")[0];
-		var data = $j(f).serialize();
-		sendAjaxWithData(actionLink,data);
-	});
-
-	$j("#tryAgain").click(function()
-	{
-		var actionLink = $j(this).next('a')[0].pathname ;
-		sendAjax(actionLink);
-	});
-
-	$j("#abandon").click(function()
-	{
-		var actionLink = $j(this).next('a')[0].pathname ;
-		sendAjax(actionLink);
-	});
-}
-
-
-
 function sendAjaxWithData($actionLink,$data)
 {
-	$j('#checkout').block({
-		fadeIn: 700,
-		fadeOut: 700,
-		showOverlay: true,
-		message:null,
-		overlayCSS:  {
-			opacity:         0,
-			cursor:          'wait'
-		}
-	});
-	$j.ajax({
-		type: "GET",
-		url: $actionLink,
-		data: $data,
-		success: function(data) {
-			$j('#checkout').unblock();
-			$j('#checkout').html(data.content);
-			initHandles();
-		}
-	});
+    $j('#checkout').block({
+        fadeIn: 700,
+        fadeOut: 700,
+        showOverlay: true,
+        message:null,
+        overlayCSS:  {
+            opacity:         0,
+            cursor:          'wait'
+        }
+    });
+    $j.ajax({
+        type: "GET",
+        url: $actionLink,
+        data: $data,
+        success: function(data) {
+            $j('#checkout').unblock();
+            $j('#checkout').html(data.content);
+            initHandles();
+        }
+    });
 }
 
 function sendAjax($actionLink)
 {
-	sendAjaxWithData($actionLink,null);
+    sendAjaxWithData($actionLink,null);
 }
-
 
 function initHandles()
 {
@@ -305,13 +200,9 @@ function initHandles()
 	initAddConcessionHandle();
 	initConcessionEditorHandle();
 	initCheckoutHandle();
-	initAddContactHandle();
-	initContactEditorHandle();
 	initProductItemListHandle();
 	initAddCodeHandle();
 	initCreditAccessHandle();
-	initProceedToPaymentHandle();
-	initAvetmissEditorHandle();
 
     initHints($j("[id*=paymentform]").attr('id'));
     initHints($j("[id*=addContactForm]").attr('id'));

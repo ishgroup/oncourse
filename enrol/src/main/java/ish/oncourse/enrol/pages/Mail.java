@@ -1,126 +1,146 @@
 package ish.oncourse.enrol.pages;
 
+import ish.oncourse.enrol.checkout.ValidateHandler;
+import ish.oncourse.enrol.checkout.contact.AddContactParser;
+import ish.oncourse.enrol.components.MailingListBox;
+import ish.oncourse.enrol.services.student.IStudentService;
+import ish.oncourse.enrol.waitinglist.MailingListController;
+import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import org.apache.cayenne.ObjectContext;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
-import org.apache.cayenne.PersistenceState;
-import org.apache.tapestry5.Block;
-import org.apache.tapestry5.annotations.AfterRender;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.corelib.components.Zone;
-import org.apache.tapestry5.ioc.annotations.Inject;
-
 public class Mail {
 
-	@Property
-	private Tag currentMailingList;
-	
-	@Persist
-	private Contact contact;
-	
-	@Property
-	@Persist
-	private boolean submissionSucceded;
-	
-	@InjectComponent
-	@Property
-	private Zone addStudentBlock;
-	
-	@Inject
-	private ITagService tagService;
-	
-	private boolean reset;
-	
-	@Persist
-	private List<Tag> selectedMailingLists;
-	
-	@SetupRender
-	Object setupRender() {
-		if (getHasContact() && !selectedMailingLists.isEmpty()) {
-			return submit();
-		}
-		
-		return null;
-	}
-	
-	@AfterRender
-	void afterRender() {
-		if (submissionSucceded) {
-			
-			this.contact = null;
-			this.submissionSucceded = false;
-		}
-	}
+    private static final Logger LOGGER = Logger.getLogger(Mail.class);
 
-	@OnEvent(component = "addStudentAction", value = "selected")
-	void onSelectedFromAddStudentAction() {
-		reset = false;
-	}
+    @Property
+    private Tag currentMailingList;
 
-	@OnEvent(component = "resetAll", value = "selected")
-	void onSelectedFromReset() {
-		reset = true;
-	}
+    @Inject
+    private ITagService tagService;
 
-	@OnEvent(component = "detailsForm", value = "failure")
-	Block refreshContactEntry() {
-		this.selectedMailingLists.clear();
-		return addStudentBlock.getBody();
-	}
-	
-	@OnEvent(component="detailsForm", value="success")
-	Object submit() {
-		if (reset) {
-			this.contact = null;
-			this.selectedMailingLists.clear();
-		}
-		else {
-			if (getHasContact()) {
-				if (!selectedMailingLists.isEmpty()) {
-				
-					List<Tag> subscribedLists = tagService.getMailingListsContactSubscribed(contact);
-					
-					for (Tag list : selectedMailingLists) {
-						if (!subscribedLists.contains(list)) {
-							tagService.subscribeContactToMailingList(contact, list);
-						}
-					}
-					this.submissionSucceded = true;
-				}
-			}
-		}
-		return addStudentBlock.getBody();
-	}
-	
-	public boolean isNewStudent() {
-		return contact.getPersistenceState() == PersistenceState.NEW;
-	}
-	
-	public void setContact(Contact contact) {
-		this.contact = contact;
-	}
-	
-	public void setSelectedMailingLists(List<Tag> mailingLists) {
-		this.selectedMailingLists = mailingLists;
-	}
-	
-	public List<Tag> getSelectedMailingLists() {
-		return this.selectedMailingLists;
-	}
-	
-	public boolean getHasContact() {
-		return this.contact != null;
-	}
-	
-	public boolean getHasMailingLists() {
-		return !tagService.getMailingLists().isEmpty();
-	}
-	
+    @Inject
+    private ICayenneService cayenneService;
+
+    @Inject
+    private PreferenceController preferenceController;
+
+    @Inject
+    private IStudentService studentService;
+
+    @Inject
+    private Messages messages;
+
+    @Inject
+    private IWebSiteService webSiteService;
+
+    @Inject
+    private Request  request;
+
+    @InjectComponent
+    private MailingListBox mailingListBox;
+
+    @Property
+    @Persist
+    private MailingListController controller;
+
+    @Property
+    private ValidateHandler validateHandler;
+
+    @Persist
+    private boolean expiered;
+
+    @SetupRender
+    Object setupRender() {
+
+        if (expiered)
+            return null;
+
+        synchronized (this) {
+            if (controller == null) {
+                ObjectContext context = cayenneService.newContext();
+                controller = new MailingListController();
+                controller.setPreferenceController(preferenceController);
+                controller.setStudentService(studentService);
+                controller.setObjectContext(context);
+                controller.setMessages(messages);
+                controller.setTagService(tagService);
+                controller.setCollege((College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null));
+                controller.init();
+            }
+        }
+        validateHandler = new ValidateHandler();
+        validateHandler.setErrors(controller.getErrors());
+        return null;
+    }
+
+    @AfterRender
+    void afterRender() {
+        if (controller != null && controller.isFinished()) {
+           controller = null;
+        }
+        controller = null;
+        expiered = false;
+    }
+
+    @OnEvent(component = "addMailingList", value = "selected")
+    Object addMailingList() {
+
+        if (controller.isAddContact())
+        {
+            AddContactParser addContactParser = new AddContactParser();
+            addContactParser.setContactCredentials(controller.getContactCredentials());
+            addContactParser.setRequest(request);
+            addContactParser.parse();
+
+            controller.setErrors(addContactParser.getErrors());
+            controller.setSelectedMailingLists(mailingListBox.getSelectedMailingLists());
+            controller.addMailingList();
+        }
+        return this;
+    }
+
+    public boolean hasMailingLists()
+    {
+        return !tagService.getMailingLists().isEmpty();
+    }
+
+    public List<Tag> getSelectedMailingLists() {
+        return controller.getSelectedMailingLists();
+    }
+
+    @Deprecated //todo remove after the version was deployed
+    public void setSelectedMailingLists(List<Tag> selectedMailingLists) {
+    }
+
+    @Deprecated //todo remove after the version was deployed
+    public void setContact(Contact contact) {
+    }
+
+    public Object onException(Throwable cause) {
+        if (controller == null) {
+            LOGGER.warn("", cause);
+            expiered = true;
+        } else {
+            controller = null;
+            throw new IllegalArgumentException(cause);
+        }
+        return this;
+    }
+
+    public boolean isExpiered() {
+        return expiered;
+    }
 }

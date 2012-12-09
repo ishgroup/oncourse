@@ -19,8 +19,6 @@
 		</t:if>
 	</t:block>
 
-
-
 	<t:block t:id="addContact">
 		<p>To join the waiting list for course ${controller.course.name}, please complete the following form:</p>
 		<fieldset>
@@ -77,10 +75,12 @@
 			</t:if>
 			<t:if test="controller.addContact">
 				<t:delegate to="block:addContact"/>
-			</t:if>
+                <t:delegate to="block:notes"/>
+            </t:if>
 			<t:if test="controller.editContact">
 				<t:delegate to="block:editContact"/>
-			</t:if>
+                <t:delegate to="block:notes"/>
+            </t:if>
 			<t:delegate to="block:editDescription"/>
 		</t:form>
 		<button id="addWaitingList">Add to waiting list</button>
@@ -88,18 +88,19 @@
 	</t:block>
 
 
-	<t:block t:id="errors">
-		<div class="validation">
-			<div>${message:error-commonHeader}</div>
-			<ul>
-				<t:loop source="controller.errors.values()" value="error">
-					<li>${error}</li>
-				</t:loop>
-			</ul>
-		</div>
-	</t:block>
+    <t:block t:id="notes">
+        <p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
+        <p class="note">
+            <strong class="alert">Note</strong>: ${message:noteSameEmail}
+        </p>
+    </t:block>
 
-	<t:block t:id="exceptionHandling">
+    <t:block t:id="errors">
+        <span t:type="checkout/errors" errors="controller.errors" warnings="controller.warnings"/>
+    </t:block>
+
+
+    <t:block t:id="exceptionHandling">
 		<t:if test="unknownCourse">
 			Sorry, the course is not defined.
 		</t:if>
@@ -118,5 +119,6 @@
 
 
 	<script type="text/javascript" src="${asset:context:js/jquery.blockUI.js}"/>
-<script type="text/javascript" src="${asset:context:js/_waitinglist.js}"/>
+    <script type="text/javascript" src="${asset:context:js/_common.js}"/>
+    <script type="text/javascript" src="${asset:context:js/_waitinglist.js}"/>
 </html>

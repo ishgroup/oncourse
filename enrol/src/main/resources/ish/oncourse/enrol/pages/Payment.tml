@@ -40,7 +40,7 @@
 
     <t:if test="expired">
         <div class="error">
-            <p>${message:error-sessionExpired}</p>
+            <p>${message:message-sessionExpired}</p>
             <script type="text/javascript">
                 setTimeout("window.location.href='${coursesLink}'", 5000);
             </script>
@@ -51,6 +51,7 @@
 
 <link href="${asset:context:css/_checkout.css}" media="screen, print" rel="stylesheet"/>
 <script type="text/javascript" src="${asset:context:js/jquery.blockUI.js}"/>
+<script type="text/javascript" src="${asset:context:js/_common.js}"/>
 <script type="text/javascript" src="${asset:context:js/_checkout.js}"/>
 
 </html>
