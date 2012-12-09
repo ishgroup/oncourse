@@ -1,9 +1,7 @@
 package ish.oncourse.services.discount;
 
 import ish.oncourse.model.Discount;
-import ish.oncourse.model.MembershipProduct;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface IDiscountService {
@@ -41,10 +39,4 @@ public interface IDiscountService {
 	 * @return the discount with the given code if it exists null otherwise.
 	 */
 	Discount getByCode(String code);
-
-
-	/**
-	 * The method returns membership for this courseClass
-	 */
-	public List<MembershipProduct> getMemberships(Collection<Discount> discounts);
 }

@@ -1,20 +1,16 @@
 package ish.oncourse.services.discount;
 
 import ish.oncourse.model.Discount;
-import ish.oncourse.model.DiscountMembership;
-import ish.oncourse.model.MembershipProduct;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class DiscountService implements IDiscountService {
@@ -101,23 +97,5 @@ public class DiscountService implements IDiscountService {
 	private Expression getAvailableOnWebFilter() {
 		return ExpressionFactory.matchExp(Discount.IS_AVAILABLE_ON_WEB_PROPERTY, true);
 	}
-
-	/**
-	 * The method returns disconts for this courseClass which have memeberships
-	 */
-	public List<MembershipProduct> getMemberships(Collection<Discount> discounts)
-	{
-		Expression qualifier = ExpressionFactory.inExp(StringUtils.join(new String[]{
-				MembershipProduct.DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY,
-				DiscountMembership.DISCOUNT_PROPERTY},'.'),discounts);
-
-		SelectQuery query = new SelectQuery(MembershipProduct.class,qualifier);
-		query.addOrdering(MembershipProduct.NAME_PROPERTY,
-				SortOrder.ASCENDING);
-		List<MembershipProduct> result =  cayenneService.sharedContext().performQuery(query);
-		return result;
-	}
-
-
 }
 
