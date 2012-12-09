@@ -98,7 +98,6 @@ public class Mail {
         if (controller != null && controller.isFinished()) {
            controller = null;
         }
-        controller = null;
         expiered = false;
     }
 
