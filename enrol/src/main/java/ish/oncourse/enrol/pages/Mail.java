@@ -49,14 +49,13 @@ public class Mail {
     private IWebSiteService webSiteService;
 
     @Inject
-    private Request  request;
+    private Request request;
 
     @InjectComponent
     private MailingListBox mailingListBox;
 
     @InjectComponent
     private ContactEditorFieldSet contactEditorFieldSet;
-
 
 
     @Property
@@ -96,7 +95,7 @@ public class Mail {
     @AfterRender
     void afterRender() {
         if (controller != null && controller.isFinished()) {
-           controller = null;
+            controller = null;
         }
         expiered = false;
     }
@@ -104,21 +103,16 @@ public class Mail {
     @OnEvent(component = "addMailingList", value = "selected")
     Object addMailingList() {
 
-        if (controller.isAddContact())
-        {
+        if (controller.isAddContact()) {
             AddContactParser addContactParser = new AddContactParser();
             addContactParser.setContactCredentials(controller.getContactCredentials());
             addContactParser.setRequest(request);
             addContactParser.parse();
 
             controller.setErrors(addContactParser.getErrors());
-            controller.setSelectedMailingLists(mailingListBox.getSelectedMailingLists());
-            controller.addMailingList();
-        }
-        if (controller.isEditContact())
-        {
+        } else if (controller.isEditContact()) {
             ContactEditorParser parser = new ContactEditorParser();
-            parser.setMessages(messages);
+            parser.setMessages(contactEditorFieldSet.getMessages());
             parser.setContact(controller.getContact());
             parser.setVisibleFields(controller.getVisibleFields());
             parser.setContactFieldHelper(controller.getContactFieldHelper());
@@ -126,14 +120,13 @@ public class Mail {
             parser.setRequest(request);
             parser.parse();
             controller.setErrors(parser.getErrors());
-            controller.setSelectedMailingLists(mailingListBox.getSelectedMailingLists());
-            controller.addMailingList();
         }
+        controller.setSelectedMailingLists(mailingListBox.getSelectedMailingLists());
+        controller.addMailingList();
         return this;
     }
 
-    public boolean hasMailingLists()
-    {
+    public boolean hasMailingLists() {
         return !tagService.getMailingLists().isEmpty();
     }
 

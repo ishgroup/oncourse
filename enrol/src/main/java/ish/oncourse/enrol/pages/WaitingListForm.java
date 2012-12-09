@@ -143,9 +143,7 @@ public class WaitingListForm {
 			addContactValidator.setRequest(request);
 			addContactValidator.parse();
 			controller.setErrors(addContactValidator.getErrors());
-		}
-
-		if (controller.isEditContact())
+		} else if (controller.isEditContact())
 		{
 			ContactEditorParser parser = new ContactEditorParser();
 			parser.setContact(controller.getContact());
