@@ -42,7 +42,7 @@ public class SolrQueryBuilder {
     static final String PARAMETER_VALUE_sfield = "course_loc";
 
 
-    static final String FILTER_TEMPLATE_collegeId = "+collegeId:%s +doctype:course +end:[NOW TO *]";
+    static final String FILTER_TEMPLATE_collegeId = "+collegeId:%s +doctype:course end:[NOW TO *]";
     static final String FILTER_TEMPLATE_s = "(detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20)";
     static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
     static final String FILTER_TEMPLATE_when = "when:%s";
