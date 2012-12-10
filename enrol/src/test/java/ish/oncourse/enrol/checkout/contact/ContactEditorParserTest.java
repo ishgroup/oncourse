@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import static ish.oncourse.services.preference.ContactFieldHelper.FieldDescriptor;
-import static ish.oncourse.services.preference.ContactFieldHelper.FieldDescriptor.*;
+import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
+import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

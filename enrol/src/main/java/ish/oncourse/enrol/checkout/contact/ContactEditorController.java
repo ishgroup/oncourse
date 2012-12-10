@@ -4,10 +4,12 @@ import ish.oncourse.enrol.checkout.ADelegate;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
-import ish.oncourse.services.preference.ContactFieldHelper.FieldDescriptor;
+import ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 import org.apache.cayenne.ObjectContext;
 
 import java.util.List;
+
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet;
 
 public class ContactEditorController extends ADelegate implements ContactEditorDelegate {
 
@@ -20,6 +22,9 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 	private List<String> visibleFields;
 
 	private ContactFieldHelper contactFieldHelper;
+
+	private ContactFiledsSet contactFiledsSet;
+
 
 	@Override
 	public Contact getContact() {
@@ -70,7 +75,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	public ContactFieldHelper getContactFieldHelper() {
 		if (contactFieldHelper == null) {
-			contactFieldHelper = new ContactFieldHelper(getPurchaseController().getPreferenceController());
+			contactFieldHelper = new ContactFieldHelper(getPurchaseController().getPreferenceController(),contactFiledsSet);
 		}
 		return contactFieldHelper;
 	}
@@ -85,5 +90,13 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	public void setObjectContext(ObjectContext objectContext) {
 		this.objectContext = objectContext;
+	}
+
+	public ContactFiledsSet getContactFiledsSet() {
+		return contactFiledsSet;
+	}
+
+	public void setContactFiledsSet(ContactFiledsSet contactFiledsSet) {
+		this.contactFiledsSet = contactFiledsSet;
 	}
 }

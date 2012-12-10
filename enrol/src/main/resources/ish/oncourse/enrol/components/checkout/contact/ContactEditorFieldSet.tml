@@ -74,7 +74,7 @@
 
 	<t:if test="${delegate.visibleFields.contains('mobilePhoneNumber')}">
 		<p>
-		<label for="mobilePhoneNumber">${label('mobilePhoneNumber')}<t:if test="required('street')"><em title="${message:required}">*</em></t:if></label>
+		<label for="mobilePhoneNumber">${label('mobilePhoneNumber')}<t:if test="required('mobilePhoneNumber')"><em title="${message:required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('mobilePhoneNumber')}">
 			<t:textfield  t:id="mobilePhoneNumber" value="delegate.contact.mobilePhoneNumber" class="mobilePhoneNumber input-fixed ${validateHandler.errorClass('mobilePhoneNumber')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('mobilePhoneNumber')}"/>

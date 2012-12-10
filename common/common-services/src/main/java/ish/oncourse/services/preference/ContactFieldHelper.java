@@ -3,10 +3,10 @@ package ish.oncourse.services.preference;
 import ish.oncourse.model.Contact;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static ish.oncourse.services.preference.PreferenceController.*;
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet;
+import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
 /**
  * The class has been introduced to exclude duplicate code in tapestry page templates for portal and enrol applications.
@@ -19,110 +19,133 @@ public class ContactFieldHelper {
 
 	private PreferenceController preferenceController;
 
-	public ContactFieldHelper(PreferenceController preferenceController) {
+	private ContactFiledsSet contactFiledsSet;
+
+	public ContactFieldHelper(PreferenceController preferenceController, ContactFiledsSet contactFiledsSet) {
 		this.preferenceController = preferenceController;
+		this.contactFiledsSet = contactFiledsSet;
 	}
 
+	@Deprecated
 	public boolean getShowAddress() {
 		String require = preferenceController.getRequireContactAddressEnrolment();
 		return isShow(require);
 	}
 
+	@Deprecated
 	public boolean getRequireAddress() {
 		String require = preferenceController.getRequireContactAddressEnrolment();
 		return VALUE_Required.equals(require);
 	}
 
+	@Deprecated
 	public boolean getShowSuburb() {
 		String require = preferenceController.getRequireContactSuburbEnrolment();
 		return isShow(require);
 	}
 
+	@Deprecated
 	public boolean getRequireSuburb() {
 		String require = preferenceController.getRequireContactSuburbEnrolment();
 		return VALUE_Required.equals(require);
 	}
 
+	@Deprecated
 	public boolean getShowState() {
 		String require = preferenceController.getRequireContactStateEnrolment();
 		return isShow(require);
 	}
 
+	@Deprecated
 	public boolean getRequireState() {
 		String require = preferenceController.getRequireContactStateEnrolment();
 		return VALUE_Required.equals(require);
 	}
 
+	@Deprecated
 	public boolean getShowPostcode() {
 		String require = preferenceController.getRequireContactPostcodeEnrolment();
 		return isShow(require);
 	}
 
+	@Deprecated
 	public boolean getRequirePostcode() {
 		String require = preferenceController.getRequireContactPostcodeEnrolment();
 		return VALUE_Required.equals(require);
 	}
 
+	@Deprecated
 	public boolean getShowHomePhone() {
 		String require = preferenceController.getRequireContactHomePhoneEnrolment();
 		return isShow(require);
 	}
 
+	@Deprecated
 	public boolean getRequireHomePhone() {
 		String require = preferenceController.getRequireContactHomePhoneEnrolment();
 		return VALUE_Required.equals(require);
 	}
 
+	@Deprecated
 	public boolean getShowBusinessPhone() {
 		String require = preferenceController.getRequireContactBusinessPhoneEnrolment();
 		return isShow(require);
 	}
 
+	@Deprecated
 	public boolean getRequireBusinessPhone() {
 		String require = preferenceController.getRequireContactBusinessPhoneEnrolment();
 		return VALUE_Required.equals(require);
 	}
 
+	@Deprecated
 	public boolean getShowFax() {
 		String require = preferenceController.getRequireContactFaxEnrolment();
 		return isShow(require);
 	}
 
+	@Deprecated
 	public boolean getRequireFax() {
 		String require = preferenceController.getRequireContactFaxEnrolment();
 		return VALUE_Required.equals(require);
 	}
 
+	@Deprecated
 	public boolean getShowMobile() {
 		String require = preferenceController.getRequireContactMobileEnrolment();
 		return isShow(require);
 	}
 
+	@Deprecated
 	public boolean getRequireMobile() {
 		String require = preferenceController.getRequireContactMobileEnrolment();
 		return VALUE_Required.equals(require);
 	}
 
+	@Deprecated
 	public boolean getShowDateOfBirth() {
 		String require = preferenceController.getRequireContactDateOfBirthEnrolment();
 		return isShow(require);
 	}
 
-	private boolean isShow(String require) {
-		return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
-	}
-
+	@Deprecated
 	public boolean getRequireDateOfBirth() {
 		String require = preferenceController.getRequireContactDateOfBirthEnrolment();
 		return VALUE_Required.equals(require);
 	}
+
+
+	private boolean isShow(String require) {
+		return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+	}
+
 
 	public boolean isAllRequiredFieldFilled(Contact contact) {
 
 		FieldDescriptor[] fields = FieldDescriptor.values();
 
 		for (FieldDescriptor field : fields) {
-			String preferenceValue = preferenceController.getValue(field.preferenceName, false);
+			String preferenceValue = preferenceController.getValue(field.getPreferenceNameBy(contactFiledsSet), false);
 			Object propertyValue = contact.readProperty(field.propertyName);
 			if (VALUE_Required.equals(preferenceValue) && propertyValue == null) {
 				return false;
@@ -132,25 +155,20 @@ public class ContactFieldHelper {
 	}
 
 	public boolean isShowField(FieldDescriptor fieldDescriptor) {
-		String preferenceValue = preferenceController.getValue(fieldDescriptor.preferenceName, false);
+		String preferenceValue = preferenceController.getValue(fieldDescriptor.getPreferenceNameBy(contactFiledsSet), false);
 		return isShow(preferenceValue);
 	}
 
 	public boolean isRequiredField(FieldDescriptor fieldDescriptor) {
-		String preferenceValue = preferenceController.getValue(fieldDescriptor.preferenceName, false);
+		String preferenceValue = preferenceController.getValue(fieldDescriptor.getPreferenceNameBy(contactFiledsSet), false);
 		return VALUE_Required.equals(preferenceValue);
 	}
-
-	public PreferenceController getPreferenceController() {
-		return preferenceController;
-	}
-
 
 	public List<String> getVisibleFields(Contact contact, boolean isFillRequiredProperties) {
 		ArrayList<String> visibleFields = new ArrayList<String>();
 
-		ContactFieldHelper.FieldDescriptor[] fieldDescriptors = ContactFieldHelper.FieldDescriptor.values();
-		for (ContactFieldHelper.FieldDescriptor fieldDescriptor : fieldDescriptors) {
+		FieldDescriptor[] fieldDescriptors = FieldDescriptor.values();
+		for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
 			if (isVisible(fieldDescriptor, contact, isFillRequiredProperties))
 				visibleFields.add(fieldDescriptor.propertyName);
 		}
@@ -166,26 +184,7 @@ public class ContactFieldHelper {
 			return isShowField(descriptor);
 	}
 
-
-	public static enum FieldDescriptor {
-		street(REQUIRE_CONTACT_ADDRESS_ENROLMENT, Contact.STREET_PROPERTY, String.class),
-		suburb(REQUIRE_CONTACT_ADDRESS_ENROLMENT, Contact.SUBURB_PROPERTY, String.class),
-		postcode(REQUIRE_CONTACT_POSTCODE_ENROLMENT, Contact.POSTCODE_PROPERTY, String.class),
-		state(REQUIRE_CONTACT_STATE_ENROLMENT, Contact.STATE_PROPERTY, String.class),
-		homePhoneNumber(REQUIRE_CONTACT_HOME_PHONE_ENROLMENT, Contact.HOME_PHONE_NUMBER_PROPERTY, String.class),
-		businessPhoneNumber(REQUIRE_CONTACT_HOME_PHONE_ENROLMENT, Contact.BUSINESS_PHONE_NUMBER_PROPERTY, String.class),
-		faxNumber(REQUIRE_CONTACT_FAX_ENROLMENT, Contact.FAX_NUMBER_PROPERTY, String.class),
-		mobilePhoneNumber(REQUIRE_CONTACT_MOBILE_ENROLMENT, Contact.MOBILE_PHONE_NUMBER_PROPERTY, String.class),
-		dateOfBirth(REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT, Contact.DATE_OF_BIRTH_PROPERTY, Date.class);
-
-		public final String preferenceName;
-		public final String propertyName;
-		public final Class propertyClass;
-
-		private FieldDescriptor(String preferenceName, String propertyName, Class propertyClass) {
-			this.preferenceName = preferenceName;
-			this.propertyName = propertyName;
-			this.propertyClass = propertyClass;
-		}
+	public PreferenceController getPreferenceController() {
+		return preferenceController;
 	}
 }

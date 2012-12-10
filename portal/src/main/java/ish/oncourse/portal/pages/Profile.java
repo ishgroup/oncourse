@@ -1,10 +1,6 @@
 package ish.oncourse.portal.pages;
 
-import ish.common.types.AvetmissStudentDisabilityType;
-import ish.common.types.AvetmissStudentEnglishProficiency;
-import ish.common.types.AvetmissStudentIndigenousStatus;
-import ish.common.types.AvetmissStudentPriorEducation;
-import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.common.types.*;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
@@ -15,27 +11,21 @@ import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Profile {
 
@@ -206,8 +196,9 @@ public class Profile {
 	@SetupRender
 	void beforeRender() {
 
-        if (contactFieldHelper == null)
-            contactFieldHelper = new ContactFieldHelper(preferenceController);
+        if (contactFieldHelper == null) {
+			contactFieldHelper = new ContactFieldHelper(preferenceController, PreferenceController.ContactFiledsSet.enrolment);
+		}
 
 		if (contact == null) {
 			ObjectContext ctx = cayenneService.newContext();

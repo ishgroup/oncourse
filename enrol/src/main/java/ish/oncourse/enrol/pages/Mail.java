@@ -25,6 +25,8 @@ import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.mailinglist;
+
 public class Mail {
 
     private static final Logger LOGGER = Logger.getLogger(Mail.class);
@@ -85,6 +87,7 @@ public class Mail {
             if (controller == null) {
                 ObjectContext context = cayenneService.newContext();
                 controller = new MailingListController();
+				controller.setContactFiledsSet(mailinglist);
                 controller.setPreferenceController(preferenceController);
                 controller.setStudentService(studentService);
                 controller.setObjectContext(context);

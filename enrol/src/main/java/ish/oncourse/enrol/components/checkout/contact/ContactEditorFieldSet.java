@@ -15,6 +15,7 @@ import java.util.Date;
 
 import static ish.oncourse.enrol.checkout.contact.ContactEditorParser.LABEL_TEMPLATE;
 import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
+import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
 public class ContactEditorFieldSet {
 
@@ -30,29 +31,27 @@ public class ContactEditorFieldSet {
 	private PreferenceController preferenceController;
 
 	@Property
-	private ContactFieldHelper contactFieldHelper = new ContactFieldHelper(preferenceController);
-
-	@Property
 	private String fieldName;
 
 	@Inject
 	private Messages messages;
 
 
-	public Messages getMessages()
-	{
+	public Messages getMessages() {
 		return messages;
 	}
 
-	public boolean required(String fieldName)
-	{
-		return contactFieldHelper.isRequiredField(ContactFieldHelper.FieldDescriptor.valueOf(fieldName));
+	public ContactFieldHelper getContactFieldHelper() {
+		return delegate.getContactFieldHelper();
+	}
+
+	public boolean required(String fieldName) {
+		return getContactFieldHelper().isRequiredField(FieldDescriptor.valueOf(fieldName));
 	}
 
 
-	public String getValue()
-	{
-		ContactFieldHelper.FieldDescriptor fieldDescriptor = ContactFieldHelper.FieldDescriptor.valueOf(fieldName);
+	public String getValue() {
+		FieldDescriptor fieldDescriptor = FieldDescriptor.valueOf(fieldName);
 
 		Object value = delegate.getContact().readProperty(fieldName);
 		if (fieldDescriptor.propertyClass == Date.class && value != null)
@@ -75,14 +74,12 @@ public class ContactEditorFieldSet {
 	public void setDateOfBirth(String dateOfBirth) {
 	}
 
-	public String label(String fieldName)
-	{
+	public String label(String fieldName) {
 		return messages.get(String.format(LABEL_TEMPLATE, fieldName));
 	}
 
 
-	public DateFormat getDateFormat()
-	{
-		return  FormatUtils.getDateFormat(DATE_FIELD_FORMAT, delegate.getContact().getCollege().getTimeZone());
+	public DateFormat getDateFormat() {
+		return FormatUtils.getDateFormat(DATE_FIELD_FORMAT, delegate.getContact().getCollege().getTimeZone());
 	}
 }

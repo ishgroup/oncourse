@@ -34,9 +34,6 @@ public class ContactEditor {
 	@Inject
 	private PreferenceController preferenceController;
 
-	@Property
-	private ContactFieldHelper contactFieldHelper = new ContactFieldHelper(preferenceController);
-
 	@Inject
 	private Request request;
 
@@ -60,6 +57,11 @@ public class ContactEditor {
 		return delegate.isFillRequiredProperties();
 	}
 
+	public ContactFieldHelper getContactFieldHelper()
+	{
+		return delegate.getContactFieldHelper();
+	}
+
 	public Contact getContact() {
 		return delegate.getContact();
 	}
@@ -72,7 +74,7 @@ public class ContactEditor {
 			ContactEditorParser contactEditorValidator = new ContactEditorParser();
 			contactEditorValidator.setRequest(request);
 			contactEditorValidator.setContact(delegate.getContact());
-			contactEditorValidator.setContactFieldHelper(contactFieldHelper);
+			contactEditorValidator.setContactFieldHelper(getContactFieldHelper());
 			contactEditorValidator.setMessages(contactEditorFieldSet.getMessages());
 			contactEditorValidator.setVisibleFields(delegate.getVisibleFields());
 			contactEditorValidator.setDateFormat(getDateFormat());

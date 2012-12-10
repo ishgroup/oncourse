@@ -26,6 +26,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
+
 @Deprecated
 public class ContactDetails {
     /**
@@ -214,8 +216,9 @@ public class ContactDetails {
     @SetupRender
     void beforeRender() {
 
-        if (contactFieldHelper == null)
-                contactFieldHelper = new ContactFieldHelper(preferenceController);
+        if (contactFieldHelper == null) {
+			contactFieldHelper = new ContactFieldHelper(preferenceController, enrolment);
+		}
         englishProficiencySelectModel = new ISHEnumSelectModel(
                 AvetmissStudentEnglishProficiency.class, messages);
         indigenousStatusSelectModel = new ISHEnumSelectModel(AvetmissStudentIndigenousStatus.class,

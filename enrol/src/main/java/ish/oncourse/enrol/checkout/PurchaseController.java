@@ -18,7 +18,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -27,6 +26,7 @@ import java.util.*;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.*;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.*;
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
 import static java.util.Arrays.asList;
 
 /**
@@ -234,6 +234,7 @@ public class PurchaseController {
 		contactEditorController.setPurchaseController(this);
 		contactEditorController.setContact(contact);
 		contactEditorController.setObjectContext(contact.getObjectContext());
+		contactEditorController.setContactFiledsSet(enrolment);
 		if (!contact.getObjectId().isTemporary() && fillRequiredProperties)
 			contactEditorController.setFillRequiredProperties(fillRequiredProperties);
 	}

@@ -6,6 +6,7 @@ import ish.oncourse.services.preference.ContactFieldHelper;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.contactAlreadyAdded;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.*;
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
 
 public class ActionAddContact extends APurchaseAction {
 
@@ -15,7 +16,7 @@ public class ActionAddContact extends APurchaseAction {
 	@Override
 	protected void makeAction() {
 		if (getController().getState().equals(addContact)) {
-			boolean isAllRequiredFieldFilled = new ContactFieldHelper(getController().getPreferenceController()).isAllRequiredFieldFilled(contact);
+			boolean isAllRequiredFieldFilled = new ContactFieldHelper(getController().getPreferenceController(), enrolment).isAllRequiredFieldFilled(contact);
 			if (contact.getObjectId().isTemporary() || !isAllRequiredFieldFilled) {
 				getController().prepareContactEditor(contact, !isAllRequiredFieldFilled);
 				getController().setState(editContact);

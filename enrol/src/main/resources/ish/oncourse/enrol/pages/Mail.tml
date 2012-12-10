@@ -105,4 +105,7 @@
 
 
 <link href="${asset:context:css/_checkout.css}" media="screen, print" rel="stylesheet" />
+<script type="text/javascript" src="${asset:context:js/_common.js}"></script>
+
+
 </html>

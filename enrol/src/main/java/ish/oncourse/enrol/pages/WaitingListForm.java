@@ -26,18 +26,19 @@ import org.apache.tapestry5.services.Request;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.waitinglist;
+
 /**
  * Java class for WaitingListForm.tml.
- * 
+ *
  * @author ksenia
- * 
  */
 public class WaitingListForm {
 
 	private static final Logger LOGGER = Logger.getLogger(WaitingListForm.class);
 
 	public static final String KEY_ERROR_potentialStudent = "error-potentialStudent";
-	
+
 	@Property
 	@Persist
 	private WaitingListController controller;
@@ -49,10 +50,10 @@ public class WaitingListForm {
 	@Inject
 	private Request request;
 
-    @Inject
-    private HttpServletRequest httpRequest;
+	@Inject
+	private HttpServletRequest httpRequest;
 
-    @Inject
+	@Inject
 	private ICayenneService cayenneService;
 
 	@Inject
@@ -63,7 +64,7 @@ public class WaitingListForm {
 
 	@Inject
 	private IStudentService studentService;
-	
+
 	@Inject
 	private PreferenceController preferenceController;
 
@@ -71,16 +72,16 @@ public class WaitingListForm {
 	@Property
 	private Messages messages;
 
-    @InjectComponent
+	@InjectComponent
 	private ContactEditorFieldSet contactEditorFieldSet;
 
 	@Property
 	@Persist
 	private boolean expired;
 
-    @Property
-    @Persist
-    private String refererUrl;
+	@Property
+	@Persist
+	private String refererUrl;
 
 
 	@Property
@@ -90,50 +91,45 @@ public class WaitingListForm {
 	void beforeRender() {
 
 
-        if (expired)
-            return;
+		if (expired)
+			return;
 
-        synchronized (this)
-		{
-			if (controller == null)
-			{
-                String courseId = request.getParameter("courseId");
-                List<Course> result = courseService.loadByIds(courseId);
-                if (result.isEmpty())
-                {
-                    unknownCourse = true;
-                    return;
-                }
+		synchronized (this) {
+			if (controller == null) {
+				String courseId = request.getParameter("courseId");
+				List<Course> result = courseService.loadByIds(courseId);
+				if (result.isEmpty()) {
+					unknownCourse = true;
+					return;
+				}
 
-                ObjectContext context = cayenneService.newContext();
-					controller = new WaitingListController();
-					controller.setPreferenceController(preferenceController);
-					controller.setStudentService(studentService);
-					controller.setObjectContext(context);
-					controller.setMessages(messages);
-					controller.setCollege((College)context.localObject(webSiteService.getCurrentCollege().getObjectId(), null));
-					controller.setCourse((Course)context.localObject(result.get(0).getObjectId(), null));
-					controller.init();
+				ObjectContext context = cayenneService.newContext();
+				controller = new WaitingListController();
+				controller.setContactFiledsSet(waitinglist);
+				controller.setPreferenceController(preferenceController);
+				controller.setStudentService(studentService);
+				controller.setObjectContext(context);
+				controller.setMessages(messages);
+				controller.setCollege((College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null));
+				controller.setCourse((Course) context.localObject(result.get(0).getObjectId(), null));
+				controller.init();
 
-                refererUrl = request.getHeader("referer");
-            }
+				refererUrl = request.getHeader("referer");
+			}
 		}
-        validateHandler = new ValidateHandler();
-        validateHandler.setErrors(controller.getErrors());
-    }
+		validateHandler = new ValidateHandler();
+		validateHandler.setErrors(controller.getErrors());
+	}
 
-	@OnEvent(component = "addWaitingList",value = "selected")
-	public Object addWaitingList()
-	{
-		if (controller.isAddContact())
-		{
+	@OnEvent(component = "addWaitingList", value = "selected")
+	public Object addWaitingList() {
+		if (controller.isAddContact()) {
 			AddContactParser addContactValidator = new AddContactParser();
 			addContactValidator.setContactCredentials(controller.getContactCredentials());
 			addContactValidator.setRequest(request);
 			addContactValidator.parse();
 			controller.setErrors(addContactValidator.getErrors());
-		} else if (controller.isEditContact())
-		{
+		} else if (controller.isEditContact()) {
 			ContactEditorParser parser = new ContactEditorParser();
 			parser.setContact(controller.getContact());
 			parser.setContactFieldHelper(controller.getContactFieldHelper());
@@ -147,11 +143,10 @@ public class WaitingListForm {
 
 
 		String value = StringUtils.trimToNull(request.getParameter(WaitingList.POTENTIAL_STUDENTS_PROPERTY));
-		if (StringUtils.isNumeric(value) )
-		{
+		if (StringUtils.isNumeric(value)) {
 			controller.getWaitingList().setPotentialStudents(Integer.valueOf(value));
 			if (controller.getWaitingList().getPotentialStudents() < 0 || controller.getWaitingList().getPotentialStudents() > 30)
-					controller.addError(WaitingList.POTENTIAL_STUDENTS_PROPERTY, messages.format(KEY_ERROR_potentialStudent));
+				controller.addError(WaitingList.POTENTIAL_STUDENTS_PROPERTY, messages.format(KEY_ERROR_potentialStudent));
 		}
 		value = StringUtils.trimToNull(request.getParameter(WaitingList.DETAIL_PROPERTY));
 		if (value != null)
@@ -161,39 +156,38 @@ public class WaitingListForm {
 	}
 
 
-	public void resetPersistProperties()
-	{
+	public void resetPersistProperties() {
 		expired = false;
 		controller = null;
-        refererUrl = null;
+		refererUrl = null;
 	}
 
 
 	public String getCoursesLink() {
-        return (refererUrl != null) ? refererUrl : HTMLUtils.getUrlBy(request, Courses.class);
+		return (refererUrl != null) ? refererUrl : HTMLUtils.getUrlBy(request, Courses.class);
 	}
 
 
-    @AfterRender
-    void afterRender() {
-        if (controller != null && controller.isFinished()) {
-           resetPersistProperties();
-        }
-        expired = false;
-    }
+	@AfterRender
+	void afterRender() {
+		if (controller != null && controller.isFinished()) {
+			resetPersistProperties();
+		}
+		expired = false;
+	}
 
-    public Object onException(Throwable cause) {
-        if (controller == null) {
-            LOGGER.warn("", cause);
-            expired = true;
-        } else {
-            if (controller != null) {
-                controller.getObjectContext().rollbackChanges();
-            }
-            resetPersistProperties();
-            throw new IllegalArgumentException(cause);
-        }
-        return this;
-    }
+	public Object onException(Throwable cause) {
+		if (controller == null) {
+			LOGGER.warn("", cause);
+			expired = true;
+		} else {
+			if (controller != null) {
+				controller.getObjectContext().rollbackChanges();
+			}
+			resetPersistProperties();
+			throw new IllegalArgumentException(cause);
+		}
+		return this;
+	}
 
 }

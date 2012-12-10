@@ -17,205 +17,214 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet;
+
 
 public abstract class AContactController implements AddContactDelegate, ContactEditorDelegate {
 
 
-    private IStudentService studentService;
-    private ObjectContext objectContext;
-    private PreferenceController preferenceController;
-    private ContactFieldHelper contactFieldHelper;
+	private IStudentService studentService;
+	private ObjectContext objectContext;
+	private PreferenceController preferenceController;
+	private ContactFieldHelper contactFieldHelper;
+	private ContactFiledsSet contactFiledsSet;
 
-    private College college;
+	private College college;
 
-    private ContactCredentials contactCredentials = new ContactCredentials();
-    private Contact contact;
+	private ContactCredentials contactCredentials = new ContactCredentials();
+	private Contact contact;
 
-    private Map<String, String> errors = new HashMap<String, String>();
-    private Map<String, String> warnings = new HashMap<String, String>();
+	private Map<String, String> errors = new HashMap<String, String>();
+	private Map<String, String> warnings = new HashMap<String, String>();
 
-    private List<String> visibleFields;
+	private List<String> visibleFields;
 
-    private boolean isFillRequiredProperties = false;
-    private State state = State.INIT;
+	private boolean isFillRequiredProperties = false;
+	private State state = State.INIT;
 
-    private Messages messages;
+	private Messages messages;
 
-    /**
-     * AddContactDelegate implementation
-     */
-    @Override
-    public void resetContact() {
-    }
+	/**
+	 * AddContactDelegate implementation
+	 */
+	@Override
+	public void resetContact() {
+	}
 
-    @Override
-    public void addContact() {
-        ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
-        contactCredentialsEncoder.setContactCredentials(contactCredentials);
-        contactCredentialsEncoder.setCollege(college);
-        contactCredentialsEncoder.setObjectContext(objectContext);
-        contactCredentialsEncoder.setStudentService(studentService);
-        contactCredentialsEncoder.encode();
-        contact = contactCredentialsEncoder.getContact();
+	@Override
+	public void addContact() {
+		ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
+		contactCredentialsEncoder.setContactCredentials(contactCredentials);
+		contactCredentialsEncoder.setCollege(college);
+		contactCredentialsEncoder.setObjectContext(objectContext);
+		contactCredentialsEncoder.setStudentService(studentService);
+		contactCredentialsEncoder.encode();
+		contact = contactCredentialsEncoder.getContact();
 
-        if (contact.getObjectId().isTemporary()) {
-            visibleFields = contactFieldHelper.getVisibleFields(contact, false);
-            state = State.EDIT_CONTACT;
-        } else {
-            isFillRequiredProperties = !(contactFieldHelper.isAllRequiredFieldFilled(contact));
-            if (isFillRequiredProperties) {
-                visibleFields = contactFieldHelper.getVisibleFields(contact, true);
-                state = State.EDIT_CONTACT;
-            } else {
-                saveContact();
-            }
-        }
-    }
+		if (contact.getObjectId().isTemporary()) {
+			visibleFields = contactFieldHelper.getVisibleFields(contact, false);
+			state = State.EDIT_CONTACT;
+		} else {
+			isFillRequiredProperties = !(contactFieldHelper.isAllRequiredFieldFilled(contact));
+			if (isFillRequiredProperties) {
+				visibleFields = contactFieldHelper.getVisibleFields(contact, true);
+				state = State.EDIT_CONTACT;
+			} else {
+				saveContact();
+			}
+		}
+	}
 
-    public void init() {
-        contactFieldHelper = new ContactFieldHelper(preferenceController);
-        state = State.ADD_CONTACT;
-    }
+	public void init() {
+		contactFieldHelper = new ContactFieldHelper(preferenceController, contactFiledsSet);
+		state = State.ADD_CONTACT;
+	}
 
-    @Override
-    public ContactCredentials getContactCredentials() {
-        return contactCredentials;
-    }
+	@Override
+	public ContactCredentials getContactCredentials() {
+		return contactCredentials;
+	}
 
-    //ContactEditorDelegate implementation
-    @Override
-    public Contact getContact() {
-        return contact;
-    }
+	//ContactEditorDelegate implementation
+	@Override
+	public Contact getContact() {
+		return contact;
+	}
 
-    protected void setContact(Contact contact)
-    {
-        this.contact = contact;
-    }
+	protected void setContact(Contact contact) {
+		this.contact = contact;
+	}
 
-    @Override
-    public boolean isFillRequiredProperties() {
-        return isFillRequiredProperties;
-    }
+	@Override
+	public boolean isFillRequiredProperties() {
+		return isFillRequiredProperties;
+	}
 
-    protected void setFillRequiredProperties(boolean fillRequiredProperties) {
-        isFillRequiredProperties = fillRequiredProperties;
-    }
-
-
-    @Override
-    public void saveContact() {
-
-        objectContext.commitChanges();
-        state = State.FINISHED;
-    }
-
-    @Override
-    public List<String> getVisibleFields() {
-        return visibleFields;
-    }
-
-    @Override
-    public void cancelContact() {
-        objectContext.rollbackChanges();
-    }
-
-    public void addError(String key, String error) {
-        this.errors.put(key, error);
-    }
-
-    public void addWarning(String key, String warning) {
-        this.warnings.put(key, warning);
-    }
-
-    @Override
-    public void setErrors(Map<String, String> errors) {
-        this.errors.clear();
-        this.errors.putAll(errors);
-    }
-
-    @Override
-    public Map<String, String> getErrors() {
-        return Collections.unmodifiableMap(errors);
-    }
-
-    public Map<String, String> getWarnings() {
-        return Collections.unmodifiableMap(warnings);
-    }
+	protected void setFillRequiredProperties(boolean fillRequiredProperties) {
+		isFillRequiredProperties = fillRequiredProperties;
+	}
 
 
-    public void setPreferenceController(PreferenceController preferenceController) {
-        this.preferenceController = preferenceController;
-    }
+	@Override
+	public void saveContact() {
 
-    public void setObjectContext(ObjectContext objectContext) {
-        this.objectContext = objectContext;
-    }
+		objectContext.commitChanges();
+		state = State.FINISHED;
+	}
 
-    public void setCollege(College college) {
-        this.college = college;
-    }
+	@Override
+	public List<String> getVisibleFields() {
+		return visibleFields;
+	}
 
-    public void setStudentService(IStudentService studentService) {
-        this.studentService = studentService;
-    }
+	@Override
+	public void cancelContact() {
+		objectContext.rollbackChanges();
+	}
 
-    public boolean isFinished() {
-        return state == State.FINISHED;
-    }
+	public void addError(String key, String error) {
+		this.errors.put(key, error);
+	}
 
-    public boolean isAddContact() {
-        return state == State.ADD_CONTACT;
-    }
+	public void addWarning(String key, String warning) {
+		this.warnings.put(key, warning);
+	}
 
-    public boolean isEditContact() {
-        return state == State.EDIT_CONTACT;
-    }
+	@Override
+	public void setErrors(Map<String, String> errors) {
+		this.errors.clear();
+		this.errors.putAll(errors);
+	}
 
-    public Messages getMessages()
-    {
-        return messages;
-    }
+	@Override
+	public Map<String, String> getErrors() {
+		return Collections.unmodifiableMap(errors);
+	}
 
-    public void setMessages(Messages messages) {
-        this.messages = messages;
-    }
-
-    public ContactFieldHelper getContactFieldHelper() {
-        return this.contactFieldHelper;
-    }
-
-    public ObjectContext getObjectContext() {
-        return objectContext;
-    }
+	public Map<String, String> getWarnings() {
+		return Collections.unmodifiableMap(warnings);
+	}
 
 
-    protected State getState() {
-        return state;
-    }
+	public void setPreferenceController(PreferenceController preferenceController) {
+		this.preferenceController = preferenceController;
+	}
 
-    protected void setState(State state) {
-        this.state = state;
-    }
+	public void setObjectContext(ObjectContext objectContext) {
+		this.objectContext = objectContext;
+	}
 
-    protected void setVisibleFields(List<String> visibleFields) {
-        this.visibleFields = visibleFields;
-    }
+	public void setCollege(College college) {
+		this.college = college;
+	}
+
+	public void setStudentService(IStudentService studentService) {
+		this.studentService = studentService;
+	}
+
+	public boolean isFinished() {
+		return state == State.FINISHED;
+	}
+
+	public boolean isAddContact() {
+		return state == State.ADD_CONTACT;
+	}
+
+	public boolean isEditContact() {
+		return state == State.EDIT_CONTACT;
+	}
+
+	public Messages getMessages() {
+		return messages;
+	}
+
+	public void setMessages(Messages messages) {
+		this.messages = messages;
+	}
+
+	public ContactFieldHelper getContactFieldHelper() {
+		return this.contactFieldHelper;
+	}
+
+	public ObjectContext getObjectContext() {
+		return objectContext;
+	}
 
 
-    public College getCollege() {
-        return college;
-    }
+	protected State getState() {
+		return state;
+	}
 
-    public IStudentService getStudentService() {
-        return studentService;
-    }
+	protected void setState(State state) {
+		this.state = state;
+	}
 
-    public static enum State {
-        INIT,
-        ADD_CONTACT,
-        EDIT_CONTACT,
-        FINISHED
-    }
+	protected void setVisibleFields(List<String> visibleFields) {
+		this.visibleFields = visibleFields;
+	}
+
+
+	public College getCollege() {
+		return college;
+	}
+
+	public IStudentService getStudentService() {
+		return studentService;
+	}
+
+	public ContactFiledsSet getContactFiledsSet() {
+		return contactFiledsSet;
+	}
+
+	public void setContactFiledsSet(ContactFiledsSet contactFiledsSet) {
+		this.contactFiledsSet = contactFiledsSet;
+	}
+
+	public static enum State {
+		INIT,
+		ADD_CONTACT,
+		EDIT_CONTACT,
+		FINISHED
+	}
 
 }

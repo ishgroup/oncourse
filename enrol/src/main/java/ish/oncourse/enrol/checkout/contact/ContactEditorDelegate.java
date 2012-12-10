@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.enrol.checkout.IDelegate;
 import ish.oncourse.model.Contact;
+import ish.oncourse.services.preference.ContactFieldHelper;
 
 import java.util.List;
 
@@ -16,5 +17,7 @@ public interface ContactEditorDelegate extends IDelegate {
 	List<String> getVisibleFields();
 
 	void cancelContact();
+
+	ContactFieldHelper getContactFieldHelper();
 
 }

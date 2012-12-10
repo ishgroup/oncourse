@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
+
 public class ContactEditorParser {
 	private Request request;
 	private Contact contact;
@@ -56,7 +58,7 @@ public class ContactEditorParser {
 
 	void parseContactFields() {
 		for (String visibleField : visibleFields) {
-			ContactFieldHelper.FieldDescriptor fieldDescriptor = ContactFieldHelper.FieldDescriptor.valueOf(visibleField);
+			FieldDescriptor fieldDescriptor = FieldDescriptor.valueOf(visibleField);
 			String stringValue = StringUtils.trimToNull(request.getParameter(visibleField));
             Object value = stringValue;
 			if (stringValue == null) {
@@ -78,7 +80,7 @@ public class ContactEditorParser {
 		}
 	}
 
-	private String getRequiredMessage(ContactFieldHelper.FieldDescriptor fieldDescriptor) {
+	private String getRequiredMessage(FieldDescriptor fieldDescriptor) {
 		return messages.format(KEY_ERROR_MESSAGE_required, messages.get(String.format(LABEL_TEMPLATE, fieldDescriptor.propertyName)));
 	}
 
@@ -119,7 +121,7 @@ public class ContactEditorParser {
 	}
 
 
-	String validate(ContactFieldHelper.FieldDescriptor fieldDescriptor) {
+	String validate(FieldDescriptor fieldDescriptor) {
 
 		switch (fieldDescriptor) {
 			case street:

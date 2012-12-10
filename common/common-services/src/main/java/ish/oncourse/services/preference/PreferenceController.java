@@ -1,6 +1,7 @@
 package ish.oncourse.services.preference;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -13,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.Date;
 import java.util.List;
 
 public class PreferenceController extends CommonPreferenceController {
@@ -22,36 +24,7 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String NTIS_LAST_UPDATE = "ntis.lastupdate";
 	private static final String POSTCODES_LAST_UPDATE = "postcodes.lastupdate";
 
-	static final String REQUIRE_CONTACT_ADDRESS_ENROLMENT = "enrolment.contact.address.required";
-	static final String REQUIRE_CONTACT_SUBURB_ENROLMENT = "enrolment.contact.suburb.required";
-	static final String REQUIRE_CONTACT_STATE_ENROLMENT = "enrolment.contact.state.required";
-	static final String REQUIRE_CONTACT_POSTCODE_ENROLMENT = "enrolment.contact.postcode.required";
-	static final String REQUIRE_CONTACT_HOME_PHONE_ENROLMENT = "enrolment.contact.homephone.required";
-	static final String REQUIRE_CONTACT_BUSINESS_PHONE_ENROLMENT = "enrolment.contact.businessphone.required";
-	static final String REQUIRE_CONTACT_FAX_ENROLMENT = "enrolment.contact.fax.required";
-	static final String REQUIRE_CONTACT_MOBILE_ENROLMENT = "enrolment.contact.mobile.required";
-	static final String REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT = "enrolment.contact.birth.required";
 	static final String ENROLMENT_MIN_AGE = "enrolment.min.age";
-
-	private static final String REQUIRE_CONTACT_ADDRESS_WAITING_LIST = "waitinglist.contact.address.required";
-	private static final String REQUIRE_CONTACT_SUBURB_WAITING_LIST = "waitinglist.contact.suburb.required";
-	private static final String REQUIRE_CONTACT_STATE_WAITING_LIST = "waitinglist.contact.state.required";
-	private static final String REQUIRE_CONTACT_POSTCODE_WAITING_LIST = "waitinglist.contact.postcode.required";
-	private static final String REQUIRE_CONTACT_HOME_PHONE_WAITING_LIST = "waitinglist.contact.homephone.required";
-	private static final String REQUIRE_CONTACT_BUSINESS_PHONE_WAITING_LIST = "waitinglist.contact.businessphone.required";
-	private static final String REQUIRE_CONTACT_FAX_WAITING_LIST = "waitinglist.contact.fax.required";
-	private static final String REQUIRE_CONTACT_MOBILE_WAITING_LIST = "waitinglist.contact.mobile.required";
-	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST = "waitinglist.contact.birthdate.required";
-
-	private static final String REQUIRE_CONTACT_ADDRESS_MAILING_LIST = "mailinglist.contact.address.required";
-	private static final String REQUIRE_CONTACT_SUBURB_MAILING_LIST = "mailinglist.contact.suburb.required";
-	private static final String REQUIRE_CONTACT_STATE_MAILING_LIST = "mailinglist.contact.state.required";
-	private static final String REQUIRE_CONTACT_POSTCODE_MAILING_LIST = "mailinglist.contact.postcode.required";
-	private static final String REQUIRE_CONTACT_HOME_PHONE_MAILING_LIST = "mailinglist.contact.homephone.required";
-	private static final String REQUIRE_CONTACT_BUSINESS_PHONE_MAILING_LIST = "mailinglist.contact.businessphone.required";
-	private static final String REQUIRE_CONTACT_FAX_MAILING_LIST = "mailinglist.contact.fax.required";
-	private static final String REQUIRE_CONTACT_MOBILE_MAILING_LIST = "mailinglist.contact.mobile.required";
-	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST = "mailinglist.contact.birth.required";
 
 	private static final String HIDE_STUDENT_DETAILS_FROM_TUTOR = "student.details.hidden";
 	private static final String TUTOR_FEEDBACK_EMAIL = "tutor.feedbackemail";
@@ -314,220 +287,277 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(POSTCODES_LAST_UPDATE, false, value);
 	}
 
+
+	@Deprecated
 	public synchronized String getRequireContactAddressWaitingList() {
-		return getValue(REQUIRE_CONTACT_ADDRESS_WAITING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.street);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactAddressWaitingList(String value) {
-		setValue(REQUIRE_CONTACT_ADDRESS_WAITING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.street, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactSuburbWaitingList() {
-		return getValue(REQUIRE_CONTACT_SUBURB_WAITING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.suburb);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactSuburbWaitingList(String value) {
-		setValue(REQUIRE_CONTACT_SUBURB_WAITING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.suburb, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactStateWaitingList() {
-		return getValue(REQUIRE_CONTACT_STATE_WAITING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.state);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactStateWaitingList(String value) {
-		setValue(REQUIRE_CONTACT_STATE_WAITING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.state, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactPostcodeWaitingList() {
-		return getValue(REQUIRE_CONTACT_POSTCODE_WAITING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.postcode);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactPostcodeWaitingList(String value) {
-		setValue(REQUIRE_CONTACT_POSTCODE_WAITING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.postcode, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactHomePhoneWaitingList() {
-		return getValue(REQUIRE_CONTACT_HOME_PHONE_WAITING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.homePhoneNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactHomePhoneWaitingList(String value) {
-		setValue(REQUIRE_CONTACT_HOME_PHONE_WAITING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.homePhoneNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactBusinessPhoneWaitingList() {
-		return getValue(REQUIRE_CONTACT_BUSINESS_PHONE_WAITING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.businessPhoneNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactBusinessPhoneWaitingList(String value) {
-		setValue(REQUIRE_CONTACT_BUSINESS_PHONE_WAITING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.businessPhoneNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactFaxWaitingList() {
-		return getValue(REQUIRE_CONTACT_FAX_WAITING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.faxNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactFaxWaitingList(String value) {
-		setValue(REQUIRE_CONTACT_FAX_WAITING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.faxNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactMobileWaitingList() {
-		return getValue(REQUIRE_CONTACT_MOBILE_WAITING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.mobilePhoneNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactMobileWaitingList(String value) {
-		setValue(REQUIRE_CONTACT_MOBILE_WAITING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.mobilePhoneNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactDateOfBirthWaitingList() {
-		return getValue(REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.dateOfBirth);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactDateOfBirthWaitingList(String value) {
-		setValue(REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.dateOfBirth, value);
 	}
 
+	//mailing list
+	@Deprecated
 	public synchronized String getRequireContactAddressMailingList() {
-		return getValue(REQUIRE_CONTACT_ADDRESS_MAILING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.street);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactAddressMailingList(String value) {
-		setValue(REQUIRE_CONTACT_ADDRESS_MAILING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.street, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactSuburbMailingList() {
-		return getValue(REQUIRE_CONTACT_SUBURB_MAILING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.suburb);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactSuburbMailingList(String value) {
-		setValue(REQUIRE_CONTACT_SUBURB_MAILING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.suburb, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactStateMailingList() {
-		return getValue(REQUIRE_CONTACT_STATE_MAILING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.state);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactStateMailingList(String value) {
-		setValue(REQUIRE_CONTACT_STATE_MAILING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.state, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactPostcodeMailingList() {
-		return getValue(REQUIRE_CONTACT_POSTCODE_MAILING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.postcode);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactPostcodeMailingList(String value) {
-		setValue(REQUIRE_CONTACT_POSTCODE_MAILING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.postcode, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactHomePhoneMailingList() {
-		return getValue(REQUIRE_CONTACT_HOME_PHONE_MAILING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.homePhoneNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactHomePhoneMailingList(String value) {
-		setValue(REQUIRE_CONTACT_HOME_PHONE_MAILING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.homePhoneNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactBusinessPhoneMailingList() {
-		return getValue(REQUIRE_CONTACT_BUSINESS_PHONE_MAILING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.businessPhoneNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactBusinessPhoneMailingList(String value) {
-		setValue(REQUIRE_CONTACT_BUSINESS_PHONE_MAILING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.businessPhoneNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactFaxMailingList() {
-		return getValue(REQUIRE_CONTACT_FAX_MAILING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.faxNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactFaxMailingList(String value) {
-		setValue(REQUIRE_CONTACT_FAX_MAILING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.faxNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactMobileMailingList() {
-		return getValue(REQUIRE_CONTACT_MOBILE_MAILING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.mobilePhoneNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactMobileMailingList(String value) {
-		setValue(REQUIRE_CONTACT_MOBILE_MAILING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.mobilePhoneNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactDateOfBirthMailingList() {
-		return getValue(REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST, false);
+		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.dateOfBirth);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactDateOfBirthMailingList(String value) {
-		setValue(REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST, false, value);
+		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.dateOfBirth, value);
 	}
 
+	//enrolment
+	@Deprecated
 	public synchronized String getRequireContactAddressEnrolment() {
-		return getValue(REQUIRE_CONTACT_ADDRESS_ENROLMENT, false);
+		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.street);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactAddressEnrolment(String value) {
-		setValue(REQUIRE_CONTACT_ADDRESS_ENROLMENT, false, value);
+		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.street, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactSuburbEnrolment() {
-		return getValue(REQUIRE_CONTACT_SUBURB_ENROLMENT, false);
+		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.suburb);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactSuburbEnrolment(String value) {
-		setValue(REQUIRE_CONTACT_SUBURB_ENROLMENT, false, value);
+		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.suburb, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactStateEnrolment() {
-		return getValue(REQUIRE_CONTACT_STATE_ENROLMENT, false);
+		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.state);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactStateEnrolment(String value) {
-		setValue(REQUIRE_CONTACT_STATE_ENROLMENT, false, value);
+		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.state, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactPostcodeEnrolment() {
-		return getValue(REQUIRE_CONTACT_POSTCODE_ENROLMENT, false);
+		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.postcode);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactPostcodeEnrolment(String value) {
-		setValue(REQUIRE_CONTACT_POSTCODE_ENROLMENT, false, value);
+		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.postcode, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactHomePhoneEnrolment() {
-		return getValue(REQUIRE_CONTACT_HOME_PHONE_ENROLMENT, false);
+		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.homePhoneNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactHomePhoneEnrolment(String value) {
-		setValue(REQUIRE_CONTACT_HOME_PHONE_ENROLMENT, false, value);
+		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.homePhoneNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactBusinessPhoneEnrolment() {
-		return getValue(REQUIRE_CONTACT_BUSINESS_PHONE_ENROLMENT, false);
+		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.businessPhoneNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactBusinessPhoneEnrolment(String value) {
-		setValue(REQUIRE_CONTACT_BUSINESS_PHONE_ENROLMENT, false, value);
+		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.businessPhoneNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactFaxEnrolment() {
-		return getValue(REQUIRE_CONTACT_FAX_ENROLMENT, false);
+		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.faxNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactFaxEnrolment(String value) {
-		setValue(REQUIRE_CONTACT_FAX_ENROLMENT, false, value);
+		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.faxNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactMobileEnrolment() {
-		return getValue(REQUIRE_CONTACT_MOBILE_ENROLMENT, false);
+		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.mobilePhoneNumber);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactMobileEnrolment(String value) {
-		setValue(REQUIRE_CONTACT_MOBILE_ENROLMENT, false, value);
+		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.mobilePhoneNumber, value);
 	}
 
+	@Deprecated
 	public synchronized String getRequireContactDateOfBirthEnrolment() {
-		return getValue(REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT, false);
+		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.dateOfBirth);
 	}
 
+	@Deprecated
 	public synchronized void setRequireContactDateOfBirthEnrolment(String value) {
-		setValue(REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT, false, value);
+		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.dateOfBirth, value);
 	}
 
 	public synchronized boolean getHideStudentDetailsFromTutor() {
@@ -620,8 +650,7 @@ public class PreferenceController extends CommonPreferenceController {
 
 		if (value != null && StringUtils.isNumeric(value)) {
 			return Integer.valueOf(value);
-		}
-		else{
+		} else {
 			LOGGER.warn(String.format("Cannot get property %s", ENROLMENT_MIN_AGE));
 			return 0;
 		}
@@ -630,4 +659,48 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setEnrolmentMinAge(Integer age) {
 		setValue(ENROLMENT_MIN_AGE, false, age.toString());
 	}
+
+	public String getRequireContactField(ContactFiledsSet contactFiledsSet, FieldDescriptor field) {
+		return getValue(field.getPreferenceNameBy(contactFiledsSet), false);
+	}
+
+
+	public void setRequireContactField(ContactFiledsSet contactFiledsSet, FieldDescriptor field, String value) {
+		setValue(field.getPreferenceNameBy(contactFiledsSet), false, value);
+	}
+
+
+	public static enum ContactFiledsSet {
+		enrolment,
+		waitinglist,
+		mailinglist,
+	}
+
+
+	public static enum FieldDescriptor {
+		street("address", Contact.STREET_PROPERTY, String.class),
+		suburb("suburb", Contact.SUBURB_PROPERTY, String.class),
+		postcode("postcode", Contact.POSTCODE_PROPERTY, String.class),
+		state("state", Contact.STATE_PROPERTY, String.class),
+		homePhoneNumber("homephone", Contact.HOME_PHONE_NUMBER_PROPERTY, String.class),
+		businessPhoneNumber("businessphone", Contact.BUSINESS_PHONE_NUMBER_PROPERTY, String.class),
+		faxNumber("fax", Contact.FAX_NUMBER_PROPERTY, String.class),
+		mobilePhoneNumber("mobile", Contact.MOBILE_PHONE_NUMBER_PROPERTY, String.class),
+		dateOfBirth("birth", Contact.DATE_OF_BIRTH_PROPERTY, Date.class);
+
+		private final String preferenceName;
+		public final String propertyName;
+		public final Class propertyClass;
+
+		private FieldDescriptor(String preferenceName, String propertyName, Class propertyClass) {
+			this.preferenceName = preferenceName;
+			this.propertyName = propertyName;
+			this.propertyClass = propertyClass;
+		}
+
+		public String getPreferenceNameBy(ContactFiledsSet contactFiledsSet) {
+			return String.format("%s.contact.%s.required", contactFiledsSet.name(), this.preferenceName);
+		}
+	}
+
 }
