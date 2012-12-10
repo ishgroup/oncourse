@@ -76,9 +76,23 @@ public class PaymentEditor {
 	@SetupRender
 	void beforeRender() {
 		userAgreed = false;
-	}
+        initExpiry();
+    }
 
-	public ValidateHandler getValidateHandler()
+    private void initExpiry() {
+        if (delegate.getPaymentIn().getCreditCardExpiry() != null)
+        {
+            String[] values =  delegate.getPaymentIn().getCreditCardExpiry().split("/");
+            if (values.length == 2)
+            {
+                expiryMonth = values[0];
+                if (StringUtils.isNumeric(values[1]))
+                    expiryYear = Integer.valueOf(values[1]);
+            }
+        }
+    }
+
+    public ValidateHandler getValidateHandler()
 	{
 		if (validateHandler == null)
 		{
