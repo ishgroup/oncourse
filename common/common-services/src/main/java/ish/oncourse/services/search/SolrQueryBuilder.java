@@ -61,7 +61,7 @@ public class SolrQueryBuilder {
 
     private static final String BOOST_STATEMENT = "{!boost b=$boostfunction v=$qq}";
     //here we can use the date in format like 2008-01-01T00:00:00Z, but I hope then will no classes longs more then 1 years
-    private static final String DATE_BOOST_FUNCTION = "recip(ms(startDate,NOW-1YEAR/DAY),1.15e-8,1,1)";
+    private static final String DATE_BOOST_FUNCTION = "recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)";
     private static final String GEODIST_BOOST_FUNCTION = "recip(geodist(),1,10,5)";
 
     private SearchParams params;
