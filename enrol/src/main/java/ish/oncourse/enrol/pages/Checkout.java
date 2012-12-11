@@ -26,7 +26,7 @@ import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
+import org.apache.tapestry5.services.Response;
 
 import java.text.Format;
 
@@ -66,6 +66,9 @@ public class Checkout {
     private Request request;
 
     @Inject
+    private Response response;
+
+    @Inject
     private Messages messages;
 
     @SessionState(create = false)
@@ -88,35 +91,49 @@ public class Checkout {
     /**
      * The property is true when session for the payment was expired.
      */
+    @Property
+    @Persist
     private boolean expired;
 
-    String setupRender() {
+
+    Object onActivate()
+    {
+        if (expired)
+            return Payment.class.getSimpleName();
+
         synchronized (this) {
             if (purchaseController == null) {
                 purchaseController = buildPaymentController();
                 if (purchaseController.isPaymentResult())
+                    //redirect if init data is not correct , for example: course classes are not selected
                     return Payment.class.getSimpleName();
-            } else if (purchaseController.isPaymentState() && !purchaseController.adjustState(Action.enableEnrolment))
+            } else if (purchaseController.isPaymentState() && !purchaseController.adjustState(Action.enableEnrolment)) {
                 //browser back-button handle
                 return Payment.class.getSimpleName();
-            else if (purchaseController.isEditCheckout())
+            } else if (purchaseController.isEditCheckout())
                 //add new items from shopping basket
                 updateCheckoutItems();
-            return null;
         }
+        return null;
+
     }
 
+    @SetupRender
+    void setupRender(){
+    }
 
     public synchronized PurchaseController getPurchaseController() {
         return purchaseController;
     }
 
-    public void resetPersistProperties() {
-
+    public void resetCookies()
+    {
         cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
         cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, StringUtils.EMPTY);
         studentService.clearStudentsShortList();
+    }
 
+    public void resetPersistProperties() {
         expired = false;
         purchaseController = null;
     }
@@ -173,6 +190,7 @@ public class Checkout {
     }
 
     public Object onException(Throwable cause) {
+        purchaseController = null;
         if (purchaseController == null) {
             LOGGER.warn("", cause);
             expired = true;

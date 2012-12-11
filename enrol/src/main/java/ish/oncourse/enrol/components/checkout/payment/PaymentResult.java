@@ -5,7 +5,10 @@ import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.pages.Payment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.preference.PreferenceController;
-import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -76,13 +79,4 @@ public class PaymentResult {
 	{
 		return messages.format("paymentFailed", getPaymentIn().getCollege().getName());
 	}
-
-	@AfterRender
-	public void afterRender() {
-		//when the process if finished we should reset all persists properties to allow the next purchase process
-		if (checkoutPage.getPurchaseController() != null && checkoutPage.getPurchaseController().isFinished()) {
-			checkoutPage.resetPersistProperties();
-		}
-	}
-
 }

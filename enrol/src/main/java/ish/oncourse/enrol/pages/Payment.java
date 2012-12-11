@@ -1,7 +1,9 @@
 package ish.oncourse.enrol.pages;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
+import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -13,16 +15,34 @@ public class Payment {
 	@Inject
 	private Request request;
 
+    Object onActivate()
+    {
+        if (checkoutPage.isExpired())
+            return null;
+        if (getPurchaseController() == null)
+            return Checkout.class.getSimpleName();
+        else if (getPurchaseController().isEditCheckout()) {
+            getPurchaseController().addError(PurchaseController.Message.illegalState);
+            return Checkout.class.getSimpleName();
+        } else
+            return null;
+    }
 
-	String setupRender() {
-		if (getPurchaseController() == null)
-			return Checkout.class.getSimpleName();
-		else if (getPurchaseController().isEditCheckout()) {
-			getPurchaseController().addError(PurchaseController.Message.illegalState);
-			return Checkout.class.getSimpleName();
-		} else
-			return null;
-	}
+    @SetupRender
+	void setupRender() {
+    }
+
+    @AfterRender
+    void afterRender() {
+        if (checkoutPage.isExpired())
+            checkoutPage.resetPersistProperties();
+
+        //when the process if finished we should reset all persists properties to allow the next purchase process
+        if (checkoutPage.getPurchaseController() != null && checkoutPage.getPurchaseController().isFinished()) {
+            checkoutPage.resetPersistProperties();
+            checkoutPage.resetCookies();
+        }
+    }
 
 	public PurchaseController getPurchaseController() {
 		return checkoutPage.getPurchaseController();
@@ -51,7 +71,6 @@ public class Payment {
 	{
 		return checkoutPage.isExpired();
 	}
-
 
 	public void onException(Throwable throwable)
 	{
