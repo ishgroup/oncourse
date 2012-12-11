@@ -41,7 +41,6 @@ public class EnrolmentItem {
     @Parameter(required = false)
     private String error;
 
-
     @Property
     private DateFormat dateFormat;
 
@@ -61,7 +60,7 @@ public class EnrolmentItem {
     }
 
     public String getEnrolmentClass() {
-        return error != null ? "disabled" : StringUtils.EMPTY;
+        return checked ? StringUtils.EMPTY: "disabled";
     }
 
 

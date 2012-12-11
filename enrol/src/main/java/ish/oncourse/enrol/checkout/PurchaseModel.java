@@ -513,7 +513,7 @@ public class PurchaseModel {
 		public void disableEnrolment(Enrolment e) {
 			if (enabledEnrolments.contains(e)) {
 				enabledEnrolments.remove(e);
-				disabledEnrolments.add(e);
+				disabledEnrolments.add(0,e);
 			}
 		}
 		
