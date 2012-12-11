@@ -3,6 +3,7 @@ package ish.oncourse.cms.components;
 import ish.oncourse.model.College;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
@@ -138,6 +139,10 @@ public class ContactEntrySettings {
 
 	@SetupRender
 	void beforeRender() {
+		updateFields();
+	}
+
+	private void updateFields() {
 		this.stateSelectModel = new StringSelectModel(VALUE_Show, VALUE_Hide, VALUE_Required);
 
 		this.avetmissQuestionsEnabled = webSiteService.getCurrentCollege().getRequiresAvetmiss() != null ?
@@ -205,6 +210,11 @@ public class ContactEntrySettings {
 
 		context.commitChanges();
 
+		if (!StringUtils.isNumeric(this.enrolmentMinAge))
+			this.enrolmentMinAge = "0";
+		preferenceController.setEnrolmentMinAge(Integer.valueOf(this.enrolmentMinAge));
+
+
 		preferenceController.setRequireContactField(enrolment, street, this.enrolmentAddressState);
 		preferenceController.setRequireContactField(enrolment, suburb, this.enrolmentSuburbState);
 		preferenceController.setRequireContactField(enrolment, state, this.enrolmentStateState);
@@ -213,12 +223,11 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(enrolment, businessPhoneNumber, this.enrolmentBusinessPhoneState);
 		preferenceController.setRequireContactField(enrolment, faxNumber, this.enrolmentFaxState);
 		preferenceController.setRequireContactField(enrolment, mobilePhoneNumber, this.enrolmentMobileState);
-		preferenceController.setRequireContactField(enrolment, dateOfBirth, this.enrolmentDateOfBirthState);
+		preferenceController.setRequireContactField(enrolment, dateOfBirth, preferenceController.getEnrolmentMinAge() > 0 ? ContactFieldHelper.VALUE_Required:
+			this.enrolmentDateOfBirthState);
+		this.enrolmentDateOfBirthState = preferenceController.getRequireContactField(enrolment, dateOfBirth);
 
 
-		if (!StringUtils.isNumeric(this.enrolmentMinAge))
-			this.enrolmentMinAge = "0";
-		preferenceController.setEnrolmentMinAge(Integer.valueOf(this.enrolmentMinAge));
 
 		preferenceController.setRequireContactField(waitinglist, street, this.waitingListAddressState);
 		preferenceController.setRequireContactField(waitinglist, suburb, this.waitingListSuburbState);
@@ -239,6 +248,7 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(mailinglist, faxNumber, this.mailingListFaxState);
 		preferenceController.setRequireContactField(mailinglist, mobilePhoneNumber, this.mailingListMobileState);
 		preferenceController.setRequireContactField(mailinglist, dateOfBirth, this.mailingListDateOfBirthState);
+
 	}
 
 	public Zone getSettingsZone() {
