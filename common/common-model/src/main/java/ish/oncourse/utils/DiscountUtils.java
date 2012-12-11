@@ -5,9 +5,11 @@ import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
+import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.DiscountMembership;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
@@ -227,7 +229,7 @@ public class DiscountUtils {
 	
 	public static List<Discount> getFilteredDiscounts(CourseClass courseClass) {
 		List<Discount> classDiscountsWithoutCode = (ExpressionFactory.matchExp(Discount.CODE_PROPERTY, null))
-			.orExp(ExpressionFactory.matchExp(Discount.CODE_PROPERTY, StringUtils.EMPTY)).filterObjects(courseClass.getDiscounts());
+			.orExp(ExpressionFactory.matchExp(Discount.CODE_PROPERTY, StringUtils.EMPTY)).filterObjects(getPotentialClassDiscounts(courseClass));
 		List<Discount> discounts = new ArrayList<Discount>(classDiscountsWithoutCode.size());
 		for (Discount discount : classDiscountsWithoutCode) {
 			if (hasAnyFiltering(discount)) {
@@ -235,6 +237,14 @@ public class DiscountUtils {
 			}
 		}
 		return discounts;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static List<Discount> getPotentialClassDiscounts(CourseClass courseClass) {
+		SelectQuery query = new SelectQuery(Discount.class, ExpressionFactory.matchExp(
+			Discount.DISCOUNT_COURSE_CLASSES_PROPERTY + "." + DiscountCourseClass.COURSE_CLASS_PROPERTY, courseClass)
+				.andExp(Discount.getCurrentDateFilter()));
+		return courseClass.getObjectContext().performQuery(query);
 	}
 	
 	private static String buildEligibilityConditionText(final Discount discount) {
