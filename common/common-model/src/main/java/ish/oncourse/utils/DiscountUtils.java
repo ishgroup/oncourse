@@ -2,6 +2,7 @@ package ish.oncourse.utils;
 
 import ish.common.types.DiscountType;
 import ish.math.Money;
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.DiscountMembership;
@@ -10,6 +11,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -215,6 +217,24 @@ public class DiscountUtils {
 			return result.toString();
 		}
 		return null;
+	}
+	
+	public static boolean hasAnyFiltering(Discount discount) {
+		return discount.getStudentEnrolledWithinDays() != null || discount.getStudentAge() != null || 
+			(discount.getDiscountConcessionTypes() != null && !discount.getDiscountConcessionTypes().isEmpty()) || discount.getStudentPostcodes() != null
+			|| (discount.getDiscountMembershipProducts() != null && !discount.getDiscountMembershipProducts().isEmpty());
+	}
+	
+	public static List<Discount> getFilteredDiscounts(CourseClass courseClass) {
+		List<Discount> classDiscountsWithoutCode = (ExpressionFactory.matchExp(Discount.CODE_PROPERTY, null))
+			.orExp(ExpressionFactory.matchExp(Discount.CODE_PROPERTY, StringUtils.EMPTY)).filterObjects(courseClass.getDiscounts());
+		List<Discount> discounts = new ArrayList<Discount>(classDiscountsWithoutCode.size());
+		for (Discount discount : classDiscountsWithoutCode) {
+			if (hasAnyFiltering(discount)) {
+				discounts.add(discount);
+			}
+		}
+		return discounts;
 	}
 	
 	private static String buildEligibilityConditionText(final Discount discount) {

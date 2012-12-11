@@ -1,5 +1,7 @@
 package ish.oncourse.model;
 
+import static ish.oncourse.utils.DiscountUtils.hasAnyFiltering;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +40,12 @@ public class PotentialDiscountsPolicy extends DiscountPolicy {
 					}
 					continue;
 
-				} else if (!discount.hasEligibilityFilter() && !discount.getHideOnWeb()) {
+				} else if (!hasAnyFiltering(discount) && !discount.getHideOnWeb()) {
 					result.add(discount);
 				}
 			}
 		}
 		return result;
 	}
-
+	
 }
