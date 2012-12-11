@@ -18,6 +18,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
+import ish.oncourse.util.InvoiceUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -139,8 +140,7 @@ public class PurchaseController {
 	}
 
 	public Money getPreviousOwing() {
-		//TODO need functionality to recalculate the value for payer
-		return Money.ZERO;
+		return InvoiceUtils.amountOwingForPayer(model.getPayer()).subtract(Money.valueOf(getModel().getInvoice().getAmountOwing()));
 	}
 
 	public Money getMinimumPayableNow() {
@@ -388,7 +388,9 @@ public class PurchaseController {
      */
     public synchronized boolean isCreditAvailable()
     {
-        return getModel().getPayer() != null && getModel().getPayer().getObjectId().isTemporary();
+		//substact current invoice from this value
+		Money owing = InvoiceUtils.amountOwingForPayer(model.getPayer()).subtract(Money.valueOf(getModel().getInvoice().getAmountOwing()));
+        return getModel().getPayer() != null && owing.isLessThan(Money.ZERO);
     }
 
     /**

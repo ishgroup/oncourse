@@ -70,6 +70,27 @@ public class PurchaseControllerTest extends ServiceTest {
 	}
 
 	@Test
+	public void testIsCreditAvailable()
+	{
+		PurchaseController controller = init(false);
+
+		Contact contact = Cayenne.objectForPK(controller.getModel().getObjectContext(), Contact.class, 1189160);
+		//add contact/payer
+		ActionParameter param = new ActionParameter(Action.addContact);
+		param.setValue(createContactCredentialsBy(contact));
+		performAction(controller, param);
+		assertTrue(controller.isCreditAvailable());
+		assertEquals(new Money("-200"),controller.getPreviousOwing());
+
+		param = new ActionParameter(Action.proceedToPayment);
+		param.setValue(controller.getModel().getPayment());
+		performAction(controller, param);
+		assertTrue(controller.isCreditAvailable());
+		assertEquals(new Money("-200"),controller.getPreviousOwing());
+
+	}
+
+	@Test
 	public void allActionsTests() throws InterruptedException {
 		PurchaseController controller = init(false);
 
