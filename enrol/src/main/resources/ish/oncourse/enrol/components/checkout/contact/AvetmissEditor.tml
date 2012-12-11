@@ -34,7 +34,7 @@
 				</span>
 			</p>
 			<p>
-				<label for="highestSchoolLevel">What is your highest COMPLETED school level?</label>
+				<label for="highestSchoolLevel">What is your highest completed school level?</label>
 				<span class="${validateHandler.validateClass('highestSchoolLevel')}">
 					<t:select t:id="highestSchoolLevel" value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" blankOption="NEVER"/>
 					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('highestSchoolLevel')}"/>
@@ -48,7 +48,7 @@
 				</span>
 			</p>
 			<p>
-				<label for="priorEducationCode">Have you SUCCESSFULLY completed any of the following qualifications?</label>
+				<label for="priorEducationCode">Have you successfully completed any of the following qualifications?</label>
 				<span class="${validateHandler.validateClass('priorEducationCode')}">
 					<t:select t:id="priorEducationCode" value="contact.student.priorEducationCode" model="priorEducationSelectModel" blankOption="NEVER"/>
 					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('priorEducationCode')}"/>
