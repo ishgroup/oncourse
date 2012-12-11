@@ -33,7 +33,8 @@
 			sortMissingLast="true" omitNorms="true" />
 		
 		<fieldType name="exacttext" class="solr.StrField"
-			sortMissingLast="true" omitNorms="true" />
+			sortMissingLast="true" omitNorms="true">
+		</fieldType>
 		
 		<fieldType name="text" class="solr.TextField"
 			positionIncrementGap="100">
@@ -176,17 +177,17 @@
 
 		<field name="course_code" type="exacttext" indexed="true" stored="true"
 			omitNorms="false" boost="30.0" />
-
+			
 		<field name="detail" type="text" indexed="true" stored="true"
 			omitNorms="false" boost="1.0" />
 
 		<field name="class_code" type="exacttext" indexed="true" stored="true"
 			multiValued="true" omitNorms="false" boost="10.0" />
 
-		<field name="tutor" type="exacttext" indexed="true" stored="true"
+		<field name="tutor" type="text" indexed="true" stored="true"
 			omitNorms="false" multiValued="true" boost="5.0" />
 
-		<field name="when" type="exacttext" indexed="true" stored="true"
+		<field name="when" type="text" indexed="true" stored="true"
 			omitNorms="false" multiValued="true" boost="5.0" />
 
 		<field name="startDate" type="date" indexed="true" stored="true"
@@ -220,5 +221,4 @@
 	<uniqueKey>id</uniqueKey>
 	<defaultSearchField>name</defaultSearchField>
 	<solrQueryParser defaultOperator="OR" />
-
 </schema>
