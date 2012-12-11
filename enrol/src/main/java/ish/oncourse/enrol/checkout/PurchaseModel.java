@@ -194,7 +194,6 @@ public class PurchaseModel {
 		return getContactNode(contact).getAllEnrolments();
 	}
 
-
 	Enrolment getEnrolmentBy(Contact contact, CourseClass courseClass)
 	{
 		List<Enrolment> enrolments = getContactNode(contact).getAllEnrolments();
@@ -368,10 +367,18 @@ public class PurchaseModel {
 			for (Enrolment e : getEnabledEnrolments(contact)) {
 				e.setStatus(EnrolmentStatus.IN_TRANSACTION);
 			}
-			deleteDisabledEnrollments(contact);
-			deleteDisabledProductItems(contact);
 		}
 	}
+
+    public void deleteDisabledItems()
+    {
+        for (Contact contact: getContacts())
+        {
+            deleteDisabledEnrollments(contact);
+            deleteDisabledProductItems(contact);
+        }
+    }
+
 
 	void deleteDisabledProductItems(Contact contact) {
 		List<ProductItem> productItems = new ArrayList<ProductItem>(getDisabledProductItems(contact));

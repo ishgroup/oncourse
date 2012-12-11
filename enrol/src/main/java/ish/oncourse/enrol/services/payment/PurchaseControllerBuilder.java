@@ -105,9 +105,6 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
         boolean result = updateCourseClasses(purchaseController);
         //todo
         List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
-        //todo wait answer on 16397
-//        if (result)
-//            purchaseController.addWarning(PurchaseController.Message.itemsWasAddedFromShoppingBasket);
     }
 
     private boolean updateCourseClasses(PurchaseController purchaseController) {
