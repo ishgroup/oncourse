@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.enrol.services.EnrolTestModule;
 import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.model.Contact;
@@ -71,6 +72,7 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         enrolments = purchaseController.getModel().getAllEnrolments(contact);
         for (Enrolment enrolment : enrolments) {
             assertTrue(enrolment.getObjectId().isTemporary());
+            assertEquals(EnrolmentStatus.NEW, enrolment.getStatus());
         }
 
 
@@ -84,6 +86,7 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
             enrolments = purchaseController.getModel().getAllEnrolments(c);
             for (Enrolment enrolment : enrolments) {
                 assertTrue(enrolment.getObjectId().isTemporary());
+                assertEquals(EnrolmentStatus.NEW, enrolment.getStatus());
             }
         }
 

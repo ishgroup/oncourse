@@ -21,6 +21,8 @@ public class ActionEnableEnrolment extends APurchaseAction {
 		InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForEnrolment(enrolment, getModel().getDiscounts());
 		il.setInvoice(getModel().getInvoice());
 		enrolment.setInvoiceLine(il);
+        //we set status IN_TRANSACTION for enable enrolment in transaction to consider the enrolment in places check
+        enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class ActionEnableEnrolment extends APurchaseAction {
 
         Expression expression = ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS, EnrolmentStatus.IN_TRANSACTION);
         List<Enrolment> activeEnrolments = expression.filterObjects(enrolments);
-        return courseClass.getMaximumPlaces() >= activeEnrolments.size();
+        return courseClass.getMaximumPlaces() > activeEnrolments.size();
     }
 
 	public Enrolment getEnrolment() {

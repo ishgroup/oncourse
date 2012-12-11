@@ -278,7 +278,7 @@ public class PurchaseController {
 	 */
 	Enrolment createEnrolment(CourseClass courseClass, Student student) {
 		Enrolment enrolment = model.getObjectContext().newObject(Enrolment.class);
-		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
+		enrolment.setStatus(EnrolmentStatus.NEW);
 		enrolment.setSource(PaymentSource.SOURCE_WEB);
 
 		enrolment.setCollege(student.getCollege());
