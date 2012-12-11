@@ -7,11 +7,10 @@ import ish.oncourse.model.PotentialDiscountsPolicy;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.utils.DiscountFeeComparator;
 import ish.oncourse.utils.DiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -19,6 +18,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.Format;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class CourseClassPrice {
 	private Discount discountItem;
 
 	@Property
-	private List<Discount> discountsWithConcessions;
+	private List<Discount> potentialDiscounts;
 
 	@Property
 	private Money discountValue;
@@ -57,23 +57,22 @@ public class CourseClassPrice {
 	private Date discountExpiryDate;
 
 	@Property
-	private String discountEligibility;
-
-	@Property
 	private Format dateFormat;
 
 	@Property
 	private String appliedDiscountsTitle;
-
-	@SetupRender
-	public void beforeRender() {
+	
+	private void fillAppliedDiscounts() {
 		List<Discount> promotions = discountService.getPromotions();
 		applicableDiscounts = courseClass.getDiscountsToApply(new PotentialDiscountsPolicy(promotions));
 		discountedFee = courseClass.getDiscountedFeeIncTax(applicableDiscounts);
 		discountValue = courseClass.getDiscountAmountIncTax(applicableDiscounts);
 		discountExpiryDate = DiscountUtils.earliestExpiryDate(applicableDiscounts);
-		discountEligibility = DiscountUtils.getEligibilityConditions(applicableDiscounts);
-
+		fillAppliedDiscountsTooltip();
+	}
+	
+	private void fillAppliedDiscountsTooltip() {
+		dateFormat = FormatUtils.getShortDateFormat(courseClass.getCollege().getTimeZone());
 		if (!applicableDiscounts.isEmpty()) {
 			StringBuffer appliedDiscountsTitleBuf = new StringBuffer(applicableDiscounts.get(0).getName());
 			if (applicableDiscounts.size() > 1) {
@@ -85,17 +84,23 @@ public class CourseClassPrice {
 					}
 				}
 			}
+			if (discountExpiryDate != null) {
+				appliedDiscountsTitleBuf.append(" expires ").append(dateFormat.format(discountExpiryDate));
+			}
 			appliedDiscountsTitle = appliedDiscountsTitleBuf.toString();
 		}
-		
+	}
+	
+	private void fillPosibleDiscounts() {
 		Expression notHiddenDiscounts = ExpressionFactory.matchExp(Discount.HIDE_ON_WEB_PROPERTY, false);
+		potentialDiscounts = notHiddenDiscounts.filterObjects(DiscountUtils.getFilteredDiscounts(courseClass));
+		Collections.sort(potentialDiscounts, new DiscountFeeComparator(courseClass));
+	}
 
-		discountsWithConcessions = notHiddenDiscounts.filterObjects(courseClass.getConcessionDiscounts());
-
-		Ordering ordering = new Ordering(Discount.NAME_PROPERTY, SortOrder.ASCENDING);
-		ordering.orderList(discountsWithConcessions);
-
-		dateFormat = FormatUtils.getShortDateFormat(courseClass.getCollege().getTimeZone());
+	@SetupRender
+	public void beforeRender() {
+		fillAppliedDiscounts();
+		fillPosibleDiscounts();
 	}
 
 	public boolean isHasFee() {

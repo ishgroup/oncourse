@@ -18,18 +18,9 @@
 				<t:if test="taxExempt" negate="true"> inc </t:if><acronym title="Goods and Services Tax">GST</acronym><t:if test="taxExempt"> exempt</t:if>
 			</span>
 		</t:if>
-		<t:if test="hasDiscountValue">
-			<t:if test="discountExpiryDate">(until <t:output format="dateFormat" value="discountExpiryDate"/>
-				<t:if test="discountEligibility">, ${discountEligibility}
-				</t:if>)
-				<p:else>
-					<t:if test="discountEligibility"> ${discountEligibility}
-					</t:if>
-				</p:else>
-			</t:if>
-		</t:if>
+		
 		<t:if t:test="paymentGatewayEnabled">
-			<t:loop source="discountsWithConcessions" value="discountItem">
+			<t:loop source="potentialDiscounts" value="discountItem">
 				<span class="discount-price">/</span>
 				<acronym class="discount-price" title="${discountItem.name}">
 					<t:output value="discountItemFeeIncTax" format="feeFormat" />
