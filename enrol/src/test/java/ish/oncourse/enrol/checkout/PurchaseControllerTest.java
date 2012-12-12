@@ -200,13 +200,21 @@ public class PurchaseControllerTest extends ACheckoutTest {
 		//press makePayment
 		makeValidPayment(controller);
 
+		enrolments = controller.getModel().getAllEnabledEnrolments();
+		for (Enrolment e : enrolments) {
+			assertEquals(EnrolmentStatus.SUCCESS, e.getStatus());
+		}
+
 		assertEquals(2, controller.getModel().getAllEnrolments(controller.getModel().getPayer()).size());
 		assertEquals(1, controller.getModel().getAllProductItems(controller.getModel().getPayer()).size());
 		assertEquals(1, controller.getModel().getPayment().getPaymentInLines().size());
 		assertEquals(3, controller.getModel().getInvoice().getInvoiceLines().size());
 		assertEquals(delegate.getPaymentIn(), controller.getModel().getPayment());
 		assertEquals(PaymentStatus.SUCCESS, delegate.getPaymentIn().getStatus());
-
+		assertFalse(controller.getModel().getObjectContext().hasChanges());
+		assertTrue(controller.isFinished());
+		assertTrue(controller.getPaymentEditorDelegate().isProcessFinished());
+		assertTrue(controller.getPaymentEditorDelegate().isPaymentSuccess());
 	}
 
 	@Test

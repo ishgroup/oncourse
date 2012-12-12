@@ -12,10 +12,10 @@
 					</script>
 				</p:else>
 			</t:if>
+			<p:else>
+				<t:delegate to="block:paymentFailed"/>
+			</p:else>
 		</t:if>
-		<p:else>
-			<t:delegate to="block:paymentFailed"/>
-		</p:else>
 	</t:if>
 
 

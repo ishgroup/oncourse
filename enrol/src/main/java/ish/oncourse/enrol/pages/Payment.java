@@ -38,9 +38,11 @@ public class Payment {
             checkoutPage.resetPersistProperties();
 
         //when the process if finished we should reset all persists properties to allow the next purchase process
-        if (checkoutPage.getPurchaseController() != null && checkoutPage.getPurchaseController().isFinished()) {
-            checkoutPage.resetPersistProperties();
-            checkoutPage.resetCookies();
+        if (getPurchaseController() != null && getPurchaseController().isFinished()) {
+			if (getPurchaseController().getPaymentEditorDelegate() != null &&
+					getPurchaseController().getPaymentEditorDelegate().isPaymentSuccess())
+				checkoutPage.resetCookies();
+			checkoutPage.resetPersistProperties();
         }
     }
 
