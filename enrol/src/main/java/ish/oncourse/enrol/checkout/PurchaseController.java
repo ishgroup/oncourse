@@ -377,7 +377,7 @@ public class PurchaseController {
 		if (state == paymentResult)
 		{
 			if (paymentEditorController != null)
-				return paymentEditorController.getPaymentProcessController().isProcessFinished();
+				return paymentEditorController.isProcessFinished();
 			return illegalModel;
 		}
 		return false;
@@ -558,7 +558,7 @@ public class PurchaseController {
 		editContact(Action.addContact, cancelAddContact),
 		editPayment(makePayment, backToEditCheckout),
         paymentProgress(showPaymentResult),
-		paymentResult(proceedToPayment);
+		paymentResult(proceedToPayment,showPaymentResult);
 
 		private List<Action> allowedActions;
 

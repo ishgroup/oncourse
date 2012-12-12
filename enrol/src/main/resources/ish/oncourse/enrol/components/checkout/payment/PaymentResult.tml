@@ -3,12 +3,19 @@
 		xmlns:p="tapestry:parameter">
 
 	<t:if test="delegate">
-		<t:if test="delegate.paymentSuccess">
-			<t:delegate to="block:paymentSuccess"/>
-			<p:else>
-				<t:delegate to="block:paymentFailed"/>
-			</p:else>
+		<t:if test="delegate.processFinished">
+			<t:if test="delegate.paymentSuccess">
+				<t:delegate to="block:paymentSuccess"/>
+				<p:else>
+					<script type="text/javascript">
+						setTimeout("window.location.href='${coursesLink}'", 100);
+					</script>
+				</p:else>
+			</t:if>
 		</t:if>
+		<p:else>
+			<t:delegate to="block:paymentFailed"/>
+		</p:else>
 	</t:if>
 
 

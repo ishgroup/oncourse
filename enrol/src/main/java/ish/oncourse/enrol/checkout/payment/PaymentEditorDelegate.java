@@ -24,6 +24,7 @@ public interface PaymentEditorDelegate {
 	public boolean isNeedConcessionReminder();
 	public boolean isEnrolmentFailedNoPlaces();
 	public boolean isPaymentSuccess();
+	public boolean isProcessFinished();
 
 	public Transaction getAnalyticsTransaction();
 

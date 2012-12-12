@@ -22,6 +22,11 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 	private PaymentProcessController paymentProcessController;
 	private Map<String,String>  errors = new HashMap<String, String>();
 
+	@Override
+	public boolean isProcessFinished() {
+		return paymentProcessController.isProcessFinished();
+	}
+
 	public boolean isPaymentSuccess()
 	{
 		return paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
