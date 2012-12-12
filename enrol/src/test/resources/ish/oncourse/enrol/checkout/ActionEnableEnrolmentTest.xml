@@ -98,7 +98,7 @@
 		roomId="1" angelId="1003" startDate="2011-11-03 01:01:59.0"
 		endDate="2111-11-03 02:01:59.0" isWebVisible="0" isCancelled="0"
 		created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
-		maximumPlaces="4" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
+		maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
 		feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"/>
 
     <Enrolment id="1001" source="O" collegeId="1" courseClassId="1001"
@@ -107,6 +107,10 @@
 
     <Enrolment id="1002" source="O" collegeId="1" courseClassId="1001"
                studentId="1002" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="2" />
+
+    <Enrolment id="1003" source="O" collegeId="1" courseClassId="1003"
+               studentId="1004" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
                status="2" />
 
 

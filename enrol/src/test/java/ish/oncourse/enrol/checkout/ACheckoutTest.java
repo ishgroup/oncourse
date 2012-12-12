@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.common.types.CreditCardType;
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
@@ -21,8 +22,9 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 	ICayenneService cayenneService;
 	IPurchaseControllerBuilder purchaseControllerBuilder;
+    PurchaseController purchaseController;
 
-	private void assertPurchaseController(PurchaseController purchaseController) {
+	private void assertPurchaseController() {
 
 		assertNotNull(purchaseController.getModel());
 		assertTrue(purchaseController.getModel().getContacts().isEmpty());
@@ -65,14 +67,13 @@ public abstract class ACheckoutTest extends ServiceTest {
 	}
 
 
-	PurchaseController createPurchaseController(PurchaseModel purchaseModel) {
-		PurchaseController purchaseController = purchaseControllerBuilder.build(purchaseModel);
+	void createPurchaseController(PurchaseModel purchaseModel) {
+		purchaseController = purchaseControllerBuilder.build(purchaseModel);
 		purchaseController.performAction(new PurchaseController.ActionParameter(PurchaseController.Action.init));
-		assertPurchaseController(purchaseController);
-		return purchaseController;
+		assertPurchaseController();
 	}
 
-	void addContactAction(PurchaseController purchaseController, Contact contact) {
+	void addFirstContact(Contact contact) {
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
 		ContactCredentials contactCredentials = createContactCredentialsBy(contact);
 		actionParameter.setValue(contactCredentials);
@@ -82,60 +83,64 @@ public abstract class ACheckoutTest extends ServiceTest {
 	}
 
 
-	void addContact(PurchaseController controller, Contact newContact) {
+	void addContact(Contact newContact) {
 		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.startAddContact);
-		performAction(controller, param);
+		performAction(param);
 
 		param = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
 		param.setValue(createContactCredentialsBy(newContact));
 
-		performAction(controller, param);
+		performAction(param);
 	}
 
-	void proceedToPayment(PurchaseController controller) {
+	void proceedToPayment() {
 		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
-		param.setValue(controller.getModel().getPayment());
-		performAction(controller, param);
+		param.setValue(purchaseController.getModel().getPayment());
+		performAction(param);
 	}
 
-	void makeInvalidPayment(PurchaseController controller) throws InterruptedException {
-		PaymentEditorDelegate delegate = controller.getPaymentEditorDelegate();
+	void makeInvalidPayment() throws InterruptedException {
+		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
 		delegate.getPaymentIn().setCreditCardCVV("1111");
 		delegate.getPaymentIn().setCreditCardExpiry("12/2020");
 		delegate.getPaymentIn().setCreditCardName("NAME NAME");
 		delegate.getPaymentIn().setCreditCardNumber("9999990000000378");
 		delegate.getPaymentIn().setCreditCardType(CreditCardType.VISA);
 		delegate.makePayment();
-		assertEquals(paymentProgress, controller.getState());
-		updatePaymentStatus(controller);
-	}
+		assertEquals(paymentProgress, purchaseController.getState());
+        assertTrue(purchaseController.isPaymentProgress());
+        assertFalse(purchaseController.isFinished());
+        updatePaymentStatus();
+    }
 
-	void makeValidPayment(PurchaseController controller) throws InterruptedException {
-		PaymentEditorDelegate delegate = controller.getPaymentEditorDelegate();
+	void makeValidPayment() throws InterruptedException {
+		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
 		delegate.getPaymentIn().setCreditCardCVV("1111");
 		delegate.getPaymentIn().setCreditCardExpiry("12/2020");
 		delegate.getPaymentIn().setCreditCardName("NAME NAME");
 		delegate.getPaymentIn().setCreditCardNumber("9999990000000378");
 		delegate.getPaymentIn().setCreditCardType(CreditCardType.MASTERCARD);
 		delegate.makePayment();
-		assertEquals(paymentProgress, controller.getState());
-		updatePaymentStatus(controller);
+		assertEquals(paymentProgress, purchaseController.getState());
+        assertTrue(purchaseController.isPaymentProgress());
+        updatePaymentStatus();
 	}
 
-	void updatePaymentStatus(PurchaseController controller) throws InterruptedException {
-		PaymentEditorDelegate delegate = controller.getPaymentEditorDelegate();
+	void updatePaymentStatus() throws InterruptedException {
+		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
 		delegate.updatePaymentStatus();
 		Thread.sleep(20000);
 		delegate.updatePaymentStatus();
-		assertEquals(paymentResult, controller.getState());
-	}
+		assertEquals(paymentResult, purchaseController.getState());
+        assertTrue(purchaseController.isPaymentResult());
+    }
 
 
 
-	void performAction(PurchaseController controller, PurchaseController.ActionParameter param) {
-		controller.performAction(param);
-		assertFalse("State is valid", controller.isIllegalState());
-		assertFalse("Model is valid", controller.isIllegalModel());
+	void performAction(PurchaseController.ActionParameter param) {
+		purchaseController.performAction(param);
+		assertFalse("State is valid", purchaseController.isIllegalState());
+		assertFalse("Model is valid", purchaseController.isIllegalModel());
 	}
 
 
@@ -146,4 +151,34 @@ public abstract class ACheckoutTest extends ServiceTest {
 		contactCredentials.setEmail(newPayer.getEmailAddress());
 		return contactCredentials;
 	}
+
+
+    void assertEnabledEnrolment(Enrolment enrolment) {
+        assertNotNull(enrolment.getInvoiceLine());
+        assertEquals(EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
+    }
+
+    void assertDisabledEnrolment(Enrolment enrolment) {
+        assertTrue(enrolment.getObjectId().isTemporary());
+        assertNull(enrolment.getInvoiceLine());
+        assertEquals(EnrolmentStatus.NEW, enrolment.getStatus());
+    }
+
+    void assertEnabledEnrolments(Contact contact, int count, boolean commited) {
+        List<Enrolment> enrolments = purchaseController.getModel().getAllEnrolments(contact);
+        assertEquals(count, enrolments.size());
+        for (Enrolment enrolment : enrolments) {
+            assertEquals(commited, !enrolment.getObjectId().isTemporary());
+            assertEnabledEnrolment(enrolment);
+        }
+    }
+
+    void assertDisabledEnrolments(Contact contact, int count) {
+        List<Enrolment> enrolments = purchaseController.getModel().getDisabledEnrolments(contact);
+        assertEquals(count, enrolments.size());
+        for (Enrolment enrolment : enrolments) {
+            assertDisabledEnrolment(enrolment);
+        }
+    }
+
 }
