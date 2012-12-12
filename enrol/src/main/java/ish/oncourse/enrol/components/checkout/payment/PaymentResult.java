@@ -5,10 +5,7 @@ import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.pages.Payment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.preference.PreferenceController;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -29,7 +26,7 @@ public class PaymentResult {
 	private Messages messages;
 
 	@InjectPage
-	private Payment payment;
+	private Payment paymentPage;
 
 	@InjectPage
 	private Checkout checkoutPage;
@@ -55,14 +52,14 @@ public class PaymentResult {
 	public Object abandon()
 	{
 		delegate.abandon();
-		return payment;
+		return paymentPage;
 	}
 
 	@OnEvent(value = "tryAgain")
 	public Object tryAgain()
 	{
 		delegate.tryAgain();
-		return payment;
+		return paymentPage;
 	}
 
 	public String getMessageThanksForEnrolment()
@@ -79,4 +76,10 @@ public class PaymentResult {
 	{
 		return messages.format("paymentFailed", getPaymentIn().getCollege().getName());
 	}
+
+    @AfterRender
+    void afterRender() {
+        //the code should be run from the component becase we should rederer the result fist and then reset everithing
+        checkoutPage.finalizingProcess();
+    }
 }

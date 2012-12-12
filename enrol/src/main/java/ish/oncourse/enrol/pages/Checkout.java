@@ -96,8 +96,7 @@ public class Checkout {
     private boolean expired;
 
 
-    Object onActivate()
-    {
+    Object onActivate() {
         if (expired)
             return Payment.class.getSimpleName();
 
@@ -119,15 +118,14 @@ public class Checkout {
     }
 
     @SetupRender
-    void setupRender(){
+    void setupRender() {
     }
 
     public synchronized PurchaseController getPurchaseController() {
         return purchaseController;
     }
 
-    public void resetCookies()
-    {
+    public void resetCookies() {
         cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
         cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, StringUtils.EMPTY);
         studentService.clearStudentsShortList();
@@ -208,5 +206,15 @@ public class Checkout {
 
     public Format moneyFormat(Money money) {
         return FormatUtils.chooseMoneyFormat(money);
+    }
+
+    public void finalizingProcess() {
+        //when the process if finished we should reset all persists properties to allow the next purchase process
+        if (purchaseController != null && purchaseController.isFinished()) {
+            if (purchaseController.getPaymentEditorDelegate() != null &&
+                    purchaseController.getPaymentEditorDelegate().isPaymentSuccess())
+                resetCookies();
+            resetPersistProperties();
+        }
     }
 }

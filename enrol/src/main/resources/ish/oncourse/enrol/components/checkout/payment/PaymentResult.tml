@@ -7,8 +7,9 @@
 			<t:if test="delegate.paymentSuccess">
 				<t:delegate to="block:paymentSuccess"/>
 				<p:else>
+                    <h2>This payment was cancelled.</h2>
 					<script type="text/javascript">
-						setTimeout("window.location.href='${coursesLink}'", 100);
+						setTimeout("window.location.href='${coursesLink}'", 5000);
 					</script>
 				</p:else>
 			</t:if>
@@ -20,9 +21,6 @@
 
 
 	<t:block t:id="paymentSuccess">
-		<script type="text/javascript">
-			refreshShortList();
-		</script>
 		<h2>Payment <span>&#187;</span> Successful</h2>
 		<p>${messageThanksForEnrolment}</p>
 		<p>Your payment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentIn.id}</strong>.</p>
@@ -37,7 +35,10 @@
 			<a href="${successUrl}">${message:continue.button.text}</a>
 		</div>
 		<t:AnalyticsTransaction transaction="delegate.analyticsTransaction"/>
-	</t:block>
+        <script type="text/javascript">
+            refreshShortList();
+        </script>
+    </t:block>
 
 	<t:block t:id="paymentFailed">
 		<t:if test="delegate.enrolmentFailedNoPlaces">
