@@ -1,6 +1,7 @@
 <html t:type="pagestructure" title="literal:Profile"
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_surveys">
 
+<t:block t:id="main">
 	<h1>${courseClass.course.name}</h1>
 
 	<span t:type="classTabs" courseClass="courseClass" selected="literal:classSurvey"/>
@@ -51,4 +52,5 @@
 	</table>
 	<button type="submit" class="form-submit-button btn">Submit</button>
 	</t:form>
+</t:block>
 </html>
