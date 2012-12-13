@@ -136,12 +136,30 @@ public class PaymentInAbandonHelper {
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
+	boolean containInvoicesWithoutEnrolOrProductLinks() {
+		Expression invoicesWithoutEnrollmentRelation = ExpressionFactory.matchExp(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "." + 
+			PaymentInLine.INVOICE_PROPERTY + "." + Invoice.INVOICE_LINES_PROPERTY + "." + InvoiceLine.ENROLMENT_PROPERTY, null);
+		Expression invoicesWithoutProductRelation = ExpressionFactory.matchDbExp(ProductItem.INVOICE_LINE_PROPERTY + "." + InvoiceLine.INVOICE_PROPERTY 
+			+ "." + Invoice.PAYMENT_IN_LINES_PROPERTY + "." + PaymentInLine.PAYMENT_IN_PROPERTY + "." + PaymentIn.ID_PK_COLUMN, paymentIn.getId());
+		Expression notZeroOwingInvoices = ExpressionFactory.noMatchExp(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "." + 
+			PaymentInLine.INVOICE_PROPERTY + "." + Invoice.AMOUNT_OWING_PROPERTY, Money.ZERO.toBigDecimal());
+		Expression paymentIdMatchExpression = ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, paymentIn.getId());
+		SelectQuery checkEnrollmentsQuery = new SelectQuery(PaymentIn.class, paymentIdMatchExpression.andExp(notZeroOwingInvoices)
+			.andExp(invoicesWithoutEnrollmentRelation));
+		SelectQuery checkProductsQuery = new SelectQuery(ProductItem.class, invoicesWithoutProductRelation);
+			
+		List<PaymentIn> enrollmentsResult = paymentIn.getObjectContext().performQuery(checkEnrollmentsQuery);
+		List<ProductItem> productsResult =  paymentIn.getObjectContext().performQuery(checkProductsQuery);
+		return !enrollmentsResult.isEmpty() && productsResult.isEmpty();
+	}
+	
 	/**
 	 * Check is this payment have linked invoices with linked entities and we need to apply abandon payment action.
 	 * @return false if should apply keep invoice, true if abandon should be used.
 	 */
 	boolean canMakeRevertInvoice() {
-		return containEnrollmentsInTransactionStatus() || containNewProductItems();
+		return containEnrollmentsInTransactionStatus() || containNewProductItems() || containInvoicesWithoutEnrolOrProductLinks();
 	}
 	
 	/**
@@ -371,5 +389,5 @@ public class PaymentInAbandonHelper {
 		}
 		return internalPayment;
 	}
-
+	
 }

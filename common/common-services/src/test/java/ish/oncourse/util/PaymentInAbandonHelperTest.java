@@ -175,6 +175,81 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
+	public void testContainInvoicesWithoutEnrolOrProductLinks() {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		PaymentIn paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		
+		//load actual invoiceLine
+		List<InvoiceLine> invoiceLines = context.performQuery(new SelectQuery(InvoiceLine.class,
+			ExpressionFactory.matchDbExp(InvoiceLine.ID_PK_COLUMN, 5L)));
+		assertFalse("InvoiceLines list should not be empty", invoiceLines.isEmpty());
+		assertEquals("InvoiceLines list should have 1 record", 1, invoiceLines.size());
+		InvoiceLine invoiceLine = invoiceLines.get(0);
+		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
+		Invoice invoice = invoiceLine.getInvoice();
+		invoice.updateAmountOwing();
+		context.commitChanges();
+		
+		//create helper for abandon
+		PaymentInAbandonHelper helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertTrue("This payment contain invoices with not 0 amount owing", helper.containInvoicesWithoutEnrolOrProductLinks());
+		
+		invoiceLine.setPriceEachExTax(Money.ZERO);
+		invoiceLine.setTaxEach(Money.ZERO);
+		invoice.updateAmountOwing();
+		context.commitChanges();
+		
+		assertFalse("This payment not contain invoices with not 0 amount owing", helper.containInvoicesWithoutEnrolOrProductLinks());
+		
+		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 1L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+				
+		//create helper for abandon
+		helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertFalse("This payment not contain linked productitems in new status", helper.containNewProductItems());
+		assertFalse("This payment not contain invoices with not 0 amount owing", helper.containInvoicesWithoutEnrolOrProductLinks());
+		
+		//update voucher for test
+		List<Voucher> vouchers = context.performQuery(new SelectQuery(Voucher.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 4L)));
+		assertFalse("Vouchers list should not be empty", vouchers.isEmpty());
+		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
+		Voucher voucher = vouchers.get(0);
+		assertNotNull("Voucher for test should not be empty", voucher);
+		assertEquals("Voucher status should be active", ProductStatus.ACTIVE, voucher.getStatus());
+		
+		voucher.setStatus(ProductStatus.NEW);
+		voucher.setExpiryDate(ProductUtil.calculateExpiryDate(new Date(), voucher.getVoucherProduct().getExpiryType(), 
+				voucher.getVoucherProduct().getExpiryDays()));
+		context.commitChanges();
+		
+		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 1L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		
+		//create helper for abandon
+		helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertTrue("This payment now contain linked productitems in new status", helper.containNewProductItems());
+		assertFalse("This payment not contain invoices with not 0 amount owing", helper.containInvoicesWithoutEnrolOrProductLinks());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
 	public void testContainEnrollmentsInTransactionStatus() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
@@ -356,14 +431,20 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 			boolean containEnrollmentsInTransactionStatus() {return false;}
 			@Override
 			boolean containNewProductItems() {return false;}
+			@Override
+			boolean containInvoicesWithoutEnrolOrProductLinks() {return false;}
+			
 		};
-		assertFalse("We should not be able to create reverse invoice if no linked enrollments or vouchers in new status", helper.canMakeRevertInvoice());
+		assertFalse("We should not be able to create reverse invoice if no linked enrollments or vouchers in new status or invoice with not 0 owing", helper.canMakeRevertInvoice());
 		
 		helper = new PaymentInAbandonHelper(mock(PaymentIn.class), false) {
 			@Override
 			boolean containEnrollmentsInTransactionStatus() {return true;}
 			@Override
 			boolean containNewProductItems() {return false;}
+			@Override
+			boolean containInvoicesWithoutEnrolOrProductLinks() {return false;}
+			
 		};
 		assertTrue("We should be able to create reverse invoice if linked enrollments in new status exist", helper.canMakeRevertInvoice());
 		
@@ -372,6 +453,9 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 			boolean containEnrollmentsInTransactionStatus() {return false;}
 			@Override
 			boolean containNewProductItems() {return true;}
+			@Override
+			boolean containInvoicesWithoutEnrolOrProductLinks() {return false;}
+			
 		};
 		assertTrue("We should be able to create reverse invoice if linked product items in new status exist", helper.canMakeRevertInvoice());
 		
@@ -380,9 +464,25 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 			boolean containEnrollmentsInTransactionStatus() {return true;}
 			@Override
 			boolean containNewProductItems() {return true;}
+			@Override
+			boolean containInvoicesWithoutEnrolOrProductLinks() {return false;}
+			
 		};
 		assertTrue("We should be able to create reverse invoice if linked product items and enrollments in new status exist", 
 			helper.canMakeRevertInvoice());
+		
+		helper = new PaymentInAbandonHelper(mock(PaymentIn.class), false) {
+			@Override
+			boolean containEnrollmentsInTransactionStatus() {return false;}
+			@Override
+			boolean containNewProductItems() {return false;}
+			@Override
+			boolean containInvoicesWithoutEnrolOrProductLinks() {return true;}
+			
+		};
+		
+		assertTrue("We should be able to create reverse invoice if unbalanced invoices exist", 
+				helper.canMakeRevertInvoice());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -910,7 +1010,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		//create helper for abandon keep invoice
 		PaymentInAbandonHelper helper = new PaymentInAbandonHelper(paymentIn, true);
 		assertTrue("In transaction payment with correct structure should pass the validation", helper.validatePaymentInForAbandon());
-		assertFalse("We should not be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
+		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
 		helper.revertTheVoucherRedemption();
 		assertEquals("Voucher should be still active", ProductStatus.ACTIVE, voucher.getStatus());
 		assertEquals("Voucher amount should be the same as before the payment attempt", voucherAmount, voucher.getRedemptionValue());
@@ -1244,6 +1344,32 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
 		//rollback the changes to check also the abandon for product items
 		context.rollbackChanges();
+		
+		invoiceLine.setPriceEachExTax(new Money("1.00"));
+		invoiceLine.setEnrolment(null);
+		invoice.updateAmountOwing();
+		paymentIn.setAmount(invoiceLine.getPriceEachExTax().toBigDecimal());
+		paymentIn.getPaymentInLines().get(0).setAmount(paymentIn.getAmount());
+		context.commitChanges();
+		
+		//create helper for abandon 
+		helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertTrue("In transaction payment with correct structure should pass the validation", helper.validatePaymentInForAbandon());
+		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
+		reversePaymentIn = helper.abandonPayment();
+		assertNotNull("Reverse invoice should not be null", reversePaymentIn);
+		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
+		assertEquals("Reverse payment status should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
+		invoice.updateAmountOwing();
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		//rollback the changes to check also the abandon for product items
+		context.rollbackChanges();
+		
+		invoiceLine.setPriceEachExTax(Money.ZERO);
+		paymentIn.setAmount(invoiceLine.getPriceEachExTax().toBigDecimal());
+		paymentIn.getPaymentInLines().get(0).setAmount(paymentIn.getAmount());
+		invoice.updateAmountOwing();
+		context.commitChanges();
 		
 		//link voucher for invoiceline
 		List<Voucher> vouchers = context.performQuery(new SelectQuery(Voucher.class, 
