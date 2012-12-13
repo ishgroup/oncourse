@@ -99,8 +99,10 @@ public class PaymentProcessController {
                 break;
             case ABANDON_PAYMENT:
             case CANCEL_PAYMENT:
+            	abandonPaymentReverseInvoice(action, true);
+                break;
 		    case EXPIRE_PAYMENT:
-                abandonPaymentReverseInvoice(action);
+                abandonPaymentReverseInvoice(action, false);
                 break;
             case ABANDON_PAYMENT_KEEP_INVOICE:
                 abandonPaymentKeepInvoice();
@@ -202,9 +204,9 @@ public class PaymentProcessController {
      * @return abandon payment message block
      * @throws java.net.MalformedURLException
      */
-    private void abandonPaymentReverseInvoice(PaymentAction action) {
+    private void abandonPaymentReverseInvoice(PaymentAction action, boolean firedManually) {
         changeProcessState(PROCESSING_ABANDON);
-        PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn);
+        PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, firedManually);
 		switch (action)
 		{
 			case ABANDON_PAYMENT:
