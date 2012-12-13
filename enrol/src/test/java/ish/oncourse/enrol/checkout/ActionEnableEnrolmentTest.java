@@ -144,18 +144,18 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         assertEquals(2, purchaseController.getModel().getAllEnabledEnrolments().size());
 
         Contact contact1 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001);
-        assertEnabledEnrolments(contact1, 1, false);
+        assertEnabledEnrolments(contact1, 1, true);
 
         Contact contact2 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1002);
-        assertEnabledEnrolments(contact2, 1, false);
+        assertEnabledEnrolments(contact2, 1, true);
 
         Contact contact3 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1003);
-        assertEnabledEnrolments(contact2, 0, false);
+        assertEnabledEnrolments(contact3, 0, false);
 
         //emulate back button
         purchaseController.adjustState(PurchaseController.Action.enableEnrolment);
-        assertEnabledEnrolments(contact1, 1, false);
-        assertEnabledEnrolments(contact2, 1, false);
+        assertEnabledEnrolments(contact1, 1, true);
+        assertEnabledEnrolments(contact2, 1, true);
         assertDisabledEnrolments(contact3, 1);
 
     }
