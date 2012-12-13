@@ -168,7 +168,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 				exec {
 					executable= 'security'
 					args = ['export', 	'-k', project.windowsKeychain,  
-							'-t', 'identities', 
+							'-t', 'all', 
 							'-f', 'pkcs12',
 							'-P', project.codeSigningTemporaryPassword, 
 							'-o', project.codeSigningTemporaryKeystore]
