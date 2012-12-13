@@ -60,7 +60,7 @@ public class PaymentInExpireJob implements Job {
 			logger.debug(String.format("The number of payments to expire:%s.", expiredPayments.size()));
 
 			for (PaymentIn p : expiredPayments) {
-				PaymentInAbandonUtil.abandonPaymentReverseInvoice(p);
+				PaymentInAbandonUtil.abandonPaymentReverseInvoice(p, false);
                 p.setStatusNotes("Payment was expired.");
             }
 			logger.debug("PaymentInExpireJob finished.");
