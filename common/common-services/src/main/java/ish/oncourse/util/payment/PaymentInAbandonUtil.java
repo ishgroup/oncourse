@@ -15,7 +15,6 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
