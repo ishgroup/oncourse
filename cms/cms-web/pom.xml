@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>ish.oncourse.willow.cms</groupId>
 			<artifactId>cms-services</artifactId>
-			<version>2.52-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
