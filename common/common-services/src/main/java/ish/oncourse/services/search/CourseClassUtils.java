@@ -185,6 +185,10 @@ public class CourseClassUtils {
                 else
                 {
                     int days =  (int) Math.ceil( (searchParams.getAfter().getTime() - courseClass.getStartDate().getTime())/ (1000 * 60 * 60 * 24));
+                    if (days == 0) {
+                    	//#16568 .avoid division by zero on courses render.
+                    	return afterMatch;
+                    }
                     afterMatch = 1/days;
                 }
             }
@@ -201,11 +205,10 @@ public class CourseClassUtils {
                 else
                 {
                     int days =  (int) Math.ceil( (courseClass.getEndDate().getTime() - searchParams.getBefore().getTime())/ (1000 * 60 * 60 * 24));
-                    if (days != 0)
-                        beforeMatch = 1/days;
-                    else
-                        beforeMatch = 1.0f;
-
+                    if (days == 0) {
+                    	return 1.0f;
+                    }
+                    beforeMatch = 1/days;
                 }
             }
 
