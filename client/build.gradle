@@ -156,7 +156,7 @@ task bundle_webstart(dependsOn: [fatJar, prepareKeychains], type: Copy) {
 						keypass:				project.codeSigningTemporaryPassword,
 						sigalg:					"MD5withRSA",
 						digestalg:				"SHA1",
-						tsa:					'http://timestamp.comodoca.com/rfc3161',
+						tsaurl:					'http://timestamp.comodoca.com/rfc3161',
 						lazy: 					"true",
 						preservelastmodified:	"true") {
 							fileset(dir: "${distsDir}/webstart/Libraries/") {
