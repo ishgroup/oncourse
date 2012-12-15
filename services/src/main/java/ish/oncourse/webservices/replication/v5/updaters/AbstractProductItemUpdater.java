@@ -23,6 +23,8 @@ public abstract class AbstractProductItemUpdater<S extends ProductItemStub, E ex
 		if (stub.getStatus() != null) {
 			ProductStatus status = TypesUtil.getEnumForDatabaseValue(stub.getStatus(), ProductStatus.class);
 			entity.setStatus(status);
+		} else {
+			entity.setStatus(null);
 		}
 	}
 }
