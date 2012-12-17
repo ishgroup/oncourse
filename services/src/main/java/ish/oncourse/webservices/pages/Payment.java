@@ -157,7 +157,7 @@ public class Payment {
     }
 
     public String getPaymentTitle() {
-        return messages.format("payment.title", payer.getGivenName(), payer.getFamilyName());
+        return messages.format("payment.title", payer.getFullName());
     }
 
     public String getInvoiceDescription() {
