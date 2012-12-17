@@ -20,6 +20,9 @@ public class SecurityCodeInterceptor extends AbstractSoapInterceptor {
 
 	private static final Logger logger = Logger.getLogger(SecurityCodeInterceptor.class);
 
+	static final String ERROR_TEMPLATE_emptySecurityCode = "empty securityCode from ip = %s with angel server version = %s .";
+	static final String ERROR_TEMPLATE_invalidSecurityCode = "Invalid security code: %s from ip = %s with angel server version = %s .";
+
 	@Inject
 	@Autowired
 	private ICollegeService collegeService;
@@ -40,21 +43,21 @@ public class SecurityCodeInterceptor extends AbstractSoapInterceptor {
 			final String ip = (httpRequest != null) ? httpRequest.getRemoteAddr() : "unknown";
 			final String version = SoapUtil.getAngelVersion(message);
 			if (securityCode == null) {
-				String m = String.format("empty.securityCode from ip = %s with angel server version = %s .", ip, version);
+				String m = String.format(ERROR_TEMPLATE_emptySecurityCode, ip, version);
 				fault =  new InterceptorErrorHandle(message,logger).handle(m);
+				throw fault;
 			}
 			College college = collegeService.findBySecurityCode(securityCode);
 			if (college == null)
 			{
-				String m = String.format("Invalid security code: %s from ip = %s with angel server version = %s .", securityCode, ip, version);
+				String m = String.format(ERROR_TEMPLATE_invalidSecurityCode, securityCode, ip, version);
 				fault =  new InterceptorErrorHandle(message,logger).handle(m);
+				throw fault;
 			}
 			request.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, college.getId());
 		} catch (Exception e) {
 			fault = new InterceptorErrorHandle(message,logger).handle(e);
-		}
-
-		if (fault != null)
 			throw fault;
+		}
 	}
 }
