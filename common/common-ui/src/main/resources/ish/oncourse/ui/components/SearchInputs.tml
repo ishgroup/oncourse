@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div id="advanced_search_container">
 		<div class="" id="advanced_search">
 			<t:form t:id="search2" class="advanced-search-form" method="get" name="search">
@@ -20,20 +20,20 @@
 					<input t:type="TextField" clientId="adv_price" t:value="searchPrice" name="price" size="8" />
 				</div>
 				<div id="adv_search_time">
-					<label class="time">
+					<label class="time checkbox">
 						<input t:type="Checkbox" t:value="daytime" name="time" /> Day time </label>
-					<label class="time">
+					<label class="time checkbox">
 						<input t:type="Checkbox" t:value="evening" name="time" /> Evenings </label>
 				</div>
 				<div id="adv_search_day">
-					<label class="day">
+					<label class="day checkbox">
 						<input t:type="Checkbox" t:value="weekday" name="day" class="parent" clientId="weekday-parent" /> Weekdays </label>
-					<label class="day">
+					<label class="day checkbox">
 						<input t:type="Checkbox" t:value="weekend" name="day" class="parent" clientId="weekend-parent" /> Weekends </label>
 				</div>
 				<div id="adv_search_submit">
-					<button type="submit" id="searcher">Search</button>
-					<a id="cancel-search" onClick="clearAdvancedSearch();">Clear</a>
+					<button type="submit" id="searcher" class="btn btn-primary">Search</button>
+					<a id="cancel-search" onClick="clearAdvancedSearch();" class="btn">Clear</a>
 				</div>
 			</t:form>
 		</div>
