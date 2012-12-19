@@ -52,6 +52,8 @@
 										<span>Phone: ${attendance.student.contact.homePhoneNumber}</span>
 										<span>E-mail: <a href="mailto:${attendance.student.contact.emailAddress}">${attendance.student.contact.emailAddress}</a></span>
 									</t:if>
+									
+									<div class="mark-yn" style="left: 500px;">${studentRation}</div>
 								</div>
 							</t:loop>
 		               	 </li>  

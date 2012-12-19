@@ -1,6 +1,7 @@
 package ish.oncourse.portal.pages.tutor;
 
 import ish.common.types.AttendanceType;
+import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
@@ -23,6 +24,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -206,6 +208,45 @@ public class ClassRoll {
 			return getShortDateFormat(currentSession.getTimeZone()).format(this.attendance.getCreated());
 		}
 		return "";
+	}
+	
+	Long getPassedSessionsDuration(Student student) {
+		Expression exp = ExpressionFactory.matchDbExp(Session.COURSE_CLASS_PROPERTY, courseClass);
+		exp = exp.andExp(ExpressionFactory.lessOrEqualExp(Session.START_DATE_PROPERTY, new Date()));
+		exp = exp.andExp(ExpressionFactory.matchExp(Session.ATTENDANCES_PROPERTY + "." + Attendance.STUDENT_PROPERTY, student));
+		exp = exp.andExp(ExpressionFactory.matchExp(Session.ATTENDANCES_PROPERTY + "." + Attendance.ATTENDANCE_TYPE_PROPERTY, AttendanceType.ATTENDED));
+        SelectQuery selectQuery = new SelectQuery(Session.class, exp);
+        @SuppressWarnings("unchecked")
+		List<Session> sessions = (List<Session>) courseClass.getObjectContext().performQuery(selectQuery);
+        Long duration = 0l;
+		for (Session session : sessions) {
+			duration += session.getDurationMinutes();
+		}
+        return duration;
+	}
+	
+	Long getFinishedSessionsDuration() {
+		Expression exp = ExpressionFactory.matchDbExp(Session.COURSE_CLASS_PROPERTY, courseClass);
+		exp = exp.andExp(ExpressionFactory.lessOrEqualExp(Session.END_DATE_PROPERTY, new Date()));
+        SelectQuery selectQuery = new SelectQuery(Session.class, exp);
+        selectQuery.addOrdering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING);
+        @SuppressWarnings("unchecked")
+		List<Session> sessions = (List<Session>) courseClass.getObjectContext().performQuery(selectQuery);
+        Long duration = 0l;
+		for (Session session : sessions) {
+			duration += session.getDurationMinutes();
+		}
+        return duration;
+	}
+	
+	public String getStudentRation() {
+		Long passedSessionsDuration = getPassedSessionsDuration(this.attendance.getStudent()), 
+			finishedSessionsDuration = getFinishedSessionsDuration();
+		BigDecimal ratio = BigDecimal.ZERO;
+		if (passedSessionsDuration > 0 && finishedSessionsDuration > 0) {
+			ratio = new Money(passedSessionsDuration.toString()).divide(new Money(finishedSessionsDuration.toString())).multiply(100).toBigDecimal();
+		}
+		return ratio.toString() + " %";
 	}
 
 	StreamResponse onActionFromAttendance(){
