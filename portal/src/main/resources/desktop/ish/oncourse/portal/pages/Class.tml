@@ -14,8 +14,6 @@
 		</tr>
 	</table>
 
-	<div class="bord mb15"></div>
-
 
 	<table class="class-info-materials mb20">
 		<tr>
@@ -24,8 +22,6 @@
 			</td>
 		</tr>
 	</table>
-
-	<div class="bord mb15"></div>
 
 	<div t:type="messages" courseClass="courseClass"/>
 
