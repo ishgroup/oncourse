@@ -2,6 +2,8 @@ package ish.oncourse.util.payment;
 
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentStatus;
+import ish.math.Money;
+import ish.oncourse.model.Invoice;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
@@ -110,6 +112,8 @@ public class   PaymentProcessControllerTest extends ServiceTest {
         assertEquals("paymentProcessController.getCurrentState()", CANCEL, paymentProcessController.getCurrentState());
         assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
         assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.FAILED, paymentProcessController.getPaymentIn().getStatus());
+        Invoice invoice = paymentProcessController.getPaymentIn().getPaymentInLines().get(0).getInvoice();
+        assertTrue("Amount owing should be empty", Money.isZeroOrEmpty(new Money(invoice.getAmountOwing())));
         assertInvalidActionsForCANCEL(paymentProcessController);
     }
 
@@ -136,6 +140,8 @@ public class   PaymentProcessControllerTest extends ServiceTest {
         assertEquals("paymentProcessController.getCurrentState()", CANCEL, paymentProcessController.getCurrentState());
         assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
         assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.FAILED_CARD_DECLINED, paymentProcessController.getPaymentIn().getStatus());
+        Invoice invoice = paymentProcessController.getPaymentIn().getPaymentInLines().get(0).getInvoice();
+        assertTrue("Amount owing should be empty", Money.isZeroOrEmpty(new Money(invoice.getAmountOwing())));
         assertInvalidActionsForCANCEL(paymentProcessController);
     }
 
@@ -149,6 +155,8 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 		assertEquals("paymentProcessController.getCurrentState()", EXPIRED, paymentProcessController.getCurrentState());
 		assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
 		assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.FAILED_CARD_DECLINED, paymentProcessController.getPaymentIn().getStatus());
+		Invoice invoice = paymentProcessController.getPaymentIn().getPaymentInLines().get(0).getInvoice();
+        assertFalse("Amount owing should not be empty", Money.isZeroOrEmpty(new Money(invoice.getAmountOwing())));
 		assertInvalidActionsForEXPIRED(paymentProcessController);
 	}
 
@@ -163,6 +171,8 @@ public class   PaymentProcessControllerTest extends ServiceTest {
         assertEquals("paymentProcessController.getCurrentState()", CANCEL, paymentProcessController.getCurrentState());
         assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
         assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.FAILED_CARD_DECLINED, paymentProcessController.getPaymentIn().getStatus());
+        Invoice invoice = paymentProcessController.getPaymentIn().getPaymentInLines().get(0).getInvoice();
+        assertFalse("Amount owing should not be empty", Money.isZeroOrEmpty(new Money(invoice.getAmountOwing())));
         assertInvalidActionsForCANCEL(paymentProcessController);
     }
 

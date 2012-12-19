@@ -25,14 +25,14 @@ import java.util.List;
 public class PaymentInAbandonUtil {
 	private static final Logger logger = Logger.getLogger(PaymentInAbandonUtil.class);
 	
-	static boolean isHaveNotEnrollmentsForKeepInvoice(final PaymentIn payment) {
+	static boolean isHaveEnrollmentsForKeepInvoice(final PaymentIn payment) {
 		Expression paymentIdMatchExpression = ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, payment.getId());
 		Expression enrollmentExpression = ExpressionFactory.matchExp(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "." + PaymentInLine.INVOICE_PROPERTY + "." + 
 			Invoice.INVOICE_LINES_PROPERTY + "." + InvoiceLine.ENROLMENT_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS);
 		SelectQuery checkQuery = new SelectQuery(PaymentIn.class, paymentIdMatchExpression.andExp(enrollmentExpression));
 		@SuppressWarnings("unchecked")
 		List<PaymentIn> successEnrollmentsResult = payment.getObjectContext().performQuery(checkQuery);
-		return successEnrollmentsResult.isEmpty();
+		return !successEnrollmentsResult.isEmpty();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -53,24 +53,14 @@ public class PaymentInAbandonUtil {
 		return !enrollmentsResult.isEmpty() && productsResult.isEmpty();
 	}
 	
-	public static void abandonPaymentReverseInvoice(final PaymentIn payment, final boolean firedManually) {
+	public static void abandonPaymentReverseInvoice(final PaymentIn payment, final boolean createReverseInvoice) {
 		try {
 			logger.info(String.format("Canceling paymentIn with id:%s, created:%s and status:%s.", payment.getId(), payment.getCreated(), payment.getStatus()));
-			if (isHaveNotEnrollmentsForKeepInvoice(payment)) {
-				//if all enrollments in transaction we can just fail them
-				if (firedManually) {
-					//if user press the abandon reverse invoice we should make reverse invoices
-					payment.abandonPayment();
-				} else {
-					if (isHaveInvoicesNotLinkedToPayableEntities(payment)) {
-						payment.abandonPaymentKeepInvoice();
-					} else {
-						payment.abandonPayment();
-					}
-				}
-			} else {
+			if (!createReverseInvoice || isHaveEnrollmentsForKeepInvoice(payment)) {
 				//we should not reverse enrollments when college allow them to enroll with owing.
 				payment.abandonPaymentKeepInvoice();
+			} else {
+				payment.abandonPayment();
 			}
 			payment.getObjectContext().commitChanges();
 		} catch (final CayenneRuntimeException ce) {

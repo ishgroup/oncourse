@@ -102,7 +102,8 @@ public class PaymentProcessController {
             	abandonPaymentReverseInvoice(action, true);
                 break;
 		    case EXPIRE_PAYMENT:
-                abandonPaymentReverseInvoice(action, false);
+		    	//if the payment expire by timeout we need to keep invoice
+		    	abandonPaymentReverseInvoice(action, false);
                 break;
             case ABANDON_PAYMENT_KEEP_INVOICE:
                 abandonPaymentKeepInvoice();
