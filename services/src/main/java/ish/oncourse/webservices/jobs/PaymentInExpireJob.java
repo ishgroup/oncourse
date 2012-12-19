@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.jobs;
 
+import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentIn;
@@ -60,7 +61,9 @@ public class PaymentInExpireJob implements Job {
 			logger.debug(String.format("The number of payments to expire:%s.", expiredPayments.size()));
 
 			for (PaymentIn p : expiredPayments) {
-				PaymentInAbandonUtil.abandonPaymentReverseInvoice(p, false);
+				//web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.
+				boolean shouldReverseInvoice = PaymentSource.SOURCE_WEB.equals(p.getSource());
+				PaymentInAbandonUtil.abandonPaymentReverseInvoice(p, shouldReverseInvoice);
                 p.setStatusNotes("Payment was expired.");
             }
 			logger.debug("PaymentInExpireJob finished.");
