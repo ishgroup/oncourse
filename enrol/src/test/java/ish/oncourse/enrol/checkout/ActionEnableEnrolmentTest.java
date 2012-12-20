@@ -1,24 +1,12 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.oncourse.enrol.services.EnrolTestModule;
-import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
-import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.ObjectContext;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -29,29 +17,13 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.enrol.services", "enrol", EnrolTestModule.class);
-        InputStream st = ActionEnableEnrolment.class.getClassLoader().getResourceAsStream(
-                "ish/oncourse/enrol/checkout/ActionEnableEnrolmentTest.xml");
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-        builder.setColumnSensing(true);
-        FlatXmlDataSet dataSet = builder.build(st);
-
-        DataSource refDataSource = getDataSource("jdbc/oncourse");
-        DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-
-
-        this.cayenneService = getService(ICayenneService.class);
-        this.purchaseControllerBuilder = getService(IPurchaseControllerBuilder.class);
+		setup("ish/oncourse/enrol/checkout/ActionEnableEnrolmentTest.xml");
     }
 
     @Test
     public void testDuplicateEnrolment() {
 
-        ObjectContext context = cayenneService.newContext();
-        CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1001);
-        PurchaseModel model = createModel(context, Arrays.asList(courseClass), Collections.EMPTY_LIST, null);
-        createPurchaseController(model);
+		CourseClass courseClass = createPurchaseController(1001);
 
         Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001);
         addFirstContact(contact);
@@ -89,10 +61,7 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 
     @Test
     public void testCourseClassEnded() {
-        ObjectContext context = cayenneService.newContext();
-        CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1002);
-        PurchaseModel model = createModel(context, Arrays.asList(courseClass), Collections.EMPTY_LIST, null);
-        createPurchaseController(model);
+		CourseClass courseClass = createPurchaseController(1002);
 
         Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001);
         addFirstContact(contact);
@@ -103,11 +72,8 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 
     @Test
     public void testCourseClassHasNoPlaces() {
-        ObjectContext context = cayenneService.newContext();
-        //calss has only three places and one already used
-        CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1003);
-        PurchaseModel model = createModel(context, Arrays.asList(courseClass), Collections.EMPTY_LIST, null);
-        createPurchaseController(model);
+        //class has only three places and one is already used
+		CourseClass courseClass = createPurchaseController(1003);
 
         //add first contact
         Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001);

@@ -438,6 +438,12 @@ public class PurchaseController {
 		return contactEditorController;
 	}
 
+	void resetContactEditorController()
+	{
+	 	this.contactEditorController = null;
+	}
+
+
 	public Messages getMessages() {
 		return messages;
 	}
@@ -481,7 +487,7 @@ public class PurchaseController {
 		this.concessionEditorController = concessionEditorController;
 	}
 
-	public void setAddContactController(AddContactController addContactController) {
+	void setAddContactController(AddContactController addContactController) {
 		this.addContactController = addContactController;
 	}
 

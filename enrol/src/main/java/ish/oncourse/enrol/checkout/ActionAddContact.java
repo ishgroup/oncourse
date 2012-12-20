@@ -24,9 +24,11 @@ public class ActionAddContact extends APurchaseAction {
 				getController().addContactToModel(contact);
 				getController().setState(editCheckout);
 			}
+			getController().setAddContactController(null);
 		} else if (getController().getState().equals(editContact)) {
 			getController().addContactToModel(contact);
 			getController().setState(editCheckout);
+			getController().resetContactEditorController();
 		} else
 			throw new IllegalStateException();
 
@@ -64,4 +66,15 @@ public class ActionAddContact extends APurchaseAction {
 		} else
 			return getController().getState() == editContact;
 	}
+
+	Contact getContact()
+	{
+		return contact;
+	}
+
+	ContactCredentials getContactCredentials()
+	{
+		return contactCredentials;
+	}
+
 }

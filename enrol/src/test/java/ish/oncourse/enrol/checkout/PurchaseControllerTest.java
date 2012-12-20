@@ -6,23 +6,13 @@ import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
-import ish.oncourse.enrol.services.EnrolTestModule;
-import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
-import ish.oncourse.enrol.utils.EnrolCoursesControllerTest;
 import ish.oncourse.model.*;
-import ish.oncourse.services.persistence.ICayenneService;
 import ish.util.InvoiceUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,20 +27,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.enrol.services", "enrol", EnrolTestModule.class);
-        InputStream st = EnrolCoursesControllerTest.class.getClassLoader().getResourceAsStream(
-                "ish/oncourse/enrol/checkout/purchaseControllerTestDataSet.xml");
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-        builder.setColumnSensing(true);
-        FlatXmlDataSet dataSet = builder.build(st);
-
-        DataSource refDataSource = getDataSource("jdbc/oncourse");
-        DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-
-
-        this.cayenneService = getService(ICayenneService.class);
-        this.purchaseControllerBuilder = getService(IPurchaseControllerBuilder.class);
+		setup("ish/oncourse/enrol/checkout/purchaseControllerTestDataSet.xml");
     }
 
 

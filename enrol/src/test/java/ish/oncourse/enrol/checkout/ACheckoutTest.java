@@ -5,13 +5,22 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
+import ish.oncourse.enrol.services.EnrolTestModule;
 import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.operation.DatabaseOperation;
 
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.State.paymentProgress;
@@ -23,6 +32,24 @@ public abstract class ACheckoutTest extends ServiceTest {
 	ICayenneService cayenneService;
 	IPurchaseControllerBuilder purchaseControllerBuilder;
     PurchaseController purchaseController;
+
+	void setup(String dbResource) throws Exception {
+		initTest("ish.oncourse.enrol.services", "enrol", EnrolTestModule.class);
+		InputStream st = ACheckoutTest.class.getClassLoader().getResourceAsStream(
+				dbResource);
+
+		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+		builder.setColumnSensing(true);
+		FlatXmlDataSet dataSet = builder.build(st);
+
+		DataSource refDataSource = getDataSource("jdbc/oncourse");
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
+
+
+		this.cayenneService = getService(ICayenneService.class);
+		this.purchaseControllerBuilder = getService(IPurchaseControllerBuilder.class);
+
+	}
 
 	private void assertPurchaseController() {
 
@@ -71,6 +98,16 @@ public abstract class ACheckoutTest extends ServiceTest {
 		purchaseController = purchaseControllerBuilder.build(purchaseModel);
 		purchaseController.performAction(new PurchaseController.ActionParameter(PurchaseController.Action.init));
 		assertPurchaseController();
+	}
+
+	CourseClass createPurchaseController(long courseClassId)
+	{
+		ObjectContext context = cayenneService.newContext();
+		CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, courseClassId);
+		PurchaseModel model = createModel(context, Arrays.asList(courseClass), Collections.EMPTY_LIST, null);
+		createPurchaseController(model);
+		return courseClass;
+
 	}
 
 	void addFirstContact(Contact contact) {
@@ -144,16 +181,20 @@ public abstract class ACheckoutTest extends ServiceTest {
 	}
 
 
-	ContactCredentials createContactCredentialsBy(Contact newPayer) {
+	ContactCredentials createContactCredentialsBy(Contact contact) {
+		return createContactCredentialsBy(contact.getGivenName(), contact.getFamilyName(), contact.getEmailAddress());
+	}
+
+	ContactCredentials createContactCredentialsBy(String firstName, String lastName, String email) {
 		ContactCredentials contactCredentials = new ContactCredentials();
-		contactCredentials.setFirstName(newPayer.getGivenName());
-		contactCredentials.setLastName(newPayer.getFamilyName());
-		contactCredentials.setEmail(newPayer.getEmailAddress());
+		contactCredentials.setFirstName(firstName);
+		contactCredentials.setLastName(lastName);
+		contactCredentials.setEmail(email);
 		return contactCredentials;
 	}
 
 
-    void assertEnabledEnrolment(Enrolment enrolment) {
+	void assertEnabledEnrolment(Enrolment enrolment) {
         assertNotNull(enrolment.getInvoiceLine());
         assertEquals(EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
     }
