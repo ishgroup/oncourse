@@ -21,17 +21,22 @@ public class ActionAddContact extends APurchaseAction {
 				getController().prepareContactEditor(contact, !isAllRequiredFieldFilled);
 				getController().setState(editContact);
 			} else {
-				getController().addContactToModel(contact);
-				getController().setState(editCheckout);
+				addContact();
 			}
 			getController().setAddContactController(null);
 		} else if (getController().getState().equals(editContact)) {
-			getController().addContactToModel(contact);
-			getController().setState(editCheckout);
-			getController().resetContactEditorController();
+			addContact();
 		} else
 			throw new IllegalStateException();
 
+	}
+
+	private void addContact()
+	{
+		contact.getObjectContext().commitChangesToParent();
+		getController().addContactToModel(contact);
+		getController().setState(editCheckout);
+		getController().resetContactEditorController();
 	}
 
 	@Override

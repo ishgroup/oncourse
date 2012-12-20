@@ -43,6 +43,7 @@ public class ContactCredentialsEncoder {
 			contact.setIsMarketingViaSMSAllowed(true);
 		}
 
+
 	}
 
 	public void setContactCredentials(ContactCredentials contactCredentials) {

@@ -47,8 +47,6 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	@Override
 	public void saveContact() {
-        if (getErrors().isEmpty())
-		    objectContext.commitChangesToParent();
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
 		actionParameter.setErrors(getErrors());
 		actionParameter.setValue(contact);

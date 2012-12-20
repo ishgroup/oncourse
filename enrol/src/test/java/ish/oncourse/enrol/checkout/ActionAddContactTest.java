@@ -2,14 +2,8 @@ package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action;
 import static ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -25,10 +19,7 @@ public class ActionAddContactTest extends ACheckoutTest {
 	@Test
 	public void test()
 	{
-		ObjectContext context = cayenneService.newContext();
-		CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1001);
-		PurchaseModel model = createModel(context, Arrays.asList(courseClass), Collections.EMPTY_LIST, null);
-		createPurchaseController(model);
+		createPurchaseController(1001);
 
 		ContactCredentials contactCredentials = createContactCredentialsBy("StudentFirstName2","StudentLastName2", "Student2@Student2.de");
 		ActionParameter parameter = new ActionParameter(Action.addContact);
@@ -60,5 +51,19 @@ public class ActionAddContactTest extends ACheckoutTest {
 		purchaseController.getContactEditorDelegate().saveContact();
 		assertNull(purchaseController.getContactEditorDelegate());
 		assertTrue(purchaseController.getModel().containsContactWith(contactCredentials));
+	}
+
+	@Test
+	public void test_contactAlreadyAdded()
+	{
+		createPurchaseController(1001);
+		ActionParameter parameter = new ActionParameter(Action.addContact);
+		ContactCredentials contactCredentials = createContactCredentialsBy("Tutor1","Tutor1", "Tutor1@Tutor1.net");
+		parameter.setValue(contactCredentials);
+		performAction(parameter);
+
+		assertNotNull(purchaseController.getModel().getPayer());
+		assertNotNull(purchaseController.getModel().getPayer().getStudent());
+		assertFalse(purchaseController.getModel().getPayer().getObjectId().isTemporary());
 	}
 }
