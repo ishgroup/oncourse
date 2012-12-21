@@ -18,7 +18,12 @@ public class ActionAddDiscount extends APurchaseAction {
 		if (getParameter() != null) {
 			discountCode = StringUtils.trimToNull(getParameter().getValue(String.class));
 			if (discountCode != null)
+			{
 				discount = getController().getDiscountService().getByCode(discountCode);
+				if (discount != null)
+					discount = getModel().localizeObject(discount);
+			}
+
 		}
 	}
 
@@ -31,7 +36,12 @@ public class ActionAddDiscount extends APurchaseAction {
 		if (discount == null) {
 			getController().addError(PurchaseController.Message.discountNotFound, discountCode);
 			return false;
-		} else
-			return true;
+		}
+		if (getModel().containsDiscount(discount))
+		{
+			getController().addWarning(PurchaseController.Message.discountAlreadyAdded, discountCode);
+			return false;
+		}
+		return true;
 	}
 }

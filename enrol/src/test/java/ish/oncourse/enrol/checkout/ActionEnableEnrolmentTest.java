@@ -25,7 +25,7 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 
 		CourseClass courseClass = createPurchaseController(1001);
 
-        Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001);
+		Contact contact = addFirstContact(1001);
         addFirstContact(contact);
 
         //test duplicate enrolment
@@ -63,8 +63,7 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
     public void testCourseClassEnded() {
 		CourseClass courseClass = createPurchaseController(1002);
 
-        Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001);
-        addFirstContact(contact);
+		Contact contact = addFirstContact(1001);
         assertNotNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
         assertEquals(0, purchaseController.getModel().getEnabledEnrolments(contact).size());
         assertDisabledEnrolments(contact, 1);
@@ -76,8 +75,8 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 		CourseClass courseClass = createPurchaseController(1003);
 
         //add first contact
-        Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001);
-        addFirstContact(contact);
+        Contact contact = addFirstContact(1001);
+
         assertNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
         assertEquals(0, purchaseController.getModel().getDisabledEnrolments(contact).size());
         assertEnabledEnrolments(contact, 1, false);

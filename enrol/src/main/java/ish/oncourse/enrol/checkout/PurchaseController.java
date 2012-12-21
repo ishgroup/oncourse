@@ -712,7 +712,8 @@ public class PurchaseController {
 		codeEmpty,
         classAlreadyAdded,
         productAlreadyAdded,
-        itemsWasAddedFromShoppingBasket;
+        itemsWasAddedFromShoppingBasket,
+		discountAlreadyAdded;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);

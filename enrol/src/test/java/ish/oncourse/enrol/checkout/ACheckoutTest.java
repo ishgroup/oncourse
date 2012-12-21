@@ -110,6 +110,13 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 	}
 
+	Contact addFirstContact(long contactId)
+	{
+		Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, contactId);
+		addFirstContact(contact);
+		return contact;
+	}
+
 	void addFirstContact(Contact contact) {
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
 		ContactCredentials contactCredentials = createContactCredentialsBy(contact);

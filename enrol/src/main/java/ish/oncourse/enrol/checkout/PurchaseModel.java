@@ -49,6 +49,23 @@ public class PurchaseModel {
 	public List<Contact> getContacts() {
 		return Collections.unmodifiableList(new ArrayList<Contact>(contacts.keySet()));
 	}
+
+	public Discount getDiscountBy(long id)
+	{
+		List<Discount> discounts = Collections.unmodifiableList(this.discounts);
+		for (Discount discount : discounts) {
+
+			if (discount.getId().equals(id))
+				return discount;
+		}
+		return null;
+	}
+
+	public boolean containsDiscount(Discount discount)
+	{
+		List<Discount> discounts = Collections.unmodifiableList(this.discounts);
+		return discounts.contains(discount);
+	}
 	
 	public void setPayer(Contact payer) {
 		this.payer = payer;

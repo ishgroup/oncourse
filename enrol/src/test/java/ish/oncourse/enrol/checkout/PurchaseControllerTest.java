@@ -240,8 +240,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(2, model.getProducts().size());
 
         if (addPayer) {
-            Contact contact = Cayenne.objectForPK(context, Contact.class, 1189157);
-            addFirstContact(contact);
+			addFirstContact(1189157);
             assertEquals(1, purchaseController.getModel().getContacts().size());
             assertNotNull(purchaseController.getModel().getPayer());
         }
