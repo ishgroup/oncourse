@@ -11,6 +11,7 @@ import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import ish.common.types.EnrolmentStatus;
@@ -343,6 +344,10 @@ public class PaymentInAbandonHelper {
 			internalPayment.setAmount(BigDecimal.ZERO);
 			internalPayment.setType(PaymentType.INTERNAL);
 			internalPayment.setStatus(PaymentStatus.SUCCESS);
+			String sessionId = paymentInLineToRefund.getPaymentIn().getSessionId();
+			if (StringUtils.trimToNull(sessionId) != null) {
+				internalPayment.setSessionId(sessionId);
+			}
 
 			// Creating refund invoice
 			Invoice refundInvoice = invoiceToRefund.createRefundInvoice();

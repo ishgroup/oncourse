@@ -78,6 +78,7 @@ public class PaymentInTest {
 		paymentIn.setAmount(new BigDecimal(150));
 		paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE);
 		paymentIn.setType(PaymentType.CREDIT_CARD);
+		paymentIn.setSessionId("1234567890");
 
 		calendar.add(Calendar.DAY_OF_MONTH, 5);
 

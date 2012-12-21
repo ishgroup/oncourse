@@ -697,6 +697,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
 		PaymentIn reversePaymentIn = helper.abandonPayment();
 		assertNotNull("Reverse invoice should not be null", reversePaymentIn);
+		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
@@ -749,6 +750,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
 		reversePaymentIn = helper.abandonPayment();
 		assertNotNull("Reverse invoice should not be null", reversePaymentIn);
+		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
@@ -868,6 +870,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
 		PaymentIn reversePaymentIn = PaymentInAbandonHelper.createRefundPaymentIn(paymentInLine, new Date());
 		assertNotNull("Reverse invoice should not be null", reversePaymentIn);
+		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment status should not change here", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
@@ -921,6 +924,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
 		reversePaymentIn = PaymentInAbandonHelper.createRefundPaymentIn(paymentInLine, new Date());
 		assertNotNull("Reverse invoice should not be null", reversePaymentIn);
+		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
@@ -1196,6 +1200,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
 		PaymentIn reversePaymentIn = helper.makeAbandon();
 		assertNotNull("Reverse invoice should not be null", reversePaymentIn);
+		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
@@ -1248,6 +1253,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
 		reversePaymentIn = helper.abandonPayment();
 		assertNotNull("Reverse invoice should not be null", reversePaymentIn);
+		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
