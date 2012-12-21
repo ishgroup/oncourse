@@ -149,7 +149,7 @@ public class PaymentInTest {
 		PaymentIn inversePayment = paymentIn.abandonPayment();
 
 		assertNotNull("Expecting not null inverse payment.", inversePayment);
-
+		assertEquals("Reverse payment sessionid should be equal to payment sessionid", inversePayment.getSessionId(), paymentIn.getSessionId());
 		context.commitChanges();
 
 		assertTrue("Checking that id isn't temporary.", !inversePayment.getObjectId().isTemporary());

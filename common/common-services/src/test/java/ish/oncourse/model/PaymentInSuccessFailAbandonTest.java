@@ -261,6 +261,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2000);
 		PaymentIn inversePayment = paymentIn.abandonPayment();
 		paymentIn.getObjectContext().commitChanges();
+		assertEquals("Reverse payment sessionid should be equal to payment sessionid", inversePayment.getSessionId(), paymentIn.getSessionId());
 		
 		assertEquals("Check type internal.", PaymentType.INTERNAL, inversePayment.getType());
 		assertEquals("Zero amount.", 0, inversePayment.getAmount().intValue());
