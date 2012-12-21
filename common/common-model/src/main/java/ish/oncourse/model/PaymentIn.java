@@ -23,6 +23,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.cayenne.validation.ValidationResult;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 public class PaymentIn extends _PaymentIn implements Queueable {
@@ -293,7 +294,11 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			internalPayment.setAmount(BigDecimal.ZERO);
 			internalPayment.setType(PaymentType.INTERNAL);
 			internalPayment.setStatus(PaymentStatus.SUCCESS);
-
+			String sessionId = paymentInLineToRefund.getPaymentIn().getSessionId();
+			if (StringUtils.trimToNull(sessionId) != null) {
+				internalPayment.setSessionId(sessionId);
+			}
+			
 			// Creating refund invoice
 			Invoice refundInvoice = invoiceToRefund.createRefundInvoice();
 			LOG.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
