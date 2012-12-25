@@ -2,7 +2,7 @@
 	<div>
 		<label for="listCheckBox">
 			<t:checkbox t:id="listCheckbox" value="selected" style="margin-top: 3px; margin-bottom: 0px; margin-right: 3px;"/>
-			<strong>${mailingList.name}</strong>
+			<strong style="padding-left:10px;">${mailingList.name}</strong>
 		</label>
 		<p>
 			<t:outputraw value="mailingList.detail" />
