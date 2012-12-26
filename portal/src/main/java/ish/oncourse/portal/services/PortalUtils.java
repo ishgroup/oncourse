@@ -3,11 +3,13 @@ package ish.oncourse.portal.services;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
+import ish.oncourse.model.WebHostName;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -34,19 +36,26 @@ public class PortalUtils {
 
     private static final String CLASS_SESSIONS_INFO_TEMPLATE = " %s sessions, %s hours";
 
+    private final static Logger LOGGER = Logger.getLogger(PortalUtils.class);
 
-
-
-    public static String getCourseDetailsURLBy(Course course, IWebSiteService webSiteService)
-    {
-        return course != null ? String.format(URL_COURSE_TEMPLATE, webSiteService.getCurrentDomain().getName(),
-                course.getCode()) : EMPTY_STRING;
+    public static String getCourseDetailsURLBy(Course course, IWebSiteService webSiteService) {
+    	WebHostName currentDomain = webSiteService.getCurrentDomain();
+    	String domainName = currentDomain.getName();
+    	if (domainName.endsWith("/")) {
+    		LOGGER.error(String.format("Incorrect domain name defined for id=%s with name %s", currentDomain.getId(), domainName));
+    		domainName = domainName.substring(0, domainName.length()-1);
+    	}
+        return course != null ? String.format(URL_COURSE_TEMPLATE, domainName, course.getCode()) : EMPTY_STRING;
     }
 
-    public static String getClassDetailsURLBy(CourseClass courseClass, IWebSiteService webSiteService)
-    {
-        return courseClass != null ? String.format(URL_CLASS_TEMPLATE, webSiteService.getCurrentDomain().getName(),
-                courseClass.getCourse().getCode(),courseClass.getCode()) : EMPTY_STRING;
+    public static String getClassDetailsURLBy(CourseClass courseClass, IWebSiteService webSiteService) {
+    	WebHostName currentDomain = webSiteService.getCurrentDomain();
+    	String domainName = currentDomain.getName();
+    	if (domainName.endsWith("/")) {
+    		LOGGER.error(String.format("Incorrect domain name defined for id=%s with name %s", currentDomain.getId(), domainName));
+    		domainName = domainName.substring(0, domainName.length()-1);
+    	}
+    	return courseClass != null ? String.format(URL_CLASS_TEMPLATE, domainName, courseClass.getCourse().getCode(), courseClass.getCode()) : EMPTY_STRING;
     }
 
 
