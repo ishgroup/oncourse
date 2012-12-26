@@ -1,5 +1,6 @@
 package ish.oncourse.portal.components;
 
+import static ish.oncourse.util.FormatUtils.getDateFormat;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Room;
@@ -8,6 +9,7 @@ import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +52,9 @@ public class ClassInformation {
 	@Property
 	private Site site;
 	
+	@Property
+	private int sessionsCount;
+	
 	@Inject
 	@Property
 	private IAuthenticationService authService;
@@ -89,9 +94,19 @@ public class ClassInformation {
 		if (room != null) {
 			site = room.getSite();
 		}
+		sessionsCount = courseClass.getSessions().size();
 
 		return true;
 	}
+	
+	public boolean getIsNotDistantLearning() {
+		return Boolean.FALSE.equals(courseClass.getIsDistantLearningCourse());
+	}
+	
+	public String getClassTime() {
+        DateFormat dateFormat = getDateFormat("dd MMMM yyyy", courseClass.getTimeZone());
+        return String.format("%s - %s", dateFormat.format(courseClass.getStartDate()), dateFormat.format(courseClass.getEndDate()));
+    }
 
 	public boolean isHasEnrolments() {
 		return enrolmentsCount > 0;

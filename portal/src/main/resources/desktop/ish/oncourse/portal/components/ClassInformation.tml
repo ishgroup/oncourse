@@ -27,6 +27,16 @@
 				</t:loop>
 			</div>
 		</t:if>
+		<t:if test="isNotDistantLearning">
+			<div>
+				<span>Sessions total count: </span>
+				<div class="class-man1">${sessionsCount}</div>
+			</div>
+			<div>
+				<span>Class duration: </span>
+				<div class="class-man1">${classTime}</div>
+			</div>
+		</t:if>
 		<t:if test="room">
 			<div><span>Venue: </span><div class="class-place1"><i class="icon-map-marker"></i> ${room.name}, ${site.name}</div></div>
 			<br/>
