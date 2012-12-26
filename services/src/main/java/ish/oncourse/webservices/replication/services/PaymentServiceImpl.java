@@ -195,6 +195,10 @@ public class PaymentServiceImpl implements InternalPaymentService {
 		}
 	}
 	
+	/**
+	 * This workaround for #16100 to avoid payments for failed enrollments processing should be removed because original issue fixed. 
+	 */
+	@Deprecated
 	public boolean isEnrolmentsCorrect(List<Enrolment> enrolments) {
 		for (Enrolment enrolment : enrolments) {
 			boolean isZeroOwing = true;
@@ -210,6 +214,11 @@ public class PaymentServiceImpl implements InternalPaymentService {
 		return true;
 	}
 	
+	/**
+	 * This method check is payment have invoices linked with other payments with in transaction status.
+	 * This check required to avoid over payment for the same invoices.
+	 * Revert invoice will be created for conflicted "enrollment" invoices with in transaction enrollment statuses.
+	 */
 	public boolean isHaveConflictedInInvoices(PaymentIn paymentIn, List<PaymentIn> updatedPayments) {
 		//we also should check that this payment not linked with any invoices which also linked with another in transaction payments.
 		List<ObjectId> conflictedInvoicesObjectIds = getLinesForConflictedInvoices(paymentIn);
@@ -238,6 +247,10 @@ public class PaymentServiceImpl implements InternalPaymentService {
 		return isConflictPayment;
 	}
 	
+	/**
+	 * This method check is payment have invoices linked with other payments with in transaction status.
+	 * List of conflicted invoices ObjectIds returned.
+	 */
 	public List<ObjectId> getLinesForConflictedInvoices(PaymentIn paymentForCheck) {
 		List<ObjectId> result = new ArrayList<ObjectId>();
 		for (PaymentInLine paymentInLine : paymentForCheck.getPaymentInLines()) {
@@ -246,6 +259,9 @@ public class PaymentServiceImpl implements InternalPaymentService {
 				PaymentIn paymentIn = paymentInLineForCheck.getPaymentIn();
 				if (!paymentIn.getObjectId().equals(paymentForCheck.getObjectId()) && PaymentStatus.IN_TRANSACTION.equals(paymentIn.getStatus())) {
 					result.add(paymentInLineForCheck.getInvoice().getObjectId());
+					logger.error(String.format("Conflicted invoice with id=%s and amount owing=%s found linked with new payment with id=%s and old " +
+						"in transaction payment with id=%s. New payment will be failed to avoid overpayment.", 
+						invoice.getId(), invoice.getAmountOwing(), paymentForCheck.getId(), paymentIn.getId()));
 				}
 			}
 		}
