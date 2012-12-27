@@ -1,15 +1,9 @@
 package ish.oncourse.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+
+import java.util.*;
 
 /**
  * Use this policy to get the discounts for which the selected student is
@@ -169,6 +163,7 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 				for (Membership contactMembership : student.getContact().getMemberships()) {
 					if (contactMembership.getProduct().getObjectId().equals(membership.getMembershipProduct().getObjectId())) {
 						eligableMembership = true;
+						break;
 					}
 				}
 			}

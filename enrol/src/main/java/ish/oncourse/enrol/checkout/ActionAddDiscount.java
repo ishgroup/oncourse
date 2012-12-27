@@ -20,11 +20,10 @@ public class ActionAddDiscount extends APurchaseAction {
 			if (discountCode != null)
 			{
 				discount = getController().getDiscountService().getByCode(discountCode);
-				if (discount != null)
-					discount = getModel().localizeObject(discount);
 			}
-
 		}
+		if (discount != null)
+			discount = getModel().localizeObject(discount);
 	}
 
 	@Override
@@ -43,5 +42,9 @@ public class ActionAddDiscount extends APurchaseAction {
 			return false;
 		}
 		return true;
+	}
+
+	public void setDiscount(Discount discount) {
+		this.discount = discount;
 	}
 }

@@ -47,11 +47,7 @@ public class ConcessionEditorController extends ADelegate implements ConcessionD
 		parameter.setValue(studentConcession);
 
 		if (getErrors().isEmpty())
-		{
 			studentConcession.setStudent(getStudent());
-			objectContext.commitChangesToParent();
-			studentConcession = null;
-		}
 
 		getPurchaseController().performAction(parameter);
 	}

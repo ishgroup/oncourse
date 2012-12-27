@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
+import org.apache.cayenne.ObjectContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -20,6 +21,8 @@ import static org.mockito.Mockito.*;
 public class ActionAddConcessionTest {
 	@Test
 	public void test() {
+		ObjectContext objectContext = mock(ObjectContext.class);
+
 		Date date = new Date();
 		ConcessionType concessionType = new ConcessionType();
 		concessionType.setName("concessionType");
@@ -39,6 +42,7 @@ public class ActionAddConcessionTest {
 		when(studentConcession.getExpiresOn()).thenReturn(date);
 		when(studentConcession.getConcessionType()).thenReturn(concessionType);
 		when(studentConcession.getStudent()).thenReturn(student);
+		when(studentConcession.getObjectContext()).thenReturn(objectContext);
 		doReturn(studentConcession).when(model).localizeObject(studentConcession);
 
 		PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addConcession);
@@ -49,9 +53,10 @@ public class ActionAddConcessionTest {
 		actionAddConcession.setParameter(parameter);
 		assertTrue(actionAddConcession.action());
 		verify(model, times(1)).addConcession(studentConcession);
-		verify(controller, times(1)).recalculateEnrolmentInvoiceLines();
+		verify(objectContext, times(1)).commitChangesToParent();
 		verify(controller, times(1)).recalculateEnrolmentInvoiceLines();
 		verify(controller, times(1)).setState(PurchaseController.State.editCheckout);
+		verify(controller, times(1)).setConcessionEditorController(null);
 
 
 		List<StudentConcession> concessions = getConcessions(studentConcession, date, concessionType, student);

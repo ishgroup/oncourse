@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.services.payment;
 
+import ish.oncourse.enrol.checkout.ActionAddDiscount;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseModel;
 import ish.oncourse.enrol.pages.Checkout;
@@ -7,6 +8,7 @@ import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Discount;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -90,6 +92,7 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
 		List<CourseClass> courseClasses = courseClassService.loadByIds(orderedClassesIds);
 		List<Product> products = voucherService.loadByIds(productIds);
+		List<Discount> discounts = discountService.getPromotions();
 
 		PurchaseModel model = new PurchaseModel();
 		model.setObjectContext(cayenneService.newContext());
@@ -97,6 +100,7 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		model.setProducts(model.localizeObjects(products));
 		model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 		model.setWebSite(model.localizeObject(webSiteService.getCurrentWebSite()));
+		model.setDiscounts(discounts);
 		return model;
 	}
 
@@ -105,9 +109,20 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
         boolean result = updateCourseClasses(purchaseController);
         //todo
         List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
+
+		updateDiscounts(purchaseController);
     }
 
-    private boolean updateCourseClasses(PurchaseController purchaseController) {
+	private void updateDiscounts(PurchaseController purchaseController) {
+		List<Discount> discounts = discountService.getPromotions();
+		for (Discount discount : discounts) {
+			ActionAddDiscount actionAddDiscount = PurchaseController.Action.addDiscount.createAction(purchaseController);
+			actionAddDiscount.setDiscount(discount);
+			actionAddDiscount.action();
+		}
+	}
+
+	private boolean updateCourseClasses(PurchaseController purchaseController) {
         boolean result = false;
         List<Long> orderedClassesIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
         for (Long classId: orderedClassesIds) {

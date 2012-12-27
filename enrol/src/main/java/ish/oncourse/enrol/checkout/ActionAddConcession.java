@@ -11,8 +11,10 @@ public class ActionAddConcession extends APurchaseAction {
 
 	@Override
 	protected void makeAction() {
+		studentConcession.getObjectContext().commitChangesToParent();
 		getModel().addConcession(getModel().localizeObject(studentConcession));
 		getController().recalculateEnrolmentInvoiceLines();
+		getController().setConcessionEditorController(null);
 		getController().setState(PurchaseController.State.editCheckout);
 	}
 
@@ -35,8 +37,7 @@ public class ActionAddConcession extends APurchaseAction {
 				continue;
 
 			if (concession.getConcessionType() == concessionType &&
-					isSameNumber(number, concession) &&
-					isSameExpiresOn(date, concession))
+					isSameNumber(number, concession))
 			{
 				getController().addError(PurchaseController.Message.concessionAlreadyAdded, concession);
 				return false;
