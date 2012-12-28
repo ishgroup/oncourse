@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.checkout.contact;
 
-import ish.oncourse.enrol.checkout.ADelegate;
-import ish.oncourse.enrol.checkout.PurchaseController;
+import ish.oncourse.enrol.checkout.*;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
@@ -24,6 +23,9 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 	private ContactFieldHelper contactFieldHelper;
 
 	private ContactFiledsSet contactFiledsSet;
+
+	private AConcessionDelegate concessionDelegate;
+
 
 
 	@Override
@@ -96,5 +98,31 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	public void setContactFiledsSet(ContactFiledsSet contactFiledsSet) {
 		this.contactFiledsSet = contactFiledsSet;
+	}
+
+	@Override
+	public boolean isActiveConcessionTypes() {
+		return getPurchaseController().isActiveConcessionTypes();
+	}
+
+	@Override
+	public ConcessionDelegate getConcessionDelegate() {
+		if (concessionDelegate == null)
+		{
+			concessionDelegate = new AConcessionDelegate() {
+				@Override
+				public void saveConcession() {
+					PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addConcession);
+					parameter.setValue(concessionDelegate.getStudentConcession());
+					ActionAddConcession action = PurchaseController.Action.addConcession.createAction(getPurchaseController());
+					action.action();
+
+				}
+			};
+			concessionDelegate.setContact(contact);
+			concessionDelegate.setObjectContext(objectContext);
+
+		}
+		return concessionDelegate;
 	}
 }

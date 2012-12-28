@@ -166,7 +166,10 @@ function initCreditAccessHandle()
 
 function sendAjaxWithData($actionLink,$data)
 {
-    $j('#checkout').block({
+	var refreshId = $j.data($actionLink,"refreshId");
+	if (!refreshId)
+		refreshId = '#checkout';
+    $j(refreshId).block({
         fadeIn: 700,
         fadeOut: 700,
         showOverlay: true,
@@ -181,8 +184,8 @@ function sendAjaxWithData($actionLink,$data)
         url: $actionLink,
         data: $data,
         success: function(data) {
-            $j('#checkout').unblock();
-            $j('#checkout').html(data.content);
+            $j(refreshId).unblock();
+            $j(refreshId).html(data.content);
             initHandles();
         }
     });

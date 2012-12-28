@@ -513,8 +513,12 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-        ConcessionType ct = Cayenne.objectForPK(context, ConcessionType.class, 1);
-        StudentConcession sc = createStudentConcession(context, model.getPayer().getStudent(), ct, model.getPayer().getCollege());
+		ObjectContext cContext = context.createChildContext();
+        ConcessionType ct = Cayenne.objectForPK(cContext, ConcessionType.class, 1);
+        StudentConcession sc = createStudentConcession(cContext,
+				(Student) cContext.localObject(model.getPayer().getStudent().getObjectId(),null),
+				ct,
+				(College) cContext.localObject(model.getPayer().getCollege().getObjectId(),null));
 
         addConcession(purchaseController, sc);
 
@@ -540,8 +544,10 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-        ConcessionType ct = Cayenne.objectForPK(context, ConcessionType.class, 1);
-        StudentConcession sc = createStudentConcession(context, model.getPayer().getStudent(), ct, model.getPayer().getCollege());
+		ObjectContext cContext = context.createChildContext();
+        ConcessionType ct = Cayenne.objectForPK(cContext, ConcessionType.class, 1);
+        StudentConcession sc = createStudentConcession(cContext, (Student)cContext.localObject(model.getPayer().getStudent().getObjectId(), null),
+				ct, (College) cContext.localObject(model.getPayer().getCollege().getObjectId(), null));
 
         addConcession(purchaseController, sc);
 
@@ -552,7 +558,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         performAction(param);
 
         param = new ActionParameter(Action.removeConcession);
-        param.setValue(ct);
+        param.setValue(model.localizeObject(ct));
         param.setValue(model.getPayer());
 
         performAction(param);
@@ -627,8 +633,6 @@ public class PurchaseControllerTest extends ACheckoutTest {
             ConcessionType concessionType = concessionEditorController.getConcessionTypes().get(i);
             concessionEditorController.changeConcessionTypeBy(i);
             assertNotNull(concessionEditorController.getStudentConcession());
-            //student will be set only before commit.
-            assertNull(concessionEditorController.getStudentConcession().getStudent());
             assertEquals(concessionType.getId(), concessionEditorController.getStudentConcession().getConcessionType().getId());
         }
         concessionEditorController.changeConcessionTypeBy(-1);

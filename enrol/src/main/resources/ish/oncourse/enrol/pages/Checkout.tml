@@ -64,7 +64,8 @@
 </t:block>
 
 <t:block t:id="contactEditor">
-	<span t:type="checkout/contact/contacteditor" delegate="purchaseController.contactEditorDelegate" returnPage="this" showCancelLink="purchaseController.payerInitialized"/>
+	<span t:type="checkout/contact/contacteditor" delegate="purchaseController.contactEditorDelegate"
+		  returnPage="this" returnBlock="checkoutBlock" showCancelLink="purchaseController.payerInitialized"/>
 </t:block>
 
 <t:block t:id="paymentEditor">

@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.components.checkout.contact;
 
+import ish.oncourse.enrol.checkout.ConcessionParser;
 import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
@@ -7,6 +8,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -31,6 +33,10 @@ public class ContactEditor {
 	@Parameter
 	private Object returnPage;
 
+	@Parameter
+	@Property
+	private Block returnBlock;
+
 	@Inject
 	private PreferenceController preferenceController;
 
@@ -46,9 +52,14 @@ public class ContactEditor {
 	@InjectComponent
 	private ContactEditorFieldSet contactEditorFieldSet;
 
+	@Inject
+	@Id("concession")
+	@Property
+	private Block concessionBlock;
+
 
 	@SetupRender
-	void beforeRender() {
+	void setupRender() {
 		validateHandler = new ValidateHandler();
 		validateHandler.setErrors(delegate.getErrors());
 	}
@@ -71,18 +82,28 @@ public class ContactEditor {
 
 		if (delegate != null)
 		{
-			ContactEditorParser contactEditorValidator = new ContactEditorParser();
-			contactEditorValidator.setRequest(request);
-			contactEditorValidator.setContact(delegate.getContact());
-			contactEditorValidator.setContactFieldHelper(getContactFieldHelper());
-			contactEditorValidator.setMessages(contactEditorFieldSet.getMessages());
-			contactEditorValidator.setVisibleFields(delegate.getVisibleFields());
-			contactEditorValidator.setDateFormat(getDateFormat());
-			contactEditorValidator.parse();
-			Map<String,String> errors = new HashMap<String, String>(contactEditorValidator.getErrors());
+			ContactEditorParser contactEditorParser = new ContactEditorParser();
+			contactEditorParser.setRequest(request);
+			contactEditorParser.setContact(delegate.getContact());
+			contactEditorParser.setContactFieldHelper(getContactFieldHelper());
+			contactEditorParser.setMessages(contactEditorFieldSet.getMessages());
+			contactEditorParser.setVisibleFields(delegate.getVisibleFields());
+			contactEditorParser.setDateFormat(getDateFormat());
+			contactEditorParser.parse();
+			Map<String,String> errors = new HashMap<String, String>(contactEditorParser.getErrors());
 
 			avetmissEditor.save();
 			errors.putAll(avetmissEditor.getErrors());
+
+			if (delegate.isActiveConcessionTypes() &&
+					delegate.getConcessionDelegate().getStudentConcession() != null)
+			{
+				ConcessionParser concessionParser = ConcessionParser.newInstance(request,
+						delegate.getConcessionDelegate().getStudentConcession(),delegate.getContact().getCollege().getTimeZone()
+						);
+				concessionParser.parse();
+				errors.putAll(concessionParser.getErrors());
+			}
 
 			delegate.setErrors(errors);
 			delegate.saveContact();

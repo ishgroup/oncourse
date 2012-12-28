@@ -1,5 +1,25 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
+	<t:form t:id="contactEditorForm">
+		<t:delegate to="block:message"/>
+		<t:delegate to="block:contactFields"/>
+		<t:if test="fillRequiredProperties" negate="true">
+			<t:delegate to="block:options"/>
+			<t:if test="delegate.activeConcessionTypes">
+				<t:delegate to="block:concession"/>
+			</t:if>
+			<t:if test = "delegate.contact.college.requiresAvetmiss">
+				<t:delegate to="block:avetmissEditor"/>
+			</t:if>
+		</t:if>
+		<div class="form-controls">
+			<t:submit t:id="saveContact" value="Checkout" class="btn btn-primary"/>
+			<t:if test="showCancelLink">
+				<t:eventlink t:id="cancelContact" class="btn btn-info">Cancel</t:eventlink>
+			</t:if>
+		</div>
+	</t:form>
+
 	<t:block t:id="message">
 		<div class="student">${contact.fullName} <span>- ${contact.emailAddress}</span></div>
 		<div class="message">
@@ -28,22 +48,17 @@
 		</fieldset>
 	</t:block>
 
-
-
-	<t:form t:id="contactEditorForm">
-		<t:delegate to="block:message"/>
-		<t:delegate to="block:contactFields"/>
-		<t:if test="fillRequiredProperties" negate="true">
-			<t:delegate to="block:options"/>
-			<t:if test = "delegate.contact.college.requiresAvetmiss">
-				<t:delegate to="block:avetmissEditor"/>
-			</t:if>
-		</t:if>
-		<div class="form-controls">
-			<t:submit t:id="saveContact" value="Checkout" class="btn btn-primary"/>
-            <t:if test="showCancelLink">
-			    <t:eventlink t:id="cancelContact" class="btn btn-info">Cancel</t:eventlink>
-            </t:if>
+	<t:block t:id="concession">
+		<div id="concessionBlock">
+			<fieldset class="concessions">
+				<br/>
+				<span t:type="checkout/concession/concessiontypes" delegate="delegate.concessionDelegate"
+					  returnBlock="returnBlock"/>
+				<t:if test="delegate.concessionDelegate.studentConcession">
+					<br/>
+					<span t:type="checkout/concession/concessionfieldset" delegate="delegate.concessionDelegate" validateHandler="validateHandler"/>
+				</t:if>
+			</fieldset>
 		</div>
-	</t:form>
+	</t:block>
 </t:container>

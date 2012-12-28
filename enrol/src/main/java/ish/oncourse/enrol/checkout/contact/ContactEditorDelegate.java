@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout.contact;
 
+import ish.oncourse.enrol.checkout.ConcessionDelegate;
 import ish.oncourse.enrol.checkout.IDelegate;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
@@ -20,4 +21,7 @@ public interface ContactEditorDelegate extends IDelegate {
 
 	ContactFieldHelper getContactFieldHelper();
 
+	boolean isActiveConcessionTypes();
+
+	ConcessionDelegate  getConcessionDelegate();
 }

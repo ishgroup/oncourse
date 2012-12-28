@@ -5,7 +5,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ConcessionDelegate extends IDelegate{
@@ -26,8 +25,6 @@ public interface ConcessionDelegate extends IDelegate{
 	public StudentConcession getStudentConcession();
 
 	public void changeConcessionTypeBy(Integer concessionTypeIndex);
-
-	public void fieldsChanged(String number, Date expiry);
 
 	public void saveConcession();
 }

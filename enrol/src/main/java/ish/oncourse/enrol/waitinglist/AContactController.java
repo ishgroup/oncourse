@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.waitinglist;
 
+import ish.oncourse.enrol.checkout.ConcessionDelegate;
 import ish.oncourse.enrol.checkout.ContactCredentialsEncoder;
 import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
@@ -218,6 +219,16 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 
 	public void setContactFiledsSet(ContactFiledsSet contactFiledsSet) {
 		this.contactFiledsSet = contactFiledsSet;
+	}
+
+	@Override
+	public boolean isActiveConcessionTypes() {
+		return false;
+	}
+
+	@Override
+	public ConcessionDelegate getConcessionDelegate() {
+		return null;
 	}
 
 	public static enum State {

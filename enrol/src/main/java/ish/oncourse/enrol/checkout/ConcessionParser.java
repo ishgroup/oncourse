@@ -1,8 +1,11 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.enrol.components.checkout.concession.ConcessionEditor;
 import ish.oncourse.model.StudentConcession;
+import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import org.apache.tapestry5.services.Request;
 
 import java.text.DateFormat;
@@ -10,6 +13,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 
 public class ConcessionParser implements IFieldsParser {
 
@@ -107,6 +112,16 @@ public class ConcessionParser implements IFieldsParser {
 	public void setStudentConcession(StudentConcession studentConcession) {
 		this.studentConcession = studentConcession;
 	}
+
+	public static ConcessionParser newInstance(Request request, StudentConcession studentConcession, String timeZone) {
+		ConcessionParser parser = new ConcessionParser();
+		parser.setStudentConcession(studentConcession);
+		parser.setMessages(MessagesImpl.forClass(ConcessionEditor.class));
+		parser.setRequest(request);
+		parser.setDateFormat(FormatUtils.getDateFormat(DATE_FIELD_FORMAT, timeZone));
+		return parser;
+	}
+
 
 	public static enum Field {
 		concessionNumber,
