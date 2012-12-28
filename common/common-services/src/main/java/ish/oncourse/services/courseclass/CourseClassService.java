@@ -256,8 +256,12 @@ public class CourseClassService implements ICourseClassService {
         		return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today))
         				.andExp(ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.IS_CONFIRMED_PROPERTY, false));
             case CURRENT:
-                return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today))
+            	if (forTutor) {
+            		return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today))
                 		.andExp(ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.IS_CONFIRMED_PROPERTY, true));
+                } else {
+                	return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today));
+                }
             case PAST:
                 return expr.andExp(ExpressionFactory.lessExp(CourseClass.END_DATE_PROPERTY, today));
             case ALL:
