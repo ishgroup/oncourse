@@ -1,6 +1,7 @@
 package ish.oncourse.portal.pages;
 
 import ish.common.types.*;
+import ish.oncourse.components.AvetmissMessages;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
@@ -21,6 +22,7 @@ import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -63,6 +65,8 @@ public class Profile {
 	 */
 	@Inject
 	private Messages messages;
+	
+	private Messages externalMessages;
 
 	/**
 	 * components
@@ -214,6 +218,7 @@ public class Profile {
 				AvetmissStudentSchoolLevel.class, messages);
 		priorEducationSelectModel = new ISHEnumSelectModel(
 				AvetmissStudentPriorEducation.class, messages);
+		externalMessages = MessagesImpl.forClass(AvetmissMessages.class);
 	}
 
 	public String getHomePhoneInputClass() {
@@ -562,4 +567,14 @@ public class Profile {
 	public boolean getIsStudent(){
 		return authService.getUser().getStudent() != null;
 	}
+	
+	public String externalMessageLabel(String fieldName) {
+		return externalMessages.get(fieldName);
+	}
+	
+	public boolean getIsRequiresAvetmiss() {
+		boolean isRequired = contact.getCollege().getRequiresAvetmiss();
+		return isRequired;
+	}
+	
 }

@@ -106,47 +106,46 @@
 						</p>
 					</fieldset>	
 					<t:if test = "isStudent">
-						<t:if test = "contact.college.requiresAvetmiss">
+						<t:if test = "isRequiresAvetmiss">
 						
 							<div>
 								<fieldset id="questionnaire-block">
 									<p>
-										<label for="countrybirth">Country of Birth</label>
+										<label for="countrybirth">${externalMessageLabel('countryOfBirth.label')}</label>
 										<span class="${countryOfBirthInputClass}">
 											<t:textfield value="countryOfBirthName" class ="input-fixed" 
 												clientId="countrybirth" t:id="countryOfBirth" />
-											
 										</span>	
 									</p>
 									<p>
-										<label for="indigenous">Indigenous Status</label>
-										<t:select value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" clientId="indigenous" blankOption="NEVER"/>
-									</p>
-									<p>
-										<label for="englishproficiency">Proficiency spoken English</label>
-										<t:select value="contact.student.englishProficiency" model="englishProficiencySelectModel" clientId="englishproficiency" blankOption="NEVER"/>
-									</p>
-									<p>
-										<label for="languagehome">Language spoken at home?</label>
+										<label for="languagehome">${externalMessageLabel('languageHome.label')}</label>
 										<span class="${languageHomeInputClass}">
 											<t:textfield value="languageHomeName" class ="input-fixed" 
 												clientId="languagehome" t:id="languageHome" />
-											
 										</span>	
 									</p>
-								
 									<p>
-										<label for="prioreducation">Prior Education Achievement</label>
-										<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" clientId="prioreducation" blankOption="NEVER"/>
+										<label for="englishproficiency">${externalMessageLabel('englishProficiency.label')}</label>
+										<t:select value="contact.student.englishProficiency" model="englishProficiencySelectModel" clientId="englishproficiency" blankOption="NEVER"/>
+									</p>
+									
+									<p>
+										<label for="indigenous">${externalMessageLabel('indigenousStatus.label')}</label>
+										<t:select value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" clientId="indigenous" blankOption="NEVER"/>
 									</p>
 									<p>
-										<label for="schoollevel">Highest school level</label>
+										<label for="schoollevel">${externalMessageLabel('highestSchoolLevel.label')}</label>
 										<t:select value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" clientId="schoollevel" blankOption="NEVER"/>
 									
+										<label for="schoolyear">${externalMessageLabel('yearSchoolCompleted.label')}</label>
 										<span class="${schoolYearInputClass}">
 											<t:textfield value="schoolYearStr" class ="input-fixed" 
 												clientId="schoolyear" t:id="schoolYear" />
 										</span>	
+									</p>
+									<p>
+										<label for="prioreducation">${externalMessageLabel('priorEducationCode.label')}</label>
+										<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" clientId="prioreducation" blankOption="NEVER"/>
 									</p>
 									
 									<p>
