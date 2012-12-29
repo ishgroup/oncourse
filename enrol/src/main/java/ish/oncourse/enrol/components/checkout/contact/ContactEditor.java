@@ -101,14 +101,19 @@ public class ContactEditor {
 			avetmissEditor.save();
 			errors.putAll(avetmissEditor.getErrors());
 
-			if (delegate.isActiveConcessionTypes() &&
-					delegate.getConcessionDelegate().getStudentConcession().getConcessionType() != null)
+			if (delegate.isActiveConcessionTypes())
 			{
-				ConcessionParser concessionParser = ConcessionParser.newInstance(request,
-						delegate.getConcessionDelegate().getStudentConcession(),delegate.getContact().getCollege().getTimeZone()
-						);
-				concessionParser.parse();
-				errors.putAll(concessionParser.getErrors());
+				if (delegate.getConcessionDelegate().getStudentConcession().getConcessionType() != null)
+				{
+					ConcessionParser concessionParser = ConcessionParser.newInstance(request,
+							delegate.getConcessionDelegate().getStudentConcession(),delegate.getContact().getCollege().getTimeZone()
+					);
+					concessionParser.parse();
+					errors.putAll(concessionParser.getErrors());
+				}
+				else
+					//important! we should delete new concession entity if an user did not select concessionType
+					delegate.getConcessionDelegate().cancelEditing();
 			}
 
 			delegate.setErrors(errors);
