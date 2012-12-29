@@ -22,7 +22,6 @@ public class ConcessionFieldSet {
 	private ConcessionDelegate delegate;
 
 	@Parameter(required = true)
-	@Property
 	private ValidateHandler validateHandler;
 
 	private DateFormat dateFormat;
@@ -30,8 +29,19 @@ public class ConcessionFieldSet {
 	@Property
 	private boolean concessionAgree;
 
+
 	@SetupRender
 	void setupRender() {
+
+	}
+
+	public ValidateHandler getValidateHandler()
+	{
+		if (validateHandler == null)
+		{
+			validateHandler = new ValidateHandler();
+		}
+		return validateHandler;
 	}
 
 	public DateFormat getDateFormat()

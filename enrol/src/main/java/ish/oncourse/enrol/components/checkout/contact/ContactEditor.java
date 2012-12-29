@@ -10,6 +10,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -41,6 +42,7 @@ public class ContactEditor {
 	private PreferenceController preferenceController;
 
 	@Inject
+	@Property
 	private Request request;
 
 	@Property
@@ -56,6 +58,10 @@ public class ContactEditor {
 	@Id("concession")
 	@Property
 	private Block concessionBlock;
+
+	@InjectComponent
+	@Property
+	private Form contactEditorForm;
 
 
 	@SetupRender
@@ -96,7 +102,7 @@ public class ContactEditor {
 			errors.putAll(avetmissEditor.getErrors());
 
 			if (delegate.isActiveConcessionTypes() &&
-					delegate.getConcessionDelegate().getStudentConcession() != null)
+					delegate.getConcessionDelegate().getStudentConcession().getConcessionType() != null)
 			{
 				ConcessionParser concessionParser = ConcessionParser.newInstance(request,
 						delegate.getConcessionDelegate().getStudentConcession(),delegate.getContact().getCollege().getTimeZone()

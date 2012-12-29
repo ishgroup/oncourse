@@ -11,7 +11,8 @@ public class ConcessionEditorController extends AConcessionDelegate {
 
 	@Override
 	public void cancelEditing() {
-		studentConcession = null;
+		getObjectContext().deleteObject(getStudentConcession());
+		setStudentConcession(null);
 		setObjectContext(null);
 		getPurchaseController().performAction(new PurchaseController.ActionParameter(PurchaseController.Action.cancelConcessionEditor));
 	}
@@ -20,7 +21,7 @@ public class ConcessionEditorController extends AConcessionDelegate {
 	public void saveConcession() {
 		PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addConcession);
 		parameter.setErrors(getErrors());
-		parameter.setValue(studentConcession);
+		parameter.setValue(getStudentConcession());
 		getPurchaseController().performAction(parameter);
 	}
 }

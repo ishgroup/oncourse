@@ -103,7 +103,15 @@ function initConcessionEditorHandle()
 	{
 		var $value =  $j("#concessionTypes option:selected").attr("value");
 		var $actionLink = $j(this).next('a')[0].pathname +'/'+$value;
-		sendAjax($actionLink);
+		var $refreshId = $j(this).data('refreshid');
+
+		sendAjaxWithDataAndRefreshId($actionLink, null, $refreshId);
+		var $formId = $j(this).data('formid');
+		if($formId)
+		{
+			//$('saveContact').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+			$j('#saveContact').click();
+		}
 	});
 
 	$j('[id*=expiresOn]').datepicker();
@@ -166,10 +174,14 @@ function initCreditAccessHandle()
 
 function sendAjaxWithData($actionLink,$data)
 {
-	var refreshId = $j.data($actionLink,"refreshId");
-	if (!refreshId)
-		refreshId = '#checkout';
-    $j(refreshId).block({
+	sendAjaxWithDataAndRefreshId($actionLink,$data,null);
+}
+
+function sendAjaxWithDataAndRefreshId($actionLink,$data,$refreshId)
+{
+	if (!$refreshId)
+		$refreshId = '#checkout';
+	$j($refreshId).block({
         fadeIn: 700,
         fadeOut: 700,
         showOverlay: true,
@@ -184,8 +196,9 @@ function sendAjaxWithData($actionLink,$data)
         url: $actionLink,
         data: $data,
         success: function(data) {
-            $j(refreshId).unblock();
-            $j(refreshId).html(data.content);
+            $j($refreshId).unblock();
+			if (data.content)
+            	$j($refreshId).html(data.content);
             initHandles();
         }
     });

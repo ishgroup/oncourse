@@ -52,11 +52,10 @@
 		<div id="concessionBlock">
 			<fieldset class="concessions">
 				<br/>
-				<span t:type="checkout/concession/concessiontypes" delegate="delegate.concessionDelegate"
-					  returnBlock="returnBlock"/>
-				<t:if test="delegate.concessionDelegate.studentConcession">
-					<br/>
-					<span t:type="checkout/concession/concessionfieldset" delegate="delegate.concessionDelegate" validateHandler="validateHandler"/>
+				<span t:type="checkout/concession/concessiontypes" delegate="delegate.concessionDelegate" parentForm="contactEditorForm"/>
+				<t:if test="delegate.concessionDelegate.studentConcession.concessionType">
+					<span t:type="checkout/concession/concessionfieldset" delegate="delegate.concessionDelegate"
+						  validateHandler="validateHandler"/>
 				</t:if>
 			</fieldset>
 		</div>

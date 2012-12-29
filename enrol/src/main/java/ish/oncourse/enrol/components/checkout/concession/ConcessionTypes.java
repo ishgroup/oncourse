@@ -9,6 +9,7 @@ import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
@@ -27,6 +28,10 @@ public class ConcessionTypes {
 	@Property
 	private String returnBlockId;
 
+	@Parameter(required = false)
+	@Property
+	private Form parentForm;
+
 	@Property
 	private ConcessionType concessionType;
 
@@ -42,6 +47,11 @@ public class ConcessionTypes {
 	private ListValueEncoder<ConcessionType> concessionTypeEncoder;
 
 
+
+	public String getFormId()
+	{
+		return parentForm != null? parentForm.getClientId():"";
+	}
 	public Student getStudent() {
 		return delegate.getStudent();
 	}
@@ -62,7 +72,7 @@ public class ConcessionTypes {
 	}
 
 	public boolean isSelectedConcessionType() {
-		return delegate.getStudentConcession() != null && delegate.getStudentConcession().getConcessionType().getId().equals(concessionType.getId());
+		return delegate.getStudentConcession().getConcessionType() != null && delegate.getStudentConcession().getConcessionType().getId().equals(concessionType.getId());
 	}
 
 	@OnEvent(value = "changeConcessionTypeEvent")

@@ -9,7 +9,7 @@ import org.apache.cayenne.ObjectContext;
 import java.util.List;
 
 public abstract class AConcessionDelegate extends ADelegate implements ConcessionDelegate {
-	protected StudentConcession studentConcession;
+	private StudentConcession studentConcession;
 	private ObjectContext objectContext;
 
 	private Contact contact;
@@ -39,7 +39,17 @@ public abstract class AConcessionDelegate extends ADelegate implements Concessio
 
 	@Override
 	public StudentConcession getStudentConcession() {
+		if(studentConcession == null)
+		{
+			studentConcession = objectContext.newObject(StudentConcession.class);
+			studentConcession.setStudent(getStudent());
+		}
 		return studentConcession;
+	}
+
+	protected void setStudentConcession(StudentConcession studentConcession)
+	{
+		this.studentConcession = studentConcession;
 	}
 
 	@Override
@@ -51,20 +61,13 @@ public abstract class AConcessionDelegate extends ADelegate implements Concessio
 	public void changeConcessionTypeBy(Integer concessionTypeIndex) {
 		if (concessionTypeIndex == -1)
 		{
-			if (studentConcession != null)
-			{
-				studentConcession = null;
-			}
+			getObjectContext().deleteObject(studentConcession);
+			this.studentConcession = null;
 		}
 		else
 		{
-			if (studentConcession == null)
-			{
-				studentConcession = objectContext.newObject(StudentConcession.class);
-				studentConcession.setStudent(getStudent());
-			}
 			ConcessionType concessionType = getConcessionTypes().get(concessionTypeIndex);
-			studentConcession.setConcessionType((ConcessionType) objectContext.localObject(concessionType.getObjectId(),concessionType));
+			getStudentConcession().setConcessionType((ConcessionType) objectContext.localObject(concessionType.getObjectId(),concessionType));
 		}
 	}
 
@@ -74,6 +77,7 @@ public abstract class AConcessionDelegate extends ADelegate implements Concessio
 
 	@Override
 	public void cancelEditing() {
+		getObjectContext().deleteObject(getStudentConcession());
 	}
 
 	@Override

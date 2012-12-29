@@ -7,7 +7,7 @@
 
 <t:block t:id="concessionEditor">
 	<span t:type="checkout/concession/concessiontypes" delegate="delegate" returnBlock="checkout.checkoutBlock"/>
-	<t:if test="studentConcession">
+	<t:if test="studentConcession.concessionType">
 		<t:form t:id="concessionForm">
 			<fieldset>
 				<span t:type="checkout/concession/concessionfieldset" delegate="delegate" validateHandler="validateHandler"/>
@@ -16,7 +16,7 @@
 	</t:if>
 
 	<p>
-		<t:if test="delegate.studentConcession">
+		<t:if test="studentConcession.concessionType">
 			<button id="saveConcession">save concession</button>
 			<t:eventlink t:id="saveConcessionEvent" style="{display:none}"/>
 		</t:if>
