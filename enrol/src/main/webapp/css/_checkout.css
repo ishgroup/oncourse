@@ -467,12 +467,17 @@ div.concessionEditor .saveConcession
     color: #888;
 }
 
-div .conditions-text
+div.conditions-text
 {
 	display: inline;
 }
 
-div .t-error
+div.t-error
 {
 	color: red;
+}
+
+a.btn
+{
+	padding-right: 20px;
 }
