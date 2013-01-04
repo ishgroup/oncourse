@@ -13,6 +13,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.ui.pages.Courses;
@@ -51,6 +52,9 @@ public class Mail {
 
     @Inject
     private IWebSiteService webSiteService;
+
+	@Inject
+	private ICountryService countryService;
 
     @Inject
     private Request request;
@@ -115,7 +119,8 @@ public class Mail {
             controller.setErrors(addContactParser.getErrors());
         } else if (controller.isEditContact()) {
             ContactEditorParser parser = new ContactEditorParser();
-            parser.setMessages(contactEditorFieldSet.getMessages());
+			parser.setCountryService(countryService);
+			parser.setMessages(contactEditorFieldSet.getMessages());
             parser.setContact(controller.getContact());
             parser.setVisibleFields(controller.getVisibleFields());
             parser.setContactFieldHelper(controller.getContactFieldHelper());

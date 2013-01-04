@@ -2,7 +2,9 @@ package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.enrol.checkout.HTMLUtils;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
+import ish.oncourse.services.reference.ICountryService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
@@ -24,6 +26,7 @@ public class ContactEditorParser {
 	private ContactFieldHelper contactFieldHelper;
 	private Messages messages;
 	private DateFormat dateFormat;
+	private ICountryService countryService;
 
 	public static final String LABEL_TEMPLATE = "label-%s";
 
@@ -32,6 +35,7 @@ public class ContactEditorParser {
 
 	static final String KEY_ERROR_dateOfBirth_youngAge = "error-dateOfBirth-youngAge";
     static final String KEY_ERROR_dateOfBirth_shouldBeInPast = "error-dateOfBirth-shouldBeInPast";
+	static final String KEY_ERROR_error_countryOfBirth = "error-countryOfBirth";
 
 	private List<String> visibleFields;
 
@@ -71,6 +75,12 @@ public class ContactEditorParser {
                     value = null;
 					errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
 				}
+			} else if (fieldDescriptor.propertyClass == Country.class)
+			{
+				value = countryService.getCountryByName(stringValue);
+
+				if (value == null)
+					errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_error_countryOfBirth));
 			}
             contact.writeProperty(fieldDescriptor.propertyName, value);
             String error = validate(fieldDescriptor);
@@ -157,8 +167,14 @@ public class ContactEditorParser {
                     }
 				}
 				return error;
+			case country:
+				return null;
 			default:
 				throw new IllegalArgumentException();
 		}
+	}
+
+	public void setCountryService(ICountryService countryService) {
+		this.countryService = countryService;
 	}
 }

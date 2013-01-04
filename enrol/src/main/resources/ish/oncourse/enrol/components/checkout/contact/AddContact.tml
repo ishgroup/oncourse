@@ -16,10 +16,10 @@
 				<strong class="alert">Note</strong>: ${message:noteSameEmail}
 			</p>
 			<div class="form-controls">
+				<t:if test="showCancelLink">
+					<t:eventlink t:id="resetContact" class="btn btn-info">Cancel</t:eventlink>
+				</t:if>
 				<t:submit t:id="checkout" value="Checkout" class="btn btn-primary"/>
-                <t:if test="showCancelLink">
-                    <t:eventlink t:id="resetContact" class="btn btn-info">Cancel</t:eventlink>
-                </t:if>
 			</div>
 		</t:form>
 	</div>

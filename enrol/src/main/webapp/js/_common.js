@@ -30,12 +30,13 @@ function initContactEditorHandle()
     }
 }
 
-function initAvetmissEditorHandle()
+function initCountryAutoCompleteHandle()
 {
     $j("[id*=countryOfBirth]").autocomplete({source: '/ui/internal/autocomplete.country', minLength: 2});
+	$j("[id*=country]").autocomplete({source: '/ui/internal/autocomplete.country', minLength: 2});
 }
 
 $j(document).ready(function() {
     initContactEditorHandle();
-    initAvetmissEditorHandle();
+	initCountryAutoCompleteHandle();
 });

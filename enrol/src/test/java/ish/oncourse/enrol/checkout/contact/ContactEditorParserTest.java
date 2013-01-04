@@ -4,6 +4,7 @@ import ish.oncourse.enrol.checkout.HTMLUtils;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.reference.ICountryService;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
 import org.junit.Test;
@@ -46,6 +47,8 @@ public class ContactEditorParserTest {
 		calendar.add(Calendar.YEAR, -19);
 		contact.setDateOfBirth(calendar.getTime());
 
+		ICountryService countryService = mock(ICountryService.class);
+
 		PreferenceController preferenceController = mock(PreferenceController.class);
 		ContactFieldHelper contactFieldHelper = mock(ContactFieldHelper.class);
 		Messages messages = mock(Messages.class);
@@ -62,6 +65,7 @@ public class ContactEditorParserTest {
 		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, 18)).thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge);
         when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast)).thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
         ContactEditorParser parser = new ContactEditorParser();
+		parser.setCountryService(countryService);
 		parser.setContact(contact);
         parser.setRequest(request);
 		parser.setContactFieldHelper(contactFieldHelper);

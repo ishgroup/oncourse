@@ -7,6 +7,7 @@ import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
@@ -40,6 +41,9 @@ public class ContactEditor {
 
 	@Inject
 	private PreferenceController preferenceController;
+
+	@Inject
+	private ICountryService countryService;
 
 	@Inject
 	@Property
@@ -89,6 +93,7 @@ public class ContactEditor {
 		if (delegate != null)
 		{
 			ContactEditorParser contactEditorParser = new ContactEditorParser();
+			contactEditorParser.setCountryService(countryService);
 			contactEditorParser.setRequest(request);
 			contactEditorParser.setContact(delegate.getContact());
 			contactEditorParser.setContactFieldHelper(getContactFieldHelper());

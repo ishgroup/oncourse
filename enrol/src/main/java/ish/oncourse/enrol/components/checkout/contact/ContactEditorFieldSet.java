@@ -2,6 +2,7 @@ package ish.oncourse.enrol.components.checkout.contact;
 
 import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
+import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
@@ -73,6 +74,19 @@ public class ContactEditorFieldSet {
 	 */
 	public void setDateOfBirth(String dateOfBirth) {
 	}
+
+
+	public String getCountry() {
+		Country country = delegate.getContact().getCountry();
+		if (country == null) {
+			return "Australia";
+		}
+		return country.getName();
+	}
+
+	public void setCountry(String value) {
+	}
+
 
 	public String label(String fieldName) {
 		return messages.get(String.format(LABEL_TEMPLATE, fieldName));

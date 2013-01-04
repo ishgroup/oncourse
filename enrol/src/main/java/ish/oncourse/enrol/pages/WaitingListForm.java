@@ -13,6 +13,7 @@ import ish.oncourse.model.WaitingList;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.Courses;
 import org.apache.cayenne.ObjectContext;
@@ -67,6 +68,9 @@ public class WaitingListForm {
 
 	@Inject
 	private PreferenceController preferenceController;
+
+	@Inject
+	private ICountryService countryService;
 
 	@Inject
 	@Property
@@ -131,6 +135,7 @@ public class WaitingListForm {
 			controller.setErrors(addContactValidator.getErrors());
 		} else if (controller.isEditContact()) {
 			ContactEditorParser parser = new ContactEditorParser();
+			parser.setCountryService(countryService);
 			parser.setContact(controller.getContact());
 			parser.setContactFieldHelper(controller.getContactFieldHelper());
 			parser.setMessages(contactEditorFieldSet.getMessages());
