@@ -1,9 +1,6 @@
 package ish.oncourse.services.preference;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.PaymentGatewayType;
-import ish.oncourse.model.Preference;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.persistence.CommonPreferenceController;
@@ -682,6 +679,7 @@ public class PreferenceController extends CommonPreferenceController {
 		suburb("suburb", Contact.SUBURB_PROPERTY, String.class),
 		postcode("postcode", Contact.POSTCODE_PROPERTY, String.class),
 		state("state", Contact.STATE_PROPERTY, String.class),
+		country("country", Contact.COUNTRY_PROPERTY, Country.class),
 		homePhoneNumber("homephone", Contact.HOME_PHONE_NUMBER_PROPERTY, String.class),
 		businessPhoneNumber("businessphone", Contact.BUSINESS_PHONE_NUMBER_PROPERTY, String.class),
 		faxNumber("fax", Contact.FAX_NUMBER_PROPERTY, String.class),

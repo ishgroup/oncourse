@@ -56,6 +56,9 @@ public class ContactEntrySettings {
 	private String enrolmentDateOfBirthState;
 
 	@Property
+	private String enrolmentCountryState;
+
+	@Property
 	private String waitingListAddressState;
 
 	@Property
@@ -83,6 +86,9 @@ public class ContactEntrySettings {
 	private String waitingListDateOfBirthState;
 
 	@Property
+	private String waitingListCountryState;
+
+	@Property
 	private String mailingListAddressState;
 
 	@Property
@@ -108,6 +114,10 @@ public class ContactEntrySettings {
 
 	@Property
 	private String mailingListDateOfBirthState;
+
+	@Property
+	private String mailingListCountryState;
+
 
 	@Property
 	private String enrolmentMinAge;
@@ -157,6 +167,7 @@ public class ContactEntrySettings {
 		this.enrolmentFaxState = preferenceController.getRequireContactField(enrolment, faxNumber);
 		this.enrolmentMobileState = preferenceController.getRequireContactField(enrolment, mobilePhoneNumber);
 		this.enrolmentDateOfBirthState = preferenceController.getRequireContactField(enrolment, dateOfBirth);
+		this.enrolmentCountryState = preferenceController.getRequireContactField(enrolment, country);
 		this.enrolmentMinAge = preferenceController.getEnrolmentMinAge().toString();
 
 		this.waitingListAddressState = preferenceController.getRequireContactField(waitinglist, street);
@@ -168,6 +179,7 @@ public class ContactEntrySettings {
 		this.waitingListFaxState = preferenceController.getRequireContactField(waitinglist, faxNumber);
 		this.waitingListMobileState = preferenceController.getRequireContactField(waitinglist, mobilePhoneNumber);
 		this.waitingListDateOfBirthState = preferenceController.getRequireContactField(waitinglist, dateOfBirth);
+		this.waitingListCountryState = preferenceController.getRequireContactField(waitinglist, country);
 
 		this.mailingListAddressState = preferenceController.getRequireContactField(mailinglist, street);
 		this.mailingListSuburbState = preferenceController.getRequireContactField(mailinglist, suburb);
@@ -178,6 +190,7 @@ public class ContactEntrySettings {
 		this.mailingListFaxState = preferenceController.getRequireContactField(mailinglist, faxNumber);
 		this.mailingListMobileState = preferenceController.getRequireContactField(mailinglist, mobilePhoneNumber);
 		this.mailingListDateOfBirthState = preferenceController.getRequireContactField(mailinglist, dateOfBirth);
+		this.mailingListCountryState = preferenceController.getRequireContactField(mailinglist, country);
 	}
 
 	@AfterRender
@@ -226,6 +239,7 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(enrolment, dateOfBirth, preferenceController.getEnrolmentMinAge() > 0 ? ContactFieldHelper.VALUE_Required:
 			this.enrolmentDateOfBirthState);
 		this.enrolmentDateOfBirthState = preferenceController.getRequireContactField(enrolment, dateOfBirth);
+		preferenceController.setRequireContactField(enrolment, country, this.enrolmentCountryState);
 
 
 
@@ -238,6 +252,8 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(waitinglist, faxNumber, this.waitingListFaxState);
 		preferenceController.setRequireContactField(waitinglist, mobilePhoneNumber, this.waitingListMobileState);
 		preferenceController.setRequireContactField(waitinglist, dateOfBirth, this.waitingListDateOfBirthState);
+		preferenceController.setRequireContactField(waitinglist, country, this.waitingListCountryState);
+
 
 		preferenceController.setRequireContactField(mailinglist, street, this.mailingListAddressState);
 		preferenceController.setRequireContactField(mailinglist, suburb, this.mailingListSuburbState);
@@ -248,6 +264,7 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(mailinglist, faxNumber, this.mailingListFaxState);
 		preferenceController.setRequireContactField(mailinglist, mobilePhoneNumber, this.mailingListMobileState);
 		preferenceController.setRequireContactField(mailinglist, dateOfBirth, this.mailingListDateOfBirthState);
+		preferenceController.setRequireContactField(mailinglist, country, this.mailingListCountryState);
 
 	}
 

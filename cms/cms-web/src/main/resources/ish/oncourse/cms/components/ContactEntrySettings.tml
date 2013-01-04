@@ -167,6 +167,28 @@
 			</div>
 
 			<div class="cms-set-container">
+				<div class="cms-set-name">Country</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+							  blankOption="never" value="enrolmentCountryState" class="cms-span2" />
+				</div>
+
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+							  blankOption="never" value="waitingListCountryState" class="cms-span2" />
+				</div>
+
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+							  blankOption="never" value="mailingListCountryState" class="cms-span2" />
+				</div>
+
+			</div>
+
+			<div class="cms-set-container">
 				<div class="cms-set-name">Home phone</div>
 
 				<div class="cms-set-col">
