@@ -2,7 +2,6 @@
 	bodyClass="literal:internal-page"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<script t:type="ui/jsassetgroup" group="literal:core-enrol" />
 <t:if test="controller.checkoutResult">
 	<t:EnrolmentPaymentProcessing t:id="resultComponent" />
 	<p:else>
