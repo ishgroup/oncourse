@@ -18,12 +18,14 @@
 					<div class="conditions">
 						<span class="${validateHandler.validateClass('userAgreed')}">
 							<t:checkbox value="userAgreed" t:id="userAgreed" class="${validateHandler.errorClass('userAgreed')}"/>
+							<div class="conditions-text ${validateHandler.errorClass('userAgreed')}">
+								<t:if test="enrolmentDisclosure">
+									I have read and accept the <a href="${enrolmentDisclosure}?wrap=false" title="Student information" class="nyromodal" >terms and conditions</a>.
+								</t:if>
+								I understand the enrolment and refund policy.
+							</div>
 							<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('userAgreed')}"/>
 						</span>
-						<t:if test="enrolmentDisclosure">
-							I have read and accept the <a href="${enrolmentDisclosure}?wrap=false" title="Student information" class="nyromodal" >terms and conditions</a>.
-						</t:if>
-						I understand the enrolment and refund policy.
 					</div>
 				</p>
 				<p class="note"><strong class="alert">Note</strong>: Fields marked with an <em>*</em> are required.</p>
@@ -49,7 +51,8 @@
 				<p>
 					<label for="creditCardType">Card Type<em title="${message:required}">*</em></label>
 					<span class="${validateHandler.validateClass('creditCardType')}">
-						<t:select t:id="creditCardType" value="paymentIn.creditCardType" model="cardTypeModel" blankLabel="${message:blankSelect}"/>
+						<t:select t:id="creditCardType" value="paymentIn.creditCardType" model="cardTypeModel" blankLabel="${message:blankSelect}"
+								  class="${validateHandler.errorClass('creditCardType')}"/>
 						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardType')}"/>
 					</span>
 				</p>
@@ -79,9 +82,10 @@
 				<p>
 					<label>Expiry<em title="${message:required}">*</em></label>
 					<span class="${validateHandler.validateClass('expiryMonth')}">
-						<t:select t:id="expiryMonth" value="expiryMonth" model="literal:01,02,03,04,05,06,07,08,09,10,11,12" blankLabel="mm"/>
+						<t:select t:id="expiryMonth" value="expiryMonth" model="literal:01,02,03,04,05,06,07,08,09,10,11,12" blankLabel="mm"
+								  class="${validateHandler.errorClass('expiryMonth')}"/>
 						/
-						<t:select t:id="expiryYear" value="expiryYear" model="years" blankLabel="yyyy"/>
+						<t:select t:id="expiryYear" value="expiryYear" model="years" blankLabel="yyyy" class="${validateHandler.errorClass('expiryMonth')}"/>
 						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('expiryMonth')}"/>
 					</span>
 				</p>

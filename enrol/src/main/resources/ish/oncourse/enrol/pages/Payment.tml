@@ -5,7 +5,7 @@
 <t:if test="paymentProgress">
 	<meta http-equiv="refresh" content="3"/>
 </t:if>
-<div id="checkout">
+<div id="checkout" class="payments">
 
 	<t:delegate to="block:errors"/>
 	<t:if test="editPayment">

@@ -466,3 +466,13 @@ div.concessionEditor .saveConcession
 .disabled {
     color: #888;
 }
+
+div .conditions-text
+{
+	display: inline;
+}
+
+div .t-error
+{
+	color: red;
+}
