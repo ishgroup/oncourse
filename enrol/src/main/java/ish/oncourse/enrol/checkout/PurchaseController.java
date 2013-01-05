@@ -42,7 +42,7 @@ public class PurchaseController {
 	public static final List<Action> COMMON_ACTIONS = Collections.unmodifiableList(Arrays.asList(
 			enableEnrolment, enableProductItem,
 			disableEnrolment, disableProductItem,
-			setVoucherPrice, addDiscount, addVoucher,
+			setVoucherPrice, addDiscount,removeDiscount, addVoucher,
 			startConcessionEditor, startAddContact,
 			owingApply, creditAccess, changePayer));
 
@@ -98,7 +98,7 @@ public class PurchaseController {
 	 *
 	 * @return true if any discount applied.
 	 */
-	public boolean isHasDiscount() {
+	public boolean hasDiscount() {
 		return !getTotalDiscountAmountIncTax().isZero();
 	}
 
@@ -108,27 +108,8 @@ public class PurchaseController {
 	 * @return total discount amount for all actual enrollments.
 	 */
 	public Money getTotalDiscountAmountIncTax() {
-		Money result = Money.ZERO;
-		for (Contact contact : getModel().getContacts()) {
-			for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
-				result = result.add(enabledEnrolment.getInvoiceLine().getDiscountTotalIncTax());
-			}
-			for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
-				result = result.add(enabledProductItem.getInvoiceLine().getDiscountTotalIncTax());
-			}
-		}
-		return result;
+        return getModel().getTotalDiscountAmountIncTax();
 	}
-
-	/**
-	 * Calculate total (include GST) invoice amount for all actual enrollments.
-	 *
-	 * @return total invoice amount for all actual enrollments.
-	 */
-	public Money getTotalIncGst() {
-		return model.updateTotalIncGst();
-	}
-
 
 	public Money getTotalPayment() {
 		return new Money(model.getPayment().getAmount());
@@ -192,6 +173,11 @@ public class PurchaseController {
 		if (!action.action()) {
 			illegalModel = true;
 		}
+        else
+        {
+            if (isEditCheckout())
+                getModel().updateTotalIncGst();
+        }
 	}
 
 
@@ -602,6 +588,7 @@ public class PurchaseController {
 		addConcession(ActionAddConcession.class, StudentConcession.class),
 		removeConcession(ActionRemoveConcession.class, ConcessionType.class, Contact.class),
 		addDiscount(ActionAddDiscount.class, String.class, Discount.class),
+        removeDiscount(ActionRemoveDiscount.class, String.class, Discount.class),
 		addVoucher(ActionAddVoucher.class, String.class, Voucher.class),
 		startConcessionEditor(ActionStartConcessionEditor.class, Contact.class),
 		cancelConcessionEditor(ActionCancelConcessionEditor.class, Contact.class),

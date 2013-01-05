@@ -35,12 +35,16 @@ public class PurchaseModel {
 	private Invoice invoice;
 	
 	private PaymentIn payment;
+    private Money totalDiscountAmountIncTax = Money.ZERO;
 	private List<PaymentIn> voucherPayments = new ArrayList<PaymentIn>();
 	
 	public void addDiscount(Discount discount){
 		discounts.add(discount);
 	}
 
+    public void removeDiscount(Discount discount){
+        discounts.remove(discount);
+    }
 
 	public void addContact(Contact contact) {
 		this.contacts.put(contact, new ContactNode());
@@ -64,7 +68,11 @@ public class PurchaseModel {
 	public boolean containsDiscount(Discount discount)
 	{
 		List<Discount> discounts = Collections.unmodifiableList(this.discounts);
-		return discounts.contains(discount);
+        for (Discount discount1 : discounts) {
+            if (discount1.getId().equals(discount.getId()))
+                return true;
+        }
+        return false;
 	}
 	
 	public void setPayer(Contact payer) {
@@ -116,6 +124,11 @@ public class PurchaseModel {
 		}
 		return payment;
 	}
+
+    public Money getTotalDiscountAmountIncTax()
+    {
+        return totalDiscountAmountIncTax;
+    }
 	
 	public void addEnrolment(Enrolment e) {
 		getContactNode(e.getStudent().getContact()).addEnrolment(e);
@@ -291,7 +304,7 @@ public class PurchaseModel {
 
 
 	public List<Discount> getDiscounts() {
-		return discounts;
+		return new ArrayList<Discount>(discounts);
 	}
 
 	public void setDiscounts(List<Discount> discounts) {
@@ -365,6 +378,19 @@ public class PurchaseModel {
 		getPayment().setAmount(result.toBigDecimal());
 		return result;
 	}
+
+    public void updateTotalDiscountAmountIncTax()
+    {
+        totalDiscountAmountIncTax = Money.ZERO;
+        for (Contact contact : this.getContacts()) {
+            for (Enrolment enabledEnrolment : this.getEnabledEnrolments(contact)) {
+                totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(enabledEnrolment.getInvoiceLine().getDiscountTotalIncTax());
+            }
+            for (ProductItem enabledProductItem : this.getEnabledProductItems(contact)) {
+                totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(enabledProductItem.getInvoiceLine().getDiscountTotalIncTax());
+            }
+        }
+    }
 
 
 	public void prepareToMakePayment() {

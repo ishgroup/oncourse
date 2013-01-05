@@ -38,12 +38,8 @@
 				<div id="addContact">Add another student</div>
 				<t:eventlink t:id="addContactEvent" style="{display:none}"/>
 			</td>
-			<td class="alignright">Total</td>
-			<td id="total" class="alignright">
-				<span class="totalPrice">
-					<t:output value="purchaseController.totalIncGst" format="moneyFormat(purchaseController.totalIncGst)"/>
-				</span>
-			</td>
+            <td class="alignright"/>
+			<td class="alignright"/>
 		</tr>
 		</tbody>
 	</table>

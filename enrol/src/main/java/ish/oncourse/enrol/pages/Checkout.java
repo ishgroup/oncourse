@@ -184,6 +184,7 @@ public class Checkout {
     public void updateCheckoutItems() {
         if (purchaseController != null) {
             purchaseControllerBuilder.updatePurchaseItems(purchaseController);
+            purchaseController.getModel().updateTotalIncGst();
         }
     }
 

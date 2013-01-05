@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.services.payment;
 
 import ish.oncourse.enrol.checkout.ActionAddDiscount;
+import ish.oncourse.enrol.checkout.ActionRemoveDiscount;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseModel;
 import ish.oncourse.enrol.pages.Checkout;
@@ -115,12 +116,37 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 
 	private void updateDiscounts(PurchaseController purchaseController) {
 		List<Discount> discounts = discountService.getPromotions();
-		for (Discount discount : discounts) {
-			ActionAddDiscount actionAddDiscount = PurchaseController.Action.addDiscount.createAction(purchaseController);
-			actionAddDiscount.setDiscount(discount);
-			actionAddDiscount.action();
+        List<Discount> discountsModel =  purchaseController.getModel().getDiscounts();
+
+        //remove  discounts
+        for (Discount discountModel : discountsModel) {
+            boolean contains =false;
+            for (Discount discount : discounts) {
+                if (discountModel.getId().equals(discount.getId()))
+                {
+                    contains = true;
+                    break;
+                }
+            }
+            if (!contains)
+            {
+                ActionRemoveDiscount actionAddDiscount = PurchaseController.Action.removeDiscount.createAction(purchaseController);
+                actionAddDiscount.setDiscount(discountModel);
+                actionAddDiscount.action();
+            }
+        }
+
+        //add new discounts
+        for (Discount discount : discounts) {
+            if (!purchaseController.getModel().containsDiscount(discount))
+            {
+                ActionAddDiscount actionAddDiscount = PurchaseController.Action.addDiscount.createAction(purchaseController);
+                actionAddDiscount.setDiscount(discount);
+                actionAddDiscount.action();
+            }
 		}
-	}
+
+    }
 
 	private boolean updateCourseClasses(PurchaseController purchaseController) {
         boolean result = false;
