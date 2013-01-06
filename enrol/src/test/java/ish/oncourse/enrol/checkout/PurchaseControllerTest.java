@@ -47,7 +47,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(Arrays.asList(
                 enableEnrolment, enableProductItem,
                 disableEnrolment, disableProductItem,
-                setVoucherPrice, addDiscount, addVoucher,
+                setVoucherPrice, addDiscount,removeDiscount, addVoucher,
                 startConcessionEditor, startAddContact,
                 owingApply, creditAccess, changePayer), COMMON_ACTIONS);
         assertEquals(State.init.getAllowedActions(), Arrays.asList(init, startAddContact));
@@ -626,7 +626,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertTrue(concessionEditorController.getObjectContext() != context);
         assertNotNull(concessionEditorController.getContact());
         assertNotNull(concessionEditorController.getStudent());
-        assertNull(concessionEditorController.getStudentConcession());
+        assertNotNull(concessionEditorController.getStudentConcession());
         assertEquals(3, concessionEditorController.getConcessionTypes().size());
 
         for (int i = 0; i < concessionEditorController.getConcessionTypes().size(); i++) {
@@ -636,11 +636,11 @@ public class PurchaseControllerTest extends ACheckoutTest {
             assertEquals(concessionType.getId(), concessionEditorController.getStudentConcession().getConcessionType().getId());
         }
         concessionEditorController.changeConcessionTypeBy(-1);
-        assertNull(concessionEditorController.getStudentConcession());
+        assertNotNull(concessionEditorController.getStudentConcession());
+        assertNull(concessionEditorController.getStudentConcession().getConcessionType());
 
         concessionEditorController.cancelEditing();
         assertNull(concessionEditorController.getObjectContext());
-        assertNull(concessionEditorController.getStudentConcession());
         assertEquals(State.editCheckout, purchaseController.getState());
     }
 
