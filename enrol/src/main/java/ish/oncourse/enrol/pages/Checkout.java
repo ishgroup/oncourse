@@ -185,6 +185,7 @@ public class Checkout {
         if (purchaseController != null) {
             purchaseControllerBuilder.updatePurchaseItems(purchaseController);
             purchaseController.getModel().updateTotalIncGst();
+            purchaseController.getModel().updateTotalDiscountAmountIncTax();
         }
     }
 

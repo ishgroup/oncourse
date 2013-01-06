@@ -20,8 +20,8 @@ public class ActionRemoveConcession extends APurchaseAction{
 			}
 			getModel().removeConcession(contact, concessionType);
 			getController().recalculateEnrolmentInvoiceLines();
-			getController().setState(editCheckout);
-	}
+            getController().setState(editCheckout);
+    }
 
 	@Override
 	protected void parse() {

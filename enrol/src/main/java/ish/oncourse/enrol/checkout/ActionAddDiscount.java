@@ -7,13 +7,12 @@ public class ActionAddDiscount extends ADiscountAction {
 		getModel().addDiscount(getModel().localizeObject(discount));
         getController().getDiscountService().addPromotion(discount);
 		getController().recalculateEnrolmentInvoiceLines();
-        getModel().updateTotalDiscountAmountIncTax();
     }
 
     @Override
     protected boolean validate() {
         boolean result = super.validate();
-        if (result && getModel().containsDiscount(discount))
+        if (result && getModel().containsDiscount(discount.getId()))
         {
             getController().addWarning(PurchaseController.Message.discountAlreadyAdded, discount.getCode());
             result = false;

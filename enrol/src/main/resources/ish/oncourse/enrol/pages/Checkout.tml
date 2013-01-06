@@ -38,7 +38,7 @@
 				<div id="addContact">Add another student</div>
 				<t:eventlink t:id="addContactEvent" style="{display:none}"/>
 			</td>
-            <td class="alignright"/>
+            <td class=""/>
 			<td class="alignright"/>
 		</tr>
 		</tbody>

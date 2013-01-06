@@ -42,11 +42,31 @@ public class PurchaseModel {
 		discounts.add(discount);
 	}
 
-    public void removeDiscount(Discount discount){
-        discounts.remove(discount);
+    public void removeDiscount(Long discountId){
+        Discount discount = getDiscountBy(discountId);
+        if (discount != null)
+            discounts.remove(discount);
     }
 
-	public void addContact(Contact contact) {
+    public Discount getDiscountBy(Long discountId)
+    {
+        List<Discount> discounts = Collections.unmodifiableList(this.discounts);
+        for (Discount discount : discounts) {
+
+            if (discount.getId().equals(discountId))
+                return discount;
+        }
+        return null;
+    }
+
+    public boolean containsDiscount(Long discountId)
+    {
+        return getDiscountBy(discountId) != null;
+    }
+
+
+
+    public void addContact(Contact contact) {
 		this.contacts.put(contact, new ContactNode());
 	}
 	
@@ -54,27 +74,6 @@ public class PurchaseModel {
 		return Collections.unmodifiableList(new ArrayList<Contact>(contacts.keySet()));
 	}
 
-	public Discount getDiscountBy(long id)
-	{
-		List<Discount> discounts = Collections.unmodifiableList(this.discounts);
-		for (Discount discount : discounts) {
-
-			if (discount.getId().equals(id))
-				return discount;
-		}
-		return null;
-	}
-
-	public boolean containsDiscount(Discount discount)
-	{
-		List<Discount> discounts = Collections.unmodifiableList(this.discounts);
-        for (Discount discount1 : discounts) {
-            if (discount1.getId().equals(discount.getId()))
-                return true;
-        }
-        return false;
-	}
-	
 	public void setPayer(Contact payer) {
 		this.payer = payer;
 		getInvoice().setContact(payer);

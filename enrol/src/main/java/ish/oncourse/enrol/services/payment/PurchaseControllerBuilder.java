@@ -120,30 +120,16 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 
         //remove  discounts
         for (Discount discountModel : discountsModel) {
-            boolean contains =false;
-            for (Discount discount : discounts) {
-                if (discountModel.getId().equals(discount.getId()))
-                {
-                    contains = true;
-                    break;
-                }
-            }
-            if (!contains)
-            {
-                ActionRemoveDiscount actionAddDiscount = PurchaseController.Action.removeDiscount.createAction(purchaseController);
-                actionAddDiscount.setDiscount(discountModel);
-                actionAddDiscount.action();
-            }
+                ActionRemoveDiscount actionRemoveDiscount = PurchaseController.Action.removeDiscount.createAction(purchaseController);
+                actionRemoveDiscount.setDiscount(discountModel);
+                actionRemoveDiscount.action();
         }
 
         //add new discounts
         for (Discount discount : discounts) {
-            if (!purchaseController.getModel().containsDiscount(discount))
-            {
-                ActionAddDiscount actionAddDiscount = PurchaseController.Action.addDiscount.createAction(purchaseController);
-                actionAddDiscount.setDiscount(discount);
-                actionAddDiscount.action();
-            }
+            ActionAddDiscount actionAddDiscount = PurchaseController.Action.addDiscount.createAction(purchaseController);
+            actionAddDiscount.setDiscount(discount);
+            actionAddDiscount.action();
 		}
 
     }
