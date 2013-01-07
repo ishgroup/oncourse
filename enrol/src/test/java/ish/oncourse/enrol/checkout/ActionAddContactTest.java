@@ -1,7 +1,9 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
+import ish.oncourse.enrol.checkout.contact.ContactEditorController;
 import ish.oncourse.model.Contact;
+import ish.oncourse.services.preference.PreferenceController;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,6 +47,11 @@ public class ActionAddContactTest extends ACheckoutTest {
 		assertNotNull(purchaseController.getContactEditorDelegate());
 		assertNull(purchaseController.getAddContactDelegate());
 		assertNotNull(purchaseController.getContactEditorDelegate().getContact());
+        assertFalse(purchaseController.getContactEditorDelegate().isFillRequiredProperties());
+        assertFalse(purchaseController.getContactEditorDelegate().getVisibleFields().isEmpty());
+        assertEquals(PreferenceController.ContactFiledsSet.enrolment, ((ContactEditorController)purchaseController.getContactEditorDelegate()).getContactFiledsSet());
+        assertNotNull(purchaseController.getContactEditorDelegate().getConcessionDelegate());
+
 		assertTrue(purchaseController.isEditContact());
 		assertEquals(PurchaseController.State.editContact,purchaseController.getState());
 

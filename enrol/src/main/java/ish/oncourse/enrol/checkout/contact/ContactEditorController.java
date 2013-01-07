@@ -3,7 +3,6 @@ package ish.oncourse.enrol.checkout.contact;
 import ish.oncourse.enrol.checkout.*;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
-import ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 import org.apache.cayenne.ObjectContext;
 
 import java.util.List;
@@ -63,14 +62,6 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 		if (visibleFields.size() < 1)
 			throw new IllegalArgumentException();
 		return visibleFields;
-	}
-
-	private boolean isVisible(FieldDescriptor descriptor) {
-		if (isFillRequiredProperties())
-			return getContactFieldHelper().isRequiredField(descriptor) && contact.readProperty(descriptor.propertyName) == null;
-		else
-			return getContactFieldHelper().isShowField(descriptor);
-
 	}
 
 	public ContactFieldHelper getContactFieldHelper() {
