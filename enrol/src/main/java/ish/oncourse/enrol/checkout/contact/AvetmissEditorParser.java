@@ -88,6 +88,8 @@ public class AvetmissEditorParser implements IFieldsParser{
 			case disabilityType:
 				contact.getStudent().setDisabilityType(AvetmissStudentDisabilityType.valueOf(value));
 				break;
+            default:
+                throw new IllegalArgumentException();
 		}
 	}
 
