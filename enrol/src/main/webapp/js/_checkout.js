@@ -105,7 +105,7 @@ function initConcessionEditorHandle()
 		var $actionLink = $j(this).next('a')[0].pathname +'/'+$value;
 		var $refreshId = $j(this).data('refreshid');
 
-		sendAjaxWithDataAndRefreshId($actionLink, null, $refreshId);
+		sendAjaxWithDataAndRefreshId($actionLink, null, $refreshId, false);
 		var $formId = $j(this).data('formid');
 		if($formId)
 		{
@@ -173,10 +173,10 @@ function initCreditAccessHandle()
 
 function sendAjaxWithData($actionLink,$data)
 {
-	sendAjaxWithDataAndRefreshId($actionLink,$data,null);
+	sendAjaxWithDataAndRefreshId($actionLink,$data,null,true);
 }
 
-function sendAjaxWithDataAndRefreshId($actionLink,$data,$refreshId)
+function sendAjaxWithDataAndRefreshId($actionLink,$data,$refreshId,$async)
 {
 	if (!$refreshId)
 		$refreshId = '#checkout';
@@ -194,6 +194,7 @@ function sendAjaxWithDataAndRefreshId($actionLink,$data,$refreshId)
         type: "GET",
         url: $actionLink,
         data: $data,
+        async: $async,
         success: function(data) {
             $j($refreshId).unblock();
 			if (data.content)
