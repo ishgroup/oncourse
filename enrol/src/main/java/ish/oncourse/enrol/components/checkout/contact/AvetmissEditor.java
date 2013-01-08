@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.components.checkout.contact;
 
 import ish.common.types.*;
+import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.contact.AvetmissEditorParser;
 import ish.oncourse.model.Contact;
@@ -18,6 +19,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import org.apache.tapestry5.services.Request;
 
 import java.util.ArrayList;
@@ -47,9 +49,12 @@ public class AvetmissEditor {
 
     @Property
     private ValidateHandler validateHandler = new ValidateHandler();
+    
+    private Messages externalMessages;
 
     @SetupRender
     void beforeRender() {
+    	externalMessages = MessagesImpl.forClass(AvetmissStrings.class);
     }
 
 
@@ -142,4 +147,8 @@ public class AvetmissEditor {
         }
         return String.format("[%s]", StringUtils.join(result.toArray(), ","));
     }
+    
+    public String externalMessageLabel(String fieldName) {
+		return externalMessages.get(fieldName);
+	}
 }
