@@ -48,10 +48,26 @@
 				</span>
 			</p>
 			<p>
+				<label for="stillAtSchool">${externalMessageLabel('labourForceStatus.label')}</label>
+				<div class="radio-list">
+					<t:radiogroup t:id="stillAtSchool" t:value="contact.student.isStillAtSchool">
+						<input type="radio" t:type="radio" t:value="true"/> Yes
+						<input type="radio" t:type="radio" t:value="false"/> No
+					</t:radiogroup>
+				</div>
+			</p>
+			<p>
 				<label for="priorEducationCode">${externalMessageLabel('priorEducationCode.label')}</label>
 				<span class="${validateHandler.validateClass('priorEducationCode')}">
 					<t:select t:id="priorEducationCode" value="contact.student.priorEducationCode" model="priorEducationSelectModel" blankOption="NEVER"/>
 					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('priorEducationCode')}"/>
+				</span>
+			</p>
+			<p>
+				<label for="labourForceStatus">${externalMessageLabel('labourForceStatus.label')}</label>
+				<span class="${validateHandler.validateClass('labourForceStatus')}">
+					<t:select t:id="labourForceStatus" value="contact.student.labourForceStatus" model="labourForceStatusSelectModel" blankOption="NEVER"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('labourForceStatus')}"/>
 				</span>
 			</p>
 			<p>

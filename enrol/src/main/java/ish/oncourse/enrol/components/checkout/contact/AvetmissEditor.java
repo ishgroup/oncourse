@@ -117,6 +117,10 @@ public class AvetmissEditor {
     public ISHEnumSelectModel getDisabilityTypeSelectModel() {
         return new ISHEnumSelectModel(AvetmissStudentDisabilityType.class, messages);
     }
+    
+    public ISHEnumSelectModel getLabourForceStatusSelectModel() {
+    	return new ISHEnumSelectModel(AvetmissStudentLabourStatus.class, messages);
+    }
 
     public void save() {
         AvetmissEditorParser avetmissEditorParser = new AvetmissEditorParser();
