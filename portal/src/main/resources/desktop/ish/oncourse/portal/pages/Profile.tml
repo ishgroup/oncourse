@@ -107,7 +107,9 @@
 					</fieldset>	
 					<t:if test = "isStudent">
 						<t:if test = "isRequiresAvetmiss">
-						
+							<div class="message">
+								<p>${externalMessageLabel('federal-edu-quest')}<strong class="collapse" id="questionnaire">${externalMessageLabel('optional-answering')}</strong></p>
+							</div>
 							<div>
 								<fieldset id="questionnaire-block">
 									<p>
@@ -149,15 +151,10 @@
 									</p>
 									
 									<p>
-										<label>
-											Disability type
-										 </label>
-										<div class="radio-list">
-											<t:radiogroup t:value="hasDisability"> 
-												<input type="radio" t:type="radio" t:value="true"/> Yes 
-												<input type="radio" t:type="radio" t:value="false"/> No 
-											</t:radiogroup>
-										</div>
+										<label for="disabilityType">
+										${externalMessageLabel('disability.extra-conditions')} Please <a href="/about/contact" title="${externalMessageLabel('disability.contact-link-title')}" class="popup">contact us</a> ${externalMessageLabel('disability.contact-message')}
+										</label>
+										 <t:select t:id="disabilityType" value="contact.student.disabilityType" model="disabilityTypeSelectModel"  blankOption="NEVER"/>
 									</p>
 									
 								</fieldset>

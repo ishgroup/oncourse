@@ -355,31 +355,10 @@ public class Profile {
 					Integer.parseInt(schoolYearStr));
 		}
 	}
-
-	// TODO useless if we display disabilityType list select
-	public boolean isHasDisability() {
-		AvetmissStudentDisabilityType disabilityType = contact.getStudent()
-				.getDisabilityType();
-		if (disabilityType == null
-				|| disabilityType
-						.equals(AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION)
-				|| disabilityType.equals(AvetmissStudentDisabilityType.NONE)) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	// TODO useless if we display disabilityType list select
-	public void setHasDisability(boolean hasDisability) {
-		if (hasDisability) {
-			contact.getStudent().setDisabilityType(
-					AvetmissStudentDisabilityType.OTHER);
-		} else {
-			contact.getStudent().setDisabilityType(
-					AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION);
-		}
-	}
+	
+	public ISHEnumSelectModel getDisabilityTypeSelectModel() {
+        return new ISHEnumSelectModel(AvetmissStudentDisabilityType.class, messages);
+    }
 
 	private String getInputSectionClass(Field field) {
 		ValidationTracker defaultTracker = profileForm.getDefaultTracker();
