@@ -146,17 +146,28 @@
 										</span>	
 									</p>
 									<p>
+										<label for="stillAtSchool">${externalMessageLabel('isStillAtSchool.label')}</label>
+										<div class="radio-list">
+											<t:radiogroup t:value="contact.student.isStillAtSchool" t:id="stillAtSchool">
+												<input type="radio" t:type="radio" t:value="true"/> Yes
+												<input type="radio" t:type="radio" t:value="false"/> No
+											</t:radiogroup>
+										</div>
+									</p>
+									<p>
 										<label for="prioreducation">${externalMessageLabel('priorEducationCode.label')}</label>
 										<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" clientId="prioreducation" blankOption="NEVER"/>
 									</p>
-									
+									<p>
+										<label for="labourForceStatus">${externalMessageLabel('labourForceStatus.label')}</label>
+										<t:select value="contact.student.labourForceStatus" model="labourForceStatusSelectModel" clientId="labourForceStatus" blankOption="NEVER"/>
+									</p>
 									<p>
 										<label for="disabilityType">
 										${externalMessageLabel('disability.extra-conditions')} Please <a href="/about/contact" title="${externalMessageLabel('disability.contact-link-title')}" class="popup">contact us</a> ${externalMessageLabel('disability.contact-message')}
 										</label>
 										 <t:select t:id="disabilityType" value="contact.student.disabilityType" model="disabilityTypeSelectModel"  blankOption="NEVER"/>
 									</p>
-									
 								</fieldset>
 							</div>
 						</t:if>

@@ -359,7 +359,11 @@ public class Profile {
 	public ISHEnumSelectModel getDisabilityTypeSelectModel() {
         return new ISHEnumSelectModel(AvetmissStudentDisabilityType.class, messages);
     }
-
+	
+	public ISHEnumSelectModel getLabourForceStatusSelectModel() {
+    	return new ISHEnumSelectModel(AvetmissStudentLabourStatus.class, messages);
+    }
+	
 	private String getInputSectionClass(Field field) {
 		ValidationTracker defaultTracker = profileForm.getDefaultTracker();
 		return defaultTracker == null || !defaultTracker.inError(field) ? messages
