@@ -1,7 +1,7 @@
 package ish.oncourse.portal.pages;
 
 import ish.common.types.*;
-import ish.oncourse.components.AvetmissMessages;
+import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
@@ -218,7 +218,7 @@ public class Profile {
 				AvetmissStudentSchoolLevel.class, messages);
 		priorEducationSelectModel = new ISHEnumSelectModel(
 				AvetmissStudentPriorEducation.class, messages);
-		externalMessages = MessagesImpl.forClass(AvetmissMessages.class);
+		externalMessages = MessagesImpl.forClass(AvetmissStrings.class);
 	}
 
 	public String getHomePhoneInputClass() {
@@ -574,7 +574,7 @@ public class Profile {
 	
 	public boolean getIsRequiresAvetmiss() {
 		boolean isRequired = contact.getCollege().getRequiresAvetmiss();
-		return isRequired;
+		return true;//isRequired;
 	}
 	
 }
