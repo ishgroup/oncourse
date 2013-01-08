@@ -36,7 +36,8 @@
         <t:if test="illegalState">
             <div class="pay-fail">
 				<t:if test="expired">
-					<h2 class="page-title">You may have used the back button, or the payment expired due to inactivity. You can see the correct status below.</h2>
+					<h2 class="page-title">This payment processing session has timed out and the payment is now marked as failed. 
+					Please close this window and create a new payment in onCourse. The enrolment, student and invoice have all been retained.</h2>
 				<p:else>
 					<h2 class="page-title">You cannot use the back button in this payment process. You can see correct status below.</h2>
 				</p:else>
