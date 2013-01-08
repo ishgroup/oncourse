@@ -27,7 +27,7 @@
     <CourseClass id="1" code="1-1" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-1" feeExGst="20.00" feeGst="1.25" roomId="1" maximumPlaces="3"
                  startDate="2011-01-01 00:00:00" isCancelled="0" isDistantLearningCourse="0" isWebVisible="1"/>
     <CourseClass id="2" code="2-1" collegeId="1" countOfSessions="2" courseId="2" deliveryMode="1" detail="Test Course Class 2-1" feeExGst="20.00" feeGst="1.25" roomId="2" maximumPlaces="3"
-                 startDate="2011-01-02 00:00:00" endDate="2013-01-02 00:00:00"  isCancelled="0" isDistantLearningCourse="0" isWebVisible="1"/>
+                 startDate="2011-01-02 00:00:00" endDate="2094-01-02 00:00:00"  isCancelled="0" isDistantLearningCourse="0" isWebVisible="1"/>
     <CourseClass id="3" code="3-1" collegeId="1" countOfSessions="3" courseId="3" deliveryMode="1" detail="Test Course Class 3-1" feeExGst="20.00" feeGst="1.25" roomId="3" maximumPlaces="3"
                  startDate="2012-01-01 00:00:01" endDate="2100-01-01 00:00:00"  isCancelled="0" isDistantLearningCourse="0"/>
     <CourseClass id="4" code="4-1" collegeId="1" countOfSessions="4" courseId="4" deliveryMode="1" detail="Test Course Class 4-1" feeExGst="20.00" feeGst="1.25" roomId="4" maximumPlaces="3"
