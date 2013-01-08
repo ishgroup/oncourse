@@ -3,8 +3,10 @@ package ish.oncourse.model;
 import ish.common.types.AvetmissStudentDisabilityType;
 import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
+import ish.common.types.AvetmissStudentLabourStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.auto._Student;
 import ish.oncourse.utils.QueueableObjectUtils;
 
@@ -21,6 +23,14 @@ public class Student extends _Student implements Queueable {
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
+	}
+	
+	public AvetmissStudentLabourStatus getLabourForceStatus() {
+		return TypesUtil.getEnumForDatabaseValue(getLabourForceType(), AvetmissStudentLabourStatus.class);
+	}
+	
+	public void setLabourForceStatus(AvetmissStudentLabourStatus labourForceStatus) {
+		setLabourForceType(labourForceStatus.getDatabaseValue());
 	}
 
 	/**
