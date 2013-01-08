@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div class="message">
-		<p>${message:federal-edu-quest}<strong class="collapse" id="questionnaire">${message:optional-answering}</strong></p>
+		<p>${externalMessageLabel('federal-edu-quest')}<strong class="collapse" id="questionnaire">${externalMessageLabel('optional-answering')}</strong></p>
 	</div>
 	<div>
 		<fieldset id="questionnaire-block">
@@ -56,7 +56,7 @@
 			</p>
 			<p>
 				<label for="disabilityType">
-					${message:extra-conditions} Please <a href="/about/contact" title="${message:contact-link-title}" class="popup">contact us</a> ${message:contact-message}
+					${externalMessageLabel('disability.extra-conditions')} Please <a href="/about/contact" title="${externalMessageLabel('disability.contact-link-title')}" class="popup">contact us</a> ${externalMessageLabel('disability.contact-message')}
 				</label>
 				<span class="${validateHandler.validateClass('disabilityType')}">
 					<t:select t:id="disabilityType" value="contact.student.disabilityType" model="disabilityTypeSelectModel"  blankOption="NEVER"/>
