@@ -239,14 +239,57 @@ public class ClassRoll {
         return duration;
 	}
 	
-	public String getStudentRation() {
-		Long passedSessionsDuration = getPassedSessionsDuration(this.attendance.getStudent()), 
-			finishedSessionsDuration = getFinishedSessionsDuration();
-		BigDecimal ratio = BigDecimal.ZERO;
-		if (passedSessionsDuration > 0 && finishedSessionsDuration > 0) {
-			ratio = new Money(passedSessionsDuration.toString()).divide(new Money(finishedSessionsDuration.toString())).multiply(100).toBigDecimal();
+	Long getMissedSessionsDuration(Student student) {
+		Expression exp = ExpressionFactory.matchDbExp(Session.COURSE_CLASS_PROPERTY, courseClass);
+		exp = exp.andExp(ExpressionFactory.lessOrEqualExp(Session.START_DATE_PROPERTY, new Date()));
+		exp = exp.andExp(ExpressionFactory.matchExp(Session.ATTENDANCES_PROPERTY + "." + Attendance.STUDENT_PROPERTY, student));
+        exp = exp.andExp(ExpressionFactory.inExp(Session.ATTENDANCES_PROPERTY + "." + Attendance.ATTENDANCE_TYPE_PROPERTY, 
+        	AttendanceType.DID_NOT_ATTEND_WITH_REASON, AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON));
+		SelectQuery selectQuery = new SelectQuery(Session.class, exp);
+        @SuppressWarnings("unchecked")
+		List<Session> sessions = (List<Session>) courseClass.getObjectContext().performQuery(selectQuery);
+        Long duration = 0l;
+		for (Session session : sessions) {
+			duration += session.getDurationMinutes();
 		}
-		return ratio.toString() + " %";
+        return duration;
+	}
+	
+	Long getUnMarkedSessionsDuration(Student student) {
+		Expression exp = ExpressionFactory.matchDbExp(Session.COURSE_CLASS_PROPERTY, courseClass);
+		exp = exp.andExp(ExpressionFactory.lessOrEqualExp(Session.START_DATE_PROPERTY, new Date()));
+		exp = exp.andExp(ExpressionFactory.matchExp(Session.ATTENDANCES_PROPERTY + "." + Attendance.STUDENT_PROPERTY, student));
+		exp = exp.andExp(ExpressionFactory.matchExp(Session.ATTENDANCES_PROPERTY + "." + Attendance.ATTENDANCE_TYPE_PROPERTY, AttendanceType.UNMARKED));
+        SelectQuery selectQuery = new SelectQuery(Session.class, exp);
+        @SuppressWarnings("unchecked")
+		List<Session> sessions = (List<Session>) courseClass.getObjectContext().performQuery(selectQuery);
+        Long duration = 0l;
+		for (Session session : sessions) {
+			duration += session.getDurationMinutes();
+		}
+        return duration;
+	}
+	
+	public String getStudentRatio() {
+		Long passedSessionsDuration = getPassedSessionsDuration(this.attendance.getStudent()), 
+			finishedSessionsDuration = getFinishedSessionsDuration(), 
+			missedSessionsDuration = getMissedSessionsDuration(this.attendance.getStudent()),
+			unmarkedSessionsDuration = getUnMarkedSessionsDuration(this.attendance.getStudent());
+		BigDecimal passsedRatio = BigDecimal.ZERO, missedRatio = BigDecimal.ZERO, unmarkedRatio = BigDecimal.ZERO;
+		if (passedSessionsDuration > 0 && finishedSessionsDuration > 0) {
+			passsedRatio = new Money(passedSessionsDuration.toString()).divide(new Money(finishedSessionsDuration.toString())).multiply(100).toBigDecimal();
+		}
+		if (missedSessionsDuration > 0 && finishedSessionsDuration > 0) {
+			missedRatio = new Money(missedSessionsDuration.toString()).divide(new Money(finishedSessionsDuration.toString())).multiply(100).toBigDecimal();
+		}
+		if (unmarkedSessionsDuration > 0 && finishedSessionsDuration > 0) {
+			unmarkedRatio = new Money(unmarkedSessionsDuration.toString()).divide(new Money(finishedSessionsDuration.toString())).multiply(100).toBigDecimal();
+		}
+		StringBuffer result = new StringBuffer();
+		result.append("Passed ").append(passsedRatio.toString()).append(" %").append("\n")
+			.append("Missed ").append(missedRatio.toString()).append(" %").append("\n")
+			.append("Unmarked ").append(unmarkedRatio.toString()).append(" %");
+		return result.toString();
 	}
 
 	StreamResponse onActionFromAttendance(){
