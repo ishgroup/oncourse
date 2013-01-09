@@ -2,7 +2,6 @@ package ish.oncourse.enrol.components.checkout.payment;
 
 import ish.common.types.CreditCardType;
 import ish.math.Money;
-import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorParser;
 import ish.oncourse.enrol.pages.Checkout;
@@ -13,6 +12,7 @@ import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.ValidateHandler;
 import ish.persistence.CommonPreferenceController;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;

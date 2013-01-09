@@ -1,7 +1,5 @@
 package ish.oncourse.enrol.pages;
 
-import ish.oncourse.enrol.checkout.HTMLUtils;
-import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.contact.AddContactParser;
 import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.enrol.components.checkout.contact.ContactEditorFieldSet;
@@ -16,6 +14,8 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.Courses;
+import ish.oncourse.util.HTMLUtils;
+import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;

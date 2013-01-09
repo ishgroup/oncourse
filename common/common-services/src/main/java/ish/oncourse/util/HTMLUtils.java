@@ -1,4 +1,4 @@
-package ish.oncourse.enrol.checkout;
+package ish.oncourse.util;
 
 import org.apache.tapestry5.services.Request;
 

@@ -48,7 +48,7 @@
 				</span>
 			</p>
 			<p>
-				<label for="stillAtSchool">${label('labourForceStatus')}</label>
+				<label for="stillAtSchool">${label('stillAtSchool')}</label>
 				<div class="radio-list">
 					<t:radiogroup t:id="stillAtSchool" t:value="contact.student.isStillAtSchool">
 						<input type="radio" t:type="radio" t:value="true"/> Yes

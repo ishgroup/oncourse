@@ -1,10 +1,10 @@
 package ish.oncourse.enrol.checkout.contact;
 
-import ish.oncourse.enrol.checkout.HTMLUtils;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.reference.ICountryService;
+import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;

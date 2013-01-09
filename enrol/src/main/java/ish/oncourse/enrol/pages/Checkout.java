@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.pages;
 
 import ish.math.Money;
-import ish.oncourse.enrol.checkout.HTMLUtils;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -19,6 +18,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.ui.pages.Courses;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.HTMLUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;

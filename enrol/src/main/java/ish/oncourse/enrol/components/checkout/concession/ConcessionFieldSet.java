@@ -1,11 +1,11 @@
 package ish.oncourse.enrol.components.checkout.concession;
 
 import ish.oncourse.enrol.checkout.ConcessionDelegate;
-import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.ValidateHandler;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;

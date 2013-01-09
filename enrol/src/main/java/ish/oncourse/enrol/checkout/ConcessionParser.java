@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.enrol.components.checkout.concession.ConcessionEditor;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;

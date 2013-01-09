@@ -1,6 +1,4 @@
-package ish.oncourse.enrol.checkout;
-
-import ish.oncourse.util.FormatUtils;
+package ish.oncourse.util;
 
 import java.util.HashMap;
 import java.util.Map;

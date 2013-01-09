@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Profile"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_profile">
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_profile">
 	<h1> ${contact.givenName} ${contact.familyName}'s Profile  </h1>
 	
 	<div class="tabbable">
@@ -108,45 +108,44 @@
 					<t:if test = "isStudent">
 						<t:if test = "isRequiresAvetmiss">
 							<div class="message">
-								<p>${externalMessageLabel('federal-edu-quest')}<strong class="collapse" id="questionnaire">${externalMessageLabel('optional-answering')}</strong></p>
+								<p>${message('message-federalEduQuest')}<strong class="collapse" id="questionnaire">${message('message-optionalAnswering')}</strong></p>
 							</div>
 							<div>
 								<fieldset id="questionnaire-block">
 									<p>
-										<label for="countrybirth">${externalMessageLabel('countryOfBirth.label')}</label>
-										<span class="${countryOfBirthInputClass}">
-											<t:textfield value="countryOfBirthName" class ="input-fixed" 
-												clientId="countrybirth" t:id="countryOfBirth" />
+										<label for="countryOfBirth">${label('countryOfBirth')}</label>
+										<span class="${validateHandler.validateClass('countryOfBirth')}">
+											<t:textfield value="countryOfBirthName" class ="input-fixed" t:id="countryOfBirth" />
 										</span>	
 									</p>
 									<p>
-										<label for="languagehome">${externalMessageLabel('languageHome.label')}</label>
-										<span class="${languageHomeInputClass}">
-											<t:textfield value="languageHomeName" class ="input-fixed" 
-												clientId="languagehome" t:id="languageHome" />
+										<label for="languageHome">${label('languageHome')}</label>
+										<span class="${validateHandler.validateClass('languageHome')}">
+											<t:textfield value="languageHomeName" class ="input-fixed" t:id="languageHome" />
 										</span>	
 									</p>
 									<p>
-										<label for="englishproficiency">${externalMessageLabel('englishProficiency.label')}</label>
-										<t:select value="contact.student.englishProficiency" model="englishProficiencySelectModel" clientId="englishproficiency" blankOption="NEVER"/>
+										<label for="englishProficiency">${label('englishProficiency')}</label>
+										<t:select value="contact.student.englishProficiency" model="englishProficiencySelectModel" blankOption="NEVER"/>
 									</p>
 									
 									<p>
-										<label for="indigenous">${externalMessageLabel('indigenousStatus.label')}</label>
-										<t:select value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" clientId="indigenous" blankOption="NEVER"/>
+										<label for="indigenousStatus">${label('indigenousStatus')}</label>
+										<t:select value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" blankOption="NEVER"/>
 									</p>
 									<p>
-										<label for="schoollevel">${externalMessageLabel('highestSchoolLevel.label')}</label>
-										<t:select value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" clientId="schoollevel" blankOption="NEVER"/>
-									
-										<label for="schoolyear">${externalMessageLabel('yearSchoolCompleted.label')}</label>
-										<span class="${schoolYearInputClass}">
+										<label for="highestSchoolLevel">${label('highestSchoolLevel')}</label>
+										<t:select value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" blankOption="NEVER"/>
+									</p>
+									<p>
+										<label for="yearSchoolCompleted">${label('yearSchoolCompleted')}</label>
+										<span class="${validateHandler.validateClass('yearSchoolCompleted')}">
 											<t:textfield value="schoolYearStr" class ="input-fixed" 
-												clientId="schoolyear" t:id="schoolYear" />
+												t:id="yearSchoolCompleted" />
 										</span>	
 									</p>
 									<p>
-										<label for="stillAtSchool">${externalMessageLabel('isStillAtSchool.label')}</label>
+										<label for="stillAtSchool">${label('stillAtSchool')}</label>
 										<div class="radio-list">
 											<t:radiogroup t:value="contact.student.isStillAtSchool" t:id="stillAtSchool">
 												<input type="radio" t:type="radio" t:value="true"/> Yes
@@ -155,16 +154,16 @@
 										</div>
 									</p>
 									<p>
-										<label for="prioreducation">${externalMessageLabel('priorEducationCode.label')}</label>
-										<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" clientId="prioreducation" blankOption="NEVER"/>
+										<label for="priorEducationCode">${label('priorEducationCode')}</label>
+										<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" blankOption="NEVER"/>
 									</p>
 									<p>
-										<label for="labourForceStatus">${externalMessageLabel('labourForceStatus.label')}</label>
-										<t:select value="contact.student.labourForceStatus" model="labourForceStatusSelectModel" clientId="labourForceStatus" blankOption="NEVER"/>
+										<label for="labourForceStatus">${label('labourForceStatus')}</label>
+										<t:select value="contact.student.labourForceStatus" model="labourForceStatusSelectModel" blankOption="NEVER"/>
 									</p>
 									<p>
 										<label for="disabilityType">
-										${externalMessageLabel('disability.extra-conditions')} Please <a href="/about/contact" title="${externalMessageLabel('disability.contact-link-title')}" class="popup">contact us</a> ${externalMessageLabel('disability.contact-message')}
+											<t:outputraw value="${label('disabilityType')}"/>
 										</label>
 										 <t:select t:id="disabilityType" value="contact.student.disabilityType" model="disabilityTypeSelectModel"  blankOption="NEVER"/>
 									</p>

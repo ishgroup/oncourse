@@ -5,6 +5,7 @@ import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
+import ish.oncourse.model.Student;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -12,6 +13,8 @@ import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
+import ish.oncourse.util.MessagesNamingConvention;
+import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Field;
@@ -31,7 +34,7 @@ import java.util.Date;
 
 public class Profile {
 
-    private static final Logger LOGGER = Logger.getLogger(Profile.class);
+	private static final Logger LOGGER = Logger.getLogger(Profile.class);
 
 	private static final DateFormat FORMAT = new SimpleDateFormat("d/M/y");
 
@@ -47,26 +50,26 @@ public class Profile {
 	@Inject
 	private ILanguageService languageService;
 
-    @Inject
-    private PreferenceController preferenceController;
+	@Inject
+	private PreferenceController preferenceController;
 
-    @Property
-    @Persist
-    private ContactFieldHelper contactFieldHelper;
+	@Property
+	@Persist
+	private ContactFieldHelper contactFieldHelper;
 
 	@Property
 	@Persist
 	private Contact contact;
-	
-    private Timetable timetable;
-    
+
+	private Timetable timetable;
+
 	/**
 	 * tapestry services
 	 */
 	@Inject
 	private Messages messages;
-	
-	private Messages externalMessages;
+
+	private Messages avetmissMessages;
 
 	/**
 	 * components
@@ -126,7 +129,7 @@ public class Profile {
 	private TextField languageHome;
 
 	@InjectComponent
-	private TextField schoolYear;
+	private TextField yearSchoolCompleted;
 
 	/**
 	 * error message template properties
@@ -197,10 +200,13 @@ public class Profile {
 	 */
 	private boolean reset;
 
+	@Property
+	private ValidateHandler validateHandler;
+
 	@SetupRender
 	void beforeRender() {
 
-        if (contactFieldHelper == null) {
+		if (contactFieldHelper == null) {
 			contactFieldHelper = new ContactFieldHelper(preferenceController, PreferenceController.ContactFiledsSet.enrolment);
 		}
 
@@ -210,15 +216,17 @@ public class Profile {
 					.getObjectId(), null);
 		}
 
+		avetmissMessages = MessagesImpl.forClass(AvetmissStrings.class);
 		englishProficiencySelectModel = new ISHEnumSelectModel(
-				AvetmissStudentEnglishProficiency.class, messages);
+				AvetmissStudentEnglishProficiency.class, avetmissMessages);
 		indigenousStatusSelectModel = new ISHEnumSelectModel(
-				AvetmissStudentIndigenousStatus.class, messages);
+				AvetmissStudentIndigenousStatus.class, avetmissMessages);
 		schoolLevelSelectModel = new ISHEnumSelectModel(
-				AvetmissStudentSchoolLevel.class, messages);
+				AvetmissStudentSchoolLevel.class, avetmissMessages);
 		priorEducationSelectModel = new ISHEnumSelectModel(
-				AvetmissStudentPriorEducation.class, messages);
-		externalMessages = MessagesImpl.forClass(AvetmissStrings.class);
+				AvetmissStudentPriorEducation.class, avetmissMessages);
+
+		validateHandler = new ValidateHandler();
 	}
 
 	public String getHomePhoneInputClass() {
@@ -280,22 +288,11 @@ public class Profile {
 		}
 	}
 
-	public String getCountryOfBirthInputClass() {
-		return getInputSectionClass(countryOfBirth);
-	}
-
-	public String getLanguageHomeInputClass() {
-		return getInputSectionClass(languageHome);
-	}
-
-	public String getSchoolYearInputClass() {
-		return getInputSectionClass(schoolYear);
-	}
 
 	public String getCountryOfBirthName() {
 		Country countryOfBirth = contact.getStudent().getCountryOfBirth();
 		if (countryOfBirth == null) {
-			return null;
+			return ICountryService.DEFAULT_COUNTRY_NAME;
 		}
 		return countryOfBirth.getName();
 	}
@@ -306,7 +303,7 @@ public class Profile {
 		}
 		Country country = countryService.getCountryByName(countryOfBirthName);
 		if (country == null) {
-			countryOfBirthErrorMessage = "Country name is incorrect";
+			validateHandler.getErrors().put(Student.COUNTRY_OF_BIRTH_PROPERTY, messageBy(Student.COUNTRY_OF_BIRTH_PROPERTY));
 		} else {
 			contact.getStudent().setCountryOfBirth(
 					(Country) contact.getObjectContext().localObject(
@@ -328,7 +325,7 @@ public class Profile {
 		}
 		Language language = languageService.getLanguageByName(languageHome);
 		if (language == null) {
-			languageHomeErrorMessage = "Language name is incorrect";
+			validateHandler.getErrors().put(Student.LANGUAGE_HOME_PROPERTY, messageBy(Student.LANGUAGE_HOME_PROPERTY));
 		} else {
 			contact.getStudent().setLanguageHome(
 					(Language) contact.getObjectContext().localObject(
@@ -348,22 +345,22 @@ public class Profile {
 	public void setSchoolYearStr(String schoolYearStr) {
 		if (!(schoolYearStr == null) && !"".equals(schoolYearStr)) {
 			if (!schoolYearStr.matches("(\\d)+")) {
-				schoolYearErrorMessage = "Incorrect format of the year.";
+				validateHandler.getErrors().put(Student.YEAR_SCHOOL_COMPLETED_PROPERTY, messageBy(Student.YEAR_SCHOOL_COMPLETED_PROPERTY));
 				return;
 			}
 			contact.getStudent().setYearSchoolCompleted(
 					Integer.parseInt(schoolYearStr));
 		}
 	}
-	
+
 	public ISHEnumSelectModel getDisabilityTypeSelectModel() {
-        return new ISHEnumSelectModel(AvetmissStudentDisabilityType.class, messages);
-    }
-	
+		return new ISHEnumSelectModel(AvetmissStudentDisabilityType.class, avetmissMessages);
+	}
+
 	public ISHEnumSelectModel getLabourForceStatusSelectModel() {
-    	return new ISHEnumSelectModel(AvetmissStudentLabourStatus.class, messages);
-    }
-	
+		return new ISHEnumSelectModel(AvetmissStudentLabourStatus.class, avetmissMessages);
+	}
+
 	private String getInputSectionClass(Field field) {
 		ValidationTracker defaultTracker = profileForm.getDefaultTracker();
 		return defaultTracker == null || !defaultTracker.inError(field) ? messages
@@ -378,7 +375,7 @@ public class Profile {
 	Object submitFailed() {
 		return "profile";
 	}
-	
+
 	@OnEvent(component = "passwordForm", value = "failure")
 	Object passwordSubmitFailed() {
 		return "profile";
@@ -389,23 +386,22 @@ public class Profile {
 		reset = false;
 	}
 
-    Object onException(Throwable cause) throws Throwable{
-        if (contact == null)
-        {
-            LOGGER.warn("Session expired",cause);
-            return this;
-        }
-        throw cause;
-    }
-    
-    @OnEvent(component = "passwordForm", value = "success")
-    Object passwordSubmitted() {
+	Object onException(Throwable cause) throws Throwable {
+		if (contact == null) {
+			LOGGER.warn("Session expired", cause);
+			return this;
+		}
+		throw cause;
+	}
+
+	@OnEvent(component = "passwordForm", value = "success")
+	Object passwordSubmitted() {
 		if (password != null) {
 			contact.setPassword(password);
 		}
 		contact.getObjectContext().commitChanges();
 		return timetable;
-    }
+	}
 
 	@OnEvent(component = "profileForm", value = "success")
 	Object submitted() {
@@ -423,8 +419,8 @@ public class Profile {
 			contact.setIsMarketingViaEmailAllowed(true);
 			contact.setIsMarketingViaPostAllowed(true);
 			contact.setIsMarketingViaSMSAllowed(true);
-			
-			if(getIsStudent()){
+
+			if (getIsStudent()) {
 				contact.getStudent().setCountryOfBirth(null);
 				contact.getStudent().setLanguageHome(null);
 				contact.getStudent().setEnglishProficiency(
@@ -449,7 +445,7 @@ public class Profile {
 			return timetable;
 		}
 	}
-	
+
 	@OnEvent(component = "passwordForm", value = "validate")
 	void validatePassword() {
 		if (password != null && password.length() > 0) {
@@ -505,26 +501,26 @@ public class Profile {
 				profileForm.recordError(fax, faxErrorMessage);
 			}
 
-            if (birthDateErrorMessage == null)
-		        birthDateErrorMessage = contact.validateBirthDate();
+			if (birthDateErrorMessage == null)
+				birthDateErrorMessage = contact.validateBirthDate();
 			if (birthDateErrorMessage != null) {
 				profileForm.recordError(birthDate, birthDateErrorMessage);
 			}
 
+			countryOfBirthErrorMessage = validateHandler.error(Student.COUNTRY_OF_BIRTH_PROPERTY);
 			if (countryOfBirthErrorMessage != null) {
 				profileForm.recordError(countryOfBirth,
 						countryOfBirthErrorMessage);
 			}
 
-			if (languageHomeErrorMessage != null) {
-				profileForm.recordError(languageHome, languageHomeErrorMessage);
-			}
+			schoolYearErrorMessage = validateHandler.error(Student.YEAR_SCHOOL_COMPLETED_PROPERTY);
 			if (schoolYearErrorMessage == null && contact.getStudent() != null) {
 				schoolYearErrorMessage = contact.getStudent()
 						.validateSchoolYear();
 			}
 			if (schoolYearErrorMessage != null) {
-				profileForm.recordError(schoolYear, schoolYearErrorMessage);
+				profileForm.recordError(yearSchoolCompleted,
+						schoolYearErrorMessage);
 			}
 
 		}
@@ -546,18 +542,26 @@ public class Profile {
 		}
 		return null;
 	}
-	
-	public boolean getIsStudent(){
+
+	public boolean getIsStudent() {
 		return authService.getUser().getStudent() != null;
 	}
-	
-	public String externalMessageLabel(String fieldName) {
-		return externalMessages.get(fieldName);
-	}
-	
+
 	public boolean getIsRequiresAvetmiss() {
-		boolean isRequired = contact.getCollege().getRequiresAvetmiss();
+		boolean isRequired = true; //contact.getCollege().getRequiresAvetmiss();
 		return isRequired;
 	}
-	
+
+
+	public String label(String fieldName) {
+		return avetmissMessages.get(String.format(MessagesNamingConvention.LABEL_KEY_TEMPLATE, fieldName));
+	}
+
+	public String messageBy(String fieldName) {
+		return avetmissMessages.get(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, fieldName));
+	}
+
+	public String message(String messageKey) {
+		return avetmissMessages.get(messageKey);
+	}
 }
