@@ -28,7 +28,7 @@
 			</div>
 		</t:if>
 		<t:if test="room">
-			<div><span>Venue: </span><div class="class-place1"><i class="icon-map-marker"></i> ${room.name}, ${site.name}</div></div>
+			<div><span>Venue: </span><div class="class-place1" style="padding-left:0"><i class="icon-map-marker"></i> ${room.name}, ${site.name}</div></div>
 			<br/>
 		
 			<t:if test="site.hasCoordinates">
@@ -74,7 +74,7 @@
 			</div>
 			<div>
 				<span>Class duration: </span>
-				<div class="class-man1">${classTime}</div>
+				<div class="class-man1" style="padding-left:0">${classTime}</div>
 			</div>
 		</t:if>
 	</div>
