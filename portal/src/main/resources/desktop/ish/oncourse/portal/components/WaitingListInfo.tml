@@ -2,7 +2,7 @@
 <div class="waiting_list_info_block">
     <h2><a href="${courseDetailsURL}">${courseName}</a></h2>
     <t:actionlink t:id="delete" class="waiting_list_btn" context="${waitingList.id}"><i class="icon-trash"/></t:actionlink>
-    <div class="description courseShortDescription">${courseDetail}<strong class="more">[<a href="${courseDetailsURL}">More</a>]</strong></div>
+    <div class="description courseShortDescription">${courseDetail}</div>
         <t:if test="classes">
             <t:loop  source="classes" value="courseClass">
                 <div class="class-details-container">
