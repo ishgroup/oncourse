@@ -286,7 +286,7 @@ public class ClassRoll {
 			unmarkedRatio = new Money(unmarkedSessionsDuration.toString()).divide(new Money(finishedSessionsDuration.toString())).multiply(100).toBigDecimal();
 		}
 		StringBuffer result = new StringBuffer();
-		result.append("Passed ").append(passsedRatio.toString()).append(" %").append("\n")
+		result.append("Attended ").append(passsedRatio.toString()).append(" %").append("\n")
 			.append("Missed ").append(missedRatio.toString()).append(" %").append("\n")
 			.append("Unmarked ").append(unmarkedRatio.toString()).append(" %");
 		return result.toString();
