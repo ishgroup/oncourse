@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ish.oncourse.util.MessagesNamingConvention.MESSAGE_KEY_TEMPLATE;
+
 public class PaymentEditorParser implements IFieldsParser {
 	private Request request;
 	private List<Contact> contacts;
@@ -35,10 +37,10 @@ public class PaymentEditorParser implements IFieldsParser {
             {
                 paymentIn.setCreditCardExpiry(expiryMonth + "/" + expiryYear);
                 if (!paymentIn.validateCCExpiry())
-                    errors.put(Field.expiryMonth.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, Field.expiryMonth.name())));
+                    errors.put(Field.expiryMonth.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.expiryMonth.name())));
             }
             else
-                errors.put(Field.expiryMonth.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, Field.expiryMonth.name())));
+                errors.put(Field.expiryMonth.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.expiryMonth.name())));
         }
 	}
 
@@ -50,7 +52,7 @@ public class PaymentEditorParser implements IFieldsParser {
 				if (value != null) {
 					setValue(field, value);
 				} else {
-					errors.put(field.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, field.name())));
+					errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
 				}
 			}
 		}
@@ -65,7 +67,7 @@ public class PaymentEditorParser implements IFieldsParser {
 			case creditCardType:
 				paymentIn.setCreditCardType(CreditCardType.valueOf(value));
 				if (!paymentIn.validateCCType())
-					errors.put(field.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, field.name())));
+					errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
 				break;
 			case creditCardName:
 				paymentIn.setCreditCardName(value);
@@ -79,7 +81,7 @@ public class PaymentEditorParser implements IFieldsParser {
 			case creditCardCVV:
 				paymentIn.setCreditCardCVV(value);
 				if (!paymentIn.validateCVV())
-					errors.put(field.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, field)));
+					errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, field)));
 				break;
 			case expiryMonth:
 			case expiryYear:

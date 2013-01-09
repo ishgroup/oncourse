@@ -11,6 +11,7 @@ import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
+import ish.oncourse.util.MessagesNamingConvention;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
@@ -50,11 +51,11 @@ public class AvetmissEditor {
     @Property
     private ValidateHandler validateHandler = new ValidateHandler();
     
-    private Messages externalMessages;
+    private Messages avetmissMessages;
 
     @SetupRender
     void beforeRender() {
-    	externalMessages = MessagesImpl.forClass(AvetmissStrings.class);
+		avetmissMessages = MessagesImpl.forClass(AvetmissStrings.class);
     }
 
 
@@ -152,7 +153,12 @@ public class AvetmissEditor {
         return String.format("[%s]", StringUtils.join(result.toArray(), ","));
     }
     
-    public String externalMessageLabel(String fieldName) {
-		return externalMessages.get(fieldName);
+    public String label(String fieldName) {
+		return avetmissMessages.get(String.format(MessagesNamingConvention.LABEL_KEY_TEMPLATE, fieldName));
 	}
+
+	public String message(String messageKey) {
+		return avetmissMessages.get(messageKey);
+	}
+
 }

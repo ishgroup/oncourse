@@ -6,6 +6,7 @@ import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.MessagesNamingConvention;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
@@ -14,7 +15,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.text.DateFormat;
 import java.util.Date;
 
-import static ish.oncourse.enrol.checkout.contact.ContactEditorParser.LABEL_TEMPLATE;
 import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
@@ -89,7 +89,7 @@ public class ContactEditorFieldSet {
 
 
 	public String label(String fieldName) {
-		return messages.get(String.format(LABEL_TEMPLATE, fieldName));
+		return messages.get(String.format(MessagesNamingConvention.LABEL_KEY_TEMPLATE, fieldName));
 	}
 
 

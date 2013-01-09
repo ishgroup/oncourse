@@ -14,8 +14,8 @@ import org.apache.tapestry5.services.Request;
 import org.junit.Before;
 import org.junit.Test;
 
-import static ish.oncourse.enrol.checkout.IFieldsParser.KEY_FIELD_ERROR_TEMPLATE;
 import static ish.oncourse.enrol.checkout.contact.AvetmissEditorParser.Field.*;
+import static ish.oncourse.util.MessagesNamingConvention.MESSAGE_KEY_TEMPLATE;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -66,7 +66,7 @@ public class AvetmissEditorParserTest {
         when(countryService.getCountryByName(validCountry)).thenReturn(country);
         when(countryService.getCountryByName(inValidCountry)).thenReturn(null);
 
-        String key = String.format(KEY_FIELD_ERROR_TEMPLATE, AvetmissEditorParser.Field.countryOfBirth);
+        String key = String.format(MESSAGE_KEY_TEMPLATE, AvetmissEditorParser.Field.countryOfBirth);
         when(messages.get(key)).thenReturn(key);
 
 
@@ -96,7 +96,7 @@ public class AvetmissEditorParserTest {
 
         when(languageService.getLanguageByName(validLanguge)).thenReturn(language);
         when(languageService.getLanguageByName(inValidLanguge)).thenReturn(null);
-        String key = String.format(KEY_FIELD_ERROR_TEMPLATE, AvetmissEditorParser.Field.languageHome);
+        String key = String.format(MESSAGE_KEY_TEMPLATE, AvetmissEditorParser.Field.languageHome);
         when(messages.get(key)).thenReturn(key);
 
         //test invalid languageHome
@@ -143,7 +143,7 @@ public class AvetmissEditorParserTest {
         verify(contact.getStudent(), times(1)).setYearSchoolCompleted(2000);
 
         when(request.getParameter(yearSchoolCompleted.name())).thenReturn("YEAR");
-        String key = String.format(KEY_FIELD_ERROR_TEMPLATE, AvetmissEditorParser.Field.yearSchoolCompleted);
+        String key = String.format(MESSAGE_KEY_TEMPLATE, AvetmissEditorParser.Field.yearSchoolCompleted);
         when(messages.get(key)).thenReturn(key);
 
         parser = getAvetmissEditorParser();

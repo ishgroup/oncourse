@@ -15,6 +15,8 @@ import org.apache.tapestry5.services.Request;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ish.oncourse.util.MessagesNamingConvention.MESSAGE_KEY_TEMPLATE;
+
 public class AvetmissEditorParser implements IFieldsParser{
 
 
@@ -49,7 +51,7 @@ public class AvetmissEditorParser implements IFieldsParser{
 			case countryOfBirth:
 				Country country = countryService.getCountryByName(value);
 				if (country == null) {
-					errors.put(field.propertyName, messages.get(String.format(KEY_FIELD_ERROR_TEMPLATE, field.name())));
+					errors.put(field.propertyName, messages.get(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
 				} else {
 					contact.getStudent().setCountryOfBirth(
 							(Country) contact.getObjectContext()
@@ -59,7 +61,7 @@ public class AvetmissEditorParser implements IFieldsParser{
 			case languageHome:
 				Language language = languageService.getLanguageByName(value);
 				if (language == null) {
-					errors.put(field.propertyName, messages.get(String.format(KEY_FIELD_ERROR_TEMPLATE, field.name())));
+					errors.put(field.propertyName, messages.get(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
 				} else {
 					contact.getStudent().setLanguageHome(
 							(Language) contact.getObjectContext().localObject(language.getObjectId(),
@@ -79,7 +81,7 @@ public class AvetmissEditorParser implements IFieldsParser{
 				if (StringUtils.isNumeric(value)) {
 					contact.getStudent().setYearSchoolCompleted(Integer.parseInt(value));
 				} else {
-					errors.put(field.propertyName, messages.get(String.format(KEY_FIELD_ERROR_TEMPLATE, field.name())));
+					errors.put(field.propertyName, messages.get(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
 				}
 				break;
 			case priorEducationCode:

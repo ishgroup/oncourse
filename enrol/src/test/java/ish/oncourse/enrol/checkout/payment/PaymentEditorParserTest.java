@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ish.oncourse.enrol.checkout.IFieldsParser.KEY_FIELD_ERROR_TEMPLATE;
 import static ish.oncourse.enrol.checkout.payment.PaymentEditorParser.Field;
+import static ish.oncourse.util.MessagesNamingConvention.MESSAGE_KEY_TEMPLATE;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -42,7 +42,7 @@ public class PaymentEditorParserTest {
 
         Field[] values = Field.values();
         for (Field value : values) {
-            String key = String.format(KEY_FIELD_ERROR_TEMPLATE, value.name());
+            String key = String.format(MESSAGE_KEY_TEMPLATE, value.name());
             when(messages.format(key)).thenReturn(key);
         }
     }
@@ -55,7 +55,7 @@ public class PaymentEditorParserTest {
         paymentEditorParser.parse();
         assertFalse(paymentEditorParser.getErrors().isEmpty());
         assertEquals(1, paymentEditorParser.getErrors().size());
-        String key = String.format(KEY_FIELD_ERROR_TEMPLATE, Field.userAgreed.name());
+        String key = String.format(MESSAGE_KEY_TEMPLATE, Field.userAgreed.name());
         assertEquals(key, paymentEditorParser.getErrors().get(Field.userAgreed.name()));
 
         paymentEditorParser = getPaymentEditorParser();
@@ -76,7 +76,7 @@ public class PaymentEditorParserTest {
         for (Field value : values) {
             if (value == Field.expiryYear)
                 value = Field.expiryMonth;
-            String key = String.format(KEY_FIELD_ERROR_TEMPLATE, value.name());
+            String key = String.format(MESSAGE_KEY_TEMPLATE, value.name());
             assertEquals(key,paymentEditorParser.getErrors().get(value.name()));
         }
 

@@ -32,7 +32,7 @@
 			</div>
 			<t:if test="delegate.needConcessionReminder">
 				<div class="message enrolment-concession-reminder">
-					<p>${message:concessionsAvailable}</p>
+					<p>${message:message-concessionsAvailable}</p>
 				</div>
 			</t:if>
 			<div class="form-controls enrolmentsSelected">

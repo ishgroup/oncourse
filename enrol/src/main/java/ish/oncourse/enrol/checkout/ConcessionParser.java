@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.enrol.components.checkout.concession.ConcessionEditor;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.MessagesNamingConvention;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
@@ -17,9 +18,6 @@ import java.util.Map;
 import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 
 public class ConcessionParser implements IFieldsParser {
-
-	public static final String KEY_FIELD_ERROR_TEMPLATE_WITH_SUFFIX = "error-%s-%s";
-
 
 	private StudentConcession studentConcession;
 
@@ -79,12 +77,12 @@ public class ConcessionParser implements IFieldsParser {
 	}
 
 	private String getErrorMessageBy(Field field, Object... params) {
-		return messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, field.name()),
+		return messages.format(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, field.name()),
 				params);
 	}
 
 	private String getErrorMessageWithSuffixBy(Field field, String suffix, Object... params) {
-		return messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE_WITH_SUFFIX, field.name(), suffix),
+		return messages.format(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE_WITH_SUFFIX, field.name(), suffix),
 				params);
 	}
 
