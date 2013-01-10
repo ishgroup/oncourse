@@ -554,7 +554,7 @@ public class Profile {
 	}
 
 	public boolean getIsRequiresAvetmiss() {
-		boolean isRequired = true; //contact.getCollege().getRequiresAvetmiss();
+		boolean isRequired = contact.getCollege().getRequiresAvetmiss();
 		return isRequired;
 	}
 
