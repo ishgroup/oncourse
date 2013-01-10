@@ -38,7 +38,7 @@ public class WaitingListForm {
 
 	private static final Logger LOGGER = Logger.getLogger(WaitingListForm.class);
 
-	public static final String KEY_ERROR_potentialStudent = "error-potentialStudent";
+	public static final String KEY_ERROR_potentialStudent = "message-potentialStudent";
 
 	@Property
 	@Persist

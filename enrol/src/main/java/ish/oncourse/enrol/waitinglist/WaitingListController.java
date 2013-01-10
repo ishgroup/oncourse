@@ -12,7 +12,7 @@ import java.util.List;
 
 public class WaitingListController extends AContactController {
 
-	public static final String KEY_ERROR_alreadyAdded = "error-alreadyAdded";
+	public static final String KEY_ERROR_alreadyAdded = "message-alreadyAdded";
 
     private Course course;
     private WaitingList waitingList;
