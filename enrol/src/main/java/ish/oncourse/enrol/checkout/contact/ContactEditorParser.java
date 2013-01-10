@@ -5,7 +5,6 @@ import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.HTMLUtils;
-import ish.oncourse.util.MessagesNamingConvention;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
@@ -91,7 +90,7 @@ public class ContactEditorParser {
 	}
 
 	private String getRequiredMessage(FieldDescriptor fieldDescriptor) {
-		return messages.format(KEY_ERROR_MESSAGE_fieldRequired, messages.get(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, fieldDescriptor.propertyName)));
+		return messages.format(KEY_ERROR_MESSAGE_fieldRequired, fieldDescriptor.propertyName);
 	}
 
 
