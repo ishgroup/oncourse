@@ -10,7 +10,7 @@ function initContactEditorHandle()
 
 
     if ($j(".suburb")) {
-        $j(".suburb").autocomplete({source: '/ui/internal/autocomplete.sub', minLength: 3,
+        $j(".suburb").autocomplete({source: '/ish/internal/autocomplete.sub', minLength: 3,
             select: function(event, ui) {
                 var value = ui.item.value;
                 var suburb = suburbFromString(value);
@@ -32,8 +32,8 @@ function initContactEditorHandle()
 
 function initCountryAutoCompleteHandle()
 {
-    $j("[id*=countryOfBirth]").autocomplete({source: '/ui/internal/autocomplete.country', minLength: 2});
-	$j("[id*=country]").autocomplete({source: '/ui/internal/autocomplete.country', minLength: 2});
+    $j("[id*=countryOfBirth]").autocomplete({source: '/ish/internal/autocomplete.country', minLength: 2});
+	$j("[id*=country]").autocomplete({source: '/ish/internal/autocomplete.country', minLength: 2});
 }
 
 $j(document).ready(function() {

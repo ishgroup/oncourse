@@ -1,4 +1,4 @@
-package ish.oncourse.ui.pages.internal;
+package ish.oncourse.pages.internal;
 
 import ish.oncourse.model.Country;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -41,7 +41,7 @@ public class AutoComplete {
         //this is incorrect state which mean that next js code not able to evaluate input item value in some browser or pass less then 3 characters
         // so we should return empty result.Used to avoid search fail in #14742 task.
         /*
-           * $j(".suburb-autocomplete").autocomplete({source: '/ui/internal/autocomplete.sub', minLength: 3,
+           * $j(".suburb-autocomplete").autocomplete({source: '/ish/internal/autocomplete.sub', minLength: 3,
            *	select: function(event, ui) {
            *	setPostcodeAndStateFromSuburb(this.form, ui.item.value);
            *	}

@@ -201,7 +201,7 @@ public class Profile {
 	private boolean reset;
 
 	@Property
-	private ValidateHandler validateHandler;
+	private ValidateHandler validateHandler = new ValidateHandler();
 
 	@SetupRender
 	void beforeRender() {
@@ -216,17 +216,23 @@ public class Profile {
 					.getObjectId(), null);
 		}
 
-		avetmissMessages = MessagesImpl.forClass(AvetmissStrings.class);
 		englishProficiencySelectModel = new ISHEnumSelectModel(
-				AvetmissStudentEnglishProficiency.class, avetmissMessages);
+				AvetmissStudentEnglishProficiency.class, getAvetmissMessages());
 		indigenousStatusSelectModel = new ISHEnumSelectModel(
-				AvetmissStudentIndigenousStatus.class, avetmissMessages);
+				AvetmissStudentIndigenousStatus.class, getAvetmissMessages());
 		schoolLevelSelectModel = new ISHEnumSelectModel(
-				AvetmissStudentSchoolLevel.class, avetmissMessages);
+				AvetmissStudentSchoolLevel.class, getAvetmissMessages());
 		priorEducationSelectModel = new ISHEnumSelectModel(
-				AvetmissStudentPriorEducation.class, avetmissMessages);
+				AvetmissStudentPriorEducation.class, getAvetmissMessages());
+	}
 
-		validateHandler = new ValidateHandler();
+	public Messages getAvetmissMessages()
+	{
+		if (avetmissMessages == null)
+		{
+			avetmissMessages =MessagesImpl.forClass(AvetmissStrings.class);
+		}
+		return avetmissMessages;
 	}
 
 	public String getHomePhoneInputClass() {
@@ -354,11 +360,11 @@ public class Profile {
 	}
 
 	public ISHEnumSelectModel getDisabilityTypeSelectModel() {
-		return new ISHEnumSelectModel(AvetmissStudentDisabilityType.class, avetmissMessages);
+		return new ISHEnumSelectModel(AvetmissStudentDisabilityType.class, getAvetmissMessages());
 	}
 
 	public ISHEnumSelectModel getLabourForceStatusSelectModel() {
-		return new ISHEnumSelectModel(AvetmissStudentLabourStatus.class, avetmissMessages);
+		return new ISHEnumSelectModel(AvetmissStudentLabourStatus.class, getAvetmissMessages());
 	}
 
 	private String getInputSectionClass(Field field) {
@@ -554,14 +560,14 @@ public class Profile {
 
 
 	public String label(String fieldName) {
-		return avetmissMessages.get(String.format(MessagesNamingConvention.LABEL_KEY_TEMPLATE, fieldName));
+		return getAvetmissMessages().get(String.format(MessagesNamingConvention.LABEL_KEY_TEMPLATE, fieldName));
 	}
 
 	public String messageBy(String fieldName) {
-		return avetmissMessages.get(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, fieldName));
+		return getAvetmissMessages().get(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, fieldName));
 	}
 
 	public String message(String messageKey) {
-		return avetmissMessages.get(messageKey);
+		return getAvetmissMessages().get(messageKey);
 	}
 }

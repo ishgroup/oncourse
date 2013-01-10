@@ -15,7 +15,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
@@ -52,7 +51,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 */
 	public static String[] IMMUTABLE_PATHS = new String[] { "/assets", "/login", "/editpage", "/newpage", "/menubuilder", "/pageoptions",
 			"/ma.", "/site", "/sitesettings", "/pagetypes", "/menus", "/pages", "/blocks", "/blockedit", "/site.blocks.",
-			"/site.pagetypes.", "/ui/internal/autocomplete.sub", "/pt.sort", "ui/textileform.send" };
+			"/site.pagetypes.", "ish/internal/autocomplete.sub", "/pt.sort", "ui/textileform.send" };
 
 	/**
 	 * Path of the removing from cookies request
