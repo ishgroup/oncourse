@@ -31,7 +31,7 @@ import org.apache.tapestry5.services.Response;
 import java.text.Format;
 
 public class Checkout {
-    public static final String DATE_FIELD_FORMAT = "MM/dd/yyyy";
+    public static final String DATE_FIELD_FORMAT = "dd/MM/yyyy";
 
     public static final Logger LOGGER = Logger.getLogger(Checkout.class);
 

@@ -5,7 +5,8 @@ function initContactEditorHandle()
     $j('.dateOfBirth').datepicker({
         changeMonth: true,
         changeYear: true,
-        maxDate: '0'
+        maxDate: '0',
+        dateFormat: 'dd/mm/yy'
     });
 
 

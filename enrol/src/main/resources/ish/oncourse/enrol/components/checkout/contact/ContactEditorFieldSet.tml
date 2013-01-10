@@ -5,7 +5,7 @@
 		<label for="street">${label('street')}<t:if test="required('street')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('street')}">
 			<t:textfield t:id="street" value="delegate.contact.street" class="street input-fixed ${validateHandler.errorClass('street')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('street')}" hint="${hint('street')}" />
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('street')}"/>
 		</span>
 		</p>
 	</t:if>
@@ -15,7 +15,7 @@
 		<label for="suburb">${label('suburb')}<t:if test="required('suburb')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('suburb')}">
 			<t:textfield t:id="suburb" value="delegate.contact.suburb" class="suburb input-fixed ${validateHandler.errorClass('suburb')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('suburb')}" hint="${hint('suburb')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('suburb')}"/>
 		</span>
 		</p>
 	</t:if>
@@ -36,7 +36,7 @@
 		<label for="state">${label('state')}<t:if test="required('state')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('state')}">
 			<t:textfield t:id="state" value="delegate.contact.state" class="state input-fixed ${validateHandler.errorClass('state')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('state')}" hint="${hint('state')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('state')}"/>
 		</span>
 		</p>
 	</t:if>
@@ -46,7 +46,7 @@
 			<label for="country">${label('country')}<t:if test="required('country')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('country')}">
 			<t:textfield t:id="country" value="country" class="country input-fixed ${validateHandler.errorClass('country')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('country')}" hint="${hint('country')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('country')}"/>
 		</span>
 		</p>
 	</t:if>

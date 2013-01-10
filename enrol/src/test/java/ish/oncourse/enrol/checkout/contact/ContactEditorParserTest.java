@@ -70,7 +70,7 @@ public class ContactEditorParserTest {
         parser.setRequest(request);
 		parser.setContactFieldHelper(contactFieldHelper);
 		parser.setMessages(messages);
-        parser.setDateFormat(new SimpleDateFormat("mm/dd/yyyy"));
+        parser.setDateFormat(new SimpleDateFormat("dd/MM/yyyy"));
 
         FieldDescriptor[] fieldDescriptors =  FieldDescriptor.values();
         ArrayList<String> fields = new ArrayList<String>();

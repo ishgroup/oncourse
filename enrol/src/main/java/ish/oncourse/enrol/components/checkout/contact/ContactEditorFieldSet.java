@@ -87,7 +87,7 @@ public class ContactEditorFieldSet {
 	public void setCountry(String value) {
 	}
 
-	public String hint(String value)
+	public String hint(String fieldName)
 	{
 		return messages.get(String.format(MessagesNamingConvention.HINT_KEY_TEMPLATE, fieldName));
 	}
