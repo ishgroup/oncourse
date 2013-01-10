@@ -6,7 +6,10 @@ import ish.oncourse.enrol.checkout.contact.AvetmissEditorParser;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
+import ish.oncourse.selectutils.BooleanSelectionContainer;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
+import ish.oncourse.selectutils.ListSelectModel;
+import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
@@ -18,6 +21,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
 
 import java.util.Map;
@@ -47,6 +51,9 @@ public class AvetmissEditor {
     private ValidateHandler validateHandler = new ValidateHandler();
     
     private Messages avetmissMessages;
+    
+    @Inject
+	private PropertyAccess access;
 
     @SetupRender
     void beforeRender() {
@@ -125,6 +132,22 @@ public class AvetmissEditor {
     public ISHEnumSelectModel getLabourForceStatusSelectModel() {
     	return new ISHEnumSelectModel(AvetmissStudentLabourStatus.class, getAvetmissMessages());
     }
+    
+    public ListSelectModel<BooleanSelectionContainer> getStillAtSchoolSelectModel() {
+		return new ListSelectModel<BooleanSelectionContainer>(BooleanSelectionContainer.getPreparedList(), BooleanSelectionContainer.FIELD_LABEL, access);
+	}
+	
+	public ListValueEncoder<BooleanSelectionContainer> getStillAtSchoolValueEncoder() {
+		return new ListValueEncoder<BooleanSelectionContainer>(BooleanSelectionContainer.getPreparedList(), BooleanSelectionContainer.FIELD_LABEL, access);
+	}
+	
+	public BooleanSelectionContainer getStillAtSchoolSelection() {
+		return BooleanSelectionContainer.getForBooleanValue(contact.getStudent().getIsStillAtSchool());
+	}
+	
+	public void setStillAtSchoolSelection(BooleanSelectionContainer selection) {
+		contact.getStudent().setIsStillAtSchool(selection.getValue());
+	} 
 
     public void save() {
         AvetmissEditorParser avetmissEditorParser = new AvetmissEditorParser();
