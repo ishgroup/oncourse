@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<t:if test="studentConcession.concessionType.hasConcessionNumber">
 		<p>
-			<label for="concessionNumber">Concession number <em title="${message:required}">*</em></label>
+			<label for="concessionNumber">Concession number <em title="${message:message-required}">*</em></label>
 						<span class="${validateHandler.validateClass('concessionNumber')}">
 							<t:textfield t:id="concessionNumber" value="studentConcession.concessionNumber" size="15" class ="input-fixed ${validateHandler.errorClass('concessionNumber')}"/>
 							<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('concessionNumber')}"/>
@@ -10,7 +10,7 @@
 	</t:if>
 	<t:if test="studentConcession.concessionType.hasExpiryDate">
 		<p>
-			<label for="expiresOn">Expiry date <em title="${message:required}">*</em></label>
+			<label for="expiresOn">Expiry date <em title="${message:message-required}">*</em></label>
 						<span class="${validateHandler.validateClass('expiresOn')}">
 							<t:textfield t:id="expiresOn" value="expiresOn" class ="input-fixed ${validateHandler.errorClass('expiresOn')}"/>
 							<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('expiresOn')}"/>
@@ -24,7 +24,7 @@
 							<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('concessionAgree')}"/>
 						</span>
 			${message:concessionConfirmationMessage}
-			<em title="${message:required}">*</em>
+			<em title="${message:message-required}">*</em>
 		</label>
 	</div>
 </t:container>

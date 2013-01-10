@@ -23,7 +23,7 @@
 	<t:block t:id="message">
 		<div class="student">${contact.fullName} <span>- ${contact.emailAddress}</span></div>
 		<div class="message">
-			<p>${message:requireAdditionalInfo}</p>
+			<p>${message:message-requireAdditionalInfo}</p>
 		</div>
 		<p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
 	</t:block>

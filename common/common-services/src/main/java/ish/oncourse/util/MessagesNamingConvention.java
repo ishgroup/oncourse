@@ -9,4 +9,5 @@ public interface MessagesNamingConvention {
 	public static final String LABEL_KEY_TEMPLATE = "label-%s";
 
 
+	public static final String HINT_KEY_TEMPLATE = "hint-%s";
 }

@@ -40,7 +40,7 @@
     <t:block t:id="notes">
         <p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
         <p class="note">
-            <strong class="alert">Note</strong>: ${message:noteSameEmail}
+            <strong class="alert">Note</strong>: ${message:message-noteSameEmail}
         </p>
     </t:block>
 
@@ -89,7 +89,7 @@
 							cols="30" rows="4" />
 			</p>
 			<p>
-				<label for="potentialStudents">Number of students (including you)<em title="${message:required}">*</em></label>
+				<label for="potentialStudents">Number of students (including you)<em title="${message:message-required}">*</em></label>
 				<span class="${validateHandler.validateClass('potentialStudents')}">
 					<t:textfield t:id="potentialStudents"
 							 t:value="controller.waitingList.potentialStudents" class="input-fixed ${validateHandler.errorClass('potentialStudents')}"/>

@@ -49,7 +49,7 @@
 <t:block t:id="notes">
     <p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
     <p class="note">
-        <strong class="alert">Note</strong>: ${message:noteSameEmail}
+        <strong class="alert">Note</strong>: ${message:message-noteSameEmail}
     </p>
 </t:block>
 

@@ -30,8 +30,8 @@ public class ContactEditorParser {
 	private ICountryService countryService;
 
 
-	private static final String KEY_ERROR_MESSAGE_required = "required";
-	private static final String KEY_ERROR_MESSAGE_birthdate_hint = "birthdate-hint";
+	private static final String KEY_ERROR_MESSAGE_fieldRequired = "message-fieldRequired";
+	private static final String KEY_ERROR_MESSAGE_birthdate_hint = "message-birthdateHint";
 
 	static final String KEY_ERROR_dateOfBirth_youngAge = "message-dateOfBirth-youngAge";
     static final String KEY_ERROR_dateOfBirth_shouldBeInPast = "message-dateOfBirth-shouldBeInPast";
@@ -91,7 +91,7 @@ public class ContactEditorParser {
 	}
 
 	private String getRequiredMessage(FieldDescriptor fieldDescriptor) {
-		return messages.format(KEY_ERROR_MESSAGE_required, messages.get(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, fieldDescriptor.propertyName)));
+		return messages.format(KEY_ERROR_MESSAGE_fieldRequired, messages.get(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, fieldDescriptor.propertyName)));
 	}
 
 

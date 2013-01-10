@@ -2,30 +2,30 @@
 
 	<t:if test="${delegate.visibleFields.contains('street')}">
 		<p>
-		<label for="street">${label('street')}<t:if test="required('street')"><em title="${message:required}">*</em></t:if></label>
+		<label for="street">${label('street')}<t:if test="required('street')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('street')}">
 			<t:textfield t:id="street" value="delegate.contact.street" class="street input-fixed ${validateHandler.errorClass('street')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('street')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('street')}" hint="${hint('street')}" />
 		</span>
 		</p>
 	</t:if>
 
 	<t:if test="${delegate.visibleFields.contains('suburb')}">
 		<p>
-		<label for="suburb">${label('suburb')}<t:if test="required('suburb')"><em title="${message:required}">*</em></t:if></label>
+		<label for="suburb">${label('suburb')}<t:if test="required('suburb')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('suburb')}">
 			<t:textfield t:id="suburb" value="delegate.contact.suburb" class="suburb input-fixed ${validateHandler.errorClass('suburb')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('suburb')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('suburb')}" hint="${hint('suburb')}"/>
 		</span>
 		</p>
 	</t:if>
 
 	<t:if test="${delegate.visibleFields.contains('postcode')}">
 		<p>
-		<label for="street">${label('postcode')}<t:if test="required('postcode')"><em title="${message:required}">*</em></t:if></label>
+		<label for="street">${label('postcode')}<t:if test="required('postcode')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('postcode')}">
 			<t:textfield t:id="postcode" value="delegate.contact.postcode" class="postcode input-fixed ${validateHandler.errorClass('postcode')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('postcode')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('postcode')}" hint="${hint('postcode')}"/>
 		</span>
 		</p>
 	</t:if>
@@ -33,20 +33,20 @@
 
 	<t:if test="${delegate.visibleFields.contains('state')}">
 		<p>
-		<label for="state">${label('state')}<t:if test="required('state')"><em title="${message:required}">*</em></t:if></label>
+		<label for="state">${label('state')}<t:if test="required('state')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('state')}">
 			<t:textfield t:id="state" value="delegate.contact.state" class="state input-fixed ${validateHandler.errorClass('state')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('state')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('state')}" hint="${hint('state')}"/>
 		</span>
 		</p>
 	</t:if>
 
 	<t:if test="${delegate.visibleFields.contains('country')}">
 		<p>
-			<label for="country">${label('country')}<t:if test="required('country')"><em title="${message:required}">*</em></t:if></label>
+			<label for="country">${label('country')}<t:if test="required('country')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('country')}">
 			<t:textfield t:id="country" value="country" class="country input-fixed ${validateHandler.errorClass('country')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('country')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('country')}" hint="${hint('country')}"/>
 		</span>
 		</p>
 	</t:if>
@@ -54,50 +54,50 @@
 
 	<t:if test="${delegate.visibleFields.contains('homePhoneNumber')}">
 		<p>
-		<label for="homePhoneNumber">${label('homePhoneNumber')}<t:if test="required('homePhoneNumber')"><em title="${message:required}">*</em></t:if></label>
+		<label for="homePhoneNumber">${label('homePhoneNumber')}<t:if test="required('homePhoneNumber')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('homePhoneNumber')}">
 			<t:textfield t:id="homePhoneNumber" value="delegate.contact.homePhoneNumber" class="homePhoneNumber input-fixed ${validateHandler.errorClass('homePhoneNumber')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('homePhoneNumber')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('homePhoneNumber')}" hint="${hint('homePhoneNumber')}"/>
 		</span>
 		</p>
 	</t:if>
 
 	<t:if test="${delegate.visibleFields.contains('businessPhoneNumber')}">
 		<p>
-		<label for="businessPhoneNumber">${label('businessPhoneNumber')}<t:if test="required('businessPhoneNumber')"><em title="${message:required}">*</em></t:if></label>
+		<label for="businessPhoneNumber">${label('businessPhoneNumber')}<t:if test="required('businessPhoneNumber')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('businessPhoneNumber')}">
 			<t:textfield t:id="businessPhoneNumber" value="delegate.contact.businessPhoneNumber" class="businessPhoneNumber input-fixed ${validateHandler.errorClass('businessPhoneNumber')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('businessPhoneNumber')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('businessPhoneNumber')}" hint="${hint('businessPhoneNumber')}"/>
 		</span>
 		</p>
 	</t:if>
 
 	<t:if test="${delegate.visibleFields.contains('faxNumber')}">
 		<p>
-		<label for="faxNumber">${label('faxNumber')}<t:if test="required('faxNumber')"><em title="${message:required}">*</em></t:if></label>
+		<label for="faxNumber">${label('faxNumber')}<t:if test="required('faxNumber')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('faxNumber')}">
 			<t:textfield t:id="faxNumber" value="delegate.contact.faxNumber" class="faxNumber input-fixed ${validateHandler.errorClass('faxNumber')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('faxNumber')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('faxNumber')}" hint="${hint('faxNumber')}"/>
 		</span>
 		</p>
 	</t:if>
 
 	<t:if test="${delegate.visibleFields.contains('mobilePhoneNumber')}">
 		<p>
-		<label for="mobilePhoneNumber">${label('mobilePhoneNumber')}<t:if test="required('mobilePhoneNumber')"><em title="${message:required}">*</em></t:if></label>
+		<label for="mobilePhoneNumber">${label('mobilePhoneNumber')}<t:if test="required('mobilePhoneNumber')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('mobilePhoneNumber')}">
 			<t:textfield  t:id="mobilePhoneNumber" value="delegate.contact.mobilePhoneNumber" class="mobilePhoneNumber input-fixed ${validateHandler.errorClass('mobilePhoneNumber')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('mobilePhoneNumber')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('mobilePhoneNumber')}" hint="${hint('mobilePhoneNumber')}"/>
 		</span>
 		</p>
 	</t:if>
 
 	<t:if test="${delegate.visibleFields.contains('dateOfBirth')}">
 		<p>
-		<label for="dateOfBirth">${label('dateOfBirth')}<t:if test="required('dateOfBirth')"><em title="${message:required}">*</em></t:if></label>
+		<label for="dateOfBirth">${label('dateOfBirth')}<t:if test="required('dateOfBirth')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('dateOfBirth')}">
 			<t:textfield  t:id="dateOfBirth" value="dateOfBirth" class="dateOfBirth input-fixed ${validateHandler.errorClass('dateOfBirth')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('dateOfBirth')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('dateOfBirth')}" hint="${hint('dateOfBirth')}"/>
 		</span>
 		</p>
 	</t:if>
