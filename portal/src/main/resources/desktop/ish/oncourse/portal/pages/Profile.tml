@@ -146,12 +146,8 @@
 									</p>
 									<p>
 										<label for="stillAtSchool">${label('stillAtSchool')}</label>
-										<div class="radio-list">
-											<t:radiogroup t:value="contact.student.isStillAtSchool" t:id="stillAtSchool">
-												<input type="radio" t:type="radio" t:value="true"/> Yes
-												<input type="radio" t:type="radio" t:value="false"/> No
-											</t:radiogroup>
-										</div>
+										<t:select value="stillAtSchoolSelection" model="stillAtSchoolSelectModel" encoder="stillAtSchoolValueEncoder" 
+											blankOption="NEVER" t:id="stillAtSchool"/>
 									</p>
 									<p>
 										<label for="priorEducationCode">${label('priorEducationCode')}</label>

@@ -7,7 +7,10 @@ import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.Student;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.selectutils.BooleanSelectionContainer;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
+import ish.oncourse.selectutils.ListSelectModel;
+import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
@@ -26,6 +29,7 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -37,7 +41,7 @@ public class Profile {
 	private static final Logger LOGGER = Logger.getLogger(Profile.class);
 
 	private static final DateFormat FORMAT = new SimpleDateFormat("d/M/y");
-
+	
 	@Inject
 	private IAuthenticationService authService;
 
@@ -202,6 +206,9 @@ public class Profile {
 
 	@Property
 	private ValidateHandler validateHandler = new ValidateHandler();
+	
+	@Inject
+	private PropertyAccess access;
 
 	@SetupRender
 	void beforeRender() {
@@ -366,6 +373,22 @@ public class Profile {
 	public ISHEnumSelectModel getLabourForceStatusSelectModel() {
 		return new ISHEnumSelectModel(AvetmissStudentLabourStatus.class, getAvetmissMessages());
 	}
+	
+	public ListSelectModel<BooleanSelectionContainer> getStillAtSchoolSelectModel() {
+		return new ListSelectModel<BooleanSelectionContainer>(BooleanSelectionContainer.getPreparedList(), BooleanSelectionContainer.FIELD_LABEL, access);
+	}
+	
+	public ListValueEncoder<BooleanSelectionContainer> getStillAtSchoolValueEncoder() {
+		return new ListValueEncoder<BooleanSelectionContainer>(BooleanSelectionContainer.getPreparedList(), BooleanSelectionContainer.FIELD_LABEL, access);
+	}
+	
+	public BooleanSelectionContainer getStillAtSchoolSelection() {
+		return BooleanSelectionContainer.getForBooleanValue(contact.getStudent().getIsStillAtSchool());
+	}
+	
+	public void setStillAtSchoolSelection(BooleanSelectionContainer selection) {
+		contact.getStudent().setIsStillAtSchool(selection.getValue());
+	} 
 
 	private String getInputSectionClass(Field field) {
 		ValidationTracker defaultTracker = profileForm.getDefaultTracker();
