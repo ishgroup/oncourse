@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BooleanSelectionContainer {
-	public static final BooleanSelectionContainer YES = new BooleanSelectionContainer(Boolean.FALSE, "No");
-	public static final BooleanSelectionContainer NO = new BooleanSelectionContainer(Boolean.TRUE, "Yes");
+	public static final BooleanSelectionContainer YES = new BooleanSelectionContainer(Boolean.TRUE, "Yes");
+	public static final BooleanSelectionContainer NO = new BooleanSelectionContainer(Boolean.FALSE, "No");
 	public static final BooleanSelectionContainer NOT_STATED = new BooleanSelectionContainer(null, "Not stated");
 	public static final String FIELD_LABEL = "label";
 	
