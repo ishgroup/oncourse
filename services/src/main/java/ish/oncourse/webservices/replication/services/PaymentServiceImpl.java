@@ -179,6 +179,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 					}
 				} else {
 					//we should fail the payments if they are for incorrect invoices
+					logger.error(String.format("Payment with id = %s will be abandoned to prevent illegal enrolment processing.", paymentIn.getId()));
 					updatedPayments.add(paymentIn.abandonPayment());
 				}
 			}
@@ -201,13 +202,14 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	@Deprecated
 	public boolean isEnrolmentsCorrect(List<Enrolment> enrolments) {
 		for (Enrolment enrolment : enrolments) {
-			boolean isZeroOwing = true;
+			boolean isZeroOwing = false;
 			if (enrolment.getInvoiceLine() != null && enrolment.getInvoiceLine().getInvoice() != null) {
 				Invoice invoice = enrolment.getInvoiceLine().getInvoice();
 				invoice.updateAmountOwing();
 				isZeroOwing = Money.isZeroOrEmpty(new Money(invoice.getAmountOwing()));
 			}
 			if (isZeroOwing && EnrolmentStatus.FAILED.equals(enrolment.getStatus())) {
+				logger.error(String.format("Failed enrolment with id =  %s linked with 0-owing invoice try to process. Payment will be abandoned.", enrolment.getId()));
 				return false;
 			}
 		}
@@ -225,7 +227,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 		boolean isConflictPayment = !conflictedInvoicesObjectIds.isEmpty();
 		if (isConflictPayment) {
 			//we should fail this payment and also create create revert invoices for "in transaction" enrollment not-conflict invoices
-			paymentIn.failPayment();
+			paymentIn.failPayment();//TODO: possible we just need to call payment set status failed here?
 			for (PaymentInLine paymentInLine : paymentIn.getPaymentInLines()) {
 				Invoice invoice = paymentInLine.getInvoice();
 				boolean isEnrollmentInvoice = false;
