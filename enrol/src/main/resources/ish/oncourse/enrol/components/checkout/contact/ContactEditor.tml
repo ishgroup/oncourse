@@ -25,7 +25,7 @@
 		<div class="message">
 			<p>${message:message-requireAdditionalInfo}</p>
 		</div>
-		<p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
+		<p class="note"><strong class="alert">Note</strong>: <t:outputraw value="${message:message-markedFieldsRequired}"/></p>
 	</t:block>
 
 	<t:block t:id="contactFields">

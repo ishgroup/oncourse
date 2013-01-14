@@ -23,7 +23,7 @@
 							<t:checkbox t:id="concessionAgree" value="concessionAgree"/>
 							<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('concessionAgree')}"/>
 						</span>
-			${message:concessionConfirmationMessage}
+			${message:message-concessionConfirmationMessage}
 			<em title="${message:message-required}">*</em>
 		</label>
 	</div>

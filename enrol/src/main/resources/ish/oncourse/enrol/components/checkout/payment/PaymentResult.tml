@@ -24,10 +24,10 @@
 		<h2>Payment <span>&#187;</span> Successful</h2>
 		<p>${messageThanksForEnrolment}</p>
 		<p>Your payment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentIn.id}</strong>.</p>
-		<p>${message:successConfirmation}</p>
+		<p>${message:message-successConfirmation}</p>
 		<t:if test="successUrl">
 			<p>
-				<strong>Please press continue to view further important information with regard to this enrolment</strong>
+				<strong>${message:message-pressContinue}</strong>
 				<br/>
 			</p>
 		</t:if>
@@ -44,11 +44,11 @@
 		<t:if test="delegate.enrolmentFailedNoPlaces">
 			<h2>Enrolment <span>&#187;</span> Failed</h2>
 			<p>${messageEnrolmentFailed}</p>
-			<p>${message:enrolmentFailedReason}</p>
+			<p>${message:message-enrolmentFailedReason}</p>
 			<p:else>
 				<h2>Enrolment <span>&#187;</span> Payment rejected</h2>
 				<p>${messagePaymentFailed}</p>
-				<p>${message:checkCreditCard}</p>
+				<p>${message:message-checkCreditCard}</p>
 			</p:else>
 		</t:if>
 		<t:eventlink t:id="tryAgain" title="Proceed with this enrolment">Try again with another card or reenter details</t:eventlink>

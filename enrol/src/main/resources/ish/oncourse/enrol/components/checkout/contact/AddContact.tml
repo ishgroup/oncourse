@@ -3,7 +3,7 @@
 		<h2>Add a student</h2>
 		<t:if test="${delegate.errors.isEmpty()}">
 		<div class="message">
-			<p>To continue, please enter the details of a person to enrol.</p>
+			<p>${message:message-enterDetails}</p>
 		</div>
 		</t:if>
 		<t:form t:id="addContactForm">
@@ -11,7 +11,7 @@
 				<br/>
 				<span t:type="checkout/contact/addcontactfieldset" delegate="delegate" validateHandler="validateHandler"/>
 			</fieldset>
-			<p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
+			<p class="note"><strong class="alert">Note</strong>: <t:outputraw value="${message:message-markedFieldsRequired}"/></p>
 			<p class="note">
 				<strong class="alert">Note</strong>: ${message:message-noteSameEmail}
 			</p>
