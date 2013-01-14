@@ -113,7 +113,12 @@ function initConcessionEditorHandle()
 		}
 	});
 
-	$j('[id*=expiresOn]').datepicker();
+	$j('[id*=expiresOn]').datepicker({
+		changeMonth: true,
+		changeYear: true,
+		maxDate: '0',
+		dateFormat: 'dd/mm/yy'
+	});
 }
 
 
