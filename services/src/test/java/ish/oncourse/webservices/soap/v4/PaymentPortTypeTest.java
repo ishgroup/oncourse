@@ -24,6 +24,8 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,6 +48,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 	private Date dueDate;
 	private Date today;
+	private DataSource onDataSource;
 
 	@Before
 	public void setupDataSet() throws Exception {
@@ -54,7 +57,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/paymentDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
-		DataSource onDataSource = getDataSource("jdbc/oncourse");
+		onDataSource = getDataSource("jdbc/oncourse");
 
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 
@@ -784,60 +787,67 @@ public class PaymentPortTypeTest extends ServiceTest {
 	
 	@Test
 	public void testV4PaymentStatus() throws Exception {
+		testPaymentStatus(SupportedVersions.V4);
+	}
+	
+	private void testPaymentStatus(SupportedVersions version) throws Exception {
+		//TODO: adjust me
 		InternalPaymentService port = getService(InternalPaymentService.class);
-		
 		//sessionId for in transaction payment, we expect an empty group as response
 		String sessionId = "AAVV#$%%%#$3333";
-		GenericTransactionGroup respGroup = port.getPaymentStatus(sessionId, SupportedVersions.V4);
-		
+		GenericTransactionGroup respGroup = port.getPaymentStatus(sessionId, version);
 		assertNotNull("Check transaction group is not null.", respGroup);
 		assertTrue("Check that group is empty.", respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		
 		//sessionId for payment in success status, we expect not empty group with paymentIn record inside.
 		sessionId = "jfjf790aaajjj9900";
-		respGroup = port.getPaymentStatus(sessionId, SupportedVersions.V4);
-		
+		respGroup = port.getPaymentStatus(sessionId, version);
 		assertNotNull("Check transaction group is not null.", respGroup);
 		assertTrue("Check that group isn't empty.", !respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		
 		GenericPaymentInStub respPaymentInStub = null;
-		
+		GenericEnrolmentStub respEnrolmentStub = null;
 		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
-			if ("PaymentIn".equals(stub.getEntityIdentifier())) {
+			if (PaymentIn.class.getSimpleName().equals(stub.getEntityIdentifier())) {
 				respPaymentInStub = (GenericPaymentInStub) stub;
+			}
+			if (Enrolment.class.getSimpleName().equals(stub.getEntityIdentifier())) {
+				respEnrolmentStub = (GenericEnrolmentStub) stub;
 			}
 		}
 		assertNotNull("Check payment presents in response.", respPaymentInStub);
 		assertEquals("Check payment status. Expecting SUCESS.", Integer.valueOf(3), respPaymentInStub.getStatus());
+		assertNotNull("Check enrolment presents in response.", respEnrolmentStub);
+		assertEquals("Check enrolment status. Expecting SUCESS.", EnrolmentStatus.SUCCESS.name(), respEnrolmentStub.getStatus());
+		// now update the data via JDBC to emulate another instance data change
+		Connection connection = onDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		statement.execute("Update PaymentIn set status=3 where sessionId='AAVV#$%%%#$3333'");
+		statement.execute("Update Enrolment set status=3 where id=2000");
+		connection.commit();
+		sessionId = "AAVV#$%%%#$3333";
+		respGroup = port.getPaymentStatus(sessionId, version);
+		assertNotNull("Check transaction group is not null.", respGroup);
+		assertTrue("Check that group is empty.", !respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+		
+		respPaymentInStub = null;
+		respEnrolmentStub = null;
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+			if (PaymentIn.class.getSimpleName().equals(stub.getEntityIdentifier())) {
+				respPaymentInStub = (GenericPaymentInStub) stub;
+			}
+			if (Enrolment.class.getSimpleName().equals(stub.getEntityIdentifier())) {
+				respEnrolmentStub = (GenericEnrolmentStub) stub;
+			}
+		}
+		assertNotNull("Check payment presents in response.", respPaymentInStub);
+		assertEquals("Check payment status. Expecting SUCESS.", Integer.valueOf(3), respPaymentInStub.getStatus());
+		assertNotNull("Check enrolment presents in response.", respEnrolmentStub);
+		assertEquals("Check enrolment status. Expecting SUCESS.", EnrolmentStatus.SUCCESS.name(), respEnrolmentStub.getStatus());
 	}
 	
 	@Test
 	public void testV5PaymentStatus() throws Exception {
-		InternalPaymentService port = getService(InternalPaymentService.class);
-		
-		//sessionId for in transaction payment, we expect an empty group as response
-		String sessionId = "AAVV#$%%%#$3333";
-		GenericTransactionGroup respGroup = port.getPaymentStatus(sessionId, SupportedVersions.V5);
-		
-		assertNotNull("Check transaction group is not null.", respGroup);
-		assertTrue("Check that group is empty.", respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		
-		//sessionId for payment in success status, we expect not empty group with paymentIn record inside.
-		sessionId = "jfjf790aaajjj9900";
-		respGroup = port.getPaymentStatus(sessionId, SupportedVersions.V5);
-		
-		assertNotNull("Check transaction group is not null.", respGroup);
-		assertTrue("Check that group isn't empty.", !respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		
-		GenericPaymentInStub respPaymentInStub = null;
-		
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
-			if ("PaymentIn".equals(stub.getEntityIdentifier())) {
-				respPaymentInStub = (GenericPaymentInStub) stub;
-			}
-		}
-		assertNotNull("Check payment presents in response.", respPaymentInStub);
-		assertEquals("Check payment status. Expecting SUCESS.", Integer.valueOf(3), respPaymentInStub.getStatus());
+		testPaymentStatus(SupportedVersions.V5);
 	}
 
 	@Test
@@ -985,9 +995,9 @@ public class PaymentPortTypeTest extends ServiceTest {
 		
 		assertTrue(attendanceCount != 0);
 		
-		payment.abandonPayment();
+		PaymentIn inversePayment = payment.abandonPayment();
 		context.commitChanges();
-		
+		assertEquals("Reverse payment sessionid should be equal to payment sessionid", inversePayment.getSessionId(), payment.getSessionId());
 		assertEquals("Expecting that attendances remain in the database. Will be deleted later from Angel.", attendanceCount, dbUnitConnection.getRowCount("Attendance"));
 		assertEquals("Expecting that outcomes remain in the database until deleted from angel.", 1, dbUnitConnection.getRowCount("Outcome"));
 	}
