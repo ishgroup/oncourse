@@ -791,7 +791,6 @@ public class PaymentPortTypeTest extends ServiceTest {
 	}
 	
 	private void testPaymentStatus(SupportedVersions version) throws Exception {
-		//TODO: adjust me
 		InternalPaymentService port = getService(InternalPaymentService.class);
 		//sessionId for in transaction payment, we expect an empty group as response
 		String sessionId = "AAVV#$%%%#$3333";
