@@ -49,8 +49,7 @@
 			</p>
 			<p>
 				<label for="stillAtSchool">${label('stillAtSchool')}</label>
-				<t:select value="stillAtSchoolSelection" model="stillAtSchoolSelectModel" encoder="stillAtSchoolValueEncoder" 
-					blankOption="NEVER" t:id="stillAtSchool"/>
+				<t:select t:id="stillAtSchool" value="stillAtSchoolSelection" model="stillAtSchoolSelectModel" blankOption="NEVER" />
 			</p>
 			<p>
 				<label for="priorEducationCode">${label('priorEducationCode')}</label>

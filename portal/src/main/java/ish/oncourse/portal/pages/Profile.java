@@ -7,10 +7,8 @@ import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.Student;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.selectutils.BooleanSelectionContainer;
+import ish.oncourse.selectutils.BooleanSelection;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
-import ish.oncourse.selectutils.ListSelectModel;
-import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
@@ -374,19 +372,15 @@ public class Profile {
 		return new ISHEnumSelectModel(AvetmissStudentLabourStatus.class, getAvetmissMessages());
 	}
 	
-	public ListSelectModel<BooleanSelectionContainer> getStillAtSchoolSelectModel() {
-		return new ListSelectModel<BooleanSelectionContainer>(BooleanSelectionContainer.getPreparedList(), BooleanSelectionContainer.FIELD_LABEL, access);
+	public ISHEnumSelectModel getStillAtSchoolSelectModel() {
+		return new ISHEnumSelectModel(BooleanSelection.class, getAvetmissMessages());
 	}
 	
-	public ListValueEncoder<BooleanSelectionContainer> getStillAtSchoolValueEncoder() {
-		return new ListValueEncoder<BooleanSelectionContainer>(BooleanSelectionContainer.getPreparedList(), BooleanSelectionContainer.FIELD_LABEL, access);
+	public BooleanSelection getStillAtSchoolSelection() {
+		return BooleanSelection.valueOf(contact.getStudent().getIsStillAtSchool());
 	}
-	
-	public BooleanSelectionContainer getStillAtSchoolSelection() {
-		return BooleanSelectionContainer.getForBooleanValue(contact.getStudent().getIsStillAtSchool());
-	}
-	
-	public void setStillAtSchoolSelection(BooleanSelectionContainer selection) {
+
+	public void setStillAtSchoolSelection(BooleanSelection selection) {
 		contact.getStudent().setIsStillAtSchool(selection.getValue());
 	} 
 
