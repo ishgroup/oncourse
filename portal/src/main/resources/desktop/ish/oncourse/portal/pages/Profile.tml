@@ -51,6 +51,15 @@
 							</span>
 						</p>
 						
+						<t:if test="${visible('country')}">
+							<p>
+								<label for="country">${label('country')}<t:if test="required('country')"><em title="${message:required}">*</em></t:if></label>
+								<span class="${validateHandler.validateClass('country')}">
+									<t:textfield value="contactCountry" class ="input-fixed" clientId="country" t:id="country" />
+								</span>
+							</p>
+						</t:if>
+						
 						<p>
 							<label for="homephone">Home Phone<t:if test="contactFieldHelper.requireHomePhone"><em title="${message:required}">*</em></t:if></label>
 							<span class="${homePhoneInputClass}">

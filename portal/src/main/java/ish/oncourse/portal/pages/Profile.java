@@ -12,11 +12,13 @@ import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
@@ -27,7 +29,6 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -108,6 +109,9 @@ public class Profile {
 
 	@InjectComponent
 	private TextField state;
+	
+	@InjectComponent
+	private TextField country;
 
 	@InjectComponent
 	private TextField homePhone;
@@ -147,6 +151,9 @@ public class Profile {
 
 	@Property
 	private String stateErrorMessage;
+	
+	@Property
+	private String countryErrorMessage;
 
 	@Property
 	private String homePhoneErrorMessage;
@@ -204,9 +211,14 @@ public class Profile {
 
 	@Property
 	private ValidateHandler validateHandler = new ValidateHandler();
+		
+	public boolean required(String fieldName) {
+		return contactFieldHelper.isRequiredField(FieldDescriptor.valueOf(fieldName));
+	}
 	
-	@Inject
-	private PropertyAccess access;
+	public boolean visible(String fieldName) {
+		return contactFieldHelper.getVisibleFields(contact, false).contains(fieldName);
+	}
 
 	@SetupRender
 	void beforeRender() {
@@ -271,7 +283,7 @@ public class Profile {
 	public String getStateInputClass() {
 		return getInputSectionClass(state);
 	}
-
+		
 	public String getPasswordInputClass() {
 		return getInputSectionClass(passwordField);
 	}
@@ -290,7 +302,7 @@ public class Profile {
 
 	public void setBirthDateProperty(String birthDateProperty) {
 		try {
-			if (birthDateProperty != null && !"".equals(birthDateProperty)) {
+			if (StringUtils.trimToNull(birthDateProperty) != null) {
 				Date parsedDate = FORMAT.parse(birthDateProperty);
 				contact.setDateOfBirth(parsedDate);
 			}
@@ -309,7 +321,7 @@ public class Profile {
 	}
 
 	public void setCountryOfBirthName(String countryOfBirthName) {
-		if (countryOfBirthName == null || "".equals(countryOfBirthName)) {
+		if (StringUtils.trimToNull(countryOfBirthName) == null) {
 			return;
 		}
 		Country country = countryService.getCountryByName(countryOfBirthName);
@@ -331,7 +343,7 @@ public class Profile {
 	}
 
 	public void setLanguageHomeName(String languageHome) {
-		if (languageHome == null || "".equals(languageHome)) {
+		if (StringUtils.trimToNull(languageHome) == null) {
 			return;
 		}
 		Language language = languageService.getLanguageByName(languageHome);
@@ -354,7 +366,7 @@ public class Profile {
 	}
 
 	public void setSchoolYearStr(String schoolYearStr) {
-		if (!(schoolYearStr == null) && !"".equals(schoolYearStr)) {
+		if (StringUtils.trimToNull(schoolYearStr) != null) {
 			if (!schoolYearStr.matches("(\\d)+")) {
 				validateHandler.getErrors().put(Student.YEAR_SCHOOL_COMPLETED_PROPERTY, messageBy(Student.YEAR_SCHOOL_COMPLETED_PROPERTY));
 				return;
@@ -382,7 +394,30 @@ public class Profile {
 
 	public void setStillAtSchoolSelection(BooleanSelection selection) {
 		contact.getStudent().setIsStillAtSchool(selection.getValue());
-	} 
+	}
+	
+	public String getContactCountry() {
+		Country country = contact.getCountry();
+		if (country == null) {
+			return ICountryService.DEFAULT_COUNTRY_NAME;
+		}
+		return country.getName();
+	}
+
+	public void setContactCountry(String value) {
+		if (StringUtils.trimToNull(value) == null) {
+			return;
+		}
+		Country country = countryService.getCountryByName(value);
+		if (country == null) {
+			validateHandler.getErrors().put(Contact.COUNTRY_PROPERTY, messageBy(Contact.COUNTRY_PROPERTY));
+		} else {
+			contact.setCountry((Country) contact.getObjectContext().localObject(country.getObjectId(), country));
+			if (validateHandler.error(Contact.COUNTRY_PROPERTY) != null) {
+				validateHandler.getErrors().remove(Contact.COUNTRY_PROPERTY);
+			}
+		}
+	}
 
 	private String getInputSectionClass(Field field) {
 		ValidationTracker defaultTracker = profileForm.getDefaultTracker();
@@ -438,6 +473,7 @@ public class Profile {
 			contact.setBusinessPhoneNumber(null);
 			contact.setFaxNumber(null);
 			contact.setDateOfBirth(null);
+			contact.setCountry(null);
 			contact.setIsMale(true);
 			contact.setIsMarketingViaEmailAllowed(true);
 			contact.setIsMarketingViaPostAllowed(true);
@@ -534,6 +570,11 @@ public class Profile {
 			if (countryOfBirthErrorMessage != null) {
 				profileForm.recordError(countryOfBirth,
 						countryOfBirthErrorMessage);
+			}
+			
+			countryErrorMessage = validateHandler.error(Contact.COUNTRY_PROPERTY);
+			if (countryErrorMessage != null) {
+				profileForm.recordError(country, countryErrorMessage);
 			}
 
 			schoolYearErrorMessage = validateHandler.error(Student.YEAR_SCHOOL_COMPLETED_PROPERTY);
