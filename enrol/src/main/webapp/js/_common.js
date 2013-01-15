@@ -37,7 +37,34 @@ function initCountryAutoCompleteHandle()
 	$j("[id*=country]").autocomplete({source: '/ish/internal/autocomplete.country', minLength: 2});
 }
 
+function initHints()
+{
+    /**
+     * unbind all functions which were binded to inputs by other scripts
+     */
+    $j('span.valid input').unbind("focus blur");
+    $j('span.validate input').unbind("focus blur");
+
+    $j(".valid").mouseenter(function() {
+        $j(this).find('.hint').removeClass('hidden-text');
+    });
+
+    $j(".valid").mouseleave(function() {
+        $j(this).find('.hint').addClass('hidden-text');
+    });
+
+    $j(".validate").mouseenter(function() {
+        $j(this).find('.reason').removeClass('hidden-text');
+    });
+
+    $j(".validate").mouseleave(function() {
+        $j(this).find('.reason').addClass('hidden-text');
+    });
+}
+
+
 $j(document).ready(function() {
     initContactEditorHandle();
 	initCountryAutoCompleteHandle();
+    initHints();
 });

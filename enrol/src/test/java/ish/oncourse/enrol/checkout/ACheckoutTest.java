@@ -138,6 +138,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 	}
 
 	void proceedToPayment() {
+        assertNull(purchaseController.getPaymentEditorDelegate());
 		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
 		param.setValue(purchaseController.getModel().getPayment());
 		performAction(param);

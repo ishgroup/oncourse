@@ -450,7 +450,7 @@ public class PurchaseController {
 					}
 				}
 		}
-		return false;
+		return true;
 	}
 
 	public void setMessages(Messages messages) {

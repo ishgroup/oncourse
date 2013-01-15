@@ -17,7 +17,7 @@ public class ActionProceedToPayment extends APurchaseAction {
     @Override
     protected void makeAction() {
         //the first time proceed
-        if (paymentIn == getModel().getPayment()) {
+        if (getController().getPaymentEditorDelegate() == null) {
             PaymentProcessController paymentProcessController = new PaymentProcessController();
             paymentProcessController.setStartWatcher(false);
             paymentProcessController.setObjectContext(getModel().getObjectContext());
@@ -44,25 +44,27 @@ public class ActionProceedToPayment extends APurchaseAction {
     @Override
     protected boolean validate() {
 
+        boolean result = true;
         PaymentEditorController paymentEditorController = (PaymentEditorController) getController().getPaymentEditorDelegate();
         if (paymentEditorController != null) {
-            return !(paymentEditorController.getPaymentProcessController().isIllegalState() ||
+            result = !(paymentEditorController.getPaymentProcessController().isIllegalState() ||
                     paymentEditorController.getPaymentProcessController().isExpired() ||
                     paymentEditorController.getPaymentProcessController().geThrowable() != null);
         } else {
             int size = getModel().getAllEnabledEnrolments().size() + getModel().getAllEnabledProductItems().size();
             if (size < 1) {
                 getController().addError(PurchaseController.Message.noEnabledItemForPurchase);
-                return false;
+                result = false;
             }
         }
 
-        getModel().deleteDisabledItems();
-        getModel().prepareToMakePayment();
-        getModel().getObjectContext().commitChanges();
-
-        boolean result;
-        result = validateEnrolments() && validateProductItems();
+        if (paymentEditorController == null && result)
+        {
+            getModel().deleteDisabledItems();
+            getModel().prepareToMakePayment();
+            getModel().getObjectContext().commitChanges();
+            result = validateEnrolments() && validateProductItems();
+        }
         return result;
     }
 

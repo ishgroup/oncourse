@@ -12,6 +12,7 @@ public class ActionBackToEditCheckout extends APurchaseAction {
 
 	@Override
 	protected void makeAction() {
+        getController().setPaymentEditorController(null);
 		getController().setState(PurchaseController.State.editCheckout);
 
 		List<Contact> contacts = getModel().getContacts();

@@ -4,6 +4,7 @@ import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
@@ -79,7 +80,7 @@ public class ContactEditorFieldSet {
 	public String getCountry() {
 		Country country = delegate.getContact().getCountry();
 		if (country == null) {
-			return "Australia";
+			return ICountryService.DEFAULT_COUNTRY_NAME;
 		}
 		return country.getName();
 	}

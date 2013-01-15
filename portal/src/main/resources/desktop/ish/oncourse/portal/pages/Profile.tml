@@ -117,7 +117,7 @@
 					<t:if test = "isStudent">
 						<t:if test = "isRequiresAvetmiss">
 							<div class="message">
-								<p>${message('message-federalEduQuest')}<strong class="collapse" id="questionnaire">${message('message-optionalAnswering')}</strong></p>
+								<p>${message('message-federalEduQuest')} <strong class="collapse" id="questionnaire">${message('message-optionalAnswering')}</strong></p>
 							</div>
 							<div>
 								<fieldset id="questionnaire-block">

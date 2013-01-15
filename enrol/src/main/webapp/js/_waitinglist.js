@@ -3,7 +3,6 @@ var $j = jQuery.noConflict();
 function initHandles()
 {
 	initAddWaitingListHandle();
-	initHints($j("[id*=waitingListForm]").attr('id'));
 }
 
 

@@ -224,24 +224,9 @@ function initHandles()
 	initProductItemListHandle();
 	initAddCodeHandle();
 	initCreditAccessHandle();
-
-    //initHints($j("[id*=paymentform]").attr('id'));
-    initHints($j("[id*=addContactForm]").attr('id'));
-    initHints($j("[id*=contactEditorForm]").attr('id'));
-    initHints($j("[id*=concessionForm]").attr('id'));
-
-
-	$j(".validate").mouseenter(function() {
-		$j(this).find('.reason').removeClass('hidden-text');
-	});
-
-	$j(".validate").mouseleave(function() {
-		$j(this).find('.reason').addClass('hidden-text');
-	});
 }
 
 
 $j(document).ready(function() {
 	initHandles();
-
 });
