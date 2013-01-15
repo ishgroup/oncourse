@@ -1,5 +1,6 @@
 package ish.oncourse.portal.pages.student;
 
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
@@ -79,11 +80,11 @@ public class Surveys {
 			if (survey == null) {
 				Student student = (Student) context.localObject(authenticationService.getUser().getStudent().getObjectId(), null);
 				this.survey = getSurveyForStudentAndClass(student, courseClass);
-			
-				if (survey == null) {
+				Enrolment studentEnrolment = getEnrolmentForStudentAndClass(student, courseClass);
+				if (survey == null && studentEnrolment != null) {
 					this.survey = context.newObject(Survey.class);
 					survey.setCollege(student.getCollege());
-					survey.setEnrolment(getEnrolmentForStudentAndClass(student, courseClass));
+					survey.setEnrolment(studentEnrolment);
 					survey.setUniqueCode(SecurityUtil.generateRandomPassword(8));
 				}
 			}
@@ -188,7 +189,8 @@ public class Surveys {
 	
 	private Enrolment getEnrolmentForStudentAndClass(Student student, CourseClass courseClass) {
 		Expression enrolmentExp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student)
-				.andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass));
+			.andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass))
+			.andExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
 		SelectQuery query = new SelectQuery(Enrolment.class, enrolmentExp);
 		
 		return (Enrolment) Cayenne.objectForQuery(student.getObjectContext(), query);
