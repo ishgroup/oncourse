@@ -405,7 +405,14 @@ public class Profile {
 	}
 
 	public void setContactCountry(String value) {
+		//cleanup error if exist
+		if (validateHandler.error(Contact.COUNTRY_PROPERTY) != null) {
+			validateHandler.getErrors().remove(Contact.COUNTRY_PROPERTY);
+		}
 		if (StringUtils.trimToNull(value) == null) {
+			if (required(Contact.COUNTRY_PROPERTY)) {
+				validateHandler.getErrors().put(Contact.COUNTRY_PROPERTY, messageBy(Contact.COUNTRY_PROPERTY));
+			}
 			return;
 		}
 		Country country = countryService.getCountryByName(value);
@@ -413,9 +420,6 @@ public class Profile {
 			validateHandler.getErrors().put(Contact.COUNTRY_PROPERTY, messageBy(Contact.COUNTRY_PROPERTY));
 		} else {
 			contact.setCountry((Country) contact.getObjectContext().localObject(country.getObjectId(), country));
-			if (validateHandler.error(Contact.COUNTRY_PROPERTY) != null) {
-				validateHandler.getErrors().remove(Contact.COUNTRY_PROPERTY);
-			}
 		}
 	}
 
