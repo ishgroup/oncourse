@@ -1,5 +1,6 @@
 package ish.oncourse.services.encrypt;
 
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -8,7 +9,7 @@ import ish.oncourse.services.ServiceModule;
 import ish.oncourse.test.ServiceTest;
 
 public class EncryptionServiceTest extends ServiceTest {
-	
+	private final static Logger LOGGER = Logger.getLogger(EncryptionServiceTest.class);
 	private EncryptionService service;
 	
 	@Before
@@ -25,13 +26,15 @@ public class EncryptionServiceTest extends ServiceTest {
 		try {
 			encryptedData = service.encrypt(data);
 		} catch (Exception e) {
-			assertFalse("Encryption lead to exception", true);
+			LOGGER.error("Encryption service thow an exception", e);
+			assertFalse("Encryption lead to exception" + e.getMessage() , true);
 		}
 		String result = null;
 		try {
 			result = service.decrypt(encryptedData);
 		} catch (Exception e) {
-			assertFalse("Decryption lead to exception", true);
+			LOGGER.error("Encryption service thow an exception", e);
+			assertFalse("Decryption lead to exception" + e.getMessage(), true);
 		}
 		assertEquals("Original data should be the same as after encrypt and decrypt", data, result);
 	}
