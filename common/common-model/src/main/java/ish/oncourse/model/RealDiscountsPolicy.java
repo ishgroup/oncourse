@@ -3,6 +3,8 @@ package ish.oncourse.model;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
+import ish.common.types.EnrolmentStatus;
+
 import java.util.*;
 
 /**
@@ -94,8 +96,8 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 			Calendar tresholdDate = new GregorianCalendar();
 			tresholdDate.add(Calendar.DATE, 0 - discount.getStudentEnrolledWithinDays());
 
-			Expression enrolledWithinDaysQualifier = ExpressionFactory.greaterExp(Enrolment.COURSE_CLASS_PROPERTY + "."
-					+ CourseClass.START_DATE_PROPERTY, tresholdDate.getTime());
+			Expression enrolledWithinDaysQualifier = ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS)
+					.andExp(ExpressionFactory.greaterExp(Enrolment.CREATED_PROPERTY, tresholdDate.getTime()));
 
 			if (enrolledWithinDaysQualifier.filterObjects(student.getEnrolments()).isEmpty()) {
 				return false;

@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.auto._Discount;
 import ish.oncourse.test.ContextUtils;
 
@@ -198,6 +199,8 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 
 		// enrolled 3 days ago
 		testDate.add(Calendar.DATE, -3);
+		enrolment.setCreated(testDate.getTime());
+		enrolment.setStatus(EnrolmentStatus.SUCCESS);
 
 		CourseClass courseClass = context.newObject(CourseClass.class);
 		courseClass.setStartDate(testDate.getTime());
