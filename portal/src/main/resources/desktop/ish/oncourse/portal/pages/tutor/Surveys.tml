@@ -65,9 +65,7 @@
 		<tr>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-tutor-b.png" alt="" width="46" height="50"/></div></td>
 			<td>
-				<t:loop  source="tutorRoles" value="tutorRole">
-					<div>${tutorContact.fullName} </div>
-				</t:loop>
+				   <div>${tutorContact.fullName} </div>
 			</td>
 			<td>
 				<span t:type="rating" id="ratingTutor" value="roundedTutorAverage"/>
@@ -76,9 +74,4 @@
 		</tr>
 	</table>
 </t:block>
-
-
-
-
-
 </html>
