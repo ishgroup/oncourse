@@ -15,7 +15,7 @@ public class EncryptionService {
 
 	public EncryptionService() throws Exception {
 		cipher = Cipher.getInstance("AES");
-		key = new SecretKeySpec("E072EDF9534053A0B6C581C58FBF25CC".getBytes("UTF-8"), "AES");
+		key = new SecretKeySpec("E072EDF9534053A0".getBytes("UTF-8"), "AES");
 	}
 
 	public byte[] encrypt(String input) throws Exception {
