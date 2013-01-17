@@ -247,8 +247,6 @@ public class ReplicationServiceImpl implements IReplicationService {
 					try {
 
 						if (record.isSuccessStatus()) {
-							ctx.deleteObject(queuedRecord);
-							
 							if (queuedRecord.getAction() != QueuedRecordAction.DELETE) {
 								Long collegeid = null;
 								try {
@@ -256,12 +254,22 @@ public class ReplicationServiceImpl implements IReplicationService {
 									Class<? extends Queueable> entityClass = (Class<? extends Queueable>) ctx.getEntityResolver()
 											.getObjEntity(record.getStub().getEntityIdentifier()).getJavaClass();
 									Queueable object = (Queueable) Cayenne.objectForPK(ctx, entityClass, record.getStub().getWillowId());
-									//add cache refresh to receive actual data before angel id set.
-									ObjectIdQuery query = new ObjectIdQuery(object.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
-									object = (Queueable) Cayenne.objectForQuery(ctx, query);
-									
-									collegeid = object.getCollege().getId();
-									object.setAngelId(record.getStub().getAngelId());
+									if (object == null) {
+										//This can be the result of willow entity deletion when receive the response from angel. 
+										//In this case queued record will be removed on next replication iteration
+										String message = String.format("Unable to load %s entity with %s willowid to setup %s angelid.", 
+												record.getStub().getEntityIdentifier(), record.getStub().getWillowId(), record.getStub().getAngelId());
+										logger.error(message);
+										queuedRecord.setErrorMessage(message);
+									} else {
+										//we should delete only the queued records for elements which we can update
+										ctx.deleteObject(queuedRecord);
+										//add cache refresh to receive actual data before angel id set.
+										ObjectIdQuery query = new ObjectIdQuery(object.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+										object = (Queueable) Cayenne.objectForQuery(ctx, query);
+										collegeid = object.getCollege().getId();
+										object.setAngelId(record.getStub().getAngelId());
+									}
 									ctx.commitChanges();
 								} catch (CayenneRuntimeException ce) {
 									ctx.rollbackChanges();
@@ -270,6 +278,8 @@ public class ReplicationServiceImpl implements IReplicationService {
 									logger.error(message, ce);
 									queuedRecord.setErrorMessage(message);									
 								}
+							} else {
+								ctx.deleteObject(queuedRecord);
 							}
 							
 						} else {
