@@ -261,6 +261,8 @@ public class ReplicationServiceImpl implements IReplicationService {
 												record.getStub().getEntityIdentifier(), record.getStub().getWillowId(), record.getStub().getAngelId());
 										logger.error(message);
 										queuedRecord.setErrorMessage(message);
+										//also setup received angleid to queued record to be able fix the entity in the issue case.
+										queuedRecord.setAngelId(record.getStub().getAngelId());
 									} else {
 										//we should delete only the queued records for elements which we can update
 										ctx.deleteObject(queuedRecord);
