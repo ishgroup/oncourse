@@ -147,6 +147,10 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 
 	@Test
 	public void testEXPIRE_PAYMENT() {
+		expirePayment();
+	}
+	
+	private PaymentProcessController expirePayment() {
 		PaymentProcessController paymentProcessController = createPaymentProcessController();
 		fillInvalidCard(paymentProcessController);
 		paymentProcessController.processAction(MAKE_PAYMENT);
@@ -158,8 +162,22 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 		Invoice invoice = paymentProcessController.getPaymentIn().getPaymentInLines().get(0).getInvoice();
         assertFalse("Amount owing should not be empty", Money.isZeroOrEmpty(new Money(invoice.getAmountOwing())));
 		assertInvalidActionsForEXPIRED(paymentProcessController);
+		return paymentProcessController;
 	}
 
+	@Test
+    public void testIsExpired() {
+		PaymentProcessController paymentProcessController = expirePayment();
+		final String oldSessionId = paymentProcessController.getPaymentIn().getSessionId();
+		final String newSessionid = "NEW_SESSIONID";
+		assertFalse("result should be false for for invalid newSessionid data", paymentProcessController.isOldAndExpired(null));
+		paymentProcessController.getPaymentIn().setSessionId(null);
+		assertTrue("result should be true for invalid data", paymentProcessController.isOldAndExpired(newSessionid));
+		paymentProcessController.getPaymentIn().setSessionId(newSessionid);
+		assertFalse("result should be false for the same expired payment", paymentProcessController.isOldAndExpired(newSessionid));
+		paymentProcessController.getPaymentIn().setSessionId(oldSessionId);
+		assertTrue("result should be true for the expired payment with no match by sessionid", paymentProcessController.isOldAndExpired(newSessionid));
+	}
 
 	@Test
     public void testABANDON_PAYMENT_KEEP_INVOICE() {
