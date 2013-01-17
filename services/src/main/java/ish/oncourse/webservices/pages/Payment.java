@@ -94,6 +94,13 @@ public class Payment {
             throw new IllegalArgumentException(e);
         }
     }
+    
+    private void resetOldSessionController(String sessionId) {
+    	if (paymentProcessController != null && paymentProcessController.isOldAndExpired(sessionId)) {
+    		//reset the paymentProcessController to be able render actual payment
+    		paymentProcessController = null;
+    	}
+    }
 
     /**
      * Finds and init payment and payment transaciton by referenceId.
@@ -102,6 +109,8 @@ public class Payment {
      */
     void onActivate(String sessionId) {
         synchronized (this) {
+        	//firstly check that there is no controller with expired session
+        	resetOldSessionController(sessionId);
             if (paymentProcessController == null) {
                 PaymentIn paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
                 if (paymentIn == null) {
@@ -141,8 +150,7 @@ public class Payment {
         return paymentProcessController.isIllegalState();
     }
 
-	public boolean isExpired()
-	{
+	public boolean isExpired() {
 		return paymentProcessController.isExpired();
 	}
 
