@@ -106,9 +106,9 @@ public class AppModule {
 			final ComponentSource componentSource) {
 		return new RequestExceptionHandler() {
 			public void handleRequestException(Throwable exception) throws IOException {
-				if (exception instanceof OperationException && exception.getCause() instanceof ComponentEventException && 
-					exception.getCause().getCause() instanceof RuntimeException && 
-					"Forms require that the request method be POST and that the t:formdata query parameter have values.".equals(exception.getMessage())) {
+				//this is Tapestry 5 validation to prevent hack attempts https://issues.apache.org/jira/browse/TAPESTRY-2563
+				//we may ignore it
+				if ("Forms require that the request method be POST and that the t:formdata query parameter have values.".equals(exception.getMessage())) {
 					logger.warn("Unexpected runtime exception: " + exception.getMessage(), exception);
 				} else {
 					logger.error("Unexpected runtime exception: " + exception.getMessage(), exception);
