@@ -4,12 +4,8 @@ import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.services.payment.IPaymentService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
-import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.payment.IPaymentProcessControllerBuilder;
 import ish.oncourse.util.payment.PaymentProcessController;
-import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
 import ish.oncourse.webservices.components.PaymentForm;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import org.apache.log4j.Logger;
@@ -17,7 +13,6 @@ import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.services.ParallelExecutor;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
@@ -44,22 +39,13 @@ public class Payment {
     private Request request;
 
     @Inject
-    private IPaymentService paymentService;
-
-    @Inject
     private ComponentResources componentResources;
-
-	@Inject
-	private ICayenneService cayenneService;
 
     @InjectComponent
     private PaymentForm paymentForm;
 
     @Inject
-    private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
-
-    @Inject
-    private ParallelExecutor parallelExecutor;
+    private IPaymentProcessControllerBuilder paymentProcessControllerBuilder;
 
     @Property
     private Contact payer;
@@ -96,12 +82,12 @@ public class Payment {
     }
     
     private void resetOldSessionController(String sessionId) {
-    	if (paymentProcessController != null && paymentProcessController.isOldAndExpired(sessionId)) {
+    	if (paymentProcessControllerBuilder.isNeedResetOldSessionController(getPaymentProcessController(), sessionId)) {
     		//reset the paymentProcessController to be able render actual payment
     		paymentProcessController = null;
     	}
     }
-
+    
     /**
      * Finds and init payment and payment transaciton by referenceId.
      *
@@ -112,22 +98,13 @@ public class Payment {
         	//firstly check that there is no controller with expired session
         	resetOldSessionController(sessionId);
             if (paymentProcessController == null) {
-                PaymentIn paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
-                if (paymentIn == null) {
-                    throw  new PaymentNotFoundException(messages.format("payment.not.found", sessionId));
-                }
-
+            	paymentProcessController = paymentProcessControllerBuilder.build(sessionId);
+            	if (paymentProcessController == null) {
+            		throw  new PaymentNotFoundException(messages.format("payment.not.found", sessionId));
+            	}
                 Session session = request.getSession(true);
                 //need for WebSiteService
-                session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, paymentIn.getCollege().getId());
-
-                paymentProcessController = new PaymentProcessController();
-                paymentProcessController.setObjectContext(cayenneService.newContext());
-                paymentProcessController.setParallelExecutor(parallelExecutor);
-                paymentProcessController.setPaymentGatewayService(paymentGatewayServiceBuilder.buildService());
-				paymentProcessController.setCayenneService(cayenneService);
-                paymentProcessController.setPaymentIn(paymentIn);
-                paymentProcessController.processAction(PaymentAction.INIT_PAYMENT);
+                session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, paymentProcessController.getPaymentIn().getCollege().getId());
             }
 
             this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);

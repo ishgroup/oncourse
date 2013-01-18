@@ -16,6 +16,8 @@ import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
+import ish.oncourse.util.payment.IPaymentProcessControllerBuilder;
+import ish.oncourse.util.payment.PaymentProcessControllerBuilder;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
@@ -78,6 +80,7 @@ public class AppModule {
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
+		binder.bind(IPaymentProcessControllerBuilder.class, PaymentProcessControllerBuilder.class);
 	}
 	
 	/**
