@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class UIRequestExceptionHandler implements RequestExceptionHandler {
 	private static final String TAPESTRY_2563_POST_VALIDATION_MESSAGE = "Forms require that the request method be POST and that the t:formdata query parameter have values.";
-	public static final String DEFAULT_ERROR_PAGE = "errorPage";
+	public static final String DEFAULT_ERROR_PAGE = "ErrorPage";
 	public static final String ERROR_500_PAGE = "ui/Error500";
 	public static final String APPLICATION_ROOT_PAGE = "/";
     private static final Logger LOGGER = Logger.getLogger(UIRequestExceptionHandler.class);
@@ -32,6 +32,8 @@ public class UIRequestExceptionHandler implements RequestExceptionHandler {
 
     public void handleRequestException(Throwable exception) throws IOException {
     	if (TAPESTRY_2563_POST_VALIDATION_MESSAGE.equals(exception.getMessage())) {
+    		//this is Tapestry 5 validation to prevent hack attempts https://issues.apache.org/jira/browse/TAPESTRY-2563
+			//we may ignore it
     		LOGGER.warn("Unexpected runtime exception: " + exception.getMessage(), exception);
     		if (response != null && redirectOnInvalidPostRequest) {
     			response.sendRedirect(redirectPage);
