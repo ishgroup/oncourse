@@ -48,6 +48,14 @@ public class ForgotPassword {
 		this.user = user;
 	}
 
+
+	public Object onActivate()
+	{
+		if (user == null)
+			return Login.class.getSimpleName();
+		return null;
+	}
+
 	@SetupRender
 	void setupRender() {
 		// creating expire link
