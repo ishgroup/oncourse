@@ -1,8 +1,6 @@
 package ish.oncourse.webservices.soap.v4;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -51,8 +49,12 @@ public class ReplicationPortTypeTest extends ServiceTest {
 
 	@Test
 	public void testV4GetRecordsSuccess() throws Exception {
+		testGetRecordsSuccess(SupportedVersions.V4);
+	}
+	
+	private void testGetRecordsSuccess(SupportedVersions version) throws Exception {
 		IReplicationService service = getService(IReplicationService.class);
-		GenericReplicationRecords response = service.getRecords(SupportedVersions.V4);
+		GenericReplicationRecords response = service.getRecords(version);
 		assertNotNull("Expecting not null response.", response);
 		List<GenericTransactionGroup> groups = response.getGenericGroups();
 		assertTrue("Expecting not empty groups.", groups.size() > 0);
@@ -63,7 +65,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 			if (st instanceof GenericEnrolmentStub) {
 				hasEnrolment = true;
 			}
-			if (st instanceof ish.oncourse.webservices.v4.stubs.replication.CourseClassStub) {
+			if (CourseClass.class.getSimpleName().equals(st.getEntityIdentifier()) && !(st instanceof GenericDeletedStub)) {
 				hasCourseClass = true;
 			}
 			if (st instanceof GenericDeletedStub) {
@@ -187,13 +189,29 @@ public class ReplicationPortTypeTest extends ServiceTest {
 
 	@Test
 	public void testV4SendResult() throws Exception {
-
+		testSendResult(SupportedVersions.V4, false);
+	}
+	
+	@Test
+	public void testV4SendResultWithConcurentDelete() throws Exception {
+		testSendResult(SupportedVersions.V4, true);
+	}
+	
+	private void testSendResult(SupportedVersions version, boolean withConcurentDelete) throws Exception {
 		IReplicationService service = getService(IReplicationService.class);
-		
-		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V4);
-		
-		GenericReplicationRecords replicatedRecords = service.getRecords(SupportedVersions.V4);
-
+		GenericReplicationResult result = PortHelper.createReplicationResult(version);
+		GenericReplicationRecords replicatedRecords = service.getRecords(version);
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
+		if (withConcurentDelete) {
+			//CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1482);
+			Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 1);
+			assertNotNull("Enrolment should exist", enrolment);
+			assertNotNull("Enrolment should be linked with invoice line", enrolment.getInvoiceLine());
+			enrolment.getInvoiceLine().setEnrolment(null);
+			objectContext.deleteObject(enrolment);
+			objectContext.commitChanges();
+		}
 		for (GenericTransactionGroup group : replicatedRecords.getGenericGroups()) {
 			long angelId = 1;
 			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
@@ -210,42 +228,29 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityWillowId = 1 or entityWillowId = 1482"));
 		
-		ICayenneService cayenneService = getService(ICayenneService.class);
-		ObjectContext objectContext = cayenneService.newContext();
 		CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1482);
 		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 1);
 		
 		assertNotNull("Expecting angelId not null for courseClass", courseClass.getAngelId());
-		assertNotNull("Expecting angelId not null for enrolment", enrolment.getAngelId());
-		
-		assertEquals("Check that no queueable records exist for confirmed objects", actualData.getRowCount(), 0);
+		if (withConcurentDelete) {
+			assertNull("Expecting null for this enrolment", enrolment);
+			assertEquals("Check that 1 queueable records exist for confirmed objects", actualData.getRowCount(), 1);
+		} else {
+			assertNotNull("Expecting angelId not null for enrolment", enrolment.getAngelId());
+			assertEquals("Check that no queueable records exist for confirmed objects", actualData.getRowCount(), 0);
+		}
+		if (withConcurentDelete) {
+			replicatedRecords = service.getRecords(version);
+			assertTrue("Replication should be empty", replicatedRecords.getGenericGroups().isEmpty());
+			actualData = dbUnitConnection.createQueryTable("QueuedRecord", 
+				String.format("select * from QueuedRecord where entityWillowId = 1 or entityWillowId = 1482"));
+			assertEquals("Check that no queueable records exist for confirmed objects", actualData.getRowCount(), 0);
+		}
 	}
 	
 	@Test
 	public void testV5GetRecordsSuccess() throws Exception {
-		IReplicationService service = getService(IReplicationService.class);
-		GenericReplicationRecords response = service.getRecords(SupportedVersions.V5);
-		assertNotNull("Expecting not null response.", response);
-		List<GenericTransactionGroup> groups = response.getGenericGroups();
-		assertTrue("Expecting not empty groups.", groups.size() > 0);
-		List<GenericReplicationStub> stubs = groups.get(0).getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		assertTrue("Expecting only three stubs.", stubs.size() == 3);
-		boolean hasEnrolment = false, hasCourseClass = false, hasDeleteStub = false;
-		for (GenericReplicationStub st : stubs) {
-			if (st instanceof GenericEnrolmentStub) {
-				hasEnrolment = true;
-			}
-			if (st instanceof ish.oncourse.webservices.v5.stubs.replication.CourseClassStub) {
-				hasCourseClass = true;
-			}
-			if (st instanceof GenericDeletedStub) {
-				hasDeleteStub = true;
-			}
-		}
-
-		assertTrue("Expecting enrolment stub.", hasEnrolment);
-		assertTrue("Expecting courseClass stub.", hasCourseClass);
-		assertTrue("Expecting DeletedStub", hasDeleteStub);
+		testGetRecordsSuccess(SupportedVersions.V5);
 	}
 	
 	@Test
@@ -360,37 +365,11 @@ public class ReplicationPortTypeTest extends ServiceTest {
 	
 	@Test
 	public void testV5SendResult() throws Exception {
-
-		IReplicationService service = getService(IReplicationService.class);
-		
-		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V5);
-		
-		GenericReplicationRecords replicatedRecords = service.getRecords(SupportedVersions.V5);
-
-		for (GenericTransactionGroup group : replicatedRecords.getGenericGroups()) {
-			long angelId = 1;
-			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
-				stub.setAngelId(angelId++);
-				GenericReplicatedRecord confirmedRecord = ReplicationUtils.toReplicatedRecord(stub, true);
-				confirmedRecord.setMessage("Record replicated.");
-				result.getGenericReplicatedRecord().add(confirmedRecord);
-			}
-		}
-
-		service.sendResults(result);
-
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
-		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityWillowId = 1 or entityWillowId = 1482"));
-		
-		ICayenneService cayenneService = getService(ICayenneService.class);
-		ObjectContext objectContext = cayenneService.newContext();
-		CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1482);
-		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 1);
-		
-		assertNotNull("Expecting angelId not null for courseClass", courseClass.getAngelId());
-		assertNotNull("Expecting angelId not null for enrolment", enrolment.getAngelId());
-		
-		assertEquals("Check that no queueable records exist for confirmed objects", actualData.getRowCount(), 0);
+		testSendResult(SupportedVersions.V5, false);
+	}
+	
+	@Test
+	public void testV5SendResultWithConcurentDelete() throws Exception {
+		testSendResult(SupportedVersions.V5, true);
 	}
 }
