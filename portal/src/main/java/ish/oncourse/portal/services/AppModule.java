@@ -31,6 +31,8 @@ import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
 @SubModule({ ModelModule.class, ServiceModule.class, TextileModule.class })
 public class AppModule {
 
+	private static final String EXCEPTION_REDIRECT_PAGE = "login";
+
 	public static void bind(ServiceBinder binder) {
 		binder.bind(IUserAgentDetector.class, UserAgentDetectorImpl.class);
 		binder.bind(ComponentRequestSelectorAnalyzer.class, PortalComponentRequestSelectorAnalyzer.class).withId(
@@ -81,11 +83,10 @@ public class AppModule {
 		configuration.add(MetaDataConstants.SECURE_PAGE, "true");
 	}
 	
-	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource,
-                                                                   ResponseRenderer renderer,
-                                                                   Request request,
-                                                                   Response response) {
-		return new UIRequestExceptionHandler(componentSource,renderer,request,response, "errorPage", "login");
+	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request, 
+		Response response) {
+		return new UIRequestExceptionHandler(componentSource, renderer, request, response, UIRequestExceptionHandler.DEFAULT_ERROR_PAGE, 
+			EXCEPTION_REDIRECT_PAGE, true);
 	}
 	
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
