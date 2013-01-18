@@ -16,12 +16,14 @@ import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
+import ish.oncourse.util.UIRequestExceptionHandler;
 import ish.oncourse.util.payment.IPaymentProcessControllerBuilder;
 import ish.oncourse.util.payment.PaymentProcessControllerBuilder;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
+import ish.oncourse.webservices.pages.PaymentNotFound;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.replication.services.*;
 import ish.oncourse.webservices.replication.v4.builders.ITransactionStubBuilder;
@@ -33,6 +35,7 @@ import ish.oncourse.webservices.replication.v4.updaters.WillowUpdaterImpl;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
@@ -45,7 +48,9 @@ import org.apache.tapestry5.runtime.ComponentEventException;
 import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.ComponentSource;
 import org.apache.tapestry5.services.ExceptionReporter;
+import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestExceptionHandler;
+import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.services.ResponseRenderer;
 
 import java.io.IOException;
@@ -104,18 +109,14 @@ public class AppModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
 		configuration.add(IWebSiteService.class, webSiteService);
 	}
+	
+	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request, 
+		Response response) {
+		return new UIRequestExceptionHandler(componentSource, renderer, request, response, UIRequestExceptionHandler.DEFAULT_ERROR_PAGE, 
+			StringUtils.EMPTY, false) {
 
-	public RequestExceptionHandler buildAppRequestExceptionHandler(final org.slf4j.Logger logger, final ResponseRenderer renderer,
-			final ComponentSource componentSource) {
-		return new RequestExceptionHandler() {
-			public void handleRequestException(Throwable exception) throws IOException {
-				//this is Tapestry 5 validation to prevent hack attempts https://issues.apache.org/jira/browse/TAPESTRY-2563
-				//we may ignore it
-				if ("Forms require that the request method be POST and that the t:formdata query parameter have values.".equals(exception.getMessage())) {
-					logger.warn("Unexpected runtime exception: " + exception.getMessage(), exception);
-				} else {
-					logger.error("Unexpected runtime exception: " + exception.getMessage(), exception);
-				}
+			@Override
+			public String getErrorPageName(Throwable exception) {
 				Throwable cause = exception.getCause();
 				if (cause != null) {
 					// Trying to get possible PaymentNotFoundException, which is
@@ -124,14 +125,12 @@ public class AppModule {
 				}
 				String exceptionPageName = null;
 				if (cause != null && cause instanceof PaymentNotFoundException) {
-					exceptionPageName = "PaymentNotFound";
+					exceptionPageName = PaymentNotFound.class.getSimpleName();
 					exception = cause;
 				} else {
-					exceptionPageName = "ErrorPage";
+					exceptionPageName = UIRequestExceptionHandler.DEFAULT_ERROR_PAGE;
 				}
-				ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(exceptionPageName);
-				exceptionReporter.reportException(exception);
-				renderer.renderPageMarkupResponse(exceptionPageName);
+				return exceptionPageName;
 			}
 		};
 	}
