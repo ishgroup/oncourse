@@ -5,8 +5,11 @@ import org.apache.tapestry5.services.*;
 
 import java.io.IOException;
 
-public class UIRequestExceptionHandler implements RequestExceptionHandler
-{
+public class UIRequestExceptionHandler implements RequestExceptionHandler {
+	private static final String TAPESTRY_2563_POST_VALIDATION_MESSAGE = "Forms require that the request method be POST and that the t:formdata query parameter have values.";
+	public static final String DEFAULT_ERROR_PAGE = "errorPage";
+	public static final String ERROR_500_PAGE = "ui/Error500";
+	public static final String APPLICATION_ROOT_PAGE = "/";
     private static final Logger LOGGER = Logger.getLogger(UIRequestExceptionHandler.class);
     private final ResponseRenderer renderer;
     private final Response response;
@@ -14,35 +17,38 @@ public class UIRequestExceptionHandler implements RequestExceptionHandler
     private Request request;
     private String errorPageName;
     private String redirectPage;
+    private boolean redirectOnInvalidPostRequest;
 
-    public UIRequestExceptionHandler(ComponentSource componentSource,
-                                     ResponseRenderer renderer,
-                                     Request request,
-                                     Response response,
-                                     String errorPageName,
-                                     String redirectPage) {
+    public UIRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request, Response response, String errorPageName,
+    	String redirectPage, boolean redirectOnInvalidPostRequest) {
         this.renderer = renderer;
         this.response = response;
         this.componentSource = componentSource;
         this.request = request;
         this.errorPageName = errorPageName;
         this.redirectPage = redirectPage;
+        this.redirectOnInvalidPostRequest = redirectOnInvalidPostRequest;
     }
 
     public void handleRequestException(Throwable exception) throws IOException {
-
-
-        if (response != null && exception != null && exception.getMessage() != null &&
-                exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
-            response.sendRedirect(redirectPage);
-        } else {
-            LOGGER.error(String.format("Unexpected runtime exception on \"%s%s\". Request is \"%s\"",
-                    request != null ? request.getServerName(): "undefined host",
-                    request != null ? request.getPath(): "undefined path",
-                    (request != null && request.isXHR())? "XmlHttpRequest":"HttpRequest") , exception);
-            ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(errorPageName);
-            exceptionReporter.reportException(exception);
-            renderer.renderPageMarkupResponse(errorPageName);
-        }
+    	if (TAPESTRY_2563_POST_VALIDATION_MESSAGE.equals(exception.getMessage())) {
+    		LOGGER.warn("Unexpected runtime exception: " + exception.getMessage(), exception);
+    		if (response != null && redirectOnInvalidPostRequest) {
+    			response.sendRedirect(redirectPage);
+    		}
+    	} else {
+    		LOGGER.error(String.format("Unexpected runtime exception on \"%s%s\". Request is \"%s\"",
+    			request != null ? request.getServerName(): "undefined host",
+    			request != null ? request.getPath(): "undefined path",
+    			(request != null && request.isXHR())? "XmlHttpRequest":"HttpRequest") , exception);
+    	}
+    	final String errorPage = getErrorPageName(exception);
+    	ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(errorPage);
+        exceptionReporter.reportException(exception);
+        renderer.renderPageMarkupResponse(errorPage);
+    }
+    
+    public String getErrorPageName(Throwable exception) {
+    	return errorPageName;
     }
 }

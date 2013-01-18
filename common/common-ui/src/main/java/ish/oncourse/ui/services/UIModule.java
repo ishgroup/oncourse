@@ -119,13 +119,10 @@ public class UIModule {
 	}
 
 
-    public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource,
-                                                                   ResponseRenderer renderer,
-                                                                   Request request,
-                                                                   Response response
-    )
-    {
-        return new UIRequestExceptionHandler(componentSource,renderer,request,response,"ui/Error500","/");
+    public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request, 
+    	Response response) {
+    	return new UIRequestExceptionHandler(componentSource, renderer, request, response, UIRequestExceptionHandler.ERROR_500_PAGE, 
+    		UIRequestExceptionHandler.APPLICATION_ROOT_PAGE, true);
     }
 
     public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
