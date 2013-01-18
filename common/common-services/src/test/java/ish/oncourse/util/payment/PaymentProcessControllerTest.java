@@ -9,8 +9,6 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
-import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.Invokable;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
 import org.dbunit.database.DatabaseConfig;
@@ -166,17 +164,17 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 	}
 
 	@Test
-    public void testIsExpired() {
+	public void testIsExpired() {
 		PaymentProcessController paymentProcessController = expirePayment();
 		final String oldSessionId = paymentProcessController.getPaymentIn().getSessionId();
 		final String newSessionid = "NEW_SESSIONID";
-		assertFalse("result should be false for for invalid newSessionid data", paymentProcessController.isOldAndExpired(null));
+		assertFalse("result should be false for for invalid newSessionid data", PaymentProcessControllerBuilder.isControllerOldAndExpired(paymentProcessController, null));
 		paymentProcessController.getPaymentIn().setSessionId(null);
-		assertTrue("result should be true for invalid data", paymentProcessController.isOldAndExpired(newSessionid));
+		assertTrue("result should be true for invalid data", PaymentProcessControllerBuilder.isControllerOldAndExpired(paymentProcessController,newSessionid));
 		paymentProcessController.getPaymentIn().setSessionId(newSessionid);
-		assertFalse("result should be false for the same expired payment", paymentProcessController.isOldAndExpired(newSessionid));
+		assertFalse("result should be false for the same expired payment", PaymentProcessControllerBuilder.isControllerOldAndExpired(paymentProcessController,newSessionid));
 		paymentProcessController.getPaymentIn().setSessionId(oldSessionId);
-		assertTrue("result should be true for the expired payment with no match by sessionid", paymentProcessController.isOldAndExpired(newSessionid));
+		assertTrue("result should be true for the expired payment with no match by sessionid", PaymentProcessControllerBuilder.isControllerOldAndExpired(paymentProcessController,newSessionid));
 	}
 
 	@Test
@@ -265,35 +263,57 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 
     private PaymentProcessController createPaymentProcessController() {
         String sessionId = "SESSIONID";
-        final PaymentProcessController paymentProcessController = new PaymentProcessController();
-        ObjectContext context = cayenneService.newContext();
-        paymentProcessController.setObjectContext(context);
-        paymentProcessController.setPaymentGatewayService(paymentGatewayService);
-		paymentProcessController.setCayenneService(cayenneService);
-        paymentProcessController.setParallelExecutor(new ParallelExecutor() {
+        final PaymentProcessController paymentProcessController = new PaymentProcessControllerBuilder() {
 			@Override
-			public <T> T invoke(Class<T> proxyType, Invokable<T> invocable) {
-				return null;
-			}
+			public ParallelExecutor takeParallelExecutor() {return new TestParallelExecutor();}
 
 			@Override
-			public <T> Future<T> invoke(Invokable<T> invocable) {
-				if (invocable instanceof ProcessPaymentInvokable) {
-					invocable.invoke();
-				}
-				if (invocable instanceof StackedPaymentMonitor) {
-					assertFalse("We should fire and re-fire the watchdog to abandon the payments only when the processing not finished", 
-						paymentProcessController.isProcessFinished());
-				}
-				return null;
-			}
-		});
-        paymentProcessController.setPaymentIn(paymentService.currentPaymentInBySessionId(sessionId));
-		assertEquals("paymentProcessController.getCurrentState()", INIT, paymentProcessController.getCurrentState());
-		paymentProcessController.processAction(PaymentAction.INIT_PAYMENT);
+			public IPaymentGatewayService receivePaymentGatewayService() {return paymentGatewayService;}
+
+			@Override
+			public ICayenneService takeCayenneService() {return cayenneService;}
+
+			@Override
+			public IPaymentService takePaymentService() {return paymentService;}
+        }.build(sessionId);
+        //update parallel executor because unable to finally init them for test on startup
+        paymentProcessController.setParallelExecutor(new TestParallelExecutor(paymentProcessController));
+        
         Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessController.getPaymentIn());
         assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessController.getCurrentState());
         return paymentProcessController;
+    }
+    
+    private class TestParallelExecutor implements ParallelExecutor {
+    	private PaymentProcessController paymentProcessController;
+    	
+    	TestParallelExecutor() {
+			this(null);
+		}
+
+		TestParallelExecutor(PaymentProcessController paymentProcessController) {
+			this.paymentProcessController = paymentProcessController;
+		}
+    	
+		@Override
+		public <T> T invoke(Class<T> proxyType, Invokable<T> invocable) {
+			return null;
+		}
+		
+		boolean isProcessFinished() {
+			return paymentProcessController != null && paymentProcessController.isProcessFinished();
+		}
+
+		@Override
+		public <T> Future<T> invoke(Invokable<T> invocable) {
+			if (invocable instanceof ProcessPaymentInvokable) {
+				invocable.invoke();
+			}
+			if (invocable instanceof StackedPaymentMonitor) {
+				assertFalse("We should fire and re-fire the watchdog to abandon the payments only when the processing not finished", isProcessFinished());
+			}
+			return null;
+		}
     }
 
 

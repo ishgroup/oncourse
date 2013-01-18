@@ -64,10 +64,6 @@ public class PaymentProcessController {
         return paymentIn;
     }
     
-    private String getPaymentInSessionId() {
-    	return paymentIn != null ? paymentIn.getSessionId() : null;
-    }
-
     public void setPaymentIn(PaymentIn paymentIn) {
         this.paymentIn = (PaymentIn) objectContext.localObject(paymentIn.getObjectId(), null);
     }
@@ -314,11 +310,6 @@ public class PaymentProcessController {
 		return currentState == EXPIRED;
 	}
 	
-	public synchronized boolean isOldAndExpired(String sessionId) {
-		return sessionId != null && isExpired() && !sessionId.equals(getPaymentInSessionId());
-	}
-
-
 	public synchronized boolean isFinalState()
 	{
 		return PaymentProcessState.isFinalState(currentState);
