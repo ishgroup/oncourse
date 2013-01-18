@@ -6,6 +6,7 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.BlockTextileAttributes;
 import ish.oncourse.services.textile.validator.BlockTextileValidator;
+import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 
 import java.util.Map;
@@ -57,6 +58,8 @@ public class BlockTextileRenderer extends AbstractRenderer {
 
 			if (webBlock != null) {
 				String result = webBlock.getContent();
+				if (result == null)
+					result = FormatUtils.EMPTY_STRING;
 
 				Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);
 				Matcher matcher = pattern.matcher(result);
