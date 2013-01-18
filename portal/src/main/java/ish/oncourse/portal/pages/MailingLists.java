@@ -9,15 +9,16 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.tapestry5.annotations.AfterRender;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.util.*;
 
 public class MailingLists {
+
+	private static final Logger LOGGER = Logger.getLogger(MailingLists.class);
 
 	@Property
 	@Persist
@@ -50,6 +51,14 @@ public class MailingLists {
 	@Property
 	@Persist
 	private boolean isSaved;
+
+	@Inject
+	private Request request;
+
+	@InjectPage
+	private Login loginPage;
+
+
 
 	@SetupRender
 	void beforeRender() {
@@ -99,7 +108,7 @@ public class MailingLists {
 
 	public void onSubmitFromMailingListForm() {
 		this.isSaved = true;
-		
+
 		Set<Tag> listOfUser = new HashSet<Tag>(tagService.getMailingListsContactSubscribed(currentUser));
 		ObjectContext objectContext = cayenneService.newContext();
 
@@ -158,4 +167,18 @@ public class MailingLists {
 	public boolean getHaveMailingLists() {
 		return !mailingLists.isEmpty();
 	}
+
+
+	/**
+	 * The method has been introduced to redirect users to login page when session expired
+	 */
+	public Object onException(Throwable cause) throws Throwable{
+		if (mailingLists == null) {
+			LOGGER.warn("Persist properties have been cleared.", cause);
+		} else {
+			throw cause;
+		}
+		return loginPage;
+	}
+
 }
