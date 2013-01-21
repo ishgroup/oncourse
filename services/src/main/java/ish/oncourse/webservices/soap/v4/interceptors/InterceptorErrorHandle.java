@@ -5,6 +5,7 @@ import ish.oncourse.webservices.exception.StackTraceUtils;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.common.util.SOAPConstants;
 import org.apache.cxf.message.Message;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 public class InterceptorErrorHandle {
@@ -14,14 +15,20 @@ public class InterceptorErrorHandle {
 	static final String ERROR_MESSAGE_TEMPLATE = "%s\n%s";
 
 
-	private final SoapMessage soapMessage;
-	private final Logger logger;
+	private SoapMessage soapMessage;
+	private Logger logger;
+	private Level level;
 
-	public InterceptorErrorHandle(SoapMessage soapMessage, Logger logger) {
-		this.soapMessage = soapMessage;
-		this.logger = logger;
+	public InterceptorErrorHandle(SoapMessage soapMessage, Logger logger)
+	{
+		this(soapMessage,logger,Level.ERROR);
 	}
 
+	public InterceptorErrorHandle(SoapMessage soapMessage, Logger logger, Level level) {
+		this.soapMessage = soapMessage;
+		this.logger = logger;
+		this.level = level == null ? Level.ERROR : level;
+	}
 
 	public AuthSoapFault handle(Throwable throwable, String message) {
 		String soapAction = (String) this.soapMessage.get(SOAPConstants.SOAP_ACTION);
@@ -30,9 +37,8 @@ public class InterceptorErrorHandle {
 
 		String errorMessage = String.format(SOAP_MESSAGE_TEMPLATE, message, soapAction, basePath, requestUrl);
 
-		logger.error(errorMessage, throwable);
-		if (throwable != null)
-		{
+		logger.log(level, errorMessage, throwable);
+		if (throwable != null) {
 			errorMessage = String.format(ERROR_MESSAGE_TEMPLATE, errorMessage, StackTraceUtils.stackTraceAsString(throwable));
 		}
 		return new AuthSoapFault(errorMessage);

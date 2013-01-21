@@ -9,6 +9,7 @@ import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -51,7 +52,7 @@ public class SecurityCodeInterceptor extends AbstractSoapInterceptor {
 			if (college == null)
 			{
 				String m = String.format(ERROR_TEMPLATE_invalidSecurityCode, securityCode, ip, version);
-				fault =  new InterceptorErrorHandle(message,logger).handle(m);
+				fault =  new InterceptorErrorHandle(message,logger, Level.WARN).handle(m);
 				throw fault;
 			}
 			request.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, college.getId());
