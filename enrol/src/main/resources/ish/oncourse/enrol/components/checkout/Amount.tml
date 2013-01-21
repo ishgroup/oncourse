@@ -36,11 +36,11 @@
 
 
 	<div id="access-password-popup">
-		<div class="password-field">
-			<label>Password </label>
-			<input type="password" name="password"/>
-			<button id="submitPassword" class="btn-password">Submit</button>
+		<div class="code-info">
+			<input type="password" name="password" class="code_input"/>
+			<div id="submitPassword" class="button">Submit</div>
 			<t:eventlink t:id="creditAccessEvent" style="{display:none;}"/>
+			<p>Password</p>
 		</div>
 	</div>
 </t:container>

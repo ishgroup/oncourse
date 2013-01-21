@@ -285,7 +285,7 @@ div.amount-container #access-password-popup {
 	position: absolute;
 	top: 5px;
 	list-style: none;
-	width: 255px;
+	width: 200px;
 	margin: 0;
 	background-color: white;
 	border: 1px solid #CCC;
@@ -294,7 +294,7 @@ div.amount-container #access-password-popup {
 	box-shadow: rgba(0, 0, 0, 0.199219) 0px 5px 10px;
 	-webkit-background-clip: padding-box;
 	background-clip: padding-box;
-	padding: 5px 0;
+	padding: 15px 10px 15px 10px;
 }
 
 div.amount-container .action-link {
