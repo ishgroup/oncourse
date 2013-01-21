@@ -266,9 +266,6 @@ public class ReplicationServiceImpl implements IReplicationService {
 									} else {
 										//we should delete only the queued records for elements which we can update
 										ctx.deleteObject(queuedRecord);
-										//add cache refresh to receive actual data before angel id set.
-										ObjectIdQuery query = new ObjectIdQuery(object.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
-										object = (Queueable) Cayenne.objectForQuery(ctx, query);
 										collegeid = object.getCollege().getId();
 										object.setAngelId(record.getStub().getAngelId());
 									}
