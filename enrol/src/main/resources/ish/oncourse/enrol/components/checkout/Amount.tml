@@ -1,31 +1,12 @@
 <t:container
 		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-		>
+        xmlns:p="tapestry:parameter">
 	<div class="amount-content">
-        <t:if test="purchaseController.creditAvailable">
-		    <p><label class="first">Credit available</label><span id="creditAccessLink" class="action-link">Access</span></p>
-        </t:if>
+        <t:delegate to="block:credit"/>
+        <t:delegate to="block:voucher"/>
+        <t:delegate to="block:previousOwing"/>
+        <t:delegate to="block:discount"/>
 
-        <t:if test="purchaseController.totalVoucherPayments.isZero()" negate="true">
-        <p><label>Voucher</label> <span>
-			(<t:output value="purchaseController.totalVoucherPayments" format="moneyFormat(purchaseController.totalVoucherPayments)"/>)
-		</span></p>
-        </t:if>
-        <t:if test="purchaseController.previousOwing.isZero()" negate="true">
-            <p><label>Previous Owing </label><span>
-                <t:output value="purchaseController.previousOwing" format="moneyFormat(purchaseController.previousOwing)"/>
-            </span>
-                <span id="removeOwingLink" class="action-link">(Remove)</span>
-                <t:eventlink t:id="removeOwingEvent" style="{display:none;}"/>
-            </p>
-        </t:if>
-        <t:if test="purchaseController.hasDiscount()">
-            <p><label>Discount</label>
-            <span>
-			    <t:output value="purchaseController.totalDiscountAmountIncTax" format="moneyFormat(purchaseController.totalDiscountAmountIncTax)"/>
-		    </span>
-            </p>
-        </t:if>
 		<p><label>Total</label>  <span>
 			<t:output value="purchaseController.totalPayment" format="moneyFormat(purchaseController.totalPayment)"/>
 		</span></p>
@@ -40,7 +21,49 @@
 			<input type="password" name="password" class="code_input"/>
 			<div id="submitPassword" class="button">Submit</div>
 			<t:eventlink t:id="creditAccessEvent" style="{display:none;}"/>
-			<p>Password</p>
+			<p>Password <em title="${message:message-required}">*</em></p>
 		</div>
 	</div>
+
+    <t:block t:id="discount">
+        <t:if test="purchaseController.hasDiscount()">
+            <p><label>Discount</label>
+            <span>
+			    <t:output value="purchaseController.totalDiscountAmountIncTax" format="moneyFormat(purchaseController.totalDiscountAmountIncTax)"/>
+		    </span>
+            </p>
+        </t:if>
+    </t:block>
+
+    <t:block t:id="previousOwing">
+        <t:if test="purchaseController.hasPreviousOwing()">
+            <p><label>Previous Owing</label><span>
+                <t:output value="purchaseController.previousOwing" format="moneyFormat(purchaseController.previousOwing)"/>
+            </span>
+            <span id="removeOwingLink" class="action-link">(Remove)</span>
+            <t:eventlink t:id="removeOwingEvent" style="{display:none;}"/>
+            </p>
+        </t:if>
+    </t:block>
+
+    <t:block t:id = "voucher">
+        <t:if test="purchaseController.totalVoucherPayments.isZero()" negate="true">
+            <p><label>Voucher</label> <span>
+                (<t:output value="purchaseController.totalVoucherPayments" format="moneyFormat(purchaseController.totalVoucherPayments)"/>)
+            </span></p>
+        </t:if>
+    </t:block>
+
+    <t:block t:id = "credit">
+        <t:if test="purchaseController.creditAvailable">
+            <t:if test="purchaseController.showCreditAmount">
+                <p><label class="first">Credit</label><span>
+                        (<t:output value="purchaseController.previousOwing" format="moneyFormat(purchaseController.previousOwing)"/>)
+                        </span></p>
+                <p:else>
+                    <p><label class="first">Credit available</label><span id="creditAccessLink" class="action-link">Access</span></p>
+                </p:else>
+            </t:if>
+        </t:if>
+    </t:block>
 </t:container>

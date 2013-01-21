@@ -73,13 +73,16 @@ public class PurchaseControllerTest extends ACheckoutTest {
         param.setValue(createContactCredentialsBy(contact));
         performAction(param);
         assertTrue(purchaseController.isCreditAvailable());
+        assertFalse(purchaseController.hasPreviousOwing());
         assertEquals(new Money("-200"), purchaseController.getPreviousOwing());
 
         param = new ActionParameter(Action.proceedToPayment);
         param.setValue(purchaseController.getModel().getPayment());
         performAction(param);
         assertTrue(purchaseController.isCreditAvailable());
+        assertFalse(purchaseController.hasPreviousOwing());
         assertEquals(new Money("-200"), purchaseController.getPreviousOwing());
+
 
     }
 

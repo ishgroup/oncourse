@@ -18,7 +18,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
-import ish.oncourse.util.InvoiceUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -82,6 +81,8 @@ public class PurchaseController {
 
     private ParallelExecutor parallelExecutor;
 
+    private boolean showCreditAmount = false;
+
     /**
 	 * @return the current state
 	 */
@@ -121,7 +122,7 @@ public class PurchaseController {
 	}
 
 	public Money getPreviousOwing() {
-		return InvoiceUtils.amountOwingForPayer(model.getPayer()).subtract(Money.valueOf(getModel().getInvoice().getAmountOwing()));
+		return model.getPreviousOwing();
 	}
 
 	public Money getMinimumPayableNow() {
@@ -376,10 +377,20 @@ public class PurchaseController {
     /**
      * returns true when current payer can get credit
      */
+    public synchronized boolean hasPreviousOwing()
+    {
+        //substact current invoice from this value
+        Money owing = getPreviousOwing();
+        return getModel().getPayer() != null && owing.isGreaterThan(Money.ZERO) && getModel().isApplingOwing();
+    }
+
+    /**
+     * returns true when current payer can get credit
+     */
     public synchronized boolean isCreditAvailable()
     {
 		//substact current invoice from this value
-		Money owing = InvoiceUtils.amountOwingForPayer(model.getPayer()).subtract(Money.valueOf(getModel().getInvoice().getAmountOwing()));
+		Money owing = getPreviousOwing();
         return getModel().getPayer() != null && owing.isLessThan(Money.ZERO);
     }
 
@@ -546,6 +557,14 @@ public class PurchaseController {
         return parallelExecutor;
     }
 
+    public boolean isShowCreditAmount() {
+        return showCreditAmount;
+    }
+
+    public void setShowCreditAmount(boolean showCreditAmount) {
+        this.showCreditAmount = showCreditAmount;
+    }
+
     public static enum State {
 		init(Action.init, Action.startAddContact),
 		editCheckout(COMMON_ACTIONS, proceedToPayment, addCourseClass),
@@ -688,6 +707,7 @@ public class PurchaseController {
 		contactAlreadyAdded,
 		discountNotFound,
 		creditAccessPasswordIsWrong,
+        passwordShouldBeSpecified,
 		duplicatedEnrolment,
 		noCourseClassPlaces,
 		courseClassEnded,

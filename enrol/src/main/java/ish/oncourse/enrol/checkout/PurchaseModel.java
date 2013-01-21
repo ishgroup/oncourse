@@ -6,6 +6,7 @@ import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.*;
+import ish.oncourse.util.InvoiceUtils;
 import ish.util.InvoiceUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
@@ -15,41 +16,43 @@ import java.util.*;
 
 /**
  * Model class for purchase controllers.
- * 
+ *
  * @author dzmitry
  */
 public class PurchaseModel {
 
-	//input data for model
-	private College college;
-	private WebSite webSite;
-	private List<CourseClass> classes = new ArrayList<CourseClass>();
-	private List<Discount> discounts = new ArrayList<Discount>();
-	private List<Product> products = new ArrayList<Product>();
+    //input data for model
+    private College college;
+    private WebSite webSite;
+    private List<CourseClass> classes = new ArrayList<CourseClass>();
+    private List<Discount> discounts = new ArrayList<Discount>();
+    private List<Product> products = new ArrayList<Product>();
 
-	private ObjectContext objectContext;
+    private ObjectContext objectContext;
 
 
-	private Map<Contact, ContactNode> contacts = new HashMap<Contact, PurchaseModel.ContactNode>();;
-	private Contact payer;
-	private Invoice invoice;
-	
-	private PaymentIn payment;
+    private Map<Contact, ContactNode> contacts = new HashMap<Contact, PurchaseModel.ContactNode>();
+    ;
+    private Contact payer;
+    private Invoice invoice;
+
+    private PaymentIn payment;
     private Money totalDiscountAmountIncTax = Money.ZERO;
-	private List<PaymentIn> voucherPayments = new ArrayList<PaymentIn>();
-	
-	public void addDiscount(Discount discount){
-		discounts.add(discount);
-	}
+    private List<PaymentIn> voucherPayments = new ArrayList<PaymentIn>();
 
-    public void removeDiscount(Long discountId){
+    private boolean applingOwing = true;
+
+    public void addDiscount(Discount discount) {
+        discounts.add(discount);
+    }
+
+    public void removeDiscount(Long discountId) {
         Discount discount = getDiscountBy(discountId);
         if (discount != null)
             discounts.remove(discount);
     }
 
-    public Discount getDiscountBy(Long discountId)
-    {
+    public Discount getDiscountBy(Long discountId) {
         List<Discount> discounts = Collections.unmodifiableList(this.discounts);
         for (Discount discount : discounts) {
 
@@ -59,327 +62,318 @@ public class PurchaseModel {
         return null;
     }
 
-    public boolean containsDiscount(Long discountId)
-    {
+    public boolean containsDiscount(Long discountId) {
         return getDiscountBy(discountId) != null;
     }
 
 
-
     public void addContact(Contact contact) {
-		this.contacts.put(contact, new ContactNode());
-	}
-	
-	public List<Contact> getContacts() {
-		return Collections.unmodifiableList(new ArrayList<Contact>(contacts.keySet()));
-	}
+        this.contacts.put(contact, new ContactNode());
+    }
 
-	public void setPayer(Contact payer) {
-		this.payer = payer;
-		getInvoice().setContact(payer);
-		getInvoice().setBillToAddress(payer.getAddress());
-		getPayment().setContact(payer);
-	}
-	
-	public Contact getPayer() {
-		return payer;
-	}
+    public List<Contact> getContacts() {
+        return Collections.unmodifiableList(new ArrayList<Contact>(contacts.keySet()));
+    }
 
-	public Invoice getInvoice() {
-		if(invoice == null)
-		{
-			invoice = objectContext.newObject(Invoice.class);
-			// fill the invoice with default values
-			invoice.setInvoiceDate(new Date());
-			invoice.setAmountOwing(BigDecimal.ZERO);
-			invoice.setDateDue(new Date());
-			invoice.setSource(PaymentSource.SOURCE_WEB);
-			invoice.setCollege(college);
-			invoice.setContact(payer);
-			invoice.setWebSite(getWebSite());
-		}
-		return invoice;
-	}
+    public void setPayer(Contact payer) {
+        this.payer = payer;
+        getInvoice().setContact(payer);
+        getInvoice().setBillToAddress(payer.getAddress());
+        getPayment().setContact(payer);
+    }
 
-	public void setPayment(PaymentIn payment)
-	{
-		this.payment = payment;
-	}
-	
+    public Contact getPayer() {
+        return payer;
+    }
 
-	public PaymentIn getPayment() {
-		if (payment == null)
-		{
-			payment = objectContext.newObject(PaymentIn.class);
-			payment.setStatus(PaymentStatus.NEW);
-			payment.setSource(PaymentSource.SOURCE_WEB);
-			payment.setCollege(college);
+    public Invoice getInvoice() {
+        if (invoice == null) {
+            invoice = objectContext.newObject(Invoice.class);
+            // fill the invoice with default values
+            invoice.setInvoiceDate(new Date());
+            invoice.setAmountOwing(BigDecimal.ZERO);
+            invoice.setDateDue(new Date());
+            invoice.setSource(PaymentSource.SOURCE_WEB);
+            invoice.setCollege(college);
+            invoice.setContact(payer);
+            invoice.setWebSite(getWebSite());
+        }
+        return invoice;
+    }
 
-			PaymentInLine paymentInLine = getObjectContext().newObject(PaymentInLine.class);
-			paymentInLine.setInvoice(getInvoice());
-			paymentInLine.setPaymentIn(payment);
-			paymentInLine.setCollege(college);
+    public void setPayment(PaymentIn payment) {
+        this.payment = payment;
+    }
 
-		}
-		return payment;
-	}
 
-    public Money getTotalDiscountAmountIncTax()
-    {
+    public PaymentIn getPayment() {
+        if (payment == null) {
+            payment = objectContext.newObject(PaymentIn.class);
+            payment.setStatus(PaymentStatus.NEW);
+            payment.setSource(PaymentSource.SOURCE_WEB);
+            payment.setCollege(college);
+
+            PaymentInLine paymentInLine = getObjectContext().newObject(PaymentInLine.class);
+            paymentInLine.setInvoice(getInvoice());
+            paymentInLine.setPaymentIn(payment);
+            paymentInLine.setCollege(college);
+
+        }
+        return payment;
+    }
+
+    public Money getTotalDiscountAmountIncTax() {
         return totalDiscountAmountIncTax;
     }
-	
-	public void addEnrolment(Enrolment e) {
-		getContactNode(e.getStudent().getContact()).addEnrolment(e);
-	}
-	
-	public void removeEnrolment(Enrolment e) {
-		getContactNode(e.getStudent().getContact()).removeEnrolment(e);
-		if (e.getInvoiceLine() != null)
-			objectContext.deleteObject(e.getInvoiceLine());
-		objectContext.deleteObject(e);
-	}
-	
-	public void addConcession(StudentConcession concession) {
-		getContactNode(concession.getStudent().getContact()).addConcession(concession.getConcessionType());
-	}
-	
-	public void removeConcession(Contact contact, ConcessionType concession) {
-		getContactNode(contact).removeConcession(concession);
-	}
+
+    public void addEnrolment(Enrolment e) {
+        getContactNode(e.getStudent().getContact()).addEnrolment(e);
+    }
+
+    public void removeEnrolment(Enrolment e) {
+        getContactNode(e.getStudent().getContact()).removeEnrolment(e);
+        if (e.getInvoiceLine() != null)
+            objectContext.deleteObject(e.getInvoiceLine());
+        objectContext.deleteObject(e);
+    }
+
+    public void addConcession(StudentConcession concession) {
+        getContactNode(concession.getStudent().getContact()).addConcession(concession.getConcessionType());
+    }
+
+    public void removeConcession(Contact contact, ConcessionType concession) {
+        getContactNode(contact).removeConcession(concession);
+    }
 
 
-	public void addProductItem(ProductItem p) {
-		getContactNode(payer).addProductItem(p);
-	}
-	
-	public void removeProductItem(Contact contact, ProductItem p) {
-		InvoiceLine invoiceLine = p.getInvoiceLine();
-		getContactNode(contact).removeProductItem(p);
-		if (invoiceLine != null)
-			objectContext.deleteObject(invoiceLine);
-		objectContext.deleteObject(p);
+    public void addProductItem(ProductItem p) {
+        getContactNode(payer).addProductItem(p);
+    }
 
-	}
+    public void removeProductItem(Contact contact, ProductItem p) {
+        InvoiceLine invoiceLine = p.getInvoiceLine();
+        getContactNode(contact).removeProductItem(p);
+        if (invoiceLine != null)
+            objectContext.deleteObject(invoiceLine);
+        objectContext.deleteObject(p);
 
-
-	public void removeAllProductItems(Contact contact)
-	{
-		List<ProductItem> productItems = getAllProductItems(contact);
-		for (ProductItem productItem : productItems) {
-			this.removeProductItem(contact,productItem);
-		}
-	}
-
-	
-	public void addVoucherPayments(Collection<PaymentIn> vps) {
-		this.voucherPayments.addAll(vps);
-	}
-	
-	public void clearVoucherPayments() {
-		this.voucherPayments.clear();
-	}
-	
-	public List<PaymentIn> getVoucherPayments() {
-		return Collections.unmodifiableList(voucherPayments);
-	}
-	
-	public void enableEnrolment(Enrolment e) {
-		getContactNode(e.getStudent().getContact()).enableEnrolment(e);
-	}
-	
-	public void disableEnrolment(Enrolment e) {
-		InvoiceLine il = e.getInvoiceLine();
-		e.setInvoiceLine(null);
-		objectContext.deleteObject(il);
-		getContactNode(e.getStudent().getContact()).disableEnrolment(e);
-	}
-	
-	public void enableProductItem(ProductItem p) {
-		getContactNode(payer).enableProductItem(p);
-	}
-	
-	public void disableProductItem(ProductItem p) {
-		InvoiceLine il = p.getInvoiceLine();
-		p.setInvoiceLine(null);
-		objectContext.deleteObject(il);
-		getContactNode(payer).disableProductItem(p);
-	}
-	
-	public List<Enrolment> getEnabledEnrolments(Contact contact) {
-		return Collections.unmodifiableList(getContactNode(contact).enabledEnrolments);
-	}
-
-	public List<ProductItem> getEnabledProductItems(Contact contact) {
-		return Collections.unmodifiableList(getContactNode(contact).enabledProductItems);
-	}
+    }
 
 
-	public List<Enrolment> getDisabledEnrolments(Contact contact) {
-		return Collections.unmodifiableList(getContactNode(contact).disabledEnrolments);
-	}
-	
-	public List<Enrolment> getAllEnrolments(Contact contact) {
-		return getContactNode(contact).getAllEnrolments();
-	}
-
-	Enrolment getEnrolmentBy(Contact contact, CourseClass courseClass)
-	{
-		List<Enrolment> enrolments = getContactNode(contact).getAllEnrolments();
-		for (Enrolment enrolment : enrolments) {
-			if (enrolment.getCourseClass().getId().equals(courseClass.getId()))
-				return enrolment;
-		}
-		return null;
-	}
-
-	ProductItem getProductItemBy(Contact contact, Product product)
-	{
-		List<ProductItem> productItems = getContactNode(contact).getAllProductItems();
-		for (ProductItem productItem : productItems ) {
-			if (productItem.getProduct().getId().equals(product.getId()))
-				return productItem;
-		}
-		return null;
-	}
+    public void removeAllProductItems(Contact contact) {
+        List<ProductItem> productItems = getAllProductItems(contact);
+        for (ProductItem productItem : productItems) {
+            this.removeProductItem(contact, productItem);
+        }
+    }
 
 
-	public boolean isEnrolmentEnabled(Enrolment enrolment) {
-		return getEnabledEnrolments(enrolment.getStudent().getContact()).contains(enrolment);
-	}
+    public void addVoucherPayments(Collection<PaymentIn> vps) {
+        this.voucherPayments.addAll(vps);
+    }
 
-	public boolean isProductItemEnabled(ProductItem productItem) {
-		return getEnabledProductItems(payer).contains(productItem);
-	}
+    public void clearVoucherPayments() {
+        this.voucherPayments.clear();
+    }
+
+    public List<PaymentIn> getVoucherPayments() {
+        return Collections.unmodifiableList(voucherPayments);
+    }
+
+    public void enableEnrolment(Enrolment e) {
+        getContactNode(e.getStudent().getContact()).enableEnrolment(e);
+    }
+
+    public void disableEnrolment(Enrolment e) {
+        InvoiceLine il = e.getInvoiceLine();
+        e.setInvoiceLine(null);
+        objectContext.deleteObject(il);
+        getContactNode(e.getStudent().getContact()).disableEnrolment(e);
+    }
+
+    public void enableProductItem(ProductItem p) {
+        getContactNode(payer).enableProductItem(p);
+    }
+
+    public void disableProductItem(ProductItem p) {
+        InvoiceLine il = p.getInvoiceLine();
+        p.setInvoiceLine(null);
+        objectContext.deleteObject(il);
+        getContactNode(payer).disableProductItem(p);
+    }
+
+    public List<Enrolment> getEnabledEnrolments(Contact contact) {
+        return Collections.unmodifiableList(getContactNode(contact).enabledEnrolments);
+    }
+
+    public List<ProductItem> getEnabledProductItems(Contact contact) {
+        return Collections.unmodifiableList(getContactNode(contact).enabledProductItems);
+    }
 
 
-	public List<ProductItem> getAllProductItems(Contact contact) {
-		return getContactNode(contact).getAllProductItems();
-	}
-	
-	public ProductItem getProductItemBy(Contact contact, Integer integer) {
-		return getAllProductItems(contact).get(integer);
-	}
-	
-	public List<ProductItem> getDisabledProductItems(Contact contact) {
-		return Collections.unmodifiableList(getContactNode(contact).disabledProductItems);
-	}
-	
-	/**
-	 * Always returns non null {@link ContactNode} instance. If specified contact doesn't exist throws {@link IllegalArgumentException}.
-	 * 
-	 * @return contact node structure
-	 */
-	private ContactNode getContactNode(Contact c) {
-		ContactNode cn = this.contacts.get(c);
-		if (cn != null) {
-			return cn;
-		} else {
-			throw new IllegalArgumentException("Requested contact is not presented in model's contact list.");
-		}
-	}
+    public List<Enrolment> getDisabledEnrolments(Contact contact) {
+        return Collections.unmodifiableList(getContactNode(contact).disabledEnrolments);
+    }
 
-	public College getCollege() {
-		return college;
-	}
+    public List<Enrolment> getAllEnrolments(Contact contact) {
+        return getContactNode(contact).getAllEnrolments();
+    }
 
-	public void setCollege(College college) {
-		this.college = college;
-	}
+    Enrolment getEnrolmentBy(Contact contact, CourseClass courseClass) {
+        List<Enrolment> enrolments = getContactNode(contact).getAllEnrolments();
+        for (Enrolment enrolment : enrolments) {
+            if (enrolment.getCourseClass().getId().equals(courseClass.getId()))
+                return enrolment;
+        }
+        return null;
+    }
 
-	public List<CourseClass> getClasses() {
-		return Collections.unmodifiableList(classes);
-	}
+    ProductItem getProductItemBy(Contact contact, Product product) {
+        List<ProductItem> productItems = getContactNode(contact).getAllProductItems();
+        for (ProductItem productItem : productItems) {
+            if (productItem.getProduct().getId().equals(product.getId()))
+                return productItem;
+        }
+        return null;
+    }
 
-	public void setClasses(List<CourseClass> classes) {
-		this.classes = new ArrayList<CourseClass>(classes);
-	}
 
-    public void addClass(CourseClass courseClass)
-    {
+    public boolean isEnrolmentEnabled(Enrolment enrolment) {
+        return getEnabledEnrolments(enrolment.getStudent().getContact()).contains(enrolment);
+    }
+
+    public boolean isProductItemEnabled(ProductItem productItem) {
+        return getEnabledProductItems(payer).contains(productItem);
+    }
+
+
+    public List<ProductItem> getAllProductItems(Contact contact) {
+        return getContactNode(contact).getAllProductItems();
+    }
+
+    public ProductItem getProductItemBy(Contact contact, Integer integer) {
+        return getAllProductItems(contact).get(integer);
+    }
+
+    public List<ProductItem> getDisabledProductItems(Contact contact) {
+        return Collections.unmodifiableList(getContactNode(contact).disabledProductItems);
+    }
+
+    /**
+     * Always returns non null {@link ContactNode} instance. If specified contact doesn't exist throws {@link IllegalArgumentException}.
+     *
+     * @return contact node structure
+     */
+    private ContactNode getContactNode(Contact c) {
+        ContactNode cn = this.contacts.get(c);
+        if (cn != null) {
+            return cn;
+        } else {
+            throw new IllegalArgumentException("Requested contact is not presented in model's contact list.");
+        }
+    }
+
+    public College getCollege() {
+        return college;
+    }
+
+    public void setCollege(College college) {
+        this.college = college;
+    }
+
+    public List<CourseClass> getClasses() {
+        return Collections.unmodifiableList(classes);
+    }
+
+    public void setClasses(List<CourseClass> classes) {
+        this.classes = new ArrayList<CourseClass>(classes);
+    }
+
+    public void addClass(CourseClass courseClass) {
         this.classes.add(courseClass);
     }
 
 
+    public List<Discount> getDiscounts() {
+        return new ArrayList<Discount>(discounts);
+    }
 
-	public List<Discount> getDiscounts() {
-		return new ArrayList<Discount>(discounts);
-	}
+    public void setDiscounts(List<Discount> discounts) {
+        this.discounts = discounts;
+    }
 
-	public void setDiscounts(List<Discount> discounts) {
-		this.discounts = discounts;
-	}
+    public List<Product> getProducts() {
+        return products;
+    }
 
-	public List<Product> getProducts() {
-		return products;
-	}
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
+    public ObjectContext getObjectContext() {
+        return objectContext;
+    }
 
-	public ObjectContext getObjectContext() {
-		return objectContext;
-	}
+    public void setObjectContext(ObjectContext objectContext) {
+        this.objectContext = objectContext;
+    }
 
-	public void setObjectContext(ObjectContext objectContext) {
-		this.objectContext = objectContext;
-	}
+    public <T extends Persistent> T localizeObject(T objectForLocalize) {
+        if (objectForLocalize == null)
+            return null;
+        if (objectForLocalize.getObjectContext().equals(objectContext)) {
+            return objectForLocalize;
+        } else {
+            return (T) objectContext.localObject(objectForLocalize.getObjectId(), null);
+        }
+    }
 
-	public <T extends Persistent> T localizeObject(T objectForLocalize) {
-		if (objectForLocalize == null)
-			return null;
-		if (objectForLocalize.getObjectContext().equals(objectContext)) {
-			return objectForLocalize;
-		} else {
-			return (T) objectContext.localObject(objectForLocalize.getObjectId(), null);
-		}
-	}
+    public <T extends Persistent> List<T> localizeObjects(List<T> objectsForLocalize) {
+        ArrayList<T> list = new ArrayList<T>();
+        for (T t : objectsForLocalize) {
+            if (t.getObjectContext().equals(objectContext)) {
+                list.add(t);
+            } else {
+                list.add((T) objectContext.localObject(t.getObjectId(), null));
+            }
+        }
+        return list;
+    }
 
-	public <T extends Persistent> List<T> localizeObjects(List<T> objectsForLocalize) {
-		ArrayList<T> list = new ArrayList<T>();
-		for (T t : objectsForLocalize) {
-			if (t.getObjectContext().equals(objectContext)) {
-				list.add(t);
-			}
-			else
-			{
-				list.add((T) objectContext.localObject(t.getObjectId(), null));
-			}
-		}
-		return list;
-	}
-
-	public boolean containsContactWith(ContactCredentials contactCredentials) {
-		for (Contact contact: getContacts()) {
-			if (contact.getFamilyName().equalsIgnoreCase(contactCredentials.getLastName()) &&
-					contact.getGivenName().equalsIgnoreCase(contactCredentials.getFirstName()) &&
-					contact.getEmailAddress().equalsIgnoreCase(contactCredentials.getEmail()))
-				return true;
-		}
-		return false;
-	}
+    public boolean containsContactWith(ContactCredentials contactCredentials) {
+        for (Contact contact : getContacts()) {
+            if (contact.getFamilyName().equalsIgnoreCase(contactCredentials.getLastName()) &&
+                    contact.getGivenName().equalsIgnoreCase(contactCredentials.getFirstName()) &&
+                    contact.getEmailAddress().equalsIgnoreCase(contactCredentials.getEmail()))
+                return true;
+        }
+        return false;
+    }
 
 
-	public Money updateTotalIncGst()
-	{
-		Money result = Money.ZERO;
-		for (Contact contact : getContacts()) {
-			for (Enrolment enabledEnrolment : getEnabledEnrolments(contact)) {
-				InvoiceLine invoiceLine = enabledEnrolment.getInvoiceLine();
-				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
-			}
-			for (ProductItem enabledProductItem : getEnabledProductItems(contact)) {
-				InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
-				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
-			}
-		}
-		getPayment().setAmount(result.toBigDecimal());
-		return result;
-	}
+    public Money updateTotalIncGst() {
+        Money result = Money.ZERO;
+        for (Contact contact : getContacts()) {
+            for (Enrolment enabledEnrolment : getEnabledEnrolments(contact)) {
+                InvoiceLine invoiceLine = enabledEnrolment.getInvoiceLine();
+                result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+            }
+            for (ProductItem enabledProductItem : getEnabledProductItems(contact)) {
+                InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
+                result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+            }
+        }
 
-    public void updateTotalDiscountAmountIncTax()
-    {
+        if (applingOwing)
+        {
+            Money previousOwing = getPreviousOwing();
+            result = result.add(previousOwing);
+        }
+        getPayment().setAmount((result.isLessThan(Money.ZERO) ? Money.ZERO : result).toBigDecimal());
+        return result;
+    }
+
+    public void updateTotalDiscountAmountIncTax() {
         totalDiscountAmountIncTax = Money.ZERO;
         for (Contact contact : this.getContacts()) {
             for (Enrolment enabledEnrolment : this.getEnabledEnrolments(contact)) {
@@ -392,89 +386,82 @@ public class PurchaseModel {
     }
 
 
-	public void prepareToMakePayment() {
+    public void prepareToMakePayment() {
 
-		updateTotalIncGst();
+        updateTotalIncGst();
 
-		Money totalGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), true);
-		Money totalExGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), false);
-		getInvoice().setTotalExGst(totalExGst.toBigDecimal());
-		getInvoice().setTotalGst(totalGst.toBigDecimal());
+        Money totalGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), true);
+        Money totalExGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), false);
+        getInvoice().setTotalExGst(totalExGst.toBigDecimal());
+        getInvoice().setTotalGst(totalGst.toBigDecimal());
 
-		getPayment().getPaymentInLines().get(0).setAmount(getPayment().getAmount());
-		getPayment().setStatus(PaymentStatus.IN_TRANSACTION);
+        getPayment().getPaymentInLines().get(0).setAmount(getPayment().getAmount());
+        getPayment().setStatus(PaymentStatus.IN_TRANSACTION);
 
-		for (Contact contact: getContacts())
-		{
-			for (Enrolment e : getEnabledEnrolments(contact)) {
-				e.setStatus(EnrolmentStatus.IN_TRANSACTION);
-			}
-		}
-	}
+        for (Contact contact : getContacts()) {
+            for (Enrolment e : getEnabledEnrolments(contact)) {
+                e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+            }
+        }
+    }
 
-    public void deleteDisabledItems()
-    {
-        for (Contact contact: getContacts())
-        {
+    public void deleteDisabledItems() {
+        for (Contact contact : getContacts()) {
             deleteDisabledEnrollments(contact);
             deleteDisabledProductItems(contact);
         }
     }
 
 
-	void deleteDisabledProductItems(Contact contact) {
-		List<ProductItem> productItems = new ArrayList<ProductItem>(getDisabledProductItems(contact));
-		for (ProductItem productItem : productItems) {
-			removeProductItem(contact, productItem);
-		}
-	}
+    void deleteDisabledProductItems(Contact contact) {
+        List<ProductItem> productItems = new ArrayList<ProductItem>(getDisabledProductItems(contact));
+        for (ProductItem productItem : productItems) {
+            removeProductItem(contact, productItem);
+        }
+    }
 
-	void deleteDisabledEnrollments(Contact contact) {
-		List<Enrolment> enrolments = new ArrayList<Enrolment>(getDisabledEnrolments(contact));
-		for (Enrolment enrolment : enrolments) {
-			removeEnrolment(enrolment);
-		}
-	}
+    void deleteDisabledEnrollments(Contact contact) {
+        List<Enrolment> enrolments = new ArrayList<Enrolment>(getDisabledEnrolments(contact));
+        for (Enrolment enrolment : enrolments) {
+            removeEnrolment(enrolment);
+        }
+    }
 
-	public List<Enrolment> getAllEnabledEnrolments() {
+    public List<Enrolment> getAllEnabledEnrolments() {
 
-		ArrayList<Enrolment> result = new ArrayList<Enrolment>();
-		for (Contact contact: getContacts())
-		{
-			result.addAll(getEnabledEnrolments(contact));
-		}
-		return result;
-	}
+        ArrayList<Enrolment> result = new ArrayList<Enrolment>();
+        for (Contact contact : getContacts()) {
+            result.addAll(getEnabledEnrolments(contact));
+        }
+        return result;
+    }
 
-	public List<ProductItem> getAllEnabledProductItems() {
+    public List<ProductItem> getAllEnabledProductItems() {
 
-		ArrayList<ProductItem> result = new ArrayList<ProductItem>();
-		for (Contact contact: getContacts())
-		{
-			result.addAll(getEnabledProductItems(contact));
-		}
-		return result;
-	}
+        ArrayList<ProductItem> result = new ArrayList<ProductItem>();
+        for (Contact contact : getContacts()) {
+            result.addAll(getEnabledProductItems(contact));
+        }
+        return result;
+    }
 
-    public String setErrorFor(Enrolment enrolment, String error)
-    {
+    public String setErrorFor(Enrolment enrolment, String error) {
         ContactNode contactNode = contacts.get(enrolment.getStudent().getContact());
         return contactNode.setErrorFor(enrolment, error);
     }
 
-    public String getErrorBy(Enrolment enrolment)
-    {
+    public String getErrorBy(Enrolment enrolment) {
         ContactNode contactNode = contacts.get(enrolment.getStudent().getContact());
         return contactNode.getErrorBy(enrolment);
     }
 
-	public WebSite getWebSite() {
-		return webSite;
-	}
+    public WebSite getWebSite() {
+        return webSite;
+    }
 
-	public void setWebSite(WebSite webSite) {
-		this.webSite = webSite;
-	}
+    public void setWebSite(WebSite webSite) {
+        this.webSite = webSite;
+    }
 
     public boolean containsClassWith(Long classId) {
         for (CourseClass courseClass : classes) {
@@ -484,109 +471,120 @@ public class PurchaseModel {
         return false;
     }
 
+    public Money getPreviousOwing() {
+        return InvoiceUtils.amountOwingForPayer(getPayer()).subtract(Money.valueOf(getInvoice().getAmountOwing()));
+    }
+
+    public boolean isApplingOwing() {
+        return applingOwing;
+    }
+
+    public void setApplingOwing(boolean applingOwing) {
+        this.applingOwing = applingOwing;
+    }
+
     private class ContactNode {
-		
-		private List<ConcessionType> concessions;
+
+        private List<ConcessionType> concessions;
 
         /**
          * map contains error for by course class id. we use courseClassId as key because Enrolment can be recreated
          */
         private Map<Long, String> courseClassErrors = new HashMap<Long, String>();
 
-		private List<Enrolment> enabledEnrolments;
-		private List<Enrolment> disabledEnrolments;
-		
-		private List<ProductItem> enabledProductItems;
-		private List<ProductItem> disabledProductItems;
-		
-		public ContactNode() {
-			this.concessions = new ArrayList<ConcessionType>();
-			
-			this.enabledEnrolments = new ArrayList<Enrolment>();
-			this.disabledEnrolments = new ArrayList<Enrolment>();
-			
-			this.enabledProductItems = new ArrayList<ProductItem>();
-			this.disabledProductItems = new ArrayList<ProductItem>();
-		}
-		
-		private List<Enrolment> getAllEnrolments() {
-			List<Enrolment> result = new ArrayList<Enrolment>(enabledEnrolments);
-			result.addAll(disabledEnrolments);
-			return Collections.unmodifiableList(result);
-		}
-		
-		private List<ProductItem> getAllProductItems() {
-			List<ProductItem> result = new ArrayList<ProductItem>(enabledProductItems);
-			result.addAll(disabledProductItems);
-			return Collections.unmodifiableList(result);
-		}
-		
-		public void addConcession(ConcessionType c) {
-			this.concessions.add(c);
-		}
-		
-		public void removeConcession(ConcessionType c) {
-			if (this.concessions.contains(c)) {
-				concessions.remove(c);
-			}
-		}
-		
-		public void addEnrolment(Enrolment e) {
-			this.disabledEnrolments.add(e);
-		}
-		
-		public void removeEnrolment(Enrolment e) {
-			if (!this.enabledEnrolments.remove(e)) {
-				this.disabledEnrolments.remove(e);
-			}
-		}
-		
-		public void addProductItem(ProductItem p) {
-			this.enabledProductItems.add(p);
-		}
-		
-		public void removeProductItem(ProductItem p) {
-			if (!this.enabledProductItems.remove(p)) {
-				this.disabledProductItems.remove(p);
-			}
-		}
-		
-		public void enableEnrolment(Enrolment e) {
-            courseClassErrors.remove(e.getCourseClass().getId());
-			if (disabledEnrolments.contains(e)) {
-				disabledEnrolments.remove(e);
-				enabledEnrolments.add(e);
-			}
-		}
-		
-		public void disableEnrolment(Enrolment e) {
-			if (enabledEnrolments.contains(e)) {
-				enabledEnrolments.remove(e);
-				disabledEnrolments.add(0,e);
-			}
-		}
-		
-		public void enableProductItem(ProductItem p) {
-			if (disabledProductItems.contains(p)) {
-				disabledProductItems.remove(p);
-				enabledProductItems.add(p);
-			}
-		}
-		
-		public void disableProductItem(ProductItem p) {
-			if (enabledProductItems.contains(p)) {
-				enabledProductItems.remove(p);
-				disabledProductItems.add(p);
-			}
-		}
+        private List<Enrolment> enabledEnrolments;
+        private List<Enrolment> disabledEnrolments;
 
-        public String getErrorBy(Enrolment enrolment)
-        {
+        private List<ProductItem> enabledProductItems;
+        private List<ProductItem> disabledProductItems;
+
+        public ContactNode() {
+            this.concessions = new ArrayList<ConcessionType>();
+
+            this.enabledEnrolments = new ArrayList<Enrolment>();
+            this.disabledEnrolments = new ArrayList<Enrolment>();
+
+            this.enabledProductItems = new ArrayList<ProductItem>();
+            this.disabledProductItems = new ArrayList<ProductItem>();
+        }
+
+        private List<Enrolment> getAllEnrolments() {
+            List<Enrolment> result = new ArrayList<Enrolment>(enabledEnrolments);
+            result.addAll(disabledEnrolments);
+            return Collections.unmodifiableList(result);
+        }
+
+        private List<ProductItem> getAllProductItems() {
+            List<ProductItem> result = new ArrayList<ProductItem>(enabledProductItems);
+            result.addAll(disabledProductItems);
+            return Collections.unmodifiableList(result);
+        }
+
+        public void addConcession(ConcessionType c) {
+            this.concessions.add(c);
+        }
+
+        public void removeConcession(ConcessionType c) {
+            if (this.concessions.contains(c)) {
+                concessions.remove(c);
+            }
+        }
+
+        public void addEnrolment(Enrolment e) {
+            this.disabledEnrolments.add(e);
+        }
+
+        public void removeEnrolment(Enrolment e) {
+            if (!this.enabledEnrolments.remove(e)) {
+                this.disabledEnrolments.remove(e);
+            }
+        }
+
+        public void addProductItem(ProductItem p) {
+            this.enabledProductItems.add(p);
+        }
+
+        public void removeProductItem(ProductItem p) {
+            if (!this.enabledProductItems.remove(p)) {
+                this.disabledProductItems.remove(p);
+            }
+        }
+
+        public void enableEnrolment(Enrolment e) {
+            courseClassErrors.remove(e.getCourseClass().getId());
+            if (disabledEnrolments.contains(e)) {
+                disabledEnrolments.remove(e);
+                enabledEnrolments.add(e);
+            }
+        }
+
+        public void disableEnrolment(Enrolment e) {
+            if (enabledEnrolments.contains(e)) {
+                enabledEnrolments.remove(e);
+                disabledEnrolments.add(0, e);
+            }
+        }
+
+        public void enableProductItem(ProductItem p) {
+            if (disabledProductItems.contains(p)) {
+                disabledProductItems.remove(p);
+                enabledProductItems.add(p);
+            }
+        }
+
+        public void disableProductItem(ProductItem p) {
+            if (enabledProductItems.contains(p)) {
+                enabledProductItems.remove(p);
+                disabledProductItems.add(p);
+            }
+        }
+
+        public String getErrorBy(Enrolment enrolment) {
             return courseClassErrors.get(enrolment.getCourseClass().getId());
         }
 
         public String setErrorFor(Enrolment enrolment, String error) {
-            return courseClassErrors.put(enrolment.getCourseClass().getId(),error);
+            return courseClassErrors.put(enrolment.getCourseClass().getId(), error);
         }
     }
 

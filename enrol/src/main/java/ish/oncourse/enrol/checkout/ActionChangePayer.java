@@ -86,6 +86,8 @@ public class ActionChangePayer extends  APurchaseAction{
 			actionEnableProductItem.setProductItem(productItem);
 			actionEnableProductItem.action();
 		}
+        getController().getModel().setApplingOwing(true);
+        getController().setShowCreditAmount(false);
 	}
 
 	public Contact getContact() {

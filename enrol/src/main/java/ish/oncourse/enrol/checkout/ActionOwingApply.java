@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout;
 public class ActionOwingApply extends APurchaseAction{
 	@Override
 	protected void makeAction() {
+        getController().getModel().setApplingOwing(false);
 	}
 
 	@Override
@@ -11,6 +12,6 @@ public class ActionOwingApply extends APurchaseAction{
 
 	@Override
 	protected boolean validate() {
-		return false;
+		return true;
 	}
 }
