@@ -20,7 +20,7 @@
   <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 	
 	<indexConfig>
-		<writeLockTimeout>1000</writeLockTimeout>
+		<writeLockTimeout>20000</writeLockTimeout>
 		<maxIndexingThreads>8</maxIndexingThreads>
 		<useCompoundFile>false</useCompoundFile>
 		<ramBufferSizeMB>32</ramBufferSizeMB>
