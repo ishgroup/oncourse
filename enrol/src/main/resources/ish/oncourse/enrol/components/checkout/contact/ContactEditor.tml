@@ -12,12 +12,12 @@
 				<t:delegate to="block:avetmissEditor"/>
 			</t:if>
 		</t:if>
-		<div class="form-controls">
-			<t:if test="showCancelLink">
-				<t:eventlink t:id="cancelContact" class="btn btn-info">Cancel</t:eventlink>
-			</t:if>
-			<t:submit t:id="saveContact" value="Checkout" class="btn btn-primary"/>
-		</div>
+        <div class="form-controls">
+            <t:if test="showCancelLink">
+                <t:eventlink t:id="cancelContact" class="btn btn-info">${message:label-cancelStudent}</t:eventlink>
+            </t:if>
+            <t:submit t:id="submitContact" value="${message:label-submitStudent}" class="btn btn-primary"/>
+        </div>
 	</t:form>
 
 	<t:block t:id="message">

@@ -87,8 +87,8 @@ public class ContactEditor {
 		return delegate.getContact();
 	}
 
-	@OnEvent(component = "saveContact", value = "selected")
-	public  Object save() {
+	@OnEvent(component = "submitContact", value = "selected")
+	public  Object submitContact() {
 
 		if (delegate != null)
 		{
@@ -133,7 +133,7 @@ public class ContactEditor {
 	}
 
 	@OnEvent(value = "cancelContact")
-	public Object cancel() {
+	public Object cancelContact() {
 		if (delegate != null)
 		{
 			delegate.setErrors(Collections.EMPTY_MAP);

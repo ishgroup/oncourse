@@ -64,7 +64,8 @@ function initHints()
 
 
 $j(document).ready(function() {
+    //initHints should be going first becouse inside the function we unbind focus and blur events
+    initHints();
     initContactEditorHandle();
 	initCountryAutoCompleteHandle();
-    initHints();
 });

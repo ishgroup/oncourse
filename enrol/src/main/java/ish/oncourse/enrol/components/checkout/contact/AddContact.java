@@ -40,8 +40,8 @@ public class AddContact {
 	}
 
 
-	@OnEvent(value = "resetContact")
-	public Object resetContact() {
+	@OnEvent(value = "cancelContact")
+	public Object cancelContact() {
 		if (delegate != null)
 		{
 			delegate.setErrors(Collections.EMPTY_MAP);
@@ -50,8 +50,8 @@ public class AddContact {
 		return returnPage;
 	}
 
-	@OnEvent(component = "checkout", value = "selected")
-	public Object addContact() {
+	@OnEvent(component = "submitContact", value = "selected")
+	public Object submitContact() {
 		if (delegate != null)
 		{
 			AddContactParser addContactValidator = new AddContactParser();
