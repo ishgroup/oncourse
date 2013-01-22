@@ -8,7 +8,6 @@
 				<p>${message:requireAdditionalInfo}</p>
 			</div>
 		</t:if>
-		<p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
 		<fieldset id="student_enrol_details">
 			<br/>
 			<t:if test="showEmail">

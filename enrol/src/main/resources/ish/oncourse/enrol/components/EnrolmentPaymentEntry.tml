@@ -85,7 +85,6 @@
 	     					I understand the enrolment and refund policy. 
 		    			</div>
   					</p>
-  					<p class="note"><strong class="alert">Note</strong>: Fields marked with an <em>*</em> are required.</p>
   				</div>
   			</t:if>
 	    	<t:if test="hasConcessionsCollege">

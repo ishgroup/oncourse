@@ -47,7 +47,6 @@
 </t:block>
 
 <t:block t:id="notes">
-    <p class="note"><strong class="alert">Note</strong>: <t:outputraw value="${message:message-markedFieldsRequired}"/></p>
     <p class="note">
         <strong class="alert">Note</strong>: ${message:message-noteSameEmail}
     </p>

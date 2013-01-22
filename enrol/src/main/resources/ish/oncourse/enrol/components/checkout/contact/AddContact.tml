@@ -11,7 +11,6 @@
 				<br/>
 				<span t:type="checkout/contact/addcontactfieldset" delegate="delegate" validateHandler="validateHandler"/>
 			</fieldset>
-			<p class="note"><strong class="alert">Note</strong>: <t:outputraw value="${message:message-markedFieldsRequired}"/></p>
 			<p class="note">
 				<strong class="alert">Note</strong>: ${message:message-noteSameEmail}
 			</p>
