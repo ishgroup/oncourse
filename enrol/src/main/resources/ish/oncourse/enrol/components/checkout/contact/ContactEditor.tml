@@ -14,7 +14,7 @@
 		</t:if>
         <div class="form-controls">
             <t:if test="showCancelLink">
-                <t:eventlink t:id="cancelContact" class="btn btn-info">${message:label-cancelStudent}</t:eventlink>
+                <t:eventlink t:id="cancelContact" class="cancel">${message:label-cancelStudent}</t:eventlink>
             </t:if>
             <t:submit t:id="submitContact" value="${message:label-submitStudent}" class="btn btn-primary"/>
         </div>
