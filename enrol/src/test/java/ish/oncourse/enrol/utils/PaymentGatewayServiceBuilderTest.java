@@ -1,8 +1,5 @@
 package ish.oncourse.enrol.utils;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
@@ -10,10 +7,13 @@ import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
-
 import org.apache.tapestry5.ioc.ServiceResources;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Test for the {@link PaymentGatewayServiceBuilder}.
@@ -50,9 +50,6 @@ public class PaymentGatewayServiceBuilderTest {
 		builder = new PaymentGatewayServiceBuilder(preferenceController, mock(ICayenneService.class));
 
 		when(resources.getService(PreferenceController.class)).thenReturn(preferenceController);
-		when(preferenceController.getPaymentGatewayType()).thenReturn(
-				PaymentGatewayType.DISABLED, PaymentGatewayType.TEST,
-				PaymentGatewayType.PAYMENT_EXPRESS);
 	}
 
 	/**
@@ -63,6 +60,7 @@ public class PaymentGatewayServiceBuilderTest {
 	 */
 	@Test
 	public void testCollegeWithDisabledGateway() {
+		when(preferenceController.getPaymentGatewayType()).thenReturn(PaymentGatewayType.DISABLED);
 		assertTrue(builder.buildService() instanceof DisabledPaymentGatewayService);
 	}
 
@@ -73,6 +71,7 @@ public class PaymentGatewayServiceBuilderTest {
 	 */
 	@Test
 	public void testCollegeWithTestGateway() {
+		when(preferenceController.getPaymentGatewayType()).thenReturn(PaymentGatewayType.TEST);
 		assertTrue(builder.buildService() instanceof TestPaymentGatewayService);
 	}
 
@@ -84,6 +83,7 @@ public class PaymentGatewayServiceBuilderTest {
 	 */
 	@Test
 	public void testCollegeWithPaymentExpressGateway() {
+		when(preferenceController.getPaymentGatewayType()).thenReturn(PaymentGatewayType.PAYMENT_EXPRESS);
 		assertTrue(builder.buildService() instanceof PaymentExpressGatewayService);
 	}
 
