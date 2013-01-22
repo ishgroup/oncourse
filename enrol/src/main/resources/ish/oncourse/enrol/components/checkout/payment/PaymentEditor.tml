@@ -28,13 +28,7 @@
 						</span>
 					</div>
 				</p>
-				<p class="note"><strong class="alert">Note</strong>: Fields marked with an <em>*</em> are required.</p>
 			</div>
-			<t:if test="delegate.needConcessionReminder">
-				<div class="message enrolment-concession-reminder">
-					<p>${message:message-concessionsAvailable}</p>
-				</div>
-			</t:if>
 			<div class="form-controls enrolmentsSelected">
 				<t:submit t:id="paymentSubmit" value="${submitButtonText}" class="btn btn-primary"/>
 			</div>
