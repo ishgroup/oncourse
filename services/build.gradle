@@ -3,7 +3,8 @@ dependencies {
 	compile project(':common:common-services')
 
 	compile 'ish.oncourse.angel:webservices-client:trunk-SNAPSHOT'
-	compile ('org.apache.cxf:cxf-bundle:2.6.2') {
+    //we cannot use version greater the 2.6.1 because task #15873
+	compile ('org.apache.cxf:cxf-bundle:2.6.1') {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
@@ -16,6 +17,16 @@ dependencies {
 	compile 'aopalliance:aopalliance:1.0'
 	compile 'commons-logging:commons-logging:1.1.1'
 	compile 'com.google.inject:guice:3.0'
+
+    //we should use these dependences for test because TestServer is not started properly otherwise.
+    testCompile 'org.eclipse.jetty:jetty-util:7.4.2.v20110526'
+    testCompile 'org.eclipse.jetty:jetty-server:7.4.2.v20110526'
+    testCompile 'org.eclipse.jetty:jetty-webapp:7.4.2.v20110526'
+    testCompile 'org.eclipse.jetty:jetty-plus:7.4.2.v20110526'
+    testCompile 'org.eclipse.jetty:jetty-jndi:7.4.2.v20110526'
+    testCompile 'org.eclipse.jetty:jetty-io:7.4.2.v20110526'
+    testCompile 'org.eclipse.jetty:jetty-security:7.4.2.v20110526'
+    testCompile 'wsdl4j:wsdl4j:1.6.2'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
