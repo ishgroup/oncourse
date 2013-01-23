@@ -8,6 +8,7 @@ dependencies {
 	compile 'commons-lang:commons-lang:2.6'
 	compile 'net.java.dev.textile-j:textile-j:2.2.864'
 	compile 'commons-io:commons-io:2.1'
+	compile 'com.google.inject:guice:3.0'
 
 	//jasperreports, will be removed from common and moved to server
 	compile ('net.sf.jasperreports:jasperreports:4.7.0') {

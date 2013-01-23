@@ -21,7 +21,6 @@ dependencies {
 	compile 'net.sourceforge.jtds:jtds:1.2.7'
 	compile 'mysql:mysql-connector-java:5.1.22'
 	compile 'net.sf.saxon:Saxon-HE:9.4.0.6'
-	compile 'com.google.inject:guice:3.0'
 	compile 'org.quartz-scheduler:quartz:2.1.6'
 	compile 'org.slf4j:slf4j-log4j12:1.7.2'
 
