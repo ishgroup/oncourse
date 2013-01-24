@@ -41,9 +41,9 @@ public class PurchaseController {
 	public static final List<Action> COMMON_ACTIONS = Collections.unmodifiableList(Arrays.asList(
 			enableEnrolment, enableProductItem,
 			disableEnrolment, disableProductItem,
-			setVoucherPrice, addDiscount,removeDiscount, addVoucher,
+			setVoucherPrice, addVoucher,
 			startConcessionEditor, startAddContact,
-			owingApply, creditAccess, changePayer));
+			changePayer));
 
 	private PurchaseModel model;
 
@@ -177,11 +177,8 @@ public class PurchaseController {
         else
         {
             //the code needs to recalcalute money values for payment and discount for all actions on checkout page
-            if (isEditCheckout())
-            {
-                getModel().updateTotalIncGst();
-                getModel().updateTotalDiscountAmountIncTax();
-            }
+            getModel().updateTotalIncGst();
+            getModel().updateTotalDiscountAmountIncTax();
         }
 	}
 
@@ -567,11 +564,11 @@ public class PurchaseController {
 
     public static enum State {
 		init(Action.init, Action.startAddContact),
-		editCheckout(COMMON_ACTIONS, proceedToPayment, addCourseClass),
+		editCheckout(COMMON_ACTIONS,addDiscount,removeDiscount, proceedToPayment, addCourseClass),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, cancelAddContact),
 		editContact(Action.addContact, cancelAddContact),
-		editPayment(makePayment, backToEditCheckout),
+		editPayment(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply),
         paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment,showPaymentResult);
 

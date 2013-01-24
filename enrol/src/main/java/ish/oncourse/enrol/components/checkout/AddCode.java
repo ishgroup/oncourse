@@ -1,11 +1,11 @@
 package ish.oncourse.enrol.components.checkout;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
-import ish.oncourse.enrol.pages.Checkout;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -15,11 +15,13 @@ public class AddCode {
 	@Parameter(required = true)
 	private PurchaseController purchaseController;
 
-	@Inject
+    @Parameter(required = true)
+    @Property
+    private Block blockToRefresh;
+
+    @Inject
 	private Request request;
 
-	@InjectPage
-	private Checkout checkout;
 
 	@OnEvent(value = "addCodeEvent")
 	public Object addCode()
@@ -31,6 +33,6 @@ public class AddCode {
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addDiscount);
 		actionParameter.setValue(code);
 		purchaseController.performAction(actionParameter);
-		return checkout.getCheckoutBlock();
+		return blockToRefresh;
 	}
 }

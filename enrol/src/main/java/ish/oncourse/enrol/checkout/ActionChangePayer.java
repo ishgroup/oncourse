@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
@@ -42,12 +43,13 @@ public class ActionChangePayer extends  APurchaseAction{
         SelectQuery q = new SelectQuery(PaymentIn.class);
         q.andQualifier(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.IN_TRANSACTION, PaymentStatus.CARD_DETAILS_REQUIRED));
         q.andQualifier(ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, contact));
+        q.andQualifier(ExpressionFactory.matchExp(PaymentIn.SOURCE_PROPERTY, PaymentSource.SOURCE_WEB));
+
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
         q.andQualifier(ExpressionFactory.greaterExp(PaymentIn.CREATED_PROPERTY, calendar.getTime()));
 
-        @SuppressWarnings("unchecked")
         List<PaymentIn> payments = context.performQuery(q);
 
         if (!payments.isEmpty())

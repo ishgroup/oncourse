@@ -1,5 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<t:delegate to="block:paymentEditor"/>
+    <div id="paymentEditor">
+	    <t:delegate to="block:paymentEditor"/>
+    </div>
 
 	<t:block t:id="paymentEditor">
 		<t:form t:id="paymentform">
@@ -35,7 +37,7 @@
 		<fieldset>
 			<div class="form-details">
 				<p>
-					<label>Amount</label>
+					<label>Pay now</label>
 					<span id="cardtotalstring"><t:output value="totalPayment" format="moneyFormat"/></span>
 				</p>
 				<p>

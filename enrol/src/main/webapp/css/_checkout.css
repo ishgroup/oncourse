@@ -259,6 +259,9 @@ div.amount-container {
 	padding: 15px 10px;
 	background: #F7F7F7;
 	margin-bottom: 20px;
+    float: left;
+    width: 100%;
+
 }
 
 div.amount-container div.code-info {

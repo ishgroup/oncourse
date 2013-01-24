@@ -25,9 +25,8 @@
 
 <t:block t:id="amount">
 	<div class="amount-container">
-		<span t:type="checkout/addcode" purchaseController="purchaseController"/>
+		<span t:type="checkout/addcode" purchaseController="purchaseController" blockToRefresh="paymentBlock"/>
 		<span t:type="checkout/amount" purchaseController="purchaseController" blockToRefresh="paymentBlock" showPayerFields="true"/>
-		<div class="clear"></div>
 	</div>
 </t:block>
 
@@ -55,11 +54,6 @@
 
     <t:if test="purchaseController">
         <span t:type="checkout/errors" errors="purchaseController.errors" warnings="purchaseController.warnings"/>
-        <t:if test="purchaseController.illegalModel">
-            <script type="text/javascript">
-                setTimeout("window.location.href='${coursesLink}'", 10000);
-            </script>
-        </t:if>
     </t:if>
 </t:block>
 
