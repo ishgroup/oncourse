@@ -76,7 +76,7 @@ table.payments tr div.drop-down
 	vertical-align: baseline;
 }
 
-.student-name > td {
+.payments tbody .student-name td {
 	border-top: 1px solid #ccc;
 }
 
@@ -100,6 +100,15 @@ table.payments tr div.drop-down
 
 .content a.add-con:hover {
 	text-decoration: underline;
+}
+
+#EnrolmentEntry .content table td {
+	padding: 4px 21px 4px 8px;
+}
+
+.payments tbody td.alignright span.fullPrice {
+	width: auto;
+	margin-right: 0;
 }
 
 table.payments tr div.drop-down > span {
