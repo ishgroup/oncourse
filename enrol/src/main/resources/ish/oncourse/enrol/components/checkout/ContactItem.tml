@@ -5,7 +5,8 @@
 			<div class="student-info">${contact.fullName} <span>
 				${contact.emailAddress}</span></div>
 			<t:if test="purchaseController.activeConcessionTypes">
-				<t:actionlink class="add-con" t:id="editConcessionLink" context="index" >Add Concession</a>
+					<a href="#" class="add-con">Add Concession</a>
+					<t:actionlink t:id="editConcessionLink" context="index" style="{display:none}"/>
 			</t:if>
 		</td>
 	</tr>
