@@ -26,7 +26,6 @@
 
 #checkout tbody td {
 	border: none;
-	border-bottom: 1px solid #D6D6D6;
 	vertical-align: middle;
 }
 
@@ -75,6 +74,18 @@ table.payments tr div.drop-down
 	color: #AAA;
 	font-size: 11px;
 	vertical-align: baseline;
+}
+
+.student-name > td {
+	border-top: 1px solid #ccc;
+}
+
+.payments tbody td em {
+	margin-left: 20px;
+}
+
+.content .payments label {
+	margin-bottom: 0;
 }
 
 .content a.add-con {
@@ -264,7 +275,7 @@ div.amount-container div.code-info p {
 }
 
 div.amount-container .amount-content {
-	width: 265px;
+	width: 235px;
 	float: right;
 }
 
@@ -288,7 +299,6 @@ div.amount-container .amount-content p {
 	float: left;
 	text-align: right;
 	margin-right: 10px;
-	font-weight: normal;
 	padding-right: 0px;
 	font-size: 12px;
 }
