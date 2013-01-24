@@ -7,7 +7,7 @@
 			<t:delegate to="block:previousOwing"/>
 		</t:if>
 
-		<p><label>Total</label>  <span>
+		<p class="total-amount"><label>Total</label>  <span>
 			<t:output value="purchaseController.totalPayment" format="moneyFormat(purchaseController.totalPayment)"/>
 		</span></p>
 		<t:delegate to="block:voucher"/>
