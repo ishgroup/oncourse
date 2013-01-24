@@ -157,6 +157,7 @@ public class CourseClassPrice {
 
 	public static final class DiscountItem
 	{
+		private static final String DIVIDER = " / ";
 		private List<Discount> discounts = new ArrayList<Discount>();
 		private Money feeIncTax;
 
@@ -170,7 +171,7 @@ public class CourseClassPrice {
 			for (Discount  discount : discounts) {
 				strings.add(discount.getName());
 			}
-			title = StringUtils.join(strings, "/");
+			title = StringUtils.join(strings, DIVIDER);
 			feeFormat = FormatUtils.chooseMoneyFormat(feeIncTax);
 		}
 
