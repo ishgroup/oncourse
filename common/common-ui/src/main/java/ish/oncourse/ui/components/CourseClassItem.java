@@ -85,7 +85,7 @@ public class CourseClassItem {
 		timetableLabels.add("Time");
 		timetableLabels.add("Where");
 
-		String timeZone = courseClass.getFirstSession() == null ? null : courseClass.getFirstSession().getTimeZone();
+		String timeZone = courseClass.getFirstSession() == null ? courseClass.getTimeZone() : courseClass.getFirstSession().getTimeZone();
 		dateFormat = FormatUtils.getShortDateFormat(timeZone);
 		timeFormat = FormatUtils.getShortTimeFormat(timeZone);
 	}

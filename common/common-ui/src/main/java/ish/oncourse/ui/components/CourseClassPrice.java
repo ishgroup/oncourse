@@ -11,16 +11,14 @@ import ish.oncourse.utils.DiscountFeeComparator;
 import ish.oncourse.utils.DiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.Format;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class CourseClassPrice {
 
@@ -43,10 +41,10 @@ public class CourseClassPrice {
 	private Money discountedFee;
 
 	@Property
-	private Discount discountItem;
+	private DiscountItem discountItem;
 
 	@Property
-	private List<Discount> potentialDiscounts;
+	private List<DiscountItem> discountItems;
 
 	@Property
 	private Money discountValue;
@@ -93,8 +91,27 @@ public class CourseClassPrice {
 	
 	private void fillPosibleDiscounts() {
 		Expression notHiddenDiscounts = ExpressionFactory.matchExp(Discount.HIDE_ON_WEB_PROPERTY, false);
-		potentialDiscounts = notHiddenDiscounts.filterObjects(DiscountUtils.getFilteredDiscounts(courseClass));
+		List<Discount> potentialDiscounts = notHiddenDiscounts.filterObjects(DiscountUtils.getFilteredDiscounts(courseClass));
 		Collections.sort(potentialDiscounts, new DiscountFeeComparator(courseClass));
+
+		Money money = null;
+		DiscountItem discountItem = null;
+
+		discountItems = new ArrayList<DiscountItem>();
+
+		for (Discount discount : potentialDiscounts) {
+			Money dMoney = courseClass.getDiscountedFeeIncTax(Arrays.asList(discount));
+			if (money == null || !money.equals(dMoney))
+			{
+				if (discountItem != null)
+					discountItem.init();
+				money = courseClass.getDiscountedFeeIncTax(Arrays.asList(discount));
+				discountItem = new DiscountItem();
+				discountItem.setFeeIncTax(money);
+				discountItem.addDiscount(discount);
+			}
+			discountItem.addDiscount(discount);
+		}
 	}
 
 	@SetupRender
@@ -123,14 +140,6 @@ public class CourseClassPrice {
 		return courseClass.getFeeIncGst().isGreaterThan(Money.ZERO);
 	}
 
-	public Money getDiscountItemFeeIncTax() {
-		ArrayList<Discount> disc = new ArrayList<Discount>(1);
-		disc.add(discountItem);
-		Money discountedFeeIncTax = courseClass.getDiscountedFeeIncTax(disc);
-		feeFormat = FormatUtils.chooseMoneyFormat(discountedFeeIncTax);
-		return discountedFeeIncTax;
-	}
-
 	public Money getFee() {
 		Money feeIncGst = courseClass.getFeeIncGst();
 		feeFormat = FormatUtils.chooseMoneyFormat(feeIncGst);
@@ -145,5 +154,52 @@ public class CourseClassPrice {
     public boolean isPaymentGatewayEnabled() {
         return preferenceController.isPaymentGatewayEnabled();
     }
+
+
+	public static final class DiscountItem
+	{
+		private List<Discount> discounts = new ArrayList<Discount>();
+		private Money feeIncTax;
+
+
+		private Format feeFormat;
+		private String title;
+
+		public void init()
+		{
+			List<String> strings = new ArrayList<String>();
+			for (Discount  discount : discounts) {
+				strings.add(discount.getName());
+			}
+			title = StringUtils.join(strings, "/");
+			feeFormat = FormatUtils.chooseMoneyFormat(feeIncTax);
+		}
+
+		public void addDiscount(Discount discount)
+		{
+			discounts.add(discount);
+		}
+
+		public String getTitle()
+		{
+			return title;
+		}
+
+		public Money getFeeIncTax() {
+			return feeIncTax;
+		}
+
+		public void setFeeIncTax(Money feeIncTax)
+		{
+			this.feeIncTax = feeIncTax;
+		}
+
+		public Format getFeeFormat()
+		{
+			return feeFormat;
+		}
+
+	}
+
 
 }

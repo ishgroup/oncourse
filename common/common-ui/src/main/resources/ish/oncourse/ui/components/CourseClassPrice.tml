@@ -20,10 +20,10 @@
 		</t:if>
 		
 		<t:if t:test="paymentGatewayEnabled">
-			<t:loop source="potentialDiscounts" value="discountItem">
+			<t:loop source="discountItems" value="discountItem">
 				<span class="discount-price">/</span>
-				<acronym class="discount-price" title="${discountItem.name}">
-					<t:output value="discountItemFeeIncTax" format="feeFormat" />
+				<acronym class="discount-price" title="${discountItem.title}">
+					<t:output value="discountItem.feeIncTax" format="discountItem.feeFormat" />
 				</acronym>
 			</t:loop>
 		</t:if>
