@@ -548,3 +548,19 @@ tr.enrolmentItem > td > em > span.started {
 .total-amount {
 	font-weight: bold;
 }
+
+#cardname, #cardnumber {
+	width: 180px;
+}
+
+#cardcvv {
+	width: 30px;
+}
+
+#expiryMonth, #expiryYear {
+	width: 70px;
+}
+
+#cvvLink {
+	margin-left: 50px;
+}
