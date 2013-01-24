@@ -106,12 +106,6 @@ table.payments tr div.drop-down
 	padding: 4px 21px 4px 8px;
 }
 
-.payments tbody td.alignright span.fullPrice {
-	width: auto;
-	margin-left: 0;
-	float: none;
-}
-
 .payments tbody td.alignright{
 	width: auto;
 	padding: 4px 43px 4px 8px;
@@ -544,4 +538,10 @@ tr.enrolmentItem > td > em > span.ended {
 
 tr.enrolmentItem > td > em > span.started {
 	vertical-align:baseline;
+}
+
+.payments tbody td.alignright span.fullPrice {
+	width: auto;
+	margin-left: 0;
+	float: none;
 }
