@@ -2,7 +2,6 @@
 		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
         xmlns:p="tapestry:parameter">
 	<div class="amount-content">
-        <t:delegate to="block:credit"/>
         <t:delegate to="block:voucher"/>
         <t:delegate to="block:previousOwing"/>
         <t:delegate to="block:discount"/>
