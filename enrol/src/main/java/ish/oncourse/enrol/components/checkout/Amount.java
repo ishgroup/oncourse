@@ -2,10 +2,9 @@ package ish.oncourse.enrol.components.checkout;
 
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController;
-import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -21,11 +20,17 @@ public class Amount {
 	@Parameter(required = true)
 	private PurchaseController purchaseController;
 
+	@Parameter(required = true)
+	@Property
+	private Block blockToRefresh;
+
+	@Property
+	@Parameter
+	private boolean showPayerFields;
+
 	@Inject
 	private Request request;
 
-	@InjectPage
-	private Checkout checkout;
 
 	@OnEvent(value = "creditAccessEvent")
 	public Object creditAccess() {
@@ -36,7 +41,7 @@ public class Amount {
         PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.creditAccess);
         actionParameter.setValue(password);
         purchaseController.performAction(actionParameter);
-        return checkout.getCheckoutBlock();
+        return blockToRefresh;
 	}
 
 	@OnEvent(value = "removeOwingEvent")
@@ -46,7 +51,7 @@ public class Amount {
 
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.owingApply);
 		purchaseController.performAction(actionParameter);
-		return checkout.getCheckoutBlock();
+		return blockToRefresh;
 	}
 
 	public Format moneyFormat(Money money)

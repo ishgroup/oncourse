@@ -1,7 +1,9 @@
 package ish.oncourse.enrol.pages;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.AfterRender;
+import org.apache.tapestry5.annotations.Id;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -11,6 +13,10 @@ public class Payment {
 
 	@InjectPage
 	private Checkout checkoutPage;
+
+	@Inject
+	@Id("payment")
+	private Block paymentBlock;
 
 	@Inject
 	private Request request;
@@ -37,6 +43,11 @@ public class Payment {
         if (checkoutPage.isExpired())
             checkoutPage.resetPersistProperties();
     }
+
+	public Block getPaymentBlock()
+	{
+		return paymentBlock;
+	}
 
     public PurchaseController getPurchaseController() {
 		return checkoutPage.getPurchaseController();

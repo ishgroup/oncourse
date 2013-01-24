@@ -44,7 +44,7 @@
 
 	<div class="amount-container">
 		<span t:type="checkout/addcode" purchaseController="purchaseController"/>
-		<span t:type="checkout/amount" purchaseController="purchaseController"/>
+		<span t:type="checkout/amount" purchaseController="purchaseController" blockToRefresh="checkoutBlock" showPayerFields="false"/>
 		<t:eventlink t:id="proceedToPaymentEvent" class="btn btn-primary">Proceed to Payment</t:eventlink>
 	</div>
 </t:block>

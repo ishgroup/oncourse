@@ -2,37 +2,32 @@
 		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
         xmlns:p="tapestry:parameter">
 	<div class="amount-content">
-        <t:delegate to="block:voucher"/>
-        <t:delegate to="block:previousOwing"/>
-        <t:delegate to="block:discount"/>
+		<t:if test="showPayerFields">
+			<t:delegate to="block:credit"/>
+			<t:delegate to="block:previousOwing"/>
+		</t:if>
 
 		<p><label>Total</label>  <span>
 			<t:output value="purchaseController.totalPayment" format="moneyFormat(purchaseController.totalPayment)"/>
 		</span></p>
+		<t:delegate to="block:voucher"/>
+		<t:delegate to="block:discount"/>
 		<p><label>Minimum Payable Now</label> <span>
 			<t:output value="purchaseController.totalPayment" format="moneyFormat(purchaseController.totalPayment)"/>
 		</span></p>
 	</div>
 
-
-	<div id="access-password-popup">
-		<div class="code-info">
-			<input type="password" name="password" class="code_input"/>
-			<div id="submitPassword" class="button">Submit</div>
-			<t:eventlink t:id="creditAccessEvent" style="{display:none;}"/>
-			<p>Password <em title="${message:message-required}">*</em></p>
+	<t:block t:id="accessPasswordPopup">
+		<div id="access-password-popup">
+			<div class="code-info">
+				<input type="password" name="password" class="code_input"/>
+				<div id="submitPassword" class="button">Submit</div>
+				<t:eventlink t:id="creditAccessEvent" style="{display:none;}"/>
+				<p>Password <em title="${message:message-required}">*</em></p>
+			</div>
 		</div>
-	</div>
+	</t:block>
 
-    <t:block t:id="discount">
-        <t:if test="purchaseController.hasDiscount()">
-            <p><label>Discount</label>
-            <span>
-			    <t:output value="purchaseController.totalDiscountAmountIncTax" format="moneyFormat(purchaseController.totalDiscountAmountIncTax)"/>
-		    </span>
-            </p>
-        </t:if>
-    </t:block>
 
     <t:block t:id="previousOwing">
         <t:if test="purchaseController.hasPreviousOwing()">
@@ -44,6 +39,18 @@
             </p>
         </t:if>
     </t:block>
+	<t:block t:id = "credit">
+		<t:if test="purchaseController.creditAvailable">
+			<t:if test="purchaseController.showCreditAmount">
+				<p><label class="first">Credit</label><span>
+                        (<t:output value="purchaseController.previousOwing" format="moneyFormat(purchaseController.previousOwing)"/>)
+                        </span></p>
+				<p:else>
+					<p><label class="first">Credit available</label><span id="creditAccessLink" class="action-link">Access</span></p>
+				</p:else>
+			</t:if>
+		</t:if>
+	</t:block>
 
     <t:block t:id = "voucher">
         <t:if test="purchaseController.totalVoucherPayments.isZero()" negate="true">
@@ -52,17 +59,14 @@
             </span></p>
         </t:if>
     </t:block>
+	<t:block t:id = "discount">
+		<t:if test="purchaseController.hasDiscount()">
+			<p><label>Discount</label>
+            <span>
+			    <t:output value="purchaseController.totalDiscountAmountIncTax" format="moneyFormat(purchaseController.totalDiscountAmountIncTax)"/>
+		    </span>
+			</p>
+		</t:if>
+	</t:block>
 
-    <t:block t:id = "credit">
-        <t:if test="purchaseController.creditAvailable">
-            <t:if test="purchaseController.showCreditAmount">
-                <p><label class="first">Credit</label><span>
-                        (<t:output value="purchaseController.previousOwing" format="moneyFormat(purchaseController.previousOwing)"/>)
-                        </span></p>
-                <p:else>
-                    <p><label class="first">Credit available</label><span id="creditAccessLink" class="action-link">Access</span></p>
-                </p:else>
-            </t:if>
-        </t:if>
-    </t:block>
 </t:container>
