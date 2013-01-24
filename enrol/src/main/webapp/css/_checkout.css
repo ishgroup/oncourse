@@ -107,8 +107,13 @@ table.payments tr div.drop-down
 }
 
 .payments tbody td.alignright span.fullPrice {
+	width: 47px;
+	margin-left: 5px;
+}
+
+.payments tbody td.alignright span + span {
+	margin-left: 0;
 	width: auto;
-	margin-right: 0;
 }
 
 table.payments tr div.drop-down > span {
