@@ -25,6 +25,13 @@
 	</properties>
 
 	<dependencies>
+	
+		<!-- This dependency contain the classes required for solr.SpatialRecursivePrefixTreeFieldType filed type initialization-->
+		<dependency>
+			<groupId>com.vividsolutions</groupId>
+			<artifactId>jts</artifactId>
+			<version>1.13</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.solr</groupId>
