@@ -108,7 +108,7 @@ public class CourseClassPrice {
 				money = courseClass.getDiscountedFeeIncTax(Arrays.asList(discount));
 				discountItem = new DiscountItem();
 				discountItem.setFeeIncTax(money);
-				discountItem.addDiscount(discount);
+				discountItems.add(discountItem);
 			}
 			discountItem.addDiscount(discount);
 		}
