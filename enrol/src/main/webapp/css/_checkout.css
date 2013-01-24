@@ -66,6 +66,31 @@ table.payments tr div.drop-down
 	float: left;
 }
 
+.payments tr td .student-info {
+	color: #345;
+	font-size: 20px;
+}
+
+.content .payments tr > td .student-info span {
+	color: #AAA;
+	font-size: 11px;
+	vertical-align: baseline;
+}
+
+.content a.add-con {
+	text-decoration: none;
+	font-size: 11px;
+	background: white;
+	border: none;
+	margin: 0;
+	padding: 0;
+	color: #125687;
+}
+
+.content a.add-con:hover {
+	text-decoration: underline;
+}
+
 table.payments tr div.drop-down > span {
 	cursor: pointer;
 	color: white;

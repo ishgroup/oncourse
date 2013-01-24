@@ -1,12 +1,11 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<tbody>
 	<tr class="student-name">
-		<td colspan="2">
-			<div class="left">${contact.fullName} <span>
+		<td colspan="3">
+			<div class="student-info">${contact.fullName} <span>
 				${contact.emailAddress}</span></div>
 			<t:if test="purchaseController.activeConcessionTypes">
-					<span class="add-con">Add Concession</span>
-					<t:actionlink t:id="editConcessionLink" context="index" style="{display:none}"/>
+				<t:actionlink class="add-con" t:id="editConcessionLink" context="index" >Add Concession</a>
 			</t:if>
 		</td>
 	</tr>
