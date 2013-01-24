@@ -38,6 +38,8 @@ public class SearchService implements ISearchService {
      * Default maximum distance for geo-searches
      */
 	public static final double MAX_DISTANCE = 100.0;
+	
+	public static final double MIN_DISTANCE = 0.0001;
 
     @Inject
     private IWebSiteService webSiteService;

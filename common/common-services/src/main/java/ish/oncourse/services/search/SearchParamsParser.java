@@ -123,8 +123,14 @@ public class SearchParamsParser
     Double parseKm(String parameter) {
     	if (StringUtils.isNumeric(parameter)) {
     		Double km = Double.valueOf(parameter);
-    		if (km != null && SearchService.MAX_DISTANCE < km) {
-    			km = SearchService.MAX_DISTANCE;
+    		if (km != null) {
+    			if (SearchService.MAX_DISTANCE < km) {
+    				//check for higher distance
+    				km = SearchService.MAX_DISTANCE;
+    			} else if (km < SearchService.MIN_DISTANCE) {
+    				//check for lower distance
+    				km = SearchService.MIN_DISTANCE;
+    			}
     		}
     		return km;
     	}
