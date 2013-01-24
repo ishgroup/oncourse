@@ -541,7 +541,7 @@ tr.enrolmentItem > td > em > span.started {
 
 .payments tbody td.alignright span.fullPrice {
 	width: auto;
-	margin-left: 0;
+	margin-right: 0;
 	float: none;
 }
 
