@@ -3,11 +3,11 @@
 	xmlns:p="tapestry:parameter">
 	
 	<tr> 
-		<td>
+		<td colspan="2">
 			<form>
 				<label id="i_${studentIndex}_${courseClassIndex}">
 					<input type="checkbox" id="enrolmentCheckbox_${studentIndex}_${courseClassIndex}" class="enrolmentCheckbox"/>
-					<t:if test="enrolmentSelected"><script type="text/javascript">document.getElementById('enrolmentCheckbox_${studentIndex}_${courseClassIndex}').checked=true;</script></t:if>				
+					<t:if test="enrolmentSelected"><script type="text/javascript">document.getElementById('enrolmentCheckbox_${studentIndex}_${courseClassIndex}').checked=true;</script></t:if>
 					<t:if test="disabled"><script type="text/javascript">document.getElementById('enrolmentCheckbox_${studentIndex}_${courseClassIndex}').disabled=true;</script></t:if>
 					${courseClass.course.name}
 	  			</label>
@@ -36,7 +36,6 @@
 	  			</t:if>
 	 	  	</em>
 		</td>
-		<td></td>
 		<td class="alignright">
 			<span t:type="EnrolmentPrice" enrolment="enrolment" courseClass="courseClass" index="${studentIndex}_${courseClassIndex}"/>
 		</td>
