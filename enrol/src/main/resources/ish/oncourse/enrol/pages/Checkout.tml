@@ -34,12 +34,10 @@
 		<span t:type="checkout/contactlist" purchaseController="purchaseController" blockToRefresh="checkoutBlock"/>
 		<tbody class="t-update t-zone" id="totals">
 		<tr>
-			<td>
+			<td colspan="3">
 				<div id="addContact">Add another student</div>
 				<t:eventlink t:id="addContactEvent" style="{display:none}"/>
 			</td>
-            <td class=""/>
-			<td class="alignright"/>
 		</tr>
 		</tbody>
 	</table>
