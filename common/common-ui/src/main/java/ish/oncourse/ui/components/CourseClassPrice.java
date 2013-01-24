@@ -103,14 +103,13 @@ public class CourseClassPrice {
 			Money dMoney = courseClass.getDiscountedFeeIncTax(Arrays.asList(discount));
 			if (money == null || !money.equals(dMoney))
 			{
-				if (discountItem != null)
-					discountItem.init();
 				money = courseClass.getDiscountedFeeIncTax(Arrays.asList(discount));
 				discountItem = new DiscountItem();
 				discountItem.setFeeIncTax(money);
 				discountItems.add(discountItem);
 			}
 			discountItem.addDiscount(discount);
+			discountItem.init();
 		}
 	}
 
