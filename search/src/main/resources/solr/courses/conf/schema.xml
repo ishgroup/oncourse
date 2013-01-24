@@ -2,10 +2,8 @@
 <schema name="oncourse" version="1.2">
 	<types>
 
-		<!-- A specialized field for geospatial search. If indexed, this fieldType 
-			can be multivalued in solr4. -->
-		<fieldType name="location" class="solr.LatLonType"
-			subFieldSuffix="_coordinate" />
+		<fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType" 
+			spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory" distErrPct="0.025" maxDistErr="0.000009" units="degrees"/>
 
 		<fieldType name="string" class="solr.StrField"
 			sortMissingLast="true" omitNorms="true" />
@@ -199,8 +197,8 @@
         <field name="class_start" type="date" indexed="true" stored="true"
                multiValued="true" omitNorms="false" boost="5.0" />
 
-        <field name="course_loc" type="location" indexed="true" stored="true" multiValued="true" boost="5.0"/>
-
+        <field name="course_loc" type="location_rpt" indexed="true" stored="true" multiValued="true" />
+        
 		<field name="course_suburb" type="textgen" indexed="true"
 			omitNorms="false" stored="true" multiValued="true" boost="5.0" />
 
@@ -213,9 +211,6 @@
 		<field name="tagId" type="long" indexed="true" stored="true"
 			multiValued="true" omitNorms="true" omitTermFreqAndPositions="true" boost="5.0" />
 
-		<!-- Type used to index the lat and lon components for the "location" FieldType -->
-		<dynamicField name="*_coordinate" type="tdouble" indexed="true"
-			stored="false" />
 	</fields>
 
 	<uniqueKey>id</uniqueKey>

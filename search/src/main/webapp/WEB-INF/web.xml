@@ -7,6 +7,10 @@
 		>
 
 	<display-name>oncourse-search</display-name>
+	
+	<listener>
+  		<listener-class>ish.oncourse.listeners.OverrideLog4JListener</listener-class>
+  	</listener>
 
 	<filter>
 		<filter-name>SolrRequestFilter</filter-name>
