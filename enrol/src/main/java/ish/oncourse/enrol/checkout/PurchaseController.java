@@ -176,9 +176,12 @@ public class PurchaseController {
 		}
         else
         {
-            //the code needs to recalcalute money values for payment and discount for all actions on checkout page
-            getModel().updateTotalIncGst();
-            getModel().updateTotalDiscountAmountIncTax();
+            if (getState() == editCheckout || getState() == editPayment)
+            {
+            //the code needs to recalcalute money values for payment and discount for all actions on checkout page and payment editor
+                getModel().updateTotalIncGst();
+                getModel().updateTotalDiscountAmountIncTax();
+            }
         }
 	}
 
