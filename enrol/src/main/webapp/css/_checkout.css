@@ -5,7 +5,6 @@
 	width: 26%;
 	padding-right: 20px;
 	vertical-align: middle;
-	font-weight: bold;
 }
 
 #checkout .conditions label {
@@ -265,7 +264,7 @@ div.amount-container {
 div.amount-container div.code-info {
 	float: left;
 	width: 270px;
-	margin: 0;
+	margin: 0 0 20px 0;
 	font-size: 11px;
 }
 
@@ -544,4 +543,8 @@ tr.enrolmentItem > td > em > span.started {
 	width: auto;
 	margin-left: 0;
 	float: none;
+}
+
+.total-amount {
+	font-weight: bold;
 }
