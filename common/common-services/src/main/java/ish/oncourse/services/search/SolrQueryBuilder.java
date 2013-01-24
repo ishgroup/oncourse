@@ -12,14 +12,14 @@ import java.util.List;
 
 public class SolrQueryBuilder {
 
+	static final double KM_IN_DEGREE_VALUE = 110.567;
 	private static final String SPACE_REPLACEMENT_CHARACTER = " ";
 	private static final String SOLR_SYNTAX_CHARACTERS_STRING = "[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]";
 
 	static final String QUERY_TYPE = "standard";
 
     static final String PARAMETER_fl = "fl";
-    static final String PARAMETER_sfield = "sfield";
-    static final String PARAMETER_pt = "pt";
+    static final String PARAMETER_geofq = "geofq";
     static final String PARAMETER_d = "d";
     public static final String PARAMETER_loc = "loc";
     static final String PARAMETER_BOOST_FUNCTION = "boostfunction";
@@ -50,7 +50,7 @@ public class SolrQueryBuilder {
     static final String FILTER_TEMPLATE_after = FIELD_class_start  + ":[%s TO *]";
     static final String FILTER_TEMPLATE_before = FIELD_end + ":[NOW TO %s]";
 
-    static final String FILTER_TEMPLATE_geofilt = "{!geofilt}";
+    static final String FILTER_TEMPLATE_geofilt = "{!score=distance}%s:\"Intersects(Circle(%s %s=%s))\"";
 
     static final String FILTER_TEMPLATE_ALL = "*:*";
 
@@ -62,7 +62,7 @@ public class SolrQueryBuilder {
     private static final String BOOST_STATEMENT = "{!boost b=$boostfunction v=$qq}";
     //here we can use the date in format like 2008-01-01T00:00:00Z, but I hope then will no classes longs more then 1 years
     private static final String DATE_BOOST_FUNCTION = "recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)";
-    private static final String GEODIST_BOOST_FUNCTION = "recip(geodist(),1,10,5)";
+    private static final String GEO_LOCATION_BOOST_FUNCTION = "recip(query($geofq),1,10,5)";
 
     private SearchParams params;
     private String collegeId;
@@ -218,12 +218,11 @@ public class SolrQueryBuilder {
     {
         List<Suburb> suburbs = params.getSuburbs();
         Suburb suburb = suburbs.get(0);
-        query.addFilterQuery(FILTER_TEMPLATE_geofilt);
-        query.add(PARAMETER_sfield, PARAMETER_VALUE_sfield);
-        query.add(PARAMETER_pt, suburb.getLocation());
-        query.add(PARAMETER_d, suburb.getDistance().toString());
+        final String geoFilterQuery = String.format(FILTER_TEMPLATE_geofilt, PARAMETER_VALUE_sfield, suburb.getLocation(), PARAMETER_d, suburb.getDistance()/KM_IN_DEGREE_VALUE);
+        query.addFilterQuery(geoFilterQuery);
         query.setQuery(BOOST_STATEMENT);
-        query.setParam(PARAMETER_BOOST_FUNCTION, GEODIST_BOOST_FUNCTION);
+        query.setParam(PARAMETER_BOOST_FUNCTION, GEO_LOCATION_BOOST_FUNCTION);
+        query.setParam(PARAMETER_geofq, geoFilterQuery);
         query.setParam(PARAMETER_qq, String.format(QUERY_brackets,convert(filters)));
     }
 
