@@ -37,7 +37,6 @@
 	  			</t:if>
 	 	  	</em>
         </td>
-		<td></td>
 		<td class="alignright">
             <t:if test="checked">
 			    <span t:type="EnrolmentPrice" enrolment="enrolment" courseClass="enrolment.courseClass" index="enrolment.id"/>
