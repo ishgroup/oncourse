@@ -54,7 +54,7 @@
 
 #checkout #addContact {
 	background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
-	margin: 0 0 0 8px;
+	margin: 0;
 	padding: 5px 0 5px 24px;
 	cursor: pointer;
 }
@@ -259,9 +259,6 @@ div.amount-container {
 	padding: 15px 10px;
 	background: #F7F7F7;
 	margin-bottom: 20px;
-    float: left;
-    width: 100%;
-
 }
 
 div.amount-container div.code-info {
@@ -294,6 +291,10 @@ div.amount-container div.code-info p {
 div.amount-container .amount-content {
 	width: 235px;
 	float: right;
+}
+
+div.amount-container .amount-content label {
+	font-weight: normal;
 }
 
 div.amount-container .amount-content span#creditAccessLink {
@@ -548,7 +549,7 @@ tr.enrolmentItem > td > em > span.started {
 	float: none;
 }
 
-.total-amount {
+.total-amount, .total-amount label {
 	font-weight: bold;
 }
 
@@ -556,7 +557,7 @@ tr.enrolmentItem > td > em > span.started {
 	width: 180px;
 }
 
-#cardcvv {
+#creditCardCVV {
 	width: 30px;
 }
 
