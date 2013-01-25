@@ -373,6 +373,12 @@ public class PurchaseModel {
             result = result.add(previousOwing);
         }
         getPayment().setAmount((result.isLessThan(Money.ZERO) ? Money.ZERO : result).toBigDecimal());
+        getPayment().getPaymentInLines().get(0).setAmount(getPayment().getAmount());
+
+        Money totalGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), true);
+        Money totalExGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), false);
+        getInvoice().setTotalExGst(totalExGst.toBigDecimal());
+        getInvoice().setTotalGst(totalGst.toBigDecimal());
         return result;
     }
 
@@ -393,12 +399,6 @@ public class PurchaseModel {
 
         updateTotalIncGst();
 
-        Money totalGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), true);
-        Money totalExGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), false);
-        getInvoice().setTotalExGst(totalExGst.toBigDecimal());
-        getInvoice().setTotalGst(totalGst.toBigDecimal());
-
-        getPayment().getPaymentInLines().get(0).setAmount(getPayment().getAmount());
         getPayment().setStatus(PaymentStatus.IN_TRANSACTION);
 
         for (Contact contact : getContacts()) {

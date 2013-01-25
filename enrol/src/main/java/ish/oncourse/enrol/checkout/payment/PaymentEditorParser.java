@@ -21,6 +21,8 @@ public class PaymentEditorParser implements IFieldsParser {
 	private Messages messages;
 	private PaymentIn paymentIn;
 
+    private boolean newPayer;
+
 	private Map<String, String> errors = new HashMap<String, String>();
 
 	public void parse() {
@@ -62,7 +64,10 @@ public class PaymentEditorParser implements IFieldsParser {
 		switch (field) {
 			case contact:
 				Long id = Long.valueOf(value);
-				paymentIn.setContact(getContactBy(id));
+                if (id.equals(Long.MIN_VALUE))
+                    newPayer = true;
+                else
+				    paymentIn.setContact(getContactBy(id));
 				break;
 			case creditCardType:
 				paymentIn.setCreditCardType(CreditCardType.valueOf(value));
@@ -123,8 +128,12 @@ public class PaymentEditorParser implements IFieldsParser {
 		return errors;
 	}
 
+    public boolean isNewPayer() {
+        return newPayer;
+    }
 
-	public static enum Field {
+
+    public static enum Field {
 		contact,
 		creditCardType,
 		creditCardName,

@@ -25,6 +25,9 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	private AConcessionDelegate concessionDelegate;
 
+    private PurchaseController.Action addAction;
+
+    private PurchaseController.Action cancelAction;
 
 
 	@Override
@@ -48,7 +51,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	@Override
 	public void saveContact() {
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(addAction);
 		actionParameter.setErrors(getErrors());
 		actionParameter.setValue(contact);
 		getPurchaseController().performAction(actionParameter);
@@ -74,7 +77,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 	@Override
 	public void cancelContact() {
 		//do nothing, just forget about the child objectContext.
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.cancelAddContact);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(cancelAction);
 		actionParameter.setValue(contact);
 		getPurchaseController().performAction(actionParameter);
 	}
@@ -116,4 +119,12 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 		}
 		return concessionDelegate;
 	}
+
+    public void setAddAction(PurchaseController.Action addAction) {
+        this.addAction = addAction;
+    }
+
+    public void setCancelAction(PurchaseController.Action cancelAction) {
+        this.cancelAction = cancelAction;
+    }
 }

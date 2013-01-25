@@ -1,34 +1,35 @@
 package ish.oncourse.enrol.checkout;
 
-public class ActionAddContact extends AAddContactAction {
+public class ActionAddPayer extends AAddContactAction
+{
 
     @Override
     protected boolean shouldChangePayer() {
-        return getModel().getPayer() == null;
-    }
-
-    @Override
-    protected boolean shouldEnableEnrolments() {
         return true;
     }
 
     @Override
-    protected boolean isApplyOwing() {
+    protected boolean shouldEnableEnrolments() {
         return false;
     }
 
     @Override
+    protected boolean isApplyOwing() {
+        return true;
+    }
+
+    @Override
     protected PurchaseController.State getFinalState() {
-        return PurchaseController.State.editCheckout;
+        return PurchaseController.State.editPayment;
     }
 
     @Override
     protected PurchaseController.Action getAddAction() {
-        return PurchaseController.Action.addContact;
+        return PurchaseController.Action.addPayer;
     }
 
     @Override
     protected PurchaseController.Action getCancelAction() {
-        return PurchaseController.Action.cancelAddContact;
+        return PurchaseController.Action.cancelAddPayer;
     }
 }

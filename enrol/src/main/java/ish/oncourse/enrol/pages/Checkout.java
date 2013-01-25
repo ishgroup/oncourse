@@ -166,7 +166,7 @@ public class Checkout {
     public Object addContact() {
         if (!request.isXHR())
             return null;
-        purchaseController.performAction(new ActionParameter(Action.startAddContact));
+        purchaseController.performAction(new ActionParameter(Action.addContact));
         return checkoutBlock;
     }
 

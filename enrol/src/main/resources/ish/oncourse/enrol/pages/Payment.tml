@@ -1,20 +1,28 @@
 <html t:type="ui/internal/pagestructure" bodyId="literal:PaymentPage"
-	  bodyClass="literal:internal-page"
-	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+      bodyClass="literal:internal-page"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 <t:if test="paymentProgress">
-	<meta http-equiv="refresh" content="3"/>
+    <meta http-equiv="refresh" content="3"/>
 </t:if>
 <div id="checkout" class="payments">
-	<t:delegate to="block:payment"/>
+    <t:delegate to="block:payment"/>
 </div>
 
 <t:block t:id="payment">
-	<t:delegate to="block:errors"/>
+    <t:delegate to="block:errors"/>
     <t:if test="purchaseController">
-        <t:delegate to="block:amount"/>
         <t:if test="editPayment">
+            <t:delegate to="block:amount"/>
             <t:delegate to="block:paymentEditor"/>
+        </t:if>
+        <t:if test="purchaseController.addContact">
+            <span t:type="checkout/contact/addcontact" delegate="purchaseController.addContactDelegate"
+                  returnPage="this" showCancelLink="true"/>
+        </t:if>
+        <t:if test="purchaseController.editContact">
+            <span t:type="checkout/contact/contacteditor" delegate="purchaseController.contactEditorDelegate"
+                  returnPage="this" returnBlock="paymentBlock" showCancelLink="true"/>
         </t:if>
         <t:if test="paymentResult">
             <t:delegate to="block:paymentResult"/>
@@ -26,24 +34,26 @@
 </t:block>
 
 <t:block t:id="amount">
-	<div class="amount-container">
-		<span t:type="checkout/addcode" purchaseController="purchaseController" blockToRefresh="paymentBlock"/>
-		<span t:type="checkout/amount" purchaseController="purchaseController" blockToRefresh="paymentBlock" showPayerFields="true"/>
+    <div class="amount-container">
+        <span t:type="checkout/addcode" purchaseController="purchaseController" blockToRefresh="paymentBlock"/>
+        <span t:type="checkout/amount" purchaseController="purchaseController" blockToRefresh="paymentBlock"
+              showPayerFields="true"/>
         <!-- the code need to clear the floats.-->
         <div class="clearboth"></div>
-	</div>
+    </div>
 </t:block>
 
 <t:block t:id="paymentEditor">
-	<span t:type="checkout/payment/paymenteditor" delegate="purchaseController.paymentEditorDelegate" blockToRefresh="paymentBlock"/>
+    <span t:type="checkout/payment/paymenteditor" delegate="purchaseController.paymentEditorDelegate"
+          blockToRefresh="paymentBlock"/>
 </t:block>
 
 <t:block t:id="paymentProgress">
-	<span t:type="checkout/payment/paymentProgress" delegate="purchaseController.paymentEditorDelegate"/>
+    <span t:type="checkout/payment/paymentProgress" delegate="purchaseController.paymentEditorDelegate"/>
 </t:block>
 
 <t:block t:id="paymentResult">
-	<span t:type="checkout/payment/paymentresult" delegate="purchaseController.paymentEditorDelegate"/>
+    <span t:type="checkout/payment/paymentresult" delegate="purchaseController.paymentEditorDelegate"/>
 </t:block>
 
 <t:block t:id="errors">

@@ -1,10 +1,12 @@
 package ish.oncourse.enrol.checkout;
 
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.addContact;
+
 public class ActionInit extends APurchaseAction {
 	@Override
 	protected void makeAction() {
 		getController().getVoucherRedemptionHelper().setInvoice(getModel().getInvoice());
-		ActionStartAddContact action = PurchaseController.Action.startAddContact.createAction(getController());
+		ActionAddContact action = addContact.createAction(getController());
 		action.action();
 	}
 

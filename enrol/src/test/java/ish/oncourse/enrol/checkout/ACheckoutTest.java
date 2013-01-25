@@ -118,7 +118,10 @@ public abstract class ACheckoutTest extends ServiceTest {
 	}
 
 	void addFirstContact(Contact contact) {
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
+        PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
+        purchaseController.performAction(actionParameter);
+
+        actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
 		ContactCredentials contactCredentials = createContactCredentialsBy(contact);
 		actionParameter.setValue(contactCredentials);
 		purchaseController.performAction(actionParameter);
@@ -128,7 +131,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 
 	void addContact(Contact newContact) {
-		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.startAddContact);
+		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
 		performAction(param);
 
 		param = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);

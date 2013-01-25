@@ -27,7 +27,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Before
     public void setup() throws Exception {
-		setup("ish/oncourse/enrol/checkout/purchaseControllerTestDataSet.xml");
+        setup("ish/oncourse/enrol/checkout/purchaseControllerTestDataSet.xml");
     }
 
 
@@ -48,9 +48,9 @@ public class PurchaseControllerTest extends ACheckoutTest {
                 enableEnrolment, enableProductItem,
                 disableEnrolment, disableProductItem,
                 setVoucherPrice, addVoucher,
-                startConcessionEditor, startAddContact),
+                startConcessionEditor, addContact),
                 COMMON_ACTIONS);
-        assertEquals(State.init.getAllowedActions(), Arrays.asList(init, startAddContact));
+        assertEquals(State.init.getAllowedActions(), Arrays.asList(init, addContact));
         ArrayList<Action> actions = new ArrayList<Action>(COMMON_ACTIONS);
         actions.add(addDiscount);
         actions.add(removeDiscount);
@@ -58,9 +58,9 @@ public class PurchaseControllerTest extends ACheckoutTest {
         actions.add(addCourseClass);
         assertEquals(State.editCheckout.getAllowedActions(), actions);
         assertEquals(State.editConcession.getAllowedActions(), Arrays.asList(addConcession, removeConcession, cancelConcessionEditor));
-        assertEquals(State.addContact.getAllowedActions(), Arrays.asList(addContact, cancelAddContact));
-        assertEquals(State.editContact.getAllowedActions(), Arrays.asList(addContact, cancelAddContact));
-        assertEquals(State.editPayment.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply,changePayer));
+        assertEquals(State.addContact.getAllowedActions(), Arrays.asList(addContact, addPayer, cancelAddContact, cancelAddPayer));
+        assertEquals(State.editContact.getAllowedActions(), Arrays.asList(addContact, addPayer, cancelAddContact, cancelAddPayer));
+        assertEquals(State.editPayment.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout, addDiscount, creditAccess, owingApply, changePayer, addPayer));
         assertEquals(State.paymentProgress.getAllowedActions(), Arrays.asList(showPaymentResult));
         assertEquals(State.paymentResult.getAllowedActions(), Arrays.asList(proceedToPayment, showPaymentResult));
     }
@@ -245,7 +245,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(2, model.getProducts().size());
 
         if (addPayer) {
-			addFirstContact(1189157);
+            addFirstContact(1189157);
             assertEquals(1, purchaseController.getModel().getContacts().size());
             assertNotNull(purchaseController.getModel().getPayer());
         }
@@ -520,12 +520,12 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-		ObjectContext cContext = context.createChildContext();
+        ObjectContext cContext = context.createChildContext();
         ConcessionType ct = Cayenne.objectForPK(cContext, ConcessionType.class, 1);
         StudentConcession sc = createStudentConcession(cContext,
-				(Student) cContext.localObject(model.getPayer().getStudent().getObjectId(),null),
-				ct,
-				(College) cContext.localObject(model.getPayer().getCollege().getObjectId(),null));
+                (Student) cContext.localObject(model.getPayer().getStudent().getObjectId(), null),
+                ct,
+                (College) cContext.localObject(model.getPayer().getCollege().getObjectId(), null));
 
         addConcession(purchaseController, sc);
 
@@ -551,10 +551,10 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-		ObjectContext cContext = context.createChildContext();
+        ObjectContext cContext = context.createChildContext();
         ConcessionType ct = Cayenne.objectForPK(cContext, ConcessionType.class, 1);
-        StudentConcession sc = createStudentConcession(cContext, (Student)cContext.localObject(model.getPayer().getStudent().getObjectId(), null),
-				ct, (College) cContext.localObject(model.getPayer().getCollege().getObjectId(), null));
+        StudentConcession sc = createStudentConcession(cContext, (Student) cContext.localObject(model.getPayer().getStudent().getObjectId(), null),
+                ct, (College) cContext.localObject(model.getPayer().getCollege().getObjectId(), null));
 
         addConcession(purchaseController, sc);
 
@@ -575,12 +575,14 @@ public class PurchaseControllerTest extends ACheckoutTest {
     }
 
     @Test
-    public void testProceedToPayment() {
+    public void testProceedToPayment() throws InterruptedException {
         PurchaseController purchaseController = init();
 
         ActionParameter param = new ActionParameter(Action.proceedToPayment);
         param.setValue(purchaseController.getModel().getPayment());
         performAction(param);
+
+        makeInvalidPayment();
 
         Contact newContact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1189158);
 

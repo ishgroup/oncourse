@@ -42,7 +42,7 @@ public class PurchaseController {
 			enableEnrolment, enableProductItem,
 			disableEnrolment, disableProductItem,
 			setVoucherPrice, addVoucher,
-			startConcessionEditor, startAddContact));
+			startConcessionEditor,Action.addContact));
 
 	private PurchaseModel model;
 
@@ -222,33 +222,19 @@ public class PurchaseController {
 	/**
 	 * @param fillRequiredProperties if true we show only required properties where value is null
 	 */
-	void prepareContactEditor(Contact contact, boolean fillRequiredProperties) {
+	void prepareContactEditor(Contact contact, boolean fillRequiredProperties,
+                              Action addAction,
+                              Action cancelAction) {
 		contactEditorController = new ContactEditorController();
 		contactEditorController.setPurchaseController(this);
 		contactEditorController.setContact(contact);
 		contactEditorController.setObjectContext(contact.getObjectContext());
 		contactEditorController.setContactFiledsSet(enrolment);
+        contactEditorController.setAddAction(addAction);
+        contactEditorController.setCancelAction(cancelAction);
 		if (!contact.getObjectId().isTemporary() && fillRequiredProperties)
 			contactEditorController.setFillRequiredProperties(fillRequiredProperties);
 	}
-
-	void  addContactToModel(Contact contact) {
-		contact = getModel().localizeObject(contact);
-		model.addContact(contact);
-		//add the first contact
-		if (getModel().getPayer() == null) {
-			ActionChangePayer actionChangePayer = changePayer.createAction(this);
-			actionChangePayer.setContact(contact);
-			actionChangePayer.action();
-            getModel().setApplingOwing(false);
-		}
-		for (CourseClass cc : model.getClasses()) {
-            ActionAddCourseClass actionAddCourseClass = Action.addCourseClass.createAction(this);
-            actionAddCourseClass.setCourseClass(cc);
-            actionAddCourseClass.action();
-		}
-	}
-
 
 	void recalculateEnrolmentInvoiceLines() {
 
@@ -569,12 +555,12 @@ public class PurchaseController {
     }
 
     public static enum State {
-		init(Action.init, Action.startAddContact),
+		init(Action.init, Action.addContact),
 		editCheckout(COMMON_ACTIONS,addDiscount,removeDiscount, proceedToPayment, addCourseClass),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
-		addContact(Action.addContact, cancelAddContact),
-		editContact(Action.addContact, cancelAddContact),
-		editPayment(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply, changePayer),
+		addContact(Action.addContact, addPayer, cancelAddContact,cancelAddPayer),
+		editContact(Action.addContact, addPayer, cancelAddContact,cancelAddPayer),
+		editPayment(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply, changePayer, addPayer),
         paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment,showPaymentResult);
 
@@ -618,15 +604,16 @@ public class PurchaseController {
 		addVoucher(ActionAddVoucher.class, String.class, Voucher.class),
 		startConcessionEditor(ActionStartConcessionEditor.class, Contact.class),
 		cancelConcessionEditor(ActionCancelConcessionEditor.class, Contact.class),
-		startAddContact(ActionStartAddContact.class),
 		cancelAddContact(ActionCancelAddContact.class),
+        cancelAddPayer(ActionCancelAddPayer.class),
 		creditAccess(ActionCreditAccess.class, String.class),
 		owingApply(ActionOwingApply.class),
 		proceedToPayment(ActionProceedToPayment.class),
 		makePayment(ActionMakePayment.class),
         showPaymentResult(ActionShowPaymentResult.class),
 		backToEditCheckout(ActionBackToEditCheckout.class),
-        addCourseClass(ActionAddCourseClass.class,CourseClass.class);
+        addCourseClass(ActionAddCourseClass.class,CourseClass.class),
+        addPayer(ActionAddPayer.class, Contact.class);
 
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
@@ -702,6 +689,11 @@ public class PurchaseController {
 		public void setErrors(Map<String, String> errors) {
 			this.errors = errors;
 		}
+
+        public boolean hasValues()
+        {
+            return !values.isEmpty();
+        }
 	}
 
 	public static enum Message {

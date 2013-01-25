@@ -188,7 +188,10 @@ public class PaymentEditor {
             return null;
         PaymentEditorParser paymentEditorParser = getPaymentEditorParser();
         paymentEditorParser.parse();
-        delegate.changePayer();
+        if (paymentEditorParser.isNewPayer())
+            delegate.addPayer();
+        else
+            delegate.changePayer();
         return blockToRefresh;
     }
 

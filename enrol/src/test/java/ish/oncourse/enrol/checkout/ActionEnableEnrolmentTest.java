@@ -26,7 +26,6 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 		CourseClass courseClass = createPurchaseController(1001);
 
 		Contact contact = addFirstContact(1001);
-        addFirstContact(contact);
 
         //test duplicate enrolment
         assertNotNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
