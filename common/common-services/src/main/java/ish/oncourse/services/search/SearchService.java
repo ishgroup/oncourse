@@ -35,10 +35,15 @@ public class SearchService implements ISearchService {
 	private static final Logger logger = Logger.getLogger(SearchService.class);
 
     /**
-     * Default maximum distance for geo-searches
+     * Default maximum km distance for geo-searches
      */
 	public static final double MAX_DISTANCE = 100.0;
 	
+	/**
+	 * The radius required for correct calculation of boost function for the cases when we want direct suburb matches filtering.
+	 * When Website app generate the URL like websitehost/courses?near='some suburb name or postcode'&km=0
+	 * this radius (10 centimeters) will be used to compensate the distance calculation error for boost function. 
+	 */
 	public static final double MIN_DISTANCE = 0.0001;
 
     @Inject
