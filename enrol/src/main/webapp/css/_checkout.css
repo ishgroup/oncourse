@@ -568,3 +568,7 @@ tr.enrolmentItem > td > em > span.started {
 #cvvLink {
 	margin-left: 50px;
 }
+
+.content .amount-container .btn-primary {
+	background-color: #0044CC;
+}
