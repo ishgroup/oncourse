@@ -386,6 +386,7 @@ div.amount-container .btn-primary, #paymentSubmit {
 	border-color: #04C #04C #002A80;
 	border-style: solid;
 	cursor: pointer;
+	font-size: 100%;
 }
 
 .payments tbody td.alignright span.fullPrice, .payments tbody td.alignright span.totalPrice {
