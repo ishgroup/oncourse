@@ -34,7 +34,7 @@
 
 #checkout .button {
 	float: left;
-	margin: 1px 0 1px 10px;
+	margin: 0 0 0 10px;
 	border: 1px solid #D1D1D1;
 	padding: 3px 10px;
 	color: black;
@@ -265,7 +265,6 @@ div.amount-container div.code-info {
 	float: left;
 	width: 270px;
 	margin: 0 0 20px 0;
-	font-size: 11px;
 }
 
 div.amount-container input.code_input {
@@ -286,6 +285,7 @@ div.amount-container div.code-info .button {
 div.amount-container div.code-info p {
 	margin-bottom: 0px;
 	clear: both;
+	font-size: 11px;
 }
 
 div.amount-container .amount-content {
