@@ -386,9 +386,6 @@ div.amount-container .btn-primary {
 	border-color: #04C #04C #002A80;
 	border-style: solid;
 	cursor: pointer;
-	display: block;
-	width: 135px;
-	clear: both;
 }
 
 .payments tbody td.alignright span.fullPrice, .payments tbody td.alignright span.totalPrice {
@@ -574,4 +571,8 @@ tr.enrolmentItem > td > em > span.started {
 
 #checkout input[type="checkbox"], #checkout input[type="radio"] {
 	margin-top: 2px;
+}
+
+.amount-content .clearboth {
+	clear: both;
 }
