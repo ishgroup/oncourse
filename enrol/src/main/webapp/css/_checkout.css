@@ -289,7 +289,7 @@ div.amount-container div.code-info p {
 }
 
 div.amount-container .amount-content {
-	width: 235px;
+	width: 253px;
 	float: right;
 }
 
@@ -313,12 +313,11 @@ div.amount-container .amount-content p {
 }
 
 #checkout div.amount-container .amount-content label {
-	width: 127px;
+	width: 145px;
 	float: left;
 	text-align: right;
 	margin-right: 10px;
 	padding-right: 0px;
-	font-size: 12px;
 }
 
 
