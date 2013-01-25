@@ -380,14 +380,13 @@ div.amount-container .btn-primary {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
-	font-size: 12px;
 	text-decoration: none;
 	border-width: 1px;
 	border-color: #04C #04C #002A80;
 	border-style: solid;
 	cursor: pointer;
 	display: block;
-	width: 110px;
+	width: 135px;
 	clear: both;
 }
 
