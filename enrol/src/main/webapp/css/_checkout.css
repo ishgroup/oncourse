@@ -549,7 +549,7 @@ tr.enrolmentItem > td > em > span.started {
 	float: none;
 }
 
-.total-amount, .total-amount label {
+.total-amount, div.amount-container .amount-content .total-amount label {
 	font-weight: bold;
 }
 
