@@ -11,28 +11,31 @@
 
 <t:block t:id="payment">
 	<t:delegate to="block:errors"/>
-	<t:delegate to="block:amount"/>
-	<t:if test="editPayment">
-		<t:delegate to="block:paymentEditor"/>
-	</t:if>
-	<t:if test="paymentResult">
-		<t:delegate to="block:paymentResult"/>
-	</t:if>
-	<t:if test="paymentProgress">
-		<t:delegate to="block:paymentProgress"/>
-	</t:if>
+    <t:if test="purchaseController">
+        <t:delegate to="block:amount"/>
+        <t:if test="editPayment">
+            <t:delegate to="block:paymentEditor"/>
+        </t:if>
+        <t:if test="paymentResult">
+            <t:delegate to="block:paymentResult"/>
+        </t:if>
+        <t:if test="paymentProgress">
+            <t:delegate to="block:paymentProgress"/>
+        </t:if>
+    </t:if>
 </t:block>
 
 <t:block t:id="amount">
 	<div class="amount-container">
 		<span t:type="checkout/addcode" purchaseController="purchaseController" blockToRefresh="paymentBlock"/>
 		<span t:type="checkout/amount" purchaseController="purchaseController" blockToRefresh="paymentBlock" showPayerFields="true"/>
-		<div class="clearboth"></div>
+        <!-- the code need to clear the floats.-->
+        <div class="clearboth"></div>
 	</div>
 </t:block>
 
 <t:block t:id="paymentEditor">
-	<span t:type="checkout/payment/paymenteditor" delegate="purchaseController.paymentEditorDelegate"/>
+	<span t:type="checkout/payment/paymenteditor" delegate="purchaseController.paymentEditorDelegate" blockToRefresh="paymentBlock"/>
 </t:block>
 
 <t:block t:id="paymentProgress">

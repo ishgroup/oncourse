@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface PaymentEditorDelegate {
 	public void makePayment();
+    public void changePayer();
 
 	public void tryAgain();
 	public void abandon();

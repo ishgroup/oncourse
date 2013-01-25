@@ -4,7 +4,6 @@ import ish.common.types.CreditCardType;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorParser;
-import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
@@ -15,7 +14,11 @@ import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidateHandler;
 import ish.persistence.CommonPreferenceController;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.Block;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
@@ -32,7 +35,6 @@ public class PaymentEditor {
 	 * Credit card expire date interval
 	 */
 	private static final int EXPIRE_YEAR_INTERVAL = 15;
-
 
 	@Parameter(required = true)
 	@Property
@@ -70,10 +72,15 @@ public class PaymentEditor {
 	@Inject
 	private PreferenceController preferenceController;
 
-	@InjectPage
-	private Checkout checkout;
+    @Parameter
+    @Property
+    private Block blockToRefresh;
 
-	@SetupRender
+    private Contact dummyPayer;
+    private List<Contact> payers;
+
+
+    @SetupRender
 	void beforeRender() {
 		userAgreed = false;
         initExpiry();
@@ -106,7 +113,7 @@ public class PaymentEditor {
 	{
 		if (payersModel == null)
 		{
-			payersModel = new ListSelectModel<Contact>(delegate.getContacts(), "fullName",propertyAccess);
+			payersModel = new ListSelectModel<Contact>(getPayers(), "fullName",propertyAccess);
 		}
 		return payersModel;
 	}
@@ -115,7 +122,7 @@ public class PaymentEditor {
 	{
 		if (payersEncoder == null)
 		{
-			payersEncoder =  new ListValueEncoder<Contact>(delegate.getContacts(), "id", propertyAccess);
+			payersEncoder =  new ListValueEncoder<Contact>(getPayers(), "id", propertyAccess);
 		}
 		return payersEncoder;
 	}
@@ -174,18 +181,63 @@ public class PaymentEditor {
 		return FormatUtils.chooseMoneyFormat(Money.valueOf(delegate.getPaymentIn().getAmount()));
 	}
 
+    @OnEvent(value = "changePayerEvent")
+    public Object changePayer()
+    {
+        if (!request.isXHR())
+            return null;
+        PaymentEditorParser paymentEditorParser = getPaymentEditorParser();
+        paymentEditorParser.parse();
+        delegate.changePayer();
+        return blockToRefresh;
+    }
+
 	@OnEvent(component = "paymentSubmit", value = "selected")
 	public Object makePayment()
 	{
-		PaymentEditorParser paymentEditorParser = new PaymentEditorParser();
-		paymentEditorParser.setRequest(request);
-		paymentEditorParser.setContacts(delegate.getContacts());
-		paymentEditorParser.setMessages(messages);
-		paymentEditorParser.setPaymentIn(delegate.getPaymentIn());
+        PaymentEditorParser paymentEditorParser = getPaymentEditorParser();
 		paymentEditorParser.parse();
 		delegate.setErrors(paymentEditorParser.getErrors());
 		delegate.makePayment();
 		getValidateHandler().setErrors(delegate.getErrors());
 		return this;
 	}
+
+    private PaymentEditorParser getPaymentEditorParser() {
+        PaymentEditorParser paymentEditorParser = new PaymentEditorParser();
+        paymentEditorParser.setRequest(request);
+        paymentEditorParser.setContacts(delegate.getContacts());
+        paymentEditorParser.setMessages(messages);
+        paymentEditorParser.setPaymentIn(delegate.getPaymentIn());
+        return paymentEditorParser;
+    }
+
+    private Contact getDummyPayer()
+    {
+        if (dummyPayer == null)
+        {
+            dummyPayer = new Contact(){
+                @Override
+                public String getFullName() {
+                    return messages.get("message-addDifferentPayer");
+                }
+
+                @Override
+                public Long getId() {
+                    return Long.MIN_VALUE;
+                }
+            };
+        }
+        return dummyPayer;
+    }
+
+    private List<Contact> getPayers()
+    {
+        if (payers == null)
+        {
+            payers = new ArrayList<Contact>(delegate.getContacts());
+            payers.add(getDummyPayer());
+        }
+        return payers;
+    }
 }

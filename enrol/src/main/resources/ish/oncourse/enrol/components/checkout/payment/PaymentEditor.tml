@@ -6,9 +6,7 @@
 	<t:block t:id="paymentEditor">
 		<t:form t:id="paymentform">
 			<div class="enrolmentsSelected">
-				<t:if test="zeroPayment" negate="true">
-					<t:delegate to="block:paymentFields"/>
-				</t:if>
+				<t:delegate to="block:paymentFields"/>
 				<p>
 					<div>
 						<label>Conditions<em title="${message:message-required}">*</em></label>
@@ -43,48 +41,51 @@
 				<p>
 					<label for="contact">Payer<em title="${message:message-required}">*</em></label>
 					<t:select t:id="contact" value="paymentIn.contact" model="payersModel" encoder="payersEncoder" blankOption="NEVER" />
-				</p>
-				<p>
-					<label for="creditCardType">Card Type<em title="${message:message-required}">*</em></label>
-					<span class="${validateHandler.validateClass('creditCardType')}">
-						<t:select t:id="creditCardType" value="paymentIn.creditCardType" model="cardTypeModel" blankLabel="${message:blankSelect}"
-								  class="${validateHandler.errorClass('creditCardType')}"/>
-						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardType')}"/>
-					</span>
-				</p>
-				<p>
-					<label for="creditCardName">Name on Card<em title="${message:message-required}">*</em></label>
-					<span class="${validateHandler.validateClass('creditCardName')}">
-						<t:textfield value="paymentIn.creditCardName" t:id="creditCardName" maxlength="80"  class="input-fixed ${validateHandler.errorClass('creditCardName')}"/>
-						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardName')}"/>
-					</span>
-				</p>
-				<p>
-					<label for="creditCardNumber">Number<em title="${message:message-required}">*</em></label>
-					<span class="${validateHandler.validateClass('creditCardNumber')}">
-						<t:textfield value="paymentIn.creditCardNumber" t:id="creditCardNumber" maxlength="20"  class="input-fixed ${validateHandler.errorClass('creditCardNumber')}"/>
-						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardNumber')}"/>
-					</span>
-				</p>
-				<p>
-					<label for="creditCardCVV">CVV<em title="${message:message-required}">*</em></label>
-					<span class="${validateHandler.validateClass('creditCardCVV')}">
-						<t:textfield value="paymentIn.creditCardCVV" t:id="creditCardCVV" maxlength="4"  class="input-fixed ${validateHandler.errorClass('creditCardCVV')}"/>
-						<a id="cvvLink" href="/enrol/ui/cvv?wrap=false" class="nyromodal">What is CVV?</a>
-						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardCVV')}"/>
-					</span>
+                    <!--<t:eventlink t:id="changePayerEvent" style="{display:none;}"/>-->
+                </p>
+                <t:if test="zeroPayment" negate="true">
+                    <p>
+                        <label for="creditCardType">Card Type<em title="${message:message-required}">*</em></label>
+                        <span class="${validateHandler.validateClass('creditCardType')}">
+                            <t:select t:id="creditCardType" value="paymentIn.creditCardType" model="cardTypeModel" blankLabel="${message:blankSelect}"
+                                      class="${validateHandler.errorClass('creditCardType')}"/>
+                            <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardType')}"/>
+                        </span>
+                    </p>
+                    <p>
+                        <label for="creditCardName">Name on Card<em title="${message:message-required}">*</em></label>
+                        <span class="${validateHandler.validateClass('creditCardName')}">
+                            <t:textfield value="paymentIn.creditCardName" t:id="creditCardName" maxlength="80"  class="input-fixed ${validateHandler.errorClass('creditCardName')}"/>
+                            <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardName')}"/>
+                        </span>
+                    </p>
+                    <p>
+                        <label for="creditCardNumber">Number<em title="${message:message-required}">*</em></label>
+                        <span class="${validateHandler.validateClass('creditCardNumber')}">
+                            <t:textfield value="paymentIn.creditCardNumber" t:id="creditCardNumber" maxlength="20"  class="input-fixed ${validateHandler.errorClass('creditCardNumber')}"/>
+                            <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardNumber')}"/>
+                        </span>
+                    </p>
+                    <p>
+                        <label for="creditCardCVV">CVV<em title="${message:message-required}">*</em></label>
+                        <span class="${validateHandler.validateClass('creditCardCVV')}">
+                            <t:textfield value="paymentIn.creditCardCVV" t:id="creditCardCVV" maxlength="4"  class="input-fixed ${validateHandler.errorClass('creditCardCVV')}"/>
+                            <a id="cvvLink" href="/enrol/ui/cvv?wrap=false" class="nyromodal">What is CVV?</a>
+                            <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardCVV')}"/>
+                        </span>
 
-				</p>
-				<p>
-					<label>Expiry<em title="${message:message-required}">*</em></label>
-					<span class="${validateHandler.validateClass('expiryMonth')}">
-						<t:select t:id="expiryMonth" value="expiryMonth" model="literal:01,02,03,04,05,06,07,08,09,10,11,12" blankLabel="mm"
-								  class="${validateHandler.errorClass('expiryMonth')}"/>
-						/
-						<t:select t:id="expiryYear" value="expiryYear" model="years" blankLabel="yyyy" class="${validateHandler.errorClass('expiryMonth')}"/>
-						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('expiryMonth')}"/>
-					</span>
-				</p>
+                    </p>
+                    <p>
+                        <label>Expiry<em title="${message:message-required}">*</em></label>
+                        <span class="${validateHandler.validateClass('expiryMonth')}">
+                            <t:select t:id="expiryMonth" value="expiryMonth" model="literal:01,02,03,04,05,06,07,08,09,10,11,12" blankLabel="mm"
+                                      class="${validateHandler.errorClass('expiryMonth')}"/>
+                            /
+                            <t:select t:id="expiryYear" value="expiryYear" model="years" blankLabel="yyyy" class="${validateHandler.errorClass('expiryMonth')}"/>
+                            <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('expiryMonth')}"/>
+                        </span>
+                    </p>
+                </t:if>
 			</div>
 		</fieldset>
 	</t:block>

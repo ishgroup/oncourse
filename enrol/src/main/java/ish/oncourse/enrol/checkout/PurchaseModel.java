@@ -40,7 +40,10 @@ public class PurchaseModel {
     private Money totalDiscountAmountIncTax = Money.ZERO;
     private List<PaymentIn> voucherPayments = new ArrayList<PaymentIn>();
 
-    private boolean applingOwing = true;
+    /**
+     * we apply previos owing/credit when this flag is true.
+     */
+    private boolean applingOwing = false;
 
     public void addDiscount(Discount discount) {
         discounts.add(discount);

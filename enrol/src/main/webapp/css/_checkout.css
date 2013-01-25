@@ -88,7 +88,7 @@ table.payments tr div.drop-down
 	margin-bottom: 0;
 }
 
-.content a.add-con {
+.content a.add-concession {
 	text-decoration: none;
 	font-size: 11px;
 	background: white;
@@ -98,7 +98,7 @@ table.payments tr div.drop-down
 	color: #125687;
 }
 
-.content a.add-con:hover {
+.content a.add-concession:hover {
 	text-decoration: underline;
 }
 
@@ -577,3 +577,11 @@ tr.enrolmentItem > td > em > span.started {
 .amount-content .clearboth {
 	clear: both;
 }
+
+.conditions {
+        position: relative;
+        top: -20px;
+        left: 26%;
+        padding-left:20px;
+        width: 60%;
+ }

@@ -2,7 +2,6 @@ package ish.oncourse.enrol.checkout.payment;
 
 import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
-import ish.oncourse.enrol.checkout.ActionChangePayer;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
@@ -41,27 +40,28 @@ public class PaymentEditorController implements PaymentEditorDelegate{
         }
     }
 
+    public void changePayer()
+    {
+        if (!getPaymentIn().getContact().getId().equals(purchaseController.getModel().getPayer().getId()))
+        {
+
+            PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.changePayer);
+            actionParameter.setValue(getPaymentIn().getContact());
+            purchaseController.performAction(actionParameter);
+        }
+    }
+
 	public void makePayment()
 	{
 		purchaseController.setErrors(errors);
-		boolean changePayerResult = true;
 		if (errors.isEmpty())
 		{
-			if (!getPaymentIn().getContact().getId().equals(purchaseController.getModel().getPayer().getId()))
-			{
-				ActionChangePayer payer = PurchaseController.Action.changePayer.createAction(purchaseController);
-				payer.setContact(getPaymentIn().getContact());
-				changePayerResult = payer.action();
-			}
-			if (changePayerResult)
-			{
-                PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
-                purchaseController.performAction(actionParameter);
-                if (purchaseController.getErrors().isEmpty())
-                {
-                    purchaseController.getModel().getObjectContext().commitChanges();
-                    paymentProcessController.processAction(MAKE_PAYMENT);
-                }
+            PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
+            purchaseController.performAction(actionParameter);
+            if (purchaseController.getErrors().isEmpty())
+            {
+                purchaseController.getModel().getObjectContext().commitChanges();
+                paymentProcessController.processAction(MAKE_PAYMENT);
             }
 		}
 	}

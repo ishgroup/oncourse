@@ -52,7 +52,7 @@ public class ActionChangePayer extends  APurchaseAction{
 
         List<PaymentIn> payments = context.performQuery(q);
 
-        if (!payments.isEmpty())
+        if (payments.size() > 1)
         {
             getController().addWarning(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
         }

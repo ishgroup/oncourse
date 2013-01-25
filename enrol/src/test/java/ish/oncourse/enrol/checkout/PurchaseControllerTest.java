@@ -48,8 +48,8 @@ public class PurchaseControllerTest extends ACheckoutTest {
                 enableEnrolment, enableProductItem,
                 disableEnrolment, disableProductItem,
                 setVoucherPrice, addVoucher,
-                startConcessionEditor, startAddContact,
-                changePayer), COMMON_ACTIONS);
+                startConcessionEditor, startAddContact),
+                COMMON_ACTIONS);
         assertEquals(State.init.getAllowedActions(), Arrays.asList(init, startAddContact));
         ArrayList<Action> actions = new ArrayList<Action>(COMMON_ACTIONS);
         actions.add(addDiscount);
@@ -60,7 +60,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(State.editConcession.getAllowedActions(), Arrays.asList(addConcession, removeConcession, cancelConcessionEditor));
         assertEquals(State.addContact.getAllowedActions(), Arrays.asList(addContact, cancelAddContact));
         assertEquals(State.editContact.getAllowedActions(), Arrays.asList(addContact, cancelAddContact));
-        assertEquals(State.editPayment.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply));
+        assertEquals(State.editPayment.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply,changePayer));
         assertEquals(State.paymentProgress.getAllowedActions(), Arrays.asList(showPaymentResult));
         assertEquals(State.paymentResult.getAllowedActions(), Arrays.asList(proceedToPayment, showPaymentResult));
     }
@@ -267,7 +267,9 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(originalPayer, model.getPayer());
         assertTrue(purchaseController.getModel().getContacts().contains(newPayer));
 
-        ActionParameter param = new PurchaseController.ActionParameter(Action.changePayer);
+        proceedToPayment();
+
+        ActionParameter param = new ActionParameter(Action.changePayer);
         param.setValue(newPayer);
 
         performAction(param);

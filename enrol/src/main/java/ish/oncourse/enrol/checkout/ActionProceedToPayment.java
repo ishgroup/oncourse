@@ -33,6 +33,7 @@ public class ActionProceedToPayment extends APurchaseAction {
         } else {
             getModel().setPayment(paymentIn);
         }
+        getController().getModel().setApplingOwing(true);
         getController().setState(editPayment);
     }
 

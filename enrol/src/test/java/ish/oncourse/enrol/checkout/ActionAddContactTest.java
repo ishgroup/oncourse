@@ -58,6 +58,7 @@ public class ActionAddContactTest extends ACheckoutTest {
 		purchaseController.getContactEditorDelegate().saveContact();
 		assertNull(purchaseController.getContactEditorDelegate());
 		assertTrue(purchaseController.getModel().containsContactWith(contactCredentials));
+        assertFalse(purchaseController.getModel().isApplingOwing());
 	}
 
 	@Test

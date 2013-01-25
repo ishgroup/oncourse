@@ -1,50 +1,15 @@
 var $j = jQuery.noConflict();
 
 function initSelectPayerHandle(){
-	//close opened popup on any event
-	$j('html').live('click dblclick', function(e){
-		var dropDown = $j('.drop-down');
-		if (dropDown[0])
-		{
-			var W = dropDown.width();
-			var H = dropDown.height();
-			var X = dropDown.offset().left;
-			var Y = $j('.drop-down').offset().top;
-			if ($j(".drop-down-content").hasClass('visible'))
-			{
-				var x = e.pageX;
-				var y = e.pageY;
-
-				if(!((x >= X && x <= X+W) &&
-					(y >= Y && y <= Y+H)))
-				{
-					$j(".drop-down-content").removeClass("visible")
-				}
-			}
-		}
-	});
-
-	$j('.drop-down').click(function()
-	{
-		var p = $j('.drop-down').position();
-		var H = $j('.drop-down').height();
-
-
-		$j(".drop-down-content").css('top',p.top  + H + 'px');
-		$j(".drop-down-content").addClass("visible")
-	});
-
-//	$j('.payer').click(function()
-//	{
-//		$j(".drop-down-content").removeClass("visible")
-//	});
-
-	$j('.contact').click(function()
-	{
-		//set the value to tapestry component
-		var $actionLink = $j(this).next('a.payerSelectLink')[0].pathname;
-		sendAjax($actionLink);
-	});
+    $j("select[id*=contact]").change(function()
+        {
+            //var $actionLink = $j(this).next('a')[0].pathname;
+            var actionLink = '/enrol/payment.paymenteditor:changepayerevent';
+            var f = $j("[id*=paymentform]")[0];
+            var data = $j(f).serialize();
+            sendAjaxWithData(actionLink, data);
+        }
+    );
 }
 
 

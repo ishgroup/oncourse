@@ -42,8 +42,7 @@ public class PurchaseController {
 			enableEnrolment, enableProductItem,
 			disableEnrolment, disableProductItem,
 			setVoucherPrice, addVoucher,
-			startConcessionEditor, startAddContact,
-			changePayer));
+			startConcessionEditor, startAddContact));
 
 	private PurchaseModel model;
 
@@ -81,6 +80,9 @@ public class PurchaseController {
 
     private ParallelExecutor parallelExecutor;
 
+    /**
+     * We show amout of credit when this flag is true.
+     */
     private boolean showCreditAmount = false;
 
     /**
@@ -238,6 +240,7 @@ public class PurchaseController {
 			ActionChangePayer actionChangePayer = changePayer.createAction(this);
 			actionChangePayer.setContact(contact);
 			actionChangePayer.action();
+            getModel().setApplingOwing(false);
 		}
 		for (CourseClass cc : model.getClasses()) {
             ActionAddCourseClass actionAddCourseClass = Action.addCourseClass.createAction(this);
@@ -571,7 +574,7 @@ public class PurchaseController {
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, cancelAddContact),
 		editContact(Action.addContact, cancelAddContact),
-		editPayment(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply),
+		editPayment(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply, changePayer),
         paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment,showPaymentResult);
 
@@ -601,7 +604,7 @@ public class PurchaseController {
 	 */
 	public static enum Action {
 		init(ActionInit.class),
-		changePayer(ActionChangePayer.class, Contact.class),
+		changePayer(ActionChangePayer.class, Contact.class, State.class),
 		setVoucherPrice(ActionSetVoucherPrice.class, Money.class),
 		enableEnrolment(ActionEnableEnrolment.class, Enrolment.class),
 		disableEnrolment(ActionDisableEnrolment.class, Enrolment.class),
