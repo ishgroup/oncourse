@@ -5,6 +5,7 @@
 	width: 26%;
 	padding-right: 20px;
 	vertical-align: middle;
+	line-height: 16px;
 }
 
 #checkout .conditions label {
@@ -551,7 +552,7 @@ tr.enrolmentItem > td > em > span.started {
 	font-weight: bold;
 }
 
-#cardname, #cardnumber {
+#creditCardName, #creditCardNumber {
 	width: 180px;
 }
 
@@ -569,4 +570,8 @@ tr.enrolmentItem > td > em > span.started {
 
 .content .amount-container .btn-primary {
 	background-color: #0044CC;
+}
+
+#checkout input[type="checkbox"], #checkout input[type="radio"] {
+	margin-top: 2px;
 }
