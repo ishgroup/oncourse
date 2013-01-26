@@ -3,7 +3,7 @@
 	
 	<t:if test="haveMailingLists">
 
-		<h3> The following mailing lists are available at ${collegeName}: </h3>
+		<h1> The following mailing lists are available at ${collegeName}: </h1>
 		
 		<t:if test="isSaved">
 			<h4>Mailing lists subscription was updated</h4>
