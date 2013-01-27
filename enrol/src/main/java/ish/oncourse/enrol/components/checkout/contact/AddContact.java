@@ -2,11 +2,13 @@ package ish.oncourse.enrol.components.checkout.contact;
 
 import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
 import ish.oncourse.enrol.checkout.contact.AddContactParser;
+import ish.oncourse.enrol.pages.Payment;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -14,7 +16,10 @@ import java.util.Collections;
 
 public class AddContact {
 
-	@Parameter (required = true)
+    private static final String KEY_addStudent = "message-addStudent";
+    private static final String KEY_addPayer = "message-addPayer";
+
+    @Parameter (required = true)
 	@Property
 	private AddContactDelegate delegate;
 
@@ -30,6 +35,9 @@ public class AddContact {
 
 	@Inject
 	private Request request;
+
+    @Inject
+    private Messages messages;
 
 	private boolean reset;
 
@@ -63,4 +71,12 @@ public class AddContact {
 		}
 		return returnPage;
 	}
+
+    public String getHeader()
+    {
+        if (returnPage instanceof Payment)
+            return messages.get(KEY_addPayer);
+        else
+            return messages.get(KEY_addStudent);
+    }
 }

@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div id="addstudent-block">
-		<h2>Add a student</h2>
+		<h2>${header}</h2>
 		<t:if test="${delegate.errors.isEmpty()}">
 		<div class="message">
 			<p>${message:message-enterDetails}</p>

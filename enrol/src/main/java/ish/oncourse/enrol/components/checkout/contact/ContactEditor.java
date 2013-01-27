@@ -3,6 +3,7 @@ package ish.oncourse.enrol.components.checkout.contact;
 import ish.oncourse.enrol.checkout.ConcessionParser;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
+import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
@@ -141,4 +142,9 @@ public class ContactEditor {
 		}
 		return returnPage;
 	}
+
+    public boolean isStudentEditor()
+    {
+        return returnPage instanceof Checkout;
+    }
 }

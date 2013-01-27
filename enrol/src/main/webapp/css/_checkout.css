@@ -585,3 +585,8 @@ tr.enrolmentItem > td > em > span.started {
         padding-left:20px;
         width: 60%;
  }
+
+.membership, .concession {
+    color: #aaa;
+    font-size: 11px;
+}

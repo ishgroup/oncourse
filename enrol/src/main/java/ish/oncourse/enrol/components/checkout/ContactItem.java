@@ -2,11 +2,16 @@ package ish.oncourse.enrol.components.checkout;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Membership;
+import ish.oncourse.model.StudentConcession;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactItem {
 	@Parameter(required = true)
@@ -35,7 +40,29 @@ public class ContactItem {
 		return purchaseController.getModel().getPayer().equals(contact);
 	}
 
-	public Object onActionFromEditConcessionLink(Integer contactIndex)
+    public List<String> getConcessionNames()
+    {
+        List<String> names = new ArrayList<String>();
+        for (StudentConcession studentConcession:contact.getStudent().getStudentConcessions()) {
+            String name = studentConcession.getConcessionType().getName();
+            if (!names.contains(name))
+                names.add(name);
+        }
+        return names;
+    }
+
+    public List<String> getMembershipNames()
+    {
+        List<String> names = new ArrayList<String>();
+        for (Membership membership:contact.getMemberships()) {
+            String name = membership.getProduct().getName();
+            if (!names.contains(name))
+                names.add(name);
+        }
+        return names;
+    }
+
+    public Object onActionFromEditConcessionLink(Integer contactIndex)
 	{
 		if (!request.isXHR())
 			return null;

@@ -1,55 +1,30 @@
 package ish.oncourse.enrol.components.checkout.concession;
 
-import ish.oncourse.enrol.checkout.ConcessionDelegate;
-import ish.oncourse.enrol.pages.Checkout;
-import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.util.FormatUtils;
-import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 
-import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConcessionList {
 
 	@Parameter(required = true)
-	@Property
-	private Student student;
+	private List<StudentConcession> studentConcessions;
 
 	@Property
-	private StudentConcession concession;
-
-	@Property
-	private Integer index;
-
-	@Property
-	private DateFormat dateFormat;
-
-	@Inject
-	private Request request;
-
-	@Parameter(required = true)
-	private ConcessionDelegate delegate;
-
-	@InjectPage
-	private Checkout checkout;
+	private String name;
 
 
-
-
-	@SetupRender
-	void beforeRender() {
-		dateFormat = FormatUtils.getDateFormat(student.getCollege().getTimeZone());
-	}
-
-	@OnEvent(value = "deleteConcessionEvent")
-	public Object deleteConcession(Integer index) {
-		if (!request.isXHR())
-			return null;
-		delegate.deleteConcessionBy(index);
-		if (checkout.getCheckoutBlock() != null)
-			return checkout.getCheckoutBlock();
-		return null;
-	}
+    public List<String> getNames()
+    {
+        List<String> names = new ArrayList<String>();
+        for (int i = 0; i < studentConcessions.size(); i++) {
+            StudentConcession studentConcession = studentConcessions.get(i);
+            String name = studentConcession.getConcessionType().getName();
+            if (!names.contains(name))
+                names.add(name);
+        }
+        return names;
+    }
 }

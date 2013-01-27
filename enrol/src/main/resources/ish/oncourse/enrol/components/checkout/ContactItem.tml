@@ -4,10 +4,14 @@
 		<td colspan="3">
 			<div class="student-info">${contact.fullName} <span>
 				${contact.emailAddress}</span></div>
-			<t:if test="purchaseController.activeConcessionTypes">
-					<a href="#" class="add-concession">Add Concession</a>
-					<t:actionlink t:id="editConcessionLink" context="index" style="{display:none}"/>
-			</t:if>
+            <span t:type='checkout/namelist' className="literal:concession" names="concessionNames"/>
+            <span t:type='checkout/namelist' className="literal:membership" names="membershipNames"/>
+            <div>
+                <t:if test="purchaseController.activeConcessionTypes">
+                        <a href="#" class="add-concession">Add Concession</a>
+                        <t:actionlink t:id="editConcessionLink" context="index" style="{display:none}"/>
+                </t:if>
+            </div>
 		</td>
 	</tr>
 	</tbody>
