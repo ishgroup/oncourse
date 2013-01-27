@@ -1,0 +1,9 @@
+<t:container
+        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div id="discountToolTip_${toolTipId}" style="display: none">
+        Best discount applied:
+        <t:loop source="discounts" value="discount">
+            <div class="discount">${discount.name}</div>
+        </t:loop>
+    </div>
+</t:container>

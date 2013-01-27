@@ -17,10 +17,23 @@ function initEnrolmentListHandle()
 {
 	$j('.enrolmentSelect').click(function()
 	{
+        $j(document).tooltip("open");
 		var $actionLink = $j(this).next('a.selectEnrolmentLink')[0].pathname;
 		sendAjax($actionLink);
 	});
+
+    $j(document).tooltip({
+                items: "[id*=discountedPrice]",
+                content: function() {
+                    var index = $j(this).data("index");
+                    var element = $j("#discountToolTip"+"_"+index);
+                    return element.html();
+                }
+        }
+    );
 }
+
+
 
 function initProductItemListHandle()
 {

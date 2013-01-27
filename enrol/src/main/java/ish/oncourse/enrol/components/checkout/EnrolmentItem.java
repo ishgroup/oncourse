@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.components.checkout;
 
+import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
@@ -13,6 +14,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.text.DateFormat;
+import java.util.List;
 
 
 public class EnrolmentItem {
@@ -30,7 +32,8 @@ public class EnrolmentItem {
     @Property
     private Integer enrolmentIndex;
 
-    @Parameter(required = false)
+    @Parameter(required = true)
+    @Property
     private EnrolmentItemDelegate delegate;
 
     @Property
@@ -83,5 +86,6 @@ public class EnrolmentItem {
 
     public static interface EnrolmentItemDelegate {
         public void onChange(Integer contactIndex, Integer enrolmentIndex);
+        public List<Discount> getDiscounts();
     }
 }
