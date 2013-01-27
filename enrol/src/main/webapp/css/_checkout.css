@@ -590,3 +590,15 @@ tr.enrolmentItem > td > em > span.started {
     color: #aaa;
     font-size: 11px;
 }
+
+.successMessage
+{
+    color: #0066AA;
+    font-weight: bold;
+    font-size: medium;
+}
+
+tbody.checkoutList
+{
+    border-bottom: 1px solid #D6D6D6;
+}
