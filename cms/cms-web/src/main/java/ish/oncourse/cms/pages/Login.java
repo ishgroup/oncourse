@@ -3,10 +3,7 @@ package ish.oncourse.cms.pages;
 
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.services.access.AuthenticationStatus;
-
-import java.io.IOException;
-import java.net.URL;
-
+import ish.oncourse.util.HTMLUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -17,6 +14,10 @@ import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -51,7 +52,7 @@ public class Login {
 		authenticationService.logout();
 	}
 
-	Object onSuccess() throws IOException {
+	public Object onSuccess() throws IOException {
 
 		if (StringUtils.isBlank(logEmail)) {
 			loginForm.recordError(emailField, "Please enter your login name");
@@ -74,7 +75,21 @@ public class Login {
 				loginForm.recordError("Login unsuccessful. " + status.name());
 			}
 		}
-		
-		return (loginForm.getHasErrors()) ? this : new URL("http://" + request.getServerName());
-	}
+
+        /**
+         * The line
+         * return (loginForm.getHasErrors()) ? this : new URL("http://" + request.getServerName());
+         * was replaced to current as workaround for task
+         */
+        return (loginForm.getHasErrors()) ? getLoginUrl(): getSiteUrl();
+
+    }
+
+    private URL getLoginUrl() throws MalformedURLException {
+        return new URL(HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath());
+    }
+
+    private URL getSiteUrl() throws MalformedURLException {
+        return new URL(HTMLUtils.HTTP_PROTOCOL + request.getServerName());
+    }
 }
