@@ -99,7 +99,7 @@ public class PageTypeEdit {
 	}
 
 	public SortedSet<WebContent> getUnassignedBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType, null);
+		return webContentService.getBlocksForRegionKey(pageType, RegionKey.unassigned);
 	}
 	
 	public boolean getIsSpecialType() {
