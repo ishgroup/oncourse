@@ -127,6 +127,11 @@ public class PageInfo {
 		if (request.getSession(false) == null) {
 			return page.getReloadPageBlock();
 		}
+		if (node == null || node.getObjectContext() == null) {
+			//if current page have been deleted, so home page set as current. required for #14484.
+			node = webNodeService.getHomePage();
+			pageOptionsArea.initPageWithNode(node);
+		}
 		pageOptionsArea.refreshThemes();
 		return pageOptionsArea.getOptionsAndButtonsZone();
 	}

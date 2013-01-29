@@ -123,8 +123,14 @@ public class PageOptions {
 
 	@SetupRender
 	public boolean beforeRender() {
-		if (node == null) {
+		return initPageWithNode(node);
+	}
+		
+	public boolean initPageWithNode(WebNode nodeForInit) {
+		if (nodeForInit == null) {
 			return false;
+		} else {
+			node = nodeForInit;
 		}
 		ObjectContext ctx = null;
 		if (node.getPersistenceState() == PersistenceState.NEW) {
@@ -294,7 +300,6 @@ public class PageOptions {
 
 	public void refreshThemes() {
 		List<WebNodeType> webNodeTypes = new ArrayList<WebNodeType>();
-
 		for (WebNodeType t : webNodeTypeService.getWebNodeTypes()) {
 			webNodeTypes.add((WebNodeType) editNode.getObjectContext().localObject(t.getObjectId(), null));
 		}
