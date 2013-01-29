@@ -315,7 +315,6 @@ div.amount-container .amount-content p {
 
 #checkout div.amount-container .amount-content label {
 	width: 145px;
-	float: left;
 	text-align: right;
 	margin-right: 10px;
 	padding-right: 0px;
@@ -330,6 +329,9 @@ div.amount-container .amount-content span {
 	display: inline-block;
 	width: 65px;
 	text-align: right;
+	float: right;
+	line-height: 16px;
+	margin-right: 32px;
 }
 
 div.amount-container #access-password-popup {
