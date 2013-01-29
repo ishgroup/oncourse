@@ -39,7 +39,7 @@
         </td>
 		<td class="alignright">
             <t:if test="checked">
-			    <span t:type="EnrolmentPrice" enrolment="enrolment" courseClass="enrolment.courseClass" index="${contactIndex}_${enrolmentIndex}}"/>
+			    <span t:type="EnrolmentPrice" enrolment="enrolment" courseClass="enrolment.courseClass" index="${contactIndex}_${enrolmentIndex}"/>
                 <span t:type="checkout/discounttooltip" discounts="delegate.discounts" toolTipId="${contactIndex}_${enrolmentIndex}"/>
             </t:if>
 		</td>

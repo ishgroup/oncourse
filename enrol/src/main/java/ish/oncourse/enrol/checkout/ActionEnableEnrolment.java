@@ -43,7 +43,7 @@ public class ActionEnableEnrolment extends APurchaseAction {
         if (enrolment.getObjectId().isTemporary()) {
             if (enrolment.isDuplicated()) {
                 getController().getModel().setErrorFor(enrolment,
-                        duplicatedEnrolment.getMessage(getController().getMessages(), enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getName()));
+                        duplicatedEnrolment.getMessage(getController().getMessages(), enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getCode()));
                 return false;
             }
         }
