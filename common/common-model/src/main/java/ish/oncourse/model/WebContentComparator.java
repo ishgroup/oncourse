@@ -11,6 +11,9 @@ public class WebContentComparator implements Comparator<WebContent> {
 	}
 
 	public int compare(WebContent o1, WebContent o2) {
+		if (webNodeType.getObjectId().isTemporary()) {
+			return o1.compareTo(o2); 
+		}
 		WebContentVisibility visibility1 = o1.getWebContentVisibility(webNodeType);
 		WebContentVisibility visibility2 = o2.getWebContentVisibility(webNodeType);
 		if (visibility1 == null || visibility2 == null) {
