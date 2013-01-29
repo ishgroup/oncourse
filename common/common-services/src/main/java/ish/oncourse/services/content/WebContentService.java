@@ -55,7 +55,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@SuppressWarnings("unchecked")
 	public SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType,
 			RegionKey regionKey) {
-		if (webNodeType != null && webNodeType.getObjectId().isTemporary()) {
+		if (webNodeType != null && webNodeType.getObjectId().isTemporary() && !RegionKey.unassigned.equals(regionKey)) {
 			//return no web content for temporary webNodeType because no web visibility exist for it
 			return new TreeSet<WebContent>();
 		}
@@ -97,8 +97,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		}
 
 		q.andQualifier(regionKeyQualifier);
-		TreeSet<WebContent> treeSet = new TreeSet<WebContent>(
-				new WebContentComparator(webNodeType));
+		TreeSet<WebContent> treeSet = new TreeSet<WebContent>(new WebContentComparator(webNodeType));
 		treeSet.addAll(webNodeType.getObjectContext().performQuery(q));
 		return treeSet;
 	}
