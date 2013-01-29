@@ -14,6 +14,7 @@ public class ActionBackToEditCheckout extends APurchaseAction {
 	protected void makeAction() {
         getController().setPaymentEditorController(null);
 		getController().setState(PurchaseController.State.editCheckout);
+        getController().getModel().setApplyPrevOwing(false);
 
 		List<Contact> contacts = getModel().getContacts();
 		List<CourseClass> classes = getModel().getClasses();
@@ -57,7 +58,6 @@ public class ActionBackToEditCheckout extends APurchaseAction {
 
 		if (getController().getState() == PurchaseController.State.editPayment
 				&& PurchaseController.COMMON_ACTIONS.contains(action)) {
-			getController().setState(PurchaseController.State.editCheckout);
 			return true;
 		}
 		getController().addError(illegalState);

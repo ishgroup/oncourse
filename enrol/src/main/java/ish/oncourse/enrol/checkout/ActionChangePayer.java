@@ -13,24 +13,22 @@ import org.apache.cayenne.query.SelectQuery;
 import java.util.Calendar;
 import java.util.List;
 
-public class ActionChangePayer extends  APurchaseAction{
+public class ActionChangePayer extends APurchaseAction {
 
-	private  Contact contact;
+    private Contact contact;
 
-	@Override
-	protected void parse()
-	{
-		if (getParameter() != null)
-			contact = getParameter().getValue(Contact.class);
-	}
+    @Override
+    protected void parse() {
+        if (getParameter() != null)
+            contact = getParameter().getValue(Contact.class);
+    }
 
-	@Override
-	protected boolean validate()
-	{
-		if (!getController().getModel().getContacts().contains(contact))
-			return false;
-		return true;
-	}
+    @Override
+    protected boolean validate() {
+        if (!getController().getModel().getContacts().contains(contact))
+            return false;
+        return true;
+    }
 
     /**
      * Check if there are in_transaction payments on enroling contact. If finds any it abandons them.
@@ -52,8 +50,7 @@ public class ActionChangePayer extends  APurchaseAction{
 
         List<PaymentIn> payments = context.performQuery(q);
 
-        if (payments.size() > 1)
-        {
+        if (payments.size() > 1) {
             getController().addWarning(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
         }
 
@@ -70,33 +67,32 @@ public class ActionChangePayer extends  APurchaseAction{
 
 
     @Override
-	protected void makeAction() {
+    protected void makeAction() {
         completeInTransactionPayments();
 
-		Contact oldPayer = getController().getModel().getPayer();
+        Contact oldPayer = getController().getModel().getPayer();
 
-		if (oldPayer != null) {
-			getController().getModel().removeAllProductItems(contact);
-		}
+        if (oldPayer != null) {
+            getController().getModel().removeAllProductItems(contact);
+        }
 
-		getController().getModel().setPayer(contact);
+        getController().getModel().setPayer(contact);
 
-		for (Product product : getController().getModel().getProducts()) {
-			ProductItem productItem = getController().createProductItem(contact, product);
-			getController().getModel().addProductItem(productItem);
-			ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
-			actionEnableProductItem.setProductItem(productItem);
-			actionEnableProductItem.action();
-		}
-        getController().getModel().setApplingOwing(true);
-        getController().setShowCreditAmount(false);
-	}
+        for (Product product : getController().getModel().getProducts()) {
+            ProductItem productItem = getController().createProductItem(contact, product);
+            getController().getModel().addProductItem(productItem);
+            ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
+            actionEnableProductItem.setProductItem(productItem);
+            actionEnableProductItem.action();
+        }
+        getController().refreshPrevOwingStatus();
+    }
 
-	public Contact getContact() {
-		return contact;
-	}
+    public Contact getContact() {
+        return contact;
+    }
 
-	public void setContact(Contact contact) {
-		this.contact = contact;
-	}
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
 }

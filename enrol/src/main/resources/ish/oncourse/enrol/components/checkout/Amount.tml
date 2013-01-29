@@ -2,11 +2,10 @@
 		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
         xmlns:p="tapestry:parameter">
 	<div class="amount-content">
-		<t:if test="showPayerFields">
-			<t:delegate to="block:credit"/>
-			<t:delegate to="block:previousOwing"/>
-		</t:if>
-
+        <t:if test="showPayerFields">
+            <t:delegate to="block:credit"/>
+            <t:delegate to="block:previousOwing"/>
+        </t:if>
 		<p class="total-amount"><label>Total</label>  <span>
 			<t:output value="purchaseController.totalPayment" format="moneyFormat(purchaseController.totalPayment)"/>
 		</span></p>
@@ -32,23 +31,25 @@
 
 
     <t:block t:id="previousOwing">
-        <t:if test="purchaseController.hasPreviousOwing()">
-            <p><label>Previous Owing</label><span>
-                <t:output value="purchaseController.previousOwing" format="moneyFormat(purchaseController.previousOwing)"/>
-            </span>
-            <span id="removeOwingLink" class="action-link">(Remove)</span>
-            <t:eventlink t:id="removeOwingEvent" style="{display:none;}"/>
-            </p>
+        <t:if test="showPrevOwing()">
+                <p><label>Previous Owing
+                        <span id="removeOwingLink" class="action-link"> (Remove)</span>
+                        <t:eventlink t:id="removeOwingEvent" style="{display:none;}"/>
+                </label>
+                <span>
+                    <t:output value="purchaseController.previousOwing" format="moneyFormat(purchaseController.previousOwing)"/>
+                </span>
+                </p>
         </t:if>
     </t:block>
 	<t:block t:id = "credit">
 		<t:if test="purchaseController.creditAvailable">
-			<t:if test="purchaseController.showCreditAmount">
+			<t:if test="purchaseController.applyPrevOwing">
 				<p><label class="first">Credit</label><span>
                         (<t:output value="purchaseController.previousOwing" format="moneyFormat(purchaseController.previousOwing)"/>)
                         </span></p>
 				<p:else>
-					<p><label class="first">Credit available</label><span id="creditAccessLink" class="action-link">Access</span></p>
+					<p><label class="first">Credit available</label><span id="creditAccessLink">Access</span></p>
 				</p:else>
 			</t:if>
 		</t:if>

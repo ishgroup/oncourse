@@ -58,4 +58,9 @@ public class Amount {
 	{
 		return FormatUtils.chooseMoneyFormat(money);
 	}
+
+    public boolean showPrevOwing()
+    {
+        return purchaseController.hasPreviousOwing() && purchaseController.isApplyPrevOwing();
+    }
 }

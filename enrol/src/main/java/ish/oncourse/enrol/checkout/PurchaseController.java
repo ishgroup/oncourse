@@ -81,11 +81,6 @@ public class PurchaseController {
     private ParallelExecutor parallelExecutor;
 
     /**
-     * We show amout of credit when this flag is true.
-     */
-    private boolean showCreditAmount = false;
-
-    /**
 	 * @return the current state
 	 */
 	public synchronized State getState() {
@@ -368,9 +363,8 @@ public class PurchaseController {
      */
     public synchronized boolean hasPreviousOwing()
     {
-        //substact current invoice from this value
         Money owing = getPreviousOwing();
-        return getModel().getPayer() != null && owing.isGreaterThan(Money.ZERO) && getModel().isApplingOwing();
+        return getModel().getPayer() != null && owing.isGreaterThan(Money.ZERO);
     }
 
     /**
@@ -378,9 +372,12 @@ public class PurchaseController {
      */
     public synchronized boolean isCreditAvailable()
     {
-		//substact current invoice from this value
 		Money owing = getPreviousOwing();
         return getModel().getPayer() != null && owing.isLessThan(Money.ZERO);
+    }
+
+    public synchronized boolean isApplyPrevOwing() {
+        return getModel().isApplyPrevOwing();
     }
 
     /**
@@ -469,7 +466,12 @@ public class PurchaseController {
 		return paymentEditorController;
 	}
 
-	public VoucherRedemptionHelper getVoucherRedemptionHelper() {
+    public void setPaymentEditorController(PaymentEditorController paymentEditorController) {
+        this.paymentEditorController = paymentEditorController;
+    }
+
+
+    public VoucherRedemptionHelper getVoucherRedemptionHelper() {
 		return voucherRedemptionHelper;
 	}
 
@@ -487,10 +489,6 @@ public class PurchaseController {
 
 	public IPaymentGatewayServiceBuilder getPaymentGatewayServiceBuilder() {
 		return paymentGatewayServiceBuilder;
-	}
-
-	public void setPaymentEditorController(PaymentEditorController paymentEditorController) {
-		this.paymentEditorController = paymentEditorController;
 	}
 
 	public IWebSiteService getWebSiteService() {
@@ -546,12 +544,11 @@ public class PurchaseController {
         return parallelExecutor;
     }
 
-    public boolean isShowCreditAmount() {
-        return showCreditAmount;
-    }
-
-    public void setShowCreditAmount(boolean showCreditAmount) {
-        this.showCreditAmount = showCreditAmount;
+    public synchronized void refreshPrevOwingStatus() {
+        if (this.hasPreviousOwing())
+            this.getModel().setApplyPrevOwing(true);
+        else if (this.isCreditAvailable())
+            this.getModel().setApplyPrevOwing(false);
     }
 
     public static enum State {

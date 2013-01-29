@@ -8,7 +8,7 @@ public class ActionAddContact extends AAddContactAction {
     }
 
     @Override
-    protected boolean shouldEnableEnrolments() {
+    protected boolean shouldAddEnrolments() {
         return true;
     }
 

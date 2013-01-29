@@ -20,7 +20,7 @@ public abstract class AAddContactAction extends APurchaseAction {
 
     protected abstract boolean shouldChangePayer();
 
-    protected abstract boolean shouldEnableEnrolments();
+    protected abstract boolean shouldAddEnrolments();
 
     protected abstract boolean isApplyOwing();
 
@@ -72,7 +72,8 @@ public abstract class AAddContactAction extends APurchaseAction {
         //add the first contact
         if (shouldChangePayer())
             changePayer();
-        initEnrolments();
+        if (shouldAddEnrolments())
+            initEnrolments();
 
         getController().setState(getFinalState());
         getController().resetContactEditorController();
@@ -83,7 +84,7 @@ public abstract class AAddContactAction extends APurchaseAction {
         actionChangePayer.setContact(contact);
         actionChangePayer.action();
         //we don't need to apply owing/credit to total on checkout page
-        getModel().setApplingOwing(isApplyOwing());
+        getModel().setApplyPrevOwing(false);
     }
 
 
@@ -91,7 +92,6 @@ public abstract class AAddContactAction extends APurchaseAction {
         for (CourseClass cc : getModel().getClasses()) {
             ActionAddCourseClass actionAddCourseClass = addCourseClass.createAction(getController());
             actionAddCourseClass.setCourseClass(cc);
-            actionAddCourseClass.setEnableEnrolment(shouldEnableEnrolments());
             actionAddCourseClass.action();
         }
     }

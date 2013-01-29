@@ -3,7 +3,8 @@ package ish.oncourse.enrol.checkout;
 public class ActionOwingApply extends APurchaseAction{
 	@Override
 	protected void makeAction() {
-        getController().getModel().setApplingOwing(false);
+        if (getController().hasPreviousOwing())
+            getController().getModel().setApplyPrevOwing(false);
 	}
 
 	@Override

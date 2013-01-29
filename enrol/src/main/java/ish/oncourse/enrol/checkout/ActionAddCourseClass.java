@@ -12,7 +12,6 @@ import java.util.List;
 public class ActionAddCourseClass extends APurchaseAction {
 
     private CourseClass courseClass;
-    private boolean enableEnrolment = true;
 
     @Override
     protected void makeAction() {
@@ -26,12 +25,9 @@ public class ActionAddCourseClass extends APurchaseAction {
                 enrolment = getController().createEnrolment(courseClass, contact.getStudent());
                 getModel().addEnrolment(enrolment);
 
-                if (isEnableEnrolment())
-                {
-                    ActionEnableEnrolment action = PurchaseController.Action.enableEnrolment.createAction(getController());
-                    action.setEnrolment(enrolment);
-                    action.action();
-                }
+                ActionEnableEnrolment action = PurchaseController.Action.enableEnrolment.createAction(getController());
+                action.setEnrolment(enrolment);
+                action.action();
             }
         }
     }
@@ -53,13 +49,5 @@ public class ActionAddCourseClass extends APurchaseAction {
 
     public void setCourseClass(CourseClass courseClass) {
         this.courseClass = courseClass;
-    }
-
-    public boolean isEnableEnrolment() {
-        return enableEnrolment;
-    }
-
-    public void setEnableEnrolment(boolean enableEnrolment) {
-        this.enableEnrolment = enableEnrolment;
     }
 }

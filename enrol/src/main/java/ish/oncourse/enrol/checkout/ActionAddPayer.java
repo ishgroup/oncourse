@@ -9,7 +9,7 @@ public class ActionAddPayer extends AAddContactAction
     }
 
     @Override
-    protected boolean shouldEnableEnrolments() {
+    protected boolean shouldAddEnrolments() {
         return false;
     }
 

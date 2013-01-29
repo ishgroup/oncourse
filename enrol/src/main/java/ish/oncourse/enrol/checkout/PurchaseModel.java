@@ -40,10 +40,8 @@ public class PurchaseModel {
     private Money totalDiscountAmountIncTax = Money.ZERO;
     private List<PaymentIn> voucherPayments = new ArrayList<PaymentIn>();
 
-    /**
-     * we apply previos owing/credit when this flag is true.
-     */
-    private boolean applingOwing = false;
+    private boolean applyPrevOwing = false;
+
 
     public void addDiscount(Discount discount) {
         discounts.add(discount);
@@ -367,11 +365,12 @@ public class PurchaseModel {
             }
         }
 
-        if (applingOwing)
+        if (isApplyPrevOwing())
         {
             Money previousOwing = getPreviousOwing();
             result = result.add(previousOwing);
         }
+
         getPayment().setAmount((result.isLessThan(Money.ZERO) ? Money.ZERO : result).toBigDecimal());
         getPayment().getPaymentInLines().get(0).setAmount(getPayment().getAmount());
 
@@ -381,6 +380,7 @@ public class PurchaseModel {
         getInvoice().setTotalGst(totalGst.toBigDecimal());
         return result;
     }
+
 
     public void updateTotalDiscountAmountIncTax() {
         totalDiscountAmountIncTax = Money.ZERO;
@@ -475,15 +475,22 @@ public class PurchaseModel {
     }
 
     public Money getPreviousOwing() {
-        return InvoiceUtils.amountOwingForPayer(getPayer()).subtract(Money.valueOf(getInvoice().getAmountOwing()));
+        objectContext.invalidateObjects(Collections.singleton(getPayer()));
+        Money amountOwing  = InvoiceUtils.amountOwingForPayer(getPayer());
+        Money amountInvoice = Money.valueOf(getInvoice().getAmountOwing());
+
+        return amountOwing.subtract(amountInvoice);
     }
 
-    public boolean isApplingOwing() {
-        return applingOwing;
+    /**
+     * We apply the owing/credit when this flag is true.
+     */
+    public boolean isApplyPrevOwing() {
+        return applyPrevOwing;
     }
 
-    public void setApplingOwing(boolean applingOwing) {
-        this.applingOwing = applingOwing;
+    public void setApplyPrevOwing(boolean applyPrevOwing) {
+        this.applyPrevOwing = applyPrevOwing;
     }
 
     private class ContactNode {

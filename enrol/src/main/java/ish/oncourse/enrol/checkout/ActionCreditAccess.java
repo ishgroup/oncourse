@@ -7,7 +7,9 @@ public class ActionCreditAccess extends APurchaseAction{
 
 	@Override
 	protected void makeAction() {
-        getController().setShowCreditAmount(true);
+        if (getController().isCreditAvailable())
+            getModel().setApplyPrevOwing(true);
+
 	}
 
 	@Override
