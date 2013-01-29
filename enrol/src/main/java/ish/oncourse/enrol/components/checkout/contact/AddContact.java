@@ -16,9 +16,6 @@ import java.util.Collections;
 
 public class AddContact {
 
-    private static final String KEY_addStudent = "message-addStudent";
-    private static final String KEY_addPayer = "message-addPayer";
-
     @Parameter (required = true)
 	@Property
 	private AddContactDelegate delegate;
@@ -72,11 +69,8 @@ public class AddContact {
 		return returnPage;
 	}
 
-    public String getHeader()
+    public boolean isPayer()
     {
-        if (returnPage instanceof Payment)
-            return messages.get(KEY_addPayer);
-        else
-            return messages.get(KEY_addStudent);
+        return (returnPage instanceof Payment);
     }
 }

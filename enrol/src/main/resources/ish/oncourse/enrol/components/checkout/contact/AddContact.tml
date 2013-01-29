@@ -1,25 +1,45 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<div id="addstudent-block">
-		<h2>${header}</h2>
-		<t:if test="${delegate.errors.isEmpty()}">
-		<div class="message">
-			<p>${message:message-enterDetails}</p>
-		</div>
-		</t:if>
-		<t:form t:id="addContactForm">
-			<fieldset>
-				<br/>
-				<span t:type="checkout/contact/addcontactfieldset" delegate="delegate" validateHandler="validateHandler"/>
-			</fieldset>
-			<p class="note">
-				<strong class="alert">Note</strong>: ${message:message-noteSameEmail}
-			</p>
-			<div class="form-controls">
-				<t:if test="showCancelLink">
-					<t:eventlink t:id="cancelContact" class="cancel">${message:label-cancelStudent}</t:eventlink>
-				</t:if>
-				<t:submit t:id="submitContact" value="${message:label-submitStudent}" class="btn btn-primary"/>
-			</div>
-		</t:form>
-	</div>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <div id="addstudent-block">
+        <t:delegate to="block:header"/>
+        <t:delegate to="block:message"/>
+        <t:form t:id="addContactForm">
+            <fieldset>
+                <br/>
+                <span t:type="checkout/contact/addcontactfieldset" delegate="delegate"
+                      validateHandler="validateHandler"/>
+            </fieldset>
+            <t:if test="payer" negate="true">
+                <p class="note">
+                    <strong class="alert">Note</strong>: ${message:message-noteSameEmail}
+                </p>
+            </t:if>
+            <div class="form-controls">
+                <t:if test="showCancelLink">
+                    <t:eventlink t:id="cancelContact" class="cancel">${message:label-cancelStudent}</t:eventlink>
+                </t:if>
+                <t:submit t:id="submitContact" value="${message:label-submitStudent}" class="btn btn-primary"/>
+            </div>
+        </t:form>
+    </div>
+
+    <t:block t:id="header">
+        <t:if test="payer">
+            <h2>${message:message-addPayer}</h2>
+            <p:else>
+                <h2>${message:message-addStudent}</h2>
+            </p:else>
+        </t:if>
+    </t:block>
+    <t:block t:id="message">
+        <t:if test="${delegate.errors.isEmpty()}">
+            <div class="message">
+                <t:if test="payer">
+                    <p>${message:message-enterDetailsForPayer}</p>
+                    <p:else>
+                        <p>${message:message-enterDetailsForStudent}</p>
+                    </p:else>
+                </t:if>
+            </div>
+        </t:if>
+    </t:block>
 </t:container>
