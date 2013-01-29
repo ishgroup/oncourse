@@ -1,8 +1,10 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.enrol.services.invoice.InvoiceProcessingService;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.InvoiceLine;
 import org.apache.cayenne.Cayenne;
 import org.junit.Before;
 import org.junit.Test;
@@ -80,6 +82,14 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         assertEquals(0, purchaseController.getModel().getDisabledEnrolments(contact).size());
         assertEnabledEnrolments(contact, 1, false);
         assertEquals(1, purchaseController.getModel().getAllEnabledEnrolments().size());
+        Enrolment enrolment = purchaseController.getModel().getAllEnabledEnrolments().get(0);
+        InvoiceLine invoiceLine = enrolment.getInvoiceLine();
+        assertNotNull(invoiceLine);
+        assertEquals("Test invoiceLine title", String.format(InvoiceProcessingService.INVOICE_LINE_TITLE_TEMPALTE,
+                contact.getGivenName(), contact.getFamilyName() ,
+                courseClass.getCourse().getCode(),courseClass.getCode(),courseClass.getCourse().getName()),
+                invoiceLine.getTitle());
+
 
         //add second contact
         contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1002);

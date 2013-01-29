@@ -4,23 +4,14 @@
 package ish.oncourse.enrol.services.invoice;
 
 import ish.math.Money;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.RealDiscountsPolicy;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Voucher;
+import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.util.InvoiceUtil;
+import org.apache.cayenne.ObjectContext;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import org.apache.cayenne.ObjectContext;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 /**
  * Implementation of {@link IInvoiceProcessingService}.
@@ -29,6 +20,13 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  * 
  */
 public class InvoiceProcessingService implements IInvoiceProcessingService {
+
+
+    /**
+     * InvoiceLine title format:
+     * <Student FirstName> <Student LastName> <CourseCode>-<CourseClassCode> <CourseName>
+     */
+    public static final String INVOICE_LINE_TITLE_TEMPALTE = "%s %s %s-%s %s";
 
 	private final IDiscountService discountService;
 	
@@ -48,17 +46,24 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#createInvoiceLineForEnrolment(ish.oncourse.model.Enrolment)
+	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#createInvoiceLineForEnrolment(ish.oncourse.model.Enrolment,List<Discount>)
 	 */
 	public InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment, List<Discount> actualPromotions) {
 		ObjectContext context = enrolment.getObjectContext();
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 
 		CourseClass courseClass = enrolment.getCourseClass();
+        Course course = courseClass.getCourse();
 		Student student = enrolment.getStudent();
+        Contact contact = student.getContact();
 		College college = enrolment.getCollege();
 
-		invoiceLine.setTitle(student.getFullName() + " " + courseClass.getCourse().getName());
+        invoiceLine.setTitle(String.format(INVOICE_LINE_TITLE_TEMPALTE,
+                contact.getGivenName(),
+                contact.getFamilyName(),
+                course.getCode(),
+                courseClass.getCode(),
+                course.getName()));
 		invoiceLine.setDescription(courseClass.getUniqueIdentifier() + " "
 				+ courseClass.getCourse().getName());
 

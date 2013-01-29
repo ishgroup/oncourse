@@ -66,6 +66,7 @@ public class ActionAddConcessionTest {
 		actionAddConcession.setParameter(parameter);
 		actionAddConcession.parse();
 		assertFalse(actionAddConcession.action());
+        verify(controller, times(1)).addError(PurchaseController.Message.concessionCardAlreadyAdded, concessions.get(1));
 	}
 
 	private List<StudentConcession> getConcessions(StudentConcession currentConcession, Date date, ConcessionType concessionType, Student student) {
