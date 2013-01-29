@@ -475,7 +475,6 @@ public class PurchaseModel {
     }
 
     public Money getPreviousOwing() {
-        objectContext.invalidateObjects(Collections.singleton(getPayer()));
         Money amountOwing  = InvoiceUtils.amountOwingForPayer(getPayer());
         Money amountInvoice = Money.valueOf(getInvoice().getAmountOwing());
 
