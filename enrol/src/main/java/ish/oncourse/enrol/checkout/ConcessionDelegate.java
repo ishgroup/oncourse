@@ -26,5 +26,5 @@ public interface ConcessionDelegate extends IDelegate{
 
 	public void changeConcessionTypeBy(Integer concessionTypeIndex);
 
-	public void saveConcession();
+	public boolean saveConcession();
 }

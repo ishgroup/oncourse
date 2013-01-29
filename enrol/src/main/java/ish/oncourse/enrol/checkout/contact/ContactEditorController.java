@@ -105,12 +105,11 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 		{
 			concessionDelegate = new AConcessionDelegate() {
 				@Override
-				public void saveConcession() {
+				public boolean saveConcession() {
 					PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addConcession);
 					parameter.setValue(concessionDelegate.getStudentConcession());
 					ActionAddConcession action = PurchaseController.Action.addConcession.createAction(getPurchaseController());
-					action.action();
-
+					return action.action();
 				}
 			};
 			concessionDelegate.setContact(contact);

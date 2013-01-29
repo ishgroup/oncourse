@@ -78,8 +78,10 @@ public class ConcessionEditor {
 			parser.parse();
 			delegate.setErrors(parser.getErrors());
 			validateHandler.setErrors(parser.getErrors());
-
-			delegate.saveConcession();
+            //we reset all fields when validation is failed.
+            boolean result = delegate.saveConcession();
+			if (parser.getErrors().isEmpty() && !result)
+                delegate.changeConcessionTypeBy(-1);
 		}
 		if (checkout.getCheckoutBlock() != null)
 			return checkout.getCheckoutBlock();

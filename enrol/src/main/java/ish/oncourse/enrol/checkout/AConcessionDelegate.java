@@ -81,6 +81,7 @@ public abstract class AConcessionDelegate extends ADelegate implements Concessio
 	}
 
 	@Override
-	public void saveConcession() {
+	public boolean saveConcession() {
+        return false;
 	}
 }

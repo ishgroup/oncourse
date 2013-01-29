@@ -35,12 +35,21 @@ public class ActionAddConcession extends APurchaseAction {
 		for (StudentConcession concession : studentConcessions) {
 			if (concession == studentConcession)
 				continue;
-
-			if (concession.getConcessionType() == concessionType &&
-					isSameNumber(number, concession))
+			if (concession.getConcessionType() == concessionType)
 			{
-				getController().addError(PurchaseController.Message.concessionAlreadyAdded, concession);
-				return false;
+                if (concession.getConcessionType().getHasConcessionNumber())
+                {
+                    if (isSameNumber(number,concession))
+                    {
+                        getController().addError(PurchaseController.Message.concessionCardAlreadyAdded, concession);
+                        return false;
+                    }
+                }
+                else
+                {
+				    getController().addError(PurchaseController.Message.concessionAlreadyAdded, concession);
+                    return false;
+                }
 			}
 		}
 

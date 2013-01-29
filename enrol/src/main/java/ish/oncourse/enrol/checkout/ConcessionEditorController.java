@@ -18,10 +18,11 @@ public class ConcessionEditorController extends AConcessionDelegate {
 	}
 
 	@Override
-	public void saveConcession() {
+	public boolean saveConcession() {
 		PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addConcession);
 		parameter.setErrors(getErrors());
 		parameter.setValue(getStudentConcession());
 		getPurchaseController().performAction(parameter);
+        return getPurchaseController().getErrors().isEmpty();
 	}
 }

@@ -45,8 +45,7 @@ public class ContactItem {
         List<String> names = new ArrayList<String>();
         for (StudentConcession studentConcession:contact.getStudent().getStudentConcessions()) {
             String name = studentConcession.getConcessionType().getName();
-            if (!names.contains(name))
-                names.add(name);
+            names.add(name);
         }
         return names;
     }
