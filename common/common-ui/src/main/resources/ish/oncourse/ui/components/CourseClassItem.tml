@@ -30,7 +30,7 @@
 					</div>
 					<p:else>
 						<t:if t:test="selfPacedClass">
-							<div class="date">Self paced<br/><br/>${expectedHours}</div>
+							<div class="date">Self paced<br/>${expectedHours}<br/>${maximumDaysToComplete}</div>
 							<p:else>
 								<b>no session</b>
 							</p:else>

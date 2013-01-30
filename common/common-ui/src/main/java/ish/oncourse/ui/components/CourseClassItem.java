@@ -166,7 +166,12 @@ public class CourseClassItem {
 	
 	public String getExpectedHours() {
 		return (courseClass.getIsDistantLearningCourse() && courseClass.getExpectedHours() != null) ? 
-				String.format("Approximately %.0f hours", courseClass.getExpectedHours().doubleValue()) : "";
+				String.format("Approximately %.0f hours", courseClass.getExpectedHours().doubleValue()) : StringUtils.EMPTY;
+	}
+	
+	public String getMaximumDaysToComplete() {
+		return (courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() != null ? 
+			String.format("%.0f maximum days to complete", courseClass.getMaximumDays().doubleValue()) : StringUtils.EMPTY);
 	}
 
 	public String getCssTableClass() {
