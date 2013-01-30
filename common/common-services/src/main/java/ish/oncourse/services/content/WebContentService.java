@@ -133,12 +133,6 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 			//unassigned region have no ordering
 			return;
 		}
-		if (webNodeType != null && webNodeType.getObjectId().isTemporary()) {
-			//as we can't receive the ordered list for temporary webNodeType just set the weight equal to position.
-			webContentVisibility.setWeight(position);
-			webContentVisibility.setRegionKey(regionKey);
-			return;
-		}
 		List<WebContentVisibility> contentVisibilities = getBlockVisibilityForRegionKey(webNodeType, regionKey);
 		if (contentVisibilities.isEmpty()) {
 			webContentVisibility.setRegionKey(regionKey);
