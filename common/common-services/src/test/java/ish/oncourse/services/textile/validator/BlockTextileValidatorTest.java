@@ -23,6 +23,7 @@ public class BlockTextileValidatorTest extends CommonValidatorTest {
 
 	private static final String TEST_NAME_NOT_EXIST = "oneName";
 	private static final String TEST_BLOCK_NAME = "blockName";
+	private static final String TEST_ILLEGAL_BLOCK_NAME = "illegal's block Name";
 
 	@Mock
 	private IWebContentService webContentService;
@@ -62,6 +63,13 @@ public class BlockTextileValidatorTest extends CommonValidatorTest {
 		assertFalse(errors.hasFailures());
 	}
 	
+	@Test
+	public void blockWithIllegalNameTest() {
+		String tag = "{block \n  name:\"" + TEST_ILLEGAL_BLOCK_NAME + "\"}";
+		validator.validate(tag, errors);
+		assertTrue(errors.hasFailures());
+		assertTrue(errors.toString().contains(((AbstractTextileValidator) validator).getSyntaxErrorMessage(TEST_ILLEGAL_BLOCK_NAME)));
+	}
 
 	/**
 	 * Emulates the situation when the textile contains error in format, two
