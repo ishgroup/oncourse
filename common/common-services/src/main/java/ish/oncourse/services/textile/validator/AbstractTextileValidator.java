@@ -36,4 +36,8 @@ public abstract class AbstractTextileValidator implements IValidator{
 	
 	protected abstract void specificTextileValidate(String tag, ValidationErrors errors);
 	
+	protected String getSyntaxErrorMessage(String name) {
+		return "There's incorrect syntax for textile with the name: " + name;
+	}
+	
 }

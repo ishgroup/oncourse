@@ -31,10 +31,14 @@ public class BlockTextileValidator extends AbstractTextileValidator {
 		String name = tagParams.get(BlockTextileAttributes.BLOCK_PARAM_NAME.getValue());
 
 		if (name != null) {
-			result = webContentService.getWebContent(WebContent.NAME_PROPERTY, name);
-			if (result == null) {
-				errors.addFailure(getBlockNotFoundErrorMessage(name),
-						ValidationFailureType.CONTENT_NOT_FOUND);
+			if (!name.contains("'")) {
+				result = webContentService.getWebContent(WebContent.NAME_PROPERTY, name);
+				if (result == null) {
+					errors.addFailure(getBlockNotFoundErrorMessage(name),
+							ValidationFailureType.CONTENT_NOT_FOUND);
+				}
+			} else {
+				errors.addFailure(getSyntaxErrorMessage(name), ValidationFailureType.SYNTAX);
 			}
 		}
 	}
