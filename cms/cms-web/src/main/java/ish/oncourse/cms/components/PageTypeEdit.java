@@ -13,11 +13,14 @@ import ish.oncourse.ui.pages.internal.Page;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.StreamResponse;
@@ -141,7 +144,14 @@ public class PageTypeEdit {
 	
 	final void sort(WebNodeType webNodeType, WebContent block, RegionKey regionKey, int regionPosition) {
 		ObjectContext context = webNodeType.getObjectContext();
-		WebContentVisibility webContentVisibility = block.getWebContentVisibility(webNodeType);
+		WebContentVisibility webContentVisibility = null;
+		if (webNodeType != null && webNodeType.getObjectId().isTemporary()) {
+			Expression expression = ExpressionFactory.matchExp(WebContentVisibility.WEB_NODE_TYPE_PROPERTY, webNodeType);
+			List<WebContentVisibility> visibilities = expression.filterObjects(block.getWebContentVisibilities());
+			webContentVisibility = visibilities.isEmpty() ? null : visibilities.get(0);
+		} else {
+			webContentVisibility = block.getWebContentVisibility(webNodeType);
+		}
 		if (regionKey == RegionKey.unassigned) {
 			if (webContentVisibility != null) {
 				// remove assignment to this type
