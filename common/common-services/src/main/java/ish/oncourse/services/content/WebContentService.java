@@ -56,8 +56,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	public SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType,
 			RegionKey regionKey) {
 		if (webNodeType != null && webNodeType.getObjectId().isTemporary() && !RegionKey.unassigned.equals(regionKey)) {
-			//return no web content for temporary webNodeType because no web visibility exist for it
-			return new TreeSet<WebContent>();
+			throw new IllegalArgumentException("Illegal params for WebContentService#getBlocksForRegionKey() call");
 		}
 		SelectQuery q = new SelectQuery(WebContent.class);
 
