@@ -14,6 +14,7 @@ import ish.oncourse.ui.pages.internal.Page;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -79,27 +80,37 @@ public class PageTypeEdit {
 	private Action action;
 
 	public SortedSet<WebContent> getHeaderBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType, RegionKey.header);
+		return getBlocksForRegion(RegionKey.header);
 	}
 
 	public SortedSet<WebContent> getLeftBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType, RegionKey.left);
+		return getBlocksForRegion(RegionKey.left);
 	}
 
 	public SortedSet<WebContent> getCenterBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType, RegionKey.content);
+		return getBlocksForRegion(RegionKey.content);
 	}
 
 	public SortedSet<WebContent> getRightBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType, RegionKey.right);
+		return getBlocksForRegion(RegionKey.right);
 	}
 
 	public SortedSet<WebContent> getFooterBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType, RegionKey.footer);
+		return getBlocksForRegion(RegionKey.footer);
 	}
 
 	public SortedSet<WebContent> getUnassignedBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType, RegionKey.unassigned);
+		return getBlocksForRegion(RegionKey.unassigned);
+	}
+	
+	private SortedSet<WebContent> getBlocksForRegion(RegionKey regionKey) {
+		if (pageType != null && pageType.getObjectId().isTemporary() && !RegionKey.unassigned.equals(regionKey)) {
+			//return no web content for temporary webNodeType because no web visibility exist for it,
+			//we exclude unassigned block because only this block may already have elements for manipulation
+			return new TreeSet<WebContent>(); 
+		} else {
+			return webContentService.getBlocksForRegionKey(pageType, regionKey);
+		}
 	}
 	
 	public boolean getIsSpecialType() {
