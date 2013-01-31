@@ -14,7 +14,6 @@ buildscript {
 	dependencies {
 		classpath 'org.apache.cayenne:cayenne-tools:3.1B1'
 		classpath 'org.apache.maven.wagon:wagon-http:2.2'
-		classpath 'gradle_cobertura:gradle_cobertura:1.2'
 		classpath 'bmuschko:gradle-cargo-plugin:0.5.6'
 		classpath 'org.codehaus.cargo:cargo-core-uberjar:1.2.2'
 		classpath 'org.codehaus.cargo:cargo-ant:1.2.2'
@@ -108,24 +107,6 @@ allprojects {
 		ignoreFailures = true  // ignore test failures so that the test aggregate still works
 	}
 
-	if (project.gradle.getStartParameter().getTaskNames().contains("tasks")) {
-		task cobertura << {
-			throw new IllegalStateException("Because of a bug in Gradle, you can't run cobertura and tasks together")
-		}
-
-		cobertura.description = """Generate Cobertura code coverage report
-		======================== NOTE ==========================
-		There is a workaround that has to do with gradle issue 2023 in the build file.
-		https://github.com/valkolovos/gradle_cobertura/issues/18
-		http://issues.gradle.org//browse/GRADLE-2023
-		"""
-	} else {
-		apply plugin: 'cobertura'
-		cobertura {
-			coverageFormat = 'xml'
-		}
-	}
-
 	task aggregateTestReports(type: TestReportAggregator) {
 		testReportDir = file("${reporting.baseDir}/tests")
 		testResultsDir = file("${buildDir}/test-results")
@@ -146,7 +127,11 @@ sonar {
 		password = sonarPassword
 	}
 	project {
-		coberturaReportPath = file("$buildDir/reports/cobertura/coverage.xml")
+		dynamicAnalysis  = "reuseReports"
+		withProjectProperties { props ->
+			props["sonar.core.codeCoveragePlugin"] = "jacoco"
+			props["sonar.jacoco.reportPath"] = "${buildDirName}/jacoco.exec"
+		}
 	}
 }
 
