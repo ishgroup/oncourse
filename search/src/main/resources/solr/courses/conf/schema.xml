@@ -209,7 +209,7 @@
 			multiValued="true" omitNorms="false" boost="5.0" />
 
 		<field name="tagId" type="long" indexed="true" stored="true"
-			multiValued="true" omitNorms="true" omitTermFreqAndPositions="true" boost="5.0" />
+			multiValued="true" omitNorms="true" omitTermFreqAndPositions="true"/>
 
 	</fields>
 
