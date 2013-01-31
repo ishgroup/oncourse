@@ -105,7 +105,7 @@ public class SolrQueryBuilder {
         appendFilterBefore(filters);
         appendAnd(filters);
 
-        appendFilterSubject(filters);
+        appendFilterSubject(q);
 
         clearLastAnd(filters);
 
@@ -187,7 +187,7 @@ public class SolrQueryBuilder {
          appendFilterWhen(filters, params.getTime());
     }
 
-    void appendFilterSubject(List<String> filters) {
+    void appendFilterSubject(SolrQuery query) {
         if (params.getSubject() != null) {
             Object tagParameter = params.getSubject();
             if (tagParameter instanceof Tag) {
@@ -198,7 +198,7 @@ public class SolrQueryBuilder {
                     tags.add(QUERY_OR);
                     tags.add(String.format(FILTER_TEMPLATE_tagId, t.getId()));
                 }
-                filters.add(String.format(QUERY_brackets, StringUtils.join(tags.toArray(), QUERY_DELIMITER)));
+                query.addFilterQuery(String.format(QUERY_brackets, StringUtils.join(tags.toArray(), QUERY_DELIMITER)));
             } else {
                 final String message = String.format("Illegal parameter detected with value = %s with type = %s  for college = %s",
                         tagParameter, tagParameter != null ? tagParameter.getClass() : "undefined", collegeId);
