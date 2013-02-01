@@ -39,6 +39,7 @@ public class ActionAddContactTest extends ACheckoutTest {
 		assertEquals(contactCredentials.getFirstName(), contact.getGivenName());
 		assertEquals(contactCredentials.getLastName(), contact.getFamilyName());
 		assertEquals(contactCredentials.getEmail(), contact.getEmailAddress());
+        assertFalse(purchaseController.getModel().isApplyPrevOwing());
 
 		assertTrue(actionAddContact.validate());
 

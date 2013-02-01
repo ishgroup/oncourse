@@ -50,15 +50,13 @@ public class ActionChangePayer extends APurchaseAction {
 
         List<PaymentIn> payments = context.performQuery(q);
 
-        if (payments.size() > 1) {
-            getController().addWarning(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
-        }
-
         PaymentIn current = getModel().getPayment();
         for (PaymentIn p : payments) {
             if (!current.getObjectId().isTemporary() &&
                     current.getId().equals(p.getId()))
                 continue;
+            if (getController().getWarnings().containsKey(PurchaseController.Message.payerHadUnfinishedPayment))
+                getController().addWarning(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
             p.abandonPayment();
         }
 

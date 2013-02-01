@@ -84,7 +84,8 @@ public abstract class AAddContactAction extends APurchaseAction {
         actionChangePayer.setContact(contact);
         actionChangePayer.action();
         //we don't need to apply owing/credit to total on checkout page
-        getModel().setApplyPrevOwing(false);
+        if (!isApplyOwing())
+            getModel().setApplyPrevOwing(false);
     }
 
 
