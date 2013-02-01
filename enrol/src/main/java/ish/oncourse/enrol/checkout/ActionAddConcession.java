@@ -37,17 +37,34 @@ public class ActionAddConcession extends APurchaseAction {
 				continue;
 			if (concession.getConcessionType() == concessionType)
 			{
-                if (concession.getConcessionType().getHasConcessionNumber())
+                if (concessionType.getHasConcessionNumber())
                 {
-                    if (isSameNumber(number,concession))
-                    {
-                        getController().addError(PurchaseController.Message.concessionCardAlreadyAdded, concession);
-                        return false;
-                    }
+					if (isSameNumber(number,concession))
+					{
+						getController().addError(PurchaseController.Message.concessionAlreadyAdded, studentConcession);
+						return false;
+					}
+
+					if (concessionType.getHasExpiryDate())
+					{
+						Date prevDate = concession.getExpiresOn();
+						//check if previos concession was expired
+						if (prevDate.after(new Date()))
+						{
+							getController().addError(PurchaseController.Message.concessionCardAlreadyAdded, studentConcession);
+							return false;
+						}
+					}
+					else
+					{
+						getController().addError(PurchaseController.Message.concessionCardAlreadyAdded, studentConcession);
+						return false;
+					}
+
                 }
                 else
                 {
-				    getController().addError(PurchaseController.Message.concessionAlreadyAdded, concession);
+				    getController().addError(PurchaseController.Message.concessionAlreadyAdded, studentConcession);
                     return false;
                 }
 			}
