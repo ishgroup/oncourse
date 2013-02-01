@@ -130,7 +130,7 @@ sonar {
 		dynamicAnalysis  = "reuseReports"
 		withProjectProperties { props ->
 			props["sonar.core.codeCoveragePlugin"] = "jacoco"
-			props["sonar.jacoco.reportPath"] = "${buildDirName}/jacoco.exec"
+			props["sonar.jacoco.reportPath"] = "${buildDir}/jacoco.exec"
 		}
 	}
 }
