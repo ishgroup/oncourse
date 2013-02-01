@@ -17,7 +17,6 @@ function initEnrolmentListHandle()
 {
 	$j('.enrolmentSelect').click(function()
 	{
-        $j(document).tooltip("open");
 		var $actionLink = $j(this).next('a.selectEnrolmentLink')[0].pathname;
 		sendAjax($actionLink);
 	});
