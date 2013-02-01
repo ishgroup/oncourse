@@ -100,7 +100,7 @@ project.ext.webstartFiles = copySpec {
 		from file("${projectDir}/src/main/resources/resources/images/onCourse.png")
 	}
 
-	into('Libraries') {
+	into("Libraries-${project.version}") {
 		from file("${libsDir}/${project.name}-${project.version}-all.jar")
 	}
 
@@ -159,7 +159,7 @@ task bundle_webstart(dependsOn: [fatJar, prepareKeychains], type: Copy) {
 						tsaurl:					'http://timestamp.comodoca.com/rfc3161',
 						lazy: 					"true",
 						preservelastmodified:	"true") {
-							fileset(dir: "${distsDir}/webstart/Libraries/") {
+							fileset(dir: "${distsDir}/webstart/Libraries-${project.version}/") {
 								include(name: '*.jar')
 							}
 						}
@@ -172,7 +172,7 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 	from file("${distsDir}/webstart/") 
 	include 'onCourse.jnlp'
 	include 'onCourseDemo.jnlp'
-	include 'Libraries/*'
+	include 'Libraries-${project.version}/*'
 	include 'images/*'
 	
 	destinationDir = file("${distsDir}/webstart/")
