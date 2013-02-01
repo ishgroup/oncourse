@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.components.checkout;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
+import ish.oncourse.model.Discount;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -14,10 +15,14 @@ public class AddCode {
 
 	public static final String FIELD_ADD_CODE = "add_code";
 
-    public static final String MESSAGE_KEY_successMessage = "message-successMessage";
+    public static final String MESSAGE_KEY_discountAdded = "message-discountAdded";
 
 	@Parameter(required = true)
+	@Property
 	private PurchaseController purchaseController;
+
+	@Property
+	private Discount discount;
 
     @Parameter(required = true)
     @Property
@@ -29,9 +34,6 @@ public class AddCode {
     @Inject
     private Messages messages;
 
-    private String lastAddDiscountCode;
-
-
 	@OnEvent(value = "addCodeEvent")
 	public Object addCode()
 	{
@@ -42,16 +44,11 @@ public class AddCode {
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addDiscount);
 		actionParameter.setValue(code);
 		purchaseController.performAction(actionParameter);
-        if (purchaseController.getErrors().isEmpty())
-            lastAddDiscountCode = code;
 		return blockToRefresh;
 	}
 
-    public String getSuccessMessage()
+    public String getDiscountAddedMessage()
     {
-        if (lastAddDiscountCode != null)
-            return messages.format(MESSAGE_KEY_successMessage,lastAddDiscountCode);
-        else
-            return null;
+        return messages.format(MESSAGE_KEY_discountAdded,discount.getCode());
     }
 }

@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.services.payment;
 
 import ish.oncourse.enrol.checkout.ActionAddDiscount;
-import ish.oncourse.enrol.checkout.ActionRemoveDiscount;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseModel;
 import ish.oncourse.enrol.pages.Checkout;
@@ -116,19 +115,12 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 
 	private void updateDiscounts(PurchaseController purchaseController) {
 		List<Discount> discounts = discountService.getPromotions();
-        List<Discount> discountsModel =  purchaseController.getModel().getDiscounts();
-
-        //remove  discounts
-        for (Discount discountModel : discountsModel) {
-                ActionRemoveDiscount actionRemoveDiscount = PurchaseController.Action.removeDiscount.createAction(purchaseController);
-                actionRemoveDiscount.setDiscount(discountModel);
-                actionRemoveDiscount.action();
-        }
 
         //add new discounts
         for (Discount discount : discounts) {
             ActionAddDiscount actionAddDiscount = PurchaseController.Action.addDiscount.createAction(purchaseController);
             actionAddDiscount.setDiscount(discount);
+			actionAddDiscount.setPublishErrors(false);
             actionAddDiscount.action();
 		}
 

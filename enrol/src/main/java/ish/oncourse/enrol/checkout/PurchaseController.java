@@ -551,6 +551,11 @@ public class PurchaseController {
             this.getModel().setApplyPrevOwing(false);
     }
 
+	public synchronized List<Discount> getDiscounts()
+	{
+		return this.getModel().getDiscounts();
+	}
+
     public static enum State {
 		init(Action.init, Action.addContact),
 		editCheckout(COMMON_ACTIONS,addDiscount,removeDiscount, proceedToPayment, addCourseClass),
