@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en" >
+	
+	<tr>
+		<td class="cms-first">${webNode.name}</td>
+		<td class="cms-block-last-upd">page/${webNode.nodeNumber}</td>
+		<td>
+			<t:if t:test="webNode.published">
+				<span data-pub="publish">
+					Published
+				</span>
+				<p:else>
+					<span data-pub="hidden">
+						Unpublished
+					</span>
+				</p:else>
+			</t:if>
+		</td>
+		<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
+		<td>
+			<span class="cms-ico-edit"></span> 
+			<a href="${webNode.path}">Edit</a>
+		</td>
+		<td class="cms-last">
+			<span class="cms-ico-del"></span>
+			<a onclick="showDeletePageConfirmation(${webNode.nodeNumber});" role="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</a>
+			<div id="deleteModal${webNode.nodeNumber}" title="Are you sure you wish to delete this item?" style="display:none;">
+				<p>Are you sure you wish to delete this item?</p>
+				<t:actionLink t:id="deletePage" clientId="deletePage${webNode.nodeNumber}" context="${webNode.nodeNumber}" 
+					zone="pagesListZone"></t:actionLink>
+			</div>
+		</td>
+	</tr>
+					
+</t:container>

@@ -1,9 +1,7 @@
 package ish.oncourse.cms.components;
 
-import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
-import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.visitor.LastEditedVisitor;
 import ish.oncourse.ui.pages.internal.Page;
 
@@ -11,7 +9,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -27,9 +24,6 @@ public class Pages {
 	@Property
 	@Inject
 	private IWebNodeService webNodeService;
-
-	@Inject
-	private ICayenneService cayenneService;
 
 	@Inject
 	private Request request;
@@ -54,30 +48,6 @@ public class Pages {
 		newPageNode.getObjectContext().commitChanges();
 
 		return new URL("http://" + request.getServerName() + "/page/" + newPageNode.getNodeNumber() + "?newpage=y");
-	}
-
-	public String getLastEdited() {
-		return webNode.accept(new LastEditedVisitor());
-	}
-
-	public Object onActionFromDeletePage(Integer nodeNumber) {
-		if (request.getSession(false) == null) {
-			return page.getReloadPageBlock();
-		}
-		ObjectContext ctx = cayenneService.newContext();
-		WebNode node = webNodeService.getNodeForNodeNumber(nodeNumber);
-		if (node != null) {
-
-			for (WebContentVisibility v : node.getWebContentVisibility()) {
-				ctx.deleteObject(ctx.localObject(v.getWebContent().getObjectId(), null));
-			}
-
-			WebNode localNode = (WebNode) ctx.localObject(node.getObjectId(), null);
-			ctx.deleteObject(localNode);
-			
-			ctx.commitChanges();
-		}
-		return pagesListZone.getBody();
 	}
 
 	public List<WebNode> getNodes() {
