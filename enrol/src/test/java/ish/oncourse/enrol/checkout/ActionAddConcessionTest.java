@@ -8,10 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,7 +20,9 @@ public class ActionAddConcessionTest {
 	public void test() {
 		ObjectContext objectContext = mock(ObjectContext.class);
 
-		Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR, 1);
+		Date date = calendar.getTime();
 		ConcessionType concessionType = new ConcessionType();
 		concessionType.setName("concessionType");
 		concessionType.setHasExpiryDate(Boolean.TRUE);
@@ -32,9 +31,10 @@ public class ActionAddConcessionTest {
 		PurchaseModel model = mock(PurchaseModel.class);
 		PurchaseController controller = mock(PurchaseController.class);
 		when(controller.getModel()).thenReturn(model);
+        when(controller.getModel().getObjectContext()).thenReturn(objectContext);
 
 
-		Student student = mock(Student.class);
+        Student student = mock(Student.class);
 		when(student.getStudentConcessions()).thenReturn(Collections.EMPTY_LIST);
 
 		StudentConcession studentConcession = mock(StudentConcession.class);
@@ -58,7 +58,6 @@ public class ActionAddConcessionTest {
 		verify(controller, times(1)).setState(PurchaseController.State.editCheckout);
 		verify(controller, times(1)).setConcessionEditorController(null);
 
-
 		List<StudentConcession> concessions = getConcessions(studentConcession, date, concessionType, student);
 		when(student.getStudentConcessions()).thenReturn(concessions);
 		actionAddConcession = new ActionAddConcession();
@@ -66,7 +65,7 @@ public class ActionAddConcessionTest {
 		actionAddConcession.setParameter(parameter);
 		actionAddConcession.parse();
 		assertFalse(actionAddConcession.action());
-        verify(controller, times(1)).addError(PurchaseController.Message.concessionCardAlreadyAdded, concessions.get(1));
+        verify(controller, times(1)).addError(PurchaseController.Message.concessionAlreadyAdded, studentConcession);
 	}
 
 	private List<StudentConcession> getConcessions(StudentConcession currentConcession, Date date, ConcessionType concessionType, Student student) {

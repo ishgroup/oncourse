@@ -8,14 +8,18 @@ import java.util.List;
 
 public class ActionAddConcession extends APurchaseAction {
 	private StudentConcession studentConcession;
+    private StudentConcession deletingConcession;
 
 	@Override
 	protected void makeAction() {
 		studentConcession.getObjectContext().commitChangesToParent();
 		getModel().addConcession(getModel().localizeObject(studentConcession));
-		getController().recalculateEnrolmentInvoiceLines();
-		getController().setConcessionEditorController(null);
-		getController().setState(PurchaseController.State.editCheckout);
+        if (deletingConcession != null)
+		    getModel().getObjectContext().deleteObject(getModel().localizeObject(deletingConcession));
+
+        getController().recalculateEnrolmentInvoiceLines();
+        getController().setConcessionEditorController(null);
+        getController().setState(PurchaseController.State.editCheckout);
 	}
 
 	@Override
@@ -37,52 +41,17 @@ public class ActionAddConcession extends APurchaseAction {
 				continue;
 			if (concession.getConcessionType() == concessionType)
 			{
-                if (concessionType.getHasConcessionNumber())
+                Date expiredDate = concession.getExpiresOn();
+                Date now = new Date();
+                if (date != null && (expiredDate == null || expiredDate.before(now)))
                 {
-					if (isSameNumber(number,concession))
-					{
-						getController().addError(PurchaseController.Message.concessionAlreadyAdded, studentConcession);
-						return false;
-					}
-
-					if (concessionType.getHasExpiryDate())
-					{
-						Date prevDate = concession.getExpiresOn();
-						//check if previos concession was expired
-						if (prevDate.after(new Date()))
-						{
-							getController().addError(PurchaseController.Message.concessionCardAlreadyAdded, studentConcession);
-							return false;
-						}
-					}
-					else
-					{
-						getController().addError(PurchaseController.Message.concessionCardAlreadyAdded, studentConcession);
-						return false;
-					}
-
+                    deletingConcession = concession;
+                    return true;
                 }
-                else
-                {
-				    getController().addError(PurchaseController.Message.concessionAlreadyAdded, studentConcession);
-                    return false;
-                }
+                getController().addError(PurchaseController.Message.concessionAlreadyAdded, studentConcession);
+                return false;
 			}
 		}
-
 		return true;
 	}
-
-	private boolean isSameNumber(String number, StudentConcession concession)
-	{
-		return (number == null && concession.getConcessionNumber() == null) ||
-				(number != null && number.equals(concession.getConcessionNumber()));
-	}
-
-	private boolean isSameExpiresOn(Date expiresOn, StudentConcession concession)
-	{
-		return (expiresOn == null && concession.getExpiresOn() == null) ||
-				(expiresOn != null && expiresOn.equals(concession.getExpiresOn()));
-	}
-
 }

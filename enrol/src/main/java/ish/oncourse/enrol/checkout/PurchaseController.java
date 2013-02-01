@@ -716,7 +716,6 @@ public class PurchaseController {
 		voucherRedeemed,
 		voucherLockedAnotherUser,
 		concessionAlreadyAdded,
-        concessionCardAlreadyAdded,
         payerHadUnfinishedPayment,
 		codeEmpty,
         classAlreadyAdded,
