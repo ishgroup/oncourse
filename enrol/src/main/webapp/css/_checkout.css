@@ -610,3 +610,16 @@ tbody.checkoutList
 	padding-left: 0;
 	margin: 30px 0 0 0;
 }
+
+body .ui-tooltip {
+	border-width: 1px;
+	padding: 5px;
+	font-size: 11px;
+	font-family: Arial, Helvetica, sans-serif;
+	box-shadow: 0 0 0 #aaa;
+}
+
+[id*=discountedPrice]
+{
+	cursor: help;
+}

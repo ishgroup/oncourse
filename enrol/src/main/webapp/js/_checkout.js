@@ -22,13 +22,18 @@ function initEnrolmentListHandle()
 		sendAjax($actionLink);
 	});
 
-    $j(document).tooltip({
+    $j("[id*=discountedPrice]").tooltip({
                 items: "[id*=discountedPrice]",
                 content: function() {
                     var index = $j(this).data("index");
                     var element = $j("#discountToolTip"+"_"+index);
                     return element.html();
-                }
+				},
+				position: {
+					my: "left top+5",
+					at: "left bottom",
+					collision: "flipfit"
+				}
         }
     );
 }
