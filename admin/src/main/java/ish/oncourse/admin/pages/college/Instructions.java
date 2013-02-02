@@ -84,7 +84,14 @@ public class Instructions {
 		return null;
 	}
 
-	@OnEvent(component="resetAngelQueueForm", value="success")
+    Object onActivate() {
+        if (college == null)
+            return indexPage;
+        else
+            return null;
+    }
+
+    @OnEvent(component="resetAngelQueueForm", value="success")
 	void resetAngelQueue() {
 		createInstruction("queue:resetRetries");
 	}

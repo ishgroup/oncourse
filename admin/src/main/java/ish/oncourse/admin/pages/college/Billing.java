@@ -1,39 +1,28 @@
 package ish.oncourse.admin.pages.college;
 
-import java.math.BigDecimal;
-import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import ish.oncourse.admin.pages.Index;
 import ish.oncourse.model.College;
 import ish.oncourse.model.LicenseFee;
 import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.Preference;
-import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.system.ICollegeService;
 import ish.persistence.CommonPreferenceController;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Billing {
 	
@@ -75,13 +64,16 @@ public class Billing {
 	
 	@Persist
 	private PreferenceController preferenceController;
+
+    @InjectPage
+    private Index indexPage;
 	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	
 	@SetupRender
 	void setupRender() {
 		this.preferenceController = prefsFactory.getPreferenceController(college);
-		
+
 		if (!PaymentGatewayType.PAYMENT_EXPRESS.equals(preferenceController.getPaymentGatewayType())) {
 			this.webPaymentEnabled = false;
 		}
@@ -171,14 +163,19 @@ public class Billing {
 			LicenseFee lf = (LicenseFee) context.localObject(fee.getObjectId(), null);
 			
 			if (info != null && lf != null) {
-				if (StringUtils.trimToNull((String) info.get(LicenseFee.PLAN_NAME_PROPERTY)) != null) {
-					lf.setPlanName((String) info.get(LicenseFee.PLAN_NAME_PROPERTY));
-					
-					if ("support".equals(fee.getKeyCode()) || "hosting".equals(fee.getKeyCode())) {
-						lf.setPaidUntil((Date) info.get(LicenseFee.PAID_UNTIL_PROPERTY));
-						lf.setRenewalDate((Date) info.get(LicenseFee.RENEWAL_DATE_PROPERTY));
-					}
-				}
+                String planName = StringUtils.trimToNull(StringUtils.trimToNull((String) info.get(LicenseFee.PLAN_NAME_PROPERTY)));
+                lf.setPlanName(planName);
+                if (planName == null) {
+                    lf.setPaidUntil(null);
+                    lf.setRenewalDate(null);
+                }
+                else {
+                    if ("support".equals(fee.getKeyCode()) || "hosting".equals(fee.getKeyCode())) {
+                        lf.setPaidUntil((Date) info.get(LicenseFee.PAID_UNTIL_PROPERTY));
+                        lf.setRenewalDate((Date) info.get(LicenseFee.RENEWAL_DATE_PROPERTY));
+                    }
+                }
+
 
 				if (StringUtils.trimToNull((String) info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)) != null) {
 					lf.setFreeTransactions(Integer.parseInt((String) info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)));
@@ -191,8 +188,15 @@ public class Billing {
 		
 		context.commitChanges();
 	}
-	
-	Object onActivate(Long id) {
+
+    Object onActivate() {
+        if (college == null)
+            return indexPage;
+        else
+            return null;
+    }
+
+    Object onActivate(Long id) {
 		this.college = collegeService.findById(id);
 		return null;
 	}
@@ -296,4 +300,12 @@ public class Billing {
 			college.setName(collegeName);
 		}
 	}
+
+    public Object onException(Throwable cause){
+        //redirect to index page when session was expired and persist properties got null value
+        if (college == null || licenseInfo == null)
+            return indexPage;
+        else throw new IllegalStateException(cause);
+    }
+
 }
