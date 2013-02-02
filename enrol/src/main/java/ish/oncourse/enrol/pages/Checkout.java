@@ -190,7 +190,6 @@ public class Checkout {
     }
 
     public Object onException(Throwable cause) {
-        purchaseController = null;
         if (purchaseController == null) {
             LOGGER.warn("", cause);
             expired = true;
