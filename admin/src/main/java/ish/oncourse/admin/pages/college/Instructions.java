@@ -1,6 +1,7 @@
 package ish.oncourse.admin.pages.college;
 
 import ish.common.types.EntityMapping;
+import ish.oncourse.admin.pages.Index;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Instruction;
 import ish.oncourse.selectutils.StringSelectModel;
@@ -13,7 +14,6 @@ import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.internal.structure.Page;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
@@ -49,7 +49,7 @@ public class Instructions {
 	private ICayenneService cayenneService;
 
     @InjectPage
-    private Page indexPage;
+    private Index indexPage;
 
 	@SetupRender
 	void setupRender() {
