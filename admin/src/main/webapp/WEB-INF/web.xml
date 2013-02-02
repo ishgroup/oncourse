@@ -68,14 +68,14 @@
 	</security-constraint>
 	
 	<login-config>
-		<auth-method>FORM</auth-method>
-		<form-login-config>
-			<form-login-page>/login.html</form-login-page>
-			<form-error-page>/loginFailed.html</form-error-page>
-		</form-login-config>
+		<auth-method>BASIC</auth-method>
+		<!--<form-login-config>-->
+			<!--<form-login-page>/login.html</form-login-page>-->
+			<!--<form-error-page>/loginFailed.html</form-error-page>-->
+		<!--</form-login-config>-->
 	</login-config>
-	
-	<session-config>
+
+    <session-config>
 		<session-timeout>40</session-timeout>
 	</session-config>
 	
