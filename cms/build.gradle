@@ -2,3 +2,16 @@ dependencies {
 	compile project(':cms:cms-web')
 	compile project(':cms:cms-services')
 }
+
+task testReport(type: TestReport) {
+	destinationDir = file("$buildDir/reports/tests")
+	// Include the results from the `test` task in all subprojects
+	reportOn subprojects*.test
+}
+
+subprojects {
+	// Disable the test report for the individual test task
+	test {
+		testReport = false
+	}
+}
