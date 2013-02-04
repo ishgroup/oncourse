@@ -41,9 +41,9 @@ public class ThemeItem {
 	}
 	
 	public boolean getIsSpecialType() {
-		return WebNodeType.PAGE.equals(webNodeType.getName());
+		return webNodeType.isDefaultPageTheme();
 	}
-	
+		
 	Object onActionFromEditPageType(String id) {
 		if(request.getSession(false)==null){
 			return page.getReloadPageBlock();
@@ -64,8 +64,7 @@ public class ThemeItem {
 		if (themeToDelete != null) {
 			themeToDelete = (WebNodeType) ctx.localObject(
 					themeToDelete.getObjectId(), null);
-			boolean canNotBeDeleted = themeToDelete.getWebNodes().size() > 0;
-			if (canNotBeDeleted) {
+			if (themeToDelete.isThemeUsedInPages()) {
 				parentComponent.setProblemMessage(String.format(PageTypes.CAN_NOT_DELETE_PAGE_MESSAGE, themeToDelete.getName()));
 			} else {
 				ctx.deleteObject(themeToDelete);
