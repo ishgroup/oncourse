@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en" >
+	
+	<tr id="${webNodeType.id}">
+		<td class="cms-first">${webNodeType.name}
+			<t:if test="isSpecialType">
+				<small>(used for all special pages)</small>
+			</t:if>
+		</td>
+		<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
+		<td>
+			<span class="cms-ico-edit"></span> 
+			<a href="#" t:type="actionLink" t:id="editPageType" t:zone="pageTypeZone" t:context="${webNodeType.id}">Edit</a>
+		</td>
+		<td class="cms-last">
+			<t:if test="isSpecialType" negate="true">
+				<span class="cms-ico-del"></span>
+				<a onclick="showDeleteThemeConfirmation(${webNodeType.id});">Delete</a>
+				<div id="deleteThemeModal${webNodeType.id}" title="Are you sure you wish to delete this item?" style="display:none;">
+					<p>Are you sure you wish to delete this item?</p>
+					<t:actionLink t:id="deletePageType" clientId="deletePageType${webNodeType.id}" context="${webNodeType.id}" 
+						zone="pageTypeZone"></t:actionLink>
+				</div>
+			</t:if>
+		</td>
+	</tr>
+</t:container>

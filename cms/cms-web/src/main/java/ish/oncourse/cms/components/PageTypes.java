@@ -2,10 +2,8 @@ package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.visitor.LastEditedVisitor;
 import ish.oncourse.ui.pages.internal.Page;
 
 import org.apache.cayenne.ObjectContext;
@@ -19,14 +17,12 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class PageTypes {
+	
+	static final String CAN_NOT_DELETE_PAGE_MESSAGE = "This theme %s cannot be deleted since it is has been used by a page.";
 
 	@Inject
 	private Request request;
 	
-	@Inject
-	@Property
-	private IWebNodeTypeService webNodeTypeService;
-
 	@Inject
 	private IWebSiteService webSiteService;
 
@@ -43,7 +39,6 @@ public class PageTypes {
 	@Inject
 	private Block editPageTypeBlock;
 
-	@Property
 	@Component
 	private Zone pageTypeZone;
 	
@@ -52,56 +47,19 @@ public class PageTypes {
 	@InjectPage
 	private Page page;
 
-	public String getLastEdited() {
-		return webNodeType.accept(new LastEditedVisitor());
-	}
-	
-	@SuppressWarnings("unused")
-	private Object onActionFromNewPageType() {
+	Object onActionFromNewPageType() {
 		if(request.getSession(false)==null){
 			return page.getReloadPageBlock();
 		}
 		ObjectContext ctx = cayenneService.newContext();
-		this.selectedPageType = ctx.newObject(WebNodeType.class);
-		selectedPageType.setWebSite((WebSite) ctx.localObject(webSiteService
-				.getCurrentWebSite().getObjectId(), null));
-		return editPageTypeBlock;
-	}
-
-	@SuppressWarnings("unused")
-	private Object onActionFromEditPageType(String id) {
-		if(request.getSession(false)==null){
-			return page.getReloadPageBlock();
-		}
-		this.selectedPageType = webNodeTypeService.findById(Long.parseLong(id));
-		return editPageTypeBlock;
-	}
-
-	@SuppressWarnings("unused")
-	private Object onActionFromDeletePageType(String id) {
-		if(request.getSession(false)==null){
-			return page.getReloadPageBlock();
-		}
-		ObjectContext ctx = cayenneService.newContext();
-		WebNodeType themeToDelete = webNodeTypeService.findById(Long
-				.parseLong(id));
-
-		if (themeToDelete != null) {
-			themeToDelete = (WebNodeType) ctx.localObject(
-					themeToDelete.getObjectId(), null);
-			if (themeToDelete.getWebNodes().size() > 0) {
-				this.problemMessage = "This theme " + themeToDelete.getName() + " cannot be deleted since it is has been used by a page.";
-			} else {
-				ctx.deleteObject(themeToDelete);
-				ctx.commitChanges();
-			}
-		}
-		return pageTypeZone.getBody();
+		WebNodeType newTheme = ctx.newObject(WebNodeType.class);
+		newTheme.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
+		changeSelectedPageType(newTheme);
+		return getEditPageTypeBlock();
 	}
 
 	public String getEditPageTypeUrl() {
-		return "http://" + request.getServerName()
-				+ "/cms/site.pagetypes.editpagetype/";
+		return "http://" + request.getServerName() + "/cms/site.pagetypes.editpagetype/";
 	}
 	
 	public String getProblemMessage() {
@@ -112,8 +70,20 @@ public class PageTypes {
 		return problemMessage;
 	}
 	
-	public boolean getIsSpecialType() {
-		return WebNodeType.PAGE.equals(webNodeType.getName());
+	void setProblemMessage(String problemMessage) {
+		this.problemMessage = problemMessage;
+	}
+
+	public Block getEditPageTypeBlock() {
+		return editPageTypeBlock;
+	}
+
+	void changeSelectedPageType(WebNodeType selectedPageType) {
+		this.selectedPageType = selectedPageType;
+	}
+
+	public Zone getPageTypeZone() {
+		return pageTypeZone;
 	}
 	
 }
