@@ -23,26 +23,11 @@
         </div>
 
         <div class="cms-content cms-page-blocks">
-
             <table class="cms-cont-table" id="blocks">
-					
 				<t:loop source="webContentService.blocks" value="block">
-					<tr id="${block.id}">
-						<td class="cms-first">${block.name}</td>
-                       	<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
-                        <td>
-                        	<span class="cms-ico-edit"></span> 
-                        	<a href="#" t:type="actionLink" t:id="editBlock" t:zone="blockZone" t:context="block.id">Edit</a>
-                        </td>
-                        <td class="cms-last">
-                        	<span class="cms-ico-del"></span> 
-                        	<a href="#" t:type="actionLink" t:id="deleteBlock" t:zone="blockZone" t:context="block.id">Delete</a>
-                        </td>
-					</tr>
+					<div t:type="blockItem" block="block"/>
 				</t:loop>
-                    
             </table>
-
         </div>
         
         <script type="text/javascript">
@@ -75,6 +60,25 @@
 					zoneManager.updateFromURL('${editBlockUrl}' + jQuery(this).attr('id'));
 				});*/
 			});
+			
+			function showDeleteBlockConfirmation(id) {
+			jQuery("#deleteBlockModal"+id).dialog({
+			 	resizable: false,
+				height:140,
+				width:380,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						jQuery(this).dialog("close");
+						var deleteAction = document.getElementById(jQuery("a[clientId='deleteBlock"+id+"']").attr("id"));
+						deleteAction.click();						
+					},
+					Cancel: function() {
+						jQuery(this).dialog("close");
+					}
+				}
+			});
+			};
 		</script>
 	
 	</t:zone>

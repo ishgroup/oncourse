@@ -7,7 +7,6 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.visitor.LastEditedVisitor;
 import ish.oncourse.ui.pages.internal.Page;
 
 import org.apache.cayenne.ObjectContext;
@@ -48,21 +47,15 @@ public class Blocks {
 	@Inject
 	private Block editBlock;
 
-	@Property
 	@Component
 	private Zone blockZone;
 
-	public String getLastEdited() {
-		return block.accept(new LastEditedVisitor());
-	}
-
-	@SuppressWarnings("unused")
-	private Object onActionFromNewBlock() {
+	Object onActionFromNewBlock() {
 		if (request.getSession(false) == null) {
 			return page.getReloadPageBlock();
 		}
 		ObjectContext ctx = cayenneService.newContext();
-		selectedBlock = ctx.newObject(WebContent.class);
+		changeSelectedBlock(ctx.newObject(WebContent.class));
 
 		WebContentVisibility visibility = ctx.newObject(WebContentVisibility.class);
 		visibility.setRegionKey(RegionKey.unassigned);
@@ -70,34 +63,23 @@ public class Blocks {
 
 		selectedBlock.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
 
-		return editBlock;
-	}
-
-	@SuppressWarnings("unused")
-	private Object onActionFromEditBlock(String id) {
-		if (request.getSession(false) == null) {
-			return page.getReloadPageBlock();
-		}
-		selectedBlock = webContentService.findById(Long.parseLong(id));
-		return editBlock;
-	}
-
-	@SuppressWarnings("unused")
-	private Object onActionFromDeleteBlock(String id) {
-		if (request.getSession(false) == null) {
-			return page.getReloadPageBlock();
-		}
-		ObjectContext ctx = cayenneService.newContext();
-		WebContent blockToDelete = webContentService.findById(Long.parseLong(id));
-		if (blockToDelete != null) {
-			blockToDelete = (WebContent) ctx.localObject(blockToDelete.getObjectId(), null);
-			ctx.deleteObject(blockToDelete);
-			ctx.commitChanges();
-		}
-		return blockZone.getBody();
+		return getEditBlock();
 	}
 
 	public String getEditBlockUrl() {
 		return "http://" + request.getServerName() + "/cms/site.blocks.editblock/";
 	}
+
+	public Block getEditBlock() {
+		return editBlock;
+	}
+
+	public Zone getBlockZone() {
+		return blockZone;
+	}
+
+	void changeSelectedBlock(WebContent selectedBlock) {
+		this.selectedBlock = selectedBlock;
+	}
+	
 }
