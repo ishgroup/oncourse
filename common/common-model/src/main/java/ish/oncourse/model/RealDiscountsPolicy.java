@@ -1,9 +1,9 @@
 package ish.oncourse.model;
 
+import ish.common.types.EnrolmentStatus;
+import ish.oncourse.utils.MembershipDiscountHelper;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-
-import ish.common.types.EnrolmentStatus;
 
 import java.util.*;
 
@@ -158,22 +158,11 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 				}
 			}
 		}
-		
-		if (discount.getDiscountMembershipProducts() != null) {
-			boolean eligableMembership = discount.getDiscountMembershipProducts().isEmpty();
-			for (DiscountMembership membership : discount.getDiscountMembershipProducts()) {
-				for (Membership contactMembership : student.getContact().getMemberships()) {
-					if (contactMembership.getProduct().getObjectId().equals(membership.getMembershipProduct().getObjectId())) {
-						eligableMembership = true;
-						break;
-					}
-				}
-			}
-			if (!eligableMembership) {
-				return false;
-			}
-		}
-		return true;// eligibile
+
+        MembershipDiscountHelper membershipDiscountHelper = new MembershipDiscountHelper();
+        membershipDiscountHelper.setContact(student.getContact());
+        membershipDiscountHelper.setDiscount(discount);
+        return membershipDiscountHelper.isEligibile();
 	}
 
 }
