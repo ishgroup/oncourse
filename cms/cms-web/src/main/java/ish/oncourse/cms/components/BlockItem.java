@@ -4,7 +4,6 @@ import java.util.List;
 
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
-import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.visitor.LastEditedVisitor;
@@ -45,20 +44,20 @@ public class BlockItem {
 	}
 	
 	public boolean getIsUsedInPages() {
-		boolean result = false;
+		return isBlockAssigned(block);
+	}
+	
+	static boolean isBlockAssigned(WebContent block) {
 		List<WebContentVisibility> visibilities = block.getWebContentVisibilities();
 		if (visibilities.size() > 0) {
 			for (WebContentVisibility visibility : visibilities) {
 				if (visibility.getWebNodeType() != null) {
 					//not unassigned
-					WebNodeType theme = visibility.getWebNodeType();
-					if (theme.isThemeUsedInPages()) {
-						return true;
-					}
+					return true;
 				}
 			}
 		}
-		return result;
+		return false;
 	}
 	
 	Object onActionFromEditBlock(String id) {
@@ -76,7 +75,7 @@ public class BlockItem {
 		}
 		ObjectContext ctx = cayenneService.newContext();
 		WebContent blockToDelete = webContentService.findById(Long.parseLong(id));
-		if (blockToDelete != null) {
+		if (blockToDelete != null && !isBlockAssigned(blockToDelete)) {
 			blockToDelete = (WebContent) ctx.localObject(blockToDelete.getObjectId(), null);
 			ctx.deleteObject(blockToDelete);
 			ctx.commitChanges();

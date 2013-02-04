@@ -41,7 +41,7 @@ public class ThemeItem {
 	}
 	
 	public boolean getIsSpecialType() {
-		return webNodeType.isDefaultPageTheme();
+		return webNodeType.isDefaultPageTheme() || webNodeType.isThemeUsedInPages();
 	}
 		
 	Object onActionFromEditPageType(String id) {
