@@ -196,6 +196,12 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	}
 }
 
+task testReport(type: TestReport) {
+	destinationDir = file("$buildDir/reports/tests")
+	// Include the results from the `test` task in all subprojects
+	reportOn subprojects*.test
+}
+
 apply plugin: 'sonar'
 
 sonar {
@@ -232,40 +238,5 @@ subprojects {
  
     test {
         jvmArgs "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec"
-    }
-}
-
-/*
-
-	Additional functionality which might later be turned into plugins
-
-*/
-
-task aggregateTestReports(type: TestReportAggregator) {
-    testReportDir = file("${reporting.baseDir}/tests")
-    testResultsDir = file("${buildDir}/test-results")
-    projects = subprojects
-}
-
-class TestReportAggregator extends Copy {
-    def projects
-    File testResultsDir
-    @OutputDirectory
-    File testReportDir
-    def TestReportAggregator() {
-        dependsOn { testTasks }
-        from { inputTestResultDirs }
-        into { testResultsDir }
-    }
-    @TaskAction
-    def aggregate() {
-        def report = new org.gradle.api.internal.tasks.testing.junit.report.DefaultTestReport(testReportDir: testReportDir, testResultsDir: testResultsDir)
-        report.generateReport()
-    }
-    def getTestTasks() {
-        projects.collect { it.tasks.withType(Test) }.flatten()
-    }
-    def getInputTestResultDirs() {
-        testTasks*.testResultsDir
     }
 }
