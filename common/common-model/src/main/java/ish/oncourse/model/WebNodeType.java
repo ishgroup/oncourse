@@ -60,4 +60,12 @@ public class WebNodeType extends _WebNodeType {
 
 		return getObjectContext().performQuery(q);
 	}
+	
+	public boolean isDefaultPageTheme(){
+		return PAGE.equals(getName());
+	}
+	
+	public boolean isThemeUsedInPages() {
+		return !getWebNodes().isEmpty();
+	}
 }
