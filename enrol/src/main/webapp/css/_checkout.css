@@ -98,6 +98,11 @@ table.payments tr div.drop-down
 	color: #125687;
 }
 
+tbody.checkoutList > tr.enrolmentItem > td.enrolmentInfo
+{
+    width: 500px;
+}
+
 .content a.add-concession:hover {
 	text-decoration: underline;
 }

@@ -3,7 +3,7 @@
 	xmlns:p="tapestry:parameter">
 
 	<tr class="enrolmentItem ${enrolmentClass}">
-		<td>
+		<td class="enrolmentInfo">
 			<label>
 				<t:if test="checked">
 					<input type="checkbox" class="enrolmentSelect" checked="${checked}"/>
