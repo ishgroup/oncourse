@@ -2,6 +2,7 @@ package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
+import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
@@ -35,6 +36,10 @@ public class PageTypes {
 
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	@Property
+	private IWebNodeTypeService webNodeTypeService;
 
 	@Inject
 	private Block editPageTypeBlock;
