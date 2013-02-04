@@ -64,7 +64,7 @@
 			 jQuery("#deleteModal"+id).dialog({
 			 	resizable: false,
 				height:140,
-				width:370,
+				width:380,
 				modal: true,
 				buttons: {
 					"Delete": function() {

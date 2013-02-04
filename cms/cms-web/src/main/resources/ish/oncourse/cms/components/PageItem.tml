@@ -24,7 +24,7 @@
 		</td>
 		<td class="cms-last">
 			<span class="cms-ico-del"></span>
-			<a onclick="showDeletePageConfirmation(${webNode.nodeNumber});" role="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</a>
+			<a onclick="showDeletePageConfirmation(${webNode.nodeNumber});">Delete</a>
 			<div id="deleteModal${webNode.nodeNumber}" title="Are you sure you wish to delete this item?" style="display:none;">
 				<p>Are you sure you wish to delete this item?</p>
 				<t:actionLink t:id="deletePage" clientId="deletePage${webNode.nodeNumber}" context="${webNode.nodeNumber}" 
