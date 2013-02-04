@@ -163,7 +163,7 @@ public class PaymentEditor {
 	}
 
 	public boolean isZeroPayment() {
-		return Money.valueOf(delegate.getPaymentIn().getAmount()).isZero();
+		return delegate.getPaymentIn().isZeroPayment();
 	}
 
 

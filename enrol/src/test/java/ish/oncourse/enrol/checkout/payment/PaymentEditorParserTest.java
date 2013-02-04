@@ -49,7 +49,7 @@ public class PaymentEditorParserTest {
 
     @Test
     public void testZeroPayment() {
-        when(paymentIn.getAmount()).thenReturn(BigDecimal.ZERO);
+        when(paymentIn.getAmount()).thenReturn(BigDecimal.valueOf(0.0));
 
         PaymentEditorParser paymentEditorParser = getPaymentEditorParser();
         paymentEditorParser.parse();

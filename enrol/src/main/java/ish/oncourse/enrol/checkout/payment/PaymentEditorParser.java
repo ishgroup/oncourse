@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +25,8 @@ public class PaymentEditorParser implements IFieldsParser {
 	private Map<String, String> errors = new HashMap<String, String>();
 
 	public void parse() {
-		if (paymentIn.getAmount().equals(BigDecimal.ZERO))
-		{
+		if (paymentIn.isZeroPayment())
 			parse(new Field[]{Field.userAgreed});
-		}
 		else
 		{
 			parse(Field.values());
