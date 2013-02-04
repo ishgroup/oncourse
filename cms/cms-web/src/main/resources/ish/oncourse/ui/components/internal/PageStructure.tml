@@ -9,6 +9,7 @@
 	<head>
 		<head t:type="ui/pagehead" title="${title}"/>
 		<t:if t:test="loggedIn">
+			<link href="/s/cms/css/modalJQuery.css" media="screen" rel="stylesheet"/>
 			<link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
 			<link href="/s/cms/js/plugins/plugins.css" rel="stylesheet" type="text/css"/>
 			<script src="/s/cms/js/all.js" />
