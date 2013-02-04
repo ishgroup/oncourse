@@ -299,11 +299,8 @@ div.amount-container .amount-content label {
 }
 
 div.amount-container .amount-content span#creditAccessLink {
-	text-align: left;
 	color: #125687;
     cursor: pointer;
-    vertical-align: bottom;
-    float: none;
 }
 
 div.amount-container .amount-content span#removeOwingLink {
