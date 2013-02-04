@@ -50,6 +50,7 @@ public class PaymentEditorParserTest {
     @Test
     public void testZeroPayment() {
         when(paymentIn.getAmount()).thenReturn(BigDecimal.valueOf(0.0));
+        when(paymentIn.isZeroPayment()).thenCallRealMethod();
 
         PaymentEditorParser paymentEditorParser = getPaymentEditorParser();
         paymentEditorParser.parse();
