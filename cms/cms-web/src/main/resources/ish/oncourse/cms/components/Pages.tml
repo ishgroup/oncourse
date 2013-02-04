@@ -69,6 +69,7 @@
 				buttons: {
 					"Delete": function() {
 						jQuery(this).dialog("close");
+						//jQuery("a[clientId='deletePage"+id+"']").trigger('click');
 						var deleteAction = document.getElementById(jQuery("a[clientId='deletePage"+id+"']").attr("id"));
 						deleteAction.click();						
 					},
