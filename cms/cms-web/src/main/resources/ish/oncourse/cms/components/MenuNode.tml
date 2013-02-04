@@ -11,8 +11,12 @@
 			<span class="cms-ico-drag"></span> 
 			Drag &amp; Place
 		</span><span class="cms-menu-pages-dl cms-last">
-			<span class="cms-ico-del"></span> 
-			<a id="r_${menu.id}">Delete</a>
+			<span class="cms-ico-del"></span>
+			<a onclick="showDeleteMenuConfirmation(${menu.id});">Delete</a>
+			<div id="deleteMenuModal${menu.id}" title="Are you sure you wish to delete this item?" style="display:none;">
+				<p>Are you sure you wish to delete this item?</p>
+				<a id="r_${menu.id}" clientId="deleteMenu${menu.id}" onclick="fireDeleteMenu(this.id);"></a>
+			</div>
 		</span>
 	</span>
 	<ul><t:body/></ul>
