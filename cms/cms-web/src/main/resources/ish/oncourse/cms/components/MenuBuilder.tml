@@ -55,7 +55,7 @@
 				<a onclick="showDeleteMenuConfirmation(XXX);">Delete</a>
 				<div title="Are you sure you wish to delete this item?" style="display:none;">
 					<p>Are you sure you wish to delete this item?</p>
-					<a id="r_XXX" onclick="fireDeleteMenu(this.id);"></a>
+					<a id="r_XXX" clientId="" onclick="fireDeleteMenu(this.id);"></a>
 				</div>
 			</span>
 		</span>
@@ -100,8 +100,7 @@
 				buttons: {
 					"Delete": function() {
 						jQuery(this).dialog("close");
-						var deleteAction = document.getElementById(jQuery("a[clientId='deleteMenu"+id+"']").attr("id"));
-						deleteAction.click();						
+						jQuery("a[clientId='deleteMenu"+id+"']").trigger('click');
 					},
 					Cancel: function() {
 						jQuery(this).dialog("close");
