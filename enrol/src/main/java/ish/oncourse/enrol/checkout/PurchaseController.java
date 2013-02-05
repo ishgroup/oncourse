@@ -175,9 +175,14 @@ public class PurchaseController {
         {
             if (getState() == editCheckout || getState() == editPayment)
             {
-            //the code needs to recalcalute money values for payment and discount for all actions on checkout page and payment editor
+                //the code needs to recalcalute money values for payment and discount for all actions on checkout page and payment editor
                 getModel().updateTotalIncGst();
                 getModel().updateTotalDiscountAmountIncTax();
+
+                //we need commit all changes which were made on editPayment page otherwise we can get incorrect contact relations (in particular invoices)
+                if (getState() == editPayment)
+                    getModel().getObjectContext().commitChanges();
+
             }
         }
 	}
