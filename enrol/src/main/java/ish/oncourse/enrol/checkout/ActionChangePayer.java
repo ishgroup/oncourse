@@ -25,10 +25,8 @@ public class ActionChangePayer extends APurchaseAction {
 
     @Override
     protected boolean validate() {
-        if (!getController().getModel().getContacts().contains(contact))
-            return false;
-        return true;
-    }
+		return getController().getModel().getContacts().contains(contact);
+	}
 
     /**
      * Check if there are in_transaction payments on enroling contact. If finds any it abandons them.
