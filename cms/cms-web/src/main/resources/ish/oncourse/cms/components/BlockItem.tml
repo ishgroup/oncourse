@@ -15,8 +15,8 @@
 				<a onclick="showDeleteBlockConfirmation(${block.id});">Delete</a>
 				<div id="deleteBlockModal${block.id}" title="Are you sure you wish to delete this item?" style="display:none;">
 					<p>Are you sure you wish to delete this item?</p>
-					<t:actionLink t:id="deleteBlock" clientId="deleteBlock${block.id}" context="${block.id}" 
-						zone="blockZone"></t:actionLink>
+					<a id="dBlock_${block.id}" onclick="fireDeleteBlock(this.id);"></a>
+					<t:actionLink t:id="deleteBlock" clientId="deleteBlock${block.id}" context="${block.id}" zone="blockZone"></t:actionLink>
 				</div>
 			</t:if>
 		</td>

@@ -11,11 +11,13 @@ import ish.oncourse.ui.pages.internal.Page;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.util.TextStreamResponse;
 
 public class BlockItem {
 	
@@ -69,9 +71,9 @@ public class BlockItem {
 		return parentComponent.getEditBlock();
 	}
 	
-	Object onActionFromDeleteBlock(String id) {
+	StreamResponse onActionFromDeleteBlock(String id) {
 		if (request.getSession(false) == null) {
-			return page.getReloadPageBlock();
+			return new TextStreamResponse("text/json", "{status: 'session timeout'}");
 		}
 		ObjectContext ctx = cayenneService.newContext();
 		WebContent blockToDelete = webContentService.findById(Long.parseLong(id));
@@ -80,8 +82,7 @@ public class BlockItem {
 			ctx.deleteObject(blockToDelete);
 			ctx.commitChanges();
 		}
-		Blocks parentComponent = (Blocks) componentResources.getContainer();
-		return parentComponent.getBlockZone().getBody();
+		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
 
 }
