@@ -81,6 +81,8 @@ public class BlockItem {
 			blockToDelete = (WebContent) ctx.localObject(blockToDelete.getObjectId(), null);
 			ctx.deleteObject(blockToDelete);
 			ctx.commitChanges();
+		} else {
+			return new TextStreamResponse("text/json", "{status: 'FAILED'}");
 		}
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}

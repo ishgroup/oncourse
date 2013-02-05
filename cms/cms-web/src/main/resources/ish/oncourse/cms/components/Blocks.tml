@@ -93,7 +93,9 @@
 							jQuery("tr[id='block_row_"+id+"']").remove();
 						} else if(data.responseText=="{status: 'session timeout'}"){
 							window.location.reload();
-						} else{
+						} else if(data.responseText=="{status: 'FAILED'}") {
+							alert("This block cannot be deleted since it is has been used by a theme(s).");
+						}else{
 							alert("The block cannot be removed due some exception.");
 						}
 					}, 
