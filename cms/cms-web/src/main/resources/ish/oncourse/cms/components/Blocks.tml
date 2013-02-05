@@ -90,7 +90,7 @@
 					complete: function(data){
 						if(data.responseText=="{status: 'OK'}"){
 							var id = this.data.substring(3);
-							jQuery("tr[id='"+id+"']").remove();
+							jQuery("tr[id='block_row_"+id+"']").remove();
 						} else if(data.responseText=="{status: 'session timeout'}"){
 							window.location.reload();
 						} else{

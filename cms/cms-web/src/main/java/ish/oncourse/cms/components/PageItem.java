@@ -5,15 +5,14 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.visitor.LastEditedVisitor;
-import ish.oncourse.ui.pages.internal.Page;
 
 import org.apache.cayenne.ObjectContext;
-import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.util.TextStreamResponse;
 
 public class PageItem {
 	
@@ -30,20 +29,14 @@ public class PageItem {
 	@Property
 	@Inject
 	private IWebNodeService webNodeService;
-	
-	@InjectPage
-	private Page page;
-	
-	@Inject
-	private ComponentResources componentResources;
-	
+		
 	public String getLastEdited() {
 		return webNode.accept(new LastEditedVisitor());
 	}
-	
-	public Object onActionFromDeletePage(Integer nodeNumber) {
+		
+	StreamResponse onActionFromDeletePage(Integer nodeNumber) {
 		if (request.getSession(false) == null) {
-			return page.getReloadPageBlock();
+			return new TextStreamResponse("text/json", "{status: 'session timeout'}");
 		}
 		ObjectContext ctx = cayenneService.newContext();
 		WebNode node = webNodeService.getNodeForNodeNumber(nodeNumber);
@@ -55,8 +48,7 @@ public class PageItem {
 			ctx.deleteObject(localNode);
 			ctx.commitChanges();
 		}
-		Pages parentComponent = (Pages) componentResources.getContainer();
-		return parentComponent.getPagesListZone().getBody();
+		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
 	
 

@@ -69,15 +69,36 @@
 				buttons: {
 					"Delete": function() {
 						jQuery(this).dialog("close");
-						//jQuery("a[clientId='deletePage"+id+"']").trigger('click');
-						var deleteAction = document.getElementById(jQuery("a[clientId='deletePage"+id+"']").attr("id"));
-						deleteAction.click();						
+						jQuery("a[id='dPage_"+id+"']").trigger('click');
 					},
 					Cancel: function() {
 						jQuery(this).dialog("close");
 					}
 				}
 			});
+		};
+		
+		function fireDeletePage(elementId) {
+			var actionId = elementId.substring(6);
+			var actionLink = jQuery("a[clientId='deletePage"+actionId+"']");
+			var actionHref = actionLink.attr("href");
+			jQuery.ajax({
+				type: "POST",
+				data: "id="+actionId,
+				url: actionHref,
+				complete: function(data){
+					if(data.responseText=="{status: 'OK'}"){
+						var id = this.data.substring(3);
+						jQuery("tr[id='page_row_"+id+"']").remove();
+					} else if(data.responseText=="{status: 'session timeout'}"){
+						window.location.reload();
+					} else{
+						alert("The page cannot be removed due some exception.");
+					}
+				}, 
+				async:true
+			});
+			return false;
 		};
 	</script>
 	

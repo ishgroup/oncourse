@@ -2,7 +2,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter" lang="en" >
 	
-	<tr id="${block.id}">
+	<tr id="block_row_${block.id}">
 		<td class="cms-first">${block.name}</td>
 		<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
 		<td>
