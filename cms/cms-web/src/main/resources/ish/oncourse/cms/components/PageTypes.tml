@@ -66,9 +66,7 @@
 				buttons: {
 					"Delete": function() {
 						jQuery(this).dialog("close");
-						//jQuery("a[clientId='deletePageType"+id+"']").trigger('click');
-						var deleteAction = document.getElementById(jQuery("a[clientId='deletePageType"+id+"']").attr("id"));
-						deleteAction.click();						
+						jQuery("a[id='dTheme_"+id+"']").trigger('click');
 					},
 					Cancel: function() {
 						jQuery(this).dialog("close");
@@ -76,6 +74,36 @@
 				}
 			});
 		};
+		
+		function fireDeleteTheme(elementId) {
+			var actionId = elementId.substring(7);
+			var actionLink = jQuery("a[clientId='deleteTheme"+actionId+"']");
+			var actionHref = actionLink.attr("href");
+			jQuery.ajax({
+				type: "POST",
+				data: "id="+actionId,
+				url: actionHref,
+				complete: function(data){
+					if(data.responseText=="{status: 'OK'}"){
+						var id = this.data.substring(3);
+						jQuery("tr[id='theme_row_"+id+"']").remove();
+					} else if(data.responseText=="{status: 'session timeout'}"){
+						window.location.reload();
+					} else if(data.responseText.split(',').length==2) {
+						var splittedData = data.responseText.split(',');
+						if (splittedData[0] == "{status: 'FAILED'") {
+							alert("This theme cannot be deleted since it is has been used by a page.");
+						} else {
+							alert("The theme cannot be removed due some exception.");
+						}
+					} else{
+						alert("The theme cannot be removed due some exception.");
+					}
+				}, 
+				async:true
+			});
+			return false;
+		};		
 		</script>
             
 	</t:zone>

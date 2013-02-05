@@ -8,11 +8,13 @@ import ish.oncourse.ui.pages.internal.Page;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.util.TextStreamResponse;
 
 public class ThemeItem {
 	
@@ -52,26 +54,24 @@ public class ThemeItem {
 		parentComponent.changeSelectedPageType(webNodeTypeService.findById(Long.parseLong(id)));
 		return parentComponent.getEditPageTypeBlock();
 	}
-		
-	Object onActionFromDeletePageType(String id) {
+	
+	StreamResponse onActionFromDeletePageType(String id) {
 		if(request.getSession(false)==null){
-			return page.getReloadPageBlock();
+			return new TextStreamResponse("text/json", "{status: 'session timeout'}");
 		}
 		ObjectContext ctx = cayenneService.newContext();
 		WebNodeType themeToDelete = webNodeTypeService.findById(Long.parseLong(id));
-
-		PageTypes parentComponent = (PageTypes) componentResources.getContainer();
 		if (themeToDelete != null) {
 			themeToDelete = (WebNodeType) ctx.localObject(
 					themeToDelete.getObjectId(), null);
 			if (themeToDelete.isThemeUsedInPages()) {
-				parentComponent.setProblemMessage(String.format(PageTypes.CAN_NOT_DELETE_PAGE_MESSAGE, themeToDelete.getName()));
+				return new TextStreamResponse("text/json", "{status: 'FAILED',themeName:'" + themeToDelete.getName() + "'}");
 			} else {
 				ctx.deleteObject(themeToDelete);
 				ctx.commitChanges();
 			}
 		}
-		return parentComponent.getPageTypeZone().getBody();
+		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
 
 }
