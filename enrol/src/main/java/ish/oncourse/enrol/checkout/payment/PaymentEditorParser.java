@@ -26,7 +26,7 @@ public class PaymentEditorParser implements IFieldsParser {
 
 	public void parse() {
 		if (paymentIn.isZeroPayment())
-			parse(new Field[]{Field.userAgreed});
+			parse(new Field[]{Field.userAgreed,Field.contact});
 		else
 		{
 			parse(Field.values());

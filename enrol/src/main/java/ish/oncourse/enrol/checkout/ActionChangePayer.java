@@ -69,7 +69,7 @@ public class ActionChangePayer extends APurchaseAction {
         Contact oldPayer = getController().getModel().getPayer();
 
         if (oldPayer != null) {
-            getController().getModel().removeAllProductItems(contact);
+            getController().getModel().removeAllProductItems(oldPayer);
         }
 
         getController().getModel().setPayer(contact);
