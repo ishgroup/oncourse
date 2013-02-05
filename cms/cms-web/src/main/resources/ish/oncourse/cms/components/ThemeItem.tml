@@ -17,7 +17,7 @@
 			<t:if test="isSpecialType" negate="true">
 				<span class="cms-ico-del"></span>
 				<a onclick="showDeleteThemeConfirmation(${webNodeType.id});">Delete</a>
-				<div id="deleteThemeModal${webNodeType.id}" title="Are you sure you wish to delete this item?" style="display:none;">
+				<div id="deleteThemeModal${webNodeType.id}" style="display:none;">
 					<p>Are you sure you wish to delete this item?</p>
 					<a id="dTheme_${webNodeType.id}" onclick="fireDeleteTheme(this.id);"></a>
 					<t:actionLink t:id="deletePageType" clientId="deleteTheme${webNodeType.id}" context="${webNodeType.id}" zone="pageTypeZone"></t:actionLink>
