@@ -12,6 +12,8 @@ import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
+import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -40,6 +42,7 @@ import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
+import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.internal.OperationException;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -85,7 +88,13 @@ public class AppModule {
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
-		binder.bind(IPaymentProcessControllerBuilder.class, PaymentProcessControllerBuilder.class);
+		//binder.bind(IPaymentProcessControllerBuilder.class, PaymentProcessControllerBuilder.class);
+	}
+	
+	@Scope("perthread")
+	public static IPaymentProcessControllerBuilder buildPaymentProcessControllerBuilder(ParallelExecutor parallelExecutor, 
+		IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder, ICayenneService cayenneService, IPaymentService paymentService) {
+		return new PaymentProcessControllerBuilder(parallelExecutor,paymentGatewayServiceBuilder, cayenneService, paymentService);
 	}
 	
 	/**
