@@ -263,18 +263,9 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 
     private PaymentProcessController createPaymentProcessController() {
         String sessionId = "SESSIONID";
-        final PaymentProcessController paymentProcessController = new PaymentProcessControllerBuilder() {
-			@Override
-			public ParallelExecutor takeParallelExecutor() {return new TestParallelExecutor();}
-
+        final PaymentProcessController paymentProcessController = new PaymentProcessControllerBuilder(new TestParallelExecutor(), null, cayenneService, paymentService) {
 			@Override
 			public IPaymentGatewayService receivePaymentGatewayService() {return paymentGatewayService;}
-
-			@Override
-			public ICayenneService takeCayenneService() {return cayenneService;}
-
-			@Override
-			public IPaymentService takePaymentService() {return paymentService;}
         }.build(sessionId);
         //update parallel executor because unable to finally init them for test on startup
         paymentProcessController.setParallelExecutor(new TestParallelExecutor(paymentProcessController));

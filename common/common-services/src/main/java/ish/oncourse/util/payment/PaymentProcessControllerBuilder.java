@@ -10,15 +10,21 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
 public class PaymentProcessControllerBuilder implements IPaymentProcessControllerBuilder{
-	@Inject
     private ParallelExecutor parallelExecutor;
-	@Inject
     private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
-	@Inject
 	private ICayenneService cayenneService;
-	@Inject
     private IPaymentService paymentService;
 	
+	@Inject
+	public PaymentProcessControllerBuilder(ParallelExecutor parallelExecutor, IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder,
+			ICayenneService cayenneService, IPaymentService paymentService) {
+		super();
+		this.parallelExecutor = parallelExecutor;
+		this.paymentGatewayServiceBuilder = paymentGatewayServiceBuilder;
+		this.cayenneService = cayenneService;
+		this.paymentService = paymentService;
+	}
+
 	@Override
 	public PaymentProcessController build(final String sessionId) {
 		final PaymentIn paymentIn = takePaymentService().currentPaymentInBySessionId(sessionId);
@@ -35,8 +41,7 @@ public class PaymentProcessControllerBuilder implements IPaymentProcessControlle
 		return controller;
 	}
 	
-	@Override
-	public boolean isNeedResetOldSessionController(PaymentProcessController paymentProcessController, String sessionId) {
+	public static boolean isNeedResetOldSessionController(PaymentProcessController paymentProcessController, String sessionId) {
 		return paymentProcessController != null && isControllerOldAndExpired(paymentProcessController, sessionId);
 	}
 	
