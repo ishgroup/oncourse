@@ -6,6 +6,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.util.payment.IPaymentProcessControllerBuilder;
 import ish.oncourse.util.payment.PaymentProcessController;
+import ish.oncourse.util.payment.PaymentProcessControllerBuilder;
 import ish.oncourse.webservices.components.PaymentForm;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import org.apache.log4j.Logger;
@@ -82,7 +83,7 @@ public class Payment {
     }
     
     private void resetOldSessionController(String sessionId) {
-    	if (paymentProcessControllerBuilder.isNeedResetOldSessionController(getPaymentProcessController(), sessionId)) {
+    	if (PaymentProcessControllerBuilder.isNeedResetOldSessionController(getPaymentProcessController(), sessionId)) {
     		//reset the paymentProcessController to be able render actual payment
     		paymentProcessController = null;
     	}
