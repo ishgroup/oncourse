@@ -52,6 +52,7 @@ public class PaymentEditorParserTest {
         when(paymentIn.getAmount()).thenReturn(BigDecimal.valueOf(0.0));
         when(paymentIn.isZeroPayment()).thenCallRealMethod();
 
+        when(request.getParameter(Field.contact.name())).thenReturn("1");
         PaymentEditorParser paymentEditorParser = getPaymentEditorParser();
         paymentEditorParser.parse();
         assertFalse(paymentEditorParser.getErrors().isEmpty());

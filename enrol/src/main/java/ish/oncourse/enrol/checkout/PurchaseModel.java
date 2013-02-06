@@ -154,10 +154,9 @@ public class PurchaseModel {
     public void removeProductItem(Contact contact, ProductItem p) {
         InvoiceLine invoiceLine = p.getInvoiceLine();
         getContactNode(contact).removeProductItem(p);
+        objectContext.deleteObject(p);
         if (invoiceLine != null)
             objectContext.deleteObject(invoiceLine);
-        objectContext.deleteObject(p);
-
     }
 
 
@@ -550,7 +549,7 @@ public class PurchaseModel {
         }
 
         public void addProductItem(ProductItem p) {
-            this.enabledProductItems.add(p);
+            this.disabledProductItems.add(p);
         }
 
         public void removeProductItem(ProductItem p) {

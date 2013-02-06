@@ -271,13 +271,7 @@ public class PurchaseController {
 	ProductItem createProductItem(Contact contact, Product product) {
 		if (product instanceof VoucherProduct) {
 			VoucherProduct vp = (VoucherProduct) product;
-			Voucher voucher = voucherService.createVoucher(vp, contact, vp.getPriceExTax());
-			InvoiceLine il = invoiceProcessingService.createInvoiceLineForVoucher(voucher, contact);
-
-			il.setInvoice(model.getInvoice());
-			voucher.setInvoiceLine(il);
-
-			return voucher;
+			return voucherService.createVoucher(vp, contact, vp.getPriceExTax());
 		} else {
 			throw new IllegalArgumentException("Unsupported product type.");
 		}
