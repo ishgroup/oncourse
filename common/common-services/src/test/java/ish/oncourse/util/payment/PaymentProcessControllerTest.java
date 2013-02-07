@@ -11,6 +11,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.tapestry5.ioc.Invokable;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
+import org.apache.tapestry5.services.Session;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -28,6 +29,7 @@ import java.util.concurrent.Future;
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.*;
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessState.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 public class   PaymentProcessControllerTest extends ServiceTest {
 
@@ -263,7 +265,9 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 
     private PaymentProcessController createPaymentProcessController() {
         String sessionId = "SESSIONID";
-        final PaymentProcessController paymentProcessController = new PaymentProcessControllerBuilder(new TestParallelExecutor(), null, cayenneService, paymentService) {
+        Session session = mock(Session.class);
+        final PaymentProcessController paymentProcessController = new PaymentProcessControllerBuilder(new TestParallelExecutor(), null, cayenneService, 
+        	paymentService, session) {
 			@Override
 			public IPaymentGatewayService receivePaymentGatewayService() {return paymentGatewayService;}
         }.build(sessionId);

@@ -26,7 +26,7 @@ public class PaymentGatewayServiceBuilder implements IPaymentGatewayServiceBuild
 	 */
 	public IPaymentGatewayService buildService() {
 
-		boolean isInTestMode = "true".equalsIgnoreCase(System.getProperty(ServiceModule.APP_TEST_MODE));
+		boolean isInTestMode = Boolean.valueOf(System.getProperty(ServiceModule.APP_TEST_MODE));
 
 		if (isInTestMode) {
 			return new TestPaymentGatewayService(cayenneService);
