@@ -96,7 +96,7 @@ public class PurchaseController {
 	 *
 	 * @return true if any discount applied.
 	 */
-	public boolean hasDiscount() {
+	public synchronized boolean hasDiscount() {
 		return !getTotalDiscountAmountIncTax().isZero();
 	}
 
@@ -105,24 +105,24 @@ public class PurchaseController {
 	 *
 	 * @return total discount amount for all actual enrollments.
 	 */
-	public Money getTotalDiscountAmountIncTax() {
+	public synchronized Money getTotalDiscountAmountIncTax() {
         return getModel().getTotalDiscountAmountIncTax();
 	}
 
-	public Money getTotalPayment() {
+	public synchronized Money getTotalPayment() {
 		return new Money(model.getPayment().getAmount());
 	}
 
-	public Money getTotalVoucherPayments() {
+	public synchronized Money getTotalVoucherPayments() {
 		//TODO need functionality to recalculate the value
 		return Money.ZERO;
 	}
 
-	public Money getPreviousOwing() {
+	public synchronized Money getPreviousOwing() {
 		return model.getPreviousOwing();
 	}
 
-	public Money getMinimumPayableNow() {
+	public synchronized Money getMinimumPayableNow() {
 		return getTotalPayment();
 	}
 
@@ -132,7 +132,7 @@ public class PurchaseController {
 	 *
 	 * @return true if some discounts can be applied for actual enrollments.
 	 */
-	public boolean hasSuitableClasses(StudentConcession studentConcession) {
+	public synchronized boolean hasSuitableClasses(StudentConcession studentConcession) {
 		// TODO: port this method to some service(it is a part of DiscountService#isStudentElifible)
 		for (CourseClass cc : model.getClasses()) {
 			for (DiscountCourseClass dcc : cc.getDiscountCourseClasses()) {
@@ -222,7 +222,7 @@ public class PurchaseController {
 	/**
 	 * @param fillRequiredProperties if true we show only required properties where value is null
 	 */
-	void prepareContactEditor(Contact contact, boolean fillRequiredProperties,
+    synchronized void prepareContactEditor(Contact contact, boolean fillRequiredProperties,
                               Action addAction,
                               Action cancelAction) {
 		contactEditorController = new ContactEditorController();
@@ -236,7 +236,7 @@ public class PurchaseController {
 			contactEditorController.setFillRequiredProperties(fillRequiredProperties);
 	}
 
-	void recalculateEnrolmentInvoiceLines() {
+    synchronized void recalculateEnrolmentInvoiceLines() {
 
 		for (Contact contact : model.getContacts()) {
 			for (Enrolment enrolment : model.getEnabledEnrolments(contact)) {
@@ -256,7 +256,7 @@ public class PurchaseController {
 	 * Creates the new {@link Enrolment} entity for the given courseClass and
 	 * Student.
 	 */
-	Enrolment createEnrolment(CourseClass courseClass, Student student) {
+    synchronized Enrolment createEnrolment(CourseClass courseClass, Student student) {
 		Enrolment enrolment = model.getObjectContext().newObject(Enrolment.class);
 		enrolment.setStatus(EnrolmentStatus.NEW);
 		enrolment.setSource(PaymentSource.SOURCE_WEB);
@@ -268,7 +268,7 @@ public class PurchaseController {
 	}
 
 
-	ProductItem createProductItem(Contact contact, Product product) {
+	synchronized ProductItem createProductItem(Contact contact, Product product) {
 		if (product instanceof VoucherProduct) {
 			VoucherProduct vp = (VoucherProduct) product;
 			return voucherService.createVoucher(vp, contact, vp.getPriceExTax());
@@ -388,7 +388,7 @@ public class PurchaseController {
     }
 
 
-	public ConcessionDelegate getConcessionDelegate() {
+	public synchronized ConcessionDelegate getConcessionDelegate() {
 		return concessionEditorController;
 	}
 
@@ -400,9 +400,6 @@ public class PurchaseController {
 		this.concessionsService = concessionsService;
 	}
 
-	public AddContactDelegate getAddContactDelegate() {
-		return addContactController;
-	}
 
 	public void setStudentService(IStudentService studentService) {
 		this.studentService = studentService;
@@ -420,11 +417,11 @@ public class PurchaseController {
 		this.preferenceController = preferenceController;
 	}
 
-	public ContactEditorDelegate getContactEditorDelegate() {
+	public synchronized ContactEditorDelegate getContactEditorDelegate() {
 		return contactEditorController;
 	}
 
-	void resetContactEditorController()
+	synchronized void resetContactEditorController()
 	{
 	 	this.contactEditorController = null;
 	}
@@ -461,28 +458,33 @@ public class PurchaseController {
 		this.paymentGatewayServiceBuilder = paymentGatewayServiceBuilder;
 	}
 
-	public PaymentEditorDelegate getPaymentEditorDelegate() {
+	public synchronized PaymentEditorDelegate getPaymentEditorDelegate() {
 		return paymentEditorController;
 	}
 
-    public void setPaymentEditorController(PaymentEditorController paymentEditorController) {
+    public synchronized void setPaymentEditorController(PaymentEditorController paymentEditorController) {
         this.paymentEditorController = paymentEditorController;
     }
 
 
-    public VoucherRedemptionHelper getVoucherRedemptionHelper() {
+    public synchronized VoucherRedemptionHelper getVoucherRedemptionHelper() {
 		return voucherRedemptionHelper;
 	}
 
-	public void setConcessionEditorController(ConcessionEditorController concessionEditorController) {
+	public synchronized void setConcessionEditorController(ConcessionEditorController concessionEditorController) {
 		this.concessionEditorController = concessionEditorController;
 	}
 
-	void setAddContactController(AddContactController addContactController) {
+	synchronized void setAddContactController(AddContactController addContactController) {
 		this.addContactController = addContactController;
 	}
 
-	public ICayenneService getCayenneService() {
+    public synchronized AddContactDelegate getAddContactDelegate() {
+        return addContactController;
+    }
+
+
+    public ICayenneService getCayenneService() {
 		return cayenneService;
 	}
 
@@ -523,12 +525,12 @@ public class PurchaseController {
         warnings.put(message.name(), message.getMessage(messages, params));
     }
 
-    public void setErrors(Map<String,String> errors) {
+    public synchronized void setErrors(Map<String,String> errors) {
 		this.errors.clear();
 		this.errors.putAll(errors);
 	}
 
-	public boolean isPaymentState() {
+	public synchronized boolean isPaymentState() {
 		return (state == State.editPayment ||
                 state == State.paymentResult ||
                 state == State.paymentProgress);
