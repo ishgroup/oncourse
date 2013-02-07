@@ -19,7 +19,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.util.UIRequestExceptionHandler;
-import ish.oncourse.util.payment.IPaymentProcessControllerBuilder;
 import ish.oncourse.util.payment.PaymentProcessControllerBuilder;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
@@ -88,15 +87,8 @@ public class AppModule {
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
-		//binder.bind(IPaymentProcessControllerBuilder.class, PaymentProcessControllerBuilder.class);
 	}
-	
-	@Scope("perthread")
-	public static IPaymentProcessControllerBuilder buildPaymentProcessControllerBuilder(ParallelExecutor parallelExecutor, 
-		IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder, ICayenneService cayenneService, IPaymentService paymentService) {
-		return new PaymentProcessControllerBuilder(parallelExecutor,paymentGatewayServiceBuilder, cayenneService, paymentService);
-	}
-	
+		
 	/**
 	 * Add initial values for ParallelExecutor
 	 * @param configuration

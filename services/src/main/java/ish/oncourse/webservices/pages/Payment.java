@@ -1,10 +1,11 @@
 package ish.oncourse.webservices.pages;
 
 import ish.math.Money;
-import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
-import ish.oncourse.util.payment.IPaymentProcessControllerBuilder;
+import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessControllerBuilder;
 import ish.oncourse.webservices.components.PaymentForm;
@@ -14,8 +15,8 @@ import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.services.ParallelExecutor;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -45,9 +46,6 @@ public class Payment {
     @InjectComponent
     private PaymentForm paymentForm;
 
-    @Inject
-    private IPaymentProcessControllerBuilder paymentProcessControllerBuilder;
-
     @Property
     private Contact payer;
 
@@ -65,6 +63,18 @@ public class Payment {
 
     @Persist
     private PaymentProcessController paymentProcessController;
+    
+    @Inject
+    private IPaymentService paymentService;
+    
+    @Inject
+	private ICayenneService cayenneService;
+    
+    @Inject
+    private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
+
+    @Inject
+    private ParallelExecutor parallelExecutor;
 
     /**
      * Clears all the properties with the @Persist annotation.
@@ -99,13 +109,11 @@ public class Payment {
         	//firstly check that there is no controller with expired session
         	resetOldSessionController(sessionId);
             if (paymentProcessController == null) {
-            	paymentProcessController = paymentProcessControllerBuilder.build(sessionId);
+            	paymentProcessController = new PaymentProcessControllerBuilder(parallelExecutor, paymentGatewayServiceBuilder, cayenneService, paymentService, 
+            		request.getSession(true)).build(sessionId);
             	if (paymentProcessController == null) {
             		throw  new PaymentNotFoundException(messages.format("payment.not.found", sessionId));
             	}
-                Session session = request.getSession(true);
-                //need for WebSiteService
-                session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, paymentProcessController.getPaymentIn().getCollege().getId());
             }
 
             this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
