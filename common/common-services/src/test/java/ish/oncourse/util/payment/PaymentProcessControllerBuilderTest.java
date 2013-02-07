@@ -134,6 +134,34 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 			builder.receivePaymentGatewayService() instanceof PaymentExpressGatewayService);
 		Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessController.getPaymentIn());
         assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessController.getCurrentState());
+        
+        //test incorrect preference emulation
+        customPreferenceController = new PreferenceController() {
+			@Override
+			protected String getValue(String key, boolean isUserPref) {
+				if (PAYMENT_GATEWAY_TYPE.equals(key)) {
+					if (session.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE) == null) {
+						return null;
+					} else {
+						return Long.valueOf(-1).equals(session.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE)) ? 
+							PaymentGatewayType.PAYMENT_EXPRESS.toString() : null;
+					}
+				}
+				return super.getValue(key, isUserPref);
+			}
+		};
+		paymentGatewayServiceBuilder = new PaymentGatewayServiceBuilder(customPreferenceController, cayenneService);
+		builder = new PaymentProcessControllerBuilder(new MockParallelExecutor(), paymentGatewayServiceBuilder, cayenneService, paymentService, session);
+		assertNotNull("Correctly inited builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
+		assertTrue("If PaymentGatewayType may be only disabled before builder.build(sessionId) call", 
+				builder.receivePaymentGatewayService() instanceof DisabledPaymentGatewayService);
+		try {
+			paymentProcessController = builder.build(sessionId);
+			assertFalse("illegal state exception should throws when college have not preference allow to use payment express", true);
+		} catch (Throwable t) {
+			assertTrue("Builder should throw an Illegal state exception for cases when college have not preference allow to use payment express", 
+				(t instanceof IllegalStateException && "Unable to process payments for this college.".equals(t.getMessage())));
+		}
 	}
 
 }
