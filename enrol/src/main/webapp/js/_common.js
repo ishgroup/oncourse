@@ -6,6 +6,8 @@ function initContactEditorHandle()
         changeMonth: true,
         changeYear: true,
         maxDate: '0',
+        defaultDate: '-30y',
+        yearRange: "c-10:c+10",
         dateFormat: 'dd/mm/yy'
     });
 
