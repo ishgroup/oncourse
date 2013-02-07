@@ -30,7 +30,7 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE = "website.webpage.medialinks.enabled";
 	private static final String ADDTHIS_PROFILE_ID = "website.medialinks.addthis";
 
-	private static final String PAYMENT_GATEWAY_TYPE = "payment.gateway.type";
+	protected static final String PAYMENT_GATEWAY_TYPE = "payment.gateway.type";
 
 	//deprecated part
 	@Deprecated

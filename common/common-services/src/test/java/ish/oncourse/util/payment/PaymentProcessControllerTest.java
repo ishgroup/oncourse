@@ -9,8 +9,6 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import org.apache.tapestry5.ioc.Invokable;
-import org.apache.tapestry5.ioc.services.ParallelExecutor;
 import org.apache.tapestry5.services.Session;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -24,12 +22,10 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Calendar;
-import java.util.concurrent.Future;
 
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.*;
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessState.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 
 public class   PaymentProcessControllerTest extends ServiceTest {
 
@@ -265,51 +261,18 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 
     private PaymentProcessController createPaymentProcessController() {
         String sessionId = "SESSIONID";
-        Session session = mock(Session.class);
-        final PaymentProcessController paymentProcessController = new PaymentProcessControllerBuilder(new TestParallelExecutor(), null, cayenneService, 
+        Session session = new MockSession();
+        final PaymentProcessController paymentProcessController = new PaymentProcessControllerBuilder(new MockParallelExecutor(), null, cayenneService, 
         	paymentService, session) {
 			@Override
 			public IPaymentGatewayService receivePaymentGatewayService() {return paymentGatewayService;}
         }.build(sessionId);
         //update parallel executor because unable to finally init them for test on startup
-        paymentProcessController.setParallelExecutor(new TestParallelExecutor(paymentProcessController));
+        paymentProcessController.setParallelExecutor(new MockParallelExecutor(paymentProcessController));
         
         Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessController.getPaymentIn());
         assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessController.getCurrentState());
         return paymentProcessController;
     }
-    
-    private class TestParallelExecutor implements ParallelExecutor {
-    	private PaymentProcessController paymentProcessController;
-    	
-    	TestParallelExecutor() {
-			this(null);
-		}
-
-		TestParallelExecutor(PaymentProcessController paymentProcessController) {
-			this.paymentProcessController = paymentProcessController;
-		}
-    	
-		@Override
-		public <T> T invoke(Class<T> proxyType, Invokable<T> invocable) {
-			return null;
-		}
-		
-		boolean isProcessFinished() {
-			return paymentProcessController != null && paymentProcessController.isProcessFinished();
-		}
-
-		@Override
-		public <T> Future<T> invoke(Invokable<T> invocable) {
-			if (invocable instanceof ProcessPaymentInvokable) {
-				invocable.invoke();
-			}
-			if (invocable instanceof StackedPaymentMonitor) {
-				assertFalse("We should fire and re-fire the watchdog to abandon the payments only when the processing not finished", isProcessFinished());
-			}
-			return null;
-		}
-    }
-
 
 }

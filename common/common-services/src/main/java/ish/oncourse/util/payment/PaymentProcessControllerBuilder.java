@@ -3,6 +3,7 @@ package ish.oncourse.util.payment;
 import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -39,7 +40,11 @@ public class PaymentProcessControllerBuilder {
         session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, paymentIn.getCollege().getId());
 		controller.setObjectContext(cayenneService.newContext());
 		controller.setParallelExecutor(parallelExecutor);
-		controller.setPaymentGatewayService(receivePaymentGatewayService());
+		IPaymentGatewayService paymentGatewayService = receivePaymentGatewayService();
+		if (paymentGatewayService instanceof DisabledPaymentGatewayService) {
+			throw new IllegalStateException("Unable to process payments for this college.");
+		}
+		controller.setPaymentGatewayService(paymentGatewayService);
 		controller.setCayenneService(cayenneService);
 		controller.setPaymentIn(paymentIn);
 		controller.processAction(PaymentAction.INIT_PAYMENT);
