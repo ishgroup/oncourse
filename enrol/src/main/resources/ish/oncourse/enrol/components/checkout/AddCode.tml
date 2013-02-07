@@ -2,7 +2,7 @@
 		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 		>
 	<div class="code-info">
-		<input type="text" name="add_code" class="code_input"/>
+		<input type="text" name="add_code" class="code_input" maxlength="64"/>
 
 		<div id="addCode" class="button">Add Code</div>
 		<t:eventlink t:id="addCodeEvent" style="{display:none}"/>
