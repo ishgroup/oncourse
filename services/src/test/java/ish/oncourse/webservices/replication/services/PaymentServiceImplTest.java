@@ -1,16 +1,15 @@
 package ish.oncourse.webservices.replication.services;
 
-import static org.junit.Assert.*;
-
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import javax.sql.DataSource;
-
+import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentSource;
+import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
+import ish.math.Money;
+import ish.oncourse.model.*;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ServiceTest;
+import ish.oncourse.webservices.soap.v4.ReplicationPortTypeTest;
+import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -22,24 +21,15 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.math.Money;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.Student;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.soap.v4.ReplicationPortTypeTest;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class PaymentServiceImplTest extends ServiceTest {
 	private ICayenneService service;
@@ -368,20 +358,20 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil3.setAmount(new BigDecimal(110l));
 		pil3.setInvoice(i2);
 		pil3.setCollege(p1.getCollege());
-		
+
 		context.commitChanges();
 		
 		InternalPaymentService port = getService(InternalPaymentService.class);
 		List<PaymentIn> updatedPayments = new ArrayList<PaymentIn>();
 		boolean result = port.isHaveConflictedInInvoices(p1, updatedPayments);
+		i1.updateAmountOwing();
+		i2.updateAmountOwing();
 		assertTrue("Payment should have conflict invoices", result);
 		assertTrue("One payment should be updated", !updatedPayments.isEmpty());
 		assertEquals("Two payments should be updated", 2, updatedPayments.size());
 		assertEquals("Two payments should be updated, second should be p1", p1, updatedPayments.get(1));
 		assertEquals("Payment inside the updatedPayments should be failed", PaymentStatus.FAILED, p1.getStatus());
-		i2.updateAmountOwing();
 		assertEquals("Amount owing for i2 should be 0 because we revert it", Money.ZERO.toBigDecimal(), i2.getAmountOwing());
-		i1.updateAmountOwing();
 		assertEquals("Inoice 1 amount owing should be positive and = 120$", new Money("120.00").toBigDecimal(), i1.getAmountOwing());
 		context.deleteObject(pil2);
 		context.deleteObject(p2);
@@ -534,9 +524,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		assertEquals("Two payments should be updated", 1, updatedPayments.size());
 		assertEquals("Two payments should be updated, second should be p1", p1, updatedPayments.get(0));
 		assertEquals("Payment inside the updatedPayments should be failed", PaymentStatus.FAILED, p1.getStatus());
-		i2.updateAmountOwing();
 		assertEquals("Amount owing for i2 should be 110 because we don't revert it", new Money("110.00").toBigDecimal(), i2.getAmountOwing());
-		i1.updateAmountOwing();
 		assertEquals("Inoice 1 amount owing should be positive and = 120$", new Money("120.00").toBigDecimal(), i1.getAmountOwing());
 		context.deleteObject(pil2);
 		context.deleteObject(p2);

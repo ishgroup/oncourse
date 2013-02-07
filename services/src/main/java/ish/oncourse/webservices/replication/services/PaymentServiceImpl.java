@@ -3,13 +3,7 @@ package ish.oncourse.webservices.replication.services;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.PaymentOut;
+import ish.oncourse.model.*;
 import ish.oncourse.services.enrol.IEnrolmentService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
@@ -25,15 +19,16 @@ import ish.oncourse.webservices.soap.v4.FaultCode;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.ObjectId;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.annotations.Inject;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.ObjectId;
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class PaymentServiceImpl implements InternalPaymentService {
 
@@ -239,6 +234,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 						break;
 					}
 				}
+				//TODO the code should be refactored because the method only checks there are other payments in transcation or no.
 				if (!conflictedInvoicesObjectIds.contains(invoice.getObjectId()) && isEnrollmentInvoice) {
 					//we should create reverse payments and invoices
 					updatedPayments.add(PaymentIn.createRefundInvoice(paymentInLine, paymentIn.getModified()));

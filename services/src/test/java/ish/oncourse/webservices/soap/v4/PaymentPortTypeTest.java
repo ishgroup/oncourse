@@ -1,9 +1,5 @@
 package ish.oncourse.webservices.soap.v4;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
 import ish.oncourse.model.Enrolment;
@@ -16,23 +12,7 @@ import ish.oncourse.webservices.replication.services.IReplicationService.Interna
 import ish.oncourse.webservices.replication.services.InternalPaymentService;
 import ish.oncourse.webservices.replication.services.PortHelper;
 import ish.oncourse.webservices.replication.services.SupportedVersions;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericInvoiceStub;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericPaymentOutStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.sql.DataSource;
-
+import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -43,6 +23,18 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class PaymentPortTypeTest extends ServiceTest {
 
@@ -379,7 +371,6 @@ public class PaymentPortTypeTest extends ServiceTest {
 				assertEquals("Check payment status. ", Integer.valueOf(4), paymentIn.getStatus().getDatabaseValue());
 				assertEquals("Only 1 paymentin line for failed payment should exist", 1, paymentIn.getPaymentInLines().size());
 				Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
-				invoice.updateAmountOwing();
 				assertEquals("Amount owing should be default", new Money("240.00").toBigDecimal(),invoice.getAmountOwing());//240=(110+10 of tax)*2
 			} else if (paymentIn.getAngelId().equals(2l)) {
 				assertEquals("Check payment status. ", Integer.valueOf(2), paymentIn.getStatus().getDatabaseValue());
@@ -467,10 +458,10 @@ public class PaymentPortTypeTest extends ServiceTest {
 				assertEquals("Check payment status. ", Integer.valueOf(4), paymentIn.getStatus().getDatabaseValue());
 				assertEquals("Only 1 paymentin line for failed payment should exist", 2, paymentIn.getPaymentInLines().size());
 				Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
-				invoice.updateAmountOwing();
+				//invoice.updateAmountOwing();
 				assertEquals("Amount owing should be default", new Money("120.00").multiply(invoice.getInvoiceLines().size()).toBigDecimal(),invoice.getAmountOwing());//240=(110+10 of tax)*2
 				invoice = paymentIn.getPaymentInLines().get(1).getInvoice();
-				invoice.updateAmountOwing();
+				//invoice.updateAmountOwing();
 				assertEquals("Amount owing should be default", new Money("120.00").multiply(invoice.getInvoiceLines().size()).toBigDecimal(),invoice.getAmountOwing());//(110+10 of tax)
 			} else if (paymentIn.getAngelId().equals(2l)) {
 				assertEquals("Check payment status. ", Integer.valueOf(2), paymentIn.getStatus().getDatabaseValue());
@@ -563,7 +554,6 @@ public class PaymentPortTypeTest extends ServiceTest {
 				assertEquals("Check payment status. ", Integer.valueOf(4), paymentIn.getStatus().getDatabaseValue());
 				assertEquals("Only 1 paymentin line for failed payment should exist", 2, paymentIn.getPaymentInLines().size());
 				Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
-				invoice.updateAmountOwing();
 				if (invoice.getPaymentInLines().size() == 1) {
 					assertEquals("Amount owing should be default", new Money("120.00").multiply(invoice.getPaymentInLines().size()).toBigDecimal(),invoice.getAmountOwing());//(110+10 of tax)
 				} else {
@@ -592,7 +582,6 @@ public class PaymentPortTypeTest extends ServiceTest {
 				
 				}
 				invoice = paymentIn.getPaymentInLines().get(1).getInvoice();
-				invoice.updateAmountOwing();
 				if (invoice.getPaymentInLines().size() == 1) {
 					assertEquals("Amount owing should be default", new Money("120.00").multiply(invoice.getPaymentInLines().size()).toBigDecimal(),invoice.getAmountOwing());//(110+10 of tax)
 				} else {
