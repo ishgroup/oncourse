@@ -302,6 +302,7 @@ public class SearchService implements ISearchService {
 
             q.setQuery(query.toString());
             SolrDocumentList results = new SolrDocumentList();
+            logger.debug(solrQueryToString(q));
             QueryResponse suburbs = query(q, SolrCore.suburbs);
             if (suburbs != null && suburbs.getResults() != null && !suburbs.getResults().isEmpty()) {
             	results.addAll(suburbs.getResults());

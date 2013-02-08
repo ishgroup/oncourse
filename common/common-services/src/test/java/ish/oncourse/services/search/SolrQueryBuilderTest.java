@@ -24,6 +24,17 @@ public class SolrQueryBuilderTest {
 	private static final String DIGITS_SEPARATED_BY_ALL_REPLACED_SOLR_SYNTAX_CHARACTERS = "1!2^3(4)5{6}7[8]9:10\"11?12+13~14*15|16&17;18\\19";
 
 	@Test
+	public void testConvertPostcodeParameterToLong() {
+		SearchParamsParser parser = new SearchParamsParser(null, null, null);
+		final String POSTCODE_1234 = "1234",POSTCODE_0700 = "0700",POSTCODE_0050 = "0050",POSTCODE_0003 = "0003",POSTCODE_0000 = "0000";
+		assertEquals("Postcode should not changes after the conversion", POSTCODE_1234, parser.convertPostcodeParameterToLong(POSTCODE_1234));
+		assertEquals("Postcode starting from 0 like '0700' should be converted to 700 string", "700", parser.convertPostcodeParameterToLong(POSTCODE_0700));
+		assertEquals("Postcode starting from 0 like '0050' should be converted to 50 string", "50", parser.convertPostcodeParameterToLong(POSTCODE_0050));
+		assertEquals("Postcode starting from 0 like '0003' should be converted to 3 string", "3", parser.convertPostcodeParameterToLong(POSTCODE_0003));
+		assertEquals("Postcode '0000' should be converted to 0 string", "0", parser.convertPostcodeParameterToLong(POSTCODE_0000));
+	}
+	
+	@Test
 	public void testSuburbFiltering() throws UnsupportedEncodingException {
 		SearchParamsParser parser = new SearchParamsParser(null, null, null);
 		SearchParams searchParams = new SearchParams();

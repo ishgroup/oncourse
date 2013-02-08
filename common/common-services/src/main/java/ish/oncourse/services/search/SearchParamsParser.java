@@ -148,9 +148,18 @@ public class SearchParamsParser
     private Double parsePrice(String parameter) {
         return parameter.matches(PATTERN_PRICE)? Double.valueOf(parameter.replaceAll("[$]", "")):null;
     }
+    
+    String convertPostcodeParameterToLong(String parameter) {
+    	//the workaround is for #17051. Till postcode stored as the long in db and indexed as is we need to call String-to-Long and back conversion 
+    	//to be able found the postcodes which starts from 0
+    	if (StringUtils.isNumeric(parameter)) {
+    		parameter = Long.valueOf(parameter).toString();
+    	}
+    	return parameter;
+    }
 
     private SolrDocumentList parseNear(String parameter) {
-        SolrDocumentList solrSuburbs = searchService.searchSuburb(parameter);
+        SolrDocumentList solrSuburbs = searchService.searchSuburb(convertPostcodeParameterToLong(parameter));
         return solrSuburbs != null && !solrSuburbs.isEmpty() ? solrSuburbs:null;
     }
 
