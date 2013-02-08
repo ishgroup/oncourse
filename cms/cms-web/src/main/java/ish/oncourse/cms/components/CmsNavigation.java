@@ -1,64 +1,75 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.cms.services.access.IAuthenticationService;
+import ish.oncourse.model.SystemUser;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WillowUser;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.ui.pages.internal.Page;
-
-import java.net.URL;
-
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.net.URL;
+
 public class CmsNavigation {
-	@InjectPage
-	private Page page;
 
-	@Inject
-	private Request request;
+    private static final String FULL_NAME_TEMPLATE = "%s %s";
+    @InjectPage
+    private Page page;
 
-	@Inject
-	@Property
-	private IAuthenticationService authenticationService;
+    @Inject
+    private Request request;
 
-	@SuppressWarnings("all")
-	@Property
-	@Inject
-	private IWebMenuService webMenuService;
+    @Inject
+    @Property
+    private IAuthenticationService authenticationService;
 
-	@SuppressWarnings("all")
-	@Property
-	@Parameter
-	private WebNode node;
+    @SuppressWarnings("all")
+    @Property
+    @Inject
+    private IWebMenuService webMenuService;
 
-	@SuppressWarnings("all")
-	@InjectComponent
-	@Property
-	private PageInfo pageInfo;
+    @SuppressWarnings("all")
+    @Property
+    @Parameter
+    private WebNode node;
 
-	@InjectComponent
-	private Pages pagesComponent;
+    @SuppressWarnings("all")
+    @InjectComponent
+    @Property
+    private PageInfo pageInfo;
 
-	@SetupRender
-	public void beforeRender() {
+    @InjectComponent
+    private Pages pagesComponent;
 
-	}
+    @SetupRender
+    public void beforeRender() {
 
-	public URL onActionFromLogout() throws Exception {
-		authenticationService.logout();
-		Request request = this.request;
-		return new URL("http://" + request.getServerName());
-	}
+    }
 
-	public Object onActionFromPages() {
-		if (request.getSession(false) == null) {
-			return page.getReloadPageBlock();
-		}
-		return pagesComponent.getPagesListZone().getBody();
-	}
+    public URL onActionFromLogout() throws Exception {
+        authenticationService.logout();
+        Request request = this.request;
+        return new URL("http://" + request.getServerName());
+    }
+
+    public Object onActionFromPages() {
+        if (request.getSession(false) == null) {
+            return page.getReloadPageBlock();
+        }
+        return pagesComponent.getPagesListZone().getBody();
+    }
+
+    public String getUserName() {
+        WillowUser willowUser = authenticationService.getUser();
+
+        if (willowUser != null)
+            return String.format(FULL_NAME_TEMPLATE, willowUser.getFirstName(), willowUser.getLastName());
+        SystemUser systemUser = authenticationService.getSystemUser();
+        if (systemUser != null)
+            return String.format(FULL_NAME_TEMPLATE, systemUser.getFirstName(), systemUser.getSurname());
+        throw new IllegalStateException("authenticated user is nod defined");
+    }
+
 }
