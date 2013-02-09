@@ -90,6 +90,12 @@
 					if(data.responseText=="{status: 'OK'}"){
 						var id = this.data.substring(3);
 						jQuery("tr[id='page_row_"+id+"']").remove();
+						if (window.location.pathname == ("/page/"+id)) {
+							var oldPath = "/page/"+id;
+							var newHref = window.location.href.replace(oldPath,"/");
+							window.location = newHref;
+							return false;
+						}
 					} else if(data.responseText=="{status: 'session timeout'}"){
 						window.location.reload();
 					} else{
