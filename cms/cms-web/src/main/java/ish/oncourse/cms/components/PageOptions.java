@@ -164,7 +164,7 @@ public class PageOptions {
 	}
 	
 	Object onActionFromRemoveDefault() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		editNode.setDefaultWebURLAlias(null);
@@ -172,7 +172,7 @@ public class PageOptions {
 	}
 
 	Object onActionFromRemoveUrl(String urlPath) {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		WebUrlAlias alias = editNode.getWebUrlAliasByPath(urlPath);
@@ -181,7 +181,7 @@ public class PageOptions {
 	}
 
 	Object onActionFromMakeDefault(String urlPath) {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		WebUrlAlias alias = editNode.getWebUrlAliasByPath(urlPath);
@@ -190,7 +190,7 @@ public class PageOptions {
 	}
 
 	void onValidateFromOptionsForm() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return;
 		}
 		if (cancelEditing) {
@@ -206,7 +206,7 @@ public class PageOptions {
 	}
 
 	void onValidateFromUrlForm() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return;
 		}
 		if (urlPath == null || "".equals(urlPath)) {
@@ -232,14 +232,14 @@ public class PageOptions {
 	}
 
 	Object onFailureFromUrlForm() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		return urlZone;
 	}
 
 	Object onSuccessFromUrlForm() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		ObjectContext ctx = editNode.getObjectContext();
@@ -254,14 +254,18 @@ public class PageOptions {
 	}
 
 	Object onFailureFromOptionsForm() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		return getOptionsAndButtonsZone();
 	}
+	
+	private boolean isSessionAndEntityValid() {
+		return (request.getSession(false) != null && editNode != null && editNode.getObjectContext() != null);
+	}
 
 	Object onSuccessFromOptionsForm() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		urlForm.clearErrors();
