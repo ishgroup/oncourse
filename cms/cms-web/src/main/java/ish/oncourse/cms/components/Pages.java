@@ -2,7 +2,6 @@ package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
-import ish.oncourse.services.visitor.LastEditedVisitor;
 import ish.oncourse.ui.pages.internal.Page;
 
 import java.io.IOException;

@@ -127,7 +127,7 @@ public class PageTypeEdit {
 	 * @return
 	 */
 	StreamResponse onActionFromSort() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return new TextStreamResponse("text/json","{status: 'session timeout'}");
 		}
 		String id = request.getParameter("id");
@@ -205,9 +205,13 @@ public class PageTypeEdit {
 		}
 		layoutSelectModel = new StringSelectModel(availableLayouts);
 	}
+	
+	private boolean isSessionAndEntityValid() {
+		return (request.getSession(false) != null && editPageType != null && editPageType.getObjectContext() != null);
+	}
 
 	Object onSubmitFromPageTypeEditForm() {
-		if(request.getSession(false)==null){
+		if(!isSessionAndEntityValid()){
 			return page.getReloadPageBlock();
 		}
 		ObjectContext ctx = editPageType.getObjectContext();
