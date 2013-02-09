@@ -98,7 +98,7 @@ public class ContentStructure {
 
 	@OnEvent(component = "editRegion", value = "action")
 	public Object onActionFromEditRegion(String id) throws Exception {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		if(!request.isXHR()){
@@ -109,15 +109,23 @@ public class ContentStructure {
 		}
 
 		ObjectContext ctx = node.getObjectContext().createChildContext();
-		WebContent region = (WebContent) ctx.localObject(webContentService.findById(Long.parseLong(id)).getObjectId(), null);
+		WebContent regionForEdit = webContentService.findById(Long.parseLong(id));
+		if (regionForEdit == null) {
+			return page.getReloadPageBlock();
+		}
+		WebContent region = (WebContent) ctx.localObject(regionForEdit.getObjectId(), null);
 
 		this.visibility = region.getWebContentVisibility(node);
 
 		return editorBlock;
 	}
+	
+	private boolean isSessionAndEntityValid() {
+		return (request.getSession(false) != null && visibility != null && visibility.getObjectContext() != null);
+	}
 
 	Object onSuccessFromRegionForm() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		WebContent webContent = visibility.getWebContent();
