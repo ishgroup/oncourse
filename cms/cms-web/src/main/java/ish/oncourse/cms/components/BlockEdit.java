@@ -57,7 +57,9 @@ public class BlockEdit {
 	}
 
 	Object onSubmitFromBlockEditForm() {
-		if (request.getSession(false) == null) {
+		//#14616
+		//if the session expired or the context for edit block were detached, we need to leave the page without process of required action.
+		if (request.getSession(false) == null || editBlock == null || editBlock.getObjectContext() == null) {
 			return page.getReloadPageBlock();
 		}
 		ObjectContext ctx = editBlock.getObjectContext();
@@ -67,9 +69,12 @@ public class BlockEdit {
 			break;
 		case delete:
 			ctx.deleteObject(editBlock);
+			ctx.commitChanges();
+			break;
 		case save:
 			editBlock.setContent(textileConverter.convertCoreTextile(editBlock.getContentTextile()));
 			ctx.commitChanges();
+			break;
 		}
 		blockEditForm.clearErrors();
 		return updateZone.getBody();
