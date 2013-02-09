@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
+import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.Component;
@@ -120,6 +121,9 @@ public class PageOptions {
 	@InjectComponent
 	@Property
 	private Hidden cancelEditingHiddenField;
+	
+	@Inject
+	private ComponentResources componentResources;
 
 	@SetupRender
 	public boolean beforeRender() {
@@ -311,6 +315,7 @@ public class PageOptions {
 
 	public Object getOptionsAndButtonsZone() {
 		savedPage = false;
-		return new MultiZoneUpdate("optionsZone", optionsZone).add("buttonsZone", buttonsZone);
+		return new MultiZoneUpdate("optionsZone", optionsZone).add("buttonsZone", buttonsZone).add("urlZone", urlZone)
+			.add("currentPageZone", ((PageInfo)componentResources.getContainer()).getCurrentPageZone());
 	}
 }

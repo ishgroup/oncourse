@@ -129,7 +129,7 @@ public class PageInfo {
 		}
 		if (node == null || node.getObjectContext() == null) {
 			//if current page have been deleted, so home page set as current. required for #14484.
-			node = webNodeService.getHomePage();
+			node = webNodeService.getHomePage();//node.getPath();
 			pageOptionsArea.initPageWithNode(node);
 		}
 		pageOptionsArea.refreshThemes();
@@ -156,6 +156,10 @@ public class PageInfo {
 		Ordering ordering = new Ordering(WebNode.NAME_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(nodes);
 		return nodes;
+	}
+
+	Zone getCurrentPageZone() {
+		return currentPageZone;
 	}
 
 }
