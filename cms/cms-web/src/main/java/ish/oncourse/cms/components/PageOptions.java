@@ -248,7 +248,9 @@ public class PageOptions {
 		alias.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
 		alias.setUrlPath(urlPath);
 
+		//both sides relationship set required to prevent#14485 persist issue.
 		editNode.addToWebUrlAliases(alias);
+		alias.setWebNode(editNode);
 		urlPath = null;
 		return urlZone;
 	}

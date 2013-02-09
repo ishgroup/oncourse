@@ -135,9 +135,13 @@ public class PageInfo {
 		pageOptionsArea.refreshThemes();
 		return pageOptionsArea.getOptionsAndButtonsZone();
 	}
+	
+	private boolean isSessionAndEntityValid() {
+		return (request.getSession(false) != null && node != null && node.getObjectContext() != null);
+	}
 
 	public Object onActionFromNewOptions() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		newPageOptionsArea.refreshThemes();
@@ -145,7 +149,7 @@ public class PageInfo {
 	}
 
 	public Object onActionFromQuickJump() {
-		if (request.getSession(false) == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		return pagesList.getBody();
