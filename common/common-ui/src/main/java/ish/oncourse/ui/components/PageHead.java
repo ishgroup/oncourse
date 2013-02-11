@@ -29,12 +29,8 @@ public class PageHead {
 	
 	@Property
 	@Parameter
-	private boolean addCanonicalLink;
+	private String canonicalLinkPath;
 	
-	public String getCanonicalLinkPath() {
-		return request.getContextPath() + request.getPath();
-	}
-
 	public String getTitle() {
 		String collegeName = siteService.getCurrentCollege().getName();
 		

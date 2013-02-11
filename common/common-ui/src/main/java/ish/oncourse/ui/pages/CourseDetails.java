@@ -22,6 +22,10 @@ public class CourseDetails {
         return CourseItemModel.createCourseItemModel(course, null);
     }
 
+    public String getCanonicalLinkPath()
+    {
+        return request.getContextPath() + request.getPath();
+    }
 
     public String getCourseDetailsTitle(){
 		if(course==null){

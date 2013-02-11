@@ -41,7 +41,7 @@ public class PageStructure {
 	
 	@Property
 	@Parameter
-	private boolean addCanonicalLink;
+	private String canonicalLinkPath;
 
 	@SetupRender
 	public void beforeRender() {
