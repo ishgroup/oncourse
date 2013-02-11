@@ -283,6 +283,9 @@ public class PageOptions {
 				editingContext.rollbackChangesLocally();
 			}
 			cancelEditing = false;
+			//TODO: remove this code after refactor the new page create action for #17107  
+			//#17107. workaround to prevent the errors after cancel for new page.
+			return page.getReloadPageBlock();
 		} else {
 			editingContext.commitChanges();
 			if (isNewPage) {
