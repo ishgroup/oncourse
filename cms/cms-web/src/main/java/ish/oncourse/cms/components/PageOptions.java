@@ -289,6 +289,7 @@ public class PageOptions {
 				savedNewPage = true;
 			} else {
 				savedPage = true;
+				return page.getReloadPageBlock();
 			}
 
 			if (updateZones != null) {
