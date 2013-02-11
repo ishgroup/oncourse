@@ -53,7 +53,9 @@ task createResourceManifests {
 			exportManifest.getParentFile().mkdirs()
 			exportManifest.write("")
 
-			FileTree tree = fileTree(dir: 'src/main/resources/resources/schema/referenceData/reports/')
+			FileTree tree = fileTree(dir: "src/main/resources/$s")
+			println("pwd" + new File(".").getAbsolutePath())
+			println(s + " ........... "+ tree)
 			tree.exclude(".DS_Store")
 			tree.visit {element ->
 				if (!element.isDirectory()) exportManifest.append("$s/$element.relativePath\n")
