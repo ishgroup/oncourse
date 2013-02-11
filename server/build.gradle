@@ -52,8 +52,11 @@ task createResourceManifests {
 			def exportManifest = new File("$buildDir/generated-resources/main/$s", "manifest")
 			exportManifest.getParentFile().mkdirs()
 			exportManifest.write("")
-			file("src/main/resources/$s").eachFile { 
-				if (it.isFile() && !it.name.equals(".DS_Store")) exportManifest.append("$s/$it.name\n")
+
+			FileTree tree = fileTree(dir: 'src/main/resources/resources/schema/referenceData/reports/')
+			tree.exclude(".DS_Store")
+			tree.visit {element ->
+				if (!element.isDirectory()) exportManifest.append("$s/$element.relativePath\n")
 			}
 		}
 	}
