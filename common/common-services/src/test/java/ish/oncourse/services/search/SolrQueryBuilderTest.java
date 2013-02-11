@@ -49,6 +49,9 @@ public class SolrQueryBuilderTest {
 		searchParams.setKm(parser.parseKm(Integer.valueOf(Double.valueOf(SearchService.MAX_DISTANCE + 1).intValue()).toString()));
 		assertNotNull("Km should not be null", searchParams.getKm());
 		assertEquals("Km more then 100.0 should be replaced with max distance", Double.valueOf(SearchService.MAX_DISTANCE), searchParams.getKm());
+		
+		//set the 100km distance for test
+		searchParams.setKm(parser.parseKm(Integer.valueOf(100).toString()));
 		SolrDocumentList solrSuburbs = new SolrDocumentList();
 		SolrDocument suburb = new SolrDocument();
 		searchParams.setNear(solrSuburbs);
