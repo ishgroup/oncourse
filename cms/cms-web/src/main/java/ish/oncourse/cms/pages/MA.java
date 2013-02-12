@@ -11,6 +11,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -26,6 +27,9 @@ import org.apache.tapestry5.util.TextStreamResponse;
  * 
  */
 public class MA {
+
+	static final String MENU_ELEMENT_VALUE_PARAMETER = "value";
+	static final String MENU_ELEMENT_ID_PARAMETER = "id";
 
 	@Inject
 	private Request request;
@@ -70,7 +74,7 @@ public class MA {
 
 		ctx.commitChanges();
 
-		obj.put("id", menu.getId());
+		obj.put(MENU_ELEMENT_ID_PARAMETER, menu.getId());
 		obj.put("warning", menu.getWarning());
 
 		return new TextStreamResponse("text/json", obj.toString());
@@ -88,8 +92,19 @@ public class MA {
 					"<script type=\"text/javascript\">window.location.reload();</script>");
 		}
 
-		String[] id = request.getParameter("id").split("_");
-		String value = request.getParameter("value");
+		String[] id = request.getParameter(MENU_ELEMENT_ID_PARAMETER).split("_");
+		String value = request.getParameter(MENU_ELEMENT_VALUE_PARAMETER);
+		if (request.getParameterNames().size() > 2) {
+			StringBuilder agregatedValue = new StringBuilder(value);
+			//this mean that & character linked with request and JQuery post value parameter as few parameters
+			for (String parameter : request.getParameterNames()) {
+				//skip the expected parameters out of process
+				if (!MENU_ELEMENT_ID_PARAMETER.equals(parameter) && !MENU_ELEMENT_VALUE_PARAMETER.equals(parameter)) {
+					agregatedValue.append("&").append(parameter.replaceAll("amp;", StringUtils.EMPTY)).append("=").append(request.getParameter(parameter));
+				}
+			}
+			value = agregatedValue.toString();
+		}
 
 		WebMenu menu = (WebMenu) cayenneService.newContext().localObject(
 				webMenuService.findById(Long.parseLong(id[1])).getObjectId(), null);
@@ -126,8 +141,8 @@ public class MA {
 		menu.getObjectContext().commitChanges();
 
 		JSONObject obj = new JSONObject();
-		obj.put("id", menu.getId());
-		obj.put("value", value);
+		obj.put(MENU_ELEMENT_ID_PARAMETER, menu.getId());
+		obj.put(MENU_ELEMENT_VALUE_PARAMETER, value);
 		obj.put("warning", menu.getWarning());
 		return new TextStreamResponse("text/json", obj.toString());
 	}
@@ -143,7 +158,7 @@ public class MA {
 			return new TextStreamResponse("text/json", "{status: 'session timeout'}");
 		}
 
-		String id = request.getParameter("id");
+		String id = request.getParameter(MENU_ELEMENT_ID_PARAMETER);
 
 		ObjectContext ctx = cayenneService.newContext();
 
@@ -177,7 +192,7 @@ public class MA {
 			return new TextStreamResponse("text/json", "{status: 'session timeout'}");
 		}
 
-		String id = request.getParameter("id");
+		String id = request.getParameter(MENU_ELEMENT_ID_PARAMETER);
 		String pid = request.getParameter("pid");
 
 		int weight = Integer.parseInt(request.getParameter("w"));
