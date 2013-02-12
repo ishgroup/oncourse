@@ -44,6 +44,9 @@ allprojects {
 	apply plugin: 'war'
 	apply plugin: 'versions' // adds the task 'dependencyUpdates'
 
+	sourceCompatibility = 1.6
+	targetCompatibility = 1.6
+
 	configurations {
 		deployerJars {
 			description = 'Jars needed for doing deployment to JBoss Nexus repo'
