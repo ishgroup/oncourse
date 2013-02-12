@@ -105,14 +105,12 @@ public class Invoice extends _Invoice implements Queueable {
 	}
 
 	@Override
-	protected void onPreUpdate() {
-		updateAmountOwing();
+	protected void onPrePersist() {
+		onPostAdd();
 	}
 
 	@Override
-	protected void onPrePersist() {
-		updateAmountOwing();
-		onPostAdd();
+	protected void onPreUpdate() {
 	}
 
 	/**

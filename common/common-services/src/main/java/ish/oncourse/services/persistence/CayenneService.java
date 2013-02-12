@@ -3,12 +3,8 @@ package ish.oncourse.services.persistence;
 import ish.math.MoneyType;
 import ish.oncourse.listeners.IshVersionListener;
 import ish.oncourse.services.cache.ICacheService;
-import ish.oncourse.services.lifecycle.BinaryInfoRelationListener;
-import ish.oncourse.services.lifecycle.QueueableLifecycleListener;
-import ish.oncourse.services.lifecycle.QueuedTransactionListener;
-import ish.oncourse.services.lifecycle.TaggableListener;
+import ish.oncourse.services.lifecycle.*;
 import ish.oncourse.services.site.IWebSiteService;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataNode;
@@ -48,6 +44,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new BinaryInfoRelationListener(webSiteService));
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener());
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new QueuedTransactionListener(this));
+		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new InvoiceListener());
 
 		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
