@@ -42,16 +42,16 @@ public class SolrQueryBuilderTest {
 		assertNull("if no param passed km should be null",searchParams.getKm());
 		searchParams.setKm(parser.parseKm(Integer.valueOf(Double.valueOf(SearchService.MAX_DISTANCE - 1).intValue()).toString()));
 		assertNotNull("Km should not be null", searchParams.getKm());
-		assertEquals("Km less then 100.0 should be set as is", Double.valueOf(SearchService.MAX_DISTANCE - 1), searchParams.getKm());
+		assertEquals("Km less then maximum should be set as is", Double.valueOf(SearchService.MAX_DISTANCE - 1), searchParams.getKm());
 		searchParams.setKm(parser.parseKm(Integer.valueOf(0).toString()));
 		assertNotNull("Km should not be null", searchParams.getKm());
 		assertEquals("Km less then minumal value should be replaced with minimal value", Double.valueOf(SearchService.MIN_DISTANCE), searchParams.getKm());
 		searchParams.setKm(parser.parseKm(Integer.valueOf(Double.valueOf(SearchService.MAX_DISTANCE + 1).intValue()).toString()));
 		assertNotNull("Km should not be null", searchParams.getKm());
-		assertEquals("Km more then 100.0 should be replaced with max distance", Double.valueOf(SearchService.MAX_DISTANCE), searchParams.getKm());
+		assertEquals("Km more then maximum should be replaced with max distance", Double.valueOf(SearchService.MAX_DISTANCE), searchParams.getKm());
 		
-		//set the 100km distance for test
-		searchParams.setKm(parser.parseKm(Integer.valueOf(100).toString()));
+		//set the default 100km distance for test
+		searchParams.setKm(parser.parseKm(null));
 		SolrDocumentList solrSuburbs = new SolrDocumentList();
 		SolrDocument suburb = new SolrDocument();
 		searchParams.setNear(solrSuburbs);

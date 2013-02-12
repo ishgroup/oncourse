@@ -63,7 +63,7 @@ public class Suburb{
         suburb.latitude = Double.parseDouble(points[0]);
         suburb.longitude = Double.parseDouble(points[1]);
         suburb.postcode = (String) doc.get(SolrQueryBuilder.FIELD_postcode);
-        suburb.distance = distance != null ? distance: SearchService.MAX_DISTANCE;
+        suburb.distance = distance != null ? distance: SearchService.DEFAULT_DISTANCE;
         return suburb;
     }
 }

@@ -35,9 +35,14 @@ public class SearchService implements ISearchService {
 	private static final Logger logger = Logger.getLogger(SearchService.class);
 
     /**
-     * Default maximum km distance for geo-searches, 19910 lead to Bad request for distance calculation.
+     * Maximum km distance for geo-searches, 19910 lead to Bad request for distance calculation.
      */
 	public static final double MAX_DISTANCE = 19900.0;
+	
+	/**
+	 * Default value which should be used if no distance specified.
+	 */
+	public static final double DEFAULT_DISTANCE = 100.0;
 	
 	/**
 	 * The radius required for correct calculation of boost function for the cases when we want direct suburb matches filtering.
