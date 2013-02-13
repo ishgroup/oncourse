@@ -2,7 +2,8 @@ package ish.oncourse.model;
 
 import static org.junit.Assert.*;
 
-import org.junit.BeforeClass;
+import org.apache.commons.lang.StringUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -16,7 +17,7 @@ public class ContactTest {
 	/**
 	 * Entity to test.
 	 */
-	private static Contact contact;
+	private Contact contact;
 
 	/**
 	 * Array of valid emails. {@see #validateEmailSuccessTest()}.
@@ -30,8 +31,8 @@ public class ContactTest {
 	private String[] invalidEmails = { "testEmail-domain.org", "@domain.org", "testEmail@domain", "test_Email",
 			"testEmail@111.111.111.111" };
 
-	@BeforeClass
-	public static void init() {
+	@Before
+	public void init() {
 		contact = new Contact();
 	}
 
@@ -42,7 +43,7 @@ public class ContactTest {
 	public void validateEmailEmptyTest() {
 		String result = contact.validateEmail();
 		assertEquals(contact.getEmptyEmailMessage(), result);
-		contact.setEmailAddress("");
+		contact.setEmailAddress(StringUtils.EMPTY);
 		assertEquals(contact.getEmptyEmailMessage(), result);
 	}
 
