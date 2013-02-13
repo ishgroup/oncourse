@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -35,64 +34,64 @@ public class CourseClassTest {
 	/**
 	 * Data context for persistent objects.
 	 */
-	private static ObjectContext context;
+	private ObjectContext context;
 	/**
 	 * The courseClass which will contain reference to 3 date-valid discounts.
 	 */
-	private static CourseClass firstClass;
+	private CourseClass firstClass;
 	/**
 	 * The courseClass which will contain reference to 1 invalid discount.
 	 */
-	private static CourseClass secondClass;
+	private CourseClass secondClass;
 	
 	/**
 	 * The courseClass which will contain reference to 1 discount.
 	 */
-	private static CourseClass thirdClass;
+	private CourseClass thirdClass;
 	
 	/**
 	 * The courseClass which will contain reference to 1 disabled discount.
 	 */
-	private static CourseClass fourthClass;
+	private CourseClass fourthClass;
 	
 	/**
 	 * The discount for {@link #secondClass} with expired date.
 	 */
-	private static Discount pastSecondClassDiscount;
+	private Discount pastSecondClassDiscount;
 	/**
 	 * The discount for {@link #firstClass} with code.
 	 */
-	private static Discount currentPromotion;
+	private Discount currentPromotion;
 	
 	/**
 	 * The discount for {@link #firstClass} with the reference to
 	 * {@link ConcessionType}.
 	 */
-	private static Discount currentConcession;
+	private Discount currentConcession;
 	/**
 	 * The discount for {@link #firstClass} without refererences to
 	 * {@link ConcessionType}
 	 */
-	private static Discount concessionEmpty;
+	private Discount concessionEmpty;
 	/**
 	 * The discount for {@link #firstClass} that will be available in future.
 	 */
-	private static Discount futureDicount;
+	private Discount futureDicount;
 
 	/**
 	 * The discount for {@link #firstClass} with code = "".
 	 */
-	private static Discount concessionEmptyCode;
+	private Discount concessionEmptyCode;
 	
-	private static Discount disabledDiscount;
+	private Discount disabledDiscount;
 	
 	/**
 	 * Initializes entities, commit needed changes.
 	 * 
 	 * @throws Exception
 	 */
-	@BeforeClass
-	public static void setUpClass() throws Exception {
+	@Before
+	public void setUpClass() throws Exception {
 		Calendar date = Calendar.getInstance();
 		
 		ContextUtils.setupDataSources();
@@ -233,10 +232,6 @@ public class CourseClassTest {
 		dcc.setCourseClass(fourthClass);
 		context.commitChanges();
 		
-	}
-
-	@Before
-	public void setUp() {
 	}
 
 	@After
