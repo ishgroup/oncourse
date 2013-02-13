@@ -88,6 +88,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 		model.setClasses(classes);
 		model.setProducts(products);
 		model.setWebSite(webSite);
+		model.setAllowToUsePrevOwing(true);
 		if (discount != null)
 			model.addDiscount(discount);
 		return model;

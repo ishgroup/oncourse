@@ -6,6 +6,7 @@ import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.util.CommonUtils;
 import ish.util.ProductUtil;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.exp.Expression;
@@ -176,17 +177,6 @@ public class VoucherService implements IVoucherService {
 	@Override
 	public boolean isAbleToPurchaseProductsOnline() {
 		String angelVersion = takeWebSiteService().getCurrentCollege().getAngelVersion();
-		if ("development".equalsIgnoreCase(angelVersion)) {
-			LOGGER.info("pass the gradle development version");
-			return true;
-		}
-		String[] splitedVersion = angelVersion.replaceAll("-", ".").split("\\.");
-		if (splitedVersion.length >= 2 && splitedVersion[0].matches("\\d+"))
-			return Long.parseLong(splitedVersion[0]) >= 4l;
-		else
-		{
-			LOGGER.warn(String.format("Unsupported for products web purchase angel version detected with identifier : %s", angelVersion));
-			return false;
-		}
+		return CommonUtils.compare(angelVersion, "4.0") >= 0;
 	}
 }

@@ -14,6 +14,7 @@ dependencies {
 	compile 'axis:axis:1.4'
 	compile 'net.htmlparser.jericho:jericho-html:3.2'
 	compile 'javax.mail:mail:1.4.5'
+	compile 'org.apache.maven:maven-artifact:3.0.4'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency

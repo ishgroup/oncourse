@@ -32,7 +32,6 @@ public class PurchaseModel {
 
 
     private Map<Contact, ContactNode> contacts = new HashMap<Contact, PurchaseModel.ContactNode>();
-    ;
     private Contact payer;
     private Invoice invoice;
 
@@ -42,8 +41,10 @@ public class PurchaseModel {
 
     private boolean applyPrevOwing = false;
 
+	private Boolean allowToUsePrevOwing  = false;
 
-    public void addDiscount(Discount discount) {
+
+	public void addDiscount(Discount discount) {
         discounts.add(discount);
     }
 
@@ -474,10 +475,16 @@ public class PurchaseModel {
     }
 
     public Money getPreviousOwing() {
-        Money amountOwing  = InvoiceUtils.amountOwingForPayer(getPayer());
-        Money amountInvoice = Money.valueOf(getInvoice().getAmountOwing());
-
-        return amountOwing.subtract(amountInvoice);
+		if (allowToUsePrevOwing)
+		{
+        	Money amountOwing  = InvoiceUtils.amountOwingForPayer(getPayer());
+        	Money amountInvoice = Money.valueOf(getInvoice().getAmountOwing());
+			return amountOwing.subtract(amountInvoice);
+		}
+		else
+		{
+			return Money.ZERO;
+		}
     }
 
     /**
@@ -491,7 +498,15 @@ public class PurchaseModel {
         this.applyPrevOwing = applyPrevOwing;
     }
 
-    private class ContactNode {
+	public Boolean getAllowToUsePrevOwing() {
+		return allowToUsePrevOwing;
+	}
+
+	public void setAllowToUsePrevOwing(Boolean allowToUsePrevOwing) {
+		this.allowToUsePrevOwing = allowToUsePrevOwing;
+	}
+
+	private class ContactNode {
 
         private List<ConcessionType> concessions;
 
