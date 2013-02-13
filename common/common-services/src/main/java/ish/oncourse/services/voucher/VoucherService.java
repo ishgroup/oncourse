@@ -177,6 +177,6 @@ public class VoucherService implements IVoucherService {
 	@Override
 	public boolean isAbleToPurchaseProductsOnline() {
 		String angelVersion = takeWebSiteService().getCurrentCollege().getAngelVersion();
-		return CommonUtils.compare(angelVersion, "4.0") >= 0;
+		return CommonUtils.compare(angelVersion, "5.0b1") >= 0;
 	}
 }
