@@ -192,7 +192,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	}
 	
 	/**
-	 * This workaround for #16100 to avoid payments for failed enrollments processing should be removed because original issue fixed. 
+	 * This workaround for #16100 to avoid payments for failed enrollments processing should be removed because original issue fixed.
+	 * May be safety removed after all the colleges migrate to angel 4.0 
 	 */
 	@Deprecated
 	public boolean isEnrolmentsCorrect(List<Enrolment> enrolments) {
@@ -214,14 +215,16 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	/**
 	 * This method check is payment have invoices linked with other payments with in transaction status.
 	 * This check required to avoid over payment for the same invoices.
-	 * Revert invoice will be created for conflicted "enrollment" invoices with in transaction enrollment statuses.
+	 * Reverse invoice will be created for conflicted "enrollment" invoices with in transaction enrollment statuses.
+	 * May be safety removed after all the colleges migrate to angel 4.0.
 	 */
+	@Deprecated
 	public boolean isHaveConflictedInInvoices(PaymentIn paymentIn, List<PaymentIn> updatedPayments) {
 		//we also should check that this payment not linked with any invoices which also linked with another in transaction payments.
 		List<ObjectId> conflictedInvoicesObjectIds = getLinesForConflictedInvoices(paymentIn);
 		boolean isConflictPayment = !conflictedInvoicesObjectIds.isEmpty();
 		if (isConflictPayment) {
-			//we should fail this payment and also create create revert invoices for "in transaction" enrollment not-conflict invoices
+			//we should fail this payment and also create create reverse invoices for "in transaction" enrollment not-conflict invoices
 			paymentIn.failPayment();//TODO: possible we just need to call payment set status failed here?
 			for (PaymentInLine paymentInLine : paymentIn.getPaymentInLines()) {
 				Invoice invoice = paymentInLine.getInvoice();
@@ -234,7 +237,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 						break;
 					}
 				}
-				//TODO the code should be refactored because the method only checks there are other payments in transcation or no.
+				//TODO the code should be re-factored because the method only checks there are other payments in transaction or no.
 				if (!conflictedInvoicesObjectIds.contains(invoice.getObjectId()) && isEnrollmentInvoice) {
 					//we should create reverse payments and invoices
 					updatedPayments.add(PaymentIn.createRefundInvoice(paymentInLine, paymentIn.getModified()));
@@ -248,7 +251,9 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	/**
 	 * This method check is payment have invoices linked with other payments with in transaction status.
 	 * List of conflicted invoices ObjectIds returned.
+	 * May be safety removed after all the colleges migrate to angel 4.0.
 	 */
+	@Deprecated
 	public List<ObjectId> getLinesForConflictedInvoices(PaymentIn paymentForCheck) {
 		List<ObjectId> result = new ArrayList<ObjectId>();
 		for (PaymentInLine paymentInLine : paymentForCheck.getPaymentInLines()) {
