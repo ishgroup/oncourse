@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.soap.v4;
 
 import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
@@ -385,13 +386,28 @@ public class PaymentPortTypeTest extends ServiceTest {
 		List<PaymentIn> payments = context.performQuery(new SelectQuery(PaymentIn.class, ExpressionFactory.inDbExp(PaymentIn.ID_PK_COLUMN, 1l,2l)));
 		for (PaymentIn paymentIn : payments) {
 			if (paymentIn.getAngelId().equals(1l)) {
-				assertEquals("Check payment status. ", Integer.valueOf(4), paymentIn.getStatus().getDatabaseValue());
+				assertEquals("Check payment status. ", PaymentStatus.FAILED, paymentIn.getStatus());
 				assertEquals("Only 1 paymentin line for failed payment should exist", 1, paymentIn.getPaymentInLines().size());
 				Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
-				BigDecimal invoiceOwing = Invoice.calculateInvoiceOwing(invoice);
-				assertEquals("Amount owing should be default", new Money("220.00").toBigDecimal(),invoiceOwing);//240=(110)*2
+				for (PaymentInLine paymentInLine : invoice.getPaymentInLines()) {
+					//check that there are no reverse invoices linked
+					assertFalse("Invoice should not be linked with any success payment", 
+						PaymentStatus.SUCCESS.equals(paymentInLine.getPaymentIn().getStatus()));
+				}
+				for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
+					assertTrue("InvoiceLine price is positive", invoiceLine.getPriceEachIncTax().isGreaterThan(Money.ZERO));
+					Enrolment enrolment = invoiceLine.getEnrolment();
+					if (invoiceLine.getAngelId().equals(2l)) {
+						assertNull("This positive invoice have no enrolment", enrolment);
+					} else if (invoiceLine.getAngelId().equals(1l)) {
+						assertNotNull("This positive invoice have enrolment", enrolment);
+						assertEquals("Enrolment should be in transaction", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
+					} else {
+						assertFalse("Unexpected invoiceline", true);
+					}
+				}
 			} else if (paymentIn.getAngelId().equals(2l)) {
-				assertEquals("Check payment status. ", Integer.valueOf(2), paymentIn.getStatus().getDatabaseValue());
+				assertEquals("Check payment status. ", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 			}
 		}
 	}
@@ -561,23 +577,34 @@ public class PaymentPortTypeTest extends ServiceTest {
 		List<PaymentIn> payments = context.performQuery(new SelectQuery(PaymentIn.class, ExpressionFactory.inDbExp(PaymentIn.ID_PK_COLUMN, 1l,2l)));
 		for (PaymentIn paymentIn : payments) {
 			if (paymentIn.getAngelId().equals(1l)) {
-				assertEquals("Check payment status. ", Integer.valueOf(4), paymentIn.getStatus().getDatabaseValue());
+				assertEquals("Check payment status. ", PaymentStatus.FAILED, paymentIn.getStatus());
 				assertEquals("2 paymentin lines for failed payment should exist", 2, paymentIn.getPaymentInLines().size());
 				for (PaymentInLine payLine : paymentIn.getPaymentInLines()) {
 					Invoice invoice = payLine.getInvoice();
-					BigDecimal invoiceOwing = Invoice.calculateInvoiceOwing(invoice);
+					for (PaymentInLine paymentInLine : invoice.getPaymentInLines()) {
+						//check that there are no reverse invoices linked
+						assertFalse("Invoice should not be linked with any success payment", 
+							PaymentStatus.SUCCESS.equals(paymentInLine.getPaymentIn().getStatus()));
+					}
 					if (invoice.getAngelId().equals(1l)) {
 						assertEquals("2 invoicelines should be linked with this invoice", 2, invoice.getInvoiceLines().size());
-						assertEquals("Amount owing should be default", new Money("110.00").multiply(invoice.getInvoiceLines().size()).toBigDecimal(), invoiceOwing);
+						for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
+							assertTrue("InvoiceLine price is positive", invoiceLine.getPriceEachIncTax().isGreaterThan(Money.ZERO));
+							Enrolment enrolment = invoiceLine.getEnrolment();
+							assertNotNull("This positive invoice have enrolment", enrolment);
+							assertEquals("Enrolment should be in transaction", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
+						}
 					} else if (invoice.getAngelId().equals(3l)) {
 						assertEquals("1 invoiceline should be linked with this invoice", 1, invoice.getInvoiceLines().size());
-						assertEquals("Amount owing should be default", new Money("110.00").toBigDecimal(), invoiceOwing);
+						InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
+						assertTrue("InvoiceLine price is positive", invoiceLine.getPriceEachIncTax().isGreaterThan(Money.ZERO));
+						assertNull("This positive invoice have no enrolment", invoiceLine.getEnrolment());
 					} else {
 						assertFalse("Unexpected invoice id=" + invoice.getAngelId(), true);
 					}
 				}
 			} else if (paymentIn.getAngelId().equals(2l)) {
-				assertEquals("Check payment status. ", Integer.valueOf(2), paymentIn.getStatus().getDatabaseValue());
+				assertEquals("Check payment status. ", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 			} else {
 				assertFalse("Unexpected payment id=" + paymentIn.getAngelId(), true);
 			}
@@ -768,15 +795,36 @@ public class PaymentPortTypeTest extends ServiceTest {
 		List<PaymentIn> payments = context.performQuery(new SelectQuery(PaymentIn.class, ExpressionFactory.inDbExp(PaymentIn.ID_PK_COLUMN, 1l,2l)));
 		for (PaymentIn paymentIn : payments) {
 			if (paymentIn.getAngelId().equals(1l)) {
-				assertEquals("Check payment status. ", Integer.valueOf(4), paymentIn.getStatus().getDatabaseValue());
+				assertEquals("Check payment status. ", PaymentStatus.FAILED, paymentIn.getStatus());
 				assertEquals("2 paymentin lines for failed payment should exist", 2, paymentIn.getPaymentInLines().size());
 				for (PaymentInLine payLine : paymentIn.getPaymentInLines()) {
 					Invoice invoice = payLine.getInvoice();
-					BigDecimal invoiceOwing = Invoice.calculateInvoiceOwing(invoice);
+					for (PaymentInLine paymentInLine : invoice.getPaymentInLines()) {
+						//check that there are no reverse invoices linked
+						PaymentIn pay = paymentInLine.getPaymentIn();
+						if (pay.getId() != null && pay.getAngelId() != null) {
+							assertFalse("Payments passed to system for processing should not be success", 
+								PaymentStatus.SUCCESS.equals(pay.getStatus()));
+						} else {
+							assertTrue("Payment without angelid is a reverse payment",PaymentStatus.SUCCESS.equals(pay.getStatus()));
+							assertEquals("Two invoices should be linked with this payment", 2, pay.getPaymentInLines().size());pay.getPaymentInLines().size();
+							for (PaymentInLine line : pay.getPaymentInLines()) {
+								Invoice inv = line.getInvoice();
+								if (inv.getAngelId() != null && inv.getAngelId().equals(3l)) {
+									assertTrue("Incorrect amount for paymentInline with angelid="+ line.getAngelId(), line.getAmount().compareTo(BigDecimal.ZERO) > 0);
+								} else if (inv.getAngelId() == null) {
+									assertTrue("Incorrect amount for paymentInline with angelid="+ line.getAngelId(), line.getAmount().compareTo(BigDecimal.ZERO) < 0);
+									assertEquals("1 invoiceline should be linked with reverse invoice", 1, inv.getInvoiceLines().size());
+									assertNull("No enrolment should be linked to reverse invoice", inv.getInvoiceLines().get(0).getEnrolment());
+								} else {
+									assertFalse("Unexpected invoice with id=" + inv.getId(), true);
+								}
+							}
+						}
+					}
 					if (invoice.getAngelId().equals(1l)) {
 						assertEquals("Invoice should be linked with both payments", 2, invoice.getPaymentInLines().size());
 						assertEquals("2 invoicelines should be linked with this invoice", 2, invoice.getInvoiceLines().size());
-						assertEquals("Amount owing should be default", new Money("110.00").multiply(invoice.getInvoiceLines().size()).toBigDecimal(), invoiceOwing);
 						for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
 							Enrolment enrol = invoiceLine.getEnrolment();
 							if (invoiceLine.getAngelId().equals(2l)) {
@@ -793,7 +841,6 @@ public class PaymentPortTypeTest extends ServiceTest {
 					} else if(invoice.getAngelId().equals(3l)) {
 						assertEquals("Invoice should be linked with both payments", 2, invoice.getPaymentInLines().size());
 						assertEquals("1 invoiceline should be linked with this invoice", 1, invoice.getInvoiceLines().size());
-						assertEquals("Amount owing should be empty", Money.ZERO.toBigDecimal(), invoiceOwing);
 						InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 						assertEquals("Invoice line should have angelid=3", 3l, invoiceLine.getAngelId().longValue());
 						Enrolment enrol = invoiceLine.getEnrolment();
@@ -805,7 +852,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 					}
 				}
 			} else if (paymentIn.getAngelId().equals(2l)) {
-				assertEquals("Check payment status. ", Integer.valueOf(2), paymentIn.getStatus().getDatabaseValue());
+				assertEquals("Check payment status. ", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 			} else {
 				assertFalse("Unexpected payment with angelid="+ paymentIn.getAngelId(), true);
 			}
