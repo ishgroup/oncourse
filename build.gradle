@@ -103,6 +103,12 @@ allprojects {
 		}
 	}
 
+	war {
+		manifest {
+			from sharedManifest
+		}
+	}
+
 	test {
 		systemProperties 'java.awt.headless': 'true'
 		maxHeapSize = '1024m'
