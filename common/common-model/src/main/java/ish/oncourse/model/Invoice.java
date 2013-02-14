@@ -67,12 +67,14 @@ public class Invoice extends _Invoice implements Queueable {
 
 	public void updateAmountOwing() {
 		// update invoice owing
-
 		Money totalCredit = getTotalCredit();
 		Money totalInvoiced = getTotalInvoiced();
 		Money totalOwing = totalInvoiced.subtract(totalCredit);
-
 		setAmountOwing(totalOwing.toBigDecimal());
+	}
+	
+	public static BigDecimal calculateInvoiceOwing(Invoice invoice) {
+		return invoice.getTotalInvoiced().subtract(invoice.getTotalCredit()).toBigDecimal();
 	}
 
 	private Money getTotalCredit() {
@@ -83,7 +85,6 @@ public class Invoice extends _Invoice implements Queueable {
 				result = result.add(paymentLine.getAmount());
 			}
 		}
-
 		return result;
 	}
 
@@ -93,7 +94,6 @@ public class Invoice extends _Invoice implements Queueable {
 		for (InvoiceLine invoiceLine : invoiceLines) {
 			result = result.add(invoiceLine.getFinalPriceToPayIncTax());
 		}
-
 		return result;
 	}
 
