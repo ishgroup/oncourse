@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+			 lang="en">
+	
+	<div id="dialog-confirm" title="Are you sure you wish to delete this item?" style="display:none;">
+		<p>
+			<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 5px 0;"></span>
+			Are you sure you wish to delete this item?
+		</p>
+	</div>
+	
+    <div class="cms-main-head">
+        <div class="cms-main-title">
+        	<h1 class="cms-page-title">Pages</h1>
+        </div>
+        <div class="cms-main-controls">
+        	<span class="cms-ico-plus"></span>
+            <a t:id="newPage" t:type="actionLink" class="button">Add new page</a>
+       	</div>
+        <div class="cms-search-block">
+            <input id="pageFilter" maxlength="300" class="cms-span2 cms-search-query" type="text" value=""/>
+            <!-- button type="button" class="cms-btn-select"/>
+            <button class="cms-btn-search" type="button"></button-->
+        </div>
+    </div>
+
+	<t:zone t:id="pagesListZone">
+    	<div class="cms-content cms-page-blocks"  >
+				
+    		<table class="cms-cont-table" id="pagestable">
+    			<t:loop source="nodes" value="webNode">
+    				<div t:type="pageItem" webNode="webNode"/>
+				</t:loop>
+	        </table>
+
+    	</div>
+    	
+	</t:zone>
+	
+	<script type="text/javascript">
+		jQuery(function() {
+			jQuery('#pageFilter').search('#pagestable tr', function(on) {
+	            on.all(function(results) {
+	             
+	            });
+
+	            on.reset(function() {
+	              jQuery('#pagestable tr').show();
+	            });
+
+	            on.empty(function() {
+	              jQuery('#pagestable tr').hide();
+	            });
+
+	            on.results(function(results) {
+	              jQuery('#pagestable tr').hide();
+	              results.show();
+	            });
+	          });
+			
+		});
+		
+		function showDeletePageConfirmation(id) {
+			 jQuery("#deleteModal"+id).dialog({
+			 	resizable: false,
+				height:140,
+				width:380,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						jQuery(this).dialog("close");
+						jQuery("a[id='dPage_"+id+"']").trigger('click');
+					},
+					Cancel: function() {
+						jQuery(this).dialog("close");
+					}
+				}
+			});
+		};
+		
+		function fireDeletePage(elementId) {
+			var actionId = elementId.substring(6);
+			var actionLink = jQuery("a[clientId='deletePage"+actionId+"']");
+			var actionHref = actionLink.attr("href");
+			jQuery.ajax({
+				type: "POST",
+				data: "id="+actionId,
+				url: actionHref,
+				complete: function(data){
+					if(data.responseText=="{status: 'OK'}"){
+						var id = this.data.substring(3);
+						jQuery("tr[id='page_row_"+id+"']").remove();
+						if (window.location.pathname == ("/page/"+id)) {
+							var oldPath = "/page/"+id;
+							var newHref = window.location.href.replace(oldPath,"/");
+							window.location = newHref;
+							return false;
+						}
+					} else if(data.responseText=="{status: 'session timeout'}"){
+						window.location.reload();
+					} else{
+						alert("The page cannot be removed due some exception.");
+					}
+				}, 
+				async:true
+			});
+			return false;
+		};
+	</script>
+	
+</t:container>

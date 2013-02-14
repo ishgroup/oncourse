@@ -10,6 +10,4 @@ include 'admin',
 	'search',
 	'services',
 	'web',
-	'cms',
-	'cms:cms-web',
-	'cms:cms-services'
+	'cms'

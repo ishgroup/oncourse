@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+			 lang="en">
+	
+	<t:block t:id="editPageTypeBlock">
+		<span t:type="pageTypeEdit" pageType="prop:selectedPageType" updateZone="prop:pageTypeZone"/>
+	</t:block>
+	
+	<t:zone t:id="pageTypeZone">
+		<div class="cms-main-head">
+        	<div class="cms-main-title">
+            	<h1 class="cms-page-title">Themes</h1>
+            </div>
+            <div class="cms-main-controls">
+	        	<span class="cms-ico-plus"></span>
+                <a href="#" t:type="actionLink" t:id="newPageType" zone="pageTypeZone" class="cms-main-control">Add new theme</a>
+			</div>
+            <div class="cms-search-block">
+			
+			<input id="themesFilter" type="text" maxlength="300" class="cms-span2 cms-search-query"/>
+                <!-- button type="button" class="cms-btn-select"></button>
+				<button class="cms-btn-search" type="button"></button-->
+            </div>
+        </div>
+
+		<div>
+			<td class="cms-first">${problemMessage}</td>
+		</div>
+		<div class="cms-content cms-page-blocks">
+
+            <table class="cms-cont-table" id="themes">
+            	<t:loop source="webNodeTypeService.webNodeTypes" value="webNodeType">
+            		<div t:type="themeItem" webNodeType="webNodeType"/>
+				</t:loop>
+            </table>
+		</div>
+            
+        <script type="text/javascript">
+			jQuery(function() {
+				jQuery('#themesFilter').search('#themes tr', function(on) {
+		            on.all(function(results) {
+		             
+		            });
+	
+		            on.reset(function() {
+		              jQuery('#themes tr').show();
+		            });
+	
+		            on.empty(function() {
+		              jQuery('#themes tr').hide();
+		            });
+	
+		            on.results(function(results) {
+		              jQuery('#themes tr').hide();
+		              results.show();
+		            });
+		          });
+			 });
+			 
+			 function showDeleteThemeConfirmation(id) {
+			 jQuery("#deleteThemeModal"+id).dialog({
+			 	resizable: false,
+				height:140,
+				width:380,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						jQuery(this).dialog("close");
+						jQuery("a[id='dTheme_"+id+"']").trigger('click');
+					},
+					Cancel: function() {
+						jQuery(this).dialog("close");
+					}
+				}
+			});
+		};
+		
+		function fireDeleteTheme(elementId) {
+			var actionId = elementId.substring(7);
+			var actionLink = jQuery("a[clientId='deleteTheme"+actionId+"']");
+			var actionHref = actionLink.attr("href");
+			jQuery.ajax({
+				type: "POST",
+				data: "id="+actionId,
+				url: actionHref,
+				complete: function(data){
+					if(data.responseText=="{status: 'OK'}"){
+						var id = this.data.substring(3);
+						jQuery("tr[id='theme_row_"+id+"']").remove();
+					} else if(data.responseText=="{status: 'session timeout'}"){
+						window.location.reload();
+					} else if(data.responseText.split(',').length==2) {
+						var splittedData = data.responseText.split(',');
+						if (splittedData[0] == "{status: 'FAILED'") {
+							alert("This theme cannot be deleted since it is has been used by a page.");
+						} else {
+							alert("The theme cannot be removed due some exception.");
+						}
+					} else{
+						alert("The theme cannot be removed due some exception.");
+					}
+				}, 
+				async:true
+			});
+			return false;
+		};		
+		</script>
+            
+	</t:zone>
+   
+</t:container>

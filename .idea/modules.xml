@@ -5,8 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/Willow.iml" filepath="$PROJECT_DIR$/Willow.iml" />
       <module fileurl="file://$PROJECT_DIR$/admin.iml" filepath="$PROJECT_DIR$/admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/cms.iml" filepath="$PROJECT_DIR$/cms.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cms-services.iml" filepath="$PROJECT_DIR$/cms-services.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cms-web.iml" filepath="$PROJECT_DIR$/cms-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/common.iml" filepath="$PROJECT_DIR$/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/common-model.iml" filepath="$PROJECT_DIR$/common-model.iml" />
       <module fileurl="file://$PROJECT_DIR$/common-services.iml" filepath="$PROJECT_DIR$/common-services.iml" />

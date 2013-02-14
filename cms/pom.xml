@@ -14,9 +14,9 @@
 	<artifactId>cms</artifactId>
 	<groupId>ish.oncourse.willow.cms</groupId>
 	<version>2.58-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>Willow - CMS Parent POM</name>
-	<description>Parent POM of the onCourse Willow CMS</description>
+	<packaging>war</packaging>
+	<name>Willow - CMS Web App</name>
+	<description>Willow - CMS Web App</description>
 
 	<properties>
 		<tomcat.cluster>B</tomcat.cluster>
@@ -25,12 +25,6 @@
 		<tomcat-staging.port>10101</tomcat-staging.port>
 		<tomcat.path>/cms</tomcat.path>
 	</properties>
-
-	<modules>
-		<module>cms-services</module>
-		<module>cms-web</module>
-	</modules>
-
 
 	<dependencies>
 		<dependency>
@@ -58,15 +52,46 @@
 			<version>2.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
-			<groupId>org.liquibase</groupId>
-  			<artifactId>liquibase-core</artifactId>
-  		</dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-upload</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
-
 	<build>
+		<finalName>cms</finalName>
+
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
