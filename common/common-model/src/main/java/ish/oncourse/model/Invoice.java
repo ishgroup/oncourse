@@ -73,10 +73,6 @@ public class Invoice extends _Invoice implements Queueable {
 		setAmountOwing(totalOwing.toBigDecimal());
 	}
 	
-	public static BigDecimal calculateInvoiceOwing(Invoice invoice) {
-		return invoice.getTotalInvoiced().subtract(invoice.getTotalCredit()).toBigDecimal();
-	}
-
 	private Money getTotalCredit() {
 		Money result = Money.ZERO;
 		List<PaymentInLine> paymentLines = getPaymentInLines();
