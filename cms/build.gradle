@@ -11,7 +11,6 @@ dependencies {
 	compile 'opensymphony:oscache:2.4.1'
 
 	testCompile 'org.apache.tapestry:tapestry-test:5.2.6'
-	testCompile 'org.mockito:mockito-core:1.9.5'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency

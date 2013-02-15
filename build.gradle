@@ -65,8 +65,9 @@ allprojects {
 	dependencies {
 		testCompile 'junit:junit:4.11'
 		testCompile 'dbunit:dbunit:2.4.8'
-		
-		compile 'log4j:log4j:1.2.17'
+        testCompile 'org.mockito:mockito-core:1.9.5'
+
+        compile 'log4j:log4j:1.2.17'
 		providedCompile 'javax.servlet:servlet-api:2.5'
 
 		deployerJars 'org.apache.maven.wagon:wagon-http:2.3'
