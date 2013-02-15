@@ -11,7 +11,7 @@
 	<groupId>ish.oncourse.willow</groupId>
 	<artifactId>enrol</artifactId>
 	<packaging>war</packaging>
-	<version>3.1-SNAPSHOT</version>
+	<version>3.1</version>
 
 	<name>Willow - Enrol Web App</name>
 
@@ -108,9 +108,9 @@
 	</build>
 	
 	<scm>
-		<connection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/enrol</connection>
-		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/enrol</developerConnection>
-		<url>http://websvn.ish.com.au/ish/willow/trunk/enrol</url>
+		<connection>scm:svn:https://svn.ish.com.au/ish/willow/tags/enrol/enrol-3.1</connection>
+		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/tags/enrol/enrol-3.1</developerConnection>
+		<url>http://websvn.ish.com.au/ish/willow/tags/enrol/enrol-3.1</url>
 	</scm>
 	
 	<repositories>
