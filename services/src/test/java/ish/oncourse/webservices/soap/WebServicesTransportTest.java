@@ -7,6 +7,9 @@ import ish.oncourse.webservices.v4.stubs.replication.InstructionStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBException;
@@ -20,6 +23,16 @@ import static org.junit.Assert.assertNotNull;
  */
 public class WebServicesTransportTest extends AbstractTransportTest {
 
+	@BeforeClass
+	public static void before() throws Exception {
+		startServer();
+	}
+
+	@AfterClass
+	public static void after() throws Exception {
+		stopServer();
+	}
+	
 	@Test
 	public void testReplicationPortType_authenticate() throws Exception {
 
@@ -86,14 +99,6 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 		assertListStubs(resultStub,PACKAGE_NAME_REFERENCE_STUBS,ReferenceStub.class);
 	}
 
-	private ReferencePortType getReferencePortType() throws JAXBException {
-		ReferenceService referenceService = new ReferenceService(ReferencePortType.class.getClassLoader().getResource("wsdl/v4_reference.wsdl"));
-		ReferencePortType referencePortType = referenceService.getReferencePort();
-
-		initPortType((BindingProvider) referencePortType, "/services/v4/reference");
-		return referencePortType;
-	}
-
 	@Test
 	public void test_processRefund() throws Throwable {
 		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
@@ -115,20 +120,14 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	}
 
 	private PaymentPortType getPortType() throws JAXBException {
-		ReplicationService replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource("wsdl/v4_replication.wsdl"));
-		PaymentPortType paymentPortType = replicationService.getPaymentPortType();
-
-		initPortType((BindingProvider) paymentPortType, "/services/v4/payment");
-		return paymentPortType;
+		return getPaymentPortType("wsdl/v4_replication.wsdl", "/services/v4/payment");
 	}
 
 	private ReplicationPortType getReplicationPortType() throws JAXBException {
-		ReplicationService replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource("wsdl/v4_replication.wsdl"));
-		ReplicationPortType replicationPortType = replicationService.getReplicationPort();
-
-		initPortType((BindingProvider) replicationPortType, "/services/v4/replication");
-		return replicationPortType;
+		return getReplicationPortType("wsdl/v4_replication.wsdl", "/services/v4/replication");
 	}
-
-
+	
+	private ReferencePortType getReferencePortType() throws JAXBException {
+		return getReferencePortType("wsdl/v4_reference.wsdl", "/services/v4/reference");
+	}
 }

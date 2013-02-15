@@ -1,5 +1,10 @@
 package ish.oncourse.webservices.soap;
 
+import ish.oncourse.webservices.soap.v4.PaymentPortType;
+import ish.oncourse.webservices.soap.v4.ReferencePortType;
+import ish.oncourse.webservices.soap.v4.ReferenceService;
+import ish.oncourse.webservices.soap.v4.ReplicationPortType;
+import ish.oncourse.webservices.soap.v4.ReplicationService;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
@@ -42,28 +47,25 @@ public abstract class AbstractTransportTest {
 	public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v4.stubs.replication";
 	public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v4.stubs.reference";
 
-
-	@BeforeClass
-	public static void before() throws Exception {
+	
+	protected static void startServer() throws Exception {
 		/* please note, in actuality, for multiple tests you will have
-			 to ensure a single version of the server is running only.
+		 to ensure a single version of the server is running only.
 
-			 For each test case, it will invoke start and will give an error.
-			 This is simplified for Blog consumption here only. */
+		 For each test case, it will invoke start and will give an error.
+		 This is simplified for Blog consumption here only. */
 		server = new TestServer();
 		server.start();
 	}
-
-	@AfterClass
-	public static void after() throws Exception {
+	
+	protected static void stopServer() throws Exception {
 		server.stop();
 	}
-
 
 	public void initPortType(BindingProvider bindingProvider, String url) throws JAXBException {
 		bindingProvider.getRequestContext().put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);
 		bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				String.format("%s%s", server.getServerUrl(),url));
+				String.format("%s%s", server.getServerUrl(), url));
 
 		Client client = ClientProxy.getClient(bindingProvider);
 
@@ -163,8 +165,25 @@ public abstract class AbstractTransportTest {
 		}
 	}
 
+	protected ReferencePortType getReferencePortType(String wsdlPath, String endpointPath) throws JAXBException {
+		ReferenceService referenceService = new ReferenceService(ReferencePortType.class.getClassLoader().getResource(wsdlPath));
+		ReferencePortType referencePortType = referenceService.getReferencePort();
+		initPortType((BindingProvider) referencePortType, endpointPath);
+		return referencePortType;
+	}
+	
+	protected PaymentPortType getPaymentPortType(String wsdlPath, String endpointPath) throws JAXBException {
+		ReplicationService replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource(wsdlPath));
+		PaymentPortType paymentPortType = replicationService.getPaymentPortType();
+		initPortType((BindingProvider) paymentPortType, endpointPath);
+		return paymentPortType;
+	}
 
-
-
+	protected ReplicationPortType getReplicationPortType(String wsdlPath, String endpointPath) throws JAXBException {
+		ReplicationService replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource(wsdlPath));
+		ReplicationPortType replicationPortType = replicationService.getReplicationPort();
+		initPortType((BindingProvider) replicationPortType, endpointPath);
+		return replicationPortType;
+	}
 
 }
