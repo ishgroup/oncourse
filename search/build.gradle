@@ -1,5 +1,5 @@
 dependencies {
-	compile project(':common:common-model')
+    compile project(':common:common-model')
 	compile project(':common:common-services')
 	compile 'org.apache.solr:solr:4.1.0@war'
 	compile 'org.apache.solr:solr-dataimporthandler:4.1.0'
@@ -11,4 +11,13 @@ dependencies {
 	
 	testCompile 'org.apache.solr:solr-test-framework:4.1.0'
 	testCompile 'org.apache.lucene:lucene-test-framework:4.1.0'
+
+}
+
+war
+{
+    into('/') {
+        from zipTree(project.configurations.compile.find { it.name.startsWith("solr-") })
+        exclude 'WEB-INF/*'
+    }
 }
