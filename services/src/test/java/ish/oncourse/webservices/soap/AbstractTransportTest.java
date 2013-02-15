@@ -63,7 +63,7 @@ public abstract class AbstractTransportTest {
 	public void initPortType(BindingProvider bindingProvider, String url) throws JAXBException {
 		bindingProvider.getRequestContext().put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);
 		bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				String.format("%s%s",TestServer.SERVER_URL,url));
+				String.format("%s%s", server.getServerUrl(),url));
 
 		Client client = ClientProxy.getClient(bindingProvider);
 

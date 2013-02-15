@@ -7,20 +7,43 @@ import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 public class TestServer {
-    private static Logger LOGGER = Logger.getLogger(TestServer.class);
+    static final String DEFAULT_WEB_XML_FILE_PATH = "/web.xml";
+	static final String DEFAULT_RESOURSE_BASE = "src/test";
+	static final String DEFAULT_HOST = "127.0.0.1";
+	static final String DEFAULT_WEB_PATH = "src/test/webapp/WEB-INF";
+	static final String DEFAULT_CONTEXT_PATH = "/services";
+	static final int DEFAULT_SERVER_PORT = 9091;
+	private static Logger LOGGER = Logger.getLogger(TestServer.class);
     private transient Server server;
-    private int port = 9091;
-    private int stopPort = 9092;
-    private String contextPath = "/services";
-    private String webPath = "src/test/webapp/WEB-INF";
-    private String host = "127.0.0.1";
-
-    public static final String SERVER_URL = "http://127.0.0.1:9091";
+    private int port;
+    //private int stopPort = 9092;
+    private String contextPath;
+    private String webPath;
+    private String host;
+    private String resourseBase;
+    private String webXmlFilePath;
+    public static final String DEFAULT_SERVER_URL = "http://127.0.0.1:9091";
 
     private transient Exception exception;
+    
+    public TestServer() {
+    	this(DEFAULT_SERVER_PORT, DEFAULT_CONTEXT_PATH, DEFAULT_WEB_PATH, DEFAULT_HOST, DEFAULT_RESOURSE_BASE, DEFAULT_WEB_XML_FILE_PATH);
+    }
+    
+    public TestServer(int port, String contextPath, String webPath, String host, String resourseBase, String webXmlFilePath) {
+		this.port = port;
+		this.contextPath = contextPath;
+		this.webPath = webPath;
+		this.host = host;
+		this.resourseBase = resourseBase;
+		this.webXmlFilePath = webXmlFilePath;
+	}
+    
+	public String getServerUrl() {
+		return "http://" + host + ":" + port;
+	}
 
-
-    public void start() throws Exception {
+	public void start() throws Exception {
         server = new Server();
         SocketConnector connector = new SocketConnector();
         connector.setPort(port);
@@ -33,8 +56,8 @@ public class TestServer {
 
         //Note: Set WAR assumes all resources etc in place like genuine WAR,
         //in our case resources scattered across so use the following instead:
-        context.setResourceBase("src/test");
-        context.setDescriptor(webPath + "/web.xml");
+        context.setResourceBase(resourseBase);
+        context.setDescriptor(webPath + webXmlFilePath);
         server.setHandler(context);
 
         try {
