@@ -32,7 +32,7 @@ public class ServiceTest {
         return tester.getRegistry().getService(serviceId, serviceInterface);
     }
 
-    protected <T> T getService(Class<T> serviceInterface) {
+    public final <T> T getService(Class<T> serviceInterface) {
 		return tester.getRegistry().getService(serviceInterface);
 	}
 	
@@ -40,7 +40,7 @@ public class ServiceTest {
 		return tester.getRegistry().getObject(objectType, annotationProvider);
 	}
 	
-	protected PageTester getPageTester() {
+	public final PageTester getPageTester() {
 		return tester;
 	}
 
