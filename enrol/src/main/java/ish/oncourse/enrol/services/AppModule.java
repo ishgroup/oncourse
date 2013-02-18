@@ -1,5 +1,7 @@
 package ish.oncourse.enrol.services;
 
+import ish.oncourse.enrol.pages.Checkout;
+import ish.oncourse.enrol.pages.Payment;
 import ish.oncourse.enrol.services.concessions.ConcessionsService;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
@@ -65,7 +67,9 @@ public class AppModule {
 					
 					// checks if the request should be secured
 					boolean isSecured = PaymentGatewayType.SECURED_TYPES.contains(preferenceController
-							.getPaymentGatewayType()) && pageName.toLowerCase().equals("enrolcourses");
+							.getPaymentGatewayType()) &&
+							(pageName.toLowerCase().equals(Checkout.class.getSimpleName().toLowerCase()) ||
+							pageName.toLowerCase().equals(Payment.class.getSimpleName().toLowerCase()));
 					
 					return (T) Boolean.valueOf(isSecured);
 				}
