@@ -27,9 +27,11 @@ import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.*
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessState.*;
 import static org.junit.Assert.*;
 
-public class   PaymentProcessControllerTest extends ServiceTest {
+public class PaymentProcessControllerTest extends ServiceTest {
 
-    public static final String VALID_CARD_NUMBER = "5431111111111111";
+    public static final String CREDIT_CARD_CVV = "1111";
+
+	public static final String VALID_CARD_NUMBER = "5431111111111111";
 
     public static final String DECLINED_CARD_NUMBER = "9999990000000378";
 
@@ -227,7 +229,7 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 
     private void fillValidCard(PaymentProcessController paymentProcessController) {
         paymentProcessController.getPaymentIn().setCreditCardName(CARD_HOLDER_NAME);
-        paymentProcessController.getPaymentIn().setCreditCardCVV("1111");
+        paymentProcessController.getPaymentIn().setCreditCardCVV(CREDIT_CARD_CVV);
         paymentProcessController.getPaymentIn().setCreditCardType(CreditCardType.VISA);
         paymentProcessController.getPaymentIn().setCreditCardNumber(VALID_CARD_NUMBER);
         paymentProcessController.getPaymentIn().setCreditCardExpiry(VALID_EXPIRY_DATE_STR);
@@ -236,7 +238,7 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 
     private void fillInvalidCard(PaymentProcessController paymentProcessController) {
         paymentProcessController.getPaymentIn().setCreditCardName(CARD_HOLDER_NAME);
-        paymentProcessController.getPaymentIn().setCreditCardCVV("1111");
+        paymentProcessController.getPaymentIn().setCreditCardCVV(CREDIT_CARD_CVV);
         paymentProcessController.getPaymentIn().setCreditCardType(CreditCardType.VISA);
         paymentProcessController.getPaymentIn().setCreditCardNumber(DECLINED_CARD_NUMBER);
         paymentProcessController.getPaymentIn().setCreditCardExpiry(VALID_EXPIRY_DATE_STR);

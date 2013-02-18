@@ -17,7 +17,7 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	/**
 	 * Logger for service.
 	 */
-	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayService.class);
+	protected static final Logger LOG = Logger.getLogger(PaymentExpressGatewayService.class);
 
 	/**
 	 * {@inheritDoc}
