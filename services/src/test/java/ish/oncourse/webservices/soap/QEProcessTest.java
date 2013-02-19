@@ -25,11 +25,10 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.services.PaymentServiceTestModule;
+import ish.oncourse.webservices.soap.PaymentServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.PaymentProcessController;
-import ish.oncourse.util.payment.PaymentProcessControllerTest;
 import ish.oncourse.utils.SessionIdGenerator;
 import ish.oncourse.webservices.soap.v4.ReplicationPortType;
 import ish.oncourse.webservices.soap.v4.ReplicationService;
@@ -56,6 +55,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class QEProcessTest extends AbstractTransportTest {
+	public static final String CARD_HOLDER_NAME = "john smith";
+	public static final String VALID_CARD_NUMBER = "5431111111111111";
+	public static final String CREDIT_CARD_CVV = "1111";
+	
 	private ServiceTest serviceTest;
 	private PageTester tester;
 	private ICayenneService cayenneService;
@@ -75,7 +78,7 @@ public class QEProcessTest extends AbstractTransportTest {
 		serviceTest = new ServiceTest();
 		serviceTest.initTest("ish.oncourse.webservices", "services", PaymentServiceTestModule.class);
 		tester = serviceTest.getPageTester();
-		InputStream st = PaymentProcessControllerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/QEProcessDataset.xml");
+		InputStream st = QEProcessTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/QEProcessDataset.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
         DataSource onDataSource = ServiceTest.getDataSource("jdbc/oncourse");
         DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
@@ -108,9 +111,9 @@ public class QEProcessTest extends AbstractTransportTest {
 		assertNotNull("Payment form submit should be available", submitButton);
 		
 		Map<String, String> fieldValues = new HashMap<String, String>();
-		fieldValues.put(cardName.getAttribute("id"), PaymentProcessControllerTest.CARD_HOLDER_NAME);
-		fieldValues.put(cardNumber.getAttribute("id"), PaymentProcessControllerTest.VALID_CARD_NUMBER);
-		fieldValues.put(cardCVV.getAttribute("id"), PaymentProcessControllerTest.CREDIT_CARD_CVV);
+		fieldValues.put(cardName.getAttribute("id"), CARD_HOLDER_NAME);
+		fieldValues.put(cardNumber.getAttribute("id"), VALID_CARD_NUMBER);
+		fieldValues.put(cardCVV.getAttribute("id"), CREDIT_CARD_CVV);
 		fieldValues.put(expirityMonth.getAttribute("id"), "01");
 		fieldValues.put(expirityYear.getAttribute("id"), "2019");
 		fieldValues.put("cardTypeField", CreditCardType.VISA.getDisplayName());
