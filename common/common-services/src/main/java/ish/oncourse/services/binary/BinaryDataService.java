@@ -18,12 +18,15 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class BinaryDataService implements IBinaryDataService {
 
 	private static final Logger LOGGER = Logger.getLogger(BinaryDataService.class);
+	public static final String NAME_PROFILE_PICTURE = "Profile picture";
+
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -124,20 +127,36 @@ public class BinaryDataService implements IBinaryDataService {
 		SelectQuery query = new SelectQuery(BinaryInfoRelation.class, ExpressionFactory.matchExp(
 				BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, entityIdNum).andExp(
 				ExpressionFactory.matchExp(BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, entityIdentifier)));
-		@SuppressWarnings("unchecked")
 		List<BinaryInfoRelation> relations = sharedContext.performQuery(query);
 		if (!relations.isEmpty()) {
 			List<BinaryInfo> attachedFiles = new ArrayList<BinaryInfo>(relations.size());
 			for (BinaryInfoRelation relation : relations) {
-				attachedFiles.add(relation.getBinaryInfo());
+				//we need the check to exclude Profile Picture from common attachment list
+				if (!isProfilePicture(relation))
+					attachedFiles.add(relation.getBinaryInfo());
 			}
 			return getCollegeQualifier(hidePrivateAttachments).filterObjects(attachedFiles);
 		}
-		return new ArrayList<BinaryInfo>(0);
+		return Collections.EMPTY_LIST;
+	}
+
+	boolean isProfilePicture(BinaryInfoRelation relation)
+	{
+		return relation.getEntityIdentifier().equals(Contact.class.getSimpleName()) && relation.getBinaryInfo().getName().equals(NAME_PROFILE_PICTURE);
 	}
 	
 	private boolean isStudentLoggedIn() {
 		return applicationStateManager.getIfExists(Contact.class) != null;
 	}
 
+
+	@Override
+	public BinaryInfo getProfilePicture(Contact contact) {
+		ObjectContext sharedContext = cayenneService.sharedContext();
+		SelectQuery query = new SelectQuery(BinaryInfo.class, ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + '.' + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, contact.getId())
+				.andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + '.' + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, contact.getObjectId().getEntityName()))
+				.andExp(ExpressionFactory.matchExp(BinaryInfo.NAME_PROPERTY, NAME_PROFILE_PICTURE)));
+		List<BinaryInfo> binaryInfos = sharedContext.performQuery(query);
+		return binaryInfos.size() > 0 ? binaryInfos.get(0): null;
+	}
 }

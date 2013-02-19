@@ -1,12 +1,20 @@
-<html t:type="ui/dialogstructure" title="${tutorDetailsTitle}" bodyId="literal:DetailsPage" bodyClass="literal:internal-page"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<html t:type="ui/dialogstructure" title="${tutorDetailsTitle}" bodyId="literal:DetailsPage"
+	  bodyClass="literal:internal-page"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div class="tutors_details">
 		<t:if t:test="${tutorFound}">
-			
-			<t:if t:test="${hasResume}">
-				<h4>Resume</h4>
-				<t:outputraw value="resume"/>
-			</t:if>
+
+			<div class="tutor_info">
+				<t:if t:test="${profilePicture}">
+					<div class="tutor_pic">
+						<img class="profilePicture" src="${profilePicture.contextPath}" alt=""/>
+					</div>
+				</t:if>
+				<t:if t:test="${hasResume}">
+					<h4>Resume</h4>
+					<t:outputraw value="resume"/>
+				</t:if>
+			</div>
 			<t:if t:test="${hasRoles}">
 				<h4>Classes</h4>
 				<div class="tutors_classes">

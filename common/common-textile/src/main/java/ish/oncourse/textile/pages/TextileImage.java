@@ -102,7 +102,7 @@ public class TextileImage {
 			ids = new ArrayList<Long>();
 		}
 		ids.add(imageBinaryInfo.getId());
-		request.setAttribute("displayedImagesIds", ids);
+		request.setAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS, ids);
 	}
 
 	private BinaryInfo getBinaryInfoBy(String name) {
