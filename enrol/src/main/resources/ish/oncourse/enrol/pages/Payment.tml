@@ -72,10 +72,10 @@
 </t:block>
 
 
-<link href="/s/stylesheets/css/enrol/_checkout.css" media="screen, print" rel="stylesheet" />
-<script type="text/javascript" src="/s/js/enrol/jquery.blockUI.js"></script>
-<script type="text/javascript" src="/s/js/enrol/_common.js"></script>
-<script type="text/javascript" src="/s/js/enrol/_checkout.js"></script>
+<link href="/s/enrol/css/checkout.css" media="screen, print" rel="stylesheet" />
+<script type="text/javascript" src="/s/enrol/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/s/enrol/js/common.js"></script>
+<script type="text/javascript" src="/s/enrol/js/checkout.js"></script>
 
 
 </html>
