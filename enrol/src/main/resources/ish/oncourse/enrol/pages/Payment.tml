@@ -71,10 +71,11 @@
     </t:if>
 </t:block>
 
-<link href="${asset:context:css/_checkout.css}" media="screen, print" rel="stylesheet"/>
 
-<script type="text/javascript" src="${asset:context:js/jquery.blockUI.js}"/>
-<script type="text/javascript" src="${asset:context:js/_common.js}"/>
-<script type="text/javascript" src="${asset:context:js/_checkout.js}"/>
+<link href="/s/stylesheets/css/enrol/_checkout.css" media="screen, print" rel="stylesheet" />
+<script type="text/javascript" src="/s/js/enrol/jquery.blockUI.js"></script>
+<script type="text/javascript" src="/s/js/enrol/_common.js"></script>
+<script type="text/javascript" src="/s/js/enrol/_checkout.js"></script>
+
 
 </html>
