@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ish.oncourse.services.ServiceTestModule;
-import ish.oncourse.services.TestContextUtil;
+import ish.oncourse.test.TestContextUtil;
 import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.test.ServiceTest;
 
