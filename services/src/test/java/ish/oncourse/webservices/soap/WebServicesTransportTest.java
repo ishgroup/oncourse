@@ -13,7 +13,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.ws.BindingProvider;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -37,14 +36,14 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	public void testReplicationPortType_authenticate() throws Exception {
 
 		ReplicationPortType replicationPortType = getReplicationPortType();
-		replicationPortType.authenticate("securityCode", Long.MAX_VALUE);
+		replicationPortType.authenticate(getSecurityCode(), getCommunicationKey());
 	}
 
 	@Test
 	public void testReplicationPortType_confirmExecution() throws Exception {
 
 		ReplicationPortType replicationPortType = getReplicationPortType();
-		replicationPortType.confirmExecution(Long.MAX_VALUE, "confirmExecution");
+		replicationPortType.confirmExecution(getCommunicationKey(), "confirmExecution");
 	}
 
 	@Test
@@ -59,7 +58,7 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	@Test
 	public void testReplicationPortType_logout() throws Exception {
 		ReplicationPortType replicationPortType = getReplicationPortType();
-		replicationPortType.logout(Long.MAX_VALUE);
+		replicationPortType.logout(getCommunicationKey());
 	}
 
 	@Test

@@ -17,15 +17,7 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.math.Money;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.webservices.soap.PaymentServiceTestModule;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.PaymentProcessController;
@@ -48,6 +40,7 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -58,15 +51,21 @@ public class QEProcessTest extends AbstractTransportTest {
 	public static final String CARD_HOLDER_NAME = "john smith";
 	public static final String VALID_CARD_NUMBER = "5431111111111111";
 	public static final String CREDIT_CARD_CVV = "1111";
-	
+
 	private ServiceTest serviceTest;
 	private PageTester tester;
 	private ICayenneService cayenneService;
 	
 	@BeforeClass
 	public static void before() throws Exception {
-		startServer();
+		startRealWSServer();
 	}
+	
+	private static void startRealWSServer() throws Exception {
+		server = new TestServer(9092, TestServer.DEFAULT_CONTEXT_PATH, "src/main/webapp/WEB-INF", TestServer.DEFAULT_HOST, 
+			"src/main", TestServer.DEFAULT_WEB_XML_FILE_PATH);
+		server.start();
+	} 
 
 	@AfterClass
 	public static void after() throws Exception {
@@ -85,6 +84,35 @@ public class QEProcessTest extends AbstractTransportTest {
         dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
         cayenneService = serviceTest.getService(ICayenneService.class);
+	}
+	
+	/**
+	 * Cleanup required to prevent test fail on before database cleanup.
+	 */
+	@After
+	public void cleanup() {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		context.deleteObjects(context.performQuery(new SelectQuery(Enrolment.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(CourseClass.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(Room.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(Site.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(Course.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(InvoiceLine.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(PaymentInLine.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(Invoice.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(PaymentTransaction.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(PaymentIn.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(Student.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(Contact.class)));
+		
+		context.deleteObjects(context.performQuery(new SelectQuery(Preference.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(Country.class)));
+		
+		context.deleteObjects(context.performQuery(new SelectQuery(QueuedRecord.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(QueuedTransaction.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(College.class)));
+		context.commitChanges();
+		System.out.println("data cleaned.");
 	}
 	
 	@Test
@@ -235,18 +263,26 @@ public class QEProcessTest extends AbstractTransportTest {
 		return payment.getSessionId();
 	}
 	
-	//@Test
+	@Test
 	public void testReplicationPortType_authenticate() throws Exception {
-
 		ReplicationPortType replicationPortType = getReplicationPortType();
-		replicationPortType.authenticate("securityCode", Long.MAX_VALUE);
+		replicationPortType.authenticate(getSecurityCode(), getCommunicationKey());
+	}
+
+	@Override
+	protected Long getCommunicationKey() {
+		return Long.valueOf("7059522699886202880");
 	}
 	
+	@Override
+	protected String getSecurityCode() {
+		return "345ttn44$%9";
+	}
+
 	private ReplicationPortType getReplicationPortType() throws JAXBException {
 		ReplicationService replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource("wsdl/v4_replication.wsdl"));
 		ReplicationPortType replicationPortType = replicationService.getReplicationPort();
-
-		initPortType((BindingProvider) replicationPortType, "/services/v4/replication");
+		initPortType((BindingProvider) replicationPortType, TestServer.DEFAULT_CONTEXT_PATH + "/v4/replication");
 		return replicationPortType;
 	}
 

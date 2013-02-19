@@ -17,8 +17,6 @@ import org.apache.cxf.transport.common.gzip.GZIPInInterceptor;
 import org.apache.cxf.transport.common.gzip.GZIPOutInterceptor;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
@@ -83,10 +81,18 @@ public abstract class AbstractTransportTest {
 		conduit.setClient(httpClientPolicy);
 
 		List<Header> headers = new ArrayList<Header>();
-		headers.add(new Header(new QName("SecurityCode"), "securityCode", new JAXBDataBinding(String.class)));
+		headers.add(new Header(new QName("SecurityCode"), getSecurityCode() , new JAXBDataBinding(String.class)));
 		headers.add(new Header(new QName("AngelVersion"), "angelVersion", new JAXBDataBinding(String.class)));
-		headers.add(new Header(new QName("CommunicationKey"), Long.MAX_VALUE, new JAXBDataBinding(String.class)));
+		headers.add(new Header(new QName("CommunicationKey"), getCommunicationKey(), new JAXBDataBinding(String.class)));
 		bindingProvider.getRequestContext().put(Header.HEADER_LIST, headers);
+	}
+
+	protected Long getCommunicationKey() {
+		return Long.MAX_VALUE;
+	}
+
+	protected String getSecurityCode() {
+		return "securityCode";
 	}
 
 	public static <T> boolean containsStubBeanName(String stubBeanName, List<T> stubs)
@@ -100,7 +106,7 @@ public abstract class AbstractTransportTest {
 		return false;
 	}
 
-	private static List<String> getStubClassNamesBy(String packageName, Class filterClass)
+	private static List<String> getStubClassNamesBy(String packageName, @SuppressWarnings("rawtypes") Class filterClass)
 	{
 		BeanDefinitionRegistry bdr = new SimpleBeanDefinitionRegistry();
 		ClassPathBeanDefinitionScanner s = new ClassPathBeanDefinitionScanner(bdr);
@@ -145,8 +151,11 @@ public abstract class AbstractTransportTest {
 	public static <T> ArrayList<T> createStubsBy(List<String> stubClassNames,String packageName,Class<T> parentStubClass) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		ArrayList<T> stubs = new ArrayList<T>();
 		for (String stubClassName : stubClassNames) {
+			@SuppressWarnings("rawtypes")
 			Class aClass = Class.forName(String.format("%s.%s", packageName, stubClassName));
+			@SuppressWarnings({ "rawtypes", "unchecked" })
 			Constructor constructor = aClass.getConstructor();
+			@SuppressWarnings("unchecked")
 			T replicationStub = (T) constructor.newInstance();
 			stubs.add(replicationStub);
 		}
