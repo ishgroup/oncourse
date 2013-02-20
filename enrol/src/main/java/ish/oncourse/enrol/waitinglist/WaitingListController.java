@@ -89,6 +89,7 @@ public class WaitingListController extends AContactController {
         waitingList = getObjectContext().newObject(WaitingList.class);
         waitingList.setCollege(getCollege());
         waitingList.setCourse(course);
+        waitingList.setPotentialStudents(1);
     }
 
 	public WaitingList getWaitingList() {

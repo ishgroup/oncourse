@@ -150,10 +150,16 @@ public class WaitingListForm {
 		String value = StringUtils.trimToNull(request.getParameter(WaitingList.POTENTIAL_STUDENTS_PROPERTY));
 		if (StringUtils.isNumeric(value)) {
 			controller.getWaitingList().setPotentialStudents(Integer.valueOf(value));
-			if (controller.getWaitingList().getPotentialStudents() < 0 || controller.getWaitingList().getPotentialStudents() > 30)
-				controller.addError(WaitingList.POTENTIAL_STUDENTS_PROPERTY, messages.format(KEY_ERROR_potentialStudent));
 		}
-		value = StringUtils.trimToNull(request.getParameter(WaitingList.DETAIL_PROPERTY));
+
+        Integer amount = controller.getWaitingList().getPotentialStudents();
+        if (amount == null || controller.getWaitingList().getPotentialStudents() < 1 || controller.getWaitingList().getPotentialStudents() > 30)
+        {
+            controller.addError(WaitingList.POTENTIAL_STUDENTS_PROPERTY, messages.format(KEY_ERROR_potentialStudent));
+            controller.getWaitingList().setPotentialStudents(1);
+        }
+
+        value = StringUtils.trimToNull(request.getParameter(WaitingList.DETAIL_PROPERTY));
 		if (value != null)
 			controller.getWaitingList().setDetail(value);
 		controller.addWaitingList();
