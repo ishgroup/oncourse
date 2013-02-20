@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
-import javax.xml.ws.BindingProvider;
 
 import ish.common.types.CreditCardType;
 import ish.common.types.EnrolmentStatus;
@@ -21,11 +20,18 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.PaymentProcessController;
-import ish.oncourse.utils.SessionIdGenerator;
+import ish.oncourse.webservices.replication.services.PortHelper;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.soap.v4.PaymentPortType;
 import ish.oncourse.webservices.soap.v4.ReplicationPortType;
-import ish.oncourse.webservices.soap.v4.ReplicationService;
+import ish.oncourse.webservices.util.GenericEnrolmentStub;
+import ish.oncourse.webservices.util.GenericPaymentInStub;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.dom.Document;
@@ -48,6 +54,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class QEProcessTest extends AbstractTransportTest {
+	private static final String ID_ATTRIBUTE = "id";
+	private static final String ENROLMENT_IDENTIFIER = Enrolment.class.getSimpleName();
+	private static final String INVOICE_LINE_IDENTIFIER = InvoiceLine.class.getSimpleName();
+	private static final String PAYMENT_LINE_IDENTIFIER = PaymentInLine.class.getSimpleName();
+	private static final String INVOICE_IDENTIFIER = Invoice.class.getSimpleName();
+	private static final String PAYMENT_IDENTIFIER = PaymentIn.class.getSimpleName();
+	private static final String V4_PAYMENT_ENDPOINT_PATH = TestServer.DEFAULT_CONTEXT_PATH + "/v4/payment";
+	private static final String V4_REPLICATION_ENDPOINT_PATH = TestServer.DEFAULT_CONTEXT_PATH + "/v4/replication";
+	private static final String V4_REPLICATION_WSDL = "wsdl/v4_replication.wsdl";
 	public static final String CARD_HOLDER_NAME = "john smith";
 	public static final String VALID_CARD_NUMBER = "5431111111111111";
 	public static final String CREDIT_CARD_CVV = "1111";
@@ -88,38 +103,15 @@ public class QEProcessTest extends AbstractTransportTest {
 	
 	/**
 	 * Cleanup required to prevent test fail on before database cleanup.
+	 * @throws Exception 
 	 */
 	@After
-	public void cleanup() {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		context.deleteObjects(context.performQuery(new SelectQuery(Enrolment.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(CourseClass.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(Room.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(Site.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(Course.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(InvoiceLine.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(PaymentInLine.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(Invoice.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(PaymentTransaction.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(PaymentIn.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(Student.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(Contact.class)));
-		
-		context.deleteObjects(context.performQuery(new SelectQuery(Preference.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(Country.class)));
-		
-		context.deleteObjects(context.performQuery(new SelectQuery(QueuedRecord.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(QueuedTransaction.class)));
-		context.deleteObjects(context.performQuery(new SelectQuery(College.class)));
-		context.commitChanges();
-		System.out.println("data cleaned.");
+	public void cleanup() throws Exception {
+		serviceTest.cleanup();
 	}
 	
-	@Test
-	public void testRenderPaymentPage() {
-		String sessionId = preparePayment();
+	void testRenderPaymentPage(String sessionId) {
 		assertNotNull("Session id should not be null", sessionId);
-		
 		Document doc = tester.renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
 		
@@ -139,11 +131,11 @@ public class QEProcessTest extends AbstractTransportTest {
 		assertNotNull("Payment form submit should be available", submitButton);
 		
 		Map<String, String> fieldValues = new HashMap<String, String>();
-		fieldValues.put(cardName.getAttribute("id"), CARD_HOLDER_NAME);
-		fieldValues.put(cardNumber.getAttribute("id"), VALID_CARD_NUMBER);
-		fieldValues.put(cardCVV.getAttribute("id"), CREDIT_CARD_CVV);
-		fieldValues.put(expirityMonth.getAttribute("id"), "01");
-		fieldValues.put(expirityYear.getAttribute("id"), "2019");
+		fieldValues.put(cardName.getAttribute(ID_ATTRIBUTE), CARD_HOLDER_NAME);
+		fieldValues.put(cardNumber.getAttribute(ID_ATTRIBUTE), VALID_CARD_NUMBER);
+		fieldValues.put(cardCVV.getAttribute(ID_ATTRIBUTE), CREDIT_CARD_CVV);
+		fieldValues.put(expirityMonth.getAttribute(ID_ATTRIBUTE), "01");
+		fieldValues.put(expirityYear.getAttribute(ID_ATTRIBUTE), "2019");
 		fieldValues.put("cardTypeField", CreditCardType.VISA.getDisplayName());
 		
 		//submit the data
@@ -183,107 +175,182 @@ public class QEProcessTest extends AbstractTransportTest {
 		assertEquals("Unexpected message", "Payment was successful.", successMessage.toString());
 	}
 	
-	private String preparePayment() {
+	@Test
+	public void testReplicateQEData() throws Exception {
+		//check that empty queuedRecords
 		ObjectContext context = cayenneService.newNonReplicatingContext();
+		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
+		//authenticate first
+		Long oldCommunicationKey = getCommunicationKey();
+		Long newCommunicationKey = getReplicationPortType().authenticate(getSecurityCode(), oldCommunicationKey);
+		assertNotNull("Received communication key should not be empty", newCommunicationKey);
+		assertTrue("Communication keys should be different before and after authenticate call", oldCommunicationKey.compareTo(newCommunicationKey) != 0);
+		assertTrue("New communication key should be equal to actual", newCommunicationKey.compareTo(getCommunicationKey()) == 0);
+		// prepare the stubs for replication
+		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(SupportedVersions.V4);
+		fillV4PaymentStubs(transaction);
+		//process payment
+		transaction = getPaymentPortType().processPayment((TransactionGroup) transaction);
+		//check the response, validate the data and receive the sessionid
+		String sessionId = null;
+		assertEquals("11 stubs should be in response for this processing", 11, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+			assertNotNull("Willowid after the first payment processing should not be NULL", stub.getWillowId());
+			if (PAYMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
+				GenericPaymentInStub payment = (GenericPaymentInStub) stub;
+				assertNull("Only 1 paymentIn entity should exist in response. This entity sessionid will be used for page processing", sessionId);
+				sessionId = payment.getSessionId();
+				assertNotNull("PaymentIn entity should contain the sessionid after processing", sessionId);
+				assertEquals("Payment status should not change after this processing", PaymentStatus.IN_TRANSACTION.getDatabaseValue(), payment.getStatus());
+			} else if (ENROLMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
+				assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.IN_TRANSACTION.name(), 
+					((GenericEnrolmentStub) stub).getStatus());
+			}
+		}
+		assertTrue("Queue should be empty after processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
+		//check the status via service
+		transaction = getPaymentPortType().getPaymentStatus(sessionId);
+		assertTrue("Get status call should return empty response for in transaction payment", 
+			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+		//call page processing
+		testRenderPaymentPage(sessionId);
+		//check that async replication works correct
 		@SuppressWarnings("unchecked")
-		List<College> colleges = context.performQuery(new SelectQuery(College.class));
-		assertNotNull("1", colleges);
-		assertTrue("3", colleges.size() == 1);
-		@SuppressWarnings("unchecked")
-		List<Contact> contacts = context.performQuery(new SelectQuery(Contact.class));
-		assertNotNull("1", contacts);
-		assertTrue("3", contacts.size() == 1);
-		@SuppressWarnings("unchecked")
-		List<CourseClass> classes = context.performQuery(new SelectQuery(CourseClass.class));
-		assertNotNull("1", classes);
-		assertTrue("3", classes.size() == 1);
-		Invoice invoice = context.newObject(Invoice.class);
-		invoice.setCollege(colleges.get(0));
-		invoice.setContact(contacts.get(0));
-		invoice.setSource(PaymentSource.SOURCE_ONCOURSE);
-		invoice.setAngelId(1l);
-		final Money hundredDollars = new Money("100.00");
-		invoice.setAmountOwing(hundredDollars.toBigDecimal());
-		final Date current = new Date();
-		invoice.setCreated(current);
-		invoice.setModified(current);
-		invoice.setDateDue(current);
-		invoice.setInvoiceNumber(123l);
-		invoice.setTotalGst(invoice.getAmountOwing());
-		invoice.setTotalExGst(invoice.getAmountOwing());
-		invoice.setInvoiceDate(current);
-		
-		PaymentIn payment = context.newObject(PaymentIn.class);
-		payment.setAmount(hundredDollars.toBigDecimal());
-		payment.setAngelId(1l);
-		payment.setCollege(invoice.getCollege());
-		payment.setContact(invoice.getContact());
-		payment.setCreated(current);
-		payment.setModified(current);
-		payment.setSessionId(new SessionIdGenerator().generateSessionId());
-		payment.setSource(PaymentSource.SOURCE_ONCOURSE);
-		payment.setStatus(PaymentStatus.IN_TRANSACTION);
-		payment.setType(PaymentType.CREDIT_CARD);
-		payment.setStudent(payment.getContact().getStudent());
-		
-		PaymentInLine paymentLine = context.newObject(PaymentInLine.class);
-		paymentLine.setAmount(payment.getAmount());
-		paymentLine.setAngelId(1l);
-		paymentLine.setCollege(payment.getCollege());
-		paymentLine.setCreated(current);
-		paymentLine.setInvoice(invoice);
-		paymentLine.setModified(current);
-		paymentLine.setPaymentIn(payment);
-		
-		InvoiceLine invoiceLine  = context.newObject(InvoiceLine.class);
-		invoiceLine.setAngelId(1l);
-		invoiceLine.setCollege(invoice.getCollege());
-		invoiceLine.setCreated(current);
-		invoiceLine.setDescription(StringUtils.EMPTY);
-		invoiceLine.setDiscountEachExTax(Money.ZERO);
-		invoiceLine.setInvoice(invoice);
-		invoiceLine.setModified(current);
-		invoiceLine.setPriceEachExTax(hundredDollars);
-		invoiceLine.setQuantity(BigDecimal.ONE);
-		invoiceLine.setTaxEach(Money.ZERO);
-		invoiceLine.setTitle(StringUtils.EMPTY);
-		
-		Enrolment enrolment = context.newObject(Enrolment.class);
-		enrolment.setAngelId(1l);
-		enrolment.setCollege(invoice.getCollege());
-		enrolment.setCourseClass(classes.get(0));
-		enrolment.setCreated(current);
-		enrolment.setInvoiceLine(invoiceLine);
-		enrolment.setModified(current);
-		enrolment.setSource(PaymentSource.SOURCE_ONCOURSE);
-		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
-		enrolment.setStudent(payment.getStudent());
-		
-		context.commitChanges();
-		return payment.getSessionId();
+		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
+		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
+		assertTrue("Queue should contain 5 records.", queuedRecords.size() == 5 );
+		boolean isPaymentFound = false, isPaymentLineFound = false, isInvoiceFound = false, isInvoiceLineFound = false, isEnrolmentDound = false;
+		for (QueuedRecord record : queuedRecords) {
+			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				assertFalse("Only 1 paymentIn should exist in a queue", isPaymentFound);
+				isPaymentFound = true;
+			} else if (PAYMENT_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				assertFalse("Only 1 paymentInLine should exist in a queue", isPaymentLineFound);
+				isPaymentLineFound = true;
+			} else if (INVOICE_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				assertFalse("Only 1 invoice should exist in a queue", isInvoiceFound);
+				isInvoiceFound = true;
+			} else if (INVOICE_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				assertFalse("Only 1 invoiceLine should exist in a queue", isInvoiceLineFound);
+				isInvoiceLineFound = true;
+			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				assertFalse("Only 1 enrolment should exist in a queue", isEnrolmentDound);
+				isEnrolmentDound = true;
+			} else {
+				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
+			}
+		}
+		assertTrue("Payment not found in a queue", isPaymentFound);
+		assertTrue("Payment line not found in a queue", isPaymentLineFound);
+		assertTrue("Invoice not found in a queue", isInvoiceFound);
+		assertTrue("Invoice line not found in a  queue", isInvoiceLineFound);
+		assertTrue("Enrolment not found in a queue", isEnrolmentDound);
+		//check the status via service when processing complete
+		transaction = getPaymentPortType().getPaymentStatus(sessionId);
+		assertFalse("Get status call should not return empty response for payment in final status", 
+			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+		assertTrue("11 elements should be replicated for this payment", transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size() == 11);
+		//logout
+		getReplicationPortType().logout(getCommunicationKey());
 	}
 	
-	@Test
-	public void testReplicationPortType_authenticate() throws Exception {
-		ReplicationPortType replicationPortType = getReplicationPortType();
-		replicationPortType.authenticate(getSecurityCode(), getCommunicationKey());
+	void fillV4PaymentStubs(GenericTransactionGroup transaction) {
+		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		final Money hundredDollars = new Money("100.00");
+		final Date current = new Date();
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInStub();
+		paymentInStub.setAngelId(1l);
+		paymentInStub.setAmount(hundredDollars.toBigDecimal());
+		paymentInStub.setContactId(1l);
+		paymentInStub.setCreated(current);
+		paymentInStub.setModified(current);
+		paymentInStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		paymentInStub.setStatus(PaymentStatus.IN_TRANSACTION.getDatabaseValue());
+		paymentInStub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
+		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
+		stubs.add(paymentInStub);
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceStub();
+		invoiceStub.setContactId(1l);
+		invoiceStub.setAmountOwing(hundredDollars.toBigDecimal());
+		invoiceStub.setAngelId(1l);
+		invoiceStub.setCreated(current);
+		invoiceStub.setDateDue(current);
+		invoiceStub.setEntityIdentifier(INVOICE_IDENTIFIER);
+		invoiceStub.setInvoiceDate(current);
+		invoiceStub.setInvoiceNumber(123l);
+		invoiceStub.setModified(current);
+		invoiceStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
+		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
+		stubs.add(invoiceStub);
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		paymentLineStub.setAngelId(1l);
+		paymentLineStub.setAmount(paymentInStub.getAmount());
+		paymentLineStub.setCreated(current);
+		paymentLineStub.setEntityIdentifier(PAYMENT_LINE_IDENTIFIER);
+		paymentLineStub.setInvoiceId(invoiceStub.getAngelId());
+		paymentLineStub.setModified(current);
+		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
+		stubs.add(paymentLineStub);
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invoiceLineStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub();
+		invoiceLineStub.setAngelId(1l);
+		invoiceLineStub.setCreated(current);
+		invoiceLineStub.setDescription(StringUtils.EMPTY);
+		invoiceLineStub.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub.setInvoiceId(invoiceStub.getAngelId());
+		invoiceLineStub.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub.setModified(current);
+		invoiceLineStub.setPriceEachExTax(invoiceStub.getAmountOwing());
+		invoiceLineStub.setQuantity(BigDecimal.ONE);
+		invoiceLineStub.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub);
+		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolmentStub = new ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub();
+		enrolmentStub.setAngelId(1l);
+		enrolmentStub.setCourseClassId(1l);
+		enrolmentStub.setCreated(current);
+		enrolmentStub.setEntityIdentifier(ENROLMENT_IDENTIFIER);
+		enrolmentStub.setInvoiceLineId(invoiceLineStub.getAngelId());
+		enrolmentStub.setModified(current);
+		enrolmentStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		enrolmentStub.setStatus(EnrolmentStatus.IN_TRANSACTION.name());
+		enrolmentStub.setStudentId(1l);
+		//link the invoiceLine with enrolment
+		invoiceLineStub.setEnrolmentId(enrolmentStub.getAngelId());
+		stubs.add(enrolmentStub);
+		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
-
+	
 	@Override
 	protected Long getCommunicationKey() {
-		return Long.valueOf("7059522699886202880");
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		@SuppressWarnings("unchecked")
+		List<College> colleges = context.performQuery(new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l)));
+		assertFalse("colleges should not be empty", colleges.isEmpty());
+		assertTrue("Only 1 college should have id=1", colleges.size() == 1);
+		College college = colleges.get(0);
+		assertNotNull("Communication key should be not NULL", college.getCommunicationKey());
+		return college.getCommunicationKey();
 	}
 	
 	@Override
 	protected String getSecurityCode() {
-		return "345ttn44$%9";
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		@SuppressWarnings("unchecked")
+		List<College> colleges = context.performQuery(new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l)));
+		assertFalse("colleges should not be empty", colleges.isEmpty());
+		assertTrue("Only 1 college should have id=1", colleges.size() == 1);
+		College college = colleges.get(0);
+		assertNotNull("Security code should be not NULL", college.getWebServicesSecurityCode());
+		return college.getWebServicesSecurityCode();
 	}
 
 	private ReplicationPortType getReplicationPortType() throws JAXBException {
-		ReplicationService replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource("wsdl/v4_replication.wsdl"));
-		ReplicationPortType replicationPortType = replicationService.getReplicationPort();
-		initPortType((BindingProvider) replicationPortType, TestServer.DEFAULT_CONTEXT_PATH + "/v4/replication");
-		return replicationPortType;
+		return getReplicationPortType(V4_REPLICATION_WSDL, V4_REPLICATION_ENDPOINT_PATH);
+	}
+	
+	private PaymentPortType getPaymentPortType() throws JAXBException {
+		return getPaymentPortType(V4_REPLICATION_WSDL, V4_PAYMENT_ENDPOINT_PATH);
 	}
 
 }
