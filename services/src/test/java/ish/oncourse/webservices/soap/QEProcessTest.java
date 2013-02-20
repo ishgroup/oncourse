@@ -175,7 +175,7 @@ public class QEProcessTest extends AbstractTransportTest {
 		assertEquals("Unexpected message", "Payment was successful.", successMessage.toString());
 	}
 	
-	@Test
+	//@Test
 	public void testReplicateQEData() throws Exception {
 		//check that empty queuedRecords
 		ObjectContext context = cayenneService.newNonReplicatingContext();
