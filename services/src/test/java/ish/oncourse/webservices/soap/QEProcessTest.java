@@ -2,10 +2,7 @@ package ish.oncourse.webservices.soap;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
@@ -66,6 +63,10 @@ public class QEProcessTest extends AbstractTransportTest {
 	public static final String CARD_HOLDER_NAME = "john smith";
 	public static final String VALID_CARD_NUMBER = "5431111111111111";
 	public static final String CREDIT_CARD_CVV = "1111";
+	
+	private static final String VALID_EXPIRITY_MONTH = Calendar.getInstance().get(Calendar.MONTH) + 1 + StringUtils.EMPTY;
+	private static final String VALID_EXPIRITY_YEAR = Calendar.getInstance().get(Calendar.YEAR) + StringUtils.EMPTY;
+
 
 	private ServiceTest serviceTest;
 	private PageTester tester;
@@ -84,6 +85,7 @@ public class QEProcessTest extends AbstractTransportTest {
 
 	@AfterClass
 	public static void after() throws Exception {
+		System.out.println("stop the server");
 		stopServer();
 	}
 	
@@ -107,6 +109,7 @@ public class QEProcessTest extends AbstractTransportTest {
 	 */
 	@After
 	public void cleanup() throws Exception {
+		System.out.println("cleanup the database");
 		serviceTest.cleanup();
 	}
 	
@@ -134,8 +137,8 @@ public class QEProcessTest extends AbstractTransportTest {
 		fieldValues.put(cardName.getAttribute(ID_ATTRIBUTE), CARD_HOLDER_NAME);
 		fieldValues.put(cardNumber.getAttribute(ID_ATTRIBUTE), VALID_CARD_NUMBER);
 		fieldValues.put(cardCVV.getAttribute(ID_ATTRIBUTE), CREDIT_CARD_CVV);
-		fieldValues.put(expirityMonth.getAttribute(ID_ATTRIBUTE), "01");
-		fieldValues.put(expirityYear.getAttribute(ID_ATTRIBUTE), "2019");
+		fieldValues.put(expirityMonth.getAttribute(ID_ATTRIBUTE), VALID_EXPIRITY_MONTH);
+		fieldValues.put(expirityYear.getAttribute(ID_ATTRIBUTE), VALID_EXPIRITY_YEAR);
 		fieldValues.put("cardTypeField", CreditCardType.VISA.getDisplayName());
 		
 		//submit the data
@@ -164,21 +167,25 @@ public class QEProcessTest extends AbstractTransportTest {
 		//parse the response result
 		Element paymentResultDiv = doc.getRootElement().getElementByAttributeValue("class", "pay-form");
 		assertNotNull("Result div should be loaded", paymentResultDiv);
+		System.out.println(paymentResultDiv);
 		Element successPaymentDiv = paymentResultDiv.getElementByAttributeValue("class", "pay-success");
 		assertNotNull("Success payment div should be loaded", successPaymentDiv);
+		System.out.println(successPaymentDiv);
 		Element output = successPaymentDiv.getElementByAttributeValue("class", "page-title");
 		assertNotNull("Success payment output should be loaded", output);
+		System.out.println(output);
 		assertFalse("Output should not be empty", output.isEmpty());
 		assertTrue("Output should contain only 1 child", output.getChildren().size() == 1);
 		Node successMessage = output.getChildren().get(0);
 		assertNotNull("Success message should be included", successMessage);
+		System.out.println(successMessage);
 		assertEquals("Unexpected message", "Payment was successful.", successMessage.toString());
 	}
 	
 	//@Test
 	public void testReplicateQEData() throws Exception {
 		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = cayenneService.newNonReplicatingContext();//TODO: fix me
 		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
 		//authenticate first
 		Long oldCommunicationKey = getCommunicationKey();
@@ -213,7 +220,7 @@ public class QEProcessTest extends AbstractTransportTest {
 		assertTrue("Get status call should return empty response for in transaction payment", 
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		//call page processing
-		testRenderPaymentPage(sessionId);
+		testRenderPaymentPage(/*"SESSIONID"*/sessionId);
 		//check that async replication works correct
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
