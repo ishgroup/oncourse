@@ -61,6 +61,7 @@
                    collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="10"
                    modified="2011-09-12 00:17:21.0" paymentInId="10" /-->
 
-    <Preference id="1" collegeId="1" name="payment.gateway.type"
-                value_string="PAYMENT_EXPRESS" />
+    <Preference id="1" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
+    <Preference id="2" collegeId="1" name="license.ccprocessing" value_string="true" />
+    
 </dataset>
