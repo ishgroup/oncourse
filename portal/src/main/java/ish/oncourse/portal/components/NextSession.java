@@ -10,6 +10,8 @@ import org.apache.tapestry5.annotations.SetupRender;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +57,16 @@ public class NextSession {
 				nextSessions.remove(nextSession);
 			}
 		}
-		
+		Collections.sort(nextSessions, new Comparator<Session>() {
+			@Override
+			public int compare(Session o1, Session o2) {
+				if (o1 != null && o2 != null && o1.getStartDate() != null && o2.getStartDate() != null) {
+					return o1.getStartDate().compareTo(o2.getStartDate());
+				}
+				return 0;
+			}
+			
+		});
 
 		return true;
 	}
