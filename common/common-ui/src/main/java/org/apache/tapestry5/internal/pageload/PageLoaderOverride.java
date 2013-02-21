@@ -1,5 +1,6 @@
 package org.apache.tapestry5.internal.pageload;
 
+import ish.oncourse.services.textile.TextileUtil;
 import org.apache.tapestry5.Binding;
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.ComponentResources;
@@ -193,9 +194,19 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
         });
     }
 
+    private MultiKey getMultiKeyBy(String className, Locale locale)
+    {
+        String template = (String) request.getAttribute(TextileUtil.TEMPLATE_FILE_NAME_PARAM);
+        //we should use anouther key to cache ComponentAssembler for component when user defines custom template
+        if (template != null)
+             return new MultiKey(className, template, locale, request.getServerName());
+        else
+            return new MultiKey(className, locale, request.getServerName());
+    }
+
     public ComponentAssembler getAssembler(String className, Locale locale)
     {
-    	MultiKey key = new MultiKey(className, locale, request.getServerName());
+    	MultiKey key = getMultiKeyBy(className, locale);
 
         ComponentAssembler result = cache.get(key);
 

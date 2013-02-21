@@ -8,7 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 public class TextileUtil {
-	public static final String TEXTILE_REGEXP = "(\\{((block)|(course)|(courses)|(tags)|(page)|(video)|(image)|(attachment))([^}]*)})|(\\{form([^}]*)}.+?(((\\{text([^}]*)})|(\\{radiolist([^}]*)})|(\\{popuplist([^}]*)})).+?)*(\\{form}))";
+    /**
+     * an user can define custom template file name for any component or page
+     */
+    public static final String TEMPLATE_FILE_NAME_PARAM = "templateFileName";
+
+
+    public static final String TEXTILE_REGEXP = "(\\{((block)|(course)|(courses)|(tags)|(page)|(video)|(image)|(attachment))([^}]*)})|(\\{form([^}]*)}.+?(((\\{text([^}]*)})|(\\{radiolist([^}]*)})|(\\{popuplist([^}]*)})).+?)*(\\{form}))";
 	public static final String QUOT = "\"|&#8220;|&#8221;|\u201C|\u201D";
 	public static final String BOOLEAN_IN_QUOTS = inQuots("(true|false)", false);
 	public static final String YES_NO_IN_QUOTS = inQuots("(yes|no|true|false)", false);

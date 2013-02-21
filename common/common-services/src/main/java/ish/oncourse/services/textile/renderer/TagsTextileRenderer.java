@@ -69,6 +69,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 					.getValue());
 			String hideTopLevel = tagParams.get(TagsTextileAttributes.TAGS_HIDE_TOP_LEVEL
 					.getValue());
+            String templateFileName = tagParams.get(TagsTextileAttributes.TAGS_TEMPLATE_FILE_NAME.getValue());
 
 			Tag parentTag = null;
 			Tag rootTag = tagService.getSubjectsTag();
@@ -87,6 +88,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 						Boolean.valueOf(showDetails));
 				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM,
 						Boolean.valueOf(hideTopLevel));
+                parameters.put(TextileUtil.TEMPLATE_FILE_NAME_PARAM, templateFileName);
 				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_TAGS_PAGE, parameters);
 				//if any additional compilation required need to analyze this and apply. 
 				Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);

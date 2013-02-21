@@ -5,6 +5,7 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
+import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.ui.template.T5FileResource;
 
 import java.io.File;
@@ -111,46 +112,63 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 		tracker.add(folder.toURL());
 	}
 
-	/**
-	 * Resolves the component name to a localized {@link Resource} (using the
-	 * {@link ComponentTemplateLocator} chain of command service). The localized
-	 * resource is used as the key to a cache of {@link ComponentTemplate}s.
-	 * <p/>
-	 * If a template doesn't exist, then the missing ComponentTemplate is
-	 * returned.
-	 */
-	public ComponentTemplate getTemplate(ComponentModel componentModel, Locale locale) {
 
-		String componentName = componentModel.getComponentClassName();
 
-		MultiKey key = new MultiKey(componentName, locale, request.getServerName());
+    /**
+     * Resolves the component name to a localized {@link Resource} (using the
+     * {@link ComponentTemplateLocator} chain of command service). The localized
+     * resource is used as the key to a cache of {@link ComponentTemplate}s.
+     * <p/>
+     * If a template doesn't exist, then the missing ComponentTemplate is
+     * returned.
+     */
+    @Override
+    public ComponentTemplate getTemplate(ComponentModel componentModel, Locale locale) {
+        String componentName = componentModel.getComponentClassName();
 
-		// First cache is key to resource.
+        //it reads templateFileName attribute to get user defined template.
+        String templateFileName = (String) request.getAttribute(TextileUtil.TEMPLATE_FILE_NAME_PARAM);
+        //we need reset the attribute to exclude effect to other pages/components
+        request.setAttribute(TextileUtil.TEMPLATE_FILE_NAME_PARAM, null);
+        //we should use anouther key to cache Resource for component when user defines custom template
+        MultiKey key = getMultiKeyBy(componentName, templateFileName, locale);
 
-		Resource resource = templateResources.get(key);
+        // First cache is key to resource.
 
-		if (resource == null) {
+        Resource resource = templateResources.get(key);
 
-			if (resource == null) {
-				resource = locateSiteTemplateResource(componentModel, locale);
-			}
+        if (resource == null) {
 
-			if (resource != null) {
-				templateResources.put(key, resource);
-			}
-		}
+            if (resource == null) {
+                resource = locateSiteTemplateResource(componentModel, templateFileName, locale);
+            }
 
-		// If we haven't yet parsed the template into the cache, do so now.
+            if (resource != null) {
+                templateResources.put(key, resource);
+            }
+        }
 
-		ComponentTemplate result = templates.get(resource);
+        // If we haven't yet parsed the template into the cache, do so now.
 
-		if (result == null) {
-			result = parseTemplate(resource);
-			templates.put(resource, result);
-		}
+        ComponentTemplate result = templates.get(resource);
 
-		return result;
-	}
+        if (result == null) {
+            result = parseTemplate(resource);
+            templates.put(resource, result);
+        }
+
+        return result;
+    }
+
+    private MultiKey getMultiKeyBy(String componentName, String templateFileName, Locale locale) {
+        MultiKey key;
+
+        if (templateFileName != null)
+            key = new MultiKey(componentName, templateFileName, locale, request.getServerName());
+        else
+            key = new MultiKey(componentName, locale, request.getServerName());
+        return key;
+    }
 
 	private ComponentTemplate parseTemplate(Resource r) {
 		// In a race condition, we may parse the same template more than once.
@@ -190,7 +208,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 		return initialModel.getBaseResource().withExtension(TapestryConstants.TEMPLATE_EXTENSION);
 	}
 
-	private Resource locateSiteTemplateResource(ComponentModel model, Locale locale) {
+	private Resource locateSiteTemplateResource(ComponentModel model, String templateFileName, Locale locale) {
 
 		String componentName = model.getComponentClassName();
 
@@ -212,8 +230,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 			Resource templateBaseResource = model.getBaseResource().withExtension("tml");
 
 			String templatePath = templateBaseResource.getPath();
-			String templateFile = templatePath.substring(templatePath.lastIndexOf("/") + 1);
-			
+            String templateFile = templatePath.substring(templatePath.lastIndexOf("/") + 1);
 			String layoutKey = null;
 			
 			WebNode currrentNode = webNodeService.getCurrentNode();
@@ -226,12 +243,24 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 			}
 			
 			if (layoutKey != null) {
-				PrivateResource resource = resourceService.getTemplateResource(layoutKey, templateFile);
 
-				LOGGER.debug("Try to load template override for: " + templateFile);
+                PrivateResource resource = null;
+                if (templateFileName != null)
+                {
+                    LOGGER.debug(String.format("Try to load user defined template %s override for %s.",templateFileName,
+                            templateFile));
+                    resource = resourceService.getTemplateResource(layoutKey, templateFileName);
+                }
+
+                if (resource == null || !resource.exists())
+                {
+                    LOGGER.debug("Try to load template override for: " + templateFile);
+                    resource = resourceService.getTemplateResource(layoutKey, templateFile);
+                }
+
 
 				if ((resource != null) && resource.exists()) {
-					LOGGER.debug("Template override: " + templateFile + " found.");
+					LOGGER.debug("Template override: " + resource.getFile().getName() + " found.");
 					return new T5FileResource(resource.getFile());
 				}
 
