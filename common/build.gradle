@@ -10,16 +10,6 @@ dependencies {
 	compile 'commons-io:commons-io:2.1'
 	compile 'com.google.inject:guice:3.0'
 
-	//jasperreports, will be removed from common and moved to server
-	compile ('net.sf.jasperreports:jasperreports:4.7.0') {
-	exclude group: 'org.apache.poi', module: 'poi-ooxml'
-
-	//excluding the following, because they aren't correctly defined inside dependencies, causing duplicate jars to be added to the project
-	// please re-evaluate after itext is upgraded
-	exclude group: 'bouncycastle', module: 'bcmail-jdk14'
-	exclude group: 'bouncycastle', module: 'bcprov-jdk14'
-	exclude group: 'bouncycastle', module: 'bctsp-jdk14'
-	}
 	// added the correct dependency manually, with version number properly formatted
 	compile 'org.bouncycastle:bctsp-jdk14:1.38'
 
