@@ -1254,6 +1254,9 @@
 		<obj-attribute name="startingMinutePerSession" type="java.lang.Integer" db-attribute-path="startingMinutePerSession"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 	</obj-entity>
+	<obj-entity name="CourseCourseRelation" superEntityName="EntityRelation" className="ish.oncourse.model.CourseCourseRelation">
+		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 1)]]></qualifier>
+	</obj-entity>
 	<obj-entity name="CourseModule" className="ish.oncourse.model.CourseModule" dbEntityName="CourseModule">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -3064,6 +3067,8 @@
 	<obj-relationship name="room" source="CourseClass" target="Room" deleteRule="Nullify" db-relationship-path="room"/>
 	<obj-relationship name="sessions" source="CourseClass" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="tutorRoles" source="CourseClass" target="TutorRole" deleteRule="Deny" db-relationship-path="tutorRoles"/>
+	<obj-relationship name="fromCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
+	<obj-relationship name="toCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationToCourse"/>
 	<obj-relationship name="college" source="CourseModule" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="CourseModule" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="module" source="CourseModule" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
