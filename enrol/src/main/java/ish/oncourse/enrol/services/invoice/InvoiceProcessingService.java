@@ -8,6 +8,8 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.util.InvoiceUtil;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.math.BigDecimal;
@@ -106,14 +108,32 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	 *      ish.oncourse.model.InvoiceLine)
 	 */
 	public void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine, List<Discount> actualPromotions) {
+
+        ObjectContext objectContext = invoiceLine.getObjectContext();
 		CourseClass courseClass = enrolment.getCourseClass();
 		List<Discount> enrolmentDiscounts = enrolment.getCourseClass().getDiscountsToApply(
 				new RealDiscountsPolicy(actualPromotions, enrolment.getStudent()));
 		InvoiceUtil.fillInvoiceLine(invoiceLine, invoiceLine.getPriceEachExTax(), courseClass.getDiscountAmountExTax(enrolmentDiscounts), 
 			courseClass.getTaxRate(), calculateTaxAdjustment(courseClass));
-	}
-	
-	private Money calculateTaxAdjustment(final CourseClass courseClass) {
+        createInvoiceLineDiscounts(invoiceLine, enrolmentDiscounts, objectContext);
+    }
+
+    /**
+     * The method creates InvoiceLineDiscount entities for all discounts which were applied to this invoiceLine
+     */
+    private void createInvoiceLineDiscounts(InvoiceLine invoiceLine, List<Discount> discounts, ObjectContext objectContext) {
+        for (Discount discount : discounts) {
+            Expression discountQualifier = ExpressionFactory.matchExp(InvoiceLineDiscount.DISCOUNT_PROPERTY, discount);
+            if (discountQualifier.filterObjects(invoiceLine.getInvoiceLineDiscounts()).isEmpty()) {
+                InvoiceLineDiscount invoiceLineDiscount = objectContext.newObject(InvoiceLineDiscount.class);
+                invoiceLineDiscount.setInvoiceLine(invoiceLine);
+                invoiceLineDiscount.setDiscount(discount);
+                invoiceLineDiscount.setCollege(invoiceLine.getCollege());
+            }
+        }
+    }
+
+    private Money calculateTaxAdjustment(final CourseClass courseClass) {
 		return courseClass.getFeeIncGst().subtract(courseClass.getFeeExGst().multiply(courseClass.getTaxRate().add(BigDecimal.ONE)));
 	}
 

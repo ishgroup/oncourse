@@ -1,7 +1,12 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.model.Discount;
+import ish.oncourse.model.InvoiceLineDiscount;
+import ish.oncourse.services.discount.DiscountService;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addDiscount;
 import static ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -36,8 +41,15 @@ public class ActionAddDiscountTest extends ACheckoutTest {
 		purchaseController.performAction(parameter);
 		assertTrue(purchaseController.isEditCheckout());
 		assertTrue(purchaseController.getErrors().isEmpty());
-		assertFalse(purchaseController.getModel().getDiscounts().isEmpty());
-		assertEquals(1, purchaseController.getModel().getDiscounts().size());
+        List<Discount> discounts =  purchaseController.getModel().getDiscounts();
+		assertFalse(discounts.isEmpty());
+		assertEquals(1, discounts.size());
+        Discount discount = new Discount();
+        assertEquals(1, discount.getInvoiceLineDiscounts().size());
+        InvoiceLineDiscount invoiceLineDiscount = discount.getInvoiceLineDiscounts().get(0);
+        assertNotNull(invoiceLineDiscount.getCollege());
+        assertNotNull(invoiceLineDiscount.getDiscount());
+        assertNotNull(invoiceLineDiscount.getInvoiceLine());
 
 		parameter = new ActionParameter(addDiscount);
 		//try add the same discount code does not exists
