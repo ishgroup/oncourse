@@ -16,6 +16,8 @@ dependencies {
     }
 	compile 'oro:oro:2.0.8'
 	compile 'org.liquibase:liquibase-core:2.0.1'
+	//we use the lib to validate email address
+	compile 'javax.mail:mail:1.4.5'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency

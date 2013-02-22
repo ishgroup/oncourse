@@ -12,8 +12,9 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.validation.ValidationResult;
-import org.apache.commons.validator.EmailValidator;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.util.Date;
 
 public class Contact extends _Contact implements Queueable {
@@ -154,7 +155,11 @@ public class Contact extends _Contact implements Queueable {
 		if (emailAddress == null || "".equals(emailAddress)) {
 			return "The " + entityName + "'s email is required.";
 		}
-		if (!EmailValidator.getInstance().isValid(emailAddress)) {
+
+		try {
+			InternetAddress emailAddr = new InternetAddress(emailAddress);
+			emailAddr.validate();
+		} catch (AddressException ex) {
 			return INVALID_EMAIL_MESSAGE;
 		}
 		return null;
