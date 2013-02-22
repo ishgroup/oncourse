@@ -7,6 +7,7 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.CourseCourseRelation;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.WaitingList;
@@ -35,7 +36,9 @@ public abstract class _Course extends CayenneDataObject {
     public static final String SEARCH_TEXT_PROPERTY = "searchText";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
+    public static final String FROM_COURSES_PROPERTY = "fromCourses";
     public static final String COURSE_MODULES_PROPERTY = "courseModules";
+    public static final String TO_COURSES_PROPERTY = "toCourses";
     public static final String QUALIFICATION_PROPERTY = "qualification";
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
 
@@ -160,6 +163,18 @@ public abstract class _Course extends CayenneDataObject {
     }
 
 
+    public void addToFromCourses(CourseCourseRelation obj) {
+        addToManyTarget("fromCourses", obj, true);
+    }
+    public void removeFromFromCourses(CourseCourseRelation obj) {
+        removeToManyTarget("fromCourses", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CourseCourseRelation> getFromCourses() {
+        return (List<CourseCourseRelation>)readProperty("fromCourses");
+    }
+
+
     public void addToCourseModules(CourseModule obj) {
         addToManyTarget("courseModules", obj, true);
     }
@@ -169,6 +184,18 @@ public abstract class _Course extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<CourseModule> getCourseModules() {
         return (List<CourseModule>)readProperty("courseModules");
+    }
+
+
+    public void addToToCourses(CourseCourseRelation obj) {
+        addToManyTarget("toCourses", obj, true);
+    }
+    public void removeFromToCourses(CourseCourseRelation obj) {
+        removeToManyTarget("toCourses", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CourseCourseRelation> getToCourses() {
+        return (List<CourseCourseRelation>)readProperty("toCourses");
     }
 
 
