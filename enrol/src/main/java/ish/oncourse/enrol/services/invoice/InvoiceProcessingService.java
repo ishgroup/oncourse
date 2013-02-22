@@ -72,11 +72,9 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		invoiceLine.setQuantity(BigDecimal.ONE);
 		Money fee = courseClass.getFeeExGst();
 		invoiceLine.setPriceEachExTax(fee);
-
-		setupDiscounts(enrolment, invoiceLine, actualPromotions);
-
 		invoiceLine.setCollege(college);
 
+		setupDiscounts(enrolment, invoiceLine, actualPromotions);
 		return invoiceLine;
 	}
 	

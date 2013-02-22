@@ -2,7 +2,6 @@ package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.services.discount.DiscountService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +43,7 @@ public class ActionAddDiscountTest extends ACheckoutTest {
         List<Discount> discounts =  purchaseController.getModel().getDiscounts();
 		assertFalse(discounts.isEmpty());
 		assertEquals(1, discounts.size());
-        Discount discount = new Discount();
+        Discount discount = discounts.get(0);
         assertEquals(1, discount.getInvoiceLineDiscounts().size());
         InvoiceLineDiscount invoiceLineDiscount = discount.getInvoiceLineDiscounts().get(0);
         assertNotNull(invoiceLineDiscount.getCollege());
