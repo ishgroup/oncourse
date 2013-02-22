@@ -118,4 +118,17 @@ public class Course extends _Course implements Queueable {
 		return qualification;
 	}
 	
+	public List<Course> getRelatedToCourses() {
+		List<Course> relatedList = new ArrayList<Course>();
+		if (!getFromCourses().isEmpty()) {
+			for (CourseCourseRelation courseRelation : getFromCourses()) {
+	    		Course relatedCourse = courseRelation.getToCourse();
+	    		if (relatedCourse.getIsWebVisible()) {
+	    			relatedList.add(relatedCourse);
+	    		}
+	    	}
+		}
+		return relatedList;
+	}
+	
 }
