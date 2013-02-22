@@ -1480,8 +1480,7 @@
 	</changeSet>
 
 
-	<!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
-			uncomment this changeset after all applications re-deployment. Especially the services and enrol.
+	<changeSet id="90" author="viacheslav" context="production" runOnChange="true">
 			<preConditions>
 				<columnExists tableName="ProductItem" columnName="paymentInId"/>
 				<columnExists tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
@@ -1490,17 +1489,16 @@
 			<dropForeignKeyConstraint baseTableName="ProductItem" constraintName="fk_Voucher_PaymentIn"/>
 			<dropColumn tableName="ProductItem" columnName="paymentInId"/>
 			<dropColumn tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
-		</changeSet-->
+	</changeSet>
     
-    <!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
-    	uncomment this changesets after all application redeployment
+    <changeSet id="91" author="viacheslav" context="production" runOnChange="true">
     	<preConditions onFail="MARK_RAN">
     		<indexExists tableName="College" columnNames="webServicesLogin,webServicesPass"/>
     	</preConditions>
     	<dropIndex tableName="College" indexName="webServicesLogin_idx"/>
     </changeSet>
     
-    <changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
+    <changeSet id="92" author="viacheslav" context="production" runOnChange="true">
     	<preConditions onFail="MARK_RAN">
     		<columnExists tableName="College" columnName="webServicesLogin"/>
     	</preConditions>
@@ -1509,19 +1507,18 @@
     	<dropColumn tableName="College" columnName="nationalProviderCode"/>
     </changeSet>
     
-    <changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
+    <changeSet id="93" author="viacheslav" context="production" runOnChange="true">
     	<preConditions onFail="MARK_RAN">
     		<columnExists tableName="College" columnName="paymentGatewayType"/>
     	</preConditions>
     	<dropColumn tableName="College" columnName="paymentGatewayType"/>
     </changeSet>
     
-    <changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
+    <changeSet id="94" author="viacheslav" context="production" runOnChange="true">
     	<preConditions onFail="MARK_RAN">
     		<columnExists tableName="Qualification" columnName="anzsic"/>
     	</preConditions>
     	<dropColumn tableName="Qualification" columnName="anzsic"/>
-    </changeSet-->
-
+    </changeSet>
 
 </databaseChangeLog>
