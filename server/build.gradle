@@ -13,6 +13,7 @@ dependencies {
 	compile 'foxtrot:foxtrot-core:4.0'
 
 	compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
+	compile "org.eclipse.jetty:jetty-servlets:$jettyVersion"
 
 	compile 'org.apache.derby:derbyclient:10.9.1.0'
 	compile 'org.apache.derby:derbynet:10.9.1.0'
