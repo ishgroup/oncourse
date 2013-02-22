@@ -102,4 +102,8 @@ public class CourseItemModel {
     {
         return !course.getModules().isEmpty();
     }
+    
+    public boolean isHaveRelatedCourses() {
+    	return !course.getRelatedToCourses().isEmpty();
+    }
 }

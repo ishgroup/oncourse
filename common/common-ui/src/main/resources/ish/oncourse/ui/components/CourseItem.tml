@@ -19,12 +19,13 @@
 				</t:if>
 			</h2>
 			<div class="description courseShortDescription">
-
-				<t:outputraw value="${courseDetail}" />
-
+				<t:outputraw value="${courseDetail}"/>
 				<strong class="more">[<a href="/course/${courseItemModel.course.code}">More</a>]</strong>
 			</div>
 		</p:else>
+		</t:if>
+		<t:if t:test="courseItemModel.haveRelatedCourses">
+			<div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
 		</t:if>
 		<t:if t:test="${courseItemModel.showModules}">
 			<div t:type="ui/CourseModules" modules="courseItemModel.course.modules"
