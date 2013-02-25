@@ -12,6 +12,7 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.validation.ValidationResult;
+import org.apache.commons.validator.EmailValidator;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -159,6 +160,15 @@ public class Contact extends _Contact implements Queueable {
 		try {
 			InternetAddress emailAddr = new InternetAddress(emailAddress);
 			emailAddr.validate();
+
+			/**
+			 * We use the additional validation because InternetAddress.validate() accepts email addresses like username@domain,
+			 * But for our application such address is not valid, our application should accept only public (not local) domain like:
+			 * *.org, *.net and so on
+			 */
+			if (!EmailValidator.getInstance().isValid(emailAddress))
+				return INVALID_EMAIL_MESSAGE;
+
 		} catch (AddressException ex) {
 			return INVALID_EMAIL_MESSAGE;
 		}

@@ -1,10 +1,11 @@
 package ish.oncourse.model;
 
-import static org.junit.Assert.*;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test for {@link Contact} entity.
@@ -23,13 +24,13 @@ public class ContactTest {
 	 * Array of valid emails. {@see #validateEmailSuccessTest()}.
 	 */
 	private String[] validEmails = { "testEmail@domain.org", "test+Email@domain.org", "test.Email@domain.org",
-			"test/Email@domain.org", "test_Email@domain.org" };
+			"test/Email@domain.org", "test_Email@domain.org","test|Email@domain.org" };
 
 	/**
 	 * Array of invalid emails. {@see #validateEmailFailedTest()}.
 	 */
-	private String[] invalidEmails = { "testEmail-domain.org", "@domain.org", "testEmail@domain", "test_Email",
-			"testEmail@111.111.111.111" };
+	private String[] invalidEmails = { "testEmail-domain.org", "@domain.org", "testEmail@", "testEmail@domain", "test_Email",
+			"testEmail@111.111.111.111","testEmail@domain./org", "testEmail@domain.\\org" , "testEmail@domain.|org", "test\\Email@domain.org" };
 
 	@Before
 	public void init() {
