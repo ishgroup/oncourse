@@ -19,13 +19,13 @@ dependencies {
 	compile 'org.apache.derby:derbynet:10.9.1.0'
 	compile 'org.liquibase:liquibase-core:2.0.5'
 	
-	compile 'net.sourceforge.jtds:jtds:1.2.7'
-	compile 'mysql:mysql-connector-java:5.1.22'
+	compile 'net.sourceforge.jtds:jtds:1.3.0'
+	compile 'mysql:mysql-connector-java:5.1.23'
 	compile 'net.sf.saxon:Saxon-HE:9.4.0.6'
 	compile 'org.quartz-scheduler:quartz:2.1.6'
 	compile 'org.slf4j:slf4j-log4j12:1.7.2'
 
-    compile ('net.sf.jasperreports:jasperreports:4.7.0') {
+    compile ('net.sf.jasperreports:jasperreports:5.0.1') {
         exclude group: 'org.apache.poi', module: 'poi-ooxml'
 
         //excluding the following, because they aren't correctly defined inside dependencies, causing duplicate jars to be added to the project
