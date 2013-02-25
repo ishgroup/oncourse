@@ -151,9 +151,8 @@ public class ProductItem {
 		return priceExTax;
 	}
 
-	public Format getFeeFormat() {
-		return feeFormat;
-	}
-	
-	
+    public Format moneyFormat(Money money)
+    {
+        return FormatUtils.chooseMoneyFormat(money);
+    }
 }

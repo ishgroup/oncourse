@@ -9,7 +9,7 @@
 				<t:outputraw value="${detailText}" />
 				<strong class="more">[<a href="/product/${product.sku}">More</a>]</strong>
 			</div>
-				<div class="classItem vevent" data-classid="${product.id}">
+			<div class="classItem vevent" data-classid="${product.id}">
 					<div class="class-item-info">
 						<div class="class-item-info-l">
 							<div class="info" itemtype="http://schema.org/Offer" itemscope="" itemprop="offers">
@@ -17,7 +17,9 @@
 								<t:if t:test="voucherProductWithoutPrice">
 									<dd itemprop="price">This voucher have no specified price</dd>
 									<p:else>
-										<dd itemprop="price">${price}</dd>
+										<dd itemprop="price">
+                                            <t:output value="price" format="moneyFormat(price)"/>
+                                        </dd>
 									</p:else>
 								</t:if>
 								<t:if t:test="courseVoucherProduct">
@@ -68,7 +70,9 @@
 								<t:if t:test="voucherProductWithoutPrice">
 									<dd itemprop="price">This voucher have no specified price</dd>
 									<p:else>
-										<dd itemprop="price">${price}</dd>
+										<dd itemprop="price">
+                                            <t:output value="price" format="moneyFormat(price)"/>
+                                        </dd>
 									</p:else>
 								</t:if>
 								<t:if t:test="courseVoucherProduct">
@@ -84,7 +88,9 @@
 									<p:else>
 										<t:if t:test="voucherProductWithValue">
 											<dt class="label">Value</dt>
-											<dd>${value}</dd>
+											<dd>
+                                                <t:output value="price" format="moneyFormat(price)"/>
+                                            </dd>
 										</t:if>
 									</p:else>
 								</t:if>
