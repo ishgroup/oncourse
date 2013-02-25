@@ -37,10 +37,10 @@ public class MailingListController extends AContactController {
             addError("message-mailingListNotSelected", getMessages().format("message-mailingListNotSelected"));
             return;
         }
+        super.saveContact();
         List<Tag> subscribedLists = tagService.getMailingListsContactSubscribed(getContact());
-
         for (Tag list : selectedMailingLists) {
-            if (!subscribedLists.contains(list)) {
+            if (!containsMailingList(subscribedLists,list)) {
                 tagService.subscribeContactToMailingList(getContact(), list);
             }
             else
@@ -48,7 +48,15 @@ public class MailingListController extends AContactController {
                 addWarning("message-alreadySubscribed", getMessages().format("message-alreadySubscribed",getContact().getFullName(), list.getName()));
             }
         }
-        super.saveContact();
+    }
+
+    private boolean containsMailingList(List<Tag> subscribedLists, Tag tag)
+    {
+        for (Tag  tag1: subscribedLists) {
+            if (tag1.getId().equals(tag.getId()))
+                return true;
+        }
+        return false;
     }
 
     public List<Tag> getSelectedMailingLists() {
