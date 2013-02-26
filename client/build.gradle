@@ -2,8 +2,9 @@ apply plugin: 'macAppBundle'
 apply plugin: 'cayenne'
 
 dependencies {
-	compile project(':common')
-	compile project(':waCommon')
+	compile (project(':common')) {
+        exclude group: 'org.apache.cayenne', module: 'cayenne-server'
+    }
 
 	compile 'commons-lang:commons-lang:2.6' // TODO: upgrade this to 3.1
 	compile 'org.apache.cayenne:cayenne-client:3.1-beta.r1443526'

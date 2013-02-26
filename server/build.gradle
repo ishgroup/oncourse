@@ -5,7 +5,6 @@ dependencies {
 	def jettyVersion = '8.1.7.v20120910'
 
 	compile project(':common')
-	compile project(':waCommon')
 	compile project(':webservices-client')
 
 	compile 'org.apache.cayenne:cayenne-lifecycle:3.1-beta.r1443526'
