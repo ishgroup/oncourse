@@ -11,15 +11,13 @@ public class Constants {
      * Template for record of  "Export to Moneyworks" report
      */
     public static final String TEMPLATE = "DI\t" +
-            "{0}\t" +
-            "{1}\t" +
-            "onCourse {2}"  +
-            " {3} plan for {4}: {5} (contract until {6})\t" +
-            "1\t" +
-            "{7, number,0.000}\t" +
-            "{8}\n";
-
-
+    		"{0}\t" +
+    		"{1}\t" +
+    		"{2}\t" +
+    		"{3}\t" +
+    		"{4, number,0.000}\t" +
+    		"{5}\t" +
+    		"{6}\n";
 
     /**
      * Key for support-value of licenseData

@@ -1,6 +1,13 @@
 package ish.oncourse.admin.services.billing;
 
-public enum BillingPlan {
+public enum StockCodes {
+	
+    SMS("ON-SMS"),
+    WEB_CC("ON-CC-TRANS"),
+    OFFICE_CC("ON-NWEB-CC"),
+    ECOMMERCE("ON-ECOM-PERC"),
+	
+	// hosting/support plans
     light("OC-LIGHT"),
     professional("OC-11"),
     enterprise("OC-10"),
@@ -11,7 +18,7 @@ public enum BillingPlan {
 
     private String productionCode;
 
-    private BillingPlan(String productionCode) {
+    private StockCodes(String productionCode) {
         this.productionCode = productionCode;
     }
 

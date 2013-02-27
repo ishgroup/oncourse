@@ -1,6 +1,5 @@
 package ish.oncourse.admin.services.billing;
 
-import ish.math.Country;
 import ish.oncourse.model.College;
 import ish.oncourse.model.LicenseFee;
 import ish.oncourse.model.MessagePerson;
@@ -9,9 +8,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,6 +24,8 @@ import static ish.oncourse.admin.services.billing.Constants.DATE_MONTH_FORMAT;
 
 public class BillingDataServiceImpl implements IBillingDataService {
 	
+	private static final DateFormat TRANSACTION_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+	
     private static final String SQL_LICENSE_FEE = "SELECT l.college_id as collegeId, l.key_code as keyCode, l.fee as fee, l.paidUntil as paidUntil, l.renewalDate as renewalDate, l.plan_name as plan, l.free_transactions as freeTransactions FROM LicenseFee as l JOIN College as c on c.id = l.college_id WHERE c.billingCode IS NOT NULL";
     private static final String SQL_SMS = "SELECT count(*) as count, c.id as collegeId FROM MessagePerson AS m JOIN College AS c on c.Id = m.collegeId WHERE c.billingCode IS NOT NULL and type = 2 AND timeOfDelivery >= #bind($from)  AND timeOfDelivery <= #bind($to) GROUP BY collegeid";
     private static final String SQL_OFFICE_TRANSACTION_COUNT = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'O' AND p.type = 2 AND (status = 3 OR status = 6) GROUP BY collegeid";
@@ -39,6 +38,40 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
 	@Inject
 	private ICollegeService collegeService;
+	
+	public static Map<Double, Double> getTasmaniaEcommerceMap(double thisMonth, Map<Long, Map<String, Object>> billingData) {
+		
+		Map<Double, Double> fees = new HashMap<Double, Double>();
+		fees.put(3.50, 100000.0);
+		fees.put(3.00, 100000.0);
+		fees.put(1.80, 200000.0);
+		fees.put(1.25, 400000.0);
+		fees.put(1.00, 800000.0);
+		fees.put(0.95, 1600000.0);
+		fees.put(0.90, 9999999999.0);
+		
+		Map<Double, Double> result = new HashMap<Double, Double>();
+		
+		BigDecimal tasmaniaYearToDate = (BigDecimal) billingData.get(new Long(15)).get("tasmaniaYearToDate");
+		double yearToDate = tasmaniaYearToDate == null ? 0 : tasmaniaYearToDate.doubleValue();
+		
+		for (Double key : fees.keySet()) {
+			if (yearToDate > 0) {
+				double deductThisIteration = Math.min(yearToDate, fees.get(key));
+				fees.put(key, fees.get(key) - deductThisIteration);
+				yearToDate -= deductThisIteration;
+			}
+		}
+		
+		for (Double key : fees.keySet()) {
+			if (fees.get(key) > 0 && thisMonth > 0) {
+				result.put(key, Math.min(thisMonth, fees.get(key)));
+				thisMonth -= fees.get(key);
+			}
+		}
+		
+		return result;
+	}
 
 	@Override
 	public Map<Long, Map<String, Object>> getLicenseFeeData() {
@@ -179,7 +212,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
     }
 
     public String getBillingDataExport(List<College> colleges, Date month) {
-		String exportData = "Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.StockQty\tDetail.UnitPrice\tDescription\n";
+		String exportData = "Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.StockQty\tDetail.UnitPrice\tDescription\tTransactionDate\n";
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(month);
@@ -203,207 +236,19 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
 	private String buildMWExport(College college, Date from, Map<Long, Map<String, Object>> billingData, Map<Long, Map<String, Object>> licenseData) {
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_MONTH_FORMAT);
-		String monthAndYear = dateFormat.format(from);
-		String description = "onCourse " + monthAndYear;
-		String text = "";
+		StringBuilder text = new StringBuilder();
 		
-		NumberFormat moneyFormat = NumberFormat.getCurrencyInstance(Country.AUSTRALIA.locale());
-		moneyFormat.setMinimumFractionDigits(2);
-
-		if (isSupportBillingMonth(college, from, licenseData)) {
-			Date renewalDate = (Date) licenseData.get(college.getId()).get("support-renewalDate");
-			
-			text += MWExportFormat.SupportFormat.format(licenseData, college, from, renewalDate, description);
-		}
+		text.append(new SupportExportLineBuilder(college, from, billingData, licenseData).buildLine());
+		text.append(new HostingExportLineBuilder(college, from, billingData, licenseData).buildLine());
+		text.append(new SMSExportLineBuilder(college, from, billingData, licenseData).buildLine());
+		text.append(new WebCCExportLineBuilder(college, from, billingData, licenseData).buildLine());
+		text.append(new OfficeCCExportLineBuilder(college, from, billingData, licenseData).buildLine());
+		text.append(new EcommerceExportLineBuilder(college, from, billingData, licenseData).buildLine());
 		
-		if (isWebHostingBillingMonth(college, from, licenseData)) {
-			Date renewalDate = (Date) licenseData.get(college.getId()).get("hosting-renewalDate");
-			
-			text += MWExportFormat.HostingFormat.format(licenseData, college, from, renewalDate, description);
-		}
-		//TODO refactoring all other report's string to use MWExportFormat
-		DecimalFormat decimalFormatter = new DecimalFormat();
-		decimalFormatter.setRoundingMode(RoundingMode.valueOf(2));
-		
-		Long sms = (Long) billingData.get(college.getId()).get("sms");
-		sms = sms == null ? 0 : sms;
-		
-		text += "DI\t" +
-				college.getBillingCode() + "\t" +
-				"ON-SMS" + "\t" +
-				"SMS usage for " + monthAndYear + "\t" +
-				sms + "\t" +
-				licenseData.get(college.getId()).get("sms") + "\t" +
-				description + "\n";
-		
-		Long ccWeb = (Long) billingData.get(college.getId()).get("ccWeb");
-		BigDecimal ccWebFree = (BigDecimal) licenseData.get(college.getId()).get("cc-web");
-		ccWeb = ccWeb == null ? 0 : ccWeb;
-		ccWebFree = ccWebFree == null ? new BigDecimal(0.0) : ccWebFree;
-		
-		text += "DI\t" +
-				college.getBillingCode() + "\t" +
-				"ON-CC-TRANS" + "\t" +
-				"onCourse online credit card transaction fee for " + monthAndYear + "\t" +
-				ccWeb + "\t" + ccWebFree + "\t" +
-				description + "\n";
-		
-		text += "DI\t" +
-				college.getBillingCode() + "\t" +
-				"ON-NWEB-CC" + "\t" +
-				"onCourse office credit card transaction fee for " + monthAndYear;
-		
-		Integer ccOfficeFree = (Integer) licenseData.get(college.getId()).get("cc-office-free");
-		Long ccOffice = (Long) billingData.get(college.getId()).get("ccOffice");
-		ccOfficeFree = ccOfficeFree == null ? 0 : ccOfficeFree;
-		ccOffice = ccOffice == null ? 0 : ccOffice;
-		
-		if (ccOfficeFree > 0) {
-			text += " (" + ccOffice + " less " + ccOfficeFree + " free transactions)";
-		}
-		text += "\t" + Math.max(0, ccOffice - ccOfficeFree) + "\t" + 
-				licenseData.get(college.getId()).get("cc-office") + 
-				"\t" + description +"\n";
-		
-		if (college.getId().longValue() == 15) {
-			
-			// Tasmania ecommerce
-			
-			Map<Double, Double> tasmaniaEcommerceFees = getTasmaniaFees(college, billingData);
-			
-			double totalFee = 0.0;
-			
-			for (Double key : tasmaniaEcommerceFees.keySet()) {
-				text += "DI\t" +
-						college.getBillingCode() + "\t" +
-						"ON-ECOM-PERC" + "\t" +
-						"onCourse eCommerce fee at " + decimalFormatter.format(key) + "% of " +
-						moneyFormat.format(tasmaniaEcommerceFees.get(key)) + " for " + monthAndYear + "\t" +
-						"1\t";
-				double fee = tasmaniaEcommerceFees.get(key) * key / 100;
-				totalFee += fee;
-				
-				text += decimalFormatter.format(fee) + "\t" +
-						description + "\n";
-			}
-			
-			if (totalFee < 375) {
-				text += "DI\t" + 
-						college.getBillingCode() + "\t" +
-						"ON-ECOM-PERC" + "\t" +
-						"Adjustment for onCourse eCommerce minimum monthly fee of $375.\t" +
-						"1\t" +
-						decimalFormatter.format(375 - totalFee) + "\t" +
-						description + "\n";
-			}
-		}
-		else {
-			BigDecimal ecommerce = (BigDecimal) licenseData.get(college.getId()).get("ecommerce");
-			BigDecimal ccWebValue = (BigDecimal) billingData.get(college.getId()).get("ccWebValue");
-			ecommerce = ecommerce == null ? new BigDecimal(0.0) : ecommerce;
-			ccWebValue = ccWebValue ==null ? new BigDecimal(0.0) : ccWebValue;
-			text += "DI\t" +
-					college.getBillingCode() + "\t" +
-					"ON-ECOM-PERC" + "\t" +
-					"onCourse eCommerce fee at " + (ecommerce.doubleValue() * 100) + "% of " +
-					moneyFormat.format(ccWebValue) + " for " + monthAndYear + "\t" + "1\t" +
-					decimalFormatter.format(ccWebValue.multiply(ecommerce)) + "\t" +
-					description + "\n";
-		}
-		
-		return text;
-	}
-	
-	private boolean isSupportBillingMonth(College college, Date fromMonth, Map<Long, Map<String, Object>> licenseData) {
-		
-		String billingPlan = (String) licenseData.get(college.getId()).get("support-plan");
-		
-		if (billingPlan == null) {
-			return false;
-		}
-		
-		Date paidUntil = (Date) licenseData.get(college.getId()).get("support-paidUntil");
-		
-		if (paidUntil == null) {
-			return true;
-		}
-		
-		Calendar payMonth = Calendar.getInstance();
-		payMonth.setTime(paidUntil);
-		
-		Calendar billingMonth = Calendar.getInstance();
-		billingMonth.setTime(fromMonth);
-		
-		return (payMonth.get(Calendar.YEAR) <= billingMonth.get(Calendar.YEAR) 
-				&& payMonth.get(Calendar.MONTH) <= billingMonth.get(Calendar.MONTH));
-	}
-	
-	private boolean isWebHostingBillingMonth(College college, Date fromMonth, Map<Long, Map<String, Object>> licenseData) {
-		
-		String billingPlan = (String) licenseData.get(college.getId()).get("hosting-plan");
-		
-		if (billingPlan == null) {
-			return false;
-		}
-		
-		Date paidUntil = (Date) licenseData.get(college.getId()).get("hosting-paidUntil");
-		
-		if (paidUntil == null) {
-			return true;
-		}
-		
-		Calendar payMonth = Calendar.getInstance();
-		payMonth.setTime(paidUntil);
-		
-		Calendar billingMonth = Calendar.getInstance();
-		billingMonth.setTime(fromMonth);
-		
-		return (payMonth.get(Calendar.YEAR) <= billingMonth.get(Calendar.YEAR) 
-				&& payMonth.get(Calendar.MONTH) <= billingMonth.get(Calendar.MONTH));
-	}
-	
-	private Map<Double, Double> getTasmaniaFees(College college, Map<Long, Map<String, Object>> billingData) {
-		if (college.getId() == 15) {
-			BigDecimal ccWebValue = (BigDecimal) billingData.get(college.getId()).get("ccWebValue");
-			ccWebValue = ccWebValue == null ? new BigDecimal(0.0) : ccWebValue;
-			return getTasmaniaEcommerce(ccWebValue.doubleValue(), billingData);
-		} else {
-			return null;
-		}
+		return text.toString();
 	}
 	
 	public Map<Double, Double> getTasmaniaEcommerce(double thisMonth, Map<Long, Map<String, Object>> billingData) {
-		
-		Map<Double, Double> fees = new HashMap<Double, Double>();
-		fees.put(3.50, 100000.0);
-		fees.put(3.00, 100000.0);
-		fees.put(1.80, 200000.0);
-		fees.put(1.25, 400000.0);
-		fees.put(1.00, 800000.0);
-		fees.put(0.95, 1600000.0);
-		fees.put(0.90, 9999999999.0);
-		
-		Map<Double, Double> result = new HashMap<Double, Double>();
-		
-		BigDecimal tasmaniaYearToDate = (BigDecimal) billingData.get(new Long(15)).get("tasmaniaYearToDate");
-		double yearToDate = tasmaniaYearToDate == null ? 0 : tasmaniaYearToDate.doubleValue();
-		
-		for (Double key : fees.keySet()) {
-			if (yearToDate > 0) {
-				double deductThisIteration = Math.min(yearToDate, fees.get(key));
-				fees.put(key, fees.get(key) - deductThisIteration);
-				yearToDate -= deductThisIteration;
-			}
-		}
-		
-		for (Double key : fees.keySet()) {
-			if (fees.get(key) > 0 && thisMonth > 0) {
-				result.put(key, Math.min(thisMonth, fees.get(key)));
-				thisMonth -= fees.get(key);
-			}
-		}
-		
-		return result;
+		return getTasmaniaEcommerceMap(thisMonth, billingData);
 	}
 }
