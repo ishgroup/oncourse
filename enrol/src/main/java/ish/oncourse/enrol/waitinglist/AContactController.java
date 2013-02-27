@@ -52,6 +52,18 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 	public void resetContact() {
 	}
 
+    /**
+     * Default value for this fields should be true
+     * because mailing-list and waiting-list features
+     * mean to use some kind of notification
+     */
+    protected void applyMarketingValues()
+    {
+        contact.setIsMarketingViaEmailAllowed(Boolean.TRUE);
+        contact.setIsMarketingViaPostAllowed(Boolean.TRUE);
+        contact.setIsMarketingViaSMSAllowed(Boolean.TRUE);
+    }
+
 	@Override
 	public void addContact() {
 		ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
@@ -108,7 +120,7 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 
 	@Override
 	public void saveContact() {
-
+        applyMarketingValues();
 		objectContext.commitChanges();
 		state = State.FINISHED;
 	}
