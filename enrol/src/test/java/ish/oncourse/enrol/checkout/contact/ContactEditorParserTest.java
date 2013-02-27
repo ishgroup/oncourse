@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout.contact;
 
+import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
@@ -41,7 +42,7 @@ public class ContactEditorParserTest {
 		parameters.put(dateOfBirth.name(), "11/d11/d2011");
 
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(Checkout.DATE_FIELD_FORMAT);
 		Contact contact = new Contact();
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.YEAR, -19);
@@ -70,7 +71,7 @@ public class ContactEditorParserTest {
         parser.setRequest(request);
 		parser.setContactFieldHelper(contactFieldHelper);
 		parser.setMessages(messages);
-        parser.setDateFormat(new SimpleDateFormat("dd/MM/yyyy"));
+        parser.setDateFormat(new SimpleDateFormat(Checkout.DATE_FIELD_FORMAT));
 
         FieldDescriptor[] fieldDescriptors =  FieldDescriptor.values();
         ArrayList<String> fields = new ArrayList<String>();
