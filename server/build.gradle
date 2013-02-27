@@ -233,39 +233,29 @@ task bundle_winService64(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
 task installer_freebsd(dependsOn: fatJar, type: Copy) {
 	description "Create the FreeBSD package (installer)."
 	doFirst {
-		logger.lifecycle("Creating the freebsd application executable for $project.name")
+		logger.lifecycle("Creating the freebsd application executable for $project.name.")
 	}
 	
 	with freebsdAppFiles
 	into file("${distsDir}/freebsd")
 
 	doLast {
-		ant.replace(file: "${distsDir}/freebsd/+COMMENT", 		token: "@version@", 			value: "${project.version}")
-		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", 		token: "@version@", 			value: "${project.version}")
-		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", 		token: "@project.name@", 		value: "${project.name}")
-		ant.replace(file: "${distsDir}/freebsd/+DISPLAY", 		token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
+		logger.lifecycle("Calculating checksums for the $project.name freebsd application executable")
+		ant.length(file:"${distsDir}/freebsd/onCourse/${project.name}-${project.version}-all.jar", property: 'size_onCourseServerJar')
+
 		ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@version@", 			value: "${project.version}")
 		ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@project.name@", 		value: "${project.name}")
 		ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
 
-		logger.lifecycle("Calculating checksums for the $project.name freebsd application executable")
-		ant.checksum(file:"${distsDir}/freebsd/+COMMENT", 										property: "hash_comment")
-		ant.checksum(file:"${distsDir}/freebsd/+DESC", 											property: "hash_desc")
-		ant.checksum(file:"${distsDir}/freebsd/+DISPLAY", 										property: "hash_display")
-		ant.checksum(file:"${distsDir}/freebsd/onCourse/${project.name}-${project.version}-all.jar", 	property: "hash_onCourseServerJar")
-		ant.checksum(file:"${distsDir}/freebsd/onCourseServer", 								property: "hash_onCourseServer")
+		ant.replace(file: "${distsDir}/freebsd/+MANIFEST", token: "@version@", 					value: "${project.version}")
+		ant.replace(file: "${distsDir}/freebsd/+MANIFEST", token: "@size_onCourseServerJar@", 	value: "${ant.size_onCourseServerJar}")
+		ant.replace(file: "${distsDir}/freebsd/+MANIFEST", token: "@hash_onCourseServerJar@", 	value: sha256("${distsDir}/freebsd/onCourse/${project.name}-${project.version}-all.jar") )
+		ant.replace(file: "${distsDir}/freebsd/+MANIFEST", token: "@hash_onCourseServer@", 		value: sha256("${distsDir}/freebsd/onCourseServer") )
 
-		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_onCourseServerJar@", 	value: "${ant.hash_onCourseServerJar}")
-		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_onCourseServer@", 		value: "${ant.hash_onCourseServer}")
-		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_comment@", 			value: "${ant.hash_comment}")
-		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_desc@", 				value: "${ant.hash_desc}")
-		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_display@", 			value: "${ant.hash_display}")
+		ant.tar(basedir:"${distsDir}/freebsd/", destfile:"${distsDir}/onCourseServer.tar")
+		xzCompress("${distsDir}/onCourseServer.tar", "${distsDir}/onCourseServer.txz")
 
-		ant.tar(basedir:"${distsDir}/freebsd/", destfile:"${distsDir}/freebsd/onCourseServer.tar")
-		ant.gzip(zipfile: "${distsDir}/freebsd/onCourseServer.tgz", src:"${distsDir}/freebsd/onCourseServer.tar")
-
-		delete freebsdAppFiles
-		delete "${distsDir}/freebsd/onCourseServer.tar"
+		delete "${distsDir}/freebsd"
 	}	
 } 
 
@@ -323,4 +313,22 @@ task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], 
 		certificateFile = file (project.codeSigningTemporaryKeystore)
 		certificateFilePassword= project.codeSigningTemporaryPassword
 	}
+}
+
+String sha256(String filename) {
+	if (! file(filename).exists()) return "missing file"
+
+	new ByteArrayOutputStream().withStream { result ->
+		def e = exec {
+			executable = 'shasum' // this is only going to work on OSX
+			args = ['-a', '256', filename]
+			standardOutput = result
+		}
+		return result.toString().split()[0]
+	}
+}
+
+void xzCompress(String input, String output) {
+	def process = "xz -7 --stdout $input > $output".execute()
+	process.waitFor()
 }
