@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.components.checkout.contact;
 
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
+import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
@@ -16,7 +17,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.text.DateFormat;
 import java.util.Date;
 
-import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
 public class ContactEditorFieldSet {
@@ -99,6 +99,6 @@ public class ContactEditorFieldSet {
 
 
 	public DateFormat getDateFormat() {
-		return FormatUtils.getDateFormat(DATE_FIELD_FORMAT, delegate.getContact().getCollege().getTimeZone());
+		return FormatUtils.getDateFormat(Checkout.DATE_FIELD_SHOW_FORMAT, delegate.getContact().getCollege().getTimeZone());
 	}
 }

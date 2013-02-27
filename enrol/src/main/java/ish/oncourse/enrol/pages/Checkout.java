@@ -36,7 +36,10 @@ public class Checkout {
      * It uses "yy" format for year because the the format parses years like 11, 73, 85 correctly. For example:
      * if an user enters 1/1/73 it means 01/01/1973 but not 01/01/0073 which it would be got when it uses format yyyy
      */
-    public static final String DATE_FIELD_FORMAT = "dd/MM/yy";
+    public static final String DATE_FIELD_PARSE_FORMAT = "dd/MM/yy";
+
+    public static final String DATE_FIELD_SHOW_FORMAT = "dd/MM/yyyy";
+
 
     public static final Logger LOGGER = Logger.getLogger(Checkout.class);
 

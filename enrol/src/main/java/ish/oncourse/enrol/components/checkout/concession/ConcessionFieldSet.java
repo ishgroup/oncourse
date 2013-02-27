@@ -48,7 +48,7 @@ public class ConcessionFieldSet {
 	{
 		if (dateFormat == null)
 		{
-			dateFormat = FormatUtils.getDateFormat(Checkout.DATE_FIELD_FORMAT,getStudent().getCollege().getTimeZone());
+			dateFormat = FormatUtils.getDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT,getStudent().getCollege().getTimeZone());
 		}
 		return dateFormat;
 	}
@@ -76,7 +76,8 @@ public class ConcessionFieldSet {
 	public void setExpiresOn(String value)
 	{
 		try {
-			getStudentConcession().setExpiresOn(value != null ? getDateFormat().parse(value): null);
+            DateFormat format = FormatUtils.getDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT,getStudent().getCollege().getTimeZone());
+			getStudentConcession().setExpiresOn(value != null ? format.parse(value): null);
 		} catch (ParseException e) {
 			LOGGER.warn(e);
 		}

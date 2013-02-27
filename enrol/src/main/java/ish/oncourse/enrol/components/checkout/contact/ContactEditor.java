@@ -21,8 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
-
 public class ContactEditor {
 
 	@Parameter(required = true)
@@ -100,7 +98,7 @@ public class ContactEditor {
 			contactEditorParser.setContactFieldHelper(getContactFieldHelper());
 			contactEditorParser.setMessages(contactEditorFieldSet.getMessages());
 			contactEditorParser.setVisibleFields(delegate.getVisibleFields());
-			contactEditorParser.setDateFormat(getDateFormat());
+			contactEditorParser.setDateFormat(FormatUtils.getDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT, getContact().getCollege().getTimeZone()));
 			contactEditorParser.parse();
 			Map<String,String> errors = new HashMap<String, String>(contactEditorParser.getErrors());
 
@@ -130,10 +128,10 @@ public class ContactEditor {
 
 	public DateFormat getDateFormat()
 	{
-		return  FormatUtils.getDateFormat(DATE_FIELD_FORMAT, getContact().getCollege().getTimeZone());
+		return  FormatUtils.getDateFormat(Checkout.DATE_FIELD_SHOW_FORMAT, getContact().getCollege().getTimeZone());
 	}
 
-	@OnEvent(value = "cancelContact")
+    @OnEvent(value = "cancelContact")
 	public Object cancelContact() {
 		if (delegate != null)
 		{

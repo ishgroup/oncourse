@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
@@ -14,7 +15,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Locale;
 
-import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -70,7 +70,7 @@ public class ConcessionValidatorTest {
 		when(studentConcession.getConcessionType()).thenReturn(concessionType);
 		parser.setStudentConcession(studentConcession);
 		parser.setMessages(createMessages());
-		parser.setDateFormat(FormatUtils.getDateFormat(DATE_FIELD_FORMAT, null));
+		parser.setDateFormat(FormatUtils.getDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT, null));
 		return parser;
 	}
 
