@@ -337,7 +337,8 @@ public class Web {
 	Object onActionFromDeleteUser(String email) {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
-		Expression exp = ExpressionFactory.matchDbExp(WillowUser.EMAIL_PROPERTY, email);
+		Expression exp = ExpressionFactory.matchDbExp(WillowUser.EMAIL_PROPERTY, email)
+				.andExp(ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, college));
 		SelectQuery query = new SelectQuery(WillowUser.class, exp);
 		WillowUser user = (WillowUser) Cayenne.objectForQuery(context, query);
 		context.deleteObject(user);
