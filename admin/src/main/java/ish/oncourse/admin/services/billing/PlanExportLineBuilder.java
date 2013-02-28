@@ -4,8 +4,11 @@ import ish.oncourse.model.College;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+
+import org.apache.commons.lang.time.DateUtils;
 
 public abstract class PlanExportLineBuilder extends AbstractExportLineBuilder {
 	
@@ -47,6 +50,28 @@ public abstract class PlanExportLineBuilder extends AbstractExportLineBuilder {
 	@Override
 	protected BigDecimal getUnitPrice() {
 		return (BigDecimal) licenseData.get(college.getId()).get(getPlanType());
+	}
+	
+	protected boolean isPlanBillingMonth(String planKey, String paidUntilKey) {
+		String billingPlan = (String) licenseData.get(college.getId()).get(planKey);
+		
+		if (billingPlan == null) {
+			return false;
+		}
+		
+		Date paidUntil = (Date) licenseData.get(college.getId()).get(paidUntilKey);
+		
+		if (paidUntil == null) {
+			return true;
+		}
+		
+		Calendar payMonth = Calendar.getInstance();
+		payMonth.setTime(paidUntil);
+		
+		Calendar billingMonth = Calendar.getInstance();
+		billingMonth.setTime(from);
+		
+		return DateUtils.truncate(payMonth, Calendar.MONTH).compareTo(DateUtils.truncate(billingMonth, Calendar.MONTH)) <= 0;
 	}
 	
 }

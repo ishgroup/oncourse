@@ -30,35 +30,11 @@ public class SupportExportLineBuilder extends PlanExportLineBuilder {
 
 	@Override
 	protected boolean skipLine() {
-		return !isSupportBillingMonth();
+		return !isPlanBillingMonth(SUPPORT_PLAN_KEY, SUPPORT_PAID_UNTIL_KEY);
 	}
 	
 	@Override
 	protected Date getRenewalDate() {
 		return (Date) licenseData.get(college.getId()).get(SUPPORT_RENEWAL_DATE_KEY);
 	}
-	
-	private boolean isSupportBillingMonth() {
-		String billingPlan = (String) licenseData.get(college.getId()).get(SUPPORT_PLAN_KEY);
-		
-		if (billingPlan == null) {
-			return false;
-		}
-		
-		Date paidUntil = (Date) licenseData.get(college.getId()).get(SUPPORT_PAID_UNTIL_KEY);
-		
-		if (paidUntil == null) {
-			return true;
-		}
-		
-		Calendar payMonth = Calendar.getInstance();
-		payMonth.setTime(paidUntil);
-		
-		Calendar billingMonth = Calendar.getInstance();
-		billingMonth.setTime(from);
-		
-		return (payMonth.get(Calendar.YEAR) <= billingMonth.get(Calendar.YEAR) 
-				&& payMonth.get(Calendar.MONTH) <= billingMonth.get(Calendar.MONTH));
-	}
-
 }

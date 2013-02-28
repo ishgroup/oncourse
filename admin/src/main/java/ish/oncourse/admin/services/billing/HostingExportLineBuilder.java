@@ -2,9 +2,9 @@ package ish.oncourse.admin.services.billing;
 
 import ish.oncourse.model.College;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+
 
 public class HostingExportLineBuilder extends PlanExportLineBuilder {
 	
@@ -30,35 +30,11 @@ public class HostingExportLineBuilder extends PlanExportLineBuilder {
 
 	@Override
 	protected boolean skipLine() {
-		return !isHostingBillingMonth();
+		return !isPlanBillingMonth(HOSTING_PLAN_KEY, HOSTING_PAID_UNTIL_KEY);
 	}
 	
 	@Override
 	protected Date getRenewalDate() {
 		return (Date) licenseData.get(college.getId()).get(HOSTING_RENEWAL_DATE_KEY);
-	}
-	
-	private boolean isHostingBillingMonth() {
-		String billingPlan = (String) licenseData.get(college.getId()).get(HOSTING_PLAN_KEY);
-		
-		if (billingPlan == null) {
-			return false;
-		}
-		
-		Date paidUntil = (Date) licenseData.get(college.getId()).get(HOSTING_PAID_UNTIL_KEY);
-		
-		if (paidUntil == null) {
-			return true;
-		}
-		
-		Calendar payMonth = Calendar.getInstance();
-		payMonth.setTime(paidUntil);
-		
-		Calendar billingMonth = Calendar.getInstance();
-		billingMonth.setTime(from);
-		
-		return payMonth.get(Calendar.YEAR) == billingMonth.get(Calendar.YEAR) ? 
-				payMonth.get(Calendar.MONTH) <= billingMonth.get(Calendar.MONTH) : 
-					payMonth.get(Calendar.YEAR) < billingMonth.get(Calendar.YEAR); 
 	}
 }
