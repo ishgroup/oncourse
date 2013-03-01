@@ -330,6 +330,8 @@ String sha256(String filename) {
 }
 
 void xzCompress(String input, String output) {
-	def process = "xz -7 --stdout $input > $output".execute()
-	process.waitFor()
+	def p1 = "xz -9 $input".execute()
+	p1.waitFor()
+	def p2 = ("mv $input" + ".xz $output").execute()
+	p2.waitFor()
 }
