@@ -16,7 +16,7 @@ public class BillingDataServiceImplTest {
 	@Test
 	public void testHostingFormat()
 	{
-		String original = "DI\tCHERSON01\tOCW-21\tonCourse standard hosting plan for Cherson: March, 2012 (contract until March, 2013)\t1\t1234567.890\tonCourse March, 2012\n";
+		String original = "DI\tCHERSON01\tOCW-21\tonCourse standard hosting plan for Cherson: March, 2012 (contract until March, 2013)\t1\t1234567.890\tonCourse March, 2012\t31/03/2012\n";
 		Map<Long, Map<String, Object>> licenseData = new HashMap<Long, Map<String, Object>>();
 		Map<String,Object> cData = new HashMap<String, Object>();
 		cData.put(HostingExportLineBuilder.HOSTING_PLAN_KEY, StockCodes.standard.name());
@@ -58,7 +58,7 @@ public class BillingDataServiceImplTest {
 	@Test
 	public void testSupportFormat()
 	{
-		String original = "DI\tCHERSON01\tOCW-21\tonCourse standard support plan for Cherson: March, 2012 (contract until March, 2013)\t1\t1234567.890\tonCourse March, 2012\n";
+		String original = "DI\tCHERSON01\tOCW-21\tonCourse standard support plan for Cherson: March, 2012 (contract until March, 2013)\t1\t1234567.890\tonCourse March, 2012\t31/03/2012\n";
 		Map<Long, Map<String, Object>> licenseData = new HashMap<Long, Map<String, Object>>();
 
 		Map<String,Object> cData = new HashMap<String, Object>();
