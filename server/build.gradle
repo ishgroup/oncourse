@@ -79,7 +79,7 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 	main = 'ish.oncourse.server.AngelServer'
 	classpath = sourceSets.main.runtimeClasspath
 	args 'DEBUG=true'
-	jvmArgs '-Xmx2048m', '-XX:MaxPermSize=256M', '-XX:+HeapDumpOnOutOfMemoryError'
+	jvmArgs '-Xmx1024m', '-XX:MaxPermSize=128M', '-XX:+HeapDumpOnOutOfMemoryError'
 }
 
 test {
