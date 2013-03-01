@@ -8,7 +8,7 @@ dependencies {
 	compile project(':webservices-client')
 
 	compile 'org.apache.cayenne:cayenne-lifecycle:3.1-beta.r1443526'
-	compile 'org.apache.cayenne:cayenne-tools:3.1-beta.r1443526'
+
 	compile 'foxtrot:foxtrot-core:4.0'
 
 	compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"

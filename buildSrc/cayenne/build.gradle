@@ -20,15 +20,7 @@ apply plugin: 'maven'
 
 version = '1.0'
 
-repositories {
-	mavenCentral()
-	maven {
-		url 'http://objectstyle.org/maven2'
-	}
-}
-
 dependencies {
-	compile gradleApi()
 	groovy localGroovy()
-	runtime 'org.apache.cayenne:cayenne-tools:3.1B1'
+	compile gradleApi()
 }

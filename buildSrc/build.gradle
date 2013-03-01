@@ -5,6 +5,7 @@ dependencies {
     compile gradleApi()
     compile 'org.tmatesoft.svnkit:svnkit:1.7.5'
     groovy 'org.codehaus.groovy:groovy-all:1.8.4'
+    compile 'org.apache.cayenne:cayenne-tools:3.1B2'
 }
 
 repositories {

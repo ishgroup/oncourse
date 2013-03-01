@@ -8,7 +8,6 @@ dependencies {
 
 	compile 'commons-lang:commons-lang:2.6' // TODO: upgrade this to 3.1
 	compile 'org.apache.cayenne:cayenne-client:3.1-beta.r1443526'
-	compile 'org.apache.cayenne:cayenne-tools:3.1-beta.r1443526'
 	compile 'foxtrot:foxtrot-core:4.0'
 	compile 'com.miglayout:miglayout-swing:4.2'
 	compile 'com.migcalendar:migcalendar:6.9.2'
