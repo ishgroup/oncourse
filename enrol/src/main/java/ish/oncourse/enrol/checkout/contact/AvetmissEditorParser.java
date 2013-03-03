@@ -78,11 +78,14 @@ public class AvetmissEditorParser implements IFieldsParser{
 				contact.getStudent().setHighestSchoolLevel(AvetmissStudentSchoolLevel.valueOf(value));
 				break;
 			case yearSchoolCompleted:
+				String error;
 				if (StringUtils.isNumeric(value)) {
 					contact.getStudent().setYearSchoolCompleted(Integer.parseInt(value));
-				} else {
-					errors.put(field.propertyName, messages.get(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
-				}
+					error = contact.getStudent().validateSchoolYear();
+				} else
+					error = messages.get(String.format(MESSAGE_KEY_TEMPLATE, field.name()));
+				if (error != null)
+					errors.put(field.propertyName, error);
 				break;
 			case priorEducationCode:
 				contact.getStudent().setPriorEducationCode(AvetmissStudentPriorEducation.valueOf(value));
