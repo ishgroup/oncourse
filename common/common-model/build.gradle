@@ -1,9 +1,10 @@
 dependencies {
-	compile ('ish.oncourse.angel:waCommon:4.0'){
-		//we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
-		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
-	}
-	compile 'org.apache.cayenne:cayenne-server:3.1M3-b1'
+    compile ('ish.oncourse.angel:waCommon:4.0'){
+        //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
+        exclude group: 'org.apache.cayenne', module: 'cayenne-server'
+    }
+
+    compile 'org.apache.cayenne:cayenne-server:3.1M3-b1'
 	compile 'org.apache.cayenne:cayenne-lifecycle:3.1M3-b1'
 	compile 'joda-time:joda-time:1.6.2'
 	compile 'commons-lang:commons-lang:2.6'
@@ -19,7 +20,7 @@ dependencies {
 	//we use the lib to validate email address
 	compile 'javax.mail:mail:1.4.5'
 
-	// The odd next line is to work around gradle pulling in the wrong configuration
+    // The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 }
