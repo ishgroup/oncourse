@@ -1,5 +1,5 @@
 dependencies {
-	testCompile ('ish.oncourse.angel:waCommon:trunk-SNAPSHOT') {
+	testCompile ('ish.oncourse.angel:waCommon:4.0') {
 		//we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
 		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
 	}
