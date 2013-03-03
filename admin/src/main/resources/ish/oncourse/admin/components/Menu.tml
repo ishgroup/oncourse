@@ -1,5 +1,5 @@
 <t:container
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div class="navbar navbar-inverse">
 		<div class="navbar-inner">
@@ -23,9 +23,6 @@
 				<li class="selectable"><t:pagelink id="Billing" page="Billing">Billing</t:pagelink><div></div></li>
 				<li class="selectable"><t:pagelink id="AddSuperUser" page="AddSuperUser">Super users</t:pagelink><div></div></li>
 				<li class="selectable"><t:pagelink id="ReplicationStatus" page="ReplicationStatus">Replication status</t:pagelink></li>
-			</ul>
-			<ul class="nav pull-right">
-				<li class="pull-right"><a href="#" t:type="ActionLink" t:id="logout">Logout</a></li>
 			</ul>
 		</div>
 	</div>
