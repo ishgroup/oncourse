@@ -118,9 +118,11 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         assertEquals(2, purchaseController.getModel().getAllEnabledEnrolments().size());
 
         Contact contact1 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001);
+        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getInvoiceLine().getInvoiceLineDiscounts().size());
         assertEnabledEnrolments(contact1, 1, true);
 
         Contact contact2 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1002);
+        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getInvoiceLine().getInvoiceLineDiscounts().size());
         assertEnabledEnrolments(contact2, 1, true);
 
         Contact contact3 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1003);
@@ -128,9 +130,20 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 
         //emulate back button
         purchaseController.adjustState(PurchaseController.Action.enableEnrolment);
+        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getInvoiceLine().getInvoiceLineDiscounts().size());
         assertEnabledEnrolments(contact1, 1, true);
+
         assertEnabledEnrolments(contact2, 1, true);
+        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getInvoiceLine().getInvoiceLineDiscounts().size());
+
         assertDisabledEnrolments(contact3, 1);
 
+        //disable enrolment with discount and proceedToPayment (the test for InvoiceLineDiscount.isAsyncReplicationAllowed() which can be performed on postRemove)
+        ActionParameter actionParameter = new ActionParameter(PurchaseController.Action.disableEnrolment);
+        actionParameter.setValue(purchaseController.getModel().getEnabledEnrolments(contact1).get(0));
+        purchaseController.performAction(actionParameter);
+
+        proceedToPayment();
+        assertDisabledEnrolments(contact1, 0);
     }
 }

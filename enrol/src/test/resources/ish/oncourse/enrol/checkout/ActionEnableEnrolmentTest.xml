@@ -113,6 +113,31 @@
                studentId="1004" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
                status="2" />
 
+    <Discount
+            id="1003"
+            angelId="1"
+            collegeId="1"
+            combinationType="1"
+            created="2011-09-12 00:56:00.0"
+            detail="detail"
+            discountAmount="100.0"
+            discountRate="1.11"
+            discountType="2"
+            modified="2011-09-12 00:56:00.0"
+            name="name"
+            roundingMode="1"
+            timeZone="timeZone"
+            validFrom="2011-09-12 00:56:00.0"
+            validTo="2111-09-12 00:56:00.0"
+            hideOnWeb="0"
+            isAvailableOnWeb="1"/>
+
+    <DiscountCourseClass id="1003" angelId="1003" collegeId="1" courseClassId="1003"
+                         created="2011-09-12 00:56:00.0"
+                         modified="2011-09-12 00:56:00.0"
+                         discountId="1003"/>
+
+
 
     <Preference id="1" collegeId="1" name="license.ccprocessing"
 		value_string="true" />

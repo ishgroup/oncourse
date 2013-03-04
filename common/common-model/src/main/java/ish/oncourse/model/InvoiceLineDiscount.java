@@ -16,6 +16,12 @@ public class InvoiceLineDiscount extends _InvoiceLineDiscount implements Queueab
 	 * @return
 	 */
 	public boolean isAsyncReplicationAllowed() {
+        /**
+         * property InvoiceLine is null when InvoiceLineDiscount was deleted.
+         * so we shoud replicate this changes to angel when if the InvoiceLineDiscount has angelid
+         */
+        if (getInvoiceLine() == null)
+            return getAngelId() != null;
 		return getInvoiceLine().isAsyncReplicationAllowed();
 	}
 }
