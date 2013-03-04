@@ -9,10 +9,6 @@ dependencies {
 	compile 'net.java.dev.textile-j:textile-j:2.2.864'
 	compile 'commons-io:commons-io:2.4'
 	compile 'com.google.inject:guice:3.0'
-
-	// added the correct dependency manually, with version number properly formatted
-	compile 'org.bouncycastle:bctsp-jdk14:1.46'
-
 }
 
 jar {
