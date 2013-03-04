@@ -8,5 +8,4 @@ dependencies {
 	compile 'org.apache.tapestry:tapestry-ioc:5.2.6'
 	compile 'commons-lang:commons-lang:2.6'
 	compile 'joda-time:joda-time:1.6.2'
-	compile 'org.apache.solr:solr-solrj:3.5.0'
 }
