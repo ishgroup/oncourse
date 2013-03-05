@@ -15,7 +15,7 @@ public class InvoiceUtils {
     /**
      * sums all invoice amount owing for a payer
      *
-     * @param contact to be analysed
+     * @param contact to be analysed. contact should be persisted.
      * @return Money sum of amount owing
      */
     public static Money amountOwingForPayer(Contact contact) {
@@ -29,7 +29,7 @@ public class InvoiceUtils {
         List<Invoice> invoices = contact.getObjectContext().performQuery(q);
         Money result = Money.ZERO;
         for (Invoice invoice : invoices) {
-            result.add(Money.valueOf(invoice.getAmountOwing()));
+            result = result.add(Money.valueOf(invoice.getAmountOwing())) ;
         }
         return result;
     }

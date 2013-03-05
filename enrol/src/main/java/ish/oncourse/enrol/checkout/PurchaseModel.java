@@ -477,9 +477,23 @@ public class PurchaseModel {
     public Money getPreviousOwing() {
 		if (allowToUsePrevOwing)
 		{
-        	Money amountOwing  = InvoiceUtils.amountOwingForPayer(getPayer());
-        	Money amountInvoice = Money.valueOf(getInvoice().getAmountOwing());
-			return amountOwing.subtract(amountInvoice);
+            if (getPayer().getObjectId().isTemporary())
+                return Money.ZERO;
+            else
+            {
+                Money amountOwing  = InvoiceUtils.amountOwingForPayer(getPayer());
+                /**
+                 * we should not subtract current invoice value when the invoice is not committed.
+                 * Because InvoiceUtils.amountOwingForPayer loads invoices from database and this loadded list
+                 * does not contain this invoice
+                 */
+                if (!getInvoice().getObjectId().isTemporary())
+                {
+                    Money amountInvoice = Money.valueOf(getInvoice().getAmountOwing());
+                    amountOwing = amountOwing.subtract(amountInvoice);
+                }
+                return amountOwing;
+            }
 		}
 		else
 		{
