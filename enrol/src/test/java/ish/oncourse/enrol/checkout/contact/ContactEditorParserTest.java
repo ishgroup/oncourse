@@ -84,6 +84,7 @@ public class ContactEditorParserTest {
 
         testValidateDateOfBirth(parser, contact);
         testParseMarketingFields(parser);
+        assertNull(parser.getContact().getIsMale());
 
     }
 
