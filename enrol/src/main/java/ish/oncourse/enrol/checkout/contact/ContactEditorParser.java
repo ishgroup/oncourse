@@ -55,8 +55,12 @@ public class ContactEditorParser {
 		contact.writeProperty(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY));
 	}
 
-	private boolean parseBooleanParameter(String parameterName) {
-		return HTMLUtils.parserBooleanValue(StringUtils.trimToNull(request.getParameter(parameterName)));
+	private Boolean parseBooleanParameter(String parameterName) {
+        String value = StringUtils.trimToNull(request.getParameter(parameterName));
+        if (value == null)
+            return null;
+        else
+		    return HTMLUtils.parserBooleanValue(value);
 	}
 
 
