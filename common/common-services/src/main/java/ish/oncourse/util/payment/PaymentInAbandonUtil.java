@@ -1,6 +1,7 @@
 package ish.oncourse.util.payment;
 
 import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
@@ -61,6 +62,10 @@ public class PaymentInAbandonUtil {
 				payment.abandonPaymentKeepInvoice();
 			} else {
 				payment.abandonPayment();
+			}
+			//we should set message that this payment was expired by timeout
+			if (!createReverseInvoice) {
+				payment.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
 			}
 			payment.getObjectContext().commitChanges();
 		} catch (final CayenneRuntimeException ce) {
