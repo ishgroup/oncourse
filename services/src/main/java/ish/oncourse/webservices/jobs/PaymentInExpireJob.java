@@ -64,7 +64,7 @@ public class PaymentInExpireJob implements Job {
 				//web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.
 				boolean shouldReverseInvoice = PaymentSource.SOURCE_WEB.equals(p.getSource());
 				PaymentInAbandonUtil.abandonPaymentReverseInvoice(p, shouldReverseInvoice);
-                p.setStatusNotes("Payment was expired.");
+                p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
             }
 			logger.debug("PaymentInExpireJob finished.");
 
