@@ -5,6 +5,12 @@
 
 	<t:block t:id="paymentEditor">
 		<t:form t:id="paymentform">
+			<div class="header-content">
+				<div class="header">
+					<h1>Secure credit card payment</h1>
+					<span>This is a secure SSL encrypted payment.</span>
+				</div>
+			</div>
 			<div class="enrolmentsSelected">
 				<t:delegate to="block:paymentFields"/>
 				<p>
