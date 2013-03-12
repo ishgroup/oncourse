@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<College id="1" name="Sydney Community College"
+			 webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+			 communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+			 timezone="Australia/Sydney"
+			 requiresAvetmiss="0"/>
+
+	<Site id="1" collegeId="1" angelId="200" isWebVisible="0"
+		  created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
+
+	<WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<Room id="1" collegeId="1" siteId="1" angelId="200"
+		  capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+		  name="TestRoom" />
+
+	<Student id="1001" collegeId="1" angelId="200"
+			 created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+			 disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+			 indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+			 priorEducationCode="0" labourForceType="0" />
+
+	<Tutor id="1001" collegeId="1" angelId="2" created="2011-09-12 00:47:26.0"
+		   modified="2011-09-12 01:02:00.0" resume="&lt;p&gt;This is mister Putin resume.&lt;/p&gt;"
+		   resume_textile="This is mister Putin resume." />
+
+	<Contact id="1001" collegeId="1" tutorId="1001"  studentId="1001" angelId="2"
+			 countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+			 isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir"
+			 emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1" />
+
+	<Invoice id="1000" source="O" amountOwing="-100" contactId="1001"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1000" totalExGst="100.00"
+			 totalGst="10.00" />
+
+	<Invoice id="1001" source="O" amountOwing="-100" contactId="1001"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1001" totalExGst="100.00"
+			 totalGst="10.00" />
+
+	<Invoice id="1002" source="O" amountOwing="-100" contactId="1001"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1002" totalExGst="100.00"
+			 totalGst="10.00" />
+</dataset>

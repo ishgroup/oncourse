@@ -9,7 +9,9 @@ import ish.oncourse.enrol.services.EnrolTestModule;
 import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.InitialContextFactoryMock;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.dbunit.database.DatabaseConnection;
@@ -17,6 +19,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 
+import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -34,6 +37,10 @@ public abstract class ACheckoutTest extends ServiceTest {
     PurchaseController purchaseController;
 
 	void setup(String dbResource) throws Exception {
+		InitialContext context = new InitialContext();
+		context.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
+		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
+
 		initTest("ish.oncourse.enrol.services", "enrol", EnrolTestModule.class);
 		InputStream st = ACheckoutTest.class.getClassLoader().getResourceAsStream(
 				dbResource);
