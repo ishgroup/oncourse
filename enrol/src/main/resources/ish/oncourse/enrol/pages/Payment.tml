@@ -28,6 +28,23 @@
 					</div>
 				</div>
 			</div>
+			<p>
+				<div>
+					<label>Conditions<em title="${message:message-required}">*</em></label>
+				</div>
+				<div class="conditions">
+					<span class="${validateHandler.validateClass('userAgreed')}">
+						<t:checkbox value="userAgreed" t:id="userAgreed" class="${validateHandler.errorClass('userAgreed')}"/>
+						<div class="conditions-text ${validateHandler.errorClass('userAgreed')}">
+							<t:if test="enrolmentDisclosure">
+								I have read the <a class="nyromodal" title="Student information" href="${enrolmentDisclosure}?wrap=false">Student Information</a> or have had it explained to me, and I agree to accept these enrolment conditions. I understand the enrolment and refund policy.
+							</t:if>
+							I understand the enrolment and refund policy.
+						</div>
+						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('userAgreed')}"/>
+					</span>
+				</div>
+			</p>
         </t:if>
         <t:if test="purchaseController.addContact">
             <span t:type="checkout/contact/addcontact" delegate="purchaseController.addContactDelegate"
