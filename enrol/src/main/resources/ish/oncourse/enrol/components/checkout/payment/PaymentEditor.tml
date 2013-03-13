@@ -42,7 +42,7 @@
 			<div class="form-details">
 				<p>
 					<label>Pay now</label>
-					<span id="cardtotalstring"><t:output value="totalPayment" format="moneyFormat"/></span>
+					<span id="cardtotalstring"><t:output value="totalPayment" format="moneyFormat"/><img src="/s/img/visa-mastercard.png" alt="visa card and master card" /> <img src="/s/img/amex.png" alt="amex" /></span>
 				</p>
 				<p>
 					<label for="contact">Payer<em title="${message:message-required}">*</em></label>
@@ -75,7 +75,7 @@
                     <p>
                         <label for="creditCardCVV">CVV<em title="${message:message-required}">*</em></label>
                         <span class="${validateHandler.validateClass('creditCardCVV')}">
-                            <t:textfield value="paymentIn.creditCardCVV" t:id="creditCardCVV" maxlength="4"  class="input-fixed ${validateHandler.errorClass('creditCardCVV')}"/>
+                            <t:textfield value="paymentIn.creditCardCVV" t:id="creditCardCVV" maxlength="4"  class="input-fixed ${validateHandler.errorClass('creditCardCVV')}"/><img src="/s/img/cvv-image.png" alt="CVV" />
                             <a id="cvvLink" href="/enrol/ui/cvv?wrap=false" class="nyromodal">What is CVV?</a>
                             <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardCVV')}"/>
                         </span>
