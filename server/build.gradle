@@ -181,11 +181,13 @@ task installer_osx(dependsOn: [codeSign, createDmg]) {
 
 project.ext.freebsdAppFiles = copySpec {
 	into('.') {
-		from("${projectDir}/src/packaging/freebsd/")
-		include ("*")
+		from("${projectDir}/src/packaging/freebsd/+MANIFEST")
 	}
-	into('onCourse') {
+	into('usr/local/onCourse') {
 		from("${libsDir}/${project.name}-${version}-all.jar")
+	}
+	into('usr/local/etc/rc.d') {
+		from("${projectDir}/src/packaging/freebsd/onCourseServer")
 	}
 }
 
@@ -244,21 +246,26 @@ task installer_freebsd(dependsOn: fatJar, type: Copy) {
 	into file("${distsDir}/freebsd")
 
 	doLast {
+		jarFile = "${distsDir}/freebsd/usr/local/onCourse/${project.name}-${project.version}-all.jar"
+		manifestFile = "${distsDir}/freebsd/+MANIFEST"
+		scriptFile = "${distsDir}/freebsd/usr/local/etc/rc.d/onCourseServer"
+
 		logger.lifecycle("Calculating checksums for the $project.name freebsd application executable")
-		ant.length(file:"${distsDir}/freebsd/onCourse/${project.name}-${project.version}-all.jar", property: 'size_onCourseServerJar')
+		ant.length(file: jarFile, property: 'size_onCourseServerJar')
 
-		ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@version@", 			value: "${project.version}")
-		ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@project.name@", 		value: "${project.name}")
-		ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
+		ant.replace(file: scriptFile, token: "@version@", value: "${project.version}")
+		ant.replace(file: scriptFile, token: "@project.name@", value: "${project.name}")
+		ant.replace(file: scriptFile, token: "@maxmemoryServer64@", value: "${project.maxmemoryServer64}")
 
-		ant.replace(file: "${distsDir}/freebsd/+MANIFEST", token: "@version@", 					value: "${project.version}")
-		ant.replace(file: "${distsDir}/freebsd/+MANIFEST", token: "@size_onCourseServerJar@", 	value: "${ant.size_onCourseServerJar}")
-		ant.replace(file: "${distsDir}/freebsd/+MANIFEST", token: "@hash_onCourseServerJar@", 	value: sha256("${distsDir}/freebsd/onCourse/${project.name}-${project.version}-all.jar") )
-		ant.replace(file: "${distsDir}/freebsd/+MANIFEST", token: "@hash_onCourseServer@", 		value: sha256("${distsDir}/freebsd/onCourseServer") )
+		ant.replace(file: manifestFile, token: "@version@", value: "${project.version}")
+		ant.replace(file: manifestFile, token: "@size_onCourseServerJar@", value: "${ant.size_onCourseServerJar}")
+		ant.replace(file: manifestFile, token: "@hash_onCourseServerJar@", value: sha256(jarFile) )
+		ant.replace(file: manifestFile, token: "@hash_onCourseServer@", value: sha256(scriptFile) )
 
 		ant.tar(basedir:"${distsDir}/freebsd/", destfile:"${distsDir}/onCourseServer.tar")
 		xzCompress("${distsDir}/onCourseServer.tar", "${distsDir}/onCourseServer.txz")
 
+		delete "${distsDir}/onCourseServer.tar"
 		delete "${distsDir}/freebsd"
 	}	
 } 
