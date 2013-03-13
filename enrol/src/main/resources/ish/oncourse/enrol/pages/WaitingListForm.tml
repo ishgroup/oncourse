@@ -79,10 +79,7 @@
 		<fieldset>
 			<p>
 				<label for="detail">
-					What you'd like:
-										<span class="description">
-											Please tell us your preferences, eg on Tuesdays, in Newtown, etc.
-										</span>
+                    Comments
 				</label>
 				<t:textarea t:id="detail" t:value="controller.waitingList.detail"
 							cols="30" rows="4" />
