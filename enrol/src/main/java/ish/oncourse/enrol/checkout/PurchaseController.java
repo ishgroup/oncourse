@@ -18,6 +18,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
+import ish.util.InvoiceUtil;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -168,27 +169,27 @@ public class PurchaseController {
 		}
 
 		APurchaseAction action = param.action.createAction(this, param);
-		if (!action.action()) {
-			illegalModel = true;
-		}
+		if (action.action())
+            actionSuccess();
         else
-        {
-            if (getState() == editCheckout || getState() == editPayment)
-            {
-                //the code needs to recalcalute money values for payment and discount for all actions on checkout page and payment editor
-                getModel().updateTotalIncGst();
-                getModel().updateTotalDiscountAmountIncTax();
-
-                //we need commit all changes which were made on editPayment page otherwise we can get incorrect contact relations (in particular invoices)
-                if (getState() == editPayment)
-                    getModel().getObjectContext().commitChanges();
-
-            }
-        }
+            illegalModel = true;
 	}
 
+    private void actionSuccess() {
+        if (getState() == editCheckout || getState() == editPayment || getState() == editCorporatePass)
+        {
+            //the code needs to recalcalute money values for payment and discount for all actions on checkout page and payment editor
+            updateTotalIncGst();
+            updateTotalDiscountAmountIncTax();
 
-	/**
+            //we need commit all changes which were made on editPayment page otherwise we can get incorrect contact relations (in particular invoices)
+            if (getState() == editPayment || getState() == editCorporatePass)
+                getModel().getObjectContext().commitChanges();
+
+        }
+    }
+
+    /**
 	 * The method is used to adjust current state when user uses browser action like back,forward
 	 * @return  true state was changed.
 	 */
@@ -337,7 +338,12 @@ public class PurchaseController {
 		return state == editPayment;
 	}
 
-	//return true when the payment process has a result.
+    public synchronized boolean isEditCorporatePass() {
+        return state == editCorporatePass;
+    }
+
+
+    //return true when the payment process has a result.
 	public synchronized boolean isPaymentResult() {
 		return state == paymentResult;
 	}
@@ -533,7 +539,9 @@ public class PurchaseController {
 	public synchronized boolean isPaymentState() {
 		return (state == State.editPayment ||
                 state == State.paymentResult ||
-                state == State.paymentProgress);
+                state == State.paymentProgress ||
+                state == State.editCorporatePass
+        );
 	}
 
     public void setParallelExecutor(ParallelExecutor parallelExecutor) {
@@ -557,13 +565,69 @@ public class PurchaseController {
 		return this.getModel().getDiscounts();
 	}
 
+    public Money updateTotalIncGst() {
+        Money result = Money.ZERO;
+        for (Contact contact : getModel().getContacts()) {
+            for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
+                InvoiceLine invoiceLine = enabledEnrolment.getInvoiceLine();
+                result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+            }
+            for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
+                InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
+                result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+            }
+        }
+
+        if (isApplyPrevOwing())
+        {
+            Money previousOwing = getPreviousOwing();
+            result = result.add(previousOwing);
+        }
+
+
+        if (isEditCorporatePass())
+            result = Money.ZERO;
+        else
+            result = (result.isLessThan(Money.ZERO) ? Money.ZERO : result);
+
+        getModel().getPayment().setAmount(result.toBigDecimal());
+        getModel().getPayment().getPaymentInLines().get(0).setAmount(result.toBigDecimal());
+
+        Money totalGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), true);
+        Money totalExGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), false);
+        getModel().getInvoice().setTotalExGst(totalExGst.toBigDecimal());
+        getModel().getInvoice().setTotalGst(totalGst.toBigDecimal());
+        getModel().getInvoice().setCorporatePassUsed(getModel().getCorporatePass());
+        return result;
+    }
+
+
+    public void updateTotalDiscountAmountIncTax() {
+        Money totalDiscountAmountIncTax = Money.ZERO;
+        for (Contact contact : getModel().getContacts()) {
+            for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
+                totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(enabledEnrolment.getInvoiceLine().getDiscountTotalIncTax());
+            }
+            for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
+                totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(enabledProductItem.getInvoiceLine().getDiscountTotalIncTax());
+            }
+        }
+        getModel().setTotalDiscountAmountIncTax(totalDiscountAmountIncTax);
+    }
+
+    String getClassName(CourseClass courseClass) {
+        return String.format("%s (%s-%s)", courseClass.getCourse().getName(), courseClass.getCourse().getCode(), courseClass.getCode());
+    }
+
+
     public static enum State {
 		init(Action.init, Action.addContact),
 		editCheckout(COMMON_ACTIONS,addDiscount,removeDiscount, proceedToPayment, addCourseClass),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, addPayer, cancelAddContact,cancelAddPayer),
 		editContact(Action.addContact, addPayer, cancelAddContact,cancelAddPayer),
-		editPayment(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply, changePayer, addPayer),
+		editPayment(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply, changePayer, addPayer,selectCorporatePassEditor),
+        editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
         paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment,showPaymentResult);
 
@@ -616,7 +680,10 @@ public class PurchaseController {
         showPaymentResult(ActionShowPaymentResult.class),
 		backToEditCheckout(ActionBackToEditCheckout.class),
         addCourseClass(ActionAddCourseClass.class,CourseClass.class),
-        addPayer(ActionAddPayer.class, Contact.class);
+        addPayer(ActionAddPayer.class, Contact.class),
+        addCorporatePass(ActionAddCorporatePass.class, String.class),
+        selectCardEditor(ActionSelectCardEditor.class),
+        selectCorporatePassEditor(ActionSelectCorporatePassEditor.class);
 
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
@@ -722,7 +789,10 @@ public class PurchaseController {
         classAlreadyAdded,
         productAlreadyAdded,
         itemsWasAddedFromShoppingBasket,
-		discountAlreadyAdded;
+		discountAlreadyAdded,
+        corporatePassNotFound,
+        corporatePassInvalidCourseClass,
+        corporatePassAdded;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);

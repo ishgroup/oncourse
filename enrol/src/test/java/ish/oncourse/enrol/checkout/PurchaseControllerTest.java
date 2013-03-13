@@ -60,7 +60,8 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(State.editConcession.getAllowedActions(), Arrays.asList(addConcession, removeConcession, cancelConcessionEditor));
         assertEquals(State.addContact.getAllowedActions(), Arrays.asList(addContact, addPayer, cancelAddContact, cancelAddPayer));
         assertEquals(State.editContact.getAllowedActions(), Arrays.asList(addContact, addPayer, cancelAddContact, cancelAddPayer));
-        assertEquals(State.editPayment.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout, addDiscount, creditAccess, owingApply, changePayer, addPayer));
+        assertEquals(State.editPayment.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout, addDiscount, creditAccess, owingApply, changePayer, addPayer,selectCorporatePassEditor));
+        assertEquals(State.editCorporatePass.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout,  addCorporatePass, selectCardEditor));
         assertEquals(State.paymentProgress.getAllowedActions(), Arrays.asList(showPaymentResult));
         assertEquals(State.paymentResult.getAllowedActions(), Arrays.asList(proceedToPayment, showPaymentResult));
     }

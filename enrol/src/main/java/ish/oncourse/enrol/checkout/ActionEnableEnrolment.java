@@ -52,14 +52,14 @@ public class ActionEnableEnrolment extends APurchaseAction {
         if (!hasPalces) {
             getController().getModel().setErrorFor(enrolment,
                     noCourseClassPlaces.getMessage(getController().getMessages(),
-                            getClassName(enrolment.getCourseClass()),
+                            getController().getClassName(enrolment.getCourseClass()),
                             enrolment.getCourseClass().getCourse().getCode()));
             return false;
         }
         if (enrolment.getCourseClass().hasEnded()) {
             getController().getModel().setErrorFor(enrolment,
                     courseClassEnded.getMessage(getController().getMessages(),
-                            getClassName(enrolment.getCourseClass()),
+                            getController().getClassName(enrolment.getCourseClass()),
                             enrolment.getCourseClass().getCourse().getCode()));
             return false;
         }
@@ -81,10 +81,5 @@ public class ActionEnableEnrolment extends APurchaseAction {
 
     public void setEnrolment(Enrolment enrolment) {
         this.enrolment = enrolment;
-    }
-
-
-    private String getClassName(CourseClass courseClass) {
-        return String.format("%s (%s-%s)", courseClass.getCourse().getName(), courseClass.getCourse().getCode(), courseClass.getCode());
     }
 }

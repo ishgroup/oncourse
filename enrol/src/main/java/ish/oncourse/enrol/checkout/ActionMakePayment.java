@@ -12,6 +12,9 @@ public class ActionMakePayment extends APurchaseAction {
 
 	@Override
 	protected boolean validate() {
+        if (getController().isEditCorporatePass() &&
+                getController().getModel().getCorporatePass() == null)
+            return false;
         return true;
 	}
 }

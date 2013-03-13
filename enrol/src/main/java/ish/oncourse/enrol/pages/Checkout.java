@@ -119,7 +119,7 @@ public class Checkout {
                 return Payment.class.getSimpleName();
             } else if (purchaseController.isEditCheckout())
                 //add new items from shopping basket
-                updateCheckoutItems();
+                updatePurchaseItems();
         }
         return null;
 
@@ -189,11 +189,11 @@ public class Checkout {
             return this;
     }
 
-    public void updateCheckoutItems() {
+    public void updatePurchaseItems() {
         if (purchaseController != null) {
             purchaseControllerBuilder.updatePurchaseItems(purchaseController);
-            purchaseController.getModel().updateTotalIncGst();
-            purchaseController.getModel().updateTotalDiscountAmountIncTax();
+            purchaseController.updateTotalIncGst();
+            purchaseController.updateTotalDiscountAmountIncTax();
         }
     }
 

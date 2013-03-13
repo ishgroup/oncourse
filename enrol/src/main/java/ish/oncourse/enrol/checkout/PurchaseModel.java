@@ -1,13 +1,11 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.*;
 import ish.oncourse.util.InvoiceUtils;
-import ish.util.InvoiceUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 
@@ -42,9 +40,10 @@ public class PurchaseModel {
     private boolean applyPrevOwing = false;
 
 	private Boolean allowToUsePrevOwing  = false;
+    private CorporatePass corporatePass;
 
 
-	public void addDiscount(Discount discount) {
+    public void addDiscount(Discount discount) {
         discounts.add(discount);
     }
 
@@ -127,6 +126,11 @@ public class PurchaseModel {
     public Money getTotalDiscountAmountIncTax() {
         return totalDiscountAmountIncTax;
     }
+
+    void setTotalDiscountAmountIncTax(Money totalDiscountAmountIncTax) {
+        this.totalDiscountAmountIncTax = totalDiscountAmountIncTax;
+    }
+
 
     public void addEnrolment(Enrolment e) {
         getContactNode(e.getStudent().getContact()).addEnrolment(e);
@@ -351,63 +355,6 @@ public class PurchaseModel {
         return false;
     }
 
-
-    public Money updateTotalIncGst() {
-        Money result = Money.ZERO;
-        for (Contact contact : getContacts()) {
-            for (Enrolment enabledEnrolment : getEnabledEnrolments(contact)) {
-                InvoiceLine invoiceLine = enabledEnrolment.getInvoiceLine();
-                result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
-            }
-            for (ProductItem enabledProductItem : getEnabledProductItems(contact)) {
-                InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
-                result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
-            }
-        }
-
-        if (isApplyPrevOwing())
-        {
-            Money previousOwing = getPreviousOwing();
-            result = result.add(previousOwing);
-        }
-
-        getPayment().setAmount((result.isLessThan(Money.ZERO) ? Money.ZERO : result).toBigDecimal());
-        getPayment().getPaymentInLines().get(0).setAmount(getPayment().getAmount());
-
-        Money totalGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), true);
-        Money totalExGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), false);
-        getInvoice().setTotalExGst(totalExGst.toBigDecimal());
-        getInvoice().setTotalGst(totalGst.toBigDecimal());
-        return result;
-    }
-
-
-    public void updateTotalDiscountAmountIncTax() {
-        totalDiscountAmountIncTax = Money.ZERO;
-        for (Contact contact : this.getContacts()) {
-            for (Enrolment enabledEnrolment : this.getEnabledEnrolments(contact)) {
-                totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(enabledEnrolment.getInvoiceLine().getDiscountTotalIncTax());
-            }
-            for (ProductItem enabledProductItem : this.getEnabledProductItems(contact)) {
-                totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(enabledProductItem.getInvoiceLine().getDiscountTotalIncTax());
-            }
-        }
-    }
-
-
-    public void prepareToMakePayment() {
-
-        updateTotalIncGst();
-
-        getPayment().setStatus(PaymentStatus.IN_TRANSACTION);
-
-        for (Contact contact : getContacts()) {
-            for (Enrolment e : getEnabledEnrolments(contact)) {
-                e.setStatus(EnrolmentStatus.IN_TRANSACTION);
-            }
-        }
-    }
-
     public void deleteDisabledItems() {
         for (Contact contact : getContacts()) {
             deleteDisabledEnrollments(contact);
@@ -520,7 +467,15 @@ public class PurchaseModel {
 		this.allowToUsePrevOwing = allowToUsePrevOwing;
 	}
 
-	private class ContactNode {
+    public void setCorporatePass(CorporatePass corporatePass) {
+        this.corporatePass = corporatePass;
+    }
+
+    public CorporatePass getCorporatePass() {
+        return corporatePass;
+    }
+
+    private class ContactNode {
 
         private List<ConcessionType> concessions;
 

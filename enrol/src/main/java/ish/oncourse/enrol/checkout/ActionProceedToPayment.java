@@ -1,6 +1,9 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentStatus;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorController;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.ProductItem;
@@ -9,7 +12,6 @@ import ish.oncourse.util.payment.PaymentProcessController;
 import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.*;
-import static ish.oncourse.enrol.checkout.PurchaseController.State.editPayment;
 
 public class ActionProceedToPayment extends APurchaseAction {
     private PaymentIn paymentIn;
@@ -34,7 +36,8 @@ public class ActionProceedToPayment extends APurchaseAction {
             getModel().setPayment(paymentIn);
         }
         getController().refreshPrevOwingStatus();
-        getController().setState(editPayment);
+        ActionSelectCardEditor actionSelectCardEditor = selectCardEditor.createAction(getController());
+        actionSelectCardEditor.makeAction();
     }
 
     @Override
@@ -62,7 +65,7 @@ public class ActionProceedToPayment extends APurchaseAction {
         if (paymentEditorController == null && result)
         {
             getModel().deleteDisabledItems();
-            getModel().prepareToMakePayment();
+            prepareToMakePayment();
             getModel().getObjectContext().commitChanges();
             result = validateEnrolments() && validateProductItems();
         }
@@ -104,5 +107,19 @@ public class ActionProceedToPayment extends APurchaseAction {
         }
         return result;
     }
+
+    public void prepareToMakePayment() {
+
+        getController().updateTotalIncGst();
+
+        getModel().getPayment().setStatus(PaymentStatus.IN_TRANSACTION);
+
+        for (Contact contact : getModel().getContacts()) {
+            for (Enrolment e : getModel().getEnabledEnrolments(contact)) {
+                e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+            }
+        }
+    }
+
 
 }
