@@ -6,7 +6,7 @@ import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.access.DbGenerator;
 import org.apache.cayenne.configuration.server.ServerRuntime;
-import org.apache.cayenne.dba.derby.DerbyAdapter;
+import org.apache.cayenne.log.NoopJdbcEventLogger;
 import org.apache.cayenne.map.DataMap;
 import org.apache.cayenne.map.DbEntity;
 import org.apache.commons.dbcp.BasicDataSource;
@@ -84,36 +84,6 @@ public class ContextUtils {
 		return dataSource;
 	}
 
-	public static void createOnCourseTables() throws Exception {
-		DataDomain domain = cayenneRuntime.getDataDomain();
-		createTablesForDataSource(getDataSource("jdbc/oncourse"), domain.getDataMap("oncourse"));
-	}
-	
-	public static void createOnCourseTables(DataSource dataSource) throws Exception {
-		DataDomain domain = cayenneRuntime.getDataDomain();
-		createTablesForDataSource(dataSource, domain.getDataMap("oncourse"));
-	}
-	
-	public static void createOnCourseBinaryTables(DataSource dataSource) throws Exception {
-		DataDomain domain = cayenneRuntime.getDataDomain();
-		createTablesForDataSource(dataSource, domain.getDataMap("oncourseBinary"));
-	}
-	
-	public static void createOnCourseReferenceTables(DataSource dataSource) throws Exception {
-		DataDomain domain = cayenneRuntime.getDataDomain();
-		createTablesForDataSource(dataSource, domain.getDataMap("oncourseReference"));
-	}
-
-	/**
-	 * Generates table for the given dataSource.
-	 * 
-	 * @param dataSource
-	 * @throws Exception
-	 */
-	private static void createTablesForDataSource(DataSource dataSource, DataMap map) throws Exception {
-		createTablesForDataSourceByParams(dataSource, map, null);
-	}
-	
 	/**
 	 * Generates table for the given dataSource.
 	 * 
@@ -121,10 +91,8 @@ public class ContextUtils {
 	 * @throws Exception
 	 */
 	private static void createTablesForDataSourceByParams(DataSource dataSource, DataMap map, Map<String, Boolean> params) throws Exception {
-		@SuppressWarnings("unused")
 		DataDomain domain = cayenneRuntime.getDataDomain();
-		@SuppressWarnings("deprecation")
-		DbGenerator generator = new DbGenerator(new DerbyAdapter(), map, Collections.<DbEntity> emptyList());
+		DbGenerator generator = new DbGenerator(domain.getDefaultNode().getAdapter(), map, NoopJdbcEventLogger.getInstance(), Collections.<DbEntity> emptyList());
 		boolean isParamsEmpty = params == null || params.isEmpty();
 		if (isParamsEmpty) {
 			generator.setShouldCreateTables(true);

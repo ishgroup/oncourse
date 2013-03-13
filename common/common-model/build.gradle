@@ -4,8 +4,8 @@ dependencies {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
-    compile 'org.apache.cayenne:cayenne-server:3.1M3-b1'
-	compile 'org.apache.cayenne:cayenne-lifecycle:3.1M3-b1'
+    compile 'org.apache.cayenne:cayenne-server:3.1B2'
+	compile 'org.apache.cayenne:cayenne-lifecycle:3.1B2'
 	compile 'joda-time:joda-time:1.6.2'
 	compile 'commons-lang:commons-lang:2.6'
 	compile 'opensymphony:oscache:2.4.1'
