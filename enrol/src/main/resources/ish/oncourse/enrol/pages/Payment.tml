@@ -14,25 +14,9 @@
 <t:block t:id="payment">
     <t:delegate to="block:errors"/>
     <t:if test="purchaseController">
-        <t:if test="editPayment">
+        <t:if test="editPayments">
             <t:delegate to="block:amount"/>
-            <t:form t:id="paymentform">
-                <div id="tabable-container">
-                    <ul class="nav">
-                        <li class="first"><a href="#credit-card">Credit card</a></li>
-                        <li class="active"><a href="#corporate-pass">CorporatePass</a></li>
-                    </ul>
-                        <div class="tab-content">
-                            <div class="single-tab" id="credit-card">
-                                <t:delegate to="block:paymentEditor"/>
-                            </div>
-                            <div class="single-tab" id="corporate-pass">
-                                <t:delegate to="block:corporatePassEditor"/>
-                            </div>
-                        </div>
-                </div>
-                <span t:type="checkout/payment/paymentcontrol" delegate="purchaseController.paymentEditorDelegate"/>
-            </t:form>
+            <t:delegate to="block:paymentEditors"/>
         </t:if>
         <t:if test="purchaseController.addContact">
             <span t:type="checkout/contact/addcontact" delegate="purchaseController.addContactDelegate"
@@ -49,6 +33,30 @@
             <t:delegate to="block:paymentProgress"/>
         </t:if>
     </t:if>
+</t:block>
+
+<t:block t:id="paymentEditors">
+    <t:form t:id="paymentform">
+        <div id="tabable-container">
+            <ul class="nav">
+                <li class="first ${cardTabClass}">
+                    <a href="#credit-card">Credit card</a>
+                </li>
+                <li class="${corporatePassTabClass}">
+                    <a href="#corporate-pass">CorporatePass</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="single-tab ${cardTabClass}" id="credit-card">
+                    <t:delegate to="block:paymentEditor"/>
+                </div>
+                <div class="single-tab ${corporatePassTabClass}" id="corporate-pass">
+                    <t:delegate to="block:corporatePassEditor"/>
+                </div>
+            </div>
+        </div>
+        <span t:type="checkout/payment/paymentcontrol" delegate="purchaseController.paymentEditorDelegate"/>
+    </t:form>
 </t:block>
 
 <t:block t:id="progress">

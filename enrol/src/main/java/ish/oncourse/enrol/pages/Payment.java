@@ -3,10 +3,15 @@ package ish.oncourse.enrol.pages;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.components.checkout.payment.CorporatePassEditor;
 import ish.oncourse.enrol.components.checkout.payment.PaymentEditor;
+import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCardEditor;
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCorporatePassEditor;
+import static ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 
 public class Payment {
 
@@ -59,6 +64,12 @@ public class Payment {
 		return checkoutPage.getPurchaseController();
 	}
 
+    public boolean isEditPayments()
+    {
+        return getPurchaseController() != null && (getPurchaseController().isEditPayment() ||
+                getPurchaseController().isEditCorporatePass());
+    }
+
     public boolean isEditPayment()
     {
         return getPurchaseController() != null && getPurchaseController().isEditPayment();
@@ -95,5 +106,35 @@ public class Payment {
             return corporatePassEditor.makePayment();
         else
             throw new IllegalArgumentException();
+    }
+
+    public String getCorporatePassTabClass()
+    {
+        return getPurchaseController().isEditCorporatePass() ? "active": FormatUtils.EMPTY_STRING;
+    }
+
+    public String getCardTabClass()
+    {
+        return getPurchaseController().isEditPayment() ? "active": FormatUtils.EMPTY_STRING;
+    }
+
+    @OnEvent(value = "selectCardEditor")
+    public Object selectCardEditor()
+    {
+        if (getPurchaseController().isEditPayment())
+            return null;
+        ActionParameter parameter = new ActionParameter(selectCardEditor);
+        getPurchaseController().performAction(parameter);
+        return paymentBlock;
+    }
+
+    @OnEvent(value = "selectCorporatePassEditor")
+    public Object selectCorporatePassEditor()
+    {
+        if (getPurchaseController().isEditCorporatePass())
+            return null;
+        ActionParameter parameter = new ActionParameter(selectCorporatePassEditor);
+        getPurchaseController().performAction(parameter);
+        return paymentBlock;
     }
 }

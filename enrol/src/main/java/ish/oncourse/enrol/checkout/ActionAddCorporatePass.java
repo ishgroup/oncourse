@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ActionAddCorporatePass extends  APurchaseAction{
 
-    private String code;
+    private String password;
 
     private CorporatePass corporatePass;
     @Override
@@ -23,17 +23,17 @@ public class ActionAddCorporatePass extends  APurchaseAction{
 
     @Override
     protected void parse() {
-        code = getParameter().getValue(String.class);
+        password = getParameter().getValue(String.class);
     }
 
     @Override
     protected boolean validate() {
         /**
-         * select all CorporatePass with this code (password) and expiry date is greater or equal current date
+         * select all CorporatePass with this password and expiry date is greater or equal current date
          * or is null in this college
          */
         SelectQuery selectQuery = new SelectQuery(CorporatePass.class);
-        Expression expression = ExpressionFactory.matchExp(CorporatePass.PASSWORD_PROPERTY, code);
+        Expression expression = ExpressionFactory.matchExp(CorporatePass.PASSWORD_PROPERTY, password);
         expression = expression.andExp(ExpressionFactory.matchExp(CorporatePass.COLLEGE_PROPERTY, getModel().getCollege()));
         expression = expression.andExp(ExpressionFactory.greaterOrEqualExp(CorporatePass.EXPIRY_DATE_PROPERTY, new Date())
                 .orExp(ExpressionFactory.matchExp(CorporatePass.EXPIRY_DATE_PROPERTY, null)));

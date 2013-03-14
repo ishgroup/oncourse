@@ -1,12 +1,11 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<fieldset>
 		<p class="info-content">Enter a CorporatePass code below to complete this transaction without any payment at this time. CorporatePass is available to  pre-approved corporate clients only.</p>
-		<p>
-			<label class="corporatePass-label" for="code-text">Code </label>
-			<input type="text" id="code-text" class="small-textbox"/>
-			<input type="submit" class="submit-button" value="Submit"/>
-		</p>
-        <div class="message">Valid code entered. This transaction will be invoiced to Acme Pty Ltd when you press the Confirm Purchase button below. Your details will be forwarded to the relevant manager at Acme Pty Ltd.</div>
-        <div class="validation">This code is not valid or has expired. Please contact the college.</div>
+        <label class="corporatePass-label" for="password">Code </label>
+        <input type="text" id="password" name="password" class="small-textbox"/>
+        <div id="addPassword" class="button">Submit</div>
+        <t:eventlink t:id="addPasswordEvent" style="{display:none}"/>
+        <!--<div class="message"></div>-->
+        <!--<div class="validation"></div>-->
 	</fieldset>
 </t:container>
