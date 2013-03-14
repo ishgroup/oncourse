@@ -9,9 +9,8 @@
 
 <t:block t:id="checkout">
 	<t:if test="purchaseController">
-		<t:delegate to="block:errors"/>
-
         <t:delegate to="block:progress"/>
+		<t:delegate to="block:errors"/>
 		<t:if test="purchaseController.editCheckout">
 			<t:delegate to="block:payments"/>
 		</t:if>

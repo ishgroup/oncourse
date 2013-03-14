@@ -12,6 +12,7 @@ public class CorporatePassEditor implements IPaymentControlDelegate {
 
     @Override
     public Object makePayment() {
+        delegate.makePayment();
         return this;
     }
 }

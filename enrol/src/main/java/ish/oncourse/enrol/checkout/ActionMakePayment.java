@@ -1,5 +1,7 @@
 package ish.oncourse.enrol.checkout;
 
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.corporatePassShouldBeEntered;
+
 public class ActionMakePayment extends APurchaseAction {
 	@Override
 	protected void makeAction() {
@@ -14,7 +16,10 @@ public class ActionMakePayment extends APurchaseAction {
 	protected boolean validate() {
         if (getController().isEditCorporatePass() &&
                 getController().getModel().getCorporatePass() == null)
+        {
+            getController().addError(corporatePassShouldBeEntered);
             return false;
+        }
         return true;
 	}
 }

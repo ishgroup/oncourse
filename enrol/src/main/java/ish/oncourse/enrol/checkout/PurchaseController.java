@@ -792,7 +792,8 @@ public class PurchaseController {
 		discountAlreadyAdded,
         corporatePassNotFound,
         corporatePassInvalidCourseClass,
-        corporatePassAdded;
+        corporatePassAdded,
+        corporatePassShouldBeEntered;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);

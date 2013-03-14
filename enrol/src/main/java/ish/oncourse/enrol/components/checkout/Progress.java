@@ -37,6 +37,18 @@ public class Progress {
 
     @SetupRender
     void beforeRender() {
+        if (purchaseController == null)
+        {
+            detailsClass = CLASS_disable;
+            checkoutClass = CLASS_disable;
+            paymentClass = CLASS_disable;
+
+            detailsUrl = URL_current;
+            checkoutUrl = URL_current;
+            paymentUrl = URL_current;
+            return;
+        }
+
         switch (purchaseController.getState()) {
 
             case init:
