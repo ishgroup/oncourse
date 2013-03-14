@@ -4,8 +4,6 @@
 	<t:if test="hasOrderNumber">
 		<script type="text/javascript">
 			var pageTracker = _gat._getTracker("${transactionAccount}");
-			//pageTracker._setDomainName("${transactionDomain}");
-			pageTracker._initData();
 			pageTracker._addTrans(
 				"${transaction.orderNumber}",
 				"${affiliation}",
