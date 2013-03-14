@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class PaymentEditor {
+public class PaymentEditor implements IPaymentControlDelegate {
 
 	/**
 	 * Credit card expire date interval
@@ -49,9 +49,6 @@ public class PaymentEditor {
 	private List<Integer> years;
 
 	private ValidateHandler validateHandler;
-
-	@Property
-	private Boolean userAgreed;
 
 	@Property
 	private String expiryMonth;
@@ -82,7 +79,6 @@ public class PaymentEditor {
 
     @SetupRender
 	void beforeRender() {
-		userAgreed = false;
         initExpiry();
     }
 
@@ -167,15 +163,6 @@ public class PaymentEditor {
 	}
 
 
-	public String getSubmitButtonText() {
-		return isZeroPayment() ? messages.get("submit.button.text.enrol") : messages.get("submit.button.text.payment");
-	}
-
-
-	public String getEnrolmentDisclosure() {
-		 return StringUtils.trimToNull(preferenceController.getFeatureEnrolmentDisclosure());
-	}
-
 	public Format getMoneyFormat()
 	{
 		return FormatUtils.chooseMoneyFormat(Money.valueOf(delegate.getPaymentIn().getAmount()));
@@ -195,7 +182,6 @@ public class PaymentEditor {
         return blockToRefresh;
     }
 
-	@OnEvent(component = "paymentSubmit", value = "selected")
 	public Object makePayment()
 	{
         PaymentEditorParser paymentEditorParser = getPaymentEditorParser();

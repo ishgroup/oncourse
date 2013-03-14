@@ -6,7 +6,7 @@
 			<input type="text" id="code-text" class="small-textbox"/>
 			<input type="submit" class="submit-button" value="Submit"/>
 		</p>
-		<div class="message">Valid code entered. This transaction will be invoiced to Acme Pty Ltd when you press the Confirm Purchase button below. Your details will be forwarded to the relevant manager at Acme Pty Ltd.</div>
-		<div class="validation">This code is not valid or has expired. Please contact the college.</div>
+        <div class="message">Valid code entered. This transaction will be invoiced to Acme Pty Ltd when you press the Confirm Purchase button below. Your details will be forwarded to the relevant manager at Acme Pty Ltd.</div>
+        <div class="validation">This code is not valid or has expired. Please contact the college.</div>
 	</fieldset>
 </t:container>

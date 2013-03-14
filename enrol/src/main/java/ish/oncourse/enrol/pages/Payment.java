@@ -1,11 +1,10 @@
 package ish.oncourse.enrol.pages;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
+import ish.oncourse.enrol.components.checkout.payment.CorporatePassEditor;
+import ish.oncourse.enrol.components.checkout.payment.PaymentEditor;
 import org.apache.tapestry5.Block;
-import org.apache.tapestry5.annotations.AfterRender;
-import org.apache.tapestry5.annotations.Id;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -20,6 +19,13 @@ public class Payment {
 
 	@Inject
 	private Request request;
+
+    @InjectComponent
+    private CorporatePassEditor corporatePassEditor;
+
+    @InjectComponent
+    private PaymentEditor paymentEditor;
+
 
     Object onActivate()
     {
@@ -82,4 +88,12 @@ public class Payment {
 		checkoutPage.onException(throwable);
 	}
 
+    public Object makePayment() {
+        if (getPurchaseController().isEditPayment())
+            return paymentEditor.makePayment();
+        else if (getPurchaseController().isEditCorporatePass())
+            return corporatePassEditor.makePayment();
+        else
+            throw new IllegalArgumentException();
+    }
 }
