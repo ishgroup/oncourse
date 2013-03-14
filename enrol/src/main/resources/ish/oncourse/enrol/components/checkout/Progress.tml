@@ -1,0 +1,15 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div class="progress-steps">
+        <ul>
+            <li class="${detailsClass}">
+                <a href="${detailsUrl}">Your details</a>
+            </li>
+            <li class="${checkoutClass}">
+                <a href="${checkoutUrl}">Summary</a>
+            </li>
+            <li class="last ${paymentClass}">
+                <a href="${paymentUrl}">Payment</a>
+            </li>
+        </ul>
+    </div>
+</t:container>

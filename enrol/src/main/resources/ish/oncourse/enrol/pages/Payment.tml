@@ -6,21 +6,10 @@
     <meta http-equiv="refresh" content="3"/>
 </t:if>
 <div id="checkout" class="payments">
-	<div class="progress-steps">
-		<ul>
-			<li class="disable">
-				<a href="#">Your details</a>
-			</li>
-			<li>
-				<a href="/enrol/checkout">Summary</a>
-			</li>
-			<li class="last active">
-				<a href="#">Payment</a>
-			</li>
-		</ul>
-	</div>
+    <t:delegate to="block:progress"/>
     <t:delegate to="block:payment"/>
 </div>
+
 
 <t:block t:id="payment">
     <t:delegate to="block:errors"/>
@@ -57,6 +46,10 @@
             <t:delegate to="block:paymentProgress"/>
         </t:if>
     </t:if>
+</t:block>
+
+<t:block t:id="progress">
+    <span t:type="checkout/progress" purchaseController="purchaseController"/>
 </t:block>
 
 <t:block t:id="amount">

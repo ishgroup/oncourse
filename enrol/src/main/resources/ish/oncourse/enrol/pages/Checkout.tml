@@ -10,45 +10,25 @@
 <t:block t:id="checkout">
 	<t:if test="purchaseController">
 		<t:delegate to="block:errors"/>
+
+        <t:delegate to="block:progress"/>
 		<t:if test="purchaseController.editCheckout">
-			<div class="progress-steps">
-				<ul>
-					<li class="disable">
-						<a href="#">Your details</a>
-					</li>
-					<li class="active">
-						<a href="#">Summary</a>
-					</li>
-					<li class="last disable">
-						<a href="#">Payment</a>
-					</li>
-				</ul>
-			</div>
 			<t:delegate to="block:payments"/>
 		</t:if>
 		<t:if test="purchaseController.editConcession">
 			<t:delegate to="block:concessionEditor"/>
 		</t:if>
 		<t:if test="purchaseController.addContact">
-			<div class="progress-steps">
-				<ul>
-					<li class="active">
-						<a href="#">Your details</a>
-					</li>
-					<li class="disable">
-						<a href="#">Summary</a>
-					</li>
-					<li class="last disable">
-						<a href="#">Payment</a>
-					</li>
-				</ul>
-			</div>
 			<t:delegate to="block:addContact"/>
 		</t:if>
 		<t:if test="purchaseController.editContact">
 			<t:delegate to="block:contactEditor"/>
 		</t:if>
 	</t:if>
+</t:block>
+
+<t:block t:id="progress">
+    <span t:type="checkout/progress" purchaseController="purchaseController"/>
 </t:block>
 
 <t:block t:id="errors">
