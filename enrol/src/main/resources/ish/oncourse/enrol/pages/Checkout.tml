@@ -12,11 +12,35 @@
 		<t:delegate to="block:errors"/>
 		<t:if test="purchaseController.editCheckout">
 			<t:delegate to="block:payments"/>
+			<ul>
+				<li>
+					<a href="#">Your details</a>
+				</li>
+				<li class="active">
+					<a href="#">Summary</a>
+				</li>
+				<li class="last disable">
+					<a href="#">Payment</a>
+				</li>
+			</ul>
 		</t:if>
 		<t:if test="purchaseController.editConcession">
 			<t:delegate to="block:concessionEditor"/>
 		</t:if>
 		<t:if test="purchaseController.addContact">
+			<div class="progress-steps">
+				<ul>
+					<li class="active">
+						<a href="#">Your details</a>
+					</li>
+					<li class="disable">
+						<a href="#">Summary</a>
+					</li>
+					<li class="last disable">
+						<a href="#">Payment</a>
+					</li>
+				</ul>
+			</div>
 			<t:delegate to="block:addContact"/>
 		</t:if>
 		<t:if test="purchaseController.editContact">
