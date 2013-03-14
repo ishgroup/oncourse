@@ -1,27 +1,22 @@
 package ish.oncourse.model;
 
-import ish.common.types.AvetmissStudentDisabilityType;
-import ish.common.types.AvetmissStudentEnglishProficiency;
-import ish.common.types.AvetmissStudentIndigenousStatus;
-import ish.common.types.AvetmissStudentLabourStatus;
-import ish.common.types.AvetmissStudentPriorEducation;
-import ish.common.types.AvetmissStudentSchoolLevel;
-import ish.common.types.TypesUtil;
+import ish.common.types.*;
 import ish.oncourse.model.auto._Student;
 import ish.oncourse.utils.QueueableObjectUtils;
-
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
+import java.util.Calendar;
+import java.util.List;
+
 public class Student extends _Student implements Queueable {
 	private static final long serialVersionUID = 8299657371084046806L;
+    public static final int MIN_SCHOOL_COMPLETION_YEAR = 1940;
 
-	public Long getId() {
+
+    public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
 	
@@ -71,8 +66,8 @@ public class Student extends _Student implements Queueable {
 			if (givenYear > thisYear) {
 				return "Year school completed cannot be in the future if supplied.";
 			}
-			if (thisYear - givenYear > 100) {
-				return "Year school completed if supplied should be within the last 100 years.";
+			if (givenYear < MIN_SCHOOL_COMPLETION_YEAR) {
+				return "Year school completed if supplied should be within not earlier than 1940.";
 			}
 		}
 		return null;
