@@ -13,7 +13,7 @@
 		<t:if test="purchaseController.editCheckout">
 			<t:delegate to="block:payments"/>
 			<ul>
-				<li>
+				<li class="disable">
 					<a href="#">Your details</a>
 				</li>
 				<li class="active">
