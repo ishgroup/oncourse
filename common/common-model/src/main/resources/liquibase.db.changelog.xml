@@ -689,10 +689,6 @@
 		<addUniqueConstraint tableName="WebSite" columnNames="siteKey" constraintName="siteKey_unique"/>
 	</changeSet>
 	
-	<!--changeSet id="XYZ" author="viacheslav" context="production" runOnChange="true">
-		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>
-	</changeSet-->
-
     <changeSet id="56" author="akoyro" context="production" runOnChange="true">
     	<preConditions onFail="MARK_RAN">
     		<not>
@@ -1519,6 +1515,19 @@
     		<columnExists tableName="Qualification" columnName="anzsic"/>
     	</preConditions>
     	<dropColumn tableName="Qualification" columnName="anzsic"/>
+    </changeSet>
+    
+    <changeSet id="95" author="viacheslav" context="production" runOnChange="true">
+    	<customChange class="ish.oncourse.model.liquibase.CleanupDuplicatedPaymentInLinesUpgrage"/>
+    </changeSet>
+    
+    <changeSet id="96" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<indexExists tableName="PaymentInLine" columnNames="paymentInId,invoiceId"/>
+    		</not>
+    	</preConditions>
+    	<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInId_invoiceId_uniq_idx"/>
     </changeSet>
 
 </databaseChangeLog>
