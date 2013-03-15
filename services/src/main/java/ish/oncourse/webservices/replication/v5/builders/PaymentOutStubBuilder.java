@@ -13,7 +13,7 @@ public class PaymentOutStubBuilder extends AbstractWillowStubBuilder<PaymentOut,
 		
 		PaymentOutStub stub = new PaymentOutStub();
 		
-		stub.setAmount(entity.getTotalAmount());
+		stub.setAmount(entity.getTotalAmount().toBigDecimal());
 		stub.setContactId(entity.getContact().getId());
 		stub.setCreated(entity.getCreated());
 		stub.setModified(entity.getModified());

@@ -2,6 +2,7 @@ package ish.oncourse.webservices.replication.v4.updaters;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
+import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentOut;
 import ish.common.types.TypesUtil;
@@ -18,7 +19,7 @@ public class PaymentOutUpdater extends AbstractWillowUpdater<PaymentOutStub, Pay
 		
 		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), PaymentStatus.class));
 		//entity.setStatus(PaymentStatus.getEnumForDatabaseValue(stub.getStatus()));
-		entity.setTotalAmount(stub.getAmount());
+		entity.setTotalAmount(new Money(stub.getAmount()));
 		
 		entity.setDateBanked(stub.getDateBanked());
 		entity.setDatePaid(stub.getDatePaid());
