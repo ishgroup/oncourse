@@ -18,7 +18,6 @@ public class PaymentOutUpdater extends AbstractWillowUpdater<PaymentOutStub, Pay
 		entity.setPaymentInTxnReference(stub.getPaymentInTxnReference());
 		
 		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), PaymentStatus.class));
-		//entity.setStatus(PaymentStatus.getEnumForDatabaseValue(stub.getStatus()));
 		entity.setTotalAmount(new Money(stub.getAmount()));
 		
 		entity.setDateBanked(stub.getDateBanked());
@@ -26,7 +25,6 @@ public class PaymentOutUpdater extends AbstractWillowUpdater<PaymentOutStub, Pay
 		
 		if (stub.getSource() != null) {
 			PaymentSource source = TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class);
-			//PaymentSource source = PaymentSource.getSourceForValue(stub.getSource());
 			if (source != null) {
 				entity.setSource(source);
 			}
