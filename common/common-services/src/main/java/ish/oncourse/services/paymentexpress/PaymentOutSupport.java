@@ -38,7 +38,7 @@ public class PaymentOutSupport implements IPaymentSupport<PaymentOut, PaymentOut
 
         StringBuilder transactionDetails = new StringBuilder("Preparing payment transaction data. ");
 
-        details.setAmount(PaymentExpressUtil.translateInputAmountAsDecimalString(paymentOut.getTotalAmount()));
+        details.setAmount(PaymentExpressUtil.translateInputAmountAsDecimalString(paymentOut.getTotalAmount().toBigDecimal()));
         transactionDetails.append("amount: ").append(details.getAmount());
 
         details.setDpsTxnRef(paymentOut.getPaymentInTxnReference());

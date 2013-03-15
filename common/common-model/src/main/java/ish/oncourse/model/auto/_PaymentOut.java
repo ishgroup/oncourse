@@ -1,6 +1,5 @@
 package ish.oncourse.model.auto;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import org.apache.cayenne.CayenneDataObject;
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
+import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentOutTransaction;
@@ -40,116 +40,116 @@ public abstract class _PaymentOut extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty(ANGEL_ID_PROPERTY, angelId);
+        writeProperty("angelId", angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty(ANGEL_ID_PROPERTY);
+        return (Long)readProperty("angelId");
     }
 
     public void setCreated(Date created) {
-        writeProperty(CREATED_PROPERTY, created);
+        writeProperty("created", created);
     }
     public Date getCreated() {
-        return (Date)readProperty(CREATED_PROPERTY);
+        return (Date)readProperty("created");
     }
 
     public void setCreditCardCVV(String creditCardCVV) {
-        writeProperty(CREDIT_CARD_CVV_PROPERTY, creditCardCVV);
+        writeProperty("creditCardCVV", creditCardCVV);
     }
     public String getCreditCardCVV() {
-        return (String)readProperty(CREDIT_CARD_CVV_PROPERTY);
+        return (String)readProperty("creditCardCVV");
     }
 
     public void setCreditCardType(CreditCardType creditCardType) {
-        writeProperty(CREDIT_CARD_TYPE_PROPERTY, creditCardType);
+        writeProperty("creditCardType", creditCardType);
     }
     public CreditCardType getCreditCardType() {
-        return (CreditCardType)readProperty(CREDIT_CARD_TYPE_PROPERTY);
+        return (CreditCardType)readProperty("creditCardType");
     }
 
     public void setDateBanked(Date dateBanked) {
-        writeProperty(DATE_BANKED_PROPERTY, dateBanked);
+        writeProperty("dateBanked", dateBanked);
     }
     public Date getDateBanked() {
-        return (Date)readProperty(DATE_BANKED_PROPERTY);
+        return (Date)readProperty("dateBanked");
     }
 
     public void setDatePaid(Date datePaid) {
-        writeProperty(DATE_PAID_PROPERTY, datePaid);
+        writeProperty("datePaid", datePaid);
     }
     public Date getDatePaid() {
-        return (Date)readProperty(DATE_PAID_PROPERTY);
+        return (Date)readProperty("datePaid");
     }
 
     public void setModified(Date modified) {
-        writeProperty(MODIFIED_PROPERTY, modified);
+        writeProperty("modified", modified);
     }
     public Date getModified() {
-        return (Date)readProperty(MODIFIED_PROPERTY);
+        return (Date)readProperty("modified");
     }
 
     public void setPaymentInTxnReference(String paymentInTxnReference) {
-        writeProperty(PAYMENT_IN_TXN_REFERENCE_PROPERTY, paymentInTxnReference);
+        writeProperty("paymentInTxnReference", paymentInTxnReference);
     }
     public String getPaymentInTxnReference() {
-        return (String)readProperty(PAYMENT_IN_TXN_REFERENCE_PROPERTY);
+        return (String)readProperty("paymentInTxnReference");
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty(SOURCE_PROPERTY, source);
+        writeProperty("source", source);
     }
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty(SOURCE_PROPERTY);
+        return (PaymentSource)readProperty("source");
     }
 
     public void setStatus(PaymentStatus status) {
-        writeProperty(STATUS_PROPERTY, status);
+        writeProperty("status", status);
     }
     public PaymentStatus getStatus() {
-        return (PaymentStatus)readProperty(STATUS_PROPERTY);
+        return (PaymentStatus)readProperty("status");
     }
 
     public void setStatusNotes(String statusNotes) {
-        writeProperty(STATUS_NOTES_PROPERTY, statusNotes);
+        writeProperty("statusNotes", statusNotes);
     }
     public String getStatusNotes() {
-        return (String)readProperty(STATUS_NOTES_PROPERTY);
+        return (String)readProperty("statusNotes");
     }
 
-    public void setTotalAmount(BigDecimal totalAmount) {
-        writeProperty(TOTAL_AMOUNT_PROPERTY, totalAmount);
+    public void setTotalAmount(Money totalAmount) {
+        writeProperty("totalAmount", totalAmount);
     }
-    public BigDecimal getTotalAmount() {
-        return (BigDecimal)readProperty(TOTAL_AMOUNT_PROPERTY);
+    public Money getTotalAmount() {
+        return (Money)readProperty("totalAmount");
     }
 
     public void setCollege(College college) {
-        setToOneTarget(COLLEGE_PROPERTY, college, true);
+        setToOneTarget("college", college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty(COLLEGE_PROPERTY);
+        return (College)readProperty("college");
     }
 
 
     public void setContact(Contact contact) {
-        setToOneTarget(CONTACT_PROPERTY, contact, true);
+        setToOneTarget("contact", contact, true);
     }
 
     public Contact getContact() {
-        return (Contact)readProperty(CONTACT_PROPERTY);
+        return (Contact)readProperty("contact");
     }
 
 
     public void addToPaymentOutTransactions(PaymentOutTransaction obj) {
-        addToManyTarget(PAYMENT_OUT_TRANSACTIONS_PROPERTY, obj, true);
+        addToManyTarget("paymentOutTransactions", obj, true);
     }
     public void removeFromPaymentOutTransactions(PaymentOutTransaction obj) {
-        removeToManyTarget(PAYMENT_OUT_TRANSACTIONS_PROPERTY, obj, true);
+        removeToManyTarget("paymentOutTransactions", obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentOutTransaction> getPaymentOutTransactions() {
-        return (List<PaymentOutTransaction>)readProperty(PAYMENT_OUT_TRANSACTIONS_PROPERTY);
+        return (List<PaymentOutTransaction>)readProperty("paymentOutTransactions");
     }
 
 

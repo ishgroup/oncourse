@@ -54,196 +54,196 @@ public abstract class _PaymentIn extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAmount(Money amount) {
-        writeProperty("amount", amount);
+        writeProperty(AMOUNT_PROPERTY, amount);
     }
     public Money getAmount() {
-        return (Money)readProperty("amount");
+        return (Money)readProperty(AMOUNT_PROPERTY);
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setCreditCardCVV(String creditCardCVV) {
-        writeProperty("creditCardCVV", creditCardCVV);
+        writeProperty(CREDIT_CARD_CVV_PROPERTY, creditCardCVV);
     }
     public String getCreditCardCVV() {
-        return (String)readProperty("creditCardCVV");
+        return (String)readProperty(CREDIT_CARD_CVV_PROPERTY);
     }
 
     public void setCreditCardExpiry(String creditCardExpiry) {
-        writeProperty("creditCardExpiry", creditCardExpiry);
+        writeProperty(CREDIT_CARD_EXPIRY_PROPERTY, creditCardExpiry);
     }
     public String getCreditCardExpiry() {
-        return (String)readProperty("creditCardExpiry");
+        return (String)readProperty(CREDIT_CARD_EXPIRY_PROPERTY);
     }
 
     public void setCreditCardName(String creditCardName) {
-        writeProperty("creditCardName", creditCardName);
+        writeProperty(CREDIT_CARD_NAME_PROPERTY, creditCardName);
     }
     public String getCreditCardName() {
-        return (String)readProperty("creditCardName");
+        return (String)readProperty(CREDIT_CARD_NAME_PROPERTY);
     }
 
     public void setCreditCardNumber(String creditCardNumber) {
-        writeProperty("creditCardNumber", creditCardNumber);
+        writeProperty(CREDIT_CARD_NUMBER_PROPERTY, creditCardNumber);
     }
     public String getCreditCardNumber() {
-        return (String)readProperty("creditCardNumber");
+        return (String)readProperty(CREDIT_CARD_NUMBER_PROPERTY);
     }
 
     public void setCreditCardType(CreditCardType creditCardType) {
-        writeProperty("creditCardType", creditCardType);
+        writeProperty(CREDIT_CARD_TYPE_PROPERTY, creditCardType);
     }
     public CreditCardType getCreditCardType() {
-        return (CreditCardType)readProperty("creditCardType");
+        return (CreditCardType)readProperty(CREDIT_CARD_TYPE_PROPERTY);
     }
 
     public void setDateBanked(Date dateBanked) {
-        writeProperty("dateBanked", dateBanked);
+        writeProperty(DATE_BANKED_PROPERTY, dateBanked);
     }
     public Date getDateBanked() {
-        return (Date)readProperty("dateBanked");
+        return (Date)readProperty(DATE_BANKED_PROPERTY);
     }
 
     public void setGatewayReference(String gatewayReference) {
-        writeProperty("gatewayReference", gatewayReference);
+        writeProperty(GATEWAY_REFERENCE_PROPERTY, gatewayReference);
     }
     public String getGatewayReference() {
-        return (String)readProperty("gatewayReference");
+        return (String)readProperty(GATEWAY_REFERENCE_PROPERTY);
     }
 
     public void setGatewayResponse(String gatewayResponse) {
-        writeProperty("gatewayResponse", gatewayResponse);
+        writeProperty(GATEWAY_RESPONSE_PROPERTY, gatewayResponse);
     }
     public String getGatewayResponse() {
-        return (String)readProperty("gatewayResponse");
+        return (String)readProperty(GATEWAY_RESPONSE_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setSessionId(String sessionId) {
-        writeProperty("sessionId", sessionId);
+        writeProperty(SESSION_ID_PROPERTY, sessionId);
     }
     public String getSessionId() {
-        return (String)readProperty("sessionId");
+        return (String)readProperty(SESSION_ID_PROPERTY);
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty("source", source);
+        writeProperty(SOURCE_PROPERTY, source);
     }
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty("source");
+        return (PaymentSource)readProperty(SOURCE_PROPERTY);
     }
 
     public void setStatus(PaymentStatus status) {
-        writeProperty("status", status);
+        writeProperty(STATUS_PROPERTY, status);
     }
     public PaymentStatus getStatus() {
-        return (PaymentStatus)readProperty("status");
+        return (PaymentStatus)readProperty(STATUS_PROPERTY);
     }
 
     public void setStatusNotes(String statusNotes) {
-        writeProperty("statusNotes", statusNotes);
+        writeProperty(STATUS_NOTES_PROPERTY, statusNotes);
     }
     public String getStatusNotes() {
-        return (String)readProperty("statusNotes");
+        return (String)readProperty(STATUS_NOTES_PROPERTY);
     }
 
     public void setType(PaymentType type) {
-        writeProperty("type", type);
+        writeProperty(TYPE_PROPERTY, type);
     }
     public PaymentType getType() {
-        return (PaymentType)readProperty("type");
+        return (PaymentType)readProperty(TYPE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setContact(Contact contact) {
-        setToOneTarget("contact", contact, true);
+        setToOneTarget(CONTACT_PROPERTY, contact, true);
     }
 
     public Contact getContact() {
-        return (Contact)readProperty("contact");
+        return (Contact)readProperty(CONTACT_PROPERTY);
     }
 
 
     public void addToPaymentInLines(PaymentInLine obj) {
-        addToManyTarget("paymentInLines", obj, true);
+        addToManyTarget(PAYMENT_IN_LINES_PROPERTY, obj, true);
     }
     public void removeFromPaymentInLines(PaymentInLine obj) {
-        removeToManyTarget("paymentInLines", obj, true);
+        removeToManyTarget(PAYMENT_IN_LINES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentInLine> getPaymentInLines() {
-        return (List<PaymentInLine>)readProperty("paymentInLines");
+        return (List<PaymentInLine>)readProperty(PAYMENT_IN_LINES_PROPERTY);
     }
 
 
     public void addToPaymentTransactions(PaymentTransaction obj) {
-        addToManyTarget("paymentTransactions", obj, true);
+        addToManyTarget(PAYMENT_TRANSACTIONS_PROPERTY, obj, true);
     }
     public void removeFromPaymentTransactions(PaymentTransaction obj) {
-        removeToManyTarget("paymentTransactions", obj, true);
+        removeToManyTarget(PAYMENT_TRANSACTIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentTransaction> getPaymentTransactions() {
-        return (List<PaymentTransaction>)readProperty("paymentTransactions");
+        return (List<PaymentTransaction>)readProperty(PAYMENT_TRANSACTIONS_PROPERTY);
     }
 
 
     public void setStudent(Student student) {
-        setToOneTarget("student", student, true);
+        setToOneTarget(STUDENT_PROPERTY, student, true);
     }
 
     public Student getStudent() {
-        return (Student)readProperty("student");
+        return (Student)readProperty(STUDENT_PROPERTY);
     }
 
 
     public void addToVoucherPaymentIns(VoucherPaymentIn obj) {
-        addToManyTarget("voucherPaymentIns", obj, true);
+        addToManyTarget(VOUCHER_PAYMENT_INS_PROPERTY, obj, true);
     }
     public void removeFromVoucherPaymentIns(VoucherPaymentIn obj) {
-        removeToManyTarget("voucherPaymentIns", obj, true);
+        removeToManyTarget(VOUCHER_PAYMENT_INS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<VoucherPaymentIn> getVoucherPaymentIns() {
-        return (List<VoucherPaymentIn>)readProperty("voucherPaymentIns");
+        return (List<VoucherPaymentIn>)readProperty(VOUCHER_PAYMENT_INS_PROPERTY);
     }
 
 
     public void addToVouchers(Voucher obj) {
-        addToManyTarget("vouchers", obj, true);
+        addToManyTarget(VOUCHERS_PROPERTY, obj, true);
     }
     public void removeFromVouchers(Voucher obj) {
-        removeToManyTarget("vouchers", obj, true);
+        removeToManyTarget(VOUCHERS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Voucher> getVouchers() {
-        return (List<Voucher>)readProperty("vouchers");
+        return (List<Voucher>)readProperty(VOUCHERS_PROPERTY);
     }
 
 

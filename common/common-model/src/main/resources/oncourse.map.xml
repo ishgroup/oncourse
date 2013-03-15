@@ -1532,7 +1532,7 @@
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="ish.common.types.PaymentStatus" db-attribute-path="status"/>
 		<obj-attribute name="statusNotes" type="java.lang.String" db-attribute-path="statusNotes"/>
-		<obj-attribute name="totalAmount" type="java.math.BigDecimal" db-attribute-path="totalAmount"/>
+		<obj-attribute name="totalAmount" type="ish.math.Money" db-attribute-path="totalAmount"/>
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
 	<obj-entity name="PaymentOutTransaction" className="ish.oncourse.model.PaymentOutTransaction" dbEntityName="PaymentOutTransaction">
