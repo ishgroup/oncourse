@@ -1355,7 +1355,7 @@
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
 	</obj-entity>
 	<obj-entity name="Invoice" className="ish.oncourse.model.Invoice" dbEntityName="Invoice">
-		<obj-attribute name="amountOwing" type="java.math.BigDecimal" db-attribute-path="amountOwing"/>
+		<obj-attribute name="amountOwing" type="ish.math.Money" db-attribute-path="amountOwing"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="billToAddress" type="java.lang.String" db-attribute-path="billToAddress"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -1369,8 +1369,8 @@
 		<obj-attribute name="publicNotes" type="java.lang.String" db-attribute-path="publicNotes"/>
 		<obj-attribute name="shippingAddress" type="java.lang.String" db-attribute-path="shippingAddress"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
-		<obj-attribute name="totalExGst" type="java.math.BigDecimal" db-attribute-path="totalExGst"/>
-		<obj-attribute name="totalGst" type="java.math.BigDecimal" db-attribute-path="totalGst"/>
+		<obj-attribute name="totalExGst" type="ish.math.Money" db-attribute-path="totalExGst"/>
+		<obj-attribute name="totalGst" type="ish.math.Money" db-attribute-path="totalGst"/>
 		<post-add method-name="onPostAdd"/>
 		<pre-persist method-name="onPrePersist"/>
 		<pre-update method-name="onPreUpdate"/>
@@ -1490,7 +1490,7 @@
 		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="status"/>
 	</obj-entity>
 	<obj-entity name="PaymentIn" className="ish.oncourse.model.PaymentIn" dbEntityName="PaymentIn">
-		<obj-attribute name="amount" type="java.math.BigDecimal" db-attribute-path="amount"/>
+		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="creditCardCVV" type="java.lang.String" db-attribute-path="creditCardCVV"/>
@@ -1512,7 +1512,7 @@
 		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
 	<obj-entity name="PaymentInLine" className="ish.oncourse.model.PaymentInLine" dbEntityName="PaymentInLine">
-		<obj-attribute name="amount" type="java.math.BigDecimal" db-attribute-path="amount"/>
+		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -3056,10 +3056,10 @@
 	<obj-relationship name="courseClass" source="CorporatePassCourseClass" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="college" source="Course" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Course" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
-	<obj-relationship name="fromCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseFromRelation"/>
 	<obj-relationship name="courseModules" source="Course" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
-	<obj-relationship name="toCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseToRelation"/>
+	<obj-relationship name="fromCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseFromRelation"/>
 	<obj-relationship name="qualification" source="Course" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
+	<obj-relationship name="toCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseToRelation"/>
 	<obj-relationship name="waitingLists" source="Course" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
 	<obj-relationship name="college" source="CourseClass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="CourseClass" target="Course" deleteRule="Nullify" db-relationship-path="course"/>

@@ -28,74 +28,74 @@ public abstract class _NotificationTemplate extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAllowWebobjectsTags(Boolean allowWebobjectsTags) {
-        writeProperty("allowWebobjectsTags", allowWebobjectsTags);
+        writeProperty(ALLOW_WEBOBJECTS_TAGS_PROPERTY, allowWebobjectsTags);
     }
     public Boolean getAllowWebobjectsTags() {
-        return (Boolean)readProperty("allowWebobjectsTags");
+        return (Boolean)readProperty(ALLOW_WEBOBJECTS_TAGS_PROPERTY);
     }
 
     public void setAllowedInTextileTags(Boolean allowedInTextileTags) {
-        writeProperty("allowedInTextileTags", allowedInTextileTags);
+        writeProperty(ALLOWED_IN_TEXTILE_TAGS_PROPERTY, allowedInTextileTags);
     }
     public Boolean getAllowedInTextileTags() {
-        return (Boolean)readProperty("allowedInTextileTags");
+        return (Boolean)readProperty(ALLOWED_IN_TEXTILE_TAGS_PROPERTY);
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setMessage(String message) {
-        writeProperty("message", message);
+        writeProperty(MESSAGE_PROPERTY, message);
     }
     public String getMessage() {
-        return (String)readProperty("message");
+        return (String)readProperty(MESSAGE_PROPERTY);
     }
 
     public void setMimeType(String mimeType) {
-        writeProperty("mimeType", mimeType);
+        writeProperty(MIME_TYPE_PROPERTY, mimeType);
     }
     public String getMimeType() {
-        return (String)readProperty("mimeType");
+        return (String)readProperty(MIME_TYPE_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setSubject(String subject) {
-        writeProperty("subject", subject);
+        writeProperty(SUBJECT_PROPERTY, subject);
     }
     public String getSubject() {
-        return (String)readProperty("subject");
+        return (String)readProperty(SUBJECT_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 

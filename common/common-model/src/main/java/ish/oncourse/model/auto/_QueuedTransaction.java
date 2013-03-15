@@ -25,44 +25,44 @@ public abstract class _QueuedTransaction extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setTransactionKey(String transactionKey) {
-        writeProperty("transactionKey", transactionKey);
+        writeProperty(TRANSACTION_KEY_PROPERTY, transactionKey);
     }
     public String getTransactionKey() {
-        return (String)readProperty("transactionKey");
+        return (String)readProperty(TRANSACTION_KEY_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void addToQueuedRecords(QueuedRecord obj) {
-        addToManyTarget("queuedRecords", obj, true);
+        addToManyTarget(QUEUED_RECORDS_PROPERTY, obj, true);
     }
     public void removeFromQueuedRecords(QueuedRecord obj) {
-        removeToManyTarget("queuedRecords", obj, true);
+        removeToManyTarget(QUEUED_RECORDS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<QueuedRecord> getQueuedRecords() {
-        return (List<QueuedRecord>)readProperty("queuedRecords");
+        return (List<QueuedRecord>)readProperty(QUEUED_RECORDS_PROPERTY);
     }
 
 

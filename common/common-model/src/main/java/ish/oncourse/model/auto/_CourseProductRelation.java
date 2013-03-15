@@ -18,20 +18,20 @@ public abstract class _CourseProductRelation extends EntityRelation {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCourse(Course course) {
-        setToOneTarget("course", course, true);
+        setToOneTarget(COURSE_PROPERTY, course, true);
     }
 
     public Course getCourse() {
-        return (Course)readProperty("course");
+        return (Course)readProperty(COURSE_PROPERTY);
     }
 
 
     public void setProduct(Product product) {
-        setToOneTarget("product", product, true);
+        setToOneTarget(PRODUCT_PROPERTY, product, true);
     }
 
     public Product getProduct() {
-        return (Product)readProperty("product");
+        return (Product)readProperty(PRODUCT_PROPERTY);
     }
 
 

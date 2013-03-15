@@ -1,10 +1,10 @@
 package ish.oncourse.model.auto;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
@@ -27,58 +27,58 @@ public abstract class _PaymentInLine extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public void setAmount(BigDecimal amount) {
-        writeProperty("amount", amount);
+    public void setAmount(Money amount) {
+        writeProperty(AMOUNT_PROPERTY, amount);
     }
-    public BigDecimal getAmount() {
-        return (BigDecimal)readProperty("amount");
+    public Money getAmount() {
+        return (Money)readProperty(AMOUNT_PROPERTY);
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setInvoice(Invoice invoice) {
-        setToOneTarget("invoice", invoice, true);
+        setToOneTarget(INVOICE_PROPERTY, invoice, true);
     }
 
     public Invoice getInvoice() {
-        return (Invoice)readProperty("invoice");
+        return (Invoice)readProperty(INVOICE_PROPERTY);
     }
 
 
     public void setPaymentIn(PaymentIn paymentIn) {
-        setToOneTarget("paymentIn", paymentIn, true);
+        setToOneTarget(PAYMENT_IN_PROPERTY, paymentIn, true);
     }
 
     public PaymentIn getPaymentIn() {
-        return (PaymentIn)readProperty("paymentIn");
+        return (PaymentIn)readProperty(PAYMENT_IN_PROPERTY);
     }
 
 

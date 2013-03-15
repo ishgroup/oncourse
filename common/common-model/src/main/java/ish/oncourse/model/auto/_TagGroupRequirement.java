@@ -27,62 +27,62 @@ public abstract class _TagGroupRequirement extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAllowsMultipleTags(Boolean allowsMultipleTags) {
-        writeProperty("allowsMultipleTags", allowsMultipleTags);
+        writeProperty(ALLOWS_MULTIPLE_TAGS_PROPERTY, allowsMultipleTags);
     }
     public Boolean getAllowsMultipleTags() {
-        return (Boolean)readProperty("allowsMultipleTags");
+        return (Boolean)readProperty(ALLOWS_MULTIPLE_TAGS_PROPERTY);
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setEntityIdentifier(String entityIdentifier) {
-        writeProperty("entityIdentifier", entityIdentifier);
+        writeProperty(ENTITY_IDENTIFIER_PROPERTY, entityIdentifier);
     }
     public String getEntityIdentifier() {
-        return (String)readProperty("entityIdentifier");
+        return (String)readProperty(ENTITY_IDENTIFIER_PROPERTY);
     }
 
     public void setIsRequired(Boolean isRequired) {
-        writeProperty("isRequired", isRequired);
+        writeProperty(IS_REQUIRED_PROPERTY, isRequired);
     }
     public Boolean getIsRequired() {
-        return (Boolean)readProperty("isRequired");
+        return (Boolean)readProperty(IS_REQUIRED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setTag(Tag tag) {
-        setToOneTarget("tag", tag, true);
+        setToOneTarget(TAG_PROPERTY, tag, true);
     }
 
     public Tag getTag() {
-        return (Tag)readProperty("tag");
+        return (Tag)readProperty(TAG_PROPERTY);
     }
 
 

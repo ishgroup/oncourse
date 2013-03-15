@@ -24,42 +24,42 @@ public abstract class _VoucherProduct extends Product {
     public static final String ID_PK_COLUMN = "id";
 
     public void setExpiryDays(Integer expiryDays) {
-        writeProperty("expiryDays", expiryDays);
+        writeProperty(EXPIRY_DAYS_PROPERTY, expiryDays);
     }
     public Integer getExpiryDays() {
-        return (Integer)readProperty("expiryDays");
+        return (Integer)readProperty(EXPIRY_DAYS_PROPERTY);
     }
 
     public void setExpiryType(ExpiryType expiryType) {
-        writeProperty("expiryType", expiryType);
+        writeProperty(EXPIRY_TYPE_PROPERTY, expiryType);
     }
     public ExpiryType getExpiryType() {
-        return (ExpiryType)readProperty("expiryType");
+        return (ExpiryType)readProperty(EXPIRY_TYPE_PROPERTY);
     }
 
     public void setMaxCoursesRedemption(Integer maxCoursesRedemption) {
-        writeProperty("maxCoursesRedemption", maxCoursesRedemption);
+        writeProperty(MAX_COURSES_REDEMPTION_PROPERTY, maxCoursesRedemption);
     }
     public Integer getMaxCoursesRedemption() {
-        return (Integer)readProperty("maxCoursesRedemption");
+        return (Integer)readProperty(MAX_COURSES_REDEMPTION_PROPERTY);
     }
 
     public void setValue(Money value) {
-        writeProperty("value", value);
+        writeProperty(VALUE_PROPERTY, value);
     }
     public Money getValue() {
-        return (Money)readProperty("value");
+        return (Money)readProperty(VALUE_PROPERTY);
     }
 
     public void addToRedemptionCourses(Course obj) {
-        addToManyTarget("redemptionCourses", obj, true);
+        addToManyTarget(REDEMPTION_COURSES_PROPERTY, obj, true);
     }
     public void removeFromRedemptionCourses(Course obj) {
-        removeToManyTarget("redemptionCourses", obj, true);
+        removeToManyTarget(REDEMPTION_COURSES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Course> getRedemptionCourses() {
-        return (List<Course>)readProperty("redemptionCourses");
+        return (List<Course>)readProperty(REDEMPTION_COURSES_PROPERTY);
     }
 
 

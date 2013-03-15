@@ -40,140 +40,140 @@ public abstract class _Tag extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDetail(String detail) {
-        writeProperty("detail", detail);
+        writeProperty(DETAIL_PROPERTY, detail);
     }
     public String getDetail() {
-        return (String)readProperty("detail");
+        return (String)readProperty(DETAIL_PROPERTY);
     }
 
     public void setDetailTextile(String detailTextile) {
-        writeProperty("detailTextile", detailTextile);
+        writeProperty(DETAIL_TEXTILE_PROPERTY, detailTextile);
     }
     public String getDetailTextile() {
-        return (String)readProperty("detailTextile");
+        return (String)readProperty(DETAIL_TEXTILE_PROPERTY);
     }
 
     public void setIsTagGroup(Boolean isTagGroup) {
-        writeProperty("isTagGroup", isTagGroup);
+        writeProperty(IS_TAG_GROUP_PROPERTY, isTagGroup);
     }
     public Boolean getIsTagGroup() {
-        return (Boolean)readProperty("isTagGroup");
+        return (Boolean)readProperty(IS_TAG_GROUP_PROPERTY);
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty("isWebVisible", isWebVisible);
+        writeProperty(IS_WEB_VISIBLE_PROPERTY, isWebVisible);
     }
     public Boolean getIsWebVisible() {
-        return (Boolean)readProperty("isWebVisible");
+        return (Boolean)readProperty(IS_WEB_VISIBLE_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setNodeType(Integer nodeType) {
-        writeProperty("nodeType", nodeType);
+        writeProperty(NODE_TYPE_PROPERTY, nodeType);
     }
     public Integer getNodeType() {
-        return (Integer)readProperty("nodeType");
+        return (Integer)readProperty(NODE_TYPE_PROPERTY);
     }
 
     public void setShortName(String shortName) {
-        writeProperty("shortName", shortName);
+        writeProperty(SHORT_NAME_PROPERTY, shortName);
     }
     public String getShortName() {
-        return (String)readProperty("shortName");
+        return (String)readProperty(SHORT_NAME_PROPERTY);
     }
 
     public void setSpecialType(NodeSpecialType specialType) {
-        writeProperty("specialType", specialType);
+        writeProperty(SPECIAL_TYPE_PROPERTY, specialType);
     }
     public NodeSpecialType getSpecialType() {
-        return (NodeSpecialType)readProperty("specialType");
+        return (NodeSpecialType)readProperty(SPECIAL_TYPE_PROPERTY);
     }
 
     public void setWeighting(Integer weighting) {
-        writeProperty("weighting", weighting);
+        writeProperty(WEIGHTING_PROPERTY, weighting);
     }
     public Integer getWeighting() {
-        return (Integer)readProperty("weighting");
+        return (Integer)readProperty(WEIGHTING_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setParent(Tag parent) {
-        setToOneTarget("parent", parent, true);
+        setToOneTarget(PARENT_PROPERTY, parent, true);
     }
 
     public Tag getParent() {
-        return (Tag)readProperty("parent");
+        return (Tag)readProperty(PARENT_PROPERTY);
     }
 
 
     public void addToTagGroupRequirements(TagGroupRequirement obj) {
-        addToManyTarget("tagGroupRequirements", obj, true);
+        addToManyTarget(TAG_GROUP_REQUIREMENTS_PROPERTY, obj, true);
     }
     public void removeFromTagGroupRequirements(TagGroupRequirement obj) {
-        removeToManyTarget("tagGroupRequirements", obj, true);
+        removeToManyTarget(TAG_GROUP_REQUIREMENTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<TagGroupRequirement> getTagGroupRequirements() {
-        return (List<TagGroupRequirement>)readProperty("tagGroupRequirements");
+        return (List<TagGroupRequirement>)readProperty(TAG_GROUP_REQUIREMENTS_PROPERTY);
     }
 
 
     public void addToTaggableTags(TaggableTag obj) {
-        addToManyTarget("taggableTags", obj, true);
+        addToManyTarget(TAGGABLE_TAGS_PROPERTY, obj, true);
     }
     public void removeFromTaggableTags(TaggableTag obj) {
-        removeToManyTarget("taggableTags", obj, true);
+        removeToManyTarget(TAGGABLE_TAGS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<TaggableTag> getTaggableTags() {
-        return (List<TaggableTag>)readProperty("taggableTags");
+        return (List<TaggableTag>)readProperty(TAGGABLE_TAGS_PROPERTY);
     }
 
 
     public void addToTags(Tag obj) {
-        addToManyTarget("tags", obj, true);
+        addToManyTarget(TAGS_PROPERTY, obj, true);
     }
     public void removeFromTags(Tag obj) {
-        removeToManyTarget("tags", obj, true);
+        removeToManyTarget(TAGS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Tag> getTags() {
-        return (List<Tag>)readProperty("tags");
+        return (List<Tag>)readProperty(TAGS_PROPERTY);
     }
 
 

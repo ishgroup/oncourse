@@ -28,65 +28,65 @@ public abstract class _Message extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setEmailBody(String emailBody) {
-        writeProperty("emailBody", emailBody);
+        writeProperty(EMAIL_BODY_PROPERTY, emailBody);
     }
     public String getEmailBody() {
-        return (String)readProperty("emailBody");
+        return (String)readProperty(EMAIL_BODY_PROPERTY);
     }
 
     public void setEmailSubject(String emailSubject) {
-        writeProperty("emailSubject", emailSubject);
+        writeProperty(EMAIL_SUBJECT_PROPERTY, emailSubject);
     }
     public String getEmailSubject() {
-        return (String)readProperty("emailSubject");
+        return (String)readProperty(EMAIL_SUBJECT_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setSmsText(String smsText) {
-        writeProperty("smsText", smsText);
+        writeProperty(SMS_TEXT_PROPERTY, smsText);
     }
     public String getSmsText() {
-        return (String)readProperty("smsText");
+        return (String)readProperty(SMS_TEXT_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void addToMessagePeople(MessagePerson obj) {
-        addToManyTarget("messagePeople", obj, true);
+        addToManyTarget(MESSAGE_PEOPLE_PROPERTY, obj, true);
     }
     public void removeFromMessagePeople(MessagePerson obj) {
-        removeToManyTarget("messagePeople", obj, true);
+        removeToManyTarget(MESSAGE_PEOPLE_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<MessagePerson> getMessagePeople() {
-        return (List<MessagePerson>)readProperty("messagePeople");
+        return (List<MessagePerson>)readProperty(MESSAGE_PEOPLE_PROPERTY);
     }
 
 

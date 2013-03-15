@@ -17,24 +17,24 @@ public abstract class _DiscussionComment extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setBody(String body) {
-        writeProperty("body", body);
+        writeProperty(BODY_PROPERTY, body);
     }
     public String getBody() {
-        return (String)readProperty("body");
+        return (String)readProperty(BODY_PROPERTY);
     }
 
     public void setDiscussionThreadId(Long discussionThreadId) {
-        writeProperty("discussionThreadId", discussionThreadId);
+        writeProperty(DISCUSSION_THREAD_ID_PROPERTY, discussionThreadId);
     }
     public Long getDiscussionThreadId() {
-        return (Long)readProperty("discussionThreadId");
+        return (Long)readProperty(DISCUSSION_THREAD_ID_PROPERTY);
     }
 
     public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
+        writeProperty(IS_DELETED_PROPERTY, isDeleted);
     }
     public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
+        return (Boolean)readProperty(IS_DELETED_PROPERTY);
     }
 
 }

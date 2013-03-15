@@ -29,76 +29,76 @@ public abstract class _Survey extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setComment(String comment) {
-        writeProperty("comment", comment);
+        writeProperty(COMMENT_PROPERTY, comment);
     }
     public String getComment() {
-        return (String)readProperty("comment");
+        return (String)readProperty(COMMENT_PROPERTY);
     }
 
     public void setCourseScore(Integer courseScore) {
-        writeProperty("courseScore", courseScore);
+        writeProperty(COURSE_SCORE_PROPERTY, courseScore);
     }
     public Integer getCourseScore() {
-        return (Integer)readProperty("courseScore");
+        return (Integer)readProperty(COURSE_SCORE_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setTutorScore(Integer tutorScore) {
-        writeProperty("tutorScore", tutorScore);
+        writeProperty(TUTOR_SCORE_PROPERTY, tutorScore);
     }
     public Integer getTutorScore() {
-        return (Integer)readProperty("tutorScore");
+        return (Integer)readProperty(TUTOR_SCORE_PROPERTY);
     }
 
     public void setUniqueCode(String uniqueCode) {
-        writeProperty("uniqueCode", uniqueCode);
+        writeProperty(UNIQUE_CODE_PROPERTY, uniqueCode);
     }
     public String getUniqueCode() {
-        return (String)readProperty("uniqueCode");
+        return (String)readProperty(UNIQUE_CODE_PROPERTY);
     }
 
     public void setVenueScore(Integer venueScore) {
-        writeProperty("venueScore", venueScore);
+        writeProperty(VENUE_SCORE_PROPERTY, venueScore);
     }
     public Integer getVenueScore() {
-        return (Integer)readProperty("venueScore");
+        return (Integer)readProperty(VENUE_SCORE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setEnrolment(Enrolment enrolment) {
-        setToOneTarget("enrolment", enrolment, true);
+        setToOneTarget(ENROLMENT_PROPERTY, enrolment, true);
     }
 
     public Enrolment getEnrolment() {
-        return (Enrolment)readProperty("enrolment");
+        return (Enrolment)readProperty(ENROLMENT_PROPERTY);
     }
 
 

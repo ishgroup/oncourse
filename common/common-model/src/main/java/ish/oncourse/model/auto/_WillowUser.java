@@ -32,93 +32,93 @@ public abstract class _WillowUser extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setEmail(String email) {
-        writeProperty("email", email);
+        writeProperty(EMAIL_PROPERTY, email);
     }
     public String getEmail() {
-        return (String)readProperty("email");
+        return (String)readProperty(EMAIL_PROPERTY);
     }
 
     public void setFailedLoginCount(Integer failedLoginCount) {
-        writeProperty("failedLoginCount", failedLoginCount);
+        writeProperty(FAILED_LOGIN_COUNT_PROPERTY, failedLoginCount);
     }
     public Integer getFailedLoginCount() {
-        return (Integer)readProperty("failedLoginCount");
+        return (Integer)readProperty(FAILED_LOGIN_COUNT_PROPERTY);
     }
 
     public void setFirstName(String firstName) {
-        writeProperty("firstName", firstName);
+        writeProperty(FIRST_NAME_PROPERTY, firstName);
     }
     public String getFirstName() {
-        return (String)readProperty("firstName");
+        return (String)readProperty(FIRST_NAME_PROPERTY);
     }
 
     public void setIsActive(Boolean isActive) {
-        writeProperty("isActive", isActive);
+        writeProperty(IS_ACTIVE_PROPERTY, isActive);
     }
     public Boolean getIsActive() {
-        return (Boolean)readProperty("isActive");
+        return (Boolean)readProperty(IS_ACTIVE_PROPERTY);
     }
 
     public void setLastFailedLogin(Date lastFailedLogin) {
-        writeProperty("lastFailedLogin", lastFailedLogin);
+        writeProperty(LAST_FAILED_LOGIN_PROPERTY, lastFailedLogin);
     }
     public Date getLastFailedLogin() {
-        return (Date)readProperty("lastFailedLogin");
+        return (Date)readProperty(LAST_FAILED_LOGIN_PROPERTY);
     }
 
     public void setLastLogin(Date lastLogin) {
-        writeProperty("lastLogin", lastLogin);
+        writeProperty(LAST_LOGIN_PROPERTY, lastLogin);
     }
     public Date getLastLogin() {
-        return (Date)readProperty("lastLogin");
+        return (Date)readProperty(LAST_LOGIN_PROPERTY);
     }
 
     public void setLastName(String lastName) {
-        writeProperty("lastName", lastName);
+        writeProperty(LAST_NAME_PROPERTY, lastName);
     }
     public String getLastName() {
-        return (String)readProperty("lastName");
+        return (String)readProperty(LAST_NAME_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setPassword(String password) {
-        writeProperty("password", password);
+        writeProperty(PASSWORD_PROPERTY, password);
     }
     public String getPassword() {
-        return (String)readProperty("password");
+        return (String)readProperty(PASSWORD_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void addToLogs(Log obj) {
-        addToManyTarget("logs", obj, true);
+        addToManyTarget(LOGS_PROPERTY, obj, true);
     }
     public void removeFromLogs(Log obj) {
-        removeToManyTarget("logs", obj, true);
+        removeToManyTarget(LOGS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Log> getLogs() {
-        return (List<Log>)readProperty("logs");
+        return (List<Log>)readProperty(LOGS_PROPERTY);
     }
 
 

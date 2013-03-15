@@ -22,52 +22,52 @@ public abstract class _PostcodeDb extends CayenneDataObject {
     public static final String SUBURB_PK_COLUMN = "suburb";
 
     public void setDc(String dc) {
-        writeProperty("dc", dc);
+        writeProperty(DC_PROPERTY, dc);
     }
     public String getDc() {
-        return (String)readProperty("dc");
+        return (String)readProperty(DC_PROPERTY);
     }
 
     public void setLat(Double lat) {
-        writeProperty("lat", lat);
+        writeProperty(LAT_PROPERTY, lat);
     }
     public Double getLat() {
-        return (Double)readProperty("lat");
+        return (Double)readProperty(LAT_PROPERTY);
     }
 
     public void setLon(Double lon) {
-        writeProperty("lon", lon);
+        writeProperty(LON_PROPERTY, lon);
     }
     public Double getLon() {
-        return (Double)readProperty("lon");
+        return (Double)readProperty(LON_PROPERTY);
     }
 
     public void setPostcode(Long postcode) {
-        writeProperty("postcode", postcode);
+        writeProperty(POSTCODE_PROPERTY, postcode);
     }
     public Long getPostcode() {
-        return (Long)readProperty("postcode");
+        return (Long)readProperty(POSTCODE_PROPERTY);
     }
 
     public void setState(String state) {
-        writeProperty("state", state);
+        writeProperty(STATE_PROPERTY, state);
     }
     public String getState() {
-        return (String)readProperty("state");
+        return (String)readProperty(STATE_PROPERTY);
     }
 
     public void setSuburb(String suburb) {
-        writeProperty("suburb", suburb);
+        writeProperty(SUBURB_PROPERTY, suburb);
     }
     public String getSuburb() {
-        return (String)readProperty("suburb");
+        return (String)readProperty(SUBURB_PROPERTY);
     }
 
     public void setType(String type) {
-        writeProperty("type", type);
+        writeProperty(TYPE_PROPERTY, type);
     }
     public String getType() {
-        return (String)readProperty("type");
+        return (String)readProperty(TYPE_PROPERTY);
     }
 
 }

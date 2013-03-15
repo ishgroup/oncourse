@@ -28,67 +28,67 @@ public abstract class _LicenseFee extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setBillingMonth(Integer billingMonth) {
-        writeProperty("billingMonth", billingMonth);
+        writeProperty(BILLING_MONTH_PROPERTY, billingMonth);
     }
     public Integer getBillingMonth() {
-        return (Integer)readProperty("billingMonth");
+        return (Integer)readProperty(BILLING_MONTH_PROPERTY);
     }
 
     public void setFee(BigDecimal fee) {
-        writeProperty("fee", fee);
+        writeProperty(FEE_PROPERTY, fee);
     }
     public BigDecimal getFee() {
-        return (BigDecimal)readProperty("fee");
+        return (BigDecimal)readProperty(FEE_PROPERTY);
     }
 
     public void setFreeTransactions(Integer freeTransactions) {
-        writeProperty("freeTransactions", freeTransactions);
+        writeProperty(FREE_TRANSACTIONS_PROPERTY, freeTransactions);
     }
     public Integer getFreeTransactions() {
-        return (Integer)readProperty("freeTransactions");
+        return (Integer)readProperty(FREE_TRANSACTIONS_PROPERTY);
     }
 
     public void setKeyCode(String keyCode) {
-        writeProperty("keyCode", keyCode);
+        writeProperty(KEY_CODE_PROPERTY, keyCode);
     }
     public String getKeyCode() {
-        return (String)readProperty("keyCode");
+        return (String)readProperty(KEY_CODE_PROPERTY);
     }
 
     public void setPaidUntil(Date paidUntil) {
-        writeProperty("paidUntil", paidUntil);
+        writeProperty(PAID_UNTIL_PROPERTY, paidUntil);
     }
     public Date getPaidUntil() {
-        return (Date)readProperty("paidUntil");
+        return (Date)readProperty(PAID_UNTIL_PROPERTY);
     }
 
     public void setPlanName(String planName) {
-        writeProperty("planName", planName);
+        writeProperty(PLAN_NAME_PROPERTY, planName);
     }
     public String getPlanName() {
-        return (String)readProperty("planName");
+        return (String)readProperty(PLAN_NAME_PROPERTY);
     }
 
     public void setRenewalDate(Date renewalDate) {
-        writeProperty("renewalDate", renewalDate);
+        writeProperty(RENEWAL_DATE_PROPERTY, renewalDate);
     }
     public Date getRenewalDate() {
-        return (Date)readProperty("renewalDate");
+        return (Date)readProperty(RENEWAL_DATE_PROPERTY);
     }
 
     public void setValidUntil(Date validUntil) {
-        writeProperty("validUntil", validUntil);
+        writeProperty(VALID_UNTIL_PROPERTY, validUntil);
     }
     public Date getValidUntil() {
-        return (Date)readProperty("validUntil");
+        return (Date)readProperty(VALID_UNTIL_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 

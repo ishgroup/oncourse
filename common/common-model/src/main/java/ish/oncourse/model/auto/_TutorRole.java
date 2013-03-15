@@ -29,71 +29,71 @@ public abstract class _TutorRole extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setConfirmedDate(Date confirmedDate) {
-        writeProperty("confirmedDate", confirmedDate);
+        writeProperty(CONFIRMED_DATE_PROPERTY, confirmedDate);
     }
     public Date getConfirmedDate() {
-        return (Date)readProperty("confirmedDate");
+        return (Date)readProperty(CONFIRMED_DATE_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setInPublicity(Boolean inPublicity) {
-        writeProperty("inPublicity", inPublicity);
+        writeProperty(IN_PUBLICITY_PROPERTY, inPublicity);
     }
     public Boolean getInPublicity() {
-        return (Boolean)readProperty("inPublicity");
+        return (Boolean)readProperty(IN_PUBLICITY_PROPERTY);
     }
 
     public void setIsConfirmed(Boolean isConfirmed) {
-        writeProperty("isConfirmed", isConfirmed);
+        writeProperty(IS_CONFIRMED_PROPERTY, isConfirmed);
     }
     public Boolean getIsConfirmed() {
-        return (Boolean)readProperty("isConfirmed");
+        return (Boolean)readProperty(IS_CONFIRMED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setCourseClass(CourseClass courseClass) {
-        setToOneTarget("courseClass", courseClass, true);
+        setToOneTarget(COURSE_CLASS_PROPERTY, courseClass, true);
     }
 
     public CourseClass getCourseClass() {
-        return (CourseClass)readProperty("courseClass");
+        return (CourseClass)readProperty(COURSE_CLASS_PROPERTY);
     }
 
 
     public void setTutor(Tutor tutor) {
-        setToOneTarget("tutor", tutor, true);
+        setToOneTarget(TUTOR_PROPERTY, tutor, true);
     }
 
     public Tutor getTutor() {
-        return (Tutor)readProperty("tutor");
+        return (Tutor)readProperty(TUTOR_PROPERTY);
     }
 
 

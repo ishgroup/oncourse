@@ -12,7 +12,6 @@ import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.ValidationResult;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -40,9 +39,9 @@ public class Invoice extends _Invoice implements Queueable {
 		refundInvoice.setInvoiceDate(new Date());
 		refundInvoice.setDateDue(new Date());
 		refundInvoice.setContact(getContact());
-		refundInvoice.setTotalExGst(BigDecimal.ZERO.subtract(getTotalExGst()));
-		refundInvoice.setTotalGst(BigDecimal.ZERO.subtract(getTotalGst()));
-		refundInvoice.setAmountOwing(BigDecimal.ZERO.subtract(getAmountOwing()));
+		refundInvoice.setTotalExGst(Money.ZERO.subtract(getTotalExGst()));
+		refundInvoice.setTotalGst(Money.ZERO.subtract(getTotalGst()));
+		refundInvoice.setAmountOwing(Money.ZERO.subtract(getAmountOwing()));
 		refundInvoice.setSource(this.getSource());
 		refundInvoice.setWebSite(this.getWebSite());
 
@@ -60,7 +59,7 @@ public class Invoice extends _Invoice implements Queueable {
 	public List<Invoice> getRefundedInvoices() {
 		Expression expr = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, getContact());
 		expr = expr.andExp(ExpressionFactory.matchExp(Invoice.COLLEGE_PROPERTY, getCollege()));
-		expr = expr.andExp(ExpressionFactory.matchExp(Invoice.AMOUNT_OWING_PROPERTY, BigDecimal.ZERO.subtract(getAmountOwing())));
+		expr = expr.andExp(ExpressionFactory.matchExp(Invoice.AMOUNT_OWING_PROPERTY, Money.ZERO.subtract(getAmountOwing())));
 		SelectQuery q = new SelectQuery(Invoice.class, expr);
 		return getObjectContext().performQuery(q);
 	}
@@ -70,7 +69,7 @@ public class Invoice extends _Invoice implements Queueable {
 		Money totalCredit = getTotalCredit();
 		Money totalInvoiced = getTotalInvoiced();
 		Money totalOwing = totalInvoiced.subtract(totalCredit);
-		setAmountOwing(totalOwing.toBigDecimal());
+		setAmountOwing(totalOwing);
 	}
 	
 	private Money getTotalCredit() {

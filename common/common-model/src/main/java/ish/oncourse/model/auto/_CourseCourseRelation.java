@@ -17,20 +17,20 @@ public abstract class _CourseCourseRelation extends EntityRelation {
     public static final String ID_PK_COLUMN = "id";
 
     public void setFromCourse(Course fromCourse) {
-        setToOneTarget("fromCourse", fromCourse, true);
+        setToOneTarget(FROM_COURSE_PROPERTY, fromCourse, true);
     }
 
     public Course getFromCourse() {
-        return (Course)readProperty("fromCourse");
+        return (Course)readProperty(FROM_COURSE_PROPERTY);
     }
 
 
     public void setToCourse(Course toCourse) {
-        setToOneTarget("toCourse", toCourse, true);
+        setToOneTarget(TO_COURSE_PROPERTY, toCourse, true);
     }
 
     public Course getToCourse() {
-        return (Course)readProperty("toCourse");
+        return (Course)readProperty(TO_COURSE_PROPERTY);
     }
 
 

@@ -38,110 +38,110 @@ public abstract class _MessagePerson extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDestinationAddress(String destinationAddress) {
-        writeProperty("destinationAddress", destinationAddress);
+        writeProperty(DESTINATION_ADDRESS_PROPERTY, destinationAddress);
     }
     public String getDestinationAddress() {
-        return (String)readProperty("destinationAddress");
+        return (String)readProperty(DESTINATION_ADDRESS_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setNumberOfAttempts(Integer numberOfAttempts) {
-        writeProperty("numberOfAttempts", numberOfAttempts);
+        writeProperty(NUMBER_OF_ATTEMPTS_PROPERTY, numberOfAttempts);
     }
     public Integer getNumberOfAttempts() {
-        return (Integer)readProperty("numberOfAttempts");
+        return (Integer)readProperty(NUMBER_OF_ATTEMPTS_PROPERTY);
     }
 
     public void setResponse(String response) {
-        writeProperty("response", response);
+        writeProperty(RESPONSE_PROPERTY, response);
     }
     public String getResponse() {
-        return (String)readProperty("response");
+        return (String)readProperty(RESPONSE_PROPERTY);
     }
 
     public void setStatus(MessageStatus status) {
-        writeProperty("status", status);
+        writeProperty(STATUS_PROPERTY, status);
     }
     public MessageStatus getStatus() {
-        return (MessageStatus)readProperty("status");
+        return (MessageStatus)readProperty(STATUS_PROPERTY);
     }
 
     public void setTimeOfDelivery(Date timeOfDelivery) {
-        writeProperty("timeOfDelivery", timeOfDelivery);
+        writeProperty(TIME_OF_DELIVERY_PROPERTY, timeOfDelivery);
     }
     public Date getTimeOfDelivery() {
-        return (Date)readProperty("timeOfDelivery");
+        return (Date)readProperty(TIME_OF_DELIVERY_PROPERTY);
     }
 
     public void setType(MessageType type) {
-        writeProperty("type", type);
+        writeProperty(TYPE_PROPERTY, type);
     }
     public MessageType getType() {
-        return (MessageType)readProperty("type");
+        return (MessageType)readProperty(TYPE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setContact(Contact contact) {
-        setToOneTarget("contact", contact, true);
+        setToOneTarget(CONTACT_PROPERTY, contact, true);
     }
 
     public Contact getContact() {
-        return (Contact)readProperty("contact");
+        return (Contact)readProperty(CONTACT_PROPERTY);
     }
 
 
     public void setMessage(Message message) {
-        setToOneTarget("message", message, true);
+        setToOneTarget(MESSAGE_PROPERTY, message, true);
     }
 
     public Message getMessage() {
-        return (Message)readProperty("message");
+        return (Message)readProperty(MESSAGE_PROPERTY);
     }
 
 
     public void setStudent(Student student) {
-        setToOneTarget("student", student, true);
+        setToOneTarget(STUDENT_PROPERTY, student, true);
     }
 
     public Student getStudent() {
-        return (Student)readProperty("student");
+        return (Student)readProperty(STUDENT_PROPERTY);
     }
 
 
     public void setTutor(Tutor tutor) {
-        setToOneTarget("tutor", tutor, true);
+        setToOneTarget(TUTOR_PROPERTY, tutor, true);
     }
 
     public Tutor getTutor() {
-        return (Tutor)readProperty("tutor");
+        return (Tutor)readProperty(TUTOR_PROPERTY);
     }
 
 

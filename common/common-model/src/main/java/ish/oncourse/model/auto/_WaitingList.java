@@ -31,76 +31,76 @@ public abstract class _WaitingList extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDetail(String detail) {
-        writeProperty("detail", detail);
+        writeProperty(DETAIL_PROPERTY, detail);
     }
     public String getDetail() {
-        return (String)readProperty("detail");
+        return (String)readProperty(DETAIL_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setPotentialStudents(Integer potentialStudents) {
-        writeProperty("potentialStudents", potentialStudents);
+        writeProperty(POTENTIAL_STUDENTS_PROPERTY, potentialStudents);
     }
     public Integer getPotentialStudents() {
-        return (Integer)readProperty("potentialStudents");
+        return (Integer)readProperty(POTENTIAL_STUDENTS_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setCourse(Course course) {
-        setToOneTarget("course", course, true);
+        setToOneTarget(COURSE_PROPERTY, course, true);
     }
 
     public Course getCourse() {
-        return (Course)readProperty("course");
+        return (Course)readProperty(COURSE_PROPERTY);
     }
 
 
     public void setStudent(Student student) {
-        setToOneTarget("student", student, true);
+        setToOneTarget(STUDENT_PROPERTY, student, true);
     }
 
     public Student getStudent() {
-        return (Student)readProperty("student");
+        return (Student)readProperty(STUDENT_PROPERTY);
     }
 
 
     public void addToWaitingListSites(WaitingListSite obj) {
-        addToManyTarget("waitingListSites", obj, true);
+        addToManyTarget(WAITING_LIST_SITES_PROPERTY, obj, true);
     }
     public void removeFromWaitingListSites(WaitingListSite obj) {
-        removeToManyTarget("waitingListSites", obj, true);
+        removeToManyTarget(WAITING_LIST_SITES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WaitingListSite> getWaitingListSites() {
-        return (List<WaitingListSite>)readProperty("waitingListSites");
+        return (List<WaitingListSite>)readProperty(WAITING_LIST_SITES_PROPERTY);
     }
 
 

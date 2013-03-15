@@ -32,86 +32,86 @@ public abstract class _CorporatePass extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setExpiryDate(Date expiryDate) {
-        writeProperty("expiryDate", expiryDate);
+        writeProperty(EXPIRY_DATE_PROPERTY, expiryDate);
     }
     public Date getExpiryDate() {
-        return (Date)readProperty("expiryDate");
+        return (Date)readProperty(EXPIRY_DATE_PROPERTY);
     }
 
     public void setInvoiceEmail(String invoiceEmail) {
-        writeProperty("invoiceEmail", invoiceEmail);
+        writeProperty(INVOICE_EMAIL_PROPERTY, invoiceEmail);
     }
     public String getInvoiceEmail() {
-        return (String)readProperty("invoiceEmail");
+        return (String)readProperty(INVOICE_EMAIL_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setPassword(String password) {
-        writeProperty("password", password);
+        writeProperty(PASSWORD_PROPERTY, password);
     }
     public String getPassword() {
-        return (String)readProperty("password");
+        return (String)readProperty(PASSWORD_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setContact(Contact contact) {
-        setToOneTarget("contact", contact, true);
+        setToOneTarget(CONTACT_PROPERTY, contact, true);
     }
 
     public Contact getContact() {
-        return (Contact)readProperty("contact");
+        return (Contact)readProperty(CONTACT_PROPERTY);
     }
 
 
     public void addToInvoice(Invoice obj) {
-        addToManyTarget("invoice", obj, true);
+        addToManyTarget(INVOICE_PROPERTY, obj, true);
     }
     public void removeFromInvoice(Invoice obj) {
-        removeToManyTarget("invoice", obj, true);
+        removeToManyTarget(INVOICE_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Invoice> getInvoice() {
-        return (List<Invoice>)readProperty("invoice");
+        return (List<Invoice>)readProperty(INVOICE_PROPERTY);
     }
 
 
     public void addToValidClasses(CourseClass obj) {
-        addToManyTarget("validClasses", obj, true);
+        addToManyTarget(VALID_CLASSES_PROPERTY, obj, true);
     }
     public void removeFromValidClasses(CourseClass obj) {
-        removeToManyTarget("validClasses", obj, true);
+        removeToManyTarget(VALID_CLASSES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<CourseClass> getValidClasses() {
-        return (List<CourseClass>)readProperty("validClasses");
+        return (List<CourseClass>)readProperty(VALID_CLASSES_PROPERTY);
     }
 
 

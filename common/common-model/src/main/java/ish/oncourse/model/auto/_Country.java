@@ -25,66 +25,66 @@ public abstract class _Country extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAsccssCode(String asccssCode) {
-        writeProperty("asccssCode", asccssCode);
+        writeProperty(ASCCSS_CODE_PROPERTY, asccssCode);
     }
     public String getAsccssCode() {
-        return (String)readProperty("asccssCode");
+        return (String)readProperty(ASCCSS_CODE_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        writeProperty(ISH_VERSION_PROPERTY, ishVersion);
     }
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        return (Long)readProperty(ISH_VERSION_PROPERTY);
     }
 
     public void setIsoCodeAlpha2(String isoCodeAlpha2) {
-        writeProperty("isoCodeAlpha2", isoCodeAlpha2);
+        writeProperty(ISO_CODE_ALPHA2_PROPERTY, isoCodeAlpha2);
     }
     public String getIsoCodeAlpha2() {
-        return (String)readProperty("isoCodeAlpha2");
+        return (String)readProperty(ISO_CODE_ALPHA2_PROPERTY);
     }
 
     public void setIsoCodeAlpha3(String isoCodeAlpha3) {
-        writeProperty("isoCodeAlpha3", isoCodeAlpha3);
+        writeProperty(ISO_CODE_ALPHA3_PROPERTY, isoCodeAlpha3);
     }
     public String getIsoCodeAlpha3() {
-        return (String)readProperty("isoCodeAlpha3");
+        return (String)readProperty(ISO_CODE_ALPHA3_PROPERTY);
     }
 
     public void setIsoCodeNumeric(Integer isoCodeNumeric) {
-        writeProperty("isoCodeNumeric", isoCodeNumeric);
+        writeProperty(ISO_CODE_NUMERIC_PROPERTY, isoCodeNumeric);
     }
     public Integer getIsoCodeNumeric() {
-        return (Integer)readProperty("isoCodeNumeric");
+        return (Integer)readProperty(ISO_CODE_NUMERIC_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setSaccCode(Integer saccCode) {
-        writeProperty("saccCode", saccCode);
+        writeProperty(SACC_CODE_PROPERTY, saccCode);
     }
     public Integer getSaccCode() {
-        return (Integer)readProperty("saccCode");
+        return (Integer)readProperty(SACC_CODE_PROPERTY);
     }
 
 }

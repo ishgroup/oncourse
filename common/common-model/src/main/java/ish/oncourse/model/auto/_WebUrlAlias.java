@@ -24,41 +24,41 @@ public abstract class _WebUrlAlias extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setUrlPath(String urlPath) {
-        writeProperty("urlPath", urlPath);
+        writeProperty(URL_PATH_PROPERTY, urlPath);
     }
     public String getUrlPath() {
-        return (String)readProperty("urlPath");
+        return (String)readProperty(URL_PATH_PROPERTY);
     }
 
     public void setWebNode(WebNode webNode) {
-        setToOneTarget("webNode", webNode, true);
+        setToOneTarget(WEB_NODE_PROPERTY, webNode, true);
     }
 
     public WebNode getWebNode() {
-        return (WebNode)readProperty("webNode");
+        return (WebNode)readProperty(WEB_NODE_PROPERTY);
     }
 
 
     public void setWebSite(WebSite webSite) {
-        setToOneTarget("webSite", webSite, true);
+        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
     }
 
     public WebSite getWebSite() {
-        return (WebSite)readProperty("webSite");
+        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 

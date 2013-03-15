@@ -27,60 +27,60 @@ public abstract class _EntityRelation extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setFromEntityIdentifier(EntityRelationType fromEntityIdentifier) {
-        writeProperty("fromEntityIdentifier", fromEntityIdentifier);
+        writeProperty(FROM_ENTITY_IDENTIFIER_PROPERTY, fromEntityIdentifier);
     }
     public EntityRelationType getFromEntityIdentifier() {
-        return (EntityRelationType)readProperty("fromEntityIdentifier");
+        return (EntityRelationType)readProperty(FROM_ENTITY_IDENTIFIER_PROPERTY);
     }
 
     public void setFromEntityWillowId(Long fromEntityWillowId) {
-        writeProperty("fromEntityWillowId", fromEntityWillowId);
+        writeProperty(FROM_ENTITY_WILLOW_ID_PROPERTY, fromEntityWillowId);
     }
     public Long getFromEntityWillowId() {
-        return (Long)readProperty("fromEntityWillowId");
+        return (Long)readProperty(FROM_ENTITY_WILLOW_ID_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setToEntityIdentifier(EntityRelationType toEntityIdentifier) {
-        writeProperty("toEntityIdentifier", toEntityIdentifier);
+        writeProperty(TO_ENTITY_IDENTIFIER_PROPERTY, toEntityIdentifier);
     }
     public EntityRelationType getToEntityIdentifier() {
-        return (EntityRelationType)readProperty("toEntityIdentifier");
+        return (EntityRelationType)readProperty(TO_ENTITY_IDENTIFIER_PROPERTY);
     }
 
     public void setToEntityWillowId(Long toEntityWillowId) {
-        writeProperty("toEntityWillowId", toEntityWillowId);
+        writeProperty(TO_ENTITY_WILLOW_ID_PROPERTY, toEntityWillowId);
     }
     public Long getToEntityWillowId() {
-        return (Long)readProperty("toEntityWillowId");
+        return (Long)readProperty(TO_ENTITY_WILLOW_ID_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 

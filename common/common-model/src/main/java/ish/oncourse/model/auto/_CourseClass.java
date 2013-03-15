@@ -62,272 +62,272 @@ public abstract class _CourseClass extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCancelled(boolean cancelled) {
-        writeProperty("cancelled", cancelled);
+        writeProperty(CANCELLED_PROPERTY, cancelled);
     }
 	public boolean isCancelled() {
-        Boolean value = (Boolean)readProperty("cancelled");
+        Boolean value = (Boolean)readProperty(CANCELLED_PROPERTY);
         return (value != null) ? value.booleanValue() : false;
     }
 
     public void setCode(String code) {
-        writeProperty("code", code);
+        writeProperty(CODE_PROPERTY, code);
     }
     public String getCode() {
-        return (String)readProperty("code");
+        return (String)readProperty(CODE_PROPERTY);
     }
 
     public void setCountOfSessions(Integer countOfSessions) {
-        writeProperty("countOfSessions", countOfSessions);
+        writeProperty(COUNT_OF_SESSIONS_PROPERTY, countOfSessions);
     }
     public Integer getCountOfSessions() {
-        return (Integer)readProperty("countOfSessions");
+        return (Integer)readProperty(COUNT_OF_SESSIONS_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDeliveryMode(Integer deliveryMode) {
-        writeProperty("deliveryMode", deliveryMode);
+        writeProperty(DELIVERY_MODE_PROPERTY, deliveryMode);
     }
     public Integer getDeliveryMode() {
-        return (Integer)readProperty("deliveryMode");
+        return (Integer)readProperty(DELIVERY_MODE_PROPERTY);
     }
 
     public void setDetail(String detail) {
-        writeProperty("detail", detail);
+        writeProperty(DETAIL_PROPERTY, detail);
     }
     public String getDetail() {
-        return (String)readProperty("detail");
+        return (String)readProperty(DETAIL_PROPERTY);
     }
 
     public void setDetailTextile(String detailTextile) {
-        writeProperty("detailTextile", detailTextile);
+        writeProperty(DETAIL_TEXTILE_PROPERTY, detailTextile);
     }
     public String getDetailTextile() {
-        return (String)readProperty("detailTextile");
+        return (String)readProperty(DETAIL_TEXTILE_PROPERTY);
     }
 
     public void setEndDate(Date endDate) {
-        writeProperty("endDate", endDate);
+        writeProperty(END_DATE_PROPERTY, endDate);
     }
     public Date getEndDate() {
-        return (Date)readProperty("endDate");
+        return (Date)readProperty(END_DATE_PROPERTY);
     }
 
     public void setExpectedHours(BigDecimal expectedHours) {
-        writeProperty("expectedHours", expectedHours);
+        writeProperty(EXPECTED_HOURS_PROPERTY, expectedHours);
     }
     public BigDecimal getExpectedHours() {
-        return (BigDecimal)readProperty("expectedHours");
+        return (BigDecimal)readProperty(EXPECTED_HOURS_PROPERTY);
     }
 
     public void setFeeExGst(Money feeExGst) {
-        writeProperty("feeExGst", feeExGst);
+        writeProperty(FEE_EX_GST_PROPERTY, feeExGst);
     }
     public Money getFeeExGst() {
-        return (Money)readProperty("feeExGst");
+        return (Money)readProperty(FEE_EX_GST_PROPERTY);
     }
 
     public void setFeeGst(Money feeGst) {
-        writeProperty("feeGst", feeGst);
+        writeProperty(FEE_GST_PROPERTY, feeGst);
     }
     public Money getFeeGst() {
-        return (Money)readProperty("feeGst");
+        return (Money)readProperty(FEE_GST_PROPERTY);
     }
 
     public void setIsDistantLearningCourse(Boolean isDistantLearningCourse) {
-        writeProperty("isDistantLearningCourse", isDistantLearningCourse);
+        writeProperty(IS_DISTANT_LEARNING_COURSE_PROPERTY, isDistantLearningCourse);
     }
     public Boolean getIsDistantLearningCourse() {
-        return (Boolean)readProperty("isDistantLearningCourse");
+        return (Boolean)readProperty(IS_DISTANT_LEARNING_COURSE_PROPERTY);
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty("isWebVisible", isWebVisible);
+        writeProperty(IS_WEB_VISIBLE_PROPERTY, isWebVisible);
     }
     public Boolean getIsWebVisible() {
-        return (Boolean)readProperty("isWebVisible");
+        return (Boolean)readProperty(IS_WEB_VISIBLE_PROPERTY);
     }
 
     public void setMaterials(String materials) {
-        writeProperty("materials", materials);
+        writeProperty(MATERIALS_PROPERTY, materials);
     }
     public String getMaterials() {
-        return (String)readProperty("materials");
+        return (String)readProperty(MATERIALS_PROPERTY);
     }
 
     public void setMaterialsTextile(String materialsTextile) {
-        writeProperty("materialsTextile", materialsTextile);
+        writeProperty(MATERIALS_TEXTILE_PROPERTY, materialsTextile);
     }
     public String getMaterialsTextile() {
-        return (String)readProperty("materialsTextile");
+        return (String)readProperty(MATERIALS_TEXTILE_PROPERTY);
     }
 
     public void setMaximumDays(Integer maximumDays) {
-        writeProperty("maximumDays", maximumDays);
+        writeProperty(MAXIMUM_DAYS_PROPERTY, maximumDays);
     }
     public Integer getMaximumDays() {
-        return (Integer)readProperty("maximumDays");
+        return (Integer)readProperty(MAXIMUM_DAYS_PROPERTY);
     }
 
     public void setMaximumPlaces(Integer maximumPlaces) {
-        writeProperty("maximumPlaces", maximumPlaces);
+        writeProperty(MAXIMUM_PLACES_PROPERTY, maximumPlaces);
     }
     public Integer getMaximumPlaces() {
-        return (Integer)readProperty("maximumPlaces");
+        return (Integer)readProperty(MAXIMUM_PLACES_PROPERTY);
     }
 
     public void setMinimumPlaces(Integer minimumPlaces) {
-        writeProperty("minimumPlaces", minimumPlaces);
+        writeProperty(MINIMUM_PLACES_PROPERTY, minimumPlaces);
     }
     public Integer getMinimumPlaces() {
-        return (Integer)readProperty("minimumPlaces");
+        return (Integer)readProperty(MINIMUM_PLACES_PROPERTY);
     }
 
     public void setMinutesPerSession(Integer minutesPerSession) {
-        writeProperty("minutesPerSession", minutesPerSession);
+        writeProperty(MINUTES_PER_SESSION_PROPERTY, minutesPerSession);
     }
     public Integer getMinutesPerSession() {
-        return (Integer)readProperty("minutesPerSession");
+        return (Integer)readProperty(MINUTES_PER_SESSION_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setSessionDetail(String sessionDetail) {
-        writeProperty("sessionDetail", sessionDetail);
+        writeProperty(SESSION_DETAIL_PROPERTY, sessionDetail);
     }
     public String getSessionDetail() {
-        return (String)readProperty("sessionDetail");
+        return (String)readProperty(SESSION_DETAIL_PROPERTY);
     }
 
     public void setSessionDetailTextile(String sessionDetailTextile) {
-        writeProperty("sessionDetailTextile", sessionDetailTextile);
+        writeProperty(SESSION_DETAIL_TEXTILE_PROPERTY, sessionDetailTextile);
     }
     public String getSessionDetailTextile() {
-        return (String)readProperty("sessionDetailTextile");
+        return (String)readProperty(SESSION_DETAIL_TEXTILE_PROPERTY);
     }
 
     public void setStartDate(Date startDate) {
-        writeProperty("startDate", startDate);
+        writeProperty(START_DATE_PROPERTY, startDate);
     }
     public Date getStartDate() {
-        return (Date)readProperty("startDate");
+        return (Date)readProperty(START_DATE_PROPERTY);
     }
 
     public void setStartingMinutePerSession(Integer startingMinutePerSession) {
-        writeProperty("startingMinutePerSession", startingMinutePerSession);
+        writeProperty(STARTING_MINUTE_PER_SESSION_PROPERTY, startingMinutePerSession);
     }
     public Integer getStartingMinutePerSession() {
-        return (Integer)readProperty("startingMinutePerSession");
+        return (Integer)readProperty(STARTING_MINUTE_PER_SESSION_PROPERTY);
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        writeProperty(TIME_ZONE_PROPERTY, timeZone);
     }
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        return (String)readProperty(TIME_ZONE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setCourse(Course course) {
-        setToOneTarget("course", course, true);
+        setToOneTarget(COURSE_PROPERTY, course, true);
     }
 
     public Course getCourse() {
-        return (Course)readProperty("course");
+        return (Course)readProperty(COURSE_PROPERTY);
     }
 
 
     public void addToDiscountCourseClasses(DiscountCourseClass obj) {
-        addToManyTarget("discountCourseClasses", obj, true);
+        addToManyTarget(DISCOUNT_COURSE_CLASSES_PROPERTY, obj, true);
     }
     public void removeFromDiscountCourseClasses(DiscountCourseClass obj) {
-        removeToManyTarget("discountCourseClasses", obj, true);
+        removeToManyTarget(DISCOUNT_COURSE_CLASSES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountCourseClass> getDiscountCourseClasses() {
-        return (List<DiscountCourseClass>)readProperty("discountCourseClasses");
+        return (List<DiscountCourseClass>)readProperty(DISCOUNT_COURSE_CLASSES_PROPERTY);
     }
 
 
     public void addToDiscussions(Discussion obj) {
-        addToManyTarget("discussions", obj, true);
+        addToManyTarget(DISCUSSIONS_PROPERTY, obj, true);
     }
     public void removeFromDiscussions(Discussion obj) {
-        removeToManyTarget("discussions", obj, true);
+        removeToManyTarget(DISCUSSIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Discussion> getDiscussions() {
-        return (List<Discussion>)readProperty("discussions");
+        return (List<Discussion>)readProperty(DISCUSSIONS_PROPERTY);
     }
 
 
     public void addToEnrolments(Enrolment obj) {
-        addToManyTarget("enrolments", obj, true);
+        addToManyTarget(ENROLMENTS_PROPERTY, obj, true);
     }
     public void removeFromEnrolments(Enrolment obj) {
-        removeToManyTarget("enrolments", obj, true);
+        removeToManyTarget(ENROLMENTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Enrolment> getEnrolments() {
-        return (List<Enrolment>)readProperty("enrolments");
+        return (List<Enrolment>)readProperty(ENROLMENTS_PROPERTY);
     }
 
 
     public void setRoom(Room room) {
-        setToOneTarget("room", room, true);
+        setToOneTarget(ROOM_PROPERTY, room, true);
     }
 
     public Room getRoom() {
-        return (Room)readProperty("room");
+        return (Room)readProperty(ROOM_PROPERTY);
     }
 
 
     public void addToSessions(Session obj) {
-        addToManyTarget("sessions", obj, true);
+        addToManyTarget(SESSIONS_PROPERTY, obj, true);
     }
     public void removeFromSessions(Session obj) {
-        removeToManyTarget("sessions", obj, true);
+        removeToManyTarget(SESSIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Session> getSessions() {
-        return (List<Session>)readProperty("sessions");
+        return (List<Session>)readProperty(SESSIONS_PROPERTY);
     }
 
 
     public void addToTutorRoles(TutorRole obj) {
-        addToManyTarget("tutorRoles", obj, true);
+        addToManyTarget(TUTOR_ROLES_PROPERTY, obj, true);
     }
     public void removeFromTutorRoles(TutorRole obj) {
-        removeToManyTarget("tutorRoles", obj, true);
+        removeToManyTarget(TUTOR_ROLES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<TutorRole> getTutorRoles() {
-        return (List<TutorRole>)readProperty("tutorRoles");
+        return (List<TutorRole>)readProperty(TUTOR_ROLES_PROPERTY);
     }
 
 

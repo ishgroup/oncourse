@@ -23,40 +23,40 @@ public abstract class _MembershipProduct extends Product {
     public static final String ID_PK_COLUMN = "id";
 
     public void setExpiryDays(Integer expiryDays) {
-        writeProperty("expiryDays", expiryDays);
+        writeProperty(EXPIRY_DAYS_PROPERTY, expiryDays);
     }
     public Integer getExpiryDays() {
-        return (Integer)readProperty("expiryDays");
+        return (Integer)readProperty(EXPIRY_DAYS_PROPERTY);
     }
 
     public void setExpiryType(ExpiryType expiryType) {
-        writeProperty("expiryType", expiryType);
+        writeProperty(EXPIRY_TYPE_PROPERTY, expiryType);
     }
     public ExpiryType getExpiryType() {
-        return (ExpiryType)readProperty("expiryType");
+        return (ExpiryType)readProperty(EXPIRY_TYPE_PROPERTY);
     }
 
     public void addToDiscountMembershipProducts(DiscountMembership obj) {
-        addToManyTarget("discountMembershipProducts", obj, true);
+        addToManyTarget(DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY, obj, true);
     }
     public void removeFromDiscountMembershipProducts(DiscountMembership obj) {
-        removeToManyTarget("discountMembershipProducts", obj, true);
+        removeToManyTarget(DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountMembership> getDiscountMembershipProducts() {
-        return (List<DiscountMembership>)readProperty("discountMembershipProducts");
+        return (List<DiscountMembership>)readProperty(DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY);
     }
 
 
     public void addToDiscountsAvailable(Discount obj) {
-        addToManyTarget("discountsAvailable", obj, true);
+        addToManyTarget(DISCOUNTS_AVAILABLE_PROPERTY, obj, true);
     }
     public void removeFromDiscountsAvailable(Discount obj) {
-        removeToManyTarget("discountsAvailable", obj, true);
+        removeToManyTarget(DISCOUNTS_AVAILABLE_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Discount> getDiscountsAvailable() {
-        return (List<Discount>)readProperty("discountsAvailable");
+        return (List<Discount>)readProperty(DISCOUNTS_AVAILABLE_PROPERTY);
     }
 
 

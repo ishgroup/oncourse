@@ -25,80 +25,80 @@ public abstract class _Postcode extends CayenneDataObject {
     public static final String POSTCODE_PK_COLUMN = "postcode";
 
     public void setBSPname(String bSPname) {
-        writeProperty("bSPname", bSPname);
+        writeProperty(B_SPNAME_PROPERTY, bSPname);
     }
     public String getBSPname() {
-        return (String)readProperty("bSPname");
+        return (String)readProperty(B_SPNAME_PROPERTY);
     }
 
     public void setBSPnumber(Short bSPnumber) {
-        writeProperty("bSPnumber", bSPnumber);
+        writeProperty(B_SPNUMBER_PROPERTY, bSPnumber);
     }
     public Short getBSPnumber() {
-        return (Short)readProperty("bSPnumber");
+        return (Short)readProperty(B_SPNUMBER_PROPERTY);
     }
 
     public void setCategory(String category) {
-        writeProperty("category", category);
+        writeProperty(CATEGORY_PROPERTY, category);
     }
     public String getCategory() {
-        return (String)readProperty("category");
+        return (String)readProperty(CATEGORY_PROPERTY);
     }
 
     public void setComments(String comments) {
-        writeProperty("comments", comments);
+        writeProperty(COMMENTS_PROPERTY, comments);
     }
     public String getComments() {
-        return (String)readProperty("comments");
+        return (String)readProperty(COMMENTS_PROPERTY);
     }
 
     public void setDeliveryOffice(String deliveryOffice) {
-        writeProperty("deliveryOffice", deliveryOffice);
+        writeProperty(DELIVERY_OFFICE_PROPERTY, deliveryOffice);
     }
     public String getDeliveryOffice() {
-        return (String)readProperty("deliveryOffice");
+        return (String)readProperty(DELIVERY_OFFICE_PROPERTY);
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        writeProperty(ISH_VERSION_PROPERTY, ishVersion);
     }
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        return (Long)readProperty(ISH_VERSION_PROPERTY);
     }
 
     public void setLocality(String locality) {
-        writeProperty("locality", locality);
+        writeProperty(LOCALITY_PROPERTY, locality);
     }
     public String getLocality() {
-        return (String)readProperty("locality");
+        return (String)readProperty(LOCALITY_PROPERTY);
     }
 
     public void setParcelZone(String parcelZone) {
-        writeProperty("parcelZone", parcelZone);
+        writeProperty(PARCEL_ZONE_PROPERTY, parcelZone);
     }
     public String getParcelZone() {
-        return (String)readProperty("parcelZone");
+        return (String)readProperty(PARCEL_ZONE_PROPERTY);
     }
 
     public void setPostcode(Short postcode) {
-        writeProperty("postcode", postcode);
+        writeProperty(POSTCODE_PROPERTY, postcode);
     }
     public Short getPostcode() {
-        return (Short)readProperty("postcode");
+        return (Short)readProperty(POSTCODE_PROPERTY);
     }
 
     public void setPresortIndicator(Short presortIndicator) {
-        writeProperty("presortIndicator", presortIndicator);
+        writeProperty(PRESORT_INDICATOR_PROPERTY, presortIndicator);
     }
     public Short getPresortIndicator() {
-        return (Short)readProperty("presortIndicator");
+        return (Short)readProperty(PRESORT_INDICATOR_PROPERTY);
     }
 
     public void setState(String state) {
-        writeProperty("state", state);
+        writeProperty(STATE_PROPERTY, state);
     }
     public String getState() {
-        return (String)readProperty("state");
+        return (String)readProperty(STATE_PROPERTY);
     }
 
 }

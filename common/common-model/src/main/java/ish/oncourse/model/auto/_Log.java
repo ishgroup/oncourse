@@ -25,48 +25,48 @@ public abstract class _Log extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAction(String action) {
-        writeProperty("action", action);
+        writeProperty(ACTION_PROPERTY, action);
     }
     public String getAction() {
-        return (String)readProperty("action");
+        return (String)readProperty(ACTION_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setPage(String page) {
-        writeProperty("page", page);
+        writeProperty(PAGE_PROPERTY, page);
     }
     public String getPage() {
-        return (String)readProperty("page");
+        return (String)readProperty(PAGE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setUser(WillowUser user) {
-        setToOneTarget("user", user, true);
+        setToOneTarget(USER_PROPERTY, user, true);
     }
 
     public WillowUser getUser() {
-        return (WillowUser)readProperty("user");
+        return (WillowUser)readProperty(USER_PROPERTY);
     }
 
 

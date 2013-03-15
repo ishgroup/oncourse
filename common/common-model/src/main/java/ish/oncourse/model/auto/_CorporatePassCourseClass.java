@@ -26,50 +26,50 @@ public abstract class _CorporatePassCourseClass extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setCorporatePass(CorporatePass corporatePass) {
-        setToOneTarget("corporatePass", corporatePass, true);
+        setToOneTarget(CORPORATE_PASS_PROPERTY, corporatePass, true);
     }
 
     public CorporatePass getCorporatePass() {
-        return (CorporatePass)readProperty("corporatePass");
+        return (CorporatePass)readProperty(CORPORATE_PASS_PROPERTY);
     }
 
 
     public void setCourseClass(CourseClass courseClass) {
-        setToOneTarget("courseClass", courseClass, true);
+        setToOneTarget(COURSE_CLASS_PROPERTY, courseClass, true);
     }
 
     public CourseClass getCourseClass() {
-        return (CourseClass)readProperty("courseClass");
+        return (CourseClass)readProperty(COURSE_CLASS_PROPERTY);
     }
 
 

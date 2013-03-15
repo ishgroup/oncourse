@@ -22,45 +22,45 @@ public abstract class _Language extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAbsCode(String absCode) {
-        writeProperty("absCode", absCode);
+        writeProperty(ABS_CODE_PROPERTY, absCode);
     }
     public String getAbsCode() {
-        return (String)readProperty("absCode");
+        return (String)readProperty(ABS_CODE_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setIsActive(Byte isActive) {
-        writeProperty("isActive", isActive);
+        writeProperty(IS_ACTIVE_PROPERTY, isActive);
     }
     public Byte getIsActive() {
-        return (Byte)readProperty("isActive");
+        return (Byte)readProperty(IS_ACTIVE_PROPERTY);
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        writeProperty(ISH_VERSION_PROPERTY, ishVersion);
     }
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        return (Long)readProperty(ISH_VERSION_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
 }

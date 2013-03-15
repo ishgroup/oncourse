@@ -35,107 +35,107 @@ public abstract class _Product extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        writeProperty(DESCRIPTION_PROPERTY, description);
     }
     public String getDescription() {
-        return (String)readProperty("description");
+        return (String)readProperty(DESCRIPTION_PROPERTY);
     }
 
     public void setIsOnSale(Boolean isOnSale) {
-        writeProperty("isOnSale", isOnSale);
+        writeProperty(IS_ON_SALE_PROPERTY, isOnSale);
     }
     public Boolean getIsOnSale() {
-        return (Boolean)readProperty("isOnSale");
+        return (Boolean)readProperty(IS_ON_SALE_PROPERTY);
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty("isWebVisible", isWebVisible);
+        writeProperty(IS_WEB_VISIBLE_PROPERTY, isWebVisible);
     }
     public Boolean getIsWebVisible() {
-        return (Boolean)readProperty("isWebVisible");
+        return (Boolean)readProperty(IS_WEB_VISIBLE_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setNotes(String notes) {
-        writeProperty("notes", notes);
+        writeProperty(NOTES_PROPERTY, notes);
     }
     public String getNotes() {
-        return (String)readProperty("notes");
+        return (String)readProperty(NOTES_PROPERTY);
     }
 
     public void setPriceExTax(Money priceExTax) {
-        writeProperty("priceExTax", priceExTax);
+        writeProperty(PRICE_EX_TAX_PROPERTY, priceExTax);
     }
     public Money getPriceExTax() {
-        return (Money)readProperty("priceExTax");
+        return (Money)readProperty(PRICE_EX_TAX_PROPERTY);
     }
 
     public void setSku(String sku) {
-        writeProperty("sku", sku);
+        writeProperty(SKU_PROPERTY, sku);
     }
     public String getSku() {
-        return (String)readProperty("sku");
+        return (String)readProperty(SKU_PROPERTY);
     }
 
     public void setTaxAdjustment(Money taxAdjustment) {
-        writeProperty("taxAdjustment", taxAdjustment);
+        writeProperty(TAX_ADJUSTMENT_PROPERTY, taxAdjustment);
     }
     public Money getTaxAdjustment() {
-        return (Money)readProperty("taxAdjustment");
+        return (Money)readProperty(TAX_ADJUSTMENT_PROPERTY);
     }
 
     public void setType(Integer type) {
-        writeProperty("type", type);
+        writeProperty(TYPE_PROPERTY, type);
     }
     public Integer getType() {
-        return (Integer)readProperty("type");
+        return (Integer)readProperty(TYPE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void addToProductItems(ProductItem obj) {
-        addToManyTarget("productItems", obj, true);
+        addToManyTarget(PRODUCT_ITEMS_PROPERTY, obj, true);
     }
     public void removeFromProductItems(ProductItem obj) {
-        removeToManyTarget("productItems", obj, true);
+        removeToManyTarget(PRODUCT_ITEMS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ProductItem> getProductItems() {
-        return (List<ProductItem>)readProperty("productItems");
+        return (List<ProductItem>)readProperty(PRODUCT_ITEMS_PROPERTY);
     }
 
 

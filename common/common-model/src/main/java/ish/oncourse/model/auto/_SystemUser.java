@@ -34,116 +34,116 @@ public abstract class _SystemUser extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDefaultAdministrationCentreId(Long defaultAdministrationCentreId) {
-        writeProperty("defaultAdministrationCentreId", defaultAdministrationCentreId);
+        writeProperty(DEFAULT_ADMINISTRATION_CENTRE_ID_PROPERTY, defaultAdministrationCentreId);
     }
     public Long getDefaultAdministrationCentreId() {
-        return (Long)readProperty("defaultAdministrationCentreId");
+        return (Long)readProperty(DEFAULT_ADMINISTRATION_CENTRE_ID_PROPERTY);
     }
 
     public void setEditCMS(Boolean editCMS) {
-        writeProperty("editCMS", editCMS);
+        writeProperty(EDIT_CMS_PROPERTY, editCMS);
     }
     public Boolean getEditCMS() {
-        return (Boolean)readProperty("editCMS");
+        return (Boolean)readProperty(EDIT_CMS_PROPERTY);
     }
 
     public void setEditTara(Boolean editTara) {
-        writeProperty("editTara", editTara);
+        writeProperty(EDIT_TARA_PROPERTY, editTara);
     }
     public Boolean getEditTara() {
-        return (Boolean)readProperty("editTara");
+        return (Boolean)readProperty(EDIT_TARA_PROPERTY);
     }
 
     public void setEmail(String email) {
-        writeProperty("email", email);
+        writeProperty(EMAIL_PROPERTY, email);
     }
     public String getEmail() {
-        return (String)readProperty("email");
+        return (String)readProperty(EMAIL_PROPERTY);
     }
 
     public void setFirstName(String firstName) {
-        writeProperty("firstName", firstName);
+        writeProperty(FIRST_NAME_PROPERTY, firstName);
     }
     public String getFirstName() {
-        return (String)readProperty("firstName");
+        return (String)readProperty(FIRST_NAME_PROPERTY);
     }
 
     public void setIsActive(Boolean isActive) {
-        writeProperty("isActive", isActive);
+        writeProperty(IS_ACTIVE_PROPERTY, isActive);
     }
     public Boolean getIsActive() {
-        return (Boolean)readProperty("isActive");
+        return (Boolean)readProperty(IS_ACTIVE_PROPERTY);
     }
 
     public void setIsAdmin(Boolean isAdmin) {
-        writeProperty("isAdmin", isAdmin);
+        writeProperty(IS_ADMIN_PROPERTY, isAdmin);
     }
     public Boolean getIsAdmin() {
-        return (Boolean)readProperty("isAdmin");
+        return (Boolean)readProperty(IS_ADMIN_PROPERTY);
     }
 
     public void setLastLoginIP(String lastLoginIP) {
-        writeProperty("lastLoginIP", lastLoginIP);
+        writeProperty(LAST_LOGIN_IP_PROPERTY, lastLoginIP);
     }
     public String getLastLoginIP() {
-        return (String)readProperty("lastLoginIP");
+        return (String)readProperty(LAST_LOGIN_IP_PROPERTY);
     }
 
     public void setLastLoginOn(Date lastLoginOn) {
-        writeProperty("lastLoginOn", lastLoginOn);
+        writeProperty(LAST_LOGIN_ON_PROPERTY, lastLoginOn);
     }
     public Date getLastLoginOn() {
-        return (Date)readProperty("lastLoginOn");
+        return (Date)readProperty(LAST_LOGIN_ON_PROPERTY);
     }
 
     public void setLogin(String login) {
-        writeProperty("login", login);
+        writeProperty(LOGIN_PROPERTY, login);
     }
     public String getLogin() {
-        return (String)readProperty("login");
+        return (String)readProperty(LOGIN_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setPassword(String password) {
-        writeProperty("password", password);
+        writeProperty(PASSWORD_PROPERTY, password);
     }
     public String getPassword() {
-        return (String)readProperty("password");
+        return (String)readProperty(PASSWORD_PROPERTY);
     }
 
     public void setSurname(String surname) {
-        writeProperty("surname", surname);
+        writeProperty(SURNAME_PROPERTY, surname);
     }
     public String getSurname() {
-        return (String)readProperty("surname");
+        return (String)readProperty(SURNAME_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 

@@ -38,104 +38,104 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setReasonForStudy(Integer reasonForStudy) {
-        writeProperty("reasonForStudy", reasonForStudy);
+        writeProperty(REASON_FOR_STUDY_PROPERTY, reasonForStudy);
     }
     public Integer getReasonForStudy() {
-        return (Integer)readProperty("reasonForStudy");
+        return (Integer)readProperty(REASON_FOR_STUDY_PROPERTY);
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty("source", source);
+        writeProperty(SOURCE_PROPERTY, source);
     }
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty("source");
+        return (PaymentSource)readProperty(SOURCE_PROPERTY);
     }
 
     public void setStatus(EnrolmentStatus status) {
-        writeProperty("status", status);
+        writeProperty(STATUS_PROPERTY, status);
     }
     public EnrolmentStatus getStatus() {
-        return (EnrolmentStatus)readProperty("status");
+        return (EnrolmentStatus)readProperty(STATUS_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setCourseClass(CourseClass courseClass) {
-        setToOneTarget("courseClass", courseClass, true);
+        setToOneTarget(COURSE_CLASS_PROPERTY, courseClass, true);
     }
 
     public CourseClass getCourseClass() {
-        return (CourseClass)readProperty("courseClass");
+        return (CourseClass)readProperty(COURSE_CLASS_PROPERTY);
     }
 
 
     public void setInvoiceLine(InvoiceLine invoiceLine) {
-        setToOneTarget("invoiceLine", invoiceLine, true);
+        setToOneTarget(INVOICE_LINE_PROPERTY, invoiceLine, true);
     }
 
     public InvoiceLine getInvoiceLine() {
-        return (InvoiceLine)readProperty("invoiceLine");
+        return (InvoiceLine)readProperty(INVOICE_LINE_PROPERTY);
     }
 
 
     public void addToOutcomes(Outcome obj) {
-        addToManyTarget("outcomes", obj, true);
+        addToManyTarget(OUTCOMES_PROPERTY, obj, true);
     }
     public void removeFromOutcomes(Outcome obj) {
-        removeToManyTarget("outcomes", obj, true);
+        removeToManyTarget(OUTCOMES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Outcome> getOutcomes() {
-        return (List<Outcome>)readProperty("outcomes");
+        return (List<Outcome>)readProperty(OUTCOMES_PROPERTY);
     }
 
 
     public void setStudent(Student student) {
-        setToOneTarget("student", student, true);
+        setToOneTarget(STUDENT_PROPERTY, student, true);
     }
 
     public Student getStudent() {
-        return (Student)readProperty("student");
+        return (Student)readProperty(STUDENT_PROPERTY);
     }
 
 
     public void addToSurveys(Survey obj) {
-        addToManyTarget("surveys", obj, true);
+        addToManyTarget(SURVEYS_PROPERTY, obj, true);
     }
     public void removeFromSurveys(Survey obj) {
-        removeToManyTarget("surveys", obj, true);
+        removeToManyTarget(SURVEYS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Survey> getSurveys() {
-        return (List<Survey>)readProperty("surveys");
+        return (List<Survey>)readProperty(SURVEYS_PROPERTY);
     }
 
 

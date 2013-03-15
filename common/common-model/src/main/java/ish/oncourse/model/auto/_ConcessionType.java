@@ -34,105 +34,105 @@ public abstract class _ConcessionType extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setCredentialExpiryDays(Integer credentialExpiryDays) {
-        writeProperty("credentialExpiryDays", credentialExpiryDays);
+        writeProperty(CREDENTIAL_EXPIRY_DAYS_PROPERTY, credentialExpiryDays);
     }
     public Integer getCredentialExpiryDays() {
-        return (Integer)readProperty("credentialExpiryDays");
+        return (Integer)readProperty(CREDENTIAL_EXPIRY_DAYS_PROPERTY);
     }
 
     public void setHasConcessionNumber(Boolean hasConcessionNumber) {
-        writeProperty("hasConcessionNumber", hasConcessionNumber);
+        writeProperty(HAS_CONCESSION_NUMBER_PROPERTY, hasConcessionNumber);
     }
     public Boolean getHasConcessionNumber() {
-        return (Boolean)readProperty("hasConcessionNumber");
+        return (Boolean)readProperty(HAS_CONCESSION_NUMBER_PROPERTY);
     }
 
     public void setHasExpiryDate(Boolean hasExpiryDate) {
-        writeProperty("hasExpiryDate", hasExpiryDate);
+        writeProperty(HAS_EXPIRY_DATE_PROPERTY, hasExpiryDate);
     }
     public Boolean getHasExpiryDate() {
-        return (Boolean)readProperty("hasExpiryDate");
+        return (Boolean)readProperty(HAS_EXPIRY_DATE_PROPERTY);
     }
 
     public void setIsConcession(Boolean isConcession) {
-        writeProperty("isConcession", isConcession);
+        writeProperty(IS_CONCESSION_PROPERTY, isConcession);
     }
     public Boolean getIsConcession() {
-        return (Boolean)readProperty("isConcession");
+        return (Boolean)readProperty(IS_CONCESSION_PROPERTY);
     }
 
     public void setIsEnabled(Boolean isEnabled) {
-        writeProperty("isEnabled", isEnabled);
+        writeProperty(IS_ENABLED_PROPERTY, isEnabled);
     }
     public Boolean getIsEnabled() {
-        return (Boolean)readProperty("isEnabled");
+        return (Boolean)readProperty(IS_ENABLED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setRequiresCredentialCheck(Boolean requiresCredentialCheck) {
-        writeProperty("requiresCredentialCheck", requiresCredentialCheck);
+        writeProperty(REQUIRES_CREDENTIAL_CHECK_PROPERTY, requiresCredentialCheck);
     }
     public Boolean getRequiresCredentialCheck() {
-        return (Boolean)readProperty("requiresCredentialCheck");
+        return (Boolean)readProperty(REQUIRES_CREDENTIAL_CHECK_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void addToDiscountConcessionTypes(DiscountConcessionType obj) {
-        addToManyTarget("discountConcessionTypes", obj, true);
+        addToManyTarget(DISCOUNT_CONCESSION_TYPES_PROPERTY, obj, true);
     }
     public void removeFromDiscountConcessionTypes(DiscountConcessionType obj) {
-        removeToManyTarget("discountConcessionTypes", obj, true);
+        removeToManyTarget(DISCOUNT_CONCESSION_TYPES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountConcessionType> getDiscountConcessionTypes() {
-        return (List<DiscountConcessionType>)readProperty("discountConcessionTypes");
+        return (List<DiscountConcessionType>)readProperty(DISCOUNT_CONCESSION_TYPES_PROPERTY);
     }
 
 
     public void addToStudentConcessions(StudentConcession obj) {
-        addToManyTarget("studentConcessions", obj, true);
+        addToManyTarget(STUDENT_CONCESSIONS_PROPERTY, obj, true);
     }
     public void removeFromStudentConcessions(StudentConcession obj) {
-        removeToManyTarget("studentConcessions", obj, true);
+        removeToManyTarget(STUDENT_CONCESSIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<StudentConcession> getStudentConcessions() {
-        return (List<StudentConcession>)readProperty("studentConcessions");
+        return (List<StudentConcession>)readProperty(STUDENT_CONCESSIONS_PROPERTY);
     }
 
 

@@ -30,69 +30,69 @@ public abstract class _DiscountMembership extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setApplyToMemberOnly(Boolean applyToMemberOnly) {
-        writeProperty("applyToMemberOnly", applyToMemberOnly);
+        writeProperty(APPLY_TO_MEMBER_ONLY_PROPERTY, applyToMemberOnly);
     }
     public Boolean getApplyToMemberOnly() {
-        return (Boolean)readProperty("applyToMemberOnly");
+        return (Boolean)readProperty(APPLY_TO_MEMBER_ONLY_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setDiscount(Discount discount) {
-        setToOneTarget("discount", discount, true);
+        setToOneTarget(DISCOUNT_PROPERTY, discount, true);
     }
 
     public Discount getDiscount() {
-        return (Discount)readProperty("discount");
+        return (Discount)readProperty(DISCOUNT_PROPERTY);
     }
 
 
     public void addToDiscountMembershipRelationTypes(DiscountMembershipRelationType obj) {
-        addToManyTarget("discountMembershipRelationTypes", obj, true);
+        addToManyTarget(DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY, obj, true);
     }
     public void removeFromDiscountMembershipRelationTypes(DiscountMembershipRelationType obj) {
-        removeToManyTarget("discountMembershipRelationTypes", obj, true);
+        removeToManyTarget(DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountMembershipRelationType> getDiscountMembershipRelationTypes() {
-        return (List<DiscountMembershipRelationType>)readProperty("discountMembershipRelationTypes");
+        return (List<DiscountMembershipRelationType>)readProperty(DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY);
     }
 
 
     public void setMembershipProduct(MembershipProduct membershipProduct) {
-        setToOneTarget("membershipProduct", membershipProduct, true);
+        setToOneTarget(MEMBERSHIP_PRODUCT_PROPERTY, membershipProduct, true);
     }
 
     public MembershipProduct getMembershipProduct() {
-        return (MembershipProduct)readProperty("membershipProduct");
+        return (MembershipProduct)readProperty(MEMBERSHIP_PRODUCT_PROPERTY);
     }
 
 

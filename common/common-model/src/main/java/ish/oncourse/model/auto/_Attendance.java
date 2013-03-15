@@ -29,66 +29,66 @@ public abstract class _Attendance extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setAttendanceType(Integer attendanceType) {
-        writeProperty("attendanceType", attendanceType);
+        writeProperty(ATTENDANCE_TYPE_PROPERTY, attendanceType);
     }
     public Integer getAttendanceType() {
-        return (Integer)readProperty("attendanceType");
+        return (Integer)readProperty(ATTENDANCE_TYPE_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setMarker(Tutor marker) {
-        setToOneTarget("marker", marker, true);
+        setToOneTarget(MARKER_PROPERTY, marker, true);
     }
 
     public Tutor getMarker() {
-        return (Tutor)readProperty("marker");
+        return (Tutor)readProperty(MARKER_PROPERTY);
     }
 
 
     public void setSession(Session session) {
-        setToOneTarget("session", session, true);
+        setToOneTarget(SESSION_PROPERTY, session, true);
     }
 
     public Session getSession() {
-        return (Session)readProperty("session");
+        return (Session)readProperty(SESSION_PROPERTY);
     }
 
 
     public void setStudent(Student student) {
-        setToOneTarget("student", student, true);
+        setToOneTarget(STUDENT_PROPERTY, student, true);
     }
 
     public Student getStudent() {
-        return (Student)readProperty("student");
+        return (Student)readProperty(STUDENT_PROPERTY);
     }
 
 

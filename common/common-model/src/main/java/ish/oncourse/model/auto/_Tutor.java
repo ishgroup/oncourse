@@ -39,129 +39,129 @@ public abstract class _Tutor extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setFinishDate(Date finishDate) {
-        writeProperty("finishDate", finishDate);
+        writeProperty(FINISH_DATE_PROPERTY, finishDate);
     }
     public Date getFinishDate() {
-        return (Date)readProperty("finishDate");
+        return (Date)readProperty(FINISH_DATE_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setResume(String resume) {
-        writeProperty("resume", resume);
+        writeProperty(RESUME_PROPERTY, resume);
     }
     public String getResume() {
-        return (String)readProperty("resume");
+        return (String)readProperty(RESUME_PROPERTY);
     }
 
     public void setResumeTextile(String resumeTextile) {
-        writeProperty("resumeTextile", resumeTextile);
+        writeProperty(RESUME_TEXTILE_PROPERTY, resumeTextile);
     }
     public String getResumeTextile() {
-        return (String)readProperty("resumeTextile");
+        return (String)readProperty(RESUME_TEXTILE_PROPERTY);
     }
 
     public void setStartDate(Date startDate) {
-        writeProperty("startDate", startDate);
+        writeProperty(START_DATE_PROPERTY, startDate);
     }
     public Date getStartDate() {
-        return (Date)readProperty("startDate");
+        return (Date)readProperty(START_DATE_PROPERTY);
     }
 
     public void addToAttendances(Attendance obj) {
-        addToManyTarget("attendances", obj, true);
+        addToManyTarget(ATTENDANCES_PROPERTY, obj, true);
     }
     public void removeFromAttendances(Attendance obj) {
-        removeToManyTarget("attendances", obj, true);
+        removeToManyTarget(ATTENDANCES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Attendance> getAttendances() {
-        return (List<Attendance>)readProperty("attendances");
+        return (List<Attendance>)readProperty(ATTENDANCES_PROPERTY);
     }
 
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setContact(Contact contact) {
-        setToOneTarget("contact", contact, true);
+        setToOneTarget(CONTACT_PROPERTY, contact, true);
     }
 
     public Contact getContact() {
-        return (Contact)readProperty("contact");
+        return (Contact)readProperty(CONTACT_PROPERTY);
     }
 
 
     public void addToMessagePeople(MessagePerson obj) {
-        addToManyTarget("messagePeople", obj, true);
+        addToManyTarget(MESSAGE_PEOPLE_PROPERTY, obj, true);
     }
     public void removeFromMessagePeople(MessagePerson obj) {
-        removeToManyTarget("messagePeople", obj, true);
+        removeToManyTarget(MESSAGE_PEOPLE_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<MessagePerson> getMessagePeople() {
-        return (List<MessagePerson>)readProperty("messagePeople");
+        return (List<MessagePerson>)readProperty(MESSAGE_PEOPLE_PROPERTY);
     }
 
 
     public void addToSessionTutors(SessionTutor obj) {
-        addToManyTarget("sessionTutors", obj, true);
+        addToManyTarget(SESSION_TUTORS_PROPERTY, obj, true);
     }
     public void removeFromSessionTutors(SessionTutor obj) {
-        removeToManyTarget("sessionTutors", obj, true);
+        removeToManyTarget(SESSION_TUTORS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<SessionTutor> getSessionTutors() {
-        return (List<SessionTutor>)readProperty("sessionTutors");
+        return (List<SessionTutor>)readProperty(SESSION_TUTORS_PROPERTY);
     }
 
 
     public void addToSessions(Session obj) {
-        addToManyTarget("sessions", obj, true);
+        addToManyTarget(SESSIONS_PROPERTY, obj, true);
     }
     public void removeFromSessions(Session obj) {
-        removeToManyTarget("sessions", obj, true);
+        removeToManyTarget(SESSIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Session> getSessions() {
-        return (List<Session>)readProperty("sessions");
+        return (List<Session>)readProperty(SESSIONS_PROPERTY);
     }
 
 
     public void addToTutorRoles(TutorRole obj) {
-        addToManyTarget("tutorRoles", obj, true);
+        addToManyTarget(TUTOR_ROLES_PROPERTY, obj, true);
     }
     public void removeFromTutorRoles(TutorRole obj) {
-        removeToManyTarget("tutorRoles", obj, true);
+        removeToManyTarget(TUTOR_ROLES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<TutorRole> getTutorRoles() {
-        return (List<TutorRole>)readProperty("tutorRoles");
+        return (List<TutorRole>)readProperty(TUTOR_ROLES_PROPERTY);
     }
 
 

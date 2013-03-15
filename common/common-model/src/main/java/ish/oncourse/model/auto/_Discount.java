@@ -55,220 +55,220 @@ public abstract class _Discount extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCode(String code) {
-        writeProperty("code", code);
+        writeProperty(CODE_PROPERTY, code);
     }
     public String getCode() {
-        return (String)readProperty("code");
+        return (String)readProperty(CODE_PROPERTY);
     }
 
     public void setCombinationType(Boolean combinationType) {
-        writeProperty("combinationType", combinationType);
+        writeProperty(COMBINATION_TYPE_PROPERTY, combinationType);
     }
     public Boolean getCombinationType() {
-        return (Boolean)readProperty("combinationType");
+        return (Boolean)readProperty(COMBINATION_TYPE_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDetail(String detail) {
-        writeProperty("detail", detail);
+        writeProperty(DETAIL_PROPERTY, detail);
     }
     public String getDetail() {
-        return (String)readProperty("detail");
+        return (String)readProperty(DETAIL_PROPERTY);
     }
 
     public void setDiscountAmount(Money discountAmount) {
-        writeProperty("discountAmount", discountAmount);
+        writeProperty(DISCOUNT_AMOUNT_PROPERTY, discountAmount);
     }
     public Money getDiscountAmount() {
-        return (Money)readProperty("discountAmount");
+        return (Money)readProperty(DISCOUNT_AMOUNT_PROPERTY);
     }
 
     public void setDiscountRate(BigDecimal discountRate) {
-        writeProperty("discountRate", discountRate);
+        writeProperty(DISCOUNT_RATE_PROPERTY, discountRate);
     }
     public BigDecimal getDiscountRate() {
-        return (BigDecimal)readProperty("discountRate");
+        return (BigDecimal)readProperty(DISCOUNT_RATE_PROPERTY);
     }
 
     public void setDiscountType(DiscountType discountType) {
-        writeProperty("discountType", discountType);
+        writeProperty(DISCOUNT_TYPE_PROPERTY, discountType);
     }
     public DiscountType getDiscountType() {
-        return (DiscountType)readProperty("discountType");
+        return (DiscountType)readProperty(DISCOUNT_TYPE_PROPERTY);
     }
 
     public void setHideOnWeb(Boolean hideOnWeb) {
-        writeProperty("hideOnWeb", hideOnWeb);
+        writeProperty(HIDE_ON_WEB_PROPERTY, hideOnWeb);
     }
     public Boolean getHideOnWeb() {
-        return (Boolean)readProperty("hideOnWeb");
+        return (Boolean)readProperty(HIDE_ON_WEB_PROPERTY);
     }
 
     public void setIsAvailableOnWeb(Boolean isAvailableOnWeb) {
-        writeProperty("isAvailableOnWeb", isAvailableOnWeb);
+        writeProperty(IS_AVAILABLE_ON_WEB_PROPERTY, isAvailableOnWeb);
     }
     public Boolean getIsAvailableOnWeb() {
-        return (Boolean)readProperty("isAvailableOnWeb");
+        return (Boolean)readProperty(IS_AVAILABLE_ON_WEB_PROPERTY);
     }
 
     public void setMaximumDiscount(Money maximumDiscount) {
-        writeProperty("maximumDiscount", maximumDiscount);
+        writeProperty(MAXIMUM_DISCOUNT_PROPERTY, maximumDiscount);
     }
     public Money getMaximumDiscount() {
-        return (Money)readProperty("maximumDiscount");
+        return (Money)readProperty(MAXIMUM_DISCOUNT_PROPERTY);
     }
 
     public void setMinimumDiscount(Money minimumDiscount) {
-        writeProperty("minimumDiscount", minimumDiscount);
+        writeProperty(MINIMUM_DISCOUNT_PROPERTY, minimumDiscount);
     }
     public Money getMinimumDiscount() {
-        return (Money)readProperty("minimumDiscount");
+        return (Money)readProperty(MINIMUM_DISCOUNT_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setRoundingMode(MoneyRounding roundingMode) {
-        writeProperty("roundingMode", roundingMode);
+        writeProperty(ROUNDING_MODE_PROPERTY, roundingMode);
     }
     public MoneyRounding getRoundingMode() {
-        return (MoneyRounding)readProperty("roundingMode");
+        return (MoneyRounding)readProperty(ROUNDING_MODE_PROPERTY);
     }
 
     public void setStudentAge(Integer studentAge) {
-        writeProperty("studentAge", studentAge);
+        writeProperty(STUDENT_AGE_PROPERTY, studentAge);
     }
     public Integer getStudentAge() {
-        return (Integer)readProperty("studentAge");
+        return (Integer)readProperty(STUDENT_AGE_PROPERTY);
     }
 
     public void setStudentAgeOperator(String studentAgeOperator) {
-        writeProperty("studentAgeOperator", studentAgeOperator);
+        writeProperty(STUDENT_AGE_OPERATOR_PROPERTY, studentAgeOperator);
     }
     public String getStudentAgeOperator() {
-        return (String)readProperty("studentAgeOperator");
+        return (String)readProperty(STUDENT_AGE_OPERATOR_PROPERTY);
     }
 
     public void setStudentEnrolledWithinDays(Integer studentEnrolledWithinDays) {
-        writeProperty("studentEnrolledWithinDays", studentEnrolledWithinDays);
+        writeProperty(STUDENT_ENROLLED_WITHIN_DAYS_PROPERTY, studentEnrolledWithinDays);
     }
     public Integer getStudentEnrolledWithinDays() {
-        return (Integer)readProperty("studentEnrolledWithinDays");
+        return (Integer)readProperty(STUDENT_ENROLLED_WITHIN_DAYS_PROPERTY);
     }
 
     public void setStudentPostcodes(String studentPostcodes) {
-        writeProperty("studentPostcodes", studentPostcodes);
+        writeProperty(STUDENT_POSTCODES_PROPERTY, studentPostcodes);
     }
     public String getStudentPostcodes() {
-        return (String)readProperty("studentPostcodes");
+        return (String)readProperty(STUDENT_POSTCODES_PROPERTY);
     }
 
     public void setStudentsQualifier(byte[] studentsQualifier) {
-        writeProperty("studentsQualifier", studentsQualifier);
+        writeProperty(STUDENTS_QUALIFIER_PROPERTY, studentsQualifier);
     }
     public byte[] getStudentsQualifier() {
-        return (byte[])readProperty("studentsQualifier");
+        return (byte[])readProperty(STUDENTS_QUALIFIER_PROPERTY);
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        writeProperty(TIME_ZONE_PROPERTY, timeZone);
     }
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        return (String)readProperty(TIME_ZONE_PROPERTY);
     }
 
     public void setValidFrom(Date validFrom) {
-        writeProperty("validFrom", validFrom);
+        writeProperty(VALID_FROM_PROPERTY, validFrom);
     }
     public Date getValidFrom() {
-        return (Date)readProperty("validFrom");
+        return (Date)readProperty(VALID_FROM_PROPERTY);
     }
 
     public void setValidTo(Date validTo) {
-        writeProperty("validTo", validTo);
+        writeProperty(VALID_TO_PROPERTY, validTo);
     }
     public Date getValidTo() {
-        return (Date)readProperty("validTo");
+        return (Date)readProperty(VALID_TO_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void addToDiscountConcessionTypes(DiscountConcessionType obj) {
-        addToManyTarget("discountConcessionTypes", obj, true);
+        addToManyTarget(DISCOUNT_CONCESSION_TYPES_PROPERTY, obj, true);
     }
     public void removeFromDiscountConcessionTypes(DiscountConcessionType obj) {
-        removeToManyTarget("discountConcessionTypes", obj, true);
+        removeToManyTarget(DISCOUNT_CONCESSION_TYPES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountConcessionType> getDiscountConcessionTypes() {
-        return (List<DiscountConcessionType>)readProperty("discountConcessionTypes");
+        return (List<DiscountConcessionType>)readProperty(DISCOUNT_CONCESSION_TYPES_PROPERTY);
     }
 
 
     public void addToDiscountCourseClasses(DiscountCourseClass obj) {
-        addToManyTarget("discountCourseClasses", obj, true);
+        addToManyTarget(DISCOUNT_COURSE_CLASSES_PROPERTY, obj, true);
     }
     public void removeFromDiscountCourseClasses(DiscountCourseClass obj) {
-        removeToManyTarget("discountCourseClasses", obj, true);
+        removeToManyTarget(DISCOUNT_COURSE_CLASSES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountCourseClass> getDiscountCourseClasses() {
-        return (List<DiscountCourseClass>)readProperty("discountCourseClasses");
+        return (List<DiscountCourseClass>)readProperty(DISCOUNT_COURSE_CLASSES_PROPERTY);
     }
 
 
     public void addToDiscountMembershipProducts(DiscountMembership obj) {
-        addToManyTarget("discountMembershipProducts", obj, true);
+        addToManyTarget(DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY, obj, true);
     }
     public void removeFromDiscountMembershipProducts(DiscountMembership obj) {
-        removeToManyTarget("discountMembershipProducts", obj, true);
+        removeToManyTarget(DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountMembership> getDiscountMembershipProducts() {
-        return (List<DiscountMembership>)readProperty("discountMembershipProducts");
+        return (List<DiscountMembership>)readProperty(DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY);
     }
 
 
     public void addToInvoiceLineDiscounts(InvoiceLineDiscount obj) {
-        addToManyTarget("invoiceLineDiscounts", obj, true);
+        addToManyTarget(INVOICE_LINE_DISCOUNTS_PROPERTY, obj, true);
     }
     public void removeFromInvoiceLineDiscounts(InvoiceLineDiscount obj) {
-        removeToManyTarget("invoiceLineDiscounts", obj, true);
+        removeToManyTarget(INVOICE_LINE_DISCOUNTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<InvoiceLineDiscount> getInvoiceLineDiscounts() {
-        return (List<InvoiceLineDiscount>)readProperty("invoiceLineDiscounts");
+        return (List<InvoiceLineDiscount>)readProperty(INVOICE_LINE_DISCOUNTS_PROPERTY);
     }
 
 

@@ -25,53 +25,53 @@ public abstract class _PaymentTransaction extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setIsFinalised(Boolean isFinalised) {
-        writeProperty("isFinalised", isFinalised);
+        writeProperty(IS_FINALISED_PROPERTY, isFinalised);
     }
     public Boolean getIsFinalised() {
-        return (Boolean)readProperty("isFinalised");
+        return (Boolean)readProperty(IS_FINALISED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setResponse(String response) {
-        writeProperty("response", response);
+        writeProperty(RESPONSE_PROPERTY, response);
     }
     public String getResponse() {
-        return (String)readProperty("response");
+        return (String)readProperty(RESPONSE_PROPERTY);
     }
 
     public void setSoapResponse(String soapResponse) {
-        writeProperty("soapResponse", soapResponse);
+        writeProperty(SOAP_RESPONSE_PROPERTY, soapResponse);
     }
     public String getSoapResponse() {
-        return (String)readProperty("soapResponse");
+        return (String)readProperty(SOAP_RESPONSE_PROPERTY);
     }
 
     public void setTxnReference(String txnReference) {
-        writeProperty("txnReference", txnReference);
+        writeProperty(TXN_REFERENCE_PROPERTY, txnReference);
     }
     public String getTxnReference() {
-        return (String)readProperty("txnReference");
+        return (String)readProperty(TXN_REFERENCE_PROPERTY);
     }
 
     public void setPayment(PaymentIn payment) {
-        setToOneTarget("payment", payment, true);
+        setToOneTarget(PAYMENT_PROPERTY, payment, true);
     }
 
     public PaymentIn getPayment() {
-        return (PaymentIn)readProperty("payment");
+        return (PaymentIn)readProperty(PAYMENT_PROPERTY);
     }
 
 

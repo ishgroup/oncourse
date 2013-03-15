@@ -26,53 +26,53 @@ public abstract class _WebHostName extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setWebSite(WebSite webSite) {
-        setToOneTarget("webSite", webSite, true);
+        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
     }
 
     public WebSite getWebSite() {
-        return (WebSite)readProperty("webSite");
+        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 
     public void addToWebSiteArray(WebSite obj) {
-        addToManyTarget("webSiteArray", obj, true);
+        addToManyTarget(WEB_SITE_ARRAY_PROPERTY, obj, true);
     }
     public void removeFromWebSiteArray(WebSite obj) {
-        removeToManyTarget("webSiteArray", obj, true);
+        removeToManyTarget(WEB_SITE_ARRAY_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebSite> getWebSiteArray() {
-        return (List<WebSite>)readProperty("webSiteArray");
+        return (List<WebSite>)readProperty(WEB_SITE_ARRAY_PROPERTY);
     }
 
 

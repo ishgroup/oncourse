@@ -29,70 +29,70 @@ public abstract class _ContactRelationType extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setFromContactName(String fromContactName) {
-        writeProperty("fromContactName", fromContactName);
+        writeProperty(FROM_CONTACT_NAME_PROPERTY, fromContactName);
     }
     public String getFromContactName() {
-        return (String)readProperty("fromContactName");
+        return (String)readProperty(FROM_CONTACT_NAME_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setToContactName(String toContactName) {
-        writeProperty("toContactName", toContactName);
+        writeProperty(TO_CONTACT_NAME_PROPERTY, toContactName);
     }
     public String getToContactName() {
-        return (String)readProperty("toContactName");
+        return (String)readProperty(TO_CONTACT_NAME_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void addToContactRelations(ContactRelation obj) {
-        addToManyTarget("contactRelations", obj, true);
+        addToManyTarget(CONTACT_RELATIONS_PROPERTY, obj, true);
     }
     public void removeFromContactRelations(ContactRelation obj) {
-        removeToManyTarget("contactRelations", obj, true);
+        removeToManyTarget(CONTACT_RELATIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ContactRelation> getContactRelations() {
-        return (List<ContactRelation>)readProperty("contactRelations");
+        return (List<ContactRelation>)readProperty(CONTACT_RELATIONS_PROPERTY);
     }
 
 
     public void addToMembeshipDiscountRelations(DiscountMembershipRelationType obj) {
-        addToManyTarget("membeshipDiscountRelations", obj, true);
+        addToManyTarget(MEMBESHIP_DISCOUNT_RELATIONS_PROPERTY, obj, true);
     }
     public void removeFromMembeshipDiscountRelations(DiscountMembershipRelationType obj) {
-        removeToManyTarget("membeshipDiscountRelations", obj, true);
+        removeToManyTarget(MEMBESHIP_DISCOUNT_RELATIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountMembershipRelationType> getMembeshipDiscountRelations() {
-        return (List<DiscountMembershipRelationType>)readProperty("membeshipDiscountRelations");
+        return (List<DiscountMembershipRelationType>)readProperty(MEMBESHIP_DISCOUNT_RELATIONS_PROPERTY);
     }
 
 

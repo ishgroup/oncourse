@@ -23,39 +23,39 @@ public abstract class _QueuedStatistic extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setEntityIdentifier(String entityIdentifier) {
-        writeProperty("entityIdentifier", entityIdentifier);
+        writeProperty(ENTITY_IDENTIFIER_PROPERTY, entityIdentifier);
     }
     public String getEntityIdentifier() {
-        return (String)readProperty("entityIdentifier");
+        return (String)readProperty(ENTITY_IDENTIFIER_PROPERTY);
     }
 
     public void setReceivedTimestamp(Date receivedTimestamp) {
-        writeProperty("receivedTimestamp", receivedTimestamp);
+        writeProperty(RECEIVED_TIMESTAMP_PROPERTY, receivedTimestamp);
     }
     public Date getReceivedTimestamp() {
-        return (Date)readProperty("receivedTimestamp");
+        return (Date)readProperty(RECEIVED_TIMESTAMP_PROPERTY);
     }
 
     public void setStackedCount(Integer stackedCount) {
-        writeProperty("stackedCount", stackedCount);
+        writeProperty(STACKED_COUNT_PROPERTY, stackedCount);
     }
     public Integer getStackedCount() {
-        return (Integer)readProperty("stackedCount");
+        return (Integer)readProperty(STACKED_COUNT_PROPERTY);
     }
 
     public void setStackedTransactionsCount(Integer stackedTransactionsCount) {
-        writeProperty("stackedTransactionsCount", stackedTransactionsCount);
+        writeProperty(STACKED_TRANSACTIONS_COUNT_PROPERTY, stackedTransactionsCount);
     }
     public Integer getStackedTransactionsCount() {
-        return (Integer)readProperty("stackedTransactionsCount");
+        return (Integer)readProperty(STACKED_TRANSACTIONS_COUNT_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 

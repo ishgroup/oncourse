@@ -27,58 +27,58 @@ public abstract class _WebContent extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setContent(String content) {
-        writeProperty("content", content);
+        writeProperty(CONTENT_PROPERTY, content);
     }
     public String getContent() {
-        return (String)readProperty("content");
+        return (String)readProperty(CONTENT_PROPERTY);
     }
 
     public void setContentTextile(String contentTextile) {
-        writeProperty("contentTextile", contentTextile);
+        writeProperty(CONTENT_TEXTILE_PROPERTY, contentTextile);
     }
     public String getContentTextile() {
-        return (String)readProperty("contentTextile");
+        return (String)readProperty(CONTENT_TEXTILE_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void addToWebContentVisibilities(WebContentVisibility obj) {
-        addToManyTarget("webContentVisibilities", obj, true);
+        addToManyTarget(WEB_CONTENT_VISIBILITIES_PROPERTY, obj, true);
     }
     public void removeFromWebContentVisibilities(WebContentVisibility obj) {
-        removeToManyTarget("webContentVisibilities", obj, true);
+        removeToManyTarget(WEB_CONTENT_VISIBILITIES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebContentVisibility> getWebContentVisibilities() {
-        return (List<WebContentVisibility>)readProperty("webContentVisibilities");
+        return (List<WebContentVisibility>)readProperty(WEB_CONTENT_VISIBILITIES_PROPERTY);
     }
 
 
     public void setWebSite(WebSite webSite) {
-        setToOneTarget("webSite", webSite, true);
+        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
     }
 
     public WebSite getWebSite() {
-        return (WebSite)readProperty("webSite");
+        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 

@@ -29,64 +29,64 @@ public abstract class _ProductItem extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setStatus(ProductStatus status) {
-        writeProperty("status", status);
+        writeProperty(STATUS_PROPERTY, status);
     }
     public ProductStatus getStatus() {
-        return (ProductStatus)readProperty("status");
+        return (ProductStatus)readProperty(STATUS_PROPERTY);
     }
 
     public void setType(Integer type) {
-        writeProperty("type", type);
+        writeProperty(TYPE_PROPERTY, type);
     }
     public Integer getType() {
-        return (Integer)readProperty("type");
+        return (Integer)readProperty(TYPE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setInvoiceLine(InvoiceLine invoiceLine) {
-        setToOneTarget("invoiceLine", invoiceLine, true);
+        setToOneTarget(INVOICE_LINE_PROPERTY, invoiceLine, true);
     }
 
     public InvoiceLine getInvoiceLine() {
-        return (InvoiceLine)readProperty("invoiceLine");
+        return (InvoiceLine)readProperty(INVOICE_LINE_PROPERTY);
     }
 
 
     public void setProduct(Product product) {
-        setToOneTarget("product", product, true);
+        setToOneTarget(PRODUCT_PROPERTY, product, true);
     }
 
     public Product getProduct() {
-        return (Product)readProperty("product");
+        return (Product)readProperty(PRODUCT_PROPERTY);
     }
 
 

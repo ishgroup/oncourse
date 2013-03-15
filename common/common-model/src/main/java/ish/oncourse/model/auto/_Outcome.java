@@ -34,102 +34,102 @@ public abstract class _Outcome extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDeliveryMode(Integer deliveryMode) {
-        writeProperty("deliveryMode", deliveryMode);
+        writeProperty(DELIVERY_MODE_PROPERTY, deliveryMode);
     }
     public Integer getDeliveryMode() {
-        return (Integer)readProperty("deliveryMode");
+        return (Integer)readProperty(DELIVERY_MODE_PROPERTY);
     }
 
     public void setEndDate(Date endDate) {
-        writeProperty("endDate", endDate);
+        writeProperty(END_DATE_PROPERTY, endDate);
     }
     public Date getEndDate() {
-        return (Date)readProperty("endDate");
+        return (Date)readProperty(END_DATE_PROPERTY);
     }
 
     public void setFundingSource(Integer fundingSource) {
-        writeProperty("fundingSource", fundingSource);
+        writeProperty(FUNDING_SOURCE_PROPERTY, fundingSource);
     }
     public Integer getFundingSource() {
-        return (Integer)readProperty("fundingSource");
+        return (Integer)readProperty(FUNDING_SOURCE_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setModuleId(Long moduleId) {
-        writeProperty("moduleId", moduleId);
+        writeProperty(MODULE_ID_PROPERTY, moduleId);
     }
     public Long getModuleId() {
-        return (Long)readProperty("moduleId");
+        return (Long)readProperty(MODULE_ID_PROPERTY);
     }
 
     public void setReportableHours(Double reportableHours) {
-        writeProperty("reportableHours", reportableHours);
+        writeProperty(REPORTABLE_HOURS_PROPERTY, reportableHours);
     }
     public Double getReportableHours() {
-        return (Double)readProperty("reportableHours");
+        return (Double)readProperty(REPORTABLE_HOURS_PROPERTY);
     }
 
     public void setStartDate(Date startDate) {
-        writeProperty("startDate", startDate);
+        writeProperty(START_DATE_PROPERTY, startDate);
     }
     public Date getStartDate() {
-        return (Date)readProperty("startDate");
+        return (Date)readProperty(START_DATE_PROPERTY);
     }
 
     public void setStatus(Integer status) {
-        writeProperty("status", status);
+        writeProperty(STATUS_PROPERTY, status);
     }
     public Integer getStatus() {
-        return (Integer)readProperty("status");
+        return (Integer)readProperty(STATUS_PROPERTY);
     }
 
     public void addToCertificateOutcomes(CertificateOutcome obj) {
-        addToManyTarget("certificateOutcomes", obj, true);
+        addToManyTarget(CERTIFICATE_OUTCOMES_PROPERTY, obj, true);
     }
     public void removeFromCertificateOutcomes(CertificateOutcome obj) {
-        removeToManyTarget("certificateOutcomes", obj, true);
+        removeToManyTarget(CERTIFICATE_OUTCOMES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<CertificateOutcome> getCertificateOutcomes() {
-        return (List<CertificateOutcome>)readProperty("certificateOutcomes");
+        return (List<CertificateOutcome>)readProperty(CERTIFICATE_OUTCOMES_PROPERTY);
     }
 
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setEnrolment(Enrolment enrolment) {
-        setToOneTarget("enrolment", enrolment, true);
+        setToOneTarget(ENROLMENT_PROPERTY, enrolment, true);
     }
 
     public Enrolment getEnrolment() {
-        return (Enrolment)readProperty("enrolment");
+        return (Enrolment)readProperty(ENROLMENT_PROPERTY);
     }
 
 

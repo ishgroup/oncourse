@@ -40,130 +40,130 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        writeProperty(DESCRIPTION_PROPERTY, description);
     }
     public String getDescription() {
-        return (String)readProperty("description");
+        return (String)readProperty(DESCRIPTION_PROPERTY);
     }
 
     public void setDiscountEachExTax(Money discountEachExTax) {
-        writeProperty("discountEachExTax", discountEachExTax);
+        writeProperty(DISCOUNT_EACH_EX_TAX_PROPERTY, discountEachExTax);
     }
     public Money getDiscountEachExTax() {
-        return (Money)readProperty("discountEachExTax");
+        return (Money)readProperty(DISCOUNT_EACH_EX_TAX_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setPriceEachExTax(Money priceEachExTax) {
-        writeProperty("priceEachExTax", priceEachExTax);
+        writeProperty(PRICE_EACH_EX_TAX_PROPERTY, priceEachExTax);
     }
     public Money getPriceEachExTax() {
-        return (Money)readProperty("priceEachExTax");
+        return (Money)readProperty(PRICE_EACH_EX_TAX_PROPERTY);
     }
 
     public void setQuantity(BigDecimal quantity) {
-        writeProperty("quantity", quantity);
+        writeProperty(QUANTITY_PROPERTY, quantity);
     }
     public BigDecimal getQuantity() {
-        return (BigDecimal)readProperty("quantity");
+        return (BigDecimal)readProperty(QUANTITY_PROPERTY);
     }
 
     public void setSortOrder(Integer sortOrder) {
-        writeProperty("sortOrder", sortOrder);
+        writeProperty(SORT_ORDER_PROPERTY, sortOrder);
     }
     public Integer getSortOrder() {
-        return (Integer)readProperty("sortOrder");
+        return (Integer)readProperty(SORT_ORDER_PROPERTY);
     }
 
     public void setTaxEach(Money taxEach) {
-        writeProperty("taxEach", taxEach);
+        writeProperty(TAX_EACH_PROPERTY, taxEach);
     }
     public Money getTaxEach() {
-        return (Money)readProperty("taxEach");
+        return (Money)readProperty(TAX_EACH_PROPERTY);
     }
 
     public void setTitle(String title) {
-        writeProperty("title", title);
+        writeProperty(TITLE_PROPERTY, title);
     }
     public String getTitle() {
-        return (String)readProperty("title");
+        return (String)readProperty(TITLE_PROPERTY);
     }
 
     public void setUnit(String unit) {
-        writeProperty("unit", unit);
+        writeProperty(UNIT_PROPERTY, unit);
     }
     public String getUnit() {
-        return (String)readProperty("unit");
+        return (String)readProperty(UNIT_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setEnrolment(Enrolment enrolment) {
-        setToOneTarget("enrolment", enrolment, true);
+        setToOneTarget(ENROLMENT_PROPERTY, enrolment, true);
     }
 
     public Enrolment getEnrolment() {
-        return (Enrolment)readProperty("enrolment");
+        return (Enrolment)readProperty(ENROLMENT_PROPERTY);
     }
 
 
     public void setInvoice(Invoice invoice) {
-        setToOneTarget("invoice", invoice, true);
+        setToOneTarget(INVOICE_PROPERTY, invoice, true);
     }
 
     public Invoice getInvoice() {
-        return (Invoice)readProperty("invoice");
+        return (Invoice)readProperty(INVOICE_PROPERTY);
     }
 
 
     public void addToInvoiceLineDiscounts(InvoiceLineDiscount obj) {
-        addToManyTarget("invoiceLineDiscounts", obj, true);
+        addToManyTarget(INVOICE_LINE_DISCOUNTS_PROPERTY, obj, true);
     }
     public void removeFromInvoiceLineDiscounts(InvoiceLineDiscount obj) {
-        removeToManyTarget("invoiceLineDiscounts", obj, true);
+        removeToManyTarget(INVOICE_LINE_DISCOUNTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<InvoiceLineDiscount> getInvoiceLineDiscounts() {
-        return (List<InvoiceLineDiscount>)readProperty("invoiceLineDiscounts");
+        return (List<InvoiceLineDiscount>)readProperty(INVOICE_LINE_DISCOUNTS_PROPERTY);
     }
 
 
     public void addToProductItem(ProductItem obj) {
-        addToManyTarget("productItem", obj, true);
+        addToManyTarget(PRODUCT_ITEM_PROPERTY, obj, true);
     }
     public void removeFromProductItem(ProductItem obj) {
-        removeToManyTarget("productItem", obj, true);
+        removeToManyTarget(PRODUCT_ITEM_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ProductItem> getProductItem() {
-        return (List<ProductItem>)readProperty("productItem");
+        return (List<ProductItem>)readProperty(PRODUCT_ITEM_PROPERTY);
     }
 
 

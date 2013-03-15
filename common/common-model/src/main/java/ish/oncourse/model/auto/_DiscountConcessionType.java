@@ -26,50 +26,50 @@ public abstract class _DiscountConcessionType extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setConcessionType(ConcessionType concessionType) {
-        setToOneTarget("concessionType", concessionType, true);
+        setToOneTarget(CONCESSION_TYPE_PROPERTY, concessionType, true);
     }
 
     public ConcessionType getConcessionType() {
-        return (ConcessionType)readProperty("concessionType");
+        return (ConcessionType)readProperty(CONCESSION_TYPE_PROPERTY);
     }
 
 
     public void setDiscount(Discount discount) {
-        setToOneTarget("discount", discount, true);
+        setToOneTarget(DISCOUNT_PROPERTY, discount, true);
     }
 
     public Discount getDiscount() {
-        return (Discount)readProperty("discount");
+        return (Discount)readProperty(DISCOUNT_PROPERTY);
     }
 
 

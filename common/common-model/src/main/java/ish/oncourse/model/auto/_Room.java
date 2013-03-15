@@ -35,107 +35,107 @@ public abstract class _Room extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCapacity(Integer capacity) {
-        writeProperty("capacity", capacity);
+        writeProperty(CAPACITY_PROPERTY, capacity);
     }
     public Integer getCapacity() {
-        return (Integer)readProperty("capacity");
+        return (Integer)readProperty(CAPACITY_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDirections(String directions) {
-        writeProperty("directions", directions);
+        writeProperty(DIRECTIONS_PROPERTY, directions);
     }
     public String getDirections() {
-        return (String)readProperty("directions");
+        return (String)readProperty(DIRECTIONS_PROPERTY);
     }
 
     public void setDirectionsTextile(String directionsTextile) {
-        writeProperty("directionsTextile", directionsTextile);
+        writeProperty(DIRECTIONS_TEXTILE_PROPERTY, directionsTextile);
     }
     public String getDirectionsTextile() {
-        return (String)readProperty("directionsTextile");
+        return (String)readProperty(DIRECTIONS_TEXTILE_PROPERTY);
     }
 
     public void setFacilities(String facilities) {
-        writeProperty("facilities", facilities);
+        writeProperty(FACILITIES_PROPERTY, facilities);
     }
     public String getFacilities() {
-        return (String)readProperty("facilities");
+        return (String)readProperty(FACILITIES_PROPERTY);
     }
 
     public void setFacilitiesTextile(String facilitiesTextile) {
-        writeProperty("facilitiesTextile", facilitiesTextile);
+        writeProperty(FACILITIES_TEXTILE_PROPERTY, facilitiesTextile);
     }
     public String getFacilitiesTextile() {
-        return (String)readProperty("facilitiesTextile");
+        return (String)readProperty(FACILITIES_TEXTILE_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void addToCourseClasses(CourseClass obj) {
-        addToManyTarget("courseClasses", obj, true);
+        addToManyTarget(COURSE_CLASSES_PROPERTY, obj, true);
     }
     public void removeFromCourseClasses(CourseClass obj) {
-        removeToManyTarget("courseClasses", obj, true);
+        removeToManyTarget(COURSE_CLASSES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<CourseClass> getCourseClasses() {
-        return (List<CourseClass>)readProperty("courseClasses");
+        return (List<CourseClass>)readProperty(COURSE_CLASSES_PROPERTY);
     }
 
 
     public void addToSessions(Session obj) {
-        addToManyTarget("sessions", obj, true);
+        addToManyTarget(SESSIONS_PROPERTY, obj, true);
     }
     public void removeFromSessions(Session obj) {
-        removeToManyTarget("sessions", obj, true);
+        removeToManyTarget(SESSIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Session> getSessions() {
-        return (List<Session>)readProperty("sessions");
+        return (List<Session>)readProperty(SESSIONS_PROPERTY);
     }
 
 
     public void setSite(Site site) {
-        setToOneTarget("site", site, true);
+        setToOneTarget(SITE_PROPERTY, site, true);
     }
 
     public Site getSite() {
-        return (Site)readProperty("site");
+        return (Site)readProperty(SITE_PROPERTY);
     }
 
 

@@ -27,57 +27,57 @@ public abstract class _SessionTutor extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setType(Integer type) {
-        writeProperty("type", type);
+        writeProperty(TYPE_PROPERTY, type);
     }
     public Integer getType() {
-        return (Integer)readProperty("type");
+        return (Integer)readProperty(TYPE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setSession(Session session) {
-        setToOneTarget("session", session, true);
+        setToOneTarget(SESSION_PROPERTY, session, true);
     }
 
     public Session getSession() {
-        return (Session)readProperty("session");
+        return (Session)readProperty(SESSION_PROPERTY);
     }
 
 
     public void setTutor(Tutor tutor) {
-        setToOneTarget("tutor", tutor, true);
+        setToOneTarget(TUTOR_PROPERTY, tutor, true);
     }
 
     public Tutor getTutor() {
-        return (Tutor)readProperty("tutor");
+        return (Tutor)readProperty(TUTOR_PROPERTY);
     }
 
 

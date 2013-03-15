@@ -30,76 +30,76 @@ public abstract class _WebMenu extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setUrl(String url) {
-        writeProperty("url", url);
+        writeProperty(URL_PROPERTY, url);
     }
     public String getUrl() {
-        return (String)readProperty("url");
+        return (String)readProperty(URL_PROPERTY);
     }
 
     public void setWeight(Integer weight) {
-        writeProperty("weight", weight);
+        writeProperty(WEIGHT_PROPERTY, weight);
     }
     public Integer getWeight() {
-        return (Integer)readProperty("weight");
+        return (Integer)readProperty(WEIGHT_PROPERTY);
     }
 
     public void addToChildrenMenus(WebMenu obj) {
-        addToManyTarget("childrenMenus", obj, true);
+        addToManyTarget(CHILDREN_MENUS_PROPERTY, obj, true);
     }
     public void removeFromChildrenMenus(WebMenu obj) {
-        removeToManyTarget("childrenMenus", obj, true);
+        removeToManyTarget(CHILDREN_MENUS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebMenu> getChildrenMenus() {
-        return (List<WebMenu>)readProperty("childrenMenus");
+        return (List<WebMenu>)readProperty(CHILDREN_MENUS_PROPERTY);
     }
 
 
     public void setParentWebMenu(WebMenu parentWebMenu) {
-        setToOneTarget("parentWebMenu", parentWebMenu, true);
+        setToOneTarget(PARENT_WEB_MENU_PROPERTY, parentWebMenu, true);
     }
 
     public WebMenu getParentWebMenu() {
-        return (WebMenu)readProperty("parentWebMenu");
+        return (WebMenu)readProperty(PARENT_WEB_MENU_PROPERTY);
     }
 
 
     public void setWebNode(WebNode webNode) {
-        setToOneTarget("webNode", webNode, true);
+        setToOneTarget(WEB_NODE_PROPERTY, webNode, true);
     }
 
     public WebNode getWebNode() {
-        return (WebNode)readProperty("webNode");
+        return (WebNode)readProperty(WEB_NODE_PROPERTY);
     }
 
 
     public void setWebSite(WebSite webSite) {
-        setToOneTarget("webSite", webSite, true);
+        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
     }
 
     public WebSite getWebSite() {
-        return (WebSite)readProperty("webSite");
+        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 

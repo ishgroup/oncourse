@@ -27,67 +27,67 @@ public abstract class _Preference extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setExplanation(String explanation) {
-        writeProperty("explanation", explanation);
+        writeProperty(EXPLANATION_PROPERTY, explanation);
     }
     public String getExplanation() {
-        return (String)readProperty("explanation");
+        return (String)readProperty(EXPLANATION_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setSqlType(Integer sqlType) {
-        writeProperty("sqlType", sqlType);
+        writeProperty(SQL_TYPE_PROPERTY, sqlType);
     }
     public Integer getSqlType() {
-        return (Integer)readProperty("sqlType");
+        return (Integer)readProperty(SQL_TYPE_PROPERTY);
     }
 
     public void setValue(byte[] value) {
-        writeProperty("value", value);
+        writeProperty(VALUE_PROPERTY, value);
     }
     public byte[] getValue() {
-        return (byte[])readProperty("value");
+        return (byte[])readProperty(VALUE_PROPERTY);
     }
 
     public void setValueString(String valueString) {
-        writeProperty("valueString", valueString);
+        writeProperty(VALUE_STRING_PROPERTY, valueString);
     }
     public String getValueString() {
-        return (String)readProperty("valueString");
+        return (String)readProperty(VALUE_STRING_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 

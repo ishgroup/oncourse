@@ -34,101 +34,101 @@ public abstract class _WebNode extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setNodeNumber(Integer nodeNumber) {
-        writeProperty("nodeNumber", nodeNumber);
+        writeProperty(NODE_NUMBER_PROPERTY, nodeNumber);
     }
     public Integer getNodeNumber() {
-        return (Integer)readProperty("nodeNumber");
+        return (Integer)readProperty(NODE_NUMBER_PROPERTY);
     }
 
     public void setPublished(boolean published) {
-        writeProperty("published", published);
+        writeProperty(PUBLISHED_PROPERTY, published);
     }
 	public boolean isPublished() {
-        Boolean value = (Boolean)readProperty("published");
+        Boolean value = (Boolean)readProperty(PUBLISHED_PROPERTY);
         return (value != null) ? value.booleanValue() : false;
     }
 
     public void setDefaultWebURLAlias(WebUrlAlias defaultWebURLAlias) {
-        setToOneTarget("defaultWebURLAlias", defaultWebURLAlias, true);
+        setToOneTarget(DEFAULT_WEB_URLALIAS_PROPERTY, defaultWebURLAlias, true);
     }
 
     public WebUrlAlias getDefaultWebURLAlias() {
-        return (WebUrlAlias)readProperty("defaultWebURLAlias");
+        return (WebUrlAlias)readProperty(DEFAULT_WEB_URLALIAS_PROPERTY);
     }
 
 
     public void addToWebContentVisibility(WebContentVisibility obj) {
-        addToManyTarget("webContentVisibility", obj, true);
+        addToManyTarget(WEB_CONTENT_VISIBILITY_PROPERTY, obj, true);
     }
     public void removeFromWebContentVisibility(WebContentVisibility obj) {
-        removeToManyTarget("webContentVisibility", obj, true);
+        removeToManyTarget(WEB_CONTENT_VISIBILITY_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebContentVisibility> getWebContentVisibility() {
-        return (List<WebContentVisibility>)readProperty("webContentVisibility");
+        return (List<WebContentVisibility>)readProperty(WEB_CONTENT_VISIBILITY_PROPERTY);
     }
 
 
     public void addToWebMenus(WebMenu obj) {
-        addToManyTarget("webMenus", obj, true);
+        addToManyTarget(WEB_MENUS_PROPERTY, obj, true);
     }
     public void removeFromWebMenus(WebMenu obj) {
-        removeToManyTarget("webMenus", obj, true);
+        removeToManyTarget(WEB_MENUS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebMenu> getWebMenus() {
-        return (List<WebMenu>)readProperty("webMenus");
+        return (List<WebMenu>)readProperty(WEB_MENUS_PROPERTY);
     }
 
 
     public void setWebNodeType(WebNodeType webNodeType) {
-        setToOneTarget("webNodeType", webNodeType, true);
+        setToOneTarget(WEB_NODE_TYPE_PROPERTY, webNodeType, true);
     }
 
     public WebNodeType getWebNodeType() {
-        return (WebNodeType)readProperty("webNodeType");
+        return (WebNodeType)readProperty(WEB_NODE_TYPE_PROPERTY);
     }
 
 
     public void setWebSite(WebSite webSite) {
-        setToOneTarget("webSite", webSite, true);
+        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
     }
 
     public WebSite getWebSite() {
-        return (WebSite)readProperty("webSite");
+        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 
     public void addToWebUrlAliases(WebUrlAlias obj) {
-        addToManyTarget("webUrlAliases", obj, true);
+        addToManyTarget(WEB_URL_ALIASES_PROPERTY, obj, true);
     }
     public void removeFromWebUrlAliases(WebUrlAlias obj) {
-        removeToManyTarget("webUrlAliases", obj, true);
+        removeToManyTarget(WEB_URL_ALIASES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebUrlAlias> getWebUrlAliases() {
-        return (List<WebUrlAlias>)readProperty("webUrlAliases");
+        return (List<WebUrlAlias>)readProperty(WEB_URL_ALIASES_PROPERTY);
     }
 
 

@@ -31,77 +31,77 @@ public abstract class _Voucher extends ProductItem {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCode(String code) {
-        writeProperty("code", code);
+        writeProperty(CODE_PROPERTY, code);
     }
     public String getCode() {
-        return (String)readProperty("code");
+        return (String)readProperty(CODE_PROPERTY);
     }
 
     public void setExpiryDate(Date expiryDate) {
-        writeProperty("expiryDate", expiryDate);
+        writeProperty(EXPIRY_DATE_PROPERTY, expiryDate);
     }
     public Date getExpiryDate() {
-        return (Date)readProperty("expiryDate");
+        return (Date)readProperty(EXPIRY_DATE_PROPERTY);
     }
 
     public void setIdKey(String idKey) {
-        writeProperty("idKey", idKey);
+        writeProperty(ID_KEY_PROPERTY, idKey);
     }
     public String getIdKey() {
-        return (String)readProperty("idKey");
+        return (String)readProperty(ID_KEY_PROPERTY);
     }
 
     public void setRedeemedCoursesCount(Integer redeemedCoursesCount) {
-        writeProperty("redeemedCoursesCount", redeemedCoursesCount);
+        writeProperty(REDEEMED_COURSES_COUNT_PROPERTY, redeemedCoursesCount);
     }
     public Integer getRedeemedCoursesCount() {
-        return (Integer)readProperty("redeemedCoursesCount");
+        return (Integer)readProperty(REDEEMED_COURSES_COUNT_PROPERTY);
     }
 
     public void setRedemptionValue(Money redemptionValue) {
-        writeProperty("redemptionValue", redemptionValue);
+        writeProperty(REDEMPTION_VALUE_PROPERTY, redemptionValue);
     }
     public Money getRedemptionValue() {
-        return (Money)readProperty("redemptionValue");
+        return (Money)readProperty(REDEMPTION_VALUE_PROPERTY);
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty("source", source);
+        writeProperty(SOURCE_PROPERTY, source);
     }
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty("source");
+        return (PaymentSource)readProperty(SOURCE_PROPERTY);
     }
 
     public void setContact(Contact contact) {
-        setToOneTarget("contact", contact, true);
+        setToOneTarget(CONTACT_PROPERTY, contact, true);
     }
 
     public Contact getContact() {
-        return (Contact)readProperty("contact");
+        return (Contact)readProperty(CONTACT_PROPERTY);
     }
 
 
     public void addToPayments(PaymentIn obj) {
-        addToManyTarget("payments", obj, true);
+        addToManyTarget(PAYMENTS_PROPERTY, obj, true);
     }
     public void removeFromPayments(PaymentIn obj) {
-        removeToManyTarget("payments", obj, true);
+        removeToManyTarget(PAYMENTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentIn> getPayments() {
-        return (List<PaymentIn>)readProperty("payments");
+        return (List<PaymentIn>)readProperty(PAYMENTS_PROPERTY);
     }
 
 
     public void addToVoucherPaymentIns(VoucherPaymentIn obj) {
-        addToManyTarget("voucherPaymentIns", obj, true);
+        addToManyTarget(VOUCHER_PAYMENT_INS_PROPERTY, obj, true);
     }
     public void removeFromVoucherPaymentIns(VoucherPaymentIn obj) {
-        removeToManyTarget("voucherPaymentIns", obj, true);
+        removeToManyTarget(VOUCHER_PAYMENT_INS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<VoucherPaymentIn> getVoucherPaymentIns() {
-        return (List<VoucherPaymentIn>)readProperty("voucherPaymentIns");
+        return (List<VoucherPaymentIn>)readProperty(VOUCHER_PAYMENT_INS_PROPERTY);
     }
 
 

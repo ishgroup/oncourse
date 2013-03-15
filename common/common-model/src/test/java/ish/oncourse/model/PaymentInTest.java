@@ -55,16 +55,16 @@ public class PaymentInTest {
 	@Test
 	public void testIsZeroAmount() throws Exception {
 		PaymentIn paymentIn = context.newObject(PaymentIn.class);
-		BigDecimal amount = new BigDecimal(224.34);
+		Money amount = new Money("224.34");
 		paymentIn.setAmount(amount);
 		assertTrue("PaymentIn is not zero payment.", !paymentIn.isZeroPayment());
-		amount = new BigDecimal(-300);
+		amount = new Money("-300");
 		paymentIn.setAmount(amount);
 		assertTrue("PaymentIn is not zero payment.", !paymentIn.isZeroPayment());
-		amount = new BigDecimal(0);
+		amount = new Money("0");
 		paymentIn.setAmount(amount);
 		assertTrue("PaymentIn is zero payment with integer argument.", paymentIn.isZeroPayment());
-		amount = new BigDecimal("0.00");
+		amount = new Money("0.00");
 		paymentIn.setAmount(amount);
 		assertTrue("PaymentIn is zero payment with string argument.", paymentIn.isZeroPayment());
 	}
@@ -75,7 +75,7 @@ public class PaymentInTest {
 		PaymentIn paymentIn = context.newObject(PaymentIn.class);
 		paymentIn.setCollege(college);
 		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
-		paymentIn.setAmount(new BigDecimal(150));
+		paymentIn.setAmount(new Money("150"));
 		paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE);
 		paymentIn.setType(PaymentType.CREDIT_CARD);
 		paymentIn.setSessionId("1234567890");
@@ -89,24 +89,24 @@ public class PaymentInTest {
 
 		Invoice invoice1 = context.newObject(Invoice.class);
 		invoice1.setAngelId(100l);
-		invoice1.setAmountOwing(new BigDecimal(-75));
+		invoice1.setAmountOwing(new Money("-75"));
 		invoice1.setInvoiceNumber(100l);
 		invoice1.setCollege(college);
 		invoice1.setInvoiceDate(calendar.getTime());
-		invoice1.setTotalExGst(new BigDecimal(-75));
-		invoice1.setTotalGst(new BigDecimal(-75));
+		invoice1.setTotalExGst(new Money("-75"));
+		invoice1.setTotalGst(new Money("-75"));
 		invoice1.setDateDue(calendar.getTime());
 		invoice1.setContact(contact);
 		invoice1.setSource(PaymentSource.SOURCE_ONCOURSE);
 
 		Invoice invoice2 = context.newObject(Invoice.class);
 		invoice2.setAngelId(102l);
-		invoice2.setAmountOwing(new BigDecimal(225));
+		invoice2.setAmountOwing(new Money("225"));
 		invoice2.setCollege(college);
 		invoice2.setInvoiceNumber(101l);
 		invoice2.setInvoiceDate(calendar.getTime());
-		invoice2.setTotalExGst(new BigDecimal(225));
-		invoice2.setTotalGst(new BigDecimal(225));
+		invoice2.setTotalExGst(new Money("225"));
+		invoice2.setTotalGst(new Money("225"));
 		invoice2.setDateDue(calendar.getTime());
 		invoice2.setContact(contact);
 		invoice2.setSource(PaymentSource.SOURCE_ONCOURSE);
@@ -114,7 +114,7 @@ public class PaymentInTest {
 		InvoiceLine invLine1 = context.newObject(InvoiceLine.class);
 		invLine1.setTitle("Test_invLine1");
 		invLine1.setCollege(college);
-		invLine1.setPriceEachExTax(new Money(new BigDecimal(-75)));
+		invLine1.setPriceEachExTax(new Money("-75"));
 		invLine1.setTaxEach(Money.ZERO);
 		invLine1.setQuantity(new BigDecimal(1));
 		invLine1.setDiscountEachExTax(Money.ZERO);
@@ -124,7 +124,7 @@ public class PaymentInTest {
 		invLine2.setTitle("Test_invLine2");
 		invLine2.setCollege(college);
 		invLine2.setEnrolment(newEnrolment());
-		invLine2.setPriceEachExTax(new Money(new BigDecimal(220)));
+		invLine2.setPriceEachExTax(new Money("220"));
 		invLine2.setTaxEach(Money.ZERO);
 		invLine2.setQuantity(new BigDecimal(1));
 		invLine2.setDiscountEachExTax(Money.ZERO);
@@ -133,12 +133,12 @@ public class PaymentInTest {
 		invoice2.addToInvoiceLines(invLine2);
 
 		PaymentInLine pLine1 = context.newObject(PaymentInLine.class);
-		pLine1.setAmount(new BigDecimal(-75));
+		pLine1.setAmount(new Money("-75"));
 		pLine1.setCollege(college);
 		pLine1.setInvoice(invoice1);
 
 		PaymentInLine pLine2 = context.newObject(PaymentInLine.class);
-		pLine2.setAmount(new BigDecimal(225));
+		pLine2.setAmount(new Money("225"));
 		pLine2.setCollege(college);
 		pLine2.setInvoice(invoice2);
 
@@ -154,7 +154,7 @@ public class PaymentInTest {
 		context.commitChanges();
 
 		assertTrue("Checking that id isn't temporary.", !inversePayment.getObjectId().isTemporary());
-		assertTrue("Inverse payment amount is zero.", BigDecimal.ZERO.equals(inversePayment.getAmount()));
+		assertTrue("Inverse payment amount is zero.", Money.ZERO.equals(inversePayment.getAmount()));
 
         // test for invoice source (#13908) -  if direct invoice was has source ONCOURSE so reverse invoice should have the same source
         List<PaymentInLine> lines = inversePayment.getPaymentInLines();

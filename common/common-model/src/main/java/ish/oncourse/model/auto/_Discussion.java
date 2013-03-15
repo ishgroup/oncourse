@@ -21,23 +21,23 @@ public abstract class _Discussion extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCourseClass(CourseClass courseClass) {
-        setToOneTarget("courseClass", courseClass, true);
+        setToOneTarget(COURSE_CLASS_PROPERTY, courseClass, true);
     }
 
     public CourseClass getCourseClass() {
-        return (CourseClass)readProperty("courseClass");
+        return (CourseClass)readProperty(COURSE_CLASS_PROPERTY);
     }
 
 
     public void addToDiscussionThread(DiscussionThread obj) {
-        addToManyTarget("discussionThread", obj, true);
+        addToManyTarget(DISCUSSION_THREAD_PROPERTY, obj, true);
     }
     public void removeFromDiscussionThread(DiscussionThread obj) {
-        removeToManyTarget("discussionThread", obj, true);
+        removeToManyTarget(DISCUSSION_THREAD_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscussionThread> getDiscussionThread() {
-        return (List<DiscussionThread>)readProperty("discussionThread");
+        return (List<DiscussionThread>)readProperty(DISCUSSION_THREAD_PROPERTY);
     }
 
 

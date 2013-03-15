@@ -1,6 +1,5 @@
 package ish.oncourse.model.auto;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import ish.common.types.CreditCardType;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
+import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentInLine;
@@ -53,11 +53,11 @@ public abstract class _PaymentIn extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Money amount) {
         writeProperty("amount", amount);
     }
-    public BigDecimal getAmount() {
-        return (BigDecimal)readProperty("amount");
+    public Money getAmount() {
+        return (Money)readProperty("amount");
     }
 
     public void setAngelId(Long angelId) {

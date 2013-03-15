@@ -77,7 +77,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			return;
 		}
 
-		Money amount = new Money(getAmount());
+		Money amount = getAmount();
 
 		if (amount.compareTo(Money.ZERO) < 0) {
 			result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY,
@@ -124,8 +124,8 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * @return true if the payment amount is greater or equal to zero.
 	 */
 	public boolean validatePaymentAmount() {
-		BigDecimal amount = getAmount();
-		boolean isValid = amount != null && amount.compareTo(BigDecimal.ZERO) != -1;
+		Money amount = getAmount();
+		boolean isValid = amount != null && amount.compareTo(Money.ZERO) != -1;
 		if (!isValid) {
 			LOG.warn("The payment amount cannot be negative:" + amount);
 		}
@@ -289,9 +289,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		invoiceToRefund.updateAmountOwing();
 		PaymentIn internalPayment = null;
 		//if the owing already balanced, no reason to create any refund invoice
-		if (!Money.isZeroOrEmpty(new Money(invoiceToRefund.getAmountOwing()))) {
+		if (!Money.isZeroOrEmpty(invoiceToRefund.getAmountOwing())) {
 			internalPayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
-			internalPayment.setAmount(BigDecimal.ZERO);
+			internalPayment.setAmount(Money.ZERO);
 			internalPayment.setType(PaymentType.INTERNAL);
 			internalPayment.setStatus(PaymentStatus.SUCCESS);
 			String sessionId = paymentInLineToRefund.getPaymentIn().getSessionId();
@@ -305,7 +305,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				invoiceToRefund.getId()));
 
 			PaymentInLine refundPL = paymentInLineToRefund.getObjectContext().newObject(PaymentInLine.class);
-			refundPL.setAmount(BigDecimal.ZERO.subtract(paymentInLineToRefund.getAmount()));
+			refundPL.setAmount(Money.ZERO.subtract(paymentInLineToRefund.getAmount()));
 			refundPL.setCollege(paymentInLineToRefund.getCollege());
 			refundPL.setInvoice(refundInvoice);
 			refundPL.setPaymentIn(internalPayment);
@@ -642,7 +642,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * @return
 	 */
 	public boolean isZeroPayment() {
-		Money amount = new Money(getAmount());
-		return amount.isZero();
+		return getAmount().isZero();
 	}
 }

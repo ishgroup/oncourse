@@ -29,64 +29,64 @@ public abstract class _VoucherPaymentIn extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setEnrolmentsCount(Integer enrolmentsCount) {
-        writeProperty("enrolmentsCount", enrolmentsCount);
+        writeProperty(ENROLMENTS_COUNT_PROPERTY, enrolmentsCount);
     }
     public Integer getEnrolmentsCount() {
-        return (Integer)readProperty("enrolmentsCount");
+        return (Integer)readProperty(ENROLMENTS_COUNT_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setStatus(VoucherPaymentStatus status) {
-        writeProperty("status", status);
+        writeProperty(STATUS_PROPERTY, status);
     }
     public VoucherPaymentStatus getStatus() {
-        return (VoucherPaymentStatus)readProperty("status");
+        return (VoucherPaymentStatus)readProperty(STATUS_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setPayment(PaymentIn payment) {
-        setToOneTarget("payment", payment, true);
+        setToOneTarget(PAYMENT_PROPERTY, payment, true);
     }
 
     public PaymentIn getPayment() {
-        return (PaymentIn)readProperty("payment");
+        return (PaymentIn)readProperty(PAYMENT_PROPERTY);
     }
 
 
     public void setVoucher(Voucher voucher) {
-        setToOneTarget("voucher", voucher, true);
+        setToOneTarget(VOUCHER_PROPERTY, voucher, true);
     }
 
     public Voucher getVoucher() {
-        return (Voucher)readProperty("voucher");
+        return (Voucher)readProperty(VOUCHER_PROPERTY);
     }
 
 

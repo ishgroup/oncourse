@@ -15,10 +15,10 @@ public abstract class _DiscussionThread extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setTopic(String topic) {
-        writeProperty("topic", topic);
+        writeProperty(TOPIC_PROPERTY, topic);
     }
     public String getTopic() {
-        return (String)readProperty("topic");
+        return (String)readProperty(TOPIC_PROPERTY);
     }
 
 }

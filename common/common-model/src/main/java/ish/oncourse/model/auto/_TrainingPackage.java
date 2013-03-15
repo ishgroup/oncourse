@@ -28,87 +28,87 @@ public abstract class _TrainingPackage extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCopyrightCategory(String copyrightCategory) {
-        writeProperty("copyrightCategory", copyrightCategory);
+        writeProperty(COPYRIGHT_CATEGORY_PROPERTY, copyrightCategory);
     }
     public String getCopyrightCategory() {
-        return (String)readProperty("copyrightCategory");
+        return (String)readProperty(COPYRIGHT_CATEGORY_PROPERTY);
     }
 
     public void setCopyrightContact(String copyrightContact) {
-        writeProperty("copyrightContact", copyrightContact);
+        writeProperty(COPYRIGHT_CONTACT_PROPERTY, copyrightContact);
     }
     public String getCopyrightContact() {
-        return (String)readProperty("copyrightContact");
+        return (String)readProperty(COPYRIGHT_CONTACT_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDeveloper(String developer) {
-        writeProperty("developer", developer);
+        writeProperty(DEVELOPER_PROPERTY, developer);
     }
     public String getDeveloper() {
-        return (String)readProperty("developer");
+        return (String)readProperty(DEVELOPER_PROPERTY);
     }
 
     public void setEndorsementFrom(Date endorsementFrom) {
-        writeProperty("endorsementFrom", endorsementFrom);
+        writeProperty(ENDORSEMENT_FROM_PROPERTY, endorsementFrom);
     }
     public Date getEndorsementFrom() {
-        return (Date)readProperty("endorsementFrom");
+        return (Date)readProperty(ENDORSEMENT_FROM_PROPERTY);
     }
 
     public void setEndorsementTo(Date endorsementTo) {
-        writeProperty("endorsementTo", endorsementTo);
+        writeProperty(ENDORSEMENT_TO_PROPERTY, endorsementTo);
     }
     public Date getEndorsementTo() {
-        return (Date)readProperty("endorsementTo");
+        return (Date)readProperty(ENDORSEMENT_TO_PROPERTY);
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        writeProperty(ISH_VERSION_PROPERTY, ishVersion);
     }
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        return (Long)readProperty(ISH_VERSION_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setNationalISC(String nationalISC) {
-        writeProperty("nationalISC", nationalISC);
+        writeProperty(NATIONAL_ISC_PROPERTY, nationalISC);
     }
     public String getNationalISC() {
-        return (String)readProperty("nationalISC");
+        return (String)readProperty(NATIONAL_ISC_PROPERTY);
     }
 
     public void setPurchaseFrom(String purchaseFrom) {
-        writeProperty("purchaseFrom", purchaseFrom);
+        writeProperty(PURCHASE_FROM_PROPERTY, purchaseFrom);
     }
     public String getPurchaseFrom() {
-        return (String)readProperty("purchaseFrom");
+        return (String)readProperty(PURCHASE_FROM_PROPERTY);
     }
 
     public void setTitle(String title) {
-        writeProperty("title", title);
+        writeProperty(TITLE_PROPERTY, title);
     }
     public String getTitle() {
-        return (String)readProperty("title");
+        return (String)readProperty(TITLE_PROPERTY);
     }
 
     public void setType(String type) {
-        writeProperty("type", type);
+        writeProperty(TYPE_PROPERTY, type);
     }
     public String getType() {
-        return (String)readProperty("type");
+        return (String)readProperty(TYPE_PROPERTY);
     }
 
     protected abstract void onPreUpdate();

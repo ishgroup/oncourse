@@ -22,36 +22,36 @@ public abstract class _WaitingListSite extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setSite(Site site) {
-        setToOneTarget("site", site, true);
+        setToOneTarget(SITE_PROPERTY, site, true);
     }
 
     public Site getSite() {
-        return (Site)readProperty("site");
+        return (Site)readProperty(SITE_PROPERTY);
     }
 
 
     public void setWaitingList(WaitingList waitingList) {
-        setToOneTarget("waitingList", waitingList, true);
+        setToOneTarget(WAITING_LIST_PROPERTY, waitingList, true);
     }
 
     public WaitingList getWaitingList() {
-        return (WaitingList)readProperty("waitingList");
+        return (WaitingList)readProperty(WAITING_LIST_PROPERTY);
     }
 
 

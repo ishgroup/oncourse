@@ -24,43 +24,43 @@ public abstract class _WebContentVisibility extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setRegionKey(RegionKey regionKey) {
-        writeProperty("regionKey", regionKey);
+        writeProperty(REGION_KEY_PROPERTY, regionKey);
     }
     public RegionKey getRegionKey() {
-        return (RegionKey)readProperty("regionKey");
+        return (RegionKey)readProperty(REGION_KEY_PROPERTY);
     }
 
     public void setWeight(Integer weight) {
-        writeProperty("weight", weight);
+        writeProperty(WEIGHT_PROPERTY, weight);
     }
     public Integer getWeight() {
-        return (Integer)readProperty("weight");
+        return (Integer)readProperty(WEIGHT_PROPERTY);
     }
 
     public void setWebContent(WebContent webContent) {
-        setToOneTarget("webContent", webContent, true);
+        setToOneTarget(WEB_CONTENT_PROPERTY, webContent, true);
     }
 
     public WebContent getWebContent() {
-        return (WebContent)readProperty("webContent");
+        return (WebContent)readProperty(WEB_CONTENT_PROPERTY);
     }
 
 
     public void setWebNode(WebNode webNode) {
-        setToOneTarget("webNode", webNode, true);
+        setToOneTarget(WEB_NODE_PROPERTY, webNode, true);
     }
 
     public WebNode getWebNode() {
-        return (WebNode)readProperty("webNode");
+        return (WebNode)readProperty(WEB_NODE_PROPERTY);
     }
 
 
     public void setWebNodeType(WebNodeType webNodeType) {
-        setToOneTarget("webNodeType", webNodeType, true);
+        setToOneTarget(WEB_NODE_TYPE_PROPERTY, webNodeType, true);
     }
 
     public WebNodeType getWebNodeType() {
-        return (WebNodeType)readProperty("webNodeType");
+        return (WebNodeType)readProperty(WEB_NODE_TYPE_PROPERTY);
     }
 
 

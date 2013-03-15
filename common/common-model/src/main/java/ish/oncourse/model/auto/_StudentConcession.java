@@ -31,85 +31,85 @@ public abstract class _StudentConcession extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setAuthorisationExpiresOn(Date authorisationExpiresOn) {
-        writeProperty("authorisationExpiresOn", authorisationExpiresOn);
+        writeProperty(AUTHORISATION_EXPIRES_ON_PROPERTY, authorisationExpiresOn);
     }
     public Date getAuthorisationExpiresOn() {
-        return (Date)readProperty("authorisationExpiresOn");
+        return (Date)readProperty(AUTHORISATION_EXPIRES_ON_PROPERTY);
     }
 
     public void setAuthorisedOn(Date authorisedOn) {
-        writeProperty("authorisedOn", authorisedOn);
+        writeProperty(AUTHORISED_ON_PROPERTY, authorisedOn);
     }
     public Date getAuthorisedOn() {
-        return (Date)readProperty("authorisedOn");
+        return (Date)readProperty(AUTHORISED_ON_PROPERTY);
     }
 
     public void setConcessionNumber(String concessionNumber) {
-        writeProperty("concessionNumber", concessionNumber);
+        writeProperty(CONCESSION_NUMBER_PROPERTY, concessionNumber);
     }
     public String getConcessionNumber() {
-        return (String)readProperty("concessionNumber");
+        return (String)readProperty(CONCESSION_NUMBER_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setExpiresOn(Date expiresOn) {
-        writeProperty("expiresOn", expiresOn);
+        writeProperty(EXPIRES_ON_PROPERTY, expiresOn);
     }
     public Date getExpiresOn() {
-        return (Date)readProperty("expiresOn");
+        return (Date)readProperty(EXPIRES_ON_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        writeProperty(TIME_ZONE_PROPERTY, timeZone);
     }
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        return (String)readProperty(TIME_ZONE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setConcessionType(ConcessionType concessionType) {
-        setToOneTarget("concessionType", concessionType, true);
+        setToOneTarget(CONCESSION_TYPE_PROPERTY, concessionType, true);
     }
 
     public ConcessionType getConcessionType() {
-        return (ConcessionType)readProperty("concessionType");
+        return (ConcessionType)readProperty(CONCESSION_TYPE_PROPERTY);
     }
 
 
     public void setStudent(Student student) {
-        setToOneTarget("student", student, true);
+        setToOneTarget(STUDENT_PROPERTY, student, true);
     }
 
     public Student getStudent() {
-        return (Student)readProperty("student");
+        return (Student)readProperty(STUDENT_PROPERTY);
     }
 
 

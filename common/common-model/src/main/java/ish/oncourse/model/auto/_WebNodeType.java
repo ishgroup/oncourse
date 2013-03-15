@@ -28,63 +28,63 @@ public abstract class _WebNodeType extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setLayoutKey(String layoutKey) {
-        writeProperty("layoutKey", layoutKey);
+        writeProperty(LAYOUT_KEY_PROPERTY, layoutKey);
     }
     public String getLayoutKey() {
-        return (String)readProperty("layoutKey");
+        return (String)readProperty(LAYOUT_KEY_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void addToWebContentVisibilities(WebContentVisibility obj) {
-        addToManyTarget("webContentVisibilities", obj, true);
+        addToManyTarget(WEB_CONTENT_VISIBILITIES_PROPERTY, obj, true);
     }
     public void removeFromWebContentVisibilities(WebContentVisibility obj) {
-        removeToManyTarget("webContentVisibilities", obj, true);
+        removeToManyTarget(WEB_CONTENT_VISIBILITIES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebContentVisibility> getWebContentVisibilities() {
-        return (List<WebContentVisibility>)readProperty("webContentVisibilities");
+        return (List<WebContentVisibility>)readProperty(WEB_CONTENT_VISIBILITIES_PROPERTY);
     }
 
 
     public void addToWebNodes(WebNode obj) {
-        addToManyTarget("webNodes", obj, true);
+        addToManyTarget(WEB_NODES_PROPERTY, obj, true);
     }
     public void removeFromWebNodes(WebNode obj) {
-        removeToManyTarget("webNodes", obj, true);
+        removeToManyTarget(WEB_NODES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebNode> getWebNodes() {
-        return (List<WebNode>)readProperty("webNodes");
+        return (List<WebNode>)readProperty(WEB_NODES_PROPERTY);
     }
 
 
     public void setWebSite(WebSite webSite) {
-        setToOneTarget("webSite", webSite, true);
+        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
     }
 
     public WebSite getWebSite() {
-        return (WebSite)readProperty("webSite");
+        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 

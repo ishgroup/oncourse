@@ -38,116 +38,116 @@ public abstract class _Session extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setEndDate(Date endDate) {
-        writeProperty("endDate", endDate);
+        writeProperty(END_DATE_PROPERTY, endDate);
     }
     public Date getEndDate() {
-        return (Date)readProperty("endDate");
+        return (Date)readProperty(END_DATE_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setStartDate(Date startDate) {
-        writeProperty("startDate", startDate);
+        writeProperty(START_DATE_PROPERTY, startDate);
     }
     public Date getStartDate() {
-        return (Date)readProperty("startDate");
+        return (Date)readProperty(START_DATE_PROPERTY);
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        writeProperty(TIME_ZONE_PROPERTY, timeZone);
     }
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        return (String)readProperty(TIME_ZONE_PROPERTY);
     }
 
     public void addToAttendances(Attendance obj) {
-        addToManyTarget("attendances", obj, true);
+        addToManyTarget(ATTENDANCES_PROPERTY, obj, true);
     }
     public void removeFromAttendances(Attendance obj) {
-        removeToManyTarget("attendances", obj, true);
+        removeToManyTarget(ATTENDANCES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Attendance> getAttendances() {
-        return (List<Attendance>)readProperty("attendances");
+        return (List<Attendance>)readProperty(ATTENDANCES_PROPERTY);
     }
 
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setCourseClass(CourseClass courseClass) {
-        setToOneTarget("courseClass", courseClass, true);
+        setToOneTarget(COURSE_CLASS_PROPERTY, courseClass, true);
     }
 
     public CourseClass getCourseClass() {
-        return (CourseClass)readProperty("courseClass");
+        return (CourseClass)readProperty(COURSE_CLASS_PROPERTY);
     }
 
 
     public void setMarker(Tutor marker) {
-        setToOneTarget("marker", marker, true);
+        setToOneTarget(MARKER_PROPERTY, marker, true);
     }
 
     public Tutor getMarker() {
-        return (Tutor)readProperty("marker");
+        return (Tutor)readProperty(MARKER_PROPERTY);
     }
 
 
     public void setRoom(Room room) {
-        setToOneTarget("room", room, true);
+        setToOneTarget(ROOM_PROPERTY, room, true);
     }
 
     public Room getRoom() {
-        return (Room)readProperty("room");
+        return (Room)readProperty(ROOM_PROPERTY);
     }
 
 
     public void addToSessionModules(SessionModule obj) {
-        addToManyTarget("sessionModules", obj, true);
+        addToManyTarget(SESSION_MODULES_PROPERTY, obj, true);
     }
     public void removeFromSessionModules(SessionModule obj) {
-        removeToManyTarget("sessionModules", obj, true);
+        removeToManyTarget(SESSION_MODULES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<SessionModule> getSessionModules() {
-        return (List<SessionModule>)readProperty("sessionModules");
+        return (List<SessionModule>)readProperty(SESSION_MODULES_PROPERTY);
     }
 
 
     public void addToSessionTutors(SessionTutor obj) {
-        addToManyTarget("sessionTutors", obj, true);
+        addToManyTarget(SESSION_TUTORS_PROPERTY, obj, true);
     }
     public void removeFromSessionTutors(SessionTutor obj) {
-        removeToManyTarget("sessionTutors", obj, true);
+        removeToManyTarget(SESSION_TUTORS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<SessionTutor> getSessionTutors() {
-        return (List<SessionTutor>)readProperty("sessionTutors");
+        return (List<SessionTutor>)readProperty(SESSION_TUTORS_PROPERTY);
     }
 
 

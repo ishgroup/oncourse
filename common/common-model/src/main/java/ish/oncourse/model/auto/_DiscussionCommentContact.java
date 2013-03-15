@@ -20,27 +20,27 @@ public abstract class _DiscussionCommentContact extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setIsNew(Boolean isNew) {
-        writeProperty("isNew", isNew);
+        writeProperty(IS_NEW_PROPERTY, isNew);
     }
     public Boolean getIsNew() {
-        return (Boolean)readProperty("isNew");
+        return (Boolean)readProperty(IS_NEW_PROPERTY);
     }
 
     public void setComment(DiscussionComment comment) {
-        setToOneTarget("comment", comment, true);
+        setToOneTarget(COMMENT_PROPERTY, comment, true);
     }
 
     public DiscussionComment getComment() {
-        return (DiscussionComment)readProperty("comment");
+        return (DiscussionComment)readProperty(COMMENT_PROPERTY);
     }
 
 
     public void setContact(Contact contact) {
-        setToOneTarget("contact", contact, true);
+        setToOneTarget(CONTACT_PROPERTY, contact, true);
     }
 
     public Contact getContact() {
-        return (Contact)readProperty("contact");
+        return (Contact)readProperty(CONTACT_PROPERTY);
     }
 
 

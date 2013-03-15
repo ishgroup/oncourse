@@ -19,25 +19,25 @@ public abstract class _InstructionParameter extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setValue(String value) {
-        writeProperty("value", value);
+        writeProperty(VALUE_PROPERTY, value);
     }
     public String getValue() {
-        return (String)readProperty("value");
+        return (String)readProperty(VALUE_PROPERTY);
     }
 
     public void setInstruction(Instruction instruction) {
-        setToOneTarget("instruction", instruction, true);
+        setToOneTarget(INSTRUCTION_PROPERTY, instruction, true);
     }
 
     public Instruction getInstruction() {
-        return (Instruction)readProperty("instruction");
+        return (Instruction)readProperty(INSTRUCTION_PROPERTY);
     }
 
 

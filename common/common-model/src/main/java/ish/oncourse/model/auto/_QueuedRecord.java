@@ -29,69 +29,69 @@ public abstract class _QueuedRecord extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAction(QueuedRecordAction action) {
-        writeProperty("action", action);
+        writeProperty(ACTION_PROPERTY, action);
     }
     public QueuedRecordAction getAction() {
-        return (QueuedRecordAction)readProperty("action");
+        return (QueuedRecordAction)readProperty(ACTION_PROPERTY);
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setEntityIdentifier(String entityIdentifier) {
-        writeProperty("entityIdentifier", entityIdentifier);
+        writeProperty(ENTITY_IDENTIFIER_PROPERTY, entityIdentifier);
     }
     public String getEntityIdentifier() {
-        return (String)readProperty("entityIdentifier");
+        return (String)readProperty(ENTITY_IDENTIFIER_PROPERTY);
     }
 
     public void setEntityWillowId(Long entityWillowId) {
-        writeProperty("entityWillowId", entityWillowId);
+        writeProperty(ENTITY_WILLOW_ID_PROPERTY, entityWillowId);
     }
     public Long getEntityWillowId() {
-        return (Long)readProperty("entityWillowId");
+        return (Long)readProperty(ENTITY_WILLOW_ID_PROPERTY);
     }
 
     public void setErrorMessage(String errorMessage) {
-        writeProperty("errorMessage", errorMessage);
+        writeProperty(ERROR_MESSAGE_PROPERTY, errorMessage);
     }
     public String getErrorMessage() {
-        return (String)readProperty("errorMessage");
+        return (String)readProperty(ERROR_MESSAGE_PROPERTY);
     }
 
     public void setLastAttemptTimestamp(Date lastAttemptTimestamp) {
-        writeProperty("lastAttemptTimestamp", lastAttemptTimestamp);
+        writeProperty(LAST_ATTEMPT_TIMESTAMP_PROPERTY, lastAttemptTimestamp);
     }
     public Date getLastAttemptTimestamp() {
-        return (Date)readProperty("lastAttemptTimestamp");
+        return (Date)readProperty(LAST_ATTEMPT_TIMESTAMP_PROPERTY);
     }
 
     public void setNumberOfAttempts(Integer numberOfAttempts) {
-        writeProperty("numberOfAttempts", numberOfAttempts);
+        writeProperty(NUMBER_OF_ATTEMPTS_PROPERTY, numberOfAttempts);
     }
     public Integer getNumberOfAttempts() {
-        return (Integer)readProperty("numberOfAttempts");
+        return (Integer)readProperty(NUMBER_OF_ATTEMPTS_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setQueuedTransaction(QueuedTransaction queuedTransaction) {
-        setToOneTarget("queuedTransaction", queuedTransaction, true);
+        setToOneTarget(QUEUED_TRANSACTION_PROPERTY, queuedTransaction, true);
     }
 
     public QueuedTransaction getQueuedTransaction() {
-        return (QueuedTransaction)readProperty("queuedTransaction");
+        return (QueuedTransaction)readProperty(QUEUED_TRANSACTION_PROPERTY);
     }
 
 
