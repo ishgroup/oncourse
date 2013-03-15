@@ -34,7 +34,7 @@ public class ObjectCacheTest extends ACheckoutTest {
 		Contact contact = Cayenne.objectForPK(context, Contact.class, 1001);
 		List<Invoice> invoices = contact.getInvoices();
 		Invoice invoice = invoices.get(0);
-		invoice.setAmountOwing(Money.ZERO.toBigDecimal());
+		invoice.setAmountOwing(Money.ZERO);
 
 
 		ObjectContext anotherContext = cayenneService.newNonReplicatingContext();
@@ -59,7 +59,7 @@ public class ObjectCacheTest extends ACheckoutTest {
 		List<Invoice> invoices = contact.getInvoices();
 		assertEquals(3, invoices.size());
 		for (Invoice invoice : invoices) {
-			assertEquals(new Money("-100.00"), Money.valueOf(invoice.getAmountOwing()));
+			assertEquals(new Money("-100.00"), invoice.getAmountOwing());
 		}
 
 		//the code updates amountOwing by JDBC request, to exclude Cayenne functionality
@@ -95,9 +95,9 @@ public class ObjectCacheTest extends ACheckoutTest {
 		assertEquals(3, invoices.size());
 		for (Invoice invoice : invoices) {
 			if (invoice.getId().equals(1000L))
-				assertEquals(Money.ZERO, Money.valueOf(invoice.getAmountOwing()));
+				assertEquals(Money.ZERO, invoice.getAmountOwing());
 			else
-				assertEquals(new Money("-100.00"), Money.valueOf(invoice.getAmountOwing()));
+				assertEquals(new Money("-100.00"), invoice.getAmountOwing());
 		}
 	}
 }

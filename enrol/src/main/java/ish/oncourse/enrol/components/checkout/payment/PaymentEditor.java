@@ -155,7 +155,7 @@ public class PaymentEditor implements IPaymentControlDelegate {
 
 	public Money getTotalPayment()
 	{
-		return Money.valueOf(getPaymentIn().getAmount());
+		return getPaymentIn().getAmount();
 	}
 
 	public boolean isZeroPayment() {
@@ -165,7 +165,7 @@ public class PaymentEditor implements IPaymentControlDelegate {
 
 	public Format getMoneyFormat()
 	{
-		return FormatUtils.chooseMoneyFormat(Money.valueOf(delegate.getPaymentIn().getAmount()));
+		return FormatUtils.chooseMoneyFormat(delegate.getPaymentIn().getAmount());
 	}
 
     @OnEvent(value = "changePayerEvent")

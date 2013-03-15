@@ -111,7 +111,7 @@ public class PurchaseController {
 	}
 
 	public synchronized Money getTotalPayment() {
-		return new Money(model.getPayment().getAmount());
+		return model.getPayment().getAmount();
 	}
 
 	public synchronized Money getTotalVoucherPayments() {
@@ -590,13 +590,13 @@ public class PurchaseController {
         else
             result = (result.isLessThan(Money.ZERO) ? Money.ZERO : result);
 
-        getModel().getPayment().setAmount(result.toBigDecimal());
-        getModel().getPayment().getPaymentInLines().get(0).setAmount(result.toBigDecimal());
+        getModel().getPayment().setAmount(result);
+        getModel().getPayment().getPaymentInLines().get(0).setAmount(result);
 
         Money totalGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), true);
         Money totalExGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), false);
-        getModel().getInvoice().setTotalExGst(totalExGst.toBigDecimal());
-        getModel().getInvoice().setTotalGst(totalGst.toBigDecimal());
+        getModel().getInvoice().setTotalExGst(totalExGst);
+        getModel().getInvoice().setTotalGst(totalGst);
         getModel().getInvoice().setCorporatePassUsed(getModel().getCorporatePass());
         return result;
     }

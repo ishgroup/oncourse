@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.checkout.payment;
 
 import ish.common.types.CreditCardType;
+import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import org.apache.tapestry5.ioc.Messages;
@@ -49,7 +50,7 @@ public class PaymentEditorParserTest {
 
     @Test
     public void testZeroPayment() {
-        when(paymentIn.getAmount()).thenReturn(BigDecimal.valueOf(0.0));
+        when(paymentIn.getAmount()).thenReturn(new Money("0.0"));
         when(paymentIn.isZeroPayment()).thenCallRealMethod();
 
         when(request.getParameter(Field.contact.name())).thenReturn("1");
@@ -68,7 +69,7 @@ public class PaymentEditorParserTest {
 
     @Test
     public void testPayment() {
-        when(paymentIn.getAmount()).thenReturn(BigDecimal.valueOf(100));
+        when(paymentIn.getAmount()).thenReturn(new Money("100"));
         //test empty form
         PaymentEditorParser paymentEditorParser = getPaymentEditorParser();
         paymentEditorParser.parse();

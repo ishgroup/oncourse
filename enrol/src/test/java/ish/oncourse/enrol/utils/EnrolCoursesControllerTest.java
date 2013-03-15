@@ -271,7 +271,7 @@ public class EnrolCoursesControllerTest extends ServiceTest{
 		assertEquals("Payment should fail", PaymentStatus.FAILED_CARD_DECLINED, controller.getModel().getPayment().getStatus());
 		assertEquals("Failed payment amount should be equial to invoice amount owing", controller.getModel().getPayment().getAmount(), 
 			controller.getModel().getInvoice().getAmountOwing());
-		assertEquals("Failed payment amount should be 1200$", new Money("1200.00").toBigDecimal(), controller.getModel().getPayment().getAmount());
+		assertEquals("Failed payment amount should be 1200$", new Money("1200.00"), controller.getModel().getPayment().getAmount());
 		assertTrue("When payment fails this mean that at least the payment will have not-commited modification", 
 			!controller.getContext().uncommittedObjects().isEmpty());
 		assertEquals("11 entities should have uncommited local modifications", 11, controller.getContext().uncommittedObjects().size());
@@ -327,7 +327,7 @@ public class EnrolCoursesControllerTest extends ServiceTest{
 		assertEquals("Payment should fail", PaymentStatus.FAILED_CARD_DECLINED, controller.getModel().getPayment().getStatus());
 		assertEquals("Failed payment amount should be equial to invoice amount owing", controller.getModel().getPayment().getAmount(), 
 			controller.getModel().getInvoice().getAmountOwing());
-		assertEquals("Failed payment amount should be 600$", new Money("600.00").toBigDecimal(), controller.getModel().getPayment().getAmount());
+		assertEquals("Failed payment amount should be 600$", new Money("600.00"), controller.getModel().getPayment().getAmount());
 		assertTrue("When payment fails this mean that at least the payment will have not-commited modification", 
 			!controller.getContext().uncommittedObjects().isEmpty());
 		assertEquals("7 entities should have uncommited local modifications", 7, controller.getContext().uncommittedObjects().size());
@@ -383,7 +383,7 @@ public class EnrolCoursesControllerTest extends ServiceTest{
 		assertEquals("Payment should fail", PaymentStatus.FAILED_CARD_DECLINED, controller.getModel().getPayment().getStatus());
 		assertEquals("Failed payment amount should be equial to invoice amount owing", controller.getModel().getPayment().getAmount(), 
 			controller.getModel().getInvoice().getAmountOwing());
-		assertEquals("Failed payment amount should be 500$", new Money("500.00").toBigDecimal(), controller.getModel().getPayment().getAmount());
+		assertEquals("Failed payment amount should be 500$", new Money("500.00"), controller.getModel().getPayment().getAmount());
 		assertTrue("When payment fails this mean that at least the payment will have not-commited modification", 
 			!controller.getContext().uncommittedObjects().isEmpty());
 		assertEquals("5 entities should have uncommited local modifications", 5, controller.getContext().uncommittedObjects().size());
@@ -437,8 +437,8 @@ public class EnrolCoursesControllerTest extends ServiceTest{
 		
 		assertFalse("After payment processing finiahed we should not checkout the result", controller.isCheckoutResult());
 		assertEquals("Payment should fail", PaymentStatus.SUCCESS, controller.getModel().getPayment().getStatus());
-		assertEquals("Success payment amount should be 1200$", new Money("1200.00").toBigDecimal(), controller.getModel().getPayment().getAmount());
-		assertEquals("Success payment amount should be zero", Money.ZERO.toBigDecimal(), controller.getModel().getInvoice().getAmountOwing());
+		assertEquals("Success payment amount should be 1200$", new Money("1200.00"), controller.getModel().getPayment().getAmount());
+		assertEquals("Success payment amount should be zero", Money.ZERO, controller.getModel().getInvoice().getAmountOwing());
 		assertTrue("When payment success this mean that everything should be commited", controller.getContext().uncommittedObjects().isEmpty());
 	}
 	
@@ -470,8 +470,8 @@ public class EnrolCoursesControllerTest extends ServiceTest{
 		
 		assertFalse("After payment processing finiahed we should not checkout the result", controller.isCheckoutResult());
 		assertEquals("Payment should fail", PaymentStatus.SUCCESS, controller.getModel().getPayment().getStatus());
-		assertEquals("Success payment amount should be 600$", new Money("600.00").toBigDecimal(), controller.getModel().getPayment().getAmount());
-		assertEquals("Success payment amount should be zero", Money.ZERO.toBigDecimal(), controller.getModel().getInvoice().getAmountOwing());
+		assertEquals("Success payment amount should be 600$", new Money("600.00"), controller.getModel().getPayment().getAmount());
+		assertEquals("Success payment amount should be zero", Money.ZERO, controller.getModel().getInvoice().getAmountOwing());
 		assertTrue("When payment success this mean that everything should be commited", controller.getContext().uncommittedObjects().isEmpty());
 	}
 	
@@ -503,8 +503,8 @@ public class EnrolCoursesControllerTest extends ServiceTest{
 		
 		assertFalse("After payment processing finiahed we should not checkout the result", controller.isCheckoutResult());
 		assertEquals("Payment should fail", PaymentStatus.SUCCESS, controller.getModel().getPayment().getStatus());
-		assertEquals("Success payment amount should be 100$", new Money("100.00").toBigDecimal(), controller.getModel().getPayment().getAmount());
-		assertEquals("Success payment amount should be zero", Money.ZERO.toBigDecimal(), controller.getModel().getInvoice().getAmountOwing());
+		assertEquals("Success payment amount should be 100$", new Money("100.00"), controller.getModel().getPayment().getAmount());
+		assertEquals("Success payment amount should be zero", Money.ZERO, controller.getModel().getInvoice().getAmountOwing());
 		assertTrue("When payment success this mean that everything should be commited", controller.getContext().uncommittedObjects().isEmpty());
 	}
 }

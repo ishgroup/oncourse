@@ -157,7 +157,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
                     }
                 }
                 transaction.setTax(tax);
-                transaction.setTotal(getPaymentIn().getAmount());
+                transaction.setTotal(getPaymentIn().getAmount().toBigDecimal());
                 return transaction;
             }
         }

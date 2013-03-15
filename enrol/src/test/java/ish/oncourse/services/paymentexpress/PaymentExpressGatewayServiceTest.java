@@ -4,6 +4,7 @@ import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import com.paymentexpress.stubs.TransactionDetails;
 import com.paymentexpress.stubs.TransactionResult2;
 import ish.common.types.CreditCardType;
+import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
@@ -35,7 +36,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentExpressGatewayServiceTest {
 
-	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayServiceTest.class);
+	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayServiceTest.class);//
 	
 	private static final String PAYMENT_REF = "W111";
 
@@ -59,9 +60,9 @@ public class PaymentExpressGatewayServiceTest {
 
 	private static final String CARD_HOLDER_NAME = "john smith";
 
-	private static final BigDecimal SUCCESS_PAYMENT_AMOUNT = new BigDecimal(1.00);
+	private static final Money SUCCESS_PAYMENT_AMOUNT = new Money("1.00");
 
-	private static final BigDecimal FAILTURE_PAYMENT_AMOUNT = new BigDecimal(1.76);
+	private static final Money FAILTURE_PAYMENT_AMOUNT = new Money("1.76");
 
 	/**
 	 * Instance to test.
@@ -172,7 +173,7 @@ public class PaymentExpressGatewayServiceTest {
 		TransactionResult2 tr1 = result1;
 		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
-		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
+		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT.toBigDecimal());
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		
 		TransactionResult2 tr = gatewayService.doTransaction(paymentOut);
@@ -209,7 +210,7 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testUnsuccessfulDoOutTransaction() throws Exception {
-		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
+		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT.toBigDecimal());
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		
 		TransactionResult2 tr = gatewayService.doTransaction(paymentOut);
@@ -255,7 +256,7 @@ public class PaymentExpressGatewayServiceTest {
 		TransactionResult2 tr1 = result1;
 		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
-		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
+		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT.toBigDecimal());
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		gatewayService.processGateway(paymentOut);
 		verify(paymentOut).succeed();
@@ -288,7 +289,7 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testUnsuccessfulOffProcessGateway() throws Exception {
-		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
+		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT.toBigDecimal());
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		gatewayService.processGateway(paymentOut);
 		verify(paymentOut).failed();
@@ -326,7 +327,7 @@ public class PaymentExpressGatewayServiceTest {
 	@Test
 	public void testPerformGatewayOperationInvalidAmount() throws Exception {
 		forceValidation();
-		when(payment.getAmount()).thenReturn(BigDecimal.TEN.negate());
+		when(payment.getAmount()).thenReturn(new Money(BigDecimal.TEN.negate()));
 		when(payment.getCreditCardType()).thenReturn(CreditCardType.VISA, CreditCardType.VISA);
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 

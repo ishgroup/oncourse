@@ -124,6 +124,7 @@ public class EnrolmentPaymentResult {
 	private void clearPersistedValues() {
 		// clear all the short lists
 		cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
+		//cookiesService.writeCookieValue(VoucherProduct.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
 		cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, StringUtils.EMPTY);
 		enrolCourses.clearPersistedProperties();
 		studentService.clearStudentsShortList();
@@ -172,7 +173,7 @@ public class EnrolmentPaymentResult {
 					//tax = tax.add(pil.getInvoice().getTotalGst());
 				}
 				transaction.setTax(tax);
-				transaction.setTotal(getModel().getPayment().getAmount());
+				transaction.setTotal(getModel().getPayment().getAmount().toBigDecimal());
 			}
 
 		}

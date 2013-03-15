@@ -333,7 +333,7 @@ public class EnrolCoursesController {
             getModel().setInvoice(getContext().newObject(Invoice.class));
             // fill the invoice with default values
             getModel().getInvoice().setInvoiceDate(new Date());
-            getModel().getInvoice().setAmountOwing(BigDecimal.ZERO);
+            getModel().getInvoice().setAmountOwing(Money.ZERO);
             getModel().getInvoice().setDateDue(new Date());
             getModel().getInvoice().setSource(PaymentSource.SOURCE_WEB);
             getModel().getInvoice().setCollege(college);
@@ -467,11 +467,11 @@ public class EnrolCoursesController {
             getModel().getInvoice().setBillToAddress(getModel().getPayment().getContact().getAddress());
 
             Money totalIncGst = getTotalIncGst();
-            getModel().getPayment().setAmount(totalIncGst.toBigDecimal());
+            getModel().getPayment().setAmount(totalIncGst);
             Money totalGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, true);
             Money totalExGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, false);
-            getModel().getInvoice().setTotalExGst(totalExGst.toBigDecimal());
-            getModel().getInvoice().setTotalGst(totalGst.toBigDecimal());
+            getModel().getInvoice().setTotalExGst(totalExGst);
+            getModel().getInvoice().setTotalGst(totalGst);
 
             PaymentInLine paymentInLine = getContext().newObject(PaymentInLine.class);
             paymentInLine.setInvoice(getModel().getInvoice());

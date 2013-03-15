@@ -9,7 +9,6 @@ import ish.oncourse.util.InvoiceUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -92,7 +91,7 @@ public class PurchaseModel {
             invoice = objectContext.newObject(Invoice.class);
             // fill the invoice with default values
             invoice.setInvoiceDate(new Date());
-            invoice.setAmountOwing(BigDecimal.ZERO);
+            invoice.setAmountOwing(Money.ZERO);
             invoice.setDateDue(new Date());
             invoice.setSource(PaymentSource.SOURCE_WEB);
             invoice.setCollege(college);
@@ -436,7 +435,7 @@ public class PurchaseModel {
                  */
                 if (!getInvoice().getObjectId().isTemporary())
                 {
-                    Money amountInvoice = Money.valueOf(getInvoice().getAmountOwing());
+                    Money amountInvoice = getInvoice().getAmountOwing();
                     amountOwing = amountOwing.subtract(amountInvoice);
                 }
                 return amountOwing;
