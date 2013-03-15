@@ -10,6 +10,9 @@ public class ActionSelectCardEditor extends APurchaseAction{
     @Override
     protected void makeAction() {
         getModel().getPayment().setType(PaymentType.CREDIT_CARD);
+		getModel().getPayment().setContact(getModel().getPayer());
+		getModel().getInvoice().setContact(getModel().getPayer());
+		getModel().getInvoice().setCorporatePassUsed(null);
         getModel().setCorporatePass(null);
         getController().setState(editPayment);
         if (getController().getPaymentEditorDelegate() != null)

@@ -37,8 +37,6 @@ public class ActionAddCorporatePassTest extends ACheckoutTest {
         selectCardEditor();
 
         selectCorporatePassEditor();
-
-
     }
 
     private void selectCardEditor() {
