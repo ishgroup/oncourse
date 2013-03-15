@@ -1,6 +1,7 @@
 package ish.oncourse.util.payment;
 
 import ish.common.types.PaymentStatus;
+import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -269,7 +270,7 @@ public class PaymentProcessController {
     }
 
 
-    public synchronized BigDecimal getAmount() {
+    public synchronized Money getAmount() {
         return paymentIn.getAmount();
     }
 
@@ -278,10 +279,12 @@ public class PaymentProcessController {
     }
 
     public PaymentIn performGatewayOperation() {
-        paymentGatewayService.performGatewayOperation(paymentIn);
-        if (paymentIn.getStatus().equals(PaymentStatus.SUCCESS))
-            objectContext.commitChanges();
-        return paymentIn;
+    	//synchronized (this) {//TODO: this is one of WA for 15839
+    		paymentGatewayService.performGatewayOperation(paymentIn);
+    		if (paymentIn.getStatus().equals(PaymentStatus.SUCCESS))
+    			objectContext.commitChanges();
+    		return paymentIn;
+    	//}
     }
 
 

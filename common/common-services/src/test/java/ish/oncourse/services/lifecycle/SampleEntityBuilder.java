@@ -100,7 +100,7 @@ public class SampleEntityBuilder {
 	public Invoice createInvoice(Contact contact) {
 		Invoice inv = ctx.newObject(Invoice.class);
 
-		inv.setAmountOwing(new BigDecimal(10));
+		inv.setAmountOwing(new Money("10"));
 
 		College college = Cayenne.objectForPK(ctx, College.class, 1l);
 		WebSite webSite = Cayenne.objectForPK(ctx, WebSite.class, 1l);
@@ -115,8 +115,8 @@ public class SampleEntityBuilder {
 		inv.setPublicNotes("test public notes");
 		inv.setShippingAddress("test shipping address");
 		inv.setSource(PaymentSource.SOURCE_WEB);
-		inv.setTotalGst(new BigDecimal(25));
-		inv.setTotalExGst(new BigDecimal(20));
+		inv.setTotalGst(new Money("25"));
+		inv.setTotalExGst(new Money("20"));
 		inv.setWebSite(webSite);
 
 		return inv;

@@ -29,7 +29,7 @@ public class InvoiceUtils {
         List<Invoice> invoices = contact.getObjectContext().performQuery(q);
         Money result = Money.ZERO;
         for (Invoice invoice : invoices) {
-            result = result.add(Money.valueOf(invoice.getAmountOwing())) ;
+            result = result.add(invoice.getAmountOwing()) ;
         }
         return result;
     }

@@ -1,6 +1,5 @@
 package ish.oncourse.util;
 
-import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -85,7 +84,7 @@ public class PaymentInAbandonHelper {
 		for (PaymentInLine paymentInLine : paymentIn.getPaymentInLines()) {
 			Invoice invoice = paymentInLine.getInvoice();
 			invoice.updateAmountOwing();
-			if (!new Money(invoice.getAmountOwing()).isZero()) {
+			if (!(invoice.getAmountOwing()).isZero()) {
 				haveAnyInvoiceWithAmountOwing = true;
 				break;
 			} else {
@@ -339,9 +338,9 @@ public class PaymentInAbandonHelper {
 		invoiceToRefund.updateAmountOwing();
 		PaymentIn internalPayment = null;
 		//if the owing already balanced, no reason to create any refund invoice
-		if (!Money.isZeroOrEmpty(new Money(invoiceToRefund.getAmountOwing()))){
+		if (!Money.isZeroOrEmpty(invoiceToRefund.getAmountOwing())){
 			internalPayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
-			internalPayment.setAmount(BigDecimal.ZERO);
+			internalPayment.setAmount(Money.ZERO);
 			internalPayment.setType(PaymentType.INTERNAL);
 			internalPayment.setStatus(PaymentStatus.SUCCESS);
 			String sessionId = paymentInLineToRefund.getPaymentIn().getSessionId();
@@ -355,7 +354,7 @@ public class PaymentInAbandonHelper {
 				invoiceToRefund.getId()));
 
 			PaymentInLine refundPL = paymentInLineToRefund.getObjectContext().newObject(PaymentInLine.class);
-			refundPL.setAmount(BigDecimal.ZERO.subtract(paymentInLineToRefund.getAmount()));
+			refundPL.setAmount(Money.ZERO.subtract(paymentInLineToRefund.getAmount()));
 			refundPL.setCollege(paymentInLineToRefund.getCollege());
 			refundPL.setInvoice(refundInvoice);
 			refundPL.setPaymentIn(internalPayment);

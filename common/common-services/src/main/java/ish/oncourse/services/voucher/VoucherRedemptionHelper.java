@@ -118,7 +118,7 @@ public class VoucherRedemptionHelper {
 		PaymentIn payment = context.newObject(PaymentIn.class);
 		payment.setType(PaymentType.VOUCHER);
 		payment.setContact((Contact) context.localObject(payer.getObjectId(), payer));
-		payment.setAmount(Money.ZERO.toBigDecimal());
+		payment.setAmount(Money.ZERO);
 		//payment.setStatus(PaymentStatus.NEW);
 		payment.setCollege(getInvoice().getCollege());
 		payment.setSource(getInvoice().getSource());
@@ -144,7 +144,7 @@ public class VoucherRedemptionHelper {
 		paymentInLine.setCollege(getInvoice().getCollege());
 		paymentInLine.setPaymentIn(paymentIn);
 		paymentInLine.setInvoice(getInvoice());
-		paymentInLine.setAmount(Money.ZERO.toBigDecimal());
+		paymentInLine.setAmount(Money.ZERO);
 		return paymentInLine;
 	}
 	
@@ -261,9 +261,9 @@ public class VoucherRedemptionHelper {
 			voucherPaymentIn = createVoucherPaymentIn(moneyVoucher, getInvoice().getContact());
 		}
 		PaymentIn paymentIn = voucherPaymentIn.getPayment();
-		paymentIn.setAmount(new Money(paymentIn.getAmount()).add(amount).toBigDecimal());
+		paymentIn.setAmount(paymentIn.getAmount().add(amount));
 		PaymentInLine paymentInLine = paymentLineForInvoiceAndPayment(paymentIn);
-		paymentInLine.setAmount(new Money(paymentInLine.getAmount()).add(amount).toBigDecimal());
+		paymentInLine.setAmount(paymentInLine.getAmount().add(amount));
 		moneyVoucher.setRedemptionValue(moneyVoucher.getRedemptionValue().subtract(amount));
 		if (moneyVoucher.isFullyRedeemed()) {
 			moneyVoucher.setStatus(ProductStatus.REDEEMED);
@@ -283,9 +283,9 @@ public class VoucherRedemptionHelper {
 			voucherPaymentIn = createVoucherPaymentIn(courseVoucher, getInvoice().getContact());
 		}
 		PaymentIn paymentIn = voucherPaymentIn.getPayment();
-		paymentIn.setAmount(new Money(paymentIn.getAmount()).add(invoiceLine.getPriceTotalIncTax()).toBigDecimal());
+		paymentIn.setAmount(paymentIn.getAmount().add(invoiceLine.getPriceTotalIncTax()));
 		PaymentInLine paymentInLine = paymentLineForInvoiceAndPayment(paymentIn);
-		paymentInLine.setAmount(new Money(paymentInLine.getAmount()).add(invoiceLine.getPriceTotalIncTax()).toBigDecimal());
+		paymentInLine.setAmount(paymentInLine.getAmount().add(invoiceLine.getPriceTotalIncTax()));
 		courseVoucher.setRedeemedCoursesCount(courseVoucher.getRedeemedCoursesCount() + 1);
 		voucherPaymentIn.setEnrolmentsCount(voucherPaymentIn.getEnrolmentsCount() + 1);
 		if (courseVoucher.isFullyRedeemed()) {

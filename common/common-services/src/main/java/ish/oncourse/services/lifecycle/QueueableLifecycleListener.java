@@ -258,10 +258,10 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         if (entity instanceof PaymentIn) {
             PaymentIn payment = (PaymentIn) entity;
             message = String.format(" PaymentIn with id = %s and paymenttype = %s and payment status = %s and amount = %s and source = %s",
-                    payment.getId(), payment.getType().name(), payment.getStatus().name(), payment.getAmount().toPlainString(), payment.getSource().name());
+                    payment.getId(), payment.getType().name(), payment.getStatus().name(), payment.getAmount().toBigDecimal().toPlainString(), payment.getSource().name());
         } else if (entity instanceof PaymentInLine) {
             PaymentInLine pLine = (PaymentInLine) entity;
-            message = String.format(" PaymentInLine with id = %s and amount = %s", pLine.getId(), pLine.getAmount().toPlainString());
+            message = String.format(" PaymentInLine with id = %s and amount = %s", pLine.getId(), pLine.getAmount().toBigDecimal().toPlainString());
         } else if (entity instanceof Enrolment) {
             Enrolment enrl = (Enrolment) entity;
             message = String.format(" Enrolment with id = %s and source = %s and status = %s", enrl.getId(), enrl.getSource().name(), enrl.getStatus().name());

@@ -40,11 +40,11 @@ public class InvoiceListenerTest extends ServiceTest {
 
 		InvoiceLine invoiceLine = createInvoiceLine(context, college, invoice);
 		context.commitChanges();
-		assertEquals("amoutOwing should be recalculated when we perssist invoice in replicated context.", new Money(new BigDecimal(110)), new Money(invoice.getAmountOwing()));
+		assertEquals("amoutOwing should be recalculated when we perssist invoice in replicated context.", new Money(new BigDecimal(110)), invoice.getAmountOwing());
 
-		invoice.setAmountOwing(BigDecimal.ZERO);
+		invoice.setAmountOwing(Money.ZERO);
 		context.commitChanges();
-		assertEquals("amoutOwing should be recalculated when we update invoice in replicated context.", new Money(new BigDecimal(110)), new Money(invoice.getAmountOwing()));
+		assertEquals("amoutOwing should be recalculated when we update invoice in replicated context.", new Money(new BigDecimal(110)), invoice.getAmountOwing());
 
 	}
 
@@ -61,11 +61,11 @@ public class InvoiceListenerTest extends ServiceTest {
 
 		InvoiceLine invoiceLine = createInvoiceLine(context, college, invoice);
 		context.commitChanges();
-		assertEquals("amoutOwing should be not recalculated when we perssist invoice in not replicated context.", Money.ZERO, new Money(invoice.getAmountOwing()));
+		assertEquals("amoutOwing should be not recalculated when we perssist invoice in not replicated context.", Money.ZERO, invoice.getAmountOwing());
 
-		invoice.setAmountOwing(BigDecimal.ZERO);
+		invoice.setAmountOwing(Money.ZERO);
 		context.commitChanges();
-		assertEquals("amoutOwing should be not recalculated when we update invoice in not replicated context.", Money.ZERO, new Money(invoice.getAmountOwing()));
+		assertEquals("amoutOwing should be not recalculated when we update invoice in not replicated context.", Money.ZERO, invoice.getAmountOwing());
 
 	}
 
@@ -85,9 +85,9 @@ public class InvoiceListenerTest extends ServiceTest {
 		Invoice invoice = context.newObject(Invoice.class);
 		invoice.setCollege(college);
 		invoice.setContact(contact);
-		invoice.setAmountOwing(BigDecimal.ZERO);
-		invoice.setTotalExGst(new BigDecimal(100));
-		invoice.setTotalGst(new BigDecimal(110));
+		invoice.setAmountOwing(Money.ZERO);
+		invoice.setTotalExGst(new Money("100"));
+		invoice.setTotalGst(new Money("110"));
 		invoice.setDateDue(new Date());
 		invoice.setInvoiceDate(new Date());
 		return invoice;

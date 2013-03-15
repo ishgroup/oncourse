@@ -35,7 +35,7 @@ public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTrans
 
         StringBuilder transactionDetails = new StringBuilder("Preparing payment transaction data. ");
 
-        details.setAmount(PaymentExpressUtil.translateInputAmountAsDecimalString(paymentIn.getAmount()));
+        details.setAmount(PaymentExpressUtil.translateInputAmountAsDecimalString(paymentIn.getAmount().toBigDecimal()));
         transactionDetails.append("amount: ").append(details.getAmount());
 
         details.setCardHolderName(paymentIn.getCreditCardName());

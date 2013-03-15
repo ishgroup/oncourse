@@ -2,6 +2,7 @@ package ish.oncourse.services.lifecycle;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
+import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -328,7 +329,7 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
         PaymentIn paymentIn = context.newObject(PaymentIn.class);
         Date zero = new Date(0);
         paymentIn.setCreated(zero);
-        paymentIn.setAmount(new BigDecimal(0.0d));
+        paymentIn.setAmount(new Money("0.0"));
         paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE);
         paymentIn.setCollege(Cayenne.objectForPK(context,College.class,1));
         context.commitChanges();

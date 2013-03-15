@@ -135,8 +135,8 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine.setPriceEachExTax(new Money("90.00"));
 		invoiceLine.setTaxEach(new Money("10.00"));
 		invoiceLine.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal());
-		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax());
+		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax());
 		
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
@@ -156,7 +156,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("After calculation voucher should be still active", ProductStatus.ACTIVE, voucher.getStatus());
 		assertEquals("After calculation voucher should contain 1 $ value", Money.ONE, voucher.getRedemptionValue());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 0", Money.ZERO.toBigDecimal(), 
+		assertEquals("Amount owing for invoice should be 0", Money.ZERO, 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 		//call re-calculate to check that the result will be the same
 		helper.calculateVouchersRedeemPayment();
@@ -165,7 +165,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("After re-calculation voucher should be still active", ProductStatus.ACTIVE, voucher.getStatus());
 		assertEquals("After re-calculation voucher should contain 1 $ value", Money.ONE, voucher.getRedemptionValue());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 0", Money.ZERO.toBigDecimal(), 
+		assertEquals("Amount owing for invoice should be 0", Money.ZERO, 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 	}
 	
@@ -198,8 +198,8 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine.setPriceEachExTax(new Money("180.00"));
 		invoiceLine.setTaxEach(new Money("20.00"));
 		invoiceLine.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal());
-		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax());
+		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax());
 		
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
@@ -220,7 +220,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("After calculation voucher should have no money left", Money.ZERO, voucher.getRedemptionValue());
 
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be correct", new Money("99.00").toBigDecimal(), 
+		assertEquals("Amount owing for invoice should be correct", new Money("99.00"), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 		//call re-calculate to check that the result will be the same
 		helper.calculateVouchersRedeemPayment();
@@ -229,7 +229,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("After re-calculation voucher should be redeemed", ProductStatus.REDEEMED, voucher.getStatus());
 		assertEquals("After re-calculation voucher should have no money left", Money.ZERO, voucher.getRedemptionValue());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be correct", new Money("99.00").toBigDecimal(), 
+		assertEquals("Amount owing for invoice should be correct", new Money("99.00"), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 	}
 	
@@ -291,8 +291,8 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine2.setPriceEachExTax(new Money("90.00"));
 		invoiceLine2.setTaxEach(new Money("10.00"));
 		invoiceLine2.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax().toBigDecimal());
-		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax());
+		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax());
 		
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
 		enrolment2.setCollege(invoiceLine2.getCollege());
@@ -303,8 +303,8 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
-		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()).toBigDecimal());
-		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()).toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()));
+		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()));
 		
 		//start helper
 		VoucherRedemptionHelper helper = new VoucherRedemptionHelper(invoice, Arrays.asList(voucher,voucher2));
@@ -319,11 +319,11 @@ public class VoucherServiceTest extends ServiceTest {
 				vouchers.get(1).getStatus());
 		assertEquals("After calculation 2 vouchers should be used and second should have 1 $ value", Money.ONE, 
 			vouchers.get(1).getRedemptionValue());
-		assertEquals("Invoice and redeemed shoudl be equal", invoice.getTotalGst(), new Money("200.00").toBigDecimal());
+		assertEquals("Invoice and redeemed shoudl be equal", invoice.getTotalGst(), new Money("200.00"));
 		invoice.updateAmountOwing();
-		Money paymentAmounts = new Money(helper.getPayments().get(0).getAmount()).add(helper.getPayments().get(1).getAmount());
-		assertEquals("Amount owing for invoice should be 0", Money.ZERO.toBigDecimal(), 
-			invoice.getAmountOwing().subtract(paymentAmounts.toBigDecimal()));
+		Money paymentAmounts = helper.getPayments().get(0).getAmount().add(helper.getPayments().get(1).getAmount());
+		assertEquals("Amount owing for invoice should be 0", Money.ZERO, 
+			invoice.getAmountOwing().subtract(paymentAmounts));
 		
 		//call re-calculate to check that the result will be the same
 		helper.calculateVouchersRedeemPayment();
@@ -337,11 +337,11 @@ public class VoucherServiceTest extends ServiceTest {
 				vouchers.get(1).getStatus());
 		assertEquals("After calculation 2 vouchers should be used and second should have 1 $ value", Money.ONE, 
 			vouchers.get(1).getRedemptionValue());
-		assertEquals("Invoice and redeemed shoudl be equal", invoice.getTotalGst(), new Money("200.00").toBigDecimal());
+		assertEquals("Invoice and redeemed shoudl be equal", invoice.getTotalGst(), new Money("200.00"));
 		invoice.updateAmountOwing();
-		paymentAmounts = new Money(helper.getPayments().get(0).getAmount()).add(helper.getPayments().get(1).getAmount());
-		assertEquals("Amount owing for invoice should be 0", Money.ZERO.toBigDecimal(), 
-			invoice.getAmountOwing().subtract(paymentAmounts.toBigDecimal()));
+		paymentAmounts = helper.getPayments().get(0).getAmount().add(helper.getPayments().get(1).getAmount());
+		assertEquals("Amount owing for invoice should be 0", Money.ZERO, 
+			invoice.getAmountOwing().subtract(paymentAmounts));
 	}
 	
 	@Test
@@ -404,8 +404,8 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine2.setPriceEachExTax(new Money("45.00"));
 		invoiceLine2.setTaxEach(new Money("5.00"));
 		invoiceLine2.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax().toBigDecimal());
-		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax());
+		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax());
 		
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
 		enrolment2.setCollege(invoiceLine2.getCollege());
@@ -416,8 +416,8 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
-		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()).toBigDecimal());
-		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()).toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()));
+		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()));
 		
 		//start helper
 		VoucherRedemptionHelper helper = new VoucherRedemptionHelper(invoice, Arrays.asList(voucher,voucher2));
@@ -436,9 +436,9 @@ public class VoucherServiceTest extends ServiceTest {
 			vouchers.get(1).getRedemptionValue());
 		
 		invoice.updateAmountOwing();
-		Money paymentAmounts = new Money(helper.getPayments().get(0).getAmount()).add(helper.getPayments().get(1).getAmount());
-		assertEquals("Amount owing for invoice should be 49 $", new Money("49.00").toBigDecimal(),
-			invoice.getAmountOwing().subtract(paymentAmounts.toBigDecimal()));
+		Money paymentAmounts = helper.getPayments().get(0).getAmount().add(helper.getPayments().get(1).getAmount());
+		assertEquals("Amount owing for invoice should be 49 $", new Money("49.00"),
+			invoice.getAmountOwing().subtract(paymentAmounts));
 		//call re-calculate to check that the result will be the same
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("Two payments should be created", helper.getPayments());
@@ -455,9 +455,9 @@ public class VoucherServiceTest extends ServiceTest {
 			vouchers.get(1).getRedemptionValue());
 		
 		invoice.updateAmountOwing();
-		paymentAmounts = new Money(helper.getPayments().get(0).getAmount()).add(helper.getPayments().get(1).getAmount());
-		assertEquals("Amount owing for invoice should be 49 $", new Money("49.00").toBigDecimal(),
-			invoice.getAmountOwing().subtract(paymentAmounts.toBigDecimal()));
+		paymentAmounts = helper.getPayments().get(0).getAmount().add(helper.getPayments().get(1).getAmount());
+		assertEquals("Amount owing for invoice should be 49 $", new Money("49.00"),
+			invoice.getAmountOwing().subtract(paymentAmounts));
 	}
 	
 	@Test
@@ -502,8 +502,8 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine.setPriceEachExTax(new Money("90.00"));
 		invoiceLine.setTaxEach(new Money("10.00"));
 		invoiceLine.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal());
-		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax());
+		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax());
 		
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
@@ -527,7 +527,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("After calculation 1 voucher should be used and should have 1 extra course place", 1, 
 			voucher.getClassesRemaining().intValue());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
+		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO, 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 		//call re-calculate to check that the result will be the same
 		helper.calculateVouchersRedeemPayment();
@@ -540,7 +540,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("After calculation 1 voucher should be used and should have 1 extra course place", 1, 
 			voucher.getClassesRemaining().intValue());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
+		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO, 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 	}
 
@@ -553,7 +553,7 @@ public class VoucherServiceTest extends ServiceTest {
 		invoice.setSource(PaymentSource.SOURCE_WEB);
 		invoice.setCollege(contact.getCollege());
 		invoice.setContact(contact);
-		invoice.setAmountOwing(BigDecimal.ZERO);
+		invoice.setAmountOwing(Money.ZERO);
 		invoice.setDateDue(new Date());
 		invoice.setInvoiceDate(invoice.getDateDue());
 		invoice.setWebSite(webSite);
@@ -625,8 +625,8 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine2.setPriceEachExTax(new Money("45.00"));
 		invoiceLine2.setTaxEach(new Money("5.00"));
 		invoiceLine2.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax().toBigDecimal());
-		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax());
+		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax());
 		
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
 		enrolment2.setCollege(invoiceLine2.getCollege());
@@ -637,8 +637,8 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
-		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()).toBigDecimal());
-		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()).toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()));
+		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()));
 		
 		//context.commitChanges();
 		//start helper
@@ -652,7 +652,7 @@ public class VoucherServiceTest extends ServiceTest {
 				voucher.getStatus());
 		
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
+		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO, 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 		//call re-calculate to check that the result will be the same
 		helper.calculateVouchersRedeemPayment();
@@ -664,7 +664,7 @@ public class VoucherServiceTest extends ServiceTest {
 				voucher.getStatus());
 		
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
+		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO, 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 	}
 	
@@ -754,8 +754,8 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine2.setPriceEachExTax(new Money("45.00"));
 		invoiceLine2.setTaxEach(new Money("5.00"));
 		invoiceLine2.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax().toBigDecimal());
-		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax());
+		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax());
 		
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
 		enrolment2.setCollege(invoiceLine2.getCollege());
@@ -766,8 +766,8 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
-		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()).toBigDecimal());
-		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()).toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()));
+		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()));
 		
 		//context.commitChanges();
 		//start helper
@@ -785,7 +785,7 @@ public class VoucherServiceTest extends ServiceTest {
 			vouchers.get(0).getClassesRemaining().intValue());
 		
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
+		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO, 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()).subtract(helper.getPayments().get(1).getAmount()));
 		
 		//call re-calculate to check that the result will be the same
@@ -802,7 +802,7 @@ public class VoucherServiceTest extends ServiceTest {
 			vouchers.get(0).getClassesRemaining().intValue());
 		
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
+		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO, 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()).subtract(helper.getPayments().get(1).getAmount()));
 	}
 	
@@ -890,8 +890,8 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine2.setPriceEachExTax(new Money("45.00"));
 		invoiceLine2.setTaxEach(new Money("5.00"));
 		invoiceLine2.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax().toBigDecimal());
-		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax());
+		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax());
 		
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
 		enrolment2.setCollege(invoiceLine2.getCollege());
@@ -902,8 +902,8 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
-		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()).toBigDecimal());
-		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()).toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()));
+		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()));
 
 		//start helper
 		VoucherRedemptionHelper helper = new VoucherRedemptionHelper(invoice, Arrays.asList(voucher, voucher2));
@@ -920,7 +920,7 @@ public class VoucherServiceTest extends ServiceTest {
 			vouchers.get(1).getRedemptionValue());
 		
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
+		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO, 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()).subtract(helper.getPayments().get(1).getAmount()));
 		
 		//call re-calculate to check that the result will be the same
@@ -937,7 +937,7 @@ public class VoucherServiceTest extends ServiceTest {
 			vouchers.get(1).getRedemptionValue());
 		
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
+		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO, 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()).subtract(helper.getPayments().get(1).getAmount()));
 	}
 

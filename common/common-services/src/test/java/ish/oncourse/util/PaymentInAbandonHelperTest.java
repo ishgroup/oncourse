@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -156,6 +155,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		PaymentInLine pil1 = mock(PaymentInLine.class);
 		when(pil1.getInvoice()).thenReturn(in1);
 		when(in1.getPaymentInLines()).thenReturn(Arrays.asList(pil1));
+		when(in1.getAmountOwing()).thenReturn(Money.ZERO);
 		paymentIn = mock(PaymentIn.class);
 		when(paymentIn.getPaymentInLines()).thenReturn(Arrays.asList(pil1));
 		when(pil1.getPaymentIn()).thenReturn(paymentIn);
@@ -499,7 +499,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -512,7 +512,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("No additional paymentInlines should appears", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -547,7 +547,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -563,7 +563,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("No additional paymentInlines should appears", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -598,7 +598,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -617,7 +617,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("No additional paymentInlines should appears", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -645,7 +645,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -683,7 +683,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -700,10 +700,10 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
-		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
+		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
 		//rollback the changes to check also the abandon for product items
 		context.rollbackChanges();
@@ -733,7 +733,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -753,10 +753,10 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
-		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
+		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 		
 		context.rollbackChanges();
@@ -817,7 +817,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		PaymentInLine paymentInLine = paymentIn.getPaymentInLines().get(0);
 		Invoice invoice = paymentInLine.getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -856,7 +856,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		paymentInLine = paymentIn.getPaymentInLines().get(0);
 		invoice = paymentInLine.getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -873,10 +873,10 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment status should not change here", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
-		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
+		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after create refund invoice should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after create refund invoice should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Enrollment status after create refund invoice should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
 		//rollback the changes to check also the create refund invoice for product items
 		context.rollbackChanges();
@@ -907,7 +907,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		paymentInLine = paymentIn.getPaymentInLines().get(0);
 		invoice = paymentInLine.getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -927,10 +927,10 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
-		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
+		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 		
 		context.rollbackChanges();
@@ -951,7 +951,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		PaymentInLine paymentInLine = paymentIn.getPaymentInLines().get(0);
 		Invoice invoice = paymentInLine.getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -965,7 +965,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertNotNull("Voucher for test should not be empty", voucher);
 		assertEquals("Voucher status should be active", ProductStatus.ACTIVE, voucher.getStatus());
 		//add enough money for voucher and commit changes
-		Money voucherAmount = new Money(paymentIn.getAmount());//.add(Money.ONE);
+		Money voucherAmount = paymentIn.getAmount();//.add(Money.ONE);
 		voucher.setRedemptionValue(voucherAmount);
 		context.commitChanges();
 		//now we should create the voucher payment in structure and change the payment type
@@ -978,7 +978,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		if (voucherPaymentIn.getEnrolmentsCount() == null && voucher.getVoucherProduct().getMaxCoursesRedemption() != null) {
 			voucherPaymentIn.setEnrolmentsCount(0);
 		}
-		voucher.setRedemptionValue(voucher.getRedemptionValue().subtract(new Money(paymentIn.getAmount())));
+		voucher.setRedemptionValue(voucher.getRedemptionValue().subtract(paymentIn.getAmount()));
 		if (voucher.isFullyRedeemed()) {
 			voucher.setStatus(ProductStatus.REDEEMED);
 		}
@@ -996,7 +996,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -1075,7 +1075,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -1119,7 +1119,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -1132,7 +1132,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("No additional paymentInlines should appears", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -1155,7 +1155,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -1186,7 +1186,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -1203,10 +1203,10 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
-		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
+		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
 		//rollback the changes to check also the abandon for product items
 		context.rollbackChanges();
@@ -1236,7 +1236,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -1256,10 +1256,10 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", paymentIn.getSessionId(), reversePaymentIn.getSessionId());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
-		assertEquals("Reverse payment should be 0 amount", BigDecimal.ZERO, reversePaymentIn.getAmount());
+		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 		
 		context.rollbackChanges();
@@ -1278,13 +1278,13 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		//set the zero payment amount
-		paymentIn.setAmount(Money.ZERO.toBigDecimal());
-		paymentIn.getPaymentInLines().get(0).setAmount(Money.ZERO.toBigDecimal());
+		paymentIn.setAmount(Money.ZERO);
+		paymentIn.getPaymentInLines().get(0).setAmount(Money.ZERO);
 		
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		//set the zero invoice price
-		invoice.setTotalExGst(Money.ZERO.toBigDecimal());
-		invoice.setTotalGst(Money.ZERO.toBigDecimal());
+		invoice.setTotalExGst(Money.ZERO);
+		invoice.setTotalGst(Money.ZERO);
 		
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
@@ -1294,7 +1294,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		invoiceLine.setTaxEach(Money.ZERO);
 		
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 0$", Money.ZERO.toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 0$", Money.ZERO,invoice.getAmountOwing());
 		Enrolment enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
 		
@@ -1329,7 +1329,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 0$", Money.ZERO.toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 0$", Money.ZERO,invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -1346,7 +1346,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be the same as original", paymentIn, reversePaymentIn);
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
 		//rollback the changes to check also the abandon for product items
 		context.rollbackChanges();
@@ -1354,7 +1354,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		invoiceLine.setPriceEachExTax(new Money("1.00"));
 		invoiceLine.setEnrolment(null);
 		invoice.updateAmountOwing();
-		paymentIn.setAmount(invoiceLine.getPriceEachExTax().toBigDecimal());
+		paymentIn.setAmount(invoiceLine.getPriceEachExTax());
 		paymentIn.getPaymentInLines().get(0).setAmount(paymentIn.getAmount());
 		context.commitChanges();
 		
@@ -1367,12 +1367,12 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment status should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		//rollback the changes to check also the abandon for product items
 		context.rollbackChanges();
 		
 		invoiceLine.setPriceEachExTax(Money.ZERO);
-		paymentIn.setAmount(invoiceLine.getPriceEachExTax().toBigDecimal());
+		paymentIn.setAmount(invoiceLine.getPriceEachExTax());
 		paymentIn.getPaymentInLines().get(0).setAmount(paymentIn.getAmount());
 		invoice.updateAmountOwing();
 		context.commitChanges();
@@ -1402,7 +1402,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 0$", Money.ZERO.toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 0$", Money.ZERO,invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -1422,7 +1422,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be the same as original", paymentIn, reversePaymentIn);
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 		
 		context.rollbackChanges();

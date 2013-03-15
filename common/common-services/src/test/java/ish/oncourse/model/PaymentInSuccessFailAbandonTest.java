@@ -94,7 +94,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		PaymentIn paymentIn = context.newObject(PaymentIn.class);
 		paymentIn.setCollege(college);
 		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
-		paymentIn.setAmount(new BigDecimal(310));
+		paymentIn.setAmount(new Money("310"));
 		paymentIn.setSource(PaymentSource.SOURCE_WEB);
 		paymentIn.setType(PaymentType.CREDIT_CARD);
 
@@ -120,12 +120,12 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		
 		Invoice invoice1 = context.newObject(Invoice.class);
 		invoice1.setAngelId(100l);
-		invoice1.setAmountOwing(new BigDecimal(150));
+		invoice1.setAmountOwing(new Money("150"));
 		invoice1.setInvoiceNumber(100l);
 		invoice1.setCollege(college);
 		invoice1.setInvoiceDate(calendar.getTime());
-		invoice1.setTotalExGst(new BigDecimal(150));
-		invoice1.setTotalGst(new BigDecimal(150));
+		invoice1.setTotalExGst(new Money("150"));
+		invoice1.setTotalGst(new Money("150"));
 		invoice1.setDateDue(calendar.getTime());
 		invoice1.setContact(contact1);
 		invoice1.setSource(PaymentSource.SOURCE_WEB);
@@ -166,7 +166,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		invLine2.setInvoice(invoice1);
 
 		PaymentInLine pLine1 = context.newObject(PaymentInLine.class);
-		pLine1.setAmount(new BigDecimal(310));
+		pLine1.setAmount(new Money("310"));
 		pLine1.setCollege(college);
 		pLine1.setInvoice(invoice1);
 		paymentIn.addToPaymentInLines(pLine1);

@@ -67,7 +67,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -98,7 +98,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -123,11 +123,11 @@ private ICayenneService cayenneService;
 		assertNotNull("Reverse invoice should exist for this abandon", reverseInvoice);
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
-		assertEquals("Reverse payment should be 0 amount", Money.ZERO.toBigDecimal(), reversePaymentIn.getAmount());
+		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), reverseInvoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, reverseInvoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
 	}
 	
@@ -145,7 +145,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -176,7 +176,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -191,7 +191,7 @@ private ICayenneService cayenneService;
 		assertTrue("Payments list should be empty", paymentIns.isEmpty());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be equal to original invoice amount", invoiceLine.getFinalPriceToPayIncTax().toBigDecimal(), 
+		assertEquals("Amount owing after abandon should be equal to original invoice amount", invoiceLine.getFinalPriceToPayIncTax(), 
 			invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 	}
@@ -210,7 +210,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -241,7 +241,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -257,7 +257,7 @@ private ICayenneService cayenneService;
 		
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be original", new Money("120.00").toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be original", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be success", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 	}
 	
@@ -275,7 +275,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -306,7 +306,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -321,7 +321,7 @@ private ICayenneService cayenneService;
 		assertTrue("Payments list should  be empty", paymentIns.isEmpty());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be original", new Money("120.00").toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be original", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should success", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 	}
 	
@@ -339,13 +339,13 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		Enrolment enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
 		
@@ -369,11 +369,11 @@ private ICayenneService cayenneService;
 		assertNotNull("Reverse invoice should exist for this abandon", reverseInvoice);
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
-		assertEquals("Reverse payment should be 0 amount", Money.ZERO.toBigDecimal(), reversePaymentIn.getAmount());
+		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), reverseInvoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, reverseInvoice.getAmountOwing());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -390,13 +390,13 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		Enrolment enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
 		
@@ -410,7 +410,7 @@ private ICayenneService cayenneService;
 		assertTrue("Payments list should be empty", paymentIns.isEmpty());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", new Money("120.00").toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", new Money("120.00"), invoice.getAmountOwing());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -427,7 +427,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -458,7 +458,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -487,11 +487,11 @@ private ICayenneService cayenneService;
 		assertNotNull("Reverse invoice should exist for this abandon", reverseInvoice);
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
-		assertEquals("Reverse payment should be 0 amount", Money.ZERO.toBigDecimal(), reversePaymentIn.getAmount());
+		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
-		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), reverseInvoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, reverseInvoice.getAmountOwing());
 		//assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 	}
 	
@@ -509,7 +509,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -540,7 +540,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -559,7 +559,7 @@ private ICayenneService cayenneService;
 		assertTrue("Payments list should not be empty", paymentIns.isEmpty());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be the equal to original invoice owing", invoiceLine.getFinalPriceToPayIncTax().toBigDecimal(), 
+		assertEquals("Amount owing after abandon should be the equal to original invoice owing", invoiceLine.getFinalPriceToPayIncTax(), 
 			invoice.getAmountOwing());
 		//assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 	}
