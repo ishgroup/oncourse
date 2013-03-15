@@ -79,7 +79,7 @@
 </t:block>
 
 <t:block t:id="corporatePassEditor">
-    <span t:type="checkout/payment/corporatePassEditor" delegate="purchaseController.paymentEditorDelegate"/>
+    <span t:type="checkout/payment/corporatePassEditor" delegate="purchaseController.paymentEditorDelegate" blockToRefresh="paymentBlock"/>
 </t:block>
 
 <t:block t:id="paymentProgress">

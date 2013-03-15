@@ -52,7 +52,15 @@ public class PaymentEditorController implements PaymentEditorDelegate {
         purchaseController.performAction(parameter);
     }
 
-    public void makePayment() {
+	@Override
+	public Map<String,String> addCorporatePass(String corporatePass) {
+		PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addCorporatePass);
+		parameter.setValue(corporatePass);
+		purchaseController.performAction(parameter);
+		return purchaseController.getErrors();
+	}
+
+	public void makePayment() {
         purchaseController.setErrors(errors);
         if (errors.isEmpty()) {
             PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
@@ -99,7 +107,12 @@ public class PaymentEditorController implements PaymentEditorDelegate {
         return paymentProcessController.getPaymentIn();
     }
 
-    public void setPurchaseController(PurchaseController purchaseController) {
+	@Override
+	public Invoice getInvoice() {
+		return purchaseController.getModel().getInvoice();
+	}
+
+	public void setPurchaseController(PurchaseController purchaseController) {
         this.purchaseController = purchaseController;
     }
 

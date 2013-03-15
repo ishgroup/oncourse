@@ -101,9 +101,15 @@ public class Payment {
 
     public Object makePayment() {
         if (getPurchaseController().isEditPayment())
-            return paymentEditor.makePayment();
+		{
+			paymentEditor.makePayment();
+			return this;
+		}
         else if (getPurchaseController().isEditCorporatePass())
-            return corporatePassEditor.makePayment();
+		{
+			corporatePassEditor.makePayment();
+			return this;
+		}
         else
             throw new IllegalArgumentException();
     }

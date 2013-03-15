@@ -2,10 +2,15 @@
 	<fieldset>
 		<p class="info-content">Enter a CorporatePass code below to complete this transaction without any payment at this time. CorporatePass is available to  pre-approved corporate clients only.</p>
         <label class="corporatePass-label" for="password">Code </label>
-        <input type="text" id="password" name="password" class="small-textbox"/>
-        <div id="addPassword" class="button">Submit</div>
-        <t:eventlink t:id="addPasswordEvent" style="{display:none}"/>
-        <!--<div class="message"></div>-->
-        <!--<div class="validation"></div>-->
+        <input type="text" id="corporatePass" name="corporatePass" class="small-textbox"/>
+        <div id="addCorporatePass" class="button">Submit</div>
+        <t:eventlink t:id="addCorporatePass" style="{display:none}"/>
+		<t:if test="successMessage">
+			<div class="message">${successMessage}</div>
+		</t:if>
+
+		<t:if test="errorMessage">
+			<div class="validation">${errorMessage}</div>
+		</t:if>
 	</fieldset>
 </t:container>

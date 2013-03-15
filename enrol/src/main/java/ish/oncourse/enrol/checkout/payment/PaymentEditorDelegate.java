@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout.payment;
 
 import ish.oncourse.analytics.Transaction;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 
 import java.util.List;
@@ -13,11 +14,15 @@ public interface PaymentEditorDelegate {
     public void changePayer();
     public void addPayer();
 
+	public Map<String,String> addCorporatePass(String corporatePass);
+
 	public void tryAgain();
 	public void abandon();
 	public List<Contact> getContacts();
 
 	public PaymentIn getPaymentIn();
+
+	public Invoice getInvoice();
 
 	public Map<String, String> getErrors();
 
