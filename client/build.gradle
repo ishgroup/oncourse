@@ -11,7 +11,6 @@ dependencies {
 	compile 'foxtrot:foxtrot-core:4.0'
 	compile 'com.miglayout:miglayout-swing:4.2'
 	compile 'com.migcalendar:migcalendar:6.9.2'
-	compile 'org.swinglabs:swing-layout:1.0.3'
 	
 	testCompile 'dbunit:dbunit:2.4.8'
 	testCompile project(':server')
