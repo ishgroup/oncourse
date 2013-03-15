@@ -5,6 +5,7 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.common.types.TypesUtil;
+import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentInStub;
@@ -14,7 +15,7 @@ public class PaymentInUpdater extends AbstractWillowUpdater<PaymentInStub, Payme
 	@Override
 	protected void updateEntity(PaymentInStub stub, PaymentIn entity, RelationShipCallback callback) {
 		
-		entity.setAmount(stub.getAmount());
+		entity.setAmount(new Money(stub.getAmount()));
 		entity.setContact(callback.updateRelationShip(stub.getContactId(), Contact.class));
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());

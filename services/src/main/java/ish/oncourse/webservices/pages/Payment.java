@@ -117,7 +117,7 @@ public class Payment {
             }
 
             this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
-            this.totalIncGst = new Money(paymentProcessController.getAmount());
+            this.totalIncGst = paymentProcessController.getAmount();
             this.payer = paymentProcessController.getContact();
             this.invoices = paymentProcessController.getInvoices();
         }

@@ -65,7 +65,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		ObjectContext context = service.newContext();
 		Contact contact = context.newObject(Contact.class);
 		PaymentIn p1 = context.newObject(PaymentIn.class);
-		p1.setAmount(new BigDecimal(110));
+		p1.setAmount(new Money("110"));
 		p1.setCollege(localizeCollege(context));
 		p1.setAngelId(1l);
 		p1.setContact(contact);
@@ -79,12 +79,12 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil1.setPaymentIn(p1);
 		pil1.setAngelId(1l);
 		pil1.setCreated(new Date());
-		pil1.setAmount(new BigDecimal(110l));
+		pil1.setAmount(new Money("110"));
 		pil1.setCollege(p1.getCollege());
 		Invoice i1 = context.newObject(Invoice.class);
 		pil1.setInvoice(i1);
 		i1.setAngelId(1l);
-		i1.setAmountOwing(new BigDecimal(110l));
+		i1.setAmountOwing(new Money("110"));
 		i1.setBillToAddress("Test billing address");
 		i1.setContact(contact);
 		i1.setCreated(new Date());
@@ -95,8 +95,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setInvoiceDate(new Date());
 		i1.setInvoiceNumber(123l);
 		i1.setModified(new Date());
-		i1.setTotalExGst(new BigDecimal(100));
-		i1.setTotalGst(new BigDecimal(110));
+		i1.setTotalExGst(new Money("100"));
+		i1.setTotalGst(new Money("110"));
 		i1.setSource(PaymentSource.SOURCE_WEB);
 		i1.setCollege(p1.getCollege());
 		InvoiceLine il1 = context.newObject(InvoiceLine.class);
@@ -114,7 +114,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		il1.setCollege(p1.getCollege());
 		
 		PaymentIn p2 = context.newObject(PaymentIn.class);
-		p2.setAmount(new BigDecimal(110));
+		p2.setAmount(new Money("110"));
 		p2.setAngelId(1l);
 		p2.setContact(contact);
 		p2.setCreated(new Date());
@@ -127,7 +127,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil2.setPaymentIn(p2);
 		pil2.setAngelId(1l);
 		pil2.setCreated(new Date());
-		pil2.setAmount(new BigDecimal(110l));
+		pil2.setAmount(new Money("110"));
 		pil2.setInvoice(i1);
 		pil2.setCollege(p1.getCollege());
 		context.commitChanges();
@@ -143,7 +143,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		ObjectContext context = service.newContext();
 		Contact contact = context.newObject(Contact.class);
 		PaymentIn p1 = context.newObject(PaymentIn.class);
-		p1.setAmount(new BigDecimal(110));
+		p1.setAmount(new Money("110"));
 		p1.setAngelId(1l);
 		p1.setContact(contact);
 		p1.setCreated(new Date());
@@ -157,12 +157,12 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil1.setPaymentIn(p1);
 		pil1.setAngelId(1l);
 		pil1.setCreated(new Date());
-		pil1.setAmount(new BigDecimal(110l));
+		pil1.setAmount(new Money("110"));
 		pil1.setCollege(p1.getCollege());
 		Invoice i1 = context.newObject(Invoice.class);
 		pil1.setInvoice(i1);
 		i1.setAngelId(1l);
-		i1.setAmountOwing(new BigDecimal(110l));
+		i1.setAmountOwing(new Money("110"));
 		i1.setBillToAddress("Test billing address");
 		i1.setContact(contact);
 		i1.setCreated(new Date());
@@ -173,8 +173,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setInvoiceDate(new Date());
 		i1.setInvoiceNumber(123l);
 		i1.setModified(new Date());
-		i1.setTotalExGst(new BigDecimal(100));
-		i1.setTotalGst(new BigDecimal(110));
+		i1.setTotalExGst(new Money("100"));
+		i1.setTotalGst(new Money("110"));
 		i1.setSource(PaymentSource.SOURCE_WEB);
 		i1.setCollege(p1.getCollege());
 		InvoiceLine il1 = context.newObject(InvoiceLine.class);
@@ -192,7 +192,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		il1.setCollege(p1.getCollege());
 		
 		PaymentIn p2 = context.newObject(PaymentIn.class);
-		p2.setAmount(new BigDecimal(110));
+		p2.setAmount(new Money("110"));
 		p2.setAngelId(1l);
 		p2.setContact(contact);
 		p2.setCreated(new Date());
@@ -205,7 +205,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil2.setPaymentIn(p2);
 		pil2.setAngelId(1l);
 		pil2.setCreated(new Date());
-		pil2.setAmount(new BigDecimal(110l));
+		pil2.setAmount(new Money("110"));
 		pil2.setInvoice(i1);
 		pil2.setCollege(p1.getCollege());
 		context.commitChanges();
@@ -232,7 +232,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		Contact contact = context.newObject(Contact.class);
 		
 		PaymentIn p1 = context.newObject(PaymentIn.class);
-		p1.setAmount(new BigDecimal(220));
+		p1.setAmount(new Money("220"));
 		p1.setAngelId(1l);
 		p1.setContact(contact);
 		p1.setCreated(new Date());
@@ -247,13 +247,13 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil1.setPaymentIn(p1);
 		pil1.setAngelId(1l);
 		pil1.setCreated(new Date());
-		pil1.setAmount(new BigDecimal(110l));
+		pil1.setAmount(new Money("110"));
 		pil1.setCollege(p1.getCollege());
 		
 		Invoice i1 = context.newObject(Invoice.class);
 		pil1.setInvoice(i1);
 		i1.setAngelId(1l);
-		i1.setAmountOwing(new BigDecimal(110l));
+		i1.setAmountOwing(new Money("110"));
 		i1.setBillToAddress("Test billing address");
 		i1.setContact(contact);
 		i1.setCreated(new Date());
@@ -264,8 +264,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setInvoiceDate(new Date());
 		i1.setInvoiceNumber(123l);
 		i1.setModified(new Date());
-		i1.setTotalExGst(new BigDecimal(100));
-		i1.setTotalGst(new BigDecimal(110));
+		i1.setTotalExGst(new Money("100"));
+		i1.setTotalGst(new Money("110"));
 		i1.setSource(PaymentSource.SOURCE_ONCOURSE);
 		i1.setCollege(p1.getCollege());
 		
@@ -284,7 +284,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		il1.setCollege(p1.getCollege());
 		
 		PaymentIn p2 = context.newObject(PaymentIn.class);
-		p2.setAmount(new BigDecimal(110));
+		p2.setAmount(new Money("110"));
 		p2.setAngelId(1l);
 		p2.setContact(contact);
 		p2.setCreated(new Date());
@@ -298,13 +298,13 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil2.setPaymentIn(p2);
 		pil2.setAngelId(1l);
 		pil2.setCreated(new Date());
-		pil2.setAmount(new BigDecimal(110l));
+		pil2.setAmount(new Money("110"));
 		pil2.setInvoice(i1);
 		pil2.setCollege(p1.getCollege());
 		
 		Invoice i2 = context.newObject(Invoice.class);
 		i2.setAngelId(1l);
-		i2.setAmountOwing(new BigDecimal(110l));
+		i2.setAmountOwing(new Money("110"));
 		i2.setBillToAddress("Test billing address");
 		i2.setContact(contact);
 		i2.setCreated(new Date());
@@ -315,8 +315,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i2.setInvoiceDate(new Date());
 		i2.setInvoiceNumber(1234l);
 		i2.setModified(new Date());
-		i2.setTotalExGst(new BigDecimal(100));
-		i2.setTotalGst(new BigDecimal(110));
+		i2.setTotalExGst(new Money("100"));
+		i2.setTotalGst(new Money("110"));
 		i2.setSource(PaymentSource.SOURCE_ONCOURSE);
 		i2.setCollege(p1.getCollege());
 		
@@ -355,7 +355,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil3.setPaymentIn(p1);
 		pil3.setAngelId(1l);
 		pil3.setCreated(new Date());
-		pil3.setAmount(new BigDecimal(110l));
+		pil3.setAmount(new Money("110"));
 		pil3.setInvoice(i2);
 		pil3.setCollege(p1.getCollege());
 
@@ -371,8 +371,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		assertEquals("Two payments should be updated", 2, updatedPayments.size());
 		assertEquals("Two payments should be updated, second should be p1", p1, updatedPayments.get(1));
 		assertEquals("Payment inside the updatedPayments should be failed", PaymentStatus.FAILED, p1.getStatus());
-		assertEquals("Amount owing for i2 should be 0 because we revert it", Money.ZERO.toBigDecimal(), i2.getAmountOwing());
-		assertEquals("Inoice 1 amount owing should be positive and = 120$", new Money("120.00").toBigDecimal(), i1.getAmountOwing());
+		assertEquals("Amount owing for i2 should be 0 because we revert it", Money.ZERO, i2.getAmountOwing());
+		assertEquals("Inoice 1 amount owing should be positive and = 120$", new Money("120.00"), i1.getAmountOwing());
 		context.deleteObject(pil2);
 		context.deleteObject(p2);
 		updatedPayments.clear();
@@ -387,7 +387,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		Contact contact = context.newObject(Contact.class);
 		
 		PaymentIn p1 = context.newObject(PaymentIn.class);
-		p1.setAmount(new BigDecimal(220));
+		p1.setAmount(new Money("220"));
 		p1.setAngelId(1l);
 		p1.setContact(contact);
 		p1.setCreated(new Date());
@@ -402,13 +402,13 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil1.setPaymentIn(p1);
 		pil1.setAngelId(1l);
 		pil1.setCreated(new Date());
-		pil1.setAmount(new BigDecimal(110l));
+		pil1.setAmount(new Money("110"));
 		pil1.setCollege(p1.getCollege());
 		
 		Invoice i1 = context.newObject(Invoice.class);
 		pil1.setInvoice(i1);
 		i1.setAngelId(1l);
-		i1.setAmountOwing(new BigDecimal(110l));
+		i1.setAmountOwing(new Money("110"));
 		i1.setBillToAddress("Test billing address");
 		i1.setContact(contact);
 		i1.setCreated(new Date());
@@ -419,8 +419,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setInvoiceDate(new Date());
 		i1.setInvoiceNumber(123l);
 		i1.setModified(new Date());
-		i1.setTotalExGst(new BigDecimal(100));
-		i1.setTotalGst(new BigDecimal(110));
+		i1.setTotalExGst(new Money("100"));
+		i1.setTotalGst(new Money("110"));
 		i1.setSource(PaymentSource.SOURCE_ONCOURSE);
 		i1.setCollege(p1.getCollege());
 		
@@ -439,7 +439,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		il1.setCollege(p1.getCollege());
 		
 		PaymentIn p2 = context.newObject(PaymentIn.class);
-		p2.setAmount(new BigDecimal(110));
+		p2.setAmount(new Money("110"));
 		p2.setAngelId(1l);
 		p2.setContact(contact);
 		p2.setCreated(new Date());
@@ -453,13 +453,13 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil2.setPaymentIn(p2);
 		pil2.setAngelId(1l);
 		pil2.setCreated(new Date());
-		pil2.setAmount(new BigDecimal(110l));
+		pil2.setAmount(new Money("110"));
 		pil2.setInvoice(i1);
 		pil2.setCollege(p1.getCollege());
 		
 		Invoice i2 = context.newObject(Invoice.class);
 		i2.setAngelId(1l);
-		i2.setAmountOwing(new BigDecimal(110l));
+		i2.setAmountOwing(new Money("110"));
 		i2.setBillToAddress("Test billing address");
 		i2.setContact(contact);
 		i2.setCreated(new Date());
@@ -470,8 +470,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i2.setInvoiceDate(new Date());
 		i2.setInvoiceNumber(1234l);
 		i2.setModified(new Date());
-		i2.setTotalExGst(new BigDecimal(100));
-		i2.setTotalGst(new BigDecimal(110));
+		i2.setTotalExGst(new Money("100"));
+		i2.setTotalGst(new Money("110"));
 		i2.setSource(PaymentSource.SOURCE_ONCOURSE);
 		i2.setCollege(p1.getCollege());
 		
@@ -510,7 +510,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil3.setPaymentIn(p1);
 		pil3.setAngelId(1l);
 		pil3.setCreated(new Date());
-		pil3.setAmount(new BigDecimal(110l));
+		pil3.setAmount(new Money("110"));
 		pil3.setInvoice(i2);
 		pil3.setCollege(p1.getCollege());
 		
@@ -524,8 +524,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		assertEquals("Two payments should be updated", 1, updatedPayments.size());
 		assertEquals("Two payments should be updated, second should be p1", p1, updatedPayments.get(0));
 		assertEquals("Payment inside the updatedPayments should be failed", PaymentStatus.FAILED, p1.getStatus());
-		assertEquals("Amount owing for i2 should be 110 because we don't revert it", new Money("110.00").toBigDecimal(), i2.getAmountOwing());
-		assertEquals("Inoice 1 amount owing should be positive and = 120$", new Money("120.00").toBigDecimal(), i1.getAmountOwing());
+		assertEquals("Amount owing for i2 should be 110 because we don't revert it", new Money("110.00"), i2.getAmountOwing());
+		assertEquals("Inoice 1 amount owing should be positive and = 120$", new Money("120.00"), i1.getAmountOwing());
 		context.deleteObject(pil2);
 		context.deleteObject(p2);
 		updatedPayments.clear();
@@ -540,7 +540,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		Contact contact = context.newObject(Contact.class);
 		
 		PaymentIn p1 = context.newObject(PaymentIn.class);
-		p1.setAmount(Money.ZERO.toBigDecimal());
+		p1.setAmount(Money.ZERO);
 		p1.setAngelId(1l);
 		p1.setContact(contact);
 		p1.setCreated(new Date());
@@ -553,7 +553,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		
 		Invoice i2 = context.newObject(Invoice.class);
 		i2.setAngelId(1l);
-		i2.setAmountOwing(new BigDecimal(110l));
+		i2.setAmountOwing(new Money("110"));
 		i2.setBillToAddress("Test billing address");
 		i2.setContact(contact);
 		i2.setCreated(new Date());
@@ -564,8 +564,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i2.setInvoiceDate(new Date());
 		i2.setInvoiceNumber(1234l);
 		i2.setModified(new Date());
-		i2.setTotalExGst(Money.ZERO.toBigDecimal());
-		i2.setTotalGst(Money.ZERO.toBigDecimal());
+		i2.setTotalExGst(Money.ZERO);
+		i2.setTotalGst(Money.ZERO);
 		i2.setSource(PaymentSource.SOURCE_ONCOURSE);
 		i2.setCollege(p1.getCollege());
 		
@@ -604,7 +604,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil3.setPaymentIn(p1);
 		pil3.setAngelId(1l);
 		pil3.setCreated(new Date());
-		pil3.setAmount(Money.ZERO.toBigDecimal());
+		pil3.setAmount(Money.ZERO);
 		pil3.setInvoice(i2);
 		pil3.setCollege(p1.getCollege());
 		

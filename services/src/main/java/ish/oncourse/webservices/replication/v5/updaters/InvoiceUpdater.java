@@ -2,6 +2,7 @@ package ish.oncourse.webservices.replication.v5.updaters;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
+import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.Invoice;
@@ -16,7 +17,7 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 
 		entity.setContact(callback.updateRelationShip(stub.getContactId(), Contact.class));
 
-		entity.setAmountOwing(stub.getAmountOwing());
+		entity.setAmountOwing(new Money(stub.getAmountOwing()));
 		entity.setBillToAddress(stub.getBillToAddress());
 		entity.setCreated(stub.getCreated());
 		entity.setCustomerPO(stub.getCustomerPO());
@@ -29,11 +30,11 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 		entity.setPublicNotes(stub.getPublicNotes());
 		entity.setShippingAddress(stub.getShippingAddress());
 
-		entity.setTotalExGst(stub.getTotalExGst());
+		entity.setTotalExGst(new Money(stub.getTotalExGst()));
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
 		//entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
 
-		entity.setTotalGst(stub.getTotalGst());
+		entity.setTotalGst(new Money(stub.getTotalGst()));
 		
 		entity.setCorporatePassUsed(callback.updateRelationShip(stub.getCorporatePassId(), CorporatePass.class));
 	}

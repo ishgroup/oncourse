@@ -14,7 +14,7 @@ public class PaymentInStubBuilder extends AbstractWillowStubBuilder<PaymentIn, P
 
 		PaymentInStub stub = new PaymentInStub();
 
-		stub.setAmount(entity.getAmount());
+		stub.setAmount(entity.getAmount().toBigDecimal());
 		stub.setContactId(entity.getContact().getId());
 		stub.setCreated(entity.getCreated());
 		stub.setModified(entity.getModified());

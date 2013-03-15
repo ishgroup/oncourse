@@ -166,7 +166,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 						updatedPayments.add(paymentIn.abandonPayment());
 					} else {
 						// if credit card and not-zero payment, generate sessionId.
-						if (isCreditCardPayment && paymentIn.getAmount().compareTo(BigDecimal.ZERO) != 0) {
+						if (isCreditCardPayment && paymentIn.getAmount().compareTo(Money.ZERO) != 0) {
 							paymentIn.setSessionId(idGenerator.generateSessionId());
 						} else {
 							paymentIn.succeed();
@@ -201,8 +201,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			boolean isZeroOwing = false;
 			if (enrolment.getInvoiceLine() != null && enrolment.getInvoiceLine().getInvoice() != null) {
 				Invoice invoice = enrolment.getInvoiceLine().getInvoice();
-				invoice.updateAmountOwing();
-				isZeroOwing = Money.isZeroOrEmpty(new Money(invoice.getAmountOwing()));
+				invoice.updateAmountOwing();//TODO: check can we remove owing
+				isZeroOwing = Money.isZeroOrEmpty(invoice.getAmountOwing());
 			}
 			if (isZeroOwing && EnrolmentStatus.FAILED.equals(enrolment.getStatus())) {
 				logger.error(String.format("Failed enrolment with id =  %s linked with 0-owing invoice try to process. Payment will be abandoned.", enrolment.getId()));

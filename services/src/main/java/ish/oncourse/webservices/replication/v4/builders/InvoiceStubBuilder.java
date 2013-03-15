@@ -9,7 +9,7 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 	protected InvoiceStub createFullStub(Invoice entity) {
 
 		InvoiceStub stub = new InvoiceStub();
-		stub.setAmountOwing(entity.getAmountOwing());
+		stub.setAmountOwing(entity.getAmountOwing().toBigDecimal());
 		stub.setBillToAddress(entity.getBillToAddress());
 		stub.setContactId(entity.getContact().getId());
 		stub.setCreated(entity.getCreated());
@@ -23,8 +23,8 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 		stub.setPublicNotes(entity.getPublicNotes());
 		stub.setShippingAddress(entity.getShippingAddress());
 		stub.setSource(entity.getSource().getDatabaseValue());
-		stub.setTotalExGst(entity.getTotalExGst());
-		stub.setTotalGst(entity.getTotalGst());
+		stub.setTotalExGst(entity.getTotalExGst().toBigDecimal());
+		stub.setTotalGst(entity.getTotalGst().toBigDecimal());
 		
 		return stub;
 	}

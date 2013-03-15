@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v5.updaters;
 
+import ish.math.Money;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
@@ -10,14 +11,9 @@ import ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub;
 
 public class PaymentInLineUpdater extends AbstractWillowUpdater<PaymentInLineStub, PaymentInLine> {
 
-	/**
-	 * Logger
-	 */
-	//private static final Logger logger = Logger.getLogger(PaymentInLineUpdater.class);
-
 	@Override
 	protected void updateEntity(PaymentInLineStub stub, PaymentInLine entity, RelationShipCallback callback) {
-		entity.setAmount(stub.getAmount());
+		entity.setAmount(new Money(stub.getAmount()));
 		entity.setCreated(stub.getCreated());
 
 		Invoice invoice = callback.updateRelationShip(stub.getInvoiceId(), Invoice.class);

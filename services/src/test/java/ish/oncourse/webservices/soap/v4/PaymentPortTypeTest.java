@@ -811,9 +811,9 @@ public class PaymentPortTypeTest extends ServiceTest {
 							for (PaymentInLine line : pay.getPaymentInLines()) {
 								Invoice inv = line.getInvoice();
 								if (inv.getAngelId() != null && inv.getAngelId().equals(3l)) {
-									assertTrue("Incorrect amount for paymentInline with angelid="+ line.getAngelId(), line.getAmount().compareTo(BigDecimal.ZERO) > 0);
+									assertTrue("Incorrect amount for paymentInline with angelid="+ line.getAngelId(), line.getAmount().compareTo(Money.ZERO) > 0);
 								} else if (inv.getAngelId() == null) {
-									assertTrue("Incorrect amount for paymentInline with angelid="+ line.getAngelId(), line.getAmount().compareTo(BigDecimal.ZERO) < 0);
+									assertTrue("Incorrect amount for paymentInline with angelid="+ line.getAngelId(), line.getAmount().compareTo(Money.ZERO) < 0);
 									assertEquals("1 invoiceline should be linked with reverse invoice", 1, inv.getInvoiceLines().size());
 									assertNull("No enrolment should be linked to reverse invoice", inv.getInvoiceLines().get(0).getEnrolment());
 								} else {
