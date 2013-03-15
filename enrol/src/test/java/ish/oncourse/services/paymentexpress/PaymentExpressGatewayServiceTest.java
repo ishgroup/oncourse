@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentExpressGatewayServiceTest {
 
-	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayServiceTest.class);//
+	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayServiceTest.class);
 	
 	private static final String PAYMENT_REF = "W111";
 
@@ -173,7 +173,7 @@ public class PaymentExpressGatewayServiceTest {
 		TransactionResult2 tr1 = result1;
 		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
-		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT.toBigDecimal());
+		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		
 		TransactionResult2 tr = gatewayService.doTransaction(paymentOut);
@@ -210,7 +210,7 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testUnsuccessfulDoOutTransaction() throws Exception {
-		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT.toBigDecimal());
+		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		
 		TransactionResult2 tr = gatewayService.doTransaction(paymentOut);
@@ -256,7 +256,7 @@ public class PaymentExpressGatewayServiceTest {
 		TransactionResult2 tr1 = result1;
 		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
-		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT.toBigDecimal());
+		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		gatewayService.processGateway(paymentOut);
 		verify(paymentOut).succeed();
@@ -289,7 +289,7 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testUnsuccessfulOffProcessGateway() throws Exception {
-		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT.toBigDecimal());
+		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		gatewayService.processGateway(paymentOut);
 		verify(paymentOut).failed();
