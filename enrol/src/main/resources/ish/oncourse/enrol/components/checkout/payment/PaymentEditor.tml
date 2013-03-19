@@ -29,14 +29,6 @@
                 </p>
                 <t:if test="zeroPayment" negate="true">
                     <p>
-                        <label for="creditCardType">Card Type<em title="${message:message-required}">*</em></label>
-                        <span class="${validateHandler.validateClass('creditCardType')}">
-                            <t:select t:id="creditCardType" value="paymentIn.creditCardType" model="cardTypeModel" blankLabel="${message:blankSelect}"
-                                      class="${validateHandler.errorClass('creditCardType')}"/>
-                            <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardType')}"/>
-                        </span>
-                    </p>
-                    <p>
                         <label for="creditCardName">Name on Card<em title="${message:message-required}">*</em></label>
                         <span class="${validateHandler.validateClass('creditCardName')}">
                             <t:textfield value="paymentIn.creditCardName" t:id="creditCardName" maxlength="80"  class="input-fixed ${validateHandler.errorClass('creditCardName')}"/>

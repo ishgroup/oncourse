@@ -1,6 +1,5 @@
 package ish.oncourse.enrol.checkout.payment;
 
-import ish.common.types.CreditCardType;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
@@ -9,7 +8,6 @@ import org.apache.tapestry5.services.Request;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,8 +72,8 @@ public class PaymentEditorParserTest {
         PaymentEditorParser paymentEditorParser = getPaymentEditorParser();
         paymentEditorParser.parse();
         assertFalse(paymentEditorParser.getErrors().isEmpty());
-        assertEquals(7, paymentEditorParser.getErrors().size());
-        Field[] values = Field.values();
+        assertEquals(6, paymentEditorParser.getErrors().size());
+        Field[] values = Field.noZeroPaymentFields();
         for (Field value : values) {
             if (value == Field.expiryYear)
                 value = Field.expiryMonth;
@@ -88,14 +86,6 @@ public class PaymentEditorParserTest {
         paymentEditorParser = getPaymentEditorParser();
         paymentEditorParser.parse();
         verify(paymentIn, times(1)).setContact(contacts.get(0));
-        assertEquals(6, paymentEditorParser.getErrors().size());
-
-        //test set creditCardType
-        when(request.getParameter(Field.creditCardType.name())).thenReturn(CreditCardType.MASTERCARD.name());
-        when(paymentIn.validateCCType()).thenReturn(true);
-        paymentEditorParser = getPaymentEditorParser();
-        paymentEditorParser.parse();
-        verify(paymentIn, times(1)).setCreditCardType(CreditCardType.MASTERCARD);
         assertEquals(5, paymentEditorParser.getErrors().size());
 
         //test set creditCardName

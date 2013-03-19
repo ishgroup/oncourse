@@ -4,6 +4,7 @@ import ish.common.types.CreditCardType;
 import ish.oncourse.enrol.checkout.IFieldsParser;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.util.payment.CreditCardParser;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
@@ -20,31 +21,27 @@ public class PaymentEditorParser implements IFieldsParser {
 	private Messages messages;
 	private PaymentIn paymentIn;
 
-    private boolean newPayer;
+	private boolean newPayer;
 
 	private Map<String, String> errors = new HashMap<String, String>();
 
 	public void parse() {
 		if (paymentIn.isZeroPayment())
-			parse(new Field[]{Field.userAgreed,Field.contact});
-		else
-		{
-			parse(Field.values());
+			parse(Field.zeroPaymentFields());
+		else {
+			parse(Field.noZeroPaymentFields());
 			String expiryMonth = StringUtils.trimToNull(request.getParameter(Field.expiryMonth.name()));
 			String expiryYear = StringUtils.trimToNull(request.getParameter(Field.expiryYear.name()));
-			if (expiryMonth != null && expiryYear != null)
-            {
-                paymentIn.setCreditCardExpiry(expiryMonth + "/" + expiryYear);
-                if (!paymentIn.validateCCExpiry())
-                    errors.put(Field.expiryMonth.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.expiryMonth.name())));
-            }
-            else
-                errors.put(Field.expiryMonth.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.expiryMonth.name())));
-        }
+			if (expiryMonth != null && expiryYear != null) {
+				paymentIn.setCreditCardExpiry(expiryMonth + "/" + expiryYear);
+				if (!paymentIn.validateCCExpiry())
+					errors.put(Field.expiryMonth.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.expiryMonth.name())));
+			} else
+				errors.put(Field.expiryMonth.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.expiryMonth.name())));
+		}
 	}
 
-	private void parse(Field[] fields)
-	{
+	private void parse(Field[] fields) {
 		for (Field field : fields) {
 			if (field != Field.expiryMonth && field != Field.expiryYear) {
 				String value = StringUtils.trimToNull(request.getParameter(field.name()));
@@ -61,24 +58,25 @@ public class PaymentEditorParser implements IFieldsParser {
 		switch (field) {
 			case contact:
 				Long id = Long.valueOf(value);
-                if (id.equals(Long.MIN_VALUE))
-                    newPayer = true;
-                else
-				    paymentIn.setContact(getContactBy(id));
-				break;
-			case creditCardType:
-				paymentIn.setCreditCardType(CreditCardType.valueOf(value));
-				if (!paymentIn.validateCCType())
-					errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
+				if (id.equals(Long.MIN_VALUE))
+					newPayer = true;
+				else
+					paymentIn.setContact(getContactBy(id));
 				break;
 			case creditCardName:
 				paymentIn.setCreditCardName(value);
 				break;
 			case creditCardNumber:
 				paymentIn.setCreditCardNumber(value);
-				String errorMessage = paymentIn.validateCCNumber();
-				if (errorMessage != null)
-					errors.put(field.name(), errorMessage);
+				CreditCardParser parser = new CreditCardParser();
+				CreditCardType creditCardType = parser.parser(value);
+				if (creditCardType != null) {
+					paymentIn.setCreditCardType(creditCardType);
+					String errorMessage = paymentIn.validateCCNumber();
+					if (errorMessage != null)
+						errors.put(field.name(), errorMessage);
+				} else
+					errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.creditCardType.name())));
 				break;
 			case creditCardCVV:
 				paymentIn.setCreditCardCVV(value);
@@ -90,6 +88,7 @@ public class PaymentEditorParser implements IFieldsParser {
 				paymentIn.setCreditCardExpiry(value);
 				break;
 			case userAgreed:
+			case creditCardType:
 				break;
 			default:
 				throw new IllegalArgumentException();
@@ -125,12 +124,12 @@ public class PaymentEditorParser implements IFieldsParser {
 		return errors;
 	}
 
-    public boolean isNewPayer() {
-        return newPayer;
-    }
+	public boolean isNewPayer() {
+		return newPayer;
+	}
 
 
-    public static enum Field {
+	public static enum Field {
 		contact,
 		creditCardType,
 		creditCardName,
@@ -138,6 +137,20 @@ public class PaymentEditorParser implements IFieldsParser {
 		creditCardCVV,
 		expiryMonth,
 		expiryYear,
-		userAgreed
+		userAgreed;
+
+		public static Field[] zeroPaymentFields() {
+			return new Field[]{Field.userAgreed, Field.contact};
+		}
+
+		public static Field[] noZeroPaymentFields() {
+			return new Field[]{Field.contact,
+					Field.creditCardName,
+					Field.creditCardNumber,
+					Field.creditCardCVV,
+					Field.expiryMonth,
+					Field.expiryYear,
+					Field.userAgreed};
+		}
 	}
 }
