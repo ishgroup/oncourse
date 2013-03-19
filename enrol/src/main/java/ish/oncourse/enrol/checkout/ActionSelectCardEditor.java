@@ -15,9 +15,8 @@ public class ActionSelectCardEditor extends APurchaseAction{
 		getModel().getPayment().setType(PaymentType.CREDIT_CARD);
 		getModel().setPayer(getModel().getContacts().get(0));
 
-        getController().setState(editPayment);
-        if (getController().getPaymentEditorDelegate() != null)
-            getController().getPaymentEditorDelegate().setErrors(Collections.EMPTY_MAP);
+        getController().getPaymentEditorDelegate().setErrors(Collections.EMPTY_MAP);
+		getController().setState(editPayment);
     }
 
     @Override

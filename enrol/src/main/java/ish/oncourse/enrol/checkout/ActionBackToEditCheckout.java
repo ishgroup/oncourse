@@ -56,7 +56,8 @@ public class ActionBackToEditCheckout extends APurchaseAction {
 	@Override
 	protected boolean validate() {
 
-		if (getController().getState() == PurchaseController.State.editPayment
+		if ((getController().isEditPayment() ||
+				getController().isEditCorporatePass())
 				&& PurchaseController.COMMON_ACTIONS.contains(action)) {
 			return true;
 		}

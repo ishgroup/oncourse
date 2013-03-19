@@ -9,8 +9,7 @@ public class ActionSelectCorporatePassEditor extends APurchaseAction{
     protected void makeAction() {
         getModel().getPayment().setType(PaymentType.INTERNAL);
         getController().setState(PurchaseController.State.editCorporatePass);
-        if (getController().getPaymentEditorDelegate() != null)
-            getController().getPaymentEditorDelegate().setErrors(Collections.EMPTY_MAP);
+        getController().getPaymentEditorDelegate().setErrors(Collections.EMPTY_MAP);
     }
 
     @Override

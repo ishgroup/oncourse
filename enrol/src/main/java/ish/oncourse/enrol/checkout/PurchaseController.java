@@ -176,7 +176,7 @@ public class PurchaseController {
 	}
 
     private void actionSuccess() {
-        if (getState() == editCheckout || getState() == editPayment || getState() == editCorporatePass)
+        if (isEditCheckout() || isEditPayment() || isEditCorporatePass())
         {
             //the code needs to recalcalute money values for payment and discount for all actions on checkout page and payment editor
             updateTotalIncGst();
@@ -198,6 +198,7 @@ public class PurchaseController {
 			return true;
 		switch (state) {
 			case editPayment:
+			case editCorporatePass:
 			case paymentProgress:
             case paymentResult:
 				ActionParameter parameter = new ActionParameter(backToEditCheckout);

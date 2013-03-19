@@ -6,12 +6,12 @@
     <meta http-equiv="refresh" content="3"/>
 </t:if>
 <div id="checkout" class="payments">
-    <t:delegate to="block:progress"/>
     <t:delegate to="block:payment"/>
 </div>
 
 
 <t:block t:id="payment">
+	<t:delegate to="block:progress"/>
     <t:delegate to="block:errors"/>
     <t:if test="purchaseController">
         <t:if test="editPayments">
