@@ -1530,4 +1530,13 @@
     	<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInId_invoiceId_uniq_idx"/>
     </changeSet>
 
+	<changeSet id="97" author="akoyro" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="CorporatePass" columnNames="collegeId,password"/>
+			</not>
+		</preConditions>
+		<addUniqueConstraint tableName="CorporatePass" columnNames="collegeId,password" constraintName="collegeId_password_uniq_idx"/>
+	</changeSet>
+
 </databaseChangeLog>
