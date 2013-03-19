@@ -19,6 +19,6 @@ public class ActionSelectCorporatePassEditor extends APurchaseAction{
 
     @Override
     protected boolean validate() {
-        return true;
-    }
+		return !getController().isEditCorporatePass();
+	}
 }

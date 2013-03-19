@@ -9,11 +9,12 @@ import static ish.oncourse.enrol.checkout.PurchaseController.State.editPayment;
 public class ActionSelectCardEditor extends APurchaseAction{
     @Override
     protected void makeAction() {
-        getModel().getPayment().setType(PaymentType.CREDIT_CARD);
-		getModel().getPayment().setContact(getModel().getPayer());
-		getModel().getInvoice().setContact(getModel().getPayer());
 		getModel().getInvoice().setCorporatePassUsed(null);
         getModel().setCorporatePass(null);
+
+		getModel().getPayment().setType(PaymentType.CREDIT_CARD);
+		getModel().setPayer(getModel().getContacts().get(0));
+
         getController().setState(editPayment);
         if (getController().getPaymentEditorDelegate() != null)
             getController().getPaymentEditorDelegate().setErrors(Collections.EMPTY_MAP);
@@ -25,6 +26,6 @@ public class ActionSelectCardEditor extends APurchaseAction{
 
     @Override
     protected boolean validate() {
-        return true;
+        return !getController().isEditPayment();
     }
 }

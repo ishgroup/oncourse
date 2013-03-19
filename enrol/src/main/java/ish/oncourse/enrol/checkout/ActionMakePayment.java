@@ -1,11 +1,30 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.EnrolmentStatus;
+import ish.oncourse.model.Enrolment;
+
+import java.util.List;
+
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.corporatePassShouldBeEntered;
 
 public class ActionMakePayment extends APurchaseAction {
 	@Override
 	protected void makeAction() {
-		getController().setState(PurchaseController.State.paymentProgress);
+		if (getController().isEditCorporatePass())
+		{
+			getController().setPaymentEditorController(null);
+			getModel().deletePayment();
+		    getController().setState(PurchaseController.State.paymentResult);
+			List<Enrolment> enrolments = getController().getModel().getAllEnabledEnrolments();
+			for (Enrolment enrolment : enrolments) {
+				enrolment.setStatus(EnrolmentStatus.SUCCESS);
+			}
+		}
+		else if (getController().isEditPayment())
+			getController().setState(PurchaseController.State.paymentProgress);
+		else
+			throw new IllegalArgumentException();
+		getModel().getObjectContext().commitChanges();
 	}
 
 	@Override

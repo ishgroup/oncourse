@@ -111,7 +111,7 @@ public class PurchaseController {
 	}
 
 	public synchronized Money getTotalPayment() {
-		return model.getPayment().getAmount();
+		return getModel().getInvoice().getTotalGst();
 	}
 
 	public synchronized Money getTotalVoucherPayments() {
@@ -124,7 +124,7 @@ public class PurchaseController {
 	}
 
 	public synchronized Money getMinimumPayableNow() {
-		return getTotalPayment();
+		return getModel().getPayment().getAmount();
 	}
 
 
@@ -356,7 +356,9 @@ public class PurchaseController {
 	public synchronized boolean isFinished() {
 		if (state == paymentResult)
 		{
-			if (paymentEditorController != null)
+			if (getModel().getCorporatePass() != null)
+				return true;
+			else if (paymentEditorController != null)
 				return paymentEditorController.isProcessFinished();
 			return illegalModel;
 		}
@@ -590,8 +592,8 @@ public class PurchaseController {
         else
             result = (result.isLessThan(Money.ZERO) ? Money.ZERO : result);
 
-        getModel().getPayment().setAmount(result);
-        getModel().getPayment().getPaymentInLines().get(0).setAmount(result);
+		getModel().getPayment().setAmount(result);
+		getModel().getPayment().getPaymentInLines().get(0).setAmount(result);
 
         Money totalGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), true);
         Money totalExGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), false);

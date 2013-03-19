@@ -12,7 +12,7 @@
 		<t:delegate to="block:voucher"/>
 		<t:delegate to="block:discount"/>
 		<p><label>Minimum Payable Now</label> <span>
-			<t:output value="purchaseController.totalPayment" format="moneyFormat(purchaseController.totalPayment)"/>
+			<t:output value="purchaseController.minimumPayableNow" format="moneyFormat(purchaseController.minimumPayableNow)"/>
 		</span></p>
 
         <t:delegate to="block:accessPasswordPopup"/>

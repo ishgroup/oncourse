@@ -241,4 +241,14 @@ public abstract class ACheckoutTest extends ServiceTest {
         }
     }
 
+	void assertPayer(Contact expected) {
+		assertEquals(expected.getId(),
+				expected.getId());
+		assertEquals(expected.getId(),
+				expected.getId());
+		assertEquals(expected.getId(),
+				purchaseController.getModel().getPayer().getId());
+	}
+
+
 }

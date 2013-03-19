@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.*;
@@ -107,22 +108,34 @@ public class PurchaseModel {
 
 
     public PaymentIn getPayment() {
-        if (payment == null) {
-            payment = objectContext.newObject(PaymentIn.class);
-            payment.setStatus(PaymentStatus.NEW);
-            payment.setSource(PaymentSource.SOURCE_WEB);
-            payment.setCollege(college);
-
-            PaymentInLine paymentInLine = getObjectContext().newObject(PaymentInLine.class);
-            paymentInLine.setInvoice(getInvoice());
-            paymentInLine.setPaymentIn(payment);
-            paymentInLine.setCollege(college);
-
-        }
+		if (payment == null)
+			payment = createPayment();
         return payment;
     }
 
-    public Money getTotalDiscountAmountIncTax() {
+	void deletePayment()
+	{
+		List<PaymentInLine> paymentInLines = payment.getPaymentInLines();
+		objectContext.deleteObjects(paymentInLines);
+		objectContext.deleteObjects(payment);
+	}
+
+	private PaymentIn createPayment() {
+		PaymentIn payment = objectContext.newObject(PaymentIn.class);
+		payment.setStatus(PaymentStatus.NEW);
+		payment.setSource(PaymentSource.SOURCE_WEB);
+		payment.setType(PaymentType.CREDIT_CARD);
+		payment.setCollege(college);
+		payment.setContact(getPayer());
+
+		PaymentInLine paymentInLine = getObjectContext().newObject(PaymentInLine.class);
+		paymentInLine.setInvoice(getInvoice());
+		paymentInLine.setPaymentIn(payment);
+		paymentInLine.setCollege(college);
+		return payment;
+	}
+
+	public Money getTotalDiscountAmountIncTax() {
         return totalDiscountAmountIncTax;
     }
 

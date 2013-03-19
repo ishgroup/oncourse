@@ -65,8 +65,8 @@ public class PaymentEditorController implements PaymentEditorDelegate {
         if (errors.isEmpty()) {
             PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
             purchaseController.performAction(actionParameter);
-            if (purchaseController.getErrors().isEmpty()) {
-                purchaseController.getModel().getObjectContext().commitChanges();
+            if (purchaseController.getErrors().isEmpty() &&
+					purchaseController.getModel().getCorporatePass() == null) {
                 paymentProcessController.processAction(MAKE_PAYMENT);
             }
         }
