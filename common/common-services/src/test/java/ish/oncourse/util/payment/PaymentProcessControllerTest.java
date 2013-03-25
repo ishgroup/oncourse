@@ -1,8 +1,10 @@
 package ish.oncourse.util.payment;
 
 import ish.common.types.CreditCardType;
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.payment.IPaymentService;
@@ -159,6 +161,8 @@ public class PaymentProcessControllerTest extends ServiceTest {
 		assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.FAILED_CARD_DECLINED, paymentProcessController.getPaymentIn().getStatus());
 		Invoice invoice = paymentProcessController.getPaymentIn().getPaymentInLines().get(0).getInvoice();
         assertFalse("Amount owing should not be empty", Money.isZeroOrEmpty(invoice.getAmountOwing()));
+        Enrolment enrolment = invoice.getInvoiceLines().get(0).getEnrolment();
+        assertEquals("Enrolment status should be final after expiration", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 		assertInvalidActionsForEXPIRED(paymentProcessController);
 		return paymentProcessController;
 	}
