@@ -21,7 +21,11 @@
 				<p>
 					<label>Pay now</label>
 					<span id="cardtotalstring"><t:output value="totalPayment" format="moneyFormat"/><img src="/s/img/visa-mastercard.png" 
-						alt="visa card and master card" /> <img src="/s/img/amex.png" alt="amex" /></span>
+						alt="visa card and master card" />
+						<t:if test="amexAvailable">
+							<img src="/s/img/amex.png" alt="amex" />
+						</t:if>
+					</span>
 				</p>
 				<p>
 					<label for="contact">Payer<em title="${message:message-required}">*</em></label>

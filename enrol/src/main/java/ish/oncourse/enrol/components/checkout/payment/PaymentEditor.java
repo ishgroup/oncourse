@@ -229,4 +229,9 @@ public class PaymentEditor implements IPaymentControlDelegate {
         }
         return payers;
     }
+
+	public boolean isAmexAvailable()
+	{
+		return preferenceController.getServicesAmexEnabled();
+	}
 }
