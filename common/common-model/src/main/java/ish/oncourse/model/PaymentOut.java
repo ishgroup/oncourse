@@ -71,14 +71,45 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 		return PaymentSource.SOURCE_WEB.getDatabaseValue() + getId();
 	}
 
-	/* (non-Javadoc)
-	 * @see ish.oncourse.model.auto._PaymentOut#setStatus(ish.common.types.PaymentStatus)
-	 */
 	@Override
 	public void setStatus(final PaymentStatus status) {
-		if (getStatus() != null && PaymentStatus.STATUSES_FINAL.contains(getStatus()) && !getStatus().equals(status)) {
-			// if payment already in this states there is no reason to change it
-			throw new IllegalArgumentException("Can not change payment status from" + getStatus() + " to " + status);
+		if (getStatus() == null) {
+			//nothing to check
+		} else {
+			switch (getStatus()) {
+			case NEW:
+				if (status == null) {
+					throw new IllegalArgumentException("Can't set the empty paymentout status!");
+				}
+				break;
+			case QUEUED:
+				if (status == null || PaymentStatus.NEW.equals(status)) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status!", status, getStatus()));
+				}
+				break;
+			case IN_TRANSACTION:
+			case CARD_DETAILS_REQUIRED:
+				if (status == null || PaymentStatus.NEW.equals(status) || PaymentStatus.QUEUED.equals(status)) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status!", status, getStatus()));
+				}
+				break;
+			case SUCCESS:
+				if (!(PaymentStatus.SUCCESS.equals(status) || PaymentStatus.STATUS_CANCELLED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status))) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status!", status, getStatus()));
+				}
+				break;
+			case FAILED:
+			case FAILED_CARD_DECLINED:
+			case FAILED_NO_PLACES:
+			case STATUS_CANCELLED:
+			case STATUS_REFUNDED:
+				if (!(getStatus().equals(status))) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status!", status, getStatus()));
+				}
+				break;
+			default:
+				throw new IllegalArgumentException(String.format("Unsupported status %s found for paymentout", status));
+			}
 		}
 		super.setStatus(status);
 	}
