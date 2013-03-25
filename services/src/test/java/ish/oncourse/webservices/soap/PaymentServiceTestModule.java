@@ -19,8 +19,12 @@ import ish.oncourse.services.courseclass.CourseClassService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.discount.DiscountService;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.enrol.EnrolmentServiceImpl;
+import ish.oncourse.services.enrol.IEnrolmentService;
 import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
+import ish.oncourse.services.filestorage.FileStorageAssetService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.html.IPlainTextExtractor;
@@ -81,8 +85,21 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
+import ish.oncourse.webservices.ITransactionGroupProcessor;
+import ish.oncourse.webservices.replication.services.InternalPaymentService;
+import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
+import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
+import ish.oncourse.webservices.replication.v4.builders.ITransactionStubBuilder;
+import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
+import ish.oncourse.webservices.replication.v4.builders.TransactionStubBuilderImpl;
+import ish.oncourse.webservices.replication.v4.builders.WillowStubBuilderImpl;
+import ish.oncourse.webservices.replication.v4.updaters.IWillowUpdater;
+import ish.oncourse.webservices.replication.v4.updaters.WillowUpdaterImpl;
 
+import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.ServiceBuilder;
+import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
@@ -149,6 +166,20 @@ public class PaymentServiceTestModule {
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
+		//this part added for test with manual services invoke
+		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
+		binder.bind(IWillowUpdater.class, WillowUpdaterImpl.class);
+		binder.bind(IWillowStubBuilder.class, WillowStubBuilderImpl.class);
+		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
+		binder.bind(IEnrolmentService.class, EnrolmentServiceImpl.class);
+		binder.bind(ITransactionGroupProcessor.class, new ServiceBuilder<ITransactionGroupProcessor>() {
+			@Override
+			public ITransactionGroupProcessor buildService(ServiceResources res) {
+				return new TransactionGroupProcessorImpl(res.getService(ICayenneService.class), res.getService("WebSiteServiceOverride",
+						IWebSiteService.class), res.getService(IWillowUpdater.class), res.getService(IFileStorageAssetService.class));
+			}
+		}).scope(ScopeConstants.PERTHREAD);
+		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 	}
 	
 	@EagerLoad
