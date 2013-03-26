@@ -170,7 +170,6 @@ public class TestQEFailedPaymentKeepInvoice extends RealWSTransportTest {
 		
 	}
 	
-	//@Ignore
 	@Test
 	public void testQEKeepInvoice() throws Exception {
 		//check that empty queuedRecords
@@ -184,7 +183,7 @@ public class TestQEFailedPaymentKeepInvoice extends RealWSTransportTest {
 		assertTrue("New communication key should be equal to actual", newCommunicationKey.compareTo(getCommunicationKey()) == 0);
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(SupportedVersions.V4);
-		fillV4PaymentStubs(transaction);
+		fillV4PaymentStubsForCases1_4(transaction);
 		//process payment
 		transaction = getPaymentPortType().processPayment((TransactionGroup) transaction);
 		//check the response, validate the data and receive the sessionid
@@ -250,7 +249,15 @@ public class TestQEFailedPaymentKeepInvoice extends RealWSTransportTest {
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
 				PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
-				assertTrue("Payment status should be failed after expiration", PaymentStatus.FAILED.equals(status));
+				assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
+			} else if (stub instanceof GenericEnrolmentStub) {
+				if (stub.getWillowId() == 1l) {
+					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
+					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.SUCCESS, status);
+				} else {
+					assertFalse(String.format("Unexpected Enrolment with id= %s and ststus= %s found in a queue", stub.getWillowId(), 
+						((GenericEnrolmentStub)stub).getStatus()), true);
+				}
 			}
 		}
 		//logout

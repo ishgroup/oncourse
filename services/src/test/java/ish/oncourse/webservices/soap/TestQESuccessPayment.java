@@ -123,7 +123,7 @@ public class TestQESuccessPayment extends RealWSTransportTest {
 		assertTrue("New communication key should be equal to actual", newCommunicationKey.compareTo(getCommunicationKey()) == 0);
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(SupportedVersions.V4);
-		fillV4PaymentStubs(transaction);
+		fillV4PaymentStubsForCases1_4(transaction);
 		//process payment
 		transaction = getPaymentPortType().processPayment((TransactionGroup) transaction);
 		//check the response, validate the data and receive the sessionid

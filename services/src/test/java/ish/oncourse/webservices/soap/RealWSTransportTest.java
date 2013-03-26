@@ -47,6 +47,7 @@ import org.junit.After;
 import org.junit.Before;
 
 public abstract class RealWSTransportTest extends AbstractTransportTest {
+	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessDataset.xml";
 	protected static final String V4_PAYMENT_ENDPOINT_PATH = TestServer.DEFAULT_CONTEXT_PATH + "/v4/payment";
 	protected static final String V4_REPLICATION_ENDPOINT_PATH = TestServer.DEFAULT_CONTEXT_PATH + "/v4/replication";
 	protected static final String V4_REPLICATION_WSDL = "wsdl/v4_replication.wsdl";
@@ -90,13 +91,17 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		stopServer(getServer());
 	}
 	
+	protected String getDataSetFile() {
+		return DEFAULT_DATASET_XML;
+	}
+	
 	@Before
 	public void setup() throws Exception {
 		initTestServer();
 		serviceTest = new ServiceTest();
 		serviceTest.initTest("ish.oncourse.webservices", "services", PaymentServiceTestModule.class);
 		tester = serviceTest.getPageTester();
-		InputStream st = RealWSTransportTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/QEProcessDataset.xml");
+		InputStream st = RealWSTransportTest.class.getClassLoader().getResourceAsStream(getDataSetFile());
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
         DataSource onDataSource = ServiceTest.getDataSource("jdbc/oncourse");
         DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
@@ -115,7 +120,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		after();
 	}
 		
-	protected void fillV4PaymentStubs(GenericTransactionGroup transaction) {
+	protected void fillV4PaymentStubsForCases1_4(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
@@ -179,6 +184,69 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		//link the invoiceLine with enrolment
 		invoiceLineStub.setEnrolmentId(enrolmentStub.getAngelId());
 		stubs.add(enrolmentStub);
+		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
+	}
+	
+	protected void fillV4PaymentStubsForCases5_6(GenericTransactionGroup transaction) {
+		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		final Money hundredDollars = new Money("100.00");
+		final Date current = new Date();
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInStub();
+		paymentInStub.setAngelId(1l);
+		paymentInStub.setAmount(hundredDollars.multiply(2).toBigDecimal());
+		paymentInStub.setContactId(1l);
+		paymentInStub.setCreated(current);
+		paymentInStub.setModified(current);
+		paymentInStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		paymentInStub.setStatus(PaymentStatus.IN_TRANSACTION.getDatabaseValue());
+		paymentInStub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
+		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
+		stubs.add(paymentInStub);
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceStub();
+		invoiceStub.setContactId(1l);
+		invoiceStub.setAmountOwing(hundredDollars.toBigDecimal());
+		invoiceStub.setAngelId(1l);
+		invoiceStub.setCreated(current);
+		invoiceStub.setDateDue(current);
+		invoiceStub.setEntityIdentifier(INVOICE_IDENTIFIER);
+		invoiceStub.setInvoiceDate(current);
+		invoiceStub.setInvoiceNumber(123l);
+		invoiceStub.setModified(current);
+		invoiceStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
+		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
+		stubs.add(invoiceStub);
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		paymentLineStub.setAngelId(1l);
+		paymentLineStub.setAmount(paymentInStub.getAmount());
+		paymentLineStub.setCreated(current);
+		paymentLineStub.setEntityIdentifier(PAYMENT_LINE_IDENTIFIER);
+		paymentLineStub.setInvoiceId(invoiceStub.getAngelId());
+		paymentLineStub.setModified(current);
+		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
+		stubs.add(paymentLineStub);
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLine2Stub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		paymentLineStub.setAngelId(2l);
+		paymentLineStub.setAmount(hundredDollars.toBigDecimal());
+		paymentLineStub.setCreated(current);
+		paymentLineStub.setEntityIdentifier(PAYMENT_LINE_IDENTIFIER);
+		paymentLineStub.setInvoiceId(10l);
+		paymentLineStub.setModified(current);
+		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
+		stubs.add(paymentLine2Stub);
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invoiceLineStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub();
+		invoiceLineStub.setAngelId(1l);
+		invoiceLineStub.setCreated(current);
+		invoiceLineStub.setDescription(StringUtils.EMPTY);
+		invoiceLineStub.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub.setInvoiceId(invoiceStub.getAngelId());
+		invoiceLineStub.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub.setModified(current);
+		invoiceLineStub.setPriceEachExTax(invoiceStub.getAmountOwing());
+		invoiceLineStub.setQuantity(BigDecimal.ONE);
+		invoiceLineStub.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub);
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
 	
