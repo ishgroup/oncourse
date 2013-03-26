@@ -187,7 +187,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
 	
-	protected void fillV4PaymentStubsForCases5_6(GenericTransactionGroup transaction) {
+	protected void fillV4PaymentStubsForCase5(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
@@ -218,7 +218,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		stubs.add(invoiceStub);
 		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
 		paymentLineStub.setAngelId(1l);
-		paymentLineStub.setAmount(paymentInStub.getAmount());
+		paymentLineStub.setAmount(hundredDollars.toBigDecimal());
 		paymentLineStub.setCreated(current);
 		paymentLineStub.setEntityIdentifier(PAYMENT_LINE_IDENTIFIER);
 		paymentLineStub.setInvoiceId(invoiceStub.getAngelId());
@@ -226,13 +226,13 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLineStub);
 		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLine2Stub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
-		paymentLineStub.setAngelId(2l);
-		paymentLineStub.setAmount(hundredDollars.toBigDecimal());
-		paymentLineStub.setCreated(current);
-		paymentLineStub.setEntityIdentifier(PAYMENT_LINE_IDENTIFIER);
-		paymentLineStub.setInvoiceId(10l);
-		paymentLineStub.setModified(current);
-		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
+		paymentLine2Stub.setAngelId(2l);
+		paymentLine2Stub.setAmount(hundredDollars.toBigDecimal());
+		paymentLine2Stub.setCreated(current);
+		paymentLine2Stub.setEntityIdentifier(PAYMENT_LINE_IDENTIFIER);
+		paymentLine2Stub.setInvoiceId(10l);
+		paymentLine2Stub.setModified(current);
+		paymentLine2Stub.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLine2Stub);
 		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invoiceLineStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub();
 		invoiceLineStub.setAngelId(1l);

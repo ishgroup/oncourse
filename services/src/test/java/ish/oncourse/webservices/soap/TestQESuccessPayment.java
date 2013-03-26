@@ -113,7 +113,7 @@ public class TestQESuccessPayment extends RealWSTransportTest {
 	@Test
 	public void testSuccessQE() throws Exception {
 		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();//TODO: fix me in 17088
+		ObjectContext context = cayenneService.newNonReplicatingContext();//TODO: fix me in 17088 
 		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
 		//authenticate first
 		Long oldCommunicationKey = getCommunicationKey();

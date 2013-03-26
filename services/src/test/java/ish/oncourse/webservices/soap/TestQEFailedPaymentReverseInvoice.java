@@ -213,7 +213,7 @@ public class TestQEFailedPaymentReverseInvoice extends RealWSTransportTest {
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertTrue("Queue should contain 12 records.", queuedRecords.size() == 12);
+		assertEquals("Queue should contain 12 records.", 12, queuedRecords.size());
 		int isPaymentFound = 0, isPaymentLineFound = 0, isInvoiceFound = 0, isInvoiceLineFound = 0, isEnrolmentFound = 0, isContactFound = 0, 
 			isStudentFound = 0;
 		for (QueuedRecord record : queuedRecords) {
@@ -242,19 +242,19 @@ public class TestQEFailedPaymentReverseInvoice extends RealWSTransportTest {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
 			}
 		}
-		assertEquals("Not all PaymentIns found in a queue", Integer.valueOf(2), Integer.valueOf(isPaymentFound));
-		assertEquals("Not all PaymentInLines found in a queue", Integer.valueOf(3), Integer.valueOf(isPaymentLineFound));
-		assertEquals("Not all Invoices found in a queue", Integer.valueOf(2), Integer.valueOf(isInvoiceFound));
-		assertEquals("Not all InvoiceLines found in a  queue", Integer.valueOf(2), Integer.valueOf(isInvoiceLineFound));
-		assertEquals("Enrolment not found in a queue", Integer.valueOf(1), Integer.valueOf(isEnrolmentFound));
-		assertEquals("Contact not found in a queue", Integer.valueOf(1), Integer.valueOf(isContactFound));
-		assertEquals("Student not found in a queue", Integer.valueOf(1), Integer.valueOf(isStudentFound));
+		assertEquals("Not all PaymentIns found in a queue", 2, isPaymentFound);
+		assertEquals("Not all PaymentInLines found in a queue", 3, isPaymentLineFound);
+		assertEquals("Not all Invoices found in a queue", 2, isInvoiceFound);
+		assertEquals("Not all InvoiceLines found in a  queue", 2, isInvoiceLineFound);
+		assertEquals("Enrolment not found in a queue", 1, isEnrolmentFound);
+		assertEquals("Contact not found in a queue", 1, isContactFound);
+		assertEquals("Student not found in a queue", 1, isStudentFound);
 		
 		//check the status via service when processing complete
 		transaction = getPaymentPortType().getPaymentStatus(sessionId);
 		assertFalse("Get status call should not return empty response for payment in final status", 
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertTrue("11 elements should be replicated for this payment", transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size() == 16);
+		assertEquals("16 elements should be replicated for this payment", 16, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
@@ -265,16 +265,8 @@ public class TestQEFailedPaymentReverseInvoice extends RealWSTransportTest {
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.SUCCESS, status);
 				} else {
-					assertFalse(String.format("Unexpected PaymentIn with id= %s and ststus= %s found in a queue", stub.getWillowId(), 
+					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(), 
 						((GenericPaymentInStub) stub).getStatus()), true);
-				}
-			} else if (stub instanceof GenericEnrolmentStub) {
-				if (stub.getWillowId() == 1l) {
-					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
-					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.FAILED, status);
-				} else {
-					assertFalse(String.format("Unexpected Enrolment with id= %s and ststus= %s found in a queue", stub.getWillowId(), 
-						((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			}
 		}
