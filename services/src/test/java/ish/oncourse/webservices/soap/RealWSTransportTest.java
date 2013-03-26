@@ -187,7 +187,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
 	
-	protected void fillV4PaymentStubsForCase5(GenericTransactionGroup transaction) {
+	protected void fillV4PaymentStubsForCase5_6(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
