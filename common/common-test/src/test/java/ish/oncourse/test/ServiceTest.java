@@ -6,6 +6,7 @@ import org.apache.tapestry5.test.PageTester;
 import org.junit.After;
 
 import javax.sql.DataSource;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -14,7 +15,15 @@ public class ServiceTest {
 	private PageTester tester;
 
 	public void initTest(String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
-        tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
+		/**
+		 * The workaround is used to exclude
+		 * "org.apache.commons.dbcp.SQLNestedException:
+		 * Cannot create JDBC driver of class 'org.apache.derby.jdbc.EmbeddedDriver'
+		 * or connect URL 'jdbc:derby:memory:oncourse;create=true'" exception for
+		 * few junits tests which uses embedded jetty server (QEProcessTest fro example)
+		 */
+		DriverManager.registerDriver(new org.apache.derby.jdbc.EmbeddedDriver());
+		tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
 		ContextUtils.setupDataSources();
 	}
 	
