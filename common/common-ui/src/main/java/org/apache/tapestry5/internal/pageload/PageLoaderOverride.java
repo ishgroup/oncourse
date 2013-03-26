@@ -1,11 +1,8 @@
 package org.apache.tapestry5.internal.pageload;
 
+import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
-import org.apache.tapestry5.Binding;
-import org.apache.tapestry5.BindingConstants;
-import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.MarkupWriter;
-import org.apache.tapestry5.SymbolConstants;
+import org.apache.tapestry5.*;
 import org.apache.tapestry5.internal.InternalComponentResources;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.internal.bindings.LiteralBinding;
@@ -16,7 +13,6 @@ import org.apache.tapestry5.internal.util.MultiKey;
 import org.apache.tapestry5.ioc.Invokable;
 import org.apache.tapestry5.ioc.Location;
 import org.apache.tapestry5.ioc.OperationTracker;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
@@ -194,19 +190,10 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
         });
     }
 
-    private MultiKey getMultiKeyBy(String className, Locale locale)
-    {
-        String template = (String) request.getAttribute(TextileUtil.TEMPLATE_FILE_NAME_PARAM);
-        //we should use anouther key to cache ComponentAssembler for component when user defines custom template
-        if (template != null)
-             return new MultiKey(className, template, locale, request.getServerName());
-        else
-            return new MultiKey(className, locale, request.getServerName());
-    }
-
     public ComponentAssembler getAssembler(String className, Locale locale)
     {
-    	MultiKey key = getMultiKeyBy(className, locale);
+		CustomTemplateDefinition ctd = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
+    	MultiKey key = CustomTemplateDefinition.getMultiKeyBy(className, ctd, request.getServerName(), locale);
 
         ComponentAssembler result = cache.get(key);
 

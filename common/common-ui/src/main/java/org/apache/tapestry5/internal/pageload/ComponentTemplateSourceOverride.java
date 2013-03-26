@@ -5,15 +5,9 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
+import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.ui.template.T5FileResource;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.TapestryConstants;
 import org.apache.tapestry5.internal.event.InvalidationEventHubImpl;
@@ -34,6 +28,13 @@ import org.apache.tapestry5.services.InvalidationEventHub;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.UpdateListener;
 import org.apache.tapestry5.services.templates.ComponentTemplateLocator;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 
 /**
  * Service implementation that manages a cache of parsed component templates.
@@ -127,11 +128,11 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
         String componentName = componentModel.getComponentClassName();
 
         //it reads templateFileName attribute to get user defined template.
-        String templateFileName = (String) request.getAttribute(TextileUtil.TEMPLATE_FILE_NAME_PARAM);
+        CustomTemplateDefinition ctd  = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
         //we need reset the attribute to exclude effect to other pages/components
-        request.setAttribute(TextileUtil.TEMPLATE_FILE_NAME_PARAM, null);
+        request.setAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION, null);
         //we should use anouther key to cache Resource for component when user defines custom template
-        MultiKey key = getMultiKeyBy(componentName, templateFileName, locale);
+        MultiKey key = CustomTemplateDefinition.getMultiKeyBy(componentName, ctd, request.getServerName(), locale);
 
         // First cache is key to resource.
 
@@ -139,9 +140,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 
         if (resource == null) {
 
-            if (resource == null) {
-                resource = locateSiteTemplateResource(componentModel, templateFileName, locale);
-            }
+			resource = locateSiteTemplateResource(componentModel, ctd, locale);
 
             if (resource != null) {
                 templateResources.put(key, resource);
@@ -158,16 +157,6 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
         }
 
         return result;
-    }
-
-    private MultiKey getMultiKeyBy(String componentName, String templateFileName, Locale locale) {
-        MultiKey key;
-
-        if (templateFileName != null)
-            key = new MultiKey(componentName, templateFileName, locale, request.getServerName());
-        else
-            key = new MultiKey(componentName, locale, request.getServerName());
-        return key;
     }
 
 	private ComponentTemplate parseTemplate(Resource r) {
@@ -208,7 +197,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 		return initialModel.getBaseResource().withExtension(TapestryConstants.TEMPLATE_EXTENSION);
 	}
 
-	private Resource locateSiteTemplateResource(ComponentModel model, String templateFileName, Locale locale) {
+	private Resource locateSiteTemplateResource(ComponentModel model, CustomTemplateDefinition ctd, Locale locale) {
 
 		String componentName = model.getComponentClassName();
 
@@ -245,11 +234,11 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 			if (layoutKey != null) {
 
                 PrivateResource resource = null;
-                if (templateFileName != null)
+                if (ctd != null && model.getComponentClassName().endsWith(ctd.getTemplateClassName()))
                 {
-                    LOGGER.debug(String.format("Try to load user defined template %s override for %s.",templateFileName,
+                    LOGGER.debug(String.format("Try to load user defined template %s override for %s.",ctd.getTemplateFileName(),
                             templateFile));
-                    resource = resourceService.getTemplateResource(layoutKey, templateFileName);
+                    resource = resourceService.getTemplateResource(layoutKey, ctd.getTemplateFileName());
                 }
 
                 if (resource == null || !resource.exists())

@@ -11,7 +11,7 @@ public class TextileUtil {
     /**
      * an user can define custom template file name for any component or page
      */
-    public static final String TEMPLATE_FILE_NAME_PARAM = "templateFileName";
+    public static final String CUSTOM_TEMPLATE_DEFINITION = "customTemplateDefinition";
 
 
     public static final String TEXTILE_REGEXP = "(\\{((block)|(course)|(courses)|(tags)|(page)|(video)|(image)|(attachment))([^}]*)})|(\\{form([^}]*)}.+?(((\\{text([^}]*)})|(\\{radiolist([^}]*)})|(\\{popuplist([^}]*)})).+?)*(\\{form}))";

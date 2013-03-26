@@ -1,8 +1,6 @@
 package ish.oncourse.util;
 
-import java.util.Locale;
-import java.util.Map;
-
+import ish.oncourse.services.textile.TextileUtil;
 import org.apache.tapestry5.dom.MarkupModel;
 import org.apache.tapestry5.internal.services.PageLoader;
 import org.apache.tapestry5.internal.structure.Page;
@@ -10,6 +8,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.Response;
+
+import java.util.Locale;
+import java.util.Map;
 
 public class PageRenderer implements IPageRenderer {
 
@@ -24,6 +25,7 @@ public class PageRenderer implements IPageRenderer {
 
 	public String renderPage(String pageName, Map<String, Object> parameters) {
 		Request request = requestGlobals.getRequest();
+		request.setAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION, null);
 		for (String key : parameters.keySet()) {
 			request.setAttribute(key, parameters.get(key));
 		}

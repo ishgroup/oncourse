@@ -2,6 +2,7 @@ package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.TagsTextileAttributes;
@@ -16,14 +17,14 @@ import java.util.regex.Pattern;
 
 /**
  * Displays a tree of tags links
- * 
+ * <p/>
  * <pre>
- * <p>Example:</p> 
+ * <p>Example:</p>
  * <br/>
- * {tags maxLevels:&quot;3&quot; isShowDetail:&quot;false&quot; 
- *  hideTopLevel:&quot;true&quot; name:&quot;/Subjects/tag&quot; } 
- * 
- * 
+ * {tags maxLevels:&quot;3&quot; isShowDetail:&quot;false&quot;
+ *  hideTopLevel:&quot;true&quot; name:&quot;/Subjects/tag&quot; }
+ *
+ *
  * <p>Description:</p>
  * <ul>
  * <li>name - Optional. Defines the path to a tag. The full path to the tag must be specified. e.g. "/Subjects/Leisure/Arts and Craft" and will display all child tags including the specified tag.</li>
@@ -39,7 +40,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 	private ITagService tagService;
 
 	private IPageRenderer pageRenderer;
-	
+
 	private ITextileConverter converter;
 
 	public TagsTextileRenderer(final ITagService tagService, final IPageRenderer pageRenderer, final ITextileConverter converter) {
@@ -50,9 +51,8 @@ public class TagsTextileRenderer extends AbstractRenderer {
 	}
 
 	/**
-	 * 
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see ish.oncourse.services.textile.renderer.AbstractRenderer#render(java.lang.String,
 	 *      ish.oncourse.util.ValidationErrors)
 	 */
@@ -69,7 +69,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 					.getValue());
 			String hideTopLevel = tagParams.get(TagsTextileAttributes.TAGS_HIDE_TOP_LEVEL
 					.getValue());
-            String templateFileName = tagParams.get(TagsTextileAttributes.TAGS_TEMPLATE_FILE_NAME.getValue());
+			String templateFileName = tagParams.get(TagsTextileAttributes.TAGS_TEMPLATE_FILE_NAME.getValue());
 
 			Tag parentTag = null;
 			Tag rootTag = tagService.getSubjectsTag();
@@ -88,7 +88,15 @@ public class TagsTextileRenderer extends AbstractRenderer {
 						Boolean.valueOf(showDetails));
 				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM,
 						Boolean.valueOf(hideTopLevel));
-                parameters.put(TextileUtil.TEMPLATE_FILE_NAME_PARAM, templateFileName);
+
+				if (templateFileName != null) {
+					CustomTemplateDefinition
+							ctd = new CustomTemplateDefinition();
+					ctd.setTemplateClassName("TagItem");
+					ctd.setTemplateFileName(templateFileName);
+					parameters.put(TextileUtil.CUSTOM_TEMPLATE_DEFINITION, ctd);
+				}
+
 				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_TAGS_PAGE, parameters);
 				//if any additional compilation required need to analyze this and apply. 
 				Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);
