@@ -86,7 +86,7 @@ public class Login {
     }
 
     private URL getLoginUrl() throws MalformedURLException {
-        return new URL(HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath());
+        return new URL(HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + "/");
     }
 
     private URL getSiteUrl() throws MalformedURLException {
