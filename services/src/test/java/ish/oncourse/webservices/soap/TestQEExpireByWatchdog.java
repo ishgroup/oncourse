@@ -15,8 +15,6 @@ import ish.oncourse.model.InvoiceLineDiscount;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
 import ish.oncourse.webservices.replication.services.PortHelper;
@@ -27,10 +25,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
-import java.io.InputStream;
 import java.util.List;
-
-import javax.sql.DataSource;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
@@ -39,67 +34,13 @@ import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.dom.Node;
 import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.services.Session;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestQEExpireByWatchdog extends RealWSTransportTest {
-	private static TestServer server;
 	
 	@Override
-	protected TestServer getServer() {
-		return server;
-	}
-	
-	//@BeforeClass
-	public static void before() throws Exception {
-		startRealWSServer();
-	}
-	
-	private static void startRealWSServer() throws Exception {
-		server = new TestServer(9092, TestServer.DEFAULT_CONTEXT_PATH, "src/main/webapp/WEB-INF", TestServer.DEFAULT_HOST, 
-			"src/main", TestServer.DEFAULT_WEB_XML_FILE_PATH);
-		server.start();
-	} 
-
-	//@AfterClass
-	public static void after() throws Exception {
-		System.out.println("stop the server");
-		stopServer(server);
-	}
-	
-	@Before
-	public void setup() throws Exception {
-		before();
-		serviceTest = new ServiceTest();
-		serviceTest.initTest("ish.oncourse.webservices", "services", PaymentServiceTestModule.class);
-		tester = serviceTest.getPageTester();
-		InputStream st = RealWSTransportTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/QEProcessDataset.xml");
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-        DataSource onDataSource = ServiceTest.getDataSource("jdbc/oncourse");
-        DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
-        dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
-        cayenneService = serviceTest.getService(ICayenneService.class);
-	}
-	
-	/**
-	 * Cleanup required to prevent test fail on before database cleanup.
-	 * @throws Exception 
-	 */
-	@After
-	public void cleanup() throws Exception {
-		//after();
-		System.out.println("cleanup the database");
-		serviceTest.cleanup();
+	protected void initTestServer() throws Exception {
+		server = startRealWSServer(9092);
 	}
 	
 	private void testRenderPaymentPageForExpiration(String sessionId) {
@@ -149,7 +90,6 @@ public class TestQEExpireByWatchdog extends RealWSTransportTest {
 		assertEquals("Unexpected message", "This payment was cancelled.", failedMessage.toString());
 	}
 	
-	@Ignore
 	@Test
 	public void testExpireQEByWatchdog() throws Exception {
 		//check that empty queuedRecords

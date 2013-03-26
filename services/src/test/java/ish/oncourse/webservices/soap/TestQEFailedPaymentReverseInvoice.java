@@ -39,14 +39,14 @@ import org.apache.tapestry5.internal.test.TestableResponse;
 import org.apache.tapestry5.services.Session;
 import org.junit.Test;
 
-public class TestQEFailedPaymentKeepInvoice extends RealWSTransportTest {
-	
+public class TestQEFailedPaymentReverseInvoice extends RealWSTransportTest {
+		
 	@Override
 	protected void initTestServer() throws Exception {
-		server = startRealWSServer(9093);
+		server = startRealWSServer(9095);
 	}
 	
-	private void testRenderPaymentPageWithKeepInvoice(String sessionId) {
+	private void testRenderPaymentPageWithReverseInvoice(String sessionId) {
 		assertNotNull("Session id should not be null", sessionId);
 		Document doc = tester.renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
@@ -130,11 +130,11 @@ public class TestQEFailedPaymentKeepInvoice extends RealWSTransportTest {
 		//fire keep invoice
 		Element paymentResultForm = doc.getElementById("paymentResultForm");
 		assertNotNull("Payment result form should be visible ", paymentResultForm);
-		Element keepInvoiceButton = paymentResultForm.getElementById("abandonAndKeep");
-		assertNotNull("Payment result form keep invoice submit should be available", keepInvoiceButton);
+		Element reverseInvoiceButton = paymentResultForm.getElementById("abandonReverse");
+		assertNotNull("Payment result form reverse invoice submit should be available", reverseInvoiceButton);
 		
 		//submit the data
-		response = tester.clickSubmitAndReturnResponse(keepInvoiceButton, new HashMap<String, String>());
+		response = tester.clickSubmitAndReturnResponse(reverseInvoiceButton, new HashMap<String, String>());
 		assertNotNull("response should not be empty", response);
 		System.out.println(response.getRedirectURL());
 		
@@ -170,9 +170,8 @@ public class TestQEFailedPaymentKeepInvoice extends RealWSTransportTest {
 		
 	}
 	
-	//@Ignore
 	@Test
-	public void testQEKeepInvoice() throws Exception {
+	public void testQEReverseInvoice() throws Exception {
 		//check that empty queuedRecords
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
@@ -184,7 +183,7 @@ public class TestQEFailedPaymentKeepInvoice extends RealWSTransportTest {
 		assertTrue("New communication key should be equal to actual", newCommunicationKey.compareTo(getCommunicationKey()) == 0);
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(SupportedVersions.V4);
-		fillV4PaymentStubs(transaction);
+		fillV4PaymentStubs(transaction);		
 		//process payment
 		transaction = getPaymentPortType().processPayment((TransactionGroup) transaction);
 		//check the response, validate the data and receive the sessionid
@@ -209,48 +208,66 @@ public class TestQEFailedPaymentKeepInvoice extends RealWSTransportTest {
 		assertTrue("Get status call should return empty response for in transaction payment", 
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		//call page processing
-		testRenderPaymentPageWithKeepInvoice(sessionId);
+		testRenderPaymentPageWithReverseInvoice(sessionId);
 		//check that async replication works correct
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertTrue("Queue should contain 5 records.", queuedRecords.size() == 5 );
-		boolean isPaymentFound = false, isPaymentLineFound = false, isInvoiceFound = false, isInvoiceLineFound = false, isEnrolmentDound = false;
+		assertTrue("Queue should contain 12 records.", queuedRecords.size() == 12);
+		int isPaymentFound = 0, isPaymentLineFound = 0, isInvoiceFound = 0, isInvoiceLineFound = 0, isEnrolmentFound = 0, isContactFound = 0, 
+			isStudentFound = 0;
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 1 paymentIn should exist in a queue", isPaymentFound);
-				isPaymentFound = true;
+				assertFalse("Only 2 paymentIn should exist in a queue", isPaymentFound >= 2);
+				isPaymentFound++;
 			} else if (PAYMENT_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 1 paymentInLine should exist in a queue", isPaymentLineFound);
-				isPaymentLineFound = true;
+				assertFalse("Only 3 paymentInLine should exist in a queue", isPaymentLineFound >= 3);
+				isPaymentLineFound++;
 			} else if (INVOICE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 1 invoice should exist in a queue", isInvoiceFound);
-				isInvoiceFound = true;
+				assertFalse("Only 2 invoice should exist in a queue", isInvoiceFound >= 2);
+				isInvoiceFound++;
 			} else if (INVOICE_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 1 invoiceLine should exist in a queue", isInvoiceLineFound);
-				isInvoiceLineFound = true;
+				assertFalse("Only 2 invoiceLine should exist in a queue", isInvoiceLineFound >= 2);
+				isInvoiceLineFound++;
 			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 1 enrolment should exist in a queue", isEnrolmentDound);
-				isEnrolmentDound = true;
+				assertFalse("Only 1 enrolment should exist in a queue", isEnrolmentFound >= 1);
+				isEnrolmentFound++;
+			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				assertFalse("Only 1 contact should exist in a queue", isContactFound >= 1);
+				isContactFound++;
+			} else if (STUDENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				assertFalse("Only 1 student should exist in a queue", isStudentFound >= 1);
+				isStudentFound++;
 			} else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
 			}
 		}
-		assertTrue("Payment not found in a queue", isPaymentFound);
-		assertTrue("Payment line not found in a queue", isPaymentLineFound);
-		assertTrue("Invoice not found in a queue", isInvoiceFound);
-		assertTrue("Invoice line not found in a  queue", isInvoiceLineFound);
-		assertTrue("Enrolment not found in a queue", isEnrolmentDound);
+		assertEquals("Not all PaymentIns found in a queue", Integer.valueOf(2), Integer.valueOf(isPaymentFound));
+		assertEquals("Not all PaymentInLines found in a queue", Integer.valueOf(3), Integer.valueOf(isPaymentLineFound));
+		assertEquals("Not all Invoices found in a queue", Integer.valueOf(2), Integer.valueOf(isInvoiceFound));
+		assertEquals("Not all InvoiceLines found in a  queue", Integer.valueOf(2), Integer.valueOf(isInvoiceLineFound));
+		assertEquals("Enrolment not found in a queue", Integer.valueOf(1), Integer.valueOf(isEnrolmentFound));
+		assertEquals("Contact not found in a queue", Integer.valueOf(1), Integer.valueOf(isContactFound));
+		assertEquals("Student not found in a queue", Integer.valueOf(1), Integer.valueOf(isStudentFound));
+		
 		//check the status via service when processing complete
 		transaction = getPaymentPortType().getPaymentStatus(sessionId);
 		assertFalse("Get status call should not return empty response for payment in final status", 
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertTrue("11 elements should be replicated for this payment", transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size() == 11);
+		assertTrue("11 elements should be replicated for this payment", transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size() == 16);
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
-				PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
-				assertTrue("Payment status should be failed after expiration", PaymentStatus.FAILED.equals(status));
+				if (stub.getWillowId() == 1l) {
+					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
+					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED, status);
+				} else if (stub.getWillowId() == 2l) {
+					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
+					assertEquals("Payment status should be failed after expiration", PaymentStatus.SUCCESS, status);
+				} else {
+					assertFalse(String.format("Unexpected PaymentIn with id= %s and ststus= %s found in a queue", stub.getWillowId(), 
+						((GenericPaymentInStub) stub).getStatus()), true);
+				}
 			}
 		}
 		//logout

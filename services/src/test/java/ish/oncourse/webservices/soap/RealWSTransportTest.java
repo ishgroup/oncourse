@@ -10,11 +10,13 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.soap.v4.PaymentPortType;
@@ -22,11 +24,13 @@ import ish.oncourse.webservices.soap.v4.ReplicationPortType;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
 
 import org.apache.cayenne.ObjectContext;
@@ -34,6 +38,13 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.test.PageTester;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
+import org.junit.Before;
 
 public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected static final String V4_PAYMENT_ENDPOINT_PATH = TestServer.DEFAULT_CONTEXT_PATH + "/v4/payment";
@@ -52,10 +63,57 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected static final String PAYMENT_LINE_IDENTIFIER = PaymentInLine.class.getSimpleName();
 	protected static final String INVOICE_IDENTIFIER = Invoice.class.getSimpleName();
 	protected static final String PAYMENT_IDENTIFIER = PaymentIn.class.getSimpleName();
+	protected static final String CONTACT_IDENTIFIER = Contact.class.getSimpleName();
+	protected static final String STUDENT_IDENTIFIER = Student.class.getSimpleName();
 	
 	protected ServiceTest serviceTest;
 	protected PageTester tester;
 	protected ICayenneService cayenneService;
+	
+	protected TestServer server;
+	
+	@Override
+	protected TestServer getServer() {
+		return server;
+	}
+	
+	protected abstract void initTestServer() throws Exception;
+	
+	protected TestServer startRealWSServer(int port) throws Exception {
+		TestServer server = new TestServer(port, TestServer.DEFAULT_CONTEXT_PATH, "src/main/webapp/WEB-INF", TestServer.DEFAULT_HOST, 
+			"src/main", TestServer.DEFAULT_WEB_XML_FILE_PATH);
+		server.start();
+		return server;
+	} 
+
+	protected void after() throws Exception {
+		stopServer(getServer());
+	}
+	
+	@Before
+	public void setup() throws Exception {
+		initTestServer();
+		serviceTest = new ServiceTest();
+		serviceTest.initTest("ish.oncourse.webservices", "services", PaymentServiceTestModule.class);
+		tester = serviceTest.getPageTester();
+		InputStream st = RealWSTransportTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/QEProcessDataset.xml");
+        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
+        DataSource onDataSource = ServiceTest.getDataSource("jdbc/oncourse");
+        DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
+        dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
+        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
+        cayenneService = serviceTest.getService(ICayenneService.class);
+	}
+	
+	/**
+	 * Cleanup required to prevent test fail on before database cleanup.
+	 * @throws Exception 
+	 */
+	@After
+	public void cleanup() throws Exception {
+		serviceTest.cleanup();
+		after();
+	}
 		
 	protected void fillV4PaymentStubs(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
