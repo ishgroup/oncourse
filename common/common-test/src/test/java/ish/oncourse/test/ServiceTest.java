@@ -48,10 +48,6 @@ public class ServiceTest {
 		return ContextUtils.getDataSource(location);
 	}
 
-	public static void cleanDataSource(DataSource dataSource) throws Exception {
-		DerbyUtils.cleanDatabase(dataSource.getConnection(), false);
-	}
-
 	public static void cleanDataSources() throws Exception {
         BasicDataSource dataSource = (BasicDataSource)getDataSource("jdbc/oncourse");
         dataSource.close();
