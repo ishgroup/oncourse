@@ -22,16 +22,23 @@ import static org.junit.Assert.assertNotNull;
  */
 public class WebServicesTransportTest extends AbstractTransportTest {
 
+	private static TestServer server;
+
 	@BeforeClass
 	public static void before() throws Exception {
-		startServer();
+		server = startServer();
 	}
 
 	@AfterClass
 	public static void after() throws Exception {
-		stopServer();
+		stopServer(server);
 	}
 	
+	@Override
+	protected TestServer getServer() {
+		return server;
+	}
+
 	@Test
 	public void testReplicationPortType_authenticate() throws Exception {
 

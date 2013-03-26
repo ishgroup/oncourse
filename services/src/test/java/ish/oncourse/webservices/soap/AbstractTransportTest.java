@@ -40,30 +40,33 @@ public abstract class AbstractTransportTest {
 
 	public static final long DEFAULT_TIMEOUT = 1000l * 60 * 5;
 	public static final long PAYMENT_SERVICE_TIMEOUT = 1000l * 60 * 25;
-	public static  TestServer server;
+	//protected static TestServer server;
 
 	public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v4.stubs.replication";
 	public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v4.stubs.reference";
 
 	
-	protected static void startServer() throws Exception {
+	protected static TestServer startServer() throws Exception {
 		/* please note, in actuality, for multiple tests you will have
 		 to ensure a single version of the server is running only.
 
 		 For each test case, it will invoke start and will give an error.
 		 This is simplified for Blog consumption here only. */
-		server = new TestServer();
+		TestServer server = new TestServer();
 		server.start();
+		return server;
 	}
 	
-	protected static void stopServer() throws Exception {
+	protected abstract TestServer getServer();
+
+	protected static void stopServer(TestServer server) throws Exception {
 		server.stop();
 	}
 
 	public void initPortType(BindingProvider bindingProvider, String url) throws JAXBException {
 		bindingProvider.getRequestContext().put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);
 		bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				String.format("%s%s", server.getServerUrl(), url));
+				String.format("%s%s", getServer().getServerUrl(), url));
 
 		Client client = ClientProxy.getClient(bindingProvider);
 
