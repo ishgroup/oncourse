@@ -62,7 +62,6 @@ public class ServiceTest {
             //ignore
         }
         deleteDbDataSourse.close();
-		//cleanDataSource(getDataSource("jdbc/oncourse"));
 	}
 
 	@After
