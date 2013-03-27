@@ -118,37 +118,17 @@ allprojects {
 	}
 }
 
-apply plugin: 'sonar'
-
-sonar {
-	server {
-		url = "http://sonar.ish.com.au"
-	}
-	database {
-		url = "jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&amp;characterEncoding=utf8"
-		driverClassName = "com.mysql.jdbc.Driver"
-		username = "sonar"
-		password = sonarPassword
-	}
-	project {
-		dynamicAnalysis  = "reuseReports"
-		withProjectProperties { props ->
-			props["sonar.core.codeCoveragePlugin"] = "jacoco"
-			props["sonar.jacoco.reportPath"] = "${buildDir}/jacoco.exec"
-		}
-	}
+apply plugin: "sonar-runner"
+sonarRunner {
+    sonarProperties {
+        property "sonar.host.url", "http://sonar.ish.com.au"
+        property "sonar.jdbc.url", "jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&amp;characterEncoding=utf8"
+        property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+        property "sonar.username", 'sonar'
+        property "sonar.password", sonarPassword // sonar password comes from users gradle.properties file
+    }
 }
 
-subprojects { 
-    configurations {
-        jacoco //Configuration Group used by Sonar to provide Code Coverage using JaCoCo
-    }
-
-    dependencies {
-        jacoco group: "org.jacoco", name: "org.jacoco.agent", version: "0.6.1.201212231917", classifier: "runtime"
-    }
- 
-    test {
-        jvmArgs "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec"
-    }
+task wrapper(type: Wrapper) {
+    gradleVersion = "1.5-rc-3"
 }
