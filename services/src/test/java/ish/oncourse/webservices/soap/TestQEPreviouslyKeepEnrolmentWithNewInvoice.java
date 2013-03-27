@@ -264,7 +264,7 @@ public class TestQEPreviouslyKeepEnrolmentWithNewInvoice extends RealWSTransport
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
 					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.SUCCESS, status);
 				} else {
-					assertFalse(String.format("Unexpected Enrolment with id= %s and ststus= %s found in a queue", stub.getWillowId(), 
+					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(), 
 						((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			}

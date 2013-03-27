@@ -267,7 +267,7 @@ private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap
 						((GenericPaymentInStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
-					assertFalse(String.format("Unexpected Enrolment with id= %s and ststus= %s found in a queue", stub.getWillowId(), 
+					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(), 
 						((GenericEnrolmentStub)stub).getStatus()), true);
 			}
 		}
