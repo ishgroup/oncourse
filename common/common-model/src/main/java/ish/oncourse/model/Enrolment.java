@@ -53,11 +53,6 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ish.oncourse.model.auto._Enrolment#onPrePersist()
-	 */
 	@Override
 	protected void onPrePersist() {
 		onPostAdd();
@@ -110,6 +105,49 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 		}
 		
 		return getStatus() != null && getStatus() != EnrolmentStatus.IN_TRANSACTION && getStatus() != EnrolmentStatus.QUEUED;
+	}
+	
+	@Override
+	public void setStatus(EnrolmentStatus status) {
+		if (getStatus() == null) {
+			//nothing to check
+		} else {
+			switch (getStatus()) {
+			case NEW:
+				if (status == null) {
+					throw new IllegalArgumentException("Can't set the empty enrolment status!");
+				}
+				break;
+			case QUEUED:
+				if (status == null || EnrolmentStatus.NEW.equals(status)) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
+				}
+				break;
+			case IN_TRANSACTION:
+				if (status == null || EnrolmentStatus.NEW.equals(status) || EnrolmentStatus.QUEUED.equals(status)) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
+				}
+				break;
+			case SUCCESS:
+				if (!(EnrolmentStatus.SUCCESS.equals(status) || EnrolmentStatus.CANCELLED.equals(status) || EnrolmentStatus.REFUNDED.equals(status))) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
+				}
+				break;
+			case FAILED:
+			case FAILED_CARD_DECLINED:
+			case FAILED_NO_PLACES:
+			case CANCELLED:
+			case REFUNDED:
+			case CORRUPTED:
+				if (!(getStatus().equals(status))) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
+				}
+				break;
+			default:
+				throw new IllegalArgumentException(String.format("Unsupported status %s found for enrolment", getStatus()));
+			}
+		}
+		super.setStatus(status);
 	}
 
 	@Override

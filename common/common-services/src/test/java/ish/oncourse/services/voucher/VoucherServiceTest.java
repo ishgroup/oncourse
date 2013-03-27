@@ -143,7 +143,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment.setCourseClass(courseClass);
 		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
-		enrolment.setStatus(EnrolmentStatus.NEW);
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
 		
@@ -206,7 +206,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment.setCourseClass(courseClass);
 		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
-		enrolment.setStatus(EnrolmentStatus.NEW);
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
 		
@@ -278,7 +278,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment.setCourseClass(courseClass);
 		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
-		enrolment.setStatus(EnrolmentStatus.NEW);
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
 		
@@ -299,7 +299,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setCourseClass(courseClass);
 		enrolment2.setInvoiceLine(invoiceLine2);
 		enrolment2.setSource(invoice.getSource());
-		enrolment2.setStatus(EnrolmentStatus.NEW);
+		enrolment2.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
@@ -350,7 +350,7 @@ public class VoucherServiceTest extends ServiceTest {
 		//load contacts
 		Contact contact = (Contact) context.performQuery(new SelectQuery(Contact.class, 
 			ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
-		WebSite webSite = Cayenne.objectForPK(context,WebSite.class, 1);
+		//WebSite webSite = Cayenne.objectForPK(context,WebSite.class, 1);
 
 		assertNotNull("Contact with id=1 should exist", contact);
 		assertNotNull("Contact with id=1 should have linked student", contact.getStudent());
@@ -391,7 +391,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment.setCourseClass(courseClass);
 		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
-		enrolment.setStatus(EnrolmentStatus.NEW);
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
 		
@@ -412,7 +412,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setCourseClass(courseClass);
 		enrolment2.setInvoiceLine(invoiceLine2);
 		enrolment2.setSource(invoice.getSource());
-		enrolment2.setStatus(EnrolmentStatus.NEW);
+		enrolment2.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
@@ -510,7 +510,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment.setCourseClass(courseClass);
 		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
-		enrolment.setStatus(EnrolmentStatus.NEW);
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
 		
@@ -612,7 +612,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment.setCourseClass(courseClass);
 		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
-		enrolment.setStatus(EnrolmentStatus.NEW);
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
 		
@@ -633,7 +633,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setCourseClass(courseClass);
 		enrolment2.setInvoiceLine(invoiceLine2);
 		enrolment2.setSource(invoice.getSource());
-		enrolment2.setStatus(EnrolmentStatus.NEW);
+		enrolment2.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
@@ -741,7 +741,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment.setCourseClass(courseClass);
 		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
-		enrolment.setStatus(EnrolmentStatus.NEW);
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
 		
@@ -762,7 +762,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setCourseClass(courseClass2);
 		enrolment2.setInvoiceLine(invoiceLine2);
 		enrolment2.setSource(invoice.getSource());
-		enrolment2.setStatus(EnrolmentStatus.NEW);
+		enrolment2.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
@@ -877,7 +877,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment.setCourseClass(courseClass);
 		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
-		enrolment.setStatus(EnrolmentStatus.NEW);
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
 		
@@ -898,7 +898,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setCourseClass(courseClass2);
 		enrolment2.setInvoiceLine(invoiceLine2);
 		enrolment2.setSource(invoice.getSource());
-		enrolment2.setStatus(EnrolmentStatus.NEW);
+		enrolment2.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		

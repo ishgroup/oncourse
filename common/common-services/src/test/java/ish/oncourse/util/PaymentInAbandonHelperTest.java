@@ -250,7 +250,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testContainEnrollmentsInTransactionStatus() {
+	public void testContainEnrollmentsInTransactionStatus1() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -305,14 +305,65 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		helper = new PaymentInAbandonHelper(paymentIn, false);
 		assertFalse("This payment not contain linked enrollments", helper.containEnrollmentsInTransactionStatus());
 		
-		enrolment.setStatus(EnrolmentStatus.FAILED);
+		enrolment.setStatus(EnrolmentStatus.CANCELLED);
 		context.commitChanges();
 		
 		//create helper for abandon
 		helper = new PaymentInAbandonHelper(paymentIn, false);
 		assertFalse("This payment not contain linked enrollments", helper.containEnrollmentsInTransactionStatus());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testContainEnrollmentsInTransactionStatus2() {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		PaymentIn paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+			
+		//create helper for abandon
+		PaymentInAbandonHelper helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertFalse("This payment not contain linked enrollments", helper.containEnrollmentsInTransactionStatus());
 		
-		enrolment.setStatus(EnrolmentStatus.CANCELLED);
+		//load actual invoiceLine
+		List<InvoiceLine> invoiceLines = context.performQuery(new SelectQuery(InvoiceLine.class,
+			ExpressionFactory.matchDbExp(InvoiceLine.ID_PK_COLUMN, 5L)));
+		assertFalse("InvoiceLines list should not be empty", invoiceLines.isEmpty());
+		assertEquals("InvoiceLines list should have 1 record", 1, invoiceLines.size());
+		InvoiceLine invoiceLine = invoiceLines.get(0);
+		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
+		//load courseclass for enrolment
+		CourseClass courseClass = (CourseClass) context.performQuery(new SelectQuery(CourseClass.class, 
+			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+		//prepare and add the enrollment to the invoiceLine
+		Enrolment enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
+		enrolment.setCollege(paymentIn.getCollege());
+		enrolment.setCourseClass(courseClass);
+		enrolment.setInvoiceLine(invoiceLine);
+		enrolment.setSource(paymentIn.getSource());
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
+		enrolment.setStudent(paymentIn.getStudent());
+		enrolment.setReasonForStudy(1);
+		
+		context.commitChanges();
+		//re-load payment with already linked enrollment in transaction
+		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		
+		helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertTrue("This payment now contain linked enrollment", helper.containEnrollmentsInTransactionStatus());
+		
+		//and now change the enrollment status to check that result will be different
+		enrolment.setStatus(EnrolmentStatus.SUCCESS);
 		context.commitChanges();
 		
 		//create helper for abandon
@@ -325,6 +376,64 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		//create helper for abandon
 		helper = new PaymentInAbandonHelper(paymentIn, false);
 		assertFalse("This payment not contain linked enrollments", helper.containEnrollmentsInTransactionStatus());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testContainEnrollmentsInTransactionStatus3() {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		PaymentIn paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+			
+		//create helper for abandon
+		PaymentInAbandonHelper helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertFalse("This payment not contain linked enrollments", helper.containEnrollmentsInTransactionStatus());
+		
+		//load actual invoiceLine
+		List<InvoiceLine> invoiceLines = context.performQuery(new SelectQuery(InvoiceLine.class,
+			ExpressionFactory.matchDbExp(InvoiceLine.ID_PK_COLUMN, 5L)));
+		assertFalse("InvoiceLines list should not be empty", invoiceLines.isEmpty());
+		assertEquals("InvoiceLines list should have 1 record", 1, invoiceLines.size());
+		InvoiceLine invoiceLine = invoiceLines.get(0);
+		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
+		//load courseclass for enrolment
+		CourseClass courseClass = (CourseClass) context.performQuery(new SelectQuery(CourseClass.class, 
+			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+		//prepare and add the enrollment to the invoiceLine
+		Enrolment enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
+		enrolment.setCollege(paymentIn.getCollege());
+		enrolment.setCourseClass(courseClass);
+		enrolment.setInvoiceLine(invoiceLine);
+		enrolment.setSource(paymentIn.getSource());
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
+		enrolment.setStudent(paymentIn.getStudent());
+		enrolment.setReasonForStudy(1);
+		
+		context.commitChanges();
+		//re-load payment with already linked enrollment in transaction
+		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		
+		helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertTrue("This payment now contain linked enrollment", helper.containEnrollmentsInTransactionStatus());
+		
+		//and now change the enrollment status to check that result will be different
+		enrolment.setStatus(EnrolmentStatus.FAILED);
+		context.commitChanges();
+		
+		//create helper for abandon
+		helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertFalse("This payment not contain linked enrollments", helper.containEnrollmentsInTransactionStatus());		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -1019,7 +1128,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Voucher should be still active", ProductStatus.ACTIVE, voucher.getStatus());
 		assertEquals("Voucher amount should be the same as before the payment attempt", voucherAmount, voucher.getRedemptionValue());
 		//clean relationship for course voucher revert
-		context.deleteObject(voucherPaymentIn);
+		context.deleteObjects(voucherPaymentIn);
 		context.commitChanges();
 		
 		//link enrollment to the invoice line
@@ -1101,7 +1210,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Voucher should be still active", ProductStatus.ACTIVE, voucher.getStatus());
 		assertEquals("Voucher redeemed course count should be the same as before the payment attempt", Integer.valueOf(0), voucher.getRedeemedCoursesCount());
 		//clean relationship for course voucher revert
-		context.deleteObject(voucherPaymentIn);
+		context.deleteObjects(voucherPaymentIn);
 		context.commitChanges();
 	}
 	

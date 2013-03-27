@@ -110,7 +110,7 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		ObjectContext ctx = cayenneService.newContext();
 
 		Course course = Cayenne.objectForPK(ctx, Course.class, 4l);
-		ctx.deleteObject(course);
+		ctx.deleteObjects(course);
 
 		ctx.commitChanges();
 
@@ -124,8 +124,8 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		TutorRole tutorRole = Cayenne.objectForPK(ctx, TutorRole.class, 1l);
 		CourseClass courseClass = Cayenne.objectForPK(ctx, CourseClass.class, 10l);
 
-		ctx.deleteObject(tutorRole);
-		ctx.deleteObject(courseClass);
+		ctx.deleteObjects(tutorRole);
+		ctx.deleteObjects(courseClass);
 
 		ctx.commitChanges();
 
@@ -143,8 +143,8 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		Course course2 = Cayenne.objectForPK(ctx, Course.class, 5l);
 		Tutor tutor = Cayenne.objectForPK(ctx, Tutor.class, 1l);
 
-		ctx.deleteObject(course2);
-		ctx.deleteObject(tutor);
+		ctx.deleteObjects(course2);
+		ctx.deleteObjects(tutor);
 
 		ctx.commitChanges();
 
@@ -339,7 +339,7 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 
             assertEquals("PaymentIn date after saved should be the same", zero, paymentIn.getCreated());
         } finally {
-            context.deleteObject(paymentIn);
+            context.deleteObjects(paymentIn);
         }
 
     }
@@ -377,7 +377,7 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
         assertEquals("Expecting one queued records.", 1, actualData.getRowCount());
         assertEquals("Test entityWillowId", survey.getId().longValue(), ((BigInteger) actualData.getValue(0, "entityWillowId")).longValue());
 
-        context.deleteObject(survey);
+        context.deleteObjects(survey);
         context.commitChanges();
     }
 
