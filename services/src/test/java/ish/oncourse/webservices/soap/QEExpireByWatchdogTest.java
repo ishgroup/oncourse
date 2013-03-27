@@ -34,12 +34,19 @@ import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.dom.Node;
 import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.services.Session;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class QEExpireByWatchdogTest extends RealWSTransportTest {
-	
+	private static TestServer server;
+
 	@Override
-	protected void initTestServer() throws Exception {
+	protected TestServer getServer() {
+		return server;
+	}
+
+	@BeforeClass	
+	public static void initTestServer() throws Exception {
 		server = startRealWSServer(9092);
 	}
 	
@@ -95,12 +102,7 @@ public class QEExpireByWatchdogTest extends RealWSTransportTest {
 		//check that empty queuedRecords
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
-		//authenticate first
-		Long oldCommunicationKey = getCommunicationKey();
-		Long newCommunicationKey = getReplicationPortType().authenticate(getSecurityCode(), oldCommunicationKey);
-		assertNotNull("Received communication key should not be empty", newCommunicationKey);
-		assertTrue("Communication keys should be different before and after authenticate call", oldCommunicationKey.compareTo(newCommunicationKey) != 0);
-		assertTrue("New communication key should be equal to actual", newCommunicationKey.compareTo(getCommunicationKey()) == 0);
+		authenticate();
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(SupportedVersions.V4);
 		fillV4PaymentStubsForCases1_4(transaction);
@@ -172,8 +174,7 @@ public class QEExpireByWatchdogTest extends RealWSTransportTest {
 				assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED, status);
 			}
 		}
-		//logout
-		getReplicationPortType().logout(getCommunicationKey());
+		logout();
 	}
 
 }

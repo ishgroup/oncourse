@@ -24,8 +24,12 @@ import ish.oncourse.webservices.soap.v4.ReplicationPortType;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -70,17 +74,8 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected ServiceTest serviceTest;
 	protected PageTester tester;
 	protected ICayenneService cayenneService;
-	
-	protected TestServer server;
-	
-	@Override
-	protected TestServer getServer() {
-		return server;
-	}
-	
-	protected abstract void initTestServer() throws Exception;
-	
-	protected TestServer startRealWSServer(int port) throws Exception {
+		
+	protected static TestServer startRealWSServer(int port) throws Exception {
 		TestServer server = new TestServer(port, TestServer.DEFAULT_CONTEXT_PATH, "src/main/webapp/WEB-INF", TestServer.DEFAULT_HOST, 
 			"src/main", TestServer.DEFAULT_WEB_XML_FILE_PATH);
 		server.start();
@@ -97,7 +92,6 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	
 	@Before
 	public void setup() throws Exception {
-		initTestServer();
 		serviceTest = new ServiceTest();
 		serviceTest.initTest("ish.oncourse.webservices", "services", PaymentServiceTestModule.class);
 		tester = serviceTest.getPageTester();
@@ -248,6 +242,44 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		invoiceLineStub.setTitle(StringUtils.EMPTY);
 		stubs.add(invoiceLineStub);
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
+	}
+	
+	protected boolean pingServer() {
+		String address = getServer().getServerUrl() + V4_REPLICATION_ENDPOINT_PATH + "?wsdl";
+		try {
+			URL url = new URL(address);
+			HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+			urlConn.setConnectTimeout(1000 * 10); // mTimeout is in seconds
+			final long startTime = System.currentTimeMillis();
+			urlConn.connect();
+			final long endTime = System.currentTimeMillis();
+			if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				System.out.println("Ping time (ms) : " + (endTime - startTime));
+				System.out.println("Ping to " + address + " was success");
+				return true;
+			}
+		} catch (final MalformedURLException e1) {
+			e1.printStackTrace();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	protected void authenticate() throws Exception {
+		//firstly ping the server with 10 seconds timeout
+		assertTrue("Webservices not ready for call", pingServer());
+		//authenticate
+		Long oldCommunicationKey = getCommunicationKey();
+		Long newCommunicationKey = getReplicationPortType().authenticate(getSecurityCode(), oldCommunicationKey);
+		assertNotNull("Received communication key should not be empty", newCommunicationKey);
+		assertTrue("Communication keys should be different before and after authenticate call", oldCommunicationKey.compareTo(newCommunicationKey) != 0);
+		assertTrue("New communication key should be equal to actual", newCommunicationKey.compareTo(getCommunicationKey()) == 0);
+	}
+		
+	protected void logout() throws Exception {
+		//logout
+		getReplicationPortType().logout(getCommunicationKey());
 	}
 	
 	@Override
