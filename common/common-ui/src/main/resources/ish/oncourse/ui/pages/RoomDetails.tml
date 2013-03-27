@@ -9,10 +9,7 @@
                 <t:outputRaw value="directions" />
             </p>
         </t:if>
-    </t:if>
-    <span t:type="ui/Attachments" entityIdentifier="literal:Room" entityIdNum="${room.id}"/>
-    <span t:type="ui/SiteDetailsComponent" room="room" collapseLocationMap="false"/>
-    <t:if test="room">
-        <span t:type="ui/Attachments" entityIdentifier="literal:Site" entityIdNum="${room.site.id}"/>
+        <span t:type="ui/Attachments" entityIdentifiers="identifiers" entityIdNums="ids"/>
+        <span t:type="ui/SiteDetailsComponent" room="room" collapseLocationMap="false"/>
     </t:if>
 </html>

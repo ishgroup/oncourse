@@ -1,15 +1,19 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	
-	<t:loop element="ul" class="literal:attachedImages" source="attachedImages" value="image">
-		<li><img src="${image.contextPath}"/></li>
-	</t:loop>
+
+    <ul class="attachedImages">
+        <t:loop source="attachedImages" value="image">
+            <li><img src="${image.contextPath}"/></li>
+        </t:loop>
+    </ul>
 	
 	<t:if test="hasAttachments">
 		<h3>Additional information</h3>
-		
-		<t:loop element="ul" class="literal:attachments"  source="attachments" value="attachment">
-			<li><a href="${attachment.contextPath}" name="${attachment.name}">${attachment.name}</a> <span class="attachmentSize">${attachment.size} kB</span> <span class="attachmentType">${attachment.type}</span></li>
-		</t:loop>
+
+        <ul class="attachments">
+            <t:loop class="literal:attachments"  source="attachments" value="attachment">
+                <li><a href="${attachment.contextPath}" name="${attachment.name}">${attachment.name}</a> <span class="attachmentSize">${attachment.size} kB</span> <span class="attachmentType">${attachment.type}</span></li>
+            </t:loop>
+        </ul>
 	</t:if>
 	
 </t:container>

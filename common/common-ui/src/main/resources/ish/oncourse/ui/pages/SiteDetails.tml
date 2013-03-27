@@ -1,5 +1,6 @@
-<html t:type="ui/internal/pagestructure" title="${site.name}" bodyId="literal:DetailPage" bodyClass="literal:internal-page"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<html t:type="ui/internal/pagestructure" title="${site.name}" bodyId="literal:DetailPage"
+      bodyClass="literal:internal-page"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<span t:type="ui/SiteDetailsComponent" site="site" collapseLocationMap="false"></span>
-	<span t:type="ui/Attachments" entityIdentifier="literal:Site" entityIdNum="${site.id}"/>
+	<span t:type="ui/Attachments" entityIdentifier="literal:Site" entityIdNum="site.id"/>
 </html>
