@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import ish.common.types.CreditCardType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.webservices.replication.services.PortHelper;
@@ -108,7 +109,6 @@ public class TestQESuccessPayment extends RealWSTransportTest {
 		assertEquals("Unexpected message", "Payment was successful.", successMessage.toString());
 	}
 	
-	//@Ignore
 	@Test
 	public void testSuccessQE() throws Exception {
 		//check that empty queuedRecords
@@ -184,6 +184,18 @@ public class TestQESuccessPayment extends RealWSTransportTest {
 		assertFalse("Get status call should not return empty response for payment in final status", 
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		assertEquals("11 elements should be replicated for this payment", 11, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		//parse the transaction results
+		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+			if (stub instanceof GenericPaymentInStub) {
+				if (stub.getWillowId() == 1l) {
+					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
+					assertEquals("Payment status should be failed after expiration", PaymentStatus.SUCCESS, status);
+				} else {
+					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(), 
+						((GenericPaymentInStub) stub).getStatus()), true);
+				}
+			}
+		}
 		//logout
 		getReplicationPortType().logout(getCommunicationKey());
 	}
