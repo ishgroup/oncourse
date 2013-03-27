@@ -30,7 +30,6 @@ import org.apache.tapestry5.dom.Node;
 import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.internal.test.TestableResponse;
 import org.apache.tapestry5.services.Session;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestQESuccessPayment extends RealWSTransportTest {
@@ -109,11 +108,11 @@ public class TestQESuccessPayment extends RealWSTransportTest {
 		assertEquals("Unexpected message", "Payment was successful.", successMessage.toString());
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void testSuccessQE() throws Exception {
 		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();//TODO: fix me in 17088 
+		ObjectContext context = cayenneService.newNonReplicatingContext();
 		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
 		//authenticate first
 		Long oldCommunicationKey = getCommunicationKey();
@@ -153,7 +152,7 @@ public class TestQESuccessPayment extends RealWSTransportTest {
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertTrue("Queue should contain 5 records.", queuedRecords.size() == 5 );
+		assertEquals("Queue should contain 5 records.", 5, queuedRecords.size());
 		boolean isPaymentFound = false, isPaymentLineFound = false, isInvoiceFound = false, isInvoiceLineFound = false, isEnrolmentDound = false;
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
@@ -184,7 +183,7 @@ public class TestQESuccessPayment extends RealWSTransportTest {
 		transaction = getPaymentPortType().getPaymentStatus(sessionId);
 		assertFalse("Get status call should not return empty response for payment in final status", 
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertTrue("11 elements should be replicated for this payment", transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size() == 11);
+		assertEquals("11 elements should be replicated for this payment", 11, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//logout
 		getReplicationPortType().logout(getCommunicationKey());
 	}
