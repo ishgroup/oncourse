@@ -188,7 +188,6 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends RealWSTransp
 		//check that empty queuedRecords
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
-		assertTrue("Webservices not ready for call", pingServer());
 		authenticate();
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(SupportedVersions.V4);
