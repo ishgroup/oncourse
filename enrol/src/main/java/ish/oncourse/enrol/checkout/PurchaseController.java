@@ -259,10 +259,10 @@ public class PurchaseController {
 	 * Student.
 	 */
     synchronized Enrolment createEnrolment(CourseClass courseClass, Student student) {
-		Enrolment enrolment = model.getObjectContext().newObject(Enrolment.class);
+		Enrolment enrolment = new Enrolment();
 		enrolment.setStatus(EnrolmentStatus.NEW);
 		enrolment.setSource(PaymentSource.SOURCE_WEB);
-
+		model.getObjectContext().registerNewObject(enrolment);
 		enrolment.setCollege(student.getCollege());
 		enrolment.setStudent(student);
 		enrolment.setCourseClass(courseClass);
