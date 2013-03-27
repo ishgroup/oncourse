@@ -3,6 +3,7 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -68,22 +69,22 @@ public class CourseClassDetails {
 
 	public List<Session> getSortedTimelineableSessions() {
 		List<Session> sessions = courseClass.getTimelineableSessions();
-		
+
 		Collections.sort(sessions, new Comparator<Session>() {
 			public int compare(Session s1, Session s2) {
-				
+
 				// sorting sessions by their start date, if start dates are equal then sorting by site name
-				
+
 				if (s1.getStartDate().equals(s2.getStartDate())) {
-					
+
 					if (s1.getRoom() != null && s1.getRoom().getSite() != null
 							&& s2.getRoom() != null && s2.getRoom().getSite() != null) {
-						
+
 						return s1.getRoom().getSite().getName().compareTo(
 								s2.getRoom().getSite().getName());
 					}
 				}
-				
+
 				return s1.getStartDate().compareTo(s2.getStartDate());
 			}
 		});
@@ -106,9 +107,8 @@ public class CourseClassDetails {
 		return "class_timedate" + (courseClass.isHasSessions() ? " tooltip" : "");
 	}
 
-    public String getCanonicalLinkPath()
-    {
-        return String.format("%s/course/%s", request.getContextPath(), courseClass.getCourse().getCode());
-    }
+	public String getCanonicalLinkPath() {
+		return HTMLUtils.getCanonicalLinkPathFor(courseClass.getCourse(), request);
+	}
 
 }

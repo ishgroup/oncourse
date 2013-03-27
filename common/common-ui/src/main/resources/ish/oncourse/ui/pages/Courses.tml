@@ -8,7 +8,7 @@
 			itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams"/>
 		<p:else>
 			<html t:type="ui/internal/pagestructure" bodyId="literal:ListPage"
-				bodyClass="literal:internal-page">
+				bodyClass="literal:internal-page" canonicalLinkPath="${canonicalLinkPath}">
 				<t:if t:test="hasInvalidSearchTerms">
 					<span t:type="ui/SearchTermsClarification" paramsInError="paramsInError"></span>
 					<p:else>

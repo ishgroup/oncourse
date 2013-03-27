@@ -2,6 +2,7 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.ui.utils.CourseItemModel;
+import ish.oncourse.util.HTMLUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -24,8 +25,8 @@ public class CourseDetails {
 
     public String getCanonicalLinkPath()
     {
-        return request.getContextPath() + request.getPath();
-    }
+		return HTMLUtils.getCanonicalLinkPathFor(course, request);
+	}
 
     public String getCourseDetailsTitle(){
 		if(course==null){

@@ -5,8 +5,8 @@ import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.*;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidationErrors;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -299,5 +299,10 @@ public class Courses {
 
 	public String getBrowseTagDetail() {
 		return textileConverter.convertCustomTextile(getBrowseTag().getDetail(), new ValidationErrors());
+	}
+
+	public String getCanonicalLinkPath()
+	{
+		return HTMLUtils.getCanonicalLinkPathForCources(request);
 	}
 }

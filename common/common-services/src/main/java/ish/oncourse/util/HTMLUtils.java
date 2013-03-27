@@ -1,5 +1,6 @@
 package ish.oncourse.util;
 
+import ish.oncourse.model.Course;
 import org.apache.tapestry5.services.Request;
 
 public class HTMLUtils {
@@ -21,5 +22,18 @@ public class HTMLUtils {
 		if (value.equalsIgnoreCase(VALUE_on))
 			return true;
 		return Boolean.valueOf(value);
+	}
+
+	public static String getCanonicalLinkPathFor(Course cource, Request request)
+	{
+		  return HTMLUtils.HTTP_PROTOCOL + request.getServerName() +
+				String.format("%s/course/%s", request.getContextPath(), cource.getCode().toUpperCase());
+
+	}
+
+	public static String getCanonicalLinkPathForCources(Request request)
+	{
+		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + request.getPath().toLowerCase();
+
 	}
 }
