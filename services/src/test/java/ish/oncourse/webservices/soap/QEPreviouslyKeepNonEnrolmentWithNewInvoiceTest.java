@@ -38,7 +38,7 @@ import org.apache.tapestry5.internal.test.TestableResponse;
 import org.apache.tapestry5.services.Session;
 import org.junit.Test;
 
-public class TestQEPreviouslyKeepNonEnrolmentWithNewInvoice extends RealWSTransportTest {
+public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends RealWSTransportTest {
 private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase6Dataset.xml";
 	
 	@Override
