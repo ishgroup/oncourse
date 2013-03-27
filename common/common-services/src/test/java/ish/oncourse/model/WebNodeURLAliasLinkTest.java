@@ -54,8 +54,8 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 			context.commitChanges();
 		} catch (RuntimeException e) {
 			//this Cayenne issue appears not all the time, but time-to-time
-			assertEquals("Commit exception", "java.lang.RuntimeException: org.apache.cayenne.CayenneRuntimeException: [v.3.1M3-b1 Aug 03 2011 14:48:26] Transaction was rolledback.", e.getMessage());
-			assertTrue("Cayenne runtime exception fires", e.getCause().getCause().getCause().getCause().getMessage().startsWith("[v.3.1M3-b1 Aug 03 2011 14:48:26] Can't extract a master key. Missing key (id), master ID (<ObjectId:WebNode, TEMP:"));
+			assertEquals("Commit exception", "java.lang.RuntimeException: org.apache.cayenne.CayenneRuntimeException: [v.3.1B2 Feb 05 2013 20:19:35] Transaction was rolledback.", e.getMessage());
+			assertTrue("Cayenne runtime exception fires", e.getCause().getCause().getCause().getCause().getMessage().startsWith("[v.3.1B2 Feb 05 2013 20:19:35] Can't extract a master key. Missing key (id), master ID (<ObjectId:WebNode, TEMP:"));
 			context.rollbackChanges();
 			return;
 			//assertTrue("Failed to link WebNode with one-to-many WebUrlAlias", false);
