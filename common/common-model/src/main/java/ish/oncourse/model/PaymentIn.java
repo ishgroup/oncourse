@@ -617,14 +617,51 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			paymentInLine.setModified(today);
 		}
 	}
-
+	
 	@Override
 	public void setStatus(final PaymentStatus status) {
-		if (getStatus() != null && PaymentStatus.STATUSES_FINAL.contains(getStatus()) && !getStatus().equals(status)) {
-			// if payment already in this states there is no reason to change it
-			throw new IllegalArgumentException("Can not change payment status from " + getStatus() + " to " + status + " payment id is " + getId());
+		if (getStatus() == null) {
+			//nothing to check
+		} else {
+			switch (getStatus()) {
+			case NEW:
+				if (status == null) {
+					throw new IllegalArgumentException("Can't set the empty paymentin status!");
+				}
+				break;
+			case QUEUED:
+				if (status == null || PaymentStatus.NEW.equals(status)) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentin with %s status!", status, getStatus()));
+				}
+				break;
+			case IN_TRANSACTION:
+			case CARD_DETAILS_REQUIRED:
+				if (status == null || PaymentStatus.NEW.equals(status) || PaymentStatus.QUEUED.equals(status)) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentin with %s status!", status, getStatus()));
+				}
+				break;
+			case SUCCESS:
+				if (!(PaymentStatus.SUCCESS.equals(status) || PaymentStatus.STATUS_CANCELLED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status))) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentin with %s status!", status, getStatus()));
+				}
+				break;
+			case FAILED:
+			case FAILED_CARD_DECLINED:
+			case FAILED_NO_PLACES:
+				//TODO: we should be able to set the in transaction status here
+				//break;
+			case STATUS_CANCELLED:
+			case STATUS_REFUNDED:
+				if (!(getStatus().equals(status))) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentin with %s status!", status, getStatus()));
+				}
+				break;
+			default:
+				throw new IllegalArgumentException(String.format("Unsupported status %s found for paymentin", getStatus()));
+			}
 		}
 		super.setStatus(status);
+		//this is an old workaround to prevent replication of PaymentIn entities without linked PaymentInLine entities
 		Date now = new Date();
 		for (PaymentInLine line : getPaymentInLines()) {
 			line.setModified(now);

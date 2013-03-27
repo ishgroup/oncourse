@@ -1,7 +1,6 @@
 package ish.oncourse.model;
 
 import ish.common.types.MessageStatus;
-import ish.common.types.MessageType;
 import ish.oncourse.model.auto._MessagePerson;
 import ish.oncourse.utils.QueueableObjectUtils;
 
@@ -16,20 +15,27 @@ public class MessagePerson extends _MessagePerson implements Queueable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setStatus(final MessageStatus status) {
-		if (getStatus() != null && MessageType.SMS.equals(getType())) {
+	public void setStatus(MessageStatus status) {
+		if (getStatus() == null) {
+			//nothing to check
+		} else {
 			switch (getStatus()) {
+			case QUEUED:
+				if (status == null) {
+					throw new IllegalArgumentException("Can't update to empty MessagePerson status from queued!");
+				}
+				break;
 			case SENT:
-				if (!MessageStatus.SENT.equals(status)) {
-					throw new IllegalStateException("We should not allow to change status from SENT to any other state! But try to change it to " + status);
+			case FAILED:
+				if (!(getStatus().equals(status))) {
+					throw new IllegalArgumentException(String.format("Can't set the %s status for MessagePerson with %s status!", status, getStatus()));
 				}
 				break;
 			default:
-				break;
+				throw new IllegalArgumentException(String.format("Unsupported status %s found for MessagePerson", getStatus()));
 			}
 		}
 		super.setStatus(status);
 	}
-	
 	
 }
