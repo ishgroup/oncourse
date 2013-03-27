@@ -437,9 +437,9 @@ public class PaymentInTest {
 				try {
 					paymentIn.setStatus(status);
 				} catch (Exception e) {
-					assertTrue("Paymentout status should be queued for this test", PaymentStatus.QUEUED.equals(paymentIn.getStatus()));
+					assertTrue("PaymentIn status should be queued for this test", PaymentStatus.QUEUED.equals(paymentIn.getStatus()));
 				}
-				assertTrue("Paymentout status should be queued for this test", PaymentStatus.QUEUED.equals(paymentIn.getStatus()));
+				assertTrue("PaymentIn status should be queued for this test", PaymentStatus.QUEUED.equals(paymentIn.getStatus()));
 			}
 		}
 	}
