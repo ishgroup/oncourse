@@ -10,7 +10,7 @@
 		<h3>Additional information</h3>
 
         <ul class="attachments">
-            <t:loop class="literal:attachments"  source="attachments" value="attachment">
+            <t:loop source="attachments" value="attachment">
                 <li><a href="${attachment.contextPath}" name="${attachment.name}">${attachment.name}</a> <span class="attachmentSize">${attachment.size} kB</span> <span class="attachmentType">${attachment.type}</span></li>
             </t:loop>
         </ul>
