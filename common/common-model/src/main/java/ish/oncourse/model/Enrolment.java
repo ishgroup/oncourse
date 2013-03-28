@@ -109,7 +109,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 	
 	@Override
 	public void setStatus(EnrolmentStatus status) {
-		/*if (getStatus() == null) {
+		if (getStatus() == null) {
 			//nothing to check
 		} else {
 			switch (getStatus()) {
@@ -124,7 +124,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 				}
 				break;
 			case IN_TRANSACTION:
-				if (status == null || EnrolmentStatus.NEW.equals(status) || EnrolmentStatus.QUEUED.equals(status)) {
+				if (status == null /*|| EnrolmentStatus.NEW.equals(status)*/ || EnrolmentStatus.QUEUED.equals(status)) {//TODO: adjust the check after #17611
 					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
 				}
 				break;
@@ -146,7 +146,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 			default:
 				throw new IllegalArgumentException(String.format("Unsupported status %s found for enrolment", getStatus()));
 			}
-		}*/
+		}
 		super.setStatus(status);
 	}
 
