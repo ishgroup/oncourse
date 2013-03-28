@@ -24,10 +24,10 @@ public class HTMLUtils {
 		return Boolean.valueOf(value);
 	}
 
-	public static String getCanonicalLinkPathFor(Course cource, Request request)
+	public static String getCanonicalLinkPathFor(Course course, Request request)
 	{
 		  return HTMLUtils.HTTP_PROTOCOL + request.getServerName() +
-				String.format("%s/course/%s", request.getContextPath(), cource.getCode().toUpperCase());
+				String.format("%s/course/%s", request.getContextPath(), course.getCode().toUpperCase());
 
 	}
 
