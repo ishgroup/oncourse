@@ -233,7 +233,6 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
 
         Product p1 = Cayenne.objectForPK(context, VoucherProduct.class, 7);
-        Product p2 = Cayenne.objectForPK(context, VoucherProduct.class, 8);
 
         Discount d = Cayenne.objectForPK(context, Discount.class, 2);
 
@@ -307,7 +306,6 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Test
     public void testEnableEnrolment() {
-        ObjectContext context = cayenneService.newContext();
         PurchaseController purchaseController = init();
         PurchaseModel model = purchaseController.getModel();
 
@@ -344,7 +342,6 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Test
     public void testDisableEnrolment() {
-        ObjectContext context = cayenneService.newContext();
         PurchaseController purchaseController = init();
         PurchaseModel model = purchaseController.getModel();
 
@@ -370,7 +367,6 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Test
     public void testEnableProduct() {
-        ObjectContext context = cayenneService.newContext();
         PurchaseController purchaseController = init();
         PurchaseModel model = purchaseController.getModel();
 
@@ -415,7 +411,6 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Test
     public void testDisableProduct() {
-        ObjectContext context = cayenneService.newContext();
         PurchaseController purchaseController = init();
         PurchaseModel model = purchaseController.getModel();
 
@@ -446,7 +441,6 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Test
     public void testAddPromocode() {
-        ObjectContext context = cayenneService.newContext();
         PurchaseController purchaseController = init();
         PurchaseModel model = purchaseController.getModel();
 
@@ -477,7 +471,6 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Test
     public void testAddVoucherCode() {
-        ObjectContext context = cayenneService.newContext();
         PurchaseController purchaseController = init();
         PurchaseModel model = purchaseController.getModel();
 
@@ -524,9 +517,9 @@ public class PurchaseControllerTest extends ACheckoutTest {
         ObjectContext cContext = context.createChildContext();
         ConcessionType ct = Cayenne.objectForPK(cContext, ConcessionType.class, 1);
         StudentConcession sc = createStudentConcession(cContext,
-                (Student) cContext.localObject(model.getPayer().getStudent().getObjectId(), null),
+                (Student) cContext.localObject(model.getPayer().getStudent()),
                 ct,
-                (College) cContext.localObject(model.getPayer().getCollege().getObjectId(), null));
+                (College) cContext.localObject(model.getPayer().getCollege()));
 
         addConcession(purchaseController, sc);
 
@@ -554,8 +547,8 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         ObjectContext cContext = context.createChildContext();
         ConcessionType ct = Cayenne.objectForPK(cContext, ConcessionType.class, 1);
-        StudentConcession sc = createStudentConcession(cContext, (Student) cContext.localObject(model.getPayer().getStudent().getObjectId(), null),
-                ct, (College) cContext.localObject(model.getPayer().getCollege().getObjectId(), null));
+        StudentConcession sc = createStudentConcession(cContext, (Student) cContext.localObject(model.getPayer().getStudent()),
+                ct, (College) cContext.localObject(model.getPayer().getCollege()));
 
         addConcession(purchaseController, sc);
 
@@ -596,7 +589,6 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Test
     public void testStartConcessionEditor() {
-        ObjectContext context = cayenneService.newContext();
         PurchaseController purchaseController = init();
 
         ActionParameter param = new ActionParameter(Action.startConcessionEditor);
@@ -608,7 +600,6 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Test
     public void testCancelConcessionEditor() {
-        ObjectContext context = cayenneService.newContext();
         PurchaseController purchaseController = init();
 
         ActionParameter param = new ActionParameter(Action.startConcessionEditor);
