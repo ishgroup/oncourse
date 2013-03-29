@@ -101,10 +101,6 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 				.thenReturn(emptyBinaryInfo);
 		when(binaryDataService.getBinaryInfoByReferenceNumber(NOT_EXISTING_REFERENCE_NUMBER)).thenReturn(null);
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, NOT_EXISTING_NAME)).thenReturn(null);
-		when(binaryInfo.getReferenceNumber()).thenReturn(TEST_BINARYINFO_REFERENCE_NUMBER);
-
-		when(emptyBinaryInfo.getReferenceNumber()).thenReturn(REF_NUM_OF_EMPTY_BINARY_INFO);
-
         when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
     }
 

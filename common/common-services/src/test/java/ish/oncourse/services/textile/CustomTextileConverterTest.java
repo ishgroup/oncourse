@@ -103,7 +103,6 @@ public class CustomTextileConverterTest {
 	 */
 	@Test
 	public void smokeImageConvertTest() {
-		when(binaryInfo.getReferenceNumber()).thenReturn(TEST_BINARYINFO_REFERENCE_NUMBER);
 		when(binaryDataService.getBinaryInfoByReferenceNumber(TEST_BINARYINFO_REFERENCE_NUMBER)).thenReturn(binaryInfo);
         when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
         String successfulResult = "successfully rendered image block";
@@ -149,7 +148,6 @@ public class CustomTextileConverterTest {
 		webContent.setContent(COMPLEX_WEB_BLOCK_CONTENT);
 		when(webContentService.getWebContent(WebContent.NAME_PROPERTY, TEST_BLOCK_NAME)).thenReturn(webContent);
 		reset(binaryDataService);
-		when(binaryInfo.getReferenceNumber()).thenReturn(TEST_BINARYINFO_REFERENCE_NUMBER);
 		when(binaryDataService.getBinaryInfoByReferenceNumber(TEST_BINARYINFO_REFERENCE_NUMBER)).thenReturn(binaryInfo);
         when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
 

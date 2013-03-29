@@ -7,6 +7,13 @@ import java.util.List;
 
 public interface IBinaryDataService {
 
+	/**
+	 * The method deprecated to use after #11321.
+	 * getBinaryInfo(BinaryInfo.NAME_PROPERTY, name) should be called instead
+	 * @param refNum  - reference number.
+	 * @return
+	 */
+	@Deprecated
 	BinaryInfo getBinaryInfoByReferenceNumber(Object refNum);
 	
 	BinaryInfo getBinaryInfoById(Object id);

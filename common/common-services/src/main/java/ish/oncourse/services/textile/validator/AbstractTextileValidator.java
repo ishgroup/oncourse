@@ -3,13 +3,15 @@ package ish.oncourse.services.textile.validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
 
 public abstract class AbstractTextileValidator implements IValidator{
-
+	protected static final Logger logger = Logger.getLogger(AbstractTextileValidator.class);
 	protected TextileType textileType;
 	
 	protected abstract void initValidator();
