@@ -1538,5 +1538,9 @@
 		</preConditions>
 		<addUniqueConstraint tableName="CorporatePass" columnNames="collegeId,password" constraintName="collegeId_password_uniq_idx"/>
 	</changeSet>
+	
+	<changeSet id="98" author="viacheslav" context="production" runOnChange="true">
+		<addNotNullConstraint tableName="BinaryInfo" columnName="filePath" columnDataType="VARCHAR(512)"/>
+	</changeSet>
 
 </databaseChangeLog>
