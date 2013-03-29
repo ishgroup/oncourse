@@ -218,10 +218,6 @@ sonarRunner {
     }
 }
 
-subprojects { 
-	version = project.parent.version
-}
-
 task wrapper(type: Wrapper) {
     gradleVersion = "1.5"
 }
