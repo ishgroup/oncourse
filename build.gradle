@@ -22,27 +22,27 @@ buildscript {
 	}
 }
 
-apply plugin: 'release'
-release {
-	//use subversion scm, unless otherwise specified in with -PscmFlavour= or in users gradle properties
-	scm = project.hasProperty('scmFlavour') ? project.scmFlavour:'svn'
-	failOnSnapshotDependencies = true
-
-	//properties for svn access
-	username = project.hasProperty('username') ? project.username : ''
-	password = project.hasProperty('password') ? project.password : ''
-
-	//the following two params have to be converted from string to boolean
-	releaseDryRun = project.hasProperty('releaseDryRun') ? project.releaseDryRun=='true' : ''
-	allowLocalModifications = project.hasProperty('allowLocalModifications') ? project.allowLocalModifications='true' : ''
-}
-version = release.projectVersion
-
 allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
 	apply plugin: 'war'
 	apply plugin: 'versions' // adds the task 'dependencyUpdates'
+	apply plugin: 'release'
+	
+	release {
+		//use subversion scm, unless otherwise specified in with -PscmFlavour= or in users gradle properties
+		scm = project.hasProperty('scmFlavour') ? project.scmFlavour:'svn'
+		failOnSnapshotDependencies = true
+
+		//properties for svn access
+		username = project.hasProperty('username') ? project.username : ''
+		password = project.hasProperty('password') ? project.password : ''
+
+		//the following two params have to be converted from string to boolean
+		releaseDryRun = project.hasProperty('releaseDryRun') ? project.releaseDryRun=='true' : ''
+		allowLocalModifications = project.hasProperty('allowLocalModifications') ? project.allowLocalModifications='true' : ''
+	}
+	version = release.projectVersion
 
 	sourceCompatibility = 1.6
 	targetCompatibility = 1.6
@@ -118,16 +118,7 @@ allprojects {
 	}
 }
 
-apply plugin: "sonar-runner"
-sonarRunner {
-    sonarProperties {
-        property "sonar.host.url", "http://sonar.ish.com.au"
-        property "sonar.jdbc.url", "jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&amp;characterEncoding=utf8"
-        property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-        property "sonar.username", 'sonar'
-        property "sonar.password", sonarPassword // sonar password comes from users gradle.properties file
-    }
-}
+
 
 task wrapper(type: Wrapper) {
     gradleVersion = "1.5"
