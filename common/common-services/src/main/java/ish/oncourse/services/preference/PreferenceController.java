@@ -22,6 +22,7 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String POSTCODES_LAST_UPDATE = "postcodes.lastupdate";
 
 	static final String ENROLMENT_MIN_AGE = "enrolment.min.age";
+	private static final String REFUND_POLICY_URL = "enrolment.refund.policy.url";
 
 	private static final String HIDE_STUDENT_DETAILS_FROM_TUTOR = "student.details.hidden";
 	private static final String TUTOR_FEEDBACK_EMAIL = "tutor.feedbackemail";
@@ -655,6 +656,14 @@ public class PreferenceController extends CommonPreferenceController {
 
 	public synchronized void setEnrolmentMinAge(Integer age) {
 		setValue(ENROLMENT_MIN_AGE, false, age.toString());
+	}
+	
+	public synchronized String getRefundPolicyUrl() {
+		return getValue(REFUND_POLICY_URL, false);
+	}
+	
+	public synchronized void setRefundPolicyUrl(String value) {
+		setValue(REFUND_POLICY_URL, false, value);
 	}
 
 	public String getRequireContactField(ContactFiledsSet contactFiledsSet, FieldDescriptor field) {

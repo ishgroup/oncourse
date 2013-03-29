@@ -18,12 +18,20 @@
 			</t:if>
 		
 			<div class="cms-set-ops cms-form-inline">
-
-                <label class="cms-checkbox">
-                    <t:checkbox t:id="redirectCheckbox" value="redirect"/> After payment successful redirect user to URL <t:textfield t:id="urlField" class="cms-span2" value="redirectToUrl"/>
-                </label>
-
-
+				<table>
+					<tr>
+						<td>
+                			<label class="cms-checkbox"><t:checkbox t:id="redirectCheckbox" value="redirect"/> After payment successful redirect user to URL </label>
+                		</td>
+                		<td><t:textfield t:id="urlField" class="cms-span2" value="redirectToUrl"/></td>
+                	</tr>
+					<tr>
+						<td>
+							<label class="cms-checkbox"><t:checkbox t:id="refundPolicyCheckbox" value="refundPolicy"/>  Refund policy page (eg. /student/terms)</label>
+						</td>
+						<td><t:textfield t:id="refundPolicyUrlField" class="cms-span2" value="refundPolicyUrl"/></td>
+					</tr>
+				</table>
 			</div>
 			
 			<div class="cms-btns">

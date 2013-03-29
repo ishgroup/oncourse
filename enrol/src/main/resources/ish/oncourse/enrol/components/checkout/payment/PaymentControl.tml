@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
     <p>
         <div>
             <label>Conditions<em title="${message:message-required}">*</em></label>
@@ -10,7 +10,12 @@
                             <t:if test="enrolmentDisclosure">
                                 I have read the <a class="nyromodal" title="Student information" href="${enrolmentDisclosure}?wrap=false">Student Information</a> or have had it explained to me, and I agree to accept these enrolment conditions.
                             </t:if>
-							I understand the enrolment and refund policy.
+							<t:if test="hasRefundPolicyUrl">
+								I understand the <a href="${refundPolicyUrl}" target="_blank">enrolment and refund policy</a>.
+								<p:else>
+									I understand the enrolment and refund policy.
+								</p:else>
+							</t:if>
 						</div>
 						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('userAgreed')}"/>
 					</span>

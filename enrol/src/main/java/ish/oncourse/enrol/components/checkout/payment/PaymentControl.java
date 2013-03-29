@@ -3,7 +3,9 @@ package ish.oncourse.enrol.components.checkout.payment;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.pages.Payment;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.util.URLUtils;
 import ish.oncourse.util.ValidateHandler;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
@@ -50,6 +52,23 @@ public class PaymentControl {
         return StringUtils.trimToNull(preferenceController.getFeatureEnrolmentDisclosure());
     }
 
+    public String getRefundPolicyUrl() {
+    	if (isHasRefundPolicyUrl()) {
+    		String url = preferenceController.getRefundPolicyUrl();
+    		
+    		if (!URLUtils.isAbsolute(url) && !url.startsWith("/")) {
+    			url = "/" + url;
+    		}
+    		
+    		return url;
+    	}
+    	
+    	return null;
+    }
+    
+    public boolean isHasRefundPolicyUrl() {
+    	return preferenceController.getRefundPolicyUrl() != null;
+    }
 
     public String getSubmitButtonText() {
         return isZeroPayment() ? messages.get("submit.button.text.enrol") : messages.get("submit.button.text.payment");

@@ -16,6 +16,12 @@ public class PaymentSettings {
 	@Property
 	private String redirectToUrl;
 	
+	@Property
+	private boolean refundPolicy;
+	
+	@Property
+	private String refundPolicyUrl;
+	
 	@SuppressWarnings("all")
 	@Property
 	private boolean saved;
@@ -45,6 +51,13 @@ public class PaymentSettings {
 		else {
 			this.redirect = false;
 		}
+		
+		if (preferenceController.getRefundPolicyUrl() != null) {
+			this.refundPolicy = true;
+			this.refundPolicyUrl = preferenceController.getRefundPolicyUrl();
+		} else {
+			this.refundPolicy = false;
+		}
 	}
 	
 	@AfterRender
@@ -63,6 +76,12 @@ public class PaymentSettings {
 		}
 		else {
 			preferenceController.setEnrolSuccessUrl(null);
+		}
+		
+		if (refundPolicy) {
+			preferenceController.setRefundPolicyUrl(this.refundPolicyUrl);
+		} else {
+			preferenceController.setRefundPolicyUrl(null);
 		}
 		
 		saved = true;
