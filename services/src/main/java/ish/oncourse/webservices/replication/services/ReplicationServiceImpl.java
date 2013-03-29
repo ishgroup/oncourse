@@ -25,7 +25,6 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -143,7 +142,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 					List<QueuedRecord> duplicates = deduper.duplicates();
 
 					for (QueuedRecord dup : duplicates) {
-						ctx.deleteObject(ctx.localObject(dup.getObjectId(), null));
+						ctx.deleteObjects(ctx.localObject(dup));
 					}
 
 					ctx.commitChanges();
@@ -154,7 +153,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 						continue;
 					}
 
-					record = (QueuedRecord) ctx.localObject(record.getObjectId(), record);
+					record = (QueuedRecord) ctx.localObject(record);
 
 					int numberAttempts = (record.getNumberOfAttempts() != null) ? record.getNumberOfAttempts() : 0;
 					record.setNumberOfAttempts(numberAttempts + 1);
@@ -187,7 +186,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 						if (stub == null) {
 							// cleanup QueuedRecord if linked object not found.
-							ctx.deleteObject(record);
+							ctx.deleteObjects(record);
 							ctx.commitChanges();
 						} else {
 							group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stub);
@@ -265,7 +264,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 										queuedRecord.setAngelId(record.getStub().getAngelId());
 									} else {
 										//we should delete only the queued records for elements which we can update
-										ctx.deleteObject(queuedRecord);
+										ctx.deleteObjects(queuedRecord);
 										collegeid = object.getCollege().getId();
 										object.setAngelId(record.getStub().getAngelId());
 									}
@@ -278,7 +277,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 									queuedRecord.setErrorMessage(message);									
 								}
 							} else {
-								ctx.deleteObject(queuedRecord);
+								ctx.deleteObjects(queuedRecord);
 							}
 							
 						} else {
