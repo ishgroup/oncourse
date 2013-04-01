@@ -1,23 +1,8 @@
-
+import ish.math.MoneyType;
 import ish.oncourse.model.*;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.Outcome;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.SessionModule;
-import ish.oncourse.model.SessionTutor;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.TutorRole;
-import ish.oncourse.test.ContextUtils;
 import ish.oncourse.test.InitialContextFactoryMock;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.conn.PoolManager;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -46,9 +31,9 @@ public class CityEastFix {
 		SelectQuery q = new SelectQuery(Enrolment.class);
 		q.andQualifier(ExpressionFactory.noMatchDbExp(Enrolment.ANGEL_ID_PROPERTY, null));
 		q.andQualifier(ExpressionFactory.matchDbExp(Enrolment.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, 338));
-		q.andQualifier(ExpressionFactory.greaterOrEqualDbExp(Enrolment.CREATED_PROPERTY, "2013-03-20 00:00:00"));
+		//q.andQualifier(ExpressionFactory.greaterOrEqualDbExp(Enrolment.CREATED_PROPERTY, "2013-03-20 00:00:00"));
 
-		ObjectContext context = ContextUtils.createObjectContext();
+		ObjectContext context = cayenneRuntime.getContext();
 		List<Enrolment> list = context.performQuery(q);
 		for (Enrolment enrolment : list) {
 			QueuedTransactionCreator creator = new QueuedTransactionCreator();
@@ -78,7 +63,6 @@ public class CityEastFix {
 	}
 
 	private void init() throws NamingException, SQLException {
-		cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
 		System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
 
 		// bind the initial context instance, because the JNDIDataSourceFactory
@@ -89,6 +73,12 @@ public class CityEastFix {
 
 		InitialContextFactoryMock.bind("jdbc/oncourse", oncourse);
 		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", oncourse);
+
+		cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
+
+		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
+			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
+		}
 	}
 
 	public String getUser() {
@@ -128,8 +118,8 @@ public class CityEastFix {
 			queuedTransaction = getObjectContext().newObject(QueuedTransaction.class);
 			queuedTransaction.setCollege(mainEntiry.getCollege());
 			queuedTransaction.setTransactionKey("CityEastFix" + mainEntiry.getId());
-			queuedTransaction.setCreated(new Date());
-			queuedTransaction.setModified(new Date());
+			queuedTransaction.setCreated(mainEntiry.getCreated());
+			queuedTransaction.setModified(mainEntiry.getCreated());
 			addEntiry(mainEntiry);
 		}
 		public void addEntiry(Queueable queueable)
@@ -279,8 +269,7 @@ public class CityEastFix {
 	}
 	
 	private void resetAttendance(Attendance a, QueuedTransactionCreator creator) {
-		a.setAngelId(null);
-		creator.addEntiry(a);
+		a.getObjectContext().deleteObjects(a);
 	}
 	
 	private void resetCourse(Course course, QueuedTransactionCreator creator) {
