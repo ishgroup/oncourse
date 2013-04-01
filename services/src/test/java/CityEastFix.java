@@ -26,12 +26,12 @@ public class CityEastFix {
 	private String password;
 
 
-	public void fix()
+	public void fixEnrolments()
 	{
 		SelectQuery q = new SelectQuery(Enrolment.class);
 		q.andQualifier(ExpressionFactory.noMatchDbExp(Enrolment.ANGEL_ID_PROPERTY, null));
 		q.andQualifier(ExpressionFactory.matchDbExp(Enrolment.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, 338));
-		//q.andQualifier(ExpressionFactory.greaterOrEqualDbExp(Enrolment.CREATED_PROPERTY, "2013-03-20 00:00:00"));
+		q.andQualifier(ExpressionFactory.greaterOrEqualDbExp(Enrolment.CREATED_PROPERTY, "2013-03-20 00:00:00"));
 
 		ObjectContext context = cayenneRuntime.getContext();
 		List<Enrolment> list = context.performQuery(q);
@@ -47,6 +47,50 @@ public class CityEastFix {
 		}
 	}
 
+	public void fixContacts()
+	{
+		SelectQuery q = new SelectQuery(Contact.class);
+		q.andQualifier(ExpressionFactory.noMatchDbExp(Enrolment.ANGEL_ID_PROPERTY, null));
+		q.andQualifier(ExpressionFactory.matchDbExp(Enrolment.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, 338));
+		q.andQualifier(ExpressionFactory.greaterOrEqualDbExp(Enrolment.CREATED_PROPERTY, "2013-03-20 00:00:00"));
+
+		ObjectContext context = cayenneRuntime.getContext();
+		List<Contact> list = context.performQuery(q);
+		for (Contact contact : list) {
+			QueuedTransactionCreator creator = new QueuedTransactionCreator();
+			creator.setObjectContext(context);
+			creator.setMainEntiry(contact);
+			creator.init();
+
+			resetContact(contact, creator);
+
+			context.commitChanges();
+		}
+	}
+
+	public void fixCourseClasses()
+	{
+		SelectQuery q = new SelectQuery(CourseClass.class);
+		q.andQualifier(ExpressionFactory.noMatchDbExp(Enrolment.ANGEL_ID_PROPERTY, null));
+		q.andQualifier(ExpressionFactory.matchDbExp(Enrolment.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, 338));
+		q.andQualifier(ExpressionFactory.greaterOrEqualDbExp(Enrolment.CREATED_PROPERTY, "2013-03-20 00:00:00"));
+
+		ObjectContext context = cayenneRuntime.getContext();
+		List<CourseClass> list = context.performQuery(q);
+		for (CourseClass courseClass : list) {
+			QueuedTransactionCreator creator = new QueuedTransactionCreator();
+			creator.setObjectContext(context);
+			creator.setMainEntiry(courseClass);
+			creator.init();
+
+			resetCourseClass(courseClass, creator);
+
+			context.commitChanges();
+		}
+	}
+
+
+
 	public static void main(String[] args) throws Exception {
 
 		CityEastFix cityEastFix = new CityEastFix();
@@ -55,7 +99,9 @@ public class CityEastFix {
 		if (args.length > 2)
 			cityEastFix.setUri(args[2]);
 		cityEastFix.init();
-		cityEastFix.fix();
+		cityEastFix.fixContacts();
+		cityEastFix.fixCourseClasses();
+		cityEastFix.fixEnrolments();
 	}
 
 	private DataSource createDataSource() throws SQLException {
