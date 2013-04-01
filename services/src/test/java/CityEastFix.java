@@ -1,4 +1,20 @@
+
 import ish.oncourse.model.*;
+import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.InvoiceLineDiscount;
+import ish.oncourse.model.Outcome;
+import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.Queueable;
+import ish.oncourse.model.Room;
+import ish.oncourse.model.Session;
+import ish.oncourse.model.SessionModule;
+import ish.oncourse.model.SessionTutor;
+import ish.oncourse.model.Site;
+import ish.oncourse.model.Student;
+import ish.oncourse.model.Tutor;
+import ish.oncourse.model.TutorRole;
 import ish.oncourse.test.ContextUtils;
 import ish.oncourse.test.InitialContextFactoryMock;
 import org.apache.cayenne.ObjectContext;
@@ -39,6 +55,9 @@ public class CityEastFix {
 			creator.setObjectContext(context);
 			creator.setMainEntiry(enrolment);
 			creator.init();
+			
+			resetEnrolment(enrolment, creator);
+			
 			context.commitChanges();
 		}
 	}
@@ -142,5 +161,215 @@ public class CityEastFix {
 		}
 	}
 
-
+	private void resetEnrolment(Enrolment e, QueuedTransactionCreator creator) {
+		if (e.getCourseClass() != null) {
+			resetCourseClass(e.getCourseClass(), creator);
+		}
+		
+		if (e.getStudent() != null) {
+			resetStudent(e.getStudent(), creator);
+			
+			if (e.getCourseClass() != null) {
+				for (Session s : e.getCourseClass().getSessions()) {
+					resetAttendance(e.getAttendanceForSessionAndStudent(s, e.getStudent()), creator);
+				}
+			}
+		}
+		
+		for (Outcome o : e.getOutcomes()) {
+			resetOutcome(o, creator);
+		}
+		
+		if (e.getInvoiceLine() != null) {
+			resetInvoiceLine(e.getInvoiceLine(), creator);
+		}
+		
+		e.setAngelId(null);
+		creator.addEntiry(e);
+	}
+	
+	private void resetInvoiceLine(InvoiceLine il, QueuedTransactionCreator creator) {
+		if (il.getInvoice() != null) {
+			resetInvoice(il.getInvoice(), creator);
+		}
+		
+		for (InvoiceLineDiscount ild : il.getInvoiceLineDiscounts()) {
+			resetInvoiceLineDiscount(ild, creator);
+		}
+		
+		il.setAngelId(null);
+		creator.addEntiry(il);
+	}
+	
+	private void resetInvoice(Invoice i, QueuedTransactionCreator creator) {
+		
+		// if the invoice was reset through another invoice line then no need in doing it again
+		if (i.getAngelId() == null) {
+			return;
+		}
+		
+		if (i.getContact() != null) {
+			resetContact(i.getContact(), creator);
+		}
+		
+		for (PaymentInLine pil : i.getPaymentInLines()) {
+			resetPaymentInLine(pil, creator);
+		}
+		
+		i.setAngelId(null);
+		creator.addEntiry(i);
+	}
+	
+	private void resetPaymentInLine(PaymentInLine pil, QueuedTransactionCreator creator) {
+		if (pil.getPaymentIn() != null) {
+			resetPaymentIn(pil.getPaymentIn(), creator);
+		}
+		
+		pil.setAngelId(null);
+		creator.addEntiry(pil);
+	}
+	
+	private void resetPaymentIn(PaymentIn p, QueuedTransactionCreator creator) {
+		if (p.getContact() != null) {
+			resetContact(p.getContact(), creator);
+		}
+		
+		p.setAngelId(null);
+		creator.addEntiry(p);
+	}
+	
+	private void resetInvoiceLineDiscount(InvoiceLineDiscount ild, QueuedTransactionCreator creator) {
+		if (ild.getDiscount() != null) {
+			resetDiscount(ild.getDiscount(), creator);
+		}
+		
+		ild.setAngelId(null);
+		creator.addEntiry(ild);
+	}
+	
+	private void resetDiscount(Discount d, QueuedTransactionCreator creator) {
+		d.setAngelId(null);
+		creator.addEntiry(d);
+	}
+	
+	private void resetOutcome(Outcome o, QueuedTransactionCreator creator) {
+		o.setAngelId(null);
+		creator.addEntiry(o);
+	}
+	
+	private void resetCourseClass(CourseClass courseClass, QueuedTransactionCreator creator) {
+		if (courseClass.getCourse() != null) {
+			resetCourse(courseClass.getCourse(), creator);
+		}
+		
+		for (Session s : courseClass.getSessions()) {
+			resetSession(s, creator);
+		}
+		
+		if (courseClass.getRoom() != null) {
+			resetRoom(courseClass.getRoom(), creator);
+		}
+		
+		for (TutorRole role : courseClass.getTutorRoles()) {
+			resetTutorRole(role, creator);
+		}
+		
+		courseClass.setAngelId(null);
+		creator.addEntiry(courseClass);
+	}
+	
+	private void resetAttendance(Attendance a, QueuedTransactionCreator creator) {
+		a.setAngelId(null);
+		creator.addEntiry(a);
+	}
+	
+	private void resetCourse(Course course, QueuedTransactionCreator creator) {
+		course.setAngelId(null);
+		creator.addEntiry(course);
+	}
+	
+	private void resetRoom(Room room, QueuedTransactionCreator creator) {
+		if (room.getSite() != null) {
+			resetSite(room.getSite(), creator);
+		}
+		
+		room.setAngelId(null);
+		creator.addEntiry(room);
+	}
+	
+	private void resetSite(Site site, QueuedTransactionCreator creator) {
+		site.setAngelId(null);
+		creator.addEntiry(site);
+	}
+	
+	private void resetSession(Session s, QueuedTransactionCreator creator) {
+		if (s.getRoom() != null) {
+			resetRoom(s.getRoom(), creator);
+		}
+		
+		for (SessionModule sm : s.getSessionModules()) {
+			resetSessionModule(sm, creator);
+		}
+		
+		for (SessionTutor st : s.getSessionTutors()) {
+			resetSessionTutor(st, creator);
+		}
+		
+		s.setAngelId(null);
+		creator.addEntiry(s);
+	}
+	
+	private void resetSessionModule(SessionModule sm, QueuedTransactionCreator creator) {
+		sm.setAngelId(null);
+		creator.addEntiry(sm);
+	}
+	
+	private void resetSessionTutor(SessionTutor st, QueuedTransactionCreator creator) {
+		if (st.getTutor() != null) {
+			resetTutor(st.getTutor(), creator);
+		}
+		
+		st.setAngelId(null);
+		creator.addEntiry(st);
+	}
+	
+	private void resetTutorRole(TutorRole role, QueuedTransactionCreator creator) {
+		if (role.getTutor() != null) {
+			resetTutor(role.getTutor(), creator);
+		}
+		
+		role.setAngelId(null);
+		creator.addEntiry(role);
+	}
+	
+	private void resetTutor(Tutor tutor, QueuedTransactionCreator creator) {
+		if (tutor.getContact() != null) {
+			resetContact(tutor.getContact(), creator);
+		}
+		
+		tutor.setAngelId(null);
+		creator.addEntiry(tutor);
+	}
+	
+	private void resetStudent(Student student, QueuedTransactionCreator creator) {
+		if (student.getContact() != null) {
+			resetContact(student.getContact(), creator);
+		}
+		
+		student.setAngelId(null);
+		creator.addEntiry(student);
+	}
+	
+	private void resetContact(Contact contact, QueuedTransactionCreator creator) {
+		if (contact.getStudent() != null) {
+			contact.getStudent().setAngelId(null);
+		}
+		
+		if (contact.getTutor() != null) {
+			contact.getTutor().setAngelId(null);
+		}
+		
+		contact.setAngelId(null);
+		creator.addEntiry(contact);
+	}
 }
