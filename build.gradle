@@ -119,7 +119,16 @@ allprojects {
 	}
 }
 
-
+apply plugin: "sonar-runner"
+sonarRunner {
+    sonarProperties {
+        property "sonar.host.url", "http://sonar.ish.com.au"
+        property "sonar.jdbc.url", "jdbc:mysql://delish.ish.com.au:3306/sonar"
+        property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+        property "sonar.username", 'sonar'
+        property "sonar.password", sonarPassword // sonar password comes from users gradle.properties file
+    }
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = "1.5"
