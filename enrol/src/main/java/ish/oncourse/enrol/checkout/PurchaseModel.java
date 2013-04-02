@@ -498,6 +498,10 @@ public class PurchaseModel {
 
         private List<Enrolment> enabledEnrolments;
         private List<Enrolment> disabledEnrolments;
+		/**
+		 * This property was introduced to keep enrolment ordering.
+		 */
+		private List<Enrolment> allEnrolments;
 
         private List<ProductItem> enabledProductItems;
         private List<ProductItem> disabledProductItems;
@@ -507,6 +511,7 @@ public class PurchaseModel {
 
             this.enabledEnrolments = new ArrayList<Enrolment>();
             this.disabledEnrolments = new ArrayList<Enrolment>();
+			this.allEnrolments = new ArrayList<Enrolment>();
 
             this.enabledProductItems = new ArrayList<ProductItem>();
             this.disabledProductItems = new ArrayList<ProductItem>();
@@ -515,7 +520,7 @@ public class PurchaseModel {
         private List<Enrolment> getAllEnrolments() {
             List<Enrolment> result = new ArrayList<Enrolment>(enabledEnrolments);
             result.addAll(disabledEnrolments);
-            return Collections.unmodifiableList(result);
+            return Collections.unmodifiableList(allEnrolments);
         }
 
         private List<ProductItem> getAllProductItems() {
@@ -536,12 +541,14 @@ public class PurchaseModel {
 
         public void addEnrolment(Enrolment e) {
             this.disabledEnrolments.add(e);
+			this.allEnrolments.add(e);
         }
 
         public void removeEnrolment(Enrolment e) {
             if (!this.enabledEnrolments.remove(e)) {
                 this.disabledEnrolments.remove(e);
             }
+			this.allEnrolments.remove(e);
         }
 
         public void addProductItem(ProductItem p) {
