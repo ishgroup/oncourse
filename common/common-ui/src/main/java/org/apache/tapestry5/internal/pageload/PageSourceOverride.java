@@ -1,5 +1,8 @@
 package org.apache.tapestry5.internal.pageload;
 
+import ish.oncourse.model.WebSite;
+import ish.oncourse.services.site.WebSiteService;
+
 import java.util.Locale;
 import java.util.Map;
 
@@ -29,8 +32,11 @@ public class PageSourceOverride implements PageSource, InvalidationListener {
 	}
 
 	public Page getPage(String canonicalPageName, Locale locale) {
+		
+		WebSite site = (WebSite) request.getAttribute(WebSiteService.CURRENT_WEB_SITE);
+		
 		MultiKey key = new MultiKey(canonicalPageName, locale,
-				request.getServerName());
+				site != null ? site.getSiteKey() : request.getServerName());
 
 		if (!pageCache.containsKey(key)) {
 			// In rare race conditions, we may see the same page loaded multiple

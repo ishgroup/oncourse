@@ -20,14 +20,14 @@ public class WebSiteService implements IWebSiteService {
 
 	private static final String CURRENT_COLLEGE = "currentCollege";
 
-	private static final String CURRENT_WEB_SITE = "currentWebSite";
-
 	private final static Logger LOGGER = Logger.getLogger(WebSiteService.class);
 
 	private static final Pattern TECHNICAL_SITES_DOMAIN_PATTERN = Pattern
 			.compile("([a-z,-]+)([.].+[.]oncourse[.]net[.]au)");
 
 	private static final String COLLEGE_DOMAIN_CACHE_GROUP = "webhosts";
+	
+	public static final String CURRENT_WEB_SITE = "currentWebSite";
 
 	@Inject
 	private Request request;
