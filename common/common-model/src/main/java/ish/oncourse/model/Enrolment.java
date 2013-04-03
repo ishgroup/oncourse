@@ -124,7 +124,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 				}
 				break;
 			case IN_TRANSACTION:
-				if (status == null /*|| EnrolmentStatus.NEW.equals(status)*/ || EnrolmentStatus.QUEUED.equals(status)) {//TODO: adjust the check after #17611
+				if (status == null || EnrolmentStatus.NEW.equals(status) || EnrolmentStatus.QUEUED.equals(status)) {
 					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
 				}
 				break;

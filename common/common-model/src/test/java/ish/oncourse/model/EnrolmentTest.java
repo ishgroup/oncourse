@@ -42,7 +42,7 @@ public class EnrolmentTest {
 		try {
 			enrolment.setStatus(null);
 		} catch (Exception e) {
-			assertTrue(secondMessage, testedStatus.equals(enrolment.getStatus()));
+			assertEquals(secondMessage, testedStatus,enrolment.getStatus());
 		}
 		assertNotNull(thirdMessage, enrolment.getStatus());
 	}
@@ -55,9 +55,9 @@ public class EnrolmentTest {
 			Enrolment enrolment = new Enrolment();
 			enrolment.setStatus(EnrolmentStatus.NEW);
 			context.registerNewObject(enrolment);
-			assertTrue("Enrolment status should be new before test", EnrolmentStatus.NEW.equals(enrolment.getStatus()));
+			assertEquals("Enrolment status should be new before test", EnrolmentStatus.NEW,enrolment.getStatus());
 			enrolment.setStatus(status);
-			assertTrue(String.format("Enrolment should be able to set the %s status after new status", status), status.equals(enrolment.getStatus()));
+			assertEquals(String.format("Enrolment should be able to set the %s status after new status", status), status,enrolment.getStatus());
 		}
 	}
 	
@@ -69,7 +69,7 @@ public class EnrolmentTest {
 			Enrolment enrolment = new Enrolment();
 			enrolment.setStatus(EnrolmentStatus.QUEUED);
 			context.registerNewObject(enrolment);
-			assertTrue("Enrolment status should be queued before test", EnrolmentStatus.QUEUED.equals(enrolment.getStatus()));
+			assertEquals("Enrolment status should be queued before test", EnrolmentStatus.QUEUED,enrolment.getStatus());
 			if (!EnrolmentStatus.NEW.equals(status)) {
 				enrolment.setStatus(status);
 				assertTrue(String.format("Enrolment should be able to set the %s status after queued status", status), status.equals(enrolment.getStatus()));
@@ -77,9 +77,9 @@ public class EnrolmentTest {
 				try {
 					enrolment.setStatus(status);
 				} catch (Exception e) {
-					assertTrue("Enrolment status should be queued for this test", EnrolmentStatus.QUEUED.equals(enrolment.getStatus()));
+					assertEquals("Enrolment status should be queued for this test", EnrolmentStatus.QUEUED,enrolment.getStatus());
 				}
-				assertTrue("Enrolment status should be queued for this test", EnrolmentStatus.QUEUED.equals(enrolment.getStatus()));
+				assertEquals("Enrolment status should be queued for this test", EnrolmentStatus.QUEUED,enrolment.getStatus());
 			}
 		}
 	}
@@ -92,19 +92,18 @@ public class EnrolmentTest {
 			Enrolment enrolment = new Enrolment();
 			enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 			context.registerNewObject(enrolment);
-			assertTrue("Enrolment status should be in transaction before test", EnrolmentStatus.IN_TRANSACTION.equals(enrolment.getStatus()));
-			if (/*!EnrolmentStatus.NEW.equals(status) && */!EnrolmentStatus.QUEUED.equals(status)) {
-				//TODO: remove this comment after #17611 code will be updated
+			assertEquals("Enrolment status should be in transaction before test", EnrolmentStatus.IN_TRANSACTION,enrolment.getStatus());
+			if (!EnrolmentStatus.NEW.equals(status) && !EnrolmentStatus.QUEUED.equals(status)) {
 				enrolment.setStatus(status);
-				assertTrue(String.format("Enrolment should be able to set the %s status after in transaction status", status), 
-					status.equals(enrolment.getStatus()));
+				assertEquals(String.format("Enrolment should be able to set the %s status after in transaction status", status), 
+					status, enrolment.getStatus());
 			} else {
 				try {
 					enrolment.setStatus(status);
 				} catch (Exception e) {
-					assertTrue("Enrolment status should be in transaction for this test", EnrolmentStatus.IN_TRANSACTION.equals(enrolment.getStatus()));
+					assertEquals("Enrolment status should be in transaction for this test", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
 				}
-				assertTrue("Enrolment status should be in transaction for this test", EnrolmentStatus.IN_TRANSACTION.equals(enrolment.getStatus()));
+				assertEquals("Enrolment status should be in transaction for this test", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
 			}
 		}
 	}
@@ -117,17 +116,17 @@ public class EnrolmentTest {
 			Enrolment enrolment = new Enrolment();
 			enrolment.setStatus(EnrolmentStatus.SUCCESS);
 			context.registerNewObject(enrolment);
-			assertTrue("Enrolment status should be success before test", EnrolmentStatus.SUCCESS.equals(enrolment.getStatus()));
+			assertEquals("Enrolment status should be success before test", EnrolmentStatus.SUCCESS,enrolment.getStatus());
 			if (EnrolmentStatus.SUCCESS.equals(status) || EnrolmentStatus.CANCELLED.equals(status) || EnrolmentStatus.REFUNDED.equals(status)) {
 				enrolment.setStatus(status);
-				assertTrue(String.format("Enrolment should be able to set the %s status after success status", status), status.equals(enrolment.getStatus()));
+				assertEquals(String.format("Enrolment should be able to set the %s status after success status", status), status,enrolment.getStatus());
 			} else {
 				try {
 					enrolment.setStatus(status);
 				} catch (Exception e) {
-					assertTrue("Enrolment status should be success for this test", EnrolmentStatus.SUCCESS.equals(enrolment.getStatus()));
+					assertEquals("Enrolment status should be success for this test", EnrolmentStatus.SUCCESS,enrolment.getStatus());
 				}
-				assertTrue("Enrolment status should be success for this test", EnrolmentStatus.SUCCESS.equals(enrolment.getStatus()));
+				assertEquals("Enrolment status should be success for this test", EnrolmentStatus.SUCCESS,enrolment.getStatus());
 			}
 		}
 	}
@@ -137,17 +136,17 @@ public class EnrolmentTest {
 			Enrolment enrolment = new Enrolment();
 			enrolment.setStatus(testedStatus);
 			context.registerNewObject(enrolment);
-			assertTrue(firstMessage, testedStatus.equals(enrolment.getStatus()));
+			assertEquals(firstMessage, testedStatus,enrolment.getStatus());
 			if (testedStatus.equals(status)) {
 				enrolment.setStatus(status);
-				assertTrue(String.format(secondMessage, status), status.equals(enrolment.getStatus()));
+				assertEquals(String.format(secondMessage, status), status,enrolment.getStatus());
 			} else {
 				try {
 					enrolment.setStatus(status);
 				} catch (Exception e) {
-					assertTrue(thirdMessage, testedStatus.equals(enrolment.getStatus()));
+					assertEquals(thirdMessage, testedStatus, enrolment.getStatus());
 				}
-				assertTrue(thirdMessage, testedStatus.equals(enrolment.getStatus()));
+				assertEquals(thirdMessage, testedStatus, enrolment.getStatus());
 			}
 		}
 	}
