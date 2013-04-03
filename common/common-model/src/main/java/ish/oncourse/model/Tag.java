@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 
 public class Tag extends _Tag implements Queueable {
@@ -34,6 +35,7 @@ public class Tag extends _Tag implements Queueable {
 			SelectQuery  q = new SelectQuery(Tag.class);
 			q.andQualifier(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, this));
 			q.andQualifier(ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true));
+			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 			visibleTags = getObjectContext().performQuery(q);
 		}
 

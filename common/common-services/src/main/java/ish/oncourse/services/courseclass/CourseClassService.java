@@ -2,12 +2,14 @@ package ish.oncourse.services.courseclass;
 
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
+import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.collections.ListUtils;
@@ -288,13 +290,8 @@ public class CourseClassService implements ICourseClassService {
      */
     private static void appyCourseClassCacheSettings(SelectQuery q) {
 
-        // TODO: uncomment when after upgrading to newer cayenne where
-        // https://issues.apache.org/jira/browse/CAY-1585 is fixed.
-
-        /**
-         * q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-         * q.setCacheGroups(CacheGroup.COURSES.name());
-         **/
+        q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+        q.setCacheGroups(CacheGroup.COURSES.name());
 
         q.addPrefetch(CourseClass.ROOM_PROPERTY);
         q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
