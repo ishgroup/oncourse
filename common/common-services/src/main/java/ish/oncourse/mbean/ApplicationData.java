@@ -1,9 +1,13 @@
 package ish.oncourse.mbean;
 
+import ish.oncourse.model.PaymentIn;
+
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.jar.Manifest;
 
 import javax.management.AttributeChangeNotification;
@@ -17,6 +21,9 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.services.ApplicationGlobals;
 
 public class ApplicationData extends NotificationBroadcasterSupport implements ApplicationDataMBean {
+	private static final String ESCAPE_QUERY_STRING = "';";
+	private static final String SELECT_PROBLEM_IN_TRANSACTION_ENROLMENT_QUERY = "select count(*) from Enrolment where status=%s and modified<='";
+	private static final String FULL_SQL_TIME_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	private static final String ATTRIBUTE_MBEAN_CHANGED_NOTIFICATION_MESSAGE = "An attribute of this MBean has changed";
 	private static final String CANCELED_TYPE_MESSAGE = "canceled";
 	private static final String REFUNDED_TYPE_MESSAGE = "refunded";
@@ -83,8 +90,14 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 	}
 	
 	@Override
-	public String getTotalInTransactionEnrolments() {
-		return getEnrolmentsCountForStatus(ENROLMENT_IN_TRANSACTION_STATUS, IN_TRANSACTION_TYPE_MESSAGE);
+	public String getProblemInTransactionEnrolments() {
+		Calendar cal = Calendar.getInstance();
+		int problemEnrollmentDelay = PaymentIn.EXPIRE_INTERVAL + 10;
+		cal.add(Calendar.MINUTE, -problemEnrollmentDelay);
+		StringBuilder selectQuery = new StringBuilder(SELECT_PROBLEM_IN_TRANSACTION_ENROLMENT_QUERY);
+		selectQuery.append(new SimpleDateFormat(FULL_SQL_TIME_DATE_FORMAT).format(cal.getTime())).append(ESCAPE_QUERY_STRING);
+		final String enrolmentsCount = evaluateEnrolmentsCountByStatus(ENROLMENT_IN_TRANSACTION_STATUS, selectQuery.toString());
+		return enrolmentsCount != null ? enrolmentsCount : String.format(FAILED_TO_LOAD_ENROLMENTS_COUNT_MESSAGE, IN_TRANSACTION_TYPE_MESSAGE);
 	}
 
 	@Override
@@ -98,7 +111,7 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 	}
 	
 	private String getEnrolmentsCountForStatus(String status, String enrolmentType) {
-		final String enrolmentsCount = evaluateEnrolmentsCountByStatus(status);
+		final String enrolmentsCount = evaluateEnrolmentsCountByStatus(status, SELECT_ENROLMENTS_BY_STATUS_STRING);
 		return enrolmentsCount != null ? enrolmentsCount : String.format(FAILED_TO_LOAD_ENROLMENTS_COUNT_MESSAGE, enrolmentType);
 	}
 	
@@ -109,7 +122,7 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 		return null;
 	}
 	
-	private String evaluateEnrolmentsCountByStatus(String status) {
+	private String evaluateEnrolmentsCountByStatus(String status, String selectQuery) {
 		try {
 			Statement statement = takeStatement();
 			if (statement == null) {
@@ -117,7 +130,7 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 			}
 			ResultSet result = null;
 			try {
-				result = statement.executeQuery(String.format(SELECT_ENROLMENTS_BY_STATUS_STRING, status));
+				result = statement.executeQuery(String.format(selectQuery, status));
 				if (result != null) {
 					result.beforeFirst();
 					result.next();

@@ -10,7 +10,7 @@ public interface ApplicationDataMBean {
 	public String getVersion();
 	public String getApplication();
 	public String getTotalSuccessEnrolments();
-	public String getTotalInTransactionEnrolments();
+	public String getProblemInTransactionEnrolments();
 	public String getTotalRefundedEnrolments();
 	public String getTotalCanceledEnrolments();
 }
