@@ -6,7 +6,9 @@
 		Override: No. This component should not normally be overridden
 	</t:remove>
 	<t:if test="wrapped">
-		<head t:type="ui/pagehead" title="${title}" canonicalLinkPath="${canonicalLinkPath}"/>
+		<head>
+			<span t:type="ui/pagehead" title="${title}" canonicalLinkPath="${canonicalLinkPath}"/>
+		</head>
 		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
 			<div  t:type="ui/BodyStructure" webNodeType="webNodeType">
 				<t:body/>
