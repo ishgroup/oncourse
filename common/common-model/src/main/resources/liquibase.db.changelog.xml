@@ -1542,5 +1542,29 @@
 	<changeSet id="98" author="viacheslav" context="production" runOnChange="true">
 		<addNotNullConstraint tableName="BinaryInfo" columnName="filePath" columnDataType="VARCHAR(512)"/>
 	</changeSet>
+	
+	<changeSet id="99" author="viacheslav" context="production" runOnChange="true">
+		<update tableName="Contact">
+			<column name="isMarketingViaEmailAllowed" value="1" />
+			<where>isMarketingViaEmailAllowed IS NULL</where>
+		</update>
+		<modifyDataType tableName="Contact" columnName="isMarketingViaEmailAllowed" newDataType="tinyint(1) NOT NULL" />
+	</changeSet>
+	
+	<changeSet id="100" author="viacheslav" context="production" runOnChange="true">
+		<update tableName="Contact">
+			<column name="isMarketingViaPostAllowed" value="1" />
+			<where>isMarketingViaPostAllowed IS NULL</where>
+		</update>
+		<modifyDataType tableName="Contact" columnName="isMarketingViaPostAllowed" newDataType="tinyint(1) NOT NULL" />
+	</changeSet>
+	
+	<changeSet id="101" author="viacheslav" context="production" runOnChange="true">
+		<update tableName="Contact">
+			<column name="isMarketingViaSMSAllowed" value="1" />
+			<where>isMarketingViaSMSAllowed IS NULL</where>
+		</update>
+		<modifyDataType tableName="Contact" columnName="isMarketingViaSMSAllowed" newDataType="tinyint(1) NOT NULL" />
+	</changeSet>
 
 </databaseChangeLog>
