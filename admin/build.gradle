@@ -21,3 +21,10 @@ dependencies {
 }
 
 archivesBaseName = "willowAdmin"
+
+war {
+	archiveName = archivesBaseName+'.war'
+	manifest {
+		from sharedManifest
+	}
+}
