@@ -1379,6 +1379,9 @@ public class PaymentPortTypeTest extends ServiceTest {
 		contactStub.setDateOfBirth(today);
 		contactStub.setEmailAddress("test@test.com");
 		contactStub.setEntityIdentifier("Contact");
+		contactStub.setMarketingViaEmailAllowed(true);
+		contactStub.setMarketingViaPostAllowed(true);
+		contactStub.setMarketingViaSMSAllowed(true);
 		return contactStub;
 	}
 
@@ -1484,6 +1487,9 @@ public class PaymentPortTypeTest extends ServiceTest {
 		contactStub.setDateOfBirth(today);
 		contactStub.setEmailAddress("test@test.com");
 		contactStub.setEntityIdentifier("Contact");
+		contactStub.setMarketingViaEmailAllowed(true);
+		contactStub.setMarketingViaPostAllowed(true);
+		contactStub.setMarketingViaSMSAllowed(true);
 		return contactStub;
 	}
 
