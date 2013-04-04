@@ -83,8 +83,8 @@ public class PaymentProcessController {
 
 		if (!validateDatabaseState(action))
 		{
-			setThrowable(new IllegalStateException(String.format("paymentIn with sessionId %s has been changed by another process.",
-					paymentIn.getSessionId())));
+			setThrowable(new IllegalStateException(String.format("paymentIn id: %s, sessionId: %s, status: %s, state: %s  has been changed by another process.",
+					paymentIn.getId(), paymentIn.getSessionId(), paymentIn.getStatus(), currentState)));
 			return;
 		}
 		switch (action) {
