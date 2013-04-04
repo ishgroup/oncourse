@@ -7,30 +7,45 @@
 	<Language id="2" ishVersion="1" name="Asian" isActive="1"/>
 	<Language id="3" ishVersion="1" name="Belgian" isActive="1"/>
 	<Language id="4" ishVersion="1" name="Belorussian" isActive="1"/>
-	<Module id="1" ishVersion="1" nationalCode="004/01" title="Occupational health and safety requirements associated with electrical work are followed" fieldOfEducation="061301" isModule="0"  />
-	<TrainingPackage id="1" ishVersion="1" nationalISC="AGR05" title="Conditionally Endorsed Agri-Food Qualifications Training Package"  endorsementFrom="2010-02-03 09:18:09" endorsementTo="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" purchaseFrom="2010-02-03 09:18:09"/>
-	<Qualification id="1" ishVersion="1" nationalCode="10351TAS" level="Certificate IV in" title="Youth &amp; Community Work (Christian)" anzsco="411716" asco="GEN19" fieldOfStudy="1103" fieldOfEducation="0899" nominalHours="13" 
+	<Module id="1" ishVersion="1" nationalCode="004/01" title="Occupational health and safety requirements associated with electrical work are followed" 
+		fieldOfEducation="061301" isModule="0"  />
+	<TrainingPackage id="1" ishVersion="1" nationalISC="AGR05" title="Conditionally Endorsed Agri-Food Qualifications Training Package"  
+		endorsementFrom="2010-02-03 09:18:09" endorsementTo="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" purchaseFrom="2010-02-03 09:18:09"/>
+	<Qualification id="1" ishVersion="1" nationalCode="10351TAS" level="Certificate IV in" title="Youth &amp; Community Work (Christian)" anzsco="411716" 
+		asco="GEN19" fieldOfStudy="1103" fieldOfEducation="0899" nominalHours="13" 
 		reviewDate="2009-07-16 16:50:31" isAccreditedCourse="1" created="2009-07-16 16:50:31" modified="2009-07-16 16:50:31"/>
 		
-	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
-	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" 
+		communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT" 
+		firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
 	
 	<QueuedTransaction id="1" collegeId="1" transactionKey="12345" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
-	<QueuedRecord id="1" transactionId="1" collegeId="1" action="CREATE" entityIdentifier="Enrolment" entityWillowId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
-	<QueuedRecord id="2" transactionId="1" collegeId="1" action="UPDATE" entityIdentifier="CourseClass" entityWillowId="1482" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
-	<QueuedRecord id="3" transactionId="1" collegeId="1" action="DELETE" entityIdentifier="Course" entityWillowId="2" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+	<QueuedRecord id="1" transactionId="1" collegeId="1" action="CREATE" entityIdentifier="Enrolment" entityWillowId="1" 
+		lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+	<QueuedRecord id="2" transactionId="1" collegeId="1" action="UPDATE" entityIdentifier="CourseClass" entityWillowId="1482" 
+		lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+	<QueuedRecord id="3" transactionId="1" collegeId="1" action="DELETE" entityIdentifier="Course" entityWillowId="2" 
+		lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
 	
 	
 	<Student id="1540" angelId="2540" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
-	<Contact id="1658" angelId="2658" collegeId="1" studentId="1540" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="putin@kremlin.ru" familyName="Putin" givenName="Vladimir"  faxNumber="1234-567" suburb="Moscow"/>
+	<Contact id="1658" angelId="2658" collegeId="1" studentId="1540" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" 
+		emailAddress="putin@kremlin.ru" familyName="Putin" givenName="Vladimir"  faxNumber="1234-567" suburb="Moscow"
+		isMarketingViaEmailAllowed="1" isMarketingViaSMSAllowed="1" isMarketingViaPostAllowed="1"/>
 	
 	<Student id="200" angelId="1200" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
-	<Contact id="1" angelId="250" collegeId="1" studentId="200" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="putin@kremlin.ru" familyName="Putin" givenName="Vladimir"  faxNumber="1234-567" suburb="Moscow"/>
+	<Contact id="1" angelId="250" collegeId="1" studentId="200" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" 
+		emailAddress="putin@kremlin.ru" familyName="Putin" givenName="Vladimir"  faxNumber="1234-567" suburb="Moscow"
+		isMarketingViaEmailAllowed="1" isMarketingViaSMSAllowed="1" isMarketingViaPostAllowed="1"/>
 	
 	<Room id="1" angelId="1" collegeId="1"/>
 	<Course id="1" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills"/>
-	<CourseClass id="1482" maximumPlaces="3" code="200701RW" collegeId="1" countOfSessions="3" courseId="1" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" roomId="1" isDistantLearningCourse="0"/>
+	<CourseClass id="1482" maximumPlaces="3" code="200701RW" collegeId="1" countOfSessions="3" courseId="1" deliveryMode="1" detail="Test Course Class" 
+		feeExGst="20.00" feeGst="1.25" roomId="1" isDistantLearningCourse="0"/>
 	<Enrolment id="1" source="O" collegeId="1" courseClassId="1482" studentId="200" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3"/>
-	<Invoice id="1" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91" source="O"/>
-	<InvoiceLine id="1" collegeId="1" enrolmentId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" taxEach="10.91" title="Test Invoice Line"/>
+	<Invoice id="1" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing" 
+		invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91" source="O"/>
+	<InvoiceLine id="1" collegeId="1" enrolmentId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" taxEach="10.91" 
+		title="Test Invoice Line"/>
 </dataset>
