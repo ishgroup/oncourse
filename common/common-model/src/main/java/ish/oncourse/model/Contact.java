@@ -45,15 +45,18 @@ public class Contact extends _Contact implements Queueable {
 		}
 		if (getIsMarketingViaEmailAllowed() == null) {
 			LOG.error(String.format("Contact with null IsMarketingViaEmailAllowed value found with id= %s . Set default true value.", getId()));
-			setIsMarketingViaEmailAllowed(true);
+			result.addFailure(ValidationFailure.validationFailure(this, _Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY,
+				"The IsMarketingViaEmailAllowed cannot be null."));
 		}
 		if (getIsMarketingViaSMSAllowed() == null) {
 			LOG.error(String.format("Contact with null IsMarketingViaSMSAllowed value found with id= %s . Set default true value.", getId()));
-			setIsMarketingViaSMSAllowed(true);
+			result.addFailure(ValidationFailure.validationFailure(this, _Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY,
+				"The IsMarketingViaSMSAllowed cannot be null."));
 		}
 		if (getIsMarketingViaPostAllowed() == null) {
 			LOG.error(String.format("Contact with null IsMarketingViaPostAllowed value found with id= %s . Set default true value.", getId()));
-			setIsMarketingViaPostAllowed(true);
+			result.addFailure(ValidationFailure.validationFailure(this, _Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY,
+				"The IsMarketingViaPostAllowed cannot be null."));
 		}
 	}
 
