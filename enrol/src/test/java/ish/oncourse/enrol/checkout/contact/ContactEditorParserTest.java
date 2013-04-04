@@ -5,7 +5,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
-import ish.oncourse.util.HTMLUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
 import org.junit.Test;
@@ -54,9 +53,9 @@ public class ContactEditorParserTest {
 		ContactFieldHelper contactFieldHelper = mock(ContactFieldHelper.class);
 		Messages messages = mock(Messages.class);
         Request request = mock(Request.class);
-        when(request.getParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY)).thenReturn(HTMLUtils.VALUE_on);
-        when(request.getParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY)).thenReturn(HTMLUtils.VALUE_on);
-        when(request.getParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY)).thenReturn(HTMLUtils.VALUE_on);
+        when(request.getParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY)).thenReturn(null);
+        when(request.getParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY)).thenReturn(null);
+        when(request.getParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY)).thenReturn(null);
         when(request.getParameter(Contact.DATE_OF_BIRTH_PROPERTY)).thenReturn("11/d11/d2011");
         when(request.getParameter(Contact.POSTCODE_PROPERTY)).thenReturn("12345");
 
@@ -117,9 +116,9 @@ public class ContactEditorParserTest {
     private void testParseMarketingFields(ContactEditorParser parser)
     {
         parser.parseMarketingFields();
-        assertTrue(parser.getContact().getIsMarketingViaEmailAllowed());
-        assertTrue(parser.getContact().getIsMarketingViaPostAllowed());
-        assertTrue(parser.getContact().getIsMarketingViaSMSAllowed());
+        assertNotNull(parser.getContact().getIsMarketingViaEmailAllowed());
+		assertNotNull(parser.getContact().getIsMarketingViaPostAllowed());
+		assertNotNull(parser.getContact().getIsMarketingViaSMSAllowed());
     }
 
 

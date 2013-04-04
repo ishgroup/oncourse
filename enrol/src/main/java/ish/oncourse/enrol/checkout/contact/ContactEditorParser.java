@@ -44,15 +44,18 @@ public class ContactEditorParser {
 
 	public void parse() {
 		parseContactFields();
-		contact.writeProperty(Contact.IS_MALE_PROPERTY, parseBooleanParameter(Contact.IS_MALE_PROPERTY));
+		contact.setIsMale(parseBooleanParameter(Contact.IS_MALE_PROPERTY));
 		parseMarketingFields();
 	}
 
 
 	void parseMarketingFields() {
-		contact.writeProperty(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY));
-		contact.writeProperty(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY));
-		contact.writeProperty(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY));
+		Boolean value = parseBooleanParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY);
+		contact.setIsMarketingViaEmailAllowed(value == null ? true: value);
+		value = parseBooleanParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY);
+		contact.setIsMarketingViaPostAllowed(value == null ? true: value);
+		value = parseBooleanParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY);
+		contact.setIsMarketingViaSMSAllowed(value == null ? true: value);
 	}
 
 	private Boolean parseBooleanParameter(String parameterName) {

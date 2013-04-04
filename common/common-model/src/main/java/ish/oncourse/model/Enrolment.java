@@ -5,13 +5,12 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.oncourse.model.auto._Enrolment;
 import ish.oncourse.utils.QueueableObjectUtils;
-
-import java.util.List;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectIdQuery;
+
+import java.util.List;
 
 public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueable {
 
@@ -124,7 +123,8 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 				}
 				break;
 			case IN_TRANSACTION:
-				if (status == null || EnrolmentStatus.NEW.equals(status) || EnrolmentStatus.QUEUED.equals(status)) {
+				// TODO: status NEW should be included in this test after task 17341 will be done
+				if (status == null || /** EnrolmentStatus.NEW.equals(status) ||**/ EnrolmentStatus.QUEUED.equals(status)) {
 					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
 				}
 				break;

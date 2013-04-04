@@ -1,15 +1,12 @@
 package ish.oncourse.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.test.ContextUtils;
-
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class EnrolmentTest {
 	private ObjectContext context;
@@ -93,7 +90,8 @@ public class EnrolmentTest {
 			enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 			context.registerNewObject(enrolment);
 			assertEquals("Enrolment status should be in transaction before test", EnrolmentStatus.IN_TRANSACTION,enrolment.getStatus());
-			if (!EnrolmentStatus.NEW.equals(status) && !EnrolmentStatus.QUEUED.equals(status)) {
+			// TODO: status NEW should be included in this test after task 17341 will be done
+			if (/*!EnrolmentStatus.NEW.equals(status) &&*/ !EnrolmentStatus.QUEUED.equals(status)) {
 				enrolment.setStatus(status);
 				assertEquals(String.format("Enrolment should be able to set the %s status after in transaction status", status), 
 					status, enrolment.getStatus());
