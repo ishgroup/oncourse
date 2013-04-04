@@ -13,17 +13,21 @@
 
     <Student id="2" angelId="2" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
     <Contact id="2" angelId="2" collegeId="1" studentId="2" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" 
-    	emailAddress="1@kremlin.ru" familyName="1" givenName="1" faxNumber="1234-567" suburb="Moscow"/>
+    	emailAddress="1@kremlin.ru" familyName="1" givenName="1" faxNumber="1234-567" suburb="Moscow"
+    	isMarketingViaEmailAllowed="1" isMarketingViaSMSAllowed="1" isMarketingViaPostAllowed="1"/>
     
     <Contact id="1" angelId="1" collegeId="1" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="2@kremlin.ru" 
-    	familyName="2" givenName="2"  faxNumber="1234-567" suburb="Moscow"/>
+    	familyName="2" givenName="2"  faxNumber="1234-567" suburb="Moscow"
+    	isMarketingViaEmailAllowed="1" isMarketingViaSMSAllowed="1" isMarketingViaPostAllowed="1"/>
     	
     <Student id="3" angelId="3" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
     <Contact id="3" angelId="3" collegeId="1" studentId="3" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" 
-    	emailAddress="3@kremlin.ru" familyName="3" givenName="3" faxNumber="1234-567" suburb="Moscow"/>
+    	emailAddress="3@kremlin.ru" familyName="3" givenName="3" faxNumber="1234-567" suburb="Moscow"
+    	isMarketingViaEmailAllowed="1" isMarketingViaSMSAllowed="1" isMarketingViaPostAllowed="1"/>
     
     <Student id="4" angelId="4" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
     <Contact id="4" angelId="4" collegeId="1" studentId="4" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" 
-    	emailAddress="4@kremlin.ru" familyName="4" givenName="4" faxNumber="1234-567" suburb="Moscow"/>
+    	emailAddress="4@kremlin.ru" familyName="4" givenName="4" faxNumber="1234-567" suburb="Moscow"
+    	isMarketingViaEmailAllowed="1" isMarketingViaSMSAllowed="1" isMarketingViaPostAllowed="1"/>
 	
 </dataset>
