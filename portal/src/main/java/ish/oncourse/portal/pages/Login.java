@@ -22,6 +22,10 @@ import java.util.Set;
 
 public class Login {
 
+	private static final String PARAMETER_firstName = "firstName";
+	private static final String PARAMETER_lastName = "lastName";
+	private static final String PARAMETER_emailAddress = "emailAddress";
+
 	@Persist
 	@Property
 	private String email;
@@ -106,15 +110,13 @@ public class Login {
     private String passwordNameErrorMessage;
 
 
-
-//    public Zone getLoginZone() {
-//        return loginZone;
-//    }
-
 	@SetupRender
 	void setupRender() {
 		// perform logout to cleanup the session before the new login
 		authenticationService.logout();
+		this.firstName = request.getParameter(PARAMETER_firstName);
+		this.lastName = request.getParameter(PARAMETER_lastName);
+		this.email = request.getParameter(PARAMETER_emailAddress);
 	}
 
 	@OnEvent(component = "forgotPassword", value = "selected")

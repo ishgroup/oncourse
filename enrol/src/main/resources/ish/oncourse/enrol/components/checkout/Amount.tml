@@ -25,7 +25,7 @@
 				<div id="submitPassword" class="button">Submit</div>
 				<t:eventlink t:id="creditAccessEvent" style="{display:none;}"/>
 				<p>Password <em title="${message:message-required}">*</em></p>
-				<p><a href="https://skillsoncourse.com.au/portal/login" target="_blank">Forgot password</a></p>
+				<p><a href="${portalUrl}" target="_blank">Forgot password</a></p>
 			</div>
 		</div>
 	</t:block>

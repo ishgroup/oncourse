@@ -11,6 +11,8 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.Format;
 
 public class Amount {
@@ -63,4 +65,12 @@ public class Amount {
     {
         return purchaseController.hasPreviousOwing() && purchaseController.isApplyPrevOwing();
     }
+
+	public URL getPortalUrl() throws MalformedURLException {
+		return new URL(String.format("https://skillsoncourse.com.au/portal/login?firstName=%s&lastName=%s&emailAddress=%s",
+				purchaseController.getModel().getPayer().getGivenName(),
+				purchaseController.getModel().getPayer().getFamilyName(),
+				purchaseController.getModel().getPayer().getEmailAddress()));
+	}
+
 }
