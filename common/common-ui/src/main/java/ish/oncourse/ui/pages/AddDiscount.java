@@ -2,20 +2,14 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Discount;
 import ish.oncourse.services.discount.IDiscountService;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.Block;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.net.MalformedURLException;
+import java.util.List;
 
 /**
  * The page for adding the promotion to the cookies.
@@ -68,11 +62,11 @@ public class AddDiscount {
 	@InjectComponent
 	private Form addDiscountForm;
 
-	/**
-	 * Zone component for udation the changed area.
-	 */
-	@InjectComponent
-	private Zone addDiscountZone;
+	@Inject
+	@Id("discountForm")
+	@Property
+	private Block discountForm;
+
 
 	/**
 	 * Setup initial values.
@@ -88,7 +82,7 @@ public class AddDiscount {
 	 * with such a code hasn't already been added to the list, the validation
 	 * passes successfully.
 	 */
-	@OnEvent(component = "addDiscountForm", value = "validate")
+	//@OnEvent(component = "addDiscountForm", value = "validate")
 	void validateDiscount() {
 		if (promoCode == null || promoCode.equals("")) {
 			errorMessage = "Enter discount code, please";
@@ -106,23 +100,26 @@ public class AddDiscount {
 	/**
 	 * Invokes on submit of the {@link #addDiscountForm}. Performs the adding of
 	 * {@link #promotion} if the {@link #validateDiscount()} passes successfully
-	 * and updates the {@link #addDiscountZone}.
+	 * and updates the {@link #discountForm}.
 	 * 
 	 * @return
 	 * @throws MalformedURLException
 	 */
-	@OnEvent(component = "addDiscountForm", value = "submit")
+	@OnEvent(value = "addDiscountEvent")
 	Object addDiscount() throws MalformedURLException {
+		/**
+		 *  promotionsList should be intialized allways because we use this value in template.
+		 */
 		promotionsList=discountService.getPromotions();
+
+		promoCode = request.getParameter("promo");
+
+		validateDiscount();
 		if (errorMessage == null) {
+
 			discountService.addPromotion(promotion);
 			promotionsList.add(0, promotion);
 		}
-		if (request.isXHR()) {
-			return addDiscountZone.getBody();
-		}
-		String url = "http://" + request.getServerName() + "/promotions";
-		return new URL(url);
-
+		return discountForm;
 	}
 }
