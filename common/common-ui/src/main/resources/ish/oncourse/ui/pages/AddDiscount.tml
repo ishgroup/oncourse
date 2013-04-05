@@ -1,27 +1,39 @@
-<html t:type="ui/dialogstructure" title="literal:My Discounts" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
+<html t:type="ui/dialogstructure" title="literal:My Discounts"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		>
+
+
 	<p>Sometimes we are able to offer discounts on a selection of our classes. If you have a discount code, then please enter it into the box
 		below</p>
-	<t:zone t:id="addDiscountZone">
-		<t:form t:id="addDiscountForm" zone="addDiscountZone">
-			<label for="promo">Discount code:</label>
-			<t:textField name="promo" value="promoCode"></t:textField>
-			<t:submit value="add"></t:submit> ${errorMessage} </t:form>
-		<t:if test="promotionsList.empty" negate="true">
-			<p class="discount_options">You have entered the following codes.<br />
-				<a href="/" onclick="window.parent.location.reload(true);return false;">Update page for these discounts now...</a>
-			</p>
-			<t:loop source="promotionsList" value="addedPromotion">
-				<h5 class="popup-name">${addedPromotion.code}</h5>
-				<div class="clear"></div>
-				<p>
-					<t:outputRaw value="addedPromotion.detail"></t:outputRaw>
-				</p>
-				<div class="divideline"></div>
-			</t:loop>
-			<p>The discounted prices will be now shown next to each course as you browse this site.</p>
-		</t:if>
-	</t:zone>
+	<t:delegate to="block:discountForm"/>
 	<p class="note"><strong class="alert">Please note:</strong> Our discounts are usually only available until a certain date, so you may not
 		be able to use an old discount code.</p>
+
+
+
+	<t:block t:id="discountForm">
+		<div id="addDiscountZone">
+			<t:form t:id="addDiscountForm" zone="addDiscountZone">
+				<label for="promo">Discount code:</label>
+				<t:textField t:id="promo" value="promoCode"/>
+				<button id="addDiscountButton" type="button">add</button>
+				<t:eventlink t:id="addDiscountEvent" style="{display:none}"/>
+				<div class="validation">${errorMessage}</div>
+			</t:form>
+			<t:if test="promotionsList.empty" negate="true">
+				<p class="discount_options">You have entered the following codes.<br />
+					<a href="/" onclick="window.parent.location.reload(true);return false;">Update page for these discounts now...</a>
+				</p>
+				<t:loop source="promotionsList" value="addedPromotion">
+					<h5 class="popup-name">${addedPromotion.code}</h5>
+					<div class="clear"></div>
+					<p>
+						<t:outputRaw value="addedPromotion.detail"></t:outputRaw>
+					</p>
+					<div class="divideline"></div>
+				</t:loop>
+				<p>The discounted prices will be now shown next to each course as you browse this site.</p>
+			</t:if>
+		</div>
+	</t:block>
 </html>
