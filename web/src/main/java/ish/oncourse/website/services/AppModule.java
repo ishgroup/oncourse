@@ -11,19 +11,21 @@ import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.ui.services.DisableJavaScriptStack;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import org.apache.tapestry5.SymbolConstants;
+import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.annotations.Contribute;
-import org.apache.tapestry5.ioc.annotations.EagerLoad;
-import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.Primary;
-import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.ApplicationGlobals;
+import org.apache.tapestry5.services.MarkupRenderer;
+import org.apache.tapestry5.services.MarkupRendererFilter;
+import org.apache.tapestry5.services.javascript.JavaScriptStack;
+import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 /**
@@ -60,4 +62,17 @@ public class AppModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local ThreadLocale locale) {
 		configuration.add(ThreadLocale.class, locale);
 	}
+
+	@Contribute(MarkupRenderer.class)
+	public static void deactiveDefaultCSS(OrderedConfiguration<MarkupRendererFilter> configuration)
+	{
+		configuration.override("InjectDefaultStyleheet", null);
+	}
+
+	@Contribute(JavaScriptStackSource.class)
+	public static void deactiveJavaScript(MappedConfiguration<String, JavaScriptStack> configuration)
+	{
+		configuration.overrideInstance(InternalConstants.CORE_STACK_NAME, DisableJavaScriptStack.class);
+	}
+
 }
