@@ -125,7 +125,7 @@ public class MessagePersonUpdaterTest extends ServiceTest {
 			assertTrue("The updater should not throw this kind of exception", false);
 		} catch (IllegalArgumentException e) {
 			logger.info( e.getMessage(), e);
-			assertTrue("test error message", e.getMessage().contains("Can't set the queued status for MessagePerson with sent status!"));
+			assertTrue("test error message", e.getMessage().contains("Can't set the queued status for MessagePerson with sent status and id = "));
 		}catch (IllegalStateException e) {
 			logger.info( e.getMessage(), e);
 			assertTrue("test error message", e.getMessage().contains(
