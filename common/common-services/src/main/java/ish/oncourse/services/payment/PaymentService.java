@@ -5,6 +5,7 @@ import java.util.List;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
+import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
@@ -79,4 +80,15 @@ public class PaymentService implements IPaymentService {
 		q.addPrefetch(PaymentIn.PAYMENT_TRANSACTIONS_PROPERTY);
 		return cayenneService.newContext().performQuery(q);
 	}
+
+	/**
+	 * @see IPaymentService#isProcessedByGateway(PaymentIn)
+	 */
+	@Override
+	public boolean isProcessedByGateway(PaymentIn payment) {
+		return ExpressionFactory.noMatchExp(PaymentTransaction.IS_FINALISED_PROPERTY, true)
+				.filterObjects(payment.getPaymentTransactions()).isEmpty();
+	}
+	
+	
 }

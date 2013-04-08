@@ -173,6 +173,8 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
             try {
 
                 paymentSupport.createTransaction();
+                
+                paymentSupport.commitTransaction();
 
                 SubmitTransactionOperation submitTransactionOperation = new SubmitTransactionOperation(username,
                         password,

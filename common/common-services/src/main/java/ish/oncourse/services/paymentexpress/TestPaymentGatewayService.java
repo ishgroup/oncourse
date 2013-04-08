@@ -39,6 +39,8 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
 		} else {
 
 			PaymentTransaction paymentTransaction = context.newObject(PaymentTransaction.class);
+			
+			context.commitChanges();
 
 			PaymentIn local = (PaymentIn) context.localObject(payment.getObjectId(), null);
 			paymentTransaction.setPayment(local);

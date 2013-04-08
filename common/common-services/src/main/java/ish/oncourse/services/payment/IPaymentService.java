@@ -42,4 +42,13 @@ public interface IPaymentService {
 	 * @return list of payment in
 	 */
 	List<PaymentIn> getPaymentsBySessionId(String sessionId);
+	
+	/**
+	 * Determines if payment processing by gateway was finalized. Returns true for payments processed by
+	 * gateway and payments which are not meant to be processed using gateway.
+	 * 
+	 * @param payment
+	 * @return
+	 */
+	boolean isProcessedByGateway(PaymentIn payment);
 }

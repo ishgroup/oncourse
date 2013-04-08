@@ -7,6 +7,7 @@ import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
@@ -46,7 +47,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
 
 		this.cayenneService = getService(ICayenneService.class);
-		this.job = new PaymentInExpireJob(cayenneService);
+		this.job = new PaymentInExpireJob(cayenneService, getService(IPaymentService.class));
 	}
 
 	@Test

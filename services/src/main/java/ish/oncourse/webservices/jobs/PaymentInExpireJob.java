@@ -5,6 +5,7 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.payment.PaymentInAbandonUtil;
 import org.apache.cayenne.ObjectContext;
@@ -34,10 +35,13 @@ public class PaymentInExpireJob implements Job {
 	private static final int FETCH_LIMIT = 500;
 
 	private final ICayenneService cayenneService; 
+	
+	private IPaymentService paymentService;
 
-	public PaymentInExpireJob(ICayenneService cayenneService) {
+	public PaymentInExpireJob(ICayenneService cayenneService, IPaymentService paymentService) {
 		super();
 		this.cayenneService = cayenneService;
+		this.paymentService = paymentService;
 	}
 
 	/**
@@ -61,10 +65,13 @@ public class PaymentInExpireJob implements Job {
 			logger.debug(String.format("The number of payments to expire:%s.", expiredPayments.size()));
 
 			for (PaymentIn p : expiredPayments) {
-				//web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.
-				boolean shouldReverseInvoice = PaymentSource.SOURCE_WEB.equals(p.getSource());
-				PaymentInAbandonUtil.abandonPaymentReverseInvoice(p, shouldReverseInvoice);
-                p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
+				// do not fail payments for which we haven't got final transaction response from gateway
+				if (paymentService.isProcessedByGateway(p)) {
+					//web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.
+					boolean shouldReverseInvoice = PaymentSource.SOURCE_WEB.equals(p.getSource());
+					PaymentInAbandonUtil.abandonPaymentReverseInvoice(p, shouldReverseInvoice);
+					p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
+				}
             }
 			logger.debug("PaymentInExpireJob finished.");
 

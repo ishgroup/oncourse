@@ -3,6 +3,7 @@ package ish.oncourse.util.payment;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
+import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
@@ -31,6 +32,8 @@ public class PaymentProcessController {
     private ParallelExecutor parallelExecutor;
     private IPaymentGatewayService paymentGatewayService;
 	private ICayenneService cayenneService;
+	private IPaymentService paymentService;
+	
     private PaymentIn paymentIn;
     private ObjectContext objectContext;
 
@@ -58,6 +61,10 @@ public class PaymentProcessController {
 
     public void setPaymentGatewayService(IPaymentGatewayService paymentGatewayService) {
         this.paymentGatewayService = paymentGatewayService;
+    }
+    
+    public void setPaymentService(IPaymentService paymentService) {
+    	this.paymentService = paymentService;
     }
 
     public PaymentIn getPaymentIn() {
@@ -102,8 +109,10 @@ public class PaymentProcessController {
             	abandonPaymentReverseInvoice(action, true);
                 break;
 		    case EXPIRE_PAYMENT:
-		    	//if the payment expire by timeout we need to keep invoice
-		    	abandonPaymentReverseInvoice(action, false);
+		    	if (paymentService.isProcessedByGateway(paymentIn)) {
+		    		//if the payment expire by timeout we need to keep invoice
+		    		abandonPaymentReverseInvoice(action, false);
+		    	}
                 break;
             case ABANDON_PAYMENT_KEEP_INVOICE:
                 abandonPaymentKeepInvoice();

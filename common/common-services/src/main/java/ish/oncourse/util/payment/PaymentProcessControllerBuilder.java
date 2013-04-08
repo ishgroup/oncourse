@@ -46,6 +46,8 @@ public class PaymentProcessControllerBuilder {
 		}
 		controller.setPaymentGatewayService(paymentGatewayService);
 		controller.setCayenneService(cayenneService);
+		controller.setPaymentService(paymentService);
+		
 		controller.setPaymentIn(paymentIn);
 		controller.processAction(PaymentAction.INIT_PAYMENT);
 		return controller;
