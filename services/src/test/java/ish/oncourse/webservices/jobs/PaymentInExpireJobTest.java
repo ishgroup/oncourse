@@ -6,8 +6,10 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.paymentexpress.PaymentInSupport;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
@@ -22,6 +24,7 @@ import javax.sql.DataSource;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -281,4 +284,92 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		enrolment2 = Cayenne.objectForPK(objectContext, Enrolment.class, 20010);
 		assertEquals("Enrolment2 is active.", EnrolmentStatus.SUCCESS, enrolment2.getStatus());
 	}
+	
+	@Test
+	public void testUnprocessedPaymentExpiration() throws Exception {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW + 1);
+		
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		
+		PaymentIn payment1 = Cayenne.objectForPK(context, PaymentIn.class, 2000);
+		PaymentIn payment2 = Cayenne.objectForPK(context, PaymentIn.class, 20000);
+		
+		Enrolment enrolment1 = Cayenne.objectForPK(context, Enrolment.class, 2000);
+		Enrolment enrolment2 = Cayenne.objectForPK(context, Enrolment.class, 2001);
+		
+		payment1.setCreated(cal.getTime());
+		payment2.setCreated(cal.getTime());
+		
+		context.commitChanges();
+		
+		PaymentInSupport paymentSupport1 = new PaymentInSupport(payment1, cayenneService);
+		PaymentTransaction transaction1 = paymentSupport1.createTransaction();
+		paymentSupport1.commitTransaction();
+		
+		PaymentInSupport paymentSupport2 = new PaymentInSupport(payment2, cayenneService);
+		PaymentTransaction transaction2 = paymentSupport2.createTransaction();
+		paymentSupport2.commitTransaction();
+		
+		cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -PaymentIn.EXPIRE_INTERVAL - 1);
+		
+		Connection connection = null;
+		try {
+			connection = getDataSource("jdbc/oncourse").getConnection();
+
+			PreparedStatement prepStat = connection.prepareStatement("update PaymentIn set modified=?");
+			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
+			int affected = prepStat.executeUpdate();
+			assertEquals("Expected update on 2 paymentIn.", 2, affected);
+			
+			prepStat.close();
+			
+			//cleanup the queue before running job
+			Statement st = connection.createStatement();
+			st.execute("delete from QueuedRecord");
+			st.execute("delete from QueuedTransaction");
+			st.close();
+		}
+		finally {
+			if (connection != null) {
+				connection.close();
+			}
+		}
+		
+		job.execute();
+		
+		payment1.setPersistenceState(PersistenceState.HOLLOW);
+		payment2.setPersistenceState(PersistenceState.HOLLOW);
+		enrolment1.setPersistenceState(PersistenceState.HOLLOW);
+		enrolment2.setPersistenceState(PersistenceState.HOLLOW);
+		
+		// Payments have unfinalized transactions and therefore should not be expired
+		assertEquals(PaymentStatus.IN_TRANSACTION, payment1.getStatus());
+		assertEquals(PaymentStatus.IN_TRANSACTION, payment2.getStatus());
+		
+		assertEquals(EnrolmentStatus.IN_TRANSACTION, enrolment1.getStatus());
+		assertEquals(EnrolmentStatus.IN_TRANSACTION, enrolment2.getStatus());
+		
+		transaction1.setIsFinalised(true);
+		transaction2.setIsFinalised(true);
+		
+		paymentSupport1.commitTransaction();
+		paymentSupport2.commitTransaction();
+		
+		job.execute();
+		
+		payment1.setPersistenceState(PersistenceState.HOLLOW);
+		payment2.setPersistenceState(PersistenceState.HOLLOW);
+		enrolment1.setPersistenceState(PersistenceState.HOLLOW);
+		enrolment2.setPersistenceState(PersistenceState.HOLLOW);
+		
+		assertEquals(PaymentStatus.FAILED, payment1.getStatus());
+		assertEquals(PaymentStatus.FAILED, payment2.getStatus());
+		
+		assertEquals(EnrolmentStatus.FAILED, enrolment1.getStatus());
+		assertEquals(EnrolmentStatus.FAILED, enrolment2.getStatus());
+
+	}
+	
 }
