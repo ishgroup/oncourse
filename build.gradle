@@ -20,8 +20,10 @@ buildscript {
 
 apply plugin: 'release'
 release {
-	//use subversion scm, unless otherwise specified in with -PscmFlavour= or in users gradle properties
-	scm = project.hasProperty('scmFlavour') ? project.scmFlavour:'svn'
+	//use scm, specified in with -PscmFlavour= or in users gradle properties. otherwise try to establish if svn of git is used
+	scm = project.hasProperty('scmFlavour') ? project.scmFlavour: file("$rootDir/.svn").exists()?'svn':file("$rootDir/.git").exists()?'git':""
+	assert scm.length() > 0
+
 	failOnSnapshotDependencies = true
 
 	//properties for svn access
