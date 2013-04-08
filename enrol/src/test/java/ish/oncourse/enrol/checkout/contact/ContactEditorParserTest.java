@@ -43,6 +43,11 @@ public class ContactEditorParserTest {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT);
 		Contact contact = new Contact();
+		//the code emulates Contact.postAdd method
+		contact.setIsMarketingViaEmailAllowed(Boolean.TRUE);
+		contact.setIsMarketingViaSMSAllowed(Boolean.TRUE);
+		contact.setIsMarketingViaPostAllowed(Boolean.TRUE);
+
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.YEAR, -19);
 		contact.setDateOfBirth(calendar.getTime());
