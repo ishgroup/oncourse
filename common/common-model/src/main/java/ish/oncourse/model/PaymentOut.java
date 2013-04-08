@@ -79,23 +79,26 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 			switch (getStatus()) {
 			case NEW:
 				if (status == null) {
-					throw new IllegalArgumentException("Can't set the empty paymentout status!");
+					throw new IllegalArgumentException(String.format("Can't set the empty paymentout status with id = %s !", getId()));
 				}
 				break;
 			case QUEUED:
 				if (status == null || PaymentStatus.NEW.equals(status)) {
-					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status!", status, getStatus()));
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status and id = %s !", 
+						status, getStatus(), getId()));
 				}
 				break;
 			case IN_TRANSACTION:
 			case CARD_DETAILS_REQUIRED:
 				if (status == null || PaymentStatus.NEW.equals(status) || PaymentStatus.QUEUED.equals(status)) {
-					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status!", status, getStatus()));
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status and id = %s !", 
+						status, getStatus(), getId()));
 				}
 				break;
 			case SUCCESS:
 				if (!(PaymentStatus.SUCCESS.equals(status) || PaymentStatus.STATUS_CANCELLED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status))) {
-					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status!", status, getStatus()));
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status and id = %s !", 
+						status, getStatus(), getId()));
 				}
 				break;
 			case FAILED:
@@ -104,11 +107,12 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 			case STATUS_CANCELLED:
 			case STATUS_REFUNDED:
 				if (!(getStatus().equals(status))) {
-					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status!", status, getStatus()));
+					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status and id = %s !", 
+						status, getStatus(), getId()));
 				}
 				break;
 			default:
-				throw new IllegalArgumentException(String.format("Unsupported status %s found for paymentout", status));
+				throw new IllegalArgumentException(String.format("Unsupported status %s found for paymentout with id = %s ", status, getId()));
 			}
 		}
 		super.setStatus(status);
