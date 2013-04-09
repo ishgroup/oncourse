@@ -17,8 +17,8 @@ public class HTMLUtils {
 	public static String getUrlBy(Request request, Class pageClass)
 	{
 		return String.format("%s%s/%s/%s", HTMLUtils.HTTP_PROTOCOL, request.getServerName(),request.getContextPath(), pageClass.getSimpleName());
-
 	}
+
 	public static boolean parserBooleanValue(String value)
 	{
 		if (value == null)
