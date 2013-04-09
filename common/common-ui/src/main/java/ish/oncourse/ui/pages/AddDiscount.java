@@ -13,9 +13,8 @@ import java.util.List;
 
 /**
  * The page for adding the promotion to the cookies.
- * 
+ *
  * @author ksenia
- * 
  */
 public class AddDiscount {
 
@@ -101,7 +100,7 @@ public class AddDiscount {
 	 * Invokes on submit of the {@link #addDiscountForm}. Performs the adding of
 	 * {@link #promotion} if the {@link #validateDiscount()} passes successfully
 	 * and updates the {@link #discountForm}.
-	 * 
+	 *
 	 * @return
 	 * @throws MalformedURLException
 	 */
@@ -110,16 +109,19 @@ public class AddDiscount {
 		/**
 		 *  promotionsList should be intialized allways because we use this value in template.
 		 */
-		promotionsList=discountService.getPromotions();
+		promotionsList = discountService.getPromotions();
 
-		promoCode = request.getParameter("promo");
+		if (request.isXHR()) {
+			promoCode = request.getParameter("promo");
 
-		validateDiscount();
-		if (errorMessage == null) {
+			validateDiscount();
+			if (errorMessage == null) {
 
-			discountService.addPromotion(promotion);
-			promotionsList.add(0, promotion);
-		}
-		return discountForm;
+				discountService.addPromotion(promotion);
+				promotionsList.add(0, promotion);
+			}
+			return discountForm;
+		} else
+			return this;
 	}
 }
