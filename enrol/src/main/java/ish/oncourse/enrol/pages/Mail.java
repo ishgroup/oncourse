@@ -177,7 +177,7 @@ public class Mail {
     }
 
     public String getCoursesLink() {
-        return (refererUrl != null) ? refererUrl : HTMLUtils.getUrlBy(request, Courses.class);
+        return (refererUrl != null) ? refererUrl : HTMLUtils.getUrlBy(request.getServerName(), Courses.class);
     }
 
 }

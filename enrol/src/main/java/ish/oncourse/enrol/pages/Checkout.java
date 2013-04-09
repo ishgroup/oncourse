@@ -167,7 +167,7 @@ public class Checkout {
     }
 
     public String getCoursesLink() {
-        return HTMLUtils.getUrlBy(request, Courses.class);
+        return HTMLUtils.getUrlBy(request.getServerName(), Courses.class);
     }
 
     @OnEvent(value = "addContactEvent")
