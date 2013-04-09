@@ -1,9 +1,11 @@
 package ish.oncourse.webservices.soap;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import ish.common.types.CreditCardType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
@@ -19,6 +21,7 @@ import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.webservices.soap.v4.PaymentPortType;
 import ish.oncourse.webservices.soap.v4.ReplicationPortType;
 import ish.oncourse.webservices.util.GenericReplicationStub;
@@ -32,7 +35,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
@@ -41,6 +46,12 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.dom.Document;
+import org.apache.tapestry5.dom.Element;
+import org.apache.tapestry5.dom.Node;
+import org.apache.tapestry5.internal.test.TestableRequest;
+import org.apache.tapestry5.internal.test.TestableResponse;
+import org.apache.tapestry5.services.Session;
 import org.apache.tapestry5.test.PageTester;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -348,6 +359,75 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	
 	protected PaymentPortType getPaymentPortType() throws JAXBException {
 		return getPaymentPortType(V4_REPLICATION_WSDL, V4_PAYMENT_ENDPOINT_PATH);
+	}
+	
+	protected final void renderPaymentPageWithSuccessProcessing(String sessionId) {
+		assertNotNull("Session id should not be null", sessionId);
+		Document doc = tester.renderPage("Payment/" + sessionId);
+		assertNotNull("Document should be loaded", doc);
+		
+		Element paymentForm = doc.getElementById("paymentDetailsForm");
+		assertNotNull("Payment form should be visible ", paymentForm);
+		Element cardName = paymentForm.getElementById("cardName");
+		assertNotNull("Card name input should be available", cardName);
+		Element cardNumber = paymentForm.getElementById("cardnumber");
+		assertNotNull("Card number input should be available", cardNumber);
+		Element expirityMonth = paymentForm.getElementById("expiryMonth");
+		assertNotNull("Card expirity month input should be available", expirityMonth);
+		Element expirityYear = paymentForm.getElementById("expiryYear");
+		assertNotNull("Card expirity year input should be available", expirityYear);
+		Element cardCVV = paymentForm.getElementById("cardcvv");
+		assertNotNull("Card CVV input should be available", cardCVV);
+		Element submitButton = paymentForm.getElementById("paymentSubmit");
+		assertNotNull("Payment form submit should be available", submitButton);
+		
+		Map<String, String> fieldValues = new HashMap<String, String>();
+		fieldValues.put(cardName.getAttribute(ID_ATTRIBUTE), CARD_HOLDER_NAME);
+		fieldValues.put(cardNumber.getAttribute(ID_ATTRIBUTE), VALID_CARD_NUMBER);
+		fieldValues.put(cardCVV.getAttribute(ID_ATTRIBUTE), CREDIT_CARD_CVV);
+		fieldValues.put(expirityMonth.getAttribute(ID_ATTRIBUTE), VALID_EXPIRITY_MONTH);
+		fieldValues.put(expirityYear.getAttribute(ID_ATTRIBUTE), VALID_EXPIRITY_YEAR);
+		fieldValues.put("cardTypeField", CreditCardType.VISA.getDisplayName());
+		
+		//submit the data
+		TestableResponse response = tester.clickSubmitAndReturnResponse(submitButton, fieldValues);
+		assertNotNull("response should not be empty", response);
+		System.out.println(response.getRedirectURL());
+		
+		//get session to check that processing in progress
+		Session session = serviceTest.getService(TestableRequest.class).getSession(false);
+		assertNotNull("Session should be inited for controller", session);
+		PaymentProcessController controller = (PaymentProcessController) session.getAttribute("state:Payment::paymentProcessController");
+		assertNotNull("controller should be not empty", controller);
+		
+		//start wait in loop for response
+		while (controller.isProcessingState()) {
+			try {
+				//sleep for 5 seconds to have some time for processing
+				Thread.sleep(5 * 1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			doc = tester.renderPage("Payment/" + sessionId);
+			assertNotNull("Document should be loaded", doc);
+		}
+		
+		//parse the response result
+		Element paymentResultDiv = doc.getRootElement().getElementByAttributeValue("class", "pay-form");
+		assertNotNull("Result div should be loaded", paymentResultDiv);
+		System.out.println(paymentResultDiv);
+		Element successPaymentDiv = paymentResultDiv.getElementByAttributeValue("class", "pay-success");
+		assertNotNull("Success payment div should be loaded", successPaymentDiv);
+		System.out.println(successPaymentDiv);
+		Element output = successPaymentDiv.getElementByAttributeValue("class", "page-title");
+		assertNotNull("Success payment output should be loaded", output);
+		//System.out.println(output);
+		assertFalse("Output should not be empty", output.isEmpty());
+		assertTrue("Output should contain only 1 child", output.getChildren().size() == 1);
+		Node successMessage = output.getChildren().get(0);
+		assertNotNull("Success message should be included", successMessage);
+		//System.out.println(successMessage);
+		assertEquals("Unexpected message", "Payment was successful.", successMessage.toString());
 	}
 
 }
