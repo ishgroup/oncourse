@@ -25,7 +25,7 @@ import org.apache.cayenne.query.SelectQuery;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class QESuccessPaymentForPartiallyCanceledTest extends RealWSTransportTest {
+public class QEFailedPaymentForPartiallyCanceledTest extends RealWSTransportTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase8Dataset.xml";
 	private static TestServer server;
 
@@ -36,7 +36,7 @@ public class QESuccessPaymentForPartiallyCanceledTest extends RealWSTransportTes
 
 	@BeforeClass	
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9099);
+		server = startRealWSServer(9101);
 	}
 	
 	protected String getDataSetFile() {
@@ -44,7 +44,7 @@ public class QESuccessPaymentForPartiallyCanceledTest extends RealWSTransportTes
 	}
 	
 	@Test
-	public void testSuccessQE() throws Exception {
+	public void testQEKeepInvoice() throws Exception {
 		//check that empty queuedRecords
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
@@ -83,7 +83,7 @@ public class QESuccessPaymentForPartiallyCanceledTest extends RealWSTransportTes
 		assertTrue("Get status call should return empty response for in transaction payment", 
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		//call page processing
-		renderPaymentPageWithSuccessProcessing(sessionId);
+		renderPaymentPageWithKeepInvoiceProcessing(sessionId);
 		//check that async replication works correct
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
@@ -126,7 +126,7 @@ public class QESuccessPaymentForPartiallyCanceledTest extends RealWSTransportTes
 			if (stub instanceof GenericPaymentInStub) {
 				if (stub.getWillowId() == 1l) {
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
-					assertEquals("Payment status should be success after processing", PaymentStatus.SUCCESS, status);
+					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(), 
 						((GenericPaymentInStub) stub).getStatus()), true);
@@ -134,10 +134,10 @@ public class QESuccessPaymentForPartiallyCanceledTest extends RealWSTransportTes
 			} else if (stub instanceof GenericEnrolmentStub) {
 				if (stub.getWillowId() == 10l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
-					assertEquals("Oncourse enrollment should be success after processing", EnrolmentStatus.SUCCESS, status);
+					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.SUCCESS, status);
 				} else if (stub.getWillowId() == 11l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
-					assertEquals("Oncourse enrollment should be refunded after processing", EnrolmentStatus.CANCELLED, status);
+					assertEquals("Oncourse enrollment should be refunded after expiration", EnrolmentStatus.CANCELLED, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(), 
 						((GenericEnrolmentStub)stub).getStatus()), true);

@@ -126,7 +126,7 @@ public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTes
 			if (stub instanceof GenericPaymentInStub) {
 				if (stub.getWillowId() == 1l) {
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
-					assertEquals("Payment status should be failed after expiration", PaymentStatus.SUCCESS, status);
+					assertEquals("Payment status should be success after processing", PaymentStatus.SUCCESS, status);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(), 
 						((GenericPaymentInStub) stub).getStatus()), true);
@@ -134,10 +134,10 @@ public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTes
 			} else if (stub instanceof GenericEnrolmentStub) {
 				if (stub.getWillowId() == 10l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
-					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.SUCCESS, status);
+					assertEquals("Oncourse enrollment should be success after processing", EnrolmentStatus.SUCCESS, status);
 				} else if (stub.getWillowId() == 11l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
-					assertEquals("Oncourse enrollment should be refunded after expiration", EnrolmentStatus.REFUNDED, status);
+					assertEquals("Oncourse enrollment should be refunded after processing", EnrolmentStatus.REFUNDED, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(), 
 						((GenericEnrolmentStub)stub).getStatus()), true);
