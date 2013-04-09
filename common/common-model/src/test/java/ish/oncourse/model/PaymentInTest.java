@@ -53,6 +53,403 @@ public class PaymentInTest {
 	}
 	
 	@Test
+	public void testPartiallyRefundInvoiceSucced() throws Exception {
+		PaymentIn paymentIn = context.newObject(PaymentIn.class);
+		paymentIn.setAmount(Money.ONE);
+		
+		paymentIn.setCollege(college);
+		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
+		paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE);
+		paymentIn.setType(PaymentType.CREDIT_CARD);
+		paymentIn.setSessionId("1234567890");
+
+		calendar.add(Calendar.DAY_OF_MONTH, 5);
+
+		Contact contact = (Contact) context.newObject(Contact.class);
+		contact.setGivenName("Test_Payer");
+		contact.setFamilyName("Test_Payer");
+		contact.setCollege(college);
+
+		Invoice invoice1 = context.newObject(Invoice.class);
+		invoice1.setAngelId(100l);
+		invoice1.setAmountOwing(new Money("2"));
+		invoice1.setInvoiceNumber(101l);
+		invoice1.setCollege(college);
+		invoice1.setInvoiceDate(calendar.getTime());
+		invoice1.setTotalExGst(new Money("2"));
+		invoice1.setTotalGst(new Money("2"));
+		invoice1.setDateDue(calendar.getTime());
+		invoice1.setContact(contact);
+		invoice1.setSource(PaymentSource.SOURCE_ONCOURSE);
+		
+		Invoice invoice2 = context.newObject(Invoice.class);
+		invoice2.setAngelId(102l);
+		invoice2.setAmountOwing(new Money("-1"));
+		invoice2.setCollege(college);
+		invoice2.setInvoiceNumber(100l);
+		invoice2.setInvoiceDate(calendar.getTime());
+		invoice2.setTotalExGst(new Money("-1"));
+		invoice2.setTotalGst(new Money("-1"));
+		invoice2.setDateDue(calendar.getTime());
+		invoice2.setContact(contact);
+		invoice2.setSource(PaymentSource.SOURCE_ONCOURSE);
+
+		InvoiceLine invLine1 = context.newObject(InvoiceLine.class);
+		invLine1.setTitle("Test_invLine1");
+		invLine1.setCollege(college);
+		invLine1.setPriceEachExTax(Money.ONE);
+		invLine1.setTaxEach(Money.ZERO);
+		invLine1.setQuantity(new BigDecimal(1));
+		invLine1.setDiscountEachExTax(Money.ZERO);
+		invLine1.setEnrolment(newEnrolment());
+		invLine1.getEnrolment().setStatus(EnrolmentStatus.SUCCESS);
+		
+		InvoiceLine invLine1_2 = context.newObject(InvoiceLine.class);
+		invLine1_2.setTitle("Test_invLine1");
+		invLine1_2.setCollege(college);
+		invLine1_2.setPriceEachExTax(Money.ONE);
+		invLine1_2.setTaxEach(Money.ZERO);
+		invLine1_2.setQuantity(new BigDecimal(1));
+		invLine1_2.setDiscountEachExTax(Money.ZERO);
+		invLine1_2.setEnrolment(newEnrolment());
+		invLine1_2.getEnrolment().setStatus(EnrolmentStatus.REFUNDED);
+		
+		InvoiceLine invLine2 = context.newObject(InvoiceLine.class);
+		invLine2.setTitle("Test_invLine2");
+		invLine2.setCollege(college);
+		invLine2.setPriceEachExTax(new Money("-1"));
+		invLine2.setTaxEach(Money.ZERO);
+		invLine2.setQuantity(new BigDecimal(1));
+		invLine2.setDiscountEachExTax(Money.ZERO);
+
+		invoice1.addToInvoiceLines(invLine1);
+		invoice1.addToInvoiceLines(invLine1_2);
+		invoice2.addToInvoiceLines(invLine2);
+
+		PaymentInLine pLine1 = context.newObject(PaymentInLine.class);
+		pLine1.setAmount(new Money("2"));
+		pLine1.setCollege(college);
+		pLine1.setInvoice(invoice1);
+
+		PaymentInLine pLine2 = context.newObject(PaymentInLine.class);
+		pLine2.setAmount(new Money("-1"));
+		pLine2.setCollege(college);
+		pLine2.setInvoice(invoice2);
+
+		paymentIn.addToPaymentInLines(pLine1);
+		paymentIn.addToPaymentInLines(pLine2);
+
+		context.commitChanges();
+		boolean isSuccedCorrect = true;
+		try {
+			paymentIn.succeed();
+			context.commitChanges();
+		} catch (Exception e) {
+			e.printStackTrace();
+			isSuccedCorrect = false;
+		}
+		assertTrue("Succed for partially refunded invoice should not thow an exception", isSuccedCorrect);
+	}
+	
+	@Test
+	public void testPartiallyCanceledInvoiceSucced() throws Exception {
+		PaymentIn paymentIn = context.newObject(PaymentIn.class);
+		paymentIn.setAmount(Money.ONE);
+		
+		paymentIn.setCollege(college);
+		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
+		paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE);
+		paymentIn.setType(PaymentType.CREDIT_CARD);
+		paymentIn.setSessionId("1234567890");
+
+		calendar.add(Calendar.DAY_OF_MONTH, 5);
+
+		Contact contact = (Contact) context.newObject(Contact.class);
+		contact.setGivenName("Test_Payer");
+		contact.setFamilyName("Test_Payer");
+		contact.setCollege(college);
+
+		Invoice invoice1 = context.newObject(Invoice.class);
+		invoice1.setAngelId(100l);
+		invoice1.setAmountOwing(new Money("2"));
+		invoice1.setInvoiceNumber(101l);
+		invoice1.setCollege(college);
+		invoice1.setInvoiceDate(calendar.getTime());
+		invoice1.setTotalExGst(new Money("2"));
+		invoice1.setTotalGst(new Money("2"));
+		invoice1.setDateDue(calendar.getTime());
+		invoice1.setContact(contact);
+		invoice1.setSource(PaymentSource.SOURCE_ONCOURSE);
+		
+		Invoice invoice2 = context.newObject(Invoice.class);
+		invoice2.setAngelId(102l);
+		invoice2.setAmountOwing(new Money("-1"));
+		invoice2.setCollege(college);
+		invoice2.setInvoiceNumber(100l);
+		invoice2.setInvoiceDate(calendar.getTime());
+		invoice2.setTotalExGst(new Money("-1"));
+		invoice2.setTotalGst(new Money("-1"));
+		invoice2.setDateDue(calendar.getTime());
+		invoice2.setContact(contact);
+		invoice2.setSource(PaymentSource.SOURCE_ONCOURSE);
+
+		InvoiceLine invLine1 = context.newObject(InvoiceLine.class);
+		invLine1.setTitle("Test_invLine1");
+		invLine1.setCollege(college);
+		invLine1.setPriceEachExTax(Money.ONE);
+		invLine1.setTaxEach(Money.ZERO);
+		invLine1.setQuantity(new BigDecimal(1));
+		invLine1.setDiscountEachExTax(Money.ZERO);
+		invLine1.setEnrolment(newEnrolment());
+		invLine1.getEnrolment().setStatus(EnrolmentStatus.SUCCESS);
+		
+		InvoiceLine invLine1_2 = context.newObject(InvoiceLine.class);
+		invLine1_2.setTitle("Test_invLine1");
+		invLine1_2.setCollege(college);
+		invLine1_2.setPriceEachExTax(Money.ONE);
+		invLine1_2.setTaxEach(Money.ZERO);
+		invLine1_2.setQuantity(new BigDecimal(1));
+		invLine1_2.setDiscountEachExTax(Money.ZERO);
+		invLine1_2.setEnrolment(newEnrolment());
+		invLine1_2.getEnrolment().setStatus(EnrolmentStatus.CANCELLED);
+		
+		InvoiceLine invLine2 = context.newObject(InvoiceLine.class);
+		invLine2.setTitle("Test_invLine2");
+		invLine2.setCollege(college);
+		invLine2.setPriceEachExTax(new Money("-1"));
+		invLine2.setTaxEach(Money.ZERO);
+		invLine2.setQuantity(new BigDecimal(1));
+		invLine2.setDiscountEachExTax(Money.ZERO);
+
+		invoice1.addToInvoiceLines(invLine1);
+		invoice1.addToInvoiceLines(invLine1_2);
+		invoice2.addToInvoiceLines(invLine2);
+
+		PaymentInLine pLine1 = context.newObject(PaymentInLine.class);
+		pLine1.setAmount(new Money("2"));
+		pLine1.setCollege(college);
+		pLine1.setInvoice(invoice1);
+
+		PaymentInLine pLine2 = context.newObject(PaymentInLine.class);
+		pLine2.setAmount(new Money("-1"));
+		pLine2.setCollege(college);
+		pLine2.setInvoice(invoice2);
+
+		paymentIn.addToPaymentInLines(pLine1);
+		paymentIn.addToPaymentInLines(pLine2);
+
+		context.commitChanges();
+		boolean isSuccedCorrect = true;
+		try {
+			paymentIn.succeed();
+			context.commitChanges();
+		} catch (Exception e) {
+			e.printStackTrace();
+			isSuccedCorrect = false;
+		}
+		assertTrue("Succed for partially canceled invoice should not thow an exception", isSuccedCorrect);
+	}
+	
+	@Test
+	public void testPartiallyRefundInvoiceFail() throws Exception {
+		PaymentIn paymentIn = context.newObject(PaymentIn.class);
+		paymentIn.setAmount(Money.ONE);
+		
+		paymentIn.setCollege(college);
+		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
+		paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE);
+		paymentIn.setType(PaymentType.CREDIT_CARD);
+		paymentIn.setSessionId("1234567890");
+
+		calendar.add(Calendar.DAY_OF_MONTH, 5);
+
+		Contact contact = (Contact) context.newObject(Contact.class);
+		contact.setGivenName("Test_Payer");
+		contact.setFamilyName("Test_Payer");
+		contact.setCollege(college);
+
+		Invoice invoice1 = context.newObject(Invoice.class);
+		invoice1.setAngelId(100l);
+		invoice1.setAmountOwing(new Money("2"));
+		invoice1.setInvoiceNumber(101l);
+		invoice1.setCollege(college);
+		invoice1.setInvoiceDate(calendar.getTime());
+		invoice1.setTotalExGst(new Money("2"));
+		invoice1.setTotalGst(new Money("2"));
+		invoice1.setDateDue(calendar.getTime());
+		invoice1.setContact(contact);
+		invoice1.setSource(PaymentSource.SOURCE_ONCOURSE);
+		
+		Invoice invoice2 = context.newObject(Invoice.class);
+		invoice2.setAngelId(102l);
+		invoice2.setAmountOwing(new Money("-1"));
+		invoice2.setCollege(college);
+		invoice2.setInvoiceNumber(100l);
+		invoice2.setInvoiceDate(calendar.getTime());
+		invoice2.setTotalExGst(new Money("-1"));
+		invoice2.setTotalGst(new Money("-1"));
+		invoice2.setDateDue(calendar.getTime());
+		invoice2.setContact(contact);
+		invoice2.setSource(PaymentSource.SOURCE_ONCOURSE);
+
+		InvoiceLine invLine1 = context.newObject(InvoiceLine.class);
+		invLine1.setTitle("Test_invLine1");
+		invLine1.setCollege(college);
+		invLine1.setPriceEachExTax(Money.ONE);
+		invLine1.setTaxEach(Money.ZERO);
+		invLine1.setQuantity(new BigDecimal(1));
+		invLine1.setDiscountEachExTax(Money.ZERO);
+		invLine1.setEnrolment(newEnrolment());
+		invLine1.getEnrolment().setStatus(EnrolmentStatus.SUCCESS);
+		
+		InvoiceLine invLine1_2 = context.newObject(InvoiceLine.class);
+		invLine1_2.setTitle("Test_invLine1");
+		invLine1_2.setCollege(college);
+		invLine1_2.setPriceEachExTax(Money.ONE);
+		invLine1_2.setTaxEach(Money.ZERO);
+		invLine1_2.setQuantity(new BigDecimal(1));
+		invLine1_2.setDiscountEachExTax(Money.ZERO);
+		invLine1_2.setEnrolment(newEnrolment());
+		invLine1_2.getEnrolment().setStatus(EnrolmentStatus.REFUNDED);
+		
+		InvoiceLine invLine2 = context.newObject(InvoiceLine.class);
+		invLine2.setTitle("Test_invLine2");
+		invLine2.setCollege(college);
+		invLine2.setPriceEachExTax(new Money("-1"));
+		invLine2.setTaxEach(Money.ZERO);
+		invLine2.setQuantity(new BigDecimal(1));
+		invLine2.setDiscountEachExTax(Money.ZERO);
+
+		invoice1.addToInvoiceLines(invLine1);
+		invoice1.addToInvoiceLines(invLine1_2);
+		invoice2.addToInvoiceLines(invLine2);
+
+		PaymentInLine pLine1 = context.newObject(PaymentInLine.class);
+		pLine1.setAmount(new Money("2"));
+		pLine1.setCollege(college);
+		pLine1.setInvoice(invoice1);
+
+		PaymentInLine pLine2 = context.newObject(PaymentInLine.class);
+		pLine2.setAmount(new Money("-1"));
+		pLine2.setCollege(college);
+		pLine2.setInvoice(invoice2);
+
+		paymentIn.addToPaymentInLines(pLine1);
+		paymentIn.addToPaymentInLines(pLine2);
+
+		context.commitChanges();
+		boolean isSuccedCorrect = true;
+		try {
+			paymentIn.failPayment();
+			context.commitChanges();
+		} catch (Exception e) {
+			e.printStackTrace();
+			isSuccedCorrect = false;
+		}
+		assertTrue("Fail for partially refunded invoice should not thow an exception", isSuccedCorrect);
+	}
+	
+	@Test
+	public void testPartiallyCanceledInvoiceFail() throws Exception {
+		PaymentIn paymentIn = context.newObject(PaymentIn.class);
+		paymentIn.setAmount(Money.ONE);
+		
+		paymentIn.setCollege(college);
+		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
+		paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE);
+		paymentIn.setType(PaymentType.CREDIT_CARD);
+		paymentIn.setSessionId("1234567890");
+
+		calendar.add(Calendar.DAY_OF_MONTH, 5);
+
+		Contact contact = (Contact) context.newObject(Contact.class);
+		contact.setGivenName("Test_Payer");
+		contact.setFamilyName("Test_Payer");
+		contact.setCollege(college);
+
+		Invoice invoice1 = context.newObject(Invoice.class);
+		invoice1.setAngelId(100l);
+		invoice1.setAmountOwing(new Money("2"));
+		invoice1.setInvoiceNumber(101l);
+		invoice1.setCollege(college);
+		invoice1.setInvoiceDate(calendar.getTime());
+		invoice1.setTotalExGst(new Money("2"));
+		invoice1.setTotalGst(new Money("2"));
+		invoice1.setDateDue(calendar.getTime());
+		invoice1.setContact(contact);
+		invoice1.setSource(PaymentSource.SOURCE_ONCOURSE);
+		
+		Invoice invoice2 = context.newObject(Invoice.class);
+		invoice2.setAngelId(102l);
+		invoice2.setAmountOwing(new Money("-1"));
+		invoice2.setCollege(college);
+		invoice2.setInvoiceNumber(100l);
+		invoice2.setInvoiceDate(calendar.getTime());
+		invoice2.setTotalExGst(new Money("-1"));
+		invoice2.setTotalGst(new Money("-1"));
+		invoice2.setDateDue(calendar.getTime());
+		invoice2.setContact(contact);
+		invoice2.setSource(PaymentSource.SOURCE_ONCOURSE);
+
+		InvoiceLine invLine1 = context.newObject(InvoiceLine.class);
+		invLine1.setTitle("Test_invLine1");
+		invLine1.setCollege(college);
+		invLine1.setPriceEachExTax(Money.ONE);
+		invLine1.setTaxEach(Money.ZERO);
+		invLine1.setQuantity(new BigDecimal(1));
+		invLine1.setDiscountEachExTax(Money.ZERO);
+		invLine1.setEnrolment(newEnrolment());
+		invLine1.getEnrolment().setStatus(EnrolmentStatus.SUCCESS);
+		
+		InvoiceLine invLine1_2 = context.newObject(InvoiceLine.class);
+		invLine1_2.setTitle("Test_invLine1");
+		invLine1_2.setCollege(college);
+		invLine1_2.setPriceEachExTax(Money.ONE);
+		invLine1_2.setTaxEach(Money.ZERO);
+		invLine1_2.setQuantity(new BigDecimal(1));
+		invLine1_2.setDiscountEachExTax(Money.ZERO);
+		invLine1_2.setEnrolment(newEnrolment());
+		invLine1_2.getEnrolment().setStatus(EnrolmentStatus.CANCELLED);
+		
+		InvoiceLine invLine2 = context.newObject(InvoiceLine.class);
+		invLine2.setTitle("Test_invLine2");
+		invLine2.setCollege(college);
+		invLine2.setPriceEachExTax(new Money("-1"));
+		invLine2.setTaxEach(Money.ZERO);
+		invLine2.setQuantity(new BigDecimal(1));
+		invLine2.setDiscountEachExTax(Money.ZERO);
+
+		invoice1.addToInvoiceLines(invLine1);
+		invoice1.addToInvoiceLines(invLine1_2);
+		invoice2.addToInvoiceLines(invLine2);
+
+		PaymentInLine pLine1 = context.newObject(PaymentInLine.class);
+		pLine1.setAmount(new Money("2"));
+		pLine1.setCollege(college);
+		pLine1.setInvoice(invoice1);
+
+		PaymentInLine pLine2 = context.newObject(PaymentInLine.class);
+		pLine2.setAmount(new Money("-1"));
+		pLine2.setCollege(college);
+		pLine2.setInvoice(invoice2);
+
+		paymentIn.addToPaymentInLines(pLine1);
+		paymentIn.addToPaymentInLines(pLine2);
+
+		context.commitChanges();
+		boolean isSuccedCorrect = true;
+		try {
+			paymentIn.failPayment();
+			context.commitChanges();
+		} catch (Exception e) {
+			e.printStackTrace();
+			isSuccedCorrect = false;
+		}
+		assertTrue("Fail for partially canceled invoice should not thow an exception", isSuccedCorrect);
+	}
+	
+	
+	@Test
 	public void testIsZeroAmount() throws Exception {
 		PaymentIn paymentIn = context.newObject(PaymentIn.class);
 		Money amount = new Money("224.34");
