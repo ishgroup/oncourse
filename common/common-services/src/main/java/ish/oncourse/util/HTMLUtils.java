@@ -8,6 +8,11 @@ public class HTMLUtils {
 	public static final String VALUE_on = "on";
 	public static final String HTTP_PROTOCOL = "http://";
 
+	public static String getUrlBy(String serverName, Class pageClass)
+	{
+		return String.format("%s%s/%s", HTMLUtils.HTTP_PROTOCOL, serverName, pageClass.getSimpleName());
+	}
+
 
 	public static String getUrlBy(Request request, Class pageClass)
 	{
