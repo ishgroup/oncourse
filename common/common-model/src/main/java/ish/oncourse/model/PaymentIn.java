@@ -252,12 +252,14 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
 					enrol.setModified(today);
-					enrol.setStatus(EnrolmentStatus.SUCCESS);
+					if (!enrol.isInFinalStatus()) {
+						enrol.setStatus(EnrolmentStatus.SUCCESS);
+					}
 				}
 			}
 		}
 	}
-
+		
 	/**
 	 * Finds invoice which is current and is performed operation on.
 	 * 
@@ -499,7 +501,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
 					enrol.setModified(today);
-					if (enrol.getStatus() != EnrolmentStatus.SUCCESS) {
+					if (!enrol.isInFinalStatus()) {
 						enrol.setStatus(EnrolmentStatus.IN_TRANSACTION);
 					}
 				}
