@@ -192,7 +192,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
 	
-	protected void fillV4PaymentStubsForCases7_8(GenericTransactionGroup transaction) {
+	protected void fillV4PaymentStubsForCases7(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
@@ -225,6 +225,33 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentLineStub2.setModified(current);
 		paymentLineStub2.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLineStub2);
+		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
+	}
+	
+	protected void fillV4PaymentStubsForCases8(GenericTransactionGroup transaction) {
+		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		final Money twoHundredDollars = new Money("200.00");
+		final Date current = new Date();
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInStub();
+		paymentInStub.setAngelId(1l);
+		paymentInStub.setAmount(twoHundredDollars.toBigDecimal());
+		paymentInStub.setContactId(1l);
+		paymentInStub.setCreated(current);
+		paymentInStub.setModified(current);
+		paymentInStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		paymentInStub.setStatus(PaymentStatus.IN_TRANSACTION.getDatabaseValue());
+		paymentInStub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
+		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
+		stubs.add(paymentInStub);
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		paymentLineStub.setAngelId(1l);
+		paymentLineStub.setAmount(paymentInStub.getAmount());
+		paymentLineStub.setCreated(current);
+		paymentLineStub.setEntityIdentifier(PAYMENT_LINE_IDENTIFIER);
+		paymentLineStub.setInvoiceId(10l);//link with original invoice
+		paymentLineStub.setModified(current);
+		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
+		stubs.add(paymentLineStub);
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
 	

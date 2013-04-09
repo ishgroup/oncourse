@@ -25,8 +25,8 @@ import org.apache.cayenne.query.SelectQuery;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTest {
-	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase7Dataset.xml";
+public class QESuccessPaymentForPartiallyCanceledTest extends RealWSTransportTest {
+	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase8Dataset.xml";
 	private static TestServer server;
 
 	@Override
@@ -51,12 +51,12 @@ public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTes
 		authenticate();
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(SupportedVersions.V4);
-		fillV4PaymentStubsForCases7(transaction);
+		fillV4PaymentStubsForCases8(transaction);
 		//process payment
 		transaction = getPaymentPortType().processPayment((TransactionGroup) transaction);
 		//check the response, validate the data and receive the sessionid
 		String sessionId = null;
-		assertEquals("16 stubs should be in response for this processing", 16, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("13 stubs should be in response for this processing", 13, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			assertNotNull("Willowid after the first payment processing should not be NULL", stub.getWillowId());
 			if (PAYMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
@@ -70,7 +70,7 @@ public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTes
 					assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.SUCCESS.name(), 
 						((GenericEnrolmentStub) stub).getStatus());
 				} else if (stub.getAngelId() == 11l) {
-					assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.REFUNDED.name(), 
+					assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.CANCELLED.name(), 
 						((GenericEnrolmentStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected enrolment stub with angelid= %s and willowid= %s", stub.getAngelId(), stub.getWillowId()), true);
@@ -88,20 +88,20 @@ public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTes
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 8 records.", 8, queuedRecords.size());
+		assertEquals("Queue should contain 7 records.", 7, queuedRecords.size());
 		int isPaymentFound = 0, isPaymentLineFound = 0, isInvoiceFound = 0, isInvoiceLineFound = 0, isEnrolmentFound = 0;
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				assertFalse("Only 1 paymentIn should exist in a queue", isPaymentFound >= 1);
 				isPaymentFound++;
 			} else if (PAYMENT_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 2 paymentInLine should exist in a queue", isPaymentLineFound >= 2);
+				assertFalse("Only 2 paymentInLine should exist in a queue", isPaymentLineFound >= 1);
 				isPaymentLineFound++;
 			} else if (INVOICE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 2 invoice should exist in a queue", isInvoiceFound >= 2);
+				assertFalse("Only 2 invoice should exist in a queue", isInvoiceFound >= 1);
 				isInvoiceFound++;
 			} else if (INVOICE_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 3 invoiceLine should exist in a queue", isInvoiceLineFound >= 3);
+				assertFalse("Only 3 invoiceLine should exist in a queue", isInvoiceLineFound >= 2);
 				isInvoiceLineFound++;
 			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				assertFalse("Only 1 enrolment should exist in a queue", isEnrolmentFound>=2);
@@ -111,7 +111,7 @@ public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTes
 			}
 		}
 		assertEquals("Not all PaymentIns found in a queue", 1, isPaymentFound);
-		assertEquals("Not all PaymentInLines found in a queue", 2, isPaymentLineFound);
+		assertEquals("Not all PaymentInLines found in a queue", 1, isPaymentLineFound);
 		assertEquals("Not all Invoices found in a queue", 1, isInvoiceFound);
 		assertEquals("Not all InvoiceLines found in a  queue", 2, isInvoiceLineFound);
 		assertEquals("Not all Enrolments found in a  queue", 2, isEnrolmentFound);
@@ -120,7 +120,7 @@ public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTes
 		transaction = getPaymentPortType().getPaymentStatus(sessionId);
 		assertFalse("Get status call should not return empty response for payment in final status", 
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("16 elements should be replicated for this payment", 16, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("13 elements should be replicated for this payment", 13, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
@@ -137,19 +137,19 @@ public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTes
 					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.SUCCESS, status);
 				} else if (stub.getWillowId() == 11l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
-					assertEquals("Oncourse enrollment should be refunded after expiration", EnrolmentStatus.REFUNDED, status);
+					assertEquals("Oncourse enrollment should be refunded after expiration", EnrolmentStatus.CANCELLED, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(), 
 						((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
-				if ((stub.getWillowId() != 10l) && (stub.getWillowId() != 11l)) {
+				if (stub.getWillowId() != 10l) {
 					assertFalse(String.format("Unexpected invoice stub with willowid= %s and angelid= %s found in a queue", 
 						stub.getWillowId(), stub.getAngelId()), true);
 				}
 			} else {
 				if (INVOICE_LINE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
-					if ((stub.getWillowId() != 10l) && (stub.getWillowId() != 11l) && (stub.getWillowId() != 12l)) {
+					if ((stub.getWillowId() != 10l) && (stub.getWillowId() != 11l)) {
 						assertFalse(String.format("Unexpected invoiceline stub with willowid= %s and angelid= %s found in a queue", 
 								stub.getWillowId(), stub.getAngelId()), true);
 					}
@@ -158,5 +158,4 @@ public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTes
 		}
 		logout();
 	}
-
 }
