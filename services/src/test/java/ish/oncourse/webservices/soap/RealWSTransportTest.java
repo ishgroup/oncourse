@@ -181,6 +181,42 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
 	
+	protected void fillV4PaymentStubsForCases7_8(GenericTransactionGroup transaction) {
+		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		final Money hundredDollars = new Money("100.00");
+		final Date current = new Date();
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInStub();
+		paymentInStub.setAngelId(1l);
+		paymentInStub.setAmount(hundredDollars.toBigDecimal());
+		paymentInStub.setContactId(1l);
+		paymentInStub.setCreated(current);
+		paymentInStub.setModified(current);
+		paymentInStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		paymentInStub.setStatus(PaymentStatus.IN_TRANSACTION.getDatabaseValue());
+		paymentInStub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
+		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
+		stubs.add(paymentInStub);
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		paymentLineStub.setAngelId(1l);
+		paymentLineStub.setAmount(hundredDollars.multiply(2l).toBigDecimal());//to match original (partially reversed) invoice amount
+		paymentLineStub.setCreated(current);
+		paymentLineStub.setEntityIdentifier(PAYMENT_LINE_IDENTIFIER);
+		paymentLineStub.setInvoiceId(10l);//link with original invoice
+		paymentLineStub.setModified(current);
+		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
+		stubs.add(paymentLineStub);
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub2 = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		paymentLineStub2.setAngelId(2l);
+		paymentLineStub2.setAmount(Money.ZERO.subtract(hundredDollars).toBigDecimal());//to match reverse invoice amount
+		paymentLineStub2.setCreated(current);
+		paymentLineStub2.setEntityIdentifier(PAYMENT_LINE_IDENTIFIER);
+		paymentLineStub2.setInvoiceId(11l);//link with reverse invoice
+		paymentLineStub2.setModified(current);
+		paymentLineStub2.setPaymentInId(paymentInStub.getAngelId());
+		stubs.add(paymentLineStub2);
+		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
+	}
+	
 	protected void fillV4PaymentStubsForCase5_6(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
