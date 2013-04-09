@@ -6,6 +6,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -170,9 +171,9 @@ public class PreferenceController extends CommonPreferenceController {
 
 		SelectQuery query = new SelectQuery(Preference.class, ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
 				ExpressionFactory.matchExp(Preference.NAME_PROPERTY, key)));
+		query.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
 
-		@SuppressWarnings("unchecked")
-		List<Preference> results = cayenneService.newContext().performQuery(query);
+		List<Preference> results = cayenneService.sharedContext().performQuery(query);
 
 		return results.isEmpty() ? null : results.get(0);
 	}
