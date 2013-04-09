@@ -51,7 +51,7 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends RealWSTransp
 
 	@BeforeClass
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9096);
+		server = startRealWSServer(9097);
 	}
 	
 	protected String getDataSetFile() {
