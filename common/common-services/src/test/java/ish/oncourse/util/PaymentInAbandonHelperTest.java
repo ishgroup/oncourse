@@ -278,11 +278,11 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		Enrolment enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load payment with already linked enrollment in transaction
@@ -343,11 +343,11 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		Enrolment enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load payment with already linked enrollment in transaction
@@ -408,11 +408,11 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		Enrolment enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load payment with already linked enrollment in transaction
@@ -638,11 +638,11 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load data
@@ -774,11 +774,11 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load data
@@ -946,11 +946,11 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load data
@@ -1139,11 +1139,12 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
+		
 		vouchers = context.performQuery(new SelectQuery(Voucher.class, ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 3L)));
 		assertFalse("Vouchers list should not be empty", vouchers.isEmpty());
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
@@ -1277,11 +1278,11 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load data
@@ -1415,11 +1416,11 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		

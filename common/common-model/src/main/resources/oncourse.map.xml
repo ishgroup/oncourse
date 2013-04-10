@@ -2399,7 +2399,7 @@
 	<db-relationship name="courseClass" source="Enrolment" target="CourseClass" toMany="false">
 		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="invoiceLine" source="Enrolment" target="InvoiceLine" toMany="false">
+	<db-relationship name="invoiceLines" source="Enrolment" target="InvoiceLine" toMany="true">
 		<db-attribute-pair source="id" target="enrolmentId"/>
 	</db-relationship>
 	<db-relationship name="outcomes" source="Enrolment" target="Outcome" toMany="true">
@@ -3100,7 +3100,7 @@
 	<obj-relationship name="contact" source="DiscussionCommentContact" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
-	<obj-relationship name="invoiceLine" source="Enrolment" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
+	<obj-relationship name="invoiceLines" source="Enrolment" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="outcomes" source="Enrolment" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="surveys" source="Enrolment" target="Survey" deleteRule="Deny" db-relationship-path="surveys"/>

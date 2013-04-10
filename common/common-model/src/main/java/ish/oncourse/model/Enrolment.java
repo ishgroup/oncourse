@@ -3,18 +3,25 @@ package ish.oncourse.model;
 import ish.common.payable.EnrolmentInterface;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
+import ish.math.Money;
 import ish.oncourse.model.auto._Enrolment;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectIdQuery;
+import org.apache.log4j.Logger;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueable {
 
 	private static final long serialVersionUID = 8361159336001022666L;
+	private static final Logger LOG = Logger.getLogger(Enrolment.class);
+	public static final String TO_MANY_INVOICE_LINE_SUPPORT_VERSION = "4.1";
 
 	/**
 	 * Statuses for which the class place is considered to be occupied.
@@ -81,6 +88,41 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 
 		return null;
 	}
+	
+	/**
+	 * Get the original enrollment invoice line. 
+	 * This is a workaround to detect which invoice line should be linked with enrollment as "original". 
+	 * Currently not-negative invoice line with lowest create date used for this cases.
+	 * If negative (reverse invoice line) linked with enrollment they should not be used as "original".
+	 * @return the original enrollment invoice line
+	 */
+	@Deprecated
+	public InvoiceLine getOriginalInvoiceLine() {
+		if (getInvoiceLines() != null && !getInvoiceLines().isEmpty()) {
+			SortedSet<InvoiceLine> invoices = new TreeSet<InvoiceLine>(new Comparator<InvoiceLine> () {
+				@Override
+				public int compare(InvoiceLine invoiceLine0, InvoiceLine invoiceLine1) {
+					if (!invoiceLine0.getFinalPriceToPayIncTax().isLessThan(Money.ZERO) && !invoiceLine1.getFinalPriceToPayIncTax().isLessThan(Money.ZERO)) {
+						return invoiceLine0.getCreated().compareTo(invoiceLine1.getCreated());
+					}
+					int compareResult = invoiceLine1.getFinalPriceToPayIncTax().compareTo(invoiceLine0.getFinalPriceToPayIncTax());
+					if (compareResult == 0) {
+						compareResult = invoiceLine0.getCreated().compareTo(invoiceLine1.getCreated());
+					}
+					return compareResult;
+				}
+			});
+			for (InvoiceLine invoiceLine : getInvoiceLines()) {
+				invoices.add(invoiceLine);
+			}
+			InvoiceLine originalInvoiceLine = invoices.first();
+			if (originalInvoiceLine.getFinalPriceToPayIncTax().isLessThan(Money.ZERO)) {
+				LOG.error(String.format("Negative invoiceLine with id = %s used as original for enrolment with id = %s", originalInvoiceLine.getId(), getId()));
+			}
+			return originalInvoiceLine;
+		}
+		return null;
+	}
 
 	/**
 	 * Check if async replication is allowed on this object. To replicate enrolment shouldn't have null, QUEUED or IN_TRANSACTION statuses.
@@ -91,18 +133,27 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 		//first of all we check if enrolment, linked to PaymentIn with either SUCCESS or FAIL status. 
 		//If so enrolment is allowed to go to the queue. We need that since there may be several payments made for enrolment,
 		//for instance when first payment failed and second payment is in progress, enrolment is allowed to go to the queue.
-		if (getInvoiceLine() != null && !getInvoiceLine().getInvoice().getPaymentInLines().isEmpty()) {
-			for (PaymentInLine line : getInvoiceLine().getInvoice().getPaymentInLines()) {
-				PaymentIn paymentIn = line.getPaymentIn();
-				final ObjectIdQuery q = new ObjectIdQuery(paymentIn.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
-				paymentIn = (PaymentIn) Cayenne.objectForQuery(getObjectContext(), q);
-				if (paymentIn.isAsyncReplicationAllowed()) {
-					return true;
+		if (getInvoiceLines() != null && !getInvoiceLines().isEmpty()) {
+			for (InvoiceLine invoiceLine : getInvoiceLines()) {
+				if (!invoiceLine.getInvoice().getPaymentInLines().isEmpty()) {
+					for (PaymentInLine paymentInLine : invoiceLine.getInvoice().getPaymentInLines()) {
+						PaymentIn paymentIn = paymentInLine.getPaymentIn();
+						final ObjectIdQuery q = new ObjectIdQuery(paymentIn.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+						paymentIn = (PaymentIn) Cayenne.objectForQuery(getObjectContext(), q);
+						if (paymentIn.isAsyncReplicationAllowed()) {
+							return true;
+						}
+					}
+				} else {
+					return isAsyncReplicationAllowedByStatusCheck();
 				}
 			}
 			return false;
-		}
-		
+		}		
+		return isAsyncReplicationAllowedByStatusCheck();
+	}
+	
+	private boolean isAsyncReplicationAllowedByStatusCheck() {
 		return getStatus() != null && getStatus() != EnrolmentStatus.IN_TRANSACTION && getStatus() != EnrolmentStatus.QUEUED;
 	}
 	

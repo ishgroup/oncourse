@@ -80,11 +80,11 @@ private ICayenneService cayenneService;
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load data
@@ -158,11 +158,11 @@ private ICayenneService cayenneService;
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load data
@@ -223,11 +223,11 @@ private ICayenneService cayenneService;
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.SUCCESS);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load data
@@ -288,11 +288,11 @@ private ICayenneService cayenneService;
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.SUCCESS);
 		enrolment.setStudent(paymentIn.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		context.commitChanges();
 		//re-load data

@@ -16,6 +16,7 @@ import java.util.Set;
 public class College extends _College {
 	private static final long serialVersionUID = 8618498696778850266L;
 	public static final String REQUESTING_COLLEGE_ATTRIBUTE = "RequestingCollege";
+	public static final String UNDEFINED_ANGEL_VERSION = "UNDEFINED";
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);

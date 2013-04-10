@@ -23,17 +23,14 @@ public class SampleEntityBuilder {
 
 	public Enrolment createEnrolment(InvoiceLine invoiceLine, Student student, CourseClass courseClass) {
 		Enrolment enrl = ctx.newObject(Enrolment.class);
-
 		College college = Cayenne.objectForPK(ctx, College.class, 1l);
 		enrl.setCollege(college);
-
-		enrl.setInvoiceLine(invoiceLine);
 		enrl.setReasonForStudy(1);
 		enrl.setSource(PaymentSource.SOURCE_WEB);
 		enrl.setStatus(EnrolmentStatus.SUCCESS);
 		enrl.setStudent(student);
 		enrl.setCourseClass(courseClass);
-
+		invoiceLine.setEnrolment(enrl);
 		return enrl;
 	}
 

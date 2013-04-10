@@ -141,11 +141,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		//context.commitChanges();
 		//start helper
@@ -204,11 +204,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		//context.commitChanges();
 		//start helper
@@ -276,11 +276,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		InvoiceLine invoiceLine2 = context.newObject(InvoiceLine.class);
 		invoiceLine2.setCollege(invoice.getCollege());
@@ -297,11 +297,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
 		enrolment2.setCollege(invoiceLine2.getCollege());
 		enrolment2.setCourseClass(courseClass);
-		enrolment2.setInvoiceLine(invoiceLine2);
 		enrolment2.setSource(invoice.getSource());
 		enrolment2.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
+		invoiceLine2.setEnrolment(enrolment2);
 		
 		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()));
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()));
@@ -389,11 +389,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		InvoiceLine invoiceLine2 = context.newObject(InvoiceLine.class);
 		invoiceLine2.setCollege(invoice.getCollege());
@@ -410,11 +410,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
 		enrolment2.setCollege(invoiceLine2.getCollege());
 		enrolment2.setCourseClass(courseClass);
-		enrolment2.setInvoiceLine(invoiceLine2);
 		enrolment2.setSource(invoice.getSource());
 		enrolment2.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
+		invoiceLine2.setEnrolment(enrolment2);
 		
 		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()));
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()));
@@ -508,11 +508,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		//context.commitChanges();
 		//start helper
@@ -610,11 +610,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		InvoiceLine invoiceLine2 = context.newObject(InvoiceLine.class);
 		invoiceLine2.setCollege(invoice.getCollege());
@@ -631,11 +631,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
 		enrolment2.setCollege(invoiceLine2.getCollege());
 		enrolment2.setCourseClass(courseClass);
-		enrolment2.setInvoiceLine(invoiceLine2);
 		enrolment2.setSource(invoice.getSource());
 		enrolment2.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
+		invoiceLine2.setEnrolment(enrolment2);
 		
 		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()));
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()));
@@ -739,11 +739,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		InvoiceLine invoiceLine2 = context.newObject(InvoiceLine.class);
 		invoiceLine2.setCollege(invoice.getCollege());
@@ -760,11 +760,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
 		enrolment2.setCollege(invoiceLine2.getCollege());
 		enrolment2.setCourseClass(courseClass2);
-		enrolment2.setInvoiceLine(invoiceLine2);
 		enrolment2.setSource(invoice.getSource());
 		enrolment2.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
+		invoiceLine2.setEnrolment(enrolment2);
 		
 		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()));
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()));
@@ -875,11 +875,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(invoiceLine.getCollege());
 		enrolment.setCourseClass(courseClass);
-		enrolment.setInvoiceLine(invoiceLine);
 		enrolment.setSource(invoice.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setStudent(contact.getStudent());
 		enrolment.setReasonForStudy(1);
+		invoiceLine.setEnrolment(enrolment);
 		
 		InvoiceLine invoiceLine2 = context.newObject(InvoiceLine.class);
 		invoiceLine2.setCollege(invoice.getCollege());
@@ -896,11 +896,11 @@ public class VoucherServiceTest extends ServiceTest {
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
 		enrolment2.setCollege(invoiceLine2.getCollege());
 		enrolment2.setCourseClass(courseClass2);
-		enrolment2.setInvoiceLine(invoiceLine2);
 		enrolment2.setSource(invoice.getSource());
 		enrolment2.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
+		invoiceLine2.setEnrolment(enrolment2);
 		
 		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()));
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()));

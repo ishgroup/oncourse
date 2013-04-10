@@ -1,6 +1,12 @@
 package ish.oncourse.model;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+
 import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentSource;
+import ish.math.Money;
 import ish.oncourse.test.ContextUtils;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
@@ -181,6 +187,110 @@ public class EnrolmentTest {
 			"Enrolment should not be able to set null status after corrupted");
 		testTheSameStatusLoop(EnrolmentStatus.CORRUPTED, "Enrolment status should be corrupted before test", 
 				"Enrolment should be able to set the %s status after corrupted status", "Enrolment status should be corrupted for this test");
+	}
+	
+	@Test
+	public void testGetOriginalInvoiceLine() {
+		Date currentTime = new Date();
+		College college = context.newObject(College.class);
+		college.setName("name");
+		college.setTimeZone("Australia/Sydney");
+		college.setFirstRemoteAuthentication(new Date());
+		college.setRequiresAvetmiss(false);
+		Course course = context.newObject(Course.class);
+		course.setCollege(college);
+		CourseClass courseClass = context.newObject(CourseClass.class);
+		courseClass.setCourse(course);
+		courseClass.setCollege(college);
+		courseClass.setMaximumPlaces(3);
+		courseClass.setIsDistantLearningCourse(false);
+		context.commitChanges();
+		
+		Calendar calendar =  Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, 5);
+
+		Contact contact = (Contact) context.newObject(Contact.class);
+		contact.setGivenName("Test_Payer");
+		contact.setFamilyName("Test_Payer");
+		contact.setCollege(college);
+		
+		Invoice invoice1 = context.newObject(Invoice.class);
+		invoice1.setAngelId(100l);
+		invoice1.setAmountOwing(new Money("225"));
+		invoice1.setInvoiceNumber(100l);
+		invoice1.setCollege(college);
+		invoice1.setInvoiceDate(calendar.getTime());
+		invoice1.setTotalExGst(new Money("225"));
+		invoice1.setTotalGst(new Money("225"));
+		invoice1.setDateDue(calendar.getTime());
+		invoice1.setContact(contact);
+		invoice1.setSource(PaymentSource.SOURCE_ONCOURSE);
+
+		InvoiceLine invLine1 = context.newObject(InvoiceLine.class);
+		invLine1.setTitle("Test_invLine1");
+		invLine1.setCollege(college);
+		invLine1.setPriceEachExTax(Money.ZERO);//positive
+		invLine1.setTaxEach(Money.ZERO);
+		invLine1.setQuantity(new BigDecimal(1));
+		invLine1.setDiscountEachExTax(Money.ZERO);
+		invLine1.setCreated(currentTime);
+		invLine1.setEnrolment(newEnrolment(college, courseClass));
+
+		InvoiceLine invLine2 = context.newObject(InvoiceLine.class);
+		invLine2.setTitle("Test_invLine2");
+		invLine2.setCollege(college);
+		invLine2.setEnrolment(invLine1.getEnrolment());
+		invLine2.setPriceEachExTax(Money.ZERO.subtract(new Money("220")));//negative
+		invLine2.setTaxEach(Money.ZERO);
+		invLine2.setQuantity(new BigDecimal(1));
+		invLine2.setCreated(currentTime);
+		invLine2.setDiscountEachExTax(Money.ZERO);
+
+		invoice1.addToInvoiceLines(invLine1);
+		invoice1.addToInvoiceLines(invLine2);
+		Enrolment enrolment = invLine1.getEnrolment();
+		context.commitChanges();
+		
+		//check the case with 1 positive and 1 negative invoiceline
+		assertEquals("Enrolment should have 2 linked invoiceLines", 2, enrolment.getInvoiceLines().size());
+		assertNotNull("Original invoice should be linked", enrolment.getOriginalInvoiceLine());
+		assertEquals("Original invoiceLine should have not negative FinalPriceToPayIncTax for this case", 
+			invLine1, enrolment.getOriginalInvoiceLine());
+		
+		invLine1.setPriceEachExTax(Money.ONE);
+		invLine2.setPriceEachExTax(Money.ZERO);
+		invLine2.setCreated(currentTime);
+		invLine1.setCreated(new Date());
+		context.commitChanges();
+		
+		//check when to both invoicelines have positive FinalPriceToPayIncTax but different create date
+		assertEquals("Enrolment should have 2 linked invoiceLines", 2, enrolment.getInvoiceLines().size());
+		assertNotNull("Original invoice should be linked", enrolment.getOriginalInvoiceLine());
+		assertEquals("Original invoiceLine should be firstly created invoiceline with not negative FinalPriceToPayIncTax", 
+			invLine2, enrolment.getOriginalInvoiceLine());
+	}
+	
+	private Enrolment newEnrolment(College college, CourseClass courseClass) {
+
+		Enrolment enrol = new Enrolment();
+		enrol.setCourseClass(courseClass);
+		enrol.setStatus(EnrolmentStatus.IN_TRANSACTION);
+		enrol.setCollege(college);
+		enrol.setSource(PaymentSource.SOURCE_ONCOURSE);
+
+		Student student = (Student) context.newObject(Student.class);
+		student.setCollege(college);
+
+		Contact contact = (Contact) context.newObject(Contact.class);
+		contact.setCollege(college);
+		contact.setGivenName("Test_CourseClass");
+		contact.setFamilyName("Test_CourseClass");
+
+		student.setContact(contact);
+
+		enrol.setStudent(student);
+
+		return enrol;
 	}
 	
 	
