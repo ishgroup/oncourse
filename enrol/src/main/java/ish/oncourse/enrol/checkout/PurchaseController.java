@@ -11,6 +11,7 @@ import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -57,6 +58,7 @@ public class PurchaseController {
 	private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
 	private IWebSiteService webSiteService;
 	private ITagService tagService;
+	private IPaymentService paymentService;
 
 	private Messages messages;
 
@@ -626,8 +628,16 @@ public class PurchaseController {
         return String.format("%s (%s-%s)", courseClass.getCourse().getName(), courseClass.getCourse().getCode(), courseClass.getCode());
     }
 
+	public IPaymentService getPaymentService() {
+		return paymentService;
+	}
 
-    public static enum State {
+	public void setPaymentService(IPaymentService paymentService) {
+		this.paymentService = paymentService;
+	}
+
+
+	public static enum State {
 		init(Action.init, Action.addContact),
 		editCheckout(COMMON_ACTIONS,addDiscount,removeDiscount, proceedToPayment, addCourseClass),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
@@ -792,6 +802,7 @@ public class PurchaseController {
 		voucherLockedAnotherUser,
 		concessionAlreadyAdded,
         payerHadUnfinishedPayment,
+		dpsHasNotFinishedProcessPreviousPayment,
 		codeEmpty,
         classAlreadyAdded,
         productAlreadyAdded,

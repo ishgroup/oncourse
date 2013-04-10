@@ -53,6 +53,13 @@ public class ActionChangePayer extends APurchaseAction {
             if (!current.getObjectId().isTemporary() &&
                     current.getId().equals(p.getId()))
                 continue;
+
+			if (getController().getPaymentService().isProcessedByGateway(p))
+			{
+				getController().addError(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
+				break;
+			}
+
             if (!getController().getWarnings().containsKey(PurchaseController.Message.payerHadUnfinishedPayment))
                 getController().addWarning(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
             p.abandonPayment();

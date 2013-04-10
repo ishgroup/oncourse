@@ -13,6 +13,7 @@ import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -66,6 +67,9 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
     @Inject
     private ParallelExecutor parallelExecutor;
 
+	@Inject
+	private IPaymentService paymentService;
+
 
     @Override
 	public PurchaseController build(PurchaseModel model) {
@@ -83,6 +87,7 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		purchaseController.setWebSiteService(webSiteService);
 		purchaseController.setTagService(tagService);
         purchaseController.setParallelExecutor(parallelExecutor);
+		purchaseController.setPaymentService(paymentService);
 		return purchaseController;
 	}
 
