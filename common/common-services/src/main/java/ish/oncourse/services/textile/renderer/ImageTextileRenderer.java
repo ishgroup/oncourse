@@ -23,12 +23,19 @@ public class ImageTextileRenderer extends AbstractRenderer {
 
 	@Override
 	public String render(String tag, ValidationErrors errors) {
-		tag = super.render(tag, errors);
-		if (!errors.hasFailures()) {
-			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-					ImageTextileAttributes.getAttrValues());
+		try {
+			tag = super.render(tag, errors);
+			if (!errors.hasFailures()) {
+				Map<String, String> tagParams = TextileUtil.getTagParams(tag,
+						ImageTextileAttributes.getAttrValues());
+				Map<String, Object> parameters = new HashMap<String, Object>();
+				parameters.put(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM, tagParams);
+				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_IMAGE_PAGE,
+						parameters);
+			}
+		} catch (Exception e) {
 			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM, tagParams);
+			parameters.put(TextileUtil.TEXTILE_UNEXPECTED_ERROR_PARAM, e.getMessage());
 			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_IMAGE_PAGE,
 					parameters);
 		}

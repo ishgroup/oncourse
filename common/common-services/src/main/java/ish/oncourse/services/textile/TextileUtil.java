@@ -56,6 +56,9 @@ public class TextileUtil {
 	
 	public static final String TEXTILE_ATTACHMENT_PAGE_PARAM = "attachmentParameters";
 
+	public static final String TEXTILE_UNEXPECTED_ERROR_PARAM = "textileUnexpectedError";
+
+
 	public static String inQuots(String param, boolean quotsRequired) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("(").append(QUOT).append(")");

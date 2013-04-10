@@ -21,49 +21,45 @@ public class TextileImage {
 	@Inject
 	private IBinaryDataService binaryDataService;
 
-	@SuppressWarnings("all")
 	@Inject
 	private IWebSiteService webSiteService;
 
-	@SuppressWarnings("all")
 	@Property
 	private String imageLink;
 
-	@SuppressWarnings("all")
 	@Property
 	private String imagePath;
 
-	@SuppressWarnings("all")
 	@Property
 	private String imageAlign;
 
-	@SuppressWarnings("all")
 	@Property
 	private String imageAlt;
 
-	@SuppressWarnings("all")
 	@Property
 	private String imageTitle;
 
-	@SuppressWarnings("all")
 	@Property
 	private String imageWidth;
 
-	@SuppressWarnings("all")
 	@Property
 	private String imageHeight;
 
-	@SuppressWarnings("all")
 	@Property
 	private String imageClass;
 
-	@SuppressWarnings("all")
 	@Property
 	private String imageCaption;
 
-	@SuppressWarnings("unchecked")
+	@Property
+	private String errorString;
+
 	@SetupRender
 	void beforeRender() {
+		errorString = (String)request.getAttribute(TextileUtil.TEXTILE_UNEXPECTED_ERROR_PARAM);
+		if (errorString != null)
+			return;
+
 		Map<String, String> tagParams = (Map<String, String>) request.getAttribute(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM);
 		String id = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ID.getValue());
 		String name = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_NAME.getValue());

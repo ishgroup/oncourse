@@ -8,6 +8,7 @@ import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 
@@ -34,8 +35,10 @@ public class ImageTextileValidator extends AbstractTextileValidator {
 		String id = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ID.getValue());
 		String name = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_NAME.getValue());
 		if (id != null) {
+			if (!StringUtils.isNumeric(id))
+				throw new IllegalArgumentException(id);
 			Integer idNum = Integer.valueOf(id);
-			logger.warn(String.format("Found a ussage of image textile with id param = %s instead of name param. Update the textile to load image by name.", 
+			logger.warn(String.format("Found a ussage of image textile with id param = %s instead of name param. Update the textile to load image by name.",
 				idNum));
 			result = binaryDataService.getBinaryInfoByReferenceNumber(idNum);
 			if (result == null) {
