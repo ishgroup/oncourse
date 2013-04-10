@@ -120,7 +120,8 @@ public class AllStubBuildersTest extends ServiceTest {
 
     @Test
     public void testV5EnrolmentStubBuilder() {
-        this.testStubBuilder(Enrolment.class, new ish.oncourse.webservices.replication.v5.builders.EnrolmentStubBuilder());
+    	//invoiceLineId added to exclude property because relationship updated to many
+        this.testStubBuilder(Enrolment.class, new ish.oncourse.webservices.replication.v5.builders.EnrolmentStubBuilder(), "invoiceLineId");
     }
 
 
@@ -270,7 +271,8 @@ public class AllStubBuildersTest extends ServiceTest {
 
     @Test
     public void testEnrolmentStubBuilder() {
-        this.testStubBuilder(Enrolment.class, new EnrolmentStubBuilder());
+    	//invoiceLineId added to exclude property because relationship updated to many
+        this.testStubBuilder(Enrolment.class, new EnrolmentStubBuilder(), "invoiceLineId");
     }
 
 
