@@ -44,12 +44,12 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		if (updater == null) {
 			throw new UpdaterNotFoundException(String.format("Updater not found for entity with key:%s", key), key);
 		}
-		updater.updateEntityFromStub(stub, entity, callback);		
 		if (entity.getCollege() == null) {
 			College currentCollege = webSiteService.getCurrentCollege();
 			if (currentCollege != null) {
-				entity.setCollege((College) entity.getObjectContext().localObject(currentCollege.getObjectId(), null));
+				entity.setCollege((College) entity.getObjectContext().localObject(currentCollege));
 			}	
 		}
+		updater.updateEntityFromStub(stub, entity, callback);
 	}
 }

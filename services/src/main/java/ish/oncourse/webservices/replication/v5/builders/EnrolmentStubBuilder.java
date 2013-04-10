@@ -12,8 +12,9 @@ public class EnrolmentStubBuilder extends AbstractWillowStubBuilder<Enrolment, E
 		
 		stub.setCourseClassId(entity.getCourseClass().getId());
 		stub.setCreated(entity.getCreated());
-		if (entity.getInvoiceLine() != null) {
-			stub.setInvoiceLineId(entity.getInvoiceLine().getId());
+		//pass of the enrollment invoice line is redundant for angel >=4.1 because updaters will ignore it in. Need to have backward compatibility
+		if (entity.getInvoiceLines() != null && !entity.getInvoiceLines().isEmpty() && entity.getOriginalInvoiceLine() != null) {
+			stub.setInvoiceLineId(entity.getOriginalInvoiceLine().getId());
 		} else {
 			logger.error("Enrollment without linked invoice line found for college" + entity.getCollege().getId() + " with willowid = " + entity.getId() 
 				+ " and angelid=" + entity.getAngelId());

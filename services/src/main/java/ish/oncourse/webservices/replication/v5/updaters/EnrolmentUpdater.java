@@ -8,7 +8,9 @@ import ish.common.types.TypesUtil;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Student;
+import ish.oncourse.util.CommonUtils;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
@@ -36,13 +38,19 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 		entity.setStudent(student);
 		final InvoiceLine invoiceLine = callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class);
 		if (invoiceLine != null) {
-			entity.setInvoiceLine(invoiceLine);
+			if (!isSupportOneToManyOnEnrolment_InvoiceLine_Relation(entity)) {
+				invoiceLine.setEnrolment(entity);
+			}
 		} else {
-			final String message = String.format("Enrollment with angelId = %s and willowid = %s with missed invoice for invoiceline id  = %s record detected for update! " 
+			final String message = String.format("Enrollment with angelId = %s and willowid = %s with missed original invoiceline with id = %s record detected for update! " 
 				+ "If this message occured on enrollment instruction call please add invoiceline instruction and retry enrollment instruction.", 
 				stub.getAngelId(), stub.getWillowId(), stub.getInvoiceLineId());
 			throw new UpdaterException(message);
 		}
+	}
+	
+	private boolean isSupportOneToManyOnEnrolment_InvoiceLine_Relation(Queueable entity) {
+		return CommonUtils.compare(getCurrentCollegeAngelVersion(entity), Enrolment.TO_MANY_INVOICE_LINE_SUPPORT_VERSION) >= 0;
 	}
 
 }

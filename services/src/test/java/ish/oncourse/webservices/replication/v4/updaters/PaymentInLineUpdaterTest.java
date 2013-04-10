@@ -13,6 +13,7 @@ import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class PaymentInLineUpdaterTest extends ServiceTest {
 
     @Before
     public void setupDataSet() throws Exception {
-        initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
+        initTest("ish.oncourse.webservices.services", StringUtils.EMPTY, ReplicationTestModule.class);
 
     }
 

@@ -3,6 +3,7 @@ package ish.oncourse.webservices.soap.v4;
 import static org.junit.Assert.*;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
@@ -18,6 +19,7 @@ import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -207,9 +209,12 @@ public class ReplicationPortTypeTest extends ServiceTest {
 			//CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1482);
 			Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 1);
 			assertNotNull("Enrolment should exist", enrolment);
-			assertNotNull("Enrolment should be linked with invoice line", enrolment.getInvoiceLine());
-			enrolment.getInvoiceLine().setEnrolment(null);
-			objectContext.deleteObject(enrolment);
+			assertNotNull("Enrolment should be linked with invoice line", enrolment.getOriginalInvoiceLine());
+			List<InvoiceLine> invoiceLines = new ArrayList<InvoiceLine>(enrolment.getInvoiceLines());
+			for (InvoiceLine invoiceLine : invoiceLines) {
+				invoiceLine.setEnrolment(null);
+			}
+			objectContext.deleteObjects(enrolment);
 			objectContext.commitChanges();
 		}
 		for (GenericTransactionGroup group : replicatedRecords.getGenericGroups()) {

@@ -14,7 +14,7 @@ public class InvoiceLineStubBuilder extends AbstractWillowStubBuilder<InvoiceLin
 		stub.setDiscountEachExTax(entity.getDiscountEachExTax().toBigDecimal());
 		
 		Enrolment enrolment = entity.getEnrolment();
-		if(enrolment!=null){
+		if (enrolment != null){
 			stub.setEnrolmentId(enrolment.getId());
 		}
 		stub.setInvoiceId(entity.getInvoice().getId());

@@ -33,7 +33,7 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 		entity.setStudent(student);
 		final InvoiceLine invoiceLine = callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class);
 		if (invoiceLine != null) {
-			entity.setInvoiceLine(invoiceLine);
+			invoiceLine.setEnrolment(entity);
 		} else {
 			final String message = String.format("Enrollment with angelId = %s and willowid = %s with missed invoice for invoiceline id  = %s record detected for update! " 
 				+ "If this message occured on enrollment instruction call please add invoiceline instruction and retry enrollment instruction.", 

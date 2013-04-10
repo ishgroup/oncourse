@@ -215,9 +215,8 @@ public class CityEastFix {
 		for (Outcome o : e.getOutcomes()) {
 			resetOutcome(o, creator);
 		}
-		
-		if (e.getInvoiceLine() != null) {
-			resetInvoiceLine(e.getInvoiceLine(), creator);
+		for (InvoiceLine invoiceLine : e.getInvoiceLines()) {
+			resetInvoiceLine(invoiceLine, creator);
 		}
 		
 		e.setAngelId(null);

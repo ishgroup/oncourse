@@ -341,7 +341,6 @@ public class PaymentServiceImplTest extends ServiceTest {
 			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1186958L)));
 		e1.setCourseClass((CourseClass) context.localObject(courseClasses.get(0)));
 		e1.setCreated(new Date());
-		e1.setInvoiceLine(il2);
 		e1.setModified(new Date());
 		e1.setReasonForStudy(1);
 		e1.setSource(PaymentSource.SOURCE_WEB);
@@ -350,6 +349,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		List<Student> students = context.performQuery(new SelectQuery(Student.class, ExpressionFactory.matchDbExp(Student.ID_PK_COLUMN, 1189147L)));
 		e1.setStudent((Student) context.localObject(students.get(0)));
 		e1.setCollege(p1.getCollege());
+		il2.setEnrolment(e1);
 		
 		PaymentInLine pil3 = context.newObject(PaymentInLine.class);
 		pil3.setPaymentIn(p1);
@@ -503,8 +503,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		@SuppressWarnings("unchecked")
 		List<Student> students = context.performQuery(new SelectQuery(Student.class, ExpressionFactory.matchDbExp(Student.ID_PK_COLUMN, 1189147L)));
 		e1.setStudent((Student) context.localObject(students.get(0)));
-		e1.setInvoiceLine(il2);
 		e1.setCollege(p1.getCollege());
+		il2.setEnrolment(e1);
 		
 		PaymentInLine pil3 = context.newObject(PaymentInLine.class);
 		pil3.setPaymentIn(p1);
@@ -604,7 +604,6 @@ public class PaymentServiceImplTest extends ServiceTest {
 			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1186958L)));
 		e1.setCourseClass((CourseClass) context.localObject(courseClasses.get(0)));
 		e1.setCreated(new Date());
-		e1.setInvoiceLine(il1);
 		e1.setModified(new Date());
 		e1.setReasonForStudy(1);
 		e1.setSource(PaymentSource.SOURCE_WEB);
@@ -613,18 +612,19 @@ public class PaymentServiceImplTest extends ServiceTest {
 		List<Student> students = context.performQuery(new SelectQuery(Student.class, ExpressionFactory.matchDbExp(Student.ID_PK_COLUMN, 1189147L)));
 		e1.setStudent((Student) context.localObject(students.get(0)));
 		e1.setCollege(p1.getCollege());
+		il1.setEnrolment(e1);
 		
 		Enrolment e2 = context.newObject(Enrolment.class);
 		e2.setAngelId(2l);
 		e2.setCourseClass(e1.getCourseClass());
 		e2.setCreated(new Date());
-		e2.setInvoiceLine(il2);
 		e2.setModified(new Date());
 		e2.setReasonForStudy(1);
 		e2.setSource(PaymentSource.SOURCE_WEB);
 		e2.setStatus(EnrolmentStatus.SUCCESS);
 		e2.setStudent(e1.getStudent());
 		e2.setCollege(p1.getCollege());
+		il2.setEnrolment(e2);
 		
 		PaymentInLine pil3 = context.newObject(PaymentInLine.class);
 		pil3.setPaymentIn(p1);

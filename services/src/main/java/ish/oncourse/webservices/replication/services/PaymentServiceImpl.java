@@ -103,8 +103,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
 				if (ReplicationUtils.getEntityName(Enrolment.class).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
 
-					Enrolment enrolment = (Enrolment) newContext.localObject(
-							enrolService.loadById(r.getStub().getWillowId()).getObjectId(), null);
+					Enrolment enrolment = (Enrolment) newContext.localObject(enrolService.loadById(r.getStub().getWillowId()));
 					// this case deny check for enrollments which active via QE with case Abandon payment keep invoice
 					if (!EnrolmentStatus.SUCCESS.equals(enrolment.getStatus())) {
 						enrolments.add(enrolment);
@@ -120,7 +119,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 										.getAngelId(),r.getStub().getWillowId()));
 					}
 
-					paymentIn = (PaymentIn) newContext.localObject(p.getObjectId(), null);
+					paymentIn = (PaymentIn) newContext.localObject(p);
 				}
 			}
 
@@ -198,8 +197,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	public boolean isEnrolmentsCorrect(List<Enrolment> enrolments) {
 		for (Enrolment enrolment : enrolments) {
 			boolean isZeroOwing = false;
-			if (enrolment.getInvoiceLine() != null && enrolment.getInvoiceLine().getInvoice() != null) {
-				Invoice invoice = enrolment.getInvoiceLine().getInvoice();
+			if (enrolment.getOriginalInvoiceLine() != null && enrolment.getOriginalInvoiceLine().getInvoice() != null) {
+				Invoice invoice = enrolment.getOriginalInvoiceLine().getInvoice();
 				invoice.updateAmountOwing();//TODO: check can we remove owing
 				isZeroOwing = Money.isZeroOrEmpty(invoice.getAmountOwing());
 			}

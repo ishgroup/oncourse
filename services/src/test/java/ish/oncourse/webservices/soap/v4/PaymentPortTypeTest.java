@@ -20,6 +20,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang.StringUtils;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -47,7 +48,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 	@Before
 	public void setupDataSet() throws Exception {
-		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
+		initTest("ish.oncourse.webservices.services", StringUtils.EMPTY, ReplicationTestModule.class);
 		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/paymentDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		onDataSource = getDataSource("jdbc/oncourse");
@@ -121,15 +122,18 @@ public class PaymentPortTypeTest extends ServiceTest {
 		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				respEnrolStub = (GenericEnrolmentStub) stub;
+				assertEquals("Check enrolment status.", "IN_TRANSACTION", respEnrolStub.getStatus());
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
 				respPaymentInStub = (GenericPaymentInStub) stub;
+				assertEquals("Check payment status.", PaymentStatus.IN_TRANSACTION.getDatabaseValue(), respPaymentInStub.getStatus());
+				assertNotNull("Check if sessionId is set.", respPaymentInStub.getSessionId());
 			}
 		}
 		assertNotNull("Check enrolment presents in response.", respEnrolStub);
 		assertNotNull("Check payment presents in response.", respPaymentInStub);
-		assertEquals("Check enrolment status.", "IN_TRANSACTION", respEnrolStub.getStatus());
-		assertEquals("Check payment status.", Integer.valueOf(2), respPaymentInStub.getStatus());
-		assertNotNull("Check if sessionId is set.", respPaymentInStub.getSessionId());
+		//assertEquals("Check enrolment status.", "IN_TRANSACTION", respEnrolStub.getStatus());
+		//assertEquals("Check payment status.", PaymentStatus.IN_TRANSACTION.getDatabaseValue(), respPaymentInStub.getStatus());
+		//assertNotNull("Check if sessionId is set.", respPaymentInStub.getSessionId());
 	}
 	
 	private void testV5CreditCardPaymentProcessing() throws InternalReplicationFault {
@@ -329,12 +333,10 @@ public class PaymentPortTypeTest extends ServiceTest {
 	private GenericTransactionGroup conflictPaymentProcessingV5WithTheSameInvoiceData() {
 		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
 		
-		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV5();
-		enrolStub2.setAngelId(2l);
 		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = invoiceV5();
 		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV5();
 		invLineStub2.setAngelId(2L);
-		invLineStub2.setEnrolmentId(2l);
+		invLineStub2.setEnrolmentId(null);
 		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub2 = paymentInV5();
 		paymentInStub2.setAngelId(2l);
 		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub2 = paymentInLineV5();
@@ -350,7 +352,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 		
 		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		stubs.add(enrolStub2);
+
 		stubs.add(paymentInStub2);
 		stubs.add(pLineStub2);
 		stubs.add(invLineStub2);
@@ -1236,7 +1238,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertEquals("Expecting that attendances remain in the database. Will be deleted later from Angel.", attendanceCount, dbUnitConnection.getRowCount("Attendance"));
 		assertEquals("Expecting that outcomes remain in the database until deleted from angel.", 1, dbUnitConnection.getRowCount("Outcome"));
 	}
-
+	
 	private ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invoiceLineV4() {
 		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub();
 		invLineStub.setEntityIdentifier("InvoiceLine");
