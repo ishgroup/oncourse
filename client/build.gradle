@@ -194,10 +194,10 @@ task installer_win(dependsOn: [bundle_win, prepareKeychains], type: au.com.ish.N
 // for help on webstart see src/packaging/webstart/devHowTo.txt
 task webstartRun(dependsOn: bundle_webstart, type: Exec) {
 	executable 'javaws'
-	args "${distsDir}/webstart/onCourse.jnlp"
+	args "-open", "DEBUG=true", "${distsDir}/webstart/onCourse.jnlp"
 }
 
 task webstartDebug(dependsOn: bundle_webstart, type: Exec) {
 	executable 'javaws'
-	args "-verbose", "-J-agentlib:jdwp=transport=dt_socket,server=y,address=8000", "${distsDir}/webstart/onCourse.jnlp" 
+	args "-open", "DEBUG=true", "-verbose", "-J-agentlib:jdwp=transport=dt_socket,server=y,address=8000", "${distsDir}/webstart/onCourse.jnlp" 
 }
