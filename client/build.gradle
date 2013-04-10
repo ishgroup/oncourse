@@ -114,7 +114,8 @@ project.ext.webstartFiles = copySpec {
 			webstartOncourseServerUseSSL: 	project.webstartOncourseServerUseSSL,
 			sourceCompatibility: 			project.sourceCompatibility,
 			mainJarClasspath : 				"Libraries-${project.version}/${project.name}-${project.version}-all.jar",
-			version: 						version
+			version: 						version,
+			maxmemoryClient:				maxmemoryClient	
 		])
 		
 		from("${projectDir}/src/main/resources/resources") {
