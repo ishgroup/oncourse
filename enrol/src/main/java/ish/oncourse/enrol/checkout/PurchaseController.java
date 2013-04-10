@@ -36,8 +36,7 @@ import static java.util.Arrays.asList;
  * @author dzmitry
  */
 public class PurchaseController {
-	private static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
-
+	protected static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
 
 	public static final List<Action> COMMON_ACTIONS = Collections.unmodifiableList(Arrays.asList(
 			enableEnrolment, enableProductItem,
@@ -242,13 +241,15 @@ public class PurchaseController {
 
 		for (Contact contact : model.getContacts()) {
 			for (Enrolment enrolment : model.getEnabledEnrolments(contact)) {
-				InvoiceLine oldInvoiceLine = enrolment.getInvoiceLine();
-				enrolment.setInvoiceLine(null);
-				model.getObjectContext().deleteObject(oldInvoiceLine);
+				List<InvoiceLine> invoiceLines = new ArrayList<InvoiceLine>(enrolment.getInvoiceLines());
+				for (InvoiceLine invoiceLine : invoiceLines) {
+					invoiceLine.setEnrolment(null);
+				}
+				model.getObjectContext().deleteObjects(invoiceLines);
 
 				InvoiceLine newInvoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, model.getDiscounts());
 				newInvoiceLine.setInvoice(model.getInvoice());
-				enrolment.setInvoiceLine(newInvoiceLine);
+				newInvoiceLine.setEnrolment(enrolment);
 			}
 		}
 	}
@@ -572,8 +573,9 @@ public class PurchaseController {
         Money result = Money.ZERO;
         for (Contact contact : getModel().getContacts()) {
             for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
-                InvoiceLine invoiceLine = enabledEnrolment.getInvoiceLine();
-                result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+            	for (InvoiceLine invoiceLine : enabledEnrolment.getInvoiceLines()) {
+            		result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+            	}
             }
             for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
                 InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
@@ -609,7 +611,9 @@ public class PurchaseController {
         Money totalDiscountAmountIncTax = Money.ZERO;
         for (Contact contact : getModel().getContacts()) {
             for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
-                totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(enabledEnrolment.getInvoiceLine().getDiscountTotalIncTax());
+            	for (InvoiceLine invoiceLine : enabledEnrolment.getInvoiceLines()) {
+            		totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(invoiceLine.getDiscountTotalIncTax());
+            	}
             }
             for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
                 totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(enabledProductItem.getInvoiceLine().getDiscountTotalIncTax());

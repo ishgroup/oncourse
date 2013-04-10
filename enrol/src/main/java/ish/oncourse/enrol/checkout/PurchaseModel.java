@@ -150,9 +150,11 @@ public class PurchaseModel {
 
     public void removeEnrolment(Enrolment e) {
         getContactNode(e.getStudent().getContact()).removeEnrolment(e);
-        if (e.getInvoiceLine() != null)
-            objectContext.deleteObject(e.getInvoiceLine());
-        objectContext.deleteObject(e);
+        List<InvoiceLine> invoiceLines = new ArrayList<InvoiceLine>(e.getInvoiceLines());
+        for (InvoiceLine invoiceLine : invoiceLines) {
+        	objectContext.deleteObjects(invoiceLine);
+        }
+        objectContext.deleteObjects(e);
     }
 
     public void addConcession(StudentConcession concession) {
@@ -171,9 +173,9 @@ public class PurchaseModel {
     public void removeProductItem(Contact contact, ProductItem p) {
         InvoiceLine invoiceLine = p.getInvoiceLine();
         getContactNode(contact).removeProductItem(p);
-        objectContext.deleteObject(p);
+        objectContext.deleteObjects(p);
         if (invoiceLine != null)
-            objectContext.deleteObject(invoiceLine);
+            objectContext.deleteObjects(invoiceLine);
     }
 
 
@@ -202,9 +204,11 @@ public class PurchaseModel {
     }
 
     public void disableEnrolment(Enrolment e) {
-        InvoiceLine il = e.getInvoiceLine();
-        e.setInvoiceLine(null);
-        objectContext.deleteObject(il);
+    	List<InvoiceLine> invoiceLines = new ArrayList<InvoiceLine>(e.getInvoiceLines());
+    	for (InvoiceLine invoiceLine : invoiceLines) {
+    		invoiceLine.setEnrolment(null);
+    	}
+        objectContext.deleteObjects(invoiceLines);
         getContactNode(e.getStudent().getContact()).disableEnrolment(e);
     }
 
@@ -215,7 +219,7 @@ public class PurchaseModel {
     public void disableProductItem(ProductItem p) {
         InvoiceLine il = p.getInvoiceLine();
         p.setInvoiceLine(null);
-        objectContext.deleteObject(il);
+        objectContext.deleteObjects(il);
         getContactNode(payer).disableProductItem(p);
     }
 

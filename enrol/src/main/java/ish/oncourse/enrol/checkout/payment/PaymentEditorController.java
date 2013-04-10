@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout.payment;
 
+import ish.math.Money;
 import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
 import ish.oncourse.enrol.checkout.PurchaseController;
@@ -152,7 +153,11 @@ public class PaymentEditorController implements PaymentEditorDelegate {
                     item.setProductName(enrolment.getCourseClass().getCourse().getName());
                     item.setQuantity(1);
                     item.setSkuCode(enrolment.getCourseClass().getCourse().getCode());
-                    item.setUnitPrice(enrolment.getInvoiceLine().getDiscountedPriceTotalExTax().toBigDecimal());
+                    Money unitPrice = Money.ZERO;
+                    for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
+                    	unitPrice = unitPrice.add(invoiceLine.getDiscountedPriceTotalExTax());
+                    }
+                    item.setUnitPrice(unitPrice.toBigDecimal());
                     transactionItems.add(item);
                 }
                 Transaction transaction = new Transaction();

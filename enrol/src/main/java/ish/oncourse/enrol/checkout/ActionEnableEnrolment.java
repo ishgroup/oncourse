@@ -20,7 +20,7 @@ public class ActionEnableEnrolment extends APurchaseAction {
         getModel().enableEnrolment(enrolment);
         InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForEnrolment(enrolment, getModel().getDiscounts());
         il.setInvoice(getModel().getInvoice());
-        enrolment.setInvoiceLine(il);
+        il.setEnrolment(getEnrolment());
         //we set status IN_TRANSACTION for enable enrolment in transaction to consider the enrolment in places check
         enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
     }

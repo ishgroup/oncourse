@@ -83,12 +83,19 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         assertEnabledEnrolments(contact, 1, false);
         assertEquals(1, purchaseController.getModel().getAllEnabledEnrolments().size());
         Enrolment enrolment = purchaseController.getModel().getAllEnabledEnrolments().get(0);
-        InvoiceLine invoiceLine = enrolment.getInvoiceLine();
+        for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
+        	assertNotNull(invoiceLine);
+        	assertEquals("Test invoiceLine title", String.format(InvoiceProcessingService.INVOICE_LINE_TITLE_TEMPALTE,
+        		contact.getGivenName(), contact.getFamilyName() ,
+        		courseClass.getCourse().getCode(),courseClass.getCode(),courseClass.getCourse().getName()),
+        		invoiceLine.getTitle());
+        }
+        /*InvoiceLine invoiceLine = enrolment.getOriginalInvoiceLine();
         assertNotNull(invoiceLine);
         assertEquals("Test invoiceLine title", String.format(InvoiceProcessingService.INVOICE_LINE_TITLE_TEMPALTE,
-                contact.getGivenName(), contact.getFamilyName() ,
-                courseClass.getCourse().getCode(),courseClass.getCode(),courseClass.getCourse().getName()),
-                invoiceLine.getTitle());
+        	contact.getGivenName(), contact.getFamilyName() ,
+        	courseClass.getCourse().getCode(),courseClass.getCode(),courseClass.getCourse().getName()),
+        	invoiceLine.getTitle());*/
 
 
         //add second contact
@@ -118,11 +125,15 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         assertEquals(2, purchaseController.getModel().getAllEnabledEnrolments().size());
 
         Contact contact1 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001);
-        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getInvoiceLine().getInvoiceLineDiscounts().size());
+        assertEquals("Expect to have only 1 invoiceline for enabled enrollment", 1, 
+        	purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getInvoiceLines().size());
+        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getOriginalInvoiceLine().getInvoiceLineDiscounts().size());
         assertEnabledEnrolments(contact1, 1, true);
 
         Contact contact2 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1002);
-        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getInvoiceLine().getInvoiceLineDiscounts().size());
+        assertEquals("Expect to have only 1 invoiceline for enabled enrollment", 1, 
+            	purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getInvoiceLines().size());
+        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getOriginalInvoiceLine().getInvoiceLineDiscounts().size());
         assertEnabledEnrolments(contact2, 1, true);
 
         Contact contact3 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1003);
@@ -130,11 +141,15 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 
         //emulate back button
         purchaseController.adjustState(PurchaseController.Action.enableEnrolment);
-        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getInvoiceLine().getInvoiceLineDiscounts().size());
+        assertEquals("Expect to have only 1 invoiceline for enabled enrollment", 1, 
+            	purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getInvoiceLines().size());
+        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getOriginalInvoiceLine().getInvoiceLineDiscounts().size());
         assertEnabledEnrolments(contact1, 1, true);
 
         assertEnabledEnrolments(contact2, 1, true);
-        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getInvoiceLine().getInvoiceLineDiscounts().size());
+        assertEquals("Expect to have only 1 invoiceline for enabled enrollment", 1, 
+            	purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getInvoiceLines().size());
+        assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getOriginalInvoiceLine().getInvoiceLineDiscounts().size());
 
         assertDisabledEnrolments(contact3, 1);
 

@@ -214,13 +214,16 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 
 	void assertEnabledEnrolment(Enrolment enrolment) {
-        assertNotNull(enrolment.getInvoiceLine());
+		for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
+			assertNotNull(invoiceLine);
+		}
+		assertFalse("Enrolment should be linked with at least 1 invoiceline", enrolment.getInvoiceLines().isEmpty());
         assertEquals(EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
     }
 
     void assertDisabledEnrolment(Enrolment enrolment) {
         assertTrue(enrolment.getObjectId().isTemporary());
-        assertNull(enrolment.getInvoiceLine());
+        assertTrue("Enrolment should not be linked with invoicelines", enrolment.getInvoiceLines().isEmpty());
         assertEquals(EnrolmentStatus.NEW, enrolment.getStatus());
     }
 
