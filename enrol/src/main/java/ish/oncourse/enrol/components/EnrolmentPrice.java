@@ -84,7 +84,11 @@ public class EnrolmentPrice {
 	 */
 	private boolean hasDiscountValue() {
 		if (isInvoiced()) {
-			return !enrolment.getInvoiceLine().getDiscountTotalExTax().isZero();
+			Money discountedTotalExTax = Money.ZERO;
+			for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
+				discountedTotalExTax = discountedTotalExTax.add(invoiceLine.getDiscountTotalExTax());
+			}
+			return !discountedTotalExTax.isZero();
 		} else {
 			return !enrolment.getCourseClass().getDiscountAmountExTax(discounts).isZero();
 		}
@@ -97,9 +101,11 @@ public class EnrolmentPrice {
 	 * @return price
 	 */
 	public Money getDiscountedPriceIncTax() {
-		Money discountedPriceIncTax = null;
+		Money discountedPriceIncTax = Money.ZERO;
 		if (isInvoiced()) {
-			discountedPriceIncTax = enrolment.getInvoiceLine().getDiscountedPriceTotalIncTax();
+			for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
+				discountedPriceIncTax = discountedPriceIncTax.add(invoiceLine.getDiscountedPriceTotalIncTax());
+			}
 		} else {
 			discountedPriceIncTax = enrolment.getCourseClass().getDiscountedFeeIncTax(discounts);
 		}
@@ -113,9 +119,11 @@ public class EnrolmentPrice {
 	 * @return discount
 	 */
 	public Money getDiscountIncTax() {
-		Money discountIncTax = null;
+		Money discountIncTax = Money.ZERO;
 		if (isInvoiced()) {
-			discountIncTax = enrolment.getInvoiceLine().getDiscountTotalIncTax();
+			for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
+				discountIncTax = discountIncTax.add(invoiceLine.getDiscountTotalIncTax());
+			}
 		} else {
 			discountIncTax = enrolment.getCourseClass().getDiscountAmountIncTax(discounts);
 		}
@@ -130,7 +138,7 @@ public class EnrolmentPrice {
 	 * @return
 	 */
 	private boolean isInvoiced() {
-		return enrolment.getInvoiceLine() != null;
+		return !enrolment.getInvoiceLines().isEmpty() && enrolment.getOriginalInvoiceLine() != null;
 	}
 
 	public Money getFee() {
