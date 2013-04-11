@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
+	private static final String COURSES_CORE_NAME = "courses";
 	private static final String EXPECTED_GENERATED_QUERY_STRING = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
 		"end:[NOW TO *]&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)&sort=" +
 		"score desc,startDate asc,name asc";
@@ -36,9 +37,6 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
 	private static final String COURSE_CODE_FIELD_NAME = "course_code";
 	private static final String COURSE_NAME_FIELD_NAME = "name";
 	private static final String COLLEGE_ID_FIELD_NAME = "collegeId";
-	private static final String DOCTYPE_FIELD_NAME = "doctype";
-	private static final String COURSE_ID_FIELD_NAME = "id";
-	private static final String COURSES_CORE_NAME = "courses";
 	private static final String COURSE_LOCATION_FIELD_NAME = "course_loc";
 	private static final String SCORE_FIELD_NAME = "score";
 	
@@ -58,7 +56,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
     
     private SolrInputDocument prepareInitCourseDocument() {
     	SolrInputDocument document = new SolrInputDocument();
-    	document.setField(COURSE_ID_FIELD_NAME, "1");
+    	document.setField(ID_FIELD_NAME, "1");
     	document.setField(DOCTYPE_FIELD_NAME, "course");
     	document.setField(COLLEGE_ID_FIELD_NAME, 1);
     	document.setField(COURSE_NAME_FIELD_NAME, "courseTest Name");
@@ -72,7 +70,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
     	document.setField(CLASS_START_FIELD_NAME, cal.getTime());
     	cal.add(Calendar.HOUR, 2);
     	document.setField(COURSE_END_FIELD_NAME, cal.getTime());
-    	document.setField(COURSE_LOCATION_FIELD_NAME, Arrays.asList("-31.94777400,115.82577800","-30.94777400,110.82577800"));
+    	document.setField(COURSE_LOCATION_FIELD_NAME, Arrays.asList(TEST_LOCATION_1, TEST_LOCATION_2));
     	document.setField(COURSE_SUBURB_FIELD_NAME, "courseTestSuburb 0001");
     	document.setField(COURSE_POSTCODE_FIELD_NAME, "1");
     	Float price = 2.0f;
@@ -111,8 +109,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
         assertEquals(1L, response.getResults().getNumFound());
         SolrDocument result = response.getResults().get(0);
         assertNotNull("Result document should not be empty", result);
-        assertEquals("Course id should be equal to original document", document.getFieldValue(COURSE_ID_FIELD_NAME), 
-        	result.getFieldValue(COURSE_ID_FIELD_NAME));
+        assertEquals("Course id should be equal to original document", document.getFieldValue(ID_FIELD_NAME), result.getFieldValue(ID_FIELD_NAME));
         assertEquals("Course name should be equal to original document", document.getFieldValue(COURSE_NAME_FIELD_NAME), 
         	result.getFieldValue(COURSE_NAME_FIELD_NAME));
         Float score = (Float) result.getFieldValue(SCORE_FIELD_NAME);
@@ -124,7 +121,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
         searchParams.setKm(SearchParamsParser.parseKm("10"));
 		solrSuburbs = new SolrDocumentList();
 		suburb = new SolrDocument();
-		suburb.addField(SolrQueryBuilder.PARAMETER_loc, "-40.94777400,110.82577800");
+		suburb.addField(SolrQueryBuilder.PARAMETER_loc, TEST_LOCATION_3);
 		suburb.addField(SolrQueryBuilder.FIELD_postcode, 
 			SearchParamsParser.convertPostcodeParameterToLong((String) document.getFieldValue(COURSE_POSTCODE_FIELD_NAME)));
 		solrSuburbs.add(suburb);
@@ -161,8 +158,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
         assertEquals(1L, response.getResults().getNumFound());
         SolrDocument result = response.getResults().get(0);
         assertNotNull("Result document should not be empty", result);
-        assertEquals("Course id should be equal to original document", document.getFieldValue(COURSE_ID_FIELD_NAME), 
-        	result.getFieldValue(COURSE_ID_FIELD_NAME));
+        assertEquals("Course id should be equal to original document", document.getFieldValue(ID_FIELD_NAME), result.getFieldValue(ID_FIELD_NAME));
         assertEquals("Course name should be equal to original document", document.getFieldValue(COURSE_NAME_FIELD_NAME), 
         	result.getFieldValue(COURSE_NAME_FIELD_NAME));
         //get the 4 digits after dot because score is runtime calculated value
@@ -188,7 +184,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
         assertEquals(1L, response.getResults().getNumFound());
         
         //delete the document
-        server.deleteById((String) document.getFieldValue(COURSE_ID_FIELD_NAME));
+        server.deleteById((String) document.getFieldValue(ID_FIELD_NAME));
         server.commit();
         
         //check that document deleted

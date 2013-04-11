@@ -22,6 +22,11 @@ public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCas
 	protected static final String SOLRCONFIG_FILE_PATH = "/conf/solrconfig.xml";
 	protected static final String SOLR_RESOURCES_PATH = "src/main/resources/solr/";
 	protected static final String TEST_SOLR_HOME = "src/test/resources/";
+	protected static final String ID_FIELD_NAME = "id";
+	protected static final String DOCTYPE_FIELD_NAME = "doctype";
+	protected static final String TEST_LOCATION_3 = "-40.94777400,110.82577800";
+	protected static final String TEST_LOCATION_2 = "-30.94777400,110.82577800";
+	protected static final String TEST_LOCATION_1 = "-31.94777400,115.82577800";
 	
 	protected static String factoryProp;
 	protected SolrServer server;
@@ -107,7 +112,7 @@ public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCas
 			CoreContainer container = new CoreContainer(new SolrResourceLoader(SolrResourceLoader.locateSolrHome())) {
 				{hostPort = System.getProperty("hostPort");
 				hostContext = "solr";
-				defaultCoreName = getCoreName();//CoreContainer.DEFAULT_DEFAULT_CORE_NAME;
+				defaultCoreName = getCoreName();
 				initShardHandler(null);
 				initZooKeeper(System.getProperty("zkHost"), 10000);
 				}
