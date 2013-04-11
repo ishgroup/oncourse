@@ -63,14 +63,6 @@ allprojects {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/ish'
 		}
-		//lucene specific repo
-		maven {
-			url 'https://repository.apache.org/snapshots/'
-		}
-		//sonatype specific repo
-		maven {
-			url 'https://repository.sonatype.org/content/groups/forge/'
-		}
 	}
 
 	dependencies {
@@ -132,13 +124,13 @@ allprojects {
 
 apply plugin: "sonar-runner"
 sonarRunner {
-   sonarProperties {
-        property "sonar.host.url", "http://sonar.ish.com.au"
+	sonarProperties {
+    	property "sonar.host.url", "http://sonar.ish.com.au"
         property "sonar.jdbc.url", "jdbc:mysql://delish.ish.com.au:3306/sonar"
         property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
         property "sonar.jdbc.username", 'sonar'
         property "sonar.jdbc.password", sonarPassword // sonar password comes from users gradle.properties file
-    }
+	}
 }
 
 task wrapper(type: Wrapper) {
