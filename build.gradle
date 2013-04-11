@@ -56,11 +56,20 @@ allprojects {
 	}
 
 	repositories {
+		//mavenCentral()
 		maven {
 			url 'http://repo.ish.com.au/content/groups/public'
 		}
 		maven {
 			url 'http://repo.ish.com.au/content/groups/ish'
+		}
+		//lucene specific repo
+		maven {
+			url 'https://repository.apache.org/snapshots/'
+		}
+		//sonatype specific repo
+		maven {
+			url 'https://repository.sonatype.org/content/groups/forge/'
 		}
 	}
 
@@ -123,7 +132,7 @@ allprojects {
 
 apply plugin: "sonar-runner"
 sonarRunner {
-    sonarProperties {
+   sonarProperties {
         property "sonar.host.url", "http://sonar.ish.com.au"
         property "sonar.jdbc.url", "jdbc:mysql://delish.ish.com.au:3306/sonar"
         property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
