@@ -120,7 +120,7 @@ public class SearchParamsParser
         }
     }
 
-    Double parseKm(String parameter) {
+    public static Double parseKm(String parameter) {
     	if (StringUtils.isNumeric(parameter)) {
     		Double km = Double.valueOf(parameter);
     		if (km != null) {
@@ -149,7 +149,7 @@ public class SearchParamsParser
         return parameter.matches(PATTERN_PRICE)? Double.valueOf(parameter.replaceAll("[$]", "")):null;
     }
     
-    String convertPostcodeParameterToLong(String parameter) {
+    public static String convertPostcodeParameterToLong(String parameter) {
     	//the workaround is for #17051. Till postcode stored as the long in db and indexed as is we need to call String-to-Long and back conversion 
     	//to be able found the postcodes which starts from 0
     	if (StringUtils.isNumeric(parameter)) {

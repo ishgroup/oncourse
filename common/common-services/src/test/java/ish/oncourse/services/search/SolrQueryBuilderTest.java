@@ -25,33 +25,36 @@ public class SolrQueryBuilderTest {
 
 	@Test
 	public void testConvertPostcodeParameterToLong() {
-		SearchParamsParser parser = new SearchParamsParser(null, null, null);
+		//SearchParamsParser parser = new SearchParamsParser(null, null, null);
 		final String POSTCODE_1234 = "1234",POSTCODE_0700 = "0700",POSTCODE_0050 = "0050",POSTCODE_0003 = "0003",POSTCODE_0000 = "0000";
-		assertEquals("Postcode should not changes after the conversion", POSTCODE_1234, parser.convertPostcodeParameterToLong(POSTCODE_1234));
-		assertEquals("Postcode starting from 0 like '0700' should be converted to 700 string", "700", parser.convertPostcodeParameterToLong(POSTCODE_0700));
-		assertEquals("Postcode starting from 0 like '0050' should be converted to 50 string", "50", parser.convertPostcodeParameterToLong(POSTCODE_0050));
-		assertEquals("Postcode starting from 0 like '0003' should be converted to 3 string", "3", parser.convertPostcodeParameterToLong(POSTCODE_0003));
-		assertEquals("Postcode '0000' should be converted to 0 string", "0", parser.convertPostcodeParameterToLong(POSTCODE_0000));
+		assertEquals("Postcode should not changes after the conversion", POSTCODE_1234, SearchParamsParser.convertPostcodeParameterToLong(POSTCODE_1234));
+		assertEquals("Postcode starting from 0 like '0700' should be converted to 700 string", "700", 
+			SearchParamsParser.convertPostcodeParameterToLong(POSTCODE_0700));
+		assertEquals("Postcode starting from 0 like '0050' should be converted to 50 string", "50", 
+			SearchParamsParser.convertPostcodeParameterToLong(POSTCODE_0050));
+		assertEquals("Postcode starting from 0 like '0003' should be converted to 3 string", "3", 
+			SearchParamsParser.convertPostcodeParameterToLong(POSTCODE_0003));
+		assertEquals("Postcode '0000' should be converted to 0 string", "0", SearchParamsParser.convertPostcodeParameterToLong(POSTCODE_0000));
 	}
 	
 	@Test
 	public void testSuburbFiltering() throws UnsupportedEncodingException {
-		SearchParamsParser parser = new SearchParamsParser(null, null, null);
+		//SearchParamsParser parser = new SearchParamsParser(null, null, null);
 		SearchParams searchParams = new SearchParams();
-		searchParams.setKm(parser.parseKm(null));
+		searchParams.setKm(SearchParamsParser.parseKm(null));
 		assertNull("if no param passed km should be null",searchParams.getKm());
-		searchParams.setKm(parser.parseKm(Integer.valueOf(Double.valueOf(SearchService.MAX_DISTANCE - 1).intValue()).toString()));
+		searchParams.setKm(SearchParamsParser.parseKm(Integer.valueOf(Double.valueOf(SearchService.MAX_DISTANCE - 1).intValue()).toString()));
 		assertNotNull("Km should not be null", searchParams.getKm());
 		assertEquals("Km less then maximum should be set as is", Double.valueOf(SearchService.MAX_DISTANCE - 1), searchParams.getKm());
-		searchParams.setKm(parser.parseKm(Integer.valueOf(0).toString()));
+		searchParams.setKm(SearchParamsParser.parseKm(Integer.valueOf(0).toString()));
 		assertNotNull("Km should not be null", searchParams.getKm());
 		assertEquals("Km less then minumal value should be replaced with minimal value", Double.valueOf(SearchService.MIN_DISTANCE), searchParams.getKm());
-		searchParams.setKm(parser.parseKm(Integer.valueOf(Double.valueOf(SearchService.MAX_DISTANCE + 1).intValue()).toString()));
+		searchParams.setKm(SearchParamsParser.parseKm(Integer.valueOf(Double.valueOf(SearchService.MAX_DISTANCE + 1).intValue()).toString()));
 		assertNotNull("Km should not be null", searchParams.getKm());
 		assertEquals("Km more then maximum should be replaced with max distance", Double.valueOf(SearchService.MAX_DISTANCE), searchParams.getKm());
 		
 		//set the default 100km distance for test
-		searchParams.setKm(parser.parseKm(null));
+		searchParams.setKm(SearchParamsParser.parseKm(null));
 		SolrDocumentList solrSuburbs = new SolrDocumentList();
 		SolrDocument suburb = new SolrDocument();
 		searchParams.setNear(solrSuburbs);
