@@ -1,10 +1,10 @@
 <t:container
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
+		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		>
 
 	<h3>Add me to the following mailing lists:</h3>
 	<div>
-		<t:loop t:source="mailingLists" index="listIndex">
+		<t:loop t:source="controller.mailingLists" index="listIndex">
 			<div>
 				<t:label for="listCheckBox"
 					style="width:80%; max-width:none; text-align:left;">

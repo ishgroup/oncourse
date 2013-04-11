@@ -67,7 +67,7 @@
 </t:block>
 
 <t:block t:id="mailingLists">
-    <t:mailinglistbox/>
+    <t:mailinglistbox controller="controller"/>
 </t:block>
 
 <t:block t:id="errors">

@@ -129,7 +129,6 @@ public class Mail {
             parser.parse();
             controller.setErrors(parser.getErrors());
         }
-        controller.setSelectedMailingLists(mailingListBox.getSelectedMailingLists());
         controller.addMailingList();
         return this;
     }

@@ -3,11 +3,14 @@ package ish.oncourse.enrol.waitinglist;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MailingListController extends AContactController {
 
-    private List<Tag> selectedMailingLists;
+    private List<Tag> selectedMailingLists = new ArrayList<Tag>();
+
+	private List<Tag> mailingLists;
 
     private ITagService tagService;
 
@@ -63,9 +66,34 @@ public class MailingListController extends AContactController {
         return selectedMailingLists;
     }
 
+	public List<Tag> getMailingLists()
+	{
+		if (mailingLists == null)
+		{
+			mailingLists =  tagService.getMailingLists();
+		}
+		return mailingLists;
+	}
+
     public void setSelectedMailingLists(List<Tag> selectedMailingLists) {
         this.selectedMailingLists = selectedMailingLists;
     }
+
+	public void selectedMailList(int index)
+	{
+		this.selectedMailingLists.add(mailingLists.get(index));
+	}
+
+	public void deselectedMailList(int index)
+	{
+		this.selectedMailingLists.remove(mailingLists.get(index));
+	}
+
+	public boolean isSelectedMailList(int index)
+	{
+		return this.selectedMailingLists.contains(mailingLists.get(index));
+	}
+
 
     public void setTagService(ITagService tagService) {
         this.tagService = tagService;
