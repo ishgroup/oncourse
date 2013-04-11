@@ -52,7 +52,7 @@ public class SolrQueryBuilder {
 
     static final String FILTER_TEMPLATE_geofilt = "{!score=distance}%s:\"Intersects(Circle(%s %s=%s))\"";
 
-    static final String FILTER_TEMPLATE_ALL = "*:*";
+    public static final String FILTER_TEMPLATE_ALL = "*:*";
 
     static final String QUERY_brackets = "(%s)";
     static final String QUERY_AND = "AND";
