@@ -30,6 +30,8 @@ import ish.oncourse.services.filestorage.FileStorageAssetService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
+import ish.oncourse.services.html.FacebookMetaProvider;
+import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.html.JerichoPlainTextExtractor;
 import ish.oncourse.services.jndi.ILookupService;
@@ -82,11 +84,7 @@ import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
-import ish.oncourse.util.ComponentPageResponseRenderer;
-import ish.oncourse.util.ContextUtil;
-import ish.oncourse.util.IComponentPageResponseRenderer;
-import ish.oncourse.util.IPageRenderer;
-import ish.oncourse.util.PageRenderer;
+import ish.oncourse.util.*;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.Configuration;
@@ -183,6 +181,7 @@ public class ServiceModule {
 		}
         binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
         binder.bind(IVoucherService.class, VoucherService.class);
+		binder.bind(IFacebookMetaProvider.class, FacebookMetaProvider.class);
 	}
 
 	@Scope("perthread")

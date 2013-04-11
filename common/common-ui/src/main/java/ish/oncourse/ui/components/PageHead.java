@@ -30,6 +30,10 @@ public class PageHead {
 	@Property
 	@Parameter
 	private String canonicalLinkPath;
+
+	@Property
+	@Parameter
+	private String metaDescription;
 	
 	public String getTitle() {
 		String collegeName = siteService.getCurrentCollege().getName();

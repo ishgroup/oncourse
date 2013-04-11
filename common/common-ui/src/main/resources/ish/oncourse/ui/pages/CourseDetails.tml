@@ -1,5 +1,10 @@
-<html t:type="ui/internal/pagestructure" canonicalLinkPath="${canonicalLinkPath}" title="${courseDetailsTitle}" bodyId="literal:DetailsPage" bodyClass="literal:internal-page"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<html t:type="ui/internal/pagestructure"
+	  canonicalLinkPath="${canonicalLinkPath}"
+	  metaDescription="${metaDescription}"
+	  title="${courseDetailsTitle}"
+	  bodyId="literal:DetailsPage"
+	  bodyClass="literal:internal-page"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<t:if t:test="course">
 		<div t:type="ui/confirmorderdialog"/>
 		<span t:type="ui/courseitem" course="course" linkToLocationsMap="true" isList="false" courseItemModel="courseItemModel"></span>

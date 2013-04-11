@@ -7,7 +7,7 @@
 	</t:remove>
 	<t:if test="wrapped">
 		<head>
-			<span t:type="ui/pagehead" title="${title}" canonicalLinkPath="${canonicalLinkPath}"/>
+			<span t:type="ui/pagehead" title="${title}" canonicalLinkPath="${canonicalLinkPath}" metaDescription="${metaDescription}"/>
 		</head>
 		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
 			<div  t:type="ui/BodyStructure" webNodeType="webNodeType">

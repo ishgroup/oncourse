@@ -43,6 +43,10 @@ public class PageStructure {
 	@Parameter
 	private String canonicalLinkPath;
 
+	@Property
+	@Parameter
+	private String metaDescription;
+
 	@SetupRender
 	public void beforeRender() {
 		if (!resources.isBound("webNodeType")) {

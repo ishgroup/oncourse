@@ -2,6 +2,7 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
+import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -19,6 +20,9 @@ public class CourseClassDetails {
 
 	@Inject
 	private ITextileConverter textileConverter;
+
+	@Inject
+	private IFacebookMetaProvider facebookMetaProvider;
 
 	@Inject
 	private Request request;
@@ -111,4 +115,8 @@ public class CourseClassDetails {
 		return HTMLUtils.getCanonicalLinkPathFor(courseClass.getCourse(), request);
 	}
 
+
+	public String getMetaDescription() {
+		return facebookMetaProvider.getDescriptionContent(courseClass);
+	}
 }
