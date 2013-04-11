@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SolrQueryBuilder {
-
+	static final String DIGIT_PATTERN = "(\\d)+";
+	static final String SPACE_PATTERN = "[\\s]+";
+	
 	static final double KM_IN_DEGREE_VALUE = 110.567;
 	private static final String SPACE_REPLACEMENT_CHARACTER = " ";
 	private static final String SOLR_SYNTAX_CHARACTERS_STRING = "[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]";
@@ -120,6 +122,32 @@ public class SolrQueryBuilder {
         	q.set(CommonParams.DEBUG_QUERY, "on");//solr 4 use on and off instead of true or false
         }
         return q;
+    }
+    
+    public static SolrQuery createSearchSuburbByLocationQuery(String location) {
+    	location = location.trim();
+        int separator = location.lastIndexOf(" ");
+        String[] suburbParams = separator > 0 ? new String[]{location.substring(0, separator), location.substring(separator + 1)}
+                : new String[]{location, null};
+        if (suburbParams[1] != null && !suburbParams[1].matches(DIGIT_PATTERN)) {
+            suburbParams[0] = location;
+            suburbParams[1] = null;
+        }
+        SolrQuery query = new SolrQuery();
+        StringBuilder queryString = new StringBuilder();
+        queryString.append("(doctype:suburb");
+        if (suburbParams[0] != null) {
+            String near = suburbParams[0].replaceAll(SPACE_PATTERN, "+");
+            queryString.append(" AND (suburb:").append(near);
+            queryString.append(" || postcode:").append(near);
+            queryString.append(")");
+        }
+        if (suburbParams[1] != null) {
+            queryString.append(" AND postcode:").append(suburbParams[1]);
+        }
+        queryString.append(") ");
+        query.setQuery(queryString.toString());
+        return query;
     }
 
     void clearLastAnd(List<String> filters)

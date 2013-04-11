@@ -277,35 +277,9 @@ public class SearchService implements ISearchService {
         }
     }
     
-    public static SolrQuery createSearchSuburbByLocationQuery(String location) {
-    	location = location.trim();
-        int separator = location.lastIndexOf(" ");
-        String[] suburbParams = separator > 0 ? new String[]{location.substring(0, separator), location.substring(separator + 1)}
-                : new String[]{location, null};
-        if (suburbParams[1] != null && !suburbParams[1].matches(DIGIT_PATTERN)) {
-            suburbParams[0] = location;
-            suburbParams[1] = null;
-        }
-        SolrQuery query = new SolrQuery();
-        StringBuilder queryString = new StringBuilder();
-        queryString.append("(doctype:suburb");
-        if (suburbParams[0] != null) {
-            String near = suburbParams[0].replaceAll(SPACE_PATTERN, "+");
-            queryString.append(" AND (suburb:").append(near);
-            queryString.append(" || postcode:").append(near);
-            queryString.append(")");
-        }
-        if (suburbParams[1] != null) {
-            queryString.append(" AND postcode:").append(suburbParams[1]);
-        }
-        queryString.append(") ");
-        query.setQuery(queryString.toString());
-        return query;
-    }
-    
     public SolrDocumentList searchSuburb(String location) {
         try {
-            SolrQuery solrQuery = createSearchSuburbByLocationQuery(location);
+            SolrQuery solrQuery = SolrQueryBuilder.createSearchSuburbByLocationQuery(location);
             SolrDocumentList results = new SolrDocumentList();
             logger.debug(solrQueryToString(solrQuery));
             QueryResponse suburbs = query(solrQuery, SolrCore.suburbs);
