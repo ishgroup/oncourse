@@ -1,16 +1,16 @@
 dependencies {
     compile project(':common:common-model')
 	compile project(':common:common-services')
-	compile 'org.apache.solr:solr:4.1.0@war'
-	compile 'org.apache.solr:solr-dataimporthandler:4.1.0'
+	compile 'org.apache.solr:solr:4.2.1@war'
+	compile 'org.apache.solr:solr-dataimporthandler:4.2.1'
 	compile 'com.vividsolutions:jts:1.13'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 	
-	testCompile 'org.apache.solr:solr-test-framework:4.1.0'
-	testCompile 'org.apache.lucene:lucene-test-framework:4.1.0'
+	testCompile 'org.apache.solr:solr-test-framework:4.2.1'
+	testCompile 'org.apache.lucene:lucene-test-framework:4.2.1'
 
 }
 
