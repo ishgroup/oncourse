@@ -178,388 +178,388 @@ public class PreferenceController extends CommonPreferenceController {
 		return results.isEmpty() ? null : results.get(0);
 	}
 
-	public synchronized void setLicenseAvetmissUpdates(boolean value) {
+	public  void setLicenseAvetmissUpdates(boolean value) {
 		setValue(LICENSE_AVETMISS_UPDATES, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicenseAvetmissUpdates() {
+	public  boolean getLicenseAvetmissUpdates() {
 		return Boolean.valueOf(getValue(LICENSE_AVETMISS_UPDATES, false));
 	}
 
-	public synchronized void setLicenseAccessControl(boolean value) {
+	public  void setLicenseAccessControl(boolean value) {
 		setValue(LICENSE_ACCESS_CONTROL, false, Boolean.toString(value));
 	}
 
-	public synchronized void setLicenseLdap(boolean value) {
+	public  void setLicenseLdap(boolean value) {
 		setValue(LICENSE_LDAP, false, Boolean.toString(value));
 	}
 
-	public synchronized void setLicenseBudget(boolean value) {
+	public  void setLicenseBudget(boolean value) {
 		setValue(LICENSE_BUDGET, false, Boolean.toString(value));
 	}
 
-	public synchronized void setLicenseExternalDB(boolean value) {
+	public  void setLicenseExternalDB(boolean value) {
 		setValue(LICENSE_EXTENRNAL_DB, false, Boolean.toString(value));
 	}
 
-	public synchronized void setLicenseSSL(boolean value) {
+	public  void setLicenseSSL(boolean value) {
 		setValue(LICENSE_SSL, false, Boolean.toString(value));
 	}
 
-	public synchronized void setLicenseEmail(boolean value) {
+	public  void setLicenseEmail(boolean value) {
 		setValue(LICENSE_EMAIL, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicenseEmail() {
+	public  boolean getLicenseEmail() {
 		return Boolean.valueOf(getValue(LICENSE_EMAIL, false));
 	}
 
-	public synchronized void setLicenseSms(boolean value) {
+	public  void setLicenseSms(boolean value) {
 		setValue(LICENSE_SMS, false, Boolean.toString(value));
 	}
 
-	public synchronized void setLicenseCCProcessing(boolean value) {
+	public  void setLicenseCCProcessing(boolean value) {
 		setValue(LICENSE_CC_PROCESSING, false, Boolean.toString(value));
 	}
 
-	public synchronized void setLicensePayroll(boolean value) {
+	public  void setLicensePayroll(boolean value) {
 		setValue(LICENSE_PAYROLL, false, Boolean.toString(value));
 	}
 
-	public synchronized void setLicenseWebsite(boolean value) {
+	public  void setLicenseWebsite(boolean value) {
 		setValue(LICENSE_WEBSITE, false, Boolean.toString(value));
 	}
 
-	public synchronized void setLicenseWebsiteOnlineEnrolments(boolean value) {
+	public  void setLicenseWebsiteOnlineEnrolments(boolean value) {
 		setValue(LICENSE_WEBSITE_ONLINE_ENROLMENTS, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicenseWebsiteOnlineEnrolments() {
+	public  boolean getLicenseWebsiteOnlineEnrolments() {
 		return Boolean.valueOf(getValue(LICENSE_WEBSITE_ONLINE_ENROLMENTS, false));
 	}
 
-	public synchronized void setLicenseWebsiteTutorPortal(boolean value) {
+	public  void setLicenseWebsiteTutorPortal(boolean value) {
 		setValue(LICENSE_WEBSITE_TUTOR_PORTAL, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicenseWebsiteTutorPortal() {
+	public  boolean getLicenseWebsiteTutorPortal() {
 		return Boolean.valueOf(getValue(LICENSE_WEBSITE_TUTOR_PORTAL, false));
 	}
 
-	public synchronized void setWebsitePlanName(String value) {
+	public  void setWebsitePlanName(String value) {
 		setValue(LICENSE_WEBSITE_PLAN_NAME, false, value);
 	}
 
-	public synchronized boolean getWebsitePlanName() {
+	public  boolean getWebsitePlanName() {
 		return Boolean.valueOf(getValue(LICENSE_WEBSITE_PLAN_NAME, false));
 	}
 
-	public synchronized void setSupportPlanName(String value) {
+	public  void setSupportPlanName(String value) {
 		setValue(LICENSE_SUPPORT_PLAN_NAME, false, value);
 	}
 
-	public synchronized boolean getSupportPlanName() {
+	public  boolean getSupportPlanName() {
 		return Boolean.valueOf(getValue(LICENSE_SUPPORT_PLAN_NAME, false));
 	}
 
-	public synchronized void setSupportPlanExpiry(String value) {
+	public  void setSupportPlanExpiry(String value) {
 		setValue(LICENSE_SUPPORT_PLAN_EXPIRY, false, value);
 	}
 
-	public synchronized boolean getSupportPlanExpiry() {
+	public  boolean getSupportPlanExpiry() {
 		return Boolean.valueOf(getValue(LICENSE_SUPPORT_PLAN_EXPIRY, false));
 	}
 
-	public synchronized String getNTISLastUpdate() {
+	public  String getNTISLastUpdate() {
 		return getValue(NTIS_LAST_UPDATE, false);
 	}
 
-	public synchronized void setNTISLastUpdate(String value) {
+	public  void setNTISLastUpdate(String value) {
 		setValue(NTIS_LAST_UPDATE, false, value);
 	}
 
-	public synchronized String getPostcodesLastUpdate() {
+	public  String getPostcodesLastUpdate() {
 		return getValue(POSTCODES_LAST_UPDATE, false);
 	}
 
-	public synchronized void setPostcodesLastUpdate(String value) {
+	public  void setPostcodesLastUpdate(String value) {
 		setValue(POSTCODES_LAST_UPDATE, false, value);
 	}
 
 
 	@Deprecated
-	public synchronized String getRequireContactAddressWaitingList() {
+	public  String getRequireContactAddressWaitingList() {
 		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.street);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactAddressWaitingList(String value) {
+	public  void setRequireContactAddressWaitingList(String value) {
 		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.street, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactSuburbWaitingList() {
+	public  String getRequireContactSuburbWaitingList() {
 		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.suburb);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactSuburbWaitingList(String value) {
+	public  void setRequireContactSuburbWaitingList(String value) {
 		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.suburb, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactStateWaitingList() {
+	public  String getRequireContactStateWaitingList() {
 		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.state);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactStateWaitingList(String value) {
+	public  void setRequireContactStateWaitingList(String value) {
 		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.state, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactPostcodeWaitingList() {
+	public  String getRequireContactPostcodeWaitingList() {
 		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.postcode);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactPostcodeWaitingList(String value) {
+	public  void setRequireContactPostcodeWaitingList(String value) {
 		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.postcode, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactHomePhoneWaitingList() {
+	public  String getRequireContactHomePhoneWaitingList() {
 		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.homePhoneNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactHomePhoneWaitingList(String value) {
+	public  void setRequireContactHomePhoneWaitingList(String value) {
 		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.homePhoneNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactBusinessPhoneWaitingList() {
+	public  String getRequireContactBusinessPhoneWaitingList() {
 		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.businessPhoneNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactBusinessPhoneWaitingList(String value) {
+	public  void setRequireContactBusinessPhoneWaitingList(String value) {
 		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.businessPhoneNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactFaxWaitingList() {
+	public  String getRequireContactFaxWaitingList() {
 		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.faxNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactFaxWaitingList(String value) {
+	public  void setRequireContactFaxWaitingList(String value) {
 		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.faxNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactMobileWaitingList() {
+	public  String getRequireContactMobileWaitingList() {
 		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.mobilePhoneNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactMobileWaitingList(String value) {
+	public  void setRequireContactMobileWaitingList(String value) {
 		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.mobilePhoneNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactDateOfBirthWaitingList() {
+	public  String getRequireContactDateOfBirthWaitingList() {
 		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.dateOfBirth);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactDateOfBirthWaitingList(String value) {
+	public  void setRequireContactDateOfBirthWaitingList(String value) {
 		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.dateOfBirth, value);
 	}
 
 	//mailing list
 	@Deprecated
-	public synchronized String getRequireContactAddressMailingList() {
+	public  String getRequireContactAddressMailingList() {
 		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.street);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactAddressMailingList(String value) {
+	public  void setRequireContactAddressMailingList(String value) {
 		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.street, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactSuburbMailingList() {
+	public  String getRequireContactSuburbMailingList() {
 		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.suburb);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactSuburbMailingList(String value) {
+	public  void setRequireContactSuburbMailingList(String value) {
 		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.suburb, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactStateMailingList() {
+	public  String getRequireContactStateMailingList() {
 		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.state);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactStateMailingList(String value) {
+	public  void setRequireContactStateMailingList(String value) {
 		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.state, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactPostcodeMailingList() {
+	public  String getRequireContactPostcodeMailingList() {
 		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.postcode);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactPostcodeMailingList(String value) {
+	public  void setRequireContactPostcodeMailingList(String value) {
 		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.postcode, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactHomePhoneMailingList() {
+	public  String getRequireContactHomePhoneMailingList() {
 		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.homePhoneNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactHomePhoneMailingList(String value) {
+	public  void setRequireContactHomePhoneMailingList(String value) {
 		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.homePhoneNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactBusinessPhoneMailingList() {
+	public  String getRequireContactBusinessPhoneMailingList() {
 		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.businessPhoneNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactBusinessPhoneMailingList(String value) {
+	public  void setRequireContactBusinessPhoneMailingList(String value) {
 		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.businessPhoneNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactFaxMailingList() {
+	public  String getRequireContactFaxMailingList() {
 		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.faxNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactFaxMailingList(String value) {
+	public  void setRequireContactFaxMailingList(String value) {
 		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.faxNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactMobileMailingList() {
+	public  String getRequireContactMobileMailingList() {
 		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.mobilePhoneNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactMobileMailingList(String value) {
+	public  void setRequireContactMobileMailingList(String value) {
 		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.mobilePhoneNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactDateOfBirthMailingList() {
+	public  String getRequireContactDateOfBirthMailingList() {
 		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.dateOfBirth);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactDateOfBirthMailingList(String value) {
+	public  void setRequireContactDateOfBirthMailingList(String value) {
 		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.dateOfBirth, value);
 	}
 
 	//enrolment
 	@Deprecated
-	public synchronized String getRequireContactAddressEnrolment() {
+	public  String getRequireContactAddressEnrolment() {
 		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.street);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactAddressEnrolment(String value) {
+	public  void setRequireContactAddressEnrolment(String value) {
 		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.street, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactSuburbEnrolment() {
+	public  String getRequireContactSuburbEnrolment() {
 		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.suburb);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactSuburbEnrolment(String value) {
+	public  void setRequireContactSuburbEnrolment(String value) {
 		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.suburb, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactStateEnrolment() {
+	public  String getRequireContactStateEnrolment() {
 		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.state);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactStateEnrolment(String value) {
+	public  void setRequireContactStateEnrolment(String value) {
 		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.state, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactPostcodeEnrolment() {
+	public  String getRequireContactPostcodeEnrolment() {
 		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.postcode);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactPostcodeEnrolment(String value) {
+	public  void setRequireContactPostcodeEnrolment(String value) {
 		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.postcode, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactHomePhoneEnrolment() {
+	public  String getRequireContactHomePhoneEnrolment() {
 		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.homePhoneNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactHomePhoneEnrolment(String value) {
+	public  void setRequireContactHomePhoneEnrolment(String value) {
 		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.homePhoneNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactBusinessPhoneEnrolment() {
+	public  String getRequireContactBusinessPhoneEnrolment() {
 		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.businessPhoneNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactBusinessPhoneEnrolment(String value) {
+	public  void setRequireContactBusinessPhoneEnrolment(String value) {
 		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.businessPhoneNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactFaxEnrolment() {
+	public  String getRequireContactFaxEnrolment() {
 		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.faxNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactFaxEnrolment(String value) {
+	public  void setRequireContactFaxEnrolment(String value) {
 		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.faxNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactMobileEnrolment() {
+	public  String getRequireContactMobileEnrolment() {
 		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.mobilePhoneNumber);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactMobileEnrolment(String value) {
+	public  void setRequireContactMobileEnrolment(String value) {
 		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.mobilePhoneNumber, value);
 	}
 
 	@Deprecated
-	public synchronized String getRequireContactDateOfBirthEnrolment() {
+	public  String getRequireContactDateOfBirthEnrolment() {
 		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.dateOfBirth);
 	}
 
 	@Deprecated
-	public synchronized void setRequireContactDateOfBirthEnrolment(String value) {
+	public  void setRequireContactDateOfBirthEnrolment(String value) {
 		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.dateOfBirth, value);
 	}
 
-	public synchronized boolean getHideStudentDetailsFromTutor() {
+	public  boolean getHideStudentDetailsFromTutor() {
 		try {
 			return Boolean.parseBoolean(getValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false));
 		} catch (Exception e) {
@@ -568,19 +568,19 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setHideStudentDetailsFromTutor(boolean value) {
+	public  void setHideStudentDetailsFromTutor(boolean value) {
 		setValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false, Boolean.toString(value));
 	}
 
-	public synchronized String getTutorFeedbackEmail() {
+	public  String getTutorFeedbackEmail() {
 		return getValue(TUTOR_FEEDBACK_EMAIL, false);
 	}
 
-	public synchronized void setTutorFeedbackEmail(String value) {
+	public  void setTutorFeedbackEmail(String value) {
 		setValue(TUTOR_FEEDBACK_EMAIL, false, value);
 	}
 
-	public synchronized boolean getEnableSocialMediaLinks() {
+	public  boolean getEnableSocialMediaLinks() {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS, false));
 		} catch (Exception e) {
@@ -589,11 +589,11 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setEnableSocialMediaLinks(boolean value) {
+	public  void setEnableSocialMediaLinks(boolean value) {
 		setValue(ENABLE_SOCIAL_MEDIA_LINKS, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getEnableSocialMediaLinksCourse() {
+	public  boolean getEnableSocialMediaLinksCourse() {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false));
 		} catch (Exception e) {
@@ -602,11 +602,11 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setEnableSocialMediaLinksCourse(boolean value) {
+	public  void setEnableSocialMediaLinksCourse(boolean value) {
 		setValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getEnableSocialMediaLinksWebPage() {
+	public  boolean getEnableSocialMediaLinksWebPage() {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false));
 		} catch (Exception e) {
@@ -615,19 +615,19 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setEnableSocialMediaLinksWebPage(boolean value) {
+	public  void setEnableSocialMediaLinksWebPage(boolean value) {
 		setValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false, Boolean.toString(value));
 	}
 
-	public synchronized String getAddThisProfileId() {
+	public  String getAddThisProfileId() {
 		return getValue(ADDTHIS_PROFILE_ID, false);
 	}
 
-	public synchronized void setAddThisProfileId(String value) {
+	public  void setAddThisProfileId(String value) {
 		setValue(ADDTHIS_PROFILE_ID, false, value);
 	}
 
-	public synchronized PaymentGatewayType getPaymentGatewayType() {
+	public  PaymentGatewayType getPaymentGatewayType() {
 		try {
 			return PaymentGatewayType.valueOf(getValue(PAYMENT_GATEWAY_TYPE, false));
 		} catch (Exception e) {
@@ -636,15 +636,15 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setPaymentGatewayType(PaymentGatewayType value) {
+	public  void setPaymentGatewayType(PaymentGatewayType value) {
 		setValue(PAYMENT_GATEWAY_TYPE, false, value.toString());
 	}
 
-	public synchronized boolean isPaymentGatewayEnabled() {
+	public  boolean isPaymentGatewayEnabled() {
 		return !PaymentGatewayType.DISABLED.equals(this.getPaymentGatewayType());
 	}
 
-	public synchronized Integer getEnrolmentMinAge() {
+	public  Integer getEnrolmentMinAge() {
 		String value = getValue(ENROLMENT_MIN_AGE, false);
 
 		if (value != null && StringUtils.isNumeric(value)) {
@@ -655,15 +655,15 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setEnrolmentMinAge(Integer age) {
+	public  void setEnrolmentMinAge(Integer age) {
 		setValue(ENROLMENT_MIN_AGE, false, age.toString());
 	}
 	
-	public synchronized String getRefundPolicyUrl() {
+	public  String getRefundPolicyUrl() {
 		return getValue(REFUND_POLICY_URL, false);
 	}
 	
-	public synchronized void setRefundPolicyUrl(String value) {
+	public  void setRefundPolicyUrl(String value) {
 		setValue(REFUND_POLICY_URL, false, value);
 	}
 
