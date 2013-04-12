@@ -234,4 +234,19 @@ public class PaymentEditor implements IPaymentControlDelegate {
 	{
 		return preferenceController.getServicesAmexEnabled();
 	}
+
+	/**
+	 * 	The method is used as setter for value attribute of select payer combobox.
+	 * 	we cannot use direct set PaymentIn.contact because sometime DUMMY contact can be passed to this
+	 * 	method and our application throws exception in this case. Reason is unknow. It is workaround.
+	 */
+	public void setPayer(Contact contact)
+	{
+
+	}
+
+	public Contact getPayer()
+	{
+		return delegate.getPaymentIn().getContact();
+	}
 }

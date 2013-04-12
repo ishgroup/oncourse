@@ -29,7 +29,7 @@
 				</p>
 				<p>
 					<label for="contact">Payer<em title="${message:message-required}">*</em></label>
-					<t:select t:id="contact" value="paymentIn.contact" model="payersModel" encoder="payersEncoder" blankOption="NEVER" />
+					<t:select t:id="contact" value="payer" model="payersModel" encoder="payersEncoder" blankOption="NEVER" />
                     <!--<t:eventlink t:id="changePayerEvent" style="{display:none;}"/>-->
                 </p>
                 <t:if test="zeroPayment" negate="true">
