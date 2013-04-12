@@ -24,9 +24,6 @@
 			</div>
 		</p:else>
 		</t:if>
-		<t:if t:test="courseItemModel.haveRelatedCourses">
-			<div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
-		</t:if>
 		<t:if t:test="${courseItemModel.showModules}">
 			<div t:type="ui/CourseModules" modules="courseItemModel.course.modules"
 				 qualification="courseItemModel.course.qualification"
@@ -70,6 +67,10 @@
 			<div class="courseDescription">
 				<t:outputraw value="${courseDetail}" />
 			</div>
+		</t:if>
+		<t:if t:test="courseItemModel.haveRelatedCourses">
+			<h3>Related Courses</h3>
+			<div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
 		</t:if>
 	</div>
 </t:container>
