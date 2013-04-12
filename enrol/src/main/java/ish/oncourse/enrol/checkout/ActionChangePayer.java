@@ -25,53 +25,60 @@ public class ActionChangePayer extends APurchaseAction {
 
     @Override
     protected boolean validate() {
-		return getController().getModel().getContacts().contains(contact);
+		return validateAndCompleteInTransactionPayments() &&
+				getController().getModel().getContacts().contains(contact);
 	}
 
     /**
      * Check if there are in_transaction payments on enroling contact. If finds any it abandons them.
+	 *
      */
-    private void completeInTransactionPayments() {
+    private boolean validateAndCompleteInTransactionPayments() {
         if (contact.getObjectId().isTemporary())
-            return;
+            return true;
         ObjectContext context = getController().getCayenneService().newContext();
 
-        SelectQuery q = new SelectQuery(PaymentIn.class);
-        q.andQualifier(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.IN_TRANSACTION, PaymentStatus.CARD_DETAILS_REQUIRED));
-        q.andQualifier(ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, contact));
-        q.andQualifier(ExpressionFactory.matchExp(PaymentIn.SOURCE_PROPERTY, PaymentSource.SOURCE_WEB));
-
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
-        q.andQualifier(ExpressionFactory.greaterExp(PaymentIn.CREATED_PROPERTY, calendar.getTime()));
-
-        List<PaymentIn> payments = context.performQuery(q);
+		List<PaymentIn> payments = context.performQuery(getPaymentsSelectQuery());
 
         PaymentIn current = getModel().getPayment();
+
         for (PaymentIn p : payments) {
             if (!current.getObjectId().isTemporary() &&
                     current.getId().equals(p.getId()))
                 continue;
 
-			if (getController().getPaymentService().isProcessedByGateway(p))
+			if (!getController().getPaymentService().isProcessedByGateway(p))
 			{
-				getController().addError(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
-				break;
+				getController().addError(PurchaseController.Message.dpsHasNotFinishedProcessPreviousPayment, contact.getFullName());
+				return false;
 			}
 
-            if (!getController().getWarnings().containsKey(PurchaseController.Message.payerHadUnfinishedPayment))
+            if (!getController().getWarnings().containsKey(PurchaseController.Message.payerHadUnfinishedPayment.name()))
                 getController().addWarning(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
             p.abandonPayment();
         }
 
         context.commitChanges();
+		return true;
     }
 
+	public SelectQuery getPaymentsSelectQuery()
+	{
+		SelectQuery q = new SelectQuery(PaymentIn.class);
+		q.andQualifier(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.IN_TRANSACTION, PaymentStatus.CARD_DETAILS_REQUIRED));
+		q.andQualifier(ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, contact));
+		q.andQualifier(ExpressionFactory.matchExp(PaymentIn.SOURCE_PROPERTY, PaymentSource.SOURCE_WEB));
+
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
+		q.andQualifier(ExpressionFactory.greaterExp(PaymentIn.CREATED_PROPERTY, calendar.getTime()));
+
+		return  q;
+	}
 
     @Override
     protected void makeAction() {
-        completeInTransactionPayments();
 
         Contact oldPayer = getController().getModel().getPayer();
 
