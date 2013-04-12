@@ -21,8 +21,8 @@ import org.junit.Test;
 public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
 	private static final String COURSES_CORE_NAME = "courses";
 	private static final String EXPECTED_GENERATED_QUERY_STRING = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
-		"end:[NOW TO *]&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)&sort=" +
-		"score desc,startDate asc,name asc";
+		"end:[NOW TO *]&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
+		"&sort=score desc,startDate asc,name asc&debugQuery=false";
 	private static final String COURSE_TAG_FIELD_NAME = "tagId";
 	private static final String COURSE_PRICE_FIELD_NAME = "price";
 	private static final String COURSE_POSTCODE_FIELD_NAME = "course_postcode";
