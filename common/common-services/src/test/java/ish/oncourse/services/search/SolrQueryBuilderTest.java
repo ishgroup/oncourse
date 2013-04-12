@@ -18,8 +18,15 @@ import static ish.oncourse.services.search.SearchParamsParser.DATE_FORMAT_FOR_AF
 import static org.junit.Assert.*;
 
 public class SolrQueryBuilderTest {
-    private static final String GEOFILTER_QUERY = "qt=standard&fl=id,name,course_loc,score&start=5&rows=10&fq=+collegeId:2 +doctype:course end:[NOW TO *]&fq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&qq=(*:*)&sort=score desc,startDate asc,name asc";
-	private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&fq=(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND startDate:[2012-01-01T12:00:00Z TO *] AND end:[NOW TO 2012-01-01T12:00:00Z])&sort=score desc,startDate asc,name asc";
+    private static final String GEOFILTER_QUERY = "qt=standard&fl=id,name,course_loc,score&start=5&rows=10&fq=+collegeId:2 +doctype:course end:[NOW TO *]&" +
+    	"fq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&q={!boost b=$boostfunction v=$qq}&" +
+    	"boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&" +
+    	"qq=(*:*)&sort=score desc,startDate asc,name asc&debugQuery=false";
+	private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
+		"end:[NOW TO *]&fq=(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)&q={!boost b=$boostfunction v=$qq}" +
+		"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) " +
+		"AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND startDate:[2012-01-01T12:00:00Z TO *] AND end:[NOW TO 2012-01-01T12:00:00Z])" +
+		"&sort=score desc,startDate asc,name asc&debugQuery=false";
 	private static final String EXPECTED_AFTER_REPLACEMENT_S_PARAM = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19";
 	private static final String DIGITS_SEPARATED_BY_ALL_REPLACED_SOLR_SYNTAX_CHARACTERS = "1!2^3(4)5{6}7[8]9:10\"11?12+13~14*15|16&17;18\\19";
 
@@ -76,7 +83,9 @@ public class SolrQueryBuilderTest {
         SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(searchParams,"1",0,100);
         String value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
 
-        assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)&sort=score desc,startDate asc,name asc", value);
+        assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
+        	"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
+        	"&sort=score desc,startDate asc,name asc&debugQuery=false", value);
 
         searchParams.setAfter(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, "UTC").parse("20120101"));
         searchParams.setBefore(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, "UTC").parse("20120101"));
