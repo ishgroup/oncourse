@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrException;
@@ -84,10 +84,7 @@ public class SearchService implements ISearchService {
                 if (solrURL == null) {
                     throw new IllegalStateException("Undefined property: " + Property.SolrServer);
                 }
-                //TODO: after update solrj dependency to 4.0 we need to use HttpSolrServer class instead of CommonsHttpSolrServer
-                //HttpSolrServer httpSolrServer = new HttpSolrServer(solrURL + "/" + core.toString());
-                CommonsHttpSolrServer httpSolrServer = new CommonsHttpSolrServer(solrURL + "/" + core.toString());
-
+                HttpSolrServer httpSolrServer = new HttpSolrServer(solrURL + "/" + core.toString());
                 solrServer = httpSolrServer;
                 solrServers.put(core, solrServer);
 

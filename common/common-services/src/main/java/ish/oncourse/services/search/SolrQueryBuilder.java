@@ -5,7 +5,6 @@ import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
-import org.apache.solr.common.params.CommonParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,12 +114,10 @@ public class SolrQueryBuilder {
             appendFilterAll(filters);
 
         setFiltersTo(q,filters);
-        q.addSortField(FIELD_score, ORDER.desc);
-        q.addSortField(FIELD_startDate, ORDER.asc);
-        q.addSortField(FIELD_name, SolrQuery.ORDER.asc);
-        if (params.getDebugQuery()) {
-        	q.set(CommonParams.DEBUG_QUERY, "on");//solr 4 use on and off instead of true or false
-        }
+        q.addSort(FIELD_score, ORDER.desc);
+        q.addSort(FIELD_startDate, ORDER.asc);
+        q.addSort(FIELD_name, ORDER.asc);
+        q.setShowDebugInfo(params.getDebugQuery());
         return q;
     }
     
@@ -168,7 +165,7 @@ public class SolrQueryBuilder {
     }
 
     void fillCommons(SolrQuery q) {
-        q.setQueryType(QUERY_TYPE);
+        q.setRequestHandler(QUERY_TYPE);
         q.setParam(PARAMETER_fl, PARAMETER_VALUE_fl);
         q.setStart(start);
         q.setRows(rows);
