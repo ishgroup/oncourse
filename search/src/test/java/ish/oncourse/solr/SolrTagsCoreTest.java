@@ -95,7 +95,7 @@ public class SolrTagsCoreTest extends CustomizedAbstractSolrTestCase {
         assertEquals("Second result should be the document with second index", document2.getFieldValue(ID_FIELD_NAME), result.getFieldValue(ID_FIELD_NAME));
                 
         //update params to match both suburbs
-        params = SolrQueryBuilder.createSearchSuburbByLocationQuery("Name2");
+        params = new SolrQuery(NAME_FIELD_NAME + ":Name2");
         value = URLDecoder.decode(params.toString(), "UTF-8");
         System.out.println(value);
         
