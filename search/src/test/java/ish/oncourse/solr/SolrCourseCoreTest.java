@@ -35,8 +35,6 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
 	private static final String CLASS_CODE_FIELD_NAME = "class_code";
 	private static final String COURSE_DETAIL_FIELD_NAME = "detail";
 	private static final String COURSE_CODE_FIELD_NAME = "course_code";
-	private static final String COURSE_NAME_FIELD_NAME = "name";
-	private static final String COLLEGE_ID_FIELD_NAME = "collegeId";
 	private static final String COURSE_LOCATION_FIELD_NAME = "course_loc";
 	private static final String SCORE_FIELD_NAME = "score";
 	
@@ -59,7 +57,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
     	document.setField(ID_FIELD_NAME, "1");
     	document.setField(DOCTYPE_FIELD_NAME, "course");
     	document.setField(COLLEGE_ID_FIELD_NAME, 1);
-    	document.setField(COURSE_NAME_FIELD_NAME, "courseTest Name");
+    	document.setField(NAME_FIELD_NAME, "courseTest Name");
     	document.setField(COURSE_CODE_FIELD_NAME, "courseTestCode");
     	document.setField(COURSE_DETAIL_FIELD_NAME, "course Test Detail");
     	document.setField(CLASS_CODE_FIELD_NAME, "courseTestCode-courseClassTestCode");
@@ -110,8 +108,8 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
         SolrDocument result = response.getResults().get(0);
         assertNotNull("Result document should not be empty", result);
         assertEquals("Course id should be equal to original document", document.getFieldValue(ID_FIELD_NAME), result.getFieldValue(ID_FIELD_NAME));
-        assertEquals("Course name should be equal to original document", document.getFieldValue(COURSE_NAME_FIELD_NAME), 
-        	result.getFieldValue(COURSE_NAME_FIELD_NAME));
+        assertEquals("Course name should be equal to original document", document.getFieldValue(NAME_FIELD_NAME), 
+        	result.getFieldValue(NAME_FIELD_NAME));
         Float score = (Float) result.getFieldValue(SCORE_FIELD_NAME);
         System.out.println(String.format("Calculated score value = %s", score));
         assertEquals("Calculated score for distance filtering should be equal to 1.9999998", Float.valueOf(1.9999998f), score);
@@ -159,13 +157,13 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
         SolrDocument result = response.getResults().get(0);
         assertNotNull("Result document should not be empty", result);
         assertEquals("Course id should be equal to original document", document.getFieldValue(ID_FIELD_NAME), result.getFieldValue(ID_FIELD_NAME));
-        assertEquals("Course name should be equal to original document", document.getFieldValue(COURSE_NAME_FIELD_NAME), 
-        	result.getFieldValue(COURSE_NAME_FIELD_NAME));
+        assertEquals("Course name should be equal to original document", document.getFieldValue(NAME_FIELD_NAME), 
+        	result.getFieldValue(NAME_FIELD_NAME));
         //get the 4 digits after dot because score is runtime calculated value
         Float score = (Float) result.getFieldValue(SCORE_FIELD_NAME);
         System.out.println(String.format("Calculated score value = %s", score));//"0.5792748"
         assertTrue("Calculated score should be more then 0.5791", score.compareTo(0.5791f) > 0);
-        assertTrue("Calculated score should be less then 0.5793", score.compareTo(0.5793f) < 0);
+        assertTrue("Calculated score should be less then 0.5794", score.compareTo(0.5794f) < 0);
         assertNotNull("Course location should not be empty", result.getFieldValues(COURSE_LOCATION_FIELD_NAME));
         assertFalse("Course location should not be empty", result.getFieldValues(COURSE_LOCATION_FIELD_NAME).isEmpty());
         assertEquals("Course should have 2 locations", 2, result.getFieldValues(COURSE_LOCATION_FIELD_NAME).size());

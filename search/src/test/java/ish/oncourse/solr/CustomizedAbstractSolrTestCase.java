@@ -23,6 +23,8 @@ public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCas
 	protected static final String SOLR_RESOURCES_PATH = "src/main/resources/solr/";
 	protected static final String TEST_SOLR_HOME = "src/test/resources/";
 	protected static final String ID_FIELD_NAME = "id";
+	protected static final String COLLEGE_ID_FIELD_NAME = "collegeId";
+	protected static final String NAME_FIELD_NAME = "name";
 	protected static final String DOCTYPE_FIELD_NAME = "doctype";
 	protected static final String TEST_LOCATION_3 = "-40.94777400,110.82577800";
 	protected static final String TEST_LOCATION_2 = "-30.94777400,110.82577800";

@@ -15,7 +15,7 @@ import org.apache.solr.common.params.SolrParams;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SolrSuburbCoreTest extends CustomizedAbstractSolrTestCase {
+public class SolrSuburbsCoreTest extends CustomizedAbstractSolrTestCase {
 	private static final String SUBURBS_CORE_NAME = "suburbs";
 	
 	private static final String SUBURBS_LOCATION_FIELD_NAME = "loc";
