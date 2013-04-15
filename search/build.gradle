@@ -1,7 +1,10 @@
 dependencies {
     compile project(':common:common-model')
 	compile project(':common:common-services')
-	compile 'org.apache.solr:solr:4.2.1@war'
+	compile ('org.apache.solr:solr:4.2.1@war'){
+        //we should exclude slf4j-jdk14 to be able redirect the output in logging file.
+        exclude group: 'org.slf4j', module: 'slf4j-jdk14'
+    }
 	compile 'org.apache.solr:solr-dataimporthandler:4.2.1'
 	compile 'com.vividsolutions:jts:1.13'
 
