@@ -14,7 +14,6 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.ui.pages.Courses;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.ObjectContext;
@@ -175,8 +174,8 @@ public class Mail {
         return this;
     }
 
-    public String getCoursesLink() {
-        return (refererUrl != null) ? refererUrl : HTMLUtils.getUrlBy(request.getServerName(), Courses.class);
+    public String getRedirectLink() {
+        return (refererUrl != null) ? refererUrl : String.format("%s%s", HTMLUtils.HTTP_PROTOCOL, request.getServerName());
     }
 
 }

@@ -62,7 +62,7 @@
         </t:loop>
     </ul>
     <script type="text/javascript">
-        setTimeout("window.location.href='${coursesLink}'", 10000);
+        setTimeout("window.location.href='${redirectLink}'", 10000);
     </script>
 </t:block>
 
@@ -75,7 +75,7 @@
         <div class="error">
             <p>${message:message-sessionExpired}</p>
             <script type="text/javascript">
-                setTimeout("window.location.href='${coursesLink}'", 10000);
+                setTimeout("window.location.href='${redirectLink}'", 10000);
             </script>
         </div>
         <p:else>
