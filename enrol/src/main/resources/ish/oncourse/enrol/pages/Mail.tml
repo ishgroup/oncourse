@@ -11,7 +11,7 @@
             <h3>Sorry, there are no mailing lists available for online
                 subscription now.</h3>
             <script type="text/javascript">
-                setTimeout("window.location.href='${coursesLink}'", 10000);
+                setTimeout("window.location.href='${redirectLink}'", 10000);
             </script>
         </p:else>
     </t:if>
