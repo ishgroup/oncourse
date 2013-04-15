@@ -262,8 +262,7 @@ task installer_freebsd(dependsOn: fatJar, type: Copy) {
 		ant.replace(file: manifestFile, token: "@hash_onCourseServerJar@", value: sha256(jarFile) )
 		ant.replace(file: manifestFile, token: "@hash_onCourseServer@", value: sha256(scriptFile) )
 
-		ant.tar(basedir:"${distsDir}/freebsd/", destfile:"${distsDir}/onCourseServer.tar")
-		xzCompress("${distsDir}/onCourseServer.tar", "${distsDir}/onCourseServer.txz")
+		freeBSDtar("${distsDir}/freebsd/", "${distsDir}/onCourseServer.txz")
 
 		delete "${distsDir}/onCourseServer.tar"
 		delete "${distsDir}/freebsd"
@@ -339,9 +338,8 @@ String sha256(String filename) {
 	}
 }
 
-void xzCompress(String input, String output) {
-	def p1 = "xz -9 $input".execute()
-	p1.waitFor()
-	def p2 = ("mv $input" + ".xz $output").execute()
-	p2.waitFor()
+void freeBSDtar(String input, String output) {
+	"chroot $input tar Pf ${distsDir}/onCourseServer.tar .".execute().waitFor()
+	"xz -9 ${distsDir}/onCourseServer.tar".execute().waitFor()
+	"mv ${distsDir}/onCourseServer.tar.xz ${output}".execute().waitFor()
 }
