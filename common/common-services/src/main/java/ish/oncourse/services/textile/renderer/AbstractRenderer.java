@@ -2,6 +2,8 @@ package ish.oncourse.services.textile.renderer;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import ish.oncourse.services.textile.validator.IValidator;
 import ish.oncourse.util.ValidationErrors;
 
@@ -22,6 +24,9 @@ public abstract class AbstractRenderer implements IRenderer {
 	 */
 	protected static boolean parseBooleanTextileAttribute(Map<String, String> params, String attributeValue) {
 		String paramStringValue = params.get(attributeValue);
-		return Boolean.getBoolean(paramStringValue.toLowerCase()) || YES_REQUIRED_PARAM_VALUE.equals(paramStringValue.toLowerCase());
+		if (StringUtils.trimToNull(paramStringValue) != null) {
+			paramStringValue = paramStringValue.toLowerCase();
+		}
+		return Boolean.getBoolean(paramStringValue) || YES_REQUIRED_PARAM_VALUE.equals(paramStringValue);
 	}
 }
