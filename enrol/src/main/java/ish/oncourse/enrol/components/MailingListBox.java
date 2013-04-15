@@ -29,13 +29,13 @@ public class MailingListBox {
 		if (checked) {
 			this.controller.selectedMailList(listIndex);
 		} else {
-			this.controller.selectedMailList(listIndex);
+			this.controller.deselectedMailList(listIndex);
 		}
 
 
 	}
 
-	public boolean getListChecked() {
+	public boolean isListChecked() {
 		return this.controller.isSelectedMailList(listIndex);
 	}
 
