@@ -81,7 +81,8 @@ public class MailingListController extends AContactController {
 
 	public void selectedMailList(int index)
 	{
-		this.selectedMailingLists.add(mailingLists.get(index));
+		if (!this.selectedMailingLists.contains(mailingLists.get(index)))
+			this.selectedMailingLists.add(mailingLists.get(index));
 	}
 
 	public void deselectedMailList(int index)
