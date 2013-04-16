@@ -16,7 +16,7 @@ dependencies {
 
 	compile 'org.apache.derby:derbyclient:10.9.1.0'
 	compile 'org.apache.derby:derbynet:10.9.1.0'
-	compile 'org.liquibase:liquibase-core:2.0.5'
+	compile 'org.liquibase:liquibase-core:2.0.5-fix'
 	
 	compile 'net.sourceforge.jtds:jtds:1.2.7'
 	// jtds 1.3 is not compatible with java 6
