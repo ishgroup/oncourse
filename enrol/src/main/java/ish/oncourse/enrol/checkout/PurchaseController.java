@@ -669,6 +669,56 @@ public class PurchaseController {
 		this.paymentService = paymentService;
 	}
 
+	public synchronized void cloneModel() {
+		PurchaseModel oldModel = getModel();
+		model = new PurchaseModel();
+		model.setObjectContext(getCayenneService().newContext());
+		model.setCollege(model.localizeObject(oldModel.getCollege()));
+		model.setWebSite(model.localizeObject(oldModel.getWebSite()));
+		model.setDiscounts(model.localizeObjects(oldModel.getDiscounts()));
+		model.setPayer(model.localizeObject(oldModel.getPayer()));
+		model.setClasses(model.localizeObjects(oldModel.getClasses()));
+		model.setProducts(model.localizeObjects(oldModel.getProducts()));
+
+		List<Contact> oldContacts = oldModel.getContacts();
+		List<CourseClass> oldClasses = oldModel.getClasses();
+		List<Product> oldProducts = oldModel.getProducts();
+		for (Contact oldContact : oldContacts) {
+			Contact contact = model.localizeObject(oldContact);
+			model.addContact(contact);
+
+			for (CourseClass oldCourseClass : oldClasses) {
+				CourseClass courseClass = model.localizeObject(oldCourseClass);
+				Enrolment enrolment = this.createEnrolment(courseClass,
+						contact.getStudent());
+				model.addEnrolment(enrolment);
+				Enrolment oldEnrolment = oldModel.getEnrolmentBy(oldContact, oldCourseClass);
+				if (oldEnrolment != null)
+				{
+					ActionEnableEnrolment actionEnableEnrolment = new ActionEnableEnrolment();
+					actionEnableEnrolment.setController(this);
+					actionEnableEnrolment.setEnrolment(enrolment);
+					actionEnableEnrolment.action();
+				}
+			}
+
+			for (Product oldProduct : oldProducts) {
+				Product product =  model.localizeObject(oldProduct);
+				ProductItem productItem = createProductItem(model.getPayer(),product);
+				model.addProductItem(productItem);
+				ProductItem oldProductItem = oldModel.getProductItemBy(oldContact, oldProduct);
+				if (oldProductItem != null)
+				{
+					ActionEnableProductItem actionEnableProductItem = new ActionEnableProductItem();
+					actionEnableProductItem.setController(this);
+					actionEnableProductItem.setProductItem(productItem);
+					actionEnableProductItem.action();
+				}
+			}
+
+		}
+	}
+
 
 	public static enum State {
 		init(Action.init, Action.addContact),

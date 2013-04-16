@@ -31,12 +31,15 @@ public class ActionMakePayment extends APurchaseAction {
 
 	@Override
 	protected boolean validate() {
-		if (getController().isEditCorporatePass() &&
-				getController().getModel().getCorporatePass() == null) {
-			getController().addError(corporatePassShouldBeEntered);
-			return false;
-		}
-
-		return getController().validateEnrolments() && getController().validateProductItems();
+		if (getController().isEditCorporatePass()) {
+			if (getController().getModel().getCorporatePass() == null) {
+				getController().addError(corporatePassShouldBeEntered);
+				return false;
+			} else
+				return getController().validateEnrolments();
+		} else if (getController().isEditPayment()) {
+			return getController().validateEnrolments() && getController().validateProductItems();
+		} else
+			throw new IllegalArgumentException();
 	}
 }

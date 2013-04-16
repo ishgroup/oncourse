@@ -18,6 +18,7 @@ public class ActionAddCorporatePass extends  APurchaseAction{
     private CorporatePass corporatePass;
     @Override
     protected void makeAction() {
+		getController().getModel().removeAllProductItems(getModel().getPayer());
 		getModel().setPayer(corporatePass.getContact());
         getModel().setCorporatePass(corporatePass);
     }

@@ -42,7 +42,6 @@ public class PurchaseModel {
 	private Boolean allowToUsePrevOwing  = false;
     private CorporatePass corporatePass;
 
-
     public void addDiscount(Discount discount) {
         discounts.add(discount);
     }
@@ -285,7 +284,7 @@ public class PurchaseModel {
      *
      * @return contact node structure
      */
-    private ContactNode getContactNode(Contact c) {
+    ContactNode getContactNode(Contact c) {
         ContactNode cn = this.contacts.get(c);
         if (cn != null) {
             return cn;

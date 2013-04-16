@@ -88,13 +88,16 @@ public class ActionChangePayer extends APurchaseAction {
 
         getController().getModel().setPayer(contact);
 
-        for (Product product : getController().getModel().getProducts()) {
-            ProductItem productItem = getController().createProductItem(contact, product);
-            getController().getModel().addProductItem(productItem);
-            ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
-            actionEnableProductItem.setProductItem(productItem);
-            actionEnableProductItem.action();
-        }
+		if (!contact.equals(oldPayer))
+		{
+			for (Product product : getController().getModel().getProducts()) {
+				ProductItem productItem = getController().createProductItem(contact, product);
+				getController().getModel().addProductItem(productItem);
+				ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
+				actionEnableProductItem.setProductItem(productItem);
+				actionEnableProductItem.action();
+			}
+		}
         getController().refreshPrevOwingStatus();
     }
 

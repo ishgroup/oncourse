@@ -7,12 +7,19 @@ import static ish.oncourse.enrol.checkout.PurchaseController.State.editPayment;
 public class ActionSelectCardEditor extends APurchaseAction{
     @Override
     protected void makeAction() {
-		getModel().getInvoice().setCorporatePassUsed(null);
-        getModel().setCorporatePass(null);
-
 		getModel().getPayment().setType(PaymentType.CREDIT_CARD);
-		getModel().setPayer(getModel().getContacts().get(0));
 
+		if (getController().isEditCorporatePass())
+		{
+			getModel().getInvoice().setCorporatePassUsed(null);
+			getModel().setCorporatePass(null);
+			getModel().setPayer(getModel().getContacts().get(0));
+		}
+
+		ActionChangePayer actionChangePayer = new ActionChangePayer();
+		actionChangePayer.setController(getController());
+		actionChangePayer.setContact(getModel().getPayer());
+		actionChangePayer.action();
 		getController().setState(editPayment);
     }
 

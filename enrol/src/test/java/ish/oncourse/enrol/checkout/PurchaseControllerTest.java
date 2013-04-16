@@ -182,8 +182,25 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(delegate.getPaymentIn(), purchaseController.getModel().getPayment());
         assertEquals(PaymentStatus.FAILED_CARD_DECLINED, delegate.getPaymentIn().getStatus());
 
+		PurchaseModel oldModel = purchaseController.getModel();
         delegate.tryAgain();
+
+		//test abandon after try another card
+		List<Enrolment> enabledEnrolments = oldModel.getAllEnabledEnrolments();
+		for (Enrolment enrolment1 : enabledEnrolments) {
+			assertEquals(EnrolmentStatus.FAILED, enrolment1.getStatus());
+		}
+		assertEquals(oldModel.getCollege().getId(), purchaseController.getModel().getCollege().getId());
+		assertEquals(oldModel.getWebSite().getId(), purchaseController.getModel().getWebSite().getId());
+		assertEquals(oldModel.getClasses().size(), purchaseController.getModel().getClasses().size());
+		assertEquals(oldModel.getProducts().size(), purchaseController.getModel().getProducts().size());
+		assertEquals(oldModel.getPayer().getId(), purchaseController.getModel().getPayer().getId());
+		assertEquals(oldModel.getContacts().size(), purchaseController.getModel().getContacts().size());
+		assertEquals(oldModel.getAllEnabledEnrolments().size(), purchaseController.getModel().getAllEnabledEnrolments().size());
+
+
         assertEquals(State.editPayment, purchaseController.getState());
+		assertNotEquals(oldModel, purchaseController.getModel());
         assertEquals(2, purchaseController.getModel().getAllEnrolments(purchaseController.getModel().getPayer()).size());
         assertEquals(0, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(1, purchaseController.getModel().getPayment().getPaymentInLines().size());

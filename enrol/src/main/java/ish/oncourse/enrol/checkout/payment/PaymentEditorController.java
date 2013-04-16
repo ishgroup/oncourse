@@ -14,7 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.*;
+import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.ABANDON_PAYMENT;
+import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.MAKE_PAYMENT;
 
 public class PaymentEditorController implements PaymentEditorDelegate {
 
@@ -104,8 +105,10 @@ public class PaymentEditorController implements PaymentEditorDelegate {
     }
 
     public void tryAgain() {
-        paymentProcessController.processAction(TRY_ANOTHER_CARD);
-		purchaseController.getModel().setPayment(paymentProcessController.getPaymentIn());
+        paymentProcessController.processAction(ABANDON_PAYMENT);
+		purchaseController.setPaymentEditorController(null);
+		purchaseController.cloneModel();
+		initPaymentProcessController();
         PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
         actionParameter.setValue(paymentProcessController.getPaymentIn());
         purchaseController.performAction(actionParameter);

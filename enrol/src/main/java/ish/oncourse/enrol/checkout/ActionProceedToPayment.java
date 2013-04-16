@@ -24,7 +24,7 @@ public class ActionProceedToPayment extends APurchaseAction {
 
 		getController().refreshPrevOwingStatus();
         ActionSelectCardEditor actionSelectCardEditor = selectCardEditor.createAction(getController());
-        actionSelectCardEditor.makeAction();
+        actionSelectCardEditor.action();
     }
 
     @Override
