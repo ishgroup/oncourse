@@ -164,12 +164,12 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(0, purchaseController.getModel().getDisabledEnrolments(purchaseController.getModel().getPayer()).size());
         assertEquals(0, purchaseController.getModel().getEnabledProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(0, purchaseController.getModel().getDisabledProductItems(purchaseController.getModel().getPayer()).size());
-        assertFalse(purchaseController.getModel().getPayment().getObjectId().isTemporary());
-        assertFalse(purchaseController.getModel().getInvoice().getObjectId().isTemporary());
+        assertTrue(purchaseController.getModel().getPayment().getObjectId().isTemporary());
+		assertTrue(purchaseController.getModel().getInvoice().getObjectId().isTemporary());
         assertEquals(1, purchaseController.getModel().getPayment().getPaymentInLines().size());
-        assertFalse(purchaseController.getModel().getPayment().getPaymentInLines().get(0).getObjectId().isTemporary());
+        assertTrue(purchaseController.getModel().getPayment().getPaymentInLines().get(0).getObjectId().isTemporary());
         assertEquals(2, purchaseController.getModel().getInvoice().getInvoiceLines().size());
-        assertFalse(purchaseController.getModel().getInvoice().getInvoiceLines().get(0).getObjectId().isTemporary());
+        assertTrue(purchaseController.getModel().getInvoice().getInvoiceLines().get(0).getObjectId().isTemporary());
 
         //press makePayment
         PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();

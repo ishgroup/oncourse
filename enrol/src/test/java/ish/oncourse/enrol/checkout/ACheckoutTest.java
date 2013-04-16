@@ -231,7 +231,7 @@ public abstract class ACheckoutTest extends ServiceTest {
         List<Enrolment> enrolments = purchaseController.getModel().getAllEnrolments(contact);
         assertEquals(count, enrolments.size());
         for (Enrolment enrolment : enrolments) {
-            assertEquals(commited, !enrolment.getObjectId().isTemporary());
+            assertEquals(commited, enrolment.getObjectId().isTemporary());
             assertEnabledEnrolment(enrolment);
         }
     }

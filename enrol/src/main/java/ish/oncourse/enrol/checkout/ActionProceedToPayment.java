@@ -6,36 +6,23 @@ import ish.oncourse.enrol.checkout.payment.PaymentEditorController;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.ProductItem;
-import ish.oncourse.util.payment.PaymentProcessController;
 
-import java.util.List;
-
-import static ish.oncourse.enrol.checkout.PurchaseController.Action.*;
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCardEditor;
 
 public class ActionProceedToPayment extends APurchaseAction {
     private PaymentIn paymentIn;
 
     @Override
     protected void makeAction() {
-        //the first time proceed
-        if (getController().getPaymentEditorDelegate() == null) {
-            PaymentProcessController paymentProcessController = new PaymentProcessController();
-            paymentProcessController.setStartWatcher(false);
-            paymentProcessController.setObjectContext(getModel().getObjectContext());
-            paymentProcessController.setPaymentIn(getModel().getPayment());
-            paymentProcessController.setCayenneService(getController().getCayenneService());
-            paymentProcessController.setPaymentGatewayService(getController().getPaymentGatewayServiceBuilder().buildService());
-            paymentProcessController.setParallelExecutor(getController().getParallelExecutor());
-            paymentProcessController.processAction(PaymentProcessController.PaymentAction.INIT_PAYMENT);
-            PaymentEditorController paymentEditorController = new PaymentEditorController();
-            paymentEditorController.setPaymentProcessController(paymentProcessController);
-            paymentEditorController.setPurchaseController(getController());
-            getController().setPaymentEditorController(paymentEditorController);
-        } else {
-            getModel().setPayment(paymentIn);
-        }
-        getController().refreshPrevOwingStatus();
+		//the first time proceed
+		if (getController().getPaymentEditorDelegate() == null) {
+			PaymentEditorController paymentEditorController = new PaymentEditorController();
+			paymentEditorController.setPurchaseController(getController());
+			paymentEditorController.init();
+			getController().setPaymentEditorController(paymentEditorController);
+		}
+
+		getController().refreshPrevOwingStatus();
         ActionSelectCardEditor actionSelectCardEditor = selectCardEditor.createAction(getController());
         actionSelectCardEditor.makeAction();
     }
@@ -66,47 +53,11 @@ public class ActionProceedToPayment extends APurchaseAction {
         {
             getModel().deleteDisabledItems();
             prepareToMakePayment();
-            getModel().getObjectContext().commitChanges();
-            result = validateEnrolments() && validateProductItems();
+            result = getController().validateEnrolments() && getController().validateProductItems();
         }
         return result;
     }
 
-    private boolean validateEnrolments() {
-        ActionEnableEnrolment actionEnableEnrolment = enableEnrolment.createAction(getController());
-        List<Enrolment> enrolments = getController().getModel().getAllEnabledEnrolments();
-        boolean result = true;
-        for (Enrolment enrolment : enrolments) {
-            actionEnableEnrolment.setEnrolment(enrolment);
-            boolean valid = actionEnableEnrolment.validateEnrolment();
-            if (!valid) {
-                ActionDisableEnrolment actionDisableEnrolment = disableEnrolment.createAction(getController());
-                actionDisableEnrolment.setEnrolment(enrolment);
-                actionDisableEnrolment.action();
-                getModel().removeEnrolment(enrolment);
-            }
-            result = result && valid;
-        }
-        return result;
-    }
-
-    private boolean validateProductItems() {
-        ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
-        List<ProductItem> items = getController().getModel().getAllProductItems(getModel().getPayer());
-        boolean result = true;
-        for (ProductItem item : items) {
-            actionEnableProductItem.setProductItem(item);
-            boolean valid = actionEnableProductItem.validateProductItem();
-            if (!valid) {
-                ActionDisableProductItem actionDisableProductItem = disableProductItem.createAction(getController());
-                actionDisableProductItem.setProductItem(item);
-                actionDisableProductItem.action();
-                getModel().removeProductItem(getModel().getPayer(), item);
-            }
-            result = result && valid;
-        }
-        return result;
-    }
 
     public void prepareToMakePayment() {
 

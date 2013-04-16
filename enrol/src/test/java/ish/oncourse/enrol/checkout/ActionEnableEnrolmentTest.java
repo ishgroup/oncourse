@@ -80,7 +80,7 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 
         assertNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
         assertEquals(0, purchaseController.getModel().getDisabledEnrolments(contact).size());
-        assertEnabledEnrolments(contact, 1, false);
+        assertEnabledEnrolments(contact, 1, true);
         assertEquals(1, purchaseController.getModel().getAllEnabledEnrolments().size());
         Enrolment enrolment = purchaseController.getModel().getAllEnabledEnrolments().get(0);
         for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
@@ -103,7 +103,7 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         addContact(contact);
         assertNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
         assertEquals(0, purchaseController.getModel().getDisabledEnrolments(contact).size());
-        assertEnabledEnrolments(contact, 1, false);
+        assertEnabledEnrolments(contact, 1, true);
         assertEquals(2, purchaseController.getModel().getAllEnabledEnrolments().size());
 
         //add third contact

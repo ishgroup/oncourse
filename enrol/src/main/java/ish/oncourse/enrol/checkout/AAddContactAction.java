@@ -66,7 +66,7 @@ public abstract class AAddContactAction extends APurchaseAction {
     }
 
     protected void addContact() {
-        contact.getObjectContext().commitChangesToParent();
+        contact.getObjectContext().commitChanges();
         contact = getModel().localizeObject(contact);
         getModel().addContact(contact);
         //add the first contact
@@ -107,7 +107,7 @@ public abstract class AAddContactAction extends APurchaseAction {
                 ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
                 contactCredentialsEncoder.setContactCredentials(contactCredentials);
                 contactCredentialsEncoder.setCollege(getModel().getCollege());
-                contactCredentialsEncoder.setObjectContext(getModel().getObjectContext().createChildContext());
+                contactCredentialsEncoder.setObjectContext(getController().getCayenneService().newContext());
                 contactCredentialsEncoder.setStudentService(getController().getStudentService());
                 contactCredentialsEncoder.encode();
                 contact = contactCredentialsEncoder.getContact();

@@ -22,7 +22,18 @@ public class PaymentEditorController implements PaymentEditorDelegate {
     private PaymentProcessController paymentProcessController;
     private Map<String, String> errors = new HashMap<String, String>();
 
-    @Override
+
+	public void init()
+	{
+		initPaymentProcessController();
+	}
+
+	@Override
+	public boolean isFinalState() {
+		return paymentProcessController.isFinalState();
+	}
+
+	@Override
     public boolean isProcessFinished() {
         return paymentProcessController.isProcessFinished();
     }
@@ -68,10 +79,23 @@ public class PaymentEditorController implements PaymentEditorDelegate {
             purchaseController.performAction(actionParameter);
             if (purchaseController.getErrors().isEmpty() &&
 					purchaseController.getModel().getCorporatePass() == null) {
-                paymentProcessController.processAction(MAKE_PAYMENT);
+				if (paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.INIT)
+					paymentProcessController.processAction(PaymentProcessController.PaymentAction.INIT_PAYMENT);
+				paymentProcessController.processAction(MAKE_PAYMENT);
             }
         }
     }
+
+	private void initPaymentProcessController()
+	{
+		paymentProcessController = new PaymentProcessController();
+		paymentProcessController.setStartWatcher(false);
+		paymentProcessController.setObjectContext(purchaseController.getModel().getObjectContext());
+		paymentProcessController.setPaymentIn(purchaseController.getModel().getPayment());
+		paymentProcessController.setCayenneService(purchaseController.getCayenneService());
+		paymentProcessController.setPaymentGatewayService(purchaseController.getPaymentGatewayServiceBuilder().buildService());
+		paymentProcessController.setParallelExecutor(purchaseController.getParallelExecutor());
+	}
 
     private void finalizeProcess() {
         PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.showPaymentResult);
@@ -81,6 +105,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
     public void tryAgain() {
         paymentProcessController.processAction(TRY_ANOTHER_CARD);
+		purchaseController.getModel().setPayment(paymentProcessController.getPaymentIn());
         PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
         actionParameter.setValue(paymentProcessController.getPaymentIn());
         purchaseController.performAction(actionParameter);
@@ -119,10 +144,6 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
     public PaymentProcessController getPaymentProcessController() {
         return paymentProcessController;
-    }
-
-    public void setPaymentProcessController(PaymentProcessController paymentProcessController) {
-        this.paymentProcessController = paymentProcessController;
     }
 
     public Map<String, String> getErrors() {

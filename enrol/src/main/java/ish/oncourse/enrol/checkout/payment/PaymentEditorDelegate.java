@@ -33,6 +33,8 @@ public interface PaymentEditorDelegate {
 	public boolean isPaymentSuccess();
 	public boolean isProcessFinished();
 
+	public boolean isFinalState();
+
 	public Transaction getAnalyticsTransaction();
 
 

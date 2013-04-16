@@ -2,7 +2,6 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentType;
-import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
@@ -42,8 +41,9 @@ public class ActionAddCorporatePassTest extends ACheckoutTest {
         selectCorporatePassEditor();
 		addCorporatePass("password1");
 
-		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
-		delegate.makePayment();
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
+		purchaseController.performAction(actionParameter);
+
 		assertNull(purchaseController.getPaymentEditorDelegate());
 		SelectQuery query = new SelectQuery(PaymentIn.class);
 		assertEquals(0, purchaseController.getModel().getObjectContext().performQuery(query).size());

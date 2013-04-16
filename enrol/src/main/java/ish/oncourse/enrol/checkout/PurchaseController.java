@@ -182,11 +182,6 @@ public class PurchaseController {
             //the code needs to recalcalute money values for payment and discount for all actions on checkout page and payment editor
             updateTotalIncGst();
             updateTotalDiscountAmountIncTax();
-
-            //we need commit all changes which were made on editPayment page otherwise we can get incorrect contact relations (in particular invoices)
-            if (getState() == editPayment || getState() == editCorporatePass)
-                getModel().getObjectContext().commitChanges();
-
         }
     }
 
@@ -609,7 +604,45 @@ public class PurchaseController {
     }
 
 
-    public void updateTotalDiscountAmountIncTax() {
+	 boolean validateEnrolments() {
+		ActionEnableEnrolment actionEnableEnrolment = enableEnrolment.createAction(this);
+		List<Enrolment> enrolments = this.getModel().getAllEnabledEnrolments();
+		boolean result = true;
+		for (Enrolment enrolment : enrolments) {
+			actionEnableEnrolment.setEnrolment(enrolment);
+			boolean valid = actionEnableEnrolment.validateEnrolment();
+			if (!valid) {
+				ActionDisableEnrolment actionDisableEnrolment = disableEnrolment.createAction(this);
+				actionDisableEnrolment.setEnrolment(enrolment);
+				actionDisableEnrolment.action();
+				getModel().removeEnrolment(enrolment);
+			}
+			result = result && valid;
+		}
+		return result;
+	}
+
+	 boolean validateProductItems() {
+		ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(this);
+		List<ProductItem> items = this.getModel().getAllProductItems(getModel().getPayer());
+		boolean result = true;
+		for (ProductItem item : items) {
+			actionEnableProductItem.setProductItem(item);
+			boolean valid = actionEnableProductItem.validateProductItem();
+			if (!valid) {
+				ActionDisableProductItem actionDisableProductItem = disableProductItem.createAction(this);
+				actionDisableProductItem.setProductItem(item);
+				actionDisableProductItem.action();
+				getModel().removeProductItem(getModel().getPayer(), item);
+			}
+			result = result && valid;
+		}
+		return result;
+	}
+
+
+
+	public void updateTotalDiscountAmountIncTax() {
         Money totalDiscountAmountIncTax = Money.ZERO;
         for (Contact contact : getModel().getContacts()) {
             for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {

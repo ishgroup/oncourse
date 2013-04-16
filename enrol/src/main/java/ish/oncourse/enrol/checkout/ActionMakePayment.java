@@ -10,19 +10,17 @@ import static ish.oncourse.enrol.checkout.PurchaseController.Message.corporatePa
 public class ActionMakePayment extends APurchaseAction {
 	@Override
 	protected void makeAction() {
-		if (getController().isEditCorporatePass())
-		{
+		if (getController().isEditCorporatePass()) {
 			getController().setPaymentEditorController(null);
 			getModel().deletePayment();
-		    getController().setState(PurchaseController.State.paymentResult);
+			getController().setState(PurchaseController.State.paymentResult);
 			List<Enrolment> enrolments = getController().getModel().getAllEnabledEnrolments();
 			for (Enrolment enrolment : enrolments) {
 				enrolment.setStatus(EnrolmentStatus.SUCCESS);
 			}
-		}
-		else if (getController().isEditPayment())
+		} else if (getController().isEditPayment()) {
 			getController().setState(PurchaseController.State.paymentProgress);
-		else
+		} else
 			throw new IllegalArgumentException();
 		getModel().getObjectContext().commitChanges();
 	}
@@ -33,12 +31,12 @@ public class ActionMakePayment extends APurchaseAction {
 
 	@Override
 	protected boolean validate() {
-        if (getController().isEditCorporatePass() &&
-                getController().getModel().getCorporatePass() == null)
-        {
-            getController().addError(corporatePassShouldBeEntered);
-            return false;
-        }
-        return true;
+		if (getController().isEditCorporatePass() &&
+				getController().getModel().getCorporatePass() == null) {
+			getController().addError(corporatePassShouldBeEntered);
+			return false;
+		}
+
+		return getController().validateEnrolments() && getController().validateProductItems();
 	}
 }
