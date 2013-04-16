@@ -604,13 +604,13 @@ public class PurchaseController {
     }
 
 
-	 boolean validateEnrolments() {
+	 boolean validateEnrolments(boolean showErrors) {
 		ActionEnableEnrolment actionEnableEnrolment = enableEnrolment.createAction(this);
 		List<Enrolment> enrolments = this.getModel().getAllEnabledEnrolments();
 		boolean result = true;
 		for (Enrolment enrolment : enrolments) {
 			actionEnableEnrolment.setEnrolment(enrolment);
-			boolean valid = actionEnableEnrolment.validateEnrolment();
+			boolean valid = actionEnableEnrolment.validateEnrolment(showErrors);
 			if (!valid) {
 				ActionDisableEnrolment actionDisableEnrolment = disableEnrolment.createAction(this);
 				actionDisableEnrolment.setEnrolment(enrolment);

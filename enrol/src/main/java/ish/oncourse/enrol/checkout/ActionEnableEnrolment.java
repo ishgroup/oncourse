@@ -33,34 +33,40 @@ public class ActionEnableEnrolment extends APurchaseAction {
 
     @Override
     protected boolean validate() {
-        return !getModel().isEnrolmentEnabled(enrolment) && validateEnrolment();
+        return !getModel().isEnrolmentEnabled(enrolment) && validateEnrolment(false);
     }
 
-    boolean validateEnrolment() {
+    boolean validateEnrolment(boolean showErrors) {
         /**
          * If enrolment was committed so we should not check these conditions
          */
         if (enrolment.getObjectId().isTemporary()) {
             if (enrolment.isDuplicated()) {
-                getController().getModel().setErrorFor(enrolment,
-                        duplicatedEnrolment.getMessage(getController().getMessages(), enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getCode()));
+				String message = duplicatedEnrolment.getMessage(getController().getMessages(), enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getCode());
+                getController().getModel().setErrorFor(enrolment,message);
+				if (showErrors)
+					getController().getErrors().put(duplicatedEnrolment.name(), message);
                 return false;
             }
         }
 
         boolean hasPalces = hasAvailableEnrolmentPlaces(enrolment.getCourseClass());
         if (!hasPalces) {
-            getController().getModel().setErrorFor(enrolment,
-                    noCourseClassPlaces.getMessage(getController().getMessages(),
-                            getController().getClassName(enrolment.getCourseClass()),
-                            enrolment.getCourseClass().getCourse().getCode()));
+			String message = noCourseClassPlaces.getMessage(getController().getMessages(),
+					getController().getClassName(enrolment.getCourseClass()),
+					enrolment.getCourseClass().getCourse().getCode());
+            getController().getModel().setErrorFor(enrolment,message);
+			if (showErrors)
+				getController().getErrors().put(noCourseClassPlaces.name(), message);
             return false;
         }
         if (enrolment.getCourseClass().hasEnded()) {
-            getController().getModel().setErrorFor(enrolment,
-                    courseClassEnded.getMessage(getController().getMessages(),
-                            getController().getClassName(enrolment.getCourseClass()),
-                            enrolment.getCourseClass().getCourse().getCode()));
+			String message = courseClassEnded.getMessage(getController().getMessages(),
+					getController().getClassName(enrolment.getCourseClass()),
+					enrolment.getCourseClass().getCourse().getCode());
+            getController().getModel().setErrorFor(enrolment, message);
+			if (showErrors)
+				getController().getErrors().put(courseClassEnded.name(), message);
             return false;
         }
         return true;

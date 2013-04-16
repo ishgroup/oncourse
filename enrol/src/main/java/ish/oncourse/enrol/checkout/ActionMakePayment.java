@@ -36,9 +36,9 @@ public class ActionMakePayment extends APurchaseAction {
 				getController().addError(corporatePassShouldBeEntered);
 				return false;
 			} else
-				return getController().validateEnrolments();
+				return getController().validateEnrolments(true);
 		} else if (getController().isEditPayment()) {
-			return getController().validateEnrolments() && getController().validateProductItems();
+			return getController().validateEnrolments(true) && getController().validateProductItems();
 		} else
 			throw new IllegalArgumentException();
 	}

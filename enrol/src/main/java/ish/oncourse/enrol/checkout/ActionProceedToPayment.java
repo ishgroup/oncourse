@@ -53,7 +53,7 @@ public class ActionProceedToPayment extends APurchaseAction {
         {
             getModel().deleteDisabledItems();
             prepareToMakePayment();
-            result = getController().validateEnrolments() && getController().validateProductItems();
+            result = getController().validateEnrolments(true) && getController().validateProductItems();
         }
         return result;
     }
