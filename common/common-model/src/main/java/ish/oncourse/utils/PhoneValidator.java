@@ -48,7 +48,6 @@ public class PhoneValidator {
 	 * 
 	 * @param pValue
 	 *            the value to validate
-	 * @throws validation
 	 *             exception with refs to object and key
 	 * @return a <b>formatted</b> value if value is valid
 	 */
@@ -58,11 +57,11 @@ public class PhoneValidator {
 		String message = null;
 		String digitOnlyString = StringUtilities.stripAlphas(pValue);
 		if (!digitOnlyString.matches("[\\([0-9]\\-\\.\\ \\:\\)]+")) {
-			message = "The mobile number must contain digits only.";
+			message = "Enter 10 digit mobile phone number including 04 area code for Australian numbers";
 		} else if (digitOnlyString.length() != 10) {
-			message = "The mobile number must be 10 digits starting with 04.";
+			message = "Enter 10 digit mobile phone number including 04 area code for Australian numbers";
 		} else if (!"04".equals(digitOnlyString.substring(0, 2))) {
-			message = "The mobile number must be 10 digits starting with 04.";
+			message = "Enter 10 digit mobile phone number including 04 area code for Australian numbers";
 		}
 		if (message != null) {
 			throw new Exception(message);
@@ -82,20 +81,19 @@ public class PhoneValidator {
 	 * 
 	 * @param pValue
 	 *            the value to validate
-	 * @throws validation
 	 *             exception with refs to object and key
 	 * @return a <b>formatted</b> value if value is valid
 	 */
-	public static String validatePhoneNumber(String pValue) throws Exception {
+	public static String validatePhoneNumber(String phoneName, String pValue) throws Exception {
 		String message;
 		String digitOnlyString;
 
 		message = null;
 		digitOnlyString = StringUtilities.stripAlphas(pValue);
 		if (digitOnlyString == null || digitOnlyString.length() != 10) {
-			message = "The phone number appears to be incomplete. Please ensure it has 10 digits (including the area code).";
+			message = String.format("Enter 10 digit %s phone number including area code for Australian numbers",phoneName);
 		} else if (!_VALID_AREA_CODES.contains(digitOnlyString.substring(0, 2))) {
-			message = "The phone number must start with either the area code or 04 for mobile numbers.";
+			message = String.format("Enter 10 digit %s phone number including area code for Australian numbers",phoneName);
 		}
 
 		if (message != null) {

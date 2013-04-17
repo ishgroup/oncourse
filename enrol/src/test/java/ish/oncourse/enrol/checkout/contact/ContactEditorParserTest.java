@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
@@ -26,6 +27,40 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ContactEditorParserTest {
 
+	@Test
+	public void testValidationForCountryDependentFields() throws ParseException {
+
+		Country country = new Country();
+		country.setName(ICountryService.DEFAULT_COUNTRY_NAME);
+		Contact contact = mock(Contact.class);
+		when(contact.getPostcode()).thenReturn("11111");
+		when(contact.getHomePhoneNumber()).thenReturn("04123456781");
+		when(contact.getBusinessPhoneNumber()).thenReturn("04123456781");
+		when(contact.getFaxNumber()).thenReturn("04123456781");
+		when(contact.getMobilePhoneNumber()).thenReturn("04123456781");
+		when(contact.getCountry()).thenReturn(country);
+
+		when(contact.validatePostcode()).thenCallRealMethod();
+		when(contact.validateHomePhone()).thenCallRealMethod();
+		when(contact.validateBusinessPhone()).thenCallRealMethod();
+		when(contact.validateFax()).thenCallRealMethod();
+		when(contact.validateMobilePhone()).thenCallRealMethod();
+
+		ContactEditorParser parser = new ContactEditorParser();
+		parser.setContact(contact);
+		assertNotNull(parser.validate(FieldDescriptor.postcode));
+		assertNotNull(parser.validate(FieldDescriptor.homePhoneNumber));
+		assertNotNull(parser.validate(FieldDescriptor.businessPhoneNumber));
+		assertNotNull(parser.validate(FieldDescriptor.faxNumber));
+		assertNotNull(parser.validate(FieldDescriptor.mobilePhoneNumber));
+
+		country.setName("USA");
+		assertNull(parser.validate(FieldDescriptor.postcode));
+		assertNull(parser.validate(FieldDescriptor.homePhoneNumber));
+		assertNull(parser.validate(FieldDescriptor.businessPhoneNumber));
+		assertNull(parser.validate(FieldDescriptor.faxNumber));
+		assertNull(parser.validate(FieldDescriptor.mobilePhoneNumber));
+	}
 
 	@Test
 	public void test() throws ParseException {
@@ -89,8 +124,9 @@ public class ContactEditorParserTest {
         testValidateDateOfBirth(parser, contact);
         testParseMarketingFields(parser);
         assertNull(parser.getContact().getIsMale());
-
     }
+
+
 
     private void testValidateDateOfBirth(ContactEditorParser parser, Contact contact) {
         contact.setDateOfBirth(null);

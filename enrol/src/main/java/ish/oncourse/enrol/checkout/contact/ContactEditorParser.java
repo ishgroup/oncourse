@@ -44,10 +44,21 @@ public class ContactEditorParser {
 
 	public void parse() {
 		parseContactFields();
+		validateContactFields();
 		Boolean value = parseBooleanParameter(Contact.IS_MALE_PROPERTY);
 		if (value != null)
 			contact.setIsMale(value);
 		parseMarketingFields();
+	}
+
+	private void validateContactFields() {
+		for (String visibleField : visibleFields) {
+			FieldDescriptor fieldDescriptor = FieldDescriptor.valueOf(visibleField);
+			String error = validate(fieldDescriptor);
+			if (error != null) {
+				errors.put(fieldDescriptor.propertyName, error);
+			}
+		}
 	}
 
 
@@ -90,15 +101,13 @@ public class ContactEditorParser {
 			} else if (fieldDescriptor.propertyClass == Country.class)
 			{
 				value = countryService.getCountryByName(stringValue);
-
 				if (value == null)
+				{
 					errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_error_countryOfBirth));
+					value = countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME);
+				}
 			}
             contact.writeProperty(fieldDescriptor.propertyName, value);
-            String error = validate(fieldDescriptor);
-            if (error != null) {
-                errors.put(fieldDescriptor.propertyName, error);
-            }
 		}
 	}
 
@@ -143,8 +152,15 @@ public class ContactEditorParser {
 		this.dateFormat = dateFormat;
 	}
 
-
+	/**
+	 * postcode
+	 * homePhoneNumber
+	 * businessPhoneNumber
+	 * faxNumber
+	 * mobilePhoneNumber
+	 */
 	String validate(FieldDescriptor fieldDescriptor) {
+		boolean defaultCountry = ICountryService.DEFAULT_COUNTRY_NAME.equals(contact.getCountry().getName());
 
 		switch (fieldDescriptor) {
 			case street:
@@ -154,15 +170,15 @@ public class ContactEditorParser {
 			case state:
 				return contact.validateState();
 			case postcode:
-				return contact.validatePostcode();
+				return defaultCountry ? contact.validatePostcode(): null;
 			case homePhoneNumber:
-				return contact.validateHomePhone();
+				return defaultCountry ? contact.validateHomePhone(): null;
 			case businessPhoneNumber:
-				return contact.validateBusinessPhone();
+				return defaultCountry ? contact.validateBusinessPhone(): null;
 			case faxNumber:
-				return contact.validateFax();
+				return defaultCountry ? contact.validateFax(): null;
 			case mobilePhoneNumber:
-				return contact.validateMobilePhone();
+				return defaultCountry ? contact.validateMobilePhone(): null;
 			case dateOfBirth:
 				String error = contact.validateBirthDate();
 				if (error == null)

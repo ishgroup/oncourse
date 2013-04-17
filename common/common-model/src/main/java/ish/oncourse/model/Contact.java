@@ -214,7 +214,7 @@ public class Contact extends _Contact implements Queueable {
 			return null;
 		}
 		if (!suburb.matches("(\\d){4}")) {
-			return "The postcode must be four digits.";
+			return "Enter 4 digit postcode for Australian postcodes.";
 		}
 		return null;
 	}
@@ -238,7 +238,7 @@ public class Contact extends _Contact implements Queueable {
 			return null;
 		}
 		try {
-			setHomePhoneNumber(PhoneValidator.validatePhoneNumber(homePhone));
+			setHomePhoneNumber(PhoneValidator.validatePhoneNumber("home", homePhone));
 		} catch (Exception ex) {
 			return ex.getMessage();
 		}
@@ -266,7 +266,7 @@ public class Contact extends _Contact implements Queueable {
 			return null;
 		}
 		try {
-			setBusinessPhoneNumber(PhoneValidator.validatePhoneNumber(businessPhone));
+			setBusinessPhoneNumber(PhoneValidator.validatePhoneNumber("business", businessPhone));
 		} catch (Exception ex) {
 			return ex.getMessage();
 		}
@@ -280,7 +280,7 @@ public class Contact extends _Contact implements Queueable {
 			return null;
 		}
 		try {
-			setFaxNumber(PhoneValidator.validatePhoneNumber(fax));
+			setFaxNumber(PhoneValidator.validatePhoneNumber("fax", fax));
 		} catch (Exception ex) {
 			return ex.getMessage();
 		}
