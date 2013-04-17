@@ -19,11 +19,20 @@
 		</t:if>
 	</t:if>
 
+	<t:block t:id="corporatePassSuccess">
+		<h2>Successful</h2>
+	</t:block>
 
 	<t:block t:id="paymentSuccess">
-		<h2>Payment <span>&#187;</span> Successful</h2>
-		<p>${messageThanksForEnrolment}</p>
-		<p>Your payment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentIn.id}</strong>.</p>
+		<t:if test="delegate.isCorporatePass()" negate="true">
+			<h2>Payment <span>&#187;</span> Successful</h2>
+			<p>${messageThanksForEnrolment}</p>
+			<p>Your payment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentIn.id}</strong>.</p>
+			<p:else>
+				<h2>CorporatePass <span>&#187;</span> Successful</h2>
+				<p>${messageThanksForEnrolment}</p>
+			</p:else>
+		</t:if>
 		<p>${message:message-successConfirmation}</p>
 		<t:if test="successUrl">
 			<p>
@@ -34,7 +43,11 @@
 		<div class="successEnrolmentContinueButton">
 			<a href="${successUrl}">${message:continue.button.text}</a>
 		</div>
-		<t:AnalyticsTransaction transaction="delegate.analyticsTransaction"/>
+
+		<t:if test="delegate.isCorporatePass()" negate="true">
+			<t:AnalyticsTransaction transaction="delegate.analyticsTransaction"/>
+		</t:if>
+
         <script type="text/javascript">
             refreshShortList();
         </script>

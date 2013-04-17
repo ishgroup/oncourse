@@ -30,17 +30,27 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 	}
 
 	@Override
+	public College getCollege() {
+		return purchaseController.getModel().getCollege();
+	}
+
+	public boolean isCorporatePass()
+	{
+		return purchaseController.getModel().getCorporatePass() != null;
+	}
+
+	@Override
 	public boolean isFinalState() {
-		return paymentProcessController.isFinalState();
+		return isCorporatePass() || paymentProcessController.isFinalState();
 	}
 
 	@Override
     public boolean isProcessFinished() {
-        return paymentProcessController.isProcessFinished();
+        return isCorporatePass() || paymentProcessController.isProcessFinished();
     }
 
     public boolean isPaymentSuccess() {
-        return paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
+        return isCorporatePass() || paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
     }
 
     public void updatePaymentStatus() {

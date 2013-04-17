@@ -11,7 +11,6 @@ public class ActionMakePayment extends APurchaseAction {
 	@Override
 	protected void makeAction() {
 		if (getController().isEditCorporatePass()) {
-			getController().setPaymentEditorController(null);
 			getModel().deletePayment();
 			getController().setState(PurchaseController.State.paymentResult);
 			List<Enrolment> enrolments = getController().getModel().getAllEnabledEnrolments();

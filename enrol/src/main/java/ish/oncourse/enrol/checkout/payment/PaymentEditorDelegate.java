@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.checkout.payment;
 
 import ish.oncourse.analytics.Transaction;
+import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
@@ -35,8 +36,12 @@ public interface PaymentEditorDelegate {
 
 	public boolean isFinalState();
 
+	public boolean isCorporatePass();
+
 	public Transaction getAnalyticsTransaction();
 
 
     void updatePaymentStatus();
+
+	College getCollege();
 }

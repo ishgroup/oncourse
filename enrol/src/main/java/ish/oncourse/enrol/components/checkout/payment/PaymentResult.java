@@ -64,17 +64,17 @@ public class PaymentResult {
 
 	public String getMessageThanksForEnrolment()
 	{
-		return messages.format("message-thanksForEnrolment", getPaymentIn().getCollege().getName());
+		return messages.format("message-thanksForEnrolment", delegate.getCollege().getName());
 	}
 
 	public String getMessageEnrolmentFailed()
 	{
-		return messages.format("message-enrolmentFailed", getPaymentIn().getCollege().getName());
+		return messages.format("message-enrolmentFailed", delegate.getCollege().getName());
 	}
 
 	public String getMessagePaymentFailed()
 	{
-		return messages.format("message-paymentFailed", getPaymentIn().getCollege().getName());
+		return messages.format("message-paymentFailed", delegate.getCollege().getName());
 	}
 
     @AfterRender

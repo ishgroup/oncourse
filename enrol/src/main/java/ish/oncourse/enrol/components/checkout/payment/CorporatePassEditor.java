@@ -42,7 +42,9 @@ public class CorporatePassEditor implements IPaymentControlDelegate {
 	void beforeRender() {
 		if (delegate.getInvoice().getCorporatePassUsed() != null)
 		{
-			successMessage = messages.get("message-corporatePassAdded");
+			successMessage = messages.format("message-corporatePassAdded",
+					delegate.getInvoice().getCorporatePassUsed().getContact().getFullName(),
+					delegate.getInvoice().getCorporatePassUsed().getInvoiceEmail());
 		}
 	}
 
