@@ -133,8 +133,11 @@ public class FormatUtils {
         return format;
     }
 
-    public static String convertDateToISO8601(Date date)
-    {
-        return FormatUtils.getDateFormat(DATE_FORMAT_ISO8601,TIME_ZONE_UTC).format(date);
+    public static String convertDateToISO8601(Date date) {
+    	return convertDateToISO8601InUserTimezone(date, TIME_ZONE_UTC);
+    }
+    
+    public static String convertDateToISO8601InUserTimezone(Date date, String timeZone) {
+    	return FormatUtils.getDateFormat(DATE_FORMAT_ISO8601, timeZone).format(date);
     }
 }
