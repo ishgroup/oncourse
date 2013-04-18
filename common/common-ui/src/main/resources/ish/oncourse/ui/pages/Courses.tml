@@ -30,6 +30,24 @@
 								being displayed. Our technical team is working to resolve this
 								problem now.</h2>
 						</t:if>
+						<div id="geolocationInfo" style="display:none;">
+							<ul>
+								<li>
+									<strong><span id="status"></span></strong>
+								</li>
+								<li>
+									<strong>Your Latitude</strong>
+                            		<span id="latitude"></span>
+								</li>
+								<li>
+									<strong>Your Longitude</strong>
+                            		<span id="longitude"></span>
+								</li>
+							</ul>
+							<div id="geolocationPlaceholder" style="margin: 20px 0px 10px; padding-left: 20px; width: 100%; height: 100%; position: relative;">
+                        		<i>Note: May take a few seconds to get the location.</i>
+                        	</div>
+						</div>
 						<t:if test="DebugRequest">
 							<t:outputraw value="${debugInfo}"/>
 						</t:if>
