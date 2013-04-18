@@ -20,7 +20,16 @@ public class SearchParams {
     private Date before;
     private List<Suburb> suburbs;
     private Boolean debugQuery = Boolean.FALSE;
+    private int timeOffset;
     
+	public int getTimeOffset() {
+		return timeOffset;
+	}
+
+	public void setTimeOffset(int timeOffset) {
+		this.timeOffset = timeOffset;
+	}
+
 	public Boolean getDebugQuery() {
 		return Boolean.TRUE.equals(debugQuery);
 	}

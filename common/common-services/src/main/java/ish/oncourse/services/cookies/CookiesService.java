@@ -25,7 +25,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
 
 public class CookiesService implements ICookiesService {
-
+	public static final String CLIENT_TIMEZONE_OFFSET_IN_MINUTES = "clientOffset";
 	public static final String COOKIES_DICTIONARY_REQUEST_ATTR = "cookiesDictionary";
 	private static final String COOKIES_COLLECTION_SEPARATOR = "%";
 	private static final String COOKIES_COLLECTION_SEPARATOR_REGEXP = "[" + COOKIES_COLLECTION_SEPARATOR + "]";

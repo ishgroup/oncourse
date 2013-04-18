@@ -11,6 +11,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.services.Request;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,17 +37,22 @@ public class SearchParamsParser
     private Map<SearchParam, String> paramsInError = new HashMap<SearchParam, String>();
 
     private SearchParams searchParams = new SearchParams();
+    private int timeOffset;
 
     public SearchParamsParser(Request request, ISearchService searchService, ITagService tagService) {
-        this.request = request;
-        this.searchService = searchService;
-        this.tagService = tagService;
+    	this(request, searchService, tagService, 0);
     }
+    
+    public SearchParamsParser(Request request, ISearchService searchService, ITagService tagService, int timeOffset) {
+		this.request = request;
+		this.searchService = searchService;
+		this.tagService = tagService;
+		this.timeOffset = timeOffset;
+	}
 
-    public void parse()
-    {
+	public void parse() {
         Tag browseTag = null;
-
+        searchParams.setTimeOffset(timeOffset);
         for (SearchParam name : SearchParam.values()) {
             String parameter = StringUtils.trimToNull(request.getParameter(name.name()));
             Object value = null;
@@ -82,11 +88,11 @@ public class SearchParamsParser
                         value = searchParams.getKm();
                         break;
                     case after:
-                        searchParams.setAfter(parseAfter(parameter));
+                        searchParams.setAfter(parseDate(parameter));
                         value = searchParams.getAfter();
                         break;
                     case before:
-                        searchParams.setBefore(parseAfter(parameter));
+                        searchParams.setBefore(parseDate(parameter));
                         value = searchParams.getBefore();
                         break;
                     case debugQuery:
@@ -112,9 +118,13 @@ public class SearchParamsParser
         }
     }
 
-    private Date parseAfter(String parameter) {
+    private Date parseDate(String parameter) {
         try {
-            return FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, null).parse(parameter);
+        	Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, FormatUtils.TIME_ZONE_UTC).parse(parameter);
+        	Calendar calendar = Calendar.getInstance();
+        	calendar.setTime(parsedDate);
+        	calendar.add(Calendar.MINUTE, timeOffset);
+            return calendar.getTime();
         } catch (ParseException e) {
             return null;
         }
