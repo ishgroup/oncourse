@@ -4,6 +4,7 @@ import ish.oncourse.cms.components.CmsNavigation;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
+import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.RequestUtil;
@@ -26,6 +27,9 @@ public class PageStructure {
 
 	@Inject
 	private IWebNodeTypeService webNodeTypeService;
+
+	@Inject
+	private IFacebookMetaProvider facebookMetaProvider;
 	
 	@SuppressWarnings("all")
 	@Property
@@ -82,5 +86,11 @@ public class PageStructure {
 
 	public String getAgentAwareBodyClass() {
 		return bodyClass + RequestUtil.getAgentAwareClass(request.getHeader(USER_AGENT_HEADER));
+	}
+
+
+	public String getMetaDescription()
+	{
+		return facebookMetaProvider.getDescriptionContent(node);
 	}
 }
