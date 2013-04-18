@@ -44,7 +44,7 @@ public class ActionAddCorporatePassTest extends ACheckoutTest {
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
 		purchaseController.performAction(actionParameter);
 
-		assertNull(purchaseController.getPaymentEditorDelegate());
+		assertTrue(purchaseController.getPaymentEditorDelegate().isCorporatePass());
 		SelectQuery query = new SelectQuery(PaymentIn.class);
 		assertEquals(0, purchaseController.getModel().getObjectContext().performQuery(query).size());
 

@@ -77,15 +77,22 @@ public class ContactEditorParserTest {
 
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT);
-		Contact contact = new Contact();
+		Contact contact = mock(Contact.class);
+		Country country = new Country();
+		country.setName(ICountryService.DEFAULT_COUNTRY_NAME);
+
+		when(contact.getCountry()).thenReturn(country);
+
 		//the code emulates Contact.postAdd method
-		contact.setIsMarketingViaEmailAllowed(Boolean.TRUE);
-		contact.setIsMarketingViaSMSAllowed(Boolean.TRUE);
-		contact.setIsMarketingViaPostAllowed(Boolean.TRUE);
+		when(contact.getIsMarketingViaEmailAllowed()).thenReturn(Boolean.TRUE);
+		when(contact.getIsMarketingViaPostAllowed()).thenReturn(Boolean.TRUE);
+		when(contact.getIsMarketingViaSMSAllowed()).thenReturn(Boolean.TRUE);
+		when(contact.getIsMale()).thenReturn(null);
+
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.YEAR, -19);
-		contact.setDateOfBirth(calendar.getTime());
+		when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
 
 		ICountryService countryService = mock(ICountryService.class);
 
@@ -135,22 +142,22 @@ public class ContactEditorParserTest {
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -17);
-        contact.setDateOfBirth(calendar.getTime());
+        when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
         parser.setContact(contact);
         error = parser.validate(dateOfBirth);
         assertNotNull(error);
         assertEquals(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, error);
 
-        contact.setDateOfBirth(null);
+		when(contact.getDateOfBirth()).thenReturn(null);
         error = parser.validate(dateOfBirth);
         assertNull(error);
 
         calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, 1);
-        contact.setDateOfBirth(calendar.getTime());
+		when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
         error = parser.validate(dateOfBirth);
         assertNotNull(error);
-        assertEquals("The birth date cannot be in the future.", error);
+        assertEquals(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, error);
 
     }
 
