@@ -1,8 +1,11 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.*;
+import ish.oncourse.services.cookies.CookiesService;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.*;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.HTMLUtils;
@@ -17,11 +20,11 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Page component representing a Course list.
@@ -39,7 +42,7 @@ public class Courses {
 	@Inject
 	@Property
 	private Request request;
-
+	
 	private static final Logger LOGGER = Logger.getLogger(Courses.class);
 	private static final int START_DEFAULT = 0;
 	private static final int ROWS_DEFAULT = 10;
@@ -53,6 +56,10 @@ public class Courses {
 	private ITagService tagService;
 	@Inject
 	private ITextileConverter textileConverter;
+	@Inject
+	private ICookiesService cookiesService;
+	@Inject
+    private IWebSiteService webSiteService;
 
 	@Property
 	private List<Course> courses;
@@ -95,7 +102,7 @@ public class Courses {
 	private List<Long> sitesIds;
 	
 	private List<Long> loadedCoursesIds;
-	
+		
 	public boolean isDebugRequest() {
 		return StringUtils.trimToNull(debugInfo) != null;
 	}
@@ -285,9 +292,22 @@ public class Courses {
 	public boolean isHasInvalidSearchTerms() {
 		return paramsInError != null && !paramsInError.isEmpty();
 	}
+	
+	int returnClientTimeZoneOffset() {
+		String offset = cookiesService.getCookieValue(CookiesService.CLIENT_TIMEZONE_OFFSET_IN_MINUTES);
+		int offsetValue = 0;
+		if (StringUtils.trimToNull(offset) != null && offset.matches("\\d+")) {
+			offsetValue = Integer.valueOf(offset);
+		} else {
+			//setup the college defined timezone offset if cookies have no defined value
+			TimeZone collegeTimeZone = TimeZone.getTimeZone(webSiteService.getCurrentCollege().getTimeZone());
+			offsetValue = collegeTimeZone.getRawOffset()/60000;
+		}
+		return offsetValue;
+	}
 
 	public SearchParams getCourseSearchParams() {
-        SearchParamsParser searchParamsParser = new SearchParamsParser(request,searchService,tagService);
+        SearchParamsParser searchParamsParser = new SearchParamsParser(request, searchService, tagService, returnClientTimeZoneOffset());
         searchParamsParser.parse();
         paramsInError = searchParamsParser.getParamsInError();
         return searchParamsParser.getSearchParams();
