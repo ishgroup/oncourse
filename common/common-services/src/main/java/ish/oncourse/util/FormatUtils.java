@@ -20,7 +20,9 @@ public class FormatUtils {
 
     public final static String shortTimeFormatString = "h:mma";
 
-    public final static String dateFormatForTimeline = "d MMM h:mma";
+	public final static String timeFormatWithTimeZoneString = "h:mma ('UTC'Z)";
+
+	public final static String dateFormatForTimeline = "d MMM h:mma";
 
     public final static String timestampFormat = "d MMM yy h:mma z";
 
@@ -106,6 +108,13 @@ public class FormatUtils {
         }
         return dateFormat;
     }
+
+	public static DateFormat getDateFormat(String format, TimeZone timeZone)
+	{
+		DateFormat dateFormat = new SimpleDateFormat(format);
+		dateFormat.setTimeZone(timeZone);
+		return dateFormat;
+	}
 
     public static NumberFormat getFeeFormatWithCents() {
         if (feeFormatWithCents == null) {

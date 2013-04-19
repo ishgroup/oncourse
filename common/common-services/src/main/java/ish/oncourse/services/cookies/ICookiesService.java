@@ -35,4 +35,9 @@ public interface ICookiesService {
 	void pushPreviousPagePath(String path);
 
 	URL popPreviousPageURL();
+
+	/**
+	 * @return offset for client(browser) timezone or null if it is not defined
+	 */
+	Integer getClientTimezoneOffset();
 }

@@ -5,17 +5,8 @@ import ish.oncourse.model.Discount;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.voucher.IVoucherService;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.Cookie;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -23,6 +14,14 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
+
+import javax.servlet.http.Cookie;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CookiesService implements ICookiesService {
 	public static final String CLIENT_TIMEZONE_OFFSET_IN_MINUTES = "clientOffset";
@@ -49,13 +48,33 @@ public class CookiesService implements ICookiesService {
 	@Inject
 	private IDiscountService discountService;
 
+	@Inject
+	private IWebSiteService webSiteService;
+
+
+	public Integer getClientTimezoneOffset()
+	{
+		String value = StringUtils.trimToNull(getCookieValue(CLIENT_TIMEZONE_OFFSET_IN_MINUTES));
+		Integer offset = null;
+
+		try
+		{
+			offset = Integer.valueOf(value);
+		}
+		catch (Exception e)
+		{
+			LOGGER.warn(String.format("clientOffset value %s is not numeric", value));
+		}
+		return offset;
+	}
+
 	/**
 	 * {@inheritDoc} <br/>
 	 * Splits the cookie value by '
 	 * {@value CookiesService#COOKIES_COLLECTION_SEPARATOR}.'
 	 * 
 	 *  
-	 * @see ish.oncourse.services.cookies.ICookiesService#getCookieCollectionValue(java.lang.String)
+	 * @see ish.oncourse.services.cookies.ICookiesService#getCookieValue(String)
 	 */
 	public <T> List<T> getCookieCollectionValue(String cookieKey, Class<T> clazz) {
 		List<T> listResult = new ArrayList<T>();

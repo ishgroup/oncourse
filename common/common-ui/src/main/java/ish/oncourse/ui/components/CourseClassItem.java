@@ -60,13 +60,14 @@ public class CourseClassItem {
 	@Property
 	private boolean linkToLocationsMap;
 
-	@SuppressWarnings("all")
 	@Property
 	private Format dateFormat;
 
-	@SuppressWarnings("all")
 	@Property
 	private Format timeFormat;
+
+	@Property
+	private Format timeFormatWithTimeZone;
 
 	@SuppressWarnings("all")
 	@Property
@@ -85,9 +86,23 @@ public class CourseClassItem {
 		timetableLabels.add("Time");
 		timetableLabels.add("Where");
 
-		String timeZone = courseClass.getFirstSession() == null ? courseClass.getTimeZone() : courseClass.getFirstSession().getTimeZone();
-		dateFormat = FormatUtils.getShortDateFormat(timeZone);
-		timeFormat = FormatUtils.getShortTimeFormat(timeZone);
+		TimeZone timeZone = getClientTimeZone();
+
+		dateFormat = FormatUtils.getDateFormat(FormatUtils.shortDateFormatString, timeZone);
+		timeFormat = FormatUtils.getDateFormat(FormatUtils.shortTimeFormatString, timeZone);
+		timeFormatWithTimeZone = FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
+	}
+
+	public TimeZone getClientTimeZone() {
+
+		Integer offset = cookiesService.getClientTimezoneOffset();
+		if (offset == null)
+			return TimeZone.getTimeZone(courseClass.getTimeZone());
+		else
+		{
+			offset = offset * 60000;
+			return new SimpleTimeZone(offset, "GMT");
+		}
 	}
 
 	public String getCourseClassDetail() {

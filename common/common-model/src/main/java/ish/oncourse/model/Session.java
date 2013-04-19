@@ -2,7 +2,6 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Session;
 import ish.oncourse.utils.QueueableObjectUtils;
-
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
@@ -31,12 +30,17 @@ public class Session extends _Session implements Queueable {
 	 */
 	@Override
 	public String getTimeZone() {
-		//check if the timezone is overriden
-		if (super.getTimeZone() != null) {
-			return super.getTimeZone();
+		String value =  super.getTimeZone();
+		if (value == null)
+		{
+			if (this.getRoom() != null && this.getRoom().getSite() != null)
+				value = this.getRoom().getSite().getTimeZone();
 		}
-		//else return default college timezone
-		return getCollege().getTimeZone();
+
+		if (value == null)
+			value = getCollege().getTimeZone();
+
+		return value;
 	}
 
 }

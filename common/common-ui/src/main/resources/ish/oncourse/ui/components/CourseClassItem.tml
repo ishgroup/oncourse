@@ -21,7 +21,7 @@
 							<abbr itemprop="startDate" class="dtstart" title="">
 								<t:output format="timeFormat" value="courseClass.firstSession.startDate" />
 							</abbr> - <abbr itemprop="endDate" class="dtend" title="">
-								<t:output format="timeFormat" value="courseClass.firstSession.endDate" />
+								<t:output format="timeFormatWithTimeZone" value="courseClass.firstSession.endDate" />
 							</abbr>
 							<t:if t:test="hasManySessions"> (first session)</t:if> 
 						</a>
