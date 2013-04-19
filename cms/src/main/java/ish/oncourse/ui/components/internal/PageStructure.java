@@ -4,7 +4,6 @@ import ish.oncourse.cms.components.CmsNavigation;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
-import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.RequestUtil;
@@ -28,9 +27,6 @@ public class PageStructure {
 	@Inject
 	private IWebNodeTypeService webNodeTypeService;
 
-	@Inject
-	private IFacebookMetaProvider facebookMetaProvider;
-	
 	@SuppressWarnings("all")
 	@Property
 	@Inject
@@ -89,8 +85,4 @@ public class PageStructure {
 	}
 
 
-	public String getMetaDescription()
-	{
-		return facebookMetaProvider.getDescriptionContent(node);
-	}
 }

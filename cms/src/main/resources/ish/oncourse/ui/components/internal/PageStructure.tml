@@ -7,9 +7,6 @@
 		Override: No. This component should not normally be overridden
 	</t:remove>
 	<head>
-		<t:if test="metaDescription">
-			<meta content="${metaDescription}" name="description"/>
-		</t:if>
 		<head t:type="ui/pagehead" title="${title}"/>
 		<t:if t:test="loggedIn">
 			<link href="/s/cms/css/modalJQuery.css" media="screen" rel="stylesheet"/>
