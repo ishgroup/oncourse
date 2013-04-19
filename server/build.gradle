@@ -179,18 +179,6 @@ task installer_osx(dependsOn: [codeSign, createDmg]) {
 	}
 }
 
-project.ext.freebsdAppFiles = copySpec {
-	into('.') {
-		from("${projectDir}/src/packaging/freebsd/+MANIFEST")
-	}
-	into('usr/local/onCourse') {
-		from("${libsDir}/${project.name}-${version}-all.jar")
-	}
-	into('usr/local/etc/rc.d') {
-		from("${projectDir}/src/packaging/freebsd/onCourseServer")
-	}
-}
-
 project.ext.unixAppFiles = copySpec {
 	into('.') {
 		from("${projectDir}/src/packaging/unix/")
@@ -235,39 +223,6 @@ task bundle_winService64(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
 		certificateFilePassword= project.codeSigningTemporaryPassword
 	}
 }
-
-task installer_freebsd(dependsOn: fatJar, type: Copy) {
-	description "Create the FreeBSD package (installer)."
-	doFirst {
-		logger.lifecycle("Creating the freebsd application executable for $project.name.")
-	}
-	
-	with freebsdAppFiles
-	into file("${distsDir}/freebsd")
-
-	doLast {
-		jarFile = "${distsDir}/freebsd/usr/local/onCourse/${project.name}-${project.version}-all.jar"
-		manifestFile = "${distsDir}/freebsd/+MANIFEST"
-		scriptFile = "${distsDir}/freebsd/usr/local/etc/rc.d/onCourseServer"
-
-		logger.lifecycle("Calculating checksums for the $project.name freebsd application executable")
-		ant.length(file: jarFile, property: 'size_onCourseServerJar')
-
-		ant.replace(file: scriptFile, token: "@version@", value: "${project.version}")
-		ant.replace(file: scriptFile, token: "@project.name@", value: "${project.name}")
-		ant.replace(file: scriptFile, token: "@maxmemoryServer64@", value: "${project.maxmemoryServer64}")
-
-		ant.replace(file: manifestFile, token: "@version@", value: "${project.version}")
-		ant.replace(file: manifestFile, token: "@size_onCourseServerJar@", value: "${ant.size_onCourseServerJar}")
-		ant.replace(file: manifestFile, token: "@hash_onCourseServerJar@", value: sha256(jarFile) )
-		ant.replace(file: manifestFile, token: "@hash_onCourseServer@", value: sha256(scriptFile) )
-
-		freeBSDtar("${distsDir}/freebsd/", "${distsDir}/onCourseServer.txz")
-
-		delete "${distsDir}/onCourseServer.tar"
-		delete "${distsDir}/freebsd"
-	}	
-} 
 
 task installer_unix(dependsOn: fatJar, type: Copy) {
 	description "Create the Unix/Linux package (zip)."
@@ -336,10 +291,4 @@ String sha256(String filename) {
 		}
 		return result.toString().split()[0]
 	}
-}
-
-void freeBSDtar(String input, String output) {
-	"chroot $input tar Pf ${distsDir}/onCourseServer.tar .".execute().waitFor()
-	"xz -9 ${distsDir}/onCourseServer.tar".execute().waitFor()
-	"mv ${distsDir}/onCourseServer.tar.xz ${output}".execute().waitFor()
 }
