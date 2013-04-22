@@ -543,10 +543,11 @@ public class CourseClass extends _CourseClass implements Queueable {
 	public String getTimeZone() {
 		String value = null;
 		Session session = getFirstSession();
-		if (session != null)
+		if (session != null) {
 			value = getFirstSession().getTimeZone();
-		else
+		} else {
 			value = getCollege().getTimeZone();
+		}
 		return value;
 	}
 

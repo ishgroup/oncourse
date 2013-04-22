@@ -31,15 +31,15 @@ public class Session extends _Session implements Queueable {
 	@Override
 	public String getTimeZone() {
 		String value =  super.getTimeZone();
-		if (value == null)
-		{
-			if (this.getRoom() != null && this.getRoom().getSite() != null)
+		if (value == null) {
+			if (this.getRoom() != null && this.getRoom().getSite() != null && !this.getRoom().getSite().getIsVirtual()) {
 				value = this.getRoom().getSite().getTimeZone();
+			}
 		}
 
-		if (value == null)
+		if (value == null) {
 			value = getCollege().getTimeZone();
-
+		}
 		return value;
 	}
 
