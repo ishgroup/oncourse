@@ -5,7 +5,6 @@ import ish.oncourse.model.Discount;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.discount.IDiscountService;
-import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
@@ -47,10 +46,6 @@ public class CookiesService implements ICookiesService {
 
 	@Inject
 	private IDiscountService discountService;
-
-	@Inject
-	private IWebSiteService webSiteService;
-
 
 	public Integer getClientTimezoneOffset()
 	{
