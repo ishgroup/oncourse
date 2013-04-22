@@ -45,6 +45,7 @@ dependencies {
 	testCompile 'dbunit:dbunit:2.4.8'
 	testCompile 'org.reflections:reflections:0.9.8'
 	testCompile 'commons-dbcp:commons-dbcp:1.4'
+	testCompile 'xmlunit:xmlunit:1.4' //used for xml export validation tests
 }
 
 jar {
