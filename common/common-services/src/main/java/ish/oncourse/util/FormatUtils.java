@@ -7,6 +7,8 @@ import java.text.*;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.apache.commons.lang.StringUtils;
+
 public class FormatUtils {
 	public static final String EMPTY_STRING = "";
 
@@ -103,14 +105,13 @@ public class FormatUtils {
 
     private static DateFormat createDateFormat(String format, String timeZone) {
         DateFormat dateFormat = new SimpleDateFormat(format);
-        if (timeZone != null) {
+        if (StringUtils.trimToNull(timeZone) != null) {
             dateFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
         }
         return dateFormat;
     }
 
-	public static DateFormat getDateFormat(String format, TimeZone timeZone)
-	{
+	public static DateFormat getDateFormat(String format, TimeZone timeZone) {
 		DateFormat dateFormat = new SimpleDateFormat(format);
 		dateFormat.setTimeZone(timeZone);
 		return dateFormat;
