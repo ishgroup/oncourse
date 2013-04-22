@@ -7,6 +7,8 @@ import ish.oncourse.model.SessionTutor;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -109,7 +111,7 @@ public class TimetableJson {
 	
 	private Date currentMonth(String monthStr) {
 		
-		DateFormat formatter = getDateFormat(DATE_FORMAT_MM_yyyy, null);
+		DateFormat formatter = getDateFormat(DATE_FORMAT_MM_yyyy, StringUtils.EMPTY);
 		
 		Date currentMonth = null; 
 		
