@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class Transaction {
+	public static final String DEFAULT_WEB_AFFILIATION = "web";
 		private String affiliation;
 		private String city;
 		private String country;

@@ -178,15 +178,20 @@ public class PaymentEditorController implements PaymentEditorDelegate {
                 for (Enrolment enrolment : enrolments) {
                     Item item = new Item();
 
-                    for (Tag tag : purchaseController.getTagService().getTagsForEntity(Course.class.getSimpleName(), enrolment.getCourseClass().getCourse().getId())) {
+                    for (Tag tag : purchaseController.getTagService().getTagsForEntity(Course.class.getSimpleName(), 
+                    	enrolment.getCourseClass().getCourse().getId())) {
                         if (Tag.SUBJECTS_TAG_NAME.equalsIgnoreCase(tag.getRoot().getName())) {
                             item.setCategoryName(tag.getDefaultPath().replace('/', '.').substring(1));
                             break;
                         }
                     }
-                    item.setProductName(enrolment.getCourseClass().getCourse().getName());
+                    StringBuilder productName = new StringBuilder(enrolment.getCourseClass().getCourse().getCode());
+                    productName.append(": ").append(enrolment.getCourseClass().getCourse().getName());
+                    item.setProductName(productName.toString());
                     item.setQuantity(1);
-                    item.setSkuCode(enrolment.getCourseClass().getCourse().getCode());
+                    StringBuilder skuCode = new StringBuilder(enrolment.getCourseClass().getCourse().getCode());
+                    skuCode.append("-").append(enrolment.getCourseClass().getCode());
+                    item.setSkuCode(skuCode.toString());
                     Money unitPrice = Money.ZERO;
                     for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
                     	unitPrice = unitPrice.add(invoiceLine.getDiscountedPriceTotalExTax());
@@ -195,7 +200,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
                     transactionItems.add(item);
                 }
                 Transaction transaction = new Transaction();
-                transaction.setAffiliation(null);
+                transaction.setAffiliation(Transaction.DEFAULT_WEB_AFFILIATION);
                 transaction.setCity(getPaymentIn().getContact().getSuburb());
                 transaction.setCountry("Australia");
                 transaction.setItems(transactionItems);
