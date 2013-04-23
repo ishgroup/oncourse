@@ -26,7 +26,7 @@ public class ActionAddCorporatePassTest extends ACheckoutTest {
     }
 
     @Test
-    public void test() {
+    public void testAddCorporatePassWithSpecifiedValidClasses() {
         createPurchaseController(1001);
         addFirstContact(1001);
         proceedToPayment();
@@ -54,7 +54,29 @@ public class ActionAddCorporatePassTest extends ACheckoutTest {
 			assertEquals(PersistenceState.COMMITTED , enrolment.getPersistenceState());
 		}
 	}
+    
+    @Test
+    public void testAddCorporatePassWithoutSpecifiedValidClasses() {
+    	createPurchaseController(1001);
+        addFirstContact(1001);
+        proceedToPayment();
+        selectCorporatePassEditor();
+		addCorporatePass("password4");//set the corporate pass without classes relationship
 
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
+		purchaseController.performAction(actionParameter);
+
+		assertTrue(purchaseController.getPaymentEditorDelegate().isCorporatePass());
+		SelectQuery query = new SelectQuery(PaymentIn.class);
+		assertEquals(0, purchaseController.getModel().getObjectContext().performQuery(query).size());
+
+		List<Enrolment> enrolments = purchaseController.getModel().getAllEnabledEnrolments();
+		for (Enrolment enrolment : enrolments) {
+			assertEquals(EnrolmentStatus.SUCCESS, enrolment.getStatus());
+			assertEquals(PersistenceState.COMMITTED , enrolment.getPersistenceState());
+		}
+    }
+    
 	private void addCorporatePass(String corporatePass) {
 		ActionParameter parameter = new ActionParameter(Action.addCorporatePass);
 		parameter.setValue(corporatePass);
