@@ -65,8 +65,11 @@ public class ActionAddCorporatePass extends  APurchaseAction{
         return true;
     }
 
-    private boolean contains(List<CourseClass> validClasses, CourseClass courseClass)
-    {
+    private boolean contains(List<CourseClass> validClasses, CourseClass courseClass) {
+    	if (validClasses.isEmpty()) {
+    		//if no classes specified, all the classes should pass as valid
+    		return true;
+    	}
         for (CourseClass aClass : validClasses) {
             if (aClass.getId().equals(courseClass.getId()))
                 return true;
