@@ -4,6 +4,7 @@ import ish.math.Money;
 import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
 import ish.oncourse.enrol.checkout.PurchaseController;
+import ish.oncourse.enrol.utils.GenerateAnaluticsTransactionUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
 import org.apache.commons.lang.StringUtils;
@@ -176,46 +177,30 @@ public class PaymentEditorController implements PaymentEditorDelegate {
                 List<Enrolment> enrolments = purchaseController.getModel().getAllEnabledEnrolments();
                 List<Item> transactionItems = new ArrayList<Item>(enrolments.size());
                 for (Enrolment enrolment : enrolments) {
-                    Item item = new Item();
-
+                     String tagDefaultPath = StringUtils.EMPTY;
                     for (Tag tag : purchaseController.getTagService().getTagsForEntity(Course.class.getSimpleName(), 
                     	enrolment.getCourseClass().getCourse().getId())) {
                         if (Tag.SUBJECTS_TAG_NAME.equalsIgnoreCase(tag.getRoot().getName())) {
-                            item.setCategoryName(tag.getDefaultPath().replace('/', '.').substring(1));
+                        	tagDefaultPath = tag.getDefaultPath();
                             break;
                         }
                     }
-                    StringBuilder productName = new StringBuilder(enrolment.getCourseClass().getCourse().getCode());
-                    productName.append(": ").append(enrolment.getCourseClass().getCourse().getName());
-                    item.setProductName(productName.toString());
-                    item.setQuantity(1);
-                    StringBuilder skuCode = new StringBuilder(enrolment.getCourseClass().getCourse().getCode());
-                    skuCode.append("-").append(enrolment.getCourseClass().getCode());
-                    item.setSkuCode(skuCode.toString());
                     Money unitPrice = Money.ZERO;
                     for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
-                    	unitPrice = unitPrice.add(invoiceLine.getDiscountedPriceTotalExTax());
+                    	unitPrice = unitPrice.add(invoiceLine.getDiscountedPriceTotalIncTax());
                     }
-                    item.setUnitPrice(unitPrice.toBigDecimal());
+                    Item item = GenerateAnaluticsTransactionUtil.generateTransactionItem(tagDefaultPath, enrolment.getCourseClass().getCourse().getCode(), 
+                        enrolment.getCourseClass().getCourse().getName(), enrolment.getCourseClass().getCode(), unitPrice.toBigDecimal());
                     transactionItems.add(item);
                 }
-                Transaction transaction = new Transaction();
-                transaction.setAffiliation(Transaction.DEFAULT_WEB_AFFILIATION);
-                transaction.setCity(getPaymentIn().getContact().getSuburb());
-                transaction.setCountry("Australia");
-                transaction.setItems(transactionItems);
-                transaction.setOrderNumber("W" + getPaymentIn().getId());
-                transaction.setShippingAmount(null);
-                transaction.setState(getPaymentIn().getContact().getState());
                 BigDecimal tax = new BigDecimal(0);
                 for (PaymentInLine pil : getPaymentIn().getPaymentInLines()) {
                     for (InvoiceLine invoiceLine : pil.getInvoice().getInvoiceLines()) {
                         tax = tax.add(invoiceLine.getTotalTax().toBigDecimal());
                     }
                 }
-                transaction.setTax(tax);
-                transaction.setTotal(getPaymentIn().getAmount().toBigDecimal());
-                return transaction;
+                return GenerateAnaluticsTransactionUtil.generateTransaction(getPaymentIn().getContact().getSuburb(), getPaymentIn().getContact().getState(), 
+                	getPaymentIn().getId(), tax, getPaymentIn().getAmount().toBigDecimal(), transactionItems);
             }
         }
         return null;
