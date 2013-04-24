@@ -7,6 +7,7 @@ import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.TimestampUtilities;
@@ -88,17 +89,15 @@ public class CourseClassItem {
 
 		TimeZone timeZone = getClientTimeZone();
 		dateFormat = FormatUtils.getDateFormat(FormatUtils.shortDateFormatString, timeZone);
-		timeFormat = FormatUtils.getDateFormat(FormatUtils.shortTimeFormatString, timeZone);
-		timeFormatWithTimeZone = FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
+		timeFormat = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
+		timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
 	}
-
+		
 	public TimeZone getClientTimeZone() {
-
 		Integer offset = cookiesService.getClientTimezoneOffset();
-		if (offset == null)
+		if (offset == null) {
 			return TimeZone.getTimeZone(courseClass.getTimeZone());
-		else
-		{
+		} else {
 			offset = offset * 60000;
 			return new SimpleTimeZone(offset, "GMT");
 		}
