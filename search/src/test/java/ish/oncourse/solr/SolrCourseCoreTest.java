@@ -162,7 +162,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
         //get the 4 digits after dot because score is runtime calculated value
         Float score = (Float) result.getFieldValue(SCORE_FIELD_NAME);
         System.out.println(String.format("Calculated score value = %s", score));//"0.5792748"
-        assertTrue("Calculated score should be more then 0.5791", score.compareTo(0.5791f) > 0);
+        assertTrue("Calculated score should be more then 0.579", score.compareTo(0.579f) > 0);
         assertTrue("Calculated score should be less then 0.5795", score.compareTo(0.5795f) < 0);
         assertNotNull("Course location should not be empty", result.getFieldValues(COURSE_LOCATION_FIELD_NAME));
         assertFalse("Course location should not be empty", result.getFieldValues(COURSE_LOCATION_FIELD_NAME).isEmpty());
