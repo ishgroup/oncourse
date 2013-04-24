@@ -56,13 +56,13 @@ public class CustomizedDateFormatTest {
 			format.format(date));
 		//check format with the timezone string
 		//check the pm
+		calendar = Calendar.getInstance(timeZone);
 		calendar.set(Calendar.MINUTE, 9);
 		calendar.set(Calendar.HOUR, 1);
 		date = calendar.getTime();
 		format = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
 		int totalMinutesOffset = timeZone.getRawOffset()/60000;
 		boolean isPositiveOffset = totalMinutesOffset>=0;
-		boolean isNegative = totalMinutesOffset<=0;
 		if (!isPositiveOffset) {
 			totalMinutesOffset = 0-totalMinutesOffset;
 		}
@@ -70,25 +70,25 @@ public class CustomizedDateFormatTest {
 		Integer minutesOffset = totalMinutesOffset%60;
 		String hoursOffsetString = hoursOffset < 10 ? "0" + hoursOffset.toString() : hoursOffset.toString(),
 			minutesOffsetString = minutesOffset < 10 ? "0" + minutesOffset.toString() : minutesOffset.toString();
-		String expectedResult = String.format("1:09%s (UTC%s%s:%s)", (!isNegative? "pm": "am"), 
+		String expectedResult = String.format("1:09%s (UTC%s%s:%s)", FormatUtils.getDateFormat("a", timeZone).format(date).toLowerCase(), 
 			(isPositiveOffset? "+": "-"), hoursOffsetString, minutesOffsetString);
 		assertEquals("Result should match the formater", expectedResult, format.format(date));
 		//check the am
 		calendar.set(Calendar.HOUR, 13);
 		date = calendar.getTime();
-		expectedResult = String.format("1:09%s (UTC%s%s:%s)", (!isNegative? "am": "pm"), (isPositiveOffset? "+": "-"), 
+		expectedResult = String.format("1:09%s (UTC%s%s:%s)", FormatUtils.getDateFormat("a", timeZone).format(date).toLowerCase(), (isPositiveOffset? "+": "-"), 
 			hoursOffsetString, minutesOffsetString);
 		assertEquals("Result should match the formater", expectedResult, format.format(date));
 		//check the 0 minutes
 		calendar.set(Calendar.HOUR, 1);
 		calendar.set(Calendar.MINUTE, 0);
 		date = calendar.getTime();
-		expectedResult = String.format("1%s (UTC%s%s:%s)", (!isNegative? "am": "pm"), (isPositiveOffset? "+": "-"), 
+		expectedResult = String.format("1%s (UTC%s%s:%s)", FormatUtils.getDateFormat("a", timeZone).format(date).toLowerCase(), (isPositiveOffset? "+": "-"), 
 			hoursOffsetString, minutesOffsetString);
 		assertEquals("Result should match the formater", expectedResult, format.format(date));
 		calendar.set(Calendar.HOUR, 13);
 		date = calendar.getTime();
-		expectedResult = String.format("1%s (UTC%s%s:%s)", (!isNegative? "pm": "am"), (isPositiveOffset? "+": "-"), 
+		expectedResult = String.format("1%s (UTC%s%s:%s)", FormatUtils.getDateFormat("a", timeZone).format(date).toLowerCase(), (isPositiveOffset? "+": "-"), 
 			hoursOffsetString, minutesOffsetString);
 		assertEquals("Result should match the formater", expectedResult, format.format(date));
 		System.out.println(expectedResult);
