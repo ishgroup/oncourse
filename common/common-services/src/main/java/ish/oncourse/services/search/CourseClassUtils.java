@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static ish.oncourse.services.search.SearchParamsParser.*;
 
 /**
@@ -177,36 +176,30 @@ public class CourseClassUtils {
 			}
 
             float afterMatch = 1.0f;
-            if (searchParams.getAfter() != null)
-            {
-
-                if (courseClass.getStartDate().after(searchParams.getAfter()))
+            if (searchParams.getAfter() != null) {
+                if (courseClass.getStartDate().after(searchParams.getAfter())) {
                     afterMatch = 1.0f;
-                else
-                {
+                } else {
                     int days =  (int) Math.ceil( (searchParams.getAfter().getTime() - courseClass.getStartDate().getTime())/ (1000 * 60 * 60 * 24));
-                    if (days == 0) {
-                    	//#16568 .avoid division by zero on courses render.
-                    	return afterMatch;
+                    //#16568 .check for 0 required to avoid division by zero on courses render.
+                    //#17083. but even if the date distance is less then 1 day we should show this class as partially matched
+                    if (days <= 1) {
+                    	return 0.5f;
                     }
                     afterMatch = 1/days;
                 }
             }
 
             float beforeMatch = 1.0f;
-            if (searchParams.getBefore() != null)
-            {
-                if (courseClass.getEndDate() == null)
-                {
+            if (searchParams.getBefore() != null) {
+                if (courseClass.getEndDate() == null) {
                     beforeMatch = 0f;
-                }
-                else if (courseClass.getEndDate().before(searchParams.getBefore()))
+                } else if (courseClass.getEndDate().before(searchParams.getBefore()))
                     beforeMatch = 1.0f;
-                else
-                {
+                else {
                     int days =  (int) Math.ceil( (courseClass.getEndDate().getTime() - searchParams.getBefore().getTime())/ (1000 * 60 * 60 * 24));
-                    if (days == 0) {
-                    	return 1.0f;
+                    if (days <= 1) {
+                    	return 0.5f;
                     }
                     beforeMatch = 1/days;
                 }
