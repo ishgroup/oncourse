@@ -1,17 +1,25 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Session;
+import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
 
 import java.text.Format;
 import java.util.List;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class TimetableEvents {
 
+	@Inject
+	private ICookiesService cookiesService;
+	
 	@Property
 	@Parameter
 	private List<Session> displayedObjects;
@@ -41,18 +49,6 @@ public class TimetableEvents {
 	@Parameter
 	private String cssOddRowClass;
 	
-	@Property
-	@Parameter
-	private Format dateFormat;
-
-	@Property
-	@Parameter
-	private Format timeFormat;
-
-	@Property
-	@Parameter
-	private Format timeFormatWithTimeZone;
-
 	public String getCssRowClass() {
 		if (isOddRow()) {
 			return cssOddRowClass;
@@ -71,14 +67,31 @@ public class TimetableEvents {
 	}
 
 	public Format getItemDateFormatter() {
-		return FormatUtils.getDateFormat(event.getTimeZone());
+		TimeZone timeZone = getClientTimeZone();
+		return FormatUtils.getDateFormat(FormatUtils.shortDateFormatString, timeZone);
 	}
 
 	public Format getItemTimeFormatter() {
-		return FormatUtils.getTimeFormat(event.getTimeZone());
+		TimeZone timeZone = getClientTimeZone();
+		return new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
+	}
+	
+	public Format getItemTimeFormatterWithTimeZone() {
+		TimeZone timeZone = getClientTimeZone();
+		return new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
 	}
 
 	public boolean isHasItemEndDate() {
 		return event.getEndDate() != null;
+	}
+	
+	public TimeZone getClientTimeZone() {
+		Integer offset = cookiesService.getClientTimezoneOffset();
+		if (offset == null) {
+			return TimeZone.getTimeZone(event.getTimeZone());
+		} else {
+			offset = offset * 60000;
+			return new SimpleTimeZone(offset, "GMT");
+		}
 	}
 }
