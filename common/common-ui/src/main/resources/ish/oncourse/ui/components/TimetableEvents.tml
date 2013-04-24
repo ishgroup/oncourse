@@ -10,11 +10,11 @@
 		<t:loop source="displayedObjects" value="event" index="listIndex">
 			<tr class="${cssRowClass}">
 				<td>
-					<t:output value="event.startDate" format="itemDateFormatter" />
+					<t:output value="event.startDate" format="dateFormat" />
 				</td>
 				<td>
-					<t:output value="event.startDate" format="itemTimeFormatter" />
-					<t:if test="hasItemEndDate"> - <t:output value="event.endDate" format="itemTimeFormatter" />
+					<t:output value="event.startDate" format="timeFormat" />
+					<t:if test="hasItemEndDate"> - <t:output value="event.endDate" format="timeFormatWithTimeZone" />
 					</t:if>
 				</td>
 				<td>

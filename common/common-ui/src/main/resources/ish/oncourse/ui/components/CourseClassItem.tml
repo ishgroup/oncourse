@@ -139,7 +139,8 @@
 			<t:if test="courseClass.hasAnyTimelineableSessions">
 				<div class="sessions_for_class hidden classSessions" id="sessions_for_class_${courseClass.id}">
 					<span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions" headerLabels="timetableLabels"
-						cssTableClass="cssTableClass" cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"/>
+						cssTableClass="cssTableClass" cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass" 
+						dateFormat="dateFormat" timeFormat="timeFormat" timeFormatWithTimeZone="timeFormatWithTimeZone"/>
 				</div>
 			</t:if>
 		</t:if>

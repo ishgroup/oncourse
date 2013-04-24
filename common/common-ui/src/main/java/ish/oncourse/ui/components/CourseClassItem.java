@@ -87,7 +87,6 @@ public class CourseClassItem {
 		timetableLabels.add("Where");
 
 		TimeZone timeZone = getClientTimeZone();
-
 		dateFormat = FormatUtils.getDateFormat(FormatUtils.shortDateFormatString, timeZone);
 		timeFormat = FormatUtils.getDateFormat(FormatUtils.shortTimeFormatString, timeZone);
 		timeFormatWithTimeZone = FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);

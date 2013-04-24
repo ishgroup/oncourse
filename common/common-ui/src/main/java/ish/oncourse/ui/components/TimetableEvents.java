@@ -6,6 +6,7 @@ import ish.oncourse.util.FormatUtils;
 import java.text.Format;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 
@@ -39,6 +40,18 @@ public class TimetableEvents {
 	@Property
 	@Parameter
 	private String cssOddRowClass;
+	
+	@Property
+	@Parameter
+	private Format dateFormat;
+
+	@Property
+	@Parameter
+	private Format timeFormat;
+
+	@Property
+	@Parameter
+	private Format timeFormatWithTimeZone;
 
 	public String getCssRowClass() {
 		if (isOddRow()) {
@@ -46,7 +59,7 @@ public class TimetableEvents {
 		} else if (isEvenRow()) {
 			return cssEvenRowClass;
 		}
-		return "";
+		return StringUtils.EMPTY;
 	}
 
 	public boolean isEvenRow() {
