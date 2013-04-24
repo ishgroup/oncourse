@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._CourseClass;
+import ish.oncourse.utils.DateUtils;
 import ish.oncourse.utils.DiscountUtils;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.TimestampUtilities;
@@ -13,7 +14,6 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -110,13 +110,13 @@ public class CourseClass extends _CourseClass implements Queueable {
 				} else {
 					Calendar start = Calendar.getInstance(timezone);
 					start.setTimeInMillis(sessionStart.getTime());
-
-					if (!DateUtils.isSameLocalTime(start, startCalendar)) {
+					
+					if (!DateUtils.isTheSameTime(start, startCalendar)) {
 						return true;
 					} else {
 						Calendar end = Calendar.getInstance(timezone);
 						end.setTimeInMillis(sessionEnd.getTime());
-						if (!DateUtils.isSameLocalTime(end, endCalendar)) {
+						if (!DateUtils.isTheSameTime(end, endCalendar)) {
 							return true;
 						}
 					}

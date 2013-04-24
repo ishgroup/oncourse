@@ -1,5 +1,7 @@
 package ish.oncourse.model;
 
+import org.apache.commons.lang.StringUtils;
+
 public class TextileFormField {
 
 	private String label;
@@ -24,7 +26,7 @@ public class TextileFormField {
 
 	public String getLabel() {
 		if (label == null) {
-			return "";
+			return StringUtils.EMPTY;
 		}
 		return label;
 	}
