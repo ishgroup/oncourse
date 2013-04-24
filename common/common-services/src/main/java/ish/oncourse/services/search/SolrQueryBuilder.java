@@ -48,7 +48,7 @@ public class SolrQueryBuilder {
     static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
     static final String FILTER_TEMPLATE_when = "when:%s";
     static final String FILTER_TEMPLATE_tagId = "tagId:%d";
-    static final String FILTER_TEMPLATE_after = FIELD_startDate  + ":[%s TO *]";
+    static final String FILTER_TEMPLATE_after = FIELD_class_start  + ":[%s TO *]";
     static final String FILTER_TEMPLATE_before = FIELD_end + ":[NOW TO %s]";
 
     static final String FILTER_TEMPLATE_geofilt = "{!score=distance}%s:\"Intersects(Circle(%s %s=%s))\"";
