@@ -1,7 +1,5 @@
 package ish.oncourse.services.jmx;
 
-import java.sql.SQLException;
-
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.naming.Context;
@@ -29,9 +27,6 @@ public class JMXInitService implements IJMXInitService, RegistryShutdownListener
 		} catch (NamingException e) {
 			datasource = null;
 			LOGGER.error(e.getMessage(), e);
-		} catch (SQLException e) {
-			datasource = null;
-			LOGGER.error(e.getMessage(), e);
 		}
 		ObjectName newApplicationDataInstance = null;
 		try {
@@ -51,10 +46,10 @@ public class JMXInitService implements IJMXInitService, RegistryShutdownListener
 		LOGGER.info("JMX service init finished.");
 	}
 	
-	private DataSource getDataSource() throws NamingException, SQLException {
+	private DataSource getDataSource() throws NamingException {
 		Context context = (Context) new InitialContext().lookup(JAVA_COMP_ENV_JDBC_CONTEXT);
 		DataSource dataSource = (DataSource) context.lookup(ONCOURSE_DATASOURCE);
-		if (dataSource != null && !dataSource.getConnection().isClosed()) {
+		if (dataSource != null) {
 			LOGGER.info("Datasource available");
 			return dataSource;
 		}

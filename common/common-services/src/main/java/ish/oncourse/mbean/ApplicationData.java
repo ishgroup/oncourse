@@ -3,6 +3,7 @@ package ish.oncourse.mbean;
 import ish.oncourse.model.PaymentIn;
 
 import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,7 +14,6 @@ import java.util.jar.Manifest;
 import javax.management.AttributeChangeNotification;
 import javax.management.MBeanNotificationInfo;
 import javax.management.NotificationBroadcasterSupport;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
@@ -114,18 +114,30 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 		final String enrolmentsCount = evaluateEnrolmentsCountByStatus(status, SELECT_ENROLMENTS_BY_STATUS_STRING);
 		return enrolmentsCount != null ? enrolmentsCount : String.format(FAILED_TO_LOAD_ENROLMENTS_COUNT_MESSAGE, enrolmentType);
 	}
-	
-	private Statement takeStatement() throws NamingException, SQLException {
-		if (dataSource != null && !dataSource.getConnection().isClosed()) {
-			return dataSource.getConnection().createStatement();
+		
+	private Connection getConnection() throws SQLException {
+		if (dataSource != null) {
+			Connection connection = dataSource.getConnection();
+			if (connection != null && !connection.isClosed()) {
+				return connection;
+			}
 		}
 		return null;
 	}
 	
 	private String evaluateEnrolmentsCountByStatus(String status, String selectQuery) {
+		Connection connection = null;
+		Statement statement = null;
 		try {
-			Statement statement = takeStatement();
+			connection = getConnection();
+			if (connection != null && !connection.isClosed()) {
+				statement = connection.createStatement();
+			} else {
+				LOGGER.warn("Failed to evaluate enrolment count because connection already closed or pool limit reached.");
+				return null;
+			}
 			if (statement == null) {
+				LOGGER.warn("Failed to evaluate enrolment count because not able to create statement.");
 				return null;
 			}
 			ResultSet result = null;
@@ -142,12 +154,23 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 					result.close();
 				}
 			}
-			
-			
-		} catch (NamingException e) {
-			LOGGER.warn("Failed to load lookup datasource", e);
 		} catch (SQLException e) {
 			LOGGER.warn("Failed to evaluate enrolment count because connection already closed", e);
+		} finally {
+			try {
+				if (statement != null && !statement.isClosed()) {
+					statement.close();
+				}
+			} catch (SQLException e) {
+				LOGGER.warn("Exception occurs when try to close the statement", e);
+			}
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				LOGGER.warn("Exception occurs when try to close the connection", e);
+			}
 		}
 		return null;
 	}
