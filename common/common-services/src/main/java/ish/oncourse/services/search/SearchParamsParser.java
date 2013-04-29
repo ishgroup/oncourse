@@ -129,7 +129,7 @@ public class SearchParamsParser
         		Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, FormatUtils.TIME_ZONE_UTC).parse(parameter);
             	Calendar calendar = Calendar.getInstance();
             	calendar.setTime(parsedDate);
-            	calendar.add(Calendar.MILLISECOND, clientTimezone.getRawOffset());
+            	calendar.add(Calendar.MILLISECOND, -clientTimezone.getRawOffset());
             	return calendar.getTime();
         	} else if (clientTimezone instanceof TimeZone) {
         		Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, clientTimezone).parse(parameter);
