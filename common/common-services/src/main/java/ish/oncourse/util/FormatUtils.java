@@ -44,7 +44,7 @@ public class FormatUtils {
     public static final String DATE_FORMAT_MMM = "MMM";
     public static final String TIME_FORMAT_h_mm_a = "h:mm a";
 
-    public static final String DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'hh:mm:ss'Z'";
+    public static final String DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     public static final String TIME_ZONE_UTC = "UTC";
 
