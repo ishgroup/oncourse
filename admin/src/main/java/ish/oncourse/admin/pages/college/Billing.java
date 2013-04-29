@@ -25,11 +25,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Billing {
+
+	private static final String SUPPORT_FEE_CODE = "support";
+	private static final String HOSTING_FEE_CODE = "hosting";
 	
 	@InjectComponent
 	@Property
 	private Form billingForm;
-	
+
 	@Property
 	@Persist
 	private College college;
@@ -120,6 +123,26 @@ public class Billing {
 			return false;
 		}
 	}
+
+	@OnEvent(component = "billingForm", value = "validate")
+	void validate() {
+		if (licenseInfo.get(SUPPORT_FEE_CODE) != null) {
+			validateFeeInfo(licenseInfo.get(SUPPORT_FEE_CODE));
+		}
+
+		if (licenseInfo.get(HOSTING_FEE_CODE) != null) {
+			validateFeeInfo(licenseInfo.get(HOSTING_FEE_CODE));
+		}
+	}
+
+	private void validateFeeInfo(Map<String, Object> feeInfo) {
+		String planName = StringUtils.trimToNull((String) feeInfo.get(LicenseFee.PLAN_NAME_PROPERTY));
+		Date renewalDate = (Date) feeInfo.get(LicenseFee.RENEWAL_DATE_PROPERTY);
+
+		if (planName != null && renewalDate == null) {
+			billingForm.recordError("Renewal date must be specified for all active plans.");
+		}
+	}
 	
 	@OnEvent(component="billingForm", value="success")
 	void submitted() throws Exception {
@@ -160,7 +183,7 @@ public class Billing {
 		
 		for (LicenseFee fee : college.getLicenseFees()) {
 			Map<String, Object> info = licenseInfo.get(fee.getKeyCode());
-			LicenseFee lf = (LicenseFee) context.localObject(fee.getObjectId(), null);
+			LicenseFee lf = context.localObject(fee);
 			
 			if (info != null && lf != null) {
                 String planName = StringUtils.trimToNull(StringUtils.trimToNull((String) info.get(LicenseFee.PLAN_NAME_PROPERTY)));
@@ -170,7 +193,7 @@ public class Billing {
                     lf.setRenewalDate(null);
                 }
                 else {
-                    if ("support".equals(fee.getKeyCode()) || "hosting".equals(fee.getKeyCode())) {
+                    if (isSupportFee(fee) || isHostingFee(fee)) {
                         lf.setPaidUntil((Date) info.get(LicenseFee.PAID_UNTIL_PROPERTY));
                         lf.setRenewalDate((Date) info.get(LicenseFee.RENEWAL_DATE_PROPERTY));
                     }
@@ -307,5 +330,13 @@ public class Billing {
             return indexPage;
         else throw new IllegalStateException(cause);
     }
+
+	private boolean isSupportFee(LicenseFee fee) {
+		return SUPPORT_FEE_CODE.equals(fee.getKeyCode());
+	}
+
+	private boolean isHostingFee(LicenseFee fee) {
+		return HOSTING_FEE_CODE.equals(fee.getKeyCode());
+	}
 
 }

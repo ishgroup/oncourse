@@ -68,6 +68,8 @@
 			</t:loop>
 		</tbody>
 	</table>
+
+	<t:errors/>
 	
 	<div class="form-actions">
 		<t:submit t:id="save" class="btn btn-primary" value="Save"/>

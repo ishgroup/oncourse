@@ -48,3 +48,7 @@ label+input {
 	margin-left: 5px;
 	margin-right: 5px;
 }
+
+HTML>BODY DIV.t-error LI {
+    margin-left: 20px;
+}
