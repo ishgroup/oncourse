@@ -7,6 +7,7 @@ import org.apache.solr.common.SolrDocumentList;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class SearchParams {
     private String s;
@@ -20,14 +21,14 @@ public class SearchParams {
     private Date before;
     private List<Suburb> suburbs;
     private Boolean debugQuery = Boolean.FALSE;
-    private int timeOffset;
+    private TimeZone clientTimezone;
     
-	public int getTimeOffset() {
-		return timeOffset;
+	public TimeZone getClientTimezone() {
+		return clientTimezone;
 	}
 
-	public void setTimeOffset(int timeOffset) {
-		this.timeOffset = timeOffset;
+	void setClientTimezone(TimeZone clientTimezone) {
+		this.clientTimezone = clientTimezone;
 	}
 
 	public Boolean getDebugQuery() {

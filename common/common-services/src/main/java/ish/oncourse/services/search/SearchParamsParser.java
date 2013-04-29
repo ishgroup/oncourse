@@ -15,6 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 public class SearchParamsParser
 {
@@ -37,22 +39,22 @@ public class SearchParamsParser
     private Map<SearchParam, String> paramsInError = new HashMap<SearchParam, String>();
 
     private SearchParams searchParams = new SearchParams();
-    private int timeOffset;
+    private TimeZone clientTimezone;
 
     public SearchParamsParser(Request request, ISearchService searchService, ITagService tagService) {
-    	this(request, searchService, tagService, 0);
+    	this(request, searchService, tagService, null);
     }
-    
-    public SearchParamsParser(Request request, ISearchService searchService, ITagService tagService, int timeOffset) {
+        
+	public SearchParamsParser(Request request, ISearchService searchService, ITagService tagService, TimeZone clientTimezone) {
 		this.request = request;
 		this.searchService = searchService;
 		this.tagService = tagService;
-		this.timeOffset = timeOffset;
+		this.clientTimezone = clientTimezone;
 	}
 
 	public void parse() {
         Tag browseTag = null;
-        searchParams.setTimeOffset(timeOffset);
+        searchParams.setClientTimezone(clientTimezone);
         for (SearchParam name : SearchParam.values()) {
             String parameter = StringUtils.trimToNull(request.getParameter(name.name()));
             Object value = null;
@@ -88,11 +90,11 @@ public class SearchParamsParser
                         value = searchParams.getKm();
                         break;
                     case after:
-                        searchParams.setAfter(parseDate(parameter));
+                        searchParams.setAfter(parseDate(parameter, SearchParam.after));
                         value = searchParams.getAfter();
                         break;
                     case before:
-                        searchParams.setBefore(parseDate(parameter));
+                        searchParams.setBefore(parseDate(parameter, SearchParam.before));
                         value = searchParams.getBefore();
                         break;
                     case debugQuery:
@@ -118,13 +120,25 @@ public class SearchParamsParser
         }
     }
 
-    private Date parseDate(String parameter) {
+    private Date parseDate(String parameter, SearchParam paramName) {
         try {
-        	Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, FormatUtils.TIME_ZONE_UTC).parse(parameter);
-        	Calendar calendar = Calendar.getInstance();
-        	calendar.setTime(parsedDate);
-        	calendar.add(Calendar.MINUTE, timeOffset);
-            return calendar.getTime();
+        	if (clientTimezone == null) {
+        		Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, FormatUtils.TIME_ZONE_UTC).parse(parameter);
+        		return parsedDate;
+        	} else if (clientTimezone instanceof SimpleTimeZone) {
+        		Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, FormatUtils.TIME_ZONE_UTC).parse(parameter);
+            	Calendar calendar = Calendar.getInstance();
+            	calendar.setTime(parsedDate);
+            	calendar.add(Calendar.MILLISECOND, clientTimezone.getRawOffset());
+            	return calendar.getTime();
+        	} else if (clientTimezone instanceof TimeZone) {
+        		Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, clientTimezone).parse(parameter);
+        		return parsedDate;
+        	} else {
+        		LOGGER.error(String.format("Unexpected client timezone param %s", clientTimezone));
+        		paramsInError.put(paramName, parameter);
+        		return null;
+        	}
         } catch (ParseException e) {
             return null;
         }
@@ -156,7 +170,7 @@ public class SearchParamsParser
     }
 
     private Double parsePrice(String parameter) {
-        return parameter.matches(PATTERN_PRICE)? Double.valueOf(parameter.replaceAll("[$]", "")):null;
+        return parameter.matches(PATTERN_PRICE) ? Double.valueOf(parameter.replaceAll("[$]", StringUtils.EMPTY)) : null;
     }
     
     public static String convertPostcodeParameterToLong(String parameter) {

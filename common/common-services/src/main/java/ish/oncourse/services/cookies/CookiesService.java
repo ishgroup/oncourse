@@ -6,6 +6,7 @@ import ish.oncourse.model.Product;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.voucher.IVoucherService;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -21,9 +22,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 public class CookiesService implements ICookiesService {
 	public static final String CLIENT_TIMEZONE_OFFSET_IN_MINUTES = "clientOffset";
+	public static final String CLIENT_TIMEZONE_NAME = "clientTimezoneName";
 	public static final String COOKIES_DICTIONARY_REQUEST_ATTR = "cookiesDictionary";
 	private static final String COOKIES_COLLECTION_SEPARATOR = "%";
 	private static final String COOKIES_COLLECTION_SEPARATOR_REGEXP = "[" + COOKIES_COLLECTION_SEPARATOR + "]";
@@ -47,17 +51,32 @@ public class CookiesService implements ICookiesService {
 	@Inject
 	private IDiscountService discountService;
 
-	public Integer getClientTimezoneOffset()
-	{
+	@Override
+	public TimeZone getClientTimezone() {
+		String value = StringUtils.trimToNull(getCookieValue(CLIENT_TIMEZONE_NAME));
+		if (value != null) {
+			return TimeZone.getTimeZone(value);
+		}
+		return null;
+	}
+	
+	@Override
+	public TimeZone getSimpleClientTimezone() {
+		Integer offset = getClientTimezoneOffset();
+		if (offset != null) {
+			offset = offset * 60000;
+			return new SimpleTimeZone(offset, "GMT");
+		}
+		return null;
+	}
+
+	@Override
+	public Integer getClientTimezoneOffset() {
 		String value = StringUtils.trimToNull(getCookieValue(CLIENT_TIMEZONE_OFFSET_IN_MINUTES));
 		Integer offset = null;
-
-		try
-		{
+		try {
 			offset = Integer.valueOf(value);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			LOGGER.warn(String.format("clientOffset value %s is not numeric", value));
 		}
 		return offset;

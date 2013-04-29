@@ -65,12 +65,10 @@ public class FormatUtils {
         return FormatUtils.getDateFormat(TIME_FORMAT_h_mm_a, timeZone);
     }
 
-
     public  static DateFormat getDateFormat(String format, String timeZone) {
         return createDateFormat(format, timeZone);
     }
-
-
+    
     public  static DateFormat getDateFormat(String timeZone) {
         return createDateFormat(dateFormatString, timeZone);
     }

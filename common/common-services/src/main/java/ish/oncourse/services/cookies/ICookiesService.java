@@ -2,6 +2,7 @@ package ish.oncourse.services.cookies;
 
 import java.net.URL;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Service for manipulating with cookies.
@@ -40,4 +41,8 @@ public interface ICookiesService {
 	 * @return offset for client(browser) timezone or null if it is not defined
 	 */
 	Integer getClientTimezoneOffset();
+	
+	TimeZone getSimpleClientTimezone();
+	
+	TimeZone getClientTimezone();
 }
