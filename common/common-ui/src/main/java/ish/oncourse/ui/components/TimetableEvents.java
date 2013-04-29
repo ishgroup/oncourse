@@ -86,12 +86,13 @@ public class TimetableEvents {
 	}
 	
 	public TimeZone getClientTimeZone() {
-		Integer offset = cookiesService.getClientTimezoneOffset();
-		if (offset == null) {
-			return TimeZone.getTimeZone(event.getTimeZone());
-		} else {
-			offset = offset * 60000;
-			return new SimpleTimeZone(offset, "GMT");
+		TimeZone timezone = cookiesService.getClientTimezone();
+		if (timezone == null) {
+			timezone = cookiesService.getSimpleClientTimezone();
+			if (timezone == null) {
+				timezone = TimeZone.getTimeZone(event.getTimeZone());
+			}
 		}
+		return timezone;
 	}
 }
