@@ -290,20 +290,21 @@ public class Courses {
 	}
 
 	public SearchParams getCourseSearchParams() {
-		SearchParamsParser searchParamsParser = new SearchParamsParser(request, searchService, tagService, getClientTimezoneOffset());
+		SearchParamsParser searchParamsParser = new SearchParamsParser(request, searchService, tagService, getClientTimezone());
 		searchParamsParser.parse();
 		paramsInError = searchParamsParser.getParamsInError();
 		return searchParamsParser.getSearchParams();
 	}
-
-	private Integer getClientTimezoneOffset() {
-		Integer offset = cookiesService.getClientTimezoneOffset();
-
-		if (offset == null) {
-			TimeZone collegeTimeZone = TimeZone.getTimeZone(webSiteService.getCurrentCollege().getTimeZone());
-			offset = collegeTimeZone.getRawOffset() / 60000;
+	
+	private TimeZone getClientTimezone() {
+		TimeZone timezone = cookiesService.getClientTimezone();
+		if (timezone == null) {
+			timezone = cookiesService.getSimpleClientTimezone();
+			if (timezone == null) {
+				timezone = TimeZone.getTimeZone(webSiteService.getCurrentCollege().getTimeZone());
+			}
 		}
-		return offset;
+		return timezone;
 	}
 
 	public Tag getBrowseTag() {
