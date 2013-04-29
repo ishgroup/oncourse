@@ -70,8 +70,7 @@ public class CookiesService implements ICookiesService {
 		return null;
 	}
 
-	@Override
-	public Integer getClientTimezoneOffset() {
+	Integer getClientTimezoneOffset() {
 		String value = StringUtils.trimToNull(getCookieValue(CLIENT_TIMEZONE_OFFSET_IN_MINUTES));
 		Integer offset = null;
 		try {

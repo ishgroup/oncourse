@@ -38,11 +38,13 @@ public interface ICookiesService {
 	URL popPreviousPageURL();
 
 	/**
-	 * @return offset for client(browser) timezone or null if it is not defined
+	 * @return simple client(browser) timezone or null if it is not defined.
+	 * Should be used only if for some reason {@link #getClientTimezone()} not return the correct timezone.
 	 */
-	Integer getClientTimezoneOffset();
-	
 	TimeZone getSimpleClientTimezone();
 	
+	/**
+	 * @return client(browser) timezone or null if it is not defined
+	 */
 	TimeZone getClientTimezone();
 }
