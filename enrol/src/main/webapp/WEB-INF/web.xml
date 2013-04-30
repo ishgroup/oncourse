@@ -9,6 +9,11 @@
 		<param-value>ish.oncourse.enrol</param-value>
 	</context-param>
 	
+	<context-param>
+		<param-name>applicationName</param-name>
+		<param-value>enrol</param-value>
+	</context-param>
+	
 	<filter>
 		<filter-name>app</filter-name>
 		<filter-class>org.apache.tapestry5.TapestryFilter</filter-class>
