@@ -8,6 +8,11 @@
 
 	<display-name>oncourse-search</display-name>
 	
+	<context-param>
+		<param-name>applicationName</param-name>
+		<param-value>search</param-value>
+	</context-param>
+	
 	<listener>
   		<listener-class>ish.oncourse.listeners.OverrideLog4JListener</listener-class>
   	</listener>
