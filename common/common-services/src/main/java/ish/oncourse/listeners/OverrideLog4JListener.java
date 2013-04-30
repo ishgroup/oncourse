@@ -14,9 +14,16 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 
 public class OverrideLog4JListener implements ServletContextListener {
-
-	protected static final String TOMCAT_CONFIGURED_LOG4J_PROPERTIES_FILE_LOCATION = "/conf/log4j.properties";
-	protected static final String DEFAULT_LOG4J_PROPERTIES_FILE_LOCATION = "/WEB-INF/classes/log4j.properties";
+	protected static final String APPLICATION_NAME_CONTEXT_PARAM = "applicationName";
+	static final String TRUE_STRING = "true";
+	protected static final String LOG4J_DEFAULT_OVERRIDE_SYSTEM_PROPERTY = "log4j.defaultInitOverride";
+	protected static final String PROPERTIES_EXTENSION = ".properties";
+	protected static final String LOG4J_PREFIX_FILE_NAME = "log4j";
+	protected static final String CONF_FOLDER_NAME = "/conf/";
+	protected static final String CATALINA_HOME_SYSTEM_PROPERTY = "catalina.home";
+	protected static final String DEFAULT_LOG4J_FILENAME = LOG4J_PREFIX_FILE_NAME + PROPERTIES_EXTENSION;
+	protected static final String DEFAULT_LOG4J_PROPERTIES_FILE_LOCATION = "/WEB-INF/classes/" + DEFAULT_LOG4J_FILENAME;
+	protected static final String APPLICATION_CUSTOM_LOGGER_FILE_FORMAT = LOG4J_PREFIX_FILE_NAME + ".%s" + PROPERTIES_EXTENSION;
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
@@ -26,19 +33,20 @@ public class OverrideLog4JListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		initTheLogger(sce.getServletContext());
 	}
-	
+		
 	static void initTheLogger(ServletContext context) {
 		LogManager.resetConfiguration();
-		System.setProperty("log4j.defaultInitOverride", "true");
+		System.setProperty(LOG4J_DEFAULT_OVERRIDE_SYSTEM_PROPERTY, TRUE_STRING);
 		//firstly try to load the location defined in TomCat
-		String confFilePath = null;
-		String catalinaHome = System.getProperty("catalina.home");
-		if (StringUtils.trimToNull(catalinaHome) != null) {
-			confFilePath = catalinaHome + TOMCAT_CONFIGURED_LOG4J_PROPERTIES_FILE_LOCATION;
-		}
+		String applicationName = context.getInitParameter(APPLICATION_NAME_CONTEXT_PARAM);
 		boolean isLoggingInit = false;
-		if (StringUtils.trimToNull(confFilePath) != null) {
-			isLoggingInit = initialiseLoggingSystemWithFile(context, confFilePath);
+		//load the application custom logger attempt
+		if (StringUtils.trimToNull(applicationName) != null) {
+			isLoggingInit = initConfiguration(context, String.format(APPLICATION_CUSTOM_LOGGER_FILE_FORMAT, applicationName));
+		}
+		//load the common custom logger attempt
+		if (!isLoggingInit) {
+			isLoggingInit = initConfiguration(context, DEFAULT_LOG4J_FILENAME);
 		}
 		//if conf loging not inited, init the default logging settings
 		if (!isLoggingInit) {
@@ -83,6 +91,15 @@ public class OverrideLog4JListener implements ServletContextListener {
 			outputMessage(context, "...failed to initialise log properties from undefined file : ");
 			return false;
 		}
+	}
+	
+	protected static boolean initConfiguration(ServletContext context, String fileName) {
+		if (StringUtils.trimToNull(fileName) != null) {
+			String catalinaHome = System.getProperty(CATALINA_HOME_SYSTEM_PROPERTY);
+			String confFilePath = catalinaHome + CONF_FOLDER_NAME + fileName;
+			return initialiseLoggingSystemWithFile(context, confFilePath);
+		}
+		return false;
 	}
 	
 	protected static boolean initialiseLoggingSystemWithFile(ServletContext context, String pathToLogFile) {
