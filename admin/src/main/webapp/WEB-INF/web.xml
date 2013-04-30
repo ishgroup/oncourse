@@ -9,6 +9,11 @@
 		<param-name>tapestry.app-package</param-name>
 		<param-value>ish.oncourse.admin</param-value>
 	</context-param>
+	
+	<context-param>
+		<param-name>applicationName</param-name>
+		<param-value>admin</param-value>
+	</context-param>
 
 	<filter>
 		<filter-name>app</filter-name>
