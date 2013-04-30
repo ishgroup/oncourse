@@ -14,6 +14,11 @@
 		<param-name>tapestry.production-mode</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	
+	<context-param>
+		<param-name>applicationName</param-name>
+		<param-value>website</param-value>
+	</context-param>
 
 	<listener>
     	<listener-class>ish.oncourse.website.listener.SessionListener</listener-class>
