@@ -10,6 +10,11 @@
 		<param-value>classpath:application-context.xml</param-value>
 	</context-param>
 	
+	<context-param>
+		<param-name>applicationName</param-name>
+		<param-value>services</param-value>
+	</context-param>
+	
 	<listener>
   		<listener-class>ish.oncourse.listeners.TheLeakPreventionListener</listener-class>
   	</listener>
