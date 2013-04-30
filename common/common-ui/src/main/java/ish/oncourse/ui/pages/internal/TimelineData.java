@@ -38,14 +38,14 @@ public class TimelineData {
 		String ids = request.getParameter("ids");
 		if (ids != null) {
 			String[] idsStings = ids.split(",");
-			List<Long> validIds = new ArrayList<Long>(idsStings.length);
+			List<Long> validIds = new ArrayList<>(idsStings.length);
 			for (String idStr : idsStings) {
 				if (idStr.matches("(\\d+)")) {
 					validIds.add(Long.valueOf(idStr));
 				}
 			}
 			courseClasses = courseClassService.loadByIds(validIds);
-			records = new ArrayList<Session>();
+			records = new ArrayList<>();
 			for (CourseClass cc : courseClasses) {
 				records.addAll(cc.getTimelineableSessions());
 			}
@@ -66,7 +66,7 @@ public class TimelineData {
 	}
 
 	public String getEventContent() {
-		Map<String, Object> parameters = new HashMap<String, Object>();
+		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("timelineRecord", record);
 		return pageRenderer.encodedPage("ui/TimelineEventDetail", parameters);
 	}

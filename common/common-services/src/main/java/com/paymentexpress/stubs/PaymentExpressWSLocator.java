@@ -146,17 +146,16 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
             return getPort(serviceEndpointInterface);
         }
         java.lang.String inputPortName = portName.getLocalPart();
-        if ("PaymentExpressWSSoap".equals(inputPortName)) {
-            return getPaymentExpressWSSoap();
-        }
-        else if ("PaymentExpressWSSoap12".equals(inputPortName)) {
-            return getPaymentExpressWSSoap12();
-        }
-        else  {
-            java.rmi.Remote _stub = getPort(serviceEndpointInterface);
-            ((org.apache.axis.client.Stub) _stub).setPortName(portName);
-            return _stub;
-        }
+	    switch (inputPortName) {
+		    case "PaymentExpressWSSoap":
+			    return getPaymentExpressWSSoap();
+		    case "PaymentExpressWSSoap12":
+			    return getPaymentExpressWSSoap12();
+		    default:
+			    java.rmi.Remote _stub = getPort(serviceEndpointInterface);
+			    ((org.apache.axis.client.Stub) _stub).setPortName(portName);
+			    return _stub;
+	    }
     }
 
     public javax.xml.namespace.QName getServiceName() {
@@ -178,18 +177,17 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
     * Set the endpoint address for the specified port name.
     */
     public void setEndpointAddress(java.lang.String portName, java.lang.String address) throws javax.xml.rpc.ServiceException {
-        
-if ("PaymentExpressWSSoap".equals(portName)) {
-            setPaymentExpressWSSoapEndpointAddress(address);
-        }
-        else 
-if ("PaymentExpressWSSoap12".equals(portName)) {
-            setPaymentExpressWSSoap12EndpointAddress(address);
-        }
-        else 
-{ // Unknown Port Name
-            throw new javax.xml.rpc.ServiceException(" Cannot set Endpoint Address for Unknown Port" + portName);
-        }
+
+	    switch (portName) {
+		    case "PaymentExpressWSSoap":
+			    setPaymentExpressWSSoapEndpointAddress(address);
+			    break;
+		    case "PaymentExpressWSSoap12":
+			    setPaymentExpressWSSoap12EndpointAddress(address);
+			    break;
+		    default:  // Unknown Port Name
+			    throw new javax.xml.rpc.ServiceException(" Cannot set Endpoint Address for Unknown Port" + portName);
+	    }
     }
 
     /**

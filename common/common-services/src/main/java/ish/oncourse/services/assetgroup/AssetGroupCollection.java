@@ -11,7 +11,7 @@ public class AssetGroupCollection {
 	private Map<String, Collection<String>> assetUrlsByGroup;
 
 	public AssetGroupCollection() {
-		this.assetUrlsByGroup = new HashMap<String, Collection<String>>();
+		this.assetUrlsByGroup = new HashMap<>();
 	}
 
 	public Collection<String> getAssetUrls(String group) {
@@ -22,7 +22,7 @@ public class AssetGroupCollection {
 	public void addUrl(String group, String url) {
 		Collection<String> assetUrls = assetUrlsByGroup.get(group);
 		if (assetUrls == null) {
-			assetUrls = new LinkedHashSet<String>();
+			assetUrls = new LinkedHashSet<>();
 			assetUrlsByGroup.put(group, assetUrls);
 		}
 

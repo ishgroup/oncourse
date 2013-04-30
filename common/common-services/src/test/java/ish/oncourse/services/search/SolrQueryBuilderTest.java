@@ -102,7 +102,7 @@ public class SolrQueryBuilderTest {
             @Override
             public List<Tag> getAllWebVisibleChildren() {
 
-                ArrayList<Tag> list = new ArrayList<Tag>();
+                ArrayList<Tag> list = new ArrayList<>();
                 for (int i = 0; i < 5; i++) {
                     final long id = i+1;
                     Tag tag = new Tag()
@@ -119,7 +119,7 @@ public class SolrQueryBuilderTest {
         });
 
         solrQueryBuilder = new SolrQueryBuilder(searchParams,"1",0,100);
-        ArrayList<String> filters = new ArrayList<String>();
+        ArrayList<String> filters = new ArrayList<>();
 
         solrQueryBuilder.appendFilterS(filters);
         assertEquals("Test filters.size for filter SearchParam.s",1,filters.size());

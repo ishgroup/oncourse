@@ -75,7 +75,7 @@ public class ISHObjectContextFactory extends DataContextFactory {
 			/**
 			 * When cache.enabled property is set to false we disable all caches includiding object shated cache.
 			 */
-			HashMap<String,String> properties = new HashMap<String, String>(parent.getProperties());
+			HashMap<String,String> properties = new HashMap<>(parent.getProperties());
 			properties.put(DataRowStore.SNAPSHOT_CACHE_SIZE_PROPERTY, "1");
 			snapshotCache = new DataRowStore(parent.getName(),properties, eventManager);
 		}

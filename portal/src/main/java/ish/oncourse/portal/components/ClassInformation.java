@@ -84,7 +84,7 @@ public class ClassInformation {
 			lastEnrolled = new PrettyTime().format(latestEnrol);
 		}
 
-		tutors = new ArrayList<Tutor>();
+		tutors = new ArrayList<>();
 		List<TutorRole> tutorRoles = courseClass.getTutorRoles();
 		for (TutorRole tutorRole : tutorRoles) {
 			tutors.add(tutorRole.getTutor());
@@ -126,7 +126,7 @@ public class ClassInformation {
 		String[] params = new String[] { room.getName(), site.getName(), site.getSuburb(), site.getStreet(),
 				site.getPublicTransportDirections(), site.getDrivingDirections(), site.getSpecialInstructions(), room.getDirections() };
 
-		List<String> escaptedParams = new ArrayList<String>(params.length);
+		List<String> escaptedParams = new ArrayList<>(params.length);
 
 		for (String p : params) {
 			escaptedParams.add(StringEscapeUtils.escapeJavaScript(p));

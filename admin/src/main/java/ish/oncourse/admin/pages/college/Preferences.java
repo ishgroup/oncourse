@@ -1,15 +1,9 @@
 package ish.oncourse.admin.pages.college;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.QueryCacheStrategy;
@@ -21,6 +15,11 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Preferences {
 	
@@ -105,7 +104,7 @@ public class Preferences {
 	private Map<String, String> initPreferences() {
 		ObjectContext context = cayenneService.sharedContext();
 		
-		Map<String, String> prefs = new TreeMap<String, String>();
+		Map<String, String> prefs = new TreeMap<>();
 		
 		College college = (College) context.localObject(this.college.getObjectId(), null);
 		

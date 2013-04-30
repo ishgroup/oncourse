@@ -185,8 +185,8 @@ public class CourseItem {
 		Matcher closedTags = Pattern.compile("<[/](.|\n)*?>").matcher(substr);
 
 		// create stack
-		Stack<String> opentagsStack = new Stack<String>();
-		Stack<String> closedtagsStack = new Stack<String>();
+		Stack<String> opentagsStack = new Stack<>();
+		Stack<String> closedtagsStack = new Stack<>();
 
 		while (openedTags.find()) {
 			String tag = openedTags.group();

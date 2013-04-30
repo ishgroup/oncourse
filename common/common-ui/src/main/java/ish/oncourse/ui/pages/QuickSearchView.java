@@ -106,7 +106,7 @@ public class QuickSearchView {
 		searchString = "";
 		searchTerms = null;
 		setupLists(new SolrDocumentList());
-		matchingCourseList = new ArrayList<Course>();
+		matchingCourseList = new ArrayList<>();
 		setupCourseList();
 	}
 
@@ -114,10 +114,10 @@ public class QuickSearchView {
 	 * @param suggestions
 	 */
 	private void setupLists(SolrDocumentList suggestions) {
-		locationDetailList = new ArrayList<PostcodeDb>();
-		List<String> courseIds = new ArrayList<String>();
-		List<String> tagIds = new ArrayList<String>();
-		List<String> postCodes = new ArrayList<String>();
+		locationDetailList = new ArrayList<>();
+		List<String> courseIds = new ArrayList<>();
+		List<String> tagIds = new ArrayList<>();
+		List<String> postCodes = new ArrayList<>();
 		
 		for (SolrDocument doc : suggestions) {
 			String doctype = (String) doc.get(SOLR_DOCUMENT_DOCTYPE_FIELD);
@@ -171,7 +171,7 @@ public class QuickSearchView {
 	}
 
 	private String getSearchStringWithoutLocation() {
-		List<String> locationTerms = new ArrayList<String>();
+		List<String> locationTerms = new ArrayList<>();
 		for (PostcodeDb postcodeDb : locationDetailList) {
 			locationTerms.add(postcodeDb.getSuburb());
 			locationTerms.add(postcodeDb.getPostcode().toString());
@@ -200,7 +200,7 @@ public class QuickSearchView {
 	}
 
 	private void setupMatchingCourseList() {
-		matchingCourseList = new ArrayList<Course>();
+		matchingCourseList = new ArrayList<>();
 		for (Course course : courses) {
 			for (String term : searchTerms) {
 				if (StringUtils.isNotBlank(term)) {
@@ -217,10 +217,10 @@ public class QuickSearchView {
 	}
 
 	private void setupCourseList() {
-		List<Course> all = new ArrayList<Course>();
+		List<Course> all = new ArrayList<>();
 		all.addAll(courses);
 		all.removeAll(matchingCourseList);
-		courseList = new ArrayList<Course>();
+		courseList = new ArrayList<>();
 		courseList.addAll(all);
 	}
 

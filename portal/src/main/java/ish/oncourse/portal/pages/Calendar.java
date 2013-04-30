@@ -74,7 +74,7 @@ public class Calendar {
 
 					List<Session> sessions = courseClassService.getContactSessions(contact);
 
-					List<VEvent> events = new ArrayList<VEvent>();
+					List<VEvent> events = new ArrayList<>();
 					
 					for (Session s : sessions) {
 						

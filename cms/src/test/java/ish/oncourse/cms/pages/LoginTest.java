@@ -45,7 +45,7 @@ public class LoginTest {
 
 		Element loginForm = doc.getElementById("loginForm");
 
-		Map<String, String> fieldValues = new HashMap<String, String>();
+		Map<String, String> fieldValues = new HashMap<>();
 
 		fieldValues.put("logEmail", "test@right.com");
 		fieldValues.put("password", "rpasswd");
@@ -69,7 +69,7 @@ public class LoginTest {
 
 		Element loginForm = doc.getElementById("loginForm");
 
-		Map<String, String> fieldValues = new HashMap<String, String>();
+		Map<String, String> fieldValues = new HashMap<>();
 
 		fieldValues.put("email", "test@right.com");
 		fieldValues.put("password", "wpasswd");

@@ -39,7 +39,7 @@ public class NextSession {
 		}
 		Date now = new Date();
 		Date closest = null;
-		nextSessions = new ArrayList<Session>();
+		nextSessions = new ArrayList<>();
 
 		for (Session session : courseClass.getSessions()) {
 			Date startDate = session.getStartDate();

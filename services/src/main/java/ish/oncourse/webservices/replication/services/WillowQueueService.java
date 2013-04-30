@@ -68,7 +68,7 @@ public class WillowQueueService implements IWillowQueueService {
 
 		@SuppressWarnings("unchecked")
 		List<QueuedTransaction> list = cayenneService.sharedContext().performQuery(q);
-		List<QueuedTransaction> result = new ArrayList<QueuedTransaction>(numberOfTransactions);
+		List<QueuedTransaction> result = new ArrayList<>(numberOfTransactions);
 
 		int maxNumber = (list.size() < numberOfTransactions) ? list.size() : numberOfTransactions;
 		int index = 0;

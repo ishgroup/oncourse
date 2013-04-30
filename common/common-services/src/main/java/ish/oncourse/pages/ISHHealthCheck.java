@@ -35,7 +35,7 @@ public class ISHHealthCheck {
         try {
             ObjectContext context = cayenneService.newNonReplicatingContext();
 
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("id", 1);
 
             SQLTemplate query = new SQLTemplate(Country.class, SQL_TEST_CONNECTION);

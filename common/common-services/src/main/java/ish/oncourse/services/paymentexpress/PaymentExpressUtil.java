@@ -53,7 +53,7 @@ public class PaymentExpressUtil {
 	 * @return
 	 */
 	public static String translateInputExpiryDate(String expiryDate) {
-		StringBuffer buff = new StringBuffer();
+		StringBuilder buff = new StringBuilder();
 		if (expiryDate != null) {
 			if ((expiryDate.matches("^(\\d{1}|\\d{2})/(\\d{2}|\\d{4})"))) {
 				String[] dateParts = expiryDate.split("/");

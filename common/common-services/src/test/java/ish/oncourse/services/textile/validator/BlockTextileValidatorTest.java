@@ -97,7 +97,7 @@ public class BlockTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, String> data = new HashMap<>();
 		for (BlockTextileAttributes attr : BlockTextileAttributes.values()) {
 			switch (attr) {
 			case BLOCK_PARAM_NAME:

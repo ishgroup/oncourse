@@ -95,7 +95,7 @@ public class TextileImage {
 
 		ArrayList<Long> ids = (ArrayList<Long>) request.getAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS);
 		if (ids == null) {
-			ids = new ArrayList<Long>();
+			ids = new ArrayList<>();
 		}
 		ids.add(imageBinaryInfo.getId());
 		request.setAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS, ids);

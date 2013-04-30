@@ -5,17 +5,6 @@ import ish.oncourse.admin.services.billing.IBillingDataService;
 import ish.oncourse.model.College;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.system.ICollegeService;
-
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -25,6 +14,12 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.util.TextStreamResponse;
+
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Billing {
 
@@ -147,7 +142,7 @@ public class Billing {
 	}
 
 	public boolean isTasmaniaEcommerce() {
-		return college.getId().longValue() == 15;
+		return college.getId() == 15;
 	}
 	
 	public boolean isSupportPayMonth() {
@@ -299,7 +294,7 @@ public class Billing {
 		Integer ccOfficeFree = (Integer) licenseData.get(college.getId()).get("cc-office-free");
 		if (ccOffice != null && ccOfficeCost != null) {
 			if (ccOfficeFree == null) {
-				ccOfficeFree = new Integer(0);
+				ccOfficeFree = 0;
 			}
 			
 			if (ccOfficeFree < ccOffice) {

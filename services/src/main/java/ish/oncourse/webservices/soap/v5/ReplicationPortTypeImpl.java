@@ -169,7 +169,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	@Override
 	@WebMethod(operationName = "getUnreplicatedEntities")
 	public List<UnreplicatedEntitiesStub> getUnreplicatedEntities() {
-		List<UnreplicatedEntitiesStub> result = new ArrayList<UnreplicatedEntitiesStub>();
+		List<UnreplicatedEntitiesStub> result = new ArrayList<>();
 		//result.add(new UnreplicatedEntitiesStub());
 		// TODO: Auto-generated method stub
 		return result;

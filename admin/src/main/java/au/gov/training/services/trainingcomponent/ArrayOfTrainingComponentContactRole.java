@@ -61,7 +61,7 @@ public class ArrayOfTrainingComponentContactRole {
      */
     public List<TrainingComponentContactRole> getTrainingComponentContactRole() {
         if (trainingComponentContactRole == null) {
-            trainingComponentContactRole = new ArrayList<TrainingComponentContactRole>();
+            trainingComponentContactRole = new ArrayList<>();
         }
         return this.trainingComponentContactRole;
     }

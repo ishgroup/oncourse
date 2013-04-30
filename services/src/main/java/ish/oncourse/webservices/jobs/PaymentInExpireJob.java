@@ -57,7 +57,7 @@ public class PaymentInExpireJob implements Job {
 			cal.add(Calendar.MINUTE, -PaymentIn.EXPIRE_INTERVAL);
 
 			ObjectContext newContext = cayenneService.newContext();
-			Set<PaymentIn> expiredPayments = new LinkedHashSet<PaymentIn>();
+			Set<PaymentIn> expiredPayments = new LinkedHashSet<>();
 
 			List<PaymentIn> notCompletedList = getNotCompletedPaymentsFromDate(newContext, cal.getTime());
 			expiredPayments.addAll(notCompletedList);

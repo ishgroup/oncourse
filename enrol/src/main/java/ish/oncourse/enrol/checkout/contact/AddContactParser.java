@@ -15,7 +15,7 @@ public class AddContactParser {
 	private Request request;
 	private ContactCredentials contactCredentials;
 
-	private Map<String, String> errors = new HashMap<String, String>();
+	private Map<String, String> errors = new HashMap<>();
 
 	public void parse()
 	{

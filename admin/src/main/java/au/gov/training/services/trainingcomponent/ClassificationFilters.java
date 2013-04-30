@@ -73,7 +73,7 @@ public class ClassificationFilters {
      */
     public List<ClassificationFilters.ClassificationFilter> getClassificationFilter() {
         if (classificationFilter == null) {
-            classificationFilter = new ArrayList<ClassificationFilters.ClassificationFilter>();
+            classificationFilter = new ArrayList<>();
         }
         return this.classificationFilter;
     }

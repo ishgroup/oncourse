@@ -77,8 +77,8 @@ public class PurchaseController {
 	private ContactEditorController contactEditorController;
 	private PaymentEditorController paymentEditorController;
 
-	private Map<String, String> errors = new HashMap<String, String>();
-    private Map<String, String> warnings = new HashMap<String, String>();
+	private Map<String, String> errors = new HashMap<>();
+    private Map<String, String> warnings = new HashMap<>();
 
     private ParallelExecutor parallelExecutor;
 
@@ -238,7 +238,7 @@ public class PurchaseController {
 
 		for (Contact contact : model.getContacts()) {
 			for (Enrolment enrolment : model.getEnabledEnrolments(contact)) {
-				List<InvoiceLine> invoiceLines = new ArrayList<InvoiceLine>(enrolment.getInvoiceLines());
+				List<InvoiceLine> invoiceLines = new ArrayList<>(enrolment.getInvoiceLines());
 				for (InvoiceLine invoiceLine : invoiceLines) {
 					invoiceLine.setEnrolment(null);
 				}
@@ -736,7 +736,7 @@ public class PurchaseController {
 
         State(List<Action> commonAction,Action...   allowedActions)
         {
-            this.allowedActions = new ArrayList<Action>(commonAction);
+            this.allowedActions = new ArrayList<>(commonAction);
             Collections.addAll(this.allowedActions, allowedActions);
         }
 
@@ -790,7 +790,7 @@ public class PurchaseController {
 
 		private Action(Class<? extends APurchaseAction> actionClass, Class<?>... paramType) {
 			this.actionClass = actionClass;
-			this.paramTypes = new ArrayList<Class<?>>(asList(paramType));
+			this.paramTypes = new ArrayList<>(asList(paramType));
 		}
 
 		public Collection<Class<?>> getActionParamTypes() {
@@ -829,7 +829,7 @@ public class PurchaseController {
 
 		public ActionParameter(Action action) {
 			this.action = action;
-			values = new HashMap<Class<?>, Object>();
+			values = new HashMap<>();
 		}
 
 		public <T> void setValue(T value) {

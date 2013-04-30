@@ -129,7 +129,7 @@ public class BinaryDataService implements IBinaryDataService {
 				ExpressionFactory.matchExp(BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, entityIdentifier)));
 		List<BinaryInfoRelation> relations = sharedContext.performQuery(query);
 		if (!relations.isEmpty()) {
-			List<BinaryInfo> attachedFiles = new ArrayList<BinaryInfo>(relations.size());
+			List<BinaryInfo> attachedFiles = new ArrayList<>(relations.size());
 			for (BinaryInfoRelation relation : relations) {
 				//we need the check to exclude Profile Picture from common attachment list
 				if (!isProfilePicture(relation))

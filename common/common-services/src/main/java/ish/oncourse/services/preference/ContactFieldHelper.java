@@ -165,7 +165,7 @@ public class ContactFieldHelper {
 	}
 
 	public List<String> getVisibleFields(Contact contact, boolean isFillRequiredProperties) {
-		ArrayList<String> visibleFields = new ArrayList<String>();
+		ArrayList<String> visibleFields = new ArrayList<>();
 
 		FieldDescriptor[] fieldDescriptors = FieldDescriptor.values();
 		for (FieldDescriptor fieldDescriptor : fieldDescriptors) {

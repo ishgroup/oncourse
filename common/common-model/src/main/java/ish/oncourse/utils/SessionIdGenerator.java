@@ -19,7 +19,7 @@ public class SessionIdGenerator {
 	 * designed this way since random number generators use a sync to make them
 	 * thread-safe and the sync makes using a a single object slow(er).
 	 */
-	private Queue<SecureRandom> randoms = new ConcurrentLinkedQueue<SecureRandom>();
+	private Queue<SecureRandom> randoms = new ConcurrentLinkedQueue<>();
 
 	/**
 	 * The Java class name of the secure random number generator class to be

@@ -59,7 +59,7 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 		}
 
 		if (records == null) {
-			records = new ArrayList<T>();
+			records = new ArrayList<>();
 		}
 
 		return records;

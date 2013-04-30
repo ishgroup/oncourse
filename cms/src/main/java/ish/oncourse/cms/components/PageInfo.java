@@ -91,7 +91,7 @@ public class PageInfo {
 	}
 
 	public Map<String, Zone> getZonesForUpdate() {
-		HashMap<String, Zone> hashMap = new HashMap<String, Zone>();
+		HashMap<String, Zone> hashMap = new HashMap<>();
 		hashMap.put("publishedZone", publishedZone);
 		hashMap.put("updatedZone", updatedZone);
 		hashMap.put("currentPageZone", currentPageZone);

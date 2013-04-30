@@ -55,10 +55,10 @@ public class GoogleDirections {
 
 	@SetupRender
 	public void beforeRender() {
-		sitesArray = new ArrayList<List<Object>>();
+		sitesArray = new ArrayList<>();
 		for (Site item : sites) {
 			if (item.isHasCoordinates()) {
-				List<Object> element = new ArrayList<Object>();
+				List<Object> element = new ArrayList<>();
 				// latitude
 				element.add(item.getLatitude().doubleValue());
 				// longitude

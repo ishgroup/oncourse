@@ -121,7 +121,7 @@ public class ResourceService implements IResourceService {
 	 * 
 	 */
 	public List<PrivateResource> getConfigResources(String fileName) {
-		List<PrivateResource> configs = new LinkedList<PrivateResource>();
+		List<PrivateResource> configs = new LinkedList<>();
 
 		String siteFolder = siteService.getCurrentWebSite().getResourceFolderName();
 

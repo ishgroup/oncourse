@@ -140,7 +140,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 			return null;
 		}
 
-		List<Session> list = new ArrayList<Session>(getSessions());
+		List<Session> list = new ArrayList<>(getSessions());
 		new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING).orderList(list);
 		return list.get(0);
 	}
@@ -168,7 +168,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 				"Select count(e) from Enrolment e where e.courseClass=?1 and e.status in (?2)");
 		query.setParameter(1, this);
 		
-		List<Integer> statusesValues = new ArrayList<Integer>();
+		List<Integer> statusesValues = new ArrayList<>();
 		// use values, because the EJBQL in cayenne 3.0 doesn't convert enums in
 		// this expression
 		for (EnrolmentStatus es : Enrolment.VALID_ENROLMENTS) {
@@ -252,14 +252,14 @@ public class CourseClass extends _CourseClass implements Queueable {
 	public Set<String> getDaysOfWeek() {
 		if (daysOfWeek == null) {
 			if (getSessions().size() > 0) {
-				ArrayList<String> days = new ArrayList<String>();
+				ArrayList<String> days = new ArrayList<>();
 				for (Session s : getSessions()) {
 					days.add(TimestampUtilities.dayOfWeek(s.getStartDate(), true, TimeZone.getTimeZone(s.getTimeZone())));
 				}
 				daysOfWeek = TimestampUtilities.uniqueDaysInOrder(days);
 			} else {
 				// no sessions recorded, so guess from class start / finish time
-				daysOfWeek = new HashSet<String>();
+				daysOfWeek = new HashSet<>();
 				if (getStartDate() != null) {
 					daysOfWeek.add(TimestampUtilities.dayOfWeek(getStartDate(), true,
 							TimeZone.getTimeZone(getTimeZone())));
@@ -368,7 +368,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 			classSessions = getObjectContext().performQuery(q);
 		}
 		
-		List<Session> validSessions = new ArrayList<Session>();
+		List<Session> validSessions = new ArrayList<>();
 		for (Session session : classSessions) {
 			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
 				validSessions.add(session);
@@ -422,7 +422,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 		List<Discount> availableDiscountsWithoutCode = (ExpressionFactory.matchExp(Discount.CODE_PROPERTY, null))
 				.orExp(ExpressionFactory.matchExp(Discount.CODE_PROPERTY, StringUtils.EMPTY)).filterObjects(getDiscounts());
 
-		List<Discount> discounts = new ArrayList<Discount>(availableDiscountsWithoutCode.size());
+		List<Discount> discounts = new ArrayList<>(availableDiscountsWithoutCode.size());
 		for (Discount discount : availableDiscountsWithoutCode) {
 			if (discount.getDiscountConcessionTypes() != null && !discount.getDiscountConcessionTypes().isEmpty()) {
 				discounts.add(discount);

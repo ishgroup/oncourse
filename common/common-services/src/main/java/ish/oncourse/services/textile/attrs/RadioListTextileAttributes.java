@@ -18,7 +18,7 @@ public enum RadioListTextileAttributes {
 
 	public static List<String> getAttrValues() {
 		RadioListTextileAttributes[] values = values();
-		List<String> attrValues = new ArrayList<String>(values.length);
+		List<String> attrValues = new ArrayList<>(values.length);
 
 		for (RadioListTextileAttributes attr : values) {
 			attrValues.add(attr.getValue());

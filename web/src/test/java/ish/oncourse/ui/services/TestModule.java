@@ -162,9 +162,9 @@ public class TestModule {
 	public ICourseClassService buildCourseClassServiceOverride() {
 		ICourseClassService mock = mock(ICourseClassService.class);
 
-		List<Long> ids = new ArrayList<Long>(1);
+		List<Long> ids = new ArrayList<>(1);
 		ids.add(1L);
-		List<CourseClass> courseClasses = new ArrayList<CourseClass>(1);
+		List<CourseClass> courseClasses = new ArrayList<>(1);
 
 		try {
 			ContextUtils.setupDataSources();

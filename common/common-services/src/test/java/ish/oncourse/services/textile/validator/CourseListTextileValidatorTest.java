@@ -37,7 +37,7 @@ public class CourseListTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, String> data = new HashMap<>();
 		for (CourseListTextileAttributes attr : CourseListTextileAttributes.values()) {
 			switch (attr) {
 			case COURSE_LIST_PARAM_LIMIT:

@@ -22,7 +22,7 @@ public class PersistentSelectModel extends AbstractSelectModel {
 
 		int size = objects.size();
 
-		options = new ArrayList<OptionModel>(size);
+		options = new ArrayList<>(size);
 
 		if (size > 0) {
 

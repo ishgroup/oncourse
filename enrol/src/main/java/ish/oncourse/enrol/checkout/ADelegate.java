@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class ADelegate implements IDelegate{
-	private Map<String, String> errors = new HashMap<String, String>();
+	private Map<String, String> errors = new HashMap<>();
 	private PurchaseController purchaseController;
 
 	@Override

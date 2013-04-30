@@ -22,7 +22,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
     private PurchaseController purchaseController;
     private PaymentProcessController paymentProcessController;
-    private Map<String, String> errors = new HashMap<String, String>();
+    private Map<String, String> errors = new HashMap<>();
 
 
 	public void init()
@@ -175,7 +175,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
         if (googleAnalyticsAccount != null && StringUtils.trimToNull(googleAnalyticsAccount) != null) {
             if (isPaymentSuccess()) {
                 List<Enrolment> enrolments = purchaseController.getModel().getAllEnabledEnrolments();
-                List<Item> transactionItems = new ArrayList<Item>(enrolments.size());
+                List<Item> transactionItems = new ArrayList<>(enrolments.size());
                 for (Enrolment enrolment : enrolments) {
                      String tagDefaultPath = StringUtils.EMPTY;
                     for (Tag tag : purchaseController.getTagService().getTagsForEntity(Course.class.getSimpleName(), 

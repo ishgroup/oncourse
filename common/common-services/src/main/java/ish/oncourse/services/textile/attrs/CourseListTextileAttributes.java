@@ -22,7 +22,7 @@ public enum CourseListTextileAttributes {
 
 	public static List<String> getAttrValues() {
 		CourseListTextileAttributes[] values = values();
-		List<String> attrValues = new ArrayList<String>(values.length);
+		List<String> attrValues = new ArrayList<>(values.length);
 
 		for (CourseListTextileAttributes attr : values) {
 			attrValues.add(attr.getValue());

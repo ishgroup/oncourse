@@ -54,7 +54,7 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 	 */
 	@Override
 	public List<Discount> getApplicableByPolicy(List<Discount> discounts) {
-		List<Discount> result = new ArrayList<Discount>();
+		List<Discount> result = new ArrayList<>();
 		if (discounts != null) {
 			for (Discount discount : discounts) {
 				if (discount.isPromotion() && !isPromotionAdded(discount)) {

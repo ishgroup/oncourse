@@ -42,7 +42,7 @@ public class ReplicationUtils {
 		if (object == null) {
 			return Collections.emptyList();
 		} else if (object instanceof Collection) {
-			return new ArrayList<Queueable>((Collection<Queueable>) object);
+			return new ArrayList<>((Collection<Queueable>) object);
 		} else {
 			Queueable q = (Queueable) object;
 			return Collections.singleton(q);

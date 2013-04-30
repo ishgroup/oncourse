@@ -211,7 +211,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		context.commitChanges();
 		
 		InternalPaymentService port = getService(InternalPaymentService.class);
-		List<PaymentIn> updatedPayments = new ArrayList<PaymentIn>();
+		List<PaymentIn> updatedPayments = new ArrayList<>();
 		boolean result = port.isHaveConflictedInInvoices(p1, updatedPayments);
 		assertTrue("Payment should have conflict invoices", result);
 		assertTrue("One payment should be updated", !updatedPayments.isEmpty());
@@ -362,7 +362,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		context.commitChanges();
 		
 		InternalPaymentService port = getService(InternalPaymentService.class);
-		List<PaymentIn> updatedPayments = new ArrayList<PaymentIn>();
+		List<PaymentIn> updatedPayments = new ArrayList<>();
 		boolean result = port.isHaveConflictedInInvoices(p1, updatedPayments);
 		i1.updateAmountOwing();
 		i2.updateAmountOwing();
@@ -517,7 +517,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		context.commitChanges();
 		
 		InternalPaymentService port = getService(InternalPaymentService.class);
-		List<PaymentIn> updatedPayments = new ArrayList<PaymentIn>();
+		List<PaymentIn> updatedPayments = new ArrayList<>();
 		boolean result = port.isHaveConflictedInInvoices(p1, updatedPayments);
 		assertTrue("Payment should have conflict invoices", result);
 		assertTrue("One payment should be updated", !updatedPayments.isEmpty());

@@ -79,7 +79,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 				parentTag = rootTag;
 			}
 			if (parentTag != null) {
-				Map<String, Object> parameters = new HashMap<String, Object>();
+				Map<String, Object> parameters = new HashMap<>();
 
 				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM, parentTag);
 				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_MAX_LEVEL_PARAM,

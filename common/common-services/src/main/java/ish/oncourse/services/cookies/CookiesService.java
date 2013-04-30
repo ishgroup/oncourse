@@ -90,7 +90,7 @@ public class CookiesService implements ICookiesService {
 	 * @see ish.oncourse.services.cookies.ICookiesService#getCookieValue(String)
 	 */
 	public <T> List<T> getCookieCollectionValue(String cookieKey, Class<T> clazz) {
-		List<T> listResult = new ArrayList<T>();
+		List<T> listResult = new ArrayList<>();
 
 		String[] result = (String[]) getCookieFromDictionary(cookieKey);
 		if (result == null) {
@@ -154,7 +154,7 @@ public class CookiesService implements ICookiesService {
 		Map<String, Object> cookiesDictionary = (Map<String, Object>) request
 				.getAttribute(COOKIES_DICTIONARY_REQUEST_ATTR);
 		if (cookiesDictionary == null) {
-			cookiesDictionary = new HashMap<String, Object>();
+			cookiesDictionary = new HashMap<>();
 		}
 		cookiesDictionary.put(cookieKey, result);
 		request.setAttribute(COOKIES_DICTIONARY_REQUEST_ATTR, cookiesDictionary);
@@ -186,7 +186,7 @@ public class CookiesService implements ICookiesService {
 		if (existingValue != null && !existingValue.equals(cookieValue)
 				&& !existingValue.contains(cookieValue + COOKIES_COLLECTION_SEPARATOR)
 				&& !existingValue.contains(COOKIES_COLLECTION_SEPARATOR + cookieValue)) {
-			StringBuffer strBuff = new StringBuffer();
+			StringBuilder strBuff = new StringBuilder();
 			if (!"".equals(existingValue)) {
 				strBuff.append(existingValue);
 				strBuff.append(COOKIES_COLLECTION_SEPARATOR);

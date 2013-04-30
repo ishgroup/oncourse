@@ -28,7 +28,7 @@ public enum ImageTextileAttributes {
 
 	public static List<String> getAttrValues() {
 		ImageTextileAttributes[] values = values();
-		List<String> attrValues = new ArrayList<String>(values.length);
+		List<String> attrValues = new ArrayList<>(values.length);
 		
 		for (ImageTextileAttributes attr : values) {
 			attrValues.add(attr.getValue());

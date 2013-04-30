@@ -18,7 +18,7 @@ public enum BlockTextileAttributes {
 
 	public static List<String> getAttrValues() {
 		BlockTextileAttributes[] values = values();
-		List<String> attrValues = new ArrayList<String>(values.length);
+		List<String> attrValues = new ArrayList<>(values.length);
 		
 		for (BlockTextileAttributes attr : values) {
 			attrValues.add(attr.getValue());

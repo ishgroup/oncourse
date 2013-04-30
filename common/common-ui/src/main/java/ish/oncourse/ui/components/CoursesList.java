@@ -55,7 +55,7 @@ public class CoursesList {
 
 	@SuppressWarnings("unchecked")
 	public String getSearchParamsStr() {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		result.append("start=").append(itemIndex);
 		result.append("&sites=").append(sitesParameter);
 		for (String paramName : request.getParameterNames()) {

@@ -46,9 +46,7 @@ public class LicenseFeeBillingMonthUpgrade implements CustomSqlChange {
             if (oncourseSchema != null) {
                 statement = ds.getConnection().createStatement();
             }
-        } catch (NamingException e) {
-            throw new SetupException(e);
-        } catch (SQLException e) {
+        } catch (NamingException | SQLException e) {
             throw new SetupException(e);
         }
 	}
@@ -62,7 +60,7 @@ public class LicenseFeeBillingMonthUpgrade implements CustomSqlChange {
 	public SqlStatement[] generateStatements(Database database) throws CustomChangeException {
 		if (this.statement != null) {
 			try {
-				Map<Long, Integer> monthMap = new HashMap<Long, Integer>();
+				Map<Long, Integer> monthMap = new HashMap<>();
 				
 				try {
 					ResultSet rs = statement.executeQuery("SELECT id, billingMonth FROM LicenseFee where billingMonth is not null");

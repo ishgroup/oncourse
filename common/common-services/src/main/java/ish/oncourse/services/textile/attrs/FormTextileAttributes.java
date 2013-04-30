@@ -20,7 +20,7 @@ public enum FormTextileAttributes {
 
 	public static List<String> getAttrValues() {
 		FormTextileAttributes[] values = values();
-		List<String> attrValues = new ArrayList<String>(values.length);
+		List<String> attrValues = new ArrayList<>(values.length);
 		
 		for (FormTextileAttributes attr : values) {
 			attrValues.add(attr.getValue());

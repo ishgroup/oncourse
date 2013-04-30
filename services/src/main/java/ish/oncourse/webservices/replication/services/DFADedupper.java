@@ -19,7 +19,7 @@ public class DFADedupper implements Comparable<DFADedupper> {
 	/**
 	 * Transaction keys
 	 */
-	private SortedSet<String> transactionKeys = new TreeSet<String>();
+	private SortedSet<String> transactionKeys = new TreeSet<>();
 
 	/**
 	 * Deduplication states
@@ -38,7 +38,7 @@ public class DFADedupper implements Comparable<DFADedupper> {
 	/**
 	 * Recordset
 	 */
-	private LinkedList<QueuedRecord> recordSet = new LinkedList<QueuedRecord>();
+	private LinkedList<QueuedRecord> recordSet = new LinkedList<>();
 
 	public void nextState(QueuedRecord record) throws DedupperException {
 		transactionKeys.add(record.getQueuedTransaction().getTransactionKey());

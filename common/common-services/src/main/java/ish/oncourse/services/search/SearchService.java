@@ -64,7 +64,7 @@ public class SearchService implements ISearchService {
     @Inject
     private ITagService tagService;
     
-    private Map<SolrCore, SolrServer> solrServers = new HashMap<SolrCore, SolrServer>();
+    private Map<SolrCore, SolrServer> solrServers = new HashMap<>();
 
     private SolrServer getSolrServer(SolrCore core) {
         SolrServer solrServer = null;

@@ -65,7 +65,7 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		assertEquals("Expecting 7 queueable records.", 7, actualData.getRowCount());
 
 		// Check entity names
-		Set<String> entityNames = new HashSet<String>();
+		Set<String> entityNames = new HashSet<>();
 		for (int i = 0; i < actualData.getRowCount(); i++) {
 			String entityName = (String) actualData.getValue(i, "entityIdentifier");
 			entityNames.add(entityName);

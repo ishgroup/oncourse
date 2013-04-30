@@ -14,6 +14,47 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="common-test" scope="TEST" />
     <orderEntry type="module" module-name="common-model" exported="" />
+    <orderEntry type="library" exported="" name="tapestry-core-5.2.6" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang-2.6" level="project" />
+    <orderEntry type="library" exported="" name="javassist-3.12.1.GA" level="project" />
+    <orderEntry type="library" exported="" name="commons-codec-1.6" level="project" />
+    <orderEntry type="library" exported="" name="commons-logging-1.1.1" level="project" />
+    <orderEntry type="library" exported="" name="wstx-asl-3.2.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="dbunit-2.4.8" level="project" />
+    <orderEntry type="library" exported="" name="solr-solrj-4.2.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="junit-4.11" level="project" />
+    <orderEntry type="library" exported="" name="maven-artifact-3.0.4" level="project" />
+    <orderEntry type="library" exported="" name="tapestry-func-5.2.6" level="project" />
+    <orderEntry type="library" exported="" name="commons-discovery-0.2" level="project" />
+    <orderEntry type="library" exported="" name="tapestry-ioc-5.2.6" level="project" />
+    <orderEntry type="library" exported="" name="antlr-runtime-3.1.1" level="project" />
+    <orderEntry type="library" exported="" name="httpclient-4.2.3" level="project" />
+    <orderEntry type="library" exported="" name="axis-jaxrpc-1.4" level="project" />
+    <orderEntry type="library" exported="" name="httpcore-4.2.2" level="project" />
+    <orderEntry type="library" exported="" name="axis-1.4" level="project" />
+    <orderEntry type="library" exported="" name="velocity-1.3.1" level="project" />
+    <orderEntry type="library" exported="" name="activation-1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="hamcrest-core-1.3" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.6.4" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-log4j12-1.6.1" level="project" />
+    <orderEntry type="library" exported="" name="commons-httpclient-3.1" level="project" />
+    <orderEntry type="library" exported="" name="plexus-utils-2.0.6" level="project" />
+    <orderEntry type="library" exported="" name="joda-time-1.6.2" level="project" />
+    <orderEntry type="library" exported="" name="zookeeper-3.4.5" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-2.1" level="project" />
+    <orderEntry type="library" exported="" name="axis-saaj-1.4" level="project" />
+    <orderEntry type="library" exported="" name="axis-wsdl4j-1.5.1" level="project" />
+    <orderEntry type="library" exported="" name="httpmime-4.2.3" level="project" />
+    <orderEntry type="library" exported="" name="tapestry5-annotations-5.2.6" level="project" />
+    <orderEntry type="library" exported="" name="log4j-1.2.17" level="project" />
+    <orderEntry type="library" exported="" name="textile-j-2.2.864" level="project" />
+    <orderEntry type="library" scope="TEST" name="mockito-core-1.9.5" level="project" />
+    <orderEntry type="library" exported="" name="servlet-api-2.5" level="project" />
+    <orderEntry type="library" exported="" name="mail-1.4.5" level="project" />
+    <orderEntry type="library" exported="" name="tapestry-json-5.2.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="objenesis-1.0" level="project" />
+    <orderEntry type="library" exported="" name="commons-collections-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="jericho-html-3.2" level="project" />
   </component>
 </module>
 

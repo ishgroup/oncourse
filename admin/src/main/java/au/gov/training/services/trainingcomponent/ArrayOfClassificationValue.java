@@ -61,7 +61,7 @@ public class ArrayOfClassificationValue {
      */
     public List<ClassificationValue> getClassificationValue() {
         if (classificationValue == null) {
-            classificationValue = new ArrayList<ClassificationValue>();
+            classificationValue = new ArrayList<>();
         }
         return this.classificationValue;
     }

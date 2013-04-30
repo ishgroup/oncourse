@@ -18,13 +18,12 @@ public class ConcessionList {
 
     public List<String> getNames()
     {
-        List<String> names = new ArrayList<String>();
-        for (int i = 0; i < studentConcessions.size(); i++) {
-            StudentConcession studentConcession = studentConcessions.get(i);
-            String name = studentConcession.getConcessionType().getName();
-            if (!names.contains(name))
-                names.add(name);
-        }
+        List<String> names = new ArrayList<>();
+	    for (StudentConcession studentConcession : studentConcessions) {
+		    String name = studentConcession.getConcessionType().getName();
+		    if (!names.contains(name))
+			    names.add(name);
+	    }
         return names;
     }
 }

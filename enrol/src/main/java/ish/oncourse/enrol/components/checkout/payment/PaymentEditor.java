@@ -109,7 +109,7 @@ public class PaymentEditor implements IPaymentControlDelegate {
 	{
 		if (payersModel == null)
 		{
-			payersModel = new ListSelectModel<Contact>(getPayers(), "fullName",propertyAccess);
+			payersModel = new ListSelectModel<>(getPayers(), "fullName",propertyAccess);
 		}
 		return payersModel;
 	}
@@ -118,7 +118,7 @@ public class PaymentEditor implements IPaymentControlDelegate {
 	{
 		if (payersEncoder == null)
 		{
-			payersEncoder =  new ListValueEncoder<Contact>(getPayers(), "id", propertyAccess);
+			payersEncoder =  new ListValueEncoder<>(getPayers(), "id", propertyAccess);
 		}
 		return payersEncoder;
 	}
@@ -138,7 +138,7 @@ public class PaymentEditor implements IPaymentControlDelegate {
 	{
 		if (years == null)
 		{
-			years = new ArrayList<Integer>();
+			years = new ArrayList<>();
 			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
 			for (int i = 0; i < EXPIRE_YEAR_INTERVAL; i++) {
@@ -224,7 +224,7 @@ public class PaymentEditor implements IPaymentControlDelegate {
     {
         if (payers == null)
         {
-            payers = new ArrayList<Contact>(delegate.getContacts());
+            payers = new ArrayList<>(delegate.getContacts());
             payers.add(getDummyPayer());
         }
         return payers;

@@ -1,17 +1,17 @@
 package ish.oncourse.services.jmx;
 
+import ish.oncourse.mbean.ApplicationData;
+import ish.oncourse.mbean.MBeanRegisterUtil;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.services.RegistryShutdownListener;
+import org.apache.tapestry5.services.ApplicationGlobals;
+
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
-import ish.oncourse.mbean.ApplicationData;
-import ish.oncourse.mbean.MBeanRegisterUtil;
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.ioc.services.RegistryShutdownListener;
-import org.apache.tapestry5.services.ApplicationGlobals;
 
 public class JMXInitService implements IJMXInitService, RegistryShutdownListener {
 	private static final String ONCOURSE_DATASOURCE = "/oncourse";
@@ -31,9 +31,7 @@ public class JMXInitService implements IJMXInitService, RegistryShutdownListener
 		ObjectName newApplicationDataInstance = null;
 		try {
 			newApplicationDataInstance = new ObjectName(objectName);
-		} catch (MalformedObjectNameException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (NullPointerException e) {
+		} catch (MalformedObjectNameException | NullPointerException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
 		if (newApplicationDataInstance != null) {

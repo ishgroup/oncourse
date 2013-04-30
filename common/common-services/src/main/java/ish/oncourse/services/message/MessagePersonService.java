@@ -30,7 +30,7 @@ public class MessagePersonService implements IMessagePersonService {
 	}
 
 	private Expression dequeueingQualifier() {
-		List<Expression> exprArray = new ArrayList<Expression>();
+		List<Expression> exprArray = new ArrayList<>();
 		exprArray.add(ExpressionFactory.matchExp(MessagePerson.TYPE_PROPERTY, MessageType.SMS));
 		exprArray.add(ExpressionFactory.matchExp(MessagePerson.STATUS_PROPERTY, MessageStatus.QUEUED));
 		exprArray.add(ExpressionFactory.noMatchExp(MessagePerson.MESSAGE_PROPERTY, null));

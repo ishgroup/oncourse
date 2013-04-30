@@ -82,7 +82,7 @@ public class CourseClassItem {
 	
 	@SetupRender
 	public void beforeRender() {
-		timetableLabels = new ArrayList<String>();
+		timetableLabels = new ArrayList<>();
 		timetableLabels.add("When");
 		timetableLabels.add("Time");
 		timetableLabels.add("Where");
@@ -110,7 +110,7 @@ public class CourseClassItem {
 	}
 	
 	public List<TutorRole> getVisibleTutorRoles() {
-		final List<TutorRole> visibleRoles = new ArrayList<TutorRole>();
+		final List<TutorRole> visibleRoles = new ArrayList<>();
 		for (TutorRole role : courseClass.getTutorRoles()) {
 			if (role.getInPublicity()) {
 				visibleRoles.add(role);

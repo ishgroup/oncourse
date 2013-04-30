@@ -89,7 +89,7 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 					LOGGER.debug(String.format("Communication key:%s for college:%s in a HALT state.", lastCommKey, college.getId()), ex);
 					throw ex;
 				}
-				if (lastCommKey == currentKey.longValue()) {
+				if (lastCommKey == currentKey) {
 					Long newKey = generateNewKey(college);
 					return newKey;
 				} else {

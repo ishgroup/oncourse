@@ -97,7 +97,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	@Override
 	public List<GenericReplicatedRecord> processGroup(GenericTransactionGroup group) {
 		this.transactionGroup = group;
-		this.result = new ArrayList<GenericReplicatedRecord>();
+		this.result = new ArrayList<>();
 
 		for (GenericReplicationStub currentStub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub, false);
@@ -434,7 +434,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 		String angelIdentifier = EntityMapping.getAngelEntityIdentifer(entityName);
 
-		for (GenericReplicationStub s : new ArrayList<GenericReplicationStub>(transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo())) {
+		for (GenericReplicationStub s : new ArrayList<>(transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo())) {
 			if (angelId.equals(s.getAngelId()) && s.getEntityIdentifier().equals(angelIdentifier)) {
 				transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo().remove(s);
 				return s;

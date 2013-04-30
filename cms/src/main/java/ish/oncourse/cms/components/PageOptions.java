@@ -306,13 +306,13 @@ public class PageOptions {
 	}
 
 	public void refreshThemes() {
-		List<WebNodeType> webNodeTypes = new ArrayList<WebNodeType>();
+		List<WebNodeType> webNodeTypes = new ArrayList<>();
 		for (WebNodeType t : webNodeTypeService.getWebNodeTypes()) {
 			webNodeTypes.add((WebNodeType) editNode.getObjectContext().localObject(t.getObjectId(), null));
 		}
 
-		this.pageTypeModel = new ListSelectModel<WebNodeType>(webNodeTypes, WebNodeType.NAME_PROPERTY, access);
-		this.pageTypeEncoder = new ListValueEncoder<WebNodeType>(webNodeTypes, "id", access);
+		this.pageTypeModel = new ListSelectModel<>(webNodeTypes, WebNodeType.NAME_PROPERTY, access);
+		this.pageTypeEncoder = new ListValueEncoder<>(webNodeTypes, "id", access);
 
 	}
 

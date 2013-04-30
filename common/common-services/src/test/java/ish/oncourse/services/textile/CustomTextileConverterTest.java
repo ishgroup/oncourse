@@ -189,7 +189,7 @@ public class CustomTextileConverterTest {
 	 */
 	@Test
 	public void smokeCourseListConvertTest() {
-		List<Course> courses = new ArrayList<Course>();
+		List<Course> courses = new ArrayList<>();
 		courses.add(new Course());
 		String successfulResult = "successfully rendered courses block";
 		when(courseService.getCourses(null, CourseListSortValue.ALPHABETICAL, false, null)).thenReturn(courses);
@@ -258,7 +258,7 @@ public class CustomTextileConverterTest {
 	public void errorsInTextilesConvertTest() {
 		String tag = "{block test}{course test}{courses test}{image test}{page test}{tags test}{video test}";
 		String result = textileConverter.convertCustomTextile(tag, errors);
-		StringBuffer expecting = new StringBuffer();
+		StringBuilder expecting = new StringBuilder();
 		expecting.append(TextileUtil.getReplacementForSyntaxErrorTag("{block test}"))
 				.append(TextileUtil.getReplacementForSyntaxErrorTag("{course test}"))
 				.append(TextileUtil.getReplacementForSyntaxErrorTag("{courses test}"))

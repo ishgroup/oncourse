@@ -519,9 +519,9 @@ public class TimestampUtilities {
 	 * @see TimestampUtilities#DaysOfWeek
 	 */
 	public static Set<String> uniqueDaysInOrder(List<String> days) {
-		Set<String> daysInOrder = new LinkedHashSet<String>(daysOfWeekNames());
+		Set<String> daysInOrder = new LinkedHashSet<>(daysOfWeekNames());
 
-		Set<String> excludedDays = new LinkedHashSet<String>(daysOfWeekNames());
+		Set<String> excludedDays = new LinkedHashSet<>(daysOfWeekNames());
 		excludedDays.removeAll(days);
 
 		daysInOrder.removeAll(excludedDays);

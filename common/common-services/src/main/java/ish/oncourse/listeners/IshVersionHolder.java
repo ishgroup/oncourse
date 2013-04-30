@@ -2,7 +2,7 @@ package ish.oncourse.listeners;
 
 public class IshVersionHolder {
 
-	private static ThreadLocal<Long> threadLocal = new InheritableThreadLocal<Long>();
+	private static ThreadLocal<Long> threadLocal = new InheritableThreadLocal<>();
 
 	public static Long getIshVersion() {
 		return threadLocal.get();

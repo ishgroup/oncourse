@@ -141,7 +141,7 @@ public class CourseClassService implements ICourseClassService {
            * get session for timetable
            * for timetable we should only show future sessions from active classes
            */
-        List<Session> sessions = new ArrayList<Session>(30);
+        List<Session> sessions = new ArrayList<>(30);
 
         if (contact.getStudent() == null && contact.getTutor() == null) {
             logger.warn(String.format("Contact with ID:%s is neither Student nor Tutor.", contact.getId()));
@@ -198,7 +198,7 @@ public class CourseClassService implements ICourseClassService {
             return Collections.emptyList();
         }
 
-        List<CourseClass> courses = new ArrayList<CourseClass>();
+        List<CourseClass> courses = new ArrayList<>();
         Ordering ordering = getOrderingBy(filter);
         if (contact.getTutor() != null) {
             courses.addAll(getCourseClassesBy(contact,filter,true));

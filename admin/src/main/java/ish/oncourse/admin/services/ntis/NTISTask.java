@@ -38,7 +38,7 @@ public class NTISTask implements Runnable {
 		this.preferenceController = preferenceController;
 		this.mailService = mailService;
 		
-		this.ntisData = new LinkedList<String>();
+		this.ntisData = new LinkedList<>();
 	}
 
 	/*

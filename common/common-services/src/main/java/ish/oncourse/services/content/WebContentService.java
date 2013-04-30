@@ -70,8 +70,8 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 
 		List<WebContentVisibility> webContentVisibilities = webNodeType
 				.getWebContentVisibilities();
-		List<Long> nodeIds = new ArrayList<Long>(webContentVisibilities.size());
-		List<Long> visibilityIds = new ArrayList<Long>(
+		List<Long> nodeIds = new ArrayList<>(webContentVisibilities.size());
+		List<Long> visibilityIds = new ArrayList<>(
 				webContentVisibilities.size());
 		for (WebContentVisibility webContentVisibility : webContentVisibilities) {
 			visibilityIds.add(webContentVisibility.getId());
@@ -96,7 +96,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		}
 
 		q.andQualifier(regionKeyQualifier);
-		TreeSet<WebContent> treeSet = new TreeSet<WebContent>(new WebContentComparator(webNodeType));
+		TreeSet<WebContent> treeSet = new TreeSet<>(new WebContentComparator(webNodeType));
 		treeSet.addAll(webNodeType.getObjectContext().performQuery(q));
 		return treeSet;
 	}
@@ -178,7 +178,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 			// there con't be visibility for the unassigned block
 			return null;
 		}
-		List<WebContentVisibility> result = new ArrayList<WebContentVisibility>();
+		List<WebContentVisibility> result = new ArrayList<>();
 		WebSite currentWebSite = webSiteService.getCurrentWebSite();
 		//fill the list of corresponding results
 		for (WebContentVisibility visibility : webNodeType.getWebContentVisibilities()) {

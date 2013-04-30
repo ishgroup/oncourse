@@ -60,7 +60,7 @@ public class TextileUtil {
 
 
 	public static String inQuots(String param, boolean quotsRequired) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("(").append(QUOT).append(")");
 		if (!quotsRequired) {
 			buffer.append("?");
@@ -88,7 +88,7 @@ public class TextileUtil {
 	}
 
 	public static Map<String, String> getTagParams(String tag, List<String> paramKeys) {
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		for (String key : paramKeys) {
 			if (tag.contains(key)) {
 				String rest = tag.substring(tag.indexOf(key));

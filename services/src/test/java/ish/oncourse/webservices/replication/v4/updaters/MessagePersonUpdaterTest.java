@@ -45,10 +45,7 @@ public class MessagePersonUpdaterTest extends ServiceTest {
 		try {
 			updater.updateEntityFromStub(stub, messagePerson, getRelationShipCallback(objectContext));
 			assertNotNull("update should passed correct", messagePerson.getMessage());
-		} catch (UpdaterException e) {
-			logger.info( e.getMessage(), e);
-			assertTrue("The updater should not throw this kind of exception", false);
-		} catch (IllegalStateException e) {
+		} catch (UpdaterException | IllegalStateException e) {
 			logger.info( e.getMessage(), e);
 			assertTrue("The updater should not throw this kind of exception", false);
 		} finally {

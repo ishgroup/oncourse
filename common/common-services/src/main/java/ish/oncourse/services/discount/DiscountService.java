@@ -32,7 +32,7 @@ public class DiscountService implements IDiscountService {
 	public List<Discount> getPromotions() {
 		List<Long> discountIds = cookiesService.getCookieCollectionValue(Discount.PROMOTIONS_KEY, Long.class);
 		if (discountIds == null) {
-			return new ArrayList<Discount>();
+			return new ArrayList<>();
 		}
 		final List<Discount> result = ExpressionFactory.noMatchExp(Discount.CODE_PROPERTY, null).filterObjects(loadByIds(discountIds.toArray()));
 		return result.isEmpty() ? new ArrayList<Discount>(0): result;
@@ -59,7 +59,7 @@ public class DiscountService implements IDiscountService {
 	@Override
 	public List<Discount> loadByIds(Object... ids) {
 		if (ids == null || ids.length == 0) {
-			return new ArrayList<Discount>();
+			return new ArrayList<>();
 		}
 
 		SelectQuery q = new SelectQuery(Discount.class);

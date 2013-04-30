@@ -65,7 +65,7 @@ public class Products {
 		this.products = voucherService.getAvailableProducts(start, rows);
 		this.productsCount = voucherService.getAvailableProducts().size();
 
-		productsIds = new ArrayList<Long>();
+		productsIds = new ArrayList<>();
 		updateIdsAndIndexes();
 	}
 	

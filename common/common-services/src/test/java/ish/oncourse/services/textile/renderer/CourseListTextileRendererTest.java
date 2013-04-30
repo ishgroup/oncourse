@@ -54,7 +54,7 @@ public class CourseListTextileRendererTest {
 	@Test
 	public void courseListWithParameters() {
 
-		List<Course> courses = new ArrayList<Course>();
+		List<Course> courses = new ArrayList<>();
 		courses.add(new Course());
 		String tagName = "/tag";
 		CourseListSortValue sort = CourseListSortValue.DATE;
@@ -63,7 +63,7 @@ public class CourseListTextileRendererTest {
 		Tag tag = new Tag();
 		when(tagService.getTagByFullPath(tagName)).thenReturn(tag);
 		when(courseService.getCourses(tagName, sort, isAscending, limit)).thenReturn(courses);
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put(TextileUtil.TEXTILE_COURSE_LIST_PAGE_PARAM, courses);
 		when(pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_LIST_PAGE, params)).thenReturn(
 				SUCCESSFULLY_RENDERED);

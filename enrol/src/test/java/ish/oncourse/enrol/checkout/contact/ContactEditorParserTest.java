@@ -64,7 +64,7 @@ public class ContactEditorParserTest {
 
 	@Test
 	public void test() throws ParseException {
-		HashMap<String,String> parameters = new HashMap<String, String>();
+		HashMap<String,String> parameters = new HashMap<>();
 		parameters.put(street.name(), "");
 		parameters.put(suburb.name(), "");
 		parameters.put(state.name(), "");
@@ -120,7 +120,7 @@ public class ContactEditorParserTest {
         parser.setDateFormat(new SimpleDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT));
 
         FieldDescriptor[] fieldDescriptors =  FieldDescriptor.values();
-        ArrayList<String> fields = new ArrayList<String>();
+        ArrayList<String> fields = new ArrayList<>();
         for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
             fields.add(fieldDescriptor.name());
         }

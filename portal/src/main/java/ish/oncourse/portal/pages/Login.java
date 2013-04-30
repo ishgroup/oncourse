@@ -172,7 +172,7 @@ public class Login {
     }
 
     private Object doLogin() {
-		List<Contact> users = new ArrayList<Contact>();
+		List<Contact> users = new ArrayList<>();
 		if(iscompany) {
 			users= authenticationService.authenticateCompany(companyName, email, password);
 		} else {
@@ -193,8 +193,8 @@ public class Login {
 			return (prevPage != null) ? prevPage : index;
 		} else {
 			
-			Set<College> colleges = new HashSet<College>();
-			Set<College> collegesWithDuplicates = new HashSet<College>();
+			Set<College> colleges = new HashSet<>();
+			Set<College> collegesWithDuplicates = new HashSet<>();
 
 			// if in one college we have two or more contacts with identical login details
 			// (we show the error on the login screen)
@@ -220,7 +220,7 @@ public class Login {
 	
 	private Object forgotPassword() {
 
-		List<Contact> users = new ArrayList<Contact>();
+		List<Contact> users = new ArrayList<>();
 		if(iscompany) {
 			users= authenticationService.findCompanyForPasswordRecovery(companyName, email);
 		} else {
@@ -236,8 +236,8 @@ public class Login {
 		} else {
 			selectCollege.setPasswordRecover(true);
 			
-			Set<College> colleges = new HashSet<College>();
-			Set<College> collegesWithDuplicates = new HashSet<College>();
+			Set<College> colleges = new HashSet<>();
+			Set<College> collegesWithDuplicates = new HashSet<>();
 
 			// if in one college we have two or more contacts with identical login details
 			// (we show the error on the login screen)

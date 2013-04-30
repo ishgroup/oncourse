@@ -18,7 +18,7 @@ public enum PageTextileAttributes {
 
 	public static List<String> getAttrValues() {
 		PageTextileAttributes[] values = values();
-		List<String> attrValues = new ArrayList<String>(values.length);
+		List<String> attrValues = new ArrayList<>(values.length);
 		
 		for (PageTextileAttributes attr : values) {
 			attrValues.add(attr.getValue());

@@ -10,7 +10,7 @@ public class ValidateHandler {
 
 	public static final String HTML_CLASS_error = "t-error";
 
-	private Map<String,String> errors = new HashMap<String, String>();
+	private Map<String,String> errors = new HashMap<>();
 
 	public String error(String fieldName)
 	{

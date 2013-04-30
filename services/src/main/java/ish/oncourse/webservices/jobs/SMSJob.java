@@ -227,17 +227,21 @@ public class SMSJob implements Job {
 					}
 
 					public Map<String, Object> templateValuesForKeys(Set<String> keys) {
-						Map<String, Object> results = new HashMap<String, Object>();
+						Map<String, Object> results = new HashMap<>();
 
 						for (String key : keys) {
 							// TODO (lachlan) move these definitions and
 							// translations into MessageTranslator
-							if ("contact.firstName".equals(key)) {
-								results.put("contact.firstName", mp.getContact().getGivenName());
-							} else if ("contact.lastName".equals(key)) {
-								results.put("contact.lastName", mp.getContact().getFamilyName());
-							} else {
-								results.put(key, Void.TYPE);
+							switch (key) {
+								case "contact.firstName":
+									results.put("contact.firstName", mp.getContact().getGivenName());
+									break;
+								case "contact.lastName":
+									results.put("contact.lastName", mp.getContact().getFamilyName());
+									break;
+								default:
+									results.put(key, Void.TYPE);
+									break;
 							}
 						}
 						return results;

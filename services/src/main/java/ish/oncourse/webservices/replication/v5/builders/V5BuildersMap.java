@@ -16,7 +16,7 @@ private Map<String, IWillowStubBuilder> builderMap;
 	 */
 	public Map<String, IWillowStubBuilder> getBuilderMap() {
 		if (builderMap == null) {
-			builderMap = new HashMap<String, IWillowStubBuilder>();
+			builderMap = new HashMap<>();
 		}
 		return builderMap;
 	}

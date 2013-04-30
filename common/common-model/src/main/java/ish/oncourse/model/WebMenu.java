@@ -68,7 +68,7 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 	}
 
 	public String getWarning() {
-		StringBuffer stringBuffer = new StringBuffer("Warning! " + getName() + " is referred to ");
+		StringBuilder stringBuffer = new StringBuilder("Warning! " + getName() + " is referred to ");
 		WebNode webNode = getWebNode();
 		if (webNode == null) {
 			if (getUrl() == null) {

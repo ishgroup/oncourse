@@ -35,7 +35,7 @@ public class VideoTextileRenderer extends AbstractRenderer {
 				tagParams.put(VideoTextileAttributes.VIDEO_PARAM_HEIGHT
 						.getValue(), TextileUtil.VIDEO_HEIGHT_DEFAULT);
 			}
-			Map<String, Object> parameters = new HashMap<String, Object>();
+			Map<String, Object> parameters = new HashMap<>();
 			parameters.put(TextileUtil.TEXTILE_VIDEO_PAGE_PARAM, tagParams);
 			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_VIDEO_PAGE,
 					parameters);

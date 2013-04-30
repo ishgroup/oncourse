@@ -23,7 +23,7 @@ public class PaymentEditorParser implements IFieldsParser {
 
 	private boolean newPayer;
 
-	private Map<String, String> errors = new HashMap<String, String>();
+	private Map<String, String> errors = new HashMap<>();
 
 	public void parse() {
 		if (paymentIn.isZeroPayment())

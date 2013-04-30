@@ -21,7 +21,7 @@ public enum TextTextileAttributes {
 
 	public static List<String> getAttrValues() {
 		TextTextileAttributes[] values = values();
-		List<String> attrValues = new ArrayList<String>(values.length);
+		List<String> attrValues = new ArrayList<>(values.length);
 		
 		for (TextTextileAttributes attr : values) {
 			attrValues.add(attr.getValue());

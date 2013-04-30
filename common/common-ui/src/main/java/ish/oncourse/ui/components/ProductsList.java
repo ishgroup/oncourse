@@ -34,7 +34,7 @@ public class ProductsList {
     }
 	
 	public String getSearchParamsStr() {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		result.append("start=").append(itemIndex);
 		for (String paramName : request.getParameterNames()) {
 			if (!paramName.equals("start") ) {

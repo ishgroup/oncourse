@@ -74,7 +74,7 @@ public class ProductItem {
 	}
 	
 	public List<Course> getRedemptionCourses() {
-		final List<Course> result = new ArrayList<Course>();
+		final List<Course> result = new ArrayList<>();
 		if (isVoucherProduct()) {
 			VoucherProduct vproduct = (VoucherProduct) productItem.getProduct();
 			return Collections.unmodifiableList(vproduct.getRedemptionCourses());

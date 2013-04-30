@@ -162,7 +162,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	 * @see ish.oncourse.services.tag.ITagService#getEntityIdsByTagPath(java.lang.String, java.lang.String)
 	 */
 	public List<Long> getEntityIdsByTagPath(String tagPath, String entityName) {
-		List<Long> ids = new ArrayList<Long>();
+		List<Long> ids = new ArrayList<>();
 
 		Tag tag = getTagByFullPath(tagPath);
 
@@ -230,8 +230,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		@SuppressWarnings("unchecked")
 		List<Taggable> taggableList = getCayenneService().sharedContext().performQuery(q);
 
-		Set<Tag> allMailingLists = new HashSet<Tag>(getMailingLists());
-		List<Tag> tags = new ArrayList<Tag>();
+		Set<Tag> allMailingLists = new HashSet<>(getMailingLists());
+		List<Tag> tags = new ArrayList<>();
 
 		for (final Taggable t : taggableList) {
 			for (final TaggableTag tg : t.getTaggableTags()) {
@@ -282,8 +282,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		@SuppressWarnings("unchecked")
 		List<Taggable> taggables = context.performQuery(query);
 		
-		for (Taggable t : new ArrayList<Taggable>(taggables)) {
-			for (final TaggableTag tt : new ArrayList<TaggableTag>(t.getTaggableTags())) {
+		for (Taggable t : new ArrayList<>(taggables)) {
+			for (final TaggableTag tt : new ArrayList<>(t.getTaggableTags())) {
 				context.deleteObject(tt);
 				context.deleteObject(t);
 			}

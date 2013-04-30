@@ -39,12 +39,12 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
     /**
      * DataContext threadlocal storage
      */
-    private static final ThreadLocal<Deque<StackFrame>> STACK_STORAGE = new InheritableThreadLocal<Deque<StackFrame>>();
+    private static final ThreadLocal<Deque<StackFrame>> STACK_STORAGE = new InheritableThreadLocal<>();
 
     /**
      * Storage to hold college between invocations of preRemove and postRemove methods.
      */
-    private Map<ObjectId, College> objectIdCollegeMap = new WeakHashMap<ObjectId, College>();
+    private Map<ObjectId, College> objectIdCollegeMap = new WeakHashMap<>();
 
     /**
      * Constructor
@@ -80,7 +80,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
             Deque<StackFrame> stack = STACK_STORAGE.get();
 
             if (stack == null) {
-                stack = new LinkedList<StackFrame>();
+                stack = new LinkedList<>();
                 STACK_STORAGE.set(stack);
             }
 

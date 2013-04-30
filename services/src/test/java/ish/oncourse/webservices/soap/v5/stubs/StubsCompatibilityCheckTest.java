@@ -33,7 +33,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	/**
 	 * Map with defined stub's fields paramethers.
 	 */
-	private Map<String,List<ReplicationStubFieldParameter>> stubsPropertyMap = new HashMap<String,List<ReplicationStubFieldParameter>>();
+	private Map<String,List<ReplicationStubFieldParameter>> stubsPropertyMap = new HashMap<>();
 	
 	private static String getStubName(Class<? extends GenericReplicationStub> clazz) {
 		return getName(clazz);
@@ -458,17 +458,17 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParamethers = fillDefaultReplicationStubFields();
 		stubsPropertyMap.put(getStubName(ReplicationStub.class), replicationStubParamethers);
-		final List<ReplicationStubFieldParameter> replicationResultParamethers = new ArrayList<ReplicationStubFieldParameter>();
+		final List<ReplicationStubFieldParameter> replicationResultParamethers = new ArrayList<>();
 		replicationResultParamethers.add(new ReplicationStubFieldParameter("replicatedRecord", true, ReplicatedRecord.class));
 		replicationResultParamethers.add(new ReplicationStubFieldParameter("genericReplicatedRecord", "replicatedRecord", List.class, true, null, 
 			ReplicatedRecord.class));
 		stubsPropertyMap.put(getName(ReplicationResult.class), replicationResultParamethers);
-		final List<ReplicationStubFieldParameter> replicationRecordsParamethers = new ArrayList<ReplicationStubFieldParameter>();
+		final List<ReplicationStubFieldParameter> replicationRecordsParamethers = new ArrayList<>();
 		replicationRecordsParamethers.add(new ReplicationStubFieldParameter("groups", true, TransactionGroup.class));
 		replicationRecordsParamethers.add(new ReplicationStubFieldParameter("genericGroups", "groups", List.class, true, null, 
 			TransactionGroup.class));
 		stubsPropertyMap.put(getName(ReplicationRecords.class), replicationRecordsParamethers);
-		final List<ReplicationStubFieldParameter> replicatedRecordParamethers = new ArrayList<ReplicationStubFieldParameter>();
+		final List<ReplicationStubFieldParameter> replicatedRecordParamethers = new ArrayList<>();
 		replicatedRecordParamethers.add(new ReplicationStubFieldParameter("status", Status.class));
 		replicatedRecordParamethers.add(new ReplicationStubFieldParameter("message", String.class));
 		replicatedRecordParamethers.add(new ReplicationStubFieldParameter("stub", HollowStub.class));
@@ -476,32 +476,32 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		replicatedRecordParamethers.add(new ReplicationStubFieldParameter("failedStatus", boolean.class, "status"));
 		replicatedRecordParamethers.add(new ReplicationStubFieldParameter("successStatus", boolean.class, "status"));
 		stubsPropertyMap.put(getName(ReplicatedRecord.class), replicatedRecordParamethers);
-		final List<ReplicationStubFieldParameter> parameterEntryParamethers = new ArrayList<ReplicationStubFieldParameter>();
+		final List<ReplicationStubFieldParameter> parameterEntryParamethers = new ArrayList<>();
 		parameterEntryParamethers.add(new ReplicationStubFieldParameter("name", String.class));
 		parameterEntryParamethers.add(new ReplicationStubFieldParameter("value", String.class));
 		stubsPropertyMap.put(getName(ParameterEntry.class), parameterEntryParamethers);
-		final List<ReplicationStubFieldParameter> parametersMapParamethers = new ArrayList<ReplicationStubFieldParameter>();
+		final List<ReplicationStubFieldParameter> parametersMapParamethers = new ArrayList<>();
 		parametersMapParamethers.add(new ReplicationStubFieldParameter("entry", true, false, ParameterEntry.class));
 		parametersMapParamethers.add(new ReplicationStubFieldParameter("genericEntry", "entry", List.class, false, null, ParameterEntry.class));
 		stubsPropertyMap.put(getName(ParametersMap.class), parametersMapParamethers);
-		final List<ReplicationStubFieldParameter> instructionStubParamethers = new ArrayList<ReplicationStubFieldParameter>();
+		final List<ReplicationStubFieldParameter> instructionStubParamethers = new ArrayList<>();
 		instructionStubParamethers.add(new ReplicationStubFieldParameter("id", Long.class));
 		instructionStubParamethers.add(new ReplicationStubFieldParameter("message", String.class));
 		instructionStubParamethers.add(new ReplicationStubFieldParameter("parameters", ParametersMap.class, false));
 		stubsPropertyMap.put(getName(InstructionStub.class), instructionStubParamethers);
-		final List<ReplicationStubFieldParameter> instructionsResponseParamethers = new ArrayList<ReplicationStubFieldParameter>();
+		final List<ReplicationStubFieldParameter> instructionsResponseParamethers = new ArrayList<>();
 		instructionsResponseParamethers.add(new ReplicationStubFieldParameter("_return", "return", List.class, false, null, InstructionStub.class));
 		stubsPropertyMap.put(getName(GetInstructionsResponse.class), instructionsResponseParamethers);
-		final List<ReplicationStubFieldParameter> faultReasonParamethers = new ArrayList<ReplicationStubFieldParameter>();
+		final List<ReplicationStubFieldParameter> faultReasonParamethers = new ArrayList<>();
 		faultReasonParamethers.add(new ReplicationStubFieldParameter("detailMessage", String.class, false));
 		faultReasonParamethers.add(new ReplicationStubFieldParameter("faultCode", Integer.class, false));		
 		stubsPropertyMap.put(getName(FaultReason.class), faultReasonParamethers);
-		final List<ReplicationStubFieldParameter> transactionGroupParamethers = new ArrayList<ReplicationStubFieldParameter>();
+		final List<ReplicationStubFieldParameter> transactionGroupParamethers = new ArrayList<>();
 		transactionGroupParamethers.add(new ReplicationStubFieldParameter("transactionKeys", List.class));
 		final ReplicationStubFieldParameter attendanceOrBinaryDataOrBinaryInfo = new ReplicationStubFieldParameter(
 			"attendanceOrBinaryDataOrBinaryInfo", List.class, false);
 		@SuppressWarnings("rawtypes")
-		final List<Class> attendanceOrBinaryDataOrBinaryInfoAvailableClasses = new ArrayList<Class>();
+		final List<Class> attendanceOrBinaryDataOrBinaryInfoAvailableClasses = new ArrayList<>();
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CertificateStub.class);
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SystemUserStub.class);
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ProductStub.class);
@@ -905,7 +905,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	}
 		
 	private List<ReplicationStubFieldParameter> fillDefaultReplicationStubFields() {
-		final List<ReplicationStubFieldParameter> paramethers = new ArrayList<ReplicationStubFieldParameter>();
+		final List<ReplicationStubFieldParameter> paramethers = new ArrayList<>();
 		paramethers.add(new ReplicationStubFieldParameter("angelId", Long.class));
 		paramethers.add(new ReplicationStubFieldParameter("willowId", Long.class));
 		paramethers.add(new ReplicationStubFieldParameter("entityIdentifier", String.class));
@@ -1028,7 +1028,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 			final boolean requiredField = elementAnotation != null ? elementAnotation.required() : false;
 			final XmlElements availableElementsAnotation = field.getAnnotation(XmlElements.class);
 			@SuppressWarnings("rawtypes")
-			final List<Class> availableElements = new ArrayList<Class>();
+			final List<Class> availableElements = new ArrayList<>();
 			if (availableElementsAnotation != null) {
 				for (final XmlElement element : availableElementsAnotation.value()) {
 					availableElements.add(element.type());
@@ -1336,7 +1336,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		@SuppressWarnings("rawtypes")
 		public List<Class> getAvailableClasses() {
 			if (availableClasses == null) {
-				availableClasses = new ArrayList<Class>();
+				availableClasses = new ArrayList<>();
 			}
 			return availableClasses;
 		}

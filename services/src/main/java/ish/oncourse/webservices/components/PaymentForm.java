@@ -97,7 +97,7 @@ public class PaymentForm {
     }
 
     private void initYears() {
-        years = new ArrayList<Integer>();
+        years = new ArrayList<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
         for (int i = 0; i < EXPIRE_YEAR_INTERVAL; i++) {

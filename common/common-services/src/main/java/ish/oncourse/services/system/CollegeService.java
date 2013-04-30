@@ -187,6 +187,6 @@ public class CollegeService implements ICollegeService {
 		EJBQLQuery q = new EJBQLQuery("select distinct w.siteKey from WebSite w");
 		@SuppressWarnings("unchecked")
 		List<String> keys = cayenneService.sharedContext().performQuery(q);
-		return new HashSet<String>(keys);
+		return new HashSet<>(keys);
 	}
 }

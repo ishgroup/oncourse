@@ -148,7 +148,7 @@ public class PortalUtils {
         String site = courseClass.getRoom() != null ?
                 courseClass.getRoom().getSite() != null ?
                         courseClass.getRoom().getSite().getName() : null : null;
-        ArrayList<String> values = new ArrayList<String>();
+        ArrayList<String> values = new ArrayList<>();
 
         if (site != null)
             values.add(site);

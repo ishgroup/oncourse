@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MailingListController extends AContactController {
 
-    private List<Tag> selectedMailingLists = new ArrayList<Tag>();
+    private List<Tag> selectedMailingLists = new ArrayList<>();
 
 	private List<Tag> mailingLists;
 

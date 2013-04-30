@@ -39,7 +39,7 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, String> data = new HashMap<>();
 		for (ImageTextileAttributes attr : ImageTextileAttributes.values()) {
 			switch (attr) {
 			case IMAGE_PARAM_ALIGH:

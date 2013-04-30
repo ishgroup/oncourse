@@ -14,7 +14,7 @@ public class FormatService implements IFormatService {
 	private final ThreadLocal<Map<FormatName, Format>> formatters;
 
 	public FormatService() {
-		formatters = new ThreadLocal<Map<FormatName, Format>>();
+		formatters = new ThreadLocal<>();
 	}
 
 	public String format(Object object, FormatName formatName) {
@@ -33,7 +33,7 @@ public class FormatService implements IFormatService {
 
 		Map<FormatName, Format> formattersMap = formatters.get();
 		if (formattersMap == null) {
-			formattersMap = new HashMap<FormatName, Format>();
+			formattersMap = new HashMap<>();
 			formatters.set(formattersMap);
 		}
 

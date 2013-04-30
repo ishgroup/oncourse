@@ -92,7 +92,7 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 		}
 
 		if (results == null) {
-			results = new ArrayList<T>();
+			results = new ArrayList<>();
 		}
 
 		if (results.isEmpty()) {

@@ -83,7 +83,7 @@ public abstract class AbstractTransportTest {
 
 		conduit.setClient(httpClientPolicy);
 
-		List<Header> headers = new ArrayList<Header>();
+		List<Header> headers = new ArrayList<>();
 		headers.add(new Header(new QName("SecurityCode"), getSecurityCode() , new JAXBDataBinding(String.class)));
 		headers.add(new Header(new QName("AngelVersion"), "angelVersion", new JAXBDataBinding(String.class)));
 		headers.add(new Header(new QName("CommunicationKey"), getCommunicationKey(), new JAXBDataBinding(String.class)));
@@ -120,7 +120,7 @@ public abstract class AbstractTransportTest {
 
 		String[] beanNames = bdr.getBeanDefinitionNames();
 
-		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<String> result = new ArrayList<>();
 
 		for (String beanName : beanNames) {
 
@@ -152,7 +152,7 @@ public abstract class AbstractTransportTest {
 	}
 
 	public static <T> ArrayList<T> createStubsBy(List<String> stubClassNames,String packageName,Class<T> parentStubClass) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-		ArrayList<T> stubs = new ArrayList<T>();
+		ArrayList<T> stubs = new ArrayList<>();
 		for (String stubClassName : stubClassNames) {
 			@SuppressWarnings("rawtypes")
 			Class aClass = Class.forName(String.format("%s.%s", packageName, stubClassName));

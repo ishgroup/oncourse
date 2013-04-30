@@ -59,7 +59,7 @@ public class InstructionServiceImpl implements IInstructionService {
 
 	@Override
 	public List<GenericInstructionStub> getInstructions(SupportedVersions version) {
-		List<GenericInstructionStub> result = new ArrayList<GenericInstructionStub>();
+		List<GenericInstructionStub> result = new ArrayList<>();
 		Expression expr = ExpressionFactory.matchExp(Instruction.COLLEGE_PROPERTY, takeWebSiteService().getCurrentCollege()).andExp(
 			ExpressionFactory.matchExp(Instruction.EXECUTED_PROPERTY, null));
 		SelectQuery q = new SelectQuery(Instruction.class, expr);

@@ -62,7 +62,7 @@ public class ConcessionTypes {
 
 	public ListValueEncoder<ConcessionType> getConcessionTypeEncoder() {
 		if (concessionTypeEncoder == null) {
-			concessionTypeEncoder = new ListValueEncoder<ConcessionType>(getConcessionTypes(), ConcessionType.ANGEL_ID_PROPERTY, propertyAccess);
+			concessionTypeEncoder = new ListValueEncoder<>(getConcessionTypes(), ConcessionType.ANGEL_ID_PROPERTY, propertyAccess);
 		}
 		return concessionTypeEncoder;
 	}

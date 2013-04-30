@@ -47,7 +47,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/System", name = "DateTimeOffset")
     public JAXBElement<DateTimeOffset> createDateTimeOffset(DateTimeOffset value) {
-        return new JAXBElement<DateTimeOffset>(_DateTimeOffset_QNAME, DateTimeOffset.class, null, value);
+        return new JAXBElement<>(_DateTimeOffset_QNAME, DateTimeOffset.class, null, value);
     }
 
 }

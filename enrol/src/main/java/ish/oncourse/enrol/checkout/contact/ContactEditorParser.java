@@ -39,7 +39,7 @@ public class ContactEditorParser {
 
 	private List<String> visibleFields;
 
-	private Map<String, String> errors = new HashMap<String, String>();
+	private Map<String, String> errors = new HashMap<>();
 
 
 	public void parse() {

@@ -20,7 +20,7 @@ public class PropertyService implements IPropertyService {
 
 	PropertyService(String runtimeConfig) throws IOException {
 
-		properties = new HashMap<String, String>();
+		properties = new HashMap<>();
 
 		String propertyFileResource = runtimeConfig != null ? "properties/runtime."
 				+ runtimeConfig + ".properties"
@@ -33,11 +33,8 @@ public class PropertyService implements IPropertyService {
 			URL url = propertyFiles.nextElement();
 
 			Properties nextProperties = new Properties();
-			InputStream in = url.openStream();
-			try {
+			try (InputStream in = url.openStream()) {
 				nextProperties.load(in);
-			} finally {
-				in.close();
 			}
 
 			for (Map.Entry<Object, Object> entry : nextProperties.entrySet()) {

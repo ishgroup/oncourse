@@ -310,7 +310,7 @@ public class PaymentInAbandonHelper {
 	 * @return active invoice
 	 */
 	Invoice findActiveInvoice() {
-		SortedSet<Invoice> invoices = new TreeSet<Invoice>(new Comparator<Invoice>() {
+		SortedSet<Invoice> invoices = new TreeSet<>(new Comparator<Invoice>() {
 			public int compare(Invoice o1, Invoice o2) {
 				return (paymentIn.getSource() == PaymentSource.SOURCE_ONCOURSE) ? o2.getInvoiceNumber().compareTo(o1.getInvoiceNumber()) : o2.getId()
 					.compareTo(o1.getId());

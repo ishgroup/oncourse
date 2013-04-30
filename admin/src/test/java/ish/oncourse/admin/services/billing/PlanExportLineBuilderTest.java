@@ -44,12 +44,12 @@ public class PlanExportLineBuilderTest extends TestCase {
 	@Before
 	public void setUp() {
 		this.college = createCollege();
-		this.licenseData = new HashMap<Long, Map<String,Object>>();
+		this.licenseData = new HashMap<>();
 	}
 	
 	@Test
 	public void testIsHostingBillingMonth() {
-		Map<String,Object> cData = new HashMap<String, Object>();
+		Map<String,Object> cData = new HashMap<>();
 		
 		this.licenseData.put(college.getId(), cData);
 		
@@ -81,7 +81,7 @@ public class PlanExportLineBuilderTest extends TestCase {
 	
 	@Test
 	public void testIsSupportBillingMonth() {
-		Map<String,Object> cData = new HashMap<String, Object>();
+		Map<String,Object> cData = new HashMap<>();
 		
 		this.licenseData.put(college.getId(), cData);
 		

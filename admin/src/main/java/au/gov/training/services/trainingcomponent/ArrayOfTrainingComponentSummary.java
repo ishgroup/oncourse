@@ -61,7 +61,7 @@ public class ArrayOfTrainingComponentSummary {
      */
     public List<TrainingComponentSummary> getTrainingComponentSummary() {
         if (trainingComponentSummary == null) {
-            trainingComponentSummary = new ArrayList<TrainingComponentSummary>();
+            trainingComponentSummary = new ArrayList<>();
         }
         return this.trainingComponentSummary;
     }

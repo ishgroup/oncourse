@@ -69,7 +69,7 @@ public class ActionAddConcessionTest {
 	}
 
 	private List<StudentConcession> getConcessions(StudentConcession currentConcession, Date date, ConcessionType concessionType, Student student) {
-		ArrayList<StudentConcession> result = new ArrayList<StudentConcession>();
+		ArrayList<StudentConcession> result = new ArrayList<>();
 		result.add(currentConcession);
 
 		StudentConcession studentConcession = mock(StudentConcession.class);

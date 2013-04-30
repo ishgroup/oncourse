@@ -48,7 +48,7 @@ public class TextileConverter implements ITextileConverter {
     @Inject
     private IFileStorageAssetService fileStorageAssetService;
 
-	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
+	private Map<TextileType, IRenderer> renderers = new HashMap<>();
 
 	@SuppressWarnings("all")
 	@Inject

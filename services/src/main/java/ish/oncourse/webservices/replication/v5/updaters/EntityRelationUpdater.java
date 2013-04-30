@@ -15,7 +15,7 @@ import ish.oncourse.webservices.v5.stubs.replication.EntityRelationStub;
 
 public class EntityRelationUpdater extends AbstractWillowUpdater<EntityRelationStub, EntityRelation> {
 	
-	protected static final Map<EntityRelationType, Class<? extends Queueable>> ENTITY_CLASS_MAPPING = new HashMap<EntityRelationType, Class<? extends Queueable>>();
+	protected static final Map<EntityRelationType, Class<? extends Queueable>> ENTITY_CLASS_MAPPING = new HashMap<>();
 	static {
 		ENTITY_CLASS_MAPPING.put(EntityRelationType.COURSE, Course.class);
 		ENTITY_CLASS_MAPPING.put(EntityRelationType.PRODUCT, Product.class);

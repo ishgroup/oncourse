@@ -65,7 +65,7 @@ public class QueueableLifecycleListenerStudentConcessionTest extends ServiceTest
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedTransaction", String.format("select * from QueuedTransaction"));
 		assertEquals("Expecting two transactions.", 2, actualData.getRowCount());
 
-		SortedSet<BigInteger> s = new TreeSet<BigInteger>();
+		SortedSet<BigInteger> s = new TreeSet<>();
 
 		for (int i = 0; i < actualData.getRowCount(); i++) {
 			BigInteger id = (BigInteger) actualData.getValue(i, "id");

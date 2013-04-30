@@ -194,7 +194,7 @@ public class TextileForm {
 								}
                             });
 
-							StringBuffer body = new StringBuffer("----------------\nA user submitted a form at ")
+							StringBuilder body = new StringBuilder("----------------\nA user submitted a form at ")
 								.append(pagePath)
 								.append(" with the following information:\n");
 
@@ -205,7 +205,7 @@ public class TextileForm {
 							}
 							//separate the parameters and break-line
 							body.append("\n").append("----------------");
-							StringBuffer subject = new StringBuffer();
+							StringBuilder subject = new StringBuilder();
 							formName = request.getParameter(TextileUtil.TEXTILE_FORM_PAGE_NAME_PARAM);
 							if (formName == null) {
 								formName = EMAIL_FORM_NAME;

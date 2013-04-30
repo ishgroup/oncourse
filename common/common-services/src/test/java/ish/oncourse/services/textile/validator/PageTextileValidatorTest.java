@@ -27,7 +27,7 @@ public class PageTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, String> data = new HashMap<>();
 		for (PageTextileAttributes attr : PageTextileAttributes.values()) {
 			switch (attr) {
 			case PAGE_CODE_PARAM:

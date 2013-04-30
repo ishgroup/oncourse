@@ -22,20 +22,20 @@ public class PurchaseModel {
     //input data for model
     private College college;
     private WebSite webSite;
-    private List<CourseClass> classes = new ArrayList<CourseClass>();
-    private List<Discount> discounts = new ArrayList<Discount>();
-    private List<Product> products = new ArrayList<Product>();
+    private List<CourseClass> classes = new ArrayList<>();
+    private List<Discount> discounts = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
 
     private ObjectContext objectContext;
 
 
-    private Map<Contact, ContactNode> contacts = new HashMap<Contact, PurchaseModel.ContactNode>();
+    private Map<Contact, ContactNode> contacts = new HashMap<>();
     private Contact payer;
     private Invoice invoice;
 
     private PaymentIn payment;
     private Money totalDiscountAmountIncTax = Money.ZERO;
-    private List<PaymentIn> voucherPayments = new ArrayList<PaymentIn>();
+    private List<PaymentIn> voucherPayments = new ArrayList<>();
 
     private boolean applyPrevOwing = false;
 
@@ -72,7 +72,7 @@ public class PurchaseModel {
     }
 
     public List<Contact> getContacts() {
-        return Collections.unmodifiableList(new ArrayList<Contact>(contacts.keySet()));
+        return Collections.unmodifiableList(new ArrayList<>(contacts.keySet()));
     }
 
     public void setPayer(Contact payer) {
@@ -149,7 +149,7 @@ public class PurchaseModel {
 
     public void removeEnrolment(Enrolment e) {
         getContactNode(e.getStudent().getContact()).removeEnrolment(e);
-        List<InvoiceLine> invoiceLines = new ArrayList<InvoiceLine>(e.getInvoiceLines());
+        List<InvoiceLine> invoiceLines = new ArrayList<>(e.getInvoiceLines());
         for (InvoiceLine invoiceLine : invoiceLines) {
         	objectContext.deleteObjects(invoiceLine);
         }
@@ -203,7 +203,7 @@ public class PurchaseModel {
     }
 
     public void disableEnrolment(Enrolment e) {
-    	List<InvoiceLine> invoiceLines = new ArrayList<InvoiceLine>(e.getInvoiceLines());
+    	List<InvoiceLine> invoiceLines = new ArrayList<>(e.getInvoiceLines());
     	for (InvoiceLine invoiceLine : invoiceLines) {
     		invoiceLine.setEnrolment(null);
     	}
@@ -306,7 +306,7 @@ public class PurchaseModel {
     }
 
     public void setClasses(List<CourseClass> classes) {
-        this.classes = new ArrayList<CourseClass>(classes);
+        this.classes = new ArrayList<>(classes);
     }
 
     public void addClass(CourseClass courseClass) {
@@ -315,7 +315,7 @@ public class PurchaseModel {
 
 
     public List<Discount> getDiscounts() {
-        return new ArrayList<Discount>(discounts);
+        return new ArrayList<>(discounts);
     }
 
     public void setDiscounts(List<Discount> discounts) {
@@ -349,7 +349,7 @@ public class PurchaseModel {
     }
 
     public <T extends Persistent> List<T> localizeObjects(List<T> objectsForLocalize) {
-        ArrayList<T> list = new ArrayList<T>();
+        ArrayList<T> list = new ArrayList<>();
         for (T t : objectsForLocalize) {
             if (t.getObjectContext().equals(objectContext)) {
                 list.add(t);
@@ -379,14 +379,14 @@ public class PurchaseModel {
 
 
     void deleteDisabledProductItems(Contact contact) {
-        List<ProductItem> productItems = new ArrayList<ProductItem>(getDisabledProductItems(contact));
+        List<ProductItem> productItems = new ArrayList<>(getDisabledProductItems(contact));
         for (ProductItem productItem : productItems) {
             removeProductItem(contact, productItem);
         }
     }
 
     void deleteDisabledEnrollments(Contact contact) {
-        List<Enrolment> enrolments = new ArrayList<Enrolment>(getDisabledEnrolments(contact));
+        List<Enrolment> enrolments = new ArrayList<>(getDisabledEnrolments(contact));
         for (Enrolment enrolment : enrolments) {
             removeEnrolment(enrolment);
         }
@@ -394,7 +394,7 @@ public class PurchaseModel {
 
     public List<Enrolment> getAllEnabledEnrolments() {
 
-        ArrayList<Enrolment> result = new ArrayList<Enrolment>();
+        ArrayList<Enrolment> result = new ArrayList<>();
         for (Contact contact : getContacts()) {
             result.addAll(getEnabledEnrolments(contact));
         }
@@ -403,7 +403,7 @@ public class PurchaseModel {
 
     public List<ProductItem> getAllEnabledProductItems() {
 
-        ArrayList<ProductItem> result = new ArrayList<ProductItem>();
+        ArrayList<ProductItem> result = new ArrayList<>();
         for (Contact contact : getContacts()) {
             result.addAll(getEnabledProductItems(contact));
         }
@@ -497,7 +497,7 @@ public class PurchaseModel {
         /**
          * map contains error for by course class id. we use courseClassId as key because Enrolment can be recreated
          */
-        private Map<Long, String> courseClassErrors = new HashMap<Long, String>();
+        private Map<Long, String> courseClassErrors = new HashMap<>();
 
         private List<Enrolment> enabledEnrolments;
         private List<Enrolment> disabledEnrolments;
@@ -510,24 +510,24 @@ public class PurchaseModel {
         private List<ProductItem> disabledProductItems;
 
         public ContactNode() {
-            this.concessions = new ArrayList<ConcessionType>();
+            this.concessions = new ArrayList<>();
 
-            this.enabledEnrolments = new ArrayList<Enrolment>();
-            this.disabledEnrolments = new ArrayList<Enrolment>();
-			this.allEnrolments = new ArrayList<Enrolment>();
+            this.enabledEnrolments = new ArrayList<>();
+            this.disabledEnrolments = new ArrayList<>();
+			this.allEnrolments = new ArrayList<>();
 
-            this.enabledProductItems = new ArrayList<ProductItem>();
-            this.disabledProductItems = new ArrayList<ProductItem>();
+            this.enabledProductItems = new ArrayList<>();
+            this.disabledProductItems = new ArrayList<>();
         }
 
         private List<Enrolment> getAllEnrolments() {
-            List<Enrolment> result = new ArrayList<Enrolment>(enabledEnrolments);
+            List<Enrolment> result = new ArrayList<>(enabledEnrolments);
             result.addAll(disabledEnrolments);
             return Collections.unmodifiableList(allEnrolments);
         }
 
         private List<ProductItem> getAllProductItems() {
-            List<ProductItem> result = new ArrayList<ProductItem>(enabledProductItems);
+            List<ProductItem> result = new ArrayList<>(enabledProductItems);
             result.addAll(disabledProductItems);
             return Collections.unmodifiableList(result);
         }

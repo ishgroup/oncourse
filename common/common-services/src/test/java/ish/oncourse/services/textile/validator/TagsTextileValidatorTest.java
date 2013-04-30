@@ -28,7 +28,7 @@ public class TagsTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, String> data = new HashMap<>();
 		for (TagsTextileAttributes attr : TagsTextileAttributes.values()) {
 			switch (attr) {
 			case TAGS_HIDE_TOP_LEVEL:

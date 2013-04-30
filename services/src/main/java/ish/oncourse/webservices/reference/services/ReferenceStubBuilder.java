@@ -22,7 +22,7 @@ import org.apache.cayenne.Persistent;
 @SuppressWarnings("rawtypes")
 public class ReferenceStubBuilder {
 
-	private Map<String, IReferenceStubBuilder> builders = new HashMap<String, IReferenceStubBuilder>();
+	private Map<String, IReferenceStubBuilder> builders = new HashMap<>();
 
 	public ReferenceStubBuilder() {
 		builders.put(getClassName(Country.class), new CountryStubBuilder());

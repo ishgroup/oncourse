@@ -61,7 +61,7 @@ public class ArrayOfRecognitionManager {
      */
     public List<RecognitionManager> getRecognitionManager() {
         if (recognitionManager == null) {
-            recognitionManager = new ArrayList<RecognitionManager>();
+            recognitionManager = new ArrayList<>();
         }
         return this.recognitionManager;
     }

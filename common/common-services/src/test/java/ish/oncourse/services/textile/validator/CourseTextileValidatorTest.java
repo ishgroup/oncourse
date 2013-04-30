@@ -49,7 +49,7 @@ public class CourseTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, String> data = new HashMap<>();
 		for (CourseTextileAttributes attr : CourseTextileAttributes.values()) {
 			switch (attr) {
 			case COURSE_PARAM_CODE:

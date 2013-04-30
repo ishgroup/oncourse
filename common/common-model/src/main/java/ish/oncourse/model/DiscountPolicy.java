@@ -47,7 +47,7 @@ public abstract class DiscountPolicy {
 	 * @return filtered discounts.
 	 */
 	public List<Discount> filterDiscounts(List<Discount> discounts, Money feeExGst) {
-		List<Discount> result = new ArrayList<Discount>();
+		List<Discount> result = new ArrayList<>();
 
 		result = getApplicableByPolicy(discounts);
 

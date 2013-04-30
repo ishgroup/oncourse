@@ -104,7 +104,7 @@ public class Courses {
 	}
 
 	public List<Long> getPreviouslyLoadedCourseIds() {
-		List<Long> loadedCourses = new ArrayList<Long>(coursesIds.size() + loadedCoursesIds.size());
+		List<Long> loadedCourses = new ArrayList<>(coursesIds.size() + loadedCoursesIds.size());
 		loadedCourses.addAll(loadedCoursesIds);
 		loadedCourses.addAll(coursesIds);
 		return loadedCourses;
@@ -115,8 +115,8 @@ public class Courses {
 		int start = getIntParam(request.getParameter("start"), START_DEFAULT);
 		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
 		sitesParameter = request.getParameter("sites");
-		sitesIds = new ArrayList<Long>();
-		loadedCoursesIds = new ArrayList<Long>();
+		sitesIds = new ArrayList<>();
+		loadedCoursesIds = new ArrayList<>();
 		if (isXHR() && start != 0) {
 			String loadedCoursesIdsString = request.getParameter("loadedCoursesIds");
 			if (StringUtils.trimToNull(loadedCoursesIdsString) != null) {
@@ -157,13 +157,13 @@ public class Courses {
 			searchParams = null;
 			focusesForMapSites = null;
 		}
-		coursesIds = new ArrayList<Long>();
+		coursesIds = new ArrayList<>();
 		updateIdsAndIndexes();
 	}
 
 	private void updateIdsAndIndexes() {
 		itemIndex = itemIndex + courses.size();
-		List<Course> duplicatedCourses = new ArrayList<Course>();
+		List<Course> duplicatedCourses = new ArrayList<>();
 		for (Course course : courses) {
 			Long courseId = course.getId();
 			if (loadedCoursesIds.contains(courseId)) {
@@ -188,9 +188,9 @@ public class Courses {
 	}
 
 	private void setupMapSites() {
-		mapSites = new ArrayList<Site>();
+		mapSites = new ArrayList<>();
 		if (hasAnyFormValuesForFocus()) {
-			focusesForMapSites = new HashMap<Long, Float>();
+			focusesForMapSites = new HashMap<>();
 		}
 
 
@@ -255,7 +255,7 @@ public class Courses {
 
 		if (isHasInvalidSearchTerms()) {
 			coursesCount = 0;
-			return new ArrayList<Course>();
+			return new ArrayList<>();
 		}
 		return searchCourses(start, rows);
 	}
@@ -267,7 +267,7 @@ public class Courses {
 		if (coursesCount == null) {
 			coursesCount = ((Number) list.getNumFound()).intValue();
 		}
-		List<String> ids = new ArrayList<String>(list.size());
+		List<String> ids = new ArrayList<>(list.size());
 		for (SolrDocument doc : list) {
 			ids.add((String) doc.getFieldValue(SOLR_DOCUMENT_ID_FIELD));
 		}

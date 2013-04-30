@@ -36,7 +36,7 @@ public class CourseClassDetails {
 	public void beforeRender() {
 		courseClass = (CourseClass) request.getAttribute(CourseClass.class.getSimpleName());
 
-		timetableLabels = new ArrayList<String>();
+		timetableLabels = new ArrayList<>();
 		timetableLabels.add("When");
 		timetableLabels.add("Time");
 		timetableLabels.add("Where");

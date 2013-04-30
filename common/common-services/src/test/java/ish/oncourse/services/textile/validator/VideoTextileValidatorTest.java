@@ -18,7 +18,7 @@ public class VideoTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, String> data = new HashMap<>();
 		for (VideoTextileAttributes attr : VideoTextileAttributes.values()) {
 			switch (attr) {
 			case VIDEO_PARAM_HEIGHT:

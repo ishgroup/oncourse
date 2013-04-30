@@ -95,7 +95,7 @@ public class TagItem {
 	}
 
 	public String getTagItemClass() {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 
 		if ((!tag.getWebVisibleTags().isEmpty()) && (maxLevels == null || maxLevels > currentDepth + 1)) {
 			result.append(messages.get("li.class.hasChildren"));

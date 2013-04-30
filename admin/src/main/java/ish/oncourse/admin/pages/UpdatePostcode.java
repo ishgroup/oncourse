@@ -146,7 +146,7 @@ public class UpdatePostcode {
 					} catch (UnsupportedEncodingException e2) {
 						encodedSubUrb = StringUtils.EMPTY;
 					}
-					final StringBuffer url = new StringBuffer(GOOGLE_MAPS_API_GEOCODE_ADDRESS).append(encodedSubUrb).append(",")
+					final StringBuilder url = new StringBuilder(GOOGLE_MAPS_API_GEOCODE_ADDRESS).append(encodedSubUrb).append(",")
 						.append(postcode.getPostcode()).append(AUSTRALIA_SEARCH_COUNTRY_POSTFIX);
 					final String result = requestPostcode(url.toString());
 					try {
@@ -179,7 +179,7 @@ public class UpdatePostcode {
 		}
 		
 		private List<BigDecimal> parseResponse(final String response, final String originalCode) throws Throwable {
-			final List<BigDecimal> geometry = new ArrayList<BigDecimal>(2);
+			final List<BigDecimal> geometry = new ArrayList<>(2);
 			DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
 			domFactory.setNamespaceAware(true);
 			DocumentBuilder builder = domFactory.newDocumentBuilder();

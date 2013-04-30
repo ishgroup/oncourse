@@ -56,7 +56,7 @@ public class PageTextileRenderer extends AbstractRenderer {
 				node = webNodeService.getRandomNode();
 			}
 			if (node != null) {
-				Map<String, Object> parameters = new HashMap<String, Object>();
+				Map<String, Object> parameters = new HashMap<>();
 				parameters.put(IWebNodeService.NODE, node);
 				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_PAGE_PAGE, parameters);
 			} else {

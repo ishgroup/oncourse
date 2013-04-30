@@ -12,6 +12,56 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="TEST" name="jetty-jndi-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" exported="" name="jms-1.1" level="project" />
+    <orderEntry type="library" exported="" name="servlet-api-2.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="geronimo-jta_1.1_spec-1.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="objenesis-1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="jetty-io-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" exported="" name="tapestry-ioc-5.2.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="jetty-xml-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" exported="" name="tapestry-core-5.2.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="bcprov-jdk15-135" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-2.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="jetty-http-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" scope="TEST" name="selenium-server-1.0.3-standalone" level="project" />
+    <orderEntry type="library" scope="TEST" name="jetty-security-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" exported="" name="tapestry5-annotations-5.2.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="tapestry-test-5.2.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="jetty-util-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" scope="TEST" name="selenium-server-coreless-1.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="jetty-server-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.6.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="org.mortbay.jetty-5.1.12" level="project" />
+    <orderEntry type="library" scope="TEST" name="selenium-core-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="log4j-1.2.17" level="project" />
+    <orderEntry type="library" scope="TEST" name="mockito-core-1.9.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="ant-1.7.1" level="project" />
+    <orderEntry type="library" exported="" name="tapestry-func-5.2.6" level="project" />
+    <orderEntry type="library" exported="" name="javassist-3.12.1.GA" level="project" />
+    <orderEntry type="library" exported="" name="antlr-runtime-3.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="ant-launcher-1.7.1" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-log4j12-1.6.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="hamcrest-core-1.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="dbunit-2.4.8" level="project" />
+    <orderEntry type="library" exported="" name="tapestry-upload-5.2.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="jetty-servlet-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" scope="TEST" name="jetty-plus-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" scope="TEST" name="jetty-webapp-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" scope="TEST" name="junit-4.11" level="project" />
+    <orderEntry type="library" scope="TEST" name="testng-5.12.1" level="project" />
+    <orderEntry type="library" exported="" name="commons-collections-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="commons-fileupload-1.2" level="project" />
+    <orderEntry type="library" exported="" name="commons-codec-1.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="mail-1.4.5" level="project" />
+    <orderEntry type="library" exported="" name="tapestry-json-5.2.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="jetty-continuation-7.0.0.v20091005" level="project" />
+    <orderEntry type="library" exported="" name="oscache-2.4.1" level="project" />
+    <orderEntry type="library" exported="" name="commons-logging-1.1.1" level="project" />
+    <orderEntry type="module" module-name="common-test" scope="TEST" />
+    <orderEntry type="module" module-name="common-model" exported="" />
+    <orderEntry type="module" module-name="common-services" exported="" />
+    <orderEntry type="module" module-name="common-ui" exported="" />
   </component>
 </module>
 

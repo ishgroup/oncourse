@@ -35,8 +35,8 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 	private ContactCredentials contactCredentials = new ContactCredentials();
 	private Contact contact;
 
-	private Map<String, String> errors = new HashMap<String, String>();
-	private Map<String, String> warnings = new HashMap<String, String>();
+	private Map<String, String> errors = new HashMap<>();
+	private Map<String, String> warnings = new HashMap<>();
 
 	private List<String> visibleFields;
 

@@ -67,8 +67,8 @@ public class CourseSearchForm {
 			}
 		});
 
-		this.tagModel = new ListSelectModel<Tag>(subjectTagChildTags, Tag.NAME_PROPERTY, access);
-		this.tagEnc = new ListValueEncoder<Tag>(subjectTagChildTags, "id", access);
+		this.tagModel = new ListSelectModel<>(subjectTagChildTags, Tag.NAME_PROPERTY, access);
+		this.tagEnc = new ListValueEncoder<>(subjectTagChildTags, "id", access);
 	}
 
 	URL onActionFromSearch() {

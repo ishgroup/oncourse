@@ -181,7 +181,7 @@ public class TrainingComponentContactRole {
      */
     public List<String> getRequiredTrainingComponentTypes() {
         if (requiredTrainingComponentTypes == null) {
-            requiredTrainingComponentTypes = new ArrayList<String>();
+            requiredTrainingComponentTypes = new ArrayList<>();
         }
         return this.requiredTrainingComponentTypes;
     }

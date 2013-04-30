@@ -27,7 +27,7 @@ public class AttachmentTextileRenderer extends AbstractRenderer {
 		if (!errors.hasFailures()) {
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 					AttachmentTextileAttributes.getAttrValues());
-			Map<String, Object> parameters = new HashMap<String, Object>();
+			Map<String, Object> parameters = new HashMap<>();
 			parameters.put(TextileUtil.TEXTILE_ATTACHMENT_PAGE_PARAM, tagParams);
 			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_ATTACHMENT_PAGE,
 					parameters);

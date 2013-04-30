@@ -14,7 +14,7 @@ public class ListValueEncoder<T> implements ValueEncoder<T> {
 
 	public ListValueEncoder(List<T> list, String idField, PropertyAccess access) {
 		if (list == null) {
-			list = new ArrayList<T>();
+			list = new ArrayList<>();
 		}
 		if (idField != null && !idField.equalsIgnoreCase("null")) {
 			if (!list.isEmpty()) {

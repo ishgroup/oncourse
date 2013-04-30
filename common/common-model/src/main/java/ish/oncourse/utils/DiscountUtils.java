@@ -126,7 +126,7 @@ public class DiscountUtils {
 	 */
 
 	public static List<Discount> chooseBestDiscountsVariant(List<Discount> discounts, Money feeExGst) {
-		Vector<Discount> chosenDiscounts = new Vector<Discount>();
+		Vector<Discount> chosenDiscounts = new Vector<>();
 		if (discounts != null && !discounts.isEmpty()) {
 			// figure out the best deal for the customer.
 			// first try all the discounts which could be combined.
@@ -202,7 +202,7 @@ public class DiscountUtils {
 	 * @return
 	 */
 	public static String getEligibilityConditions(List<Discount> applicableDiscounts) {
-		StringBuffer result = new StringBuffer(FOR_STUDENTS_START_STRING);
+		StringBuilder result = new StringBuilder(FOR_STUDENTS_START_STRING);
 		boolean hasFilter = false;
 		for (Discount discount : applicableDiscounts) {
 			if ((discount.hasEligibilityFilter() 
@@ -230,7 +230,7 @@ public class DiscountUtils {
 	public static List<Discount> getFilteredDiscounts(CourseClass courseClass) {
 		List<Discount> classDiscountsWithoutCode = (ExpressionFactory.matchExp(Discount.CODE_PROPERTY, null))
 			.orExp(ExpressionFactory.matchExp(Discount.CODE_PROPERTY, StringUtils.EMPTY)).filterObjects(getPotentialClassDiscounts(courseClass));
-		List<Discount> discounts = new ArrayList<Discount>(classDiscountsWithoutCode.size());
+		List<Discount> discounts = new ArrayList<>(classDiscountsWithoutCode.size());
 		for (Discount discount : classDiscountsWithoutCode) {
 			if (hasAnyFiltering(discount)) {
 				discounts.add(discount);
@@ -248,7 +248,7 @@ public class DiscountUtils {
 	}
 	
 	private static String buildEligibilityConditionText(final Discount discount) {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		if (discount.getStudentEnrolledWithinDays() != null) {
 			result.append(ENROLLED_WITHIN_CONDITION_TEXT).append(discount.getStudentEnrolledWithinDays());
 		}

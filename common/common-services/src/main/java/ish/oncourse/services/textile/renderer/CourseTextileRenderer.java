@@ -60,7 +60,7 @@ public class CourseTextileRenderer extends AbstractRenderer {
 				course = courseService.getCourse(tagName);
 			}
 			if (course != null) {
-				Map<String, Object> parameters = new HashMap<String, Object>();
+				Map<String, Object> parameters = new HashMap<>();
 				parameters.put(TextileUtil.TEXTILE_COURSE_PAGE_PARAM, course);
 				parameters.put(TextileUtil.TEXTILE_COURSE_SHOW_CLASSES_PARAM, showClasses);
 				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_PAGE, parameters);

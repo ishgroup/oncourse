@@ -93,7 +93,7 @@ public abstract class AbstractDiscountPolicyTest {
 		nonAvailableDiscountWithAmount.setHideOnWeb(false);
 		nonAvailableDiscountWithAmount.setIsAvailableOnWeb(false);
 		
-		promotions = new ArrayList<Discount>();
+		promotions = new ArrayList<>();
 		promotions.add(combDiscountWithAmount);
 		promotions.add(singleDiscountWithRateMin);
 	}

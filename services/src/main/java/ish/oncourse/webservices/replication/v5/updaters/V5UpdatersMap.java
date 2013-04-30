@@ -80,7 +80,7 @@ private Map<String, IWillowUpdater> updaterMap;
 	 */
 	public Map<String, IWillowUpdater> getUpdaterMap() {
 		if (updaterMap == null) {
-			updaterMap = new HashMap<String, IWillowUpdater>();
+			updaterMap = new HashMap<>();
 		}
 		return updaterMap;
 	}

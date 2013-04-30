@@ -96,7 +96,7 @@ public class StringUtilities extends Object {
 			return new String("");
 		}
 
-		StringBuffer sb = new StringBuffer(string.length());
+		StringBuilder sb = new StringBuilder(string.length());
 		// true if last char was blank
 		boolean lastWasBlankChar = false;
 		int len = string.length();
@@ -162,7 +162,7 @@ public class StringUtilities extends Object {
 
 	public static String[] linesFromInputStream(InputStream in)
 			throws IOException {
-		List<String> lines = new ArrayList<String>();
+		List<String> lines = new ArrayList<>();
 		if (in != null) {
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(in));
@@ -191,7 +191,7 @@ public class StringUtilities extends Object {
 	 * @return The converted string.
 	 */
 	public static String stripAlphas(String string) {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 
 		if (string != null) {
 			for (int i = 0, count = string.length(); i < count; i++) {

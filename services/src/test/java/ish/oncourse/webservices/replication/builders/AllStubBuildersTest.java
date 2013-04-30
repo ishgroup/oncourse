@@ -55,7 +55,7 @@ public class AllStubBuildersTest extends ServiceTest {
     ) {
         ICayenneService cayenneService = getService(ICayenneService.class);
         E entity = Cayenne.objectForPK(cayenneService.sharedContext(), entityClass, entityId);
-        StubBuilderTestHelper<E, S> stubBuilderTestHelper = new StubBuilderTestHelper<E, S>(entity,excludeProperty);
+        StubBuilderTestHelper<E, S> stubBuilderTestHelper = new StubBuilderTestHelper<>(entity,excludeProperty);
         stubBuilderTestHelper.assertStubBuilder(stubBuilder);
     }
 

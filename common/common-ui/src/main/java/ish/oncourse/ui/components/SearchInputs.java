@@ -62,7 +62,7 @@ public class SearchInputs {
 			}
 		});
 		
-		tagNames = new ArrayList<String>();
+		tagNames = new ArrayList<>();
 		for(Tag tag:subjectTagChildTags){
 			tagNames.add(tag.getName());
 		}

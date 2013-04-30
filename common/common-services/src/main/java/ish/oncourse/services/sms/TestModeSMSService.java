@@ -12,6 +12,6 @@ public class TestModeSMSService implements ISMSService {
 
 	@Override
 	public Pair<MessageStatus, String> sendSMS(String sessionId, String from, String to, String text) {
-		return new Pair<MessageStatus, String>(MessageStatus.SENT, "message was sent");
+		return new Pair<>(MessageStatus.SENT, "message was sent");
 	}
 }

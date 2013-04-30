@@ -52,7 +52,7 @@ public class TimetableList {
 
 	@SetupRender
 	void setupRender() {
-		this.sessionsByDate = new LinkedHashMap<Date, List<Session>>();
+		this.sessionsByDate = new LinkedHashMap<>();
 
 		Calendar cal = Calendar.getInstance();
 
@@ -66,7 +66,7 @@ public class TimetableList {
 			curMonth = cal.get(Calendar.MONTH);
 			curYear = cal.get(Calendar.YEAR);
 
-			List<Session> bucket = new ArrayList<Session>(5);
+			List<Session> bucket = new ArrayList<>(5);
 			bucket.add(sessions.get(0));
 			sessionsByDate.put(sessions.get(0).getStartDate(), bucket);
 
@@ -75,7 +75,7 @@ public class TimetableList {
 				cal.setTime(s.getStartDate());
 
 				if (cal.get(Calendar.DAY_OF_MONTH) != curDay || cal.get(Calendar.MONTH) != curMonth || cal.get(Calendar.YEAR) != curYear) {
-					bucket = new ArrayList<Session>(5);
+					bucket = new ArrayList<>(5);
 					sessionsByDate.put(s.getStartDate(), bucket);
 				}
 
@@ -131,7 +131,7 @@ public class TimetableList {
 	}
 	
 	public List<Tutor> getTutors() {
-		List<Tutor> tutors = new ArrayList<Tutor>();
+		List<Tutor> tutors = new ArrayList<>();
 		List<TutorRole> tutorRoles = session.getCourseClass().getTutorRoles();
 		for (TutorRole tutorRole : tutorRoles) {
 			tutors.add(tutorRole.getTutor());

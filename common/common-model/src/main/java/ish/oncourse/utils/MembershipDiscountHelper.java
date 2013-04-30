@@ -13,11 +13,11 @@ public class MembershipDiscountHelper {
     private Discount discount;
     private Contact contact;
 
-    private HashMap<ContactRelationType,List<MembershipProduct>> relations = new HashMap<ContactRelationType, List<MembershipProduct>>();
+    private HashMap<ContactRelationType,List<MembershipProduct>> relations = new HashMap<>();
 
 
     private List<MembershipProduct> getMembershipProductsBy(Contact contact) {
-        List<MembershipProduct> membershipProducts = new ArrayList<MembershipProduct>();
+        List<MembershipProduct> membershipProducts = new ArrayList<>();
         List<Membership> memberships = contact.getMemberships();
         for (Membership membership : memberships)
             membershipProducts.add((MembershipProduct) membership.getProduct());
@@ -29,7 +29,7 @@ public class MembershipDiscountHelper {
         List<MembershipProduct> result = relations.get(contactRelationType);
         if (result == null)
         {
-            result = new ArrayList<MembershipProduct>();
+            result = new ArrayList<>();
             relations.put(contactRelationType, result);
         }
         return result;

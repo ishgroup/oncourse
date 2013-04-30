@@ -29,7 +29,7 @@ public class PaymentEditorParserTest {
 
         Contact contact = mock(Contact.class);
         when(contact.getId()).thenReturn(1L);
-        contacts = new ArrayList<Contact>();
+        contacts = new ArrayList<>();
         contacts.add(contact);
 
         messages = mock(Messages.class);

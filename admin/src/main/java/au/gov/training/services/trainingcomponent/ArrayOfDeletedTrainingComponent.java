@@ -61,7 +61,7 @@ public class ArrayOfDeletedTrainingComponent {
      */
     public List<DeletedTrainingComponent> getDeletedTrainingComponent() {
         if (deletedTrainingComponent == null) {
-            deletedTrainingComponent = new ArrayList<DeletedTrainingComponent>();
+            deletedTrainingComponent = new ArrayList<>();
         }
         return this.deletedTrainingComponent;
     }

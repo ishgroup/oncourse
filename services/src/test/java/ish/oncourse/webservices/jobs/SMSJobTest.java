@@ -59,7 +59,7 @@ public class SMSJobTest extends ServiceTest {
 
 		when(smsService.authenticate()).thenReturn("123456");
 		when(smsService.sendSMS(anyString(), anyString(), anyString(), anyString())).thenReturn(
-				new Pair<MessageStatus, String>(MessageStatus.SENT, "success"));
+				new Pair<>(MessageStatus.SENT, "success"));
 
 		SMSJob smsJob = new SMSJob(messagePersonService, smsService, prefFactory, cayenneService);
 		smsJob.execute();
@@ -97,7 +97,7 @@ public class SMSJobTest extends ServiceTest {
 
 		when(mock2.authenticate()).thenReturn(null);
 		when(mock2.sendSMS(anyString(), anyString(), anyString(), anyString())).thenReturn(
-				new Pair<MessageStatus, String>(MessageStatus.SENT, "success"));
+				new Pair<>(MessageStatus.SENT, "success"));
 
 		smsJob = new SMSJob(messagePersonService, mock2, prefFactory, cayenneService);
 		smsJob.execute();
@@ -123,7 +123,7 @@ public class SMSJobTest extends ServiceTest {
 
 		when(smsService.authenticate()).thenReturn("123456");
 		when(smsService.sendSMS(anyString(), anyString(), anyString(), anyString())).thenReturn(
-				new Pair<MessageStatus, String>(MessageStatus.SENT, "success"));
+				new Pair<>(MessageStatus.SENT, "success"));
 
 		updateCreatedDate();
 

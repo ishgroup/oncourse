@@ -267,7 +267,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 */
 	private Invoice findActiveInvoice() {
 
-		SortedSet<Invoice> invoices = new TreeSet<Invoice>(new Comparator<Invoice>() {
+		SortedSet<Invoice> invoices = new TreeSet<>(new Comparator<Invoice>() {
 			public int compare(Invoice o1, Invoice o2) {
 				return (getSource() == PaymentSource.SOURCE_ONCOURSE) ? o2.getInvoiceNumber().compareTo(o1.getInvoiceNumber()) : o2.getId()
 						.compareTo(o1.getId());
@@ -409,7 +409,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	@Deprecated
 	private void revertTheVoucherRedemption() {
 		//also check that vouchers linked with the payment to avoid the state when vouchers will be partially used with abandoned payment.
-		final List<VoucherPaymentIn> objectsForDelete = new ArrayList<VoucherPaymentIn>();
+		final List<VoucherPaymentIn> objectsForDelete = new ArrayList<>();
 		for (VoucherPaymentIn voucherPaymentIn : getVoucherPaymentIns()) {
 			if (!PaymentType.VOUCHER.equals(getType())) {
 				LOG.error(String.format("Not voucher paymentIn with id %s have linked vouchers!", getId()));

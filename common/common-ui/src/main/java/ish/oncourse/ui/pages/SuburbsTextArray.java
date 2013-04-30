@@ -27,7 +27,7 @@ public class SuburbsTextArray extends SuburbAutocomplete {
 				searchParam);
 		
 		if (!responseResults.isEmpty()) {
-			strings = new ArrayList<String>(responseResults.size());
+			strings = new ArrayList<>(responseResults.size());
 			for (SolrDocument doc : responseResults) {
 				strings.add((String) doc.getFieldValue("suburb") + " "
 						+ (String) doc.getFieldValue("postcode"));

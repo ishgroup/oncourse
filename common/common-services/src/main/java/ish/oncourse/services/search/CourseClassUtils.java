@@ -124,7 +124,7 @@ public class CourseClassUtils {
 	private static float focusMatchForDays(final CourseClass courseClass, final String searchDay) {
 		float result = 0.0f;
 		if (courseClass.getDaysOfWeek() != null) {
-			List<String> uniqueDays = new ArrayList<String>();
+			List<String> uniqueDays = new ArrayList<>();
 			uniqueDays.addAll(courseClass.getDaysOfWeek());
 			for (String day : uniqueDays) {
                 if (PARAM_VALUE_weekday.equalsIgnoreCase(searchDay) && TimestampUtilities.DaysOfWorkingWeekNamesLowerCase.contains(day.toLowerCase()))

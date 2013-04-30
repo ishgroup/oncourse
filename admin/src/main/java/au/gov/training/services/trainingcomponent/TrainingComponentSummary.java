@@ -119,7 +119,7 @@ public class TrainingComponentSummary {
      */
     public List<String> getComponentType() {
         if (componentType == null) {
-            componentType = new ArrayList<String>();
+            componentType = new ArrayList<>();
         }
         return this.componentType;
     }
@@ -268,7 +268,7 @@ public class TrainingComponentSummary {
      */
     public List<String> getUsageReccomendation() {
         if (usageReccomendation == null) {
-            usageReccomendation = new ArrayList<String>();
+            usageReccomendation = new ArrayList<>();
         }
         return this.usageReccomendation;
     }

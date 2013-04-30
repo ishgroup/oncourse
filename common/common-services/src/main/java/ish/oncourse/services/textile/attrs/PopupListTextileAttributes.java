@@ -18,7 +18,7 @@ public enum PopupListTextileAttributes {
 
 	public static List<String> getAttrValues() {
 		PopupListTextileAttributes[] values = values();
-		List<String> attrValues = new ArrayList<String>(values.length);
+		List<String> attrValues = new ArrayList<>(values.length);
 
 		for (PopupListTextileAttributes attr : values) {
 			attrValues.add(attr.getValue());

@@ -19,7 +19,7 @@ public enum AttachmentTextileAttributes {
 	
 	public static List<String> getAttrValues() {
 		AttachmentTextileAttributes[] values = values();
-		List<String> attrValues = new ArrayList<String>(values.length);
+		List<String> attrValues = new ArrayList<>(values.length);
 		
 		for (AttachmentTextileAttributes attr : values) {
 			attrValues.add(attr.getValue());

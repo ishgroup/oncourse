@@ -62,7 +62,7 @@ public class MembershipDiscountHelperTest {
         when(discount.getDiscountMembershipProducts()).thenReturn(Collections.singletonList(discountMembership1));
         if (relationTypes != null)
         {
-            ArrayList<DiscountMembershipRelationType> list = new ArrayList<DiscountMembershipRelationType>();
+            ArrayList<DiscountMembershipRelationType> list = new ArrayList<>();
             for (ContactRelationType relationType : relationTypes) {
                 DiscountMembershipRelationType dmrt = mock(DiscountMembershipRelationType.class);
                 when(dmrt.getContactRelationType()).thenReturn(relationType);

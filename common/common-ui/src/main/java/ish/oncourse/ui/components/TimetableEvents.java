@@ -59,11 +59,11 @@ public class TimetableEvents {
 	}
 
 	public boolean isEvenRow() {
-		return this.listIndex != null && this.listIndex.intValue() % 2 == 0;
+		return this.listIndex != null && this.listIndex % 2 == 0;
 	}
 
 	public boolean isOddRow() {
-		return this.listIndex != null && this.listIndex.intValue() % 2 != 0;
+		return this.listIndex != null && this.listIndex % 2 != 0;
 	}
 
 	public Format getItemDateFormatter() {

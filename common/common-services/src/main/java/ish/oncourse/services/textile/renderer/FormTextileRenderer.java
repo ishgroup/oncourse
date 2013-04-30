@@ -35,13 +35,13 @@ public class FormTextileRenderer extends AbstractRenderer {
 		// TODO uncomment this when the validation of the form will be needed,
 		// now we just pass all the text
 		// if (errors.hasFailures()) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
+		Map<String, Object> parameters = new HashMap<>();
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag, FormTextileAttributes.getAttrValues());
 		parameters.put(TextileUtil.TEXTILE_FORM_PAGE_NAME_PARAM, tagParams.get(FormTextileAttributes.NAME.getValue()));
 		parameters.put(TextileUtil.TEXTILE_FORM_PAGE_EMAIL_PARAM, tagParams.get(FormTextileAttributes.EMAIL.getValue()));
 		parameters.put(TextileUtil.TEXTILE_FORM_PAGE_URL_PARAM, tagParams.get(FormTextileAttributes.URL.getValue()));
 
-		List<TextileFormField> fields = new ArrayList<TextileFormField>();
+		List<TextileFormField> fields = new ArrayList<>();
 		Pattern textPattern = Pattern.compile(TextileType.FORM_FIELDS_PATTERN);
 		Matcher textMatcher = textPattern.matcher(tag);
 		String content = tag.replaceAll("\\{form([^}]*)}", StringUtils.EMPTY);

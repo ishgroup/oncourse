@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CreditCardParser {
 
-	private List<Matcher> matchers = new ArrayList<Matcher>();
+	private List<Matcher> matchers = new ArrayList<>();
 
 	public CreditCardParser() {
 		matchers.add(new VisaMatcher());

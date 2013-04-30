@@ -51,7 +51,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
                 startConcessionEditor, addContact),
                 COMMON_ACTIONS);
         assertEquals(State.init.getAllowedActions(), Arrays.asList(init, addContact));
-        ArrayList<Action> actions = new ArrayList<Action>(COMMON_ACTIONS);
+        ArrayList<Action> actions = new ArrayList<>(COMMON_ACTIONS);
         actions.add(addDiscount);
         actions.add(removeDiscount);
         actions.add(proceedToPayment);

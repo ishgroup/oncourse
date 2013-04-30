@@ -65,8 +65,8 @@ public class SelectCollege {
 	}
 
 	public void setTheUsers(List<Contact> contacts, Set<College> collegesWithDuplicates) {
-		this.users = new ArrayList<String>(5);
-		this.collegesWithDuplicates = new ArrayList<String>();
+		this.users = new ArrayList<>(5);
+		this.collegesWithDuplicates = new ArrayList<>();
 
 		for (Contact c : contacts) {
 			if (collegesWithDuplicates.size() > 0) {

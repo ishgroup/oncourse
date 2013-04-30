@@ -100,7 +100,7 @@ public class ContactEditor {
 			contactEditorParser.setVisibleFields(delegate.getVisibleFields());
 			contactEditorParser.setDateFormat(FormatUtils.getDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT, getContact().getCollege().getTimeZone()));
 			contactEditorParser.parse();
-			Map<String,String> errors = new HashMap<String, String>(contactEditorParser.getErrors());
+			Map<String,String> errors = new HashMap<>(contactEditorParser.getErrors());
 
 			avetmissEditor.save();
 			errors.putAll(avetmissEditor.getErrors());

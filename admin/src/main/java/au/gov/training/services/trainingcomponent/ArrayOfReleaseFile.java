@@ -61,7 +61,7 @@ public class ArrayOfReleaseFile {
      */
     public List<ReleaseFile> getReleaseFile() {
         if (releaseFile == null) {
-            releaseFile = new ArrayList<ReleaseFile>();
+            releaseFile = new ArrayList<>();
         }
         return this.releaseFile;
     }

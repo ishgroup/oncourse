@@ -29,7 +29,7 @@ public class ReferenceService {
 	@Inject
 	public ReferenceService(ICountryService countryService, ILanguageService languageService, IQualificationService qualificationService,
 			IModuleService moduleService, ITrainingPackageService trainingPackageService) {
-		allServices = new LinkedList<IReferenceService<? extends Persistent>>();
+		allServices = new LinkedList<>();
 		allServices.add(countryService);
 		allServices.add(languageService);
 		allServices.add(trainingPackageService);
@@ -41,7 +41,7 @@ public class ReferenceService {
 	 * Combines the results accross all reference services for ishVersion.
 	 */
 	public List<Persistent> getForReplication(Long ishVersion) {
-		List<Persistent> list = new LinkedList<Persistent>();
+		List<Persistent> list = new LinkedList<>();
 		for (IReferenceService<? extends Persistent> service : allServices) {
 			List<? extends Persistent> records = service.getForReplication(ishVersion);
 			list.addAll(records);
@@ -54,7 +54,7 @@ public class ReferenceService {
 	 * reference entities.
 	 */
 	public Long findMaxIshVersion() {
-		SortedSet<Long> versions = new TreeSet<Long>();
+		SortedSet<Long> versions = new TreeSet<>();
 
 		for (IReferenceService<?> service : allServices) {
 			Long maxVersion = service.findMaxIshVersion();

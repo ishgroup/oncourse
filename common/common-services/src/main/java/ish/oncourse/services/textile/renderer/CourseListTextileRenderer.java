@@ -71,7 +71,7 @@ public class CourseListTextileRenderer extends AbstractRenderer {
 			if (courses.isEmpty()) {
 				tag = null;
 			} else {
-				Map<String, Object> parameters = new HashMap<String, Object>();
+				Map<String, Object> parameters = new HashMap<>();
 				parameters.put(TextileUtil.TEXTILE_COURSE_LIST_PAGE_PARAM, courses);
 				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_LIST_PAGE, parameters);
 			}

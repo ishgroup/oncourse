@@ -26,7 +26,7 @@ public class ConcessionParser implements IFieldsParser {
 
 	private Messages messages;
 
-	private Map<String, String> errors = new HashMap<String, String>();
+	private Map<String, String> errors = new HashMap<>();
 
 	private DateFormat dateFormat;
 

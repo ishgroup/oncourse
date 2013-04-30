@@ -66,7 +66,7 @@ public abstract class _WebNode extends CayenneDataObject {
     }
 	public boolean isPublished() {
         Boolean value = (Boolean)readProperty(PUBLISHED_PROPERTY);
-        return (value != null) ? value.booleanValue() : false;
+        return (value != null) ? value : false;
     }
 
     public void setDefaultWebURLAlias(WebUrlAlias defaultWebURLAlias) {

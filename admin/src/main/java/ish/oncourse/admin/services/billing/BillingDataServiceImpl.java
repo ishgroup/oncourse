@@ -6,21 +6,14 @@ import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
-
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.query.SQLTemplate;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import static ish.oncourse.admin.services.billing.Constants.DATE_MONTH_FORMAT;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class BillingDataServiceImpl implements IBillingDataService {
 	
@@ -41,7 +34,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 	
 	public static Map<Double, Double> getTasmaniaEcommerceMap(double thisMonth, Map<Long, Map<String, Object>> billingData) {
 		
-		Map<Double, Double> fees = new HashMap<Double, Double>();
+		Map<Double, Double> fees = new HashMap<>();
 		fees.put(3.50, 100000.0);
 		fees.put(3.00, 100000.0);
 		fees.put(1.80, 200000.0);
@@ -50,9 +43,9 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		fees.put(0.95, 1600000.0);
 		fees.put(0.90, 9999999999.0);
 		
-		Map<Double, Double> result = new HashMap<Double, Double>();
+		Map<Double, Double> result = new HashMap<>();
 		
-		BigDecimal tasmaniaYearToDate = (BigDecimal) billingData.get(new Long(15)).get("tasmaniaYearToDate");
+		BigDecimal tasmaniaYearToDate = (BigDecimal) billingData.get((long) 15).get("tasmaniaYearToDate");
 		double yearToDate = tasmaniaYearToDate == null ? 0 : tasmaniaYearToDate.doubleValue();
 		
 		for (Double key : fees.keySet()) {
@@ -97,7 +90,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
 			Integer freeTransactions = (Integer) r.get("freeTransactions");
 
-			if (freeTransactions != null && freeTransactions.intValue() != 0) {
+			if (freeTransactions != null && freeTransactions != 0) {
 				billingRow.put(key + "-free", freeTransactions);
 			}
 		}
@@ -113,7 +106,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		// SMS
 		SQLTemplate query = new SQLTemplate(MessagePerson.class, SQL_SMS);
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("from", from);
 		params.put("to", to);
 
@@ -174,7 +167,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 				data.get(tasmaniaId).put("tasmaniaYearToDate", new BigDecimal(0.0));
 			}
 			else {
-				Map<String, Object> tasmaniaParams = new HashMap<String, Object>();
+				Map<String, Object> tasmaniaParams = new HashMap<>();
 				
 				cal.setTime(from);
 				cal.set(Calendar.DAY_OF_YEAR, 1);
@@ -201,7 +194,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 	}
 
     private Map<Long, Map<String, Object>> createMap() {
-        Map<Long, Map<String, Object>> data = new HashMap<Long, Map<String, Object>>();
+        Map<Long, Map<String, Object>> data = new HashMap<>();
 
         for (College college : collegeService.allColleges()) {
             if (!data.containsKey(college.getId())) {

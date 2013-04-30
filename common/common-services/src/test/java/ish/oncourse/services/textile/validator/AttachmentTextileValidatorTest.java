@@ -56,7 +56,7 @@ public class AttachmentTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, String> data = new HashMap<>();
 		for (AttachmentTextileAttributes attr : AttachmentTextileAttributes.values()) {
 			switch (attr) {
 			case ATTACHMENT_PARAM_NAME:

@@ -75,8 +75,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	@Override
 	public GenericTransactionGroup processPayment(GenericTransactionGroup transaction) throws InternalReplicationFault {
 
-		List<GenericReplicatedRecord> replicatedRecords = new ArrayList<GenericReplicatedRecord>();
-		List<Enrolment> enrolments = new ArrayList<Enrolment>();
+		List<GenericReplicatedRecord> replicatedRecords = new ArrayList<>();
+		List<Enrolment> enrolments = new ArrayList<>();
 		PaymentIn paymentIn = null;
 		boolean isCreditCardPayment = false;
 
@@ -134,7 +134,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
 		try {
 			GenericTransactionGroup response = PortHelper.createTransactionGroup(transaction);
-			List<PaymentIn> updatedPayments = new LinkedList<PaymentIn>();
+			List<PaymentIn> updatedPayments = new LinkedList<>();
 			updatedPayments.add(paymentIn);
 			
 			//we also should check that this payment not linked with any invoices which also linked with another in transaction payments.
@@ -253,7 +253,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	 */
 	@Deprecated
 	public List<ObjectId> getLinesForConflictedInvoices(PaymentIn paymentForCheck) {
-		List<ObjectId> result = new ArrayList<ObjectId>();
+		List<ObjectId> result = new ArrayList<>();
 		for (PaymentInLine paymentInLine : paymentForCheck.getPaymentInLines()) {
 			Invoice invoice = paymentInLine.getInvoice();
 			for (PaymentInLine paymentInLineForCheck : invoice.getPaymentInLines()) {

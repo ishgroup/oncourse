@@ -61,7 +61,7 @@ public class ArrayOfUsageRecommendation {
      */
     public List<UsageRecommendation> getUsageRecommendation() {
         if (usageRecommendation == null) {
-            usageRecommendation = new ArrayList<UsageRecommendation>();
+            usageRecommendation = new ArrayList<>();
         }
         return this.usageRecommendation;
     }

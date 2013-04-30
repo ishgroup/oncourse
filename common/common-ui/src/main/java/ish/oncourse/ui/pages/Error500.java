@@ -43,7 +43,7 @@ public class Error500 implements ExceptionReporter {
 
 	public ArrayList<String> getStackTraces() {
 		StackTraceElement[] st = exception.getStackTrace();
-		ArrayList<String> stackTraceElementMessage = new ArrayList<String>();
+		ArrayList<String> stackTraceElementMessage = new ArrayList<>();
 
 		for (StackTraceElement ste : st) {
 			stackTraceElementMessage.add(ste.toString());

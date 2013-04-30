@@ -47,7 +47,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/Arrays", name = "ArrayOfstring")
     public JAXBElement<ArrayOfstring> createArrayOfstring(ArrayOfstring value) {
-        return new JAXBElement<ArrayOfstring>(_ArrayOfstring_QNAME, ArrayOfstring.class, null, value);
+        return new JAXBElement<>(_ArrayOfstring_QNAME, ArrayOfstring.class, null, value);
     }
 
 }

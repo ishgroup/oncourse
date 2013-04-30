@@ -21,7 +21,7 @@ public enum VideoTextileAttributes {
 
 	public static List<String> getAttrValues() {
 		VideoTextileAttributes[] values = values();
-		List<String> attrValues = new ArrayList<String>(values.length);
+		List<String> attrValues = new ArrayList<>(values.length);
 		
 		for (VideoTextileAttributes attr : values) {
 			attrValues.add(attr.getValue());

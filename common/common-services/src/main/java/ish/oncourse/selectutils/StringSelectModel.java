@@ -24,7 +24,7 @@ public class StringSelectModel extends AbstractSelectModel implements
 
 	public List<OptionModel> getOptions() {
 
-		List<OptionModel> optionModels = new ArrayList<OptionModel>(
+		List<OptionModel> optionModels = new ArrayList<>(
 				labels.length);
 
 		for (String label : labels) {

@@ -72,7 +72,7 @@ public class CourseClassPrice {
 	private void fillAppliedDiscountsTooltip() {
 		dateFormat = FormatUtils.getShortDateFormat(courseClass.getCollege().getTimeZone());
 		if (!applicableDiscounts.isEmpty()) {
-			StringBuffer appliedDiscountsTitleBuf = new StringBuffer(applicableDiscounts.get(0).getName());
+			StringBuilder appliedDiscountsTitleBuf = new StringBuilder(applicableDiscounts.get(0).getName());
 			if (applicableDiscounts.size() > 1) {
 				appliedDiscountsTitleBuf.append(" combined with: ");
 				for (int i = 1; i < applicableDiscounts.size(); i++) {
@@ -97,7 +97,7 @@ public class CourseClassPrice {
 		Money money = null;
 		DiscountItem discountItem = null;
 
-		discountItems = new ArrayList<DiscountItem>();
+		discountItems = new ArrayList<>();
 
 		for (Discount discount : potentialDiscounts) {
 			Money dMoney = courseClass.getDiscountedFeeIncTax(Arrays.asList(discount));
@@ -158,7 +158,7 @@ public class CourseClassPrice {
 	public static final class DiscountItem
 	{
 		private static final String DIVIDER = " / ";
-		private List<Discount> discounts = new ArrayList<Discount>();
+		private List<Discount> discounts = new ArrayList<>();
 		private Money feeIncTax;
 
 
@@ -167,7 +167,7 @@ public class CourseClassPrice {
 
 		public void init()
 		{
-			List<String> strings = new ArrayList<String>();
+			List<String> strings = new ArrayList<>();
 			for (Discount  discount : discounts) {
 				strings.add(discount.getName());
 			}

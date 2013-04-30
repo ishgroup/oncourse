@@ -113,7 +113,7 @@ public class SearchParams {
 
     public List<Suburb> getSuburbs() {
         if (suburbs == null) {
-            suburbs = new ArrayList<Suburb>();
+            suburbs = new ArrayList<>();
             if (near != null) {
                 for (SolrDocument solrDocument : near)
                     suburbs.add(Suburb.valueOf(solrDocument, getKm()));

@@ -64,7 +64,7 @@ public class MailingLists {
 	void beforeRender() {
 		this.currentUser = authService.getUser();
 		this.mailingLists = tagService.getMailingLists();
-		this.selectedMailingLists = new ArrayList<Long>();
+		this.selectedMailingLists = new ArrayList<>();
 		initSelectedLists();
 	}
 	
@@ -109,7 +109,7 @@ public class MailingLists {
 	public void onSubmitFromMailingListForm() {
 		this.isSaved = true;
 
-		Set<Tag> listOfUser = new HashSet<Tag>(tagService.getMailingListsContactSubscribed(currentUser));
+		Set<Tag> listOfUser = new HashSet<>(tagService.getMailingListsContactSubscribed(currentUser));
 		ObjectContext objectContext = cayenneService.newContext();
 
 		for (Long id : selectedMailingLists) {
@@ -138,7 +138,7 @@ public class MailingLists {
 		}
 
 		if (!listOfUser.isEmpty()) {
-			for (Tag tag : new ArrayList<Tag>(listOfUser)) {
+			for (Tag tag : new ArrayList<>(listOfUser)) {
 				College currentCollege = webSiteService.getCurrentCollege();
 				Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
 						.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, currentUser.getId()))
@@ -148,8 +148,8 @@ public class MailingLists {
 				SelectQuery q = new SelectQuery(Taggable.class, qual);
 				List<Taggable> taggableList = objectContext.performQuery(q);
 
-				for (Taggable t : new ArrayList<Taggable>(taggableList)) {
-					for (final TaggableTag tg : new ArrayList<TaggableTag>(t.getTaggableTags())) {
+				for (Taggable t : new ArrayList<>(taggableList)) {
+					for (final TaggableTag tg : new ArrayList<>(t.getTaggableTags())) {
 						objectContext.deleteObject(tg);
 						objectContext.deleteObject(t);
 					}

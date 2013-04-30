@@ -25,12 +25,16 @@ public class TimezoneHolder {
 	StreamResponse onActionFromSetupOffset() {
 		for (String parameter : request.getParameterNames()) {
 			String value = request.getParameter(parameter);
-			if (OFFSET_PARAMETER.equals(parameter)) {
-				cookiesService.writeCookieValue(CookiesService.CLIENT_TIMEZONE_OFFSET_IN_MINUTES, value);
-			} else if (TIMEZONE_NAME_PARAMETER.equals(parameter)) {
-				cookiesService.writeCookieValue(CookiesService.CLIENT_TIMEZONE_NAME, value);
-			} else {
-				LOGGER.error(String.format("Unexpected param %s with value %s for timezone holder passed", parameter, value));
+			switch (parameter) {
+				case OFFSET_PARAMETER:
+					cookiesService.writeCookieValue(CookiesService.CLIENT_TIMEZONE_OFFSET_IN_MINUTES, value);
+					break;
+				case TIMEZONE_NAME_PARAMETER:
+					cookiesService.writeCookieValue(CookiesService.CLIENT_TIMEZONE_NAME, value);
+					break;
+				default:
+					LOGGER.error(String.format("Unexpected param %s with value %s for timezone holder passed", parameter, value));
+					break;
 			}
 		}
 		return new TextStreamResponse(JSON_RESPONSE_TYPE, STATUS_OK_RESPONSE);

@@ -61,7 +61,7 @@ public class ArrayOfRelease {
      */
     public List<Release> getRelease() {
         if (release == null) {
-            release = new ArrayList<Release>();
+            release = new ArrayList<>();
         }
         return this.release;
     }

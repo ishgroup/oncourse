@@ -52,7 +52,7 @@ public class SearchCriteria {
 
 	@SetupRender
 	void beforeRender() {
-		browseTagPath = new ArrayList<Tag>();
+		browseTagPath = new ArrayList<>();
 		
 		Tag browseTag = tagService.getBrowseTag();
 		
@@ -64,7 +64,7 @@ public class SearchCriteria {
 		searchString = request.getParameter("s");
 		String day = request.getParameter("day");
 		if(day!=null && !"".equals(day)){
-			searchDays=new ArrayList<String>(1);
+			searchDays=new ArrayList<>(1);
 			searchDays.add(day);
 		}
 		searchTime = request.getParameter("time");

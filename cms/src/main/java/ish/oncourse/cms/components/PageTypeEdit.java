@@ -104,7 +104,7 @@ public class PageTypeEdit {
 		if (pageType != null && pageType.getObjectId().isTemporary() && !RegionKey.unassigned.equals(regionKey)) {
 			//return no web content for temporary webNodeType because no web visibility exist for it,
 			//we exclude unassigned block because only this block may already have elements for manipulation
-			return new TreeSet<WebContent>(); 
+			return new TreeSet<>(); 
 		} else {
 			return webContentService.getBlocksForRegionKey(pageType, regionKey);
 		}

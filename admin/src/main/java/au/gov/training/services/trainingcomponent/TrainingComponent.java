@@ -206,7 +206,7 @@ public class TrainingComponent {
      */
     public List<String> getComponentType() {
         if (componentType == null) {
-            componentType = new ArrayList<String>();
+            componentType = new ArrayList<>();
         }
         return this.componentType;
     }

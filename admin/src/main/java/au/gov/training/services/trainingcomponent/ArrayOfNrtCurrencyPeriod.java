@@ -61,7 +61,7 @@ public class ArrayOfNrtCurrencyPeriod {
      */
     public List<NrtCurrencyPeriod> getNrtCurrencyPeriod() {
         if (nrtCurrencyPeriod == null) {
-            nrtCurrencyPeriod = new ArrayList<NrtCurrencyPeriod>();
+            nrtCurrencyPeriod = new ArrayList<>();
         }
         return this.nrtCurrencyPeriod;
     }

@@ -23,7 +23,7 @@ public class College extends _College {
 	}
 
 	public Set<String> getCollegeSiteStates() {
-		Set<String> states = new HashSet<String>();
+		Set<String> states = new HashSet<>();
 
 		for (Site site : getSites()) {
 			if (site.getState() != null) {
@@ -35,7 +35,7 @@ public class College extends _College {
 	}
 
 	public List<ConcessionType> getActiveConcessionTypes() {
-		List<ConcessionType> activeConcessionTypes = new ArrayList<ConcessionType>();
+		List<ConcessionType> activeConcessionTypes = new ArrayList<>();
 		for (ConcessionType concessionType : getConcessionTypes()) {
 			if (Boolean.TRUE.equals(concessionType.getIsConcession()) && Boolean.TRUE.equals(concessionType.getIsEnabled())) {
 				activeConcessionTypes.add(concessionType);

@@ -41,7 +41,7 @@ public class VoucherRedemptionHelper {
 	 * Default constructor.
 	 */
 	public VoucherRedemptionHelper() {
-		this.vouchers = new ArrayList<Voucher>();
+		this.vouchers = new ArrayList<>();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class VoucherRedemptionHelper {
 	 */
 	public List<PaymentIn> getPayments() {
 		if (payments == null) {
-			payments = new ArrayList<PaymentIn>();
+			payments = new ArrayList<>();
 		}
 		return payments;
 	}
@@ -83,7 +83,7 @@ public class VoucherRedemptionHelper {
 	 */
 	public List<Voucher> getVouchers() {
 		if (vouchers == null) {
-			vouchers = new ArrayList<Voucher>();
+			vouchers = new ArrayList<>();
 		}
 		Collections.sort(vouchers, new VoucherComparator());
 		return vouchers;
@@ -187,7 +187,7 @@ public class VoucherRedemptionHelper {
 		discardChanges();
 		if (!getVouchers().isEmpty() && !getInvoice().getInvoiceLines().isEmpty()) {
 			//check available vouchers for courses first
-			List<InvoiceLine> redeemedInvoiceLines = new ArrayList<InvoiceLine>();
+			List<InvoiceLine> redeemedInvoiceLines = new ArrayList<>();
 			List<Voucher> courseVouchers = ACTIVE_VOUCHER_QUALIFIER.filterObjects(COURSE_VOUCHER_QUALIFIER.filterObjects(getVouchers()));
 			for (Voucher courseVoucher : courseVouchers) {
 				for (InvoiceLine invoiceLine : getInvoice().getInvoiceLines()) {
@@ -203,7 +203,7 @@ public class VoucherRedemptionHelper {
 				}
 			}
 			//check available vouchers with money
-			List<RedeemedInvoiceLine> partiallyRedeemedInvoiceLines = new ArrayList<RedeemedInvoiceLine>();
+			List<RedeemedInvoiceLine> partiallyRedeemedInvoiceLines = new ArrayList<>();
 			//fill amount which need to be redeemed
 			for (InvoiceLine invoiceLine : getInvoice().getInvoiceLines()) {
 				if (!redeemedInvoiceLines.contains(invoiceLine)) {

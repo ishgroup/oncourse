@@ -61,7 +61,7 @@ public class ArrayOfDataManagerAssignment {
      */
     public List<DataManagerAssignment> getDataManagerAssignment() {
         if (dataManagerAssignment == null) {
-            dataManagerAssignment = new ArrayList<DataManagerAssignment>();
+            dataManagerAssignment = new ArrayList<>();
         }
         return this.dataManagerAssignment;
     }

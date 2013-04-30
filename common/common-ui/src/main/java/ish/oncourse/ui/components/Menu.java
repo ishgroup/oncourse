@@ -27,7 +27,7 @@ public class Menu {
 	
 	@SetupRender
 	boolean beforeRender() {
-		childPositions = new HashMap<WebMenu, Integer>();
+		childPositions = new HashMap<>();
 		return rootMenu != null;
 	}
 

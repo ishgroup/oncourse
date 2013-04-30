@@ -87,7 +87,7 @@ public class SolrQueryBuilder {
 
         fillCommons(q);
 
-        ArrayList<String> filters = new ArrayList<String>();
+        ArrayList<String> filters = new ArrayList<>();
         appendFilterS(filters);
         appendAnd(filters);
 
@@ -217,7 +217,7 @@ public class SolrQueryBuilder {
             Object tagParameter = params.getSubject();
             if (tagParameter instanceof Tag) {
                 Tag browseTag = (Tag) tagParameter;
-                ArrayList<String> tags = new ArrayList<String>();
+                ArrayList<String> tags = new ArrayList<>();
                 tags.add(String.format(FILTER_TEMPLATE_tagId, browseTag.getId()));
                 for (Tag t : browseTag.getAllWebVisibleChildren()) {
                     tags.add(QUERY_OR);

@@ -13,7 +13,7 @@ public class ValidationErrors implements Serializable {
 	private List<ValidationFailure> failures;
 
 	public ValidationErrors() {
-		failures = new ArrayList<ValidationFailure>();
+		failures = new ArrayList<>();
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class ValidationErrors implements Serializable {
 	}
 
 	public void clear() {
-		failures = new ArrayList<ValidationFailure>();
+		failures = new ArrayList<>();
 	}
 
 	public boolean contains(String error) {

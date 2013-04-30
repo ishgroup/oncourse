@@ -205,7 +205,7 @@ public class ReleaseComponent {
      */
     public List<String> getType() {
         if (type == null) {
-            type = new ArrayList<String>();
+            type = new ArrayList<>();
         }
         return this.type;
     }

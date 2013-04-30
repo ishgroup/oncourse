@@ -61,7 +61,7 @@ public class ArrayOfMapping {
      */
     public List<Mapping> getMapping() {
         if (mapping == null) {
-            mapping = new ArrayList<Mapping>();
+            mapping = new ArrayList<>();
         }
         return this.mapping;
     }

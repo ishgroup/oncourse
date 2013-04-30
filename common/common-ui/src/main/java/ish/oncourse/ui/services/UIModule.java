@@ -110,7 +110,7 @@ public class UIModule {
 	}
 
 	public static void contributeTypeCoercer(Configuration<CoercionTuple<PrivateResource, Resource>> configuration) {
-		configuration.add(new CoercionTuple<PrivateResource, Resource>(PrivateResource.class, Resource.class,
+		configuration.add(new CoercionTuple<>(PrivateResource.class, Resource.class,
 				new Coercion<PrivateResource, Resource>() {
 					public Resource coerce(PrivateResource input) {
 						return new T5FileResource(input.getFile());

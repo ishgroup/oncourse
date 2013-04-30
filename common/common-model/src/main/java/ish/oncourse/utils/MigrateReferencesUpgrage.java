@@ -44,9 +44,7 @@ public class MigrateReferencesUpgrage implements CustomSqlChange {
             if (oncourseSchema != null && oncourseReferenceSchema != null) {
                 statement = ds1.getConnection().createStatement();
             }
-        } catch (NamingException e) {
-            throw new SetupException(e);
-        } catch (SQLException e) {
+        } catch (NamingException | SQLException e) {
             throw new SetupException(e);
         }
     }

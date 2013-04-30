@@ -1,20 +1,6 @@
 package ish.oncourse.model.liquibase;
 
 import ish.math.Money;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import liquibase.change.custom.CustomSqlChange;
 import liquibase.database.Database;
 import liquibase.exception.CustomChangeException;
@@ -22,6 +8,18 @@ import liquibase.exception.SetupException;
 import liquibase.exception.ValidationErrors;
 import liquibase.resource.ResourceAccessor;
 import liquibase.statement.SqlStatement;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CleanupDuplicatedPaymentInLinesUpgrage implements CustomSqlChange {
 	private static final String CLEANUP_PAYMENTINLINES_QUERY = "delete from PaymentInLine where id=%s;";
@@ -50,9 +48,7 @@ public class CleanupDuplicatedPaymentInLinesUpgrage implements CustomSqlChange {
             if (oncourseSchema != null) {
                 statement = ds.getConnection().createStatement();
             }
-        } catch (NamingException e) {
-            throw new SetupException(e);
-        } catch (SQLException e) {
+        } catch (NamingException | SQLException e) {
             throw new SetupException(e);
         }
 	}
@@ -69,7 +65,7 @@ public class CleanupDuplicatedPaymentInLinesUpgrage implements CustomSqlChange {
 	@Override
 	public SqlStatement[] generateStatements(Database database) throws CustomChangeException {
 		if (statement != null) {
-			final Map<Long, Map<Long, List<PaymentInLineContainer>>> duplicatesMap = new HashMap<Long, Map<Long, List<PaymentInLineContainer>>>();
+			final Map<Long, Map<Long, List<PaymentInLineContainer>>> duplicatesMap = new HashMap<>();
 			try {
 				try {
 					ResultSet rs = statement.executeQuery(DUPLICATE_PAYMENTINLINES_SELECT_QUERY);
@@ -81,11 +77,11 @@ public class CleanupDuplicatedPaymentInLinesUpgrage implements CustomSqlChange {
 						Long invoiceId = rs.getLong(4);
 						Map<Long, List<PaymentInLineContainer>> paymentInvoices = duplicatesMap.get(paymentId);
 						if (paymentInvoices == null) {
-							paymentInvoices = new HashMap<Long, List<PaymentInLineContainer>>();
+							paymentInvoices = new HashMap<>();
 						}
 						List<PaymentInLineContainer> duplicatedPaymentInLines = paymentInvoices.get(invoiceId);
 						if (duplicatedPaymentInLines == null) {
-							duplicatedPaymentInLines = new ArrayList<PaymentInLineContainer>();
+							duplicatedPaymentInLines = new ArrayList<>();
 						}
 						duplicatedPaymentInLines.add(new PaymentInLineContainer(paymentInLineId, amount));
 						paymentInvoices.put(invoiceId, duplicatedPaymentInLines);

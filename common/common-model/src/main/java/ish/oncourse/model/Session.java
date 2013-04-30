@@ -20,7 +20,7 @@ public class Session extends _Session implements Queueable {
 		Long minutes = null;
 		if ((getStartDate() != null) && (getEndDate() != null)) {
 			Period duration = new Period(getStartDate().getTime(), getEndDate().getTime(), PeriodType.minutes());
-			minutes = new Long(duration.getMinutes());
+			minutes = (long) duration.getMinutes();
 		}
 		return minutes;
 	}

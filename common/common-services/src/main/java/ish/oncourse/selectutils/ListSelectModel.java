@@ -19,7 +19,7 @@ public class ListSelectModel<T> extends AbstractSelectModel {
 	public ListSelectModel(List<T> list, String labelField,
 			PropertyAccess access) {
 		if (list == null) {
-			list = new ArrayList<T>();
+			list = new ArrayList<>();
 		}
 		if (labelField != null && !labelField.equalsIgnoreCase("null")) {
 			if (!list.isEmpty()) {
@@ -35,7 +35,7 @@ public class ListSelectModel<T> extends AbstractSelectModel {
 	}
 
 	public List<OptionModel> getOptions() {
-		List<OptionModel> optionModelList = new ArrayList<OptionModel>();
+		List<OptionModel> optionModelList = new ArrayList<>();
 		for (T obj : list) {
 			if (labelFieldAdapter == null) {
 				optionModelList.add(new OptionModelImpl(strRepr(obj) + "", obj));

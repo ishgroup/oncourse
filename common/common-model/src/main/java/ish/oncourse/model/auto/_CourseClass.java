@@ -73,7 +73,7 @@ public abstract class _CourseClass extends CayenneDataObject {
     }
 	public boolean isCancelled() {
         Boolean value = (Boolean)readProperty(CANCELLED_PROPERTY);
-        return (value != null) ? value.booleanValue() : false;
+        return (value != null) ? value : false;
     }
 
     public void setCode(String code) {

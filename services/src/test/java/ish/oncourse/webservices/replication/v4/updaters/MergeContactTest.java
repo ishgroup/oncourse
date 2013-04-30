@@ -36,7 +36,7 @@ public class MergeContactTest extends ServiceTest {
 	
 	@Before
     public void setupDataSet() throws Exception {
-		final Map<String, Boolean> params = new HashMap<String, Boolean>(3);
+		final Map<String, Boolean> params = new HashMap<>(3);
 		params.put(ContextUtils.SHOULD_CREATE_TABLES, true);
 		params.put(ContextUtils.SHOULD_CREATE_PK_SUPPORT, true);
 		params.put(ContextUtils.SHOULD_CREATE_FK_CONSTRAINTS, false);
@@ -319,7 +319,7 @@ public class MergeContactTest extends ServiceTest {
 		assertNull("contact 1 have no link to tutor", contact1.getTutor());
 		assertNull("contact 2 have no link to student", contact2.getStudent());
 		assertNull("contact 2 have no link to tutor", contact2.getTutor());
-		List<Contact> result = new ArrayList<Contact>(2);
+		List<Contact> result = new ArrayList<>(2);
 		result.add(contact1);
 		result.add(contact2);
 		return result;
@@ -334,7 +334,7 @@ public class MergeContactTest extends ServiceTest {
 		assertNull("contact 1 have no link to tutor", contact1.getTutor());
 		assertNotNull("contact 2 have no link to student", contact2.getStudent());
 		assertNull("contact 2 have no link to tutor", contact2.getTutor());
-		List<Contact> result = new ArrayList<Contact>(2);
+		List<Contact> result = new ArrayList<>(2);
 		result.add(contact1);
 		result.add(contact2);
 		return result;

@@ -30,7 +30,7 @@ public class ISHObjectContext extends DataContext {
 	 * We use put the copy of generated transaction key into stack, because there might be nested calls of commitChanges() from callbacks on the same object
 	 * context.
 	 */
-	private Deque<String> transactionKeyStack = new ArrayDeque<String>();
+	private Deque<String> transactionKeyStack = new ArrayDeque<>();
 
 	public ISHObjectContext(DataChannel channel, ObjectStore objectStore) {
 		super(channel, objectStore);

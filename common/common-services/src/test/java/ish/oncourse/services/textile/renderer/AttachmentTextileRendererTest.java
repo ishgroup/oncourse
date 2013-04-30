@@ -54,8 +54,8 @@ public class AttachmentTextileRendererTest {
         when(fileStorageAssetService.contains(binaryInfo))
                 .thenReturn(Boolean.TRUE);
 
-        Map<String, Object> params = new HashMap<String, Object>();
-		Map<String, Object> attachmentParams = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
+		Map<String, Object> attachmentParams = new HashMap<>();
 		attachmentParams.put(AttachmentTextileAttributes.ATTACHMENT_PARAM_NAME.getValue(), TEST_ATTACHMENT_NAME);
 		params.put(TextileUtil.TEXTILE_ATTACHMENT_PAGE_PARAM, attachmentParams);
 		when(pageRenderer.renderPage(TextileUtil.TEXTILE_ATTACHMENT_PAGE, params))

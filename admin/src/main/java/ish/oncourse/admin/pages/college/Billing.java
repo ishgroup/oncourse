@@ -92,9 +92,9 @@ public class Billing {
 		}
 		this.qePaymentEnabled = preferenceController.getLicenseCCProcessing();
 		
-		this.licenseInfo = new LinkedHashMap<String, Map<String, Object>>();
+		this.licenseInfo = new LinkedHashMap<>();
 		for (LicenseFee fee : college.getLicenseFees()) {
-			Map<String, Object> info = new LinkedHashMap<String, Object>();
+			Map<String, Object> info = new LinkedHashMap<>();
 			
 			info.put(LicenseFee.PLAN_NAME_PROPERTY, fee.getPlanName());
 			

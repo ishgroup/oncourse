@@ -46,7 +46,7 @@ public class TextileTags {
 
 	@SetupRender
 	boolean beginRender() {
-		childPositions = new HashMap<Tag, Integer>();
+		childPositions = new HashMap<>();
 		rootTag = (Tag) request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM);
 		maxLevels = (Integer) request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_MAX_LEVEL_PARAM);
 		
@@ -80,7 +80,7 @@ public class TextileTags {
 	}
 
 	public String getRootTagClass() {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		if (!rootTag.getWebVisibleTags().isEmpty()) {
 			result.append(messages.get("li.class.hasChildren"));
 		}

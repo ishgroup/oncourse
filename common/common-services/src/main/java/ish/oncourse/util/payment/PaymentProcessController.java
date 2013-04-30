@@ -197,9 +197,7 @@ public class PaymentProcessController {
                 changeProcessState(FAILED);
             }
             LOGGER.info(String.format("Payment gateway processing has been finished with status %s", paymentIn.getStatus()));
-        } catch (InterruptedException e) {
-            setThrowable(e);
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             setThrowable(e);
         } catch (TimeoutException e) {
             LOGGER.info("Payment is processed yet");
@@ -263,7 +261,7 @@ public class PaymentProcessController {
 
     public synchronized List<Invoice> getInvoices() {
         if (invoices == null) {
-            invoices = new ArrayList<Invoice>();
+            invoices = new ArrayList<>();
             for (PaymentInLine paymentLine : paymentIn.getPaymentInLines()) {
                 this.invoices.add(paymentLine.getInvoice());
             }

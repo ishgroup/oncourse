@@ -78,7 +78,7 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 		Element submitButton = paymentForm.getElementById("paymentSubmit");
 		assertNotNull("Payment form submit should be available", submitButton);
 		
-		Map<String, String> fieldValues = new HashMap<String, String>();
+		Map<String, String> fieldValues = new HashMap<>();
 		fieldValues.put(cardName.getAttribute(ID_ATTRIBUTE), CARD_HOLDER_NAME);
 		fieldValues.put(cardNumber.getAttribute(ID_ATTRIBUTE), DECLINED_CARD_NUMBER);
 		fieldValues.put(cardCVV.getAttribute(ID_ATTRIBUTE), CREDIT_CARD_CVV);

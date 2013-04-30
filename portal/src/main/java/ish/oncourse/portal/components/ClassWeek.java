@@ -59,17 +59,17 @@ public class ClassWeek {
 	@SetupRender
 	void beforeRender() {
 		
-		daysOfWeekMap = new HashMap<String, List<Session>>();
+		daysOfWeekMap = new HashMap<>();
 
-		daysOfWeek = new ArrayList<String>(Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"));
+		daysOfWeek = new ArrayList<>(Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"));
 		
-		List<Session> sessionsOnMonday = new ArrayList<Session>();
-		List<Session> sessionsOnTuesday = new ArrayList<Session>();
-		List<Session> sessionsOnWednesday = new ArrayList<Session>();
-		List<Session> sessionsOnThursday = new ArrayList<Session>();
-		List<Session> sessionsOnFriday = new ArrayList<Session>();
-		List<Session> sessionsOnSaturday = new ArrayList<Session>();
-		List<Session> sessionsOnSunday = new ArrayList<Session>();
+		List<Session> sessionsOnMonday = new ArrayList<>();
+		List<Session> sessionsOnTuesday = new ArrayList<>();
+		List<Session> sessionsOnWednesday = new ArrayList<>();
+		List<Session> sessionsOnThursday = new ArrayList<>();
+		List<Session> sessionsOnFriday = new ArrayList<>();
+		List<Session> sessionsOnSaturday = new ArrayList<>();
+		List<Session> sessionsOnSunday = new ArrayList<>();
 		
 		for(Session session: courseClass.getSessions()){
 			Calendar cal = Calendar.getInstance();

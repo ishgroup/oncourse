@@ -64,11 +64,11 @@ public class WillowMessagingTemplateEngine {
 	 */
 	public static Map<String, String> generateResponseForTemplateResponder(WillowMessagingTemplateResponder responder)
 			throws NullPointerException, IllegalArgumentException {
-		Map<String, String> input = new HashMap<String, String>(2);
+		Map<String, String> input = new HashMap<>(2);
 		input.put("message", responder.templateMessage());
 		input.put("subject", responder.templateSubject());
 
-		Map<String, String> results = new HashMap<String, String>(2);
+		Map<String, String> results = new HashMap<>(2);
 		for (Map.Entry<String, String> entry : input.entrySet()) {
 			Set<String> keyPaths = keyPathsForTemplate(entry.getValue());
 			if (LOG.isDebugEnabled())

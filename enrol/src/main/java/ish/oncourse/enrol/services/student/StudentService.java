@@ -61,14 +61,14 @@ public class StudentService implements IStudentService {
 		@SuppressWarnings("unchecked")
 		List<Long> studentIds = (List<Long>) session.getAttribute(SHORTLIST_STUDENTS_KEY);
 		if (studentIds == null) {
-			studentIds = new ArrayList<Long>();
+			studentIds = new ArrayList<>();
 		}
 		return studentIds;
 	}
 
 	public List<Contact> getStudentsFromShortList() {
 		List<Contact> contacts = getContactsByIds(getContactsIdsFromShortList());
-		List<Ordering> orderings = new ArrayList<Ordering>();
+		List<Ordering> orderings = new ArrayList<>();
 		orderings.add(new Ordering(Contact.GIVEN_NAME_PROPERTY, SortOrder.ASCENDING));
 		orderings.add(new Ordering(Contact.FAMILY_NAME_PROPERTY, SortOrder.ASCENDING));
 		Ordering.orderList(contacts, orderings);

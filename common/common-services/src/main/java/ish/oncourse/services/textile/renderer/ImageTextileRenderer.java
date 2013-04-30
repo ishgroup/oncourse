@@ -28,13 +28,13 @@ public class ImageTextileRenderer extends AbstractRenderer {
 			if (!errors.hasFailures()) {
 				Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 						ImageTextileAttributes.getAttrValues());
-				Map<String, Object> parameters = new HashMap<String, Object>();
+				Map<String, Object> parameters = new HashMap<>();
 				parameters.put(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM, tagParams);
 				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_IMAGE_PAGE,
 						parameters);
 			}
 		} catch (Exception e) {
-			Map<String, Object> parameters = new HashMap<String, Object>();
+			Map<String, Object> parameters = new HashMap<>();
 			parameters.put(TextileUtil.TEXTILE_UNEXPECTED_ERROR_PARAM, e.getMessage());
 			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_IMAGE_PAGE,
 					parameters);

@@ -28,11 +28,11 @@ public class CoursesSitesMap {
 
 	@SetupRender
 	public void beforeRender() {
-		mapSites = new ArrayList<Site>();
-		focusesForMapSites = new HashMap<Long, Float>();
+		mapSites = new ArrayList<>();
+		focusesForMapSites = new HashMap<>();
 
 		String sitesParamStr = request.getParameter("sites");
-		List<Long> sitesIds = new ArrayList<Long>();
+		List<Long> sitesIds = new ArrayList<>();
 
 		if (sitesParamStr != null) {
 			String[] splittedSites = sitesParamStr.split(",");

@@ -61,7 +61,7 @@ public class Student extends _Student implements Queueable {
 
 	public String validateSchoolYear() {
 		if (getYearSchoolCompleted() != null) {
-			int givenYear = getYearSchoolCompleted().intValue();
+			int givenYear = getYearSchoolCompleted();
 			int thisYear = Calendar.getInstance().get(Calendar.YEAR);
 			if (givenYear > thisYear) {
 				return "Year school completed cannot be in the future if supplied.";

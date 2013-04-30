@@ -29,9 +29,9 @@ public class CourseItemModel {
     public static CourseItemModel createCourseItemModel(Course course, SearchParams searchParams) {
         CourseItemModel courseItemModel = new CourseItemModel();
         courseItemModel.course = course;
-        courseItemModel.otherClasses = new ArrayList<CourseClass>();
-        courseItemModel.fullClasses = new ArrayList<CourseClass>();
-        courseItemModel.availableClasses = new ArrayList<CourseClass>();
+        courseItemModel.otherClasses = new ArrayList<>();
+        courseItemModel.fullClasses = new ArrayList<>();
+        courseItemModel.availableClasses = new ArrayList<>();
 
         if (searchParams == null) {
             courseItemModel.availableClasses.addAll(course.getEnrollableClasses());

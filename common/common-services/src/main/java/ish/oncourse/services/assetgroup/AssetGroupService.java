@@ -78,9 +78,8 @@ public class AssetGroupService implements IAssetGroupService {
 			URL url = config.getPrivateUrl();
 
 			try {
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						url.openStream()));
-				try {
+				try (BufferedReader in = new BufferedReader(new InputStreamReader(
+						url.openStream()))) {
 
 					String line;
 					String group = null;
@@ -108,8 +107,6 @@ public class AssetGroupService implements IAssetGroupService {
 							collection.addUrl(group, assetURL);
 						}
 					}
-				} finally {
-					in.close();
 				}
 			} catch (IOException e) {
 				throw new RuntimeException("Error reading config file", e);

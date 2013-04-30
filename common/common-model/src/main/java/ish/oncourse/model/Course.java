@@ -24,7 +24,7 @@ public class Course extends _Course implements Queueable {
 
 	public List<CourseClass> getEnrollableClasses() {
 		List<CourseClass> currentClasses = getCurrentClasses();
-		List<CourseClass> list = new ArrayList<CourseClass>();
+		List<CourseClass> list = new ArrayList<>();
 
 		for (CourseClass courseClass : currentClasses) {
 			if (courseClass.isHasAvailableEnrolmentPlaces()) {
@@ -37,7 +37,7 @@ public class Course extends _Course implements Queueable {
 
 	public List<CourseClass> getCurrentClasses() {
 		List<CourseClass> courseClasses = getCourseClasses();
-		List<CourseClass> list = new ArrayList<CourseClass>();
+		List<CourseClass> list = new ArrayList<>();
 
 		for (CourseClass courseClass : courseClasses) {
 			if (Boolean.TRUE.equals(courseClass.getIsWebVisible())
@@ -54,7 +54,7 @@ public class Course extends _Course implements Queueable {
 	
 	public List<CourseClass> getFullClasses() {
 		List<CourseClass> currentClasses = getCurrentClasses();
-		List<CourseClass> list = new ArrayList<CourseClass>();
+		List<CourseClass> list = new ArrayList<>();
 
 		for (CourseClass courseClass : currentClasses) {
 			if (!courseClass.isHasAvailableEnrolmentPlaces()) {
@@ -66,7 +66,7 @@ public class Course extends _Course implements Queueable {
 	}
 
 	public List<Module> getModules() {
-		final List<Module> result = new ArrayList<Module>();
+		final List<Module> result = new ArrayList<>();
 		for (final CourseModule courseModule : getCourseModules()) {
 			Module module = null;
 			try {
@@ -119,7 +119,7 @@ public class Course extends _Course implements Queueable {
 	}
 	
 	public List<Course> getRelatedToCourses() {
-		List<Course> relatedList = new ArrayList<Course>();
+		List<Course> relatedList = new ArrayList<>();
 		if (!getFromCourses().isEmpty()) {
 			for (CourseCourseRelation courseRelation : getFromCourses()) {
 	    		Course relatedCourse = courseRelation.getToCourse();

@@ -42,7 +42,7 @@ public class ContactItem {
 
     public List<String> getConcessionNames()
     {
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         for (StudentConcession studentConcession:contact.getStudent().getStudentConcessions()) {
             String name = studentConcession.getConcessionType().getName();
             names.add(name);
@@ -52,7 +52,7 @@ public class ContactItem {
 
     public List<String> getMembershipNames()
     {
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         for (Membership membership:contact.getMemberships()) {
             String name = membership.getProduct().getName();
             if (!names.contains(name))

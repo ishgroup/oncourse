@@ -169,7 +169,7 @@ public class PortHelper {
 	}
 
 	public static List<InstructionStub> convertv4InstructionsList(final List<GenericInstructionStub> list) {
-		final List<InstructionStub> result = new ArrayList<InstructionStub>(list.size());
+		final List<InstructionStub> result = new ArrayList<>(list.size());
 		for (GenericInstructionStub stub : list) {
 			if (stub instanceof InstructionStub) {
 				result.add((InstructionStub) stub);
@@ -181,7 +181,7 @@ public class PortHelper {
 	}
 
 	public static List<ish.oncourse.webservices.v5.stubs.replication.InstructionStub> convertv5InstructionsList(final List<GenericInstructionStub> list) {
-		final List<ish.oncourse.webservices.v5.stubs.replication.InstructionStub> result = new ArrayList<ish.oncourse.webservices.v5.stubs.replication.InstructionStub>(
+		final List<ish.oncourse.webservices.v5.stubs.replication.InstructionStub> result = new ArrayList<>(
 		list.size());
 		for (GenericInstructionStub stub : list) {
 			if (stub instanceof ish.oncourse.webservices.v5.stubs.replication.InstructionStub) {

@@ -1,14 +1,7 @@
 package ish.oncourse.test;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class DerbyUtils {
@@ -44,12 +37,11 @@ public class DerbyUtils {
 
          PreparedStatement ps = conn.prepareCall(
            "CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(?, NULL)");
-         
-         for (int i = 0; i < CLEAR_DB_PROPERTIES.length; i++)
-         {
-             ps.setString(1, CLEAR_DB_PROPERTIES[i]);
-             ps.executeUpdate();
-         }
+
+	     for (String CLEAR_DB_PROPERTY : CLEAR_DB_PROPERTIES) {
+		     ps.setString(1, CLEAR_DB_PROPERTY);
+		     ps.executeUpdate();
+	     }
          ps.close();
          conn.commit();
      }
@@ -87,14 +79,14 @@ public class DerbyUtils {
     
             // DROP all the user schemas.
             sqle = null;
-            for (Iterator i = schemas.iterator(); i.hasNext();) {
-                String schema = (String) i.next();
-                try {
-                    JDBC.dropSchema(dmd, schema);
-                } catch (SQLException e) {
-                    sqle = e;
-                }
-            }
+	        for (Object schema1 : schemas) {
+		        String schema = (String) schema1;
+		        try {
+			        JDBC.dropSchema(dmd, schema);
+		        } catch (SQLException e) {
+			        sqle = e;
+		        }
+	        }
             // No errors means all the schemas we wanted to
             // drop were dropped, so nothing more to do.
             if (sqle == null)
@@ -140,14 +132,13 @@ public class DerbyUtils {
     	 
     	 CallableStatement cs = conn.prepareCall
     	     ("CALL SYSCS_UTIL.SYSCS_INPLACE_COMPRESS_TABLE(?, ?, 1, 1, 1)");
-    	 
-    	 for (int i = 0; i < COMPRESS_DB_OBJECTS.length; i++)
-    	 {
-    		 int delim = COMPRESS_DB_OBJECTS[i].indexOf(".");
-             cs.setString(1, COMPRESS_DB_OBJECTS[i].substring(0, delim) );
-             cs.setString(2, COMPRESS_DB_OBJECTS[i].substring(delim+1) );
-             cs.execute();
-    	 }
+
+	     for (String COMPRESS_DB_OBJECT : COMPRESS_DB_OBJECTS) {
+		     int delim = COMPRESS_DB_OBJECT.indexOf(".");
+		     cs.setString(1, COMPRESS_DB_OBJECT.substring(0, delim));
+		     cs.setString(2, COMPRESS_DB_OBJECT.substring(delim + 1));
+		     cs.execute();
+	     }
     	 
     	 cs.close();
     	 conn.commit();

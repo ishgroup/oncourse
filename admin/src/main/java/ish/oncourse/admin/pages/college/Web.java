@@ -126,7 +126,7 @@ public class Web {
 	@SetupRender
 	void setupRender() {
 		this.changeSiteUrl = response.encodeURL(request.getContextPath() + "/college/changeDomainSite");
-		this.sites = new HashMap<String, WebSite>();
+		this.sites = new HashMap<>();
 		
 		ObjectContext context = cayenneService.sharedContext();
 		
@@ -295,9 +295,9 @@ public class Web {
 		SelectQuery query = new SelectQuery(WebSite.class, exp);
 		WebSite site = (WebSite) Cayenne.objectForQuery(context, query);
 			
-		List<WebNode> nodes = new ArrayList<WebNode>(site.getWebNodes());
-		List<WebNodeType> nodeTypes = new ArrayList<WebNodeType>(site.getWebNodeTypes());
-		List<WebMenu> menus = new ArrayList<WebMenu>(site.getWebMenus());
+		List<WebNode> nodes = new ArrayList<>(site.getWebNodes());
+		List<WebNodeType> nodeTypes = new ArrayList<>(site.getWebNodeTypes());
+		List<WebMenu> menus = new ArrayList<>(site.getWebMenus());
 		
 		if (nodes.size() > 1 && menus.size() > 1) {
 			siteDeleteFailed = true;

@@ -16,7 +16,7 @@ public class PreferenceControllerFactory {
 	@Inject
 	private ICayenneService cayenneService;
 	
-	private Map<Long, PreferenceController> controllerMap = new HashMap<Long, PreferenceController>();
+	private Map<Long, PreferenceController> controllerMap = new HashMap<>();
 	
 	public PreferenceController getPreferenceController(final College college) {
 		

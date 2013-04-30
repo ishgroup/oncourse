@@ -149,7 +149,7 @@ public class Tag extends _Tag implements Queueable {
 	}
 
 	public List<Tag> getAllWebVisibleChildren() {
-		List<Tag> children = new ArrayList<Tag>();
+		List<Tag> children = new ArrayList<>();
 		addAllWebVisibleChildren(children, this);
 		return children;
 	}

@@ -61,7 +61,7 @@ public class ArrayOfClassificationPurpose {
      */
     public List<ClassificationPurpose> getClassificationPurpose() {
         if (classificationPurpose == null) {
-            classificationPurpose = new ArrayList<ClassificationPurpose>();
+            classificationPurpose = new ArrayList<>();
         }
         return this.classificationPurpose;
     }

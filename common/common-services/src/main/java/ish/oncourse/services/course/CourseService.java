@@ -57,7 +57,7 @@ public class CourseService implements ICourseService {
 
 	@Override
 	public List<Course> getCourses(String tagName, CourseListSortValue sort, Boolean isAscending, Integer limit) {
-		List<Course> result = new ArrayList<Course>();
+		List<Course> result = new ArrayList<>();
 		Long collegeId = webSiteService.getCurrentCollege().getId();
 		Expression expression = ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true)
 			.andExp(ExpressionFactory.matchDbExp(Course.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, collegeId));
@@ -128,7 +128,7 @@ public class CourseService implements ICourseService {
 			return Collections.emptyList();
 		}
 
-		final Map<Long, Integer> orderingMap = new HashMap<Long, Integer>();
+		final Map<Long, Integer> orderingMap = new HashMap<>();
 		for (Integer i = 0; i < ids.length; i++) {
 			Long id = null;
 			if (ids[i] instanceof Long) {

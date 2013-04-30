@@ -19,20 +19,12 @@
  */
 package ish.oncourse.test;
 
-import java.sql.BatchUpdateException;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
+import junit.framework.Assert;
+
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
-
-import junit.framework.Assert;
 
 /**
  * JDBC utility methods for the JUnit tests. Note that JSR 169 is a subset of
@@ -289,8 +281,7 @@ public class JDBC {
 		// Execute them as a complete batch, hoping they will all succeed.
 		s.clearBatch();
 		int batchCount = 0;
-		for (Iterator i = ddl.iterator(); i.hasNext();) {
-			Object sql = i.next();
+		for (Object sql : ddl) {
 			if (sql != null) {
 				s.addBatch(sql.toString());
 				batchCount++;
@@ -370,9 +361,9 @@ public class JDBC {
 	private static String bytesToString(byte[] ba) {
 		if (ba == null)
 			return null;
-		StringBuffer s = new StringBuffer();
-		for (int i = 0; i < ba.length; ++i) {
-			s.append(Integer.toHexString(ba[i] & 0x00ff));
+		StringBuilder s = new StringBuilder();
+		for (byte aBa : ba) {
+			s.append(Integer.toHexString(aBa & 0x00ff));
 		}
 		return s.toString();
 	}
@@ -382,7 +373,7 @@ public class JDBC {
 	 * executed by JDBC.
 	 */
 	public static String escape(String name) {
-		StringBuffer buffer = new StringBuffer(name.length() + 2);
+		StringBuilder buffer = new StringBuilder(name.length() + 2);
 		buffer.append('"');
 		for (int i = 0; i < name.length(); i++) {
 			char c = name.charAt(i);

@@ -157,6 +157,6 @@ public class DefaultSMSService implements ISMSService {
 			logger.error("Unknown exception for sms delivery", e);
 		}
 
-		return new Pair<MessageStatus, String>(returnStatus, aResponse);
+		return new Pair<>(returnStatus, aResponse);
 	}
 }

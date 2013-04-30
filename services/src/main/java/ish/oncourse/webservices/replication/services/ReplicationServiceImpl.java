@@ -65,7 +65,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 	@Override
 	public GenericReplicationResult sendRecords(GenericReplicationRecords req) throws InternalReplicationFault {
 		try {
-			List<GenericReplicatedRecord> replicatedRecords = new ArrayList<GenericReplicatedRecord>();
+			List<GenericReplicatedRecord> replicatedRecords = new ArrayList<>();
 			for (GenericTransactionGroup group : req.getGroups()) {
 				replicatedRecords.addAll(transactionGroupAtomicUpdater.processGroup(group));
 			}
@@ -93,7 +93,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 			int from = 0;
 
 			List<QueuedTransaction> transactions;
-			List<QueuedRecord> queue = new LinkedList<QueuedRecord>();
+			List<QueuedRecord> queue = new LinkedList<>();
 
 			do {
 				transactions = queueService.getReplicationQueue(from, TRANSACTION_BATCH_SIZE);
@@ -110,10 +110,10 @@ public class ReplicationServiceImpl implements IReplicationService {
 			} while (number < TRANSACTION_BATCH_SIZE && transactions.size() == TRANSACTION_BATCH_SIZE);
 
 			// now we have records to process
-			List<GenericTransactionGroup> resultGroups = new ArrayList<GenericTransactionGroup>();
+			List<GenericTransactionGroup> resultGroups = new ArrayList<>();
 
 			if (!queue.isEmpty()) {
-				Map<QueueKey, DFADedupper> dedupMap = new LinkedHashMap<QueueKey, DFADedupper>();
+				Map<QueueKey, DFADedupper> dedupMap = new LinkedHashMap<>();
 
 				for (QueuedRecord r : queue) {
 					QueueKey key = new QueueKey(r.getEntityWillowId(), r.getEntityIdentifier());
@@ -128,13 +128,13 @@ public class ReplicationServiceImpl implements IReplicationService {
 					deduper.nextState(r);
 				}
 
-				List<DFADedupper> sortedDeduppers = new ArrayList<DFADedupper>(dedupMap.entrySet().size());
+				List<DFADedupper> sortedDeduppers = new ArrayList<>(dedupMap.entrySet().size());
 				for (Map.Entry<QueueKey, DFADedupper> entry : dedupMap.entrySet()) {
 					sortedDeduppers.add(entry.getValue());
 				}
 				Collections.sort(sortedDeduppers);
 
-				Map<String, GenericTransactionGroup> groupMap = new LinkedHashMap<String, GenericTransactionGroup>();
+				Map<String, GenericTransactionGroup> groupMap = new LinkedHashMap<>();
 
 				for (DFADedupper deduper : sortedDeduppers) {
 
@@ -203,7 +203,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 			result.getGenericGroups().addAll(resultGroups);
 
 			// clean remove group if it's empty
-			for (GenericTransactionGroup g : new ArrayList<GenericTransactionGroup>(result.getGenericGroups())) {
+			for (GenericTransactionGroup g : new ArrayList<>(result.getGenericGroups())) {
 				if (g.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
 					result.getGroups().remove(g);
 				}

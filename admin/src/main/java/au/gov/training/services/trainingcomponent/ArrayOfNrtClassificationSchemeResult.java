@@ -61,7 +61,7 @@ public class ArrayOfNrtClassificationSchemeResult {
      */
     public List<NrtClassificationSchemeResult> getNrtClassificationSchemeResult() {
         if (nrtClassificationSchemeResult == null) {
-            nrtClassificationSchemeResult = new ArrayList<NrtClassificationSchemeResult>();
+            nrtClassificationSchemeResult = new ArrayList<>();
         }
         return this.nrtClassificationSchemeResult;
     }

@@ -36,7 +36,7 @@ public class SearchParamsParser
     private final ISearchService searchService;
     private ITagService tagService;
 
-    private Map<SearchParam, String> paramsInError = new HashMap<SearchParam, String>();
+    private Map<SearchParam, String> paramsInError = new HashMap<>();
 
     private SearchParams searchParams = new SearchParams();
     private TimeZone clientTimezone;

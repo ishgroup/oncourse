@@ -285,7 +285,7 @@ public class ClassRoll {
 		if (unmarkedSessionsDuration > 0 && finishedSessionsDuration > 0) {
 			unmarkedRatio = new Money(unmarkedSessionsDuration.toString()).divide(new Money(finishedSessionsDuration.toString())).multiply(100).toBigDecimal();
 		}
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		result.append("Attended ").append(passsedRatio.toString()).append(" %").append("\n")
 			.append("Missed ").append(missedRatio.toString()).append(" %").append("\n")
 			.append("Unmarked ").append(unmarkedRatio.toString()).append(" %");

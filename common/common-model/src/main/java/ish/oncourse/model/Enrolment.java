@@ -99,7 +99,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 	@Deprecated
 	public InvoiceLine getOriginalInvoiceLine() {
 		if (getInvoiceLines() != null && !getInvoiceLines().isEmpty()) {
-			SortedSet<InvoiceLine> invoices = new TreeSet<InvoiceLine>(new Comparator<InvoiceLine> () {
+			SortedSet<InvoiceLine> invoices = new TreeSet<>(new Comparator<InvoiceLine> () {
 				@Override
 				public int compare(InvoiceLine invoiceLine0, InvoiceLine invoiceLine1) {
 					if (!invoiceLine0.getFinalPriceToPayIncTax().isLessThan(Money.ZERO) && !invoiceLine1.getFinalPriceToPayIncTax().isLessThan(Money.ZERO)) {

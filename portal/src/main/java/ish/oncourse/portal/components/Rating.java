@@ -50,7 +50,7 @@ public class Rating {
 	public List<Integer> getSource() {
 		if (source == null)
 		{
-			source = new ArrayList<Integer>();
+			source = new ArrayList<>();
 			source.add(0);
 			source.add(1);
 			source.add(2);

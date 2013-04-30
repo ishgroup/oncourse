@@ -69,7 +69,7 @@ public class SiteDetailsComponent {
 	}
 
 	public List<Site> getMapSites() {
-		List<Site> sites = new ArrayList<Site>(1);
+		List<Site> sites = new ArrayList<>(1);
 		sites.add(site);
 		return sites;
 	}

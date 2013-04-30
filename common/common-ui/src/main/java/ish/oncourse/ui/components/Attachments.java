@@ -71,7 +71,7 @@ public class Attachments {
             entityIdNums = new String[]{entityIdNum};
         }
 
-        ArrayList<BinaryInfo> result = new ArrayList<BinaryInfo>();
+        ArrayList<BinaryInfo> result = new ArrayList<>();
         for (int i = 0; i < entityIdentifiers.length; i++) {
             String identifier = entityIdentifiers[i];
             Long id = Long.valueOf(entityIdNums[i]);

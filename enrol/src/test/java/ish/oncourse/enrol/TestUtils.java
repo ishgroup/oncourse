@@ -25,7 +25,7 @@ public class TestUtils {
 
 			@Override
 			public List<String> getParameterNames() {
-				return new ArrayList<String>(paramters.keySet());
+				return new ArrayList<>(paramters.keySet());
 			}
 
 			@Override

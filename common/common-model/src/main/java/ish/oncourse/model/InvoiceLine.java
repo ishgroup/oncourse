@@ -52,7 +52,7 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 	}
 	
 	public List<Voucher> getVouchers() {
-		List<Voucher> vouchers = new ArrayList<Voucher>();
+		List<Voucher> vouchers = new ArrayList<>();
 		for (ProductItem productItem : getProductItem()) {
 			if (productItem instanceof Voucher) {
 				vouchers.add((Voucher) productItem);
@@ -62,7 +62,7 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 	}
 	
 	public List<Membership> getMemberShips() {
-		List<Membership> memberships = new ArrayList<Membership>();
+		List<Membership> memberships = new ArrayList<>();
 		for (ProductItem productItem : getProductItem()) {
 			if (productItem instanceof Membership) {
 				memberships.add((Membership) productItem);
