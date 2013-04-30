@@ -15,6 +15,8 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -26,6 +28,8 @@ import java.util.*;
 
 public class Billing {
 
+	private static final Logger logger = Logger.getLogger(Billing.class);
+
 	private static final String SUPPORT_FEE_CODE = "support";
 	private static final String HOSTING_FEE_CODE = "hosting";
 	
@@ -34,11 +38,10 @@ public class Billing {
 	private Form billingForm;
 
 	@Property
-	@Persist
 	private College college;
 	
 	@Property
-	@Persist
+	@Persist(PersistenceConstants.FLASH)
 	private Map<String, Map<String, Object>> licenseInfo;
 	
 	@Property
@@ -75,6 +78,10 @@ public class Billing {
 	
 	@SetupRender
 	void setupRender() {
+		ObjectContext context = cayenneService.sharedContext();
+
+		this.college = context.localObject(college);
+
 		this.preferenceController = prefsFactory.getPreferenceController(college);
 
 		if (!PaymentGatewayType.PAYMENT_EXPRESS.equals(preferenceController.getPaymentGatewayType())) {
@@ -104,8 +111,7 @@ public class Billing {
 			
 			this.licenseInfo.put(fee.getKeyCode(), info);
 		}
-		
-		ObjectContext context = cayenneService.sharedContext();
+
 		Expression exp = ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, college);
 		List<Preference> prefs = context.performQuery(new SelectQuery(Preference.class, exp));
 		for (Preference p : prefs) {
@@ -145,14 +151,13 @@ public class Billing {
 	}
 	
 	@OnEvent(component="billingForm", value="success")
-	void submitted() throws Exception {
-		ObjectContext context = cayenneService.newContext();
-		
-		College col = (College) context.localObject(college.getObjectId(), null);
-		if (col != null) {
-			col.setPaymentGatewayAccount(college.getPaymentGatewayAccount());
-			col.setPaymentGatewayPass(college.getPaymentGatewayPass());
-			col.setName(college.getName());
+	void submitted() {
+		ObjectContext context = college.getObjectContext();
+
+		if (college != null) {
+			college.setPaymentGatewayAccount(this.college.getPaymentGatewayAccount());
+			college.setPaymentGatewayPass(this.college.getPaymentGatewayPass());
+			college.setName(this.college.getName());
 			
 			if (this.webPaymentEnabled) {
 				preferenceController.setPaymentGatewayType(PaymentGatewayType.PAYMENT_EXPRESS);
@@ -163,7 +168,7 @@ public class Billing {
 			preferenceController.setLicenseCCProcessing(this.qePaymentEnabled);
 			
 			boolean found = false;
-			for (Preference p : col.getPreferences()) {
+			for (Preference p : college.getPreferences()) {
 				if (CommonPreferenceController.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
 					p.setValueString(Boolean.toString(this.amexEnabled));
 					found = true;
@@ -173,7 +178,7 @@ public class Billing {
 			if (!found) {
 				Date now = new Date();
 				Preference p = context.newObject(Preference.class);
-				p.setCollege(col);
+				p.setCollege(college);
 				p.setName(CommonPreferenceController.SERVICES_CC_AMEX_ENABLED);
 				p.setValueString(Boolean.toString(this.amexEnabled));
 				p.setCreated(now);
@@ -181,7 +186,7 @@ public class Billing {
 			}
 		}
 		
-		for (LicenseFee fee : college.getLicenseFees()) {
+		for (LicenseFee fee : this.college.getLicenseFees()) {
 			Map<String, Object> info = licenseInfo.get(fee.getKeyCode());
 			LicenseFee lf = context.localObject(fee);
 			
@@ -212,16 +217,12 @@ public class Billing {
 		context.commitChanges();
 	}
 
-    Object onActivate() {
-        if (college == null)
-            return indexPage;
-        else
-            return null;
-    }
-
-    Object onActivate(Long id) {
+    void onActivate(Long id) {
 		this.college = collegeService.findById(id);
-		return null;
+	}
+
+	Object onPassivate() {
+		return this.college.getId();
 	}
 
 	public String getPaymentExpUser() {
@@ -326,9 +327,11 @@ public class Billing {
 
     public Object onException(Throwable cause){
         //redirect to index page when session was expired and persist properties got null value
-        if (college == null || licenseInfo == null)
+        if (college == null || licenseInfo == null) {
             return indexPage;
-        else throw new IllegalStateException(cause);
+		} else {
+			throw new IllegalStateException(cause);
+		}
     }
 
 	private boolean isSupportFee(LicenseFee fee) {

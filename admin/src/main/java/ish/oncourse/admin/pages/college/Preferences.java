@@ -15,6 +15,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -24,7 +25,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 public class Preferences {
 	
 	@Property
-	@Persist
 	private College college;
 	
 	@Property
@@ -37,7 +37,7 @@ public class Preferences {
 	private String newPreferenceValue;
 	
 	@Property
-	@Persist
+	@Persist(PersistenceConstants.FLASH)
 	private Map<String, String> preferences;
 	
 	@Inject
@@ -53,9 +53,12 @@ public class Preferences {
 		this.preferences = initPreferences();
 	}
 	
-	Object onActivate(Long id) {
+	void onActivate(Long id) {
 		this.college = collegeService.findById(id);
-		return null;
+	}
+
+	Object onPassivate() {
+		return college.getId();
 	}
 	
 	@OnEvent(component="save", value="selected")

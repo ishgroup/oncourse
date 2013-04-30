@@ -13,6 +13,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -26,11 +27,10 @@ public class Web {
     public final static String DEFAULT_HOME_PAGE_NAME = "Home page";
 	
 	@Property
-	@Persist
 	private College college;
 	
 	@Property
-	@Persist
+	@Persist(PersistenceConstants.FLASH)
 	private Map<String, WebSite> sites;
 	
 	@SuppressWarnings("all")
@@ -114,9 +114,12 @@ public class Web {
 	@Inject
 	private Response response;
 	
-	Object onActivate(Long id) {
+	void onActivate(Long id) {
 		this.college = collegeService.findById(id);
-		return null;
+	}
+
+	Object onPassivate() {
+		return college.getId();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -127,7 +130,7 @@ public class Web {
 		
 		ObjectContext context = cayenneService.sharedContext();
 		
-		College college = (College) context.localObject(this.college.getObjectId(), null);
+		College college = context.localObject(this.college);
 		
 		Expression sitesExp = ExpressionFactory.matchExp(WebSite.COLLEGE_PROPERTY, college);
 		Expression domainsExp = ExpressionFactory.matchExp(WebHostName.COLLEGE_PROPERTY, college);
@@ -167,7 +170,7 @@ public class Web {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
 		WebHostName domain = context.newObject(WebHostName.class);
-		domain.setCollege((College) context.localObject(college.getObjectId(), null));
+		domain.setCollege(context.localObject(college));
 		
 		Expression exp = ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, newDomainSite);
 		SelectQuery query = new SelectQuery(WebSite.class, exp);
@@ -187,7 +190,7 @@ public class Web {
 		
 		for (String key : sites.keySet()) {
 			if (sites.get(key) != null) {
-				WebSite webSite = (WebSite) context.localObject(sites.get(key).getObjectId(), null);
+				WebSite webSite = context.localObject(sites.get(key));
 				
 				if (webSite != null) {
 					webSite.setGoogleAnalyticsAccount(sites.get(key).getGoogleAnalyticsAccount());
@@ -204,7 +207,7 @@ public class Web {
 		Date now = new Date();
 		
 		WebSite site = context.newObject(WebSite.class);
-		site.setCollege((College) context.localObject(college.getObjectId(), null));
+		site.setCollege(context.localObject(college));
 		site.setName(newSiteNameValue);
 		site.setSiteKey(newSiteKeyValue);
 		site.setGoogleAnalyticsAccount(newSiteGoogleAnalyticsValue);
@@ -229,7 +232,7 @@ public class Web {
 		menu.setWeight(1);
 		menu.setWebNode(node);
 		
-		College college = (College) context.localObject(this.college.getObjectId(), null);
+		College college = context.localObject(this.college);
 		if (college != null) {
 			Expression exp = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, college).andExp(
 					ExpressionFactory.matchExp(Tag.NAME_PROPERTY, Tag.SUBJECTS_TAG_NAME));
@@ -238,7 +241,7 @@ public class Web {
 			
 			if (subjectsTags.size() == 0) {
 				Tag tag = context.newObject(Tag.class);
-				tag.setCollege((College) context.localObject(college.getObjectId(), null));
+				tag.setCollege(context.localObject(college));
 				tag.setName(Tag.SUBJECTS_TAG_NAME);
 				tag.setIsWebVisible(true);
 				tag.setIsTagGroup(true);
@@ -279,7 +282,7 @@ public class Web {
 		Expression exp = ExpressionFactory.matchExp(WebHostName.NAME_PROPERTY, name);
 		SelectQuery query = new SelectQuery(WebHostName.class, exp);
 		WebHostName domain = (WebHostName) Cayenne.objectForQuery(context, query);
-		context.deleteObject(domain);
+		context.deleteObjects(domain);
 		context.commitChanges();
 		
 		return null;
@@ -313,17 +316,17 @@ public class Web {
 		
 		try {
 			for (WebNode node : nodes) {
-				context.deleteObject(node);
+				context.deleteObjects(node);
 			}
 			
 			for (WebNodeType nodeType : nodeTypes) {
-				context.deleteObject(nodeType);
+				context.deleteObjects(nodeType);
 			}
 				
 			for (WebMenu menu : menus) {
-				context.deleteObject(menu);
+				context.deleteObjects(menu);
 			}
-			context.deleteObject(site);
+			context.deleteObjects(site);
 				
 			context.commitChanges();
 		} catch (DeleteDenyException e) {
@@ -341,7 +344,7 @@ public class Web {
 				.andExp(ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, college));
 		SelectQuery query = new SelectQuery(WillowUser.class, exp);
 		WillowUser user = (WillowUser) Cayenne.objectForQuery(context, query);
-		context.deleteObject(user);
+		context.deleteObjects(user);
 		context.commitChanges();
 		
 		return null;

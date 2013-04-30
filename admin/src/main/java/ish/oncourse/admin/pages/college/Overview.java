@@ -42,7 +42,6 @@ public class Overview {
 	private ICayenneService cayenneService;
 	
 	@Property
-	@Persist
 	private College college;
 	
 	@Property
@@ -67,9 +66,12 @@ public class Overview {
 		lastReplication = dateFormat.format(college.getLastRemoteAuthentication());
 	}
 	
-	Object onActivate(Long id) {
+	void onActivate(Long id) {
 		this.college = collegeService.findById(id);
-		return null;
+	}
+
+	Object onPassivate() {
+		return college.getId();
 	}
 	
 	Object onActionFromDisableCollege() {

@@ -23,7 +23,6 @@ import java.util.Map;
 public class Instructions {
 
 	@Property
-	@Persist
 	private College college;
 
 	@Property
@@ -79,17 +78,13 @@ public class Instructions {
 		}
 	}
 
-	Object onActivate(Long id) {
+	void onActivate(Long id) {
 		this.college = collegeService.findById(id);
-		return null;
 	}
 
-    Object onActivate() {
-        if (college == null)
-            return indexPage;
-        else
-            return null;
-    }
+	Object onPassivate() {
+		return college.getId();
+	}
 
     @OnEvent(component="resetAngelQueueForm", value="success")
 	void resetAngelQueue() {
