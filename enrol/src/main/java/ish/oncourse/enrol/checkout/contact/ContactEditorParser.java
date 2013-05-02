@@ -85,9 +85,11 @@ public class ContactEditorParser {
 
 	void parseContactFields() {
 		for (String visibleField : visibleFields) {
+
 			FieldDescriptor fieldDescriptor = FieldDescriptor.valueOf(visibleField);
 			String stringValue = StringUtils.trimToNull(request.getParameter(visibleField));
             Object value = stringValue;
+
 			if (stringValue == null) {
 				if (contactFieldHelper.isRequiredField(fieldDescriptor))
 					errors.put(fieldDescriptor.propertyName, getRequiredMessage(fieldDescriptor));
@@ -98,7 +100,9 @@ public class ContactEditorParser {
                     value = null;
 					errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
 				}
-			} else if (fieldDescriptor.propertyClass == Country.class)
+			}
+
+			if (fieldDescriptor.propertyClass == Country.class)
 			{
 				value = countryService.getCountryByName(stringValue);
 				if (value == null)
@@ -107,7 +111,8 @@ public class ContactEditorParser {
 					value = countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME);
 				}
 			}
-            contact.writeProperty(fieldDescriptor.propertyName, value);
+
+			contact.writeProperty(fieldDescriptor.propertyName, value);
 		}
 	}
 

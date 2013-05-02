@@ -21,8 +21,7 @@ import java.util.HashMap;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContactEditorParserTest {
@@ -60,6 +59,7 @@ public class ContactEditorParserTest {
 		assertNull(parser.validate(FieldDescriptor.businessPhoneNumber));
 		assertNull(parser.validate(FieldDescriptor.faxNumber));
 		assertNull(parser.validate(FieldDescriptor.mobilePhoneNumber));
+
 	}
 
 	@Test
@@ -95,6 +95,7 @@ public class ContactEditorParserTest {
 		when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
 
 		ICountryService countryService = mock(ICountryService.class);
+		when(countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME)).thenReturn(country);
 
 		PreferenceController preferenceController = mock(PreferenceController.class);
 		ContactFieldHelper contactFieldHelper = mock(ContactFieldHelper.class);
@@ -131,6 +132,13 @@ public class ContactEditorParserTest {
         testValidateDateOfBirth(parser, contact);
         testParseMarketingFields(parser);
         assertNull(parser.getContact().getIsMale());
+
+		when(request.getParameter(Contact.COUNTRY_PROPERTY)).thenReturn(null);
+		parser.parse();
+
+
+		assertNotNull(contact.getCountry());
+		verify(contact, atLeastOnce()).writeProperty(Contact.COUNTRY_PROPERTY, countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME));
     }
 
 
