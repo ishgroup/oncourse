@@ -2,6 +2,7 @@ package ish.oncourse.ui.pages.internal;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
+import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.node.IWebNodeService;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
@@ -26,6 +27,9 @@ public class Page {
 
 	@Inject
 	private IWebNodeService webNodeService;
+
+	@Inject
+	private IFacebookMetaProvider facebookMetaProvider;
 	
 	private static final Logger logger = Logger.getLogger(Page.class);
 
@@ -65,5 +69,10 @@ public class Page {
 			return false;
 		}
 		return node != null && node.getId() != null && node.getId().equals(homePage.getId());
+	}
+
+
+	public String getMetaDescription() {
+		return facebookMetaProvider.getDescriptionContent(node);
 	}
 }
