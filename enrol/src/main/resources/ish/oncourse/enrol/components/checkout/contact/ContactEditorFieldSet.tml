@@ -25,7 +25,7 @@
 			<label for="country">${label('country')}<t:if test="required('country')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('country')}">
 			<t:textfield t:id="country" value="country" class="country input-fixed ${validateHandler.errorClass('country')}"/>
-			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('country')}"/>
+			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('country')}" hint="${hint('country')}"/>
 		</span>
 		</p>
 	</t:if>
