@@ -442,6 +442,7 @@
 		<db-attribute name="plan_name" type="CHAR" length="12"/>
 		<db-attribute name="renewalDate" type="DATE" length="10"/>
 		<db-attribute name="valid_until" type="DATE" length="10"/>
+		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="Log" catalog="willow_college">
 		<db-attribute name="action" type="LONGVARCHAR" length="16777215"/>
@@ -1417,11 +1418,11 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="page" type="java.lang.String" db-attribute-path="page"/>
 	</obj-entity>
-	<obj-entity name="Membership" superEntityName="ProductItem" className="ish.oncourse.model.Membership" dbEntityName="ProductItem">
+	<obj-entity name="Membership" superEntityName="ProductItem" className="ish.oncourse.model.Membership">
 		<qualifier><![CDATA[type = 2]]></qualifier>
 		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
 	</obj-entity>
-	<obj-entity name="MembershipProduct" superEntityName="Product" className="ish.oncourse.model.MembershipProduct" dbEntityName="Product">
+	<obj-entity name="MembershipProduct" superEntityName="Product" className="ish.oncourse.model.MembershipProduct">
 		<qualifier><![CDATA[type = 2]]></qualifier>
 		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
 		<obj-attribute name="expiryType" type="ish.common.types.ExpiryType" db-attribute-path="expiryType"/>
@@ -1822,7 +1823,7 @@
 		<obj-attribute name="isConfirmed" type="java.lang.Boolean" db-attribute-path="isConfirmed"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
-	<obj-entity name="Voucher" superEntityName="ProductItem" className="ish.oncourse.model.Voucher" dbEntityName="ProductItem">
+	<obj-entity name="Voucher" superEntityName="ProductItem" className="ish.oncourse.model.Voucher">
 		<qualifier><![CDATA[type = 3]]></qualifier>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
@@ -1838,7 +1839,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="status" type="ish.common.types.VoucherPaymentStatus" db-attribute-path="status"/>
 	</obj-entity>
-	<obj-entity name="VoucherProduct" superEntityName="Product" className="ish.oncourse.model.VoucherProduct" dbEntityName="Product">
+	<obj-entity name="VoucherProduct" superEntityName="Product" className="ish.oncourse.model.VoucherProduct">
 		<qualifier><![CDATA[type = 3]]></qualifier>
 		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
 		<obj-attribute name="expiryType" type="ish.common.types.ExpiryType" db-attribute-path="expiryType"/>
@@ -2483,6 +2484,9 @@
 	<db-relationship name="college" source="LicenseFee" target="College" toMany="false">
 		<db-attribute-pair source="college_id" target="id"/>
 	</db-relationship>
+	<db-relationship name="webSite" source="LicenseFee" target="WebSite" toMany="false">
+		<db-attribute-pair source="webSiteId" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="Log" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -2927,6 +2931,9 @@
 	<db-relationship name="invoices" source="WebSite" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
+	<db-relationship name="licenseFees" source="WebSite" target="LicenseFee" toMany="true">
+		<db-attribute-pair source="id" target="webSiteId"/>
+	</db-relationship>
 	<db-relationship name="toWebHostName" source="WebSite" target="WebHostName" toMany="false">
 		<db-attribute-pair source="SSLhostNameId" target="id"/>
 	</db-relationship>
@@ -3123,6 +3130,7 @@
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="college" source="LicenseFee" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="webSite" source="LicenseFee" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="Log" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="user" source="Log" target="WillowUser" deleteRule="Nullify" db-relationship-path="user"/>
 	<obj-relationship name="contact" source="Membership" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
@@ -3273,6 +3281,7 @@
 	<obj-relationship name="collegeDomains" source="WebSite" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
 	<obj-relationship name="contents" source="WebSite" target="WebContent" deleteRule="Deny" db-relationship-path="contents"/>
 	<obj-relationship name="invoices" source="WebSite" target="Invoice" deleteRule="Nullify" db-relationship-path="invoices"/>
+	<obj-relationship name="licenseFees" source="WebSite" target="LicenseFee" deleteRule="Deny" db-relationship-path="licenseFees"/>
 	<obj-relationship name="toWebHostName" source="WebSite" target="WebHostName" deleteRule="Nullify" db-relationship-path="toWebHostName"/>
 	<obj-relationship name="webMenus" source="WebSite" target="WebMenu" deleteRule="Deny" db-relationship-path="webMenus"/>
 	<obj-relationship name="webNodeTypes" source="WebSite" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>

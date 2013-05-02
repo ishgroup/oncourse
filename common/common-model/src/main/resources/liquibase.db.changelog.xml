@@ -1567,4 +1567,26 @@
 		<modifyDataType tableName="Contact" columnName="isMarketingViaSMSAllowed" newDataType="tinyint(1) NOT NULL" />
 	</changeSet>
 
+	<changeSet id="102" author="dzmitry" context="production" runOnChange="true">
+		<preConditions>
+			<not>
+				<columnExists tableName="LicenseFee" columnName="webSiteId"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="LicenseFee">
+			<column name="webSiteId" type="BIGINT"/>
+		</addColumn>
+		<addForeignKeyConstraint baseTableName="LicenseFee" baseColumnNames="webSiteId" constraintName="fk_LicenseFee_WebSite" referencedTableName="WebSite"
+								 referencedColumnNames="id"/>
+	</changeSet>
+
+	<changeSet id="103" author="dzmitry" context="production" runOnChange="true">
+		<dropUniqueConstraint tableName="LicenseFee" constraintName="college_key_uniq_idx"/>
+		<addUniqueConstraint tableName="LicenseFee" constraintName="college_website_key_uniq_idx" columnNames="college_id,webSiteId,key_code"/>
+	</changeSet>
+
+	<changeSet id="104" author="dzmitry" context="production" runOnChange="true">
+		<sql>update LicenseFee set webSiteId = (select id from WebSite ws where ws.collegeId = college_id limit 1) where key_code in ('hosting', 'cc-web', 'ecommerce')</sql>
+	</changeSet>
+
 </databaseChangeLog>

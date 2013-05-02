@@ -1,10 +1,8 @@
 package ish.oncourse.admin.pages;
 
-import java.math.BigDecimal;
-
 import ish.oncourse.admin.pages.college.Billing;
+import ish.oncourse.admin.utils.LicenseFeeUtil;
 import ish.oncourse.model.College;
-import ish.oncourse.model.LicenseFee;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -72,15 +70,6 @@ public class AddCollege {
 		return prls.createPageRenderLinkWithContext(Billing.class, collegeId);
 	}
 	
-	private LicenseFee createFee(ObjectContext context, College college, String keyCode) {
-		LicenseFee fee = context.newObject(LicenseFee.class);
-		fee.setCollege(college);
-		fee.setKeyCode(keyCode);
-		fee.setFreeTransactions(0);
-		fee.setFee(new BigDecimal(0));
-		return fee;
-	}
-	
 	private Preference createPreference(ObjectContext context, College college, String name, String value) {
 		Preference pref = context.newObject(Preference.class);
 		
@@ -92,12 +81,9 @@ public class AddCollege {
 	}
 	
 	private void initializeLicenseFees(ObjectContext context, College college) {
-		createFee(context, college, "sms");
-		createFee(context, college, "cc-office");
-		createFee(context, college, "cc-web");
-		createFee(context, college, "ecommerce");
-		createFee(context, college, "support");
-		createFee(context, college, "hosting");
+		LicenseFeeUtil.createFee(context, college, null, LicenseFeeUtil.SMS_FEE_CODE);
+		LicenseFeeUtil.createFee(context, college, null, LicenseFeeUtil.CC_OFFICE_FEE_CODE);
+		LicenseFeeUtil.createFee(context, college, null, LicenseFeeUtil.SUPPORT_FEE_CODE);
 	}
 	
 	private void initializeLicensePreferences(ObjectContext context, College college) {

@@ -1,10 +1,8 @@
 package ish.oncourse.admin.pages.college;
 
 import ish.oncourse.admin.pages.Index;
-import ish.oncourse.model.College;
-import ish.oncourse.model.LicenseFee;
-import ish.oncourse.model.PaymentGatewayType;
-import ish.oncourse.model.Preference;
+import ish.oncourse.admin.utils.LicenseFeeUtil;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
@@ -13,15 +11,15 @@ import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -30,26 +28,28 @@ public class Billing {
 
 	private static final Logger logger = Logger.getLogger(Billing.class);
 
-	private static final String SUPPORT_FEE_CODE = "support";
-	private static final String HOSTING_FEE_CODE = "hosting";
-	
 	@InjectComponent
 	@Property
 	private Form billingForm;
 
 	@Property
+	@Persist
 	private College college;
-	
+
 	@Property
-	@Persist(PersistenceConstants.FLASH)
-	private Map<String, Map<String, Object>> licenseInfo;
-	
+	private int webSiteIndex;
+
 	@Property
-	private String currentLicenseInfoKey;
-	
+	private int feeIndex;
+
 	@Property
-	private String infoKey;
-	
+	@Persist
+	private List<WebSite> webSites;
+
+	@Property
+	@Persist
+	private List<LicenseFee> collegeLicenseFees;
+
 	@Property
 	private boolean webPaymentEnabled;
 	
@@ -75,10 +75,10 @@ public class Billing {
     private Index indexPage;
 	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	
+
 	@SetupRender
 	void setupRender() {
-		ObjectContext context = cayenneService.sharedContext();
+		ObjectContext context = cayenneService.newContext();
 
 		this.college = context.localObject(college);
 
@@ -91,26 +91,12 @@ public class Billing {
 			this.webPaymentEnabled = true;
 		}
 		this.qePaymentEnabled = preferenceController.getLicenseCCProcessing();
-		
-		this.licenseInfo = new LinkedHashMap<>();
-		for (LicenseFee fee : college.getLicenseFees()) {
-			Map<String, Object> info = new LinkedHashMap<>();
-			
-			info.put(LicenseFee.PLAN_NAME_PROPERTY, fee.getPlanName());
-			
-			if (fee.getPaidUntil() != null) {
-				info.put(LicenseFee.PAID_UNTIL_PROPERTY, fee.getPaidUntil());
-			}
-			
-			if (fee.getRenewalDate() != null) {
-				info.put(LicenseFee.RENEWAL_DATE_PROPERTY, fee.getRenewalDate());
-			}
-			
-			info.put(LicenseFee.FREE_TRANSACTIONS_PROPERTY, String.valueOf(fee.getFreeTransactions()));
-			info.put(LicenseFee.FEE_PROPERTY, String.valueOf(fee.getFee()));
-			
-			this.licenseInfo.put(fee.getKeyCode(), info);
-		}
+
+		this.webSites = college.getWebSites();
+
+		Expression collegeFeesExp = ExpressionFactory.matchExp(LicenseFee.WEB_SITE_PROPERTY, null);
+		this.collegeLicenseFees = collegeFeesExp.filterObjects(college.getLicenseFees());
+		Ordering.orderList(collegeLicenseFees, Arrays.asList(new Ordering(LicenseFee.KEY_CODE_PROPERTY, SortOrder.ASCENDING)));
 
 		Expression exp = ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, college);
 		List<Preference> prefs = context.performQuery(new SelectQuery(Preference.class, exp));
@@ -123,27 +109,31 @@ public class Billing {
 	}
 	
 	public boolean isSupportOrHosting() {
-		if ("support".equals(currentLicenseInfoKey) || "hosting".equals(currentLicenseInfoKey)) {
-			return true;
-		} else {
-			return false;
-		}
+		return LicenseFeeUtil.SUPPORT_FEE_CODE.equals(getCurrentLicenseFee().getKeyCode())
+				|| LicenseFeeUtil.HOSTING_FEE_CODE.equals(getCurrentLicenseFee().getKeyCode());
 	}
 
 	@OnEvent(component = "billingForm", value = "validate")
 	void validate() {
-		if (licenseInfo.get(SUPPORT_FEE_CODE) != null) {
-			validateFeeInfo(licenseInfo.get(SUPPORT_FEE_CODE));
+
+		for (LicenseFee fee : collegeLicenseFees) {
+			if (isSupportFee(fee) || isHostingFee(fee)) {
+				validateFee(fee);
+			}
 		}
 
-		if (licenseInfo.get(HOSTING_FEE_CODE) != null) {
-			validateFeeInfo(licenseInfo.get(HOSTING_FEE_CODE));
+		for (WebSite webSite : webSites) {
+			for (LicenseFee fee : webSite.getLicenseFees()) {
+				if (isSupportFee(fee) || isHostingFee(fee)) {
+					validateFee(fee);
+				}
+			}
 		}
 	}
 
-	private void validateFeeInfo(Map<String, Object> feeInfo) {
-		String planName = StringUtils.trimToNull((String) feeInfo.get(LicenseFee.PLAN_NAME_PROPERTY));
-		Date renewalDate = (Date) feeInfo.get(LicenseFee.RENEWAL_DATE_PROPERTY);
+	private void validateFee(LicenseFee fee) {
+		String planName = StringUtils.trimToNull(fee.getPlanName());
+		Date renewalDate = fee.getRenewalDate();
 
 		if (planName != null && renewalDate == null) {
 			billingForm.recordError("Renewal date must be specified for all active plans.");
@@ -185,40 +175,14 @@ public class Billing {
 				p.setModified(now);
 			}
 		}
-		
-		for (LicenseFee fee : this.college.getLicenseFees()) {
-			Map<String, Object> info = licenseInfo.get(fee.getKeyCode());
-			LicenseFee lf = context.localObject(fee);
-			
-			if (info != null && lf != null) {
-                String planName = StringUtils.trimToNull(StringUtils.trimToNull((String) info.get(LicenseFee.PLAN_NAME_PROPERTY)));
-                lf.setPlanName(planName);
-                if (planName == null) {
-                    lf.setPaidUntil(null);
-                    lf.setRenewalDate(null);
-                }
-                else {
-                    if (isSupportFee(fee) || isHostingFee(fee)) {
-                        lf.setPaidUntil((Date) info.get(LicenseFee.PAID_UNTIL_PROPERTY));
-                        lf.setRenewalDate((Date) info.get(LicenseFee.RENEWAL_DATE_PROPERTY));
-                    }
-                }
 
-
-				if (StringUtils.trimToNull((String) info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)) != null) {
-					lf.setFreeTransactions(Integer.parseInt((String) info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)));
-				}
-				if (StringUtils.trimToNull((String) info.get(LicenseFee.FEE_PROPERTY)) != null) {
-					lf.setFee(new BigDecimal((String) info.get(LicenseFee.FEE_PROPERTY)));
-				}
-			}
-		}
-		
 		context.commitChanges();
 	}
 
     void onActivate(Long id) {
-		this.college = collegeService.findById(id);
+		if (college == null) {
+			this.college = collegeService.findById(id);
+		}
 	}
 
 	Object onPassivate() {
@@ -240,25 +204,8 @@ public class Billing {
 	public void setPaymentExpPass(String value) {
 		college.setPaymentGatewayPass(value);
 	}
-	
-	public Map<String, Object> getCurrentLicenseInfo() {
-		return licenseInfo.get(currentLicenseInfoKey);
-	}
-	
-	public String getPlanName() {
-		return (String) getCurrentLicenseInfo().get(LicenseFee.PLAN_NAME_PROPERTY);
-	}
-	
-	public void setPlanName(String planName) {
-		getCurrentLicenseInfo().put(LicenseFee.PLAN_NAME_PROPERTY, planName);
-	}
-	
-	public String getPaidUntil() {
-		Date paidUntil = (Date) getCurrentLicenseInfo().get(LicenseFee.PAID_UNTIL_PROPERTY);
-		return paidUntil == null ? "" : dateFormat.format(paidUntil);
-	}
-	
-	public void setPaidUntil(String dateString) {
+
+	public void setPaidUntil(LicenseFee fee, String dateString) {
 		if (dateString != null) {
 			try {
 				Date date = dateFormat.parse(dateString);
@@ -266,22 +213,17 @@ public class Billing {
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(date);
 					cal.set(Calendar.DAY_OF_MONTH, 1);
-					getCurrentLicenseInfo().put(LicenseFee.PAID_UNTIL_PROPERTY, cal.getTime());
+					fee.setPaidUntil(cal.getTime());
 				}
 			} catch (ParseException e) {
 				billingForm.recordError("Paid until date not valid.");
 			}
 		} else {
-			getCurrentLicenseInfo().put(LicenseFee.PAID_UNTIL_PROPERTY, null);
+			fee.setPaidUntil(null);
 		}
 	}
 	
-	public String getRenewalDate() {
-		Date renewalDate = (Date) getCurrentLicenseInfo().get(LicenseFee.RENEWAL_DATE_PROPERTY);
-		return renewalDate == null ? "" : dateFormat.format(renewalDate);
-	}
-	
-	public void setRenewalDate(String dateString){
+	public void setRenewalDate(LicenseFee fee, String dateString){
 		if (dateString != null) {
 			try {
 				Date date = dateFormat.parse(dateString);
@@ -289,32 +231,16 @@ public class Billing {
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(date);
 					cal.set(Calendar.DAY_OF_MONTH, 1);
-					getCurrentLicenseInfo().put(LicenseFee.RENEWAL_DATE_PROPERTY, cal.getTime());
+					fee.setRenewalDate(cal.getTime());
 				}
 			} catch (ParseException e) {
 				billingForm.recordError("Renewal date not valid.");
 			}
 		} else {
-			getCurrentLicenseInfo().put(LicenseFee.RENEWAL_DATE_PROPERTY, null);
+			fee.setRenewalDate(null);
 		}
 	}
-	
-	public String getFreeTransactions() {
-		return (String) getCurrentLicenseInfo().get(LicenseFee.FREE_TRANSACTIONS_PROPERTY);
-	}
-	
-	public void setFreeTransactions(String freeTransactions) {
-		getCurrentLicenseInfo().put(LicenseFee.FREE_TRANSACTIONS_PROPERTY, freeTransactions);
-	}
-	
-	public String getFee() {
-		return (String) getCurrentLicenseInfo().get(LicenseFee.FEE_PROPERTY);
-	}
-	
-	public void setFee(String fee) {
-		getCurrentLicenseInfo().put(LicenseFee.FEE_PROPERTY, fee);
-	}
-	
+
 	public String getCollegeName() {
 		return college.getName();
 	}
@@ -327,7 +253,7 @@ public class Billing {
 
     public Object onException(Throwable cause){
         //redirect to index page when session was expired and persist properties got null value
-        if (college == null || licenseInfo == null) {
+        if (college == null) {
             return indexPage;
 		} else {
 			throw new IllegalStateException(cause);
@@ -335,11 +261,72 @@ public class Billing {
     }
 
 	private boolean isSupportFee(LicenseFee fee) {
-		return SUPPORT_FEE_CODE.equals(fee.getKeyCode());
+		return LicenseFeeUtil.SUPPORT_FEE_CODE.equals(fee.getKeyCode());
 	}
 
 	private boolean isHostingFee(LicenseFee fee) {
-		return HOSTING_FEE_CODE.equals(fee.getKeyCode());
+		return LicenseFeeUtil.HOSTING_FEE_CODE.equals(fee.getKeyCode());
 	}
 
+	public WebSite getCurrentWebsite() {
+		return webSites.get(webSiteIndex);
+	}
+
+	public LicenseFee getCurrentLicenseFee() {
+		return getCurrentWebsite().getLicenseFees().get(feeIndex);
+	}
+
+	public LicenseFee getCurrentCollegeLicenseFee() {
+		return collegeLicenseFees.get(feeIndex);
+	}
+
+	public String getCurrentPaidUntil() {
+		return getFeePaidUntil(getCurrentLicenseFee());
+	}
+
+	public void setCurrentPaidUntil(String paidUntilString) {
+		setPaidUntil(getCurrentLicenseFee(), paidUntilString);
+	}
+
+	public String getCurrentRenewalDate() {
+		return getFeeRenewalDate(getCurrentLicenseFee());
+	}
+
+	public void setCurrentRenewalDate(String renewalDateString) {
+		setRenewalDate(getCurrentLicenseFee(), renewalDateString);
+	}
+
+	public String getCurrentCollegeFeePaidUntil() {
+		return getFeePaidUntil(getCurrentCollegeLicenseFee());
+	}
+
+	public void setCurrentCollegeFeePaidUntil(String paidUntilString) {
+		setPaidUntil(getCurrentCollegeLicenseFee(), paidUntilString);
+	}
+
+	public String getCurrentCollegeFeeRenewalDate() {
+		return getFeeRenewalDate(getCurrentCollegeLicenseFee());
+	}
+
+	public void setCurrentCollegeFeeRenewalDate(String renewalDateString) {
+		setRenewalDate(getCurrentCollegeLicenseFee(), renewalDateString);
+	}
+
+	private String getFeePaidUntil(LicenseFee fee) {
+		Date paidUntil = getCurrentLicenseFee().getPaidUntil();
+		if (paidUntil != null) {
+			return dateFormat.format(paidUntil);
+		}
+
+		return StringUtils.EMPTY;
+	}
+
+	private String getFeeRenewalDate(LicenseFee fee) {
+		Date renewalDate = getCurrentLicenseFee().getRenewalDate();
+		if (renewalDate != null) {
+			return dateFormat.format(renewalDate);
+		}
+
+		return StringUtils.EMPTY;
+	}
 }

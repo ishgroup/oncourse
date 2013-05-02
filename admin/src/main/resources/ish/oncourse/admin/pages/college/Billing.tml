@@ -34,10 +34,45 @@
 		<t:checkbox t:id="amexCheckbox" value="amexEnabled"/>Amex card type enabled
 	</label>
 
-	<h2>License Fees</h2>
+	<h2>License Fees (onCourse)</h2>
 
 	<table class="table table-striped table-condensed">
 		<thead>
+		<tr>
+			<td>Key Code</td>
+			<td>Plan Name</td>
+			<td>Paid Until</td>
+			<td>Renewal Date</td>
+			<td>Free Transactions</td>
+			<td>Fee</td>
+		</tr>
+		</thead>
+		<tbody>
+		<t:loop source="collegeLicenseFees" index="feeIndex">
+			<tr>
+				<td>${currentCollegeLicenseFee.keyCode}</td>
+				<td><t:textfield t:id="collegePlanName" value="currentCollegeLicenseFee.planName"/></td>
+				<td>
+					<t:if test="supportOrHosting">
+						<t:textfield t:id="collegePaidUntil" class="datefield" value="currentCollegeFeePaidUntil"/>
+					</t:if>
+				</td>
+				<td>
+					<t:if test="supportOrHosting">
+						<t:textfield t:id="collegeRenewalDate" class="datefield" value="currentCollegeFeeRenewalDate"/>
+					</t:if>
+				</td>
+				<td><t:textfield t:id="collegeFreeTransactions" t:validate="required" value="currentCollegeLicenseFee.freeTransactions"/></td>
+				<td><t:textfield t:id="collegeFee" t:validate="required" value="currentCollegeLicenseFee.fee"/></td>
+			</tr>
+		</t:loop>
+		</tbody>
+	</table>
+
+	<t:loop source="webSites" index="webSiteIndex">
+		<h2>License Fees (${currentWebsite.name})</h2>
+		<table class="table table-striped table-condensed">
+			<thead>
 			<tr>
 				<td>Key Code</td>
 				<td>Plan Name</td>
@@ -46,28 +81,29 @@
 				<td>Free Transactions</td>
 				<td>Fee</td>
 			</tr>
-		</thead>
-		<tbody>
-			<t:loop source="licenseInfo.keySet()" value="currentLicenseInfoKey">
+			</thead>
+			<tbody>
+			<t:loop source="currentWebsite.licenseFees" index="feeIndex">
 				<tr>
-					<td>${currentLicenseInfoKey}</td>
-					<td><t:textfield t:id="planName" value="planName"/></td>
+					<td>${currentLicenseFee.keyCode}</td>
+					<td><t:textfield t:id="planName" value="currentLicenseFee.planName"/></td>
 					<td>
 						<t:if test="supportOrHosting">
-							<t:textfield t:id="paidUntil" class="datefield" value="paidUntil"/>
+							<t:textfield t:id="paidUntil" class="datefield" value="currentPaidUntil"/>
 						</t:if>
 					</td>
 					<td>
 						<t:if test="supportOrHosting">
-							<t:textfield t:id="renewalDate" class="datefield" value="renewalDate"/>
+							<t:textfield t:id="renewalDate" class="datefield" value="currentRenewalDate"/>
 						</t:if>
 					</td>
-					<td><t:textfield t:id="freeTransactions" t:validate="required" value="freeTransactions"/></td>
-					<td><t:textfield t:id="fee" t:validate="required" value="fee"/></td>
+					<td><t:textfield t:id="freeTransactions" t:validate="required" value="currentLicenseFee.freeTransactions"/></td>
+					<td><t:textfield t:id="fee" t:validate="required" value="currentLicenseFee.fee"/></td>
 				</tr>
 			</t:loop>
-		</tbody>
-	</table>
+			</tbody>
+		</table>
+	</t:loop>
 
 	<t:errors/>
 	

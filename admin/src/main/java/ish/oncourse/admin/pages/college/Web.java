@@ -1,5 +1,6 @@
 package ish.oncourse.admin.pages.college;
 
+import ish.oncourse.admin.utils.LicenseFeeUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.node.IWebNodeService;
@@ -205,9 +206,11 @@ public class Web {
 	void addSite() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		Date now = new Date();
+
+		College college = context.localObject(this.college);
 		
 		WebSite site = context.newObject(WebSite.class);
-		site.setCollege(context.localObject(college));
+		site.setCollege(college);
 		site.setName(newSiteNameValue);
 		site.setSiteKey(newSiteKeyValue);
 		site.setGoogleAnalyticsAccount(newSiteGoogleAnalyticsValue);
@@ -231,8 +234,11 @@ public class Web {
 		menu.setWebSite(site);
 		menu.setWeight(1);
 		menu.setWebNode(node);
-		
-		College college = context.localObject(this.college);
+
+		LicenseFeeUtil.createFee(context, college, site, LicenseFeeUtil.HOSTING_FEE_CODE);
+		LicenseFeeUtil.createFee(context, college, site, LicenseFeeUtil.CC_WEB_FEE_CODE);
+		LicenseFeeUtil.createFee(context, college, site, LicenseFeeUtil.ECOMMERCE_FEE_CODE);
+
 		if (college != null) {
 			Expression exp = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, college).andExp(
 					ExpressionFactory.matchExp(Tag.NAME_PROPERTY, Tag.SUBJECTS_TAG_NAME));

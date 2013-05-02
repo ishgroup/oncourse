@@ -7,6 +7,7 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.LicenseFee;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebMenu;
@@ -32,6 +33,7 @@ public abstract class _WebSite extends CayenneDataObject {
     public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
     public static final String CONTENTS_PROPERTY = "contents";
     public static final String INVOICES_PROPERTY = "invoices";
+    public static final String LICENSE_FEES_PROPERTY = "licenseFees";
     public static final String TO_WEB_HOST_NAME_PROPERTY = "toWebHostName";
     public static final String WEB_MENUS_PROPERTY = "webMenus";
     public static final String WEB_NODE_TYPES_PROPERTY = "webNodeTypes";
@@ -124,6 +126,18 @@ public abstract class _WebSite extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Invoice> getInvoices() {
         return (List<Invoice>)readProperty(INVOICES_PROPERTY);
+    }
+
+
+    public void addToLicenseFees(LicenseFee obj) {
+        addToManyTarget(LICENSE_FEES_PROPERTY, obj, true);
+    }
+    public void removeFromLicenseFees(LicenseFee obj) {
+        removeToManyTarget(LICENSE_FEES_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<LicenseFee> getLicenseFees() {
+        return (List<LicenseFee>)readProperty(LICENSE_FEES_PROPERTY);
     }
 
 
