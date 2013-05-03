@@ -3,6 +3,7 @@ package ish.oncourse.admin.pages;
 import ish.math.Country;
 import ish.oncourse.admin.services.billing.IBillingDataService;
 import ish.oncourse.model.College;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.query.Ordering;
@@ -46,12 +47,15 @@ public class Billing {
 	private College college;
 
 	@Property
-	@Persist
-	private Map<Long, Map<String, Object>> licenseData;
+	private int webSiteIndex;
 
 	@Property
 	@Persist
-	private Map<Long, Map<String, Object>> billingData;
+	private Map<Long, Map<Long, Map<String, Object>>> licenseData;
+
+	@Property
+	@Persist
+	private Map<Long, Map<Long, Map<String, Object>>> billingData;
 
 	@Property
 	@Persist
@@ -146,8 +150,8 @@ public class Billing {
 	}
 	
 	public boolean isSupportPayMonth() {
-		String plan = (String) licenseData.get(college.getId()).get("support-plan");
-		Date paidUntil = (Date) licenseData.get(college.getId()).get("support-paidUntil");
+		String plan = (String) licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support-plan");
+		Date paidUntil = (Date) licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support-paidUntil");
 		if (plan != null) {
 			if (paidUntil == null) {
 				return true;
@@ -166,33 +170,33 @@ public class Billing {
 	}
 
 	public String getSupportPaidUntil() {
-		Object supportPaidUntil = licenseData.get(college.getId()).get("support-paidUntil");
+		Object supportPaidUntil = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support-paidUntil");
 		return supportPaidUntil == null ? "" : dateFormat.format(supportPaidUntil);
 	}
 
 	public String getSupportFree() {
-		Object supportFree = licenseData.get(college.getId()).get("support-free");
+		Object supportFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support-free");
 		return supportFree == null ? "" : String.valueOf(supportFree);
 	}
 
 	public String getSupport() {
-		Object support = licenseData.get(college.getId()).get("support");
+		Object support = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support");
 		return support == null ? moneyFormat.format(0.0) : moneyFormat.format(support);
 	}
 
 	public String getWebHostingFree() {
-		Object webHostingFree = licenseData.get(college.getId()).get("support-free");
+		Object webHostingFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support-free");
 		return webHostingFree == null ? "" : String.valueOf(webHostingFree);
 	}
 
 	public String getHosting() {
-		Object hosting = licenseData.get(college.getId()).get("hosting");
+		Object hosting = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("hosting");
 		return hosting == null ? moneyFormat.format(0.0) : moneyFormat.format(hosting);
 	}
 
 	public boolean isWebHostingPayMonth() {
-		String plan = (String) licenseData.get(college.getId()).get("hosting-plan");
-		Date paidUntil = (Date) licenseData.get(college.getId()).get("hosting-paidUntil");
+		String plan = (String) licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("hosting-plan");
+		Date paidUntil = (Date) licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("hosting-paidUntil");
 		if (plan != null) {
 			if (paidUntil == null) {
 				return true;
@@ -212,74 +216,74 @@ public class Billing {
 	}
 
 	public String getWebHostingPaidUntil() {
-		Object webHostingPaidUntil = licenseData.get(college.getId()).get("hosting-paidUntil");
+		Object webHostingPaidUntil = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("hosting-paidUntil");
 		return webHostingPaidUntil == null ? "" : dateFormat.format(webHostingPaidUntil);
 	}
 
 	public String getSms() {
-		Object sms = billingData.get(college.getId()).get("sms");
+		Object sms = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("sms");
 		return sms == null ? "" : String.valueOf(sms);
 	}
 
 	public String getSmsFree() {
-		Object smsFree = licenseData.get(college.getId()).get("sms-free");
+		Object smsFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("sms-free");
 		return smsFree == null ? "" : String.valueOf(smsFree);
 	}
 
 	public String getSmsCollege() {
-		Object smsCollege = licenseData.get(college.getId()).get("sms");
+		Object smsCollege = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("sms");
 		return smsCollege == null ? moneyFormat.format(0.0) : moneyFormat.format(smsCollege);
 	}
 
 	public String getCcOffice() {
-		Object ccOffice = billingData.get(college.getId()).get("ccOffice");
+		Object ccOffice = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("ccOffice");
 		return ccOffice == null ? "" : String.valueOf(ccOffice);
 	}
 
 	public String getCcOfficeFree() {
-		Object ccOfficeFree = licenseData.get(college.getId()).get("cc-office-free");
+		Object ccOfficeFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-office-free");
 		return ccOfficeFree == null ? "" : String.valueOf(ccOfficeFree);
 	}
 
 	public String getCcOfficeCollege() {
-		Object ccOfficeCollege = licenseData.get(college.getId()).get("cc-office");
+		Object ccOfficeCollege = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-office");
 		return ccOfficeCollege == null ? moneyFormat.format(0.0) : moneyFormat.format(ccOfficeCollege);
 	}
 
 	public String getCcWeb() {
-		Object ccWeb = billingData.get(college.getId()).get("ccWeb");
+		Object ccWeb = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("ccWeb");
 		return ccWeb == null ? "" : String.valueOf(ccWeb);
 	}
 
 	public String getCcWebFree() {
-		Object ccWebFree = licenseData.get(college.getId()).get("cc-web-free");
+		Object ccWebFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-web-free");
 		return ccWebFree == null ? "" : String.valueOf(ccWebFree);
 	}
 
 	public String getCcWebCollege() {
-		Object ccWebCollege = licenseData.get(college.getId()).get("cc-web");
+		Object ccWebCollege = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-web");
 		return ccWebCollege == null ? moneyFormat.format(0.0) : moneyFormat.format(ccWebCollege);
 	}
 
 	public String getCcWebValue() {
-		Object ccWebValue = billingData.get(college.getId()).get("ccWebValue");
+		Object ccWebValue = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("ccWebValue");
 		return ccWebValue == null ? moneyFormat.format(0.0) : moneyFormat.format(ccWebValue);
 	}
 
 	public String getEcommerceFree() {
-		Object ecommerceFree = licenseData.get(college.getId()).get("ecommerce-free");
+		Object ecommerceFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("ecommerce-free");
 		return ecommerceFree == null ? "" : String.valueOf(ecommerceFree);
 	}
 
 	public String getEcommerce() {
-		Object ecommerce = licenseData.get(college.getId()).get("ecommerce");
+		Object ecommerce = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("ecommerce");
 		return ecommerce == null ? "0.0" : 
 				String.valueOf(((BigDecimal) ecommerce).doubleValue() * 100);
 	}
 
 	public String getSmsTotal() {
-		Object sms = billingData.get(college.getId()).get("sms");
-		Object smsCost = licenseData.get(college.getId()).get("sms");
+		Object sms = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("sms");
+		Object smsCost = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("sms");
 		if (sms != null && smsCost != null) {
 			return moneyFormat.format((Long) sms * ((BigDecimal) smsCost).doubleValue());
 		}
@@ -289,9 +293,9 @@ public class Billing {
 	}
 
 	public String getCcOfficeTotal() {
-		Long ccOffice = (Long) billingData.get(college.getId()).get("ccOffice");
-		BigDecimal ccOfficeCost = (BigDecimal) licenseData.get(college.getId()).get("cc-office");
-		Integer ccOfficeFree = (Integer) licenseData.get(college.getId()).get("cc-office-free");
+		Long ccOffice = (Long) billingData.get(college.getId()).get(getCurrentWebSiteId()).get("ccOffice");
+		BigDecimal ccOfficeCost = (BigDecimal) licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-office");
+		Integer ccOfficeFree = (Integer) licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-office-free");
 		if (ccOffice != null && ccOfficeCost != null) {
 			if (ccOfficeFree == null) {
 				ccOfficeFree = 0;
@@ -310,8 +314,8 @@ public class Billing {
 	}
 	
 	public String getCcWebTotal() {
-		Object ccWeb = billingData.get(college.getId()).get("ccWeb");
-		Object ccWebCost = licenseData.get(college.getId()).get("cc-web");
+		Object ccWeb = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("ccWeb");
+		Object ccWebCost = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-web");
 		if (ccWeb != null && ccWebCost != null) {
 			return moneyFormat.format((Long) ccWeb * ((BigDecimal) ccWebCost).doubleValue());
 		}
@@ -334,7 +338,8 @@ public class Billing {
 	
 	public Map<Double, Double> getTasmaniaFees() {
 		if (isTasmaniaEcommerce()) {
-			BigDecimal ccWebValue = (BigDecimal) billingData.get(college.getId()).get("ccWebValue");
+			BigDecimal ccWebValue = (BigDecimal) billingData.get(college.getId()).get(
+					getCurrentWebSiteId()).get("ccWebValue");
 			ccWebValue = ccWebValue == null ? new BigDecimal(0.0) : ccWebValue;
 			tasmaniaEcommerceFees = billingService.getTasmaniaEcommerce(ccWebValue.doubleValue(), billingData);
 		}
@@ -347,6 +352,19 @@ public class Billing {
 	
 	public String getTasmaniaTotal() {
 		return moneyFormat.format((Double)currentKey / 100 * tasmaniaEcommerceFees.get(currentKey));
+	}
+
+	public WebSite getCurrentWebsite() {
+		List<WebSite> webSites = college.getWebSites();
+		if (webSiteIndex < webSites.size()) {
+			return college.getWebSites().get(webSiteIndex);
+		}
+		return null;
+	}
+
+	private Long getCurrentWebSiteId() {
+		WebSite currentWebsite = getCurrentWebsite();
+		return currentWebsite != null ? currentWebsite.getId() : null;
 	}
 	
 }

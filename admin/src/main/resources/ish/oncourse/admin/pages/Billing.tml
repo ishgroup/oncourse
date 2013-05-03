@@ -1,94 +1,102 @@
 <html t:type="pagestructure" title="literal:Billing"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<t:form t:id="billingForm">
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:form t:id="billingForm">
 		<span class="form-inline">
 			<t:select t:id="month" model="monthModel" value="month" onChange="javascript:this.form.elements['refresh'].click();"/>
 			<t:submit t:id="export" class="btn btn-primary" value="Export to Moneyworks" />
 			<t:submit t:id="refresh" value="Refresh" style="visibility:hidden"/>
 		</span>
-		
-		<table class="table table-striped table-condensed">
-			<thead>
+
+	<table class="table table-striped table-condensed">
+		<thead>
+		<tr>
+			<td>Description</td>
+			<td>Quantity</td>
+			<td>Free transactions</td>
+			<td>Unit cost</td>
+			<td>Billable for ${month}</td>
+		</tr>
+		</thead>
+		<tbody>
+		<t:loop source="colleges" value="college" volatile="true">
+			<tr>
+				<td colspan="5"><h3><a t:type="pagelink" t:page="college/overview" t:context="college.id">${college.name} <small>${college.billingCode}:${college.id}</small></a></h3></td>
+			</tr>
+			<tr>
+				<td colspan="5"><h4>onCourse</h4></td>
+			</tr>
+			<tr>
+				<td>Support (paid until ${supportPaidUntil})</td>
+				<td></td>
+				<td>${supportFree}</td>
+				<td>${support} <small>ex GST</small></td>
+				<td>
+					<t:if test="supportPayMonth">
+						${support} <small>ex GST</small>
+						<p:else>$0</p:else>
+					</t:if>
+				</td>
+			</tr>
+			<tr>
+				<td>SMS</td>
+				<td>${sms}</td>
+				<td>${smsFree}</td>
+				<td>${smsCollege} <small>ex GST</small></td>
+				<td>${smsTotal} <small>ex GST</small></td>
+			</tr>
+			<tr>
+				<td>Credit card office</td>
+				<td>${ccOffice}</td>
+				<td>${ccOfficeFree}</td>
+				<td>${ccOfficeCollege} <small>ex GST</small></td>
+				<td>${ccOfficeTotal} <small>ex GST</small></td>
+			</tr>
+			<t:loop source="college.webSites" index="webSiteIndex">
 				<tr>
-					<td>Description</td>
-					<td>Quantity</td>
-					<td>Free transactions</td>
-					<td>Unit cost</td>
-					<td>Billable for ${month}</td>
+					<td colspan="5"><h4>${currentWebSite.name}</h4></td>
 				</tr>
-			</thead>
-			<tbody>
-				<t:loop source="colleges" value="college" volatile="true">
-						<tr>
-							<td colspan="5"><h3><a t:type="pagelink" t:page="college/overview" t:context="college.id">${college.name} <small>${college.billingCode}:${college.id}</small></a></h3></td>
-						</tr>
-						<tr>
-							<td>Support (paid until ${supportPaidUntil})</td>
-							<td></td>
-							<td>${supportFree}</td>
-							<td>${support} <small>ex GST</small></td>
-							<td>
-								<t:if test="supportPayMonth">
-									${support} <small>ex GST</small>
-									<p:else>$0</p:else>
-								</t:if>
-							</td>
-						</tr>
-						<tr>
-							<td>Web hosting (paid until ${webHostingPaidUntil})</td>
-							<td></td>
-							<td>${webHostingFree}</td>
-							<td>${hosting} <small>ex GST</small></td>
-							<td>
-								<t:if test="webHostingPayMonth">
-									${hosting} <small>ex GST</small>
-									<p:else>$0</p:else>
-								</t:if>
-							</td>
-						</tr>
-						<tr>
-							<td>SMS</td>
-							<td>${sms}</td>
-							<td>${smsFree}</td>
-							<td>${smsCollege} <small>ex GST</small></td>
-							<td>${smsTotal} <small>ex GST</small></td>
-						</tr>
-						<tr>
-							<td>Credit card office</td>
-							<td>${ccOffice}</td>
-							<td>${ccOfficeFree}</td>
-							<td>${ccOfficeCollege} <small>ex GST</small></td>
-							<td>${ccOfficeTotal} <small>ex GST</small></td>
-						</tr>
-						<tr>
-							<td>Credit card web</td>
-							<td>${ccWeb}</td>
-							<td>${ccWebFree}</td>
-							<td>${ccWebCollege} <small>ex GST</small></td>
-							<td>${ccWebTotal} <small>ex GST</small></td>
-						</tr>
-						<t:if test="tasmaniaEcommerce" negate="true">
-							<tr>
-								<td>eCommerce</td>
-								<td>${ccWebValue} <small>inc GST</small></td>
-								<td>${ecommerceFree}</td>
-								<td>${ecommerce}%</td>
-								<td>${ecommerceTotal} <small>ex GST</small></td>
-							</tr>
-							<p:else>
-								<t:loop source="tasmaniaFees.keySet()" value="currentKey">
-									<tr>
-										<td>eCommerce ${currentKey}%</td>
-										<td>${tasmaniaFee} <small>inc GST</small></td>
-										<td>${ecommerceFree}</td>
-										<td>${currentKey}%</td>
-										<td>${tasmaniaTotal}</td>
-									</tr>
-								</t:loop>
-							</p:else>
+				<tr>
+					<td>Web hosting (paid until ${webHostingPaidUntil})</td>
+					<td></td>
+					<td>${webHostingFree}</td>
+					<td>${hosting} <small>ex GST</small></td>
+					<td>
+						<t:if test="webHostingPayMonth">
+							${hosting} <small>ex GST</small>
+							<p:else>$0</p:else>
 						</t:if>
-				</t:loop>
-			</tbody>
-		</table>
-	</t:form>
+					</td>
+				</tr>
+				<tr>
+					<td>Credit card web</td>
+					<td>${ccWeb}</td>
+					<td>${ccWebFree}</td>
+					<td>${ccWebCollege} <small>ex GST</small></td>
+					<td>${ccWebTotal} <small>ex GST</small></td>
+				</tr>
+				<t:if test="tasmaniaEcommerce" negate="true">
+					<tr>
+						<td>eCommerce</td>
+						<td>${ccWebValue} <small>inc GST</small></td>
+						<td>${ecommerceFree}</td>
+						<td>${ecommerce}%</td>
+						<td>${ecommerceTotal} <small>ex GST</small></td>
+					</tr>
+					<p:else>
+						<t:loop source="tasmaniaFees.keySet()" value="currentKey">
+							<tr>
+								<td>eCommerce ${currentKey}%</td>
+								<td>${tasmaniaFee} <small>inc GST</small></td>
+								<td>${ecommerceFree}</td>
+								<td>${currentKey}%</td>
+								<td>${tasmaniaTotal}</td>
+							</tr>
+						</t:loop>
+					</p:else>
+				</t:if>
+			</t:loop>
+		</t:loop>
+		</tbody>
+	</table>
+</t:form>
 </html>

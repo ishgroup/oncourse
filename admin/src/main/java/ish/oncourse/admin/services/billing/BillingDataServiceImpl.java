@@ -1,9 +1,6 @@
 package ish.oncourse.admin.services.billing;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.LicenseFee;
-import ish.oncourse.model.MessagePerson;
-import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.DataRow;
@@ -19,11 +16,11 @@ public class BillingDataServiceImpl implements IBillingDataService {
 	
 	private static final DateFormat TRANSACTION_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 	
-    private static final String SQL_LICENSE_FEE = "SELECT l.college_id as collegeId, l.key_code as keyCode, l.fee as fee, l.paidUntil as paidUntil, l.renewalDate as renewalDate, l.plan_name as plan, l.free_transactions as freeTransactions FROM LicenseFee as l JOIN College as c on c.id = l.college_id WHERE c.billingCode IS NOT NULL";
+    private static final String SQL_LICENSE_FEE = "SELECT l.college_id as collegeId, l.webSiteId as webSiteId, l.key_code as keyCode, l.fee as fee, l.paidUntil as paidUntil, l.renewalDate as renewalDate, l.plan_name as plan, l.free_transactions as freeTransactions FROM LicenseFee as l JOIN College as c on c.id = l.college_id WHERE c.billingCode IS NOT NULL";
     private static final String SQL_SMS = "SELECT count(*) as count, c.id as collegeId FROM MessagePerson AS m JOIN College AS c on c.Id = m.collegeId WHERE c.billingCode IS NOT NULL and type = 2 AND timeOfDelivery >= #bind($from)  AND timeOfDelivery <= #bind($to) GROUP BY collegeid";
     private static final String SQL_OFFICE_TRANSACTION_COUNT = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'O' AND p.type = 2 AND (status = 3 OR status = 6) GROUP BY collegeid";
-    private static final String SQL_WEB_TRANSACTION_COUNT = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'W' AND p.type = 2 AND (status = 3 OR status = 6) GROUP BY collegeid";
-    private static final String SQL_WEB_TRANSACTION_VALUE = "SELECT c.id as collegeId, SUM(i.totalGst) as value FROM Invoice i JOIN College AS c on c.Id = i.collegeId WHERE c.billingCode IS NOT NULL and i.created >= #bind($from) AND i.created <= #bind($to) AND i.source = 'W' GROUP BY collegeid";
+    private static final String SQL_WEB_TRANSACTION_COUNT = "select count(p.id) as count, c.id as collegeId, i.webSiteId as webSiteId from PaymentIn p join PaymentInLine pil on p.id = pil.paymentInId join Invoice i on pil.invoiceId = i.id join College c on p.collegeId = c.id where c.billingCode is not null and p.created >= #bind($from) and p.created <= #bind($to) and p.source = 'W' and p.type = 2 and p.status in (3, 6) group by collegeId, i.webSiteId";
+    private static final String SQL_WEB_TRANSACTION_VALUE = "SELECT c.id as collegeId, i.webSiteId as webSiteId, SUM(i.totalGst) as value FROM Invoice i JOIN College AS c on c.Id = i.collegeId WHERE c.billingCode IS NOT NULL and i.created >= #bind($from) AND i.created <= #bind($to) AND i.source = 'W' GROUP BY collegeid, i.webSiteId";
     private static final String SQL_TASMANIA_ECOMMERCE = "SELECT SUM(i.totalGst) as value FROM Invoice i WHERE i.created >= #bind($from) AND i.created <= #bind($to) AND i.collegeId = 15 AND i.source = 'W'";
 
     @Inject
@@ -31,9 +28,9 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
 	@Inject
 	private ICollegeService collegeService;
-	
-	public static Map<Double, Double> getTasmaniaEcommerceMap(double thisMonth, Map<Long, Map<String, Object>> billingData) {
-		
+
+	public static Map<Double, Double> getTasmaniaEcommerceMap(double thisMonth, Map<Long, Map<Long, Map<String, Object>>> billingData) {
+
 		Map<Double, Double> fees = new HashMap<>();
 		fees.put(3.50, 100000.0);
 		fees.put(3.00, 100000.0);
@@ -42,12 +39,12 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		fees.put(1.00, 800000.0);
 		fees.put(0.95, 1600000.0);
 		fees.put(0.90, 9999999999.0);
-		
+
 		Map<Double, Double> result = new HashMap<>();
-		
-		BigDecimal tasmaniaYearToDate = (BigDecimal) billingData.get((long) 15).get("tasmaniaYearToDate");
+
+		BigDecimal tasmaniaYearToDate = (BigDecimal) billingData.get((long) 15).get(null).get("tasmaniaYearToDate");
 		double yearToDate = tasmaniaYearToDate == null ? 0 : tasmaniaYearToDate.doubleValue();
-		
+
 		for (Double key : fees.keySet()) {
 			if (yearToDate > 0) {
 				double deductThisIteration = Math.min(yearToDate, fees.get(key));
@@ -55,21 +52,21 @@ public class BillingDataServiceImpl implements IBillingDataService {
 				yearToDate -= deductThisIteration;
 			}
 		}
-		
+
 		for (Double key : fees.keySet()) {
 			if (fees.get(key) > 0 && thisMonth > 0) {
 				result.put(key, Math.min(thisMonth, fees.get(key)));
 				thisMonth -= fees.get(key);
 			}
 		}
-		
+
 		return result;
 	}
 
 	@Override
-	public Map<Long, Map<String, Object>> getLicenseFeeData() {
+	public Map<Long, Map<Long, Map<String, Object>>> getLicenseFeeData() {
 
-		Map<Long, Map<String, Object>> data = createMap();
+		Map<Long, Map<Long, Map<String, Object>>> data = createMap();
 
 		SQLTemplate query = new SQLTemplate(LicenseFee.class, SQL_LICENSE_FEE);
 		query.setFetchingDataRows(true);
@@ -79,29 +76,31 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
 
-			Map<String, Object> billingRow = data.get(collegeId);
+			Long webSiteId = (Long) r.get("webSiteId");
+
+			Map<Long, Map<String, Object>> billingRow = data.get(collegeId);
 
 			String key = (String) r.get("keyCode");
-			billingRow.put(key, r.get("fee"));
-			billingRow.put(key + "-renewMonth", r.get("billingMonth"));
-			billingRow.put(key + "-plan", r.get("plan"));
-			billingRow.put(key + "-paidUntil", r.get("paidUntil"));
-			billingRow.put(key + "-renewalDate", r.get("renewalDate"));
+			billingRow.get(webSiteId).put(key, r.get("fee"));
+			billingRow.get(webSiteId).put(key + "-renewMonth", r.get("billingMonth"));
+			billingRow.get(webSiteId).put(key + "-plan", r.get("plan"));
+			billingRow.get(webSiteId).put(key + "-paidUntil", r.get("paidUntil"));
+			billingRow.get(webSiteId).put(key + "-renewalDate", r.get("renewalDate"));
 
 			Integer freeTransactions = (Integer) r.get("freeTransactions");
 
 			if (freeTransactions != null && freeTransactions != 0) {
-				billingRow.put(key + "-free", freeTransactions);
+				billingRow.get(webSiteId).put(key + "-free", freeTransactions);
 			}
 		}
 
 		return data;
 	}
 
-	@SuppressWarnings("unchecked")
-	public Map<Long, Map<String, Object>> getBillingData(Date from, Date to) {
+	@Override
+	public Map<Long, Map<Long, Map<String, Object>>> getBillingData(Date from, Date to) {
 
-        Map<Long, Map<String, Object>> data = createMap();
+        Map<Long, Map<Long, Map<String, Object>>> data = createMap();
 		
 		// SMS
 		SQLTemplate query = new SQLTemplate(MessagePerson.class, SQL_SMS);
@@ -117,7 +116,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
-			data.get(collegeId).put("sms", r.get("count"));
+			data.get(collegeId).get(null).put("sms", r.get("count"));
 		}
 
 		// office transaction count
@@ -129,7 +128,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
-			data.get(collegeId).put("ccOffice", r.get("count"));
+			data.get(collegeId).get(null).put("ccOffice", r.get("count"));
 		}
 
 		// web transaction count
@@ -141,7 +140,8 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
-			data.get(collegeId).put("ccWeb", r.get("count"));
+			Long webSiteId = (Long) r.get("webSiteId");
+			data.get(collegeId).get(webSiteId).put("ccWeb", r.get("count"));
 		}
 
 		// web transaction value
@@ -153,7 +153,8 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
-			data.get(collegeId).put("ccWebValue", r.get("value"));
+			Long webSiteId = (Long) r.get("webSiteId");
+			data.get(collegeId).get(webSiteId).put("ccWebValue", r.get("value"));
 		}
 
 		// tasmania ecommerce
@@ -164,7 +165,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 			cal.setTime(to);
 			
 			if (cal.get(Calendar.MONTH) == 1) {
-				data.get(tasmaniaId).put("tasmaniaYearToDate", new BigDecimal(0.0));
+				data.get(tasmaniaId).get(null).put("tasmaniaYearToDate", new BigDecimal(0.0));
 			}
 			else {
 				Map<String, Object> tasmaniaParams = new HashMap<>();
@@ -185,7 +186,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 				BigDecimal value = (BigDecimal) result.get(0).get("value");
 				
 				if (value != null) {
-					data.get(tasmaniaId).put("tasmaniaYearToDate", value);
+					data.get(tasmaniaId).get(null).put("tasmaniaYearToDate", value);
 				}
 			}
 		}
@@ -193,16 +194,22 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		return data;
 	}
 
-    private Map<Long, Map<String, Object>> createMap() {
-        Map<Long, Map<String, Object>> data = new HashMap<>();
+	private Map<Long, Map<Long, Map<String, Object>>> createMap() {
+		Map<Long, Map<Long, Map<String, Object>>> data = new HashMap<>();
 
-        for (College college : collegeService.allColleges()) {
-            if (!data.containsKey(college.getId())) {
-                data.put(college.getId(), new HashMap<String, Object>());
-            }
-        }
-        return data;
-    }
+		for (College college : collegeService.allColleges()) {
+			if (!data.containsKey(college.getId())) {
+				data.put(college.getId(), new HashMap<Long, Map<String, Object>>());
+			}
+
+			for (WebSite webSite : college.getWebSites()) {
+				data.get(college.getId()).put(webSite.getId(), new HashMap<String, Object>());
+			}
+
+			data.get(college.getId()).put(null, new HashMap<String, Object>());
+		}
+		return data;
+	}
 
     public String getBillingDataExport(List<College> colleges, Date month) {
 		String exportData = "Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.StockQty\tDetail.UnitPrice\tDescription\tTransactionDate\n";
@@ -216,13 +223,15 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		cal.add(Calendar.MONTH, 1);
 		
 		Date to = cal.getTime();
+
+		// TODO: Disable export for now as it won't be able to handle new maps until #16310 is done
 		
-		Map<Long, Map<String, Object>> billingData = getBillingData(from, to);
-		Map<Long, Map<String, Object>> licenseData = getLicenseFeeData();
-		
-		for (College college : colleges) {
-			exportData += buildMWExport(college, from, billingData, licenseData);
-		}
+//		Map<Long, Map<String, Object>> billingData = getBillingData(from, to);
+//		Map<Long, Map<String, Object>> licenseData = getLicenseFeeData();
+//
+//		for (College college : colleges) {
+//			exportData += buildMWExport(college, from, billingData, licenseData);
+//		}
 		
 		return exportData;
 	}
@@ -240,8 +249,9 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		
 		return text.toString();
 	}
-	
-	public Map<Double, Double> getTasmaniaEcommerce(double thisMonth, Map<Long, Map<String, Object>> billingData) {
+
+	@Override
+	public Map<Double, Double> getTasmaniaEcommerce(double thisMonth, Map<Long, Map<Long, Map<String, Object>>> billingData) {
 		return getTasmaniaEcommerceMap(thisMonth, billingData);
 	}
 }
