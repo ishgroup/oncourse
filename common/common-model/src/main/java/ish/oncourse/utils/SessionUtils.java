@@ -24,7 +24,7 @@ public class SessionUtils {
 
 	}
 
-	private static StartEndTime valueOf(Session session)
+	static StartEndTime valueOf(Session session)
 	{
 		StartEndTime t = new StartEndTime();
 		t.setStartTime(session.getStartDate() != null? adjustDate2Time(session.getStartDate()):0);
@@ -33,7 +33,7 @@ public class SessionUtils {
 
 	}
 
-	private static long adjustDate2Time(Date date) {
+	static long adjustDate2Time(Date date) {
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 		calendar.setTime(date);
 		calendar.set(Calendar.YEAR, 0);
