@@ -41,45 +41,47 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 	
 	@Override
 	public String buildLine() {
-		
-		if (isTasmaniaEcommerce()) {
-			
-			String tasmaniaLines = "";
-			
-			Map<Double, Double> tasmaniaEcommerceFees = getTasmaniaFees();
-			
-			double totalFee = 0.0;
-			
-			for (Double key : tasmaniaEcommerceFees.keySet()) {
-				
-				double fee = tasmaniaEcommerceFees.get(key) * key / 100;
-				totalFee += fee;
-				
-				tasmaniaLines += MessageFormat.format(
-						Constants.TEMPLATE, 
-						college.getBillingCode(), 
-						getStockCode(),
-						getTasmaniaEcommerceKeyDescription(key, tasmaniaEcommerceFees),
-						ECOMMERCE_QUANTITY,
-						decimalFormatter.format(fee), 
-						getDescription(),
-						getTransactionDateString());
-			}
-			
-			if (totalFee < TASMANIA_MIN_FEE) {
-				tasmaniaLines += MessageFormat.format(
-						Constants.TEMPLATE,
-						college.getBillingCode(),
-						getStockCode(),
-						TASMANIA_ECOMMERCE_MIN_FEE_DESC,
-						ECOMMERCE_QUANTITY,
-						decimalFormatter.format(TASMANIA_MIN_FEE - totalFee),
-						getDescription(),
-						getTransactionDateString());
-			}
-			
-			return tasmaniaLines;
-		}
+
+		// TODO: Disable tasmania specific export part for now as it won't be able to handle new maps until #16310 is done
+
+//		if (isTasmaniaEcommerce()) {
+//
+//			String tasmaniaLines = "";
+//
+//			Map<Double, Double> tasmaniaEcommerceFees = getTasmaniaFees();
+//
+//			double totalFee = 0.0;
+//
+//			for (Double key : tasmaniaEcommerceFees.keySet()) {
+//
+//				double fee = tasmaniaEcommerceFees.get(key) * key / 100;
+//				totalFee += fee;
+//
+//				tasmaniaLines += MessageFormat.format(
+//						Constants.TEMPLATE,
+//						college.getBillingCode(),
+//						getStockCode(),
+//						getTasmaniaEcommerceKeyDescription(key, tasmaniaEcommerceFees),
+//						ECOMMERCE_QUANTITY,
+//						decimalFormatter.format(fee),
+//						getDescription(),
+//						getTransactionDateString());
+//			}
+//
+//			if (totalFee < TASMANIA_MIN_FEE) {
+//				tasmaniaLines += MessageFormat.format(
+//						Constants.TEMPLATE,
+//						college.getBillingCode(),
+//						getStockCode(),
+//						TASMANIA_ECOMMERCE_MIN_FEE_DESC,
+//						ECOMMERCE_QUANTITY,
+//						decimalFormatter.format(TASMANIA_MIN_FEE - totalFee),
+//						getDescription(),
+//						getTransactionDateString());
+//			}
+//
+//			return tasmaniaLines;
+//		}
 		
 		return super.buildLine();
 	}
@@ -139,14 +141,15 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 	protected boolean skipLine() {
 		return false;
 	}
-	
-	private Map<Double, Double> getTasmaniaFees() {
-		if (isTasmaniaEcommerce()) {
-			BigDecimal ccWebValue = (BigDecimal) billingData.get(college.getId()).get("ccWebValue");
-			ccWebValue = ccWebValue == null ? new BigDecimal(0.0) : ccWebValue;
-			return BillingDataServiceImpl.getTasmaniaEcommerceMap(ccWebValue.doubleValue(), billingData);
-		} else {
-			return null;
-		}
-	}
+
+	// TODO: Disable tasmania specific export part for now as it won't be able to handle new maps until #16310 is done
+//	private Map<Double, Double> getTasmaniaFees() {
+//		if (isTasmaniaEcommerce()) {
+//			BigDecimal ccWebValue = (BigDecimal) billingData.get(college.getId()).get("ccWebValue");
+//			ccWebValue = ccWebValue == null ? new BigDecimal(0.0) : ccWebValue;
+//			return BillingDataServiceImpl.getTasmaniaEcommerceMap(ccWebValue.doubleValue(), billingData);
+//		} else {
+//			return null;
+//		}
+//	}
 }
