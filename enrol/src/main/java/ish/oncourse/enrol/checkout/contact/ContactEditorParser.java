@@ -106,10 +106,7 @@ public class ContactEditorParser {
 			{
 				value = countryService.getCountryByName(stringValue);
 				if (value == null)
-				{
-					errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_error_countryOfBirth));
 					value = countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME);
-				}
 			}
 
 			contact.writeProperty(fieldDescriptor.propertyName, value);
