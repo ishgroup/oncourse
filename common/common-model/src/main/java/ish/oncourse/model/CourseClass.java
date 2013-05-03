@@ -3,9 +3,9 @@ package ish.oncourse.model;
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._CourseClass;
-import ish.oncourse.utils.DateUtils;
 import ish.oncourse.utils.DiscountUtils;
 import ish.oncourse.utils.QueueableObjectUtils;
+import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -75,56 +75,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 *         end times
 	 */
 	public boolean isSessionsHaveDifferentTimes() {
-
-		if (getSessions().size() > 1) {
-			TimeZone timezone = null;
-			{
-				String timezoneName = "Australia/Sydney";
-				if (getTimeZone() != null && !"".equals(getTimeZone().trim())) {
-					timezoneName = getTimeZone();
-				}
-				timezone = TimeZone.getTimeZone(timezoneName);
-			}
-
-			Calendar startCalendar = null;
-			Calendar endCalendar = null;
-
-			for (int i = 0, count = getSessions().size(); i < count; i++) {
-				Session session = getSessions().get(i);
-				Date sessionStart = session.getStartDate();
-				Date sessionEnd = session.getEndDate();
-
-				if (i == 0) {
-					if (sessionStart != null) {
-						startCalendar = Calendar.getInstance(timezone);
-						startCalendar.setTimeInMillis(sessionStart.getTime());
-					}
-					if (sessionEnd != null) {
-						endCalendar = Calendar.getInstance(timezone);
-						endCalendar.setTimeInMillis(sessionEnd.getTime());
-					}
-				} else if (sessionStart == null && startCalendar != null || sessionStart != null
-						&& startCalendar == null || sessionEnd == null && endCalendar != null || sessionEnd != null
-						&& endCalendar == null) {
-					return false;
-				} else {
-					Calendar start = Calendar.getInstance(timezone);
-					start.setTimeInMillis(sessionStart.getTime());
-					
-					if (!DateUtils.isTheSameTime(start, startCalendar)) {
-						return true;
-					} else {
-						Calendar end = Calendar.getInstance(timezone);
-						end.setTimeInMillis(sessionEnd.getTime());
-						if (!DateUtils.isTheSameTime(end, endCalendar)) {
-							return true;
-						}
-					}
-				}
-			}
-		}
-
-		return false;
+		return !SessionUtils.isSameTime(getSessions());
 	}
 
 	public boolean isHasSessions() {
