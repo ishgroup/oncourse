@@ -164,7 +164,8 @@ public class TextileUtil {
 	}
 
 	public static String getReplacementForSyntaxErrorTag(String tag) {
-		return "<!-- ERROR in " + tag + ". Syntax error --!> ";
+		return String.format("<span class=\"richtext_error\">Syntax error in \"%s\"</span>",tag);
+		//return "<!-- ERROR in " + tag + ". Syntax error --!> ";
 	}
 
 }

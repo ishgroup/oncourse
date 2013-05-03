@@ -36,7 +36,10 @@ public class ImageTextileValidator extends AbstractTextileValidator {
 		String name = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_NAME.getValue());
 		if (id != null) {
 			if (!StringUtils.isNumeric(id))
-				throw new IllegalArgumentException(id);
+			{
+				errors.addFailure(getWorngIdMessage(id), ValidationFailureType.SYNTAX);
+				return;
+			}
 			Integer idNum = Integer.valueOf(id);
 			logger.warn(String.format("Found a ussage of image textile with id param = %s instead of name param. Update the textile to load image by name.",
 				idNum));
@@ -77,6 +80,11 @@ public class ImageTextileValidator extends AbstractTextileValidator {
 
 	public String getNotFoundContentMessage() {
 		return "This image's content is missed";
+	}
+
+	public String getWorngIdMessage(String id)
+	{
+		return String.format("Wrong id \"%s\".",id);
 	}
 
 }

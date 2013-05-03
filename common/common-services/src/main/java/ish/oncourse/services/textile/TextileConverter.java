@@ -10,6 +10,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.renderer.*;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.util.ValidationFailureType;
 import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
 import net.java.textilej.parser.markup.textile.TextileDialect;
@@ -118,14 +119,19 @@ public class TextileConverter implements ITextileConverter {
 			content = content.substring(startTag + tag.length());
 			IRenderer renderer = getRendererForTag(tag);
 			if (renderer != null) {
-				String replacement = renderer.render(tag, tempErrors);
+				String replacement = null;
+				try {
+					replacement = renderer.render(tag, tempErrors);
+				} catch (Exception e) {
+					tempErrors.addFailure(e.getMessage(), ValidationFailureType.SYNTAX);
+				}
 				// TODO remove the check for renderer when the validation of
 				// {form} is needed, now we just pass all the text
 				if (!(renderer instanceof FormTextileRenderer)) {
 					if (tempErrors.hasSyntaxFailures()) {
 						replacement = TextileUtil.getReplacementForSyntaxErrorTag(tag);
 					} else if (tempErrors.hasContentNotFoundFailures() || replacement == null) {
-						replacement = "<div></div>";
+						replacement = TextileUtil.getReplacementForSyntaxErrorTag(tag);
 					}
 				}
 				result += replacement;
