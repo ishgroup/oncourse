@@ -88,9 +88,14 @@ public class CourseClassItem {
 		timetableLabels.add("Where");
 
 		TimeZone timeZone = getClientTimeZone();
+
 		dateFormat = FormatUtils.getDateFormat(FormatUtils.shortDateFormatString, timeZone);
 		timeFormat = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
-		timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
+
+		if (timeZone.getRawOffset() == TimeZone.getTimeZone(courseClass.getCollege().getTimeZone()).getRawOffset())
+			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
+		else
+			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
 	}
 		
 	public TimeZone getClientTimeZone() {
