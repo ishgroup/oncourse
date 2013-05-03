@@ -111,7 +111,7 @@ public class ContactEditorParser {
 					value = countryService.getCountryByName(stringValue);
 					if (value == null)
 					{
-						errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_error_countryOfBirth));
+						errors.put(fieldDescriptor.propertyName, messages.format(KEY_ERROR_error_countryOfBirth,stringValue));
 						value = countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME);
 					}
 				}
