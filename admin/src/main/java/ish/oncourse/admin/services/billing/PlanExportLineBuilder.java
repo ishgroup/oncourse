@@ -3,32 +3,24 @@ package ish.oncourse.admin.services.billing;
 import ish.oncourse.model.College;
 
 import java.math.BigDecimal;
-import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import ish.oncourse.model.WebSite;
 import org.apache.commons.lang.time.DateUtils;
 
 public abstract class PlanExportLineBuilder extends AbstractExportLineBuilder {
-	
-	public static final String PLAN_DESCRIPTION_TEMPLATE = "onCourse {0} {1} plan for {2}: {3} (contract until {4})";
-	
+
 	private static final Long PLAN_QUANTITY = 1L;
 	
-	public PlanExportLineBuilder(College college, Date from, Map<Long, Map<String, Object>> billingData, Map<Long, Map<String, Object>> licenseData) {
-		super(college, from, billingData, licenseData);
-	}
-
-	@Override
-	protected String buildDetailedDescription() {
-       return MessageFormat.format(
-        		PLAN_DESCRIPTION_TEMPLATE, 
-        		getBillingPlan(),
-                getPlanType(),
-                college.getName(),
-                MONTH_FORMATTER.format(from),
-                MONTH_FORMATTER.format(getRenewalDate()));
+	public PlanExportLineBuilder(
+			College college,
+			WebSite webSite,
+			Date from,
+			Map<Long, Map<Long, Map<String, Object>>> billingData,
+			Map<Long, Map<Long, Map<String, Object>>> licenseData) {
+		super(college, webSite, from, billingData, licenseData);
 	}
 	
 	@Override
@@ -49,17 +41,17 @@ public abstract class PlanExportLineBuilder extends AbstractExportLineBuilder {
 
 	@Override
 	protected BigDecimal getUnitPrice() {
-		return (BigDecimal) licenseData.get(college.getId()).get(getPlanType());
+		return (BigDecimal) licenseData.get(college.getId()).get(getWebSiteId()).get(getPlanType());
 	}
 	
 	protected boolean isPlanBillingMonth(String planKey, String paidUntilKey) {
-		String billingPlan = (String) licenseData.get(college.getId()).get(planKey);
+		String billingPlan = (String) licenseData.get(college.getId()).get(getWebSiteId()).get(planKey);
 		
 		if (billingPlan == null) {
 			return false;
 		}
 		
-		Date paidUntil = (Date) licenseData.get(college.getId()).get(paidUntilKey);
+		Date paidUntil = (Date) licenseData.get(college.getId()).get(getWebSiteId()).get(paidUntilKey);
 		
 		if (paidUntil == null) {
 			return true;

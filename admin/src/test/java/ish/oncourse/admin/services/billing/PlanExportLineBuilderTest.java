@@ -1,12 +1,9 @@
 package ish.oncourse.admin.services.billing;
 
-import static org.junit.Assert.*;
-
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+import ish.oncourse.model.WebSite;
 import junit.framework.TestCase;
 
 import org.junit.Before;
@@ -16,12 +13,29 @@ import ish.oncourse.model.College;
 
 public class PlanExportLineBuilderTest extends TestCase {
 	
-	private Map<Long, Map<String, Object>> licenseData;
+	private Map<Long, Map<Long, Map<String, Object>>> licenseData;
 	private College college;
 	
 	private College createCollege() {
-		College college = new College()
+		return new College()
 		{
+			private WebSite webSite = new WebSite() {
+				@Override
+				public Long getId() {
+					return 1L;
+				}
+
+				@Override
+				public String getName() {
+					return "Cherson";
+				}
+
+				@Override
+				public String getSiteKey() {
+					return "chers";
+				}
+			};
+
 			@Override
 			public Long getId() {
 				return 1L;
@@ -31,14 +45,17 @@ public class PlanExportLineBuilderTest extends TestCase {
 			public String getBillingCode() {
 				return "CHERSON01";
 			}
-			
+
 			@Override
 			public String getName() {
 				return "Cherson";
 			}
+
+			@Override
+			public List<WebSite> getWebSites() {
+				return Arrays.asList(webSite);
+			}
 		};
-		
-		return college;
 	}
 	
 	@Before
@@ -49,19 +66,22 @@ public class PlanExportLineBuilderTest extends TestCase {
 	
 	@Test
 	public void testIsHostingBillingMonth() {
-		Map<String,Object> cData = new HashMap<>();
-		
+		Map<Long, Map<String,Object>> cData = new HashMap<>();
+
 		this.licenseData.put(college.getId(), cData);
+		cData.put(1L, new HashMap<String, Object>());
 		
 		Calendar calFrom = Calendar.getInstance();
 		calFrom.set(Calendar.YEAR, 2013);
 		calFrom.set(Calendar.MONTH, Calendar.JANUARY);
-		
-		HostingExportLineBuilder builder = new HostingExportLineBuilder(college, calFrom.getTime(), null, licenseData);
+
+		WebSite webSite = college.getWebSites().get(0);
+
+		HostingExportLineBuilder builder = new HostingExportLineBuilder(college, webSite, calFrom.getTime(), null, licenseData);
 		assertFalse(builder.isPlanBillingMonth(HostingExportLineBuilder.HOSTING_PLAN_KEY, HostingExportLineBuilder.HOSTING_PAID_UNTIL_KEY));
 		
-		cData.put(HostingExportLineBuilder.HOSTING_PLAN_KEY, StockCodes.standard.name());
-		cData.put(HostingExportLineBuilder.HOSTING_PLAN_TYPE, new BigDecimal(1234567.89d));
+		cData.get(webSite.getId()).put(HostingExportLineBuilder.HOSTING_PLAN_KEY, StockCodes.standard.name());
+		cData.get(webSite.getId()).put(HostingExportLineBuilder.HOSTING_PLAN_TYPE, new BigDecimal(1234567.89d));
 		
 		assertTrue(builder.isPlanBillingMonth(HostingExportLineBuilder.HOSTING_PLAN_KEY, HostingExportLineBuilder.HOSTING_PAID_UNTIL_KEY));
 		
@@ -69,31 +89,34 @@ public class PlanExportLineBuilderTest extends TestCase {
 		paidUntil.set(Calendar.YEAR, 2013);
 		paidUntil.set(Calendar.MONTH, Calendar.NOVEMBER);
 		
-		cData.put(HostingExportLineBuilder.HOSTING_PAID_UNTIL_KEY, paidUntil.getTime());
+		cData.get(webSite.getId()).put(HostingExportLineBuilder.HOSTING_PAID_UNTIL_KEY, paidUntil.getTime());
 		
 		assertFalse(builder.isPlanBillingMonth(HostingExportLineBuilder.HOSTING_PLAN_KEY, HostingExportLineBuilder.HOSTING_PAID_UNTIL_KEY));
 		
 		paidUntil.set(Calendar.YEAR, 2012);
-		cData.put(HostingExportLineBuilder.HOSTING_PAID_UNTIL_KEY, paidUntil.getTime());
+		cData.get(webSite.getId()).put(HostingExportLineBuilder.HOSTING_PAID_UNTIL_KEY, paidUntil.getTime());
 		
 		assertTrue(builder.isPlanBillingMonth(HostingExportLineBuilder.HOSTING_PLAN_KEY, HostingExportLineBuilder.HOSTING_PAID_UNTIL_KEY));
 	}
 	
 	@Test
 	public void testIsSupportBillingMonth() {
-		Map<String,Object> cData = new HashMap<>();
+		Map<Long, Map<String,Object>> cData = new HashMap<>();
 		
 		this.licenseData.put(college.getId(), cData);
+		cData.put(1L, new HashMap<String, Object>());
 		
 		Calendar calFrom = Calendar.getInstance();
 		calFrom.set(Calendar.YEAR, 2013);
 		calFrom.set(Calendar.MONTH, Calendar.JANUARY);
+
+		WebSite webSite = college.getWebSites().get(0);
 		
-		SupportExportLineBuilder builder = new SupportExportLineBuilder(college, calFrom.getTime(), null, licenseData);
+		SupportExportLineBuilder builder = new SupportExportLineBuilder(college, webSite, calFrom.getTime(), null, licenseData);
 		assertFalse(builder.isPlanBillingMonth(SupportExportLineBuilder.SUPPORT_PLAN_KEY, SupportExportLineBuilder.SUPPORT_PAID_UNTIL_KEY));
 		
-		cData.put(SupportExportLineBuilder.SUPPORT_PLAN_KEY, StockCodes.standard.name());
-		cData.put(SupportExportLineBuilder.SUPPORT_PLAN_TYPE, new BigDecimal(1234567.89d));
+		cData.get(webSite.getId()).put(SupportExportLineBuilder.SUPPORT_PLAN_KEY, StockCodes.standard.name());
+		cData.get(webSite.getId()).put(SupportExportLineBuilder.SUPPORT_PLAN_TYPE, new BigDecimal(1234567.89d));
 		
 		assertTrue(builder.isPlanBillingMonth(SupportExportLineBuilder.SUPPORT_PLAN_KEY, SupportExportLineBuilder.SUPPORT_PAID_UNTIL_KEY));
 		
@@ -101,13 +124,13 @@ public class PlanExportLineBuilderTest extends TestCase {
 		paidUntil.set(Calendar.YEAR, 2013);
 		paidUntil.set(Calendar.MONTH, Calendar.NOVEMBER);
 		
-		cData.put(SupportExportLineBuilder.SUPPORT_PAID_UNTIL_KEY, paidUntil.getTime());
+		cData.get(webSite.getId()).put(SupportExportLineBuilder.SUPPORT_PAID_UNTIL_KEY, paidUntil.getTime());
 		
 		assertFalse(builder.isPlanBillingMonth(SupportExportLineBuilder.SUPPORT_PLAN_KEY, SupportExportLineBuilder.SUPPORT_PAID_UNTIL_KEY));
 		
 		paidUntil.set(Calendar.YEAR, 2013);
 		paidUntil.set(Calendar.MONTH, Calendar.JANUARY);
-		cData.put(SupportExportLineBuilder.SUPPORT_PAID_UNTIL_KEY, paidUntil.getTime());
+		cData.get(webSite.getId()).put(SupportExportLineBuilder.SUPPORT_PAID_UNTIL_KEY, paidUntil.getTime());
 		
 		assertTrue(builder.isPlanBillingMonth(SupportExportLineBuilder.SUPPORT_PLAN_KEY, SupportExportLineBuilder.SUPPORT_PAID_UNTIL_KEY));
 	}

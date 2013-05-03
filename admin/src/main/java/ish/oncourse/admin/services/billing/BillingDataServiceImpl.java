@@ -224,28 +224,33 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		
 		Date to = cal.getTime();
 
-		// TODO: Disable export for now as it won't be able to handle new maps until #16310 is done
-		
-//		Map<Long, Map<String, Object>> billingData = getBillingData(from, to);
-//		Map<Long, Map<String, Object>> licenseData = getLicenseFeeData();
-//
-//		for (College college : colleges) {
-//			exportData += buildMWExport(college, from, billingData, licenseData);
-//		}
+		Map<Long, Map<Long, Map<String, Object>>> billingData = getBillingData(from, to);
+		Map<Long, Map<Long, Map<String, Object>>> licenseData = getLicenseFeeData();
+
+		for (College college : colleges) {
+			exportData += buildMWExport(college, from, billingData, licenseData);
+		}
 		
 		return exportData;
 	}
 
-	private String buildMWExport(College college, Date from, Map<Long, Map<String, Object>> billingData, Map<Long, Map<String, Object>> licenseData) {
+	private String buildMWExport(
+			College college,
+			Date from,
+			Map<Long, Map<Long, Map<String, Object>>> billingData,
+			Map<Long, Map<Long, Map<String, Object>>> licenseData) {
 		
 		StringBuilder text = new StringBuilder();
 		
-		text.append(new SupportExportLineBuilder(college, from, billingData, licenseData).buildLine());
-		text.append(new HostingExportLineBuilder(college, from, billingData, licenseData).buildLine());
-		text.append(new SMSExportLineBuilder(college, from, billingData, licenseData).buildLine());
-		text.append(new WebCCExportLineBuilder(college, from, billingData, licenseData).buildLine());
-		text.append(new OfficeCCExportLineBuilder(college, from, billingData, licenseData).buildLine());
-		text.append(new EcommerceExportLineBuilder(college, from, billingData, licenseData).buildLine());
+		text.append(new SupportExportLineBuilder(college, null, from, billingData, licenseData).buildLine());
+		text.append(new SMSExportLineBuilder(college, null, from, billingData, licenseData).buildLine());
+		text.append(new OfficeCCExportLineBuilder(college, null, from, billingData, licenseData).buildLine());
+
+		for (WebSite webSite : college.getWebSites()) {
+			text.append(new HostingExportLineBuilder(college, webSite, from, billingData, licenseData).buildLine());
+			text.append(new WebCCExportLineBuilder(college, webSite, from, billingData, licenseData).buildLine());
+			text.append(new EcommerceExportLineBuilder(college, webSite, from, billingData, licenseData).buildLine());
+		}
 		
 		return text.toString();
 	}

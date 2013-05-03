@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import ish.oncourse.model.WebSite;
 import org.apache.commons.lang.StringUtils;
 
 public abstract class AbstractExportLineBuilder implements MWExportLineBuilder {
@@ -19,12 +20,19 @@ public abstract class AbstractExportLineBuilder implements MWExportLineBuilder {
 	private static final DateFormat TRANSACTION_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
 	protected College college;
+	protected WebSite webSite;
 	protected Date from;
-	protected Map<Long, Map<String, Object>> billingData;
-	protected Map<Long, Map<String, Object>> licenseData;
+	protected Map<Long, Map<Long, Map<String, Object>>> billingData;
+	protected Map<Long, Map<Long, Map<String, Object>>> licenseData;
 
-	public AbstractExportLineBuilder(College college, Date from, Map<Long, Map<String, Object>> billingData, Map<Long, Map<String, Object>> licenseData) {
+	public AbstractExportLineBuilder(
+			College college,
+			WebSite webSite,
+			Date from,
+			Map<Long, Map<Long, Map<String, Object>>> billingData,
+			Map<Long, Map<Long, Map<String, Object>>> licenseData) {
 		this.college = college;
+		this.webSite = webSite;
 		this.from = from;
 		this.billingData = billingData;
 		this.licenseData = licenseData;
@@ -67,5 +75,9 @@ public abstract class AbstractExportLineBuilder implements MWExportLineBuilder {
 		cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 		
 		return TRANSACTION_DATE_FORMAT.format(cal.getTime());
+	}
+
+	protected Long getWebSiteId() {
+		return webSite != null ? webSite.getId() : null;
 	}
 }
