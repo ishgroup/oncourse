@@ -7,7 +7,7 @@
 	<p class="note"><strong class="alert">Please note:</strong> Our discounts are usually only available until a certain date, so you may not be able to use an old discount code.</p>
 
 	<t:block t:id="discountForm">
-		<t:form t:id="addDiscountForm" zone="addDiscountZone">
+		<t:form t:id="addDiscountForm" zone="addDiscountZone" clientValidation="literal:NONE">
 			<label for="promo">Discount code:</label>
 			<t:textField t:id="promo" value="promoCode"/>
 			<button id="addDiscountButton" type="button">add</button>
