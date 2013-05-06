@@ -187,7 +187,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					
 					String type = summary.getComponentType().get(0);
 					
-					if (SKILL_SET.equals(type)) {
+					if (QUALIFICATION.equals(type) || ACCREDITED_COURSE.equals(type) || SKILL_SET.equals(type)) {
 						
 						SelectQuery query = new SelectQuery(Qualification.class);
 						Expression exp = ExpressionFactory.matchExp("nationalCode", summary.getCode().getValue());
@@ -272,7 +272,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				Qualification r = (Qualification) Cayenne.objectForQuery(context, query);
 
 				if (r != null) {
-					context.deleteObject(r);
+					context.deleteObjects(r);
 				}
 			}
 
@@ -424,7 +424,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 
 				TrainingPackage r = (TrainingPackage) Cayenne.objectForQuery(context, query);
 				if (r != null) {
-					context.deleteObject(r);
+					context.deleteObjects(r);
 				}
 			}
 
@@ -561,7 +561,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				Module r = (Module) Cayenne.objectForQuery(context, query);
 
 				if (r != null) {
-					context.deleteObject(r);
+					context.deleteObjects(r);
 				}
 			}
 
