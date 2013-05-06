@@ -39,22 +39,22 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "startDate"
 })
 @XmlSeeAlso({
-    NrtCurrencyPeriod.class,
     Classification.class,
     ClassificationValue.class,
     UsageRecommendation.class,
     NrtCompletion.class,
     RecognitionManagerAssignment.class,
     DataManagerAssignment.class,
-    Contact.class
+    Contact.class,
+    NrtCurrencyPeriod.class
 })
 public class AbstractDto {
 
     @XmlElement(name = "ActionOnEntity")
     protected ActionOnEntity actionOnEntity;
-    @XmlElementRef(name = "EndDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "EndDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<XMLGregorianCalendar> endDate;
-    @XmlElementRef(name = "StartDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "StartDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<XMLGregorianCalendar> startDate;
 
     /**
@@ -102,7 +102,7 @@ public class AbstractDto {
      *     
      */
     public void setEndDate(JAXBElement<XMLGregorianCalendar> value) {
-        this.endDate = ((JAXBElement<XMLGregorianCalendar> ) value);
+        this.endDate = value;
     }
 
     /**
@@ -126,7 +126,7 @@ public class AbstractDto {
      *     
      */
     public void setStartDate(JAXBElement<XMLGregorianCalendar> value) {
-        this.startDate = ((JAXBElement<XMLGregorianCalendar> ) value);
+        this.startDate = value;
     }
 
 }

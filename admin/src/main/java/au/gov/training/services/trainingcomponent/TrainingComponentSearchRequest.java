@@ -48,7 +48,7 @@ public class TrainingComponentSearchRequest
     extends AbstractPageRequest
 {
 
-    @XmlElementRef(name = "ClassificationFilters", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "ClassificationFilters", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ClassificationFilters> classificationFilters;
     @XmlElement(name = "Filter", required = true, nillable = true)
     protected String filter;
@@ -60,7 +60,7 @@ public class TrainingComponentSearchRequest
     protected Boolean searchCode;
     @XmlElement(name = "SearchTitle")
     protected Boolean searchTitle;
-    @XmlElementRef(name = "TrainingComponentTypes", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "TrainingComponentTypes", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<TrainingComponentTypeFilter> trainingComponentTypes;
 
     /**
@@ -84,7 +84,7 @@ public class TrainingComponentSearchRequest
      *     
      */
     public void setClassificationFilters(JAXBElement<ClassificationFilters> value) {
-        this.classificationFilters = ((JAXBElement<ClassificationFilters> ) value);
+        this.classificationFilters = value;
     }
 
     /**
@@ -228,7 +228,7 @@ public class TrainingComponentSearchRequest
      *     
      */
     public void setTrainingComponentTypes(JAXBElement<TrainingComponentTypeFilter> value) {
-        this.trainingComponentTypes = ((JAXBElement<TrainingComponentTypeFilter> ) value);
+        this.trainingComponentTypes = value;
     }
 
 }

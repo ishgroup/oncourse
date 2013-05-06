@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "TransferDataManager")
 public class TransferDataManager {
 
-    @XmlElementRef(name = "request", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "request", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<TrainingComponentTransferDataManagerRequest> request;
 
     /**
@@ -59,7 +59,7 @@ public class TransferDataManager {
      *     
      */
     public void setRequest(JAXBElement<TrainingComponentTransferDataManagerRequest> value) {
-        this.request = ((JAXBElement<TrainingComponentTransferDataManagerRequest> ) value);
+        this.request = value;
     }
 
 }

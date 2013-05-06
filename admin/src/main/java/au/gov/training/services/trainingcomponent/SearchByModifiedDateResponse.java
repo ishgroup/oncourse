@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "SearchByModifiedDateResponse")
 public class SearchByModifiedDateResponse {
 
-    @XmlElementRef(name = "SearchByModifiedDateResult", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "SearchByModifiedDateResult", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<TrainingComponentSearchResult> searchByModifiedDateResult;
 
     /**
@@ -59,7 +59,7 @@ public class SearchByModifiedDateResponse {
      *     
      */
     public void setSearchByModifiedDateResult(JAXBElement<TrainingComponentSearchResult> value) {
-        this.searchByModifiedDateResult = ((JAXBElement<TrainingComponentSearchResult> ) value);
+        this.searchByModifiedDateResult = value;
     }
 
 }

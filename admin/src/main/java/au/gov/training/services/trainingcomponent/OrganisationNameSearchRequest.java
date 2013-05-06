@@ -49,7 +49,7 @@ public class OrganisationNameSearchRequest
     extends AbstractPageRequest
 {
 
-    @XmlElementRef(name = "ClassificationFilters", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "ClassificationFilters", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ClassificationFilters> classificationFilters;
     @XmlElement(name = "CurrentNamesOnly")
     protected Boolean currentNamesOnly;
@@ -61,7 +61,7 @@ public class OrganisationNameSearchRequest
     protected String filter;
     @XmlElement(name = "IncludeCode")
     protected Boolean includeCode;
-    @XmlElementRef(name = "RegistrationManagers", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "RegistrationManagers", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfstring> registrationManagers;
 
     /**
@@ -85,7 +85,7 @@ public class OrganisationNameSearchRequest
      *     
      */
     public void setClassificationFilters(JAXBElement<ClassificationFilters> value) {
-        this.classificationFilters = ((JAXBElement<ClassificationFilters> ) value);
+        this.classificationFilters = value;
     }
 
     /**
@@ -229,7 +229,7 @@ public class OrganisationNameSearchRequest
      *     
      */
     public void setRegistrationManagers(JAXBElement<ArrayOfstring> value) {
-        this.registrationManagers = ((JAXBElement<ArrayOfstring> ) value);
+        this.registrationManagers = value;
     }
 
 }

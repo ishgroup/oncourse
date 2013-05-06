@@ -5,6 +5,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -33,11 +34,14 @@ import javax.xml.bind.annotation.XmlType;
     "code",
     "title"
 })
+@XmlSeeAlso({
+    UnitGridEntry3 .class
+})
 public class UnitGridEntry {
 
-    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> code;
-    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> title;
 
     /**
@@ -61,7 +65,7 @@ public class UnitGridEntry {
      *     
      */
     public void setCode(JAXBElement<String> value) {
-        this.code = ((JAXBElement<String> ) value);
+        this.code = value;
     }
 
     /**
@@ -85,7 +89,7 @@ public class UnitGridEntry {
      *     
      */
     public void setTitle(JAXBElement<String> value) {
-        this.title = ((JAXBElement<String> ) value);
+        this.title = value;
     }
 
 }

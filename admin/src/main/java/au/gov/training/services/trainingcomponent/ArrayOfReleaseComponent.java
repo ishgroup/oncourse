@@ -61,7 +61,7 @@ public class ArrayOfReleaseComponent {
      */
     public List<ReleaseComponent> getReleaseComponent() {
         if (releaseComponent == null) {
-            releaseComponent = new ArrayList<>();
+            releaseComponent = new ArrayList<ReleaseComponent>();
         }
         return this.releaseComponent;
     }

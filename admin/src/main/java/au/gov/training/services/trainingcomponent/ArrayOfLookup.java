@@ -61,7 +61,7 @@ public class ArrayOfLookup {
      */
     public List<Lookup> getLookup() {
         if (lookup == null) {
-            lookup = new ArrayList<>();
+            lookup = new ArrayList<Lookup>();
         }
         return this.lookup;
     }

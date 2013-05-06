@@ -61,7 +61,7 @@ public class ArrayOfAddressStates {
      */
     public List<AddressStates> getAddressStates() {
         if (addressStates == null) {
-            addressStates = new ArrayList<>();
+            addressStates = new ArrayList<AddressStates>();
         }
         return this.addressStates;
     }

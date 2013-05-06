@@ -44,17 +44,17 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class Mapping {
 
-    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> code;
     @XmlElement(name = "IsEquivalent")
     protected Boolean isEquivalent;
-    @XmlElementRef(name = "MapsToCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "MapsToCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> mapsToCode;
-    @XmlElementRef(name = "MapsToTitle", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "MapsToTitle", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> mapsToTitle;
-    @XmlElementRef(name = "Notes", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Notes", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> notes;
-    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> title;
 
     /**
@@ -78,7 +78,7 @@ public class Mapping {
      *     
      */
     public void setCode(JAXBElement<String> value) {
-        this.code = ((JAXBElement<String> ) value);
+        this.code = value;
     }
 
     /**
@@ -126,7 +126,7 @@ public class Mapping {
      *     
      */
     public void setMapsToCode(JAXBElement<String> value) {
-        this.mapsToCode = ((JAXBElement<String> ) value);
+        this.mapsToCode = value;
     }
 
     /**
@@ -150,7 +150,7 @@ public class Mapping {
      *     
      */
     public void setMapsToTitle(JAXBElement<String> value) {
-        this.mapsToTitle = ((JAXBElement<String> ) value);
+        this.mapsToTitle = value;
     }
 
     /**
@@ -174,7 +174,7 @@ public class Mapping {
      *     
      */
     public void setNotes(JAXBElement<String> value) {
-        this.notes = ((JAXBElement<String> ) value);
+        this.notes = value;
     }
 
     /**
@@ -198,7 +198,7 @@ public class Mapping {
      *     
      */
     public void setTitle(JAXBElement<String> value) {
-        this.title = ((JAXBElement<String> ) value);
+        this.title = value;
     }
 
 }

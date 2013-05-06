@@ -47,7 +47,7 @@ public class OrganisationScopeSearchRequest
     protected String filter;
     @XmlElement(name = "IncludeImplicitScope")
     protected Boolean includeImplicitScope;
-    @XmlElementRef(name = "RegistrationManagers", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "RegistrationManagers", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfstring> registrationManagers;
     @XmlElement(name = "SearchTrainingPackageContents")
     protected Boolean searchTrainingPackageContents;
@@ -121,7 +121,7 @@ public class OrganisationScopeSearchRequest
      *     
      */
     public void setRegistrationManagers(JAXBElement<ArrayOfstring> value) {
-        this.registrationManagers = ((JAXBElement<ArrayOfstring> ) value);
+        this.registrationManagers = value;
     }
 
     /**

@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "GetDetails")
 public class GetDetails {
 
-    @XmlElementRef(name = "request", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "request", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<TrainingComponentDetailsRequest> request;
 
     /**
@@ -59,7 +59,7 @@ public class GetDetails {
      *     
      */
     public void setRequest(JAXBElement<TrainingComponentDetailsRequest> value) {
-        this.request = ((JAXBElement<TrainingComponentDetailsRequest> ) value);
+        this.request = value;
     }
 
 }

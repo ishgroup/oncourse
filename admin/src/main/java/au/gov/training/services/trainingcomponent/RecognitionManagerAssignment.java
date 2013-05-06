@@ -35,7 +35,7 @@ public class RecognitionManagerAssignment
     extends AbstractDto
 {
 
-    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> code;
 
     /**
@@ -59,7 +59,7 @@ public class RecognitionManagerAssignment
      *     
      */
     public void setCode(JAXBElement<String> value) {
-        this.code = ((JAXBElement<String> ) value);
+        this.code = value;
     }
 
 }

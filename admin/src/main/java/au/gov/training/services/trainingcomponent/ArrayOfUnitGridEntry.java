@@ -61,7 +61,7 @@ public class ArrayOfUnitGridEntry {
      */
     public List<UnitGridEntry> getUnitGridEntry() {
         if (unitGridEntry == null) {
-            unitGridEntry = new ArrayList<>();
+            unitGridEntry = new ArrayList<UnitGridEntry>();
         }
         return this.unitGridEntry;
     }

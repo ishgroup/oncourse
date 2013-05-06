@@ -38,9 +38,9 @@ public class DeletedSearchRequest
     extends AbstractPageRequest
 {
 
-    @XmlElementRef(name = "EndDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "EndDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<DateTimeOffset> endDate;
-    @XmlElementRef(name = "StartDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "StartDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<DateTimeOffset> startDate;
 
     /**
@@ -64,7 +64,7 @@ public class DeletedSearchRequest
      *     
      */
     public void setEndDate(JAXBElement<DateTimeOffset> value) {
-        this.endDate = ((JAXBElement<DateTimeOffset> ) value);
+        this.endDate = value;
     }
 
     /**
@@ -88,7 +88,7 @@ public class DeletedSearchRequest
      *     
      */
     public void setStartDate(JAXBElement<DateTimeOffset> value) {
-        this.startDate = ((JAXBElement<DateTimeOffset> ) value);
+        this.startDate = value;
     }
 
 }

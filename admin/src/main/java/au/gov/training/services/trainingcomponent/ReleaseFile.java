@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class ReleaseFile {
 
-    @XmlElementRef(name = "RelativePath", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "RelativePath", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> relativePath;
     @XmlElement(name = "Size")
     protected Integer size;
@@ -62,7 +62,7 @@ public class ReleaseFile {
      *     
      */
     public void setRelativePath(JAXBElement<String> value) {
-        this.relativePath = ((JAXBElement<String> ) value);
+        this.relativePath = value;
     }
 
     /**

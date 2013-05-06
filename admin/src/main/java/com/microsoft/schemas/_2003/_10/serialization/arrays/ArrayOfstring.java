@@ -61,7 +61,7 @@ public class ArrayOfstring {
      */
     public List<String> getString() {
         if (string == null) {
-            string = new ArrayList<>();
+            string = new ArrayList<String>();
         }
         return this.string;
     }

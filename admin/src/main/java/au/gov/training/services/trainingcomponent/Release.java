@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -52,28 +53,31 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "releaseNumber",
     "unitGrid"
 })
+@XmlSeeAlso({
+    Release3 .class
+})
 public class Release {
 
-    @XmlElementRef(name = "ApprovalProcess", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "ApprovalProcess", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> approvalProcess;
-    @XmlElementRef(name = "Components", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Components", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfReleaseComponent> components;
-    @XmlElementRef(name = "Currency", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Currency", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> currency;
-    @XmlElementRef(name = "Files", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Files", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfReleaseFile> files;
-    @XmlElementRef(name = "IscApprovalDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "IscApprovalDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<XMLGregorianCalendar> iscApprovalDate;
-    @XmlElementRef(name = "MinisterialAgreementDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "MinisterialAgreementDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<XMLGregorianCalendar> ministerialAgreementDate;
-    @XmlElementRef(name = "NqcEndorsementDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "NqcEndorsementDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<XMLGregorianCalendar> nqcEndorsementDate;
     @XmlElement(name = "ReleaseDate")
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar releaseDate;
-    @XmlElementRef(name = "ReleaseNumber", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "ReleaseNumber", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> releaseNumber;
-    @XmlElementRef(name = "UnitGrid", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "UnitGrid", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfUnitGridEntry> unitGrid;
 
     /**
@@ -97,7 +101,7 @@ public class Release {
      *     
      */
     public void setApprovalProcess(JAXBElement<String> value) {
-        this.approvalProcess = ((JAXBElement<String> ) value);
+        this.approvalProcess = value;
     }
 
     /**
@@ -121,7 +125,7 @@ public class Release {
      *     
      */
     public void setComponents(JAXBElement<ArrayOfReleaseComponent> value) {
-        this.components = ((JAXBElement<ArrayOfReleaseComponent> ) value);
+        this.components = value;
     }
 
     /**
@@ -145,7 +149,7 @@ public class Release {
      *     
      */
     public void setCurrency(JAXBElement<String> value) {
-        this.currency = ((JAXBElement<String> ) value);
+        this.currency = value;
     }
 
     /**
@@ -169,7 +173,7 @@ public class Release {
      *     
      */
     public void setFiles(JAXBElement<ArrayOfReleaseFile> value) {
-        this.files = ((JAXBElement<ArrayOfReleaseFile> ) value);
+        this.files = value;
     }
 
     /**
@@ -193,7 +197,7 @@ public class Release {
      *     
      */
     public void setIscApprovalDate(JAXBElement<XMLGregorianCalendar> value) {
-        this.iscApprovalDate = ((JAXBElement<XMLGregorianCalendar> ) value);
+        this.iscApprovalDate = value;
     }
 
     /**
@@ -217,7 +221,7 @@ public class Release {
      *     
      */
     public void setMinisterialAgreementDate(JAXBElement<XMLGregorianCalendar> value) {
-        this.ministerialAgreementDate = ((JAXBElement<XMLGregorianCalendar> ) value);
+        this.ministerialAgreementDate = value;
     }
 
     /**
@@ -241,7 +245,7 @@ public class Release {
      *     
      */
     public void setNqcEndorsementDate(JAXBElement<XMLGregorianCalendar> value) {
-        this.nqcEndorsementDate = ((JAXBElement<XMLGregorianCalendar> ) value);
+        this.nqcEndorsementDate = value;
     }
 
     /**
@@ -289,7 +293,7 @@ public class Release {
      *     
      */
     public void setReleaseNumber(JAXBElement<String> value) {
-        this.releaseNumber = ((JAXBElement<String> ) value);
+        this.releaseNumber = value;
     }
 
     /**
@@ -313,7 +317,7 @@ public class Release {
      *     
      */
     public void setUnitGrid(JAXBElement<ArrayOfUnitGridEntry> value) {
-        this.unitGrid = ((JAXBElement<ArrayOfUnitGridEntry> ) value);
+        this.unitGrid = value;
     }
 
 }

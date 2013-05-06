@@ -50,7 +50,7 @@ public class SearchResult {
     protected Integer pageNumber;
     @XmlElement(name = "PageSize")
     protected Integer pageSize;
-    @XmlElementRef(name = "Results", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Results", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfTrainingComponentSummary> results;
 
     /**
@@ -146,7 +146,7 @@ public class SearchResult {
      *     
      */
     public void setResults(JAXBElement<ArrayOfTrainingComponentSummary> value) {
-        this.results = ((JAXBElement<ArrayOfTrainingComponentSummary> ) value);
+        this.results = value;
     }
 
 }

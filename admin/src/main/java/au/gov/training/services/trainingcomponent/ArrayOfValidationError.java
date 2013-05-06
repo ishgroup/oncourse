@@ -61,7 +61,7 @@ public class ArrayOfValidationError {
      */
     public List<ValidationError> getValidationError() {
         if (validationError == null) {
-            validationError = new ArrayList<>();
+            validationError = new ArrayList<ValidationError>();
         }
         return this.validationError;
     }

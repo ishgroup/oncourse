@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class ValidationFault {
 
-    @XmlElementRef(name = "Errors", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Errors", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfValidationError> errors;
 
     /**
@@ -57,7 +57,7 @@ public class ValidationFault {
      *     
      */
     public void setErrors(JAXBElement<ArrayOfValidationError> value) {
-        this.errors = ((JAXBElement<ArrayOfValidationError> ) value);
+        this.errors = value;
     }
 
 }

@@ -61,7 +61,7 @@ public class ArrayOfRecognitionManagerAssignment {
      */
     public List<RecognitionManagerAssignment> getRecognitionManagerAssignment() {
         if (recognitionManagerAssignment == null) {
-            recognitionManagerAssignment = new ArrayList<>();
+            recognitionManagerAssignment = new ArrayList<RecognitionManagerAssignment>();
         }
         return this.recognitionManagerAssignment;
     }

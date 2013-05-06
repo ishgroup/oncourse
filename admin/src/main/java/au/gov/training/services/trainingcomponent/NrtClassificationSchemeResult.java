@@ -116,7 +116,7 @@ public class NrtClassificationSchemeResult {
      */
     public List<String> getAppliesToComponentTypes() {
         if (appliesToComponentTypes == null) {
-            appliesToComponentTypes = new ArrayList<>();
+            appliesToComponentTypes = new ArrayList<String>();
         }
         return this.appliesToComponentTypes;
     }
@@ -241,7 +241,7 @@ public class NrtClassificationSchemeResult {
      */
     public List<String> getRequiredForComponentTypes() {
         if (requiredForComponentTypes == null) {
-            requiredForComponentTypes = new ArrayList<>();
+            requiredForComponentTypes = new ArrayList<String>();
         }
         return this.requiredForComponentTypes;
     }

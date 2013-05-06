@@ -61,7 +61,7 @@ public class ArrayOfContact {
      */
     public List<Contact> getContact() {
         if (contact == null) {
-            contact = new ArrayList<>();
+            contact = new ArrayList<Contact>();
         }
         return this.contact;
     }

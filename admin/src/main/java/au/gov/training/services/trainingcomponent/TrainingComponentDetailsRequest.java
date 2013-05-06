@@ -38,7 +38,7 @@ public class TrainingComponentDetailsRequest {
 
     @XmlElement(name = "Code", required = true, nillable = true)
     protected String code;
-    @XmlElementRef(name = "InformationRequest", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "InformationRequest", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<TrainingComponentInformationRequested> informationRequest;
 
     /**
@@ -86,7 +86,7 @@ public class TrainingComponentDetailsRequest {
      *     
      */
     public void setInformationRequest(JAXBElement<TrainingComponentInformationRequested> value) {
-        this.informationRequest = ((JAXBElement<TrainingComponentInformationRequested> ) value);
+        this.informationRequest = value;
     }
 
 }

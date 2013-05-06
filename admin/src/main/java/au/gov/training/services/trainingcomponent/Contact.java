@@ -59,31 +59,31 @@ public class Contact
     extends AbstractDto
 {
 
-    @XmlElementRef(name = "Email", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Email", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> email;
-    @XmlElementRef(name = "Fax", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Fax", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> fax;
-    @XmlElementRef(name = "FirstName", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "FirstName", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> firstName;
-    @XmlElementRef(name = "GroupName", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "GroupName", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> groupName;
-    @XmlElementRef(name = "JobTitle", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "JobTitle", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> jobTitle;
-    @XmlElementRef(name = "LastName", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "LastName", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> lastName;
-    @XmlElementRef(name = "Mobile", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Mobile", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> mobile;
-    @XmlElementRef(name = "OrganisationName", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "OrganisationName", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> organisationName;
-    @XmlElementRef(name = "Phone", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Phone", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> phone;
-    @XmlElementRef(name = "PostalAddress", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "PostalAddress", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<Address> postalAddress;
-    @XmlElementRef(name = "RoleCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "RoleCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> roleCode;
-    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> title;
-    @XmlElementRef(name = "TypeCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "TypeCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> typeCode;
 
     /**
@@ -107,7 +107,7 @@ public class Contact
      *     
      */
     public void setEmail(JAXBElement<String> value) {
-        this.email = ((JAXBElement<String> ) value);
+        this.email = value;
     }
 
     /**
@@ -131,7 +131,7 @@ public class Contact
      *     
      */
     public void setFax(JAXBElement<String> value) {
-        this.fax = ((JAXBElement<String> ) value);
+        this.fax = value;
     }
 
     /**
@@ -155,7 +155,7 @@ public class Contact
      *     
      */
     public void setFirstName(JAXBElement<String> value) {
-        this.firstName = ((JAXBElement<String> ) value);
+        this.firstName = value;
     }
 
     /**
@@ -179,7 +179,7 @@ public class Contact
      *     
      */
     public void setGroupName(JAXBElement<String> value) {
-        this.groupName = ((JAXBElement<String> ) value);
+        this.groupName = value;
     }
 
     /**
@@ -203,7 +203,7 @@ public class Contact
      *     
      */
     public void setJobTitle(JAXBElement<String> value) {
-        this.jobTitle = ((JAXBElement<String> ) value);
+        this.jobTitle = value;
     }
 
     /**
@@ -227,7 +227,7 @@ public class Contact
      *     
      */
     public void setLastName(JAXBElement<String> value) {
-        this.lastName = ((JAXBElement<String> ) value);
+        this.lastName = value;
     }
 
     /**
@@ -251,7 +251,7 @@ public class Contact
      *     
      */
     public void setMobile(JAXBElement<String> value) {
-        this.mobile = ((JAXBElement<String> ) value);
+        this.mobile = value;
     }
 
     /**
@@ -275,7 +275,7 @@ public class Contact
      *     
      */
     public void setOrganisationName(JAXBElement<String> value) {
-        this.organisationName = ((JAXBElement<String> ) value);
+        this.organisationName = value;
     }
 
     /**
@@ -299,7 +299,7 @@ public class Contact
      *     
      */
     public void setPhone(JAXBElement<String> value) {
-        this.phone = ((JAXBElement<String> ) value);
+        this.phone = value;
     }
 
     /**
@@ -323,7 +323,7 @@ public class Contact
      *     
      */
     public void setPostalAddress(JAXBElement<Address> value) {
-        this.postalAddress = ((JAXBElement<Address> ) value);
+        this.postalAddress = value;
     }
 
     /**
@@ -347,7 +347,7 @@ public class Contact
      *     
      */
     public void setRoleCode(JAXBElement<String> value) {
-        this.roleCode = ((JAXBElement<String> ) value);
+        this.roleCode = value;
     }
 
     /**
@@ -371,7 +371,7 @@ public class Contact
      *     
      */
     public void setTitle(JAXBElement<String> value) {
-        this.title = ((JAXBElement<String> ) value);
+        this.title = value;
     }
 
     /**
@@ -395,7 +395,7 @@ public class Contact
      *     
      */
     public void setTypeCode(JAXBElement<String> value) {
-        this.typeCode = ((JAXBElement<String> ) value);
+        this.typeCode = value;
     }
 
 }

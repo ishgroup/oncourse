@@ -51,14 +51,14 @@ public class TrainingComponentContactRole {
     protected Boolean allowGroupContact;
     @XmlElement(name = "AllowMultipleCurrent")
     protected Boolean allowMultipleCurrent;
-    @XmlElementRef(name = "Description", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Description", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> description;
     @XmlElement(name = "IsImplicit")
     protected Boolean isImplicit;
     @XmlList
     @XmlElement(name = "RequiredTrainingComponentTypes")
     protected List<String> requiredTrainingComponentTypes;
-    @XmlElementRef(name = "Role", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Role", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> role;
 
     /**
@@ -130,7 +130,7 @@ public class TrainingComponentContactRole {
      *     
      */
     public void setDescription(JAXBElement<String> value) {
-        this.description = ((JAXBElement<String> ) value);
+        this.description = value;
     }
 
     /**
@@ -181,7 +181,7 @@ public class TrainingComponentContactRole {
      */
     public List<String> getRequiredTrainingComponentTypes() {
         if (requiredTrainingComponentTypes == null) {
-            requiredTrainingComponentTypes = new ArrayList<>();
+            requiredTrainingComponentTypes = new ArrayList<String>();
         }
         return this.requiredTrainingComponentTypes;
     }
@@ -207,7 +207,7 @@ public class TrainingComponentContactRole {
      *     
      */
     public void setRole(JAXBElement<String> value) {
-        this.role = ((JAXBElement<String> ) value);
+        this.role = value;
     }
 
 }

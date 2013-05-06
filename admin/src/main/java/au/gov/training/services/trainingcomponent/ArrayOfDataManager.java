@@ -61,7 +61,7 @@ public class ArrayOfDataManager {
      */
     public List<DataManager> getDataManager() {
         if (dataManager == null) {
-            dataManager = new ArrayList<>();
+            dataManager = new ArrayList<DataManager>();
         }
         return this.dataManager;
     }

@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "SearchDeletedByDeletedDate")
 public class SearchDeletedByDeletedDate {
 
-    @XmlElementRef(name = "request", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "request", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<DeletedSearchRequest> request;
 
     /**
@@ -59,7 +59,7 @@ public class SearchDeletedByDeletedDate {
      *     
      */
     public void setRequest(JAXBElement<DeletedSearchRequest> value) {
-        this.request = ((JAXBElement<DeletedSearchRequest> ) value);
+        this.request = value;
     }
 
 }

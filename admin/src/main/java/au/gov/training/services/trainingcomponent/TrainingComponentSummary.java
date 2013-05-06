@@ -9,7 +9,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import org.datacontract.schemas._2004._07.deewr_tga.UsageRecommendationState;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
 
@@ -50,9 +52,12 @@ import org.datacontract.schemas._2004._07.system.DateTimeOffset;
     "updatedDate",
     "usageReccomendation"
 })
+@XmlSeeAlso({
+    TrainingComponentSummary2 .class
+})
 public class TrainingComponentSummary {
 
-    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> code;
     @XmlList
     @XmlElement(name = "ComponentType")
@@ -61,15 +66,14 @@ public class TrainingComponentSummary {
     protected DateTimeOffset createdDate;
     @XmlElement(name = "IsConfidential")
     protected Boolean isConfidential;
-    @XmlElementRef(name = "IsCurrent", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "IsCurrent", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<Boolean> isCurrent;
-    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> title;
     @XmlElement(name = "UpdatedDate")
     protected DateTimeOffset updatedDate;
-    @XmlList
     @XmlElement(name = "UsageReccomendation")
-    protected List<String> usageReccomendation;
+    protected UsageRecommendationState usageReccomendation;
 
     /**
      * Gets the value of the code property.
@@ -92,7 +96,7 @@ public class TrainingComponentSummary {
      *     
      */
     public void setCode(JAXBElement<String> value) {
-        this.code = ((JAXBElement<String> ) value);
+        this.code = value;
     }
 
     /**
@@ -119,7 +123,7 @@ public class TrainingComponentSummary {
      */
     public List<String> getComponentType() {
         if (componentType == null) {
-            componentType = new ArrayList<>();
+            componentType = new ArrayList<String>();
         }
         return this.componentType;
     }
@@ -193,7 +197,7 @@ public class TrainingComponentSummary {
      *     
      */
     public void setIsCurrent(JAXBElement<Boolean> value) {
-        this.isCurrent = ((JAXBElement<Boolean> ) value);
+        this.isCurrent = value;
     }
 
     /**
@@ -217,7 +221,7 @@ public class TrainingComponentSummary {
      *     
      */
     public void setTitle(JAXBElement<String> value) {
-        this.title = ((JAXBElement<String> ) value);
+        this.title = value;
     }
 
     /**
@@ -247,30 +251,25 @@ public class TrainingComponentSummary {
     /**
      * Gets the value of the usageReccomendation property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the usageReccomendation property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getUsageReccomendation().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link UsageRecommendationState }
+     *     
      */
-    public List<String> getUsageReccomendation() {
-        if (usageReccomendation == null) {
-            usageReccomendation = new ArrayList<>();
-        }
-        return this.usageReccomendation;
+    public UsageRecommendationState getUsageReccomendation() {
+        return usageReccomendation;
+    }
+
+    /**
+     * Sets the value of the usageReccomendation property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link UsageRecommendationState }
+     *     
+     */
+    public void setUsageReccomendation(UsageRecommendationState value) {
+        this.usageReccomendation = value;
     }
 
 }

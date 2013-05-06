@@ -61,7 +61,7 @@ public class ArrayOfNrtCompletion {
      */
     public List<NrtCompletion> getNrtCompletion() {
         if (nrtCompletion == null) {
-            nrtCompletion = new ArrayList<>();
+            nrtCompletion = new ArrayList<NrtCompletion>();
         }
         return this.nrtCompletion;
     }

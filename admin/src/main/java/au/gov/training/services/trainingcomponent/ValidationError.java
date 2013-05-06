@@ -44,17 +44,17 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class ValidationError {
 
-    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> code;
-    @XmlElementRef(name = "Message", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Message", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> message;
     @XmlElement(name = "Severity")
     protected ValidationErrorSeverity severity;
-    @XmlElementRef(name = "SubCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "SubCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> subCode;
-    @XmlElementRef(name = "ValidationTarget", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "ValidationTarget", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> validationTarget;
-    @XmlElementRef(name = "Context", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Context", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> context;
 
     /**
@@ -78,7 +78,7 @@ public class ValidationError {
      *     
      */
     public void setCode(JAXBElement<String> value) {
-        this.code = ((JAXBElement<String> ) value);
+        this.code = value;
     }
 
     /**
@@ -102,7 +102,7 @@ public class ValidationError {
      *     
      */
     public void setMessage(JAXBElement<String> value) {
-        this.message = ((JAXBElement<String> ) value);
+        this.message = value;
     }
 
     /**
@@ -150,7 +150,7 @@ public class ValidationError {
      *     
      */
     public void setSubCode(JAXBElement<String> value) {
-        this.subCode = ((JAXBElement<String> ) value);
+        this.subCode = value;
     }
 
     /**
@@ -174,7 +174,7 @@ public class ValidationError {
      *     
      */
     public void setValidationTarget(JAXBElement<String> value) {
-        this.validationTarget = ((JAXBElement<String> ) value);
+        this.validationTarget = value;
     }
 
     /**
@@ -198,7 +198,7 @@ public class ValidationError {
      *     
      */
     public void setContext(JAXBElement<String> value) {
-        this.context = ((JAXBElement<String> ) value);
+        this.context = value;
     }
 
 }

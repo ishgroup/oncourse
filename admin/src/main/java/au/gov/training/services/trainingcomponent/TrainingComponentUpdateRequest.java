@@ -46,15 +46,15 @@ public class TrainingComponentUpdateRequest {
 
     @XmlElement(name = "Code", required = true, nillable = true)
     protected String code;
-    @XmlElementRef(name = "CompletionMappingList", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "CompletionMappingList", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<CompletionMappingList> completionMappingList;
-    @XmlElementRef(name = "CurrencyPeriodList", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "CurrencyPeriodList", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<CurrencyPeriodList> currencyPeriodList;
-    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> title;
-    @XmlElementRef(name = "TrainingComponentClassificationList", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "TrainingComponentClassificationList", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<TrainingComponentClassificationList> trainingComponentClassificationList;
-    @XmlElementRef(name = "TrainingComponentContactList", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "TrainingComponentContactList", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<TrainingComponentContactList> trainingComponentContactList;
 
     /**
@@ -102,7 +102,7 @@ public class TrainingComponentUpdateRequest {
      *     
      */
     public void setCompletionMappingList(JAXBElement<CompletionMappingList> value) {
-        this.completionMappingList = ((JAXBElement<CompletionMappingList> ) value);
+        this.completionMappingList = value;
     }
 
     /**
@@ -126,7 +126,7 @@ public class TrainingComponentUpdateRequest {
      *     
      */
     public void setCurrencyPeriodList(JAXBElement<CurrencyPeriodList> value) {
-        this.currencyPeriodList = ((JAXBElement<CurrencyPeriodList> ) value);
+        this.currencyPeriodList = value;
     }
 
     /**
@@ -150,7 +150,7 @@ public class TrainingComponentUpdateRequest {
      *     
      */
     public void setTitle(JAXBElement<String> value) {
-        this.title = ((JAXBElement<String> ) value);
+        this.title = value;
     }
 
     /**
@@ -174,7 +174,7 @@ public class TrainingComponentUpdateRequest {
      *     
      */
     public void setTrainingComponentClassificationList(JAXBElement<TrainingComponentClassificationList> value) {
-        this.trainingComponentClassificationList = ((JAXBElement<TrainingComponentClassificationList> ) value);
+        this.trainingComponentClassificationList = value;
     }
 
     /**
@@ -198,7 +198,7 @@ public class TrainingComponentUpdateRequest {
      *     
      */
     public void setTrainingComponentContactList(JAXBElement<TrainingComponentContactList> value) {
-        this.trainingComponentContactList = ((JAXBElement<TrainingComponentContactList> ) value);
+        this.trainingComponentContactList = value;
     }
 
 }

@@ -45,19 +45,19 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class Address {
 
-    @XmlElementRef(name = "CountryCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "CountryCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> countryCode;
-    @XmlElementRef(name = "Line1", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Line1", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> line1;
-    @XmlElementRef(name = "Line2", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Line2", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> line2;
-    @XmlElementRef(name = "Postcode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Postcode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> postcode;
-    @XmlElementRef(name = "StateCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "StateCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> stateCode;
-    @XmlElementRef(name = "StateOverseas", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "StateOverseas", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> stateOverseas;
-    @XmlElementRef(name = "Suburb", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Suburb", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> suburb;
 
     /**
@@ -81,7 +81,7 @@ public class Address {
      *     
      */
     public void setCountryCode(JAXBElement<String> value) {
-        this.countryCode = ((JAXBElement<String> ) value);
+        this.countryCode = value;
     }
 
     /**
@@ -105,7 +105,7 @@ public class Address {
      *     
      */
     public void setLine1(JAXBElement<String> value) {
-        this.line1 = ((JAXBElement<String> ) value);
+        this.line1 = value;
     }
 
     /**
@@ -129,7 +129,7 @@ public class Address {
      *     
      */
     public void setLine2(JAXBElement<String> value) {
-        this.line2 = ((JAXBElement<String> ) value);
+        this.line2 = value;
     }
 
     /**
@@ -153,7 +153,7 @@ public class Address {
      *     
      */
     public void setPostcode(JAXBElement<String> value) {
-        this.postcode = ((JAXBElement<String> ) value);
+        this.postcode = value;
     }
 
     /**
@@ -177,7 +177,7 @@ public class Address {
      *     
      */
     public void setStateCode(JAXBElement<String> value) {
-        this.stateCode = ((JAXBElement<String> ) value);
+        this.stateCode = value;
     }
 
     /**
@@ -201,7 +201,7 @@ public class Address {
      *     
      */
     public void setStateOverseas(JAXBElement<String> value) {
-        this.stateOverseas = ((JAXBElement<String> ) value);
+        this.stateOverseas = value;
     }
 
     /**
@@ -225,7 +225,7 @@ public class Address {
      *     
      */
     public void setSuburb(JAXBElement<String> value) {
-        this.suburb = ((JAXBElement<String> ) value);
+        this.suburb = value;
     }
 
 }

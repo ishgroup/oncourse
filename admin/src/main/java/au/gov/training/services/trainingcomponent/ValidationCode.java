@@ -37,11 +37,11 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class ValidationCode {
 
-    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> code;
-    @XmlElementRef(name = "Message", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Message", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> message;
-    @XmlElementRef(name = "SubCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "SubCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> subCode;
 
     /**
@@ -65,7 +65,7 @@ public class ValidationCode {
      *     
      */
     public void setCode(JAXBElement<String> value) {
-        this.code = ((JAXBElement<String> ) value);
+        this.code = value;
     }
 
     /**
@@ -89,7 +89,7 @@ public class ValidationCode {
      *     
      */
     public void setMessage(JAXBElement<String> value) {
-        this.message = ((JAXBElement<String> ) value);
+        this.message = value;
     }
 
     /**
@@ -113,7 +113,7 @@ public class ValidationCode {
      *     
      */
     public void setSubCode(JAXBElement<String> value) {
-        this.subCode = ((JAXBElement<String> ) value);
+        this.subCode = value;
     }
 
 }

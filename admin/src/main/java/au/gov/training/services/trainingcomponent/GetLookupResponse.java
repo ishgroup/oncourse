@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "GetLookupResponse")
 public class GetLookupResponse {
 
-    @XmlElementRef(name = "GetLookupResult", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "GetLookupResult", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfLookup> getLookupResult;
 
     /**
@@ -59,7 +59,7 @@ public class GetLookupResponse {
      *     
      */
     public void setGetLookupResult(JAXBElement<ArrayOfLookup> value) {
-        this.getLookupResult = ((JAXBElement<ArrayOfLookup> ) value);
+        this.getLookupResult = value;
     }
 
 }

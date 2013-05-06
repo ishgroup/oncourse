@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
@@ -70,44 +71,47 @@ import org.datacontract.schemas._2004._07.system.DateTimeOffset;
     "updatedDate",
     "usageRecommendations"
 })
+@XmlSeeAlso({
+    TrainingComponent2 .class
+})
 public class TrainingComponent {
 
-    @XmlElementRef(name = "Classifications", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Classifications", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfClassification> classifications;
-    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> code;
-    @XmlElementRef(name = "CompletionMapping", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "CompletionMapping", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfNrtCompletion> completionMapping;
     @XmlList
     @XmlElement(name = "ComponentType")
     protected List<String> componentType;
-    @XmlElementRef(name = "Contacts", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Contacts", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfContact> contacts;
     @XmlElement(name = "CreatedDate")
     protected DateTimeOffset createdDate;
-    @XmlElementRef(name = "CurrencyPeriods", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "CurrencyPeriods", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfNrtCurrencyPeriod> currencyPeriods;
-    @XmlElementRef(name = "DataManagers", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "DataManagers", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfDataManagerAssignment> dataManagers;
     @XmlElement(name = "IsConfidential")
     protected Boolean isConfidential;
-    @XmlElementRef(name = "IscOrganisationCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "IscOrganisationCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> iscOrganisationCode;
-    @XmlElementRef(name = "MappingInformation", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "MappingInformation", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfMapping> mappingInformation;
-    @XmlElementRef(name = "ParentCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "ParentCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> parentCode;
-    @XmlElementRef(name = "ParentTitle", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "ParentTitle", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> parentTitle;
-    @XmlElementRef(name = "RecognitionManagers", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "RecognitionManagers", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfRecognitionManagerAssignment> recognitionManagers;
-    @XmlElementRef(name = "Releases", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Releases", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfRelease> releases;
-    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> title;
     @XmlElement(name = "UpdatedDate")
     protected DateTimeOffset updatedDate;
-    @XmlElementRef(name = "UsageRecommendations", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "UsageRecommendations", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfUsageRecommendation> usageRecommendations;
 
     /**
@@ -131,7 +135,7 @@ public class TrainingComponent {
      *     
      */
     public void setClassifications(JAXBElement<ArrayOfClassification> value) {
-        this.classifications = ((JAXBElement<ArrayOfClassification> ) value);
+        this.classifications = value;
     }
 
     /**
@@ -155,7 +159,7 @@ public class TrainingComponent {
      *     
      */
     public void setCode(JAXBElement<String> value) {
-        this.code = ((JAXBElement<String> ) value);
+        this.code = value;
     }
 
     /**
@@ -179,7 +183,7 @@ public class TrainingComponent {
      *     
      */
     public void setCompletionMapping(JAXBElement<ArrayOfNrtCompletion> value) {
-        this.completionMapping = ((JAXBElement<ArrayOfNrtCompletion> ) value);
+        this.completionMapping = value;
     }
 
     /**
@@ -206,7 +210,7 @@ public class TrainingComponent {
      */
     public List<String> getComponentType() {
         if (componentType == null) {
-            componentType = new ArrayList<>();
+            componentType = new ArrayList<String>();
         }
         return this.componentType;
     }
@@ -232,7 +236,7 @@ public class TrainingComponent {
      *     
      */
     public void setContacts(JAXBElement<ArrayOfContact> value) {
-        this.contacts = ((JAXBElement<ArrayOfContact> ) value);
+        this.contacts = value;
     }
 
     /**
@@ -280,7 +284,7 @@ public class TrainingComponent {
      *     
      */
     public void setCurrencyPeriods(JAXBElement<ArrayOfNrtCurrencyPeriod> value) {
-        this.currencyPeriods = ((JAXBElement<ArrayOfNrtCurrencyPeriod> ) value);
+        this.currencyPeriods = value;
     }
 
     /**
@@ -304,7 +308,7 @@ public class TrainingComponent {
      *     
      */
     public void setDataManagers(JAXBElement<ArrayOfDataManagerAssignment> value) {
-        this.dataManagers = ((JAXBElement<ArrayOfDataManagerAssignment> ) value);
+        this.dataManagers = value;
     }
 
     /**
@@ -352,7 +356,7 @@ public class TrainingComponent {
      *     
      */
     public void setIscOrganisationCode(JAXBElement<String> value) {
-        this.iscOrganisationCode = ((JAXBElement<String> ) value);
+        this.iscOrganisationCode = value;
     }
 
     /**
@@ -376,7 +380,7 @@ public class TrainingComponent {
      *     
      */
     public void setMappingInformation(JAXBElement<ArrayOfMapping> value) {
-        this.mappingInformation = ((JAXBElement<ArrayOfMapping> ) value);
+        this.mappingInformation = value;
     }
 
     /**
@@ -400,7 +404,7 @@ public class TrainingComponent {
      *     
      */
     public void setParentCode(JAXBElement<String> value) {
-        this.parentCode = ((JAXBElement<String> ) value);
+        this.parentCode = value;
     }
 
     /**
@@ -424,7 +428,7 @@ public class TrainingComponent {
      *     
      */
     public void setParentTitle(JAXBElement<String> value) {
-        this.parentTitle = ((JAXBElement<String> ) value);
+        this.parentTitle = value;
     }
 
     /**
@@ -448,7 +452,7 @@ public class TrainingComponent {
      *     
      */
     public void setRecognitionManagers(JAXBElement<ArrayOfRecognitionManagerAssignment> value) {
-        this.recognitionManagers = ((JAXBElement<ArrayOfRecognitionManagerAssignment> ) value);
+        this.recognitionManagers = value;
     }
 
     /**
@@ -472,7 +476,7 @@ public class TrainingComponent {
      *     
      */
     public void setReleases(JAXBElement<ArrayOfRelease> value) {
-        this.releases = ((JAXBElement<ArrayOfRelease> ) value);
+        this.releases = value;
     }
 
     /**
@@ -496,7 +500,7 @@ public class TrainingComponent {
      *     
      */
     public void setTitle(JAXBElement<String> value) {
-        this.title = ((JAXBElement<String> ) value);
+        this.title = value;
     }
 
     /**
@@ -544,7 +548,7 @@ public class TrainingComponent {
      *     
      */
     public void setUsageRecommendations(JAXBElement<ArrayOfUsageRecommendation> value) {
-        this.usageRecommendations = ((JAXBElement<ArrayOfUsageRecommendation> ) value);
+        this.usageRecommendations = value;
     }
 
 }

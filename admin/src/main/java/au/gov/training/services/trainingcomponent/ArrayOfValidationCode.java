@@ -61,7 +61,7 @@ public class ArrayOfValidationCode {
      */
     public List<ValidationCode> getValidationCode() {
         if (validationCode == null) {
-            validationCode = new ArrayList<>();
+            validationCode = new ArrayList<ValidationCode>();
         }
         return this.validationCode;
     }

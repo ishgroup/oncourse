@@ -61,7 +61,7 @@ public class ArrayOfClassification {
      */
     public List<Classification> getClassification() {
         if (classification == null) {
-            classification = new ArrayList<>();
+            classification = new ArrayList<Classification>();
         }
         return this.classification;
     }

@@ -22,6 +22,9 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;enumeration value="TrainingComponentUsageRecommendation"/>
  *     &lt;enumeration value="TrainingComponentType"/>
  *     &lt;enumeration value="ClassificationPurpose"/>
+ *     &lt;enumeration value="ScopeDecision"/>
+ *     &lt;enumeration value="RestrictionTypeCode"/>
+ *     &lt;enumeration value="TrainingComponentEndReason"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
@@ -46,7 +49,13 @@ public enum LookupName {
     @XmlEnumValue("TrainingComponentType")
     TRAINING_COMPONENT_TYPE("TrainingComponentType"),
     @XmlEnumValue("ClassificationPurpose")
-    CLASSIFICATION_PURPOSE("ClassificationPurpose");
+    CLASSIFICATION_PURPOSE("ClassificationPurpose"),
+    @XmlEnumValue("ScopeDecision")
+    SCOPE_DECISION("ScopeDecision"),
+    @XmlEnumValue("RestrictionTypeCode")
+    RESTRICTION_TYPE_CODE("RestrictionTypeCode"),
+    @XmlEnumValue("TrainingComponentEndReason")
+    TRAINING_COMPONENT_END_REASON("TrainingComponentEndReason");
     private final String value;
 
     LookupName(String v) {

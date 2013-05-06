@@ -39,13 +39,13 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class DataManager {
 
-    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> code;
-    @XmlElementRef(name = "Description", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Description", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> description;
-    @XmlElementRef(name = "RecognitionManagerCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "RecognitionManagerCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> recognitionManagerCode;
-    @XmlElementRef(name = "RegistrationManagerCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "RegistrationManagerCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> registrationManagerCode;
 
     /**
@@ -69,7 +69,7 @@ public class DataManager {
      *     
      */
     public void setCode(JAXBElement<String> value) {
-        this.code = ((JAXBElement<String> ) value);
+        this.code = value;
     }
 
     /**
@@ -93,7 +93,7 @@ public class DataManager {
      *     
      */
     public void setDescription(JAXBElement<String> value) {
-        this.description = ((JAXBElement<String> ) value);
+        this.description = value;
     }
 
     /**
@@ -117,7 +117,7 @@ public class DataManager {
      *     
      */
     public void setRecognitionManagerCode(JAXBElement<String> value) {
-        this.recognitionManagerCode = ((JAXBElement<String> ) value);
+        this.recognitionManagerCode = value;
     }
 
     /**
@@ -141,7 +141,7 @@ public class DataManager {
      *     
      */
     public void setRegistrationManagerCode(JAXBElement<String> value) {
-        this.registrationManagerCode = ((JAXBElement<String> ) value);
+        this.registrationManagerCode = value;
     }
 
 }

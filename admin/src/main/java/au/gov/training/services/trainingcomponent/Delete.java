@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "Delete")
 public class Delete {
 
-    @XmlElementRef(name = "request", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "request", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<TrainingComponentDeleteRequest> request;
 
     /**
@@ -59,7 +59,7 @@ public class Delete {
      *     
      */
     public void setRequest(JAXBElement<TrainingComponentDeleteRequest> value) {
-        this.request = ((JAXBElement<TrainingComponentDeleteRequest> ) value);
+        this.request = value;
     }
 
 }

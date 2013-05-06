@@ -5,6 +5,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -31,11 +32,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "NrtCurrencyPeriod", propOrder = {
     "authority"
 })
+@XmlSeeAlso({
+    NrtCurrencyPeriod2 .class
+})
 public class NrtCurrencyPeriod
     extends AbstractDto
 {
 
-    @XmlElementRef(name = "Authority", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Authority", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> authority;
 
     /**
@@ -59,7 +63,7 @@ public class NrtCurrencyPeriod
      *     
      */
     public void setAuthority(JAXBElement<String> value) {
-        this.authority = ((JAXBElement<String> ) value);
+        this.authority = value;
     }
 
 }

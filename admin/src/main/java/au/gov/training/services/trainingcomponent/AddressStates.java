@@ -37,11 +37,11 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class AddressStates {
 
-    @XmlElementRef(name = "Abbreviation", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Abbreviation", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> abbreviation;
-    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> code;
-    @XmlElementRef(name = "Description", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Description", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> description;
 
     /**
@@ -65,7 +65,7 @@ public class AddressStates {
      *     
      */
     public void setAbbreviation(JAXBElement<String> value) {
-        this.abbreviation = ((JAXBElement<String> ) value);
+        this.abbreviation = value;
     }
 
     /**
@@ -89,7 +89,7 @@ public class AddressStates {
      *     
      */
     public void setCode(JAXBElement<String> value) {
-        this.code = ((JAXBElement<String> ) value);
+        this.code = value;
     }
 
     /**
@@ -113,7 +113,7 @@ public class AddressStates {
      *     
      */
     public void setDescription(JAXBElement<String> value) {
-        this.description = ((JAXBElement<String> ) value);
+        this.description = value;
     }
 
 }

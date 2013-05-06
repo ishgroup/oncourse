@@ -47,15 +47,15 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class ReleaseComponent {
 
-    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Code", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> code;
-    @XmlElementRef(name = "ReleaseCurrency", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "ReleaseCurrency", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> releaseCurrency;
-    @XmlElementRef(name = "ReleaseDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "ReleaseDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> releaseDate;
-    @XmlElementRef(name = "ReleaseNumber", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "ReleaseNumber", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> releaseNumber;
-    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "Title", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> title;
     @XmlList
     @XmlElement(name = "Type")
@@ -82,7 +82,7 @@ public class ReleaseComponent {
      *     
      */
     public void setCode(JAXBElement<String> value) {
-        this.code = ((JAXBElement<String> ) value);
+        this.code = value;
     }
 
     /**
@@ -106,7 +106,7 @@ public class ReleaseComponent {
      *     
      */
     public void setReleaseCurrency(JAXBElement<String> value) {
-        this.releaseCurrency = ((JAXBElement<String> ) value);
+        this.releaseCurrency = value;
     }
 
     /**
@@ -130,7 +130,7 @@ public class ReleaseComponent {
      *     
      */
     public void setReleaseDate(JAXBElement<String> value) {
-        this.releaseDate = ((JAXBElement<String> ) value);
+        this.releaseDate = value;
     }
 
     /**
@@ -154,7 +154,7 @@ public class ReleaseComponent {
      *     
      */
     public void setReleaseNumber(JAXBElement<String> value) {
-        this.releaseNumber = ((JAXBElement<String> ) value);
+        this.releaseNumber = value;
     }
 
     /**
@@ -178,7 +178,7 @@ public class ReleaseComponent {
      *     
      */
     public void setTitle(JAXBElement<String> value) {
-        this.title = ((JAXBElement<String> ) value);
+        this.title = value;
     }
 
     /**
@@ -205,7 +205,7 @@ public class ReleaseComponent {
      */
     public List<String> getType() {
         if (type == null) {
-            type = new ArrayList<>();
+            type = new ArrayList<String>();
         }
         return this.type;
     }

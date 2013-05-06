@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "SearchResponse")
 public class SearchResponse {
 
-    @XmlElementRef(name = "SearchResult", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "SearchResult", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<TrainingComponentSearchResult> searchResult;
 
     /**
@@ -59,7 +59,7 @@ public class SearchResponse {
      *     
      */
     public void setSearchResult(JAXBElement<TrainingComponentSearchResult> value) {
-        this.searchResult = ((JAXBElement<TrainingComponentSearchResult> ) value);
+        this.searchResult = value;
     }
 
 }

@@ -43,13 +43,13 @@ public class TrainingComponentModifiedSearchRequest
     extends AbstractPageRequest
 {
 
-    @XmlElementRef(name = "DataManagerFilter", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "DataManagerFilter", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<ArrayOfstring> dataManagerFilter;
-    @XmlElementRef(name = "EndDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "EndDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<DateTimeOffset> endDate;
-    @XmlElementRef(name = "StartDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "StartDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<DateTimeOffset> startDate;
-    @XmlElementRef(name = "TrainingComponentTypes", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "TrainingComponentTypes", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<TrainingComponentTypeFilter> trainingComponentTypes;
 
     /**
@@ -73,7 +73,7 @@ public class TrainingComponentModifiedSearchRequest
      *     
      */
     public void setDataManagerFilter(JAXBElement<ArrayOfstring> value) {
-        this.dataManagerFilter = ((JAXBElement<ArrayOfstring> ) value);
+        this.dataManagerFilter = value;
     }
 
     /**
@@ -97,7 +97,7 @@ public class TrainingComponentModifiedSearchRequest
      *     
      */
     public void setEndDate(JAXBElement<DateTimeOffset> value) {
-        this.endDate = ((JAXBElement<DateTimeOffset> ) value);
+        this.endDate = value;
     }
 
     /**
@@ -121,7 +121,7 @@ public class TrainingComponentModifiedSearchRequest
      *     
      */
     public void setStartDate(JAXBElement<DateTimeOffset> value) {
-        this.startDate = ((JAXBElement<DateTimeOffset> ) value);
+        this.startDate = value;
     }
 
     /**
@@ -145,7 +145,7 @@ public class TrainingComponentModifiedSearchRequest
      *     
      */
     public void setTrainingComponentTypes(JAXBElement<TrainingComponentTypeFilter> value) {
-        this.trainingComponentTypes = ((JAXBElement<TrainingComponentTypeFilter> ) value);
+        this.trainingComponentTypes = value;
     }
 
 }

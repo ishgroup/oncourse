@@ -43,9 +43,9 @@ public class TrainingComponentTransferDataManagerRequest {
 
     @XmlElement(name = "DataManagerCode", required = true, nillable = true)
     protected String dataManagerCode;
-    @XmlElementRef(name = "EffectiveDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "EffectiveDate", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<XMLGregorianCalendar> effectiveDate;
-    @XmlElementRef(name = "RecognitionManagerCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "RecognitionManagerCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> recognitionManagerCode;
     @XmlElement(name = "TrainingComponentCode", required = true, nillable = true)
     protected String trainingComponentCode;
@@ -95,7 +95,7 @@ public class TrainingComponentTransferDataManagerRequest {
      *     
      */
     public void setEffectiveDate(JAXBElement<XMLGregorianCalendar> value) {
-        this.effectiveDate = ((JAXBElement<XMLGregorianCalendar> ) value);
+        this.effectiveDate = value;
     }
 
     /**
@@ -119,7 +119,7 @@ public class TrainingComponentTransferDataManagerRequest {
      *     
      */
     public void setRecognitionManagerCode(JAXBElement<String> value) {
-        this.recognitionManagerCode = ((JAXBElement<String> ) value);
+        this.recognitionManagerCode = value;
     }
 
     /**

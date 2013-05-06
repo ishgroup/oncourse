@@ -39,7 +39,7 @@ import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 })
 public class DeletedTrainingComponent {
 
-    @XmlElementRef(name = "NationalCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class)
+    @XmlElementRef(name = "NationalCode", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> nationalCode;
     @XmlElement(name = "Operation")
     protected DeleteOperation operation;
@@ -67,7 +67,7 @@ public class DeletedTrainingComponent {
      *     
      */
     public void setNationalCode(JAXBElement<String> value) {
-        this.nationalCode = ((JAXBElement<String> ) value);
+        this.nationalCode = value;
     }
 
     /**
