@@ -22,6 +22,10 @@
 			<td><t:textfield t:id="paymentPass" value="paymentExpPass" />
 			</td>
 		</tr>
+		<tr>
+			<td>Billing code</td>
+			<td><t:textfield t:id="billingCode" value="billingCode" validate="required"/></td>
+		</tr>
 	</table>
 	
 	<label class="checkbox">

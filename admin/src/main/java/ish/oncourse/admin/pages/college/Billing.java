@@ -205,6 +205,14 @@ public class Billing {
 		college.setPaymentGatewayPass(value);
 	}
 
+	public String getBillingCode() {
+		return college.getBillingCode();
+	}
+
+	public void setBillingCode(String value) {
+		college.setBillingCode(value);
+	}
+
 	public void setPaidUntil(LicenseFee fee, String dateString) {
 		if (dateString != null) {
 			try {
