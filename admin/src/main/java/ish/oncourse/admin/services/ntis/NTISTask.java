@@ -1,6 +1,7 @@
 package ish.oncourse.admin.services.ntis;
 
 import ish.oncourse.model.Module;
+import ish.oncourse.model.Organisation;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.mail.MailService;
@@ -85,6 +86,14 @@ public class NTISTask implements Runnable {
 				LOGGER.debug("Qualifications: " + qualificationResult.getNumberOfNew() + " new, " + qualificationResult.getNumberOfUpdated() + " updated.");
 
 				ntisData.add("Qualifications: " + qualificationResult.getNumberOfNew() + " new, " + qualificationResult.getNumberOfUpdated() + " updated.");
+
+				NTISResult organisationResult = ntisUpdater.doUpdate(fromDate, toDate, Organisation.class);
+
+				String organisationResultString = String.format(
+						"Organisations: %d new, %d updated.", organisationResult.getNumberOfNew(), organisationResult.getNumberOfUpdated());
+
+				LOGGER.debug(organisationResultString);
+				ntisData.add(organisationResultString);
 
 				preferenceController.setNTISLastUpdate(dateFormat.format(toDate));
 
