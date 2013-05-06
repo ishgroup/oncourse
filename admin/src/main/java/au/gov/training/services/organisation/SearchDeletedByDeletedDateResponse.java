@@ -1,0 +1,65 @@
+
+package au.gov.training.services.organisation;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Java class for anonymous complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType>
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="SearchDeletedByDeletedDateResult" type="{http://training.gov.au/services/}ArrayOfDeletedOrganisation" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "searchDeletedByDeletedDateResult"
+})
+@XmlRootElement(name = "SearchDeletedByDeletedDateResponse")
+public class SearchDeletedByDeletedDateResponse {
+
+    @XmlElementRef(name = "SearchDeletedByDeletedDateResult", namespace = "http://training.gov.au/services/", type = JAXBElement.class, required = false)
+    protected JAXBElement<ArrayOfDeletedOrganisation> searchDeletedByDeletedDateResult;
+
+    /**
+     * Gets the value of the searchDeletedByDeletedDateResult property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link JAXBElement }{@code <}{@link ArrayOfDeletedOrganisation }{@code >}
+     *     
+     */
+    public JAXBElement<ArrayOfDeletedOrganisation> getSearchDeletedByDeletedDateResult() {
+        return searchDeletedByDeletedDateResult;
+    }
+
+    /**
+     * Sets the value of the searchDeletedByDeletedDateResult property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link JAXBElement }{@code <}{@link ArrayOfDeletedOrganisation }{@code >}
+     *     
+     */
+    public void setSearchDeletedByDeletedDateResult(JAXBElement<ArrayOfDeletedOrganisation> value) {
+        this.searchDeletedByDeletedDateResult = value;
+    }
+
+}
