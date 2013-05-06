@@ -46,10 +46,8 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 
 		if ((ishVersion != null) && (ishVersion >= 0)) {
 
-			Expression qualifier = ExpressionFactory.matchExp(ISH_VERSION_PROPERTY, ishVersion);
-
 			SelectQuery query = new SelectQuery(getEntityClass());
-			query.setQualifier(qualifier);
+			query.setQualifier(getQueryQualifier(ishVersion));
 
 			try {
 				records = (List<T>) getCayenneService().sharedContext().performQuery(query);
@@ -63,6 +61,10 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 		}
 
 		return records;
+	}
+
+	protected Expression getQueryQualifier(Long ishVersion) {
+		return ExpressionFactory.matchExp(ISH_VERSION_PROPERTY, ishVersion);
 	}
 
 	/**

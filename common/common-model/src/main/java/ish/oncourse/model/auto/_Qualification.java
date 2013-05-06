@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.QualificationType;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.Course;
 
@@ -38,139 +39,138 @@ public abstract class _Qualification extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAnzsco(String anzsco) {
-        writeProperty("anzsco", anzsco);
+        writeProperty(ANZSCO_PROPERTY, anzsco);
     }
     public String getAnzsco() {
-        return (String)readProperty("anzsco");
+        return (String)readProperty(ANZSCO_PROPERTY);
     }
 
     public void setAsco(String asco) {
-        writeProperty("asco", asco);
+        writeProperty(ASCO_PROPERTY, asco);
     }
-    
     public String getAsco() {
-        return (String)readProperty("asco");
+        return (String)readProperty(ASCO_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setFieldOfEducation(String fieldOfEducation) {
-        writeProperty("fieldOfEducation", fieldOfEducation);
+        writeProperty(FIELD_OF_EDUCATION_PROPERTY, fieldOfEducation);
     }
     public String getFieldOfEducation() {
-        return (String)readProperty("fieldOfEducation");
+        return (String)readProperty(FIELD_OF_EDUCATION_PROPERTY);
     }
 
     public void setFieldOfStudy(String fieldOfStudy) {
-        writeProperty("fieldOfStudy", fieldOfStudy);
+        writeProperty(FIELD_OF_STUDY_PROPERTY, fieldOfStudy);
     }
     public String getFieldOfStudy() {
-        return (String)readProperty("fieldOfStudy");
+        return (String)readProperty(FIELD_OF_STUDY_PROPERTY);
     }
 
-    public void setIsAccreditedCourse(Byte isAccreditedCourse) {
-        writeProperty("isAccreditedCourse", isAccreditedCourse);
+    public void setIsAccreditedCourse(QualificationType isAccreditedCourse) {
+        writeProperty(IS_ACCREDITED_COURSE_PROPERTY, isAccreditedCourse);
     }
-    public Byte getIsAccreditedCourse() {
-        return (Byte)readProperty("isAccreditedCourse");
+    public QualificationType getIsAccreditedCourse() {
+        return (QualificationType)readProperty(IS_ACCREDITED_COURSE_PROPERTY);
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        writeProperty(ISH_VERSION_PROPERTY, ishVersion);
     }
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        return (Long)readProperty(ISH_VERSION_PROPERTY);
     }
 
     public void setLevel(String level) {
-        writeProperty("level", level);
+        writeProperty(LEVEL_PROPERTY, level);
     }
     public String getLevel() {
-        return (String)readProperty("level");
+        return (String)readProperty(LEVEL_PROPERTY);
     }
 
     public void setLevelCode(String levelCode) {
-        writeProperty("levelCode", levelCode);
+        writeProperty(LEVEL_CODE_PROPERTY, levelCode);
     }
     public String getLevelCode() {
-        return (String)readProperty("levelCode");
+        return (String)readProperty(LEVEL_CODE_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setNationalCode(String nationalCode) {
-        writeProperty("nationalCode", nationalCode);
+        writeProperty(NATIONAL_CODE_PROPERTY, nationalCode);
     }
     public String getNationalCode() {
-        return (String)readProperty("nationalCode");
+        return (String)readProperty(NATIONAL_CODE_PROPERTY);
     }
 
     public void setNewApprenticeship(String newApprenticeship) {
-        writeProperty("newApprenticeship", newApprenticeship);
+        writeProperty(NEW_APPRENTICESHIP_PROPERTY, newApprenticeship);
     }
     public String getNewApprenticeship() {
-        return (String)readProperty("newApprenticeship");
+        return (String)readProperty(NEW_APPRENTICESHIP_PROPERTY);
     }
 
     public void setNominalHours(Float nominalHours) {
-        writeProperty("nominalHours", nominalHours);
+        writeProperty(NOMINAL_HOURS_PROPERTY, nominalHours);
     }
     public Float getNominalHours() {
-        return (Float)readProperty("nominalHours");
+        return (Float)readProperty(NOMINAL_HOURS_PROPERTY);
     }
 
     public void setReviewDate(Date reviewDate) {
-        writeProperty("reviewDate", reviewDate);
+        writeProperty(REVIEW_DATE_PROPERTY, reviewDate);
     }
     public Date getReviewDate() {
-        return (Date)readProperty("reviewDate");
+        return (Date)readProperty(REVIEW_DATE_PROPERTY);
     }
 
     public void setTitle(String title) {
-        writeProperty("title", title);
+        writeProperty(TITLE_PROPERTY, title);
     }
     public String getTitle() {
-        return (String)readProperty("title");
+        return (String)readProperty(TITLE_PROPERTY);
     }
 
     public void setTrainingPackageId(Long trainingPackageId) {
-        writeProperty("trainingPackageId", trainingPackageId);
+        writeProperty(TRAINING_PACKAGE_ID_PROPERTY, trainingPackageId);
     }
     public Long getTrainingPackageId() {
-        return (Long)readProperty("trainingPackageId");
+        return (Long)readProperty(TRAINING_PACKAGE_ID_PROPERTY);
     }
 
     public void addToCertificates(Certificate obj) {
-        addToManyTarget("certificates", obj, true);
+        addToManyTarget(CERTIFICATES_PROPERTY, obj, true);
     }
     public void removeFromCertificates(Certificate obj) {
-        removeToManyTarget("certificates", obj, true);
+        removeToManyTarget(CERTIFICATES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Certificate> getCertificates() {
-        return (List<Certificate>)readProperty("certificates");
+        return (List<Certificate>)readProperty(CERTIFICATES_PROPERTY);
     }
 
 
     public void addToCourses(Course obj) {
-        addToManyTarget("courses", obj, true);
+        addToManyTarget(COURSES_PROPERTY, obj, true);
     }
     public void removeFromCourses(Course obj) {
-        removeToManyTarget("courses", obj, true);
+        removeToManyTarget(COURSES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Course> getCourses() {
-        return (List<Course>)readProperty("courses");
+        return (List<Course>)readProperty(COURSES_PROPERTY);
     }
 
 

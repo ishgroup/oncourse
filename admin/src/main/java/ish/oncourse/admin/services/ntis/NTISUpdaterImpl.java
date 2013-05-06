@@ -1,5 +1,6 @@
 package ish.oncourse.admin.services.ntis;
 
+import ish.common.types.QualificationType;
 import ish.oncourse.listeners.IshVersionHolder;
 import ish.oncourse.model.Module;
 import ish.oncourse.model.Qualification;
@@ -43,6 +44,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 	private static final String QUALIFICATION = "Qualification";
 	private static final String TRAINING_PACKAGE = "TrainingPackage";
 	private static final String ACCREDITED_COURSE = "AccreditedCourse";
+	private static final String SKILL_SET = "SkillSet";
 	private static final String MODULE = "AccreditedCourseModule";
 	private static final String UNIT = "Unit";
 
@@ -90,7 +92,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 
 	/**
 	 * 
-	 * @see ish.oncourse.admin.services.ntis.INTISUpdateService#doUpdate()
+	 * @see ish.oncourse.admin.services.ntis.INTISUpdater#doUpdate(java.util.Date, java.util.Date, Class)
 	 */
 	@Override
 	public synchronized NTISResult doUpdate(Date from, Date to, Class<?> type) throws NTISException {
@@ -144,6 +146,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		TrainingComponentTypeFilter typeFilter = new TrainingComponentTypeFilter();
 		typeFilter.setIncludeQualification(true);
 		typeFilter.setIncludeAccreditedCourse(true);
+		typeFilter.setIncludeSkillSet(true);
 
 		// search for modified components
 		TrainingComponentModifiedSearchRequest request = new TrainingComponentModifiedSearchRequest();
@@ -184,7 +187,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					
 					String type = summary.getComponentType().get(0);
 					
-					if (QUALIFICATION.equals(type) || ACCREDITED_COURSE.equals(type)) {
+					if (SKILL_SET.equals(type)) {
 						
 						SelectQuery query = new SelectQuery(Qualification.class);
 						Expression exp = ExpressionFactory.matchExp("nationalCode", summary.getCode().getValue());
@@ -199,12 +202,20 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						
 						q.setNationalCode(summary.getCode().getValue());
 						setQualificationTitleAndLevel(q, summary.getTitle().getValue());
-						
-						if (ACCREDITED_COURSE.equals(type)) {
-							q.setIsAccreditedCourse((byte) 1);
-						}
-						else {
-							q.setIsAccreditedCourse((byte) 0);
+
+						switch (type) {
+							case QUALIFICATION:
+								q.setIsAccreditedCourse(QualificationType.QUALIFICATION_TYPE);
+								break;
+							case ACCREDITED_COURSE:
+								q.setIsAccreditedCourse(QualificationType.COURSE_TYPE);
+								break;
+							case SKILL_SET:
+								q.setIsAccreditedCourse(QualificationType.SKILLSET_TYPE);
+								break;
+							default:
+								throw new IllegalStateException(
+										String.format("Qualification type %s is not supported.", type));
 						}
 						
 						detailsRequest.setCode(summary.getCode().getValue());
@@ -237,9 +248,9 @@ public class NTISUpdaterImpl implements INTISUpdater {
 							}
 						}
 						
-						if (q.getLevelCode() == null) {
+						if (!QualificationType.SKILLSET_TYPE.equals(q.getIsAccreditedCourse()) && q.getLevelCode() == null) {
 							LOGGER.error("Skipping qualification record without level of education code. National code is " + q.getNationalCode());
-							context.deleteObject(q);
+							context.deleteObjects(q);
 						}
 					}
 				}

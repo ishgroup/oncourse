@@ -1615,7 +1615,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
 		<obj-attribute name="fieldOfStudy" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
-		<obj-attribute name="isAccreditedCourse" type="java.lang.Byte" db-attribute-path="isAccreditedCourse"/>
+		<obj-attribute name="isAccreditedCourse" type="ish.common.types.QualificationType" db-attribute-path="isAccreditedCourse"/>
 		<obj-attribute name="ishVersion" type="java.lang.Long" db-attribute-path="ishVersion"/>
 		<obj-attribute name="level" type="java.lang.String" db-attribute-path="level"/>
 		<obj-attribute name="levelCode" type="java.lang.String" db-attribute-path="levelCode"/>

@@ -7,6 +7,7 @@ package ish.oncourse.webservices.reference.builders;
 
 import java.util.Date;
 
+import ish.common.types.QualificationType;
 import org.apache.commons.lang.StringUtils;
 
 import ish.oncourse.model.Qualification;
@@ -38,7 +39,7 @@ public final class QualificationStubBuilder implements IReferenceStubBuilder<Qua
 		stub.setFieldOfEducation(record.getFieldOfEducation());
 		stub.setFieldOfStudy(record.getFieldOfStudy());
 		Boolean isAccreditedCourse = (record.getIsAccreditedCourse() == null) ? null
-				: (record.getIsAccreditedCourse() == 1);
+				: (QualificationType.COURSE_TYPE.equals(record.getIsAccreditedCourse()));
 		stub.setIsAccreditedCourse(isAccreditedCourse);
 		stub.setIshVersion(record.getIshVersion());
 		stub.setLevel(record.getLevel());
