@@ -78,6 +78,7 @@ task createResourceManifests {
 		}
 	}
 }
+test.dependsOn(createResourceManifests)
 
 task run(dependsOn: [classes, processResources], type: JavaExec) {
 	main = 'ish.oncourse.server.AngelServer'
