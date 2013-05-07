@@ -3,10 +3,13 @@ package ish.oncourse.admin.pages;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 
@@ -69,9 +72,16 @@ public class ReplicationStatus {
 	public String getNumberOfRecordsInQueue() {
 		ObjectContext context = cayenneService.sharedContext();
 		
-		College college = (College) context.localObject(currentCollege.getObjectId(), null);
+		College college = context.localObject(currentCollege);
 		if (college != null) {
-			Expression exp = ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, college);
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.HOUR, -1);
+			Date oneHourBefore = cal.getTime();
+
+			Expression exp = ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, college).andExp(
+					ExpressionFactory.lessExp(
+							QueuedRecord.QUEUED_TRANSACTION_PROPERTY + "." + QueuedTransaction.CREATED_PROPERTY,
+							oneHourBefore));
 			SelectQuery query = new SelectQuery(QueuedRecord.class, exp);
 			
 			List<QueuedRecord> records = context.performQuery(query);
@@ -83,7 +93,7 @@ public class ReplicationStatus {
 	private QueuedRecord getOldestQueuedItem() {
 		ObjectContext context = cayenneService.sharedContext();
 		
-		College college = (College) context.localObject(currentCollege.getObjectId(), null);
+		College college = context.localObject(currentCollege);
 		if (college != null) {
 			Expression exp = ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, college);
 			SelectQuery query = new SelectQuery(QueuedRecord.class, exp);
@@ -100,7 +110,7 @@ public class ReplicationStatus {
 	private QueuedRecord getLastQueuedItem() {
 		ObjectContext context = cayenneService.sharedContext();
 		
-		College college = (College) context.localObject(currentCollege.getObjectId(), null);
+		College college = context.localObject(currentCollege);
 		if (college != null) {
 			Expression exp = ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, college);
 			SelectQuery query = new SelectQuery(QueuedRecord.class, exp);

@@ -13,7 +13,7 @@
 				<td><strong>Oldest queued item</strong></td>
 				<td><strong>Angel version</strong></td>
 				<td><strong>Last error</strong></td>
-				<td><strong>Records in queue</strong></td>
+				<td><strong>Records in queue older than 1 hour</strong></td>
 			</tr>
 		</thead>
 		<tbody>
