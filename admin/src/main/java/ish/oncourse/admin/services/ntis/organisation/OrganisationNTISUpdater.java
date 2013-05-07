@@ -20,6 +20,7 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
+import java.util.Date;
 import java.util.List;
 
 public class OrganisationNTISUpdater extends AbstractComponentNTISUpdater {
@@ -105,7 +106,8 @@ public class OrganisationNTISUpdater extends AbstractComponentNTISUpdater {
 		}
 	}
 
-	protected boolean processRecord(ObjectContext context, OrganisationSearchResultItem item) {
+	protected boolean processRecord(ObjectContext context, OrganisationSearchResultItem item)
+			throws IOrganisationServiceGetDetailsValidationFaultFaultFaultMessage {
 
 		boolean isNewRecord = false;
 
@@ -121,11 +123,55 @@ public class OrganisationNTISUpdater extends AbstractComponentNTISUpdater {
 		}
 
 		organisation.setCode(item.getCode().getValue());
-		organisation.setTradingName(item.getTradingName().getValue());
-		organisation.setLegalPersonName(item.getLegalPersonName().getValue());
 		organisation.setHasActiveRegistration(item.isHasActiveRegistration());
 
+		fillRecordDetails(organisation);
+
 		return isNewRecord;
+	}
+
+	private void fillRecordDetails(Organisation organisation) throws IOrganisationServiceGetDetailsValidationFaultFaultFaultMessage {
+
+		OrganisationInformationRequested info = new OrganisationInformationRequested();
+
+		info.setShowResponsibleLegalPersons(true);
+		info.setShowTradingNames(true);
+		info.setShowRegistrationPeriods(true);
+		info.setShowUrls(true);
+
+		OrganisationDetailsRequest detailsRequest = new OrganisationDetailsRequest();
+		detailsRequest.setInformationRequested(objectFactory.createOrganisationInformationRequested(info));
+		detailsRequest.setCode(organisation.getCode());
+
+		au.gov.training.services.organisation.Organisation organisationDetails = organisationService.getDetails(detailsRequest);
+
+		if (!organisationDetails.getResponsibleLegalPersons().getValue().getResponsibleLegalPerson().isEmpty()) {
+
+			ResponsibleLegalPerson legalPerson = organisationDetails.getResponsibleLegalPersons().getValue().getResponsibleLegalPerson().get(0);
+
+			String abn = !legalPerson.getAbns().getValue().getString().isEmpty() ?
+					legalPerson.getAbns().getValue().getString().get(0) : null;
+
+			Date registrationStart = legalPerson.getStartDate() != null ?
+					legalPerson.getStartDate().getValue().toGregorianCalendar().getTime() : null;
+			Date registrationEnd = legalPerson.getEndDate() != null ?
+					legalPerson.getEndDate().getValue().toGregorianCalendar().getTime() : null;
+
+			organisation.setLegalPersonName(legalPerson.getName());
+			organisation.setAbn(abn);
+			organisation.setRegistrationStart(registrationStart);
+			organisation.setRegistrationEnd(registrationEnd);
+		}
+
+		String tradingName = !organisationDetails.getTradingNames().getValue().getTradingName().isEmpty() ?
+				organisationDetails.getTradingNames().getValue().getTradingName().get(0).getName().getValue() : null;
+
+		organisation.setTradingName(tradingName);
+
+		String webAddress = !organisationDetails.getUrls().getValue().getUrl().isEmpty() ?
+				organisationDetails.getUrls().getValue().getUrl().get(0).getLink() : null;
+
+		organisation.setWebAddress(webAddress);
 	}
 
 	protected void deleteRecord(ObjectContext context, DeletedOrganisation organisation) {

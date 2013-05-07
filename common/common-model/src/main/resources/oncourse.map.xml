@@ -516,13 +516,17 @@
 		<db-attribute name="subject" type="VARCHAR" length="512"/>
 	</db-entity>
 	<db-entity name="Organisation">
+		<db-attribute name="abn" type="VARCHAR" length="128"/>
 		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="16"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="hasActiveRegistration" type="TINYINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="legalPersonName" type="VARCHAR" length="256"/>
+		<db-attribute name="legalPersonName" type="VARCHAR" length="512"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
-		<db-attribute name="tradingName" type="VARCHAR" length="256"/>
+		<db-attribute name="registrationEnd" type="TIMESTAMP"/>
+		<db-attribute name="registrationStart" type="TIMESTAMP"/>
+		<db-attribute name="tradingName" type="VARCHAR" length="512"/>
+		<db-attribute name="webAddress" type="VARCHAR" length="256"/>
 	</db-entity>
 	<db-entity name="Outcome" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -1488,12 +1492,16 @@
 		<obj-attribute name="subject" type="java.lang.String" db-attribute-path="subject"/>
 	</obj-entity>
 	<obj-entity name="Organisation" className="ish.oncourse.model.Organisation" dbEntityName="Organisation">
+		<obj-attribute name="abn" type="java.lang.String" db-attribute-path="abn"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="hasActiveRegistration" type="java.lang.Boolean" db-attribute-path="hasActiveRegistration"/>
 		<obj-attribute name="legalPersonName" type="java.lang.String" db-attribute-path="legalPersonName"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="registrationEnd" type="java.util.Date" db-attribute-path="registrationEnd"/>
+		<obj-attribute name="registrationStart" type="java.util.Date" db-attribute-path="registrationStart"/>
 		<obj-attribute name="tradingName" type="java.lang.String" db-attribute-path="tradingName"/>
+		<obj-attribute name="webAddress" type="java.lang.String" db-attribute-path="webAddress"/>
 	</obj-entity>
 	<obj-entity name="Outcome" className="ish.oncourse.model.Outcome" dbEntityName="Outcome">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

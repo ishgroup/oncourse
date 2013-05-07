@@ -12,14 +12,25 @@ import org.apache.cayenne.CayenneDataObject;
  */
 public abstract class _Organisation extends CayenneDataObject {
 
+    public static final String ABN_PROPERTY = "abn";
     public static final String CODE_PROPERTY = "code";
     public static final String CREATED_PROPERTY = "created";
     public static final String HAS_ACTIVE_REGISTRATION_PROPERTY = "hasActiveRegistration";
     public static final String LEGAL_PERSON_NAME_PROPERTY = "legalPersonName";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String REGISTRATION_END_PROPERTY = "registrationEnd";
+    public static final String REGISTRATION_START_PROPERTY = "registrationStart";
     public static final String TRADING_NAME_PROPERTY = "tradingName";
+    public static final String WEB_ADDRESS_PROPERTY = "webAddress";
 
     public static final String ID_PK_COLUMN = "id";
+
+    public void setAbn(String abn) {
+        writeProperty(ABN_PROPERTY, abn);
+    }
+    public String getAbn() {
+        return (String)readProperty(ABN_PROPERTY);
+    }
 
     public void setCode(String code) {
         writeProperty(CODE_PROPERTY, code);
@@ -56,11 +67,32 @@ public abstract class _Organisation extends CayenneDataObject {
         return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
+    public void setRegistrationEnd(Date registrationEnd) {
+        writeProperty(REGISTRATION_END_PROPERTY, registrationEnd);
+    }
+    public Date getRegistrationEnd() {
+        return (Date)readProperty(REGISTRATION_END_PROPERTY);
+    }
+
+    public void setRegistrationStart(Date registrationStart) {
+        writeProperty(REGISTRATION_START_PROPERTY, registrationStart);
+    }
+    public Date getRegistrationStart() {
+        return (Date)readProperty(REGISTRATION_START_PROPERTY);
+    }
+
     public void setTradingName(String tradingName) {
         writeProperty(TRADING_NAME_PROPERTY, tradingName);
     }
     public String getTradingName() {
         return (String)readProperty(TRADING_NAME_PROPERTY);
+    }
+
+    public void setWebAddress(String webAddress) {
+        writeProperty(WEB_ADDRESS_PROPERTY, webAddress);
+    }
+    public String getWebAddress() {
+        return (String)readProperty(WEB_ADDRESS_PROPERTY);
     }
 
 }
