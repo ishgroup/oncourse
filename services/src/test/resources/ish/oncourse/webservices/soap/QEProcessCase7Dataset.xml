@@ -60,15 +60,15 @@
              
     <InvoiceLine id="10" collegeId="1" enrolmentId="10" angelId="10"
                  invoiceId="10" quantity="1.0" discountEachExTax="0.00"
-                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" created="2011-09-12 00:47:26.0"/>
 	
 	<InvoiceLine id="11" collegeId="1" enrolmentId="11" angelId="11"
                  invoiceId="10" quantity="1.0" discountEachExTax="0.00"
-                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" created="2011-09-12 00:47:26.0"/>
 
 	<InvoiceLine id="12" collegeId="1" angelId="12"
                  invoiceId="11" quantity="1.0" discountEachExTax="0.00"
-                 priceEachExTax="-99" taxEach="1" title="refund Test Invoice Line" />
+                 priceEachExTax="-99" taxEach="1" title="refund Test Invoice Line" created="2011-09-12 00:47:26.0"/>
                  
     <PaymentIn id="10" amount="200" angelId="10" collegeId="1"
                contactId="1" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
