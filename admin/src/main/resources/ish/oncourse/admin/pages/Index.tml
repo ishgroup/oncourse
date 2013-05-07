@@ -6,6 +6,7 @@
  			<tr>
  				<th>ID</th>
  				<th>Name</th>
+				<th>State</th>
  				<th>Last Remote Authentication</th>
  				<th>Angel Version</th>
  			</tr>
@@ -15,6 +16,7 @@
  				<tr>
  					<td>${college.id}</td>
  					<td><a t:type="pagelink" t:page="college/overview" t:context="college.id" href="#">${college.name}</a></td>
+					<td>${state}</td>
  					<td><code>${lastRemoteAuthentication}</code></td>
  					<td>${college.angelVersion}</td>
  				</tr>

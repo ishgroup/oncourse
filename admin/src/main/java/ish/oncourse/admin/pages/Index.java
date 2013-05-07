@@ -1,6 +1,8 @@
 package ish.oncourse.admin.pages;
 
 import ish.oncourse.model.College;
+import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.system.ICollegeService;
 
 import java.text.SimpleDateFormat;
@@ -36,6 +38,9 @@ public class Index {
 	
 	@Inject
 	private ComponentResources componentResources;
+
+	@Inject
+	private PreferenceControllerFactory preferenceControllerFactory;
 	
 	@Property
 	@Persist
@@ -56,5 +61,10 @@ public class Index {
 	public String getLastRemoteAuthentication() {
 		Date lastRemoteAuth = college.getLastRemoteAuthentication();
 		return lastRemoteAuth != null ? DATE_FORMAT.format(lastRemoteAuth) : "";
+	}
+
+	public String getState() {
+		PreferenceController preferenceController = preferenceControllerFactory.getPreferenceController(college);
+		return preferenceController.getAvetmissStateName();
 	}
 }
