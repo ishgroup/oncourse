@@ -1623,4 +1623,18 @@
 		</createIndex>
 	</changeSet>
 
+	<changeSet id="106" author="dzmitry" context="production" runOnChange="true">
+		<addColumn tableName="Organisation">
+			<column name="abn" type="VARCHAR(256)"/>
+			<column name="webAddress" type="VARCHAR(256)"/>
+			<column name="registrationStart" type="TIMESTAMP"/>
+			<column name="registrationEnd" type="TIMESTAMP"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="107" author="dzmitry" context="production" runOnChange="true">
+		<modifyDataType tableName="Organisation" columnName="tradingName" newDataType="VARCHAR(512)"/>
+		<modifyDataType tableName="Organisation" columnName="legalPersonName" newDataType="VARCHAR(512)"/>
+	</changeSet>
+
 </databaseChangeLog>
