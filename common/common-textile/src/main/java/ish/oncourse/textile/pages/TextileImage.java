@@ -117,4 +117,8 @@ public class TextileImage {
 		return imageBinaryInfo;
 	}
 
+	public boolean getHasNoErrors() {
+		return errorString == null;
+	}
+
 }
