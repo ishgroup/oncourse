@@ -1,13 +1,8 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<t:if test="hasNoErrors">
-		<a href="${imageLink}">
-			<img src="${imagePath}" align="${imageAlign}" alt="${imageAlt}" title="${imageTitle}" width="${imageWidth}" height="${imageHeight}"
-					class="${imageClass}" />
-				<t:if test="imageCaption">
-					<br /> ${imageCaption} </t:if>
-		</a>
-		<p:else>
-			<span class="richtext_error">Syntax error in ${errorString}</span>
-		</p:else>
-	</t:if>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<a href="${imageLink}">
+		<img src="${imagePath}" align="${imageAlign}" alt="${imageAlt}" title="${imageTitle}" width="${imageWidth}" height="${imageHeight}"
+				class="${imageClass}" />
+			<t:if test="imageCaption">
+				<br /> ${imageCaption} </t:if>
+	</a>
 </t:container>

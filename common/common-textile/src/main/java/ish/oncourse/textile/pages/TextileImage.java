@@ -51,14 +51,8 @@ public class TextileImage {
 	@Property
 	private String imageCaption;
 
-	@Property
-	private String errorString;
-
 	@SetupRender
 	void beforeRender() {
-		errorString = (String)request.getAttribute(TextileUtil.TEXTILE_UNEXPECTED_ERROR_PARAM);
-		if (errorString != null)
-			return;
 
 		Map<String, String> tagParams = (Map<String, String>) request.getAttribute(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM);
 		String id = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ID.getValue());
@@ -116,9 +110,4 @@ public class TextileImage {
 		}
 		return imageBinaryInfo;
 	}
-
-	public boolean getHasNoErrors() {
-		return errorString == null;
-	}
-
 }
