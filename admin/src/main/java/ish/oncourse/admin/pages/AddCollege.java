@@ -97,5 +97,7 @@ public class AddCollege {
 		createPreference(context, college, PreferenceController.LICENSE_PAYROLL, String.valueOf(false));
 		createPreference(context, college, PreferenceController.LICENSE_WEBSITE, String.valueOf(false));
 		createPreference(context, college, PreferenceController.LICENSE_VOUCHER, String.valueOf(false));
+		createPreference(context, college, PreferenceController.LICENSE_MEMBERSHIP, String.valueOf(true));
+		createPreference(context, college, PreferenceController.LICENSE_ATTENDANCE, String.valueOf(true));
 	}
 }
