@@ -119,6 +119,17 @@ public class ContactEditorParser {
 
 			contact.writeProperty(fieldDescriptor.propertyName, value);
 		}
+
+		/**
+		 * I introduced this code to be sure that contact.country field is not empty for any cases.
+		 * There are a lot of old contacts which have null value in this field.
+		 * When our contact editor requires to fill required fields we can get NullPointerException,
+		 * if country field is null.
+		 */
+		if (contact.getCountry() == null)
+		{
+			contact.setCountry(countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME));
+		}
 	}
 
 	private String getRequiredMessage(FieldDescriptor fieldDescriptor) {

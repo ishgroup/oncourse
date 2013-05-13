@@ -178,4 +178,54 @@ public class ContactEditorParserTest {
     }
 
 
+	@Test
+	public void testCountryForExistingContact() throws ParseException {
+		Contact contact = new Contact();
+		Contact sContact= spy(contact);
+		doReturn(null).when(sContact).getCountry();
+
+
+		Country country = new Country();
+		country.setName(ICountryService.DEFAULT_COUNTRY_NAME);
+		doNothing().when(sContact).setCountry(country);
+
+		ICountryService countryService = mock(ICountryService.class);
+		when(countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME)).thenReturn(country);
+
+
+		PreferenceController preferenceController = mock(PreferenceController.class);
+		ContactFieldHelper contactFieldHelper = mock(ContactFieldHelper.class);
+		when(contactFieldHelper.getPreferenceController()).thenReturn(preferenceController);
+		when(contactFieldHelper.isRequiredField(FieldDescriptor.dateOfBirth)).thenReturn(true);
+
+
+		Request request = mock(Request.class);
+		when(request.getParameter(Contact.DATE_OF_BIRTH_PROPERTY)).thenReturn("11/11/2011");
+
+
+		Messages messages = mock(Messages.class);
+		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast)).thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
+
+		ContactEditorParser parser = new ContactEditorParser();
+		parser.setCountryService(countryService);
+		parser.setContact(sContact);
+		parser.setRequest(request);
+		parser.setContactFieldHelper(contactFieldHelper);
+		parser.setMessages(messages);
+		parser.setDateFormat(new SimpleDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT));
+
+		FieldDescriptor[] fieldDescriptors =  new FieldDescriptor[]{FieldDescriptor.dateOfBirth};
+		ArrayList<String> fields = new ArrayList<>();
+		for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
+			fields.add(fieldDescriptor.name());
+		}
+		parser.setVisibleFields(fields);
+		try {
+			parser.parse();
+		} catch (Exception e) {
+			verify(sContact, times(1)).setCountry(country);
+		}
+	}
+
+
 }
