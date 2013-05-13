@@ -289,14 +289,21 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			}
 			
 			GenericReplicatedRecord paymentOutRecord = ReplicationUtils.replicatedPaymentOutRecord(replicatedRecords);
-			PaymentOut paymentOut = paymentInService.paymentOutByAngelId(paymentOutRecord.getStub().getAngelId());
+			PaymentOut paymentOutToProcess = paymentInService.paymentOutByAngelId(paymentOutRecord.getStub().getAngelId());
 
-			if (paymentOut == null) {
+			if (paymentOutToProcess == null) {
 				throw new Exception("The paymentOut record with angelId \"" + paymentOutRecord.getStub().getAngelId()
 						+ "\" wasn't saved during the refund group processing.");
 			}
 
+			ObjectContext context = cayenneService.newNonReplicatingContext();
+			PaymentOut paymentOut = context.localObject(paymentOutToProcess);
+
 			paymentGatewayService.performGatewayOperation(paymentOut);
+
+			// commit modifications to payment in nonreplicating context and immediatelly send transaction group back to angel
+
+			context.commitChanges();
 
 			GenericTransactionGroup group = PortHelper.createTransactionGroup(refundGroup);
 			group.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createRefundTransaction(paymentOut, 

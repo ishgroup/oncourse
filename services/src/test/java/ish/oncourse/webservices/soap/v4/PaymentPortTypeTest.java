@@ -3,12 +3,7 @@ package ish.oncourse.webservices.soap.v4;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.Session;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
@@ -18,6 +13,7 @@ import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
@@ -44,15 +40,22 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 	private Date dueDate;
 	private Date today;
+
 	private DataSource onDataSource;
 
+	private ICayenneService cayenneService;
+
 	@Before
-	public void setupDataSet() throws Exception {
+	public void setup() throws Exception {
 		initTest("ish.oncourse.webservices.services", StringUtils.EMPTY, ReplicationTestModule.class);
+
+		cayenneService = getService(ICayenneService.class);
+
 		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/paymentDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		onDataSource = getDataSource("jdbc/oncourse");
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
+
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_MONTH, 3);
 		this.dueDate = cal.getTime();
@@ -1170,27 +1173,48 @@ public class PaymentPortTypeTest extends ServiceTest {
 	private void processRefundSuccess(GenericTransactionGroup respGroup) {
 		assertNotNull(respGroup);
 		GenericPaymentOutStub pResp = null;
+		Long willowId = null;
+
 		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("PaymentOut".equals(stub.getEntityIdentifier())) {
 				pResp = (GenericPaymentOutStub) stub;
+				willowId = stub.getWillowId();
 			}
 		}
-		assertNotNull("Check paymentOut presents in response.", pResp);
-		assertEquals("Check paymentOut status. Expecting SUCESS.", Integer.valueOf(3), pResp.getStatus());
+
+		assertNotNull("Check paymentOut is present in response.", pResp);
+		assertEquals("Check paymentOut status. Expecting SUCCESS.", Integer.valueOf(3), pResp.getStatus());
 		assertNotNull("Check that dateBanked is set.", pResp.getDateBanked());
 		assertNotNull("Check that datePaid is set.", pResp.getDatePaid());
+
+		PaymentOut paymentOut = Cayenne.objectForPK(cayenneService.newNonReplicatingContext(), PaymentOut.class, willowId);
+		paymentOut.setPersistenceState(PersistenceState.HOLLOW);
+
+		assertNotNull("Check paymentOut is present in database.", paymentOut);
+		assertEquals("Check paymentOut status. Expecting SUCCESS.", PaymentStatus.SUCCESS, paymentOut.getStatus());
+		assertNotNull("Check that dateBanked is set.", paymentOut.getDateBanked());
+		assertNotNull("Check that datePaid is set.", paymentOut.getDatePaid());
 	}
 	
 	private void processRefundFailed(GenericTransactionGroup respGroup) {
 		assertNotNull(respGroup);
 		GenericPaymentOutStub pResp = null;
+		Long willowId = null;
+
 		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("PaymentOut".equals(stub.getEntityIdentifier())) {
 				pResp = (GenericPaymentOutStub) stub;
+				willowId = stub.getWillowId();
 			}
 		}
-		assertNotNull("Check paymentOut presents in response.", pResp);
+		assertNotNull("Check paymentOut is present in response.", pResp);
 		assertEquals("Check paymentOut status. Expecting FAILED.", Integer.valueOf(4), pResp.getStatus());
+
+		PaymentOut paymentOut = Cayenne.objectForPK(cayenneService.newNonReplicatingContext(), PaymentOut.class, willowId);
+		paymentOut.setPersistenceState(PersistenceState.HOLLOW);
+
+		assertNotNull("Check paymentOut is present in db.", paymentOut);
+		assertEquals("Check paymentOut status. Expecting FAILED.", PaymentStatus.FAILED, paymentOut.getStatus());
 	}
 
 	@Test
