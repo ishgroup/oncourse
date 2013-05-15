@@ -105,14 +105,14 @@ public class ContactEditorParser {
 			if (fieldDescriptor.propertyClass == Country.class)
 			{
 				if (stringValue == null)
-					value = countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME);
+					value = getCountryBy(ICountryService.DEFAULT_COUNTRY_NAME);
 				else
 				{
-					value = countryService.getCountryByName(stringValue);
+					value = getCountryBy(stringValue);
 					if (value == null)
 					{
 						errors.put(fieldDescriptor.propertyName, messages.format(KEY_ERROR_error_countryOfBirth,stringValue));
-						value = countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME);
+						value = getCountryBy(ICountryService.DEFAULT_COUNTRY_NAME);
 					}
 				}
 			}
@@ -130,6 +130,16 @@ public class ContactEditorParser {
 		{
 			contact.setCountry(countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME));
 		}
+	}
+
+	private Country getCountryBy(String name)
+	{
+		Country country = countryService.getCountryByName(name);
+		if (country != null)
+		{
+			country = contact.getObjectContext().localObject(country);
+		}
+		return country;
 	}
 
 	private String getRequiredMessage(FieldDescriptor fieldDescriptor) {

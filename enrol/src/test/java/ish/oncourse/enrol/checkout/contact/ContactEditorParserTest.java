@@ -6,6 +6,7 @@ import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
 import org.junit.Test;
@@ -77,6 +78,7 @@ public class ContactEditorParserTest {
 
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT);
+		ObjectContext context = mock(ObjectContext.class);
 		Contact contact = mock(Contact.class);
 		Country country = new Country();
 		country.setName(ICountryService.DEFAULT_COUNTRY_NAME);
@@ -88,6 +90,8 @@ public class ContactEditorParserTest {
 		when(contact.getIsMarketingViaPostAllowed()).thenReturn(Boolean.TRUE);
 		when(contact.getIsMarketingViaSMSAllowed()).thenReturn(Boolean.TRUE);
 		when(contact.getIsMale()).thenReturn(null);
+		when(contact.getObjectContext()).thenReturn(context);
+		when(context.localObject(country)).thenReturn(country);
 
 
 		Calendar calendar = Calendar.getInstance();
