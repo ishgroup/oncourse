@@ -32,11 +32,11 @@ import static org.junit.Assert.*;
 
 public abstract class ACheckoutTest extends ServiceTest {
 
-	ICayenneService cayenneService;
+	protected ICayenneService cayenneService;
 	IPurchaseControllerBuilder purchaseControllerBuilder;
     PurchaseController purchaseController;
 
-	void setup(String dbResource) throws Exception {
+	protected void setup(String dbResource) throws Exception {
 		InitialContext context = new InitialContext();
 		context.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
 		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);

@@ -1,14 +1,17 @@
 package ish.oncourse.enrol.checkout.contact;
 
+import ish.oncourse.enrol.checkout.ACheckoutTest;
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -19,13 +22,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ContactEditorParserTest {
+public class ContactEditorParserTest extends ACheckoutTest{
+
+	@Before
+	public void setup() throws Exception {
+		setup("ish/oncourse/enrol/checkout/contact/ContactEditorParserTest.xml");
+	}
 
 	@Test
 	public void testValidationForCountryDependentFields() throws ParseException {
@@ -184,29 +193,15 @@ public class ContactEditorParserTest {
 
 	@Test
 	public void testCountryForExistingContact() throws ParseException {
-		ObjectContext context = mock(ObjectContext.class);
+		ObjectContext context = cayenneService.newContext();
 
-		Contact contact = new Contact();
-		Contact sContact= spy(contact);
-		doReturn(null).when(sContact).getCountry();
-		doReturn(context).when(sContact).getObjectContext();
+		Contact contact = Cayenne.objectForPK(context, Contact.class, 1001);
 
 
+		PreferenceController preferenceController = getService(PreferenceController.class);
+		ICountryService countryService = getService(ICountryService.class);
 
-		Country country = new Country();
-		country.setName(ICountryService.DEFAULT_COUNTRY_NAME);
-		doNothing().when(sContact).setCountry(country);
-		doReturn(country).when(context).localObject(country);
-
-		ICountryService countryService = mock(ICountryService.class);
-		when(countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME)).thenReturn(country);
-
-
-		PreferenceController preferenceController = mock(PreferenceController.class);
-		ContactFieldHelper contactFieldHelper = mock(ContactFieldHelper.class);
-		when(contactFieldHelper.getPreferenceController()).thenReturn(preferenceController);
-		when(contactFieldHelper.isRequiredField(FieldDescriptor.dateOfBirth)).thenReturn(true);
-
+		ContactFieldHelper contactFieldHelper = new ContactFieldHelper(preferenceController, enrolment);
 
 		Request request = mock(Request.class);
 		when(request.getParameter(Contact.DATE_OF_BIRTH_PROPERTY)).thenReturn("11/11/2011");
@@ -217,7 +212,7 @@ public class ContactEditorParserTest {
 
 		ContactEditorParser parser = new ContactEditorParser();
 		parser.setCountryService(countryService);
-		parser.setContact(sContact);
+		parser.setContact(contact);
 		parser.setRequest(request);
 		parser.setContactFieldHelper(contactFieldHelper);
 		parser.setMessages(messages);
@@ -229,11 +224,7 @@ public class ContactEditorParserTest {
 			fields.add(fieldDescriptor.name());
 		}
 		parser.setVisibleFields(fields);
-		try {
-			parser.parse();
-		} catch (Exception e) {
-			verify(sContact, times(1)).setCountry(country);
-		}
+		parser.parse();
 	}
 
 
