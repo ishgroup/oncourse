@@ -184,14 +184,19 @@ public class ContactEditorParserTest {
 
 	@Test
 	public void testCountryForExistingContact() throws ParseException {
+		ObjectContext context = mock(ObjectContext.class);
+
 		Contact contact = new Contact();
 		Contact sContact= spy(contact);
 		doReturn(null).when(sContact).getCountry();
+		doReturn(context).when(sContact).getObjectContext();
+
 
 
 		Country country = new Country();
 		country.setName(ICountryService.DEFAULT_COUNTRY_NAME);
 		doNothing().when(sContact).setCountry(country);
+		doReturn(country).when(context).localObject(country);
 
 		ICountryService countryService = mock(ICountryService.class);
 		when(countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME)).thenReturn(country);
