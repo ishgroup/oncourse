@@ -128,7 +128,7 @@ public class ContactEditorParser {
 		 */
 		if (contact.getCountry() == null)
 		{
-			contact.setCountry(countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME));
+			contact.setCountry(getCountryBy(ICountryService.DEFAULT_COUNTRY_NAME));
 		}
 	}
 
