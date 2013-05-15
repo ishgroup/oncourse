@@ -1,12 +1,12 @@
 package ish.oncourse.enrol.utils;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
 
-public class GenerateAnaluticsTransactionUtil {
+import java.math.BigDecimal;
+import java.util.List;
+
+public class GenerateAnalyticsTransactionUtil {
 	static final char LEFT_SLASH_CHAR = '/';
 	static final char DOT_CHAR = '.';
 	static final String PLUS_CHARACTER_MATCH_PATTERN = "[+]";
@@ -31,9 +31,9 @@ public class GenerateAnaluticsTransactionUtil {
         return transaction;
 	}
 	
-	public static Item generateTransactionItem(String tagDefaultPath, String courseCode, String courseName, String classCode, BigDecimal unitPrice) {
+	public static Item generateTransactionItem(String category, String courseCode, String courseName, String classCode, BigDecimal unitPrice) {
 		Item item = new Item();
-		item.setCategoryName(tagDefaultPath.replace(LEFT_SLASH_CHAR, DOT_CHAR).substring(1).replaceAll(PLUS_CHARACTER_MATCH_PATTERN, SPACE_CHARACTER));
+		item.setCategoryName(category);
 		StringBuilder productName = new StringBuilder(courseCode);
         productName.append(PRODUCT_CODE_DELIMITER).append(courseName);
         item.setProductName(productName.toString());
@@ -43,6 +43,15 @@ public class GenerateAnaluticsTransactionUtil {
         item.setSkuCode(skuCode.toString());
         item.setUnitPrice(unitPrice);
 		return item;
+	}
+
+	/**
+	 * @param tagPath not null
+	 */
+	public static String getCategoryNameBy(String tagPath)
+	{
+		return tagPath.replace(LEFT_SLASH_CHAR, DOT_CHAR).substring(1).replaceAll(PLUS_CHARACTER_MATCH_PATTERN, SPACE_CHARACTER);
+
 	}
 
 }

@@ -4,10 +4,10 @@ import ish.math.Money;
 import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
 import ish.oncourse.enrol.checkout.PurchaseController;
-import ish.oncourse.enrol.utils.GenerateAnaluticsTransactionUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,10 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ish.oncourse.enrol.utils.GenerateAnalyticsTransactionUtil.*;
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.ABANDON_PAYMENT;
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.MAKE_PAYMENT;
 
 public class PaymentEditorController implements PaymentEditorDelegate {
+
+	private static final Logger LOGGER = Logger.getLogger(PaymentEditorController.class);
 
     private PurchaseController purchaseController;
     private PaymentProcessController paymentProcessController;
@@ -170,39 +173,53 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
     @Override
     public Transaction getAnalyticsTransaction() {
-        String googleAnalyticsAccount = purchaseController.getWebSiteService().getCurrentWebSite().getGoogleAnalyticsAccount();
+		try {
+			String googleAnalyticsAccount = purchaseController.getWebSiteService().getCurrentWebSite().getGoogleAnalyticsAccount();
 
-        if (googleAnalyticsAccount != null && StringUtils.trimToNull(googleAnalyticsAccount) != null) {
-            if (isPaymentSuccess()) {
-                List<Enrolment> enrolments = purchaseController.getModel().getAllEnabledEnrolments();
-                List<Item> transactionItems = new ArrayList<>(enrolments.size());
-                for (Enrolment enrolment : enrolments) {
-                     String tagDefaultPath = StringUtils.EMPTY;
-                    for (Tag tag : purchaseController.getTagService().getTagsForEntity(Course.class.getSimpleName(), 
-                    	enrolment.getCourseClass().getCourse().getId())) {
-                        if (Tag.SUBJECTS_TAG_NAME.equalsIgnoreCase(tag.getRoot().getName())) {
-                        	tagDefaultPath = tag.getDefaultPath();
-                            break;
-                        }
-                    }
-                    Money unitPrice = Money.ZERO;
-                    for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
-                    	unitPrice = unitPrice.add(invoiceLine.getDiscountedPriceTotalIncTax());
-                    }
-                    Item item = GenerateAnaluticsTransactionUtil.generateTransactionItem(tagDefaultPath, enrolment.getCourseClass().getCourse().getCode(), 
-                        enrolment.getCourseClass().getCourse().getName(), enrolment.getCourseClass().getCode(), unitPrice.toBigDecimal());
-                    transactionItems.add(item);
-                }
-                BigDecimal tax = new BigDecimal(0);
-                for (PaymentInLine pil : getPaymentIn().getPaymentInLines()) {
-                    for (InvoiceLine invoiceLine : pil.getInvoice().getInvoiceLines()) {
-                        tax = tax.add(invoiceLine.getTotalTax().toBigDecimal());
-                    }
-                }
-                return GenerateAnaluticsTransactionUtil.generateTransaction(getPaymentIn().getContact().getSuburb(), getPaymentIn().getContact().getState(), 
-                	getPaymentIn().getId(), tax, getPaymentIn().getAmount().toBigDecimal(), transactionItems);
-            }
-        }
-        return null;
+			if (googleAnalyticsAccount != null && StringUtils.trimToNull(googleAnalyticsAccount) != null) {
+				if (isPaymentSuccess()) {
+					List<Enrolment> enrolments = purchaseController.getModel().getAllEnabledEnrolments();
+					List<Item> transactionItems = new ArrayList<>(enrolments.size());
+					for (Enrolment enrolment : enrolments) {
+						Tag tag = getTagBy(enrolment);
+						CourseClass courseClass = enrolment.getCourseClass();
+						Course course = courseClass.getCourse();
+						Money unitPrice = Money.ZERO;
+						for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
+							unitPrice = unitPrice.add(invoiceLine.getDiscountedPriceTotalIncTax());
+						}
+						Item item = generateTransactionItem(
+								getCategoryNameBy(tag == null ? StringUtils.EMPTY: getCategoryNameBy(tag.getDefaultPath())),
+								course.getCode(),
+								course.getName(),
+								courseClass.getCode(),
+								unitPrice.toBigDecimal());
+						transactionItems.add(item);
+					}
+					BigDecimal tax = new BigDecimal(0);
+					for (PaymentInLine pil : getPaymentIn().getPaymentInLines()) {
+						for (InvoiceLine invoiceLine : pil.getInvoice().getInvoiceLines()) {
+							tax = tax.add(invoiceLine.getTotalTax().toBigDecimal());
+						}
+					}
+					return generateTransaction(getPaymentIn().getContact().getSuburb(), getPaymentIn().getContact().getState(),
+							getPaymentIn().getId(), tax, getPaymentIn().getAmount().toBigDecimal(), transactionItems);
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("Cannot create Analytics Transaction.", e);
+		}
+		return null;
     }
+
+	private Tag getTagBy(Enrolment enrolment) {
+
+		for (Tag tag : purchaseController.getTagService().getTagsForEntity(Course.class.getSimpleName(),
+			enrolment.getCourseClass().getCourse().getId())) {
+			if (Tag.SUBJECTS_TAG_NAME.equalsIgnoreCase(tag.getRoot().getName())) {
+				return tag;
+			}
+		}
+		return null;
+	}
 }
