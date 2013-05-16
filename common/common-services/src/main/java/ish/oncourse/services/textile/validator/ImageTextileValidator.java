@@ -41,8 +41,9 @@ public class ImageTextileValidator extends AbstractTextileValidator {
 				return;
 			}
 			Integer idNum = Integer.valueOf(id);
-			logger.warn(String.format("Found a ussage of image textile with id param = %s instead of name param. Update the textile to load image by name.",
-				idNum));
+			if (logger.isDebugEnabled())
+				logger.debug(String.format("Found a ussage of image textile with id param = %s instead of name param. Update the textile to load image by name.",
+					idNum));
 			result = binaryDataService.getBinaryInfoByReferenceNumber(idNum);
 			if (result == null) {
 				errors.addFailure(getNotFoundByIdMessage(idNum), ValidationFailureType.CONTENT_NOT_FOUND);
