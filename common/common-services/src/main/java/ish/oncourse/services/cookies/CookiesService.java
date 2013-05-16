@@ -67,10 +67,10 @@ public class CookiesService implements ICookiesService {
 	Integer getClientTimezoneOffset() {
 		String value = StringUtils.trimToNull(getCookieValue(CLIENT_TIMEZONE_OFFSET_IN_MINUTES));
 		Integer offset = null;
-		try {
+
+		if (StringUtils.isNumeric(value))
+		{
 			offset = Integer.valueOf(value);
-		} catch (Exception e) {
-			LOGGER.debug(String.format("clientOffset value %s is not numeric", value));
 		}
 		return offset;
 	}
