@@ -183,7 +183,7 @@ public class Billing {
 	}
 
     void onActivate(Long id) {
-		if (college == null) {
+		if (college == null || !college.getId().equals(id)) {
 			this.college = collegeService.findById(id);
 		}
 	}
