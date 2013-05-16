@@ -57,12 +57,12 @@
 				<td>${currentCollegeLicenseFee.keyCode}</td>
 				<td><t:textfield t:id="collegePlanName" value="currentCollegeLicenseFee.planName"/></td>
 				<td>
-					<t:if test="supportOrHosting">
+					<t:if test="support">
 						<t:textfield t:id="collegePaidUntil" class="datefield" value="currentCollegeFeePaidUntil"/>
 					</t:if>
 				</td>
 				<td>
-					<t:if test="supportOrHosting">
+					<t:if test="support">
 						<t:textfield t:id="collegeRenewalDate" class="datefield" value="currentCollegeFeeRenewalDate"/>
 					</t:if>
 				</td>
@@ -92,12 +92,12 @@
 					<td>${currentLicenseFee.keyCode}</td>
 					<td><t:textfield t:id="planName" value="currentLicenseFee.planName"/></td>
 					<td>
-						<t:if test="supportOrHosting">
+						<t:if test="hosting">
 							<t:textfield t:id="paidUntil" class="datefield" value="currentPaidUntil"/>
 						</t:if>
 					</td>
 					<td>
-						<t:if test="supportOrHosting">
+						<t:if test="hosting">
 							<t:textfield t:id="renewalDate" class="datefield" value="currentRenewalDate"/>
 						</t:if>
 					</td>

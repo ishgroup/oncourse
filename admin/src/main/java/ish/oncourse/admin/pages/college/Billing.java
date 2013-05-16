@@ -107,10 +107,13 @@ public class Billing {
 			}
 		}
 	}
-	
-	public boolean isSupportOrHosting() {
-		return LicenseFeeUtil.SUPPORT_FEE_CODE.equals(getCurrentLicenseFee().getKeyCode())
-				|| LicenseFeeUtil.HOSTING_FEE_CODE.equals(getCurrentLicenseFee().getKeyCode());
+
+	public boolean isSupport() {
+		return isSupportFee(getCurrentCollegeLicenseFee());
+	}
+
+	public boolean isHosting() {
+		return isHostingFee(getCurrentLicenseFee());
 	}
 
 	@OnEvent(component = "billingForm", value = "validate")
@@ -321,7 +324,7 @@ public class Billing {
 	}
 
 	private String getFeePaidUntil(LicenseFee fee) {
-		Date paidUntil = getCurrentLicenseFee().getPaidUntil();
+		Date paidUntil = fee.getPaidUntil();
 		if (paidUntil != null) {
 			return dateFormat.format(paidUntil);
 		}
@@ -330,7 +333,7 @@ public class Billing {
 	}
 
 	private String getFeeRenewalDate(LicenseFee fee) {
-		Date renewalDate = getCurrentLicenseFee().getRenewalDate();
+		Date renewalDate = fee.getRenewalDate();
 		if (renewalDate != null) {
 			return dateFormat.format(renewalDate);
 		}
