@@ -100,6 +100,9 @@ public class NTISTask implements Runnable {
 			} catch (Exception e) {
 				LOGGER.error("NTIS update failed with exception.", e);
 				ntisData.add(String.format("NTIS update failed with exception:%s", e.getMessage()));
+
+				// error occured stop advancing dates and report failure.
+				break;
 			}
 		}
 
