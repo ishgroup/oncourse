@@ -54,7 +54,7 @@ public class NTISTask implements Runnable {
 		while (cal.getTime().before(to)) {
 
 			Date fromDate = cal.getTime();
-			cal.add(Calendar.MONTH, 1);
+			cal.add(Calendar.DATE, 1);
 			Date toDate = cal.getTime();
 			if (toDate.after(to)) {
 				toDate = to;
