@@ -113,7 +113,6 @@ public class Courses {
 	@SetupRender
 	public void beforeRender() {
 		int start = getIntParam(request.getParameter("start"), START_DEFAULT);
-		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
 		sitesParameter = request.getParameter("sites");
 		sitesIds = new ArrayList<>();
 		loadedCoursesIds = new ArrayList<>();
@@ -152,7 +151,7 @@ public class Courses {
 		} catch (SearchException e) {
 			LOGGER.error("Unexpected search exception: " + e.getMessage(), e);
 			this.isException = true;
-			this.courses = courseService.getCourses(start, rows);
+			this.courses = courseService.getCourses(start, ROWS_DEFAULT);
 			this.coursesCount = courseService.getCoursesCount();
 			searchParams = null;
 			focusesForMapSites = null;
@@ -245,7 +244,6 @@ public class Courses {
 
 	private List<Course> searchCourses() {
 		int start = getIntParam(request.getParameter("start"), itemIndex);
-		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
 
 		searchParams = getCourseSearchParams();
 
@@ -257,7 +255,7 @@ public class Courses {
 			coursesCount = 0;
 			return new ArrayList<>();
 		}
-		return searchCourses(start, rows);
+		return searchCourses(start, ROWS_DEFAULT);
 	}
 
 	private List<Course> searchCourses(int start, int rows) {

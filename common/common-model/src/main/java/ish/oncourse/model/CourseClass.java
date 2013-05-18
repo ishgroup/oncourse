@@ -9,10 +9,7 @@ import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.*;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
@@ -314,6 +311,10 @@ public class CourseClass extends _CourseClass implements Queueable {
 		else {
 			Expression expr = ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY, this);
 			SelectQuery q = new SelectQuery(Session.class, expr);
+			/**
+			 * we use CACHE LOCAL_CACHE  Strategy to reduce db requests.
+			 */
+			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 			q.addPrefetch(Session.ROOM_PROPERTY);
 			q.addPrefetch(Session.ROOM_PROPERTY + "." + Room.SITE_PROPERTY);
 			classSessions = getObjectContext().performQuery(q);

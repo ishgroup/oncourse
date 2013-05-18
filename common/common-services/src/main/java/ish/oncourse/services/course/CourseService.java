@@ -11,7 +11,10 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.*;
+import org.apache.cayenne.query.EJBQLQuery;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -149,7 +152,8 @@ public class CourseService implements ICourseService {
                 /**
                  * The warn has been added to exclude error when some hacked request is going with not numeric ids
                  */
-                LOGGER.warn(String.format("ids cannot contain not numeric element like this: %s",ids[i]));
+				if (LOGGER.isDebugEnabled())
+                	LOGGER.debug(String.format("ids cannot contain not numeric element like this: %s",ids[i]));
                 return Collections.EMPTY_LIST;
             }
 		}

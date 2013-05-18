@@ -2,15 +2,15 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebMenu;
 import ish.oncourse.utils.QueueableObjectUtils;
+import org.apache.cayenne.PersistenceState;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SelectQuery;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.cayenne.PersistenceState;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 
 public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 	private static final long serialVersionUID = -6977235713134006203L;
@@ -44,6 +44,10 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 		if (!getObjectId().isTemporary()) {
 			Expression expr = ExpressionFactory.matchExp(WebMenu.PARENT_WEB_MENU_PROPERTY, this);
 			SelectQuery q = new SelectQuery(WebMenu.class, expr);
+			/**
+			 * we use CACHE LOCAL_CACHE  Strategy to reduce db requests.
+			 */
+			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 			q.addPrefetch(WebMenu.PARENT_WEB_MENU_PROPERTY);
 			q.addPrefetch(WebMenu.CHILDREN_MENUS_PROPERTY);
 			return getObjectContext().performQuery(q);
