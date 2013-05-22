@@ -1,98 +1,112 @@
 package ish.oncourse.linktransform;
 
+import org.apache.log4j.Logger;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.regex.Pattern;
 
-public enum PageIdentifier {
+public enum PageIdentifier
+{
 
-	Home(new DefaultMatcher("/"), "ui/internal/Page"),
+
+	Home(new ExactMatcher("/"), "ui/internal/Page"),
 	/**
 	 * courses/arts/drama Show course list page, optionally filtered by the
 	 * subject tag identified by arts -> drama
 	 */
-	Courses("/courses", "ui/Courses"),
+	Courses(new SlashedPrefixMatcher("/courses/"), "ui/Courses"),
 	/**
 	 * Show products list page, no filtering available, only pagination
 	 */
-	Products("/products", "ui/Products"),
+	Products(new SlashedPrefixMatcher("/products/"), "ui/Products"),
 	/**
 	 * course/ABC Show course detail for the course with code ABC
 	 */
-	Course("/course/", "ui/CourseDetails"),
+	Course(new PrefixMatcher("/course/"), "ui/CourseDetails"),
 	/**
 	 * Voucher product detail for voucher product with provided id
 	 */
-	Product("/product/", "ui/ProductDetails"),
+	Product(new PrefixMatcher("/product/"), "ui/ProductDetails"),
 	/**
 	 * class/ABC-123 Show the class detail for the CourseClass with code ABC-123
 	 */
-	CourseClass("/class/", "ui/CourseClassDetails"),
+	CourseClass(new PrefixMatcher("/class/"), "ui/CourseClassDetails"),
 	/**
 	 * page/123 This is always available for every webpage, even if it doesn't
 	 * have a URL alias
 	 */
-	Page("/page/", "ui/internal/Page"),
+	Page(new PrefixMatcher("/page/"), "ui/internal/Page"),
 	/**
 	 * sites Show the site list for all sites
 	 */
-	Sites(new DefaultMatcher("/sites"), "ui/Sites"),
+	Sites(new SlashedPrefixMatcher("/sites/"), "ui/Sites"),
 	/**
 	 * site/200 Show the site detail for the site with angel id of 200
 	 */
-	Site("/site/", "ui/SiteDetails"),
+	Site(new PrefixMatcher("/site/"), "ui/SiteDetails"),
 	/**
 	 * room/200 Show the room detail for the room with angel id of 200
 	 */
-	Room("/room/", "ui/RoomDetails"),
+	Room(new PrefixMatcher("/room/"), "ui/RoomDetails"),
 	/**
 	 * tutor/123 Show the tutor detail for the tutor with angel id of 123
 	 */
-	Tutor("/tutor/", "ui/TutorDetails"),
+	Tutor(new PrefixMatcher("/tutor/"), "ui/TutorDetails"),
 	/**
 	 * /sitemap.xml Google specific sitemap file.
 	 */
-	Sitemap(new DefaultMatcher("/sitemap.xml"), "ui/SitemapXML"),
+	Sitemap("/sitemap.xml", "ui/SitemapXML"),
 	/**
 	 * Path of the search autocomplete
 	 */
-	AdvancedKeyword(new DefaultMatcher("/advanced/keyword"), "ui/QuickSearchView"),
+	AdvancedKeyword("/advanced/keyword", "ui/QuickSearchView"),
 	/**
 	 * Path of the suburbs autocomplete
 	 */
-	AdvancedSuburbs(new DefaultMatcher("/advanced/suburbs"), "ui/SuburbsTextArray"),
+	AdvancedSuburbs("/advanced/suburbs", "ui/SuburbsTextArray"),
 	/**
 	 * Path of the refreshing the shortlist
 	 */
-	Shortlist(new DefaultMatcher("/refreshshortlist"), "ui/ShortListPage"),
+	Shortlist("/refreshshortlist", "ui/ShortListPage"),
 	/**
 	 * Path for the page of adding the discount.
 	 */
-	AddDiscount(new DefaultMatcher("/adddiscount"), "ui/AddDiscount"),
+	AddDiscount("/adddiscount", "ui/AddDiscount"),
 
 	/**
 	 * Path for the page displaying promotions.
 	 */
-	Promotions(new DefaultMatcher("/promotions"), "ui/PromoCodesPage"),
+	Promotions("/promotions", "ui/PromoCodesPage"),
 	/**
 	 * /Timeline/sessions?ids=123,456 Show the timeline view for the sessions of
 	 * courseClasses with ids of 123 and 456
 	 */
-	Timeline(new DefaultMatcher("/timeline/sessions"), "ui/internal/TimelineData"),
+	Timeline("/timeline/sessions", "ui/internal/TimelineData"),
 	
-	CoursesSitesMap(new DefaultMatcher("/coursessitesmap"), "ui/CoursesSitesMap"),
+	CoursesSitesMap("/coursessitesmap", "ui/CoursesSitesMap"),
 
-	ISHHealthCheck(new DefaultMatcher("/ishhealthcheck"), "ish/ISHHealthCheck"),
+	ISHHealthCheck("/ishhealthcheck", "ish/ISHHealthCheck"),
 
 	PageNotFound("/pagenotfound", "ui/PageNotFound"),
 
 	SiteNotFound("/sitenotfound", "ui/SiteNotFound");
 
+	private  static final PageIdentifier[] sortedValues;
+	static
+	{
+		sortedValues = sortedValues();
+	}
+
 	private Matcher matcher;
 	private String pageName;
 
+	private static final Logger LOGGER = Logger.getLogger(PageIdentifier.class);
+
 	private PageIdentifier(String pattern, String pageName) {
-		this.matcher = new PrefixMatcher(pattern);
+		this.matcher = new ExactMatcher(pattern);
 		this.pageName = pageName;
 	}
 
@@ -120,7 +134,7 @@ public enum PageIdentifier {
 	 * It needs becouse we should compore with longer patterns in first to exclude invalid choosing when two patterns prefixes equal
 	 * each other:  courses and coursessitesmap
 	 */
-	public static PageIdentifier[] sortedValues()
+	private static PageIdentifier[] sortedValues()
 	{
 		PageIdentifier[] values = values();
 		Arrays.sort(values, new Comparator<PageIdentifier>() {
@@ -137,7 +151,13 @@ public enum PageIdentifier {
 			path = path.replace("/cms", "");
 		}
 
-		for (PageIdentifier pageIdentifier : sortedValues()) {
+		try {
+			path = URLDecoder.decode(path,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.warn(e.getMessage(),e);
+		}
+
+		for (PageIdentifier pageIdentifier : sortedValues) {
 			if (pageIdentifier.getMatcher().matches(path)) {
 				return pageIdentifier;
 			}
@@ -152,7 +172,7 @@ public enum PageIdentifier {
 		public String getPattern();
 	}
 
-	private static class DefaultMatcher implements Matcher
+	private static class ExactMatcher implements Matcher
 	{
 		private String pattern;
 
@@ -161,7 +181,7 @@ public enum PageIdentifier {
 			return pattern;
 		}
 
-		private DefaultMatcher(String pattern) {
+		private ExactMatcher(String pattern) {
 			this.pattern = pattern;
 		}
 
@@ -185,12 +205,32 @@ public enum PageIdentifier {
 			this.prefix = prefix;
 		}
 
+		@Override
+		public boolean matches(String value) {
+			return !value.equals(prefix) && value.startsWith(prefix);
+		}
+	}
+
+	private static class SlashedPrefixMatcher implements Matcher
+	{
+		private String prefix;
+
+		@Override
+		public String getPattern() {
+			return prefix;
+		}
+
+		private SlashedPrefixMatcher(String prefix) {
+			this.prefix = prefix;
+		}
 
 		@Override
 		public boolean matches(String value) {
+			value = value + '/';
 			return value.startsWith(prefix);
 		}
 	}
+
 
 	private static class RegexMatcher implements Matcher
 	{
