@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -26,13 +27,6 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.common.types.ProductStatus;
 import ish.math.Money;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.Voucher;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
@@ -52,7 +46,104 @@ private ICayenneService cayenneService;
 		
 		this.cayenneService = getService(ICayenneService.class);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testMultipleEnrollmentsExpireAbandon() {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class,
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 20L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		PaymentIn paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
+		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
+		invoice.updateAmountOwing();
+		assertEquals("Amount owing for invoice should be 100", new Money("100.00"),invoice.getAmountOwing());
+		assertEquals("InvoiceLines list should have 2 records", 2, invoice.getInvoiceLines().size());
+
+		//load courseclass for enrolment
+		CourseClass courseClass = (CourseClass) context.performQuery(new SelectQuery(CourseClass.class,
+			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+		assertNotNull("Course class should be loaded", courseClass);
+
+		for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
+			assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
+			//prepare and add the enrollment to the invoiceLine
+			Enrolment enrolment = context.newObject(Enrolment.class);
+			enrolment.setCollege(paymentIn.getCollege());
+			enrolment.setCourseClass(courseClass);
+			enrolment.setSource(paymentIn.getSource());
+			enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
+			if (invoiceLine.getId() == 20L) {
+				enrolment.setStudent(paymentIn.getStudent());
+				assertEquals("This student should have id=4", 4L, enrolment.getStudent().getId().longValue());
+			} else if (invoiceLine.getId() == 21L) {
+				Student student3 = (Student) context.performQuery(new SelectQuery(Student.class, ExpressionFactory.matchDbExp(Student.ID_PK_COLUMN, 3L))).get(0);
+				assertNotNull("Student with id 3 should be loaded", student3);
+				enrolment.setStudent(student3);
+			}
+			enrolment.setReasonForStudy(1);
+			invoiceLine.setEnrolment(enrolment);
+		}
+		context.commitChanges();
+
+		//re-load data
+		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class,
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 20L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
+		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
+		invoice.updateAmountOwing();
+		assertEquals("Amount owing for invoice should be 100", new Money("100.00"),invoice.getAmountOwing());
+		assertEquals("InvoiceLines list should have 2 records", 2, invoice.getInvoiceLines().size());
+
+		//emulate run abandon by system
+		PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, true);
+		//re-load data
+		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class,
+			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		PaymentIn reversePaymentIn = paymentIns.get(0);
+		assertNotNull("Reverse payment should exist for this abandon", reversePaymentIn);
+		Invoice reverseInvoice = null;
+		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
+			if (!line.getInvoice().getId().equals(invoice.getId())) {
+				reverseInvoice = line.getInvoice();
+			}
+		}
+		assertNotNull("Reverse invoice should exist for this abandon", reverseInvoice);
+		assertEquals("InvoiceLines list should have 2 records for reverse invoice", 2, reverseInvoice.getInvoiceLines().size());
+		for (InvoiceLine invoiceLine : reverseInvoice.getInvoiceLines()) {
+			assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
+			Enrolment enrolment = invoiceLine.getEnrolment();
+			assertNull("enrollment should not be linked with invoicelines for reverse invoice", enrolment);
+			//TODO: update this test when reverse invoice lines became linked with reversed enrollment
+		}
+		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
+		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
+		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
+		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
+		invoice.updateAmountOwing();
+		reverseInvoice.updateAmountOwing();
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO, reverseInvoice.getAmountOwing());
+		assertEquals("InvoiceLines list should have 2 records", 2, invoice.getInvoiceLines().size());
+		for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
+			assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
+			Enrolment enrolment = invoiceLine.getEnrolment();
+			assertNotNull("enrollment should be linked with invoicelines after reverse", enrolment);
+			assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testInTransactionEnrollManuallyAbandonPaymentReverseInvoice() {
@@ -117,7 +208,7 @@ private ICayenneService cayenneService;
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
 			if (line.getInvoice() != invoice) {
-				reverseInvoice = invoice;
+				reverseInvoice = line.getInvoice();
 			}
 		}
 		assertNotNull("Reverse invoice should exist for this abandon", reverseInvoice);
@@ -126,6 +217,7 @@ private ICayenneService cayenneService;
 		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
+		reverseInvoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, reverseInvoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
@@ -363,7 +455,7 @@ private ICayenneService cayenneService;
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
 			if (line.getInvoice() != invoice) {
-				reverseInvoice = invoice;
+				reverseInvoice = line.getInvoice();
 			}
 		}
 		assertNotNull("Reverse invoice should exist for this abandon", reverseInvoice);
@@ -372,6 +464,7 @@ private ICayenneService cayenneService;
 		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
+		reverseInvoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, reverseInvoice.getAmountOwing());
 	}
@@ -410,7 +503,7 @@ private ICayenneService cayenneService;
 		assertTrue("Payments list should be empty", paymentIns.isEmpty());
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be 0", new Money("120.00"), invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be 120", new Money("120.00"), invoice.getAmountOwing());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -481,7 +574,7 @@ private ICayenneService cayenneService;
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
 			if (line.getInvoice() != invoice) {
-				reverseInvoice = invoice;
+				reverseInvoice = line.getInvoice();
 			}
 		}
 		assertNotNull("Reverse invoice should exist for this abandon", reverseInvoice);
@@ -490,6 +583,7 @@ private ICayenneService cayenneService;
 		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
+		reverseInvoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, reverseInvoice.getAmountOwing());
 		//assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());

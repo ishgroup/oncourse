@@ -87,8 +87,25 @@
 	
 	<PaymentInLine  amount="120.00" angelId="12" collegeId="1" created="2011-09-20 11:14:54" id="12" invoiceId="2" modified="2011-09-20 11:14:54"
 		paymentInId="2"/>
-		
 
+    <PaymentIn amount="100.00"
+               angelId="20" collegeId="1" contactId="4" created="2011-09-20 11:14:54" creditCardCVV="QWER" creditCardExpiry="creditCardExpiry"
+               creditCardName="creditCardName" creditCardNumber="creditCardNumberX" creditCardType="VISA" dateBanked="2011-09-20 11:14:54"
+               gatewayReference="gatewayReference" gatewayResponse="gatewayResponse" id="20"
+               modified="2011-09-20 11:14:54" sessionId="sessionId" source="W" status="2"
+               statusNotes="statusNotes" studentId="4" type="2"/>
+
+    <PaymentInLine  amount="100.00" angelId="20" collegeId="1" created="2011-09-20 11:14:54" id="20" invoiceId="20" modified="2011-09-20 11:14:54"
+                    paymentInId="20"/>
+
+    <Invoice id="20" angelId="20" source="O" amountOwing="0.00" contactId="4" collegeId="1" dateDue="2011-09-20 11:14:54"
+             description="invoice for testing multiple enrollments reverse" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="91.00" totalGst="9.00"/>
+
+    <InvoiceLine id="20" angelId="20" collegeId="1" invoiceId="20" quantity="1.0" discountEachExTax="0.00" priceEachExTax="45.50"
+                 taxEach="4.50" title="Test Invoice Line"/>
+
+    <InvoiceLine id="21" angelId="21" collegeId="1" invoiceId="20" quantity="1.0" discountEachExTax="0.00" priceEachExTax="45.50"
+                 taxEach="4.50" title="Test Invoice Line"/>
 	
 	<Invoice id="3" angelId="3" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54" 
 		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="10.91" />
