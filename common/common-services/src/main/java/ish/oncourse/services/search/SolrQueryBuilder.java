@@ -270,7 +270,7 @@ public class SolrQueryBuilder {
         return StringUtils.join(filters.toArray(), QUERY_DELIMITER);
     }
     
-    static String replaceSOLRSyntaxisCharacters(String original) {
+	public static String replaceSOLRSyntaxisCharacters(String original) {
     	String resultString = original.replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, SPACE_REPLACEMENT_CHARACTER);
     	return resultString;
     }
