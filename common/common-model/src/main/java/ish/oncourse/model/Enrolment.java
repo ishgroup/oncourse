@@ -165,23 +165,31 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 			switch (getStatus()) {
 			case NEW:
 				if (status == null) {
-					throw new IllegalArgumentException("Can't set the empty enrolment status!");
+					throw new IllegalArgumentException(String.format(
+						"Can't set the empty enrolment status for enrollment with id= %s and angelid= %s!",
+							getId(), getAngelId()));
 				}
 				break;
 			case QUEUED:
 				if (status == null || EnrolmentStatus.NEW.equals(status)) {
-					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
+					throw new IllegalArgumentException(String.format(
+						"Can't set the %s status for enrolment with %s status and id= %s and angelid= %s!",
+							status, getStatus(), getId(), getAngelId()));
 				}
 				break;
 			case IN_TRANSACTION:
 				// TODO: status NEW should be included in this test after task 17341 will be done
 				if (status == null || /** EnrolmentStatus.NEW.equals(status) ||**/ EnrolmentStatus.QUEUED.equals(status)) {
-					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
+					throw new IllegalArgumentException(String.format(
+						"Can't set the %s status for enrolment with %s status and id= %s and angelid= %s!",
+							status, getStatus(), getId(), getAngelId()));
 				}
 				break;
 			case SUCCESS:
 				if (!(EnrolmentStatus.SUCCESS.equals(status) || EnrolmentStatus.CANCELLED.equals(status) || EnrolmentStatus.REFUNDED.equals(status))) {
-					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
+					throw new IllegalArgumentException(String.format(
+						"Can't set the %s status for enrolment with %s status and id= %s and angelid= %s!",
+							status, getStatus(), getId(), getAngelId()));
 				}
 				break;
 			case FAILED:
@@ -191,11 +199,15 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 			case REFUNDED:
 			case CORRUPTED:
 				if (!(getStatus().equals(status))) {
-					throw new IllegalArgumentException(String.format("Can't set the %s status for enrolment with %s status!", status, getStatus()));
+					throw new IllegalArgumentException(String.format(
+						"Can't set the %s status for enrolment with %s status and id= %s and angelid= %s!",
+							status, getStatus(), getId(), getAngelId()));
 				}
 				break;
 			default:
-				throw new IllegalArgumentException(String.format("Unsupported status %s found for enrolment", getStatus()));
+				throw new IllegalArgumentException(String.format(
+					"Unsupported status %s found for enrolment with id= %s and angelid= %s",
+						getStatus(), getId(), getAngelId()));
 			}
 		}
 		super.setStatus(status);
