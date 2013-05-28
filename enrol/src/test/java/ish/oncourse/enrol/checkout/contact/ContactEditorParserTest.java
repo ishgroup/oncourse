@@ -127,6 +127,8 @@ public class ContactEditorParserTest extends ACheckoutTest{
 			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge);
         when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast))
 			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
+		when(messages.get(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old)).
+			thenReturn(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old);
         ContactEditorParser parser = new ContactEditorParser();
 		parser.setCountryService(countryService);
 		parser.setContact(contact);

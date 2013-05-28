@@ -29,7 +29,7 @@ public class ContactEditorParser {
 
 	private static final String KEY_ERROR_MESSAGE_fieldRequired = "message-fieldRequired";
 	private static final String KEY_ERROR_MESSAGE_birthdate_hint = "message-birthdateHint";
-	private static final String KEY_ERROR_MESSAGE_birthdate_old = "message-oldbirthdate";
+	static final String KEY_ERROR_MESSAGE_birthdate_old = "message-oldbirthdate";
 
 	static final String KEY_ERROR_dateOfBirth_youngAge = "message-dateOfBirth-youngAge";
     static final String KEY_ERROR_dateOfBirth_shouldBeInPast = "message-dateOfBirth-shouldBeInPast";
@@ -124,10 +124,10 @@ public class ContactEditorParser {
 												messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
 										}
 									} else {
-										errors.put(fieldDescriptor.propertyName, KEY_ERROR_MESSAGE_birthdate_old);
+										errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_old));
 									}
 								} else {
-									errors.put(fieldDescriptor.propertyName, KEY_ERROR_MESSAGE_birthdate_old);
+									errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_old));
 								}
 							}
 						}
