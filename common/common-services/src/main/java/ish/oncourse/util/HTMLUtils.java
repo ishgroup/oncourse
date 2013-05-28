@@ -37,12 +37,6 @@ public class HTMLUtils {
 
 	}
 
-	public static String getCanonicalLinkPathForCourses(Request request)
-	{
-		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + request.getPath().toLowerCase();
-
-	}
-
 	public static String getCanonicalLinkPathForCourses(Request request, Tag browseTag)
 	{
 		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + (browseTag == null ? request.getPath(): browseTag.getDefaultPath().toLowerCase());
