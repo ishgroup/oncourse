@@ -190,7 +190,8 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		CreditCardType creditCardType = getCreditCardType();
 		if (!ExternalValidation.validateCreditCardNumber(creditCardNumber)
 				|| (creditCardType != null && !ExternalValidation.validateCreditCardNumber(creditCardNumber, creditCardType))) {
-			LOG.warn("The credit card number " + creditCardNumber + " is invalid");
+			LOG.warn(String.format("The credit card number %s is invalid for payment with id=%s",
+				CreditCardUtil.obfuscateCCNumber(creditCardNumber), getId()));
 			return "Invalid credit card number.";
 		}
 
