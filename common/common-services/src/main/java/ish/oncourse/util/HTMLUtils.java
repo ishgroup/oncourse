@@ -1,6 +1,7 @@
 package ish.oncourse.util;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.model.Tag;
 import org.apache.tapestry5.services.Request;
 
 public class HTMLUtils {
@@ -36,9 +37,16 @@ public class HTMLUtils {
 
 	}
 
-	public static String getCanonicalLinkPathForCources(Request request)
+	public static String getCanonicalLinkPathForCourses(Request request)
 	{
 		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + request.getPath().toLowerCase();
 
 	}
+
+	public static String getCanonicalLinkPathForCourses(Request request, Tag browseTag)
+	{
+		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + (browseTag == null ? request.getPath(): browseTag.getDefaultPath().toLowerCase());
+
+	}
+
 }
