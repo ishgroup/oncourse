@@ -105,11 +105,19 @@ public class Checkout {
 
 
     Object onActivate() {
-        if (expired)
-            return Payment.class.getSimpleName();
+
+		if (isExpired())
+			return Payment.class.getSimpleName();
+
+		/**
+		 * The check was added to handle expire session for ajax requests correctly.
+		 */
+		if (request.isXHR())
+			return null;
+
 
         synchronized (this) {
-            if (purchaseController == null) {
+            if (isInitRequest()) {
                 purchaseController = buildPaymentController();
                 if (purchaseController.isPaymentResult())
                     //redirect if init data is not correct , for example: course classes are not selected
@@ -125,9 +133,9 @@ public class Checkout {
 
     }
 
-    @SetupRender
-    void setupRender() {
-    }
+	private boolean isInitRequest() {
+		return purchaseController == null && request.getPath().equals("/checkout");
+	}
 
     public synchronized PurchaseController getPurchaseController() {
         return purchaseController;
@@ -198,15 +206,25 @@ public class Checkout {
     }
 
     public Object onException(Throwable cause) {
+		/**
+		 * purchaseController controller can be null only when session was expired.
+		 */
         if (purchaseController == null) {
-            LOGGER.warn("", cause);
             expired = true;
         } else {
+			//in other cases we have illegal behavior.
             expired = false;
             purchaseController = null;
             throw new IllegalArgumentException(cause);
         }
-        return paymentPage;
+
+		/**
+		 * the code renders only a defined block (not whole page) for ajax requests.
+		 */
+		if (request.isXHR())
+			return paymentPage.getPaymentBlock();
+		else
+        	return paymentPage;
     }
 
     public boolean isExpired() {

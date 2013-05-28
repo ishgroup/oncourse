@@ -5,7 +5,10 @@ import ish.oncourse.enrol.components.checkout.payment.CorporatePassEditor;
 import ish.oncourse.enrol.components.checkout.payment.PaymentEditor;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.Block;
-import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.annotations.Id;
+import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -36,7 +39,12 @@ public class Payment {
     {
         if (checkoutPage.isExpired())
             return null;
-        if (getPurchaseController() == null)
+		/**
+		 * The check was added to handle expire session for ajax requests correctly.
+		 */
+		if (request.isXHR())
+			return null;
+        if (isInitRequest())
             return Checkout.class.getSimpleName();
         else if (getPurchaseController().isEditCheckout()) {
             getPurchaseController().addError(PurchaseController.Message.illegalState);
@@ -45,15 +53,10 @@ public class Payment {
             return null;
     }
 
-    @SetupRender
-	void setupRender() {
-    }
-
-    @AfterRender
-    void afterRender() {
-        if (checkoutPage.isExpired())
-            checkoutPage.resetPersistProperties();
-    }
+	private boolean isInitRequest()
+	{
+		return getPurchaseController() == null && request.getPath().equals("/payment");
+	}
 
 	public Block getPaymentBlock()
 	{
@@ -94,9 +97,9 @@ public class Payment {
 		return checkoutPage.isExpired();
 	}
 
-	public void onException(Throwable throwable)
+	public Object onException(Throwable throwable)
 	{
-		checkoutPage.onException(throwable);
+		return checkoutPage.onException(throwable);
 	}
 
     public Object makePayment() {

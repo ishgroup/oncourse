@@ -92,12 +92,7 @@
 
 <t:block t:id="errors">
     <t:if test="expired">
-        <div class="error">
-            <p>${message:message-sessionExpired}</p>
-            <script type="text/javascript">
-                setTimeout("window.location.href='${coursesLink}'", 10000);
-            </script>
-        </div>
+		  <span t:type="checkout/payment/expiredsession"/>
     </t:if>
 
     <t:if test="purchaseController">
