@@ -123,8 +123,10 @@ public class ContactEditorParserTest extends ACheckoutTest{
         when(contactFieldHelper.getPreferenceController()).thenReturn(preferenceController);
         when(contactFieldHelper.isRequiredField(FieldDescriptor.street)).thenReturn(true);
         when(preferenceController.getEnrolmentMinAge()).thenReturn(18);
-		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, 18)).thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge);
-        when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast)).thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
+		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, 18))
+			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge);
+        when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast))
+			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
         ContactEditorParser parser = new ContactEditorParser();
 		parser.setCountryService(countryService);
 		parser.setContact(contact);
@@ -147,11 +149,46 @@ public class ContactEditorParserTest extends ACheckoutTest{
         assertNull(parser.getContact().getIsMale());
 
 		when(request.getParameter(Contact.COUNTRY_PROPERTY)).thenReturn(null);
+		//clean the errors before parse
 		parser.parse();
 
-
 		assertNotNull(contact.getCountry());
-		verify(contact, atLeastOnce()).writeProperty(Contact.COUNTRY_PROPERTY, countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME));
+		verify(contact, atLeastOnce()).writeProperty(Contact.COUNTRY_PROPERTY,
+			countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME));
+
+		//additional check for birth date validation
+		parser.getErrors().clear();
+		assertTrue("No errors should appears", parser.getErrors().isEmpty());
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, -50);
+		String testDate = parser.dateFormat.format(cal.getTime());
+		when(request.getParameter(Contact.DATE_OF_BIRTH_PROPERTY)).thenReturn(testDate);
+		when(contact.getDateOfBirth()).thenReturn(cal.getTime());
+		parser.setRequest(request);
+		parser.setContact(contact);
+		parser.parse();
+		assertNull("No date of birth validation errors should be found", parser.getErrors().get("dateOfBirth"));
+
+		//check for 2 digit birth date
+		cal.set(Calendar.YEAR, 84);
+		testDate = String.format("%s/%s/%s", cal.get(Calendar.DATE), cal.get(Calendar.MONTH)+1, cal.get(Calendar.YEAR));
+		when(request.getParameter(Contact.DATE_OF_BIRTH_PROPERTY)).thenReturn(testDate);
+		when(contact.getDateOfBirth()).thenReturn(cal.getTime());
+		parser.setRequest(request);
+		parser.setContact(contact);
+		parser.parse();
+		assertNull("No date of birth validation errors should be found", parser.getErrors().get("dateOfBirth"));
+
+		//check for 3 digit birth date
+		cal.set(Calendar.YEAR, 184);
+		testDate = String.format("%s/%s/%s", cal.get(Calendar.DATE), cal.get(Calendar.MONTH)+1, cal.get(Calendar.YEAR));
+		//parser.dateFormat.format(cal.getTime());
+		when(request.getParameter(Contact.DATE_OF_BIRTH_PROPERTY)).thenReturn(testDate);
+		when(contact.getDateOfBirth()).thenReturn(cal.getTime());
+		parser.setRequest(request);
+		parser.setContact(contact);
+		parser.parse();
+		assertNotNull("Date of birth validation errors should be found", parser.getErrors().get("dateOfBirth"));
     }
 
 
@@ -208,7 +245,8 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 
 		Messages messages = mock(Messages.class);
-		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast)).thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
+		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast))
+			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
 
 		ContactEditorParser parser = new ContactEditorParser();
 		parser.setCountryService(countryService);

@@ -14,10 +14,7 @@ import org.joda.time.Years;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
@@ -26,12 +23,13 @@ public class ContactEditorParser {
 	private Contact contact;
 	private ContactFieldHelper contactFieldHelper;
 	private Messages messages;
-	private DateFormat dateFormat;
+	DateFormat dateFormat;
 	private ICountryService countryService;
 
 
 	private static final String KEY_ERROR_MESSAGE_fieldRequired = "message-fieldRequired";
 	private static final String KEY_ERROR_MESSAGE_birthdate_hint = "message-birthdateHint";
+	private static final String KEY_ERROR_MESSAGE_birthdate_old = "message-oldbirthdate";
 
 	static final String KEY_ERROR_dateOfBirth_youngAge = "message-dateOfBirth-youngAge";
     static final String KEY_ERROR_dateOfBirth_shouldBeInPast = "message-dateOfBirth-shouldBeInPast";
@@ -99,6 +97,41 @@ public class ContactEditorParser {
 				} catch (ParseException e) {
                     value = null;
 					errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
+				} finally {
+					if ("dateOfBirth".equals(visibleField)) {
+						if (value != null) {
+							Calendar currentCalendar = Calendar.getInstance();
+							int currentCenturyYear = currentCalendar.get(Calendar.YEAR) - 2000;
+							String[] splittedDate = stringValue.split("/");
+							currentCalendar.set(1900, 1, 1);
+							if (currentCalendar.getTime().after((Date) value)) {
+								//firstly try to adjust the year to 2 digits
+								if (splittedDate.length == 3) {
+									String passedYear = splittedDate[2];
+									if (passedYear.length() == 2) {
+										int year = Integer.parseInt(passedYear);
+										if (year > currentCenturyYear) {
+											year+=1900;
+										} else {
+											year+=2000;
+										}
+										try {
+											value = dateFormat.parse(
+												String.format("%s/%s/%s", splittedDate[0], splittedDate[1], year));
+										} catch (ParseException e) {
+											value = null;
+											errors.put(fieldDescriptor.propertyName,
+												messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
+										}
+									} else {
+										errors.put(fieldDescriptor.propertyName, KEY_ERROR_MESSAGE_birthdate_old);
+									}
+								} else {
+									errors.put(fieldDescriptor.propertyName, KEY_ERROR_MESSAGE_birthdate_old);
+								}
+							}
+						}
+					}
 				}
 			}
 
@@ -109,9 +142,9 @@ public class ContactEditorParser {
 				else
 				{
 					value = getCountryBy(stringValue);
-					if (value == null)
-					{
-						errors.put(fieldDescriptor.propertyName, messages.format(KEY_ERROR_error_countryOfBirth,stringValue));
+					if (value == null) {
+						errors.put(fieldDescriptor.propertyName,
+							messages.format(KEY_ERROR_error_countryOfBirth,stringValue));
 						value = getCountryBy(ICountryService.DEFAULT_COUNTRY_NAME);
 					}
 				}
@@ -219,7 +252,8 @@ public class ContactEditorParser {
                     {
                         Integer minAge = contactFieldHelper.getPreferenceController().getEnrolmentMinAge();
 
-                        Integer age = Years.yearsBetween(new DateTime(date.getTime()), new DateTime(new Date().getTime())).getYears();
+                        Integer age = Years.yearsBetween(new DateTime(date.getTime()),
+		                    new DateTime(new Date().getTime())).getYears();
                         if (minAge > age)
                             return messages.format(KEY_ERROR_dateOfBirth_youngAge, minAge);
                         if (date.compareTo(new Date()) > -1)
