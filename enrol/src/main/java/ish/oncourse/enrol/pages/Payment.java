@@ -55,7 +55,7 @@ public class Payment {
 
 	private boolean isInitRequest()
 	{
-		return getPurchaseController() == null && request.getPath().equals("/payment");
+		return getPurchaseController() == null && request.getPath().toLowerCase().equals("/payment");
 	}
 
 	public Block getPaymentBlock()

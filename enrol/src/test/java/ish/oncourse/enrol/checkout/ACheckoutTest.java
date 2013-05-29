@@ -41,7 +41,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 		context.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
 		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
 
-		initTest("ish.oncourse.enrol.services", "enrol", EnrolTestModule.class);
+		initTest("ish.oncourse.enrol", "enrol", EnrolTestModule.class);
 		InputStream st = ACheckoutTest.class.getClassLoader().getResourceAsStream(
 				dbResource);
 

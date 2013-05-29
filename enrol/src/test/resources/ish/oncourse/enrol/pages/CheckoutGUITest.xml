@@ -14,6 +14,8 @@
 
 	<WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
+	<Tag id="1001" collegeId="1" angelId="1001" isWebVisible="1" nodeType="1" weighting="1" created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" name="Subjects"/>
+
 	<Room id="1" collegeId="1" siteId="1" angelId="1000"
 		  capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
 		  name="TestRoom" />
@@ -50,10 +52,12 @@
 
 	<CourseClass id="1001" collegeId="1" code="1" courseId="1001"
 				 roomId="1" angelId="1001" startDate="2011-10-12 00:55:59.0"
-				 endDate="2111-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0"
 				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
 				 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
 				 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+
+
 
 	<Preference id="1" collegeId="1" name="license.ccprocessing"
 				value_string="true" />

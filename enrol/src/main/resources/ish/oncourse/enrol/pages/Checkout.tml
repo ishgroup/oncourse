@@ -52,7 +52,7 @@
             <span t:type="checkout/amount" purchaseController="purchaseController" blockToRefresh="checkoutBlock" showPayerFields="false"/>
             <!-- the code need to clear the floats.-->
             <div class="clearboth"></div>
-			<t:eventlink t:id="proceedToPaymentEvent" class="btn btn-primary">Proceed to Payment</t:eventlink>
+			<t:eventlink t:id="proceedToPaymentEvent" id="proceedToPaymentEvent" class="btn btn-primary">Proceed to Payment</t:eventlink>
         </div>
     </div>
 </t:block>

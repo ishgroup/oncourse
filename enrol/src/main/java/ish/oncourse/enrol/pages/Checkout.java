@@ -134,7 +134,7 @@ public class Checkout {
     }
 
 	private boolean isInitRequest() {
-		return purchaseController == null && request.getPath().equals("/checkout");
+		return purchaseController == null && request.getPath().toLowerCase().equals("/checkout");
 	}
 
     public synchronized PurchaseController getPurchaseController() {
