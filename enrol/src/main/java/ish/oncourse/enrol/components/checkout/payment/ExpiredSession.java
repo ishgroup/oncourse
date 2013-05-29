@@ -16,4 +16,9 @@ public class ExpiredSession {
 	void afterRender() {
 		checkoutPage.resetPersistProperties();
 	}
+
+	public String getCoursesLink()
+	{
+		return checkoutPage.getCoursesLink();
+	}
 }

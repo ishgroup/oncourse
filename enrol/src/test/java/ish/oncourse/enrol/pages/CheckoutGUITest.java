@@ -23,15 +23,16 @@ public class CheckoutGUITest extends ACheckoutTest {
 	}
 
 	@Test
-	public void testCheckoutCompiling()
-	{
+	public void testSuccessfulPayment() throws InterruptedException {
 		getPageTester().getRegistry().getService("testCookiesService", ICookiesService.class).writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, "1001");
+
+		//init load checkout
 		TestableResponse response = getPageTester().renderPageAndReturnResponse("Checkout");
 		assertResponse(response);
 		Element element = response.getRenderedDocument().getElementById("submitContact");
 		assertNotNull(element);
 
-
+		//add the first student
 		Map<String,String> parameters = new HashMap<>();
 		parameters.put("firstName", "Student1");
 		parameters.put("lastName", "Student1");
@@ -42,13 +43,39 @@ public class CheckoutGUITest extends ACheckoutTest {
 		element = response.getRenderedDocument().getElementById("proceedToPaymentEvent");
 		assertNotNull(element);
 
+		//press proceedToPayment
 		response = getPageTester().clickLinkAndReturnResponse(element);
 		assertResponse(response);
+
+		element = response.getRenderedDocument().getElementById("paymentSubmit");
+		assertNotNull(element);
+
+		//fill credit card details and press  paymentSubmit
+		parameters = new HashMap<>();
+		parameters.put("contact", "1001");
+		parameters.put("creditCardName", "Student1 Student1");
+		parameters.put("creditCardNumber", "5105105105105100");
+		parameters.put("creditCardCVV", "1111");
+		parameters.put("expiryMonth", "01");
+		parameters.put("expiryYear", "2111");
+		parameters.put("userAgreed", "on");
+
+		response = getPageTester().clickSubmitAndReturnResponse(element, parameters);
+		assertResponse(response);
+
+		assertTrue("DPS wating page", response.getRenderedDocument().toString().contains("Please Wait!"));
+		//test dps gateway uses 10 sec interval to process payment
+		Thread.sleep(15000);
+		getPageTester().renderPageAndReturnResponse("Payment");
+		response = getPageTester().renderPageAndReturnResponse("Payment");
+		assertResponse(response);
+
+		assertTrue(response.getRenderedDocument().toString().contains("SUCCESSFUL"));
 	}
 
 	private void assertResponse(TestableResponse response) {
 		if (LOGGER.isDebugEnabled())
-			LOGGER.debug(response.getOutput());
+			LOGGER.debug(response.getRenderedDocument());
 		assertEquals(200, response.getStatus());
 		assertNull("Not Error500 page", response.getRenderedDocument().getElementById("exception"));
 
