@@ -29,6 +29,8 @@
 				<t:textfield t:id="instructionMessage" t:validate="required" value="instructionMessage"/>
 				<t:submit t:id="addInstruction" class="btn btn-primary" value="Add"/>
 			</div>
+            <t:outputraw value="${listOfInstructions}"/>
+            <br/><br/>
 		</t:form>
 	</div>
 	

@@ -22,6 +22,12 @@ import java.util.Map;
 
 public class Instructions {
 
+	public static final String SUPPORTED_INSTRUCTIONS = "Available complex instructions: " +
+		"queue:AttendanceForClass:class_angelId (for angel >=4.1 version), " +
+		"queue:AttendanceForEnrolment:enrolment_angelId (for angel >=4.1 version), " +
+		"queue:instructWithRelationships:PaymentIn:paymentIn_angelId (for angel >=4.0 version), " +
+		"queue:instructWithRelationships:Invoice:invoice_angelId (for angel >=4.0 version), " +
+		"queue:instructWithRelationships:Enrolment:enrolment_angelId (for angel >=4.0 version)\n";
 	@Property
 	private College college;
 
@@ -128,4 +134,8 @@ public class Instructions {
             return indexPage;
         else throw new IllegalStateException(cause);
     }
+
+	public String getListOfInstructions() {
+		return SUPPORTED_INSTRUCTIONS;
+	}
 }
