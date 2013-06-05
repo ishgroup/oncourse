@@ -20,7 +20,7 @@ public class RequestUtil {
 			try {
 				versionNumber = Integer.parseInt(userAgent.substring(versionPosition, versionPosition + 1));
 			} catch (Throwable t) {
-				LOG.warn("Incorrect or corrupted userAgent received " + userAgent, t);
+				LOG.info("Incorrect or corrupted userAgent received " + userAgent, t);
 				return StringUtils.EMPTY;
 			}
 			switch (versionNumber) {
