@@ -34,6 +34,8 @@ import static ish.oncourse.services.preference.PreferenceController.ContactFiled
  *
  * @author ksenia
  */
+
+@Secure // this anatation is important. The page should use secure handling allways
 public class WaitingListForm {
 
 	private static final Logger LOGGER = Logger.getLogger(WaitingListForm.class);

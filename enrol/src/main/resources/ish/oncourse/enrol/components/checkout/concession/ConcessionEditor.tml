@@ -8,7 +8,7 @@
 <t:block t:id="concessionEditor">
 	<span t:type="checkout/concession/concessiontypes" delegate="delegate" returnBlock="checkout.checkoutBlock"/>
 	<t:if test="studentConcession.concessionType">
-		<t:form t:id="concessionForm">
+		<t:form t:id="concessionForm" clientValidation="literal:NONE" secure="true">
 			<fieldset>
 				<span t:type="checkout/concession/concessionfieldset" delegate="delegate" validateHandler="validateHandler"/>
 			</fieldset>

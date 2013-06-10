@@ -10,7 +10,11 @@
     <t:block t:id="editor">
         <t:delegate to="block:errors"/>
         <t:if test="controller">
-            <t:form t:id="waitingListForm">
+			<t:remove>
+				parameter secure=true is used to be sure that the form action action will be secure.
+				parameter clientValidation=NONE is used to exclude injection tapestry java script handling for this form
+			</t:remove>
+			<t:form t:id="waitingListForm" clientValidation="literal:NONE" secure="true">
                 <t:if test="controller.addContact">
                     <t:delegate to="block:addContact"/>
                     <t:delegate to="block:editDescription"/>

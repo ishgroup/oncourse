@@ -1,7 +1,5 @@
 package ish.oncourse.enrol.services;
 
-import ish.oncourse.enrol.pages.Checkout;
-import ish.oncourse.enrol.pages.Payment;
 import ish.oncourse.enrol.services.concessions.ConcessionsService;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
@@ -10,17 +8,14 @@ import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.enrol.services.payment.PurchaseControllerBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.services.student.StudentService;
-import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
-import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
-import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.MetaDataConstants;
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
@@ -29,7 +24,6 @@ import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.ApplicationGlobals;
-import org.apache.tapestry5.services.MetaDataLocator;
 
 /**
  * The module that is automatically included as part of the Tapestry IoC
@@ -52,37 +46,9 @@ public class AppModule {
 		return jmxService;
 	}
 
-	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
-		configuration.add(MetaDataConstants.SECURE_PAGE, "true");
-	}
-	
-	public MetaDataLocator decorateMetaDataLocator(final MetaDataLocator original, final PreferenceController preferenceController) {
-		return new MetaDataLocator() {
-			
-			@SuppressWarnings("unchecked")
-			@Override
-			public <T> T findMeta(String key, String pageName, Class<T> expectedType) {
-				
-				if (MetaDataConstants.SECURE_PAGE.equals(key)) {
-					
-					// checks if the request should be secured
-					boolean isSecured = PaymentGatewayType.SECURED_TYPES.contains(preferenceController
-							.getPaymentGatewayType()) &&
-							(pageName.toLowerCase().equals(Checkout.class.getSimpleName().toLowerCase()) ||
-							pageName.toLowerCase().equals(Payment.class.getSimpleName().toLowerCase()));
-					
-					return (T) Boolean.valueOf(isSecured);
-				}
-				
-				return original.findMeta(key, pageName, expectedType);
-			}
-
-			@Override
-			public <T> T findMeta(String key, ComponentResources resources, Class<T> expectedType) {
-				return original.findMeta(key, resources, expectedType);
-			}
-
-		};
+	public static void contributeApplicationDefaults(
+			MappedConfiguration<String, String> configuration) {
+		configuration.add(SymbolConstants.SECURE_ENABLED, "true");
 	}
 
 	public ThreadLocale buildThreadLocaleOverride(IWebSiteService webSiteService) {

@@ -27,6 +27,7 @@ import java.util.List;
 
 import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.mailinglist;
 
+@Secure // this anatation is important. The page should use secure handling allways
 public class Mail {
 
     private static final Logger LOGGER = Logger.getLogger(Mail.class);

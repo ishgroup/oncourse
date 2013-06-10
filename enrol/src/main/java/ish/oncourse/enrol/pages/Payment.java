@@ -5,10 +5,7 @@ import ish.oncourse.enrol.components.checkout.payment.CorporatePassEditor;
 import ish.oncourse.enrol.components.checkout.payment.PaymentEditor;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.Block;
-import org.apache.tapestry5.annotations.Id;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -16,6 +13,7 @@ import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCardEd
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCorporatePassEditor;
 import static ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 
+@Secure // this anatation is important. The page should use secure handling allways
 public class Payment {
 
 	@InjectPage

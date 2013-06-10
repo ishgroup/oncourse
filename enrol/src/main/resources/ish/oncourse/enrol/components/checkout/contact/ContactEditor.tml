@@ -1,6 +1,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-	<t:form t:id="contactEditorForm">
+	<t:remove>
+		parameter secure=true is used to be sure that the form action action will be secure.
+		parameter clientValidation=NONE is used to exclude injection tapestry java script handling for this form
+	</t:remove>
+	<t:form t:id="contactEditorForm" clientValidation="literal:NONE" secure="true">
 		<t:delegate to="block:message"/>
 		<t:delegate to="block:contactFields"/>
 		<t:if test="fillRequiredProperties" negate="true">

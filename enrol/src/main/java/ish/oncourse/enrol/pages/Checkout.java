@@ -30,6 +30,7 @@ import org.apache.tapestry5.services.Response;
 
 import java.text.Format;
 
+@Secure // this anatation is important. The page should use secure handling allways
 public class Checkout {
     /**
      * the format is used to parse string value which an user puts in date field.

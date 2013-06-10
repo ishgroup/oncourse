@@ -2,7 +2,11 @@
     <div id="addstudent-block">
         <t:delegate to="block:header"/>
         <t:delegate to="block:message"/>
-        <t:form t:id="addContactForm">
+		<t:remove>
+			parameter secure=true is used to be sure that the form action action will be secure.
+			parameter clientValidation=NONE is used to exclude injection tapestry java script handling for this form
+		</t:remove>
+		<t:form t:id="addContactForm" clientValidation="literal:NONE" secure="true">
             <fieldset>
                 <br/>
                 <span t:type="checkout/contact/addcontactfieldset" delegate="delegate"

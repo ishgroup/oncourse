@@ -36,7 +36,11 @@
 </t:block>
 
 <t:block t:id="paymentEditors">
-    <t:form t:id="paymentform">
+	<t:remove>
+		parameter secure=true is used to be sure that the form action action will be secure.
+		parameter clientValidation=NONE is used to exclude injection tapestry java script handling for this form
+	</t:remove>
+	<t:form t:id="paymentform" clientValidation="literal:NONE" secure="true">
         <div id="tabable-container">
             <ul class="nav">
                 <li class="first ${cardTabClass}">
