@@ -20,6 +20,7 @@ import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.ui.services.UIModule;
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -46,6 +47,12 @@ public class EnrolTestModule {
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("testWebSiteService");
 		binder.bind(ICookiesService.class, CookiesServiceOverride.class).withId("testCookiesService");
 		binder.bind(IPurchaseControllerBuilder.class, PurchaseControllerBuilder.class);
+	}
+
+	public static void contributeApplicationDefaults(
+			MappedConfiguration<String, String> configuration) {
+		//we need to use SECURE_ENABLED=false because  PageTester does not support secure handling
+		configuration.add(SymbolConstants.SECURE_ENABLED, "false");
 	}
 
 	public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {
