@@ -4,6 +4,7 @@
 		id="cms">
 	<head>
 		<!-- CSS -->
+		<meta http-equiv="Cache-control" content="no-cache"/>
 		<link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
 		<head t:type="ui/pagehead" title="literal:CMS Login Page"/>
 	</head>

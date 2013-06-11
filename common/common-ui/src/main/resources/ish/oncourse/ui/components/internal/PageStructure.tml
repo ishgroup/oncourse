@@ -7,6 +7,7 @@
 	</t:remove>
 	<t:if test="wrapped">
 		<head>
+			<meta http-equiv="Cache-control" content="${cacheMeta}"/>
 			<span t:type="ui/pagehead" title="${title}" canonicalLinkPath="${canonicalLinkPath}" metaDescription="${metaDescription}"/>
 		</head>
 		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">

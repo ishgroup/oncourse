@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <head>
+		<meta http-equiv="Cache-control" content="no-cache"/>
 		<t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
         <title>onCourse services status</title>
     </head>

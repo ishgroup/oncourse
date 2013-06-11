@@ -30,10 +30,7 @@ import ish.oncourse.services.filestorage.FileStorageAssetService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
-import ish.oncourse.services.html.FacebookMetaProvider;
-import ish.oncourse.services.html.IFacebookMetaProvider;
-import ish.oncourse.services.html.IPlainTextExtractor;
-import ish.oncourse.services.html.JerichoPlainTextExtractor;
+import ish.oncourse.services.html.*;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.jndi.LookupService;
 import ish.oncourse.services.location.IPostCodeDbService;
@@ -182,6 +179,7 @@ public class ServiceModule {
         binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
         binder.bind(IVoucherService.class, VoucherService.class);
 		binder.bind(IFacebookMetaProvider.class, FacebookMetaProvider.class);
+		binder.bind(ICacheMetaProvider.class, NoCacheMetaProvider.class).eagerLoad();
 	}
 
 	@Scope("perthread")

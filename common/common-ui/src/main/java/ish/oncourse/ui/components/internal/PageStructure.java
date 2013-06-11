@@ -1,6 +1,7 @@
 package ish.oncourse.ui.components.internal;
 
 import ish.oncourse.model.WebNodeType;
+import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.util.RequestUtil;
 import org.apache.tapestry5.ComponentResources;
@@ -23,6 +24,9 @@ public class PageStructure {
 
 	@Inject
 	private ComponentResources resources;
+
+	@Inject
+	private ICacheMetaProvider cacheMetaProvider;
 
 	@Property
 	@Parameter
@@ -61,5 +65,10 @@ public class PageStructure {
 	public boolean isWrapped() {
 		String wrap = request.getParameter("wrap");
 		return wrap == null || Boolean.parseBoolean(wrap);
+	}
+
+	public String getCacheMeta()
+	{
+		return cacheMetaProvider.getMetaContent();
 	}
 }

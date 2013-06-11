@@ -12,9 +12,7 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestGlobals;
 
-import javax.servlet.http.Cookie;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -29,9 +27,6 @@ public class CookiesService implements ICookiesService {
 
 	@Inject
 	private Request request;
-
-	@Inject
-	private RequestGlobals requestGlobals;
 
 	@Inject
 	private Cookies cookies;
@@ -241,12 +236,7 @@ public class CookiesService implements ICookiesService {
 	 */
 	@Override
 	public void removeCookieValue(String name) {
-		Cookie cookie = new Cookie(name, null);
-		cookie.setPath("/");
-		cookie.setMaxAge(0);
-		cookie.setSecure(request.isSecure());
-
-		requestGlobals.getHTTPServletResponse().addCookie(cookie);
+		cookies.writeCookieValue(name, null, "/");
 	}
 
 	@Override

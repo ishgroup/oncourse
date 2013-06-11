@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+			 communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+	<WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<WebHostName name="cce.education.com.au" webSiteId="1" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+</dataset>

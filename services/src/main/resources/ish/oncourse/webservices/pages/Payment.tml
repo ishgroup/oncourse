@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 <head>
+	<meta http-equiv="Cache-control" content="no-cache"/>
     <meta charset="utf-8"/>
     <title>${message:headerTitle}</title>
     <t:if test="showProcessing">

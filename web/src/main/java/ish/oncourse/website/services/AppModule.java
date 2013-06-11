@@ -8,16 +8,19 @@ package ish.oncourse.website.services;
 import ish.oncourse.linktransform.PageLinkTransformer;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.services.DisableJavaScriptStack;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
+import ish.oncourse.website.services.html.CacheMetaProvider;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
@@ -34,7 +37,16 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
  */
 @SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
 public class AppModule {
-	
+
+	public static void bind(ServiceBinder binder) {
+		binder.bind(ICacheMetaProvider.class,CacheMetaProvider.class).withId("WebCacheMetaProvider");
+	}
+
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local ICacheMetaProvider cacheMetaProvider) {
+		configuration.add(ICacheMetaProvider.class, cacheMetaProvider);
+	}
+
+
 	@EagerLoad
 	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
 		JMXInitService jmxService = new JMXInitService(applicationGlobals,"website","ish.oncourse:type=WebSiteApplicationData");
