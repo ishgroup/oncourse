@@ -12,6 +12,7 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.validation.ValidationResult;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.EmailValidator;
 import org.apache.log4j.Logger;
 
@@ -120,7 +121,8 @@ public class Contact extends _Contact implements Queueable {
 	 * @return
 	 */
 	public static String validateGivenName(String entityName, String givenName) {
-		if (givenName == null || "".equals(givenName)) {
+		givenName = StringUtils.trimToNull(givenName);
+		if (givenName == null) {
 			return "The " + entityName + "'s first name is required.";
 		}
 
@@ -144,7 +146,8 @@ public class Contact extends _Contact implements Queueable {
 	 * @return
 	 */
 	public static String validateFamilyName(String entityName, String familyName) {
-		if (familyName == null || "".equals(familyName)) {
+		familyName = StringUtils.trimToNull(familyName);
+		if (familyName == null) {
 			return "The " + entityName + "'s last name is required.";
 		}
 		if (familyName.split("\\d").length != 1) {
@@ -173,7 +176,8 @@ public class Contact extends _Contact implements Queueable {
 	 * @return
 	 */
 	public static String validateEmail(String entityName, String emailAddress) {
-		if (emailAddress == null || "".equals(emailAddress)) {
+		emailAddress = StringUtils.trimToNull(emailAddress);
+		if (emailAddress == null) {
 			return "The " + entityName + "'s email is required.";
 		}
 

@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.model.Contact;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.services.Request;
 
 import java.util.HashMap;
@@ -19,9 +20,9 @@ public class AddContactParser {
 
 	public void parse()
 	{
-		contactCredentials.setFirstName(request.getParameter(FIELD_NAME_firstName));
-		contactCredentials.setLastName(request.getParameter(FIELD_NAME_lastName));
-		contactCredentials.setEmail(request.getParameter(FIELD_NAME_email));
+		contactCredentials.setFirstName(StringUtils.trimToNull(request.getParameter(FIELD_NAME_firstName)));
+		contactCredentials.setLastName(StringUtils.trimToNull(request.getParameter(FIELD_NAME_lastName)));
+		contactCredentials.setEmail(StringUtils.trimToNull(request.getParameter(FIELD_NAME_email)));
 		parseFirstName();
 		parseLastName();
 		parseEmail();
