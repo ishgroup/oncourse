@@ -29,7 +29,7 @@ import org.apache.tapestry5.services.ApplicationGlobals;
  * The module that is automatically included as part of the Tapestry IoC
  * registry.
  */
-@SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
+@SubModule({ModelModule.class, ServiceModule.class, UIModule.class})
 public class AppModule {
 
 	public static void bind(ServiceBinder binder) {
@@ -38,17 +38,25 @@ public class AppModule {
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
 		binder.bind(IPurchaseControllerBuilder.class, PurchaseControllerBuilder.class);
 	}
-	
+
 	@EagerLoad
 	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
-		JMXInitService jmxService = new JMXInitService(applicationGlobals,"enrol","ish.oncourse:type=EnrolApplicationData");
+		JMXInitService jmxService = new JMXInitService(applicationGlobals, "enrol", "ish.oncourse:type=EnrolApplicationData");
 		hub.addRegistryShutdownListener(jmxService);
 		return jmxService;
 	}
 
-	public static void contributeApplicationDefaults(
-			MappedConfiguration<String, String> configuration) {
-		configuration.add(SymbolConstants.SECURE_ENABLED, "true");
+	public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
+		boolean isInTestMode = "true".equalsIgnoreCase(System.getProperty(ServiceModule.APP_TEST_MODE));
+		/**
+		 * this validation was added to allow to work with this application on test server.
+		 * The server does not support ssl.
+		 */
+
+		if (isInTestMode)
+			configuration.add(SymbolConstants.SECURE_ENABLED, "false");
+		else
+			configuration.add(SymbolConstants.SECURE_ENABLED, "true");
 	}
 
 	public ThreadLocale buildThreadLocaleOverride(IWebSiteService webSiteService) {
