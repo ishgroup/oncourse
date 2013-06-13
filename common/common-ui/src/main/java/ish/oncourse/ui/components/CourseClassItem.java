@@ -304,12 +304,13 @@ public class CourseClassItem {
     }
 
 	/**
-	 * The method returns value "classCommenced" for tag's attribute "class" if courseClass start date is null
+	 * The method returns value "classCommenced" for tag's attribute "class" if courseClass.firstSession start date is null
 	 * or less the today
 	 */
 	public String getClassCommenced()
 	{
-		Date date = courseClass.getStartDate();
+		Session session = courseClass.getFirstSession();
+		Date date = session != null ? session.getStartDate():null;
 		return date == null || date.compareTo(new Date()) < 0 ? CLASS_NAME_classCommenced: StringUtils.EMPTY;
 	}
 }
