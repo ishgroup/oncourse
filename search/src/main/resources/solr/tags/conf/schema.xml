@@ -76,7 +76,7 @@
 			required="true" />
 
 		<field name="name" type="textgen" indexed="true" stored="true"
-			omitNorms="false" boost="10.0" />
+			omitNorms="false"/>
 
 	</fields>
 

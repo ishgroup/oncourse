@@ -63,13 +63,13 @@
 			required="true" />
 
 		<field name="loc" type="location" indexed="true" stored="true"
-			omitNorms="false" boost="5.0" />
+			omitNorms="false"/>
 
 		<field name="suburb" type="textgen" indexed="true" stored="true"
-			omitNorms="false" boost="5.0" />
+			omitNorms="false"/>
 
 		<field name="postcode" type="string" indexed="true" stored="true"
-			omitNorms="false" boost="5.0" />
+			omitNorms="false"/>
 
 		<!-- Type used to index the lat and lon components for the "location" FieldType -->
 		<dynamicField name="*_coordinate" type="tdouble" indexed="true"

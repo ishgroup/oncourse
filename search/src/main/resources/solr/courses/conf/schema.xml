@@ -171,42 +171,42 @@
 		<field name="collegeId" type="int" indexed="true" stored="true" />
 
 		<field name="name" type="textgen" indexed="true" stored="true"
-			omitNorms="false" boost="20.0" />
+			omitNorms="false"/>
 
 		<field name="course_code" type="exacttext" indexed="true" stored="true"
-			omitNorms="false" boost="30.0" />
+			omitNorms="false"/>
 			
 		<field name="detail" type="text" indexed="true" stored="true"
-			omitNorms="false" boost="1.0" />
+			omitNorms="false"/>
 
 		<field name="class_code" type="exacttext" indexed="true" stored="true"
-			multiValued="true" omitNorms="false" boost="10.0" />
+			multiValued="true" omitNorms="false"/>
 
 		<field name="tutor" type="text" indexed="true" stored="true"
-			omitNorms="false" multiValued="true" boost="5.0" />
+			omitNorms="false" multiValued="true"/>
 
 		<field name="when" type="text" indexed="true" stored="true"
-			omitNorms="false" multiValued="true" boost="5.0" />
+			omitNorms="false" multiValued="true"/>
 
 		<field name="startDate" type="date" indexed="true" stored="true"
 			omitNorms="false" />
 
 		<field name="end" type="date" indexed="true" stored="true"
-			multiValued="true" omitNorms="false" boost="5.0" />
+			multiValued="true" omitNorms="false"/>
 
         <field name="class_start" type="date" indexed="true" stored="true"
-               multiValued="true" omitNorms="false" boost="5.0" />
+               multiValued="true" omitNorms="false"/>
 
         <field name="course_loc" type="location_rpt" indexed="true" stored="true" multiValued="true" />
         
 		<field name="course_suburb" type="textgen" indexed="true"
-			omitNorms="false" stored="true" multiValued="true" boost="5.0" />
+			omitNorms="false" stored="true" multiValued="true"/>
 
 		<field name="course_postcode" type="string" indexed="true"
-			omitNorms="false" stored="true" multiValued="true" boost="5.0" />
+			omitNorms="false" stored="true" multiValued="true"/>
 
 		<field name="price" type="sfloat" indexed="true" stored="true"
-			multiValued="true" omitNorms="false" boost="5.0" />
+			multiValued="true" omitNorms="false"/>
 
 		<field name="tagId" type="long" indexed="true" stored="true"
 			multiValued="true" omitNorms="true" omitTermFreqAndPositions="true"/>
