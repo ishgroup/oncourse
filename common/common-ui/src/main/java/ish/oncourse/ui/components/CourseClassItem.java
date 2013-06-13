@@ -27,6 +27,8 @@ public class CourseClassItem {
     private static final String VALUE_yes = "yes";
     private static final String VALUE_no = "no";
 
+	private static final String CLASS_NAME_classCommenced = "classCommenced";
+
     @Inject
 	private Messages messages;
 
@@ -300,4 +302,14 @@ public class CourseClassItem {
         }
         return false;
     }
+
+	/**
+	 * The method returns value "classCommenced" for tag's attribute "class" if courseClass start date is null
+	 * or less the today
+	 */
+	public String getClassCommenced()
+	{
+		Date date = courseClass.getStartDate();
+		return date == null || date.compareTo(new Date()) < 0 ? CLASS_NAME_classCommenced: StringUtils.EMPTY;
+	}
 }

@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div class="classItem vevent" data-classid="${courseClass.id}" itemtype="http://schema.org/EducationEvent" itemscope="itemscope" >
+	<div class="classItem vevent ${classCommenced}" data-classid="${courseClass.id}" itemtype="http://schema.org/EducationEvent" itemscope="itemscope" >
 
 		<!--hcalendar implementation-->
 		<div class="class-item-info">
