@@ -47,16 +47,7 @@ public class AppModule {
 	}
 
 	public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
-		boolean isInTestMode = "true".equalsIgnoreCase(System.getProperty(ServiceModule.APP_TEST_MODE));
-		/**
-		 * this validation was added to allow to work with this application on test server.
-		 * The server does not support ssl.
-		 */
-
-		if (isInTestMode)
-			configuration.add(SymbolConstants.SECURE_ENABLED, "false");
-		else
-			configuration.add(SymbolConstants.SECURE_ENABLED, "true");
+		configuration.add(SymbolConstants.SECURE_ENABLED, "true");
 	}
 
 	public ThreadLocale buildThreadLocaleOverride(IWebSiteService webSiteService) {
