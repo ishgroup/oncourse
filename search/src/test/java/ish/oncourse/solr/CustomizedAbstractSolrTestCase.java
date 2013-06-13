@@ -84,57 +84,7 @@ public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCas
 	protected static void customCreateCore(final String coreName) {
     	assertNotNull(testSolrHome);
     	SolrTestCaseJ4.solrConfig = TestHarness.createConfig(testSolrHome, coreName, getSolrConfigFile());
-    	h = new TestHarness(coreName, new CustomInitializer(coreName, dataDir.getAbsolutePath(), SolrTestCaseJ4.solrConfig, 
-    		new IndexSchema(SolrTestCaseJ4.solrConfig, getSchemaFile(), null)));
+		h = new TestHarness(coreName, dataDir.getAbsolutePath(), SolrTestCaseJ4.solrConfig, getSchemaFile());
     	lrf = h.getRequestFactory("standard", 0, 20, CommonParams.VERSION, "2.2");
-    }
-	
-	protected static class CustomInitializer extends CoreContainer.Initializer {
-    	private String coreName;
-    	private String dataDirectory;
-    	private SolrConfig solrConfig;
-    	private IndexSchema indexSchema;
-    	
-		protected CustomInitializer(String coreName, String dataDirectory, SolrConfig solrConfig, IndexSchema indexSchema) {
-			if (coreName == null) {
-				throw new IllegalArgumentException("No core name defined");
-			}
-			this.coreName = coreName;
-			this.dataDirectory = dataDirectory;
-			this.solrConfig = solrConfig;
-			this.indexSchema = indexSchema;
-		}
-    	
-		protected String getCoreName() {
-			return coreName;
-		}
-		
-		@Override
-		public CoreContainer initialize() {
-			CoreContainer container = new CoreContainer(new SolrResourceLoader(SolrResourceLoader.locateSolrHome())) {
-				{hostPort = System.getProperty("hostPort");
-				hostContext = "solr";
-				defaultCoreName = getCoreName();
-				initShardHandler(null);
-				initZooKeeper(System.getProperty("zkHost"), 10000);
-				}
-			};
-			LogWatcher<?> logging = new JulWatcher("test");
-			logging.registerListener(new ListenerConfig(), container);
-			container.setLogging(logging);
-	      
-			CoreDescriptor dcore = new CoreDescriptor(container, getCoreName(), solrConfig.getResourceLoader().getInstanceDir());
-			dcore.setConfigName(solrConfig.getResourceName());
-			dcore.setSchemaName(indexSchema.getResourceName());
-			SolrCore core = new SolrCore(getCoreName(), dataDirectory, solrConfig, indexSchema, dcore);
-			container.register(getCoreName(), core, false);
-
-			// TODO: we should be exercising the *same* core container initialization code, not equivalent code!
-			if (container.getZkController() == null && core.getUpdateHandler().getUpdateLog() != null) {
-				// always kick off recovery if we are in standalone mode.
-				core.getUpdateHandler().getUpdateLog().recoverFromLog();
-			}
-			return container;
-		}
     }
 }

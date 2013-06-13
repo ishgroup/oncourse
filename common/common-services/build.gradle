@@ -9,7 +9,7 @@ dependencies {
 	compile 'org.apache.tapestry:tapestry-core:5.2.6'
 	compile 'org.apache.tapestry:tapestry5-annotations:5.2.6'
 	compile 'joda-time:joda-time:1.6.2'
-	compile 'org.apache.solr:solr-solrj:4.2.1'
+	compile 'org.apache.solr:solr-solrj:4.3.0'
 	compile 'net.java.dev.textile-j:textile-j:2.2.864'
 	compile 'axis:axis:1.4'
 	compile 'net.htmlparser.jericho:jericho-html:3.2'
