@@ -4,6 +4,7 @@ import ish.oncourse.enrol.checkout.ConcessionParser;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.enrol.pages.Checkout;
+import ish.oncourse.enrol.services.Constants;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
@@ -98,7 +99,6 @@ public class ContactEditor {
 			contactEditorParser.setContactFieldHelper(getContactFieldHelper());
 			contactEditorParser.setMessages(contactEditorFieldSet.getMessages());
 			contactEditorParser.setVisibleFields(delegate.getVisibleFields());
-			contactEditorParser.setDateFormat(FormatUtils.getDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT, getContact().getCollege().getTimeZone()));
 			contactEditorParser.parse();
 			Map<String,String> errors = new HashMap<>(contactEditorParser.getErrors());
 
@@ -128,7 +128,7 @@ public class ContactEditor {
 
 	public DateFormat getDateFormat()
 	{
-		return  FormatUtils.getDateFormat(Checkout.DATE_FIELD_SHOW_FORMAT, getContact().getCollege().getTimeZone());
+		return  FormatUtils.getDateFormat(Constants.DATE_FIELD_SHOW_FORMAT, getContact().getCollege().getTimeZone());
 	}
 
     @OnEvent(value = "cancelContact")

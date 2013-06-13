@@ -141,7 +141,6 @@ public class WaitingListForm {
 			parser.setContact(controller.getContact());
 			parser.setContactFieldHelper(controller.getContactFieldHelper());
 			parser.setMessages(contactEditorFieldSet.getMessages());
-			parser.setDateFormat(contactEditorFieldSet.getDateFormat());
 			parser.setRequest(request);
 			parser.setVisibleFields(controller.getVisibleFields());
 			parser.parse();

@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.enrol.components.checkout.concession.ConcessionEditor;
-import ish.oncourse.enrol.pages.Checkout;
+import ish.oncourse.enrol.services.Constants;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.HTMLUtils;
@@ -117,7 +117,7 @@ public class ConcessionParser implements IFieldsParser {
 		parser.setStudentConcession(studentConcession);
 		parser.setMessages(MessagesImpl.forClass(ConcessionEditor.class));
 		parser.setRequest(request);
-		parser.setDateFormat(FormatUtils.getDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT, timeZone));
+		parser.setDateFormat(FormatUtils.getDateFormat(Constants.DATE_FIELD_PARSE_FORMAT, timeZone));
 		return parser;
 	}
 

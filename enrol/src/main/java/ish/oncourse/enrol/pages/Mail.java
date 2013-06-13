@@ -124,7 +124,6 @@ public class Mail {
             parser.setContact(controller.getContact());
             parser.setVisibleFields(controller.getVisibleFields());
             parser.setContactFieldHelper(controller.getContactFieldHelper());
-            parser.setDateFormat(contactEditorFieldSet.getDateFormat());
             parser.setRequest(request);
             parser.parse();
             controller.setErrors(parser.getErrors());

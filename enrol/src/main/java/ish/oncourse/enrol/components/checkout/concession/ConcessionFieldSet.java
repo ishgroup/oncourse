@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.components.checkout.concession;
 
 import ish.oncourse.enrol.checkout.ConcessionDelegate;
-import ish.oncourse.enrol.pages.Checkout;
+import ish.oncourse.enrol.services.Constants;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
@@ -48,7 +48,7 @@ public class ConcessionFieldSet {
 	{
 		if (dateFormat == null)
 		{
-			dateFormat = FormatUtils.getDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT,getStudent().getCollege().getTimeZone());
+			dateFormat = FormatUtils.getDateFormat(Constants.DATE_FIELD_PARSE_FORMAT,getStudent().getCollege().getTimeZone());
 		}
 		return dateFormat;
 	}
@@ -76,7 +76,7 @@ public class ConcessionFieldSet {
 	public void setExpiresOn(String value)
 	{
 		try {
-            DateFormat format = FormatUtils.getDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT,getStudent().getCollege().getTimeZone());
+            DateFormat format = FormatUtils.getDateFormat(Constants.DATE_FIELD_PARSE_FORMAT,getStudent().getCollege().getTimeZone());
 			getStudentConcession().setExpiresOn(value != null ? format.parse(value): null);
 		} catch (ParseException e) {
 			LOGGER.warn(e);

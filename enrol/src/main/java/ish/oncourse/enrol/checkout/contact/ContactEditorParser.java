@@ -7,6 +7,7 @@ import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
 import org.joda.time.DateTime;
@@ -14,18 +15,21 @@ import org.joda.time.Years;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static ish.oncourse.enrol.services.Constants.DATE_FIELD_PARSE_FORMAT;
+import static ish.oncourse.enrol.services.Constants.MIN_DATE_OF_BIRTH;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
 public class ContactEditorParser {
+
 	private Request request;
 	private Contact contact;
 	private ContactFieldHelper contactFieldHelper;
 	private Messages messages;
-	DateFormat dateFormat;
+	private DateFormat dateFormat = new SimpleDateFormat(DATE_FIELD_PARSE_FORMAT);
 	private ICountryService countryService;
-
 
 	private static final String KEY_ERROR_MESSAGE_fieldRequired = "message-fieldRequired";
 	private static final String KEY_ERROR_MESSAGE_birthdate_hint = "message-birthdateHint";
@@ -93,45 +97,10 @@ public class ContactEditorParser {
 					errors.put(fieldDescriptor.propertyName, getRequiredMessage(fieldDescriptor));
 			} else if (fieldDescriptor.propertyClass == Date.class) {
 				try {
-					value = dateFormat.parse(stringValue);
+					value = DateUtils.truncate(dateFormat.parse(stringValue), Calendar.DAY_OF_MONTH);
 				} catch (ParseException e) {
                     value = null;
 					errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
-				} finally {
-					if ("dateOfBirth".equals(visibleField)) {
-						if (value != null) {
-							Calendar currentCalendar = Calendar.getInstance();
-							int currentCenturyYear = currentCalendar.get(Calendar.YEAR) - 2000;
-							String[] splittedDate = stringValue.split("/");
-							currentCalendar.set(1900, 1, 1);
-							if (currentCalendar.getTime().after((Date) value)) {
-								//firstly try to adjust the year to 2 digits
-								if (splittedDate.length == 3) {
-									String passedYear = splittedDate[2];
-									if (passedYear.length() == 2) {
-										int year = Integer.parseInt(passedYear);
-										if (year > currentCenturyYear) {
-											year+=1900;
-										} else {
-											year+=2000;
-										}
-										try {
-											value = dateFormat.parse(
-												String.format("%s/%s/%s", splittedDate[0], splittedDate[1], year));
-										} catch (ParseException e) {
-											value = null;
-											errors.put(fieldDescriptor.propertyName,
-												messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
-										}
-									} else {
-										errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_old));
-									}
-								} else {
-									errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_old));
-								}
-							}
-						}
-					}
 				}
 			}
 
@@ -164,6 +133,7 @@ public class ContactEditorParser {
 			contact.setCountry(getCountryBy(ICountryService.DEFAULT_COUNTRY_NAME));
 		}
 	}
+
 
 	private Country getCountryBy(String name)
 	{
@@ -212,10 +182,6 @@ public class ContactEditorParser {
 		this.visibleFields = visibleFields;
 	}
 
-	public void setDateFormat(DateFormat dateFormat) {
-		this.dateFormat = dateFormat;
-	}
-
 	/**
 	 * postcode
 	 * homePhoneNumber
@@ -258,6 +224,8 @@ public class ContactEditorParser {
                             return messages.format(KEY_ERROR_dateOfBirth_youngAge, minAge);
                         if (date.compareTo(new Date()) > -1)
                             return messages.format(KEY_ERROR_dateOfBirth_shouldBeInPast);
+						if (MIN_DATE_OF_BIRTH.compareTo(date) > 0)
+							return messages.get(KEY_ERROR_MESSAGE_birthdate_old);
                     }
 				}
 				return error;
@@ -270,5 +238,9 @@ public class ContactEditorParser {
 
 	public void setCountryService(ICountryService countryService) {
 		this.countryService = countryService;
+	}
+
+	public DateFormat getDateFormat() {
+		return dateFormat;
 	}
 }

@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.enrol.checkout.ACheckoutTest;
-import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
@@ -17,10 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
+import java.util.*;
 
 import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
@@ -30,6 +26,15 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContactEditorParserTest extends ACheckoutTest{
+
+	private ObjectContext context;
+	private Contact contact;
+	private Country country;
+	private ICountryService countryService;
+	private ContactFieldHelper contactFieldHelper;
+	private Request request;
+	private Messages messages;
+
 
 	@Before
 	public void setup() throws Exception {
@@ -74,68 +79,15 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 	@Test
 	public void test() throws ParseException {
-		HashMap<String,String> parameters = new HashMap<>();
-		parameters.put(street.name(), "");
-		parameters.put(suburb.name(), "");
-		parameters.put(state.name(), "");
-		parameters.put(postcode.name(), "");
-		parameters.put(homePhoneNumber.name(), "");
-		parameters.put(businessPhoneNumber.name(), "");
-		parameters.put(faxNumber.name(), "");
-		parameters.put(mobilePhoneNumber.name(), "");
-		parameters.put(dateOfBirth.name(), "11/d11/d2011");
 
+		prepareData();
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT);
-		ObjectContext context = mock(ObjectContext.class);
-		Contact contact = mock(Contact.class);
-		Country country = new Country();
-		country.setName(ICountryService.DEFAULT_COUNTRY_NAME);
-
-		when(contact.getCountry()).thenReturn(country);
-
-		//the code emulates Contact.postAdd method
-		when(contact.getIsMarketingViaEmailAllowed()).thenReturn(Boolean.TRUE);
-		when(contact.getIsMarketingViaPostAllowed()).thenReturn(Boolean.TRUE);
-		when(contact.getIsMarketingViaSMSAllowed()).thenReturn(Boolean.TRUE);
-		when(contact.getIsMale()).thenReturn(null);
-		when(contact.getObjectContext()).thenReturn(context);
-		when(context.localObject(country)).thenReturn(country);
-
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.YEAR, -19);
-		when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
-
-		ICountryService countryService = mock(ICountryService.class);
-		when(countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME)).thenReturn(country);
-
-		PreferenceController preferenceController = mock(PreferenceController.class);
-		ContactFieldHelper contactFieldHelper = mock(ContactFieldHelper.class);
-		Messages messages = mock(Messages.class);
-        Request request = mock(Request.class);
-        when(request.getParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY)).thenReturn(null);
-        when(request.getParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY)).thenReturn(null);
-        when(request.getParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY)).thenReturn(null);
-        when(request.getParameter(Contact.DATE_OF_BIRTH_PROPERTY)).thenReturn("11/d11/d2011");
-        when(request.getParameter(Contact.POSTCODE_PROPERTY)).thenReturn("12345");
-
-        when(contactFieldHelper.getPreferenceController()).thenReturn(preferenceController);
-        when(contactFieldHelper.isRequiredField(FieldDescriptor.street)).thenReturn(true);
-        when(preferenceController.getEnrolmentMinAge()).thenReturn(18);
-		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, 18))
-			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge);
-        when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast))
-			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
-		when(messages.get(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old)).
-			thenReturn(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old);
-        ContactEditorParser parser = new ContactEditorParser();
+		ContactEditorParser parser = new ContactEditorParser();
 		parser.setCountryService(countryService);
 		parser.setContact(contact);
         parser.setRequest(request);
 		parser.setContactFieldHelper(contactFieldHelper);
 		parser.setMessages(messages);
-        parser.setDateFormat(new SimpleDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT));
 
         FieldDescriptor[] fieldDescriptors =  FieldDescriptor.values();
         ArrayList<String> fields = new ArrayList<>();
@@ -156,30 +108,103 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 		assertNotNull(contact.getCountry());
 		verify(contact, atLeastOnce()).writeProperty(Contact.COUNTRY_PROPERTY,
-			countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME));
+				countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME));
+
+	}
+
+	private void prepareData() {
+		HashMap<String,String> parameters = new HashMap<>();
+		parameters.put(street.name(), "");
+		parameters.put(suburb.name(), "");
+		parameters.put(state.name(), "");
+		parameters.put(postcode.name(), "");
+		parameters.put(homePhoneNumber.name(), "");
+		parameters.put(businessPhoneNumber.name(), "");
+		parameters.put(faxNumber.name(), "");
+		parameters.put(mobilePhoneNumber.name(), "");
+		parameters.put(dateOfBirth.name(), "11/d11/d2011");
+
+
+		context = mock(ObjectContext.class);
+		contact = spy(new Contact());
+		country = new Country();
+		country.setName(ICountryService.DEFAULT_COUNTRY_NAME);
+
+		when(contact.getCountry()).thenReturn(country);
+
+		//the code emulates Contact.postAdd method
+		when(contact.getIsMarketingViaEmailAllowed()).thenReturn(Boolean.TRUE);
+		when(contact.getIsMarketingViaPostAllowed()).thenReturn(Boolean.TRUE);
+		when(contact.getIsMarketingViaSMSAllowed()).thenReturn(Boolean.TRUE);
+		when(contact.getIsMale()).thenReturn(null);
+		when(contact.getObjectContext()).thenReturn(context);
+		when(context.localObject(country)).thenReturn(country);
+
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.YEAR, -19);
+		when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
+
+		countryService = mock(ICountryService.class);
+		when(countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME)).thenReturn(country);
+
+		PreferenceController preferenceController = mock(PreferenceController.class);
+		contactFieldHelper = mock(ContactFieldHelper.class);
+		messages = mock(Messages.class);
+		request = mock(Request.class);
+		when(request.getParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY)).thenReturn(null);
+		when(request.getParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY)).thenReturn(null);
+		when(request.getParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY)).thenReturn(null);
+		when(request.getParameter(Contact.DATE_OF_BIRTH_PROPERTY)).thenReturn("11/d11/d2011");
+		when(request.getParameter(Contact.POSTCODE_PROPERTY)).thenReturn("12345");
+
+		when(contactFieldHelper.getPreferenceController()).thenReturn(preferenceController);
+		when(contactFieldHelper.isRequiredField(FieldDescriptor.street)).thenReturn(true);
+		when(preferenceController.getEnrolmentMinAge()).thenReturn(18);
+		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, 18))
+			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge);
+		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast))
+			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
+		when(messages.get(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old)).
+			thenReturn(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old);
+	}
+
+	@Test
+	public void testDateOfBirth() {
+
+		 prepareData();
+
+		ContactEditorParser parser = new ContactEditorParser();
+		parser.setCountryService(countryService);
+		parser.setContact(contact);
+		parser.setRequest(request);
+		parser.setContactFieldHelper(contactFieldHelper);
+		parser.setMessages(messages);
+		parser.setVisibleFields(Collections.singletonList(Contact.DATE_OF_BIRTH_PROPERTY));
+
 
 		//additional check for birth date validation
 		parser.getErrors().clear();
 		assertTrue("No errors should appears", parser.getErrors().isEmpty());
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.YEAR, -50);
-		String testDate = parser.dateFormat.format(cal.getTime());
+		String testDate = parser.getDateFormat().format(cal.getTime());
 		when(request.getParameter(Contact.DATE_OF_BIRTH_PROPERTY)).thenReturn(testDate);
-		when(contact.getDateOfBirth()).thenReturn(cal.getTime());
+		doCallRealMethod().when(contact).setDateOfBirth(any(Date.class));
+
 		parser.setRequest(request);
 		parser.setContact(contact);
 		parser.parse();
-		assertNull("No date of birth validation errors should be found", parser.getErrors().get("dateOfBirth"));
+		assertNull("No date of birth validation errors should be found", parser.getErrors().get(Contact.DATE_OF_BIRTH_PROPERTY));
 
 		//check for 2 digit birth date
 		cal.set(Calendar.YEAR, 84);
 		testDate = String.format("%s/%s/%s", cal.get(Calendar.DATE), cal.get(Calendar.MONTH)+1, cal.get(Calendar.YEAR));
 		when(request.getParameter(Contact.DATE_OF_BIRTH_PROPERTY)).thenReturn(testDate);
-		when(contact.getDateOfBirth()).thenReturn(cal.getTime());
 		parser.setRequest(request);
 		parser.setContact(contact);
 		parser.parse();
-		assertNull("No date of birth validation errors should be found", parser.getErrors().get("dateOfBirth"));
+		assertNull("No date of birth validation errors should be found", parser.getErrors().get(Contact.DATE_OF_BIRTH_PROPERTY));
 
 		//check for 3 digit birth date
 		cal.set(Calendar.YEAR, 184);
@@ -190,12 +215,12 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		parser.setRequest(request);
 		parser.setContact(contact);
 		parser.parse();
-		assertNotNull("Date of birth validation errors should be found", parser.getErrors().get("dateOfBirth"));
-    }
+		assertNotNull("Date of birth validation errors should be found", parser.getErrors().get(Contact.DATE_OF_BIRTH_PROPERTY));
+	}
 
 
 
-    private void testValidateDateOfBirth(ContactEditorParser parser, Contact contact) {
+	private void testValidateDateOfBirth(ContactEditorParser parser, Contact contact) {
         contact.setDateOfBirth(null);
         String error = parser.validate(dateOfBirth);
         assertNull(error);
@@ -217,7 +242,8 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
         error = parser.validate(dateOfBirth);
         assertNotNull(error);
-        assertEquals(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, error);
+		//message from Contact "The birth date cannot be in the future."
+        assertEquals("The birth date cannot be in the future.", error);
 
     }
 
@@ -256,7 +282,6 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		parser.setRequest(request);
 		parser.setContactFieldHelper(contactFieldHelper);
 		parser.setMessages(messages);
-		parser.setDateFormat(new SimpleDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT));
 
 		FieldDescriptor[] fieldDescriptors =  new FieldDescriptor[]{FieldDescriptor.dateOfBirth};
 		ArrayList<String> fields = new ArrayList<>();

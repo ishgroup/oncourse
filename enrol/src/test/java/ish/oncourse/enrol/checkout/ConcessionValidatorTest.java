@@ -1,10 +1,9 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.oncourse.enrol.pages.Checkout;
+import ish.oncourse.enrol.services.Constants;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.MessageFormatter;
 import org.apache.tapestry5.ioc.Messages;
@@ -72,7 +71,7 @@ public class ConcessionValidatorTest {
 		when(studentConcession.getConcessionType()).thenReturn(concessionType);
 		parser.setStudentConcession(studentConcession);
 		parser.setMessages(createMessages());
-		parser.setDateFormat(FormatUtils.getDateFormat(Checkout.DATE_FIELD_PARSE_FORMAT, StringUtils.EMPTY));
+		parser.setDateFormat(FormatUtils.getDateFormat(Constants.DATE_FIELD_PARSE_FORMAT, StringUtils.EMPTY));
 		return parser;
 	}
 
