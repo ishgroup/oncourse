@@ -54,7 +54,7 @@
 		</t:if>
 		<t:if t:test="courseItemModel.course.allowWaitingList">
 			<p class="waiting-list-title" id="wl${courseItemModel.course.id}">
-				<a class="actionLink" href="/enrol/waitinglistform?courseId=${courseItemModel.course.id}">
+				<a class="actionLink" href="/enrol/waitinglistform/${courseItemModel.course.id}">
 					<t:if t:test="courseItemModel.course.enrollableClasses.empty" negate="true">
 						<t:if t:test="hasMoreAvailablePlaces"> If there isn't a class to suit you, please <p:else> Classes are full. Please </p:else>
 						</t:if>

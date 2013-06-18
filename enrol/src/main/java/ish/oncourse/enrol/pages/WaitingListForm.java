@@ -5,7 +5,6 @@ import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.enrol.components.checkout.contact.ContactEditorFieldSet;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.waitinglist.WaitingListController;
-import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.services.course.ICourseService;
@@ -93,6 +92,14 @@ public class WaitingListForm {
 	@Property
 	private boolean unknownCourse;
 
+	private Long  courseId;
+
+	void onActivate(Long id)
+	{
+		resetPersistProperties();
+		courseId = id;
+	}
+
 	@SetupRender
 	void beforeRender() {
 
@@ -102,7 +109,13 @@ public class WaitingListForm {
 
 		synchronized (this) {
 			if (controller == null) {
-				String courseId = request.getParameter("courseId");
+
+				if (courseId == null)
+				{
+					unknownCourse = true;
+					return;
+				}
+
 				List<Course> result = courseService.loadByIds(courseId);
 				if (result.isEmpty()) {
 					unknownCourse = true;
@@ -116,8 +129,8 @@ public class WaitingListForm {
 				controller.setStudentService(studentService);
 				controller.setObjectContext(context);
 				controller.setMessages(messages);
-				controller.setCollege((College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null));
-				controller.setCourse((Course) context.localObject(result.get(0).getObjectId(), null));
+				controller.setCollege(context.localObject(webSiteService.getCurrentCollege()));
+				controller.setCourse(context.localObject(result.get(0)));
 				controller.init();
 
 				refererUrl = request.getHeader("referer");
@@ -172,6 +185,7 @@ public class WaitingListForm {
 		expired = false;
 		controller = null;
 		refererUrl = null;
+		courseId = null;
 	}
 
 
