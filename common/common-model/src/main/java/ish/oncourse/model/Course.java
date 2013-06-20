@@ -3,15 +3,14 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._Course;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.TimestampUtilities;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Course extends _Course implements Queueable {
 	private static final long serialVersionUID = 254942637990278217L;
@@ -51,7 +50,7 @@ public class Course extends _Course implements Queueable {
 
 		return list;
 	}
-	
+
 	public List<CourseClass> getFullClasses() {
 		List<CourseClass> currentClasses = getCurrentClasses();
 		List<CourseClass> list = new ArrayList<>();
@@ -72,7 +71,7 @@ public class Course extends _Course implements Queueable {
 			try {
 				module = courseModule.getModule();
 			} catch (Exception e) {
-				LOGGER.warn(String.format("Exception occurrs when try to load course module with course id %s for college %s", getId(), 
+				LOGGER.warn(String.format("Exception occurrs when try to load course module with course id %s for college %s", getId(),
 						getCollege().getId()), e);
 				module = null;
 			}
@@ -83,7 +82,7 @@ public class Course extends _Course implements Queueable {
 				List<Module> queryResult = getObjectContext().performQuery(moduleQuery);
 				module = queryResult.isEmpty() ? null : queryResult.get(0);
 				if (queryResult.size() > 1) {
-					LOGGER.warn(String.format("%s objects found for module with id %s to course %s relationship but should be 1", 
+					LOGGER.warn(String.format("%s objects found for module with id %s to course %s relationship but should be 1",
 						queryResult.size(), module.getId(), getId()));
 				}
 			}
@@ -100,7 +99,7 @@ public class Course extends _Course implements Queueable {
 		try {
 			qualification = super.getQualification();
 		} catch (Exception e) {
-			LOGGER.warn(String.format("Exception occurrs when try to load course qualification with course id %s for college %s", getId(), 
+			LOGGER.warn(String.format("Exception occurrs when try to load course qualification with course id %s for college %s", getId(),
 				getCollege().getId()), e);
 			qualification = null;
 		}
@@ -111,24 +110,28 @@ public class Course extends _Course implements Queueable {
 			List<Qualification> result = getObjectContext().performQuery(qualificationQuery);
 			qualification = result.isEmpty() ? null : result.get(0);
 			if (result.size() > 1) {
-				LOGGER.warn(String.format("%s objects found for qualification with id %s to course %s relationship but should be 1", 
+				LOGGER.warn(String.format("%s objects found for qualification with id %s to course %s relationship but should be 1",
 					result.size(), qualification.getId(), getId()));
 			}
 		}
 		return qualification;
 	}
-	
+
 	public List<Course> getRelatedToCourses() {
 		List<Course> relatedList = new ArrayList<>();
-		if (!getFromCourses().isEmpty()) {
-			for (CourseCourseRelation courseRelation : getFromCourses()) {
-	    		Course relatedCourse = courseRelation.getToCourse();
-	    		if (relatedCourse.getIsWebVisible()) {
-	    			relatedList.add(relatedCourse);
-	    		}
-	    	}
+		for (CourseCourseRelation courseRelation : getFromCourses()) {
+			Course relatedCourse = courseRelation.getToCourse();
+			if (relatedCourse.getIsWebVisible()) {
+				relatedList.add(relatedCourse);
+			}
+		}
+		for (CourseCourseRelation courseRelation : getToCourses()) {
+			Course relatedCourse = courseRelation.getFromCourse();
+			if (relatedCourse.getIsWebVisible()) {
+				relatedList.add(relatedCourse);
+			}
 		}
 		return relatedList;
 	}
-	
+
 }
