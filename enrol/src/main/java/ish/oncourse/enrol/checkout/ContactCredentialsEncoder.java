@@ -25,14 +25,14 @@ public class ContactCredentialsEncoder {
 		 */
 
 		if (contact != null) {
-			contact = (Contact) objectContext.localObject(contact.getObjectId(), null);
+			contact = objectContext.localObject(contact);
 			if (contact.getStudent() == null) {
 				contact.createNewStudent();
 			}
 		} else {
 			contact = objectContext.newObject(Contact.class);
 
-			contact.setCollege((College)objectContext.localObject(college.getObjectId(),null));
+			contact.setCollege(objectContext.localObject(college));
 
 			contact.setGivenName(contactCredentials.getFirstName());
 			contact.setFamilyName(contactCredentials.getLastName());
