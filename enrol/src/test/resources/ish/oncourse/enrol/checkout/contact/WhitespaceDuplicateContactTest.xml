@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<Country id="2" ishVersion="1" name="Australia" isoCodeAlpha2="AU" isoCodeAlpha3="AUS" isoCodeNumeric="338" asccssCode="1100" saccCode="1101"/>
+
+	<College id="1" name="Sydney Community College"
+			 webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+			 communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+			 timezone="Australia/Sydney"
+			 requiresAvetmiss="0" angelVersion="development"/>
+
+	<Student id="1001" collegeId="1" angelId="1000"
+			 created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+			 disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+			 indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+			 priorEducationCode="0" labourForceType="0" />
+
+	<Contact id="1001" collegeId="1" studentId="1001"
+			 angelId="1001" created="2011-09-12 00:51:00.0" isCompany="0"
+			 isMale="1" familyName="van Riet" givenName="Caroline" emailAddress="carolinevanriet@gmail.com"
+			 dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1" />
+</dataset>

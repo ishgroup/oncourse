@@ -42,15 +42,18 @@ public abstract class ACheckoutTest extends ServiceTest {
 		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
 
 		initTest("ish.oncourse.enrol", "enrol", EnrolTestModule.class);
-		InputStream st = ACheckoutTest.class.getClassLoader().getResourceAsStream(
-				dbResource);
+		if (dbResource != null)
+		{
+			InputStream st = ACheckoutTest.class.getClassLoader().getResourceAsStream(
+					dbResource);
 
-		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-		builder.setColumnSensing(true);
-		FlatXmlDataSet dataSet = builder.build(st);
+			FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+			builder.setColumnSensing(true);
+			FlatXmlDataSet dataSet = builder.build(st);
 
-		DataSource refDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
+			DataSource refDataSource = getDataSource("jdbc/oncourse");
+			DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
+		}
 
 
 		this.cayenneService = getService(ICayenneService.class);
