@@ -9,13 +9,16 @@ import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.log.NoopJdbcEventLogger;
 import org.apache.cayenne.map.DataMap;
 import org.apache.cayenne.map.DbEntity;
+import org.apache.cayenne.map.Relationship;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -92,6 +95,15 @@ public class ContextUtils {
 	 */
 	private static void createTablesForDataSourceByParams(DataSource dataSource, DataMap map, Map<String, Boolean> params) throws Exception {
 		DataDomain domain = cayenneRuntime.getDataDomain();
+		List<Relationship> entityRelationshipsToRemove = new ArrayList<Relationship>();
+		entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationToProduct"));
+		entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationFromProduct"));
+		entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationToCourse"));
+		entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationFromCourse"));
+		for (Relationship rel : entityRelationshipsToRemove) {
+			map.getDbEntity("EntityRelation").removeRelationship(rel.getName());
+		}
+
 		DbGenerator generator = new DbGenerator(domain.getDefaultNode().getAdapter(), map, NoopJdbcEventLogger.getInstance(), Collections.<DbEntity> emptyList());
 		boolean isParamsEmpty = params == null || params.isEmpty();
 		if (isParamsEmpty) {
@@ -103,7 +115,12 @@ public class ContextUtils {
 			generator.setShouldCreateFKConstraints(Boolean.TRUE.equals(params.get(SHOULD_CREATE_FK_CONSTRAINTS)));
 			generator.setShouldCreatePKSupport(Boolean.TRUE.equals(params.get(SHOULD_CREATE_PK_SUPPORT)));
 		}
+
 		generator.runGenerator(dataSource);
+
+		for (Relationship rel : entityRelationshipsToRemove) {
+			map.getDbEntity("EntityRelation").addRelationship(rel);
+		}
 	}
 
 	/**
