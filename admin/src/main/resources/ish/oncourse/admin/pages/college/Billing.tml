@@ -1,6 +1,6 @@
 <html t:type="pagestructure" title="literal:College Billing"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		>
 
 <span t:type="editTabs" college="college" selected="literal:billing" />
 
@@ -55,7 +55,7 @@
 		<t:loop source="collegeLicenseFees" index="feeIndex">
 			<tr>
 				<td>${currentCollegeLicenseFee.keyCode}</td>
-				<td><t:textfield t:id="collegePlanName" value="currentCollegeLicenseFee.planName"/></td>
+				<td><t:textfield t:id="collegePlanName" value="currentCollegePlanName"/></td>
 				<td>
 					<t:if test="support">
 						<t:textfield t:id="collegePaidUntil" class="datefield" value="currentCollegeFeePaidUntil"/>
@@ -90,7 +90,7 @@
 			<t:loop source="currentWebsite.licenseFees" index="feeIndex">
 				<tr>
 					<td>${currentLicenseFee.keyCode}</td>
-					<td><t:textfield t:id="planName" value="currentLicenseFee.planName"/></td>
+					<td><t:textfield t:id="planName" value="currentPlanName"/></td>
 					<td>
 						<t:if test="hosting">
 							<t:textfield t:id="paidUntil" class="datefield" value="currentPaidUntil"/>

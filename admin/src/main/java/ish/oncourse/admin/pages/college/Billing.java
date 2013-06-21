@@ -1,6 +1,7 @@
 package ish.oncourse.admin.pages.college;
 
 import ish.oncourse.admin.pages.Index;
+import ish.oncourse.admin.services.billing.StockCodes;
 import ish.oncourse.admin.utils.LicenseFeeUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -22,7 +23,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class Billing {
 
@@ -340,4 +344,41 @@ public class Billing {
 
 		return StringUtils.EMPTY;
 	}
+
+	public String getCurrentPlanName()
+	{
+		return getCurrentLicenseFee().getPlanName();
+	}
+
+	public void setCurrentPlanName(String planName)
+	{
+		setPlanName(getCurrentLicenseFee(), planName);
+	}
+
+
+	public String getCurrentCollegePlanName()
+	{
+		return getCurrentCollegeLicenseFee().getPlanName();
+	}
+
+	public void setCurrentCollegePlanName(String planName)
+	{
+		setPlanName(getCurrentCollegeLicenseFee(), planName);
+	}
+
+	private void setPlanName(LicenseFee licenseFee, String planName)
+	{
+		if (planName != null)
+		{
+			try {
+				StockCodes code = StockCodes.valueOf(StringUtils.trimToEmpty(planName).toLowerCase());
+				planName = code.name();
+			} catch (IllegalArgumentException e) {
+				//billingForm.recordError(String.format("Plan name \"%s\" is not supported.",planName));
+				planName = StockCodes.platinum.name();
+			}
+		}
+		licenseFee.setPlanName(planName);
+	}
+
 }
