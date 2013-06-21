@@ -62,6 +62,13 @@ public class Billing {
 	
 	@Property
 	private boolean amexEnabled;
+
+	@Property
+	private boolean replicationEnabled;
+
+	@Property
+	@Persist
+	private boolean showReplicationMessage;
 	
 	@Inject
 	private ICayenneService cayenneService;
@@ -95,6 +102,8 @@ public class Billing {
 			this.webPaymentEnabled = true;
 		}
 		this.qePaymentEnabled = preferenceController.getLicenseCCProcessing();
+
+		this.replicationEnabled = preferenceController.getReplicationEnabled();
 
 		this.webSites = college.getWebSites();
 
@@ -163,6 +172,8 @@ public class Billing {
 				preferenceController.setPaymentGatewayType(PaymentGatewayType.DISABLED);
 			}
 			preferenceController.setLicenseCCProcessing(this.qePaymentEnabled);
+
+			replicationEnable();
 			
 			boolean found = false;
 			for (Preference p : college.getPreferences()) {
@@ -186,6 +197,14 @@ public class Billing {
 		context.commitChanges();
 	}
 
+	private void replicationEnable()
+	{
+		boolean old = preferenceController.getReplicationEnabled();
+		showReplicationMessage = old != replicationEnabled && replicationEnabled;
+		preferenceController.setReplicationEnabled(replicationEnabled);
+	}
+
+
     void onActivate(Long id) {
 		if (college == null || !college.getId().equals(id)) {
 			this.college = collegeService.findById(id);
@@ -194,6 +213,12 @@ public class Billing {
 
 	Object onPassivate() {
 		return this.college.getId();
+	}
+
+	@AfterRender
+	void afterRender()
+	{
+		showReplicationMessage = false;
 	}
 
 	public String getPaymentExpUser() {

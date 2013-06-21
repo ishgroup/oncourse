@@ -27,7 +27,20 @@
 			<td><t:textfield t:id="billingCode" value="billingCode" validate="required"/></td>
 		</tr>
 	</table>
-	
+
+	<label class="checkbox">
+		<t:checkbox t:id="replicationCheckbox" value="replicationEnabled"/>Replication enabled
+	</label>
+	<t:if test="showReplicationMessage">
+		<div class="message">
+			Restart this angel server two times:
+			<ul>
+				<li>for loading preferences to angel side.</li>
+				<li>for rescheduling replication job.</li>
+			</ul>
+		</div>
+	</t:if>
+
 	<label class="checkbox">
 		<t:checkbox t:id="webPaymentCheckbox" value="webPaymentEnabled"/>web payment gateway enabled
 	</label>
