@@ -1,10 +1,8 @@
 package ish.oncourse.utils;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import org.apache.commons.lang.StringUtils;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -202,6 +200,26 @@ public class StringUtilities extends Object {
 		}
 		return result.toString();
 	}
+
+
+	/**
+	 * The method cuts all not non-printable Unicode characters and trims the string to null
+	 */
+	public static String cutToNull(String str)
+	{
+		str = StringUtils.trimToNull(str);
+		return str != null ? str.replaceAll("\\p{C}", StringUtils.EMPTY): str;
+	}
+
+	/**
+	 * The method cuts all not non-printable Unicode characters and trims the string to empty
+	 */
+	public static String cutToEmpty(String str)
+	{
+		str = StringUtils.trimToEmpty(str);
+		return str.replaceAll("\\p{C}", StringUtils.EMPTY);
+	}
+
 
 	private StringUtilities() {
 	}

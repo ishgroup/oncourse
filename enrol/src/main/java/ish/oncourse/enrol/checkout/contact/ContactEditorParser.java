@@ -6,7 +6,7 @@ import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.MessagesNamingConvention;
-import org.apache.commons.lang.StringUtils;
+import ish.oncourse.utils.StringUtilities;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
@@ -77,7 +77,7 @@ public class ContactEditorParser {
 	}
 
 	private Boolean parseBooleanParameter(String parameterName) {
-        String value = StringUtils.trimToNull(request.getParameter(parameterName));
+        String value = StringUtilities.cutToNull(request.getParameter(parameterName));
         if (value == null)
             return null;
         else
@@ -89,7 +89,7 @@ public class ContactEditorParser {
 		for (String visibleField : visibleFields) {
 
 			FieldDescriptor fieldDescriptor = FieldDescriptor.valueOf(visibleField);
-			String stringValue = StringUtils.trimToNull(request.getParameter(visibleField));
+			String stringValue = StringUtilities.cutToNull(request.getParameter(visibleField));
             Object value = stringValue;
 
 			if (stringValue == null) {

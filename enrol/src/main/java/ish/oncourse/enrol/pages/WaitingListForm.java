@@ -15,6 +15,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.Courses;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidateHandler;
+import ish.oncourse.utils.StringUtilities;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -161,7 +162,7 @@ public class WaitingListForm {
 		}
 
 
-		String value = StringUtils.trimToNull(request.getParameter(WaitingList.POTENTIAL_STUDENTS_PROPERTY));
+		String value = StringUtilities.cutToNull(request.getParameter(WaitingList.POTENTIAL_STUDENTS_PROPERTY));
 		if (StringUtils.isNumeric(value)) {
 			controller.getWaitingList().setPotentialStudents(Integer.valueOf(value));
 		}

@@ -21,7 +21,11 @@ import static org.mockito.Mockito.when;
 public class WhitespaceDuplicateContactTest extends ACheckoutTest {
 
 	private static final String FIRST_NAME = "Caroline";
-	private static final String LAST_NAME = "van Riet";
+
+	private static final String LAST_NAME_PART1 = "van";
+	private static final String LAST_NAME_PART2 = "Riet";
+	private static final String LAST_NAME = String.format("%s %s",LAST_NAME_PART1, LAST_NAME_PART2);
+
 	private static final String EMAIL = "carolinevanriet@gmail.com";
 	private IStudentService studentService;
 
@@ -38,34 +42,40 @@ public class WhitespaceDuplicateContactTest extends ACheckoutTest {
 
 		for (char i = 0; i < 33; i++) {
 
-			ContactCredentials contactCredentials = new ContactCredentials();
-
-			Request request = mock(Request.class);
-			when(request.getParameter(AddContactParser.FIELD_NAME_firstName)).thenReturn(i + FIRST_NAME + i);
-			when(request.getParameter(AddContactParser.FIELD_NAME_lastName)).thenReturn(i + LAST_NAME + i);
-			when(request.getParameter(AddContactParser.FIELD_NAME_email)).thenReturn(i + EMAIL + i);
-
-			AddContactParser parser = new AddContactParser();
-			parser.setRequest(request);
-			parser.setContactCredentials(contactCredentials);
-			parser.parse();
-			assertEquals(FIRST_NAME, contactCredentials.getFirstName());
-			assertEquals(LAST_NAME, contactCredentials.getLastName());
-			assertEquals(EMAIL,contactCredentials.getEmail());
-
-			assertEquals(0, parser.getErrors().size());
-
-			ContactCredentialsEncoder encoder = new ContactCredentialsEncoder();
-			encoder.setCollege(contact.getCollege());
-			encoder.setContactCredentials(contactCredentials);
-			encoder.setStudentService(studentService);
-			encoder.setObjectContext(cayenneService.newContext());
-
-			encoder.encode();
-
-			Contact contact1 = encoder.getContact();
-			assertEquals(contact.getId(), contact1.getId());
+			assertChar(contact, i);
 		}
 
+	}
+
+	private void assertChar(Contact contact, char i) {
+		ContactCredentials contactCredentials = new ContactCredentials();
+
+		Request request = mock(Request.class);
+		when(request.getParameter(AddContactParser.FIELD_NAME_firstName)).thenReturn(i + FIRST_NAME + i);
+		when(request.getParameter(AddContactParser.FIELD_NAME_lastName)).thenReturn(i == ' ' ?
+				i + LAST_NAME_PART1 + i + LAST_NAME_PART2 + i:
+				i + LAST_NAME_PART1 + i + " " + i + LAST_NAME_PART2 + i);
+		when(request.getParameter(AddContactParser.FIELD_NAME_email)).thenReturn(i + EMAIL + i);
+
+		AddContactParser parser = new AddContactParser();
+		parser.setRequest(request);
+		parser.setContactCredentials(contactCredentials);
+		parser.parse();
+		assertEquals(FIRST_NAME, contactCredentials.getFirstName());
+		assertEquals(LAST_NAME, contactCredentials.getLastName());
+		assertEquals(EMAIL,contactCredentials.getEmail());
+
+		assertEquals(0, parser.getErrors().size());
+
+		ContactCredentialsEncoder encoder = new ContactCredentialsEncoder();
+		encoder.setCollege(contact.getCollege());
+		encoder.setContactCredentials(contactCredentials);
+		encoder.setStudentService(studentService);
+		encoder.setObjectContext(cayenneService.newContext());
+
+		encoder.encode();
+
+		Contact contact1 = encoder.getContact();
+		assertEquals(contact.getId(), contact1.getId());
 	}
 }

@@ -6,7 +6,7 @@ import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.MessagesNamingConvention;
-import org.apache.commons.lang.StringUtils;
+import ish.oncourse.utils.StringUtilities;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import org.apache.tapestry5.services.Request;
@@ -31,9 +31,9 @@ public class ConcessionParser implements IFieldsParser {
 	private DateFormat dateFormat;
 
 	public void parse() {
-		String concessionNumber = StringUtils.trimToNull(request.getParameter(Field.concessionNumber.name()));
-		String expiresOn = StringUtils.trimToNull(request.getParameter(Field.expiresOn.name()));
-		String concessionAgree = StringUtils.trimToNull(request.getParameter(Field.concessionAgree.name()));
+		String concessionNumber = StringUtilities.cutToNull(request.getParameter(Field.concessionNumber.name()));
+		String expiresOn = StringUtilities.cutToNull(request.getParameter(Field.expiresOn.name()));
+		String concessionAgree = StringUtilities.cutToNull(request.getParameter(Field.concessionAgree.name()));
 
 		parseConcessionNumber(concessionNumber);
 		parseExpiresOn(expiresOn);

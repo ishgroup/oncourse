@@ -6,6 +6,7 @@ import ish.oncourse.analytics.Transaction;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
+import ish.oncourse.utils.StringUtilities;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -176,7 +177,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 		try {
 			String googleAnalyticsAccount = purchaseController.getWebSiteService().getCurrentWebSite().getGoogleAnalyticsAccount();
 
-			if (googleAnalyticsAccount != null && StringUtils.trimToNull(googleAnalyticsAccount) != null) {
+			if (googleAnalyticsAccount != null && StringUtilities.cutToNull(googleAnalyticsAccount) != null) {
 				if (isPaymentSuccess()) {
 					List<Enrolment> enrolments = purchaseController.getModel().getAllEnabledEnrolments();
 					List<Item> transactionItems = new ArrayList<>(enrolments.size());

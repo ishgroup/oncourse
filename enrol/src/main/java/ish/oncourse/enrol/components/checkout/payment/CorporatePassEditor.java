@@ -2,7 +2,7 @@ package ish.oncourse.enrol.components.checkout.payment;
 
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorParser;
-import org.apache.commons.lang.StringUtils;
+import ish.oncourse.utils.StringUtilities;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
@@ -50,7 +50,7 @@ public class CorporatePassEditor implements IPaymentControlDelegate {
 	@OnEvent(value = "addCorporatePass")
 	public Object addCorporatePass()
 	{
-		String password = StringUtils.trimToNull(request.getParameter("corporatePass"));
+		String password = StringUtilities.cutToNull(request.getParameter("corporatePass"));
 		if (password == null)
 			errorMessage = messages.get("message-password");
 		else

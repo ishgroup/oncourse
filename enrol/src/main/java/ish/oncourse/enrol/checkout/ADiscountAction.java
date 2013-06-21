@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.model.Discount;
-import org.apache.commons.lang.StringUtils;
+import ish.oncourse.utils.StringUtilities;
 
 public abstract class ADiscountAction extends APurchaseAction {
     protected Discount discount;
@@ -10,7 +10,7 @@ public abstract class ADiscountAction extends APurchaseAction {
     @Override
     protected void parse() {
         if (getParameter() != null) {
-            discountCode = StringUtils.trimToNull(getParameter().getValue(String.class));
+            discountCode = StringUtilities.cutToNull(getParameter().getValue(String.class));
             if (discountCode != null)
             {
                 discount = getController().getDiscountService().getByCode(discountCode);

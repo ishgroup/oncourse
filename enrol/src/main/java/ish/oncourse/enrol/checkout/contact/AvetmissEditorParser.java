@@ -8,6 +8,7 @@ import ish.oncourse.model.Language;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
+import ish.oncourse.utils.StringUtilities;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
@@ -36,7 +37,7 @@ public class AvetmissEditorParser implements IFieldsParser{
 	public void parse() {
 		Field[] fields = Field.values();
 		for (Field field : fields) {
-			String value = StringUtils.trimToNull(request.getParameter(field.name()));
+			String value = StringUtilities.cutToNull(request.getParameter(field.name()));
 			if (value != null)
 				setValue(field, value);
 		}

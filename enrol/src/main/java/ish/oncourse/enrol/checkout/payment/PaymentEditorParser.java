@@ -5,7 +5,7 @@ import ish.oncourse.enrol.checkout.IFieldsParser;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.util.payment.CreditCardParser;
-import org.apache.commons.lang.StringUtils;
+import ish.oncourse.utils.StringUtilities;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
 
@@ -30,8 +30,8 @@ public class PaymentEditorParser implements IFieldsParser {
 			parse(Field.zeroPaymentFields());
 		else {
 			parse(Field.noZeroPaymentFields());
-			String expiryMonth = StringUtils.trimToNull(request.getParameter(Field.expiryMonth.name()));
-			String expiryYear = StringUtils.trimToNull(request.getParameter(Field.expiryYear.name()));
+			String expiryMonth = StringUtilities.cutToNull(request.getParameter(Field.expiryMonth.name()));
+			String expiryYear = StringUtilities.cutToNull(request.getParameter(Field.expiryYear.name()));
 			if (expiryMonth != null && expiryYear != null) {
 				paymentIn.setCreditCardExpiry(expiryMonth + "/" + expiryYear);
 				if (!paymentIn.validateCCExpiry())
@@ -44,7 +44,7 @@ public class PaymentEditorParser implements IFieldsParser {
 	private void parse(Field[] fields) {
 		for (Field field : fields) {
 			if (field != Field.expiryMonth && field != Field.expiryYear) {
-				String value = StringUtils.trimToNull(request.getParameter(field.name()));
+				String value = StringUtilities.cutToNull(request.getParameter(field.name()));
 				if (value != null) {
 					setValue(field, value);
 				} else {
