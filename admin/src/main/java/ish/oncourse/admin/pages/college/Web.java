@@ -288,6 +288,11 @@ public class Web {
 		Expression exp = ExpressionFactory.matchExp(WebHostName.NAME_PROPERTY, name);
 		SelectQuery query = new SelectQuery(WebHostName.class, exp);
 		WebHostName domain = (WebHostName) Cayenne.objectForQuery(context, query);
+
+		List<WebSite> webSites = domain.getWebSiteArray();
+		for (WebSite webSite : webSites)
+			domain.removeFromWebSiteArray(webSite);
+
 		context.deleteObjects(domain);
 		context.commitChanges();
 		
