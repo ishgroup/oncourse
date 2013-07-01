@@ -43,20 +43,28 @@
 	<t:form t:id="paymentform" clientValidation="literal:NONE" secure="true">
         <div id="tabable-container">
             <ul class="nav">
-                <li class="first ${cardTabClass}">
-                    <a href="#credit-card">Credit card</a>
-                </li>
-                <li class="${corporatePassTabClass}">
-                    <a href="#corporate-pass">CorporatePass</a>
-                </li>
+				<t:if test="purchaseController.creditCardPaymentEnabled">
+					<li class="first ${cardTabClass}">
+						<a href="#credit-card">Credit card</a>
+					</li>
+				</t:if>
+				<t:if test="purchaseController.corporatePassPaymentEnabled">
+					<li class="${corporatePassTabClass}">
+						<a href="#corporate-pass">CorporatePass</a>
+					</li>
+				</t:if>
             </ul>
             <div class="tab-content">
-                <div class="single-tab ${cardTabClass}" id="credit-card">
-                    <t:delegate to="block:paymentEditor"/>
-                </div>
-                <div class="single-tab ${corporatePassTabClass}" id="corporate-pass">
-                    <t:delegate to="block:corporatePassEditor"/>
-                </div>
+				<t:if test="purchaseController.creditCardPaymentEnabled">
+					<div class="single-tab ${cardTabClass}" id="credit-card">
+						<t:delegate to="block:paymentEditor"/>
+					</div>
+				</t:if>
+				<t:if test="purchaseController.corporatePassPaymentEnabled">
+					<div class="single-tab ${corporatePassTabClass}" id="corporate-pass">
+						<t:delegate to="block:corporatePassEditor"/>
+					</div>
+				</t:if>
             </div>
         </div>
         <span t:type="checkout/payment/paymentcontrol" delegate="purchaseController.paymentEditorDelegate"/>

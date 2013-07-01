@@ -8,6 +8,7 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCardEditor;
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCorporatePassEditor;
 
 public class ActionProceedToPayment extends APurchaseAction {
     private PaymentIn paymentIn;
@@ -23,8 +24,17 @@ public class ActionProceedToPayment extends APurchaseAction {
 		}
 
 		getController().refreshPrevOwingStatus();
-        ActionSelectCardEditor actionSelectCardEditor = selectCardEditor.createAction(getController());
-        actionSelectCardEditor.action();
+		if (getController().isCreditCardPaymentEnabled())
+		{
+			ActionSelectCardEditor actionSelectCardEditor = selectCardEditor.createAction(getController());
+			actionSelectCardEditor.action();
+		}
+		else if (getController().isCorporatePassPaymentEnabled())
+		{
+			ActionSelectCorporatePassEditor action = selectCorporatePassEditor.createAction(getController());
+			action.action();
+		}
+
     }
 
     @Override
@@ -34,8 +44,13 @@ public class ActionProceedToPayment extends APurchaseAction {
 
     @Override
     protected boolean validate() {
-
         boolean result = true;
+		if (!(getController().isCreditCardPaymentEnabled() ||  getController().isCorporatePassPaymentEnabled()))
+		{
+			getController().addError(PurchaseController.Message.noEnabledPaymentMethods);
+			result = false;
+		}
+
         PaymentEditorController paymentEditorController = (PaymentEditorController) getController().getPaymentEditorDelegate();
         if (paymentEditorController != null) {
             result = !(paymentEditorController.getPaymentProcessController().isIllegalState() ||

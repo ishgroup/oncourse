@@ -34,6 +34,10 @@ public class PreferenceController extends CommonPreferenceController {
 
 	protected static final String PAYMENT_GATEWAY_TYPE = "payment.gateway.type";
 
+	private static final String ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED = "enrolment.corporatePass.payment.enabled";
+	private static final String ENROLMENT_CREDITCARD_PAYMENT_ENABLED = "enrolment.creditCard..payment.enabled";
+
+
 	//deprecated part
 	@Deprecated
 	public static final String LICENSE_AVETMISS_UPDATES = "license.avetmiss.updates";
@@ -674,6 +678,30 @@ public class PreferenceController extends CommonPreferenceController {
 
 	public void setRequireContactField(ContactFiledsSet contactFiledsSet, FieldDescriptor field, String value) {
 		setValue(field.getPreferenceNameBy(contactFiledsSet), false, value);
+	}
+
+	public boolean isCorporatePassPaymentEnabled() {
+		String value = StringUtils.trimToNull(getValue(ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED, false));
+		if (value == null)
+			return true;
+		return Boolean.valueOf(value);
+	}
+
+	public boolean isCreditCardPaymentEnabled() {
+		String value = StringUtils.trimToNull(getValue(ENROLMENT_CREDITCARD_PAYMENT_ENABLED, false));
+		if (value == null)
+			return true;
+		return Boolean.valueOf(value);
+	}
+
+	public void setCorporatePassPaymentEnabled(boolean value)
+	{
+		setValue(ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED, false, Boolean.toString(value));
+	}
+
+	public void setCreditCardPaymentEnabled(boolean value)
+	{
+		setValue(ENROLMENT_CREDITCARD_PAYMENT_ENABLED, false, Boolean.toString(value));
 	}
 
 

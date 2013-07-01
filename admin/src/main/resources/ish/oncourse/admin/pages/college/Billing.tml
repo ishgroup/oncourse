@@ -51,6 +51,15 @@
 		<t:checkbox t:id="amexCheckbox" value="amexEnabled"/>Amex card type enabled
 	</label>
 
+	<label class="checkbox">
+		<t:checkbox t:id="creditCardPaymentEnabledCheckbox" value="creditCardPaymentEnabled"/>credit card payment enabled
+	</label>
+
+	<label class="checkbox">
+		<t:checkbox t:id="corporatePassPaymentEnabledCheckbox" value="corporatePassPaymentEnabled"/>corporatePass payment enabled
+	</label>
+
+
 	<h2>License Fees (onCourse)</h2>
 
 	<table class="table table-striped table-condensed">

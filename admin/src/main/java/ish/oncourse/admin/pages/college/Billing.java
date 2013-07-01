@@ -67,6 +67,13 @@ public class Billing {
 	private boolean replicationEnabled;
 
 	@Property
+	private boolean creditCardPaymentEnabled;
+
+	@Property
+	private boolean corporatePassPaymentEnabled;
+
+
+	@Property
 	@Persist
 	private boolean showReplicationMessage;
 	
@@ -104,6 +111,10 @@ public class Billing {
 		this.qePaymentEnabled = preferenceController.getLicenseCCProcessing();
 
 		this.replicationEnabled = preferenceController.getReplicationEnabled();
+
+		this.corporatePassPaymentEnabled = preferenceController.isCorporatePassPaymentEnabled();
+
+		this.creditCardPaymentEnabled = preferenceController.isCreditCardPaymentEnabled();
 
 		this.webSites = college.getWebSites();
 
@@ -174,7 +185,9 @@ public class Billing {
 			preferenceController.setLicenseCCProcessing(this.qePaymentEnabled);
 
 			replicationEnable();
-			
+			preferenceController.setCorporatePassPaymentEnabled(corporatePassPaymentEnabled);
+			preferenceController.setCreditCardPaymentEnabled(creditCardPaymentEnabled);
+
 			boolean found = false;
 			for (Preference p : college.getPreferences()) {
 				if (CommonPreferenceController.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {

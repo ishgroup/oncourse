@@ -661,6 +661,16 @@ public class PurchaseController {
         return String.format("%s (%s-%s)", courseClass.getCourse().getName(), courseClass.getCourse().getCode(), courseClass.getCode());
     }
 
+	public boolean isCorporatePassPaymentEnabled()
+	{
+		return preferenceController.isCorporatePassPaymentEnabled();
+	}
+
+	public boolean isCreditCardPaymentEnabled()
+	{
+		return preferenceController.isCreditCardPaymentEnabled();
+	}
+
 	public IPaymentService getPaymentService() {
 		return paymentService;
 	}
@@ -894,7 +904,10 @@ public class PurchaseController {
         corporatePassNotFound,
         corporatePassInvalidCourseClass,
         corporatePassAdded,
-        corporatePassShouldBeEntered;
+        corporatePassShouldBeEntered,
+		noEnabledPaymentMethods,
+		corporatePassNotEnabled,
+		creditCardPaymentNotEnabled;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);

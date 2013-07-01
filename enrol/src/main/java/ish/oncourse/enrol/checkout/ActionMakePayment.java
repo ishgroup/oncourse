@@ -5,7 +5,7 @@ import ish.oncourse.model.Enrolment;
 
 import java.util.List;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Message.corporatePassShouldBeEntered;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
 
 public class ActionMakePayment extends APurchaseAction {
 	@Override
@@ -30,6 +30,19 @@ public class ActionMakePayment extends APurchaseAction {
 
 	@Override
 	protected boolean validate() {
+		if (getController().isEditCorporatePass() && !getController().isEditCorporatePass())
+		{
+			getController().addError(corporatePassNotEnabled);
+			return false;
+		}
+
+		if (getController().isEditPayment() && !getController().isCreditCardPaymentEnabled())
+		{
+			getController().addError(creditCardPaymentNotEnabled);
+			return false;
+		}
+
+
 		if (getController().isEditCorporatePass()) {
 			if (getController().getModel().getCorporatePass() == null) {
 				getController().addError(corporatePassShouldBeEntered);
