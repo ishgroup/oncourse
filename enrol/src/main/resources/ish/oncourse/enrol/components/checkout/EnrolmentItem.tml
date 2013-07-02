@@ -25,16 +25,13 @@
 	  			<t:if test="enrolment.courseClass.hasRoom">
 	  				<span t:type="ui/RoomLocation" room="enrolment.courseClass.room" withRoomName="false" disabledLink="true" />
 				</t:if>&#187; 
-		  		<t:if test="enrolment.courseClass.running">
 		  			<span class="started">
 	  					<t:output value="enrolment.courseClass.startDate" format="dateFormat"/>
 	  				</span>
-					<p:else>
-						<span class="ended">
-	  						<t:output value="enrolment.courseClass.endDate" format="dateFormat"/>
-		  				</span>
-		  			</p:else>
-	  			</t:if>
+					-
+					<span class="ended">
+						<t:output value="enrolment.courseClass.endDate" format="dateFormat"/>
+					</span>
 	 	  	</em>
         </td>
 		<td class="alignright">
