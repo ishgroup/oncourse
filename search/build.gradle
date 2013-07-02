@@ -1,6 +1,6 @@
 dependencies {
-	compile files('../common/common-services/src/main/java/ish/oncourse/listeners/OverrideLog4JListener.java')
-	compile 'commons-lang:commons-lang:2.6'
+    compile project(':common:common-services')
+    //compile 'commons-lang:commons-lang:2.6'
 
 	compile 'org.apache.solr:solr:4.3.1@war'
 	compile 'org.apache.solr:solr-dataimporthandler:4.3.1'
@@ -12,7 +12,7 @@ dependencies {
 	
 	testCompile 'org.apache.solr:solr-test-framework:4.3.1'
 	testCompile 'org.apache.lucene:lucene-test-framework:4.3.1'
-	testCompile project(':common:common-services')
+	//testCompile project(':common:common-services')
 }
 
 war
