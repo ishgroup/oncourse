@@ -198,6 +198,7 @@ public class Web {
 				
 				if (webSite != null) {
 					webSite.setGoogleAnalyticsAccount(sites.get(key).getGoogleAnalyticsAccount());
+					webSite.setGoogleTagmanagerAccount(sites.get(key).getGoogleTagmanagerAccount());
 				}
 			}
 		}
