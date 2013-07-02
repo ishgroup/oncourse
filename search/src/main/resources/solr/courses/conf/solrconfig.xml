@@ -2,20 +2,6 @@
 <config>
   <luceneMatchVersion>LUCENE_41</luceneMatchVersion>
 
-	<lib dir="../../contrib/extraction/lib" regex=".*\.jar"/>
-	<lib dir="../../dist/" regex="apache-solr-cell-\d.*\.jar" />
-	
-	<lib dir="../../contrib/clustering/lib/" regex=".*\.jar"/>
-	<lib dir="../../dist/" regex="apache-solr-clustering-\d.*\.jar" />
-	
-	<lib dir="../../contrib/langid/lib/" regex=".*\.jar" />
-	<lib dir="../../dist/" regex="apache-solr-langid-\d.*\.jar" />
-	
-	<lib dir="../../contrib/velocity/lib" regex=".*\.jar" />
-	<lib dir="../../dist/" regex="apache-solr-velocity-\d.*\.jar" />
-
-	<lib dir="/total/crap/dir/ignored" />  
-
   <dataDir>${SOLR_DATA}/courses</dataDir>
   <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 	
