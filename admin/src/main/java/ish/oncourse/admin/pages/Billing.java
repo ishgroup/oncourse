@@ -170,22 +170,48 @@ public class Billing {
 	}
 
 	public String getSupportPaidUntil() {
-		Object supportPaidUntil = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support-paidUntil");
+		Object supportPaidUntil = licenseData.get(college.getId()).get(null).get("support-paidUntil");
 		return supportPaidUntil == null ? "" : dateFormat.format(supportPaidUntil);
 	}
 
 	public String getSupportFree() {
-		Object supportFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support-free");
+		Object supportFree = licenseData.get(college.getId()).get(null).get("support-free");
 		return supportFree == null ? "" : String.valueOf(supportFree);
 	}
 
 	public String getSupport() {
-		Object support = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support");
+		Object support = licenseData.get(college.getId()).get(null).get("support");
 		return support == null ? moneyFormat.format(0.0) : moneyFormat.format(support);
 	}
 
+	public String getSms() {
+		Object sms = billingData.get(college.getId()).get(null).get("sms");
+		return sms == null ? "" : String.valueOf(sms);
+	}
+
+	public String getSmsFree() {
+		Object smsFree = licenseData.get(college.getId()).get(null).get("sms-free");
+		return smsFree == null ? "" : String.valueOf(smsFree);
+	}
+
+	public String getSmsCollege() {
+		Object smsCollege = licenseData.get(college.getId()).get(null).get("sms");
+		return smsCollege == null ? moneyFormat.format(0.0) : moneyFormat.format(smsCollege);
+	}
+
+	public String getSmsTotal() {
+		Object sms = billingData.get(college.getId()).get(null).get("sms");
+		Object smsCost = licenseData.get(college.getId()).get(null).get("sms");
+		if (sms != null && smsCost != null) {
+			return moneyFormat.format((Long) sms * ((BigDecimal) smsCost).doubleValue());
+		}
+		else {
+			return moneyFormat.format(0.0);
+		}
+	}
+
 	public String getWebHostingFree() {
-		Object webHostingFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support-free");
+		Object webHostingFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("hosting-free");
 		return webHostingFree == null ? "" : String.valueOf(webHostingFree);
 	}
 
@@ -201,17 +227,17 @@ public class Billing {
 			if (paidUntil == null) {
 				return true;
 			}
-			
+
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(paidUntil);
-			
+
 			Calendar payDate = Calendar.getInstance();
 			payDate.setTime(fromMonth);
 			if (cal.get(Calendar.MONTH) <= payDate.get(Calendar.MONTH) && cal.get(Calendar.YEAR) <= payDate.get(Calendar.YEAR)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -220,35 +246,42 @@ public class Billing {
 		return webHostingPaidUntil == null ? "" : dateFormat.format(webHostingPaidUntil);
 	}
 
-	public String getSms() {
-		Object sms = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("sms");
-		return sms == null ? "" : String.valueOf(sms);
-	}
-
-	public String getSmsFree() {
-		Object smsFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("sms-free");
-		return smsFree == null ? "" : String.valueOf(smsFree);
-	}
-
-	public String getSmsCollege() {
-		Object smsCollege = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("sms");
-		return smsCollege == null ? moneyFormat.format(0.0) : moneyFormat.format(smsCollege);
-	}
-
 	public String getCcOffice() {
-		Object ccOffice = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("ccOffice");
+		Object ccOffice = billingData.get(college.getId()).get(null).get("ccOffice");
 		return ccOffice == null ? "" : String.valueOf(ccOffice);
 	}
 
 	public String getCcOfficeFree() {
-		Object ccOfficeFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-office-free");
+		Object ccOfficeFree = licenseData.get(college.getId()).get(null).get("cc-office-free");
 		return ccOfficeFree == null ? "" : String.valueOf(ccOfficeFree);
 	}
 
 	public String getCcOfficeCollege() {
-		Object ccOfficeCollege = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-office");
+		Object ccOfficeCollege = licenseData.get(college.getId()).get(null).get("cc-office");
 		return ccOfficeCollege == null ? moneyFormat.format(0.0) : moneyFormat.format(ccOfficeCollege);
 	}
+
+	public String getCcOfficeTotal() {
+		Long ccOffice = (Long) billingData.get(college.getId()).get(null).get("ccOffice");
+		BigDecimal ccOfficeCost = (BigDecimal) licenseData.get(college.getId()).get(null).get("cc-office");
+		Integer ccOfficeFree = (Integer) licenseData.get(college.getId()).get(null).get("cc-office-free");
+		if (ccOffice != null && ccOfficeCost != null) {
+			if (ccOfficeFree == null) {
+				ccOfficeFree = 0;
+			}
+
+			if (ccOfficeFree < ccOffice) {
+				return moneyFormat.format((ccOffice - ccOfficeFree) * ccOfficeCost.doubleValue());
+			}
+			else {
+				return moneyFormat.format(0.0);
+			}
+		}
+		else {
+			return moneyFormat.format(0.0);
+		}
+	}
+
 
 	public String getCcWeb() {
 		Object ccWeb = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("ccWeb");
@@ -270,49 +303,6 @@ public class Billing {
 		return ccWebValue == null ? moneyFormat.format(0.0) : moneyFormat.format(ccWebValue);
 	}
 
-	public String getEcommerceFree() {
-		Object ecommerceFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("ecommerce-free");
-		return ecommerceFree == null ? "" : String.valueOf(ecommerceFree);
-	}
-
-	public String getEcommerce() {
-		Object ecommerce = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("ecommerce");
-		return ecommerce == null ? "0.0" : 
-				String.valueOf(((BigDecimal) ecommerce).doubleValue() * 100);
-	}
-
-	public String getSmsTotal() {
-		Object sms = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("sms");
-		Object smsCost = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("sms");
-		if (sms != null && smsCost != null) {
-			return moneyFormat.format((Long) sms * ((BigDecimal) smsCost).doubleValue());
-		}
-		else {
-			return moneyFormat.format(0.0);
-		}
-	}
-
-	public String getCcOfficeTotal() {
-		Long ccOffice = (Long) billingData.get(college.getId()).get(getCurrentWebSiteId()).get("ccOffice");
-		BigDecimal ccOfficeCost = (BigDecimal) licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-office");
-		Integer ccOfficeFree = (Integer) licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-office-free");
-		if (ccOffice != null && ccOfficeCost != null) {
-			if (ccOfficeFree == null) {
-				ccOfficeFree = 0;
-			}
-			
-			if (ccOfficeFree < ccOffice) {
-				return moneyFormat.format((ccOffice - ccOfficeFree) * ccOfficeCost.doubleValue());
-			}
-			else {
-				return moneyFormat.format(0.0);
-			}
-		}
-		else {
-			return moneyFormat.format(0.0);
-		}
-	}
-	
 	public String getCcWebTotal() {
 		Object ccWeb = billingData.get(college.getId()).get(getCurrentWebSiteId()).get("ccWeb");
 		Object ccWebCost = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("cc-web");
@@ -322,6 +312,17 @@ public class Billing {
 		else {
 			return moneyFormat.format(0.0);
 		}
+	}
+
+	public String getEcommerceFree() {
+		Object ecommerceFree = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("ecommerce-free");
+		return ecommerceFree == null ? "" : String.valueOf(ecommerceFree);
+	}
+
+	public String getEcommerce() {
+		Object ecommerce = licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("ecommerce");
+		return ecommerce == null ? "0.0" : 
+				String.valueOf(((BigDecimal) ecommerce).doubleValue() * 100);
 	}
 
 	public String getEcommerceTotal() {
