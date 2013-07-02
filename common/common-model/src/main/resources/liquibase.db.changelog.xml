@@ -1637,4 +1637,15 @@
 		<modifyDataType tableName="Organisation" columnName="legalPersonName" newDataType="VARCHAR(512)"/>
 	</changeSet>
 
+	<changeSet id="108" author="andrey" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebSite" columnName="googleTagmanagerAccount"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="WebSite">
+			<column name="googleTagmanagerAccount" type="VARCHAR(16)"/>
+		</addColumn>
+	</changeSet>
+
 </databaseChangeLog>

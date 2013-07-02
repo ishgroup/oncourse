@@ -60,8 +60,11 @@ public class Web {
 	private String newSiteKeyValue;
 	
 	@Property
+	private String newSiteGoogleTagmanagerValue;
+
+	@Property
 	private String newSiteGoogleAnalyticsValue;
-	
+
 	@Property
 	private String newDomainValue;
 	
@@ -214,6 +217,7 @@ public class Web {
 		site.setName(newSiteNameValue);
 		site.setSiteKey(newSiteKeyValue);
 		site.setGoogleAnalyticsAccount(newSiteGoogleAnalyticsValue);
+		site.setGoogleTagmanagerAccount(newSiteGoogleTagmanagerValue);
 		site.setCreated(now);
 		site.setModified(now);
 		

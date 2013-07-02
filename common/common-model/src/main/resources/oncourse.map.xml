@@ -1028,6 +1028,7 @@
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="googleAnalyticsAccount" type="VARCHAR" length="16"/>
 		<db-attribute name="googleDirectionsFrom" type="VARCHAR" length="256"/>
+		<db-attribute name="googleTagmanagerAccount" type="VARCHAR" length="16"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
@@ -1935,6 +1936,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="googleAnalyticsAccount" type="java.lang.String" db-attribute-path="googleAnalyticsAccount"/>
 		<obj-attribute name="googleDirectionsFrom" type="java.lang.String" db-attribute-path="googleDirectionsFrom"/>
+		<obj-attribute name="googleTagmanagerAccount" type="java.lang.String" db-attribute-path="googleTagmanagerAccount"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="siteKey" type="java.lang.String" db-attribute-path="siteKey"/>
