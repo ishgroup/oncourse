@@ -8,6 +8,7 @@ import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -150,18 +151,13 @@ public class Billing {
 	}
 	
 	public boolean isSupportPayMonth() {
-		String plan = (String) licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support-plan");
-		Date paidUntil = (Date) licenseData.get(college.getId()).get(getCurrentWebSiteId()).get("support-paidUntil");
+		String plan = (String) licenseData.get(college.getId()).get(null).get("support-plan");
+		Date paidUntil = (Date) licenseData.get(college.getId()).get(null).get("support-paidUntil");
 		if (plan != null) {
 			if (paidUntil == null) {
 				return true;
 			}
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(paidUntil);
-			
-			Calendar payDate = Calendar.getInstance();
-			payDate.setTime(fromMonth);
-			if (cal.get(Calendar.MONTH) <= payDate.get(Calendar.MONTH) && cal.get(Calendar.YEAR) <= payDate.get(Calendar.YEAR)) {
+			if (DateUtils.truncatedCompareTo(paidUntil, fromMonth, Calendar.MONTH) <= 0) {
 				return true;
 			}
 		}
@@ -228,12 +224,7 @@ public class Billing {
 				return true;
 			}
 
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(paidUntil);
-
-			Calendar payDate = Calendar.getInstance();
-			payDate.setTime(fromMonth);
-			if (cal.get(Calendar.MONTH) <= payDate.get(Calendar.MONTH) && cal.get(Calendar.YEAR) <= payDate.get(Calendar.YEAR)) {
+			if (DateUtils.truncatedCompareTo(paidUntil, fromMonth, Calendar.MONTH) <= 0) {
 				return true;
 			}
 		}
