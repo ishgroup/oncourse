@@ -2,6 +2,8 @@ package ish.oncourse.util;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.environment.IEnvironmentService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.services.Request;
 
 public class HTMLUtils {
@@ -41,6 +43,31 @@ public class HTMLUtils {
 	{
 		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + (browseTag == null ? request.getPath(): browseTag.getDefaultPath().toLowerCase());
 
+	}
+
+	public static String getMetaGeneratorContent(IEnvironmentService environmentService) {
+		StringBuilder buff = new StringBuilder(
+				environmentService.getApplicationName());
+
+		String buildServerID = environmentService.getBuildServerID();
+		if (!StringUtils.isEmpty(buildServerID)) {
+			buff.append(' ').append(buildServerID);
+		}
+
+		String scmVersion = environmentService.getScmVersion();
+		if (!StringUtils.isEmpty(scmVersion)) {
+			buff.append(StringUtils.isEmpty(buildServerID) ? ' ' : '/');
+			buff.append('r');
+			buff.append(scmVersion);
+		}
+
+		String ciVersion = environmentService.getCiVersion();
+		if (!StringUtils.isEmpty(ciVersion)) {
+			buff.append(StringUtils.isEmpty(buildServerID) ? ' ' : '/');
+			buff.append('r');
+			buff.append(ciVersion);
+		}
+		return buff.toString();
 	}
 
 }

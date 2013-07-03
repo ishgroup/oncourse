@@ -4,7 +4,7 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import org.apache.commons.lang.StringUtils;
+import ish.oncourse.util.HTMLUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -46,28 +46,7 @@ public class PageHead {
 	}
 
 	public String getMetaGeneratorContent() {
-		StringBuilder buff = new StringBuilder(
-				environmentService.getApplicationName());
-
-		String buildServerID = environmentService.getBuildServerID();
-		if (!StringUtils.isEmpty(buildServerID)) {
-			buff.append(' ').append(buildServerID);
-		}
-
-		String scmVersion = environmentService.getScmVersion();
-		if (!StringUtils.isEmpty(scmVersion)) {
-			buff.append(StringUtils.isEmpty(buildServerID) ? ' ' : '/');
-			buff.append('r');
-			buff.append(scmVersion);
-		}
-
-		String ciVersion = environmentService.getCiVersion();
-		if (!StringUtils.isEmpty(ciVersion)) {
-			buff.append(StringUtils.isEmpty(buildServerID) ? ' ' : '/');
-			buff.append('r');
-			buff.append(ciVersion);
-		}
-		return buff.toString();
+		return HTMLUtils.getMetaGeneratorContent(environmentService);
 	}
 
 	/**

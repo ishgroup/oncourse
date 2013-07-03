@@ -2,6 +2,7 @@
 
 	<meta http-equiv="Cache-control" content="no-cache"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
 
 	<title>${title}</title>
 
