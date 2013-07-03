@@ -14,7 +14,7 @@ public class OfficeCCExportLineBuilder extends AbstractExportLineBuilder {
 	public static final String OFFICE_CC_LICENSE_KEY = "cc-office";
 	public static final String OFFICE_CC_FREE_TRANSACTIONS = "cc-office-free";
 	public static final String OFFICE_CC_SIMPLE_DESCRIPTION_TEMPLATE = "Office credit card transaction fee";
-    public static final String OFFICE_CC_DESCRIPTION_TEMPLATE = "Office credit card transaction fee ({1} less {2} free transactions)";
+    public static final String OFFICE_CC_DESCRIPTION_TEMPLATE = "Office credit card transaction fee ({0} less {1} free transactions)";
 	
 	public OfficeCCExportLineBuilder(
 			College college,
@@ -46,8 +46,9 @@ public class OfficeCCExportLineBuilder extends AbstractExportLineBuilder {
 		
 		return MessageFormat.format(
 				template,
-				getTransactionsCount(), 
-				getFreeTransactionsCount());
+				getTransactionsCount(),
+				getFreeTransactionsCount()
+				);
 	}
 
 	@Override
