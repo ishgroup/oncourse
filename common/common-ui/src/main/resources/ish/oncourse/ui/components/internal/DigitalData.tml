@@ -1,0 +1,52 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<t:if test="cart">
+		<script type="text/javascript">
+			digitalData = [{
+				'cart':{
+					'cartID': '${cart.id}',
+					'price':
+					{
+						'basePrice':'${cart.price.base}',
+						'vouchercode':'${cart.price.vouchercode}',
+						'voucherdiscount':'${cart.price.voucherdiscount}',
+						'currency': '${cart.price.currency}',
+						'tax': '${cart.price.tax}',
+						'priceWithTax': '${cart.price.withTax}',
+						'cartTotal': '${cart.price.total}'
+					},
+					'items':{
+							<t:loop source="cart.products" value="product">
+								{
+									'productID':
+									{
+										'prodID': '${product.id.id}',
+										'productName': '${product.id.name}',
+										'description': '${product.id.description}',
+										'productURL': '${product.id.url}',
+										'sku': '${product.id.sku}'
+									},
+									'productCategory':
+									{
+										'primaryCategory': '${product.category.primary}',
+										'ProductType': '${product.category.type}'
+									},
+						            'quantity': '${product.quantity}',
+									'price':
+									{
+										'basePrice':'${product.price.base}',
+										'vouchercode':'${product.price.vouchercode}',
+										'voucherdiscount':'${product.price.voucherdiscount}',
+										'currency': '${product.price.currency}',
+										'tax': '${product.price.tax}',
+										'priceWithTax': '${product.price.withTax}',
+										'cartTotal': '${product.price.total}'
+									}
+								}
+							</t:loop>
+							}
+
+				}
+			}];
+		</script>
+	</t:if>
+</t:container>

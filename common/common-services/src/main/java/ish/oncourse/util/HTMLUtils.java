@@ -3,10 +3,14 @@ package ish.oncourse.util;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.environment.IEnvironmentService;
+import ish.oncourse.services.html.IPlainTextExtractor;
+import ish.oncourse.services.textile.ITextileConverter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.services.Request;
 
 public class HTMLUtils {
+	private static final Logger LOGGER = Logger.getLogger(HTMLUtils.class);
 
 	public static final String VALUE_on = "on";
 	public static final String HTTP_PROTOCOL = "http://";
@@ -68,6 +72,22 @@ public class HTMLUtils {
 			buff.append(ciVersion);
 		}
 		return buff.toString();
+	}
+
+	public static String cutDescription(ITextileConverter textileConverter, IPlainTextExtractor plainTextExtractor,
+											   String details, int size)
+	{
+		try {
+			String detail = textileConverter.convertCustomTextile(details,
+					new ValidationErrors());
+			if (detail != null) {
+				String plainText = plainTextExtractor.extractFromHtml(detail);
+				return StringUtils.abbreviate(plainText, size);
+			}
+		} catch (Exception e) {
+			LOGGER.warn(e.getMessage());
+		}
+		return StringUtils.EMPTY;
 	}
 
 }
