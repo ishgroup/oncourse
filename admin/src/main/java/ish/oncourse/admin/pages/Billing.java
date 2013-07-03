@@ -318,8 +318,8 @@ public class Billing {
 
 	public String getEcommerceTotal() {
         Long id = college.getId();
-		Object ecommerce = licenseData.get(id).get("ecommerce");
-		Object ccWebValue = billingData.get(id).get("ccWebValue");
+		Object ecommerce = licenseData.get(id).get(getCurrentWebSiteId()).get("ecommerce");
+		Object ccWebValue = billingData.get(id).get(getCurrentWebSiteId()).get("ccWebValue");
 		if (ecommerce != null && ccWebValue != null) {
 			return moneyFormat.format(
 					((BigDecimal) ecommerce).multiply((BigDecimal) ccWebValue));
