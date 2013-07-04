@@ -12,6 +12,7 @@ public class ActionSelectCardEditor extends APurchaseAction{
 		if (getController().isEditCorporatePass())
 		{
 			getModel().getInvoice().setCorporatePassUsed(null);
+			getModel().getInvoice().setCustomerReference(null);
 			getModel().setCorporatePass(null);
 			getModel().setPayer(getModel().getContacts().get(0));
 		}

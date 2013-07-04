@@ -16,6 +16,8 @@ import java.util.Map;
 
 public class CorporatePassEditor implements IPaymentControlDelegate {
 
+	private static final String FIELD_corporatePass = "corporatePass";
+	private static final String FIELD_reference = "reference";
     @Parameter(required = true)
     @Property
     private PaymentEditorDelegate delegate;
@@ -46,31 +48,30 @@ public class CorporatePassEditor implements IPaymentControlDelegate {
 		}
 	}
 
-
 	@OnEvent(value = "addCorporatePass")
 	public Object addCorporatePass()
 	{
-		String password = StringUtilities.cutToNull(request.getParameter("corporatePass"));
+		String password = StringUtilities.cutToNull(request.getParameter(FIELD_corporatePass));
 		if (password == null)
 			errorMessage = messages.get("message-password");
-		else
-		{
-			Map<String,String> errors = delegate.addCorporatePass(password);
+		else {
+			Map<String, String> errors = delegate.addCorporatePass(password);
 			if (!errors.isEmpty())
 				errorMessage = errors.values().iterator().next();
 		}
 		return blockToRefresh;
 	}
 
-    @Override
-    public Object makePayment() {
+	@Override
+	public Object makePayment() {
 		PaymentEditorParser parser = getPaymentEditorParser();
 		parser.parse();
+		String reference = StringUtilities.cutToNull(request.getParameter(FIELD_reference));
+		delegate.getInvoice().setCustomerReference(reference);
 		delegate.setErrors(parser.getErrors());
 		delegate.makePayment();
-        return blockToRefresh;
-    }
-
+		return blockToRefresh;
+	}
 
 	private PaymentEditorParser getPaymentEditorParser() {
 		PaymentEditorParser paymentEditorParser = new PaymentEditorParser();

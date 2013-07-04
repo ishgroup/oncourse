@@ -1,10 +1,24 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<fieldset>
 		<p class="info-content">Enter a CorporatePass code below to complete this transaction without any payment at this time. CorporatePass is available to  pre-approved corporate clients only.</p>
-        <label class="corporatePass-label" for="password">Code </label>
-        <input type="text" id="corporatePass" name="corporatePass" class="small-textbox"/>
-        <div id="addCorporatePass" class="button">Submit</div>
-        <t:eventlink t:id="addCorporatePass" style="{display:none}"/>
+
+		<t:if test="successMessage" negate="true">
+			<label class="corporatePass-label" for="corporatePass">Code </label>
+			<input type="text" id="corporatePass" name="corporatePass" class="input-fixed"/>
+
+			<div id="addCorporatePass" class="button">Submit</div>
+			<t:eventlink t:id="addCorporatePass" style="{display:none}"/>
+		</t:if>
+
+		<t:if test="successMessage">
+			<label class="corporatePass-label" for="reference">
+				Your Reference
+				<small>(Optional)</small>
+			</label>
+			<input type="text" id="reference" name="reference" class="input-fixed"/>
+		</t:if>
+
+
 		<t:if test="successMessage">
 			<div class="message">${successMessage}</div>
 		</t:if>
@@ -12,13 +26,5 @@
 		<t:if test="errorMessage">
 			<div class="validation">${errorMessage}</div>
 		</t:if>
-	</fieldset>
-	<fieldset>
-        <label class="corporatePass-label" for="reference">
-			Your Reference
-			<small>(Optional)</small>
-		</label>
-        <input type="text" id="reference" name="reference"/>
-        <div id="addReference" class="button">Submit</div>
 	</fieldset>
 </t:container>
