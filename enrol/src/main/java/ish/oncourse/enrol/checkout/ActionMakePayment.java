@@ -30,7 +30,7 @@ public class ActionMakePayment extends APurchaseAction {
 
 	@Override
 	protected boolean validate() {
-		if (getController().isEditCorporatePass() && !getController().isEditCorporatePass())
+		if (getController().isEditCorporatePass() && !getController().isCorporatePassPaymentEnabled())
 		{
 			getController().addError(corporatePassNotEnabled);
 			return false;

@@ -11,6 +11,8 @@ import org.apache.cayenne.query.SelectQuery;
 import java.util.Date;
 import java.util.List;
 
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.corporatePassNotEnabled;
+
 public class ActionAddCorporatePass extends  APurchaseAction{
 
     private String password;
@@ -65,6 +67,12 @@ public class ActionAddCorporatePass extends  APurchaseAction{
     }
 
     private boolean contains(List<CourseClass> validClasses, CourseClass courseClass) {
+		if (!getController().isCorporatePassPaymentEnabled())
+		{
+			getController().addError(corporatePassNotEnabled);
+			return false;
+		}
+
     	if (validClasses.isEmpty()) {
     		//if no classes specified, all the classes should pass as valid
     		return true;
