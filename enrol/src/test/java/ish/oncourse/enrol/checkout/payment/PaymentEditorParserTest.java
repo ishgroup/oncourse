@@ -63,6 +63,21 @@ public class PaymentEditorParserTest {
         when(request.getParameter(Field.userAgreed.name())).thenReturn("on");
         paymentEditorParser.parse();
         assertTrue(paymentEditorParser.getErrors().isEmpty());
+
+		//test when corporate pass web enrolment available only and corporate pass not entered yet
+		when(request.getParameter(Field.contact.name())).thenReturn(null);
+		paymentEditorParser = getPaymentEditorParser();
+		paymentEditorParser.parse();
+		assertFalse(paymentEditorParser.getErrors().isEmpty());
+		assertEquals(1, paymentEditorParser.getErrors().size());
+		key = String.format(MESSAGE_KEY_TEMPLATE, Field.contact.name());
+		assertEquals(key, paymentEditorParser.getErrors().get(Field.contact.name()));
+
+		//test when corporate pass web enrolment available only and corporate pass entered
+		paymentEditorParser = getPaymentEditorParser();
+		paymentEditorParser.setCorporatePass(true);
+		paymentEditorParser.parse();
+		assertTrue(paymentEditorParser.getErrors().isEmpty());
     }
 
     @Test
@@ -134,6 +149,7 @@ public class PaymentEditorParserTest {
         paymentEditorParser.setPaymentIn(paymentIn);
         paymentEditorParser.setContacts(contacts);
         paymentEditorParser.setMessages(messages);
+		paymentEditorParser.setCorporatePass(false);
         return paymentEditorParser;
     }
 }
