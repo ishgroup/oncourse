@@ -79,6 +79,7 @@ public class CorporatePassEditor implements IPaymentControlDelegate {
 		paymentEditorParser.setContacts(delegate.getContacts());
 		paymentEditorParser.setMessages(messages);
 		paymentEditorParser.setPaymentIn(delegate.getPaymentIn());
+		paymentEditorParser.setCorporatePass(delegate.isCorporatePass());
 		return paymentEditorParser;
 	}
 

@@ -22,6 +22,7 @@ public class PaymentEditorParser implements IFieldsParser {
 	private PaymentIn paymentIn;
 
 	private boolean newPayer;
+	private boolean isCorporatePass;
 
 	private Map<String, String> errors = new HashMap<>();
 
@@ -48,7 +49,11 @@ public class PaymentEditorParser implements IFieldsParser {
 				if (value != null) {
 					setValue(field, value);
 				} else {
-					errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
+					if (isCorporatePass && Field.contact.equals(field)) {
+						//skip the check
+					} else {
+						errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
+					}
 				}
 			}
 		}
@@ -128,6 +133,9 @@ public class PaymentEditorParser implements IFieldsParser {
 		return newPayer;
 	}
 
+	public void setCorporatePass(boolean corporatePass) {
+		isCorporatePass = corporatePass;
+	}
 
 	public static enum Field {
 		contact,

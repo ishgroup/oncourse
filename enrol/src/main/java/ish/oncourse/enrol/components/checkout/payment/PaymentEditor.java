@@ -198,6 +198,8 @@ public class PaymentEditor implements IPaymentControlDelegate {
         paymentEditorParser.setContacts(delegate.getContacts());
         paymentEditorParser.setMessages(messages);
         paymentEditorParser.setPaymentIn(delegate.getPaymentIn());
+		//when we parse payment page we should ignore entered corporate pass
+		paymentEditorParser.setCorporatePass(false);
         return paymentEditorParser;
     }
 
