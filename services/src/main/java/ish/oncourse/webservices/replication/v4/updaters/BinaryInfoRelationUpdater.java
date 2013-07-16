@@ -1,7 +1,6 @@
 package ish.oncourse.webservices.replication.v4.updaters;
 
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.BinaryInfoRelation;
+import ish.oncourse.model.*;
 import ish.oncourse.webservices.v4.stubs.replication.BinaryInfoRelationStub;
 
 public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoRelationStub, BinaryInfoRelation> {
@@ -12,7 +11,46 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 		entity.setCreated(stub.getCreated());
 		entity.setEntityAngelId(stub.getEntityAngelId());
 		entity.setEntityIdentifier(stub.getEntityName());
-		entity.setEntityWillowId(stub.getEntityWillowId());
 		entity.setModified(stub.getModified());
+		//after set the data, try to update relation related entity willowid
+		Queueable entityObject;
+		if (CONTACT_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Contact.class);
+		} else if (COURSE_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Course.class);
+		} else if (CERTIFICATE_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Certificate.class);
+		} else if (COURSE_CLASS_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), CourseClass.class);
+		} else if (ENROLMENT_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Enrolment.class);
+		} else if (INVOICE_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Invoice.class);
+		} else if (ROOM_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Room.class);
+		} else if (SESSION_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Session.class);
+		} else if (SITE_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Site.class);
+		} else if (STUDENT_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Student.class);
+		} else if (TUTOR_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Tutor.class);
+		} else if (TAG_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Tag.class);
+		} else {
+			String message = String.format("Unexpected related entity with type %s and angelid %s",
+				stub.getEntityName(), stub.getEntityAngelId());
+			LOG.error(message);
+			throw new UpdaterException(message);
+		}
+		if (entityObject != null && entityObject.getId() != null) {
+			entity.setEntityWillowId(entityObject.getId());
+		} else {
+			String message = String.format(
+				"Unable to load related entity %s for angelid %s or this entity have null willowId",
+					stub.getEntityName(), stub.getEntityAngelId());
+			LOG.error(message);
+		}
 	}
 }
