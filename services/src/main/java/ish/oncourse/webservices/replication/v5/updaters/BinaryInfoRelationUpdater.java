@@ -9,7 +9,7 @@ import ish.oncourse.webservices.v5.stubs.replication.BinaryInfoRelationStub;
 public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoRelationStub, BinaryInfoRelation> {
 
 	@Override
-	protected void updateEntity(BinaryInfoRelationStub stub, BinaryInfoRelation entity, RelationShipCallback callback) {		
+	public void updateEntity(BinaryInfoRelationStub stub, BinaryInfoRelation entity, RelationShipCallback callback) {
 		entity.setBinaryInfo(callback.updateRelationShip(stub.getBinaryInfoId(), BinaryInfo.class));
 		entity.setCreated(stub.getCreated());
 		entity.setEntityAngelId(stub.getEntityAngelId());
@@ -54,6 +54,7 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 				"Unable to load related entity %s for angelid %s or this entity have null willowId",
 					stub.getEntityName(), stub.getEntityAngelId());
 			LOG.error(message);
+			throw new UpdaterException(message);
 		}
 	}
 }
