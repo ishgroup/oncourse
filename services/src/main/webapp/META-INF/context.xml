@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="${tomcat.path}" sessionCookiePath="/services" sessionCookieName="oncourse_session">
-  <ResourceLink global="jdbc/oncourse" name="jdbc/oncourse" type="javax.sql.DataSource"/>
-  <Environment name="CustomComponentsPath" value="/var/onCourse/resources" type="java.lang.String" override="false"/>
+<Context antiJARLocking="true" path="/${tomcat.path}" sessionCookiePath="/services" sessionCookieName="oncourse_session">
+    <ResourceLink global="jdbc/oncourse" name="jdbc/oncourse" type="javax.sql.DataSource"/>
+    <Environment name="CustomComponentsPath" value="/var/onCourse/resources" type="java.lang.String" override="false"/>
 
-  <Environment name="asset.fileStorageRoot" override="false" type="java.lang.String" value="/var/tomonCourse/assets" />
-  <Environment name="asset.syncScript" override="false" type="java.lang.String" value="/var/tomonCourse/scripts/assetSync.sh" />
+    <Environment name="asset.fileStorageRoot" override="false" type="java.lang.String" value="/var/tomonCourse/assets" />
+    <Environment name="asset.syncScript" override="false" type="java.lang.String" value="/var/tomonCourse/scripts/assetSync.sh" />
   
-  <Environment name="cache.enabled" override="false" type="java.lang.Boolean" value="false"/>
+    <Environment name="cache.enabled" override="false" type="java.lang.Boolean" value="false"/>
 </Context>
