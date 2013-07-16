@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="${tomcat.path}">
+<Context antiJARLocking="true" path="/${tomcat.path}">
 	<Environment name="solr/home" type="java.lang.String" value="/var/onCourse/solr" override="true" />
 	<ResourceLink global="jdbc/oncourse" name="jdbc/oncourse" type="javax.sql.DataSource"/>
 	<Environment name="CustomComponentsPath" value="/var/onCourse/resources" type="java.lang.String" override="false"/>

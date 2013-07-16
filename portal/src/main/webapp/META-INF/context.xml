@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="${tomcat.path}" sessionCookiePath="/portal" sessionCookieName="oncourse_session">
+<Context antiJARLocking="true" path="/${tomcat.path}" sessionCookiePath="/portal" sessionCookieName="oncourse_session">
 	<Environment name="solr/home" type="java.lang.String" value="/var/onCourse/solr" override="true" />
 	<ResourceLink global="jdbc/oncourse" name="jdbc/oncourse" type="javax.sql.DataSource"/>
 
