@@ -13,7 +13,9 @@ import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.content.WebContentService;
+import ish.oncourse.services.cookies.CookiesImplOverride;
 import ish.oncourse.services.cookies.CookiesService;
+import ish.oncourse.services.cookies.ICookiesOverride;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.CourseService;
 import ish.oncourse.services.course.ICourseService;
@@ -123,6 +125,7 @@ public class ServiceModule {
 		binder.bind(IAssetGroupService.class, AssetGroupService.class);
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
+		binder.bind(ICookiesOverride.class, CookiesImplOverride.class);
 		binder.bind(IEnvironmentService.class, EnvironmentService.class);
 		binder.bind(IFormatService.class, FormatService.class);
 		binder.bind(IPageRenderer.class, PageRenderer.class);

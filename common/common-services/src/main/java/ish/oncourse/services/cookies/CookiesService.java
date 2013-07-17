@@ -10,7 +10,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.Request;
 
 import java.net.MalformedURLException;
@@ -29,7 +28,7 @@ public class CookiesService implements ICookiesService {
 	private Request request;
 
 	@Inject
-	private Cookies cookies;
+	private ICookiesOverride cookiesOverride;
 
 	@Inject
 	private ICourseClassService courseClassService;
@@ -163,7 +162,7 @@ public class CookiesService implements ICookiesService {
 	}
 
 	public String getCookieValue(String cookieKey) {
-		return cookies.readCookieValue(cookieKey);
+		return cookiesOverride.readCookieValue(cookieKey);
 	}
 
 	public void appendValueToCookieCollection(String cookieKey, String cookieValue) {
@@ -188,7 +187,7 @@ public class CookiesService implements ICookiesService {
 	}
 
 	public void writeCookieValue(String cookieKey, String cookieValue) {
-		cookies.writeCookieValue(cookieKey, cookieValue, "/");
+		cookiesOverride.writeCookieValue(cookieKey, cookieValue, "/", false);
 	}
 
 	public void removeValueFromCookieCollection(String cookieKey, String cookieValue) {
@@ -236,7 +235,7 @@ public class CookiesService implements ICookiesService {
 	 */
 	@Override
 	public void removeCookieValue(String name) {
-		cookies.writeCookieValue(name, null, "/");
+		cookiesOverride.writeCookieValue(name, null, "/", request.isSecure());
 	}
 
 	@Override
