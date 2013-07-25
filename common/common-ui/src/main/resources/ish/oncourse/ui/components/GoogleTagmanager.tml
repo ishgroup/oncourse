@@ -1,5 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<t:if test="account">
+		<span t:type="ui/internal/datalayer"/>
+
 		<noscript><iframe src="//www.googletagmanager.com/ns.html?id=${account}"
 						  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
