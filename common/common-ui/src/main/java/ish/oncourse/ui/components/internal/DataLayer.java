@@ -16,7 +16,11 @@ import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 
-public class DigitalData {
+/**
+ * The class is tapestry component class for DataLayer.tml template which creates dataLayer javascript object
+ * for Google TagManager functionality
+ */
+public class DataLayer {
 
 	@Inject
 	private Request request;

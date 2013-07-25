@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<t:if test="cart">
 		<script type="text/javascript">
-			digitalData = [{
+			dataLayer = [{
 				'cart':{
 					'price':
 					{
@@ -44,7 +44,6 @@
 
 				}
 			}];
-			alert(digitalData['cart']);
 		</script>
 	</t:if>
 </t:container>
