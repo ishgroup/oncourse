@@ -128,7 +128,7 @@ public class Payment {
 	 *         and the payment is successful
 	 */
 	public String getEventName() {
-		boolean result = getPurchaseController().isFinished() &&
+		boolean result = getPurchaseController() != null && getPurchaseController().isFinished() &&
 				getPurchaseController().getPaymentEditorDelegate() != null &&
 				getPurchaseController().getPaymentEditorDelegate().isPaymentSuccess();
 		return result ? "purchaseComplete" : null;

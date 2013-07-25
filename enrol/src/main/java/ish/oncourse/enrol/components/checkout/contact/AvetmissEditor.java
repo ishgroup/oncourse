@@ -148,7 +148,7 @@ public class AvetmissEditor {
         avetmissEditorParser.setContact(contact);
         avetmissEditorParser.setCountryService(countryService);
         avetmissEditorParser.setLanguageService(languageService);
-        avetmissEditorParser.setMessages(messages);
+        avetmissEditorParser.setMessages(getAvetmissMessages());
         avetmissEditorParser.setRequest(request);
         avetmissEditorParser.parse();
         validateHandler.setErrors(avetmissEditorParser.getErrors());
