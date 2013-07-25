@@ -1,11 +1,10 @@
 package ish.oncourse.services.datalayer;
 
+import ish.math.Money;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
-import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.HTMLUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.services.Request;
@@ -13,12 +12,14 @@ import org.apache.tapestry5.services.Request;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The class creates java value objects(Cart,Product,Price,Category) for data layer of the tag mananager functionality.
+ * then the value objects will be converted to correspondent java script objects.
+ */
 public class ShoppingCartDataBuilder {
 
 	private Request request;
 	private ITagService tagService;
-	private IPlainTextExtractor plainTextExtractor;
-	private ITextileConverter textileConverter;
 	private List<CourseClass> courseClasses;
 	private Cart cart;
 
@@ -47,15 +48,15 @@ public class ShoppingCartDataBuilder {
 	}
 
 	public void build() {
+		/**
+		 * The field should be set before using this instance.
+		 */
 		assert request != null;
 		assert tagService != null;
-		assert plainTextExtractor != null;
-		assert textileConverter != null;
 		assert courseClasses != null;
 
 
 		cart = new Cart();
-		cart.id = "CART_ID";
 		for (CourseClass courseClass : courseClasses) {
 			Product product = getProduct(courseClass);
 			addProduct(product);
@@ -63,10 +64,10 @@ public class ShoppingCartDataBuilder {
 	}
 
 	private void addProduct(Product product) {
-		cart.price.tax += product.price.tax;
-		cart.price.base += product.price.base;
-		cart.price.withTax += product.price.withTax;
-		cart.price.total += product.price.total;
+		cart.price.tax = cart.price.tax.add(product.price.tax);
+		cart.price.base = cart.price.base.add(product.price.base);
+		cart.price.withTax = cart.price.withTax.add(product.price.withTax);
+		cart.price.total = cart.price.total.add(product.price.total);
 		cart.products.add(product);
 	}
 
@@ -81,9 +82,9 @@ public class ShoppingCartDataBuilder {
 
 	private Price getPrice(CourseClass courseClass) {
 		Price price = new Price();
-		price.base = courseClass.getFeeExGst().doubleValue();
-		price.withTax = courseClass.getFeeIncGst().doubleValue();
-		price.tax = courseClass.getFeeGst().doubleValue();
+		price.base = courseClass.getFeeExGst();
+		price.withTax = courseClass.getFeeIncGst();
+		price.tax = courseClass.getFeeGst();
 		price.total = price.withTax;
 		return price;
 	}
@@ -91,7 +92,7 @@ public class ShoppingCartDataBuilder {
 	private ProductCategory getCategory(CourseClass courseClass) {
 		Tag tag = getTagBy(courseClass);
 		ProductCategory category = new ProductCategory();
-		category.type = CourseClass.class.getSimpleName();
+		category.type = CategoryType.CLASS.name().toLowerCase();
 		category.primary = getCategoryBy(tag);
 		return category;
 	}
@@ -100,7 +101,6 @@ public class ShoppingCartDataBuilder {
 		ProductId productId = new ProductId();
 		productId.id = courseClass.getCourse().getCode();
 		productId.name = courseClass.getCourse().getName();
-		productId.description = HTMLUtils.cutDescription(textileConverter, plainTextExtractor, courseClass.getCourse().getDetail(), 150);
 		productId.url = HTMLUtils.getCanonicalLinkPathFor(courseClass.getCourse(), request);
 		productId.sku = courseClass.getUniqueIdentifier();
 		return productId;
@@ -126,51 +126,48 @@ public class ShoppingCartDataBuilder {
 		return cart;
 	}
 
-	public IPlainTextExtractor getPlainTextExtractor() {
-		return plainTextExtractor;
-	}
-
-	public void setPlainTextExtractor(IPlainTextExtractor plainTextExtractor) {
-		this.plainTextExtractor = plainTextExtractor;
-	}
-
-	public ITextileConverter getTextileConverter() {
-		return textileConverter;
-	}
-
-	public void setTextileConverter(ITextileConverter textileConverter) {
-		this.textileConverter = textileConverter;
-	}
-
+	/**
+	 * Value object for java script object Cart
+	 */
 	public static class Cart {
-		public String id = StringUtils.EMPTY;
 		public Price price = new Price();
 		public List<Product> products = new ArrayList<>();
 	}
 
+	/**
+	 * Value object for java script object Price
+	 */
 	public static class Price {
 		public String vouchercode = StringUtils.EMPTY;
 		public String voucherdiscount = StringUtils.EMPTY;
 		public String currency = "AUD";
-		public Double base = 0.0;
-		public Double withTax = 0.0;
-		public Double tax = 0.0;
-		public Double total = 0.0;
+		public Money base = Money.ZERO;
+		public Money withTax = Money.ZERO;
+		public Money tax = Money.ZERO;
+		public Money total = Money.ZERO;
 	}
 
+	/**
+	 * Value object for java script object ProductId
+	 */
 	public static class ProductId {
 		public String id = StringUtils.EMPTY;
 		public String name = StringUtils.EMPTY;
-		public String description = StringUtils.EMPTY;
 		public String url = StringUtils.EMPTY;
 		public String sku = StringUtils.EMPTY;
 	}
 
+	/**
+	 * Value object for java script object ProductCategory
+	 */
 	public static class ProductCategory {
 		public String primary = StringUtils.EMPTY;
 		public String type = StringUtils.EMPTY;
 	}
 
+	/**
+	 * Value object for java script object Product
+	 */
 	public static class Product {
 		public ProductId id = new ProductId();
 		public ProductCategory category = new ProductCategory();
@@ -178,5 +175,14 @@ public class ShoppingCartDataBuilder {
 		public Price price = new Price();
 		public List<Product> linkedProducts = new ArrayList<>();
 		public List<Product> attributes = new ArrayList<>();
+	}
+
+
+	/**
+	 * Enum predefined values for ProductCategory.type field
+	 */
+	public static enum CategoryType
+	{
+		CLASS
 	}
 }

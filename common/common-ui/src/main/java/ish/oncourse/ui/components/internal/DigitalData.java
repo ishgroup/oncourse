@@ -5,15 +5,14 @@ import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.datalayer.ShoppingCartDataBuilder;
-import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,12 +33,6 @@ public class DigitalData {
 	@Inject
 	private ITagService tagService;
 
-	@Inject
-	private ITextileConverter textileConverter;
-
-	@Inject
-	private IPlainTextExtractor plainTextExtractor;
-
 	@Property
 	private ShoppingCartDataBuilder.Cart cart;
 
@@ -49,8 +42,18 @@ public class DigitalData {
 	private List<CourseClass> classes;
 	private List<Product> products;
 
+	@Property
+	private NumberFormat moneyFormat;
+
 	@SetupRender
 	void beforeRender() {
+
+		moneyFormat = NumberFormat.getInstance();
+		moneyFormat.setMinimumIntegerDigits(1);
+		moneyFormat.setMinimumFractionDigits(2);
+		moneyFormat.setMaximumFractionDigits(2);
+		moneyFormat.setGroupingUsed(false);
+
 		initItems();
 
 		if (classes.size() > 0)
@@ -58,8 +61,6 @@ public class DigitalData {
 			ShoppingCartDataBuilder cartDataBuilder = new ShoppingCartDataBuilder();
 			cartDataBuilder.setRequest(request);
 			cartDataBuilder.setTagService(tagService);
-			cartDataBuilder.setPlainTextExtractor(plainTextExtractor);
-			cartDataBuilder.setTextileConverter(textileConverter);
 
 			cartDataBuilder.setCourseClasses(classes);
 			cartDataBuilder.build();

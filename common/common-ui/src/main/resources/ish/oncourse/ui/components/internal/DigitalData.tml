@@ -3,25 +3,23 @@
 		<script type="text/javascript">
 			digitalData = [{
 				'cart':{
-					'cartID': '${cart.id}',
 					'price':
 					{
-						'basePrice':'${cart.price.base}',
+						'basePrice':'<t:output value="cart.price.base" format="moneyFormat"/>',
 						'vouchercode':'${cart.price.vouchercode}',
 						'voucherdiscount':'${cart.price.voucherdiscount}',
 						'currency': '${cart.price.currency}',
-						'tax': '${cart.price.tax}',
-						'priceWithTax': '${cart.price.withTax}',
-						'cartTotal': '${cart.price.total}'
+						'tax': '<t:output value="cart.price.tax" format="moneyFormat"/>',
+						'priceWithTax': '<t:output value="cart.price.withTax" format="moneyFormat"/>',
+						'cartTotal': '<t:output value="cart.price.total" format="moneyFormat"/>'
 					},
-					'items':{
+					'items':[
 							<t:loop source="cart.products" value="product">
 								{
 									'productID':
 									{
 										'prodID': '${product.id.id}',
 										'productName': '${product.id.name}',
-										'description': '${product.id.description}',
 										'productURL': '${product.id.url}',
 										'sku': '${product.id.sku}'
 									},
@@ -33,20 +31,20 @@
 						            'quantity': '${product.quantity}',
 									'price':
 									{
-										'basePrice':'${product.price.base}',
+										'basePrice':'<t:output value="product.price.base" format="moneyFormat"/>',
 										'vouchercode':'${product.price.vouchercode}',
 										'voucherdiscount':'${product.price.voucherdiscount}',
 										'currency': '${product.price.currency}',
-										'tax': '${product.price.tax}',
-										'priceWithTax': '${product.price.withTax}',
-										'cartTotal': '${product.price.total}'
+										'tax': '<t:output value="product.price.tax" format="moneyFormat"/>',
+										'priceWithTax': '<t:output value="product.price.withTax" format="moneyFormat"/>'
 									}
-								}
+								},
 							</t:loop>
-							}
+							]
 
 				}
 			}];
+			alert(digitalData['cart']);
 		</script>
 	</t:if>
 </t:container>
