@@ -34,6 +34,13 @@ public class PageHead {
 	@Property
 	@Parameter
 	private String metaDescription;
+
+	/**
+	 * Google tag mananger event name.
+	 */
+	@Property
+	@Parameter
+	private String eventName;
 	
 	public String getTitle() {
 		String collegeName = siteService.getCurrentCollege().getName();

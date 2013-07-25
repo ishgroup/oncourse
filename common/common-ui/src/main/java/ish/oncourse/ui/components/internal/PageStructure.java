@@ -51,6 +51,13 @@ public class PageStructure {
 	@Parameter
 	private String metaDescription;
 
+	/**
+	 * Google tag mananger event name.
+	 */
+	@Property
+	@Parameter
+	private String eventName;
+
 	@SetupRender
 	public void beforeRender() {
 		if (!resources.isBound("webNodeType")) {

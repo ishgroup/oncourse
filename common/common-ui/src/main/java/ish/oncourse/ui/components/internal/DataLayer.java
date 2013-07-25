@@ -7,6 +7,7 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.datalayer.ShoppingCartDataBuilder;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
+import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -48,6 +49,13 @@ public class DataLayer {
 
 	@Property
 	private NumberFormat moneyFormat;
+
+	/**
+	 * Google tag mananger event name.
+	 */
+	@Parameter
+	@Property
+	private String eventName;
 
 	@SetupRender
 	void beforeRender() {

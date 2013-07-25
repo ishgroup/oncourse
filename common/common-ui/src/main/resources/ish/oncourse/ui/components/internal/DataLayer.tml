@@ -1,8 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<t:if test="cart">
 		<script type="text/javascript">
-			dataLayer = [{
-				'cart':{
+			dataLayer = [
+				{'cart':{
 					'price':
 					{
 						'basePrice':'<t:output value="cart.price.base" format="moneyFormat"/>',
@@ -45,5 +45,10 @@
 				}
 			}];
 		</script>
+		<t:if test="eventName">
+			<script type="text/javascript">
+				dataLayer.push({'event': '${eventName}'});
+			</script>
+		</t:if>
 	</t:if>
 </t:container>

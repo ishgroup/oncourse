@@ -8,7 +8,10 @@
 	<t:if test="wrapped">
 		<head>
 			<meta http-equiv="Cache-control" content="${cacheMeta}"/>
-			<span t:type="ui/pagehead" title="${title}" canonicalLinkPath="${canonicalLinkPath}" metaDescription="${metaDescription}"/>
+			<span t:type="ui/pagehead" title="${title}"
+				  canonicalLinkPath="${canonicalLinkPath}"
+				  metaDescription="${metaDescription}"
+				  eventName="${eventName}"/>
 		</head>
 		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
 			<div  t:type="ui/BodyStructure" webNodeType="webNodeType">
