@@ -18,130 +18,119 @@ public class Payment {
 
 	@InjectPage
 	private Checkout checkoutPage;
-
 	@Inject
 	@Id("payment")
 	private Block paymentBlock;
-
 	@Inject
 	private Request request;
+	@InjectComponent
+	private CorporatePassEditor corporatePassEditor;
+	@InjectComponent
+	private PaymentEditor paymentEditor;
 
-    @InjectComponent
-    private CorporatePassEditor corporatePassEditor;
-
-    @InjectComponent
-    private PaymentEditor paymentEditor;
-
-
-    Object onActivate()
-    {
-        if (checkoutPage.isExpired())
-            return null;
+	Object onActivate() {
+		if (checkoutPage.isExpired())
+			return null;
 		/**
 		 * The check was added to handle expire session for ajax requests correctly.
 		 */
 		if (request.isXHR())
 			return null;
-        if (isInitRequest())
-            return Checkout.class.getSimpleName();
-        else if (getPurchaseController().isEditCheckout()) {
-            getPurchaseController().addError(PurchaseController.Message.illegalState);
-            return Checkout.class.getSimpleName();
-        } else
-            return null;
-    }
+		if (isInitRequest())
+			return Checkout.class.getSimpleName();
+		else if (getPurchaseController().isEditCheckout()) {
+			getPurchaseController().addError(PurchaseController.Message.illegalState);
+			return Checkout.class.getSimpleName();
+		} else
+			return null;
+	}
 
-	private boolean isInitRequest()
-	{
+	private boolean isInitRequest() {
 		return getPurchaseController() == null && request.getPath().toLowerCase().equals("/payment");
 	}
 
-	public Block getPaymentBlock()
-	{
+	public Block getPaymentBlock() {
 		return paymentBlock;
 	}
 
-    public PurchaseController getPurchaseController() {
+	public PurchaseController getPurchaseController() {
 		return checkoutPage.getPurchaseController();
 	}
 
-    public boolean isEditPayments()
-    {
-        return getPurchaseController() != null && (getPurchaseController().isEditPayment() ||
-                getPurchaseController().isEditCorporatePass());
-    }
+	public boolean isEditPayments() {
+		return getPurchaseController() != null && (getPurchaseController().isEditPayment() ||
+				getPurchaseController().isEditCorporatePass());
+	}
 
-    public boolean isEditPayment()
-    {
-        return getPurchaseController() != null && getPurchaseController().isEditPayment();
-    }
+	public boolean isEditPayment() {
+		return getPurchaseController() != null && getPurchaseController().isEditPayment();
+	}
 
-    public boolean isPaymentResult()
-    {
-        return getPurchaseController() != null && getPurchaseController().isPaymentResult();
-    }
+	public boolean isPaymentResult() {
+		return getPurchaseController() != null && getPurchaseController().isPaymentResult();
+	}
 
-    public boolean isPaymentProgress()
-    {
-        return getPurchaseController() != null && getPurchaseController().isPaymentProgress();
-    }
+	public boolean isPaymentProgress() {
+		return getPurchaseController() != null && getPurchaseController().isPaymentProgress();
+	}
 
 	public String getCoursesLink() {
 		return checkoutPage.getCoursesLink();
 	}
 
-	public boolean isExpired()
-	{
+	public boolean isExpired() {
 		return checkoutPage.isExpired();
 	}
 
-	public Object onException(Throwable throwable)
-	{
+	public Object onException(Throwable throwable) {
 		return checkoutPage.onException(throwable);
 	}
 
-    public Object makePayment() {
-        if (getPurchaseController().isEditPayment())
-		{
+	public Object makePayment() {
+		if (getPurchaseController().isEditPayment()) {
 			paymentEditor.makePayment();
 			return this;
-		}
-        else if (getPurchaseController().isEditCorporatePass())
-		{
+		} else if (getPurchaseController().isEditCorporatePass()) {
 			corporatePassEditor.makePayment();
 			return this;
-		}
-        else
-            throw new IllegalArgumentException();
-    }
+		} else
+			throw new IllegalArgumentException();
+	}
 
-    public String getCorporatePassTabClass()
-    {
-        return getPurchaseController().isEditCorporatePass() ? "active": FormatUtils.EMPTY_STRING;
-    }
+	public String getCorporatePassTabClass() {
+		return getPurchaseController().isEditCorporatePass() ? "active" : FormatUtils.EMPTY_STRING;
+	}
 
-    public String getCardTabClass()
-    {
-        return getPurchaseController().isEditPayment() ? "active": FormatUtils.EMPTY_STRING;
-    }
+	public String getCardTabClass() {
+		return getPurchaseController().isEditPayment() ? "active" : FormatUtils.EMPTY_STRING;
+	}
 
-    @OnEvent(value = "selectCardEditor")
-    public Object selectCardEditor()
-    {
-        if (getPurchaseController().isEditPayment())
-            return null;
-        ActionParameter parameter = new ActionParameter(selectCardEditor);
-        getPurchaseController().performAction(parameter);
-        return paymentBlock;
-    }
+	@OnEvent(value = "selectCardEditor")
+	public Object selectCardEditor() {
+		if (getPurchaseController().isEditPayment())
+			return null;
+		ActionParameter parameter = new ActionParameter(selectCardEditor);
+		getPurchaseController().performAction(parameter);
+		return paymentBlock;
+	}
 
-    @OnEvent(value = "selectCorporatePassEditor")
-    public Object selectCorporatePassEditor()
-    {
-        if (getPurchaseController().isEditCorporatePass())
-            return null;
-        ActionParameter parameter = new ActionParameter(selectCorporatePassEditor);
-        getPurchaseController().performAction(parameter);
-        return paymentBlock;
-    }
+	@OnEvent(value = "selectCorporatePassEditor")
+	public Object selectCorporatePassEditor() {
+		if (getPurchaseController().isEditCorporatePass())
+			return null;
+		ActionParameter parameter = new ActionParameter(selectCorporatePassEditor);
+		getPurchaseController().performAction(parameter);
+		return paymentBlock;
+	}
+
+	/**
+	 * @return google tag maneger event name "purchaseComplete" if the payment process is finished
+	 *         and the payment is successful
+	 */
+	public String getEventName() {
+		boolean result = getPurchaseController().isFinished() &&
+				getPurchaseController().getPaymentEditorDelegate() != null &&
+				getPurchaseController().getPaymentEditorDelegate().isPaymentSuccess();
+		return result ? "purchaseComplete" : null;
+	}
 }

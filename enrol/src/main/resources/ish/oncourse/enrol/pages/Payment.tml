@@ -1,4 +1,4 @@
-<html t:type="ui/internal/pagestructure" bodyId="literal:PaymentPage"
+<html t:type="ui/internal/pagestructure" eventName="${eventName}" bodyId="literal:PaymentPage"
       bodyClass="literal:internal-page"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
