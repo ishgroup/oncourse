@@ -133,4 +133,13 @@ public class Payment {
 				getPurchaseController().getPaymentEditorDelegate().isPaymentSuccess();
 		return result ? "purchaseComplete" : null;
 	}
+
+	/**
+	 * the method returns true always we should show control for accessing credit for current payer.
+	 * In corparate pass case, we should hide this control because corparate pass use case does not have payer.
+	 */
+	public boolean isShowPayerFields()
+	{
+		return !getPurchaseController().isEditCorporatePass();
+	}
 }
