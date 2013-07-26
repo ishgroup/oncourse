@@ -91,7 +91,7 @@ public class CourseClassItem {
 
 		TimeZone timeZone = getClientTimeZone();
 
-		dateFormat = FormatUtils.getDateFormat(FormatUtils.shortDateFormatString, timeZone);
+		dateFormat = FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
 		timeFormat = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
 
 		if (timeZone.getRawOffset() == TimeZone.getTimeZone(courseClass.getCollege().getTimeZone()).getRawOffset())

@@ -4,16 +4,14 @@ import ish.oncourse.model.Session;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
-
-import java.text.Format;
-import java.util.List;
-import java.util.SimpleTimeZone;
-import java.util.TimeZone;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.text.Format;
+import java.util.List;
+import java.util.TimeZone;
 
 public class TimetableEvents {
 
@@ -68,7 +66,7 @@ public class TimetableEvents {
 
 	public Format getItemDateFormatter() {
 		TimeZone timeZone = getClientTimeZone();
-		return FormatUtils.getDateFormat(FormatUtils.shortDateFormatString, timeZone);
+		return FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
 	}
 
 	public Format getItemTimeFormatter() {
