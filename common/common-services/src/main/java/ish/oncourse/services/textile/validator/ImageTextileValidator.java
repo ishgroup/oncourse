@@ -8,7 +8,6 @@ import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 
@@ -32,28 +31,16 @@ public class ImageTextileValidator extends AbstractTextileValidator {
 		BinaryInfo result = null;
 
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
-		String id = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ID.getValue());
 		String name = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_NAME.getValue());
-		if (id != null) {
-			if (!StringUtils.isNumeric(id))
-			{
-				errors.addFailure(getWorngIdMessage(id), ValidationFailureType.SYNTAX);
-				return;
-			}
-			Integer idNum = Integer.valueOf(id);
-			if (logger.isDebugEnabled())
-				logger.debug(String.format("Found a ussage of image textile with id param = %s instead of name param. Update the textile to load image by name.",
-					idNum));
-			result = binaryDataService.getBinaryInfoByReferenceNumber(idNum);
-			if (result == null) {
-				errors.addFailure(getNotFoundByIdMessage(idNum), ValidationFailureType.CONTENT_NOT_FOUND);
-			}
-
-		} else if (name != null) {
+		if (name != null) {
 			result = binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, name);
 			if (result == null) {
 				errors.addFailure(getNotFoundByNameMessage(name), ValidationFailureType.CONTENT_NOT_FOUND);
 			}
+		}
+		else
+		{
+			errors.addFailure(getRequiredAttrsMessage(tag), ValidationFailureType.SYNTAX);
 		}
 	}
 
@@ -62,17 +49,13 @@ public class ImageTextileValidator extends AbstractTextileValidator {
 	 * @return
 	 */
 	public String getRequiredAttrsMessage(String tag) {
-		return "The image: " + tag + " must contain at least one of the required attributes: name or id";
+		return "The image: " + tag + " must contain the required attribute: name";
 	}
 
 	public String getFormatErrorMessage(String tag) {
-		return "The image tag '" + tag + "' doesn't match {image id:\"id\" name:\"name\" align:\"right|left|center\" "
+		return "The image tag '" + tag + "' doesn't match {image name:\"name\" align:\"right|left|center\" "
 				+ "caption:\"your caption\" alt:\"your alt\" link:\"link\" "
 				+ "title:\"title\" width:\"digit\" height:\"digit\" class:\"cssClass\"}";
-	}
-
-	public String getNotFoundByIdMessage(Integer id) {
-		return "There's no image with the id: " + id;
 	}
 
 	public String getNotFoundByNameMessage(String name) {
@@ -82,10 +65,4 @@ public class ImageTextileValidator extends AbstractTextileValidator {
 	public String getNotFoundContentMessage() {
 		return "This image's content is missed";
 	}
-
-	public String getWorngIdMessage(String id)
-	{
-		return String.format("Wrong id \"%s\".",id);
-	}
-
 }

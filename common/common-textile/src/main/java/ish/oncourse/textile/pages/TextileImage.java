@@ -55,7 +55,6 @@ public class TextileImage {
 	void beforeRender() {
 
 		Map<String, String> tagParams = (Map<String, String>) request.getAttribute(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM);
-		String id = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ID.getValue());
 		String name = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_NAME.getValue());
 		String align = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ALIGH.getValue());
 		String alt = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ALT.getValue());
@@ -67,7 +66,7 @@ public class TextileImage {
 		String cssClass = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_CLASS.getValue());
 		String attachment = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ATTACHMENT.getValue());
 
-		BinaryInfo imageBinaryInfo = getBinaryInfoBy(id, name);
+		BinaryInfo imageBinaryInfo = getBinaryInfoBy(name);
 
 		imagePath = imageBinaryInfo != null ? (imageBinaryInfo.getContextPath()) : StringUtils.EMPTY;
 		imageAlign = align != null ? align : StringUtils.EMPTY;
@@ -96,14 +95,8 @@ public class TextileImage {
 	}
 
 	private BinaryInfo getBinaryInfoBy(String name) {
-		return getBinaryInfoBy(null, name);
-	}
-
-	private BinaryInfo getBinaryInfoBy(String id, String name) {
 		BinaryInfo imageBinaryInfo = null;
-		if (id != null) {
-			imageBinaryInfo = binaryDataService.getBinaryInfoByReferenceNumber(id);
-		} else if (name != null) {
+		if (name != null) {
 			imageBinaryInfo = binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, name);
 		} else {
 			imageBinaryInfo = binaryDataService.getRandomImage();

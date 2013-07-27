@@ -47,26 +47,6 @@ public class BinaryDataService implements IBinaryDataService {
 				qualifier));
 	}
 
-	@Override
-	public BinaryInfo getBinaryInfoByReferenceNumber(Object refNum) {
-		if (refNum == null) {
-			return null;
-		}
-
-		// if this binaryInfo was created in willow-wo, it has the
-		// referenceNumber property which is unique for every college
-		Expression refNumQualifier = ExpressionFactory.matchExp(BinaryInfo.REFERENCE_NUMBER_PROPERTY, refNum);
-
-		// if this binaryInfo is the willow2 entity, the referenceNumber=null as
-		// it is not generated anymore, use angelId for reference.
-		refNumQualifier = refNumQualifier.orExp(ExpressionFactory.matchExp(BinaryInfo.REFERENCE_NUMBER_PROPERTY, null)
-				.andExp(ExpressionFactory.matchExp(BinaryInfo.ANGEL_ID_PROPERTY, refNum)));
-		Expression qualifier = getCollegeQualifier().andExp(refNumQualifier);
-
-		return (BinaryInfo) Cayenne.objectForQuery(cayenneService.sharedContext(), new SelectQuery(BinaryInfo.class,
-				qualifier));
-	}
-
 	public BinaryInfo getBinaryInfo(final String searchProperty, Object value) {
 		final Expression qualifier = getCollegeQualifier().andExp(ExpressionFactory.matchExp(searchProperty, value));
 		return getRandomBinaryInfo(qualifier);

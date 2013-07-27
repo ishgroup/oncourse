@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum ImageTextileAttributes {
-	IMAGE_PARAM_ID("id:"),
 	IMAGE_PARAM_ALIGH("align:"),
 	IMAGE_PARAM_CAPTION("caption:"),
 	IMAGE_PARAM_ALT("alt:"),

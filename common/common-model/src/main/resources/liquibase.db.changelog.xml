@@ -1648,4 +1648,8 @@
 		</addColumn>
 	</changeSet>
 
+	<changeSet id="109" author="andrey" context="production" runOnChange="true">
+		<customChange class="ish.oncourse.model.liquibase.ReplaceId2NameForImageTag"/>
+	</changeSet>
+
 </databaseChangeLog>

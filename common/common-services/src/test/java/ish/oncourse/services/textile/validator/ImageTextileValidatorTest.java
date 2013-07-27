@@ -20,10 +20,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ImageTextileValidatorTest extends CommonValidatorTest {
 
-	private static final Integer TEST_BINARYINFO_REFERENCE_NUMBER = 100;
 	private static final String TEST_BINARYINFO_NAME = "image name";
 
-	private static final Integer NOT_EXISTING_REFERENCE_NUMBER = 200;
 	private static final String NOT_EXISTING_NAME = "another name";
 
 	private static final Integer REF_NUM_OF_EMPTY_BINARY_INFO = 0;
@@ -60,9 +58,6 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 			case IMAGE_PARAM_HEIGHT:
 				data.put(ImageTextileAttributes.IMAGE_PARAM_HEIGHT.getValue(), "{image height:\"30\" height:\"50\"}");
 				break;
-			case IMAGE_PARAM_ID:
-				data.put(ImageTextileAttributes.IMAGE_PARAM_ID.getValue(), "{image id:\"30\" id:\"50\"}");
-				break;
 			case IMAGE_PARAM_LINK:
 				data.put(ImageTextileAttributes.IMAGE_PARAM_LINK.getValue(), "{image link:\"link1\" link:\"link2\"}");
 				break;
@@ -88,18 +83,14 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	protected String getTextileForSmokeTest() {
-		return "{image id:\"" + TEST_BINARYINFO_REFERENCE_NUMBER + "\"}";
+		return "{image name:\"" + TEST_BINARYINFO_NAME + "\"}";
 	}
 
 	@Override
 	public void init() {
 		validator = new ImageTextileValidator(binaryDataService, fileStorageAssetService);
 		errors = new ValidationErrors();
-		when(binaryDataService.getBinaryInfoByReferenceNumber(TEST_BINARYINFO_REFERENCE_NUMBER)).thenReturn(binaryInfo);
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_BINARYINFO_NAME)).thenReturn(binaryInfo);
-		when(binaryDataService.getBinaryInfoByReferenceNumber(REF_NUM_OF_EMPTY_BINARY_INFO))
-				.thenReturn(emptyBinaryInfo);
-		when(binaryDataService.getBinaryInfoByReferenceNumber(NOT_EXISTING_REFERENCE_NUMBER)).thenReturn(null);
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, NOT_EXISTING_NAME)).thenReturn(null);
         when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
     }
@@ -110,17 +101,14 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 	 */
 	@Test
 	public void requiredAttrsTest() {
-		String tag = "{image id:\"" + TEST_BINARYINFO_REFERENCE_NUMBER + "\"}";
-		validator.validate(tag, errors);
-		assertFalse(errors.hasFailures());
 
-		tag = "{image name:\"" + TEST_BINARYINFO_NAME + "\"}";
+		String tag = "{image name:\"" + TEST_BINARYINFO_NAME + "\"}";
 		validator.validate(tag, errors);
 		assertFalse(errors.hasFailures());
 
 		tag = "{image alt:\"altText\"}";
 		validator.validate(tag, errors);
-		assertFalse(errors.hasFailures());
+		assertTrue(errors.hasFailures());
 	}
 
 	/**
@@ -129,29 +117,12 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 	 */
 	@Test
 	public void notFoundBinaryInfoTest() {
-		String tag = "{image id:\"" + NOT_EXISTING_REFERENCE_NUMBER + "\"}";
-		validator.validate(tag, errors);
-		assertTrue(errors.hasFailures());
-		assertTrue(errors.contains(((ImageTextileValidator) validator)
-				.getNotFoundByIdMessage(NOT_EXISTING_REFERENCE_NUMBER)));
-
-		tag = "{image name:\"" + NOT_EXISTING_NAME + "\"}";
+		String tag = "{image name:\"" + NOT_EXISTING_NAME + "\"}";
 		validator.validate(tag, errors);
 		assertTrue(errors.hasFailures());
 		assertTrue(errors.contains(((ImageTextileValidator) validator).getNotFoundByNameMessage(NOT_EXISTING_NAME)));
 	}
 
-	/**
-	 * Emulates the situation when the binaryInfo exists but the corresponded
-	 * binary data doesn't
-	 */
-	@Test
-	public void notFoundBinaryDataTest() {
-		String tag = "{image id:\"" + REF_NUM_OF_EMPTY_BINARY_INFO + "\"}";
-		validator.validate(tag, errors);
-		assertFalse(errors.hasFailures());
-	}
-	
 	/**
 	 * Emulates the situation when there is a new line in {image}, shouldn't be any errors.
 	 */

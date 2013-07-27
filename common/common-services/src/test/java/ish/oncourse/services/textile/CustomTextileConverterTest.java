@@ -39,9 +39,9 @@ public class CustomTextileConverterTest {
 
 	private static final String TEST_WEB_BLOCK_CONTENT = "web block content";
 
-	private static final int TEST_BINARYINFO_REFERENCE_NUMBER = 123;
+	private static final String TEST_BINARYINFO_NAME = "123";
 
-	private static final String IMAGE_BY_REF_NUMBER = "{image id:\"" + TEST_BINARYINFO_REFERENCE_NUMBER + "\"}";
+	private static final String IMAGE_BY_REF_NUMBER = "{image name:\"" + TEST_BINARYINFO_NAME + "\"}";
 
 	private static final String TEST_BLOCK_NAME = "blockName";
 
@@ -98,19 +98,6 @@ public class CustomTextileConverterTest {
 	}
 
 	/**
-	 * Emulates the situation when {image id:"123"} is converted, the binary
-	 * info with reference number 123 exists. Should pass without errors.
-	 */
-	@Test
-	public void smokeImageConvertTest() {
-		when(binaryDataService.getBinaryInfoByReferenceNumber(TEST_BINARYINFO_REFERENCE_NUMBER)).thenReturn(binaryInfo);
-        when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
-        String successfulResult = "successfully rendered image block";
-		testPageRenderParams(IMAGE_BY_REF_NUMBER, TextileUtil.TEXTILE_IMAGE_PAGE, successfulResult);
-
-	}
-	
-	/**
 	 * Emulates the situation when {attachment name:"attachmentName"} is converted, 
 	 * the binary info with name "attachmentName" exists. Should pass without errors.
 	 */
@@ -148,7 +135,7 @@ public class CustomTextileConverterTest {
 		webContent.setContent(COMPLEX_WEB_BLOCK_CONTENT);
 		when(webContentService.getWebContent(WebContent.NAME_PROPERTY, TEST_BLOCK_NAME)).thenReturn(webContent);
 		reset(binaryDataService);
-		when(binaryDataService.getBinaryInfoByReferenceNumber(TEST_BINARYINFO_REFERENCE_NUMBER)).thenReturn(binaryInfo);
+		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_BINARYINFO_NAME)).thenReturn(binaryInfo);
         when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
 
 		String successfulResult = "successfully rendered image block";
