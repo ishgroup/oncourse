@@ -31,9 +31,9 @@ import static org.mockito.Mockito.*;
 @SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
 public class TestModuleForContentStructure {
 		/**
-		 * Test refNum.
+		 * Test BinaryInfo name.
 		 */
-		private static final int REFERENCE_NUMBER_FOR_BINARY_INFO = 100;
+		private static final String NAME_FOR_BINARY_INFO = "TEST";
 
 		public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {
 			return new RequestFilter() {
@@ -185,9 +185,9 @@ public class TestModuleForContentStructure {
 		public IBinaryDataService buildBinaryDataServiceOverride() {
 			IBinaryDataService mock = mock(IBinaryDataService.class);
 			BinaryInfo binaryInfo = mock(BinaryInfo.class);
-			when(binaryInfo.getReferenceNumber()).thenReturn(REFERENCE_NUMBER_FOR_BINARY_INFO);
+			when(binaryInfo.getName()).thenReturn(TestModuleForContentStructure.NAME_FOR_BINARY_INFO);
 
-			when(mock.getRandomImage()).thenReturn(
+			when(mock.getBinaryInfo(BinaryInfo.NAME_PROPERTY,TestModuleForContentStructure.NAME_FOR_BINARY_INFO)).thenReturn(
 					binaryInfo);
 
 			return mock;

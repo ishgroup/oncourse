@@ -32,8 +32,8 @@ public class ContentStructureTest {
 		int numberEnd = doc.toString().indexOf("/>", numberStart) + 2;
 		String imgElement = doc.toString().substring(numberStart, numberEnd);
 
-		assertNotNull(imgElement.contains("binarydata?id=100"));
-		 
+		assertNotNull(imgElement.contains("binarydata?name="));
+
 		tester.shutdown();
 	}
 }

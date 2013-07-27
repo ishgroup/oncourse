@@ -30,8 +30,8 @@ public class LinkPageForContentStructure {
 		node.setNodeNumber(9999);
 
 		WebContent webContent=context.newObject(WebContent.class);
-		webContent.setContentTextile("{image}");
-		webContent.setContent("{image}");
+		webContent.setContentTextile("{image name:\"TEST\"}");
+		webContent.setContent("{image name:\"TEST\"}");
 		webContent.setWebSite(webSite);
 		
 		WebContentVisibility webContentVisibility = context.newObject(WebContentVisibility.class);
