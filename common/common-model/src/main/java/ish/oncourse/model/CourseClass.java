@@ -491,6 +491,11 @@ public class CourseClass extends _CourseClass implements Queueable {
 		return super.getFeeGst();
 	}
 
+	public boolean isVirtualSiteUsed() {
+		Session session = getFirstSession();
+		return session != null && session.isVirtualSiteUsed();
+	}
+
 	@Override
 	public String getTimeZone() {
 		String value = null;

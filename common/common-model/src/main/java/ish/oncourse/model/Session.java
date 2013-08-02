@@ -43,4 +43,8 @@ public class Session extends _Session implements Queueable {
 		return value;
 	}
 
+	public boolean isVirtualSiteUsed() {
+		return getRoom() != null && getRoom().getSite() != null && getRoom().getSite().getIsVirtual();
+	}
+
 }

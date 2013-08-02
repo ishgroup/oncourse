@@ -101,11 +101,17 @@ public class CourseClassItem {
 	}
 		
 	public TimeZone getClientTimeZone() {
-		TimeZone timezone = cookiesService.getClientTimezone();
+		TimeZone timezone = null;
+		if (!courseClass.isVirtualSiteUsed()) {
+			timezone = TimeZone.getTimeZone(courseClass.getTimeZone());
+		}
 		if (timezone == null) {
-			timezone = cookiesService.getSimpleClientTimezone();
+			timezone = cookiesService.getClientTimezone();
 			if (timezone == null) {
-				timezone = TimeZone.getTimeZone(courseClass.getTimeZone());
+				timezone = cookiesService.getSimpleClientTimezone();
+				if (timezone == null) {
+					timezone = TimeZone.getTimeZone(courseClass.getTimeZone());
+				}
 			}
 		}
 		return timezone;

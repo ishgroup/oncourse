@@ -84,11 +84,17 @@ public class TimetableEvents {
 	}
 	
 	public TimeZone getClientTimeZone() {
-		TimeZone timezone = cookiesService.getClientTimezone();
+		TimeZone timezone = null;
+		if (!event.isVirtualSiteUsed()) {
+			timezone = TimeZone.getTimeZone(event.getTimeZone());
+		}
 		if (timezone == null) {
-			timezone = cookiesService.getSimpleClientTimezone();
+			timezone = cookiesService.getClientTimezone();
 			if (timezone == null) {
-				timezone = TimeZone.getTimeZone(event.getTimeZone());
+				timezone = cookiesService.getSimpleClientTimezone();
+				if (timezone == null) {
+					timezone = TimeZone.getTimeZone(event.getTimeZone());
+				}
 			}
 		}
 		return timezone;
