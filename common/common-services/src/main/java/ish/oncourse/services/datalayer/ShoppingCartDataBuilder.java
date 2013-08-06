@@ -6,10 +6,12 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.HTMLUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.services.Request;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,6 +60,7 @@ public class ShoppingCartDataBuilder {
 
 		cart = new Cart();
 		for (CourseClass courseClass : courseClasses) {
+			cart.storeName = courseClass.getCollege().getName();
 			Product product = getProduct(courseClass);
 			addProduct(product);
 		}
@@ -130,6 +133,9 @@ public class ShoppingCartDataBuilder {
 	 * Value object for java script object Cart
 	 */
 	public static class Cart {
+		public String id = RandomStringUtils.random(10,true,true);
+		public String storeName = StringUtils.EMPTY;
+		public Date date = new Date();
 		public Price price = new Price();
 		public List<Product> products = new ArrayList<>();
 	}
