@@ -2,8 +2,10 @@ package ish.oncourse.services.paymentexpress;
 
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
-
+import ish.oncourse.model.PaymentOutTransaction;
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 /**
  * This service performs the validation of payment before sending it to the
@@ -47,7 +49,6 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 */
 	@Override
 	public void performGatewayOperation(PaymentOut paymentOut) {
-		// TODO Auto-generated method stub
 		if (performPaymentOutValidation(paymentOut)) {
 			LOG.debug("Payment details validation succeed.");
 			processGateway(paymentOut);
@@ -63,15 +64,15 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 * 
 	 * @param payment
 	 */
-	public abstract void processGateway(PaymentIn payment);
+	protected abstract void processGateway(PaymentIn payment);
 
 	/**
 	 * Performs actual gateway process if the validation method
-	 * {@link #performPaymentValidation(PaymentOut)} returned true.
+	 * {@link #performPaymentOutValidation(ish.oncourse.model.PaymentOut)} returned true.
 	 * 
-	 * @param payment
+	 * @param paymentOut
 	 */
-	public abstract void processGateway(PaymentOut paymentOut);
+	protected abstract void processGateway(PaymentOut paymentOut);
 
 	/**
 	 * Perform the validation before send to gateway.
@@ -80,7 +81,7 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 *            the given payment to validate.
 	 * @return
 	 */
-	public boolean performPaymentValidation(PaymentIn payment) {
+	private boolean performPaymentValidation(PaymentIn payment) {
 		return payment.validateBeforeSend();
 	}
 
@@ -91,7 +92,22 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 *            the given payment to validate.
 	 * @return
 	 */
-	public boolean performPaymentOutValidation(PaymentOut paymentOut) {
+	private boolean performPaymentOutValidation(PaymentOut paymentOut) {
+
+		List<PaymentOutTransaction> paymentOutTransactions = paymentOut.getPaymentOutTransactions();
+		/**
+		 * The check was introduced to exclude possibility to send  paymentOut to DPS twice.
+		 * We did not manage to reproduce this behavior on local test system, so it is rather workaround than a fix
+		 */
+
+		 // paymentOut cannot have DPS transactions.
+		if (!paymentOutTransactions.isEmpty())
+		{
+			String message = String.format("Attempt to process paymentOut: %d when the payment out already has dps transactions", paymentOut.getId());
+			paymentOut.setStatusNotes(message);
+			LOG.error(message);
+			return false;
+		}
 		return paymentOut.validateBeforeSend();
 	}
 }

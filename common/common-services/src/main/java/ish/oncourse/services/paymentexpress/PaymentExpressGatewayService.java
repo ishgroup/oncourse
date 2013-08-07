@@ -1,6 +1,9 @@
 package ish.oncourse.services.paymentexpress;
 
-import com.paymentexpress.stubs.*;
+import com.paymentexpress.stubs.PaymentExpressWSLocator;
+import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
+import com.paymentexpress.stubs.TransactionDetails;
+import com.paymentexpress.stubs.TransactionResult2;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
@@ -61,7 +64,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      * @see AbstractPaymentGatewayService#processGateway(ish.oncourse.model.PaymentIn)
      */
     @Override
-    public void processGateway(PaymentIn payment) {
+    protected void processGateway(PaymentIn payment) {
 
         try {
             TransactionResult2 tr = doTransaction(payment);
@@ -98,7 +101,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
     }
 
     @Override
-    public void processGateway(PaymentOut paymentOut) {
+    protected void processGateway(PaymentOut paymentOut) {
 
         TransactionResult2 tr;
 

@@ -9,6 +9,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 
+import java.util.Date;
+
 public class PaymentOutSupport implements IPaymentSupport<PaymentOut, PaymentOutTransaction> {
 
     /**
@@ -60,7 +62,9 @@ public class PaymentOutSupport implements IPaymentSupport<PaymentOut, PaymentOut
     public PaymentOutTransaction createTransaction() {
         ObjectContext newObjectContext = cayenneService.newNonReplicatingContext();
         currentTransaction = newObjectContext.newObject(PaymentOutTransaction.class);
-        PaymentOut local = (PaymentOut) newObjectContext.localObject(paymentOut.getObjectId(), null);
+		currentTransaction.setCreated(new Date());
+		currentTransaction.setModified(new Date());
+        PaymentOut local = newObjectContext.localObject(paymentOut);
         currentTransaction.setPaymentOut(local);
         return currentTransaction;
     }
