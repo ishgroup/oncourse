@@ -1,14 +1,16 @@
 dependencies {
+	compile 'org.apache.tapestry:tapestry-core:5.3.7'
+	compile 'org.apache.tapestry:plastic:5.3.7'
+	compile 'org.apache.tapestry:tapestry5-annotations:5.3.7'
+	compile 'org.apache.tapestry:tapestry-ioc:5.3.7'
+	compile 'org.apache.tapestry:tapestry-json:5.3.7'
+	compile 'org.mnode.ical4j:ical4j:1.0.2'
+	compile 'com.ocpsoft:ocpsoft-pretty-time:1.0.7'
+
 	compile project(':common:common-model')
 	compile project(':common:common-textile')
 	compile project(':common:common-services')
-	compile 'org.apache.tapestry:tapestry-core:5.3.1'
-	compile 'org.apache.tapestry:plastic:5.3.1'
-	compile 'org.apache.tapestry:tapestry5-annotations:5.3.1'
-	compile 'org.apache.tapestry:tapestry-ioc:5.3.1'
-	compile 'org.apache.tapestry:tapestry-json:5.3.1'
-	compile 'org.mnode.ical4j:ical4j:1.0.2'
-	compile 'com.ocpsoft:ocpsoft-pretty-time:1.0.7'
+
 
 	providedCompile 'javax.mail:mail:1.4'
 
