@@ -41,7 +41,6 @@ public class WaitingListInfo {
     @InjectPage
     private WaitingLists waitingListsPage;
 
-
     public String getCourseName() {
         return waitingList.getCourse().getName();
     }
@@ -50,7 +49,6 @@ public class WaitingListInfo {
 
         return getCourseDetailsURLBy(waitingList.getCourse(), webSiteService);
     }
-
 
     public String getCourseDetail() {
         return PortalUtils.getCourseDetailsBy(waitingList.getCourse(), textileConverter, plainTextExtractor);
@@ -68,7 +66,6 @@ public class WaitingListInfo {
         return PortalUtils.getClassPlaceBy(courseClass);
     }
 
-
     @SetupRender
     void setupRender() {
         classes = waitingList.getCourse().getEnrollableClasses();
@@ -78,4 +75,10 @@ public class WaitingListInfo {
         waitingListsPage.deleteWaitingListBy(id);
         return waitingListsPage;
     }
+
+	public boolean isWebVisible() {
+		return waitingList != null && waitingList.getCourse().getIsWebVisible() &&
+			webSiteService.getCurrentDomain() != null;
+	}
+
 }
