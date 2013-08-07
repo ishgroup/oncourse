@@ -271,6 +271,15 @@ public class Web {
 		
 		context.commitChanges();
 	}
+
+	@OnEvent(value = "setMainDomainEvent")
+	void setMainDomainEvent(Long domainId)
+	{
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		WebHostName webHostName = Cayenne.objectForPK(context, WebHostName.class, domainId);
+		webHostName.getWebSite().setToWebHostName(webHostName);
+		context.commitChanges();
+	}
 	
 	@OnEvent(component="cmsUsersForm", value="success")
 	void addUser() throws UnsupportedEncodingException {
@@ -287,20 +296,27 @@ public class Web {
 		context.commitChanges();
 	}
 	
-	Object onActionFromDeleteDomain(String name) {
+	Object onActionFromDeleteDomain(Long id) {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
-		Expression exp = ExpressionFactory.matchExp(WebHostName.NAME_PROPERTY, name);
-		SelectQuery query = new SelectQuery(WebHostName.class, exp);
-		WebHostName domain = (WebHostName) Cayenne.objectForQuery(context, query);
+		WebHostName domain = Cayenne.objectForPK(context,WebHostName.class, id);
+		WebSite webSite = domain.getWebSite();
 
-		List<WebSite> webSites = domain.getWebSiteArray();
-		for (WebSite webSite : webSites)
-			domain.removeFromWebSiteArray(webSite);
-
+		WebHostName mainDomain = webSite.getToWebHostName();
+		//we should reset main domain property if we delete the same domain
+		if (mainDomain != null && mainDomain.getId().equals(domain.getId()))
+			webSite.setToWebHostName(null);
 		context.deleteObjects(domain);
 		context.commitChanges();
-		
+
+		//we should set other main domain.
+		List<WebHostName> webHostNames = webSite.getCollegeDomains();
+		if (webHostNames.size() > 0)
+		{
+			webSite.setToWebHostName(webHostNames.get(0));
+		}
+		context.commitChanges();
+
 		return null;
 	}
 	
@@ -373,5 +389,10 @@ public class Web {
 	public WebSite getCurrentWebSite() {
 		return this.sites.get(currentSiteKey);
 	}
-	
+
+	public boolean isMainDomain()
+	{
+		WebHostName mainDomain = currentDomain.getWebSite().getToWebHostName();
+		return mainDomain != null && currentDomain.getId().equals(mainDomain.getId());
+	}
 }

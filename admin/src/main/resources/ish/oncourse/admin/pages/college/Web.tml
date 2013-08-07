@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:College Web"
-	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
 	<span t:type="editTabs" college="college" selected="literal:web"/>
 	
@@ -9,6 +9,7 @@
 		<table class="table table-striped table-condensed">
 			<thead>
 				<tr>
+					<th>Main</th>
 					<th>Name</th>
 					<th>Site</th>
 				</tr>
@@ -17,11 +18,23 @@
 				<t:form t:id="domainsForm">
 					<t:loop source="domains" value="currentDomain">
 						<tr id="${currentDomain.name}">
+							<td width='1px'>
+								<t:if test="isMainDomain()">
+									<div class="btn"  title="Main Domain"><i class="icon-ok"/></div>
+									<p:else>
+												<span title="Main Domain">
+												<t:eventlink t:id="setMainDomainEvent" class="btn" context="currentDomain.id">
+													<i class="icon-white icon-ok"/>
+												</t:eventlink>
+												</span>
+									</p:else>
+								</t:if>
+							</td>
 							<td>${currentDomain.name}</td>
 							<td>
 								<div class="input-append">
 									<t:select t:id="siteSelect" class="siteSelect" model="siteSelectModel" blankOption="never" context="currentDomain.name" value="selectedSite"/>
-									<t:actionlink t:id="deleteDomain" class="btn" context="currentDomain.getName()"><i class="icon-trash"></i></t:actionlink>
+									<t:actionlink t:id="deleteDomain" class="btn" context="currentDomain.id"><i class="icon-trash"></i></t:actionlink>
 								</div>
 							</td>
 						</tr>
@@ -29,6 +42,7 @@
 				</t:form>
 				<t:form t:id="newDomainForm">
 					<tr>
+						<td/>
 						<td><t:textfield t:id="newDomain" t:validate="required" value="newDomainValue"/></td>
 						<td>
 							<div class="input-append">
