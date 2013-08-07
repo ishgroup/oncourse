@@ -87,9 +87,6 @@ public class Login {
     @Inject
     private Messages messages;
 
-//    @InjectComponent
-//    private Zone loginZone;
-
     @InjectComponent
     @Property
     private Form loginForm;
