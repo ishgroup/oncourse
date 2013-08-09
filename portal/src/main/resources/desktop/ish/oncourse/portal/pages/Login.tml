@@ -2,79 +2,57 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 <div id="loginZone">
+	<t:delegate to="block:loginBlock"/>
+</div>
+
+<t:block t:id="loginBlock">
 	<t:form t:id="loginForm" class="login-form" method="post" >
 
-        <div class="login-wrapper">
-	
-		<div class="login-left">
-			<h1>Log In</h1>
-	
-			<div class="login-container">
-					 <t:errors banner="literal:Please correct the following mistakes:" class="literal:validation alert alert-block alert-error"/>
+		<div class="login-wrapper">
+
+			<div class="login-left">
+				<h1>Log In</h1>
+
+				<div class="login-container">
+					<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation alert alert-block alert-error"/>
 					<div class="login-table">
 						<div style="width:100%;">
 							<p class="ascompany clearfix"><t:label for="iscompany">As company</t:label>
 								<span class="textField">
-									<t:checkbox onclick="set_is_company(document.getElementsByName('iscompany')[0].checked)" t:id="iscompany" value="iscompany" />
+									<t:checkbox t:id="iscompany" value="iscompany" />
 								</span>
 							</p>
 						</div>
 
-                        <div style="${companyDetailsStyle}" class="${companyDetailsClass}">
-                            <p class="clearfix">
-                                <t:label for="companyName">Company Name</t:label>
-                                <span class="textField">
-                                    <span class="validate">
-                                        <t:TextField t:id="companyName" size="30" maxlength="100" />
-                                        <span t:type="HintComponent" validationMessage="${companyNameErrorMessage}"/>
-                                    </span>
-                                </span>
+						<t:if test="iscompany" negate="true">
+							<t:delegate to="block:studentFieldSet"/>
+						</t:if>
+						<t:if test="iscompany">
+							<t:delegate to="block:companyFieldSet"/>
+						</t:if>
 
-                            </p>
-                        </div>
 
-                        <div style="${userDetailsStyle}" class="${userDetailsClass}">
-                            <p class="clearfix">
-                                <t:label for="firstName">First Name</t:label>
-                                <span class="textField">
-                                    <span class="validate">
-                                        <t:TextField t:id="firstName" size="30" maxlength="100" />
-                                        <span t:type="HintComponent" validationMessage="${firstNameErrorMessage}"/>
-                                    </span>
-                                </span>
-                            </p>
-
-                            <p class="clearfix">
-                                <t:label for="lastName">Last Name</t:label>
-                                <span class="textField">
-                                    <span class="validate">
-                                        <t:TextField t:id="lastName" size="30" maxlength="100" />
-                                        <span t:type="HintComponent" validationMessage="${secondNameErrorMessage}"/>
-                                    </span>
-                                </span>
-                            </p>
-                        </div>
 
 						<p class="clearfix">
-                            <t:label for="email">E-mail</t:label>
+							<t:label for="email">E-mail</t:label>
                             <span class="textField">
                                 <span class="validate">
                                     <t:TextField t:id="email" size="30" maxlength="100" />
                                     <span t:type="HintComponent" validationMessage="${emailNameErrorMessage}"/>
                                 </span>
                             </span>
-                        </p>
-					
+						</p>
+
 						<p class="clearfix">
-                            <t:label for="password">Password</t:label>
+							<t:label for="password">Password</t:label>
                             <span class="textField">
                                 <span class="validate">
                                     <input t:type="PasswordField" t:id="password" size="30" maxlength="100" />
                                     <span t:type="HintComponent" validationMessage="${passwordNameErrorMessage}"/>
                                 </span>
                             </span>
-                        </p>
-						
+						</p>
+
 						<p class="clearfix">
                             <span class="textField">
                                 <t:submit t:id="signIn" class="btn-login btn btn-primary" value="Login" clientId="loginBtn"/>
@@ -82,17 +60,56 @@
                             </span>
 						</p>
 					</div>
+				</div>
 			</div>
+
+			<div class="login-right">If you are a tutor or a student login to SkillsOnCourse to manage your classes, view your timetable and much more. If you are looking to enrol in a class please visit the college website directly.</div>
+
 		</div>
-	
-		<div class="login-right">If you are a tutor or a student login to SkillsOnCourse to manage your classes, view your timetable and much more. If you are looking to enrol in a class please visit the college website directly.</div>
-	
-	</div>
-	
+
 	</t:form>
-    <script type="text/javascript">
-        initHints("loginZone");
-    </script>
-    <div class="cl"></div>
-</div>
+	<script type="text/javascript">
+		initHints("loginZone");
+	</script>
+	<div class="cl"></div>
+</t:block>
+
+<t:block t:id="companyFieldSet">
+	<div class="contactFields">
+		<p class="clearfix">
+			<t:label for="companyName">Company Name</t:label>
+			<span class="textField">
+				<span class="validate">
+					<t:TextField t:id="companyName" size="30" maxlength="100" />
+					<span t:type="HintComponent" validationMessage="${companyNameErrorMessage}"/>
+				</span>
+			</span>
+		</p>
+	</div>
+</t:block>
+
+<t:block t:id="studentFieldSet">
+	<div class="contactFields">
+		<p class="clearfix">
+			<t:label for="firstName">First Name</t:label>
+			<span class="textField">
+				<span class="validate">
+					<t:TextField t:id="firstName" size="30" maxlength="100" />
+					<span t:type="HintComponent" validationMessage="${firstNameErrorMessage}"/>
+				</span>
+			</span>
+		</p>
+
+		<p class="clearfix">
+			<t:label for="lastName">Last Name</t:label>
+			<span class="textField">
+				<span class="validate">
+					<t:TextField t:id="lastName" size="30" maxlength="100" />
+					<span t:type="HintComponent" validationMessage="${secondNameErrorMessage}"/>
+				</span>
+			</span>
+		</p>
+	</div>
+</t:block>
+
 </html>
