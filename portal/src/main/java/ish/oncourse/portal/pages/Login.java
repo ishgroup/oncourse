@@ -5,6 +5,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
@@ -82,6 +83,10 @@ public class Login {
 	@InjectPage
 	private SelectCollege selectCollege;
 
+	@Inject
+	@Id("loginBlock")
+	private Block loginBlock;
+
 	private boolean isForgotPassword;
 
     @Inject
@@ -114,6 +119,13 @@ public class Login {
 		this.firstName = request.getParameter(PARAMETER_firstName);
 		this.lastName = request.getParameter(PARAMETER_lastName);
 		this.email = request.getParameter(PARAMETER_emailAddress);
+	}
+
+	@OnEvent(value = "onCompanyCheckEvent")
+	Object onCompanyCheck()
+	{
+		iscompany = (iscompany == null || !iscompany);
+		return loginBlock;
 	}
 
 	@OnEvent(component = "forgotPassword", value = "selected")
@@ -257,26 +269,6 @@ public class Login {
 			return selectCollege;
 		}
 	}
-
-    public String getUserDetailsStyle()
-    {
-        return  iscompany != null && iscompany ? "display: none;" : "display: block;";
-    }
-
-    public String getCompanyDetailsStyle()
-    {
-        return  iscompany != null && iscompany ? "display: block;" : "display: none;";
-    }
-
-    public String getUserDetailsClass()
-    {
-        return iscompany != null && iscompany ? "user-details collapse": "user-details ";
-    }
-
-    public String getCompanyDetailsClass()
-    {
-        return iscompany != null && iscompany ? "company-details ": "company-details collapse";
-    }
 
     public String getCompanyNameErrorMessage() {
         return companyNameErrorMessage;
