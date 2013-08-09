@@ -1,6 +1,7 @@
 package ish.oncourse.services.courseclass;
 
 import ish.oncourse.model.*;
+import org.apache.cayenne.ObjectContext;
 
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,12 @@ public interface ICourseClassService {
 	 * @return
 	 */
 	List<CourseClass> loadByIds(Object... ids);
+
+	/**
+	 * The method allows to load classes by id from any context not only from shared.
+	 * It is usefull if we what to get clear object which is loading from db directly.
+	 */
+	List<CourseClass> loadByIds(ObjectContext objectContext,Object... ids);
 
 	/**
 	 * 

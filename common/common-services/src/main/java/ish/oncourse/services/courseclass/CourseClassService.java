@@ -6,6 +6,7 @@ import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
@@ -64,7 +65,12 @@ public class CourseClassService implements ICourseClassService {
         return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
     }
 
-    public List<CourseClass> loadByIds(Object... ids) {
+	public List<CourseClass> loadByIds(Object... ids) {
+		return loadByIds(cayenneService.sharedContext(), ids);
+	}
+
+	public List<CourseClass> loadByIds(ObjectContext objectContext,Object... ids) {
+
         if (ids.length == 0) {
             return Collections.emptyList();
         }
@@ -75,7 +81,7 @@ public class CourseClassService implements ICourseClassService {
 
         appyCourseClassCacheSettings(q);
 
-        return cayenneService.sharedContext().performQuery(q);
+        return objectContext.performQuery(q);
     }
 
     public List<CourseClass> loadByIds(List<Long> ids) {
