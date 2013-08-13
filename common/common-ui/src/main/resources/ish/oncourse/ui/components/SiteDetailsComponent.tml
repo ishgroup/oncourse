@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div class="vcard locationInfo">
 		<h1>${site.name}</h1>
 		<div class="adr" id="">
@@ -33,16 +33,8 @@
 		</div>
 	</div>
 	<t:if t:test="site.hasCoordinates">
-
 		<span t:type="ui/GoogleDirections" sites="mapSites" showDirections="true" collapseLocationMap="collapseLocationMap"
 			showLocationMap="true" />
-		<script type="text/javascript">
-			$j(document).ready(function() {
-				if ($j('#gmapCanvas').length) {
-					mapLoad('gmapCanvas', gMapSites, gMapOptions);
-				}
-			});
-		</script>
 	</t:if>
 
 	<div id="gmapCanvas"></div>

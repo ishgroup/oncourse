@@ -1,14 +1,8 @@
 <html t:type="ui/internal/pagestructure" bodyId="literal:SiteList" bodyClass="literal:internal-page"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<h1>Sites</h1>
-	<span t:type="ui/GoogleMapSites" sites="sites" showLocationMap="true"></span>
-	<script type="text/javascript">
-			$j(document).ready(function() {
-				if ($j('#gmapCanvas').length) {
-					mapLoad('gmapCanvas', gMapSites, gMapOptions);
-				}
-			});
-	</script>
+	<span t:type="ui/GoogleMapSites" sites="sites" showLocationMap="true"/>
+
 	<ul class="siteList">
 		<t:loop source="sites" value="site">
 			<li class="vcard">

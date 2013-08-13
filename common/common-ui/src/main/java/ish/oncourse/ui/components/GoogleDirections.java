@@ -1,16 +1,15 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Site;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class GoogleDirections {
 	@Inject
@@ -112,43 +111,20 @@ public class GoogleDirections {
 	}
 
 	public void setupMapPosition() {
+		/**
+		 * if at least one site has coordinate  we should show google map.
+		 */
 
-		double avLat = 0;
-		double avLong = 0;
-		int count = 0;
-		Double firstLat = null;
-		Double firstLong = null;
 		for (Site item : sites) {
 			if (item.getLatitude() == null || item.getLongitude() == null) {
 				continue;
 			}
-			Double lat = new Double(item.getLatitude().toString());
-			Double lon = new Double(item.getLongitude().toString());
-			if (firstLat == null) {
-				firstLat = lat;
-			}
-			if (firstLong == null) {
-				firstLong = lon;
-			}
-
-			// UGLY HACK to ignore ridiculous site lat longs
-			if (Math.abs(firstLat - lat) > 10) {
-				continue;
-			}
-			if (Math.abs(firstLong - lon) > 10) {
-				continue;
-			}
-			count++;
-			avLat = avLat + lat;
-			avLong = avLong + lon;
-		}
-		if (count > 0) {
-			mapPositionLatitude = avLat / count;
-			mapPositionLongitude = avLong / count;
-		} else {
-			// TODO set global position
+			mapPositionLatitude = item.getLatitude().doubleValue();
+			mapPositionLongitude = item.getLongitude().doubleValue();
+			break;
 		}
 	}
+
 
 	public boolean isHasGlobalPosition() {
 		String near = request.getParameter("near");
@@ -190,6 +166,15 @@ public class GoogleDirections {
 
 	public String getMapClass() {
 		return showLocationMap ? "map" : "mapDelayed";
+	}
+
+	/**
+	 * google option "center" is needed only we show one marker. when we show more then one marker google
+	 * api 3.exp calculates this value by itself.
+	 */
+	public boolean needCenter()
+	{
+		return sites != null && sites.size() == 1;
 	}
 
 }

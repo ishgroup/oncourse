@@ -1,23 +1,49 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
+		>
 	<t:if t:test="hasLocation">
+
 		<script type="text/javascript">
-			vLat = "${mapPositionLatitude}";
-			vLong = "${mapPositionLongitude}";
-			gMapOptions = {
-				zoom: 14,
-				center: new google.maps.LatLng(vLat, vLong),
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-			near = "${searchingNear}";
-			vSiteAddress = "${address}";
-			vFrom = "${directionsFrom}";
-			showNearMarker = "${hasGlobalPosition}";
-			showMapItems = "${showMapItems}";
-			zoom = null;
-			siteMarkers = new Array();
-			gMapSites = ${sitesArray};
-			mapLoaded=false;
+
+
+			function initialize() {
+				vLat = "${mapPositionLatitude}";
+				vLong = "${mapPositionLongitude}";
+				gMapOptions = {
+					zoom: 14,
+					<t:if test="needCenter()">
+						center: new google.maps.LatLng(vLat, vLong),
+					</t:if>
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				near = "${searchingNear}";
+				vSiteAddress = "${address}";
+				vFrom = "${directionsFrom}";
+				showNearMarker = "${hasGlobalPosition}";
+				showMapItems = "${showMapItems}";
+				zoom = null;
+				siteMarkers = new Array();
+				gMapSites = ${sitesArray};
+				mapLoaded=false;
+
+				mapLoad('gmapCanvas', gMapSites, gMapOptions);
+			}
+
+			/**
+			 * the function makes async call to load google map
+			 */
+			function loadMap() {
+				var script = document.createElement('script');
+				script.type = 'text/javascript';
+				//we use this hard code to convert &amp; to &.
+				script.src = jQuery('<div></div>').html('https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;callback=initialize').text();
+				document.body.appendChild(script);
+			}
+
+			jQuery(document).ready(function() {
+				if (jQuery('#gmapCanvas').length) {
+					loadMap();
+				}
+			});
 		</script>
 
 		<div id="directions" class="directions-wrapper">
