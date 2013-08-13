@@ -34,7 +34,7 @@
 			function loadMap() {
 				var script = document.createElement('script');
 				script.type = 'text/javascript';
-				//we use this hard code to convert &amp; to &.
+				//we use this hard code to convert &amp; to real amp.
 				script.src = jQuery('<div></div>').html('https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;callback=initialize').text();
 				document.body.appendChild(script);
 			}
