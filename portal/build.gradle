@@ -6,13 +6,11 @@ dependencies {
 	compile 'org.apache.tapestry:tapestry-json:5.3.7'
 	compile 'org.mnode.ical4j:ical4j:1.0.2'
 	compile 'com.ocpsoft:ocpsoft-pretty-time:1.0.7'
+	compile 'javax.mail:mail:1.4.5'
 
 	compile project(':common:common-model')
 	compile project(':common:common-textile')
 	compile project(':common:common-services')
-
-
-	providedCompile 'javax.mail:mail:1.4'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
