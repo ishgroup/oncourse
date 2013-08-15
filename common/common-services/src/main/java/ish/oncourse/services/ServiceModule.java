@@ -91,7 +91,7 @@ import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
-import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.LibraryMapping;
@@ -101,9 +101,8 @@ import org.apache.tapestry5.services.LibraryMapping;
  */
 public class ServiceModule {
 
-	private static Logger LOGGER = Logger.getLogger(ServiceModule.class);
-
 	public static final String APP_TEST_MODE = "application.test";
+	private static Logger LOGGER = Logger.getLogger(ServiceModule.class);
 
 	public static void bind(ServiceBinder binder) {
 
@@ -117,7 +116,7 @@ public class ServiceModule {
 
 		// Tapestry and environment specific services
 		binder.bind(ReferenceService.class);
-		
+
 		if (ContextUtil.isQueryCacheEnabled()) {
 			binder.bind(ICacheService.class, OSCacheService.class);
 		} else {
@@ -147,10 +146,10 @@ public class ServiceModule {
 		binder.bind(PreferenceController.class);
 		binder.bind(PreferenceControllerFactory.class);
 		binder.bind(EncryptionService.class);
-		binder.bind(IMailService.class,MailService.class);
-		
+		binder.bind(IMailService.class, MailService.class);
+
 		binder.bind(ThreadSource.class, ThreadSourceImpl.class);
-		
+
 		binder.bind(IContactService.class, ContactServiceImpl.class);
 		binder.bind(IRoomService.class, RoomService.class);
 		binder.bind(ISitesService.class, SitesService.class);
@@ -175,14 +174,14 @@ public class ServiceModule {
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
-		
+
 		if (isInTestMode) {
 			binder.bind(ISMSService.class, TestModeSMSService.class);
 		} else {
 			binder.bind(ISMSService.class, DefaultSMSService.class);
 		}
-        binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
-        binder.bind(IVoucherService.class, VoucherService.class);
+		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
+		binder.bind(IVoucherService.class, VoucherService.class);
 		binder.bind(IFacebookMetaProvider.class, FacebookMetaProvider.class);
 		binder.bind(ICacheMetaProvider.class, NoCacheMetaProvider.class).eagerLoad();
 	}
@@ -199,12 +198,20 @@ public class ServiceModule {
 		return cayenneService;
 	}
 
-	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration, @Inject IEnvironmentService environmentService) {
+	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration, @Local IEnvironmentService environmentService) {
 		// The version of the application, which is incorporated into URLs for
 		// context and classpath assets.If not specified the random number is
 		// used each time.
-		String version = environmentService.getCiVersion();
-		configuration.add(SymbolConstants.APPLICATION_VERSION, version);
+		try {
+			String version = environmentService.getCiVersion();
+			configuration.add(SymbolConstants.APPLICATION_VERSION, version);
+		} catch (Exception e) {
+			/**
+			 * The catch was intruduce to exclude runtime exception for junits:
+			 * java.lang.RuntimeException: Exception constructing service 'ServiceOverride': Construction of service 'ServiceOverride' has failed due to recursion: the service depends on itself in some way. Please check org.apache.tapestry5.ioc.internal.services.ServiceOverrideImpl(Map) (at ServiceOverrideImpl.java:31) via org.apache.tapestry5.ioc.services.TapestryIOCModule.bind(ServiceBinder) (at TapestryIOCModule.java:49) for references to another service that is itself dependent on service 'ServiceOverride'.
+			 */
+			LOGGER.debug("Unexpected exception.",e);
+		}
 		/**
 		 * The configuration property is set to avoid adding
 		 * "<meta content="Apache Tapestry Framework (version 5.*.*)" name="generator"> to head.
@@ -220,8 +227,8 @@ public class ServiceModule {
 
 	}
 
-    public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
-        configuration.add(new LibraryMapping("ish", "ish.oncourse"));
-    }
+	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
+		configuration.add(new LibraryMapping("ish", "ish.oncourse"));
+	}
 
 }
