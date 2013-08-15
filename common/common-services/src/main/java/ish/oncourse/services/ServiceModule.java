@@ -201,7 +201,7 @@ public class ServiceModule {
 		// The version of the application, which is incorporated into URLs for
 		// context and classpath assets.If not specified the random number is
 		// used each time.
-		configuration.add(SymbolConstants.APPLICATION_VERSION, "2");
+		// configuration.add(SymbolConstants.APPLICATION_VERSION, "2");
 	}
 
     public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
