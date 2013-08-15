@@ -8,7 +8,6 @@ import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.ui.services.filter.LogFilter;
 import ish.oncourse.ui.template.T5FileResource;
 import ish.oncourse.util.UIRequestExceptionHandler;
-import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.pageload.ComponentTemplateSourceOverride;
 import org.apache.tapestry5.internal.pageload.PageLoaderOverride;
 import org.apache.tapestry5.internal.pageload.PageSourceOverride;
@@ -88,16 +87,6 @@ public class UIModule {
 
 	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
 		configuration.add(new LibraryMapping("ui", "ish.oncourse.ui"));
-	}
-
-	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
-
-		// ensure Tapestry does not advertise itself on our pages...
-		configuration.add(SymbolConstants.OMIT_GENERATOR_META, "true");
-
-		// this is overridden in other palces anyways, as we are using locale
-		// variant for site template customization
-		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
 	}
 
 	public void contributeRequestHandler(OrderedConfiguration<RequestFilter> configuration,

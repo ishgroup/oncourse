@@ -13,7 +13,6 @@ dependencies {
 	compile 'net.java.dev.textile-j:textile-j:2.2.864'
 	compile 'axis:axis:1.4'
 	compile 'net.htmlparser.jericho:jericho-html:3.2'
-	compile 'javax.mail:mail:1.4.5'
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	compile 'org.apache.maven:maven-artifact:3.0.4'
 

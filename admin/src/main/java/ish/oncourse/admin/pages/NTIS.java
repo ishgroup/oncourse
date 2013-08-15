@@ -1,22 +1,10 @@
 package ish.oncourse.admin.pages;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
 import ish.oncourse.admin.services.ntis.INTISUpdater;
-import ish.oncourse.admin.services.ntis.NTISResult;
 import ish.oncourse.admin.services.ntis.NTISTask;
-import ish.oncourse.model.Module;
-import ish.oncourse.model.Qualification;
-import ish.oncourse.model.TrainingPackage;
-import ish.oncourse.services.mail.MailService;
+import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.threading.ThreadSource;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -27,6 +15,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.services.Session;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class NTIS {
 
@@ -51,7 +43,7 @@ public class NTIS {
 	private ThreadSource threadSource;
 	
 	@Inject
-	private MailService mailService;
+	private IMailService mailService;
 	
 	@InjectComponent
 	private Form updateForm;
@@ -126,7 +118,7 @@ public class NTIS {
 		private Session session;
 
 		public SessionBoundNTISTask(Date from, Date to, Session session, INTISUpdater ntisUpdater, 
-				PreferenceController preferenceController, MailService mailService) {
+				PreferenceController preferenceController, IMailService mailService) {
 			super(from, to, ntisUpdater, preferenceController, mailService);
 			this.session = session;
 		}

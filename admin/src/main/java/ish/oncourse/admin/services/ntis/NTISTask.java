@@ -4,8 +4,9 @@ import ish.oncourse.model.Module;
 import ish.oncourse.model.Organisation;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
-import ish.oncourse.services.mail.MailService;
+import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.preference.PreferenceController;
+import org.apache.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,32 +14,27 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 public class NTISTask implements Runnable {
 
-	private static Logger LOGGER = Logger.getLogger(NTISTask.class);
-	
 	private static final String EMAIL_FROM = "support@ish.com.au";
 	private static final String EMAIL_TO = "support@ish.com.au";
 	private static final String EMAIL_SUBJECT = "NTIS Data Update";
-
+	private static Logger LOGGER = Logger.getLogger(NTISTask.class);
+	protected List<String> ntisData;
 	private Date from;
 	private Date to;
 	private INTISUpdater ntisUpdater;
 	private PreferenceController preferenceController;
-	private MailService mailService;
-	
-	protected List<String> ntisData;
+	private IMailService mailService;
 
-	public NTISTask(Date from, Date to, INTISUpdater ntisUpdater, PreferenceController preferenceController, MailService mailService) {
+	public NTISTask(Date from, Date to, INTISUpdater ntisUpdater, PreferenceController preferenceController, IMailService mailService) {
 		super();
 		this.from = from;
 		this.to = to;
 		this.ntisUpdater = ntisUpdater;
 		this.preferenceController = preferenceController;
 		this.mailService = mailService;
-		
+
 		this.ntisData = new LinkedList<>();
 	}
 
@@ -108,18 +104,18 @@ public class NTISTask implements Runnable {
 
 		ntisData.add("Update finished.");
 		ntisData.add(String.format("END_%s", preferenceController.getNTISLastUpdate()));
-		
+
 		sendResultEmail();
 	}
-	
+
 	private void sendResultEmail() {
 		StringBuilder emailBody = new StringBuilder();
-		
+
 		for (String line : ntisData) {
 			emailBody.append(line);
 			emailBody.append("\n");
 		}
-		
+
 		mailService.sendMail(EMAIL_FROM, EMAIL_TO, EMAIL_SUBJECT, emailBody.toString());
 	}
 }

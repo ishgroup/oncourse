@@ -1,12 +1,11 @@
-package ish.oncourse.portal.services.mail;
-
-import java.util.Date;
+package ish.oncourse.services.mail;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Date;
 
 public class EmailBuilder {
 

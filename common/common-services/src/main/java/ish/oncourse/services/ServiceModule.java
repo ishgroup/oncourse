@@ -37,6 +37,7 @@ import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.jndi.LookupService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
+import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.mail.MailService;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.menu.WebMenuService;
@@ -90,6 +91,7 @@ import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
+import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.LibraryMapping;
@@ -145,7 +147,7 @@ public class ServiceModule {
 		binder.bind(PreferenceController.class);
 		binder.bind(PreferenceControllerFactory.class);
 		binder.bind(EncryptionService.class);
-		binder.bind(MailService.class);
+		binder.bind(IMailService.class,MailService.class);
 		
 		binder.bind(ThreadSource.class, ThreadSourceImpl.class);
 		
@@ -197,11 +199,25 @@ public class ServiceModule {
 		return cayenneService;
 	}
 
-	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
+	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration, @Inject IEnvironmentService environmentService) {
 		// The version of the application, which is incorporated into URLs for
 		// context and classpath assets.If not specified the random number is
 		// used each time.
-		// configuration.add(SymbolConstants.APPLICATION_VERSION, "2");
+		String version = environmentService.getCiVersion();
+		configuration.add(SymbolConstants.APPLICATION_VERSION, version);
+		/**
+		 * The configuration property is set to avoid adding
+		 * "<meta content="Apache Tapestry Framework (version 5.*.*)" name="generator"> to head.
+		 */
+
+		// ensure Tapestry does not advertise itself on our pages...
+		configuration.add(SymbolConstants.OMIT_GENERATOR_META, "true");
+
+		// this is overridden in other palces anyways, as we are using locale
+		// variant for site template customization
+		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
+
+
 	}
 
     public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {

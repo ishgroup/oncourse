@@ -6,8 +6,6 @@ import ish.oncourse.portal.access.AuthenticationService;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.discussion.DiscussionServiceImpl;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
-import ish.oncourse.portal.services.mail.IMailService;
-import ish.oncourse.portal.services.mail.MailServiceImpl;
 import ish.oncourse.portal.services.pageload.*;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.ServiceModule;
@@ -18,6 +16,7 @@ import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.UIRequestExceptionHandler;
 import org.apache.tapestry5.MetaDataConstants;
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -33,13 +32,14 @@ public class AppModule {
 
 	private static final String EXCEPTION_REDIRECT_PAGE = "login";
 
+	private static final String HMAC_PASSPHRASE = "T88LkO4uVSAH72BSU85FzhI6e3O31N6J";
+
 	public static void bind(ServiceBinder binder) {
 		binder.bind(IUserAgentDetector.class, UserAgentDetectorImpl.class);
 		binder.bind(ComponentRequestSelectorAnalyzer.class, PortalComponentRequestSelectorAnalyzer.class).withId(
 				"PortalComponentRequestSelectorAnalyzer");
 
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
-		binder.bind(IMailService.class, MailServiceImpl.class);
 		binder.bind(IDiscussionService.class, DiscussionServiceImpl.class);
 		binder.bind(AccessController.class).withId("AccessController");
 		binder.bind(IWebSiteService.class, PortalSiteService.class).withId("WebSiteServiceOverride");
@@ -82,8 +82,12 @@ public class AppModule {
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
 		configuration.add(MetaDataConstants.SECURE_PAGE, "true");
 	}
-	
-	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request, 
+
+	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
+		configuration.add(SymbolConstants.HMAC_PASSPHRASE, HMAC_PASSPHRASE);
+	}
+
+	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request,
 		Response response) {
 		return new UIRequestExceptionHandler(componentSource, renderer, request, response, UIRequestExceptionHandler.DEFAULT_ERROR_PAGE, 
 			EXCEPTION_REDIRECT_PAGE, true);

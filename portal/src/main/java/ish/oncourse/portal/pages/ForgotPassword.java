@@ -1,8 +1,8 @@
 package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.Contact;
-import ish.oncourse.portal.services.mail.EmailBuilder;
-import ish.oncourse.portal.services.mail.IMailService;
+import ish.oncourse.services.mail.EmailBuilder;
+import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.utils.SessionIdGenerator;
 import org.apache.cayenne.ObjectContext;
@@ -60,7 +60,7 @@ public class ForgotPassword {
 	void setupRender() {
 		// creating expire link
 		ObjectContext ctx = cayenneService.newContext();
-		Contact c = (Contact) ctx.localObject(user.getObjectId(), null);
+		Contact c = ctx.localObject(user);
 
 		Calendar calendar = Calendar.getInstance();
 

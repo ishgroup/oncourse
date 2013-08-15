@@ -1,18 +1,17 @@
 package ish.oncourse.admin.pages.ntis;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import ish.oncourse.admin.services.ntis.INTISUpdater;
 import ish.oncourse.admin.services.ntis.NTISTask;
-import ish.oncourse.services.mail.MailService;
+import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.threading.ThreadSource;
-
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.util.TextStreamResponse;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class Update {
@@ -21,7 +20,7 @@ public class Update {
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 	
 	@Inject
-	private MailService mailService;
+	private IMailService mailService;
 	
 	@Inject
 	private INTISUpdater ntisUpdater;

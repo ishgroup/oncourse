@@ -4,7 +4,6 @@
 	<ResourceLink global="jdbc/oncourse" name="jdbc/oncourse" type="javax.sql.DataSource"/>
 
     <Environment name="CustomComponentsPath" value="/var/onCourse/resources" type="java.lang.String" override="false"/>
-	<ResourceLink global="mail/Session" name="mail/Session" type="javax.mail.Session"/>
 
     <Environment name="asset.fileStorageRoot" override="false" type="java.lang.String" value="/var/tomonCourse/assets" />
     <Environment name="asset.syncScript" override="false" type="java.lang.String" value="/var/tomonCourse/scripts/assetSync.sh" />

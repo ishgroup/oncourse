@@ -6,7 +6,7 @@
 </div>
 
 <t:block t:id="loginBlock">
-	<t:form t:id="loginForm" class="login-form" method="post" >
+	<t:form t:id="loginForm" class="login-form" method="post" clientValidation="literal:NONE">
 
 		<div class="login-wrapper">
 
