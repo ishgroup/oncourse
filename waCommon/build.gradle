@@ -1,5 +1,5 @@
 dependencies {
-	compile 'org.apache.cayenne:cayenne-server:3.1-beta.r1443526'
+	compile 'org.apache.cayenne:cayenne-server:3.2M1.1'
 }
 
 jar {
