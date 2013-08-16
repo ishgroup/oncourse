@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -231,7 +232,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
     @Test
     public void testErrorNoSelectedItemForPurchase() {
         ObjectContext context = cayenneService.newContext();
-        PurchaseModel model = createModel(context, Collections.EMPTY_LIST, Collections.EMPTY_LIST, null);
+        PurchaseModel model = createModel(context, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
         PurchaseController purchaseController = purchaseControllerBuilder.build(model);
         purchaseController.performAction(new ActionParameter(Action.init));
         assertEquals(State.paymentResult, purchaseController.getState());
@@ -243,32 +244,43 @@ public class PurchaseControllerTest extends ACheckoutTest {
     }
 
     private PurchaseController init(boolean addPayer) {
-        ObjectContext context = cayenneService.newContext();
-        CourseClass cc1 = Cayenne.objectForPK(context, CourseClass.class, 1186958);
-        CourseClass cc2 = Cayenne.objectForPK(context, CourseClass.class, 1186959);
-        CourseClass cc3 = Cayenne.objectForPK(context, CourseClass.class, 1186960);
+		return init(Arrays.asList(1186958L,1186959L,1186960L), Arrays.asList(7L),Arrays.asList(2L), addPayer);
+	}
+
+	private PurchaseController init(List<Long> courseClassIds, List<Long> productIds,  List<Long> discountIds, boolean addPayer) {
+		ObjectContext context = cayenneService.newContext();
+
+		List<CourseClass> courseClasses = new ArrayList<>();
+		for (Long id : courseClassIds)
+			courseClasses.add(Cayenne.objectForPK(context, CourseClass.class, id));
+
+		List<Product> products = new ArrayList<>();
+		for (Long id : productIds)
+			products.add(Cayenne.objectForPK(context, VoucherProduct.class, id));
+
+		List<Discount> discounts = new ArrayList<>();
+		for (Long id : discountIds)
+			discounts.add(Cayenne.objectForPK(context, Discount.class, id));
 
 
-        Product p1 = Cayenne.objectForPK(context, VoucherProduct.class, 7);
+		PurchaseModel model = createModel(context,
+				courseClasses,
+				products,
+				discounts);
 
-        Discount d = Cayenne.objectForPK(context, Discount.class, 2);
+		super.createPurchaseController(model);
+		assertEquals(courseClasses.size(), model.getClasses().size());
+		assertEquals(products.size(), model.getProducts().size());
+		assertEquals(discounts.size(), model.getDiscounts().size());
 
-        PurchaseModel model = createModel(context,
-                Arrays.asList(cc1, cc2, cc3),
-                Arrays.asList(p1),
-                d);
-        super.createPurchaseController(model);
-        assertEquals(3, model.getClasses().size());
-        assertEquals(1, model.getProducts().size());
+		if (addPayer) {
+			addFirstContact(1189157);
+			assertEquals(1, purchaseController.getModel().getContacts().size());
+			assertNotNull(purchaseController.getModel().getPayer());
+		}
 
-        if (addPayer) {
-            addFirstContact(1189157);
-            assertEquals(1, purchaseController.getModel().getContacts().size());
-            assertNotNull(purchaseController.getModel().getPayer());
-        }
-
-        return purchaseController;
-    }
+		return purchaseController;
+	}
 
     @Test
     public void testChangePayer() {
@@ -604,7 +616,34 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertTrue("No actions should be allowed when purchaseController is in finalized state.", purchaseController.isIllegalState());
     }
 
-    @Test
+	@Test
+	/**
+	 * The test checks that zero payment gets INTERNAL type
+	 */
+	public void testZeroProceedToPayment() throws InterruptedException {
+
+		PurchaseController purchaseController = init(Arrays.asList(1186960L), Collections.EMPTY_LIST, Collections.EMPTY_LIST,true);
+
+		ActionParameter param = new ActionParameter(Action.proceedToPayment);
+		param.setValue(purchaseController.getModel().getPayment());
+		performAction(param);
+
+		assertTrue(purchaseController.getModel().getPayment().isZeroPayment());
+		assertEquals(PaymentType.INTERNAL, purchaseController.getModel().getPayment().getType());
+
+		makeInvalidPayment();
+
+		Contact newContact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1189158);
+
+		param = new ActionParameter(Action.addContact);
+		param.setValue(newContact);
+
+		purchaseController.performAction(param);
+		assertTrue("No actions should be allowed when purchaseController is in finalized state.", purchaseController.isIllegalState());
+	}
+
+
+	@Test
     public void testStartConcessionEditor() {
         PurchaseController purchaseController = init();
 

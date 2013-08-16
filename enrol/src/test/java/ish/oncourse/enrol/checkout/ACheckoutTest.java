@@ -88,7 +88,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 	PurchaseModel createModel(ObjectContext context,
 							  List<CourseClass> classes,
 							  List<Product> products,
-							  Discount discount) {
+							  List<Discount> discounts) {
 		College college = Cayenne.objectForPK(context, College.class, 1);
 		WebSite webSite = Cayenne.objectForPK(context, WebSite.class, 1);
 
@@ -99,8 +99,9 @@ public abstract class ACheckoutTest extends ServiceTest {
 		model.setProducts(products);
 		model.setWebSite(webSite);
 		model.setAllowToUsePrevOwing(true);
-		if (discount != null)
+		for (Discount discount : discounts) {
 			model.addDiscount(discount);
+		}
 		return model;
 	}
 
@@ -115,7 +116,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 	{
 		ObjectContext context = cayenneService.newContext();
 		CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, courseClassId);
-		PurchaseModel model = createModel(context, Arrays.asList(courseClass), Collections.EMPTY_LIST, null);
+		PurchaseModel model = createModel(context, Arrays.asList(courseClass), Collections.EMPTY_LIST, Collections.EMPTY_LIST);
 		createPurchaseController(model);
 		return courseClass;
 

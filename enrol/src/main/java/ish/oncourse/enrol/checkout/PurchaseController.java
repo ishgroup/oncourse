@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
+import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.*;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorController;
@@ -126,28 +127,6 @@ public class PurchaseController {
 
 	public synchronized Money getMinimumPayableNow() {
 		return getModel().getPayment().getAmount();
-	}
-
-
-	/**
-	 * Check that any discounts potentially can be applied for actual enrollments.
-	 *
-	 * @return true if some discounts can be applied for actual enrollments.
-	 */
-	public synchronized boolean hasSuitableClasses(StudentConcession studentConcession) {
-		// TODO: port this method to some service(it is a part of DiscountService#isStudentElifible)
-		for (CourseClass cc : model.getClasses()) {
-			for (DiscountCourseClass dcc : cc.getDiscountCourseClasses()) {
-				for (DiscountConcessionType dct : dcc.getDiscount().getDiscountConcessionTypes()) {
-					if (studentConcession.getConcessionType().getId().equals(dct.getConcessionType().getId())
-							&& (!Boolean.TRUE.equals(studentConcession.getConcessionType().getHasExpiryDate())
-							|| (studentConcession.getExpiresOn() != null && studentConcession.getExpiresOn().after(new Date())))) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
 	}
 
 
@@ -591,6 +570,15 @@ public class PurchaseController {
             result = Money.ZERO;
         else
             result = (result.isLessThan(Money.ZERO) ? Money.ZERO : result);
+
+		/**
+		 * we need to set payment type to internal when amount is zero because admin application
+		 * billing logic uses this type to define which payments were sent to DPS and which were not sent.
+		 */
+		if (result.isZero())
+			getModel().getPayment().setType(PaymentType.INTERNAL);
+		else
+			getModel().getPayment().setType(PaymentType.CREDIT_CARD);
 
 		getModel().getPayment().setAmount(result);
 		getModel().getPayment().getPaymentInLines().get(0).setAmount(result);
