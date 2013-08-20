@@ -56,7 +56,7 @@
 						<p class="clearfix">
                             <span class="textField">
                                 <t:submit t:id="signIn" class="btn-login btn btn-primary" value="Login" clientId="loginBtn"/>
-                                <a t:id="forgotPassword" t:type="linksubmit" href="#" class="login-forgot">Forgot Password?</a>
+                                <a id="forgotPassword" href="#" class="login-forgot">Forgot Password?</a>
                             </span>
 						</p>
 					</div>

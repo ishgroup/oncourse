@@ -87,6 +87,11 @@ public class Login {
 	@Id("loginBlock")
 	private Block loginBlock;
 
+	/**
+	 * the property should be persist because we set it over ajax request and
+	 * it should be available for the next requests
+	 */
+	@Persist
 	private boolean isForgotPassword;
 
     @Inject
@@ -128,9 +133,10 @@ public class Login {
 		return loginBlock;
 	}
 
-	@OnEvent(component = "forgotPassword", value = "selected")
-	void onSelectedForgotPassword() {
+	@OnEvent(value = "onForgotPasswordEvent")
+	Object onForgotPassword() {
 		this.isForgotPassword = true;
+		return loginBlock;
 	}
 
 	Object onSuccess() throws IOException {
