@@ -6,6 +6,7 @@ import org.apache.tapestry5.services.Request;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -59,7 +60,7 @@ public class HTMLUtilsTest {
 
 	@Test
 	public void test_getCanonicalLinkPathForCourses() {
-		String expected = "http://localhost.localdomain/context/tag1.name/tag2.sname1+tag2.sname2";
+		String expected = "http://localhost.localdomain/context/courses/tag1.name/tag2.sname1+tag2.sname2";
 		Tag tag1 = mock(Tag.class);
 		when(tag1.getName()).thenReturn("tag1.name");
 		when(tag1.getShortName()).thenReturn(null);
@@ -69,6 +70,8 @@ public class HTMLUtilsTest {
 		when(tag2.getName()).thenReturn("tag2.name");
 		when(tag2.getShortName()).thenReturn("tag2.sname1 tag2.sname2");
 		when(tag2.getDefaultPath()).thenCallRealMethod();
+		when(tag2.getLink()).thenCallRealMethod();
+		when(tag2.getLink(anyString())).thenCallRealMethod();
 		when(tag2.getParent()).thenReturn(tag1);
 
 		Request request = createRequest();
