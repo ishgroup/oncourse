@@ -175,10 +175,10 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 	void makeValidPayment() throws InterruptedException {
 		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
-		delegate.getPaymentIn().setCreditCardCVV("1111");
-		delegate.getPaymentIn().setCreditCardExpiry("12/2020");
-		delegate.getPaymentIn().setCreditCardName("NAME NAME");
-		delegate.getPaymentIn().setCreditCardNumber("9999990000000378");
+		delegate.getPaymentIn().setCreditCardCVV("321");
+		delegate.getPaymentIn().setCreditCardExpiry("11/2027");
+		delegate.getPaymentIn().setCreditCardName("VALERIY IVANOV");
+		delegate.getPaymentIn().setCreditCardNumber("5105105105105100");
 		delegate.getPaymentIn().setCreditCardType(CreditCardType.MASTERCARD);
 		delegate.makePayment();
 		assertEquals(paymentProgress, purchaseController.getState());

@@ -53,11 +53,11 @@ public class CheckoutGUITest extends ACheckoutTest {
 		//fill credit card details and press  paymentSubmit
 		parameters = new HashMap<>();
 		parameters.put("contact", "1001");
-		parameters.put("creditCardName", "Student1 Student1");
+		parameters.put("creditCardName", "VALERIY IVANOV");
 		parameters.put("creditCardNumber", "5105105105105100");
-		parameters.put("creditCardCVV", "1111");
-		parameters.put("expiryMonth", "01");
-		parameters.put("expiryYear", "2111");
+		parameters.put("creditCardCVV", "321");
+		parameters.put("expiryMonth", "11");
+		parameters.put("expiryYear", "2027");
 		parameters.put("userAgreed", "on");
 
 		response = getPageTester().clickSubmitAndReturnResponse(element, parameters);
