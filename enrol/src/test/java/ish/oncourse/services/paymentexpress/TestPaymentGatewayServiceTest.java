@@ -143,7 +143,7 @@ public class TestPaymentGatewayServiceTest {
 
          creditCart = new CreditCart(CreditCardType.MASTERCARD,
                 "5105105105105100",
-                "VALERIY IVANOV",
+                "JOHN MASTER",
                 "322",
                 "11/2027");
         processCreditCard(creditCart);

@@ -36,9 +36,9 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
     /**
      * Valid credit cards for payment.
      */
-    public static final CreditCart MASTERCARD = new CreditCart(CreditCardType.MASTERCARD, "5105105105105100", "VALERIY IVANOV", "321", "11/2027");
-    public static final CreditCart VISA = new CreditCart(CreditCardType.VISA, "4012888888881881", "ARTEM KRAVCHENKO", "123", "12/2027");
-    public static final CreditCart AMEX = new CreditCart(CreditCardType.AMEX, "378282246310005", "DMITRIY VALENTYKEVICH", "0965", "07/2027");
+    public static final CreditCart MASTERCARD = new CreditCart(CreditCardType.MASTERCARD, "5105105105105100", "JOHN MASTER", "321", "11/2027");
+    public static final CreditCart VISA = new CreditCart(CreditCardType.VISA, "4012888888881881", "JOHN VISA", "123", "12/2027");
+    public static final CreditCart AMEX = new CreditCart(CreditCardType.AMEX, "378282246310005", "JOHN AMEX", "0965", "07/2027");
 
     private VerifyResult result;
 
