@@ -15,8 +15,7 @@
  */
 
 apply plugin: 'groovy'
-apply plugin: 'java'
-apply plugin: 'maven'
+
 
 version = '1.0'
 
