@@ -10,6 +10,9 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Date;
 import java.util.Properties;
 
 public class MailService implements IMailService {
@@ -40,14 +43,29 @@ public class MailService implements IMailService {
 			LOGGER.error("Bad recipient address");
 			return false;
 		}
+		Properties props = System.getProperties();
+		if (!props.containsKey("mail.smtp.host")) {
+			LOGGER.error("SMPT host is not defined!");
+		}
+		Session session = Session.getDefaultInstance(props, null);
+		// -- Create a new message --
+		Message msg = new MimeMessage(session);
 
-		EmailBuilder emailBuilder = new EmailBuilder();
-		emailBuilder.setFromEmail(from);
-		emailBuilder.setToEmails(to);
-		emailBuilder.setSubject(subject);
-		emailBuilder.setBody(body);
-		// -- Send the message --
-		return sendEmail(emailBuilder, false);
+		try {
+			// -- Set the FROM and TO fields --
+			msg.setFrom(new InternetAddress(from));
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
+			// -- Set the subject and body text --
+			msg.setSubject(subject);
+			msg.setText(body);
+			msg.setSentDate(new Date());
+			// -- Send the message --
+			Transport.send(msg);
+		} catch (Exception e) {
+			LOGGER.error("Exception on sending mail:" + e.getMessage());
+			return false;
+		}
+		return true;
 	}
 
 	@Override
