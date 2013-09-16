@@ -1,12 +1,15 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<ul class="courseList">
-		<t:loop source="courses" value="course">
-			<li data-courseCode="${course.code}">
-				<a href="/course/${course.code}">${course.name}</a>
-				<p>
-					<t:outputraw value="course.detail" />
-				</p>
-			</li>
-		</t:loop>
+		<t:if test="titles">
+			<t:loop source="courses" value="course">
+					<span t:type="textile/course/titles" course="course"/>
+			</t:loop>
+		</t:if>
+
+		<t:if test="details">
+			<t:loop source="courses" value="course">
+				<span t:type="textile/course/details" course="course"/>
+			</t:loop>
+		</t:if>
 	</ul>
 </t:container>

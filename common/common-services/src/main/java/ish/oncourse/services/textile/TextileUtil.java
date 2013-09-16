@@ -38,6 +38,7 @@ public class TextileUtil {
 	public static final String TEXTILE_COURSE_PAGE_PARAM = "course";
 	public static final String TEXTILE_COURSE_SHOW_CLASSES_PARAM = "showclasses";
 	public static final String TEXTILE_COURSE_LIST_PAGE_PARAM = "courseList";
+	public static final String TEXTILE_COURSE_STYLE_PARAM = "courseStyle";
 
 	public static final String TEXTILE_IMAGE_PAGE_PARAM = "additionalImageParameters";
 
@@ -165,6 +166,12 @@ public class TextileUtil {
 
 	public static String getReplacementForSyntaxErrorTag(String tag) {
 		return String.format("<span class=\"richtext_error\">Syntax error in \"%s\"</span>",tag);
+		//return "<!-- ERROR in " + tag + ". Syntax error --!> ";
+	}
+
+	public static String getReplacementForSyntaxErrorTag(String tag, ValidationErrors tempErrors) {
+		return String.format("<span class=\"richtext_error\">Syntax error in \"%s\"</span>" +
+				"%s",tag, tempErrors.toString());
 		//return "<!-- ERROR in " + tag + ". Syntax error --!> ";
 	}
 

@@ -1,0 +1,6 @@
+<li data-courseCode="${course.code}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<a href="/course/${course.code}">${course.name}</a>
+	<p>
+		<t:outputraw value="course.detail" />
+	</p>
+</li>

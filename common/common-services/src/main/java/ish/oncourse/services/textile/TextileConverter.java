@@ -129,9 +129,9 @@ public class TextileConverter implements ITextileConverter {
 				// {form} is needed, now we just pass all the text
 				if (!(renderer instanceof FormTextileRenderer)) {
 					if (tempErrors.hasSyntaxFailures()) {
-						replacement = TextileUtil.getReplacementForSyntaxErrorTag(tag);
+						replacement = TextileUtil.getReplacementForSyntaxErrorTag(tag,tempErrors);
 					} else if (tempErrors.hasContentNotFoundFailures() || replacement == null) {
-						replacement = TextileUtil.getReplacementForSyntaxErrorTag(tag);
+						replacement = TextileUtil.getReplacementForSyntaxErrorTag(tag, tempErrors);
 					}
 				}
 				result += replacement;

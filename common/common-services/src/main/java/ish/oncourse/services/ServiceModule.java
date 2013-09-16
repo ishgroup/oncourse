@@ -85,6 +85,7 @@ import ish.oncourse.services.tutor.TutorService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.Configuration;
@@ -202,14 +203,17 @@ public class ServiceModule {
 		// The version of the application, which is incorporated into URLs for
 		// context and classpath assets.If not specified the random number is
 		// used each time.
+		// CommonUtils.VERSION_development we need only when we start our applications from IDEs (eclipse, intellij IDEA ....).
 		try {
 			String version = environmentService.getCiVersion();
+			configuration.add(SymbolConstants.APPLICATION_VERSION, StringUtils.trimToNull(version) == null ? CommonUtils.VERSION_development: version);
 			configuration.add(SymbolConstants.APPLICATION_VERSION, version);
 		} catch (Exception e) {
 			/**
 			 * The catch was intruduce to exclude runtime exception for junits:
 			 * java.lang.RuntimeException: Exception constructing service 'ServiceOverride': Construction of service 'ServiceOverride' has failed due to recursion: the service depends on itself in some way. Please check org.apache.tapestry5.ioc.internal.services.ServiceOverrideImpl(Map) (at ServiceOverrideImpl.java:31) via org.apache.tapestry5.ioc.services.TapestryIOCModule.bind(ServiceBinder) (at TapestryIOCModule.java:49) for references to another service that is itself dependent on service 'ServiceOverride'.
 			 */
+			configuration.add(SymbolConstants.APPLICATION_VERSION,  CommonUtils.VERSION_development);
 			LOGGER.debug("Unexpected exception.",e);
 		}
 		/**

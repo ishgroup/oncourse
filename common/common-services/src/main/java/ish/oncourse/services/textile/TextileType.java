@@ -32,9 +32,12 @@ public enum TextileType {
 	COURSE("\\{course([^}]*)}", "\\{course(.+?((code:" + STR_IN_QUOTS + ")" + "|(tag:" + STR_WHITESPACE + ")"
 			+ "|(showclasses:" + BOOLEAN_IN_QUOTS + "))){0,3}}", CourseTextileAttributes.getAttrValues()),
 
-	COURSE_LIST("\\{courses([^}]*)}", "\\{courses(.+?((tag:" + STR_WHITESPACE + ")" + "|(limit:" + DIGIT_IN_QUOTS
-			+ ")" + "|(sort:" + inQuots("(date|alphabetical|availability)", false) + ")" + "|(order:" + inQuots("(asc|desc)", false)
-			+ "))){0,4}}", CourseListTextileAttributes.getAttrValues()),
+	COURSE_LIST("\\{courses([^}]*)}", "\\{courses(.+?((tag:" + STR_WHITESPACE + ")"
+			+ "|(limit:" + DIGIT_IN_QUOTS+ ")"
+			+ "|(sort:" + inQuots("(date|alphabetical|availability)", false) + ")"
+			+ "|(order:" + inQuots("(asc|desc)", false)+ ")"
+			+ "|(style:" + inQuots("(titles|details)", false) + ")" +
+			")){0,4}}", CourseListTextileAttributes.getAttrValues()),
 
 	PAGE("\\{page([^}]*)}", "\\{page(.+?((code:" + DIGIT_IN_QUOTS + "))){0,1}}", PageTextileAttributes.getAttrValues()),
 

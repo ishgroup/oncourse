@@ -41,7 +41,7 @@ public class CourseListTextileValidator extends AbstractTextileValidator {
 	public String getFormatErrorMessage(String tag) {
 		return "The courseList tag '"
 				+ tag
-				+ "' doesn't match {courses tag:\"/tag\" limit:\"digit\" sort:\"date|alphabetical|availability\" order:\"asc|desc\"}";
+				+ "' doesn't match {courses tag:\"/tag\" limit:\"digit\" sort:\"date|alphabetical|availability\" order:\"asc|desc\" style:\"titles|details\"}";
 	}
 
 	public String getTagNotFoundByName(String tagged) {

@@ -8,7 +8,9 @@ public enum CourseListTextileAttributes {
 	COURSE_LIST_PARAM_TAG("tag:"),
 	COURSE_LIST_PARAM_LIMIT("limit:"),
 	COURSE_LIST_PARAM_SORT("sort:"),
-	COURSE_LIST_PARAM_ORDER("order:");
+	COURSE_LIST_PARAM_ORDER("order:"),
+	COURSE_LIST_PARAM_STYLE("style:");
+
 	
 	private String value;
 

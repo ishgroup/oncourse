@@ -6,6 +6,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.CourseListSortValue;
 import ish.oncourse.services.textile.attrs.CourseListTextileAttributes;
+import ish.oncourse.services.textile.attrs.CourseStyle;
 import ish.oncourse.services.textile.validator.CourseListTextileValidator;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
@@ -59,7 +60,10 @@ public class CourseListTextileRenderer extends AbstractRenderer {
 					.getValue());
 			String tagName = tagParams.get(CourseListTextileAttributes.COURSE_LIST_PARAM_TAG
 					.getValue());
-			Boolean isAscending = order != null ? "asc".equalsIgnoreCase(order): false;
+			String style = tagParams.get(CourseListTextileAttributes.COURSE_LIST_PARAM_STYLE
+					.getValue());
+
+			Boolean isAscending = order == null || "asc".equalsIgnoreCase(order);
 			Integer intLimit = limit == null ? null : Integer.valueOf(limit);
 			CourseListSortValue sortOrder = CourseListSortValue.getByName(sort);
 			if (sortOrder == null) {
@@ -73,6 +77,8 @@ public class CourseListTextileRenderer extends AbstractRenderer {
 			} else {
 				Map<String, Object> parameters = new HashMap<>();
 				parameters.put(TextileUtil.TEXTILE_COURSE_LIST_PAGE_PARAM, courses);
+				if (style != null)
+					parameters.put(TextileUtil.TEXTILE_COURSE_STYLE_PARAM, CourseStyle.valueOf(style));
 				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_LIST_PAGE, parameters);
 			}
 		}
