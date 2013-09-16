@@ -3,6 +3,7 @@ package ish.oncourse.enrol.pages;
 import ish.oncourse.enrol.checkout.ACheckoutTest;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.internal.test.TestableResponse;
@@ -53,10 +54,10 @@ public class CheckoutGUITest extends ACheckoutTest {
 		//fill credit card details and press  paymentSubmit
 		parameters = new HashMap<>();
 		parameters.put("contact", "1001");
-		parameters.put("creditCardName", "VALERIY IVANOV");
-		parameters.put("creditCardNumber", "5105105105105100");
-		parameters.put("creditCardCVV", "321");
-		parameters.put("expiryMonth", "11");
+		parameters.put("creditCardName", TestPaymentGatewayService.VISA.getName());
+		parameters.put("creditCardNumber", TestPaymentGatewayService.VISA.getNumber());
+		parameters.put("creditCardCVV", TestPaymentGatewayService.VISA.getCvv());
+		parameters.put("expiryMonth", "12");
 		parameters.put("expiryYear", "2027");
 		parameters.put("userAgreed", "on");
 

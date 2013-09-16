@@ -8,6 +8,7 @@ import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.services.EnrolTestModule;
 import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.model.*;
+import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.InitialContextFactoryMock;
 import ish.oncourse.test.ServiceTest;
@@ -175,11 +176,11 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 	void makeValidPayment() throws InterruptedException {
 		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
-		delegate.getPaymentIn().setCreditCardCVV("321");
-		delegate.getPaymentIn().setCreditCardExpiry("11/2027");
-		delegate.getPaymentIn().setCreditCardName("VALERIY IVANOV");
-		delegate.getPaymentIn().setCreditCardNumber("5105105105105100");
-		delegate.getPaymentIn().setCreditCardType(CreditCardType.MASTERCARD);
+		delegate.getPaymentIn().setCreditCardCVV(TestPaymentGatewayService.VISA.getCvv());
+		delegate.getPaymentIn().setCreditCardExpiry(TestPaymentGatewayService.VISA.getExpiry());
+		delegate.getPaymentIn().setCreditCardName(TestPaymentGatewayService.VISA.getName());
+		delegate.getPaymentIn().setCreditCardNumber(TestPaymentGatewayService.VISA.getNumber());
+		delegate.getPaymentIn().setCreditCardType(TestPaymentGatewayService.VISA.getType());
 		delegate.makePayment();
 		assertEquals(paymentProgress, purchaseController.getState());
         assertTrue(purchaseController.isPaymentProgress());
