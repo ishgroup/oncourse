@@ -207,13 +207,11 @@ public class ServiceModule {
 		try {
 			String version = environmentService.getCiVersion();
 			configuration.add(SymbolConstants.APPLICATION_VERSION, StringUtils.trimToNull(version) == null ? CommonUtils.VERSION_development: version);
-			configuration.add(SymbolConstants.APPLICATION_VERSION, version);
 		} catch (Exception e) {
 			/**
 			 * The catch was intruduce to exclude runtime exception for junits:
 			 * java.lang.RuntimeException: Exception constructing service 'ServiceOverride': Construction of service 'ServiceOverride' has failed due to recursion: the service depends on itself in some way. Please check org.apache.tapestry5.ioc.internal.services.ServiceOverrideImpl(Map) (at ServiceOverrideImpl.java:31) via org.apache.tapestry5.ioc.services.TapestryIOCModule.bind(ServiceBinder) (at TapestryIOCModule.java:49) for references to another service that is itself dependent on service 'ServiceOverride'.
 			 */
-			configuration.add(SymbolConstants.APPLICATION_VERSION,  CommonUtils.VERSION_development);
 			LOGGER.debug("Unexpected exception.",e);
 		}
 		/**
