@@ -68,9 +68,6 @@
 		</div>
 
 	</t:form>
-	<script type="text/javascript">
-		initHints("loginZone");
-	</script>
 	<div class="cl"></div>
 </t:block>
 

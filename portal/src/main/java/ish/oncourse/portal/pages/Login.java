@@ -13,6 +13,7 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 
 import java.io.IOException;
 import java.net.URL;
@@ -77,6 +78,9 @@ public class Login {
 	@InjectPage
     private Index index;
 
+    @InjectPage
+    private Timetable timetable;
+
 	@InjectPage
 	private ForgotPassword forgotPassword;
 
@@ -102,31 +106,57 @@ public class Login {
     private Form loginForm;
 
     @Persist
+    @Property
     private String companyNameErrorMessage;
 
     @Persist
+    @Property
     private String firstNameErrorMessage;
 
     @Persist
+    @Property
     private String secondNameErrorMessage;
 
     @Persist
+    @Property
     private String emailNameErrorMessage;
 
     @Persist
+    @Property
     private String passwordNameErrorMessage;
 
 
 	@SetupRender
 	void setupRender() {
-		// perform logout to cleanup the session before the new login
-		authenticationService.logout();
-		this.firstName = request.getParameter(PARAMETER_firstName);
-		this.lastName = request.getParameter(PARAMETER_lastName);
-		this.email = request.getParameter(PARAMETER_emailAddress);
+        fillStudentFields();
+        //the code makes logout when an user open login page again
+        if (!loginForm.getHasErrors())
+            authenticationService.logout();
 	}
 
-	@OnEvent(value = "onCompanyCheckEvent")
+
+    @AfterRender
+    void  afterRender()
+    {
+        clearErrorFields();
+        isForgotPassword = false;
+    }
+
+    private void fillStudentFields() {
+        String value  = StringUtils.trimToNull(request.getParameter(PARAMETER_firstName));
+        if (value != null)
+		    this.firstName = value;
+
+        value  = StringUtils.trimToNull(request.getParameter(PARAMETER_lastName));
+        if (value != null)
+            this.lastName = value;
+
+        value  = StringUtils.trimToNull(request.getParameter(PARAMETER_lastName));
+        if (value != null)
+    		this.email = value;
+    }
+
+    @OnEvent(value = "onCompanyCheckEvent")
 	Object onCompanyCheck()
 	{
 		iscompany = (iscompany == null || !iscompany);
@@ -137,6 +167,7 @@ public class Login {
 	Object onForgotPassword() {
 		this.isForgotPassword = true;
 		return loginBlock;
+
 	}
 
 	Object onSuccess() throws IOException {
@@ -275,24 +306,4 @@ public class Login {
 			return selectCollege;
 		}
 	}
-
-    public String getCompanyNameErrorMessage() {
-        return companyNameErrorMessage;
-    }
-
-    public String getFirstNameErrorMessage() {
-        return firstNameErrorMessage;
-    }
-
-    public String getSecondNameErrorMessage() {
-        return secondNameErrorMessage;
-    }
-
-    public String getEmailNameErrorMessage() {
-        return emailNameErrorMessage;
-    }
-
-    public String getPasswordNameErrorMessage() {
-        return passwordNameErrorMessage;
-    }
 }
