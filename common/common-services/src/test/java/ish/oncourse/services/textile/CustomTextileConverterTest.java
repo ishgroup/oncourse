@@ -179,7 +179,7 @@ public class CustomTextileConverterTest {
 		List<Course> courses = new ArrayList<>();
 		courses.add(new Course());
 		String successfulResult = "successfully rendered courses block";
-		when(courseService.getCourses(null, CourseListSortValue.ALPHABETICAL, false, null)).thenReturn(courses);
+		when(courseService.getCourses(null, CourseListSortValue.ALPHABETICAL, true, null)).thenReturn(courses);
 		testPageRenderParams(COURSE_LIST, TextileUtil.TEXTILE_COURSE_LIST_PAGE, successfulResult);
 	}
 
@@ -243,21 +243,14 @@ public class CustomTextileConverterTest {
 	 */
 	@Test
 	public void errorsInTextilesConvertTest() {
-		String tag = "{block test}{course test}{courses test}{image test}{page test}{tags test}{video test}";
-		String result = textileConverter.convertCustomTextile(tag, errors);
-		StringBuilder expecting = new StringBuilder();
-		expecting.append(TextileUtil.getReplacementForSyntaxErrorTag("{block test}"))
-				.append(TextileUtil.getReplacementForSyntaxErrorTag("{course test}"))
-				.append(TextileUtil.getReplacementForSyntaxErrorTag("{courses test}"))
-				.append(TextileUtil.getReplacementForSyntaxErrorTag("{image test}"))
-				.append(TextileUtil.getReplacementForSyntaxErrorTag("{page test}"))
-				.append(TextileUtil.getReplacementForSyntaxErrorTag("{tags test}"))
-				.append(TextileUtil.getReplacementForSyntaxErrorTag("{video test}"));
-
-		assertEquals(expecting.toString(), result);
-		assertTrue(errors.hasFailures());
-
-		errors.clear();
+		String[] tags = new String[]{"{block test}","{course test}","{courses test}","{image test}","{page test}","{tags test}","{video test}"};
+		for (String tag : tags) {
+			String result = textileConverter.convertCustomTextile(tag, errors);
+			assertTrue(errors.hasFailures());
+			String error = TextileUtil.getReplacementForSyntaxErrorTag(tag,errors);
+			assertEquals(error, result);
+			errors.clear();
+		}
 		//TODO uncomment when the validation of {form} is needed, now we just pass all the text
 		/*tag = "{form}{form}{form}{form}{form}";
 		result = textileConverter.convertCustomTextile(tag, errors);
