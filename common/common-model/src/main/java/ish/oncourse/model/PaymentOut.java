@@ -96,7 +96,7 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 				}
 				break;
 			case SUCCESS:
-				if (!(PaymentStatus.SUCCESS.equals(status) || PaymentStatus.STATUS_CANCELLED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status))) {
+				if (!PaymentStatus.SUCCESS.equals(status)) {
 					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status and id = %s !", 
 						status, getStatus(), getId()));
 				}
@@ -104,8 +104,6 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 			case FAILED:
 			case FAILED_CARD_DECLINED:
 			case FAILED_NO_PLACES:
-			case STATUS_CANCELLED:
-			case STATUS_REFUNDED:
 				if (!(getStatus().equals(status))) {
 					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentout with %s status and id = %s !", 
 						status, getStatus(), getId()));

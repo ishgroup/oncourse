@@ -644,7 +644,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				}
 				break;
 			case SUCCESS:
-				if (!(PaymentStatus.SUCCESS.equals(status) || PaymentStatus.STATUS_CANCELLED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status))) {
+				if (!PaymentStatus.SUCCESS.equals(status)) {
 					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentin with %s status and id = %s !", 
 						status, getStatus(), getId()));
 				}
@@ -654,8 +654,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			case FAILED_NO_PLACES:
 				//TODO: we should be able to set the in transaction status here
 				//break;
-			case STATUS_CANCELLED:
-			case STATUS_REFUNDED:
 				if (!(getStatus().equals(status))) {
 					throw new IllegalArgumentException(String.format("Can't set the %s status for paymentin with %s status and id = %s !", 
 						status, getStatus(), getId()));

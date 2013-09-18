@@ -147,7 +147,7 @@ public class PaymentOutTest {
 			PaymentOut paymentOut = context.newObject(PaymentOut.class);
 			paymentOut.setStatus(PaymentStatus.SUCCESS);
 			assertTrue("Paymentout status should be success before test", PaymentStatus.SUCCESS.equals(paymentOut.getStatus()));
-			if (PaymentStatus.SUCCESS.equals(status) || PaymentStatus.STATUS_CANCELLED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status)) {
+			if (PaymentStatus.SUCCESS.equals(status)) {
 				paymentOut.setStatus(status);
 				assertTrue(String.format("Paymentout should be able to set the %s status after success status", status), 
 					status.equals(paymentOut.getStatus()));
@@ -199,16 +199,6 @@ public class PaymentOutTest {
 				"Paymentout status should be failed no places for this test", "Payment out should not be able to set null status after failed no places");
 		testFailedStatusLoop(PaymentStatus.FAILED_NO_PLACES, "Paymentout status should be failed no places before test", 
 			"Paymentout should be able to set the %s status after failed no places status", "Paymentout status should be failed no places for this test");
-		//canceled part
-		testNullSet(PaymentStatus.STATUS_CANCELLED, "Paymentout status should be canceled before test", "Paymentout status should be canceled for this test", 
-			"Payment out should not be able to set null status after canceled");
-		testFailedStatusLoop(PaymentStatus.STATUS_CANCELLED, "Paymentout status should be canceled before test", 
-			"Paymentout should be able to set the %s status after canceled status", "Paymentout status should be canceled for this test");
-		//refunded part
-		testNullSet(PaymentStatus.STATUS_REFUNDED, "Paymentout status should be refunded before test", "Paymentout status should be refunded for this test", 
-			"Payment out should not be able to set null status after refunded");
-		testFailedStatusLoop(PaymentStatus.STATUS_REFUNDED, "Paymentout status should be refunded before test", 
-				"Paymentout should be able to set the %s status after refunded status", "Paymentout status should be refunded for this test");
 	}
 	
 }

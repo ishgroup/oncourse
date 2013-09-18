@@ -65,7 +65,7 @@ public class PaymentInTest {
 
 		calendar.add(Calendar.DAY_OF_MONTH, 5);
 
-		Contact contact = (Contact) context.newObject(Contact.class);
+		Contact contact = context.newObject(Contact.class);
 		contact.setGivenName("Test_Payer");
 		contact.setFamilyName("Test_Payer");
 		contact.setCollege(college);
@@ -164,7 +164,7 @@ public class PaymentInTest {
 
 		calendar.add(Calendar.DAY_OF_MONTH, 5);
 
-		Contact contact = (Contact) context.newObject(Contact.class);
+		Contact contact = context.newObject(Contact.class);
 		contact.setGivenName("Test_Payer");
 		contact.setFamilyName("Test_Payer");
 		contact.setCollege(college);
@@ -263,7 +263,7 @@ public class PaymentInTest {
 
 		calendar.add(Calendar.DAY_OF_MONTH, 5);
 
-		Contact contact = (Contact) context.newObject(Contact.class);
+		Contact contact = context.newObject(Contact.class);
 		contact.setGivenName("Test_Payer");
 		contact.setFamilyName("Test_Payer");
 		contact.setCollege(college);
@@ -362,7 +362,7 @@ public class PaymentInTest {
 
 		calendar.add(Calendar.DAY_OF_MONTH, 5);
 
-		Contact contact = (Contact) context.newObject(Contact.class);
+		Contact contact = context.newObject(Contact.class);
 		contact.setGivenName("Test_Payer");
 		contact.setFamilyName("Test_Payer");
 		contact.setCollege(college);
@@ -479,7 +479,7 @@ public class PaymentInTest {
 
 		calendar.add(Calendar.DAY_OF_MONTH, 5);
 
-		Contact contact = (Contact) context.newObject(Contact.class);
+		Contact contact = context.newObject(Contact.class);
 		contact.setGivenName("Test_Payer");
 		contact.setFamilyName("Test_Payer");
 		contact.setCollege(college);
@@ -570,10 +570,10 @@ public class PaymentInTest {
 		enrol.setCollege(college);
 		enrol.setSource(PaymentSource.SOURCE_ONCOURSE);
 
-		Student student = (Student) context.newObject(Student.class);
+		Student student = context.newObject(Student.class);
 		student.setCollege(college);
 
-		Contact contact = (Contact) context.newObject(Contact.class);
+		Contact contact = context.newObject(Contact.class);
 		contact.setCollege(college);
 		contact.setGivenName("Test_CourseClass");
 		contact.setFamilyName("Test_CourseClass");
@@ -884,7 +884,7 @@ public class PaymentInTest {
 			PaymentIn paymentIn = context.newObject(PaymentIn.class);
 			paymentIn.setStatus(PaymentStatus.SUCCESS);
 			assertTrue("PaymentIn status should be success before test", PaymentStatus.SUCCESS.equals(paymentIn.getStatus()));
-			if (PaymentStatus.SUCCESS.equals(status) || PaymentStatus.STATUS_CANCELLED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status)) {
+			if (PaymentStatus.SUCCESS.equals(status)) {
 				paymentIn.setStatus(status);
 				assertTrue(String.format("PaymentIn should be able to set the %s status after success status", status), 
 					status.equals(paymentIn.getStatus()));
@@ -936,15 +936,5 @@ public class PaymentInTest {
 			"PaymentIn status should be failed no places for this test", "PaymentIn should not be able to set null status after failed no places");
 		testFailedStatusLoop(PaymentStatus.FAILED_NO_PLACES, "PaymentIn status should be failed no places before test", 
 			"PaymentIn should be able to set the %s status after failed no places status", "PaymentIn status should be failed no places for this test");
-		//canceled part
-		testNullSet(PaymentStatus.STATUS_CANCELLED, "PaymentIn status should be canceled before test", "PaymentIn status should be canceled for this test", 
-			"PaymentIn should not be able to set null status after canceled");
-		testFailedStatusLoop(PaymentStatus.STATUS_CANCELLED, "PaymentIn status should be canceled before test", 
-			"PaymentIn should be able to set the %s status after canceled status", "PaymentIn status should be canceled for this test");
-		//refunded part
-		testNullSet(PaymentStatus.STATUS_REFUNDED, "PaymentIn status should be refunded before test", "PaymentIn status should be refunded for this test", 
-			"PaymentIn should not be able to set null status after refunded");
-		testFailedStatusLoop(PaymentStatus.STATUS_REFUNDED, "PaymentIn status should be refunded before test", 
-			"PaymentIn should be able to set the %s status after refunded status", "PaymentIn status should be refunded for this test");
 	}
 }
