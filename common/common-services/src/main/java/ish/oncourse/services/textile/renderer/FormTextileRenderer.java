@@ -1,24 +1,22 @@
 package ish.oncourse.services.textile.renderer;
 
+import ish.oncourse.model.TextileFormField;
+import ish.oncourse.services.textile.TextileType;
+import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.FormTextileAttributes;
+import ish.oncourse.services.textile.attrs.PopupListTextileAttributes;
+import ish.oncourse.services.textile.attrs.RadioListTextileAttributes;
+import ish.oncourse.services.textile.attrs.TextTextileAttributes;
+import ish.oncourse.services.textile.validator.FormTextileValidator;
+import ish.oncourse.util.IPageRenderer;
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang.StringUtils;
-
-import ish.oncourse.model.TextileFormField;
-import ish.oncourse.services.textile.TextileType;
-import ish.oncourse.services.textile.TextileUtil;
-import ish.oncourse.services.textile.attrs.FormTextileAttributes;
-import ish.oncourse.services.textile.attrs.RadioListTextileAttributes;
-import ish.oncourse.services.textile.attrs.PopupListTextileAttributes;
-import ish.oncourse.services.textile.attrs.TextTextileAttributes;
-import ish.oncourse.services.textile.validator.FormTextileValidator;
-import ish.oncourse.util.IPageRenderer;
-import ish.oncourse.util.ValidationErrors;
 
 public class FormTextileRenderer extends AbstractRenderer {
 	private static final int DEFAULT_TEXTAREA_ROWS = 10;
@@ -30,11 +28,7 @@ public class FormTextileRenderer extends AbstractRenderer {
 	}
 
 	@Override
-	public String render(String tag, ValidationErrors errors) {
-		tag = super.render(tag, errors);
-		// TODO uncomment this when the validation of the form will be needed,
-		// now we just pass all the text
-		// if (errors.hasFailures()) {
+	protected String internalRender(String tag) {
 		Map<String, Object> parameters = new HashMap<>();
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag, FormTextileAttributes.getAttrValues());
 		parameters.put(TextileUtil.TEXTILE_FORM_PAGE_NAME_PARAM, tagParams.get(FormTextileAttributes.NAME.getValue()));

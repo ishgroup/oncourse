@@ -6,7 +6,6 @@ import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.AttachmentTextileAttributes;
 import ish.oncourse.util.IPageRenderer;
-import ish.oncourse.util.ValidationErrors;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,14 +36,11 @@ public class AttachmentTextileRendererTest {
 	@Mock
 	private BinaryInfo binaryInfo;
 	
-	private AttachmentTextileRenderer attachmentTextileRenderer;
-	
-	private ValidationErrors errors;
+	private AttachmentTextileRenderer renderer;
 	
 	@Before
 	public void init() {
-		errors = new ValidationErrors();
-		attachmentTextileRenderer = new AttachmentTextileRenderer(binaryDataService, fileStorageAssetService, pageRenderer);
+		renderer = new AttachmentTextileRenderer(binaryDataService, fileStorageAssetService, pageRenderer);
 	}
 	
 	@Test
@@ -61,19 +57,20 @@ public class AttachmentTextileRendererTest {
 		when(pageRenderer.renderPage(TextileUtil.TEXTILE_ATTACHMENT_PAGE, params))
 				.thenReturn(SUCCESSFULLY_RENDERED);
 		
-		String result = attachmentTextileRenderer.render(
-				"{attachment name:\"" + TEST_ATTACHMENT_NAME + "\"}", errors);
+		String result = renderer.render(
+				"{attachment name:\"" + TEST_ATTACHMENT_NAME + "\"}");
 		
-		assertFalse(errors.hasFailures());
+		assertFalse(renderer.getErrors().hasFailures());
 		assertEquals(SUCCESSFULLY_RENDERED, result);
 	}
 	
 	@Test
 	public void testAttachmentRenderingFailed() {
 		String textile = "{attachment with invalid syntax}";
-		String result = attachmentTextileRenderer.render(textile, errors);
-		assertTrue(errors.hasFailures());
-		assertEquals(textile, result);
+		String result = renderer.render(textile);
+		assertTrue(renderer.getErrors().hasFailures());
+		assertEquals("<span class=\"richtext_error\">Syntax error in \"{attachment with invalid syntax}\"</span><ol><li>The attachment tag '{attachment with invalid syntax}' doesn't match {attachment name:\"name\"}</li></ol>",
+				result);
 	}
 
 }

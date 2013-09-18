@@ -41,36 +41,34 @@ public class BlockTextileRenderer extends AbstractRenderer {
 		this.converter = converter;
 	}
 
-	public String render(String tag, ValidationErrors errors) {
-		tag = super.render(tag, errors);
-		if (!errors.hasFailures()) {
+	@Override
+	protected String internalRender(String tag) {
+		WebContent webBlock = null;
+		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
+				BlockTextileAttributes.getAttrValues());
 
-			WebContent webBlock = null;
-			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-					BlockTextileAttributes.getAttrValues());
+		String name = tagParams.get(BlockTextileAttributes.BLOCK_PARAM_NAME.getValue());
+		if (name != null) {
+			webBlock = webBlockDataService.getWebContent(WebContent.NAME_PROPERTY, name);
+		} else {
+			webBlock = webBlockDataService.getWebContent(null, null);
+		}
 
-			String name = tagParams.get(BlockTextileAttributes.BLOCK_PARAM_NAME.getValue());
-			if (name != null) {
-				webBlock = webBlockDataService.getWebContent(WebContent.NAME_PROPERTY, name);
+		if (webBlock != null) {
+			String result = webBlock.getContent();
+			if (result == null)
+				result = FormatUtils.EMPTY_STRING;
+
+			Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);
+			Matcher matcher = pattern.matcher(result);
+			if (matcher.find()) {
+				ValidationErrors errors = new ValidationErrors();
+				tag = converter.convertCustomTextile(result, errors);
 			} else {
-				webBlock = webBlockDataService.getWebContent(null, null);
+				tag = result;
 			}
-
-			if (webBlock != null) {
-				String result = webBlock.getContent();
-				if (result == null)
-					result = FormatUtils.EMPTY_STRING;
-
-				Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);
-				Matcher matcher = pattern.matcher(result);
-				if (matcher.find() && !errors.hasFailures()) {
-					tag = converter.convertCustomTextile(result, errors);
-				} else {
-					tag = result;
-				}
-			} else {
-				tag = null;
-			}
+		} else {
+			tag = null;
 		}
 		return tag;
 	}

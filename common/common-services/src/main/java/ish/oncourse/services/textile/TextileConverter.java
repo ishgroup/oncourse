@@ -15,12 +15,11 @@ import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
 import net.java.textilej.parser.markup.textile.TextileDialect;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,9 +48,6 @@ public class TextileConverter implements ITextileConverter {
     @Inject
     private IFileStorageAssetService fileStorageAssetService;
 
-	private Map<TextileType, IRenderer> renderers = new HashMap<>();
-
-	@SuppressWarnings("all")
 	@Inject
 	private IPlainTextExtractor extractor;
 
@@ -105,39 +101,25 @@ public class TextileConverter implements ITextileConverter {
 	}
 
 	public String convertCustomTextile(String content, ValidationErrors errors) {
-		if (content == null) {
-			content = "";
-		}
+		content = StringUtils.trimToEmpty(content);
+
 		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);
 		Matcher matcher = pattern.matcher(content);
-		String result = "";
-		ValidationErrors tempErrors = new ValidationErrors();
+		String result = StringUtils.EMPTY;
 		while (matcher.find()) {
 			String tag = matcher.group();
 			int startTag = content.indexOf(tag);
 			result += content.substring(0, startTag);
 			content = content.substring(startTag + tag.length());
-			IRenderer renderer = getRendererForTag(tag);
-			if (renderer != null) {
-				String replacement = null;
-				try {
-					replacement = renderer.render(tag, tempErrors);
-				} catch (Exception e) {
-					tempErrors.addFailure(e.getMessage(), ValidationFailureType.SYNTAX);
-				}
-				// TODO remove the check for renderer when the validation of
-				// {form} is needed, now we just pass all the text
-				if (!(renderer instanceof FormTextileRenderer)) {
-					if (tempErrors.hasSyntaxFailures()) {
-						replacement = TextileUtil.getReplacementForSyntaxErrorTag(tag,tempErrors);
-					} else if (tempErrors.hasContentNotFoundFailures() || replacement == null) {
-						replacement = TextileUtil.getReplacementForSyntaxErrorTag(tag, tempErrors);
-					}
-				}
-				result += replacement;
+			String replacement = null;
+			try {
+				IRenderer renderer = getRendererForTag(tag);
+				replacement = renderer.render(tag);
+				errors.appendErrors(renderer.getErrors());
+			} catch (Exception e) {
+				errors.addFailure(e.getMessage(), ValidationFailureType.SYNTAX);
 			}
-			errors.appendErrors(tempErrors);
-			tempErrors.clear();
+			result += replacement;
 		}
 		result += content;
 		result = clearGenerated(result);
@@ -158,19 +140,14 @@ public class TextileConverter implements ITextileConverter {
 	}
 
 	private IRenderer getRendererForTag(String tag) {
-		IRenderer renderer = null;
 		for (TextileType type : TextileType.BASE_TYPES) {
 			Pattern pattern = Pattern.compile(type.getRegexp(), Pattern.DOTALL);
 			Matcher matcher = pattern.matcher(tag);
 			if (matcher.find()) {
-				renderer = renderers.get(type);
-				if (renderer == null) {
-					renderer = createRendererForType(type);
-					renderers.put(type, renderer);
-				}
+					return createRendererForType(type);
 			}
 		}
-		return renderer;
+		return null;
 	}
 
 	/**
@@ -197,8 +174,10 @@ public class TextileConverter implements ITextileConverter {
 			return new FormTextileRenderer(pageRenderer);
 		case ATTACHMENT:
 			return new AttachmentTextileRenderer(binaryDataService, fileStorageAssetService, pageRenderer);
+		default:
+			throw new IllegalArgumentException();
 		}
-		return null;
+
 	}
 
 }

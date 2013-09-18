@@ -6,7 +6,6 @@ import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
 import ish.oncourse.services.textile.validator.ImageTextileValidator;
 import ish.oncourse.util.IPageRenderer;
-import ish.oncourse.util.ValidationErrors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,16 +21,13 @@ public class ImageTextileRenderer extends AbstractRenderer {
 	}
 
 	@Override
-	public String render(String tag, ValidationErrors errors) {
-		tag = super.render(tag, errors);
-		if (!errors.hasFailures()) {
-			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-					ImageTextileAttributes.getAttrValues());
-			Map<String, Object> parameters = new HashMap<>();
-			parameters.put(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM, tagParams);
-			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_IMAGE_PAGE,
-					parameters);
-		}
+	protected String internalRender(String tag) {
+		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
+				ImageTextileAttributes.getAttrValues());
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM, tagParams);
+		tag = pageRenderer.renderPage(TextileUtil.TEXTILE_IMAGE_PAGE,
+				parameters);
 		return tag;
 	}
 

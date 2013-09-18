@@ -1,22 +1,22 @@
 package ish.oncourse.services.textile.renderer;
 
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.IPageRenderer;
-import ish.oncourse.util.ValidationErrors;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CourseTextileRendererTest {
@@ -33,9 +33,7 @@ public class CourseTextileRendererTest {
 	/**
 	 * service under the test
 	 */
-	private CourseTextileRenderer courseTextileRenderer;
-
-	private ValidationErrors errors;
+	private CourseTextileRenderer renderer;
 
 	private Course course;
 
@@ -49,10 +47,9 @@ public class CourseTextileRendererTest {
 
 	@Before
 	public void init() {
-		errors = new ValidationErrors();
 		course = new Course();
 		tag = new Tag();
-		courseTextileRenderer = new CourseTextileRenderer(courseService,
+		renderer = new CourseTextileRenderer(courseService,
 				pageRenderer, tagService);
 		when(courseService.getCourse(Course.CODE_PROPERTY, TEST_COURSE_CODE))
 				.thenReturn(course);
@@ -68,9 +65,9 @@ public class CourseTextileRendererTest {
 	 */
 	@Test
 	public void renderCourseWithGivenCode() {
-		String result = courseTextileRenderer.render("{course code:\""
-				+ TEST_COURSE_CODE + "\"}", errors);
-		assertFalse(errors.hasFailures());
+		String result = renderer.render("{course code:\""
+				+ TEST_COURSE_CODE + "\"}");
+		assertFalse(renderer.getErrors().hasFailures());
 		assertEquals(SUCCESSFULLY_RENDERED, result);
 	}
 
@@ -81,10 +78,9 @@ public class CourseTextileRendererTest {
 	 */
 	@Test
 	public void renderRandomRestrictedCourse() {
-		String result = courseTextileRenderer.render("{course tag:\""
-				+ TAG_NAME + "\" showclasses:\"true\"}",
-				errors);
-		assertFalse(errors.hasFailures());
+		String result = renderer.render("{course tag:\""
+				+ TAG_NAME + "\" showclasses:\"true\"}");
+		assertFalse(renderer.getErrors().hasFailures());
 		assertEquals(SUCCESSFULLY_RENDERED, result);
 	}
 }

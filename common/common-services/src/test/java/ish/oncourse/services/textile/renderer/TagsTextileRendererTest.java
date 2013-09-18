@@ -1,20 +1,20 @@
 package ish.oncourse.services.textile.renderer;
 
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.IPageRenderer;
-import ish.oncourse.util.ValidationErrors;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TagsTextileRendererTest {
@@ -25,9 +25,7 @@ public class TagsTextileRendererTest {
 	/**
 	 * service under the test
 	 */
-	private TagsTextileRenderer tagsTextileRenderer;
-
-	private ValidationErrors errors;
+	private TagsTextileRenderer renderer;
 
 	@Mock
 	private ITagService tagService;
@@ -42,11 +40,10 @@ public class TagsTextileRendererTest {
 	@SuppressWarnings("unchecked")
 	@Before
 	public void init() {
-		errors = new ValidationErrors();
 		rootTag = new Tag();
 		tag = new Tag();
 		tag.setName(TEST_TAG_NAME);
-		tagsTextileRenderer = new TagsTextileRenderer(tagService, pageRenderer, null);
+		renderer = new TagsTextileRenderer(tagService, pageRenderer, null);
 		when(tagService.getSubjectsTag()).thenReturn(rootTag);
 		when(tagService.getTagByFullPath(TEST_TAG_NAME)).thenReturn(tag);
 		when(pageRenderer.renderPage(eq(TextileUtil.TEXTILE_TAGS_PAGE), anyMap())).thenReturn(
@@ -60,8 +57,8 @@ public class TagsTextileRendererTest {
 	@Test
 	public void renderPageWithNodeNumberTest() {
 		String tag = "{tags name:\"" + TEST_TAG_NAME + "\"}";
-		String result = tagsTextileRenderer.render(tag, errors);
-		assertFalse(errors.hasFailures());
+		String result = renderer.render(tag);
+		assertFalse(renderer.getErrors().hasFailures());
 		assertEquals(SUCCESSFULLY_RENDERED, result);
 	}
 }

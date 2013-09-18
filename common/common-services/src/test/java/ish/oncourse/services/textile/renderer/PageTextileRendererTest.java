@@ -1,22 +1,20 @@
 package ish.oncourse.services.textile.renderer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
-
+import ish.oncourse.model.WebNode;
+import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.util.IPageRenderer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import ish.oncourse.model.WebNode;
-import ish.oncourse.services.node.IWebNodeService;
-import ish.oncourse.services.textile.TextileUtil;
-import ish.oncourse.util.IPageRenderer;
-import ish.oncourse.util.ValidationErrors;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PageTextileRendererTest {
@@ -25,14 +23,12 @@ public class PageTextileRendererTest {
 
 	private static final String SUCCESSFULLY_RENDERED = "success";
 
-	private ValidationErrors errors;
-
 	private WebNode page;
 
 	/**
 	 * service under the test
 	 */
-	private PageTextileRenderer pageTextileRenderer;
+	private PageTextileRenderer renderer;
 
 	@Mock
 	private IWebNodeService webNodeService;
@@ -42,10 +38,9 @@ public class PageTextileRendererTest {
 
 	@Before
 	public void init() {
-		errors = new ValidationErrors();
 		page = new WebNode();
 
-		pageTextileRenderer = new PageTextileRenderer(webNodeService,
+		renderer = new PageTextileRenderer(webNodeService,
 				pageRenderer);
 
 		when(webNodeService.getNodeForNodeNumber(eq(TEST_PAGE_CODE)))
@@ -62,8 +57,8 @@ public class PageTextileRendererTest {
 	@Test
 	public void renderPageWithNodeNumberTest() {
 		String tag = "{page code:\"" + TEST_PAGE_CODE + "\"}";
-		String result = pageTextileRenderer.render(tag, errors);
-		assertFalse(errors.hasFailures());
+		String result = renderer.render(tag);
+		assertFalse(renderer.getErrors().hasFailures());
 		assertEquals(SUCCESSFULLY_RENDERED, result);
 	}
 }

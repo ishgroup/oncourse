@@ -29,10 +29,10 @@ public enum TextileType {
 	BLOCK("\\{block([^}]*)}", "\\{block(.+?name:" + STR_WHITESPACE + ")?}", BlockTextileAttributes
 			.getAttrValues()),
 
-	COURSE("\\{course([^}]*)}", "\\{course(.+?((code:" + STR_IN_QUOTS + ")" + "|(tag:" + STR_WHITESPACE + ")"
+	COURSE("\\{course\\ ([^}]*)}", "\\{course(.+?((code:" + STR_IN_QUOTS + ")" + "|(tag:" + STR_WHITESPACE + ")"
 			+ "|(showclasses:" + BOOLEAN_IN_QUOTS + "))){0,3}}", CourseTextileAttributes.getAttrValues()),
 
-	COURSE_LIST("\\{courses([^}]*)}", "\\{courses(.+?((tag:" + STR_WHITESPACE + ")"
+	COURSE_LIST("\\{courses\\ ([^}]*)}", "\\{courses(.+?((tag:" + STR_WHITESPACE + ")"
 			+ "|(limit:" + DIGIT_IN_QUOTS+ ")"
 			+ "|(sort:" + inQuots("(date|alphabetical|availability)", false) + ")"
 			+ "|(order:" + inQuots("(asc|desc)", false)+ ")"

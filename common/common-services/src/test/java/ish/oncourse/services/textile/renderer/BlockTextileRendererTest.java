@@ -1,16 +1,17 @@
 package ish.oncourse.services.textile.renderer;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.services.content.IWebContentService;
-import ish.oncourse.util.ValidationErrors;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BlockTextileRendererTest {
@@ -25,16 +26,13 @@ public class BlockTextileRendererTest {
 	/**
 	 * service under the test
 	 */
-	private BlockTextileRenderer blockTextileRenderer;
-
-	private ValidationErrors errors;
+	private BlockTextileRenderer renderer;
 
 	@Before
 	public void init() {
 		webContent = new WebContent();
 		webContent.setContent(BLOCK_CONTENT);
-		errors = new ValidationErrors();
-		blockTextileRenderer = new BlockTextileRenderer(webContentService, null);
+		renderer = new BlockTextileRenderer(webContentService, null);
 	}
 
 	/**
@@ -44,8 +42,8 @@ public class BlockTextileRendererTest {
 	public void testRandomBlockRendering() {
 		when(webContentService.getWebContent(null, null))
 				.thenReturn(webContent);
-		String result = blockTextileRenderer.render("{block}", errors);
-		assertFalse(errors.hasFailures());
+		String result = renderer.render("{block}");
+		assertFalse(renderer.getErrors().hasFailures());
 		assertEquals(BLOCK_CONTENT, result);
 	}
 
@@ -57,8 +55,8 @@ public class BlockTextileRendererTest {
 	public void testBlockNotFound() {
 		reset(webContentService);
 		when(webContentService.getWebContent(null, null)).thenReturn(null);
-		String result = blockTextileRenderer.render("{block}", errors);
-		assertFalse(errors.hasFailures());
-		assertNull(result);
+		String result = renderer.render("{block}");
+		assertFalse(renderer.getErrors().hasFailures());
+		assertEquals("<span class=\"richtext_error\">Syntax error in \"{block}\"</span>", result);
 	}
 }
