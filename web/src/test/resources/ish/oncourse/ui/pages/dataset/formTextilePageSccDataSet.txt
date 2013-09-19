@@ -11,17 +11,17 @@ h4. Generally About Your Course
 What is the name of your course?
 {text name:"Course-name" required:"yes" label:"1. Course Name" maxlength:"40"}
 2. Have you successfully offered a similar course before?
-{radiolist name:"Similar-Course-Undertaken"  default:"No" options:"No,Yes," description:"Please check one."}
+{radiolist name:"Similar-Course-Undertaken"  label:"Similar-Course-Undertaken" default:"No" options:"No,Yes," description:"Please check one."}
 3. Are you currently offering this course elsewhere?
-{radiolist name:"Similar-Course-Elsewhere"  default:"No" options:"No,Yes," description:"Please check one."}
+{radiolist name:"Similar-Course-Elsewhere"  label:"Similar-Course-Elsewhere" default:"No" options:"No,Yes," description:"Please check one."}
 If yes, where?
 {text name:"Course-offered-at" required:"no" label:"4. Venue Name" maxlength:"30"}
 
 h4. More Specifically About Your Course?
 1. How many sessions do you propose for your course?
-{radiolist name:"Number-of-Sessions"  default:"1" options:"1,2,3,4,5,6,7,8," description:"Please check one."}
+{radiolist name:"Number-of-Sessions" label:"Number-of-Sessions" default:"1" options:"1,2,3,4,5,6,7,8," description:"Please check one."}
 2. Is your course proposed for the Day, Evening or Weekend?
-{radiolist name:"Course-Proposed"  required:"yes" default:"Day" options:"Day,Evening,Weekend" description:"Please check one."}
+{radiolist name:"Course-Proposed" label:"Course-Proposed" required:"yes" default:"Day" options:"Day,Evening,Weekend" description:"Please check one."}
 3. Please describe your course as you would like it advertised.
 {text name:"Course-Description" label:required:"yes" description:"Please describe your course." lines:"20"}
 

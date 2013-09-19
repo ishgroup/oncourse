@@ -25,6 +25,7 @@ public class FormTextileRenderer extends AbstractRenderer {
 	public FormTextileRenderer(IPageRenderer pageRenderer) {
 		this.pageRenderer = pageRenderer;
 		validator = new FormTextileValidator();
+		setRenderAlways(true);
 	}
 
 	@Override
@@ -110,10 +111,6 @@ public class FormTextileRenderer extends AbstractRenderer {
 		parameters.put(TextileUtil.TEXTILE_FORM_PAGE_FIELDS_PARAM, fields);
 		parameters.put(TextileUtil.TEXTILE_FORM_PAGE_AFTER_FIELDS_PARAM, content);
 		tag = pageRenderer.renderPage(TextileUtil.TEXTILE_FORM_PAGE, parameters);
-		// TODO uncomment this when the validation of the form is needed, now we
-		// just pass all the text
-		// }
-
 		return tag;
 	}
 

@@ -13,6 +13,11 @@ public abstract class AbstractRenderer implements IRenderer {
 	private ValidationErrors errors = new ValidationErrors();
 
 	/**
+	 * if  renderAlways is true we should render the textile even if the validation is failed.
+	 */
+	private boolean renderAlways = false;
+
+	/**
 	 * Parse potentially boolean attribute value.
 	 *
 	 * @param params         - parameters map
@@ -30,7 +35,7 @@ public abstract class AbstractRenderer implements IRenderer {
 	public String render(String tag) {
 		validator.validate(tag, errors);
 		String result = tag;
-		if (!errors.hasFailures())
+		if (renderAlways || !errors.hasFailures())
 			result = internalRender(tag);
 		result = handleErrors(tag, result);
 		return result;
@@ -40,11 +45,25 @@ public abstract class AbstractRenderer implements IRenderer {
 
 	protected String handleErrors(String tag, String result) {
 		if (errors.hasFailures() || result == null)
-			result = TextileUtil.getReplacementForSyntaxErrorTag(tag, errors);
+		{
+			String errorsHtml = TextileUtil.getReplacementForSyntaxErrorTag(tag, errors);
+			if (renderAlways)
+				result = String.format("<p>%s/p>%s", errorsHtml, result);
+			else
+				result = errorsHtml;
+		}
 		return result;
 	}
 
 	public ValidationErrors getErrors() {
 		return errors;
+	}
+
+	public boolean isRenderAlways() {
+		return renderAlways;
+	}
+
+	public void setRenderAlways(boolean renderAlways) {
+		this.renderAlways = renderAlways;
 	}
 }

@@ -59,6 +59,8 @@ public class TextileUtil {
 
 	public static final String TEXTILE_UNEXPECTED_ERROR_PARAM = "textileUnexpectedError";
 
+	private static final int ERROR_TAG_MAX_LENGHT = 50;
+
 
 	public static String inQuots(String param, boolean quotsRequired) {
 		StringBuilder buffer = new StringBuilder();
@@ -171,7 +173,7 @@ public class TextileUtil {
 
 	public static String getReplacementForSyntaxErrorTag(String tag, ValidationErrors tempErrors) {
 		return String.format("<span class=\"richtext_error\">Syntax error in \"%s\"</span>" +
-				"%s",tag, tempErrors.toString());
+				"%s", tag.length() > ERROR_TAG_MAX_LENGHT ? tag.substring(0, ERROR_TAG_MAX_LENGHT) + "...": tag, tempErrors.toString());
 		//return "<!-- ERROR in " + tag + ". Syntax error --!> ";
 	}
 
