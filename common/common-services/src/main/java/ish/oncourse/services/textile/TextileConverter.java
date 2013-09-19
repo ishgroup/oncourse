@@ -117,7 +117,7 @@ public class TextileConverter implements ITextileConverter {
 				replacement = renderer.render(tag);
 				errors.appendErrors(renderer.getErrors());
 			} catch (Exception e) {
-				errors.addFailure(e.getMessage(), ValidationFailureType.SYNTAX);
+				errors.addFailure(e, ValidationFailureType.SYNTAX);
 			}
 			result += replacement;
 		}
@@ -175,7 +175,7 @@ public class TextileConverter implements ITextileConverter {
 		case ATTACHMENT:
 			return new AttachmentTextileRenderer(binaryDataService, fileStorageAssetService, pageRenderer);
 		default:
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(String.format("Type $s is not supported", type));
 		}
 
 	}

@@ -1,5 +1,7 @@
 package ish.oncourse.util;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +18,11 @@ public class ValidationErrors implements Serializable {
 		failures = new ArrayList<>();
 	}
 
-	/**
-	 * Add a failure to the validation result.
-	 * 
-	 * @param failure
-	 *            failure to be added. It may not be null.
-	 */
+	public void addFailure(Exception e, ValidationFailureType type) {
+		addFailure(ExceptionUtils.getRootCauseMessage(e), type);
+	}
+
+
 	public void addFailure(String failure, ValidationFailureType type) {
 		if (failure == null || type == null) {
 			throw new IllegalArgumentException("failure message and type cannot be null.");
@@ -38,6 +39,7 @@ public class ValidationErrors implements Serializable {
 			failures.add(validationFailure);
 		}
 	}
+
 
 	/**
 	 * Returns true if at least one failure has been added to this result. False
