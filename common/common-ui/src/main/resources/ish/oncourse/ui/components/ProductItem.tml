@@ -1,116 +1,81 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div class="vevent courseItem producItem">
-		<t:if t:test="isList" negate="true">
-			<h2>
-				<a href="/product/${product.sku}" class="url">${product.name}</a>
-			</h2>
-			
-			<div class="description courseShortDescription">
-				<t:outputraw value="${detailText}" />
-				<strong class="more">[<a href="/product/${product.sku}">More</a>]</strong>
-			</div>
-			<div class="classItem vevent" data-classid="${product.id}">
-					<div class="class-item-info">
-						<div class="class-item-info-l">
-							<div class="info" itemtype="http://schema.org/Offer" itemscope="" itemprop="offers">
-								<dt class="label">Price</dt>
-								<t:if t:test="voucherProductWithoutPrice">
-									<dd itemprop="price">This voucher have no specified price</dd>
-									<p:else>
-										<dd itemprop="price">
-                                            <t:output value="price" format="moneyFormat(price)"/>
-                                        </dd>
-									</p:else>
-								</t:if>
-								<t:if t:test="courseVoucherProduct">
-									<dt class="label">Valid for</dt>
-									<dd>
-										${courseVoucherDescription}
-										<ul class="class-listing">
-										<t:loop source="redemptionCourses" value="course">
-											<li>${course.name}</li>
-										</t:loop>
-										</ul>
-									</dd>
-									<p:else>
-										<t:if t:test="voucherProductWithValue">
-											<dt class="label">Value</dt>
-											<dd>${value}</dd>
-										</t:if>
-									</p:else>
-								</t:if>
-							</div>
-						</div>
-					</div>
-					<div class="classAction">
-						<t:if t:test="paymentGatewayEnabled">
-							<t:if test="addedProduct">
-								<a class="enrolAction enrol-added-class" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">Added</a>
-								<p:else>
-									<a class="enrolAction" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}" 
-										title="${purchaseHoverTitle}">BUY NOW</a>
-								</p:else>
-							</t:if>
-						</t:if>
-					</div>
-				</div>
+    <div class="vevent courseItem producItem">
+        <t:if t:test="isList"  >
+            <t:delegate to="block:list"/>
+        </t:if>
+        <t:unless test="isList" >
+            <t:delegate to="block:nonlist"/>
+        </t:unless>
+    </div>
 
-		
-		<p:else>
-			<h1 class="summary page-title">${product.name}</h1>
-			<div class="clearboth"></div>
-			
-			<div class="courseDescription">
-				<t:outputraw value="${detailText}" />
-				<div class="classItem vevent" data-classid="${product.id}">
-					<div class="class-item-info">
-						<div class="class-item-info-l">
-							<div class="info" itemtype="http://schema.org/Offer" itemscope="" itemprop="offers">
-								<dt class="label">Price</dt>
-								<t:if t:test="voucherProductWithoutPrice">
-									<dd itemprop="price">This voucher have no specified price</dd>
-									<p:else>
-										<dd itemprop="price">
-                                            <t:output value="price" format="moneyFormat(price)"/>
-                                        </dd>
-									</p:else>
-								</t:if>
-								<t:if t:test="courseVoucherProduct">
-									<dt class="label">Valid for</dt>
-									<dd>
-										${courseVoucherDescription}
-										<ul class="class-listing">
-										<t:loop source="redemptionCourses" value="course">
-											<li>${course.name}</li>
-										</t:loop>
-										</ul>
-									</dd>
-									<p:else>
-										<t:if t:test="voucherProductWithValue">
-											<dt class="label">Value</dt>
-											<dd>
-                                                <t:output value="price" format="moneyFormat(price)"/>
-                                            </dd>
-										</t:if>
-									</p:else>
-								</t:if>
-							</div>
-						</div>
-					</div>
-					<div class="classAction">
-						<t:if t:test="paymentGatewayEnabled">
-							<t:if test="addedProduct">
-								<a class="enrolAction enrol-added-class" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">Added</a>
-								<p:else>
-									<a class="enrolAction" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}" 
-										title="${purchaseHoverTitle}">BUY NOW</a>
-								</p:else>
-							</t:if>
-						</t:if>
-					</div>
-				</div>
-			</div>
-		</p:else>
-		</t:if>
-	</div>
+    <t:block t:id="nonlist">
+        <h2>
+            <a href="/product/${product.sku}" class="url">${product.name}</a>
+        </h2>
+
+        <div class="description courseShortDescription">
+            <t:outputraw value="${detailText}" />
+            <strong class="more">[<a href="/product/${product.sku}">More</a>]</strong>
+        </div>
+        <t:delegate to="block:main"/>
+
+    </t:block>
+
+    <t:block t:id="list">
+        <h1 class="summary page-title">${product.name}</h1>
+        <div class="clearboth"></div>
+
+        <div class="courseDescription">
+            <t:outputraw value="${detailText}" />
+        </div>
+        <t:delegate to="block:main"/>
+    </t:block>
+
+    <t:block t:id="main">
+        <div class="classItem vevent" data-classid="${product.id}">
+            <div class="class-item-info">
+                <div class="class-item-info-l">
+                    <div class="info">
+                        <dt class="label">Price</dt>
+                        <t:if t:test="voucherProductWithoutPrice">
+                            <dd itemprop="price">This voucher have no specified price</dd>
+                        </t:if>
+                        <t:unless test="voucherProductWithoutPrice" >
+                            <dd>${price}</dd>
+                        </t:unless>
+
+                        <t:if t:test="courseVoucherProduct">
+                            <dt class="label">Valid for</dt>
+                            <dd>
+                                ${courseVoucherDescription}
+                                <ul class="class-listing">
+                                    <t:loop source="redemptionCourses" value="course">
+                                        <li>${course.name}</li>
+                                    </t:loop>
+                                </ul>
+                            </dd>
+                        </t:if>
+                        <t:unless test="courseVoucherProduct" >
+                            <t:if t:test="voucherProductWithValue">
+                                <dt class="label">Value</dt>
+                                <dd>${value}</dd>
+                            </t:if>
+                        </t:unless>
+                    </div>
+                </div>
+            </div>
+            <div class="classAction">
+                <t:if t:test="paymentGatewayEnabled">
+                    <t:if test="addedProduct">
+                        <a class="enrolAction enrol-added-class" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">Added</a>
+                    </t:if>
+                    <t:unless test="addedProduct" >
+                        <a class="enrolAction" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">BUY NOW</a>
+                    </t:unless>
+
+                </t:if>
+            </div>
+        </div>
+    </t:block>
+
 </t:container>
