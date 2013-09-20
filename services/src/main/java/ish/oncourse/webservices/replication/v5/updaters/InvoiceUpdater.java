@@ -20,7 +20,6 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 		entity.setAmountOwing(new Money(stub.getAmountOwing()));
 		entity.setBillToAddress(stub.getBillToAddress());
 		entity.setCreated(stub.getCreated());
-		entity.setCustomerPO(stub.getCustomerPO());
 		entity.setCustomerReference(stub.getCustomerReference());
 		entity.setDateDue(stub.getDateDue());
 		entity.setDescription(stub.getDescription());
@@ -32,7 +31,6 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 
 		entity.setTotalExGst(new Money(stub.getTotalExGst()));
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
-		//entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
 
 		entity.setTotalGst(new Money(stub.getTotalGst()));
 		

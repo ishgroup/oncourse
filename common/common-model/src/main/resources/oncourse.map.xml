@@ -381,7 +381,6 @@
 		<db-attribute name="contactId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="corporatePassId" type="BIGINT"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="customerPO" type="VARCHAR" length="500"/>
 		<db-attribute name="customerReference" type="LONGVARCHAR" length="65535"/>
 		<db-attribute name="dateDue" type="DATE" isMandatory="true" length="10"/>
 		<db-attribute name="description" type="LONGVARCHAR" length="16777215"/>
@@ -1374,7 +1373,6 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="billToAddress" type="java.lang.String" db-attribute-path="billToAddress"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="customerPO" type="java.lang.String" db-attribute-path="customerPO"/>
 		<obj-attribute name="customerReference" type="java.lang.String" db-attribute-path="customerReference"/>
 		<obj-attribute name="dateDue" type="java.util.Date" db-attribute-path="dateDue"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>

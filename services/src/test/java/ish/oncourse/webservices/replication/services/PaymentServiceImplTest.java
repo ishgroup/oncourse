@@ -88,7 +88,6 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setBillToAddress("Test billing address");
 		i1.setContact(contact);
 		i1.setCreated(new Date());
-		i1.setCustomerPO("PO");
 		i1.setCustomerReference("ref123");
 		i1.setDateDue(new Date());
 		i1.setDescription("Invoice for accounting course");
@@ -166,7 +165,6 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setBillToAddress("Test billing address");
 		i1.setContact(contact);
 		i1.setCreated(new Date());
-		i1.setCustomerPO("PO");
 		i1.setCustomerReference("ref123");
 		i1.setDateDue(new Date());
 		i1.setDescription("Invoice for accounting course");
@@ -257,7 +255,6 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setBillToAddress("Test billing address");
 		i1.setContact(contact);
 		i1.setCreated(new Date());
-		i1.setCustomerPO("PO");
 		i1.setCustomerReference("ref123");
 		i1.setDateDue(new Date());
 		i1.setDescription("Invoice for accounting course");
@@ -308,7 +305,6 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i2.setBillToAddress("Test billing address");
 		i2.setContact(contact);
 		i2.setCreated(new Date());
-		i2.setCustomerPO("PO");
 		i2.setCustomerReference("ref123");
 		i2.setDateDue(new Date());
 		i2.setDescription("Invoice for accounting course");
@@ -412,7 +408,6 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setBillToAddress("Test billing address");
 		i1.setContact(contact);
 		i1.setCreated(new Date());
-		i1.setCustomerPO("PO");
 		i1.setCustomerReference("ref123");
 		i1.setDateDue(new Date());
 		i1.setDescription("Invoice for accounting course");
@@ -463,7 +458,6 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i2.setBillToAddress("Test billing address");
 		i2.setContact(contact);
 		i2.setCreated(new Date());
-		i2.setCustomerPO("PO");
 		i2.setCustomerReference("ref123");
 		i2.setDateDue(new Date());
 		i2.setDescription("Invoice for accounting course");
@@ -557,7 +551,6 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setBillToAddress("Test billing address");
 		i1.setContact(contact);
 		i1.setCreated(new Date());
-		i1.setCustomerPO("PO");
 		i1.setCustomerReference("ref123");
 		i1.setDateDue(new Date());
 		i1.setDescription("Invoice for accounting course");

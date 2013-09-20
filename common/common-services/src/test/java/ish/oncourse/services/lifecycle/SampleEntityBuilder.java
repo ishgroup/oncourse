@@ -104,7 +104,6 @@ public class SampleEntityBuilder {
 		inv.setCollege(college);
 
 		inv.setContact(contact);
-		inv.setCustomerPO("customer PO");
 		inv.setCustomerReference("customer reference");
 		inv.setDateDue(new Date());
 		inv.setDescription("test description");

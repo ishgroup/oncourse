@@ -26,7 +26,6 @@ public abstract class _Invoice extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String BILL_TO_ADDRESS_PROPERTY = "billToAddress";
     public static final String CREATED_PROPERTY = "created";
-    public static final String CUSTOMER_PO_PROPERTY = "customerPO";
     public static final String CUSTOMER_REFERENCE_PROPERTY = "customerReference";
     public static final String DATE_DUE_PROPERTY = "dateDue";
     public static final String DESCRIPTION_PROPERTY = "description";
@@ -48,174 +47,167 @@ public abstract class _Invoice extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAmountOwing(Money amountOwing) {
-        writeProperty(AMOUNT_OWING_PROPERTY, amountOwing);
+        writeProperty("amountOwing", amountOwing);
     }
     public Money getAmountOwing() {
-        return (Money)readProperty(AMOUNT_OWING_PROPERTY);
+        return (Money)readProperty("amountOwing");
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty(ANGEL_ID_PROPERTY, angelId);
+        writeProperty("angelId", angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty(ANGEL_ID_PROPERTY);
+        return (Long)readProperty("angelId");
     }
 
     public void setBillToAddress(String billToAddress) {
-        writeProperty(BILL_TO_ADDRESS_PROPERTY, billToAddress);
+        writeProperty("billToAddress", billToAddress);
     }
     public String getBillToAddress() {
-        return (String)readProperty(BILL_TO_ADDRESS_PROPERTY);
+        return (String)readProperty("billToAddress");
     }
 
     public void setCreated(Date created) {
-        writeProperty(CREATED_PROPERTY, created);
+        writeProperty("created", created);
     }
     public Date getCreated() {
-        return (Date)readProperty(CREATED_PROPERTY);
-    }
-
-    public void setCustomerPO(String customerPO) {
-        writeProperty(CUSTOMER_PO_PROPERTY, customerPO);
-    }
-    public String getCustomerPO() {
-        return (String)readProperty(CUSTOMER_PO_PROPERTY);
+        return (Date)readProperty("created");
     }
 
     public void setCustomerReference(String customerReference) {
-        writeProperty(CUSTOMER_REFERENCE_PROPERTY, customerReference);
+        writeProperty("customerReference", customerReference);
     }
     public String getCustomerReference() {
-        return (String)readProperty(CUSTOMER_REFERENCE_PROPERTY);
+        return (String)readProperty("customerReference");
     }
 
     public void setDateDue(Date dateDue) {
-        writeProperty(DATE_DUE_PROPERTY, dateDue);
+        writeProperty("dateDue", dateDue);
     }
     public Date getDateDue() {
-        return (Date)readProperty(DATE_DUE_PROPERTY);
+        return (Date)readProperty("dateDue");
     }
 
     public void setDescription(String description) {
-        writeProperty(DESCRIPTION_PROPERTY, description);
+        writeProperty("description", description);
     }
     public String getDescription() {
-        return (String)readProperty(DESCRIPTION_PROPERTY);
+        return (String)readProperty("description");
     }
 
     public void setInvoiceDate(Date invoiceDate) {
-        writeProperty(INVOICE_DATE_PROPERTY, invoiceDate);
+        writeProperty("invoiceDate", invoiceDate);
     }
     public Date getInvoiceDate() {
-        return (Date)readProperty(INVOICE_DATE_PROPERTY);
+        return (Date)readProperty("invoiceDate");
     }
 
     public void setInvoiceNumber(Long invoiceNumber) {
-        writeProperty(INVOICE_NUMBER_PROPERTY, invoiceNumber);
+        writeProperty("invoiceNumber", invoiceNumber);
     }
     public Long getInvoiceNumber() {
-        return (Long)readProperty(INVOICE_NUMBER_PROPERTY);
+        return (Long)readProperty("invoiceNumber");
     }
 
     public void setModified(Date modified) {
-        writeProperty(MODIFIED_PROPERTY, modified);
+        writeProperty("modified", modified);
     }
     public Date getModified() {
-        return (Date)readProperty(MODIFIED_PROPERTY);
+        return (Date)readProperty("modified");
     }
 
     public void setPublicNotes(String publicNotes) {
-        writeProperty(PUBLIC_NOTES_PROPERTY, publicNotes);
+        writeProperty("publicNotes", publicNotes);
     }
     public String getPublicNotes() {
-        return (String)readProperty(PUBLIC_NOTES_PROPERTY);
+        return (String)readProperty("publicNotes");
     }
 
     public void setShippingAddress(String shippingAddress) {
-        writeProperty(SHIPPING_ADDRESS_PROPERTY, shippingAddress);
+        writeProperty("shippingAddress", shippingAddress);
     }
     public String getShippingAddress() {
-        return (String)readProperty(SHIPPING_ADDRESS_PROPERTY);
+        return (String)readProperty("shippingAddress");
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty(SOURCE_PROPERTY, source);
+        writeProperty("source", source);
     }
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty(SOURCE_PROPERTY);
+        return (PaymentSource)readProperty("source");
     }
 
     public void setTotalExGst(Money totalExGst) {
-        writeProperty(TOTAL_EX_GST_PROPERTY, totalExGst);
+        writeProperty("totalExGst", totalExGst);
     }
     public Money getTotalExGst() {
-        return (Money)readProperty(TOTAL_EX_GST_PROPERTY);
+        return (Money)readProperty("totalExGst");
     }
 
     public void setTotalGst(Money totalGst) {
-        writeProperty(TOTAL_GST_PROPERTY, totalGst);
+        writeProperty("totalGst", totalGst);
     }
     public Money getTotalGst() {
-        return (Money)readProperty(TOTAL_GST_PROPERTY);
+        return (Money)readProperty("totalGst");
     }
 
     public void setCollege(College college) {
-        setToOneTarget(COLLEGE_PROPERTY, college, true);
+        setToOneTarget("college", college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty(COLLEGE_PROPERTY);
+        return (College)readProperty("college");
     }
 
 
     public void setContact(Contact contact) {
-        setToOneTarget(CONTACT_PROPERTY, contact, true);
+        setToOneTarget("contact", contact, true);
     }
 
     public Contact getContact() {
-        return (Contact)readProperty(CONTACT_PROPERTY);
+        return (Contact)readProperty("contact");
     }
 
 
     public void setCorporatePassUsed(CorporatePass corporatePassUsed) {
-        setToOneTarget(CORPORATE_PASS_USED_PROPERTY, corporatePassUsed, true);
+        setToOneTarget("corporatePassUsed", corporatePassUsed, true);
     }
 
     public CorporatePass getCorporatePassUsed() {
-        return (CorporatePass)readProperty(CORPORATE_PASS_USED_PROPERTY);
+        return (CorporatePass)readProperty("corporatePassUsed");
     }
 
 
     public void addToInvoiceLines(InvoiceLine obj) {
-        addToManyTarget(INVOICE_LINES_PROPERTY, obj, true);
+        addToManyTarget("invoiceLines", obj, true);
     }
     public void removeFromInvoiceLines(InvoiceLine obj) {
-        removeToManyTarget(INVOICE_LINES_PROPERTY, obj, true);
+        removeToManyTarget("invoiceLines", obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<InvoiceLine> getInvoiceLines() {
-        return (List<InvoiceLine>)readProperty(INVOICE_LINES_PROPERTY);
+        return (List<InvoiceLine>)readProperty("invoiceLines");
     }
 
 
     public void addToPaymentInLines(PaymentInLine obj) {
-        addToManyTarget(PAYMENT_IN_LINES_PROPERTY, obj, true);
+        addToManyTarget("paymentInLines", obj, true);
     }
     public void removeFromPaymentInLines(PaymentInLine obj) {
-        removeToManyTarget(PAYMENT_IN_LINES_PROPERTY, obj, true);
+        removeToManyTarget("paymentInLines", obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentInLine> getPaymentInLines() {
-        return (List<PaymentInLine>)readProperty(PAYMENT_IN_LINES_PROPERTY);
+        return (List<PaymentInLine>)readProperty("paymentInLines");
     }
 
 
     public void setWebSite(WebSite webSite) {
-        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
+        setToOneTarget("webSite", webSite, true);
     }
 
     public WebSite getWebSite() {
-        return (WebSite)readProperty(WEB_SITE_PROPERTY);
+        return (WebSite)readProperty("webSite");
     }
 
 
