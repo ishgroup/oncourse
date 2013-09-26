@@ -159,7 +159,7 @@
     <Invoice id="1" angelId="2" billToAddress="billToAddress" source="W" amountOwing="100.00" contactId="1"
              collegeId="3" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
-             totalGst="10.91" created="2011-09-10 11:14:54" customerPO="customerPO"
+             totalGst="10.91" created="2011-09-10 11:14:54"
              customerReference="customerReference" modified="2011-09-10 11:14:54"
              publicNotes="publicNotes" shippingAddress="shippingAddress" corporatePassId="1"/>
 

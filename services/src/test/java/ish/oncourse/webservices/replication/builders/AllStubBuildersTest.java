@@ -137,7 +137,7 @@ public class AllStubBuildersTest extends ServiceTest {
 
     @Test
     public void testV5InvoiceStubBuilder() {
-        this.testStubBuilder(Invoice.class, new ish.oncourse.webservices.replication.v5.builders.InvoiceStubBuilder(), "status");
+        this.testStubBuilder(Invoice.class, new ish.oncourse.webservices.replication.v5.builders.InvoiceStubBuilder(), "status", "customerPO");
     }
 
     @Test
@@ -288,7 +288,7 @@ public class AllStubBuildersTest extends ServiceTest {
 
     @Test
     public void testInvoiceStubBuilder() {
-        this.testStubBuilder(Invoice.class, new InvoiceStubBuilder(), "status");
+        this.testStubBuilder(Invoice.class, new InvoiceStubBuilder(), "status", "customerPO");
     }
 
     @Test
