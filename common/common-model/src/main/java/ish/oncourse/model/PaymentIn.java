@@ -78,9 +78,10 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		Money amount = getAmount();
 
-		if (amount.compareTo(Money.ZERO) < 0) {
+		//#18653 we may pass only contra payments with negative amount
+		if (amount.isLessThan(Money.ZERO) && !PaymentType.CONTRA.equals(getType())) {
 			result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY,
-					"The payment-in must have non negative amount."));
+				"The payment-in must have non negative amount."));
 			return;
 		}
 
