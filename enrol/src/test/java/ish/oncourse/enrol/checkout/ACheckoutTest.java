@@ -16,6 +16,7 @@ import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
@@ -52,8 +53,13 @@ public abstract class ACheckoutTest extends ServiceTest {
 			builder.setColumnSensing(true);
 			FlatXmlDataSet dataSet = builder.build(st);
 
-			DataSource refDataSource = getDataSource("jdbc/oncourse");
-			DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
+            ReplacementDataSet rDataSet;
+            rDataSet = new ReplacementDataSet(dataSet);
+
+            rDataSet.addReplacementObject("[null]", null);
+
+            DataSource refDataSource = getDataSource("jdbc/oncourse");
+			DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), rDataSet);
 		}
 
 

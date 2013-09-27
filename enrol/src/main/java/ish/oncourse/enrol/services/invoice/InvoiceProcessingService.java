@@ -87,7 +87,7 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		
 		invoiceLine.setDescription(String.format("Voucher %s", voucher.getProduct().getDescription()));
         invoiceLine.setTitle(String.format("%s %s", payer.getFullName(), voucher.getProduct().getName()));
-        invoiceLine.setPriceEachExTax(voucher.getRedemptionValue());
+        invoiceLine.setPriceEachExTax(voucher.getVoucherProduct().getPriceExTax());
         invoiceLine.setDiscountEachExTax(Money.ZERO);
         invoiceLine.setTaxEach(Money.ZERO);
         invoiceLine.setQuantity(BigDecimal.ONE);
@@ -98,7 +98,28 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
         return invoiceLine;
 	}
 
-	/**
+
+    @Override
+    public InvoiceLine createInvoiceLineForMembership(Membership membership, Contact payer) {
+            ObjectContext context = membership.getObjectContext();
+            InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
+
+            College college = membership.getCollege();
+
+            invoiceLine.setDescription(String.format("Membership %s", membership.getProduct().getDescription()));
+            invoiceLine.setTitle(String.format("%s %s", payer.getFullName(), membership.getProduct().getName()));
+            invoiceLine.setPriceEachExTax(membership.getProduct().getPriceExTax());
+            invoiceLine.setDiscountEachExTax(Money.ZERO);
+            invoiceLine.setTaxEach(Money.ZERO);
+            invoiceLine.setQuantity(BigDecimal.ONE);
+            membership.setInvoiceLine(invoiceLine);
+
+            invoiceLine.setCollege(college);
+
+            return invoiceLine;
+    }
+
+    /**
 	 * 
 	 * {@inheritDoc}
 	 * 

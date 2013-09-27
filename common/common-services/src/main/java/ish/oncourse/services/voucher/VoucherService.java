@@ -129,27 +129,19 @@ public class VoucherService implements IVoucherService {
 		return results;
 	}
 
-	@Override
-	public Voucher createVoucher(VoucherProduct voucherProduct, Contact contact, Money voucherPrice) {
+	public Voucher createVoucher(VoucherProduct voucherProduct, Contact contact) {
 		Voucher voucher = voucherProduct.getObjectContext().newObject(Voucher.class);
 		voucher.setCode(SecurityUtil.generateRandomPassword(Voucher.VOUCHER_CODE_LENGTH));
 		voucher.setCollege(voucherProduct.getCollege());
-		if (contact != null) {
-			voucher.setContact((Contact) voucherProduct.getObjectContext().localObject(contact.getObjectId(), null));
-		}
-		voucher.setExpiryDate(ProductUtil.calculateExpiryDate(new Date(), voucherProduct.getExpiryType(), voucherProduct.getExpiryDays()));
-		if (!Money.isZeroOrEmpty(voucherProduct.getPriceExTax()) && Money.ZERO.isLessThan(voucherProduct.getPriceExTax())) {
-			voucher.setRedemptionValue(voucherProduct.getPriceExTax());
-		} else if (!Money.isZeroOrEmpty(voucherPrice) && Money.ZERO.isLessThan(voucherPrice)) {
-			voucher.setRedemptionValue(voucherPrice);
-		} else {
-			throw new IllegalArgumentException("Voucher price can't be null, zero or negative when we purchase voucher.");
-		}
-		voucher.setSource(PaymentSource.SOURCE_WEB);
-		voucher.setStatus(ProductStatus.NEW);
-		voucher.setProduct(voucherProduct);
-		voucher.setRedeemedCoursesCount(0);
 
+		voucher.setContact(contact);
+        voucher.setSource(PaymentSource.SOURCE_WEB);
+        voucher.setStatus(ProductStatus.NEW);
+        voucher.setProduct(voucherProduct);
+        voucher.setRedeemedCoursesCount(0);
+
+        voucher.setExpiryDate(ProductUtil.calculateExpiryDate(new Date(), voucherProduct.getExpiryType(), voucherProduct.getExpiryDays()));
+        voucher.setRedemptionValue(voucherProduct.getValue());
 		return voucher;
 	}
 

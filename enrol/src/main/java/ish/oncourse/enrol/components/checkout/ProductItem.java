@@ -62,7 +62,6 @@ public class ProductItem {
 
 	@SetupRender
 	void beforeRender() {
-		checked = purchaseController.getModel().isProductItemEnabled(productItem);
 		Money definedPrice = getPrice();
 		if (priceValue == null && definedPrice.isZero()) {
 			priceValue = definedPrice;
@@ -131,5 +130,9 @@ public class ProductItem {
 	public static interface ProductItemDelegate {
 		public void onChange(Integer contactIndex, Integer productItemIndex);
 	}
+
+    public Integer[] getActionContext() {
+        return new Integer[]{contactIndex, productItemIndex};
+    }
 
 }

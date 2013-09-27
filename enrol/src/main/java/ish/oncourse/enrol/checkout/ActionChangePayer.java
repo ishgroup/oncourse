@@ -25,9 +25,11 @@ public class ActionChangePayer extends APurchaseAction {
 
     @Override
     protected boolean validate() {
-		return validateAndCompleteInTransactionPayments() &&
-				getController().getModel().getContacts().contains(contact);
-	}
+        return !contact.equals(getModel().getPayer()) &&
+                validateAndCompleteInTransactionPayments() &&
+                getController().getModel().getContacts().contains(contact);
+
+    }
 
     /**
      * Check if there are in_transaction payments on enroling contact. If finds any it abandons them.
@@ -82,9 +84,8 @@ public class ActionChangePayer extends APurchaseAction {
 
         Contact oldPayer = getController().getModel().getPayer();
 
-        if (oldPayer != null) {
+        if (oldPayer!= null && !contact.equals(oldPayer))
             getController().getModel().removeAllProductItems(oldPayer);
-        }
 
         getController().getModel().setPayer(contact);
 

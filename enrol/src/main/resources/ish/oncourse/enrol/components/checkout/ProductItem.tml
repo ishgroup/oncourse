@@ -13,7 +13,7 @@
 						</p:else>
 					</t:if>
 					${productItem.product.name}
-					<t:eventlink t:id="selectProductEvent" style="{display: none;}"/>
+					<t:eventlink t:id="selectProductEvent" style="{display: none;}" context="actionContext" />
 				</label>
 	  		</form>
 	  		<em>
@@ -37,14 +37,16 @@
 		</td>
 		<td></td>
 		<td class="alignright">
-			<t:if test="voucherWithPrice">
-				<span class="fee-full fullPrice" id="fullPrice_${productItem.id}">
-					<t:output value="price" format="feeFormat"/>
-				</span>
-			<p:else>
-				<input value="priceValue"/>
-			</p:else>
-			</t:if>
+            <t:if test="checked">
+			    <t:if test="voucherWithPrice">
+				    <span class="fee-full fullPrice" id="fullPrice_${productItem.id}">
+					    <t:output value="price" format="feeFormat"/>
+				    </span>
+			    <p:else>
+				    <input value="priceValue"/>
+			    </p:else>
+			    </t:if>
+            </t:if>
 		</td>
 	</tr>
  

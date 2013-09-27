@@ -21,6 +21,7 @@ public class ActionProceedToPayment extends APurchaseAction {
 			paymentEditorController.setPurchaseController(getController());
 			paymentEditorController.init();
 			getController().setPaymentEditorController(paymentEditorController);
+            getController().setState(PurchaseController.State.editPayment);
 		}
 
 		getController().refreshPrevOwingStatus();

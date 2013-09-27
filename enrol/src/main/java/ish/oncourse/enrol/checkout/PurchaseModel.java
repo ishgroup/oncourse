@@ -490,6 +490,18 @@ public class PurchaseModel {
         return corporatePass;
     }
 
+    public void addProduct(Product product) {
+        this.products.add(product);
+    }
+
+    public boolean containsProduct(Long productId) {
+        for (Product product : products) {
+            if (product.getId().equals(productId))
+                return true;
+        }
+        return false;
+    }
+
     private class ContactNode {
 
         private List<ConcessionType> concessions;

@@ -21,6 +21,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.util.CommonUtils;
+import org.apache.cayenne.Cayenne;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -113,10 +114,8 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 
     @Override
     public void updatePurchaseItems(PurchaseController purchaseController) {
-        boolean result = updateCourseClasses(purchaseController);
-        //todo
-        List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
-
+        updateCourseClasses(purchaseController);
+        updateProducts(purchaseController);
 		updateDiscounts(purchaseController);
     }
 
@@ -145,6 +144,24 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
                 purchaseController.getModel().addClass(courseClass);
                 PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addCourseClass);
                 parameter.setValue(courseClass);
+                purchaseController.performAction(parameter);
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    private boolean updateProducts(PurchaseController purchaseController) {
+        boolean result = false;
+        List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
+        for (Long productId: productIds) {
+            boolean value = purchaseController.getModel().containsProduct(productId);
+            if (!value)
+            {
+                Product product = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Product.class, productId);
+
+                PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addProduct);
+                parameter.setValue(product);
                 purchaseController.performAction(parameter);
                 result = true;
             }

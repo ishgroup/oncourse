@@ -2,11 +2,7 @@ package ish.oncourse.enrol.services.invoice;
 
 import java.util.List;
 
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Voucher;
+import ish.oncourse.model.*;
 
 /**
  * The service for manipulating with invoice-related services: Invoice, InvoiceLine
@@ -58,4 +54,12 @@ public interface IInvoiceProcessingService {
 	 * @param actualPromotions 
 	 */
 	void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine, List<Discount> actualPromotions);
+
+    /**
+     *
+     * @param membership
+     * @param payer
+     * @return
+     */
+    InvoiceLine createInvoiceLineForMembership(Membership membership, Contact payer);
 }

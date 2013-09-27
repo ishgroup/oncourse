@@ -57,6 +57,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         actions.add(removeDiscount);
         actions.add(proceedToPayment);
         actions.add(addCourseClass);
+        actions.add(addProduct);
         assertEquals(State.editCheckout.getAllowedActions(), actions);
         assertEquals(State.editConcession.getAllowedActions(), Arrays.asList(addConcession, removeConcession, cancelConcessionEditor));
         assertEquals(State.addContact.getAllowedActions(), Arrays.asList(addContact, addPayer, cancelAddContact, cancelAddPayer));
@@ -239,15 +240,15 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertNotNull(purchaseController.getErrors().get(PurchaseController.Message.noSelectedItemForPurchase.name()));
     }
 
-    private PurchaseController init() {
+    protected PurchaseController init() {
         return init(true);
     }
 
-    private PurchaseController init(boolean addPayer) {
+    protected PurchaseController init(boolean addPayer) {
 		return init(Arrays.asList(1186958L,1186959L,1186960L), Arrays.asList(7L),Arrays.asList(2L), addPayer);
 	}
 
-	private PurchaseController init(List<Long> courseClassIds, List<Long> productIds,  List<Long> discountIds, boolean addPayer) {
+    protected PurchaseController init(List<Long> courseClassIds, List<Long> productIds,  List<Long> discountIds, boolean addPayer) {
 		ObjectContext context = cayenneService.newContext();
 
 		List<CourseClass> courseClasses = new ArrayList<>();
@@ -256,7 +257,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
 		List<Product> products = new ArrayList<>();
 		for (Long id : productIds)
-			products.add(Cayenne.objectForPK(context, VoucherProduct.class, id));
+			products.add(Cayenne.objectForPK(context, Product.class, id));
 
 		List<Discount> discounts = new ArrayList<>();
 		for (Long id : discountIds)
@@ -702,7 +703,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
     }
 
     @Test
-    public void testAbandan() throws InterruptedException {
+    public void testAbandon() throws InterruptedException {
         PurchaseController purchaseController = init(true);
         proceedToPayment();
         makeInvalidPayment();

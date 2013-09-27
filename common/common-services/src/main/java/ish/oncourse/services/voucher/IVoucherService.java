@@ -17,7 +17,7 @@ public interface IVoucherService {
 	
 	Voucher getVoucherByCode(final String code);
 	
-	Voucher createVoucher(VoucherProduct voucherProduct, Contact contact, Money voucherPrice);
+	Voucher createVoucher(VoucherProduct voucherProduct, Contact contact);
 	List<Product> loadByIds(List<Long> ids);
 	
 	List<Product> loadByIds(Object... ids);

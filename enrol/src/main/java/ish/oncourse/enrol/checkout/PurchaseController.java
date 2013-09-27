@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentType;
+import ish.common.types.ProductStatus;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.*;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorController;
@@ -21,6 +22,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.util.InvoiceUtil;
+import ish.util.ProductUtil;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -44,7 +46,7 @@ public class PurchaseController {
 			enableEnrolment, enableProductItem,
 			disableEnrolment, disableProductItem,
 			setVoucherPrice, addVoucher,
-			startConcessionEditor,Action.addContact));
+			startConcessionEditor, Action.addContact));
 
 	private PurchaseModel model;
 
@@ -79,11 +81,11 @@ public class PurchaseController {
 	private PaymentEditorController paymentEditorController;
 
 	private Map<String, String> errors = new HashMap<>();
-    private Map<String, String> warnings = new HashMap<>();
+	private Map<String, String> warnings = new HashMap<>();
 
-    private ParallelExecutor parallelExecutor;
+	private ParallelExecutor parallelExecutor;
 
-    /**
+	/**
 	 * @return the current state
 	 */
 	public synchronized State getState() {
@@ -109,7 +111,7 @@ public class PurchaseController {
 	 * @return total discount amount for all actual enrollments.
 	 */
 	public synchronized Money getTotalDiscountAmountIncTax() {
-        return getModel().getTotalDiscountAmountIncTax();
+		return getModel().getTotalDiscountAmountIncTax();
 	}
 
 	public synchronized Money getTotalPayment() {
@@ -138,7 +140,7 @@ public class PurchaseController {
 		illegalState = false;
 		illegalModel = false;
 		errors.clear();
-        warnings.clear();
+		warnings.clear();
 
 
 		adjustState(param.action);
@@ -150,23 +152,23 @@ public class PurchaseController {
 
 		APurchaseAction action = param.action.createAction(this, param);
 		if (action.action())
-            actionSuccess();
-        else
-            illegalModel = true;
+			actionSuccess();
+		else
+			illegalModel = true;
 	}
 
-    private void actionSuccess() {
-        if (isEditCheckout() || isEditPayment() || isEditCorporatePass())
-        {
-            //the code needs to recalcalute money values for payment and discount for all actions on checkout page and payment editor
-            updateTotalIncGst();
-            updateTotalDiscountAmountIncTax();
-        }
-    }
+	private void actionSuccess() {
+		if (isEditCheckout() || isEditPayment() || isEditCorporatePass()) {
+			//the code needs to recalcalute money values for payment and discount for all actions on checkout page and payment editor
+			updateTotalIncGst();
+			updateTotalDiscountAmountIncTax();
+		}
+	}
 
-    /**
+	/**
 	 * The method is used to adjust current state when user uses browser action like back,forward
-	 * @return  true state was changed.
+	 *
+	 * @return true state was changed.
 	 */
 	public synchronized boolean adjustState(Action action) {
 		if (!COMMON_ACTIONS.contains(action))
@@ -175,7 +177,7 @@ public class PurchaseController {
 			case editPayment:
 			case editCorporatePass:
 			case paymentProgress:
-            case paymentResult:
+			case paymentResult:
 				ActionParameter parameter = new ActionParameter(backToEditCheckout);
 				parameter.setValue(action);
 				ActionBackToEditCheckout actionBackToEditCheckout = backToEditCheckout.createAction(this, parameter);
@@ -199,21 +201,21 @@ public class PurchaseController {
 	/**
 	 * @param fillRequiredProperties if true we show only required properties where value is null
 	 */
-    synchronized void prepareContactEditor(Contact contact, boolean fillRequiredProperties,
-                              Action addAction,
-                              Action cancelAction) {
+	synchronized void prepareContactEditor(Contact contact, boolean fillRequiredProperties,
+										   Action addAction,
+										   Action cancelAction) {
 		contactEditorController = new ContactEditorController();
 		contactEditorController.setPurchaseController(this);
 		contactEditorController.setContact(contact);
 		contactEditorController.setObjectContext(contact.getObjectContext());
 		contactEditorController.setContactFiledsSet(enrolment);
-        contactEditorController.setAddAction(addAction);
-        contactEditorController.setCancelAction(cancelAction);
+		contactEditorController.setAddAction(addAction);
+		contactEditorController.setCancelAction(cancelAction);
 		if (!contact.getObjectId().isTemporary() && fillRequiredProperties)
 			contactEditorController.setFillRequiredProperties(fillRequiredProperties);
 	}
 
-    synchronized void recalculateEnrolmentInvoiceLines() {
+	synchronized void recalculateEnrolmentInvoiceLines() {
 
 		for (Contact contact : model.getContacts()) {
 			for (Enrolment enrolment : model.getEnabledEnrolments(contact)) {
@@ -235,7 +237,7 @@ public class PurchaseController {
 	 * Creates the new {@link Enrolment} entity for the given courseClass and
 	 * Student.
 	 */
-    synchronized Enrolment createEnrolment(CourseClass courseClass, Student student) {
+	synchronized Enrolment createEnrolment(CourseClass courseClass, Student student) {
 		Enrolment enrolment = new Enrolment();
 		enrolment.setStatus(EnrolmentStatus.NEW);
 		enrolment.setSource(PaymentSource.SOURCE_WEB);
@@ -250,7 +252,16 @@ public class PurchaseController {
 	synchronized ProductItem createProductItem(Contact contact, Product product) {
 		if (product instanceof VoucherProduct) {
 			VoucherProduct vp = (VoucherProduct) product;
-			return voucherService.createVoucher(vp, contact, vp.getPriceExTax());
+			return voucherService.createVoucher(vp, contact);
+		} else if (product instanceof MembershipProduct) {
+			MembershipProduct mp = (MembershipProduct) product;
+			Membership membership = getModel().getObjectContext().newObject(Membership.class);
+			membership.setCollege(mp.getCollege());
+			membership.setContact(contact);
+			membership.setExpiryDate(ProductUtil.calculateExpiryDate(new Date(), mp.getExpiryType(), mp.getExpiryDays()));
+			membership.setProduct(mp);
+			membership.setStatus(ProductStatus.NEW);
+			return membership;
 		} else {
 			throw new IllegalArgumentException("Unsupported product type.");
 		}
@@ -316,24 +327,23 @@ public class PurchaseController {
 		return state == editPayment;
 	}
 
-    public synchronized boolean isEditCorporatePass() {
-        return state == editCorporatePass;
-    }
+	public synchronized boolean isEditCorporatePass() {
+		return state == editCorporatePass;
+	}
 
 
-    //return true when the payment process has a result.
+	//return true when the payment process has a result.
 	public synchronized boolean isPaymentResult() {
 		return state == paymentResult;
 	}
 
-    public synchronized boolean isPaymentProgress() {
-        return state == paymentProgress;
-    }
+	public synchronized boolean isPaymentProgress() {
+		return state == paymentProgress;
+	}
 
-    //return true when the payment process was finished
+	//return true when the payment process was finished
 	public synchronized boolean isFinished() {
-		if (state == paymentResult)
-		{
+		if (state == paymentResult) {
 			if (getModel().getCorporatePass() != null)
 				return true;
 			else if (paymentEditorController != null)
@@ -343,35 +353,32 @@ public class PurchaseController {
 		return false;
 	}
 
-    /**
-     * returns true when current payer can get credit
-     */
-    public synchronized boolean hasPreviousOwing()
-    {
-        Money owing = getPreviousOwing();
-        return getModel().getPayer() != null && owing.isGreaterThan(Money.ZERO);
-    }
-
-    /**
-     * returns true when current payer can get credit
-     */
-    public synchronized boolean isCreditAvailable()
-    {
+	/**
+	 * returns true when current payer can get credit
+	 */
+	public synchronized boolean hasPreviousOwing() {
 		Money owing = getPreviousOwing();
-        return getModel().getPayer() != null && owing.isLessThan(Money.ZERO);
-    }
+		return getModel().getPayer() != null && owing.isGreaterThan(Money.ZERO);
+	}
 
-    public synchronized boolean isApplyPrevOwing() {
-        return getModel().isApplyPrevOwing();
-    }
+	/**
+	 * returns true when current payer can get credit
+	 */
+	public synchronized boolean isCreditAvailable() {
+		Money owing = getPreviousOwing();
+		return getModel().getPayer() != null && owing.isLessThan(Money.ZERO);
+	}
 
-    /**
-     * the method retuns true if payer alread is set. the method used to define show reset button for contact editor dialog
-     */
-    public synchronized boolean isPayerInitialized()
-    {
-        return getModel().getPayer() != null;
-    }
+	public synchronized boolean isApplyPrevOwing() {
+		return getModel().isApplyPrevOwing();
+	}
+
+	/**
+	 * the method retuns true if payer alread is set. the method used to define show reset button for contact editor dialog
+	 */
+	public synchronized boolean isPayerInitialized() {
+		return getModel().getPayer() != null;
+	}
 
 
 	public synchronized ConcessionDelegate getConcessionDelegate() {
@@ -407,9 +414,8 @@ public class PurchaseController {
 		return contactEditorController;
 	}
 
-	synchronized void resetContactEditorController()
-	{
-	 	this.contactEditorController = null;
+	synchronized void resetContactEditorController() {
+		this.contactEditorController = null;
 	}
 
 
@@ -448,12 +454,12 @@ public class PurchaseController {
 		return paymentEditorController;
 	}
 
-    public synchronized void setPaymentEditorController(PaymentEditorController paymentEditorController) {
-        this.paymentEditorController = paymentEditorController;
-    }
+	public synchronized void setPaymentEditorController(PaymentEditorController paymentEditorController) {
+		this.paymentEditorController = paymentEditorController;
+	}
 
 
-    public synchronized VoucherRedemptionHelper getVoucherRedemptionHelper() {
+	public synchronized VoucherRedemptionHelper getVoucherRedemptionHelper() {
 		return voucherRedemptionHelper;
 	}
 
@@ -465,12 +471,12 @@ public class PurchaseController {
 		this.addContactController = addContactController;
 	}
 
-    public synchronized AddContactDelegate getAddContactDelegate() {
-        return addContactController;
-    }
+	public synchronized AddContactDelegate getAddContactDelegate() {
+		return addContactController;
+	}
 
 
-    public ICayenneService getCayenneService() {
+	public ICayenneService getCayenneService() {
 		return cayenneService;
 	}
 
@@ -499,77 +505,75 @@ public class PurchaseController {
 		errors.put(message.name(), message.getMessage(messages, params));
 	}
 
-    public synchronized Map<String, String> getErrors() {
-        return errors;
-    }
+	public synchronized Map<String, String> getErrors() {
+		return errors;
+	}
 
-    public synchronized Map<String, String> getWarnings() {
-        return warnings;
-    }
+	public synchronized Map<String, String> getWarnings() {
+		return warnings;
+	}
 
-    public synchronized void addWarning(Message message, Object... params) {
-        warnings.put(message.name(), message.getMessage(messages, params));
-    }
+	public synchronized void addWarning(Message message, Object... params) {
+		warnings.put(message.name(), message.getMessage(messages, params));
+	}
 
-    public synchronized void setErrors(Map<String,String> errors) {
+	public synchronized void setErrors(Map<String, String> errors) {
 		this.errors.clear();
 		this.errors.putAll(errors);
 	}
 
 	public synchronized boolean isPaymentState() {
 		return (state == State.editPayment ||
-                state == State.paymentResult ||
-                state == State.paymentProgress ||
-                state == State.editCorporatePass
-        );
+				state == State.paymentResult ||
+				state == State.paymentProgress ||
+				state == State.editCorporatePass
+		);
 	}
 
-    public void setParallelExecutor(ParallelExecutor parallelExecutor) {
+	public void setParallelExecutor(ParallelExecutor parallelExecutor) {
 
-       this.parallelExecutor = parallelExecutor;
-    }
+		this.parallelExecutor = parallelExecutor;
+	}
 
-    public ParallelExecutor getParallelExecutor() {
-        return parallelExecutor;
-    }
+	public ParallelExecutor getParallelExecutor() {
+		return parallelExecutor;
+	}
 
-    public synchronized void refreshPrevOwingStatus() {
-        if (this.hasPreviousOwing())
-            this.getModel().setApplyPrevOwing(true);
-        else if (this.isCreditAvailable())
-            this.getModel().setApplyPrevOwing(false);
-    }
+	public synchronized void refreshPrevOwingStatus() {
+		if (this.hasPreviousOwing())
+			this.getModel().setApplyPrevOwing(true);
+		else if (this.isCreditAvailable())
+			this.getModel().setApplyPrevOwing(false);
+	}
 
-	public synchronized List<Discount> getDiscounts()
-	{
+	public synchronized List<Discount> getDiscounts() {
 		return this.getModel().getDiscounts();
 	}
 
-    public Money updateTotalIncGst() {
-        Money result = Money.ZERO;
-        for (Contact contact : getModel().getContacts()) {
-            for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
-            	for (InvoiceLine invoiceLine : enabledEnrolment.getInvoiceLines()) {
-            		result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
-            	}
-            }
-            for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
-                InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
-                result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
-            }
-        }
+	public Money updateTotalIncGst() {
+		Money result = Money.ZERO;
+		for (Contact contact : getModel().getContacts()) {
+			for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
+				for (InvoiceLine invoiceLine : enabledEnrolment.getInvoiceLines()) {
+					result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+				}
+			}
+			for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
+				InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
+				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+			}
+		}
 
-        if (isApplyPrevOwing())
-        {
-            Money previousOwing = getPreviousOwing();
-            result = result.add(previousOwing);
-        }
+		if (isApplyPrevOwing()) {
+			Money previousOwing = getPreviousOwing();
+			result = result.add(previousOwing);
+		}
 
 
-        if (isEditCorporatePass())
-            result = Money.ZERO;
-        else
-            result = (result.isLessThan(Money.ZERO) ? Money.ZERO : result);
+		if (isEditCorporatePass())
+			result = Money.ZERO;
+		else
+			result = (result.isLessThan(Money.ZERO) ? Money.ZERO : result);
 
 		/**
 		 * we need to set payment type to internal when amount is zero because admin application
@@ -583,16 +587,16 @@ public class PurchaseController {
 		getModel().getPayment().setAmount(result);
 		getModel().getPayment().getPaymentInLines().get(0).setAmount(result);
 
-        Money totalGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), true);
-        Money totalExGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), false);
-        getModel().getInvoice().setTotalExGst(totalExGst);
-        getModel().getInvoice().setTotalGst(totalGst);
-        getModel().getInvoice().setCorporatePassUsed(getModel().getCorporatePass());
-        return result;
-    }
+		Money totalGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), true);
+		Money totalExGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), false);
+		getModel().getInvoice().setTotalExGst(totalExGst);
+		getModel().getInvoice().setTotalGst(totalGst);
+		getModel().getInvoice().setCorporatePassUsed(getModel().getCorporatePass());
+		return result;
+	}
 
 
-	 boolean validateEnrolments(boolean showErrors) {
+	boolean validateEnrolments(boolean showErrors) {
 		ActionEnableEnrolment actionEnableEnrolment = enableEnrolment.createAction(this);
 		List<Enrolment> enrolments = this.getModel().getAllEnabledEnrolments();
 		boolean result = true;
@@ -610,13 +614,13 @@ public class PurchaseController {
 		return result;
 	}
 
-	 boolean validateProductItems() {
+	boolean validateProductItems() {
 		ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(this);
 		List<ProductItem> items = this.getModel().getAllProductItems(getModel().getPayer());
 		boolean result = true;
 		for (ProductItem item : items) {
 			actionEnableProductItem.setProductItem(item);
-			boolean valid = actionEnableProductItem.validateProductItem();
+			boolean valid = actionEnableProductItem.validate();
 			if (!valid) {
 				ActionDisableProductItem actionDisableProductItem = disableProductItem.createAction(this);
 				actionDisableProductItem.setProductItem(item);
@@ -629,33 +633,30 @@ public class PurchaseController {
 	}
 
 
-
 	public void updateTotalDiscountAmountIncTax() {
-        Money totalDiscountAmountIncTax = Money.ZERO;
-        for (Contact contact : getModel().getContacts()) {
-            for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
-            	for (InvoiceLine invoiceLine : enabledEnrolment.getInvoiceLines()) {
-            		totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(invoiceLine.getDiscountTotalIncTax());
-            	}
-            }
-            for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
-                totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(enabledProductItem.getInvoiceLine().getDiscountTotalIncTax());
-            }
-        }
-        getModel().setTotalDiscountAmountIncTax(totalDiscountAmountIncTax);
-    }
+		Money totalDiscountAmountIncTax = Money.ZERO;
+		for (Contact contact : getModel().getContacts()) {
+			for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
+				for (InvoiceLine invoiceLine : enabledEnrolment.getInvoiceLines()) {
+					totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(invoiceLine.getDiscountTotalIncTax());
+				}
+			}
+			for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
+				totalDiscountAmountIncTax = totalDiscountAmountIncTax.add(enabledProductItem.getInvoiceLine().getDiscountTotalIncTax());
+			}
+		}
+		getModel().setTotalDiscountAmountIncTax(totalDiscountAmountIncTax);
+	}
 
-    String getClassName(CourseClass courseClass) {
-        return String.format("%s (%s-%s)", courseClass.getCourse().getName(), courseClass.getCourse().getCode(), courseClass.getCode());
-    }
+	String getClassName(CourseClass courseClass) {
+		return String.format("%s (%s-%s)", courseClass.getCourse().getName(), courseClass.getCourse().getCode(), courseClass.getCode());
+	}
 
-	public boolean isCorporatePassPaymentEnabled()
-	{
+	public boolean isCorporatePassPaymentEnabled() {
 		return preferenceController.isCorporatePassPaymentEnabled();
 	}
 
-	public boolean isCreditCardPaymentEnabled()
-	{
+	public boolean isCreditCardPaymentEnabled() {
 		return preferenceController.isCreditCardPaymentEnabled();
 	}
 
@@ -691,8 +692,7 @@ public class PurchaseController {
 						contact.getStudent());
 				model.addEnrolment(enrolment);
 				Enrolment oldEnrolment = oldModel.getEnrolmentBy(oldContact, oldCourseClass);
-				if (oldEnrolment != null)
-				{
+				if (oldEnrolment != null) {
 					ActionEnableEnrolment actionEnableEnrolment = new ActionEnableEnrolment();
 					actionEnableEnrolment.setController(this);
 					actionEnableEnrolment.setEnrolment(enrolment);
@@ -701,12 +701,11 @@ public class PurchaseController {
 			}
 
 			for (Product oldProduct : oldProducts) {
-				Product product =  model.localizeObject(oldProduct);
-				ProductItem productItem = createProductItem(model.getPayer(),product);
+				Product product = model.localizeObject(oldProduct);
+				ProductItem productItem = createProductItem(model.getPayer(), product);
 				model.addProductItem(productItem);
 				ProductItem oldProductItem = oldModel.getProductItemBy(oldContact, oldProduct);
-				if (oldProductItem != null)
-				{
+				if (oldProductItem != null) {
 					ActionEnableProductItem actionEnableProductItem = new ActionEnableProductItem();
 					actionEnableProductItem.setController(this);
 					actionEnableProductItem.setProductItem(productItem);
@@ -720,23 +719,22 @@ public class PurchaseController {
 
 	public static enum State {
 		init(Action.init, Action.addContact),
-		editCheckout(COMMON_ACTIONS,addDiscount,removeDiscount, proceedToPayment, addCourseClass),
+		editCheckout(COMMON_ACTIONS, addDiscount, removeDiscount, proceedToPayment, addCourseClass, addProduct),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
-		addContact(Action.addContact, addPayer, cancelAddContact,cancelAddPayer),
-		editContact(Action.addContact, addPayer, cancelAddContact,cancelAddPayer),
-		editPayment(makePayment, backToEditCheckout,addDiscount, creditAccess, owingApply, changePayer, addPayer,selectCorporatePassEditor),
-        editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
-        paymentProgress(showPaymentResult),
-		paymentResult(proceedToPayment,showPaymentResult);
+		addContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
+		editContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
+		editPayment(makePayment, backToEditCheckout, addDiscount, creditAccess, owingApply, changePayer, addPayer, selectCorporatePassEditor),
+		editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
+		paymentProgress(showPaymentResult),
+		paymentResult(proceedToPayment, showPaymentResult);
 
 		private List<Action> allowedActions;
 
 
-        State(List<Action> commonAction,Action...   allowedActions)
-        {
-            this.allowedActions = new ArrayList<>(commonAction);
-            Collections.addAll(this.allowedActions, allowedActions);
-        }
+		State(List<Action> commonAction, Action... allowedActions) {
+			this.allowedActions = new ArrayList<>(commonAction);
+			Collections.addAll(this.allowedActions, allowedActions);
+		}
 
 		State(Action... allowedActions) {
 			this.allowedActions = Arrays.asList(allowedActions);
@@ -765,23 +763,24 @@ public class PurchaseController {
 		addConcession(ActionAddConcession.class, StudentConcession.class),
 		removeConcession(ActionRemoveConcession.class, ConcessionType.class, Contact.class),
 		addDiscount(ActionAddDiscount.class, String.class, Discount.class),
-        removeDiscount(ActionRemoveDiscount.class, String.class, Discount.class),
+		removeDiscount(ActionRemoveDiscount.class, String.class, Discount.class),
 		addVoucher(ActionAddVoucher.class, String.class, Voucher.class),
 		startConcessionEditor(ActionStartConcessionEditor.class, Contact.class),
 		cancelConcessionEditor(ActionCancelConcessionEditor.class, Contact.class),
 		cancelAddContact(ActionCancelAddContact.class),
-        cancelAddPayer(ActionCancelAddPayer.class),
+		cancelAddPayer(ActionCancelAddPayer.class),
 		creditAccess(ActionCreditAccess.class, String.class),
 		owingApply(ActionOwingApply.class),
 		proceedToPayment(ActionProceedToPayment.class),
 		makePayment(ActionMakePayment.class),
-        showPaymentResult(ActionShowPaymentResult.class),
+		showPaymentResult(ActionShowPaymentResult.class),
 		backToEditCheckout(ActionBackToEditCheckout.class),
-        addCourseClass(ActionAddCourseClass.class,CourseClass.class),
-        addPayer(ActionAddPayer.class, Contact.class),
-        addCorporatePass(ActionAddCorporatePass.class, String.class),
-        selectCardEditor(ActionSelectCardEditor.class),
-        selectCorporatePassEditor(ActionSelectCorporatePassEditor.class);
+		addCourseClass(ActionAddCourseClass.class, CourseClass.class),
+		addProduct(ActionAddProduct.class, Product.class),
+		addPayer(ActionAddPayer.class, Contact.class),
+		addCorporatePass(ActionAddCorporatePass.class, String.class),
+		selectCardEditor(ActionSelectCardEditor.class),
+		selectCorporatePassEditor(ActionSelectCorporatePassEditor.class);
 
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
@@ -858,19 +857,18 @@ public class PurchaseController {
 			this.errors = errors;
 		}
 
-        public boolean hasValues()
-        {
-            return !values.isEmpty();
-        }
+		public boolean hasValues() {
+			return !values.isEmpty();
+		}
 	}
 
 	public static enum Message {
 		noSelectedItemForPurchase,
-        noEnabledItemForPurchase,
+		noEnabledItemForPurchase,
 		contactAlreadyAdded,
 		discountNotFound,
 		creditAccessPasswordIsWrong,
-        passwordShouldBeSpecified,
+		passwordShouldBeSpecified,
 		duplicatedEnrolment,
 		noCourseClassPlaces,
 		courseClassEnded,
@@ -882,20 +880,22 @@ public class PurchaseController {
 		voucherRedeemed,
 		voucherLockedAnotherUser,
 		concessionAlreadyAdded,
-        payerHadUnfinishedPayment,
+		payerHadUnfinishedPayment,
 		dpsHasNotFinishedProcessPreviousPayment,
 		codeEmpty,
-        classAlreadyAdded,
-        productAlreadyAdded,
-        itemsWasAddedFromShoppingBasket,
+		classAlreadyAdded,
+		productAlreadyAdded,
+		itemsWasAddedFromShoppingBasket,
 		discountAlreadyAdded,
-        corporatePassNotFound,
-        corporatePassInvalidCourseClass,
-        corporatePassAdded,
-        corporatePassShouldBeEntered,
+		corporatePassNotFound,
+		corporatePassInvalidCourseClass,
+		corporatePassAdded,
+		corporatePassShouldBeEntered,
 		noEnabledPaymentMethods,
 		corporatePassNotEnabled,
-		creditCardPaymentNotEnabled;
+		creditCardPaymentNotEnabled,
+		duplicatedMembership,
+		enterVoucherPrice;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);

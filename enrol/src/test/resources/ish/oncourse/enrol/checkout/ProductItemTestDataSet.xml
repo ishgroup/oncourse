@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="1" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0"/>
+
+    <Site id="1181610" collegeId="1" angelId="200" isWebVisible="0"
+          created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
+
+    <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+    <Room id="1181746" collegeId="1" siteId="1181610" angelId="200"
+          capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+          name="TestRoom" />
+
+    <Student id="1189147" collegeId="1" angelId="200"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+    <Student id="1189148" collegeId="1" angelId="201"
+             created="2011-09-12 01:02:30.0" modified="2011-09-12 01:02:30.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+    <Student id="1189149" collegeId="1" angelId="202"
+             created="2011-09-12 01:03:00.0" modified="2011-09-12 01:03:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+    <Student id="1189150" collegeId="1" angelId="203"
+             created="2011-09-12 01:03:00.0" modified="2011-09-12 01:03:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+    <Tutor id="1185782" collegeId="1" angelId="2" created="2011-09-12 00:47:26.0"
+           modified="2011-09-12 01:02:00.0" resume="&lt;p&gt;This is mister Putin resume.&lt;/p&gt;"
+           resume_textile="This is mister Putin resume." />
+
+    <Contact id="1189156" collegeId="1" tutorId="1185782" angelId="2"
+             countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+             isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir"
+             emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+    <Contact id="1189157" collegeId="1" studentId="1189147"
+             angelId="3" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Ledger" givenName="Alex" emailAddress="av@noname.by"
+             dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+    <Contact id="1189158" collegeId="1" studentId="1189148"
+             angelId="4" countryId="1" created="2011-09-12 01:02:30.0" isCompany="0"
+             familyName="TestStudent1" givenName="TestStudent1" emailAddress="test@test.au"
+             street="test address" suburb="test suburb" isMarketingViaEmailAllowed="1"
+             isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" />
+    <Contact id="1189159" collegeId="1" studentId="1189149"
+             angelId="5" countryId="1" created="2011-09-12 01:03:00.0" isCompany="0"
+             isMale="1" familyName="TestStudent2" givenName="TestStudent2" street="test address2"
+             suburb="test suburb" state="wa" isMarketingViaEmailAllowed="1"
+             isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" />
+    <Contact id="1189160" collegeId="1" studentId="1189150"
+             angelId="5" countryId="1" created="2011-09-12 01:03:00.0" isCompany="0"
+             isMale="1" familyName="TestStudent3" givenName="TestStudent3" street="test address2"
+             suburb="test suburb" state="wa" isMarketingViaEmailAllowed="1"
+             isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" />
+
+    <Course id="1186952" collegeId="1" angelId="200" code="AAV"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting" />
+    <Course id="1186953" collegeId="1" angelId="201" code="MSC"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:57:38.0" modified="2011-09-12 00:59:00.0"
+            allowWaitingList="1" name="Microsoft Word" />
+    <Course id="1186954" collegeId="1" angelId="202" code="PPO"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:59:38.0" modified="2011-09-12 01:02:00.0"
+            allowWaitingList="1" name="Adobe Photoshop essentials" />
+
+    <CourseClass id="1186958" collegeId="1" code="1" courseId="1186952"
+                 roomId="1181746" angelId="200" startDate="2011-10-12 00:55:59.0"
+                 endDate="2111-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+    <CourseClass id="1186959" collegeId="1" code="1" courseId="1186953"
+                 roomId="1181746" angelId="201" startDate="2011-09-13 00:58:59.0"
+                 endDate="2111-10-07 01:58:59.0" isWebVisible="1" isCancelled="0"
+                 created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:01.0"
+                 maximumPlaces="1" minimumPlaces="1" countOfSessions="5" deliveryMode="1"
+                 feeExGst="300.00" feeGst="30.00" isDistantLearningCourse="0"/>
+    <CourseClass id="1186960" collegeId="1" code="1" courseId="1186954"
+                 roomId="1181746" angelId="202" startDate="2011-11-03 01:01:59.0"
+                 endDate="2111-11-03 02:01:59.0" isWebVisible="0" isCancelled="0"
+                 created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                 maximumPlaces="2" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
+                 feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"/>
+
+    <Invoice id="1000" source="O" amountOwing="0" contactId="1189158"
+             collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+             invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
+             totalGst="10.91" />
+
+    <InvoiceLine id="11111" collegeId="1" invoiceId="1000" quantity="1.0" discountEachExTax="0.00"
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
+
+
+    <Invoice id="1002" source="O" amountOwing="-100" contactId="1189160"
+             collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+             invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
+             totalGst="10.91" />
+
+    <InvoiceLine id="11112" collegeId="1" invoiceId="1002" quantity="1.0" discountEachExTax="0.00"
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
+
+    <Invoice id="1003" source="O" amountOwing="-100" contactId="1189160"
+             collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+             invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
+             totalGst="10.91" />
+
+    <InvoiceLine id="11113" collegeId="1" invoiceId="1003" quantity="1.0" discountEachExTax="0.00"
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
+
+
+    <Product collegeId="1" SKU="23456" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="7" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 5" TYPE="3" angelId="7"
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00"/>
+
+    <Product collegeId="1" SKU="234567" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="8" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 6" TYPE="2" angelId="8"
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" maxCoursesRedemption="1"/>
+
+    <Product collegeId="1" SKU="23458" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="9" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 5" TYPE="2" angelId="8"
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00"/>
+
+    <Product collegeId="1" SKU="234569" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="10" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test voucher product part 6" TYPE="3" angelId="8"
+             TAXADJUSTMENT="0.00" PRICEEXTAX="[null]" maxCoursesRedemption="1"/>
+
+    <ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="3"
+                 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="7" TYPE="2" angelId="3" code="test" value="100.00" source="O"
+                 status="0" INVOICELINEID="11111"/>
+
+    <ConcessionType id="1"
+                    angelId="2"
+                    collegeId="1"
+                    credentialExpiryDays="1"
+                    hasConcessionNumber="1"
+                    hasExpiryDate="0"
+                    isConcession="1"
+                    isEnabled="1"
+                    name="ConcessionType1"
+                    requiresCredentialCheck="1"
+                    created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+    <ConcessionType id="2"
+                    angelId="2"
+                    collegeId="1"
+                    credentialExpiryDays="1"
+                    hasConcessionNumber="1"
+                    hasExpiryDate="0"
+                    isConcession="1"
+                    isEnabled="1"
+                    name="ConcessionType2"
+                    requiresCredentialCheck="1"
+                    created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+    <ConcessionType id="3"
+                    angelId="2"
+                    collegeId="1"
+                    credentialExpiryDays="1"
+                    hasConcessionNumber="1"
+                    hasExpiryDate="0"
+                    isConcession="1"
+                    isEnabled="1"
+                    name="ConcessionType3"
+                    requiresCredentialCheck="1"
+                    created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+    <Discount
+            id="1"
+            angelId="2"
+            code="code"
+            collegeId="1"
+            combinationType="1"
+            created="2011-09-12 00:56:00.0"
+            detail="detail"
+            discountAmount="100.0"
+            discountRate="1.11"
+            discountType="2"
+            modified="2011-09-12 00:56:00.0"
+            name="name"
+            roundingMode="1"
+            timeZone="timeZone"
+            validFrom="2011-09-12 00:56:00.0"
+            validTo="2111-09-12 00:56:00.0"
+            hideOnWeb="0"
+            isAvailableOnWeb="1"/>
+
+    <Discount
+            id="2"
+            angelId="3"
+            collegeId="1"
+            code="concession"
+            combinationType="1"
+            created="2011-09-12 00:56:00.0"
+            detail="detail"
+            discountAmount="100.0"
+            discountType="2"
+            modified="2011-09-12 00:56:00.0"
+            name="name"
+            roundingMode="1"
+            timeZone="timeZone"
+            validFrom="2011-09-12 00:56:00.0"
+            validTo="2111-09-12 00:56:00.0"
+            hideOnWeb="0"
+            isAvailableOnWeb="1"/>
+
+    <DiscountConcessionType id="1" discountId="2" concessionTypeId="1" collegeId="1"/>
+
+    <DiscountCourseClass id="1" discountId="1" courseClassId="1186958" collegeId="1"/>
+    <DiscountCourseClass id="2" discountId="2" courseClassId="1186958" collegeId="1"/>
+
+    <MessageTemplate id="131" collegeId="1" angelId="201"
+                     created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:21.0" name="Enrolment confirmation"
+                     subject="&lt;college.shortName&gt; [Enrolment confirmation #&lt;invoice.number&gt;]"
+                     message="&lt;currentDate&gt;&#xD;&#xA;Thank you for enrolling at &lt;college.name&gt;.&#xD;&#xA;Your Reference Number is &lt;invoice.number&gt;.&#xD;&#xA;&#xD;&#xA;Class List:&#xD;&#xA;------------&#xD;&#xA;&lt;classList&gt;&#xD;&#xA;&#xD;&#xA;Please re-visit &lt;college.webAddress&gt; prior to your course to  check course materials, instructions and for possible changes.  If there are insufficient numbers courses have to be cancelled. We usually cancel courses when necessary, four working days prior to their scheduled start date. It would be wise to check the status your course on the website a day or two prior to its scheduled start date.  Please confirm your course is running prior to purchasing any materials  and equipment.&#xD;&#xA;&#xD;&#xA;The EMERGENCY contact number referred to in the College Brochure is xx xxxx xxxx. This number is for EMERGENCY contact outside College Office hours. Office hours are 9am-5pm Monday to Friday. This number is for use if you are lost, sick or unable to attend a particular session of your course. Our tutors appreciate &quot;apologies&quot; if you are unable to attend.&#xD;&#xA;&#xD;&#xA;Please take this confirmation with you to your course as proof of enrolment.&#xD;&#xA;&#xD;&#xA;Please remember that &quot;Smoking is Prohibited&quot; by Law on School sites.&#xD;&#xA;&#xD;&#xA;We trust that you will enjoy your course(s).&#xD;&#xA;Please do not hesitate to contact the College office should you need any further information.&#xD;&#xA;&#xD;&#xA;----------------------------&#xD;&#xA;Email: &lt;college.email&gt;&#xD;&#xA;Phone: &lt;college.phone&gt;&#xD;&#xA;Fax: &lt;college.fax&gt;&#xD;&#xA;----------------------------&#xD;&#xA;" />
+    <MessageTemplate id="132" collegeId="1" angelId="203"
+                     created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:21.0" name="Payment succeeded"
+                     subject="&lt;college.shortName&gt; [Receipt# &lt;payment.number&gt;]"
+                     message="&lt;college.name&gt; Tax Invoice&#xD;&#xA;ABN: &lt;college.abn&gt;&#xD;&#xA;&lt;college.streetAddress1&gt;&#xD;&#xA;&lt;college.suburb&gt; &lt;college.state&gt; &lt;college.postcode&gt;&#xD;&#xA;&lt;college.webAddress&gt;&#xD;&#xA;&lt;currentDate&gt;&#xD;&#xA;&#xD;&#xA;Dear &lt;payer.firstName&gt; &lt;payer.lastName&gt;, thank you for your payment.&#xD;&#xA;Your receipt number is &lt;payment.number&gt;.&#xD;&#xA;&#xD;&#xA;Total Paid &lt;payment.totalIncTax&gt;&#xD;&#xA;&#xD;&#xA;Please feel free to contact the college office should you need any further information. Office hours are 9:00am to 5:00pm, Monday to Friday.&#xD;&#xA;&#xD;&#xA;----------------------------&#xD;&#xA;&lt;college.email&gt;&#xD;&#xA;&lt;college.phone&gt; phone&#xD;&#xA;&lt;college.fax&gt; fax&#xD;&#xA;----------------------------&#xD;&#xA;" />
+    <MessageTemplate id="133" collegeId="1" angelId="200"
+                     created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:21.0" name="Payment failed"
+                     subject="&lt;college.name&gt;: Enrolment Failed"
+                     message="&lt;college.name&gt;&#xD;&#xA;ABN: &lt;college.abn&gt;&#xD;&#xA;&lt;college.streetAddress1&gt;&#xD;&#xA;&lt;college.suburb&gt; &lt;college.state&gt; &lt;college.postcode&gt;&#xD;&#xA;&lt;college.webAddress&gt;&#xD;&#xA;&lt;currentDate&gt;&#xD;&#xA;&#xD;&#xA;Dear &lt;payer.firstName&gt; &lt;payer.lastName&gt;,&#xD;&#xA;Your transaction at &lt;college.shortName&gt; failed for the following reason:&#xD;&#xA;&#xD;&#xA;&lt;payment.failureMessage&gt;&#xD;&#xA;&#xD;&#xA;If you were enrolling in a course, then your enrolment has been unsuccessful. You might like to try again with a different credit card or enrol in a class with more places available.&#xD;&#xA;&#xD;&#xA;Please feel free to contact the college office should you need any further information. Office hours are 9:00am to 5:00pm, Monday to Friday.&#xD;&#xA;&#xD;&#xA;----------------------------&#xD;&#xA;&lt;college.email&gt;&#xD;&#xA;&lt;college.phone&gt; phone&#xD;&#xA;&lt;college.fax&gt; fax&#xD;&#xA;----------------------------&#xD;&#xA;" />
+    <MessageTemplate id="134" collegeId="1" angelId="204"
+                     created="2011-09-12 00:38:56.0" modified="2011-09-12 00:17:21.0" name="Tax invoice"
+                     subject="&lt;college.shortName&gt; [Tax Invoice# &lt;invoice.number&gt;]"
+                     message="&lt;college.name&gt; Tax Invoice&#xD;&#xA;ABN: &lt;college.abn&gt;&#xD;&#xA;&lt;college.streetAddress1&gt;&#xD;&#xA;&lt;college.suburb&gt; &lt;college.state&gt; &lt;college.postcode&gt;&#xD;&#xA;&lt;college.webAddress&gt;&#xD;&#xA;&lt;currentDate&gt;&#xD;&#xA;&#xD;&#xA;Dear &lt;payer.firstName&gt; &lt;payer.lastName&gt;, thank you for enrolling at &lt;college.shortName&gt;.&#xD;&#xA;Your invoice number is &lt;invoice.number&gt;.&#xD;&#xA;&#xD;&#xA;-------------------------------------------&#xD;&#xA;&lt;invoice.lines&gt;&#xD;&#xA;-------------------------------------------&#xD;&#xA;Total tax &lt;invoice.totalTax&gt;&#xD;&#xA;Total amount &lt;invoice.totalIncTax&gt;&#xD;&#xA;&#xD;&#xA;Payment &lt;invoice.totalPaid&gt;&#xD;&#xA;Total owing &lt;invoice.totalOwing&gt;&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;Please feel free to contact the college office should you need any further information. Office hours are 9:00am to 5:00pm, Monday to Friday.&#xD;&#xA;&#xD;&#xA;----------------------------&#xD;&#xA;&lt;college.email&gt;&#xD;&#xA;&lt;college.phone&gt; phone&#xD;&#xA;&lt;college.fax&gt; fax&#xD;&#xA;----------------------------&#xD;&#xA;" />
+    <MessageTemplate id="135" collegeId="1" angelId="202"
+                     created="2011-09-12 00:38:56.0" modified="2011-09-12 00:17:21.0" name="SMS tutor reminder"
+                     subject="[subject not used for SMS]"
+                     message="&lt;college.name&gt; reminds you that your class &lt;class.name&gt; begins on &lt;class.startDate&gt;.&#xD;&#xA;" />
+
+    <Session id="1186969" collegeId="1" courseClassId="1186958"
+             roomId="1181746" angelId="201" startDate="2011-10-12 00:55:59.0"
+             endDate="2011-10-12 01:55:59.0" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+    <Session id="1186970" collegeId="1" courseClassId="1186958"
+             roomId="1181746" angelId="200" startDate="2011-10-14 00:55:59.0"
+             endDate="2011-10-14 01:55:59.0" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+    <Session id="1186971" collegeId="1" courseClassId="1186958"
+             roomId="1181746" angelId="202" startDate="2011-10-16 00:55:59.0"
+             endDate="2011-10-16 01:55:59.0" created="2011-09-12 00:56:01.0"
+             modified="2011-09-12 00:56:01.0" />
+    <Session id="1186972" collegeId="1" courseClassId="1186959"
+             roomId="1181746" angelId="205" startDate="2011-09-13 00:58:59.0"
+             endDate="2011-09-13 01:58:59.0" created="2011-09-12 00:59:00.0"
+             modified="2011-09-12 00:59:00.0" />
+    <Session id="1186973" collegeId="1" courseClassId="1186959"
+             roomId="1181746" angelId="206" startDate="2011-09-19 00:58:59.0"
+             endDate="2011-09-19 01:58:59.0" created="2011-09-12 00:59:00.0"
+             modified="2011-09-12 00:59:00.0" />
+    <Session id="1186974" collegeId="1" courseClassId="1186959"
+             roomId="1181746" angelId="203" startDate="2011-09-25 00:58:59.0"
+             endDate="2011-09-25 01:58:59.0" created="2011-09-12 00:59:00.0"
+             modified="2011-09-12 00:59:00.0" />
+    <Session id="1186975" collegeId="1" courseClassId="1186959"
+             roomId="1181746" angelId="207" startDate="2011-10-01 00:58:59.0"
+             endDate="2011-10-01 01:58:59.0" created="2011-09-12 00:59:00.0"
+             modified="2011-09-12 00:59:01.0" />
+    <Session id="1186976" collegeId="1" courseClassId="1186959"
+             roomId="1181746" angelId="204" startDate="2011-10-07 00:58:59.0"
+             endDate="2011-10-07 01:58:59.0" created="2011-09-12 00:59:01.0"
+             modified="2011-09-12 00:59:01.0" />
+    <Session id="1186977" collegeId="1" courseClassId="1186960"
+             roomId="1181746" angelId="208" startDate="2011-11-03 01:01:59.0"
+             endDate="2011-11-03 02:01:59.0" created="2011-09-12 01:02:00.0" />
+
+    <SessionTutor id="1" sessionId="1186969" tutorId="1185782"
+                  collegeId="1" angelId="203" created="2011-09-12 00:56:00.0" />
+    <SessionTutor id="2" sessionId="1186970" tutorId="1185782"
+                  collegeId="1" angelId="202" created="2011-09-12 00:56:00.0" />
+    <SessionTutor id="3" sessionId="1186971" tutorId="1185782"
+                  collegeId="1" angelId="201" created="2011-09-12 00:56:01.0" />
+    <SessionTutor id="4" sessionId="1186972" tutorId="1185782"
+                  collegeId="1" angelId="206" created="2011-09-12 00:59:00.0" />
+    <SessionTutor id="5" sessionId="1186973" tutorId="1185782"
+                  collegeId="1" angelId="205" created="2011-09-12 00:59:00.0" />
+    <SessionTutor id="6" sessionId="1186974" tutorId="1185782"
+                  collegeId="1" angelId="208" created="2011-09-12 00:59:00.0" />
+    <SessionTutor id="7" sessionId="1186975" tutorId="1185782"
+                  collegeId="1" angelId="207" created="2011-09-12 00:59:01.0" />
+    <SessionTutor id="8" sessionId="1186976" tutorId="1185782"
+                  collegeId="1" angelId="204" created="2011-09-12 00:59:01.0" />
+
+    <Tag id="3471" collegeId="1" angelId="201" isWebVisible="1"
+         nodeType="2" weighting="1" created="2011-09-12 00:38:54.0" modified="2011-09-12 00:17:14.0"
+         shortName="Welcome" name="Welcome page"
+         detail="&lt;h3 id=&quot;Homepage&quot;&gt;Home page &lt;/h3&gt;&lt;p&gt;This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse.&lt;/p&gt;"
+         detail_textile="h3. Home page &#xA;&#xA;This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse." />
+    <Tag id="3472" collegeId="1" angelId="200" isWebVisible="1"
+         nodeType="1" weighting="1" created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"
+         name="Subjects" />
+    <Tag id="3473" collegeId="1" angelId="202" isWebVisible="1"
+         nodeType="2" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:15.0"
+         shortName="Home" name="Home page"
+         detail="&lt;h3 id=&quot;Homepage&quot;&gt;Home page &lt;/h3&gt;&lt;p&gt;This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse.&lt;/p&gt;"
+         detail_textile="h3. Home page &#xA;&#xA;This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse." />
+    <Tag id="3474" collegeId="1" angelId="203" isWebVisible="0"
+         nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:38:55.0"
+         name="Mailing Lists" />
+    <Tag id="3475" collegeId="1" angelId="207" isWebVisible="0"
+         nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:38:55.0"
+         name="Payroll wage intervals" />
+    <Tag id="3476" parentId="3475" collegeId="1" angelId="206"
+         isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0"
+         modified="2011-09-12 00:17:20.0" name="Weekly" />
+    <Tag id="3477" parentId="3475" collegeId="1" angelId="204"
+         isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0"
+         modified="2011-09-12 00:17:20.0" name="Fortnightly" />
+    <Tag id="3478" parentId="3475" collegeId="1" angelId="205"
+         isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0"
+         modified="2011-09-12 00:17:20.0" name="Monthly" />
+
+    <TagGroupRequirement id="477" tagId="3472"
+                         collegeId="1" angelId="200" allowsMultipleTags="1" isRequired="0"
+                         created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:14.0" />
+    <TagGroupRequirement id="478" tagId="3474"
+                         collegeId="1" angelId="201" allowsMultipleTags="1" isRequired="0"
+                         created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:16.0" />
+    <TagGroupRequirement id="479" tagId="3475"
+                         collegeId="1" angelId="202" allowsMultipleTags="0" isRequired="0"
+                         created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" />
+
+    <TutorRole id="1" courseClassId="1186958" tutorId="1185782" inPublicity="1"
+               collegeId="1" angelId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:55:40.0" />
+    <TutorRole id="2" courseClassId="1186959" tutorId="1185782" inPublicity="1"
+               collegeId="1" angelId="2" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:58:51.0" />
+    <TutorRole id="3" courseClassId="1186960" tutorId="1185782" inPublicity="1"
+               collegeId="1" angelId="3" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:01:38.0" />
+
+    <Preference id="1" collegeId="1" name="license.ccprocessing"
+                value_string="true" />
+    <Preference id="2" collegeId="1" name="payment.gateway.type"
+                value_string="TEST" />
+
+</dataset>
