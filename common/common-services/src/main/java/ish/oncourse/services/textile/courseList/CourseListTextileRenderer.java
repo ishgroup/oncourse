@@ -28,7 +28,8 @@ import java.util.Map;
  *		"titles" shows only name of course
  *		"details" shows full information about this course
  *		default - details
- *	showTags: - if the parameter is true we should show tags. current implementation shows only the first layer of tags.
+ *	showTags - if the parameter is true we should show tags. current implementation shows only the first layer of tags for tag which defined in parameter tag.
+ *             If tag parameter is not defined we use "Subject" first layers tags.
  *				defaul - false
  */
 public class CourseListTextileRenderer extends AbstractRenderer {
