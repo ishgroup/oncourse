@@ -1,10 +1,11 @@
 package ish.oncourse.services.course;
 
-import java.io.InputStream;
-import java.util.List;
-
-import javax.sql.DataSource;
-
+import ish.oncourse.model.Course;
+import ish.oncourse.model.Tag;
+import ish.oncourse.services.ServiceTestModule;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.test.ServiceTest;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -12,13 +13,9 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.oncourse.model.Course;
-import ish.oncourse.model.Tag;
-import ish.oncourse.services.ServiceTestModule;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.textile.attrs.CourseListSortValue;
-import ish.oncourse.test.ServiceTest;
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -63,12 +60,12 @@ public class CourseServiceTest extends ServiceTest {
 	@Test
 	public void testGetCoursesForTagNameSortOrderAndLimit() {
 		assertNotNull("Not able to init course service", service);
-		//test default ALPHABETICAL desc sorting
+		//test default alphabetical desc sorting
 		List<Course> result = service.getCourses(null, null, false, null);
 		assertTrue("getCourses should return not empty list", !result.isEmpty());
 		assertEquals("5 courses should be available", 5, result.size());
 		assertEquals("The id of the top course should be 5", 5L, result.get(0).getId().longValue());
-		//test default ALPHABETICAL asc sorting
+		//test default alphabetical asc sorting
 		result = service.getCourses(null, null, true, null);
 		assertTrue("getCourses should return not empty list", !result.isEmpty());
 		assertEquals("5 courses should be available", 5, result.size());
@@ -79,34 +76,34 @@ public class CourseServiceTest extends ServiceTest {
 		assertEquals("3 courses should be available because limit used", 3, result.size());
 		assertEquals("The id of the top course should be 2", 2L, result.get(0).getId().longValue());
 		//test availability
-		result = service.getCourses(null, CourseListSortValue.AVAILABILITY, true, null);
+		result = service.getCourses(null, Sort.availability, true, null);
 		assertTrue("getCourses should return not empty list", !result.isEmpty());
 		assertEquals("5 courses should be available", 5, result.size());
 		assertEquals("The id of the top course should be 3", 3L, result.get(0).getId().longValue());
-		result = service.getCourses(null, CourseListSortValue.AVAILABILITY, false, null);
+		result = service.getCourses(null, Sort.availability, false, null);
 		assertTrue("getCourses should return not empty list", !result.isEmpty());
 		assertEquals("5 courses should be available", 5, result.size());
 		assertEquals("The id of the top course should be 1", 1L, result.get(0).getId().longValue());
 		//test date
-		result = service.getCourses(null, CourseListSortValue.DATE, true, null);
+		result = service.getCourses(null, Sort.date, true, null);
 		assertTrue("getCourses should return not empty list", !result.isEmpty());
 		assertEquals("5 courses should be available", 5, result.size());
 		assertEquals("The id of the top course should be 1", 1L, result.get(0).getId().longValue());
-		result = service.getCourses(null, CourseListSortValue.DATE, false, null);
+		result = service.getCourses(null, Sort.date, false, null);
 		assertTrue("getCourses should return not empty list", !result.isEmpty());
 		assertEquals("5 courses should be available", 5, result.size());
 		assertEquals("The id of the top course should be 3", 3L, result.get(0).getId().longValue());
 		//test with unexisted tag
-		result = service.getCourses("unexisted tag name", CourseListSortValue.DATE, true, null);
+		result = service.getCourses("unexisted tag name", Sort.date, true, null);
 		assertTrue("getCourses should return empty list", result.isEmpty());
 		Tag subjects = tagService.getSubjectsTag();
 		assertNotNull("Subjects tag should be founded", subjects);
 		//test with existed tag
-		result = service.getCourses(subjects.getName(), CourseListSortValue.DATE, true, null);
+		result = service.getCourses(subjects.getName(), Sort.date, true, null);
 		assertTrue("getCourses should return not empty list", !result.isEmpty());
 		assertEquals("5 courses should be linked with tag", 5, result.size());
 		assertEquals("The id of the top course should be 1", 1L, result.get(0).getId().longValue());
-		result = service.getCourses(subjects.getName(), CourseListSortValue.DATE, false, null);
+		result = service.getCourses(subjects.getName(), Sort.date, false, null);
 		assertTrue("getCourses should return not empty list", !result.isEmpty());
 		assertEquals("5 courses should be linked with tag", 5, result.size());
 		assertEquals("The id of the top course should be 3", 3L, result.get(0).getId().longValue());

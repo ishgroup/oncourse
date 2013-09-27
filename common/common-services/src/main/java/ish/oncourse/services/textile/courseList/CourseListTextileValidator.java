@@ -1,10 +1,10 @@
-package ish.oncourse.services.textile.validator;
+package ish.oncourse.services.textile.courseList;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
-import ish.oncourse.services.textile.attrs.CourseListTextileAttributes;
+import ish.oncourse.services.textile.validator.AbstractTextileValidator;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
 
@@ -26,7 +26,7 @@ public class CourseListTextileValidator extends AbstractTextileValidator {
 	@Override
 	protected void specificTextileValidate(String tag, ValidationErrors errors) {
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
-		String tagged = tagParams.get(CourseListTextileAttributes.COURSE_LIST_PARAM_TAG.getValue());
+		String tagged = tagParams.get(TextileAttrs.tag.getValue());
 
 		if (tagged != null) {
 			Tag tagEntity = tagService.getTagByFullPath(tagged);
@@ -41,7 +41,12 @@ public class CourseListTextileValidator extends AbstractTextileValidator {
 	public String getFormatErrorMessage(String tag) {
 		return "The courseList tag '"
 				+ tag
-				+ "' doesn't match {courses tag:\"/tag\" limit:\"digit\" sort:\"date|alphabetical|availability\" order:\"asc|desc\" style:\"titles|details\"}";
+				+ "' doesn't match {courses tag:\"/tag\" " +
+				"limit:\"digit\" " +
+				"sort:\"date|alphabetical|availability\" " +
+				"order:\"asc|desc\" " +
+				"style:\"titles|details\" " +
+				"showTags:\"true|false\"}";
 	}
 
 	public String getTagNotFoundByName(String tagged) {

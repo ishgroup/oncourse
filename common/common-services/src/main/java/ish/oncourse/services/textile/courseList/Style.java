@@ -1,11 +1,11 @@
-package ish.oncourse.services.textile.attrs;
+package ish.oncourse.services.textile.courseList;
 
-public enum  CourseStyle {
+public enum Style {
 	details("textile/course/detail"),
 	titles("textile/course/title");
 	private String template;
 
-	private CourseStyle(String template)
+	private Style(String template)
 	{
 
 		this.template = template;

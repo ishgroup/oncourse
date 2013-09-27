@@ -6,7 +6,6 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.textile.attrs.CourseListSortValue;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -59,7 +58,7 @@ public class CourseService implements ICourseService {
 	}
 
 	@Override
-	public List<Course> getCourses(String tagName, CourseListSortValue sort, Boolean isAscending, Integer limit) {
+	public List<Course> getCourses(String tagName, Sort sort, Boolean isAscending, Integer limit) {
 		List<Course> result = new ArrayList<>();
 		Long collegeId = webSiteService.getCurrentCollege().getId();
 		Expression expression = ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true)
@@ -88,16 +87,16 @@ public class CourseService implements ICourseService {
 		result = cayenneService.sharedContext().performQuery(query);
 		if (sort == null) {
 			//if nothing specified use default
-			sort = CourseListSortValue.ALPHABETICAL;
+			sort = Sort.alphabetical;
 		}
 		switch (sort) {
-		case AVAILABILITY:
+		case availability:
 			sortByAvailability(isAscending, result);
 			break;
-		case DATE:
+		case date:
 			sortByStartDate(isAscending, result);
 			break;
-		case ALPHABETICAL:
+		case alphabetical:
 			Ordering ordering = new Ordering(Course.NAME_PROPERTY, isAscending ? SortOrder.ASCENDING
 					: SortOrder.DESCENDING);
 			ordering.orderList(result);

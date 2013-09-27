@@ -7,6 +7,7 @@ import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.textile.courseList.CourseListTextileRenderer;
 import ish.oncourse.services.textile.renderer.*;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
@@ -117,6 +118,7 @@ public class TextileConverter implements ITextileConverter {
 				replacement = renderer.render(tag);
 				errors.appendErrors(renderer.getErrors());
 			} catch (Exception e) {
+				LOGGER.warn(e.getMessage(),e);
 				errors.addFailure(e, ValidationFailureType.SYNTAX);
 			}
 			result += replacement;

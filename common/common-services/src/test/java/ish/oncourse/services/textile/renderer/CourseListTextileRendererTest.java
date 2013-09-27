@@ -3,27 +3,32 @@ package ish.oncourse.services.textile.renderer;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.course.Sort;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
-import ish.oncourse.services.textile.attrs.CourseListSortValue;
+import ish.oncourse.services.textile.courseList.CourseListTextileRenderer;
 import ish.oncourse.util.IPageRenderer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CourseListTextileRendererTest {
 	private static final String SUCCESSFULLY_RENDERED = "success";
+
+	private static final  String ERRORS_RESULT = "<span class=\"richtext_error\">Syntax error in \"{courses broken syntax}\"</span><ol><li>The courseList tag '{courses broken syntax}' doesn't match {courses tag:\"/tag\" limit:\"digit\" sort:\"date|alphabetical|availability\" order:\"asc|desc\" style:\"titles|details\" showTags:\"true|false\"}</li></ol>";
 
 	@Mock
 	private ICourseService courseService;
@@ -51,15 +56,15 @@ public class CourseListTextileRendererTest {
 		List<Course> courses = new ArrayList<>();
 		courses.add(new Course());
 		String tagName = "/tag";
-		CourseListSortValue sort = CourseListSortValue.DATE;
+		Sort sort = Sort.date;
 		Boolean isAscending = false;
 		Integer limit = 5;
-		Tag tag = new Tag();
+		Tag tag = mock(Tag.class);
+		Tag subject = mock(Tag.class);
 		when(tagService.getTagByFullPath(tagName)).thenReturn(tag);
+		when(tagService.getSubjectsTag()).thenReturn(subject);
 		when(courseService.getCourses(tagName, sort, isAscending, limit)).thenReturn(courses);
-		Map<String, Object> params = new HashMap<>();
-		params.put(TextileUtil.TEXTILE_COURSE_LIST_PAGE_PARAM, courses);
-		when(pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_LIST_PAGE, params)).thenReturn(
+		when(pageRenderer.renderPage(eq(TextileUtil.TEXTILE_COURSE_LIST_PAGE), Matchers.any(HashMap.class))).thenReturn(
 				SUCCESSFULLY_RENDERED);
 		String result = renderer.render("{courses tag:\"" + tagName
 				+ "\" limit:\"" + limit + "\" sort:\"date\" order:\"desc\"}");
@@ -72,7 +77,7 @@ public class CourseListTextileRendererTest {
 		String textile = "{courses broken syntax}";
 		String result = renderer.render(textile);
 		assertTrue(renderer.getErrors().hasFailures());
-		assertEquals("<span class=\"richtext_error\">Syntax error in \"{courses broken syntax}\"</span><ol><li>The courseList tag '{courses broken syntax}' doesn't match {courses tag:\"/tag\" limit:\"digit\" sort:\"date|alphabetical|availability\" order:\"asc|desc\" style:\"titles|details\"}</li></ol>", result);
+		assertEquals(ERRORS_RESULT, result);
 	}
 
 }

@@ -1,12 +1,11 @@
 package ish.oncourse.textile.pages;
 
-import java.util.List;
-
 import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.textile.TextileUtil;
-
-import ish.oncourse.services.textile.attrs.CourseStyle;
+import ish.oncourse.services.textile.courseList.PageModel;
+import org.apache.tapestry5.Block;
+import org.apache.tapestry5.annotations.BeginRender;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -17,33 +16,46 @@ public class TextileCourseList {
 	private Request request;
 
 	@Property
-	private List<CourseClass> courses;
-
-	@Property
 	private Course course;
 
 	@Property
-	private CourseStyle style;
+	private int index;
 
+	@Property
+	private PageModel model;
+
+	@Inject
+	private Block titles, details;
+
+	@Inject
+	@Property
+	private Block courses;
+
+
+	@BeginRender
 	void beginRender() {
-		courses = (List<CourseClass>) request
-				.getAttribute(TextileUtil.TEXTILE_COURSE_LIST_PAGE_PARAM);
-
-		style = (CourseStyle) request
-				.getAttribute(TextileUtil.TEXTILE_COURSE_STYLE_PARAM);
-		if (style == null)
-			style = CourseStyle.details;
-
+		model = (PageModel) request.getAttribute(TextileUtil.TEXTILE_COURSELIST_MODEL_PARAM);
 	}
 
-	public boolean isTitles()
-	{
-		return style == CourseStyle.titles;
+	public Block getStyleBlock() {
+		switch (model.getStyle()) {
+
+			case details:
+				return details;
+			case titles:
+				return titles;
+			default:
+				throw new IllegalArgumentException();
+		}
 	}
 
-	public boolean isDetails()
+	public Tag getTag()
 	{
-		return style == CourseStyle.details;
+		if (model.isShowTags())
+			return model.getChildTags().get(index);
+		else
+			return model.getTag();
+
 	}
 
 }

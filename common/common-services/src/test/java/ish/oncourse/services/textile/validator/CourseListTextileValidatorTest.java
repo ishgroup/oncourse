@@ -1,21 +1,21 @@
 package ish.oncourse.services.textile.validator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.textile.attrs.CourseListTextileAttributes;
+import ish.oncourse.services.textile.courseList.CourseListTextileValidator;
+import ish.oncourse.services.textile.courseList.TextileAttrs;
 import ish.oncourse.util.ValidationErrors;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CourseListTextileValidatorTest extends CommonValidatorTest {
@@ -38,22 +38,22 @@ public class CourseListTextileValidatorTest extends CommonValidatorTest {
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
 		Map<String, String> data = new HashMap<>();
-		for (CourseListTextileAttributes attr : CourseListTextileAttributes.values()) {
+		for (TextileAttrs attr : TextileAttrs.values()) {
 			switch (attr) {
-			case COURSE_LIST_PARAM_LIMIT:
-				data.put(CourseListTextileAttributes.COURSE_LIST_PARAM_LIMIT.getValue(),
+			case limit:
+				data.put(TextileAttrs.limit.getValue(),
 						"{courses limit:\"1\" limit:\"2\"}");
 				break;
-			case COURSE_LIST_PARAM_ORDER:
-				data.put(CourseListTextileAttributes.COURSE_LIST_PARAM_ORDER.getValue(),
+			case order:
+				data.put(TextileAttrs.order.getValue(),
 						"{course order:\"asc\" order:\"desc\"}");
 				break;
-			case COURSE_LIST_PARAM_SORT:
-				data.put(CourseListTextileAttributes.COURSE_LIST_PARAM_SORT.getValue(),
+			case sort:
+				data.put(TextileAttrs.sort.getValue(),
 						"{courses sort:\"date\" sort:\"alphabetical\"}");
 				break;
-			case COURSE_LIST_PARAM_TAG:
-				data.put(CourseListTextileAttributes.COURSE_LIST_PARAM_TAG.getValue(),
+			case tag:
+				data.put(TextileAttrs.tag.getValue(),
 						"{courses tag:\"tag1\" tag:\"tag2\"}");
 				break;
 			}

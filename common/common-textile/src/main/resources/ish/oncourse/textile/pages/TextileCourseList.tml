@@ -1,15 +1,32 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<ul class="courseList">
-		<t:if test="titles">
-			<t:loop source="courses" value="course">
-					<span t:type="textile/course/titles" course="course"/>
-			</t:loop>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+		<t:if test="model.showTags">
+			<ul class="tagList">
+				<t:loop source="model.getChildTags()" index="index">
+					<li><a href="${tag.link}">${tag.name}</a></li>
+					<div t:type="textile/delegate" to="courses"/>
+				</t:loop>
+			</ul>
 		</t:if>
+		<t:unless test="model.showTags">
+			<t:remove>Tapestry does not show the content without this div. I didn't not find why</t:remove>
+			<div>
+				<div t:type="textile/delegate" to="courses"/>
+			</div>
+		</t:unless>
 
-		<t:if test="details">
-			<t:loop source="courses" value="course">
-				<span t:type="textile/course/details" course="course"/>
+	<t:block t:id="titles">
+		<span t:type="textile/course/titles" course="course"/>
+	</t:block>
+
+	<t:block t:id="details">
+		<span t:type="textile/course/details" course="course"/>
+	</t:block>
+
+	<t:block t:id="courses">
+		<ul class="courseList">
+			<t:loop source="model.getCoursesBy(tag)" value="course">
+				<div t:type="textile/delegate" to="styleBlock"/>
 			</t:loop>
-		</t:if>
-	</ul>
+		</ul>
+	</t:block>
 </t:container>

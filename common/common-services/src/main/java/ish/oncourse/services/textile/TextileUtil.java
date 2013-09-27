@@ -37,8 +37,8 @@ public class TextileUtil {
 
 	public static final String TEXTILE_COURSE_PAGE_PARAM = "course";
 	public static final String TEXTILE_COURSE_SHOW_CLASSES_PARAM = "showclasses";
-	public static final String TEXTILE_COURSE_LIST_PAGE_PARAM = "courseList";
-	public static final String TEXTILE_COURSE_STYLE_PARAM = "courseStyle";
+
+	public static final String TEXTILE_COURSELIST_MODEL_PARAM = "courseListModel";
 
 	public static final String TEXTILE_IMAGE_PAGE_PARAM = "additionalImageParameters";
 

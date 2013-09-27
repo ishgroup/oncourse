@@ -1,6 +1,7 @@
 package ish.oncourse.services.textile;
 
 import ish.oncourse.services.textile.attrs.*;
+import ish.oncourse.services.textile.courseList.TextileAttrs;
 
 import java.util.List;
 
@@ -36,8 +37,9 @@ public enum TextileType {
 			+ "|(limit:" + DIGIT_IN_QUOTS+ ")"
 			+ "|(sort:" + inQuots("(date|alphabetical|availability)", false) + ")"
 			+ "|(order:" + inQuots("(asc|desc)", false)+ ")"
-			+ "|(style:" + inQuots("(titles|details)", false) + ")" +
-			")){0,4}}", CourseListTextileAttributes.getAttrValues()),
+			+ "|(style:" + inQuots("(titles|details)", false) + ")"
+			+ "|(showTags:" + BOOLEAN_IN_QUOTS + ")" +
+			")){0,4}}", TextileAttrs.getAttrValues()),
 
 	PAGE("\\{page([^}]*)}", "\\{page(.+?((code:" + DIGIT_IN_QUOTS + "))){0,1}}", PageTextileAttributes.getAttrValues()),
 
