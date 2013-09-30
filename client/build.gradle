@@ -3,7 +3,9 @@ apply plugin: 'cayenne'
 
 dependencies {
 	compile (project(':common')) {
-        exclude group: 'org.apache.cayenne', module: 'cayenne-server'
+//		TODO: cayenne server jar was added to dependencies because in the cayenne's version
+// 				client org.apache.cayenne.ResultIterator extends org.apache.cayenne.access.ResultIterator from server jar
+//        exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
 	compile 'commons-lang:commons-lang:2.6' // TODO: upgrade this to 3.1
@@ -11,8 +13,10 @@ dependencies {
 	compile 'foxtrot:foxtrot-core:4.0'
 	compile 'com.miglayout:miglayout-swing:4.2'
 	compile 'com.migcalendar:migcalendar:6.9.3'
-	
+	compile 'commons-beanutils:commons-beanutils-core:1.8.3'
+
 	testCompile 'dbunit:dbunit:2.4.8'
+    testCompile 'org.mockito:mockito-core:1.9.5'
 	testCompile project(':server')
 }
 
