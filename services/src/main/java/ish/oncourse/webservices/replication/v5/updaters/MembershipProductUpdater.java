@@ -6,7 +6,9 @@ import ish.math.Money;
 import ish.oncourse.model.MembershipProduct;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
 import ish.oncourse.webservices.v5.stubs.replication.MembershipProductStub;
+import org.apache.commons.lang.StringUtils;
 
 public class MembershipProductUpdater extends AbstractWillowUpdater<MembershipProductStub, MembershipProduct> {
 
@@ -24,6 +26,11 @@ public class MembershipProductUpdater extends AbstractWillowUpdater<MembershipPr
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
 		entity.setNotes(stub.getNotes());
+		if (StringUtils.trimToNull(stub.getSku()) == null) {
+			String message = String.format("Membership product with angelId = %s and willowid = %s and empty SKU detected!",
+				stub.getAngelId(), stub.getWillowId());
+			throw new UpdaterException(message);
+		}
 		entity.setSku(stub.getSku());
 		entity.setType(stub.getType());
 		if (stub.getPriceExTax() != null) {

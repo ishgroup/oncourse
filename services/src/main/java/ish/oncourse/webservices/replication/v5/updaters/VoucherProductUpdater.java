@@ -6,7 +6,9 @@ import ish.math.Money;
 import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
 import ish.oncourse.webservices.v5.stubs.replication.VoucherProductStub;
+import org.apache.commons.lang.StringUtils;
 
 public class VoucherProductUpdater extends AbstractWillowUpdater<VoucherProductStub, VoucherProduct> {
 
@@ -24,6 +26,11 @@ public class VoucherProductUpdater extends AbstractWillowUpdater<VoucherProductS
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
 		entity.setNotes(stub.getNotes());
+		if (StringUtils.trimToNull(stub.getSku()) == null) {
+			String message = String.format("Voucher product with angelId = %s and willowid = %s and empty SKU detected!",
+				stub.getAngelId(), stub.getWillowId());
+			throw new UpdaterException(message);
+		}
 		entity.setSku(stub.getSku());
 		entity.setType(stub.getType());
 		entity.setMaxCoursesRedemption(stub.getMaxCoursesRedemption());

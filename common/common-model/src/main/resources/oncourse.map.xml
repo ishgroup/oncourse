@@ -639,7 +639,7 @@
 		<db-attribute name="name" type="VARCHAR" length="500"/>
 		<db-attribute name="notes" type="VARCHAR" length="8000"/>
 		<db-attribute name="priceExTax" type="DECIMAL" length="10" scale="2"/>
-		<db-attribute name="sku" type="VARCHAR" length="100"/>
+		<db-attribute name="sku" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="taxAdjustment" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="value" type="DECIMAL" length="10" scale="2"/>
