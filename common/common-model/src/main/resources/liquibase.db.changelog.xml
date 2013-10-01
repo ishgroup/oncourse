@@ -1665,4 +1665,10 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="111" author="viacheslav" context="production" runOnChange="true">
+        <sql>update Product set SKU=CAST(angelId AS CHAR(100)) where SKU is NULL or SKU='';</sql>
+        <addNotNullConstraint tableName="Product" columnName="SKU" columnDataType="varchar(100)"/>
+        <addUniqueConstraint tableName="Product" columnNames="SKU,collegeId" constraintName="Product_SKU_unique"/>
+    </changeSet>
+
 </databaseChangeLog>
