@@ -39,6 +39,7 @@ public class MembershipProductUpdater extends AbstractWillowUpdater<MembershipPr
 		if (stub.getTaxAdjustment() != null) {
 			entity.setTaxAdjustment(new Money(stub.getTaxAdjustment()));
 		}
+		entity.setFeeGST(stub.getFeeGST() != null ? Money.valueOf(stub.getFeeGST()) : Money.ZERO);
 	}
 
 }

@@ -43,6 +43,7 @@ public class VoucherProductUpdater extends AbstractWillowUpdater<VoucherProductS
 		if (stub.getTaxAdjustment() != null){
 			entity.setTaxAdjustment(Money.valueOf(stub.getTaxAdjustment()));
 		}
+		entity.setFeeGST(stub.getFeeGST() != null ? Money.valueOf(stub.getFeeGST()) : Money.ZERO);
 	}
 
 }
