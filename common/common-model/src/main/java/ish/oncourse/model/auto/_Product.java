@@ -20,6 +20,7 @@ public abstract class _Product extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String DESCRIPTION_PROPERTY = "description";
+    public static final String FEE_GST_PROPERTY = "feeGST";
     public static final String IS_ON_SALE_PROPERTY = "isOnSale";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String MODIFIED_PROPERTY = "modified";
@@ -35,107 +36,114 @@ public abstract class _Product extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty(ANGEL_ID_PROPERTY, angelId);
+        writeProperty("angelId", angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty(ANGEL_ID_PROPERTY);
+        return (Long)readProperty("angelId");
     }
 
     public void setCreated(Date created) {
-        writeProperty(CREATED_PROPERTY, created);
+        writeProperty("created", created);
     }
     public Date getCreated() {
-        return (Date)readProperty(CREATED_PROPERTY);
+        return (Date)readProperty("created");
     }
 
     public void setDescription(String description) {
-        writeProperty(DESCRIPTION_PROPERTY, description);
+        writeProperty("description", description);
     }
     public String getDescription() {
-        return (String)readProperty(DESCRIPTION_PROPERTY);
+        return (String)readProperty("description");
+    }
+
+    public void setFeeGST(Money feeGST) {
+        writeProperty("feeGST", feeGST);
+    }
+    public Money getFeeGST() {
+        return (Money)readProperty("feeGST");
     }
 
     public void setIsOnSale(Boolean isOnSale) {
-        writeProperty(IS_ON_SALE_PROPERTY, isOnSale);
+        writeProperty("isOnSale", isOnSale);
     }
     public Boolean getIsOnSale() {
-        return (Boolean)readProperty(IS_ON_SALE_PROPERTY);
+        return (Boolean)readProperty("isOnSale");
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty(IS_WEB_VISIBLE_PROPERTY, isWebVisible);
+        writeProperty("isWebVisible", isWebVisible);
     }
     public Boolean getIsWebVisible() {
-        return (Boolean)readProperty(IS_WEB_VISIBLE_PROPERTY);
+        return (Boolean)readProperty("isWebVisible");
     }
 
     public void setModified(Date modified) {
-        writeProperty(MODIFIED_PROPERTY, modified);
+        writeProperty("modified", modified);
     }
     public Date getModified() {
-        return (Date)readProperty(MODIFIED_PROPERTY);
+        return (Date)readProperty("modified");
     }
 
     public void setName(String name) {
-        writeProperty(NAME_PROPERTY, name);
+        writeProperty("name", name);
     }
     public String getName() {
-        return (String)readProperty(NAME_PROPERTY);
+        return (String)readProperty("name");
     }
 
     public void setNotes(String notes) {
-        writeProperty(NOTES_PROPERTY, notes);
+        writeProperty("notes", notes);
     }
     public String getNotes() {
-        return (String)readProperty(NOTES_PROPERTY);
+        return (String)readProperty("notes");
     }
 
     public void setPriceExTax(Money priceExTax) {
-        writeProperty(PRICE_EX_TAX_PROPERTY, priceExTax);
+        writeProperty("priceExTax", priceExTax);
     }
     public Money getPriceExTax() {
-        return (Money)readProperty(PRICE_EX_TAX_PROPERTY);
+        return (Money)readProperty("priceExTax");
     }
 
     public void setSku(String sku) {
-        writeProperty(SKU_PROPERTY, sku);
+        writeProperty("sku", sku);
     }
     public String getSku() {
-        return (String)readProperty(SKU_PROPERTY);
+        return (String)readProperty("sku");
     }
 
     public void setTaxAdjustment(Money taxAdjustment) {
-        writeProperty(TAX_ADJUSTMENT_PROPERTY, taxAdjustment);
+        writeProperty("taxAdjustment", taxAdjustment);
     }
     public Money getTaxAdjustment() {
-        return (Money)readProperty(TAX_ADJUSTMENT_PROPERTY);
+        return (Money)readProperty("taxAdjustment");
     }
 
     public void setType(Integer type) {
-        writeProperty(TYPE_PROPERTY, type);
+        writeProperty("type", type);
     }
     public Integer getType() {
-        return (Integer)readProperty(TYPE_PROPERTY);
+        return (Integer)readProperty("type");
     }
 
     public void setCollege(College college) {
-        setToOneTarget(COLLEGE_PROPERTY, college, true);
+        setToOneTarget("college", college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty(COLLEGE_PROPERTY);
+        return (College)readProperty("college");
     }
 
 
     public void addToProductItems(ProductItem obj) {
-        addToManyTarget(PRODUCT_ITEMS_PROPERTY, obj, true);
+        addToManyTarget("productItems", obj, true);
     }
     public void removeFromProductItems(ProductItem obj) {
-        removeToManyTarget(PRODUCT_ITEMS_PROPERTY, obj, true);
+        removeToManyTarget("productItems", obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ProductItem> getProductItems() {
-        return (List<ProductItem>)readProperty(PRODUCT_ITEMS_PROPERTY);
+        return (List<ProductItem>)readProperty("productItems");
     }
 
 

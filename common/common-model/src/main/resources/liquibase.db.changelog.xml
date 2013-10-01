@@ -1652,4 +1652,17 @@
 		<customChange class="ish.oncourse.model.liquibase.ReplaceId2NameForImageTag"/>
 	</changeSet>
 
+    <changeSet id="110" author="viacheslav" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="Product" columnName="feeGST"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="Product">
+            <column name="feeGST" type="DECIMAL(10,2)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

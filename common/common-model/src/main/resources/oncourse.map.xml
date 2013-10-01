@@ -631,6 +631,7 @@
 		<db-attribute name="description" type="VARCHAR" length="8000"/>
 		<db-attribute name="expiryDays" type="INTEGER"/>
 		<db-attribute name="expiryType" type="INTEGER"/>
+		<db-attribute name="feeGST" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isOnSale" type="BOOLEAN" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="BOOLEAN" isMandatory="true"/>
@@ -1615,6 +1616,7 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="feeGST" type="ish.math.Money" db-attribute-path="feeGST"/>
 		<obj-attribute name="isOnSale" type="java.lang.Boolean" db-attribute-path="isOnSale"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
