@@ -129,19 +129,19 @@
 
     <Product collegeId="1" SKU="23456" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="7" ISONSALE="1"
              ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 5" TYPE="3" angelId="7"
-             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00"/>
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00"/>
 
     <Product collegeId="1" SKU="234567" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="8" ISONSALE="1"
              ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 6" TYPE="2" angelId="8"
-             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" maxCoursesRedemption="1"/>
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" maxCoursesRedemption="1" feeGST="0.00"/>
 
     <Product collegeId="1" SKU="23458" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="9" ISONSALE="1"
              ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 5" TYPE="2" angelId="8"
-             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00"/>
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00"/>
 
     <Product collegeId="1" SKU="234569" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="10" ISONSALE="1"
              ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test voucher product part 6" TYPE="3" angelId="8"
-             TAXADJUSTMENT="0.00" PRICEEXTAX="[null]" maxCoursesRedemption="1"/>
+             TAXADJUSTMENT="0.00" PRICEEXTAX="[null]" maxCoursesRedemption="1" feeGST="0.00"/>
 
     <ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="3"
                  MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="7" TYPE="2" angelId="3" code="test" value="100.00" source="O"
