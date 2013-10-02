@@ -26,7 +26,6 @@ public class MembershipProductStubBuilder extends AbstractWillowStubBuilder<Memb
 			stub.setTaxAdjustment(entity.getTaxAdjustment().toBigDecimal());
 		}
 		stub.setType(entity.getType());
-		stub.setFeeGST(entity.getFeeGST().toBigDecimal());
 		return stub;
 	}
 
