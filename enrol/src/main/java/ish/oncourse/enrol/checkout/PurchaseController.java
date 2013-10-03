@@ -620,7 +620,7 @@ public class PurchaseController {
 		boolean result = true;
 		for (ProductItem item : items) {
 			actionEnableProductItem.setProductItem(item);
-			boolean valid = actionEnableProductItem.validate();
+			boolean valid = actionEnableProductItem.validateProductItem();
 			if (!valid) {
 				ActionDisableProductItem actionDisableProductItem = disableProductItem.createAction(this);
 				actionDisableProductItem.setProductItem(item);
@@ -757,7 +757,7 @@ public class PurchaseController {
 		setVoucherPrice(ActionSetVoucherPrice.class, Money.class),
 		enableEnrolment(ActionEnableEnrolment.class, Enrolment.class),
 		disableEnrolment(ActionDisableEnrolment.class, Enrolment.class),
-		enableProductItem(ActionEnableProductItem.class, ProductItem.class),
+		enableProductItem(ActionEnableProductItem.class, ProductItem.class, Money.class),
 		disableProductItem(ActionDisableProductItem.class, ProductItem.class),
 		addContact(ActionAddContact.class, ContactCredentials.class),
 		addConcession(ActionAddConcession.class, StudentConcession.class),

@@ -171,4 +171,10 @@ public class VoucherService implements IVoucherService {
 		String angelVersion = takeWebSiteService().getCurrentCollege().getAngelVersion();
 		return CommonUtils.compare(angelVersion, "5.0b1") >= 0;
 	}
+
+    @Override
+    public boolean isVoucherWithoutPrice(VoucherProduct product)
+    {
+        return product.getRedemptionCourses().isEmpty() && product.getPriceExTax() == null;
+    }
 }

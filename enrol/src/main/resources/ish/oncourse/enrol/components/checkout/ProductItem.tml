@@ -2,52 +2,61 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	
-	<tr> 
-		<td>
-			<form>
-				<label>
-					<t:if test="checked">
-						<input type="checkbox" class="productItemCheckbox" checked="${checked}"/>
-						<p:else>
-							<input type="checkbox" class="productItemCheckbox"/>
-						</p:else>
-					</t:if>
-					${productItem.product.name}
-					<t:eventlink t:id="selectProductEvent" style="{display: none;}" context="actionContext" />
-				</label>
-	  		</form>
-	  		<em>
-	  			<t:if test="voucherWithPrice">
-	  				This is a voucher with specified price.
-	  			</t:if>
-	  			<t:if test="giftSertificate">
-	  				This voucher have no specified price. Please enter the amount below:
-	  			</t:if>
-	  			<t:if test="courseVoucher">
-	  				<dt class="label">This voucher valid for</dt>
-					<dd>
-						<ul class="class-listing">
-							<t:loop source="redemptionCourses" value="course">
-								<li>${course.name}</li>
-							</t:loop>
-						</ul>
-					</dd>
-	  			</t:if>
-	 	  	</em>
-		</td>
-		<td></td>
-		<td class="alignright">
-            <t:if test="checked">
-			    <t:if test="voucherWithPrice">
-				    <span class="fee-full fullPrice" id="fullPrice_${productItem.id}">
-					    <t:output value="price" format="feeFormat"/>
-				    </span>
-			    <p:else>
-				    <input value="priceValue"/>
-			    </p:else>
-			    </t:if>
+	<tr class="enrolmentItem ${enrolmentClass}">
+		<td class="enrolmentInfo">
+            <label>
+                <t:if test="checked">
+                    <input type="checkbox" class="productItemCheckbox" checked="${checked}"/>
+                    <p:else>
+                        <input type="checkbox" class="productItemCheckbox"/>
+                    </p:else>
+                </t:if>
+                ${productItem.product.name}
+                <t:eventlink t:id="selectProductEvent" style="{display: none;}" context="actionContext" />
+            </label>
+	  		<t:if test="voucherProduct">
+                <t:delegate to="block:voucher"/>
             </t:if>
 		</td>
+		<td class="alignright priceValue">
+                    <t:if test="checked">
+				        <span class="fee-full fullPrice">
+					        <t:output value="price" format="moneyFormat(price)"/>
+				        </span>
+                    </t:if>
+                    <t:unless test="checked">
+                        <t:if test="voucherProduct">
+                            <t:if test="voucherValue.hasPrice()" negate="true">
+                                <input class="priceValue" name='priceValue' value="$0.00"/>
+                            </t:if>
+                        </t:if>
+                    </t:unless>
+		</td>
 	</tr>
+
+
+    <t:block t:id="voucher">
+
+            <t:if test="voucherValue.hasPrice()">
+                This is a voucher with specified price.
+                <t:if test="voucherValue.hasCourses()">
+                    <dt class="label">This voucher valid for</dt>
+                    <dd>
+                        <t:loop source="voucherValue.courses" value="course">
+                            <li>${course.name}</li>
+                        </t:loop>
+                    </dd>
+                </t:if>
+                <t:unless test="voucherValue.hasCourses()">
+                    <dt class="label">Value</dt>
+                    <dd>${voucherValue.value}</dd>
+                </t:unless>
+            </t:if>
+            <t:unless test="voucherValue.hasPrice()">
+                This voucher have no specified price. Please enter the amount below:
+            </t:unless>
+    </t:block>
+
+
  
 </t:container>	

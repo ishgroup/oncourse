@@ -426,7 +426,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         param = new ActionParameter(Action.enableProductItem);
         param.setValue(productToDisable);
-
+        param.setValue(Money.ZERO);
         performAction(param);
 
 

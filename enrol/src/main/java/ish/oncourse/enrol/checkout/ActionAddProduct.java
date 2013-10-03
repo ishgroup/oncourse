@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.ProductItem;
@@ -22,6 +23,7 @@ public class ActionAddProduct extends APurchaseAction {
 
             ActionEnableProductItem action = PurchaseController.Action.enableProductItem.createAction(getController());
             action.setProductItem(productItem);
+            action.setPrice(Money.ZERO);
             action.action();
         }
     }

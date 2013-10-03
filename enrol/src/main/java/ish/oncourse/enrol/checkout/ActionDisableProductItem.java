@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.math.Money;
 import ish.oncourse.model.Membership;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.Voucher;
@@ -10,6 +11,9 @@ public class ActionDisableProductItem extends APurchaseAction{
 	@Override
 	protected void makeAction() {
 		if (productItem instanceof Voucher) {
+            if(getController().getVoucherService().isVoucherWithoutPrice(((Voucher) productItem).getVoucherProduct())) {
+                ((Voucher) productItem).setRedemptionValue(Money.ZERO);
+            }
 			getModel().disableProductItem(productItem);
 		}else if(productItem instanceof Membership){
             getModel().disableProductItem(productItem);

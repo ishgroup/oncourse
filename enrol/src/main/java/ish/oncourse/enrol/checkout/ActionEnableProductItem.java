@@ -17,32 +17,47 @@ public class
 	@Override
 	protected void makeAction() {
 		if (productItem instanceof Voucher) {
-			Voucher voucher = (Voucher) productItem;
-			if (voucher.getInvoiceLine() == null) {
-				InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
-						getModel().getPayer());
-				il.setInvoice(getModel().getInvoice());
-				voucher.setInvoiceLine(il);
-			}
+            enableVoucher();
 		} else if (productItem instanceof Membership){
-            Membership membership = (Membership) productItem;
-            if (membership.getInvoiceLine() == null) {
-                InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForMembership(membership,
-                        getModel().getPayer());
-                il.setInvoice(getModel().getInvoice());
-                membership.setInvoiceLine(il);
-            }
+            enableMembership();
         }else{
 			throw new IllegalArgumentException("Unsupported product type.");
 		}
 		getModel().enableProductItem(productItem);
 	}
 
-	@Override
+    private void enableMembership() {
+        Membership membership = (Membership) productItem;
+        InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForMembership(membership,
+                getModel().getPayer());
+        il.setInvoice(getModel().getInvoice());
+        membership.setInvoiceLine(il);
+    }
+
+    private void enableVoucher() {
+        Voucher voucher = (Voucher) productItem;
+
+        InvoiceLine il;
+        if (getController().getVoucherService().isVoucherWithoutPrice(voucher.getVoucherProduct()))
+        {
+            voucher.setRedemptionValue(price);
+            il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
+                    getModel().getPayer(), price);
+        } else
+            il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
+                    getModel().getPayer());
+        il.setInvoice(getModel().getInvoice());
+        voucher.setInvoiceLine(il);
+    }
+
+    @Override
 	protected void parse() {
 
 		if (getParameter() != null)
+        {
 			productItem = getParameter().getValue(ProductItem.class);
+            price = getParameter().getValue(Money.class);
+        }
 	}
 
 
@@ -88,8 +103,8 @@ public class
 
     private boolean validateVoucher() {
         Voucher voucher = (Voucher) productItem;
-        boolean withoutPrice = voucher.getVoucherProduct().getRedemptionCourses().isEmpty() && voucher.getVoucherProduct().getPriceExTax() == null;
-        if (withoutPrice && price == null)
+        boolean withoutPrice = getController().getVoucherService().isVoucherWithoutPrice(((Voucher) productItem).getVoucherProduct());
+        if (withoutPrice && (price.isZero() || price.isLessThan(Money.ZERO)))
         {
             String message = enterVoucherPrice.getMessage(getController().getMessages(), productItem.getProduct().getName());
             getController().getErrors().put(enterVoucherPrice.name(), message);

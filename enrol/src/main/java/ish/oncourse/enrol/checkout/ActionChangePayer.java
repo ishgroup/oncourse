@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
+import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Product;
@@ -96,6 +97,7 @@ public class ActionChangePayer extends APurchaseAction {
 				getController().getModel().addProductItem(productItem);
 				ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
 				actionEnableProductItem.setProductItem(productItem);
+                actionEnableProductItem.setPrice(Money.ZERO);
 				actionEnableProductItem.action();
 			}
 		}

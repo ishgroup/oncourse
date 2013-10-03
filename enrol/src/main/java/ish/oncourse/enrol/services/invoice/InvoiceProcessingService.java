@@ -80,23 +80,28 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	
 	@Override
 	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer) {
-		ObjectContext context = voucher.getObjectContext();
-		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
-		
-		College college = voucher.getCollege();
-		
-		invoiceLine.setDescription(String.format("Voucher %s", voucher.getProduct().getDescription()));
+        return createInvoiceLineForVoucher(voucher, payer, voucher.getVoucherProduct().getPriceExTax());
+	}
+
+    @Override
+    public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer, Money price) {
+        ObjectContext context = voucher.getObjectContext();
+        InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
+
+        College college = voucher.getCollege();
+
+        invoiceLine.setDescription(String.format("Voucher %s", voucher.getProduct().getDescription()));
         invoiceLine.setTitle(String.format("%s %s", payer.getFullName(), voucher.getProduct().getName()));
-        invoiceLine.setPriceEachExTax(voucher.getVoucherProduct().getPriceExTax());
+        invoiceLine.setPriceEachExTax(price);
         invoiceLine.setDiscountEachExTax(Money.ZERO);
         invoiceLine.setTaxEach(Money.ZERO);
         invoiceLine.setQuantity(BigDecimal.ONE);
         voucher.setInvoiceLine(invoiceLine);
-        
+
         invoiceLine.setCollege(college);
-        
+
         return invoiceLine;
-	}
+    }
 
 
     @Override

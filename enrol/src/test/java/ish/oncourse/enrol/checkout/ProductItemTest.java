@@ -128,7 +128,7 @@ public class ProductItemTest extends PurchaseControllerTest {
         assertEquals(1, model.getAllEnabledProductItems().size());
 
         assertEquals(1,purchaseController.getErrors().size());
-        assertEquals("Enter prise for voucher: my test voucher product part 6.", purchaseController.getErrors().get(enterVoucherPrice.name()));
+        assertEquals("Enter price for voucher: my test voucher product part 6.", purchaseController.getErrors().get(enterVoucherPrice.name()));
 
 
         proceedToPayment();

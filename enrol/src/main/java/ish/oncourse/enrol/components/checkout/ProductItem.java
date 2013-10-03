@@ -2,10 +2,10 @@ package ish.oncourse.enrol.components.checkout;
 
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.Product;
-import ish.oncourse.model.VoucherProduct;
+import ish.oncourse.model.*;
+import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.util.FormatUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -16,8 +16,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.text.Format;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ProductItem {
@@ -48,69 +46,49 @@ public class ProductItem {
 	private Block blockToRefresh;
 
 	@Property
-	private Format feeFormat;
-	
-	@Property
 	private Course course;
-	
-	@Property
-	private Money priceValue;
+
+    @Property
+    private VoucherValue voucherValue;
+
 
 	@Inject
 	private Request request;
 
+    @Inject
+    private IVoucherService voucherService;
+
+
+
 
 	@SetupRender
 	void beforeRender() {
-		Money definedPrice = getPrice();
-		if (priceValue == null && definedPrice.isZero()) {
-			priceValue = definedPrice;
-		}
+
+        if (productItem instanceof Voucher)
+        {
+            voucherValue = new VoucherValue();
+            voucherValue.setVoucher((Voucher) productItem);
+        }
 	}
-	
-	public boolean isVoucherProduct() {
-		return productItem.getProduct() instanceof VoucherProduct;
-	}
-	
-	public List<Course> getRedemptionCourses() {
-		final List<Course> result = new ArrayList<>();
-		if (isVoucherProduct()) {
-			VoucherProduct vproduct = (VoucherProduct) productItem.getProduct();
-			return Collections.unmodifiableList(vproduct.getRedemptionCourses());
-		}
-		return result;
-	}
-	
-	public boolean isVoucherWithPrice() {
-		return !getPrice().isZero();
-	}
-	
-	public boolean isMoneyVoucher() {
-		return isVoucherProduct() && isVoucherWithPrice() && !isCourseVoucher();
-	}
-	
-	public boolean isGiftSertificate() {
-		return isVoucherProduct() && !isVoucherWithPrice() && !isCourseVoucher();
-	}
-	
-	public boolean isCourseVoucher() {
-		return !getRedemptionCourses().isEmpty();
-	}
-	
+
+
+    public boolean isVoucherProduct(){
+        return productItem instanceof Voucher;
+    }
+
+
+    public String getEnrolmentClass() {
+        return checked ? StringUtils.EMPTY: "disabled";
+    }
+
 	public Money getPrice() {
-		Product product = productItem.getProduct();
-		Money priceExTax = product.getPriceExTax();
-		if (priceExTax == null) {
-			if (isVoucherProduct()) {
-				priceExTax = Money.ZERO;
-			} else {
-				LOGGER.error(String.format("Empty price for product with name %s and sku %s", product.getName(), product.getSku()));
-				throw new IllegalStateException(String.format("Empty price for product with name %s and sku %s", product.getName(), product.getSku()));
-			}
-		}
-		this.feeFormat = FormatUtils.chooseMoneyFormat(priceExTax);
-		return priceExTax;
+        InvoiceLine invoiceLine = productItem.getInvoiceLine();
+        if(invoiceLine != null){
+            return invoiceLine.getPriceEachIncTax();
+        }
+		return Money.ZERO;
 	}
+
 
 
 	@OnEvent(value = "selectProductEvent")
@@ -118,21 +96,76 @@ public class ProductItem {
 		if (!request.isXHR())
 			return null;
 
+        String priceValue =  StringUtils.trimToNull(request.getParameter("priceValue"));
+        Money price = null;
+
+        if (priceValue != null)
+        {
+            try {
+                price = new Money(priceValue);
+            } catch (Exception e) {
+                //todo add error message
+            }
+        }
+        else
+        {
+            //todo add error message
+        }
+
+
 		if (delegate != null) {
-			delegate.onChange(contactIndex, productItemIndex);
+			delegate.onChange(contactIndex, productItemIndex, price);
 			if (blockToRefresh != null)
 				return blockToRefresh;
 		}
 		return null;
 	}
 
+    public Format moneyFormat(Money money)
+    {
+        return FormatUtils.chooseMoneyFormat(money);
+    }
+
 
 	public static interface ProductItemDelegate {
-		public void onChange(Integer contactIndex, Integer productItemIndex);
+		public void onChange(Integer contactIndex, Integer productItemIndex, Money price);
 	}
 
     public Integer[] getActionContext() {
         return new Integer[]{contactIndex, productItemIndex};
+    }
+
+    public class VoucherValue
+    {
+        private Voucher voucher;
+
+        public boolean hasPrice()
+        {
+           return !voucherService.isVoucherWithoutPrice(voucher.getVoucherProduct());
+        }
+
+        public boolean hasCourses()
+        {
+           return !voucher.getVoucherProduct().getRedemptionCourses().isEmpty();
+        }
+
+        public Voucher getVoucher() {
+            return voucher;
+        }
+
+        public void setVoucher(Voucher voucher) {
+            this.voucher = voucher;
+        }
+
+        public Money getValue()
+        {
+            return voucher.getVoucherProduct().getValue();
+        }
+
+        public List<Course> getCourses()
+        {
+            return voucher.getVoucherProduct().getRedemptionCourses();
+        }
     }
 
 }

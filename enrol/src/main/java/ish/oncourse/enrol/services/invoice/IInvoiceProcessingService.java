@@ -2,6 +2,7 @@ package ish.oncourse.enrol.services.invoice;
 
 import java.util.List;
 
+import ish.math.Money;
 import ish.oncourse.model.*;
 
 /**
@@ -46,6 +47,7 @@ public interface IInvoiceProcessingService {
 	 * @return invoiceLine object created
 	 */
 	InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer);
+    InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer, Money price);
 	
 	/**
 	 * Sets the discounted values to the given invoiceLine for the given enrolment.
