@@ -27,7 +27,7 @@ import java.util.List;
  * Date: 9/25/13
  * Time: 10:09 AM
  */
-public class ProductItemTest extends PurchaseControllerTest {
+public class ProductItemTest extends ACheckoutTest {
     PurchaseController purchaseController;
     PurchaseModel model;
     Product product;

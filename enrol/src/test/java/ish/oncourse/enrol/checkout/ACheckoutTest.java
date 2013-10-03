@@ -24,6 +24,7 @@ import org.dbunit.operation.DatabaseOperation;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -264,5 +265,48 @@ public abstract class ACheckoutTest extends ServiceTest {
 				purchaseController.getModel().getPayer().getId());
 	}
 
+
+    protected PurchaseController init() {
+        return init(true);
+    }
+
+    protected PurchaseController init(boolean addPayer) {
+        return init(Arrays.asList(1186958L,1186959L,1186960L), Arrays.asList(7L),Arrays.asList(2L), addPayer);
+    }
+
+    protected PurchaseController init(List<Long> courseClassIds, List<Long> productIds,  List<Long> discountIds, boolean addPayer) {
+        ObjectContext context = cayenneService.newContext();
+
+        List<CourseClass> courseClasses = new ArrayList<>();
+        for (Long id : courseClassIds)
+            courseClasses.add(Cayenne.objectForPK(context, CourseClass.class, id));
+
+        List<Product> products = new ArrayList<>();
+        for (Long id : productIds)
+            products.add(Cayenne.objectForPK(context, Product.class, id));
+
+        List<Discount> discounts = new ArrayList<>();
+        for (Long id : discountIds)
+            discounts.add(Cayenne.objectForPK(context, Discount.class, id));
+
+
+        PurchaseModel model = createModel(context,
+                courseClasses,
+                products,
+                discounts);
+
+        createPurchaseController(model);
+        assertEquals(courseClasses.size(), model.getClasses().size());
+        assertEquals(products.size(), model.getProducts().size());
+        assertEquals(discounts.size(), model.getDiscounts().size());
+
+        if (addPayer) {
+            addFirstContact(1189157);
+            assertEquals(1, purchaseController.getModel().getContacts().size());
+            assertNotNull(purchaseController.getModel().getPayer());
+        }
+
+        return purchaseController;
+    }
 
 }
