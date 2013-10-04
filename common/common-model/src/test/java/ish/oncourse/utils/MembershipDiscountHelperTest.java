@@ -1,5 +1,6 @@
 package ish.oncourse.utils;
 
+import ish.common.types.ProductStatus;
 import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
@@ -41,6 +42,7 @@ public class MembershipDiscountHelperTest {
             Membership membership = mock(Membership.class);
             when(membership.getProduct()).thenReturn(product);
             when(membership.getContact()).thenReturn(contact);
+			when(membership.getStatus()).thenReturn(ProductStatus.ACTIVE);
             when(contact.getMemberships()).thenReturn(Collections.singletonList(membership));
         }
         return contact;
