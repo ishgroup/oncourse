@@ -116,7 +116,7 @@ public class PaymentProcessController {
 		    	}
                 break;
             case ABANDON_PAYMENT_KEEP_INVOICE:
-				abandonPayment(action, true);
+				abandonPayment(action, false);
                 break;
             case UPDATE_PAYMENT_GATEWAY_STATUS:
                 updatePaymentGatewayStatus();
@@ -219,6 +219,7 @@ public class PaymentProcessController {
 		switch (action)
 		{
 			case ABANDON_PAYMENT:
+			case ABANDON_PAYMENT_KEEP_INVOICE:
 			case CANCEL_PAYMENT:
 				changeProcessState(CANCEL);
 				break;
@@ -230,17 +231,6 @@ public class PaymentProcessController {
 		}
     }
 
-    /**
-     * Abandon payment, but keeps invoices for later processing.
-     *
-     * @return abandon payment message block
-     */
-    private void abandonPaymentKeepInvoice() {
-        changeProcessState(PROCESSING_ABANDON);
-        paymentIn.abandonPaymentKeepInvoice();
-        objectContext.commitChanges();
-        changeProcessState(CANCEL);
-    }
 
     /**
      * Marks current trasaction as finalized, creates a new one for other credit

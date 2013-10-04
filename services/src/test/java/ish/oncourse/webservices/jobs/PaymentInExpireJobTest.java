@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.jobs;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Enrolment;
@@ -12,16 +10,6 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.PaymentInSupport;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.jobs.PaymentInExpireJob;
-
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.util.Calendar;
-
-import javax.sql.DataSource;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -32,6 +20,16 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.Calendar;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PaymentInExpireJobTest extends ServiceTest {
 
@@ -186,17 +184,20 @@ public class PaymentInExpireJobTest extends ServiceTest {
 				String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000"));
 		assertEquals("1 InvoiceLine in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
+				String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2001"));
+		assertEquals("1 InvoiceLine in the queue.", 1, actualData.getRowCount());
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000"));
-		assertEquals("2 PaymentIn in the queue.", 2, actualData.getRowCount());
+		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000"));
-		assertTrue("at least 1 Enrolment in the queue.", 1 <= actualData.getRowCount());
+		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2001"));
-		assertTrue("at least 1 Enrolment in the queue.", 1 <= actualData.getRowCount());
+		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
 	}
 	
 	@Test
@@ -261,7 +262,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='PaymentIn'"));
 		
-		assertEquals("Expecting 4 records in the queue for PaymentIn", 4, actualData.getRowCount());
+		assertEquals("Expecting 3 records in the queue for PaymentIn", 3, actualData.getRowCount());
 		
 		ObjectContext objectContext = cayenneService.newContext();
 		
