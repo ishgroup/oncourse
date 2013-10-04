@@ -40,7 +40,7 @@ public class MembershipProductUpdaterTest extends ServiceTest {
 		MembershipProductStub stub = new MembershipProductStub();
 		stub.setAngelId(1l);
 		stub.setWillowId(1l);
-		stub.setType(ProductType.VOUCHER.getDatabaseValue());
+		stub.setType(ProductType.MEMBERSHIP.getDatabaseValue());
 		stub.setTaxAdjustment(Money.ZERO.toBigDecimal());
 		stub.setSku("validSKU");
 		stub.setNotes(StringUtils.EMPTY);
@@ -90,7 +90,7 @@ public class MembershipProductUpdaterTest extends ServiceTest {
 		MembershipProductStub stub = new MembershipProductStub();
 		stub.setAngelId(1l);
 		stub.setWillowId(1l);
-		stub.setType(ProductType.VOUCHER.getDatabaseValue());
+		stub.setType(ProductType.MEMBERSHIP.getDatabaseValue());
 		stub.setTaxAdjustment(Money.ZERO.toBigDecimal());
 		stub.setSku("        ");
 		stub.setNotes(StringUtils.EMPTY);
@@ -118,8 +118,13 @@ public class MembershipProductUpdaterTest extends ServiceTest {
 			assertTrue("Empty SKU should lead to updater exception", false);
 		} catch (UpdaterException e) {
 			logger.error( e.getMessage(), e);
-			assertTrue("Updater should throw an exception because SKU is empty!",
-					e.getMessage().startsWith("Membership product with angelId = 1 and willowid = 1 and empty SKU detected!"));
+			assertEquals("Updater should throw an exception because SKU is empty!",
+					e.getMessage(),
+					String.format(AbstractProductUpdater.ERROR_SKU_MESSAGE_TEMPLATE,
+							MembershipProduct.class.getSimpleName(),
+							1,
+							1)
+			);
 		} finally {
 			objectContext.rollbackChanges();
 		}

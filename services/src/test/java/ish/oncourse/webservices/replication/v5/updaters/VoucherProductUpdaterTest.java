@@ -121,8 +121,13 @@ public class VoucherProductUpdaterTest extends ServiceTest {
 			assertTrue("Empty SKU should lead to updater exception", false);
 		} catch (UpdaterException e) {
 			logger.error( e.getMessage(), e);
-			assertTrue("Updater should throw an exception because SKU is empty!",
-					e.getMessage().startsWith("Voucher product with angelId = 1 and willowid = 1 and empty SKU detected!"));
+			assertEquals("Updater should throw an exception because SKU is empty!",
+					e.getMessage(),
+					String.format(AbstractProductUpdater.ERROR_SKU_MESSAGE_TEMPLATE,
+							VoucherProduct.class.getSimpleName(),
+							1,
+							1)
+			);
 		} finally {
 			objectContext.rollbackChanges();
 		}
