@@ -1,7 +1,10 @@
 package ish.oncourse.model;
 
+import ish.math.Money;
 import ish.oncourse.model.auto._Product;
 import ish.oncourse.utils.QueueableObjectUtils;
+
+import java.math.BigDecimal;
 
 public class Product extends _Product implements Queueable {
 	private static final long serialVersionUID = 8422903473669633877L;
@@ -13,5 +16,20 @@ public class Product extends _Product implements Queueable {
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
+	}
+
+	public Money getPriceIncTax() {
+		if (getPriceExTax() != null)
+			return getPriceExTax().add(getFeeGST());
+		else
+			return Money.ZERO;
+	}
+
+	public BigDecimal getTaxRate() {
+
+		if (getPriceExTax() == null || getPriceExTax().isZero())
+			return BigDecimal.ZERO;
+		else
+			return getFeeGST().divide(getPriceExTax()).toBigDecimal();
 	}
 }

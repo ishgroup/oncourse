@@ -1,23 +1,19 @@
 package ish.oncourse.enrol.checkout;
 
 
-
-
-import ish.oncourse.model.*;
-import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
-import static ish.oncourse.enrol.checkout.PurchaseController.State.*;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
+import ish.oncourse.model.*;
 import org.apache.cayenne.Cayenne;
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.duplicatedMembership;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.enterVoucherPrice;
+import static org.junit.Assert.*;
 
 
 
@@ -95,6 +91,7 @@ public class ProductItemTest extends ACheckoutTest {
             assertNotNull(il.getDescription());
             assertNotNull(il.getTitle());
             assertEquals(p.getPriceExTax(), il.getPriceEachExTax());
+			assertEquals(p.getPriceIncTax(), il.getPriceEachIncTax());
             assertNotNull(il.getDiscountEachExTax());
             assertNotNull(il.getTaxEach());
             assertNotNull(il.getQuantity());

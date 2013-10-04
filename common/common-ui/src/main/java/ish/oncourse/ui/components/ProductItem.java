@@ -1,10 +1,5 @@
 package ish.oncourse.ui.components;
 
-import java.text.Format;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import ish.math.Money;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Product;
@@ -15,13 +10,17 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.text.Format;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ProductItem {
 	private static final int DETAILS_LENGTH = 490;
@@ -136,7 +135,7 @@ public class ProductItem {
 	}
 	
 	public Money getPrice() {
-		Money priceExTax = product.getPriceExTax();
+		Money priceExTax = product.getPriceIncTax();
 		if (priceExTax == null) {
 			if (isVoucherProduct()) {
 				priceExTax = Money.ZERO;

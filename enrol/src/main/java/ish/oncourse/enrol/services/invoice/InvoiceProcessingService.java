@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ish.oncourse.enrol.services.invoice;
 
@@ -17,27 +17,25 @@ import java.util.List;
 
 /**
  * Implementation of {@link IInvoiceProcessingService}.
- * 
+ *
  * @author ksenia
- * 
  */
 public class InvoiceProcessingService implements IInvoiceProcessingService {
 
 
-    /**
-     * InvoiceLine title format:
-     * <Student FirstName> <Student LastName> <CourseCode>-<CourseClassCode> <CourseName>
-     */
-    public static final String INVOICE_LINE_TITLE_TEMPALTE = "%s %s %s-%s %s";
-
+	/**
+	 * InvoiceLine title format:
+	 * <Student FirstName> <Student LastName> <CourseCode>-<CourseClassCode> <CourseName>
+	 */
+	public static final String INVOICE_LINE_TITLE_TEMPALTE = "%s %s %s-%s %s";
 	private final IDiscountService discountService;
-	
+
 	@Inject
 	public InvoiceProcessingService(IDiscountService discountService) {
 		super();
 		this.discountService = discountService;
 	}
-	
+
 	/**
 	 * @return the discountService
 	 */
@@ -47,25 +45,25 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#createInvoiceLineForEnrolment(ish.oncourse.model.Enrolment,List<Discount>)
+	 *
+	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#createInvoiceLineForEnrolment(ish.oncourse.model.Enrolment, List<Discount>)
 	 */
 	public InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment, List<Discount> actualPromotions) {
 		ObjectContext context = enrolment.getObjectContext();
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 
 		CourseClass courseClass = enrolment.getCourseClass();
-        Course course = courseClass.getCourse();
+		Course course = courseClass.getCourse();
 		Student student = enrolment.getStudent();
-        Contact contact = student.getContact();
+		Contact contact = student.getContact();
 		College college = enrolment.getCollege();
 
-        invoiceLine.setTitle(String.format(INVOICE_LINE_TITLE_TEMPALTE,
-                contact.getGivenName(),
-                contact.getFamilyName(),
-                course.getCode(),
-                courseClass.getCode(),
-                course.getName()));
+		invoiceLine.setTitle(String.format(INVOICE_LINE_TITLE_TEMPALTE,
+				contact.getGivenName(),
+				contact.getFamilyName(),
+				course.getCode(),
+				courseClass.getCode(),
+				course.getName()));
 		invoiceLine.setDescription(courseClass.getUniqueIdentifier() + " "
 				+ courseClass.getCourse().getName());
 
@@ -77,87 +75,75 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		setupDiscounts(enrolment, invoiceLine, actualPromotions);
 		return invoiceLine;
 	}
-	
+
 	@Override
 	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer) {
-        return createInvoiceLineForVoucher(voucher, payer, voucher.getVoucherProduct().getPriceExTax());
+		return this.createInvoiceLineForVoucher(voucher, payer, voucher.getVoucherProduct().getPriceExTax());
 	}
 
-    @Override
-    public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer, Money price) {
-        ObjectContext context = voucher.getObjectContext();
-        InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
+	@Override
+	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer, Money priceExTax) {
+		return createInvoiceLineForProductItem(voucher, payer, priceExTax);
 
-        College college = voucher.getCollege();
+	}
 
-        invoiceLine.setDescription(String.format("Voucher %s", voucher.getProduct().getDescription()));
-        invoiceLine.setTitle(String.format("%s %s", payer.getFullName(), voucher.getProduct().getName()));
-        invoiceLine.setPriceEachExTax(price);
-        invoiceLine.setDiscountEachExTax(Money.ZERO);
-        invoiceLine.setTaxEach(Money.ZERO);
-        invoiceLine.setQuantity(BigDecimal.ONE);
-        voucher.setInvoiceLine(invoiceLine);
+	private InvoiceLine createInvoiceLineForProductItem(ProductItem productItem, Contact contact, Money priceExTax) {
+		ObjectContext context = productItem.getObjectContext();
 
-        invoiceLine.setCollege(college);
+		Product product = productItem.getProduct();
+		College college = productItem.getCollege();
 
-        return invoiceLine;
-    }
+		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 
+		invoiceLine.setDescription(String.format("%s %s", productItem.getClass().getSimpleName(), product.getDescription()));
+		invoiceLine.setTitle(String.format("%s %s", contact.getFullName(), product.getName()));
 
-    @Override
-    public InvoiceLine createInvoiceLineForMembership(Membership membership, Contact payer) {
-            ObjectContext context = membership.getObjectContext();
-            InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
+		invoiceLine.setQuantity(BigDecimal.ONE);
+		InvoiceUtil.fillInvoiceLine(invoiceLine, priceExTax, Money.ZERO, product.getTaxRate(), product.getTaxAdjustment());
+		productItem.setInvoiceLine(invoiceLine);
 
-            College college = membership.getCollege();
+		invoiceLine.setCollege(college);
 
-            invoiceLine.setDescription(String.format("Membership %s", membership.getProduct().getDescription()));
-            invoiceLine.setTitle(String.format("%s %s", payer.getFullName(), membership.getProduct().getName()));
-            invoiceLine.setPriceEachExTax(membership.getProduct().getPriceExTax());
-            invoiceLine.setDiscountEachExTax(Money.ZERO);
-            invoiceLine.setTaxEach(Money.ZERO);
-            invoiceLine.setQuantity(BigDecimal.ONE);
-            membership.setInvoiceLine(invoiceLine);
+		return invoiceLine;
+	}
 
-            invoiceLine.setCollege(college);
+	@Override
+	public InvoiceLine createInvoiceLineForMembership(Membership membership, Contact payer) {
+		return createInvoiceLineForProductItem(membership, payer, membership.getProduct().getPriceExTax());
+	}
 
-            return invoiceLine;
-    }
-
-    /**
-	 * 
+	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#setupDiscounts(ish.oncourse.model.Enrolment,
-	 *      ish.oncourse.model.InvoiceLine)
+	 *
+	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#setupDiscounts(ish.oncourse.model.Enrolment, ish.oncourse.model.InvoiceLine, java.util.List)
 	 */
 	public void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine, List<Discount> actualPromotions) {
 
-        ObjectContext objectContext = invoiceLine.getObjectContext();
+		ObjectContext objectContext = invoiceLine.getObjectContext();
 		CourseClass courseClass = enrolment.getCourseClass();
 		List<Discount> enrolmentDiscounts = enrolment.getCourseClass().getDiscountsToApply(
 				new RealDiscountsPolicy(actualPromotions, enrolment.getStudent()));
-		InvoiceUtil.fillInvoiceLine(invoiceLine, invoiceLine.getPriceEachExTax(), courseClass.getDiscountAmountExTax(enrolmentDiscounts), 
-			courseClass.getTaxRate(), calculateTaxAdjustment(courseClass));
-        createInvoiceLineDiscounts(invoiceLine, enrolmentDiscounts, objectContext);
-    }
+		InvoiceUtil.fillInvoiceLine(invoiceLine, invoiceLine.getPriceEachExTax(), courseClass.getDiscountAmountExTax(enrolmentDiscounts),
+				courseClass.getTaxRate(), calculateTaxAdjustment(courseClass));
+		createInvoiceLineDiscounts(invoiceLine, enrolmentDiscounts, objectContext);
+	}
 
-    /**
-     * The method creates InvoiceLineDiscount entities for all discounts which were applied to this invoiceLine
-     */
-    private void createInvoiceLineDiscounts(InvoiceLine invoiceLine, List<Discount> discounts, ObjectContext objectContext) {
-        for (Discount discount : discounts) {
-            Expression discountQualifier = ExpressionFactory.matchExp(InvoiceLineDiscount.DISCOUNT_PROPERTY, discount);
-            if (discountQualifier.filterObjects(invoiceLine.getInvoiceLineDiscounts()).isEmpty()) {
-                InvoiceLineDiscount invoiceLineDiscount = objectContext.newObject(InvoiceLineDiscount.class);
-                invoiceLineDiscount.setInvoiceLine(invoiceLine);
-                invoiceLineDiscount.setDiscount(discount);
-                invoiceLineDiscount.setCollege(invoiceLine.getCollege());
-            }
-        }
-    }
+	/**
+	 * The method creates InvoiceLineDiscount entities for all discounts which were applied to this invoiceLine
+	 */
+	private void createInvoiceLineDiscounts(InvoiceLine invoiceLine, List<Discount> discounts, ObjectContext objectContext) {
+		for (Discount discount : discounts) {
+			Expression discountQualifier = ExpressionFactory.matchExp(InvoiceLineDiscount.DISCOUNT_PROPERTY, discount);
+			if (discountQualifier.filterObjects(invoiceLine.getInvoiceLineDiscounts()).isEmpty()) {
+				InvoiceLineDiscount invoiceLineDiscount = objectContext.newObject(InvoiceLineDiscount.class);
+				invoiceLineDiscount.setInvoiceLine(invoiceLine);
+				invoiceLineDiscount.setDiscount(discount);
+				invoiceLineDiscount.setCollege(invoiceLine.getCollege());
+			}
+		}
+	}
 
-    private Money calculateTaxAdjustment(final CourseClass courseClass) {
+	private Money calculateTaxAdjustment(final CourseClass courseClass) {
 		return courseClass.getFeeIncGst().subtract(courseClass.getFeeExGst().multiply(courseClass.getTaxRate().add(BigDecimal.ONE)));
 	}
 
