@@ -1,18 +1,26 @@
 package ish.oncourse.services.textile;
 
+
 import org.junit.Test;
 
+import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertTrue;
 
 public class TextileTypeTest {
+    Pattern patternRegexp;
+    Pattern patternDetailedRegexp;
+    String[] validTEXT;
+    String[] validRADIOLIST;
+    String[] validPOPUPLIST;
+
 
 
 	@Test
 	public void testIMAGE() {
-		Pattern patternRegexp = Pattern.compile(TextileType.IMAGE.getRegexp());
-		Pattern patternDetailedRegexp = Pattern.compile(TextileType.IMAGE.getDetailedRegexp());
+        patternRegexp = Pattern.compile(TextileType.IMAGE.getRegexp());
+	    patternDetailedRegexp = Pattern.compile(TextileType.IMAGE.getDetailedRegexp());
 
 		String[] invalid = new String[]
 				{
@@ -69,54 +77,343 @@ public class TextileTypeTest {
 				"{image name:\"GYBlogoSummer\"|align:centre|width:150}",
 				"{image:AusIndustryStackedJPG|align:left|width:10}",
 		};
-		for (String s : valid)
-		{
-			assertTrue(s, patternRegexp.matcher(s).matches());
-			assertTrue(s, patternDetailedRegexp.matcher(s).matches());
-		}
+
+        verify(valid);
+
 	}
 
 	@Test
 	public void testVIDEO() {
-	}
+        patternRegexp = Pattern.compile(TextileType.VIDEO.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.VIDEO.getDetailedRegexp());
 
-	@Test
+        String[] valid = new String[]{
+                "{video id:\"1\"}",
+                "{video id:\"1\"|type:\"type\"}",
+                "{video id:\"er\" width:\"8px\"  height:\"4px\"}",
+                "{video id:\"1\" type:\"type\" width:\"4px\"}",
+                "{video id:\"1\" type:\"type\" width:\"4px\" height:\"4px\"}",
+                "{video id:\"1\" type:\"type\" width:\"4\" height:\"4\"}",
+                "{video id:\"1\" type:\"type\" width:\"4px\" height:\"4\"}",
+                "{video id:\"1\" type:\"type\" width:\"4\" height:\"4px\"}",
+                "{video id:\"1\" height:\"4px\"}",
+                "{video       type:\"type\"        width:\"4px\"       height:\"4px\"}",
+                "{video height:\"4px\" width:\"8px\" id:\"ID\"}",
+                "{video height:\"4px\" width:\"8px\" id:\"ID\" type:“type“}",
+                "{video height:\"4px\" id:\"er\" width:\"8px\" type:\"type\"}",
+                "{video  type:\"type\" height:\"4px\" id:\"er\" width:\"8px\"}",
+                "{video  type:\"type\"  id:\"er\" height:\"4px\" width:\"8px\"}",
+                "{video  type:\"type\" id:\"er\" width:\"8px\"  height:\"4px\"}",
+                "{video id:\"er\"|tept:\"type\"|width:8px|height:4px}",
+                "{video id:\"er\"|tept:\"type\"|height:4px|width:8px}",
+
+                "{video id:\"er\"|width:8px|height:4px}",
+                "{video id:\"er\"|tupe:type|width:8}",
+                "{video id:\"er\"|tupe:type|height:8}",
+                "{video id:\"er\"|height:8}",
+                "{video id:\"er\"|width:8}",
+
+                "{video id:\"t\"type:\"type\"wight:\"123px\"hight:\"3px\"}",
+                "{video id:\"t\"type:\"type\"wight:\"123px\"}",
+                "{video id:\"t\"type:\"type\"hight:\"3px\"wight:\"123px\"}",
+                "{video id:\"t\"type:\"type\"}",
+
+
+
+        };
+
+        verify(valid);
+    }
+
+
+
+    @Test
 	public void testBLOCK() {
+        patternRegexp = Pattern.compile(TextileType.BLOCK.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.BLOCK.getDetailedRegexp());
+
+        String[] valid = new String[]{
+
+            "{block}",
+            "{block name:\"_\"}",
+            "{block name:“f“}",
+
+
+
+        };
+        verify(valid);
 	}
 
 	@Test
 	public void testCOURSE() {
-	}
+        patternRegexp = Pattern.compile(TextileType.COURSE.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.COURSE.getDetailedRegexp());
+
+        String[] valid = new String[]{
+        "{course}",
+        "{course code:\"code\"}",
+        "{course    code:\"code\"}",
+        "{course code:\"code1\" tag:\"tag1\"}",
+        "{course code:\"code2\" tag:\"tag23\" showclasses:true}",
+        "{course code:\"code3\" tag:\"tag34\" showclasses:\"true\"}",
+        "{course code:\"code4\" tag:\"tag56\" showclasses:false}",
+        "{course code:\"code5\" tag:\"tag75\" showclasses:\"false\"}",
+        "{course code:\"code6\" showclasses:true}",
+        "{course tag:\"tag_tag tag\" code:\"code\" showclasses:true}",
+        "{course showclasses:true tag:\"tag_tag tag\" code:\"code\"}",
+        "{course code:\"code\" showclasses:true tag:\"tag_tag tag\"}",
+        "{course code:\"code\"tag:\"tag\"|showclasses:true}"
+        };
+
+        verify(valid);
+    }
 
 	@Test
 	public void testCOURSE_LIST() {
+        patternRegexp = Pattern.compile(TextileType.COURSE_LIST.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.COURSE_LIST.getDetailedRegexp());
+
+        String[] valid = new String[]{
+            "{courses}",
+            "{courses tag:\"TAG1\"}",
+            "{courses tag:\"TAG2\" limit:\"5\"}",
+            "{courses tag:\"TAG3\" limit:554}",
+            "{courses tag:\"TAG4\" limit:554 sort:\"date\"}",
+            "{courses tag:\"TAG5\" limit:554 sort:\"alphabetical\"}",
+            "{courses tag:\"TAG6\" limit:554 sort:\"availability\"}",
+            "{courses tag:\"TAG7\" limit:554 sort:date}",
+            "{courses tag:\"TAG8\" limit:554 sort:alphabetical}",
+            "{courses tag:\"TAG9\" limit:554 sort:availability}",
+            "{courses tag:\"TAG0\" limit:554 sort:availability order\"asc\"}",
+            "{courses tag:\"TAG-0\" limit:554 sort:availability order:\"dasc\"}",
+            "{courses tag:\"TAG9\" limit:554 sort:availability order:asc}",
+            "{courses tag:\"TAG67\" limit:554 sort:availability order:desc}",
+            "{courses tag:\"TAG56\" limit:554 sort:availability order:desc style:\"titles\"}",
+            "{courses tag:\"TAG45\" limit:554 sort:availability order:desc style:\"details\"}",
+            "{courses tag:\"TAG2\" limit:554 sort:availability order:desc style:titles}",
+            "{courses tag:\"TAG34\" limit:554 sort:availability order:desc style:details}",
+            "{courses tag:\"TAG345\" limit:554 sort:availability order:desc style:details showTags:\"true\"}",
+            "{courses tag:\"TAG3\" limit:554 sort:availability order:desc style:details showTags:true}",
+            "{courses tag:\"TAG df\" limit:554 sort:availability order:desc style:details showTags:\"false\"}",
+            "{courses tag:\"TAG_ta\" limit:554 sort:availability order:desc style:details showTags:false}",
+            "{courses tag:\"TAG df\"|limit:554|sort:availability|order:desc|style:details|showTags:false}",
+            "{courses showTags:false tag:\"TAG df\" limit:554 sort:availability order:desc style:details}",
+            "{courses style:details showTags:false tag:\"TAG df\" limit:554 sort:availability order:desc}",
+            "{courses order:desc style:details showTags:false tag:\"TAG df\" limit:554 sort:availability}",
+            "{courses sort:availability order:desc style:details showTags:false tag:\"TAG df\" limit:554}",
+            "{courses limit:554 sort:availability order:desc style:details showTags:false tag:\"TAG df\"}",
+            "{courses tag:\"TAG df\" sort:availability}",
+            "{courses tag:\"TAG df\" order:desc}",
+            "{courses tag:\"TAG df\" style:details}",
+            "{courses tag:\"TAG df\" showTags:false}"
+
+
+        };
+        verify(valid);
+
 	}
 
 	@Test
 	public void testPAGE() {
+        patternRegexp = Pattern.compile(TextileType.PAGE.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.PAGE.getDetailedRegexp());
+
+        String[] valid = new String[]{
+           "{page}",
+           "{page code:0}",
+           "{page code:124}",
+           "{page code:\"124\"}",
+           "{page code:\"000\"}",
+
+        };
+        verify(valid);
+
 	}
 
 	@Test
 	public void testTAGS() {
+
+        patternRegexp = Pattern.compile(TextileType.TAGS.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.TAGS.getDetailedRegexp());
+
+        String[] valid = new String[]{
+
+
+                "{tags}",
+                "{tags maxLevels:\"101\"}",
+                "{tags maxLevels:101}",
+                "{tags maxLevels:101 showDetail:\"true\"}",
+                "{tags maxLevels:101 showDetail:true}",
+                "{tags maxLevels:101 showDetail:false}",
+                "{tags maxLevels:101 showDetail:\"false\"}",
+                "{tags maxLevels:101 showDetail:\"false\" hideTopLevel:\"true\"}",
+                "{tags maxLevels:101 showDetail:\"false\" hideTopLevel:\"false\"}",
+                "{tags maxLevels:101 showDetail:true hideTopLevel:false}",
+                "{tags maxLevels:101 showDetail:true hideTopLevel:true}",
+                "{tags maxLevels:101 showDetail:true hideTopLevel:true name:\"name_Name bla 123\"}",
+                "{tags maxLevels:00100 showDetail:true hideTopLevel:true name:\"name_Name bla 123\"}",
+                "{tags name:\"name_Name bla 123\" maxLevels:00100 showDetail:true hideTopLevel:true}",
+                "{tags name: hideTopLevel:true \"name_Name bla 123\" maxLevels:00100 showDetail:true}",
+                "{tags name: showDetail:true hideTopLevel:true name:\"name_Name bla 123\" maxLevels:00100}",
+                "{tags maxLevels:00100 showDetail:true hideTopLevel:true name:\"name_Name bla 123\"}",
+                "{tags maxLevels:00100 showDetail:true hideTopLevel:true}",
+                "{tags maxLevels:101|showDetail:true|hideTopLevel:true|name:\"name_Name bla 123\"}",
+                "{tags   maxLevels:101 | showDetail:true | hideTopLevel:true | name:\"name_Name bla 123\"}"
+
+        };
+        verify(valid);
 	}
 
 	@Test
 	public void testTEXT() {
+
+        patternRegexp = Pattern.compile(TextileType.TEXT.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.TEXT.getDetailedRegexp());
+
+        validTEXT = new String[]{
+
+                "{text label:\"Label_label label~\"}",
+                "{text label:\"Label_label label~\" required:\"yes\"}",
+                "{text label:\"Label_label label~\" required:\"no\"}",
+                "{text label:\"Label_label label~\" required:\"true\"}",
+                "{text label:\"Label_label label~\" required:\"false\"}",
+                "{text label:\"Label_label label~\" required:false}",
+                "{text label:\"Label_label label~\" required:true}",
+                "{text label:\"Label_label label~\" required:yes}",
+                "{text label:\"Label_label label~\" required:no}",
+                "{text label:\"Label_label label~\" required:no lines:120031}",
+                "{text label:\"Label_label label~\" required:no lines:000}",
+                "{text label:\"Label_label label~\" required:no lines:\"0010\"}",
+                "{text label:\"Label_label label~\" required:no lines:\"yes\"}",
+                "{text label:\"Label_label label~\" required:no lines:\"no\"}",
+                "{text label:\"Label_label label~\" required:no lines:\"true\"}",
+                "{text label:\"Label_label label~\" required:no lines:\"false\"}",
+                "{text label:\"Label_label label~\" required:no lines:false}",
+                "{text label:\"Label_label label~\" required:no lines:true}",
+                "{text label:\"Label_label label~\" required:no lines:no}",
+                "{text label:\"Label_label label~\" required:no lines:yes}",
+                "{text label:\"Label_label label~\" required:no lines:yes maxlength:\"12\"}",
+                "{text label:\"Label_label label~\" required:no lines:yes maxlength:001}",
+                "{text maxlength:001 label:\"Label_label label~\" required:no lines:yes}",
+                "{text lines:yes maxlength:001 label:\"Label_label label~\" required:no}",
+                "{text required:no lines:yes maxlength:001 label:\"Label_label label~\"}",
+                "{text required:no|lines:yes|maxlength:001|label:\"Label_label label~\"}",
+                "{text required:no|maxlength:001|label:\"Label_label label~\"}",
+                "{text required:no|label:\"Label_label label~\"}"
+
+        };
+        verify(validTEXT);
 	}
 
 	@Test
 	public void testRADIOLIST() {
+        patternRegexp = Pattern.compile(TextileType.RADIOLIST.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.RADIOLIST.getDetailedRegexp());
+
+         validRADIOLIST = new String[]{
+                "{radiolist label:\"Label_LABEL~~ labek`\"}",
+                "{radiolist label:\"Label_LABEL~~ labek`\" required:\"yes\"}",
+                "{radiolist label:\"Label_LABEL~~ labek`\" required:\"no\"}",
+                "{radiolist label:\"Label_LABEL~~ labek`\" required:\"true\"}",
+                "{radiolist label:\"Label_LABEL~~ labek`\" required:\"false\"}",
+                "{radiolist label:\"Label_LABEL~~ labek`\" required:yes}",
+                "{radiolist label:\"Label_LABEL~~ labek`\" required:no}",
+                "{radiolist label:\"Label_LABEL~~ labek`\" required:true}",
+                "{radiolist label:\"Label_LABEL~~ labek`\" required:false}",
+                "{radiolist label:\"Label_LABEL~~ labek`\" required:false default:\"Default label_default\"}",
+                "{radiolist label:\"Label_LABEL~~ labek`\" required:false default:\"Default label_default\" options:\"default optiont for default label\"}",
+                "{radiolist required:false label:\"Label_LABEL~~ labek`\" default:\"Default label_default\" options:\"default optiont for default label\"}",
+                "{radiolist required:false|label:\"Label_LABEL~~ labek`\" default:\"Default label_default\" options:\"default optiont for default label\"}",
+                "{radiolist options:\"default optiont for default label\" required:false|label:\"Label_LABEL~~ labek`\" default:\"Default label_default\"}",
+                "{radiolist default:\"Default label_default\" options:\"default optiont for default label\" required:false|label:\"Label_LABEL~~ labek`\"}",
+                "{radiolist default:\"Default label_default\" options:\"default optiont for default label\" required:false label:\"Label_LABEL~~ labek`\"}"
+
+        };
+        verify(validRADIOLIST);
 	}
 
 	@Test
 	public void testPOPUPLIST() {
+
+        patternRegexp = Pattern.compile(TextileType.POPUPLIST.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.POPUPLIST.getDetailedRegexp());
+
+        validPOPUPLIST = new String[]{
+                "{popuplist label:\"Label_LABEL~~ labek`\"}",
+                "{popuplist label:\"Label_LABEL~~ labek`\" required:\"yes\"}",
+                "{popuplist label:\"Label_LABEL~~ labek`\" required:\"no\"}",
+                "{popuplist label:\"Label_LABEL~~ labek`\" required:\"true\"}",
+                "{popuplist label:\"Label_LABEL~~ labek`\" required:\"false\"}",
+                "{popuplist label:\"Label_LABEL~~ labek`\" required:yes}",
+                "{popuplist label:\"Label_LABEL~~ labek`\" required:no}",
+                "{popuplist label:\"Label_LABEL~~ labek`\" required:true}",
+                "{popuplist label:\"Label_LABEL~~ labek`\" required:false}",
+                "{popuplist label:\"Label_LABEL~~ labek`\" required:false default:\"Default label_default\"}",
+                "{popuplist label:\"Label_LABEL~~ labek`\" required:false default:\"Default label_default\" options:\"default optiont for default label\"}",
+                "{popuplist required:false label:\"Label_LABEL~~ labek`\" default:\"Default label_default\" options:\"default optiont for default label\"}",
+                "{popuplist required:false|label:\"Label_LABEL~~ labek`\" default:\"Default label_default\" options:\"default optiont for default label\"}",
+                "{popuplist options:\"default optiont for default label\" required:false|label:\"Label_LABEL~~ labek`\" default:\"Default label_default\"}",
+                "{popuplist default:\"Default label_default\" options:\"default optiont for default label\" required:false|label:\"Label_LABEL~~ labek`\"}",
+                "{popuplist default:\"Default label_default\" options:\"default optiont for default label\" required:false label:\"Label_LABEL~~ labek`\"}"
+
+
+        };
+        verify(validPOPUPLIST);
 	}
 
 	@Test
 	public void testFORM() {
+        testPOPUPLIST();
+        testRADIOLIST();
+        testTEXT();
+
+
+
+        patternRegexp = Pattern.compile(TextileType.FORM.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.FORM.getDetailedRegexp());
+
+        LinkedList<String> validForms = new LinkedList<>();
+        String validString;
+
+
+
+        for(String text : validTEXT)
+           for(String radioList : validRADIOLIST)
+              for(String popupList : validPOPUPLIST){
+                  validString= String.format("{form name:\"name\" email:\"test@test.com\" url:\"http://arqe2.local.oncourse.net.au/form\"} %s %s %s {form}", text, radioList, popupList);
+                  validForms.add(validString);
+                  validString= String.format("{form name:\"name\" email:\"test@test.com\"} %s %s %s {form}", radioList,text, popupList);
+                  validForms.add(validString);
+
+              }
+
+        String[] valid =  validForms.toArray(new String[validForms.size()]);
+        verify(valid);
 	}
 
 	@Test
 	public void testATTACHMENT() {
+        patternRegexp = Pattern.compile(TextileType.ATTACHMENT.getRegexp());
+        patternDetailedRegexp = Pattern.compile(TextileType.ATTACHMENT.getDetailedRegexp());
+
+        String[] valid = new String[]{
+                "{attachment}",
+                "{attachment name:\"Name may contains different symbols ~#@!\"}"
+
+        };
+        verify(valid);
+
 	}
+
+
+    private void verify(String[] valid) {
+        for (String s : valid)
+        {
+            assertTrue(s, patternRegexp.matcher(s).matches());
+            assertTrue(s, patternDetailedRegexp.matcher(s).matches());
+
+        }
+    }
+
+
 }
