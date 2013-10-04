@@ -1,29 +1,16 @@
 package ish.oncourse.model;
 
-import ish.common.types.CreditCardType;
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.ProductStatus;
-import ish.common.types.VoucherPaymentStatus;
+import ish.common.types.*;
 import ish.common.util.ExternalValidation;
 import ish.math.Money;
 import ish.oncourse.model.auto._PaymentIn;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.CreditCardUtil;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import java.util.*;
 
 public class PaymentIn extends _PaymentIn implements Queueable {
 
@@ -230,8 +217,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 	/**
 	 * Sets the status of payment to {@link PaymentStatus#SUCCESS}, and sets the
-	 * success statuses to the related invoice ( {@link InvoiceStatus#SUCCESS} )
-	 * and enrolment ( {@link EnrolmentStatus#SUCCESS} ).
+	 * success statuses to the related invoice and enrolment ( {@link EnrolmentStatus#SUCCESS} ).
 	 * 
 	 * Invoked when the payment gateway processing is succeed.
 	 * 
@@ -244,19 +230,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		if (activeInvoice != null) {
 			activeInvoice.setModified(today);
-			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
-				il.setModified(today);
-				for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
-					ilDiscount.setModified(today);
-				}
-				Enrolment enrol = il.getEnrolment();
-				if (enrol != null) {
-					enrol.setModified(today);
-					if (!enrol.isInFinalStatus()) {
-						enrol.setStatus(EnrolmentStatus.SUCCESS);
-					}
-				}
-			}
+			new PaymentInUtils().makeSuccess(activeInvoice.getInvoiceLines());
 		}
 	}
 		
@@ -320,29 +294,16 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		paymentInLineToRefund.setModified(modifiedTime);
 		
 		// Fail enrollments on invoiceToRefund
-		for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
-			il.setModified(modifiedTime);
-			for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
-				ilDiscount.setModified(modifiedTime);
-			}
-			Enrolment enrol = il.getEnrolment();
-			if (enrol != null) {
-				enrol.setModified(modifiedTime);
-				boolean shouldFailEnrolment = enrol.getStatus() == null || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
-				if (shouldFailEnrolment) {
-					enrol.setStatus(EnrolmentStatus.FAILED);
-				}
-			}
-		}
-		
+		new PaymentInUtils().makeFail(invoiceToRefund.getInvoiceLines());
+
 		return internalPayment;
 	}
 
 	/**
 	 * Fails payment, but does not override state if already FAILED.Sets the
 	 * status of payment to {@link PaymentStatus#FAILED}, and sets the failed
-	 * statuses to the related invoice ( {@link InvoiceStatus#FAILED} ) and
-	 * enrolment ( {@link EnrolmentStatus#FAILED} ). Creates the refund invoice.
+	 * statuses to the related invoice and enrolment ( {@link EnrolmentStatus#FAILED} ).
+	 * Creates the refund invoice.
 	 */
 	public PaymentIn abandonPayment() {
 
@@ -457,19 +418,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		if (activeInvoice != null) {
 			activeInvoice.setModified(today);
-			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
-				il.setModified(today);
-				for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
-					ilDiscount.setModified(today);
-				}
-				Enrolment enrol = il.getEnrolment();
-				if (enrol != null) {
-					enrol.setModified(today);
-					if (enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
-						enrol.setStatus(EnrolmentStatus.SUCCESS);
-					}
-				}
-			}
+			new PaymentInUtils().makeSuccess(activeInvoice.getInvoiceLines());
 		}
 	}
 
@@ -683,5 +632,59 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 */
 	public boolean isZeroPayment() {
 		return getAmount().isZero();
+	}
+
+
+	/**
+	 * The class in the first step to move abandone paymentIn functionality to separate class
+	 */
+	private static class PaymentInUtils
+	{
+		private EnrolmentStatus enrolmentStatus;
+		private ProductStatus productStatus;
+		private List<InvoiceLine> invoiceLines;
+
+
+		public void makeFail(List<InvoiceLine> invoiceLines)
+		{
+			this.invoiceLines = invoiceLines;
+			enrolmentStatus = EnrolmentStatus.FAILED;
+			productStatus = ProductStatus.CANCELLED;
+			processInvoiceLines();
+
+		}
+
+		public void makeSuccess(List<InvoiceLine> invoiceLines)
+		{
+			this.invoiceLines = invoiceLines;
+			enrolmentStatus = EnrolmentStatus.SUCCESS;
+			productStatus = ProductStatus.ACTIVE;
+			processInvoiceLines();
+		}
+
+		private void processInvoiceLines() {
+			Date date = new Date();
+			for (InvoiceLine il : invoiceLines) {
+				il.setModified(date);
+				for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
+					ilDiscount.setModified(date);
+				}
+
+				Enrolment enrol = il.getEnrolment();
+				if (enrol != null) {
+					enrol.setModified(date);
+					if (enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
+						enrol.setStatus(enrolmentStatus);
+					}
+				}
+
+				List<ProductItem> productItems = il.getProductItem();
+				for (ProductItem productItem : productItems) {
+					if (productItem.getStatus() == ProductStatus.NEW)
+						productItem.setStatus(productStatus);
+				}
+			}
+		}
+
 	}
 }

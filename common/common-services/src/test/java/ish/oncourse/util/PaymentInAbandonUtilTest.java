@@ -1,17 +1,15 @@
 package ish.oncourse.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.InputStream;
-import java.util.List;
-
-import javax.sql.DataSource;
-
+import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
+import ish.common.types.ProductStatus;
+import ish.math.Money;
 import ish.oncourse.model.*;
+import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.payment.PaymentInAbandonUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -22,15 +20,11 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.ProductStatus;
-import ish.math.Money;
-import ish.oncourse.services.ServiceModule;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
-import ish.oncourse.util.payment.PaymentInAbandonUtil;
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class PaymentInAbandonUtilTest extends ServiceTest {
 private ICayenneService cayenneService;
@@ -105,7 +99,7 @@ private ICayenneService cayenneService;
 		assertEquals("InvoiceLines list should have 2 records", 2, invoice.getInvoiceLines().size());
 
 		//emulate run abandon by system
-		PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, true);
+		PaymentInAbandonUtil.abandonPayment(paymentIn, true);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class,
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -197,7 +191,7 @@ private ICayenneService cayenneService;
 		assertNotNull("Now enrollment should be linked to invoice line", enrolment);
 		assertEquals("Initial enrollment status should be in transaction", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
 		//emulate run abandon by user
-		PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, true);
+		PaymentInAbandonUtil.abandonPayment(paymentIn, true);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -276,7 +270,7 @@ private ICayenneService cayenneService;
 		assertNotNull("Now enrollment should be linked to invoice line", enrolment);
 		assertEquals("Initial enrollment status should be in transaction", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
 		//emulate run abandon by expire job
-		PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, false);
+		PaymentInAbandonUtil.abandonPayment(paymentIn, false);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -341,7 +335,7 @@ private ICayenneService cayenneService;
 		assertNotNull("Now enrollment should be linked to invoice line", enrolment);
 		assertEquals("Initial enrollment status should be in success", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 		//emulate run abandon by user
-		PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, true);
+		PaymentInAbandonUtil.abandonPayment(paymentIn, true);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -406,7 +400,7 @@ private ICayenneService cayenneService;
 		assertNotNull("Now enrollment should be linked to invoice line", enrolment);
 		assertEquals("Initial enrollment status should be success", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 		//emulate run abandon by expire job
-		PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, false);
+		PaymentInAbandonUtil.abandonPayment(paymentIn, false);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -444,7 +438,7 @@ private ICayenneService cayenneService;
 		context.commitChanges();
 		
 		//emulate run abandon by user
-		PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, true);
+		PaymentInAbandonUtil.abandonPayment(paymentIn, true);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -496,7 +490,7 @@ private ICayenneService cayenneService;
 		context.commitChanges();
 		
 		//emulate run abandon by expire job
-		PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, false);
+		PaymentInAbandonUtil.abandonPayment(paymentIn, false);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -563,7 +557,7 @@ private ICayenneService cayenneService;
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
 		//emulate run abandon by user
-		PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, true);
+		PaymentInAbandonUtil.abandonPayment(paymentIn, true);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -646,7 +640,7 @@ private ICayenneService cayenneService;
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
 		//emulate run abandon by expire job
-		PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, false);
+		PaymentInAbandonUtil.abandonPayment(paymentIn, false);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));

@@ -106,16 +106,17 @@ public class PaymentProcessController {
                 break;
             case ABANDON_PAYMENT:
             case CANCEL_PAYMENT:
-            	abandonPaymentReverseInvoice(action, true);
+            	abandonPayment(action, true);
                 break;
 		    case EXPIRE_PAYMENT:
 		    	if (paymentService.isProcessedByGateway(paymentIn)) {
+					paymentIn.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
 		    		//if the payment expire by timeout we need to keep invoice
-		    		abandonPaymentReverseInvoice(action, false);
+		    		abandonPayment(action, false);
 		    	}
                 break;
             case ABANDON_PAYMENT_KEEP_INVOICE:
-                abandonPaymentKeepInvoice();
+				abandonPayment(action, true);
                 break;
             case UPDATE_PAYMENT_GATEWAY_STATUS:
                 updatePaymentGatewayStatus();
@@ -212,9 +213,9 @@ public class PaymentProcessController {
      * @return abandon payment message block
      * @throws java.net.MalformedURLException
      */
-    private void abandonPaymentReverseInvoice(PaymentAction action, boolean firedManually) {
+    private void abandonPayment(PaymentAction action, boolean reverseInvoice) {
         changeProcessState(PROCESSING_ABANDON);
-        PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn, firedManually);
+        PaymentInAbandonUtil.abandonPayment(paymentIn, reverseInvoice);
 		switch (action)
 		{
 			case ABANDON_PAYMENT:

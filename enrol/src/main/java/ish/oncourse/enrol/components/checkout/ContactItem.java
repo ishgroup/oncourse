@@ -1,9 +1,10 @@
 package ish.oncourse.enrol.components.checkout;
 
-import ish.oncourse.enrol.checkout.ActionEnableProductItem;
+import ish.common.types.ProductStatus;
 import ish.oncourse.enrol.checkout.PurchaseController;
-import ish.oncourse.model.*;
-import ish.oncourse.model.ProductItem;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.Membership;
+import ish.oncourse.model.StudentConcession;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -55,7 +56,8 @@ public class ContactItem {
         List<String> names = new ArrayList<>();
         for (Membership membership:contact.getMemberships()) {
             String name = membership.getProduct().getName();
-            if (!names.contains(name) && membership.getId()!=null)
+			//we show only memebership which already persisted and has active status
+            if (!names.contains(name) && membership.getStatus() == ProductStatus.ACTIVE)
                 names.add(name);
         }
         return names;

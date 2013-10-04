@@ -1,5 +1,6 @@
 package ish.oncourse.utils;
 
+import ish.common.types.ProductStatus;
 import ish.oncourse.model.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,10 @@ public class MembershipDiscountHelper {
         List<MembershipProduct> membershipProducts = new ArrayList<>();
         List<Membership> memberships = contact.getMemberships();
         for (Membership membership : memberships)
-            membershipProducts.add((MembershipProduct) membership.getProduct());
+		{
+			if (membership.getStatus() == ProductStatus.ACTIVE)
+            	membershipProducts.add((MembershipProduct) membership.getProduct());
+		}
         return membershipProducts;
     }
 
