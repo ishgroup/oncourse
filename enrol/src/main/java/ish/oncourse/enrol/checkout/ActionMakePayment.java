@@ -1,7 +1,10 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
+import ish.common.types.ProductStatus;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.ProductItem;
 
 import java.util.List;
 
@@ -17,11 +20,25 @@ public class ActionMakePayment extends APurchaseAction {
 			for (Enrolment enrolment : enrolments) {
 				enrolment.setStatus(EnrolmentStatus.SUCCESS);
 			}
+			List<ProductItem> productItems = getController().getModel().getAllEnabledProductItems();
+			for (ProductItem productItem : productItems) {
+				productItem.setStatus(ProductStatus.ACTIVE);
+			}
 		} else if (getController().isEditPayment()) {
 			getController().setState(PurchaseController.State.paymentProgress);
 		} else
 			throw new IllegalArgumentException();
+
+		adjustSortOrder();
 		getModel().getObjectContext().commitChanges();
+	}
+
+	private void adjustSortOrder() {
+		List<InvoiceLine> invoiceLines = getModel().getInvoice().getInvoiceLines();
+		for (int i = 0; i < invoiceLines.size(); i++) {
+			InvoiceLine invoiceLine = invoiceLines.get(i);
+			invoiceLine.setSortOrder(i);
+		}
 	}
 
 	@Override

@@ -1,11 +1,13 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.ProductStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 
 import java.util.List;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.duplicatedMembership;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.enterVoucherPrice;
 
 
 public class
@@ -91,6 +93,8 @@ public class
         for (Membership membership : memberships) {
             if (membership == productItem)
                 continue;
+			if (membership.getStatus() != ProductStatus.ACTIVE)
+				continue;
             if (membership.getProduct().equals(productItem.getProduct()))
             {
                 String message = duplicatedMembership.getMessage(getController().getMessages(), ((Membership) productItem).getContact().getFullName(), membership.getProduct().getSku());
