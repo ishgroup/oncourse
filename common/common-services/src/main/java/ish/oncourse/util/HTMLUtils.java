@@ -1,6 +1,7 @@
 package ish.oncourse.util;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.model.Product;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.html.IPlainTextExtractor;
@@ -42,6 +43,13 @@ public class HTMLUtils {
 				String.format("%s/course/%s", request.getContextPath(), course.getCode().toUpperCase());
 
 	}
+
+	public static String getCanonicalLinkPathFor(Product product, Request request)
+	{
+		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() +
+				String.format("%s/product/%s", request.getContextPath(), product.getSku().toUpperCase());
+	}
+
 
 	public static String getCanonicalLinkPathForCourses(Request request, Tag browseTag)
 	{

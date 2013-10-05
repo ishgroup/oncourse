@@ -1,6 +1,7 @@
 package ish.oncourse.ui.components.internal;
 
 import ish.oncourse.model.WebNodeType;
+import ish.oncourse.services.datalayer.DataLayerFactory;
 import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.util.RequestUtil;
@@ -57,6 +58,10 @@ public class PageStructure {
 	@Property
 	@Parameter
 	private String eventName;
+
+	@Property
+	@Parameter
+	private DataLayerFactory.Cart cart;
 
 	@SetupRender
 	public void beforeRender() {

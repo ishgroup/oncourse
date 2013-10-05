@@ -135,10 +135,10 @@ public class ProductItem {
 	}
 	
 	public Money getPrice() {
-		Money priceExTax = product.getPriceIncTax();
-		if (priceExTax == null) {
+		Money price = product.getPriceIncTax();
+		if (price == null) {
 			if (isVoucherProduct()) {
-				priceExTax = Money.ZERO;
+				price = Money.ZERO;
 			} else {
 				LOGGER.error(String.format("Empty price for product with name %s and sku %s", product.getName(), product.getSku()));
 				throw new IllegalStateException(String.format("Empty price for product with name %s and sku %s", product.getName(), product.getSku()));
@@ -146,8 +146,8 @@ public class ProductItem {
 				//TODO: here we should throw the exception but till the data replication not finished we need only log the error.
 			}
 		}
-		this.feeFormat = FormatUtils.chooseMoneyFormat(priceExTax);
-		return priceExTax;
+		this.feeFormat = FormatUtils.chooseMoneyFormat(price);
+		return price;
 	}
 
     public Format moneyFormat(Money money)

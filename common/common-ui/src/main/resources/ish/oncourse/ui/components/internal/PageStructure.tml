@@ -11,7 +11,7 @@
 			<span t:type="ui/pagehead" title="${title}"
 				  canonicalLinkPath="${canonicalLinkPath}"
 				  metaDescription="${metaDescription}"
-				  eventName="${eventName}"/>
+				  eventName="${eventName}" cart="${cart}"/>
 		</head>
 		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
 			<div  t:type="ui/BodyStructure" webNodeType="webNodeType">

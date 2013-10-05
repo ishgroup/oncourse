@@ -25,5 +25,5 @@
 	<script type="text/javascript" src="/s/js/all.js"></script>
 	<span t:type="ui/googleAnalytics"/>
 
-	<span t:type="ui/googletagmanager" eventName="${eventName}"/>
+	<span t:type="ui/googletagmanager" eventName="${eventName}" cart="${cart}"/>
 </t:container>

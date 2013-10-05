@@ -21,6 +21,8 @@ import ish.oncourse.services.course.CourseService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.CourseClassService;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.datalayer.DataLayerFactory;
+import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.services.discount.DiscountService;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.encrypt.EncryptionService;
@@ -90,6 +92,7 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
@@ -185,6 +188,8 @@ public class ServiceModule {
 		binder.bind(IVoucherService.class, VoucherService.class);
 		binder.bind(IFacebookMetaProvider.class, FacebookMetaProvider.class);
 		binder.bind(ICacheMetaProvider.class, NoCacheMetaProvider.class).eagerLoad();
+
+		binder.bind(IDataLayerFactory.class, DataLayerFactory.class).scope(ScopeConstants.PERTHREAD);
 	}
 
 	@Scope("perthread")

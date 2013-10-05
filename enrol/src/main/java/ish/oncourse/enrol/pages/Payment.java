@@ -3,11 +3,15 @@ package ish.oncourse.enrol.pages;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.components.checkout.payment.CorporatePassEditor;
 import ish.oncourse.enrol.components.checkout.payment.PaymentEditor;
+import ish.oncourse.services.datalayer.DataLayerFactory;
+import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.LinkedList;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCardEditor;
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCorporatePassEditor;
@@ -23,6 +27,10 @@ public class Payment {
 	private Block paymentBlock;
 	@Inject
 	private Request request;
+
+	@Inject
+	private IDataLayerFactory dataLayerFactory;
+
 	@InjectComponent
 	private CorporatePassEditor corporatePassEditor;
 	@InjectComponent
@@ -132,6 +140,22 @@ public class Payment {
 				getPurchaseController().getPaymentEditorDelegate() != null &&
 				getPurchaseController().getPaymentEditorDelegate().isPaymentSuccess();
 		return result ? "purchaseComplete" : null;
+	}
+
+	public DataLayerFactory.Cart getCart()
+	{
+		boolean result = getPurchaseController() != null && getPurchaseController().isFinished() &&
+				getPurchaseController().getPaymentEditorDelegate() != null &&
+				getPurchaseController().getPaymentEditorDelegate().isPaymentSuccess();
+		if (result)
+		{
+			LinkedList list = new LinkedList();
+			list.addAll(getPurchaseController().getModel().getAllEnabledEnrolments());
+			list.addAll(getPurchaseController().getModel().getAllEnabledProductItems());
+			DataLayerFactory.Cart cart = dataLayerFactory.build(getPurchaseController().getModel().getAllEnabledEnrolments());
+			return cart;
+		}
+		return null;
 	}
 
 	/**

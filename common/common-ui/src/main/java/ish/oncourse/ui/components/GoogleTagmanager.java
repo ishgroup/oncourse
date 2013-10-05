@@ -21,6 +21,10 @@ public class GoogleTagmanager {
 	@Parameter
 	private String eventName;
 
+	@Property
+	@Parameter
+	private String cart;
+
 	public String getAccount() {
 		String account = siteService.getCurrentWebSite().getGoogleTagmanagerAccount();
 		return (StringUtils.trimToNull(account) == null) ? null : account.trim();

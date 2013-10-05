@@ -1,6 +1,7 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.datalayer.DataLayerFactory;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
@@ -41,6 +42,11 @@ public class PageHead {
 	@Property
 	@Parameter
 	private String eventName;
+
+	@Property
+	@Parameter
+	private DataLayerFactory.Cart cart;
+
 	
 	public String getTitle() {
 		String collegeName = siteService.getCurrentCollege().getName();

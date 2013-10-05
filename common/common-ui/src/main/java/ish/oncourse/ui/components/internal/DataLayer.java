@@ -4,7 +4,8 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.services.datalayer.ShoppingCartDataBuilder;
+import ish.oncourse.services.datalayer.DataLayerFactory;
+import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.tapestry5.annotations.Parameter;
@@ -14,6 +15,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,11 +40,15 @@ public class DataLayer {
 	@Inject
 	private ITagService tagService;
 
-	@Property
-	private ShoppingCartDataBuilder.Cart cart;
+	@Inject
+	private IDataLayerFactory dataLayerFactory;
 
 	@Property
-	private ShoppingCartDataBuilder.Product product;
+	@Parameter
+	private DataLayerFactory.Cart cart;
+
+	@Property
+	private DataLayerFactory.Product product;
 
 	private List<CourseClass> classes;
 	private List<Product> products;
@@ -68,17 +74,16 @@ public class DataLayer {
 
 		initItems();
 
-		if (classes.size() > 0)
+		if (cart == null)
 		{
-			ShoppingCartDataBuilder cartDataBuilder = new ShoppingCartDataBuilder();
-			cartDataBuilder.setRequest(request);
-			cartDataBuilder.setTagService(tagService);
-
-			cartDataBuilder.setCourseClasses(classes);
-			cartDataBuilder.build();
-			cart = cartDataBuilder.getCart();
+			if (classes.size() > 0 || products.size() > 0)
+			{
+				ArrayList values = new ArrayList(classes.size() + products.size());
+				values.addAll(classes);
+				values.addAll(products);
+				cart = dataLayerFactory.build(values);
+			}
 		}
-		//todo export for vouchers
 	}
 
 	private void initItems() {
