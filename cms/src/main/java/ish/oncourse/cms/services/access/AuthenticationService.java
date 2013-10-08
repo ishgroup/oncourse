@@ -8,7 +8,6 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.security.AuthenticationUtil;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
@@ -49,13 +48,48 @@ public class AuthenticationService implements IAuthenticationService {
 			return AuthenticationStatus.INVALID_CREDENTIALS;
 		}
 
+		// try authenticate by email using SystemUser table
 		AuthenticationStatus status = authenticateByEmail(userName, password);
 
+		// if failed then try authenticate SystemUser by login
 		if (AuthenticationStatus.NO_MATCHING_USER.equals(status)) {
 			status = authenticateByLogin(userName, password);
 		}
 
+		// if SystemUser authentication failed then try authenticate using WillowUser table
+		if (AuthenticationStatus.NO_MATCHING_USER.equals(status)) {
+			status = authenticateWillowUser(userName, password);
+		}
+
 		return status;
+	}
+
+	private AuthenticationStatus authenticateWillowUser(String userName, String password) {
+		College college = siteService.getCurrentCollege();
+
+		SelectQuery query = new SelectQuery(WillowUser.class);
+		query.andQualifier(ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, college));
+		query.orQualifier(ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, null));
+
+		query.andQualifier(ExpressionFactory.matchExp(WillowUser.EMAIL_PROPERTY, userName));
+
+		final List<WillowUser> users = cayenneService.newContext().performQuery(query);
+
+		if (users.isEmpty()) {
+			return AuthenticationStatus.NO_MATCHING_USER;
+		}
+
+		if (users.size() > 1) {
+			return AuthenticationStatus.MORE_THAN_ONE_USER;
+		}
+
+		WillowUser user = users.get(0);
+
+		if (password.equals(user.getPassword())) {
+			return succedAuthentication(WillowUser.class, user);
+		} else {
+			return AuthenticationStatus.INVALID_CREDENTIALS;
+		}
 	}
 
 	private AuthenticationStatus authenticateByEmail(String email, String password) {
@@ -114,25 +148,10 @@ public class AuthenticationService implements IAuthenticationService {
 		if (AuthenticationUtil.isValidPasswordHash(user.getPassword())) {
 			// normal authenticatioin procedure
 			return AuthenticationUtil.checkPassword(password, user.getPassword());
-		} else {
-			// fallback to old password hashing system
-			if (AuthenticationUtil.checkOldPassword(password, user.getPassword())) {
-
-				// if password is correct then replace old hash with new one
-				ObjectContext context = cayenneService.newContext();
-
-				SystemUser localUser = context.localObject(user);
-
-				String newHash = AuthenticationUtil.generatePasswordHash(password);
-				localUser.setPassword(newHash);
-
-				context.commitChanges();
-
-				return true;
-			}
 		}
 
-		return false;
+		// fallback to old password hashing mechanism
+		return AuthenticationUtil.checkOldPassword(password, user.getPassword());
 	}
 
 	@Override

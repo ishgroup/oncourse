@@ -6,13 +6,9 @@ package ish.oncourse.cms.services.access;
 import static org.junit.Assert.*;
 
 import ish.oncourse.cms.services.CmsTestModule;
-import ish.oncourse.model.SystemUser;
 import ish.oncourse.services.access.AuthenticationStatus;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.security.AuthenticationUtil;
-import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.ObjectContext;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -82,31 +78,24 @@ public class AuthenticationServiceTest extends ServiceTest {
 	}
 
 	@Test
-	public void testOldHashReplacement() throws Exception {
-		ObjectContext context = cayenneService.newContext();
+	public void testLoginWillowUser() throws Exception {
+		// wrong password
+		AuthenticationStatus statusFail = authenticationService.authenticate("willow@test.test", "wrong");
+		assertEquals(AuthenticationStatus.INVALID_CREDENTIALS, statusFail);
 
-		SystemUser user = Cayenne.objectForPK(context, SystemUser.class, 1);
+		// correct password
+		AuthenticationStatus statusSuccess = authenticationService.authenticate("willow@test.test", "willow");
+		assertEquals(AuthenticationStatus.SUCCESS, statusSuccess);
+	}
 
-		// check if old hash for "password" is in place
-		assertEquals("5baa61e4c9b93f3f68225b6cf8331b7ee68fd8", user.getPassword());
+	@Test
+	public void testLoginWillowSuperUser() throws Exception {
+		// wrong password
+		AuthenticationStatus statusFail = authenticationService.authenticate("super@test.test", "wrong");
+		assertEquals(AuthenticationStatus.INVALID_CREDENTIALS, statusFail);
 
-		// try wrong password
-		AuthenticationStatus status = authenticationService.authenticate(user.getLogin(), "wrong");
-
-		assertEquals(AuthenticationStatus.INVALID_CREDENTIALS, status);
-		// check if old hash for "password" is still in place
-		assertEquals("5baa61e4c9b93f3f68225b6cf8331b7ee68fd8", user.getPassword());
-
-		// try correct password
-		status = authenticationService.authenticate(user.getLogin(), "password");
-
-		assertEquals(AuthenticationStatus.SUCCESS, status);
-
-		// check that hash is in a new format
-		assertTrue(AuthenticationUtil.isValidPasswordHash(user.getPassword()));
-
-		// check that user is still able to log in with the same password
-		status = authenticationService.authenticate(user.getLogin(), "password");
-		assertEquals(AuthenticationStatus.SUCCESS, status);
+		// correct password
+		AuthenticationStatus statusSuccess = authenticationService.authenticate("super@test.test", "super");
+		assertEquals(AuthenticationStatus.SUCCESS, statusSuccess);
 	}
 }
