@@ -99,7 +99,7 @@ public class TextileTypeTest {
                 "{video id:\"1\" height:\"4px\"}",
                 "{video       type:\"type\"        width:\"4px\"       height:\"4px\"}",
                 "{video height:\"4px\" width:\"8px\" id:\"ID\"}",
-                "{video height:\"4px\" width:\"8px\" id:\"ID\" type:\"type\'}",
+                "{video height:\"4px\" width:\"8px\" id:\"ID\" type:\"type\"}",
                 "{video height:\"4px\" id:\"er\" width:\"8px\" type:\"type\"}",
                 "{video  type:\"type\" height:\"4px\" id:\"er\" width:\"8px\"}",
                 "{video  type:\"type\"  id:\"er\" height:\"4px\" width:\"8px\"}",
