@@ -35,6 +35,6 @@ public abstract class AbstractProductUpdater<S extends ProductStub, E extends Pr
 		if (stub.getTaxAdjustment() != null) {
 			entity.setTaxAdjustment(new Money(stub.getTaxAdjustment()));
 		}
-		entity.setFeeGST(stub.getFeeGST() != null ? Money.valueOf(stub.getFeeGST()) : Money.ZERO);
+		entity.setFeeGST(stub.getTaxAmount() != null ? Money.valueOf(stub.getTaxAmount()) : Money.ZERO);
 	}
 }

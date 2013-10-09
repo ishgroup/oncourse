@@ -28,6 +28,13 @@ public class InvoiceLineUpdater extends AbstractWillowUpdater<InvoiceLineStub, I
 		entity.setTaxEach(Money.valueOf(stub.getTaxEach()));
 		entity.setTitle(stub.getTitle());
 		entity.setUnit(stub.getUnit());
+		entity.setSortOrder(stub.getSortOrder());
+
+		// ugly hack to handle InvoiceLine.sortOrder logic without migration to new stubs version
+		if (CommonUtils.compare(getCurrentCollegeAngelVersion(entity), CommonUtils.VERSION_5_0) >= 0) {
+			entity.setSortOrder(stub.getSortOrder());
+		}
+
 		if (stub.getEnrolmentId() != null) {
 			if (isSupportOneToManyOnEnrolment_InvoiceLine_Relation(entity)) {
 				Enrolment enrolment = callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class);

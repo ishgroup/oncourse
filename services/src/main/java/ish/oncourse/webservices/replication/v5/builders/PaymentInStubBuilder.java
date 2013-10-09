@@ -3,6 +3,7 @@ package ish.oncourse.webservices.replication.v5.builders;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.util.CommonUtils;
 import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v5.stubs.replication.PaymentInStub;
 import ish.util.CreditCardUtil;
@@ -30,16 +31,18 @@ public class PaymentInStubBuilder extends AbstractWillowStubBuilder<PaymentIn, P
 		stub.setStatus(entity.getStatus().getDatabaseValue());
 
 		PaymentType type = entity.getType();
-		if (type == null && entity.getSource() == PaymentSource.SOURCE_WEB) {
-			if (entity.getCreditCardNumber() == null) {
+
+		// ugly hack to handle new REVERSE payment type for pre 5.0 angel versions
+		if (CommonUtils.compare(CommonUtils.getCurrentCollegeAngelVersion(entity), CommonUtils.VERSION_5_0) < 0) {
+
+			// older angel versions used INTERNAL payment type instead of REVERSE
+			if (PaymentType.REVERSE.equals(type)) {
 				type = PaymentType.INTERNAL;
-			} else {
-				type = PaymentType.CREDIT_CARD;
 			}
 		}
-		if (type != null) {
-			stub.setType(type.getDatabaseValue());
-		}
+
+		stub.setType(type.getDatabaseValue());
+
 		stub.setGatewayReference(entity.getGatewayReference());
 		stub.setGatewayResponse(entity.getGatewayResponse());
 		stub.setSessionId(entity.getSessionId());

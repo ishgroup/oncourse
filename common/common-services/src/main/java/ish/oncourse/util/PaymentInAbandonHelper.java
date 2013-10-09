@@ -336,16 +336,16 @@ public class PaymentInAbandonHelper {
 		// linked to invoiceToRefund, and refundInvoice.
 		Invoice invoiceToRefund = paymentInLineToRefund.getInvoice();
 		invoiceToRefund.updateAmountOwing();
-		PaymentIn internalPayment = null;
+		PaymentIn reversePayment;
 		//if the owing already balanced, no reason to create any refund invoice
 		if (!Money.isZeroOrEmpty(invoiceToRefund.getAmountOwing())){
-			internalPayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
-			internalPayment.setAmount(Money.ZERO);
-			internalPayment.setType(PaymentType.INTERNAL);
-			internalPayment.setStatus(PaymentStatus.SUCCESS);
+			reversePayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
+			reversePayment.setAmount(Money.ZERO);
+			reversePayment.setType(PaymentType.REVERSE);
+			reversePayment.setStatus(PaymentStatus.SUCCESS);
 			String sessionId = paymentInLineToRefund.getPaymentIn().getSessionId();
 			if (StringUtils.trimToNull(sessionId) != null) {
-				internalPayment.setSessionId(sessionId);
+				reversePayment.setSessionId(sessionId);
 			}
 
 			// Creating refund invoice
@@ -357,12 +357,12 @@ public class PaymentInAbandonHelper {
 			refundPL.setAmount(Money.ZERO.subtract(paymentInLineToRefund.getAmount()));
 			refundPL.setCollege(paymentInLineToRefund.getCollege());
 			refundPL.setInvoice(refundInvoice);
-			refundPL.setPaymentIn(internalPayment);
+			refundPL.setPaymentIn(reversePayment);
 
 			PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
-			paymentInLineToRefundCopy.setPaymentIn(internalPayment);
+			paymentInLineToRefundCopy.setPaymentIn(reversePayment);
 		} else {
-			internalPayment = paymentInLineToRefund.getPaymentIn();
+			reversePayment = paymentInLineToRefund.getPaymentIn();
 		}
 		invoiceToRefund.setModified(modifiedTime);
 		paymentInLineToRefund.setModified(modifiedTime);
@@ -391,7 +391,7 @@ public class PaymentInAbandonHelper {
 			}
 			//TODO: we should also add the memberships changes here when they receive the status
 		}
-		return internalPayment;
+		return reversePayment;
 	}
 	
 }

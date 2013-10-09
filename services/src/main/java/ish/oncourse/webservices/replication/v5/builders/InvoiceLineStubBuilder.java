@@ -2,6 +2,7 @@ package ish.oncourse.webservices.replication.v5.builders;
 
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.util.CommonUtils;
 import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub;
 
@@ -25,6 +26,12 @@ public class InvoiceLineStubBuilder extends AbstractWillowStubBuilder<InvoiceLin
 		stub.setTaxEach(entity.getTaxEach().toBigDecimal());
 		stub.setTitle(entity.getTitle());
 		stub.setUnit(entity.getUnit());
+
+		// ugly hack to handle InvoiceLine.sortOrder logic without migration to new stub version
+		if (CommonUtils.compare(CommonUtils.getCurrentCollegeAngelVersion(entity), CommonUtils.VERSION_5_0) >= 0) {
+			stub.setSortOrder(entity.getSortOrder());
+		}
+
 		return stub;
 	}
 }

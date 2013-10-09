@@ -267,7 +267,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		if (!Money.isZeroOrEmpty(invoiceToRefund.getAmountOwing())) {
 			internalPayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
 			internalPayment.setAmount(Money.ZERO);
-			internalPayment.setType(PaymentType.INTERNAL);
+			internalPayment.setType(PaymentType.REVERSE);
 			internalPayment.setStatus(PaymentStatus.SUCCESS);
 			String sessionId = paymentInLineToRefund.getPaymentIn().getSessionId();
 			if (StringUtils.trimToNull(sessionId) != null) {
