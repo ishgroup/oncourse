@@ -7,7 +7,7 @@ dependencies {
 	compile project(':common')
 	compile project(':webservices-client')
 
-	compile 'org.apache.cayenne:cayenne-lifecycle:3.2M1.1'
+	compile 'org.apache.cayenne:cayenne-lifecycle:3.2M1.2'
 
 	compile 'foxtrot:foxtrot-core:4.0'
 
