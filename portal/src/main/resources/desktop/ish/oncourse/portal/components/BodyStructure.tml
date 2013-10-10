@@ -1,27 +1,18 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-	<div class="wrapper">
+	<div class="wrap">
 
 		<div t:type="bodyheader"/>
-
-
-		<div class="center">
-
-			<t:if t:test="userInSession">
-				<div t:type="bodysidebar"/>
-			</t:if>
+		<div class="container">
+			<!--<t:if t:test="userInSession">-->
+				<!--<div t:type="bodysidebar"/>-->
+			<!--</t:if>-->
 
 			<div t:type="bodycontent">
 				<t:body/>
 			</div>
-
-			<div class="cl"></div>
 		</div>
 
-
 		<div t:type="bodyfooter"/>
-
 	</div>
-
-
 </t:container>

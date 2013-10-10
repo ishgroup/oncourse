@@ -1,112 +1,39 @@
 <html t:type="pagestructure" title="literal:Login page"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<div class="col-xs-12 col-sm-12 col-lg-12">
+	<div class="login-form well">
+		<t:form t:id="loginForm" method="post" clientValidation="literal:NONE">
+			<fieldset><h2 class="form-title">Log In</h2>
 
-<div id="loginZone">
-	<t:delegate to="block:loginBlock"/>
-</div>
+				<div class="login-option clearfix form-group">
+					<div class="slider-frame"><label class="slider-button ${companyCheckStyle.companyOn}" for="chk_company">${companyCheckStyle.label}</label>
+						<t:checkbox t:id="iscompany" value="iscompany" clientId="chk_company" name="chk_company"/></div>
+				</div>
+				<div class="company-login" style="${companyCheckStyle.companyDisplay}">
+					<div class="form-group"><t:textField t:id="companyName" class="form-control" placeholder="Company Name"/></div>
+				</div>
 
-<t:block t:id="loginBlock">
-	<t:form t:id="loginForm" class="login-form" method="post" clientValidation="literal:NONE">
+				<div class="user-login"  style="${companyCheckStyle.studentDisplay}">
+					<div class="form-group"><t:textField t:id="firstName" class="form-control" placeholder="First Name"/></div>
+					<div class="form-group"><t:textField t:id="lastName" class="form-control" placeholder="Last Name"/></div>
+				</div>
 
-		<div class="login-wrapper">
 
-			<div class="login-left">
-				<h1>Log In</h1>
-
-				<div class="login-container">
-					<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation alert alert-block alert-error"/>
-					<div class="login-table">
-						<div style="width:100%;">
-							<p class="ascompany clearfix"><t:label for="iscompany">As company</t:label>
-								<span class="textField">
-									<t:checkbox t:id="iscompany" value="iscompany" />
-								</span>
-							</p>
+				<div class="form-group"><t:textField t:id="email" class="form-control" placeholder="Email"/></div>
+				<div class="form-group"><t:passwordField t:id="password" class="form-control" placeholder="Password"/></div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="forget-pwd"><a href="#">Forgot Password?</a></div>
+						<div class="text-right">
+							<t:submit class="btn-login btn btn-primary" value="Submit"/>
 						</div>
-
-						<t:if test="iscompany" negate="true">
-							<t:delegate to="block:studentFieldSet"/>
-						</t:if>
-						<t:if test="iscompany">
-							<t:delegate to="block:companyFieldSet"/>
-						</t:if>
-
-
-
-						<p class="clearfix">
-							<t:label for="email">E-mail</t:label>
-                            <span class="textField">
-                                <span class="validate">
-                                    <t:TextField t:id="email" size="30" maxlength="100" />
-                                    <span t:type="HintComponent" validationMessage="${emailNameErrorMessage}"/>
-                                </span>
-                            </span>
-						</p>
-
-						<p class="clearfix">
-							<t:label for="password">Password</t:label>
-                            <span class="textField">
-                                <span class="validate">
-                                    <input t:type="PasswordField" t:id="password" size="30" maxlength="100" />
-                                    <span t:type="HintComponent" validationMessage="${passwordNameErrorMessage}"/>
-                                </span>
-                            </span>
-						</p>
-
-						<p class="clearfix">
-                            <span class="textField">
-                                <t:submit t:id="signIn" class="btn-login btn btn-primary" value="Login" clientId="loginBtn"/>
-                                <a id="forgotPassword" href="#" class="login-forgot">Forgot Password?</a>
-                            </span>
-						</p>
 					</div>
 				</div>
-			</div>
-
-			<div class="login-right">If you are a tutor or a student login to SkillsOnCourse to manage your classes, view your timetable and much more. If you are looking to enrol in a class please visit the college website directly.</div>
-
-		</div>
-
-	</t:form>
-	<div class="cl"></div>
-</t:block>
-
-<t:block t:id="companyFieldSet">
-	<div class="contactFields">
-		<p class="clearfix">
-			<t:label for="companyName">Company Name</t:label>
-			<span class="textField">
-				<span class="validate">
-					<t:TextField t:id="companyName" size="30" maxlength="100" />
-					<span t:type="HintComponent" validationMessage="${companyNameErrorMessage}"/>
-				</span>
-			</span>
-		</p>
+			</fieldset>
+		</t:form>
+		<div class="alert alert-info"><p>If you are a tutor or a student login to SkillsOnCourse to manage your
+			classes, view your timetable and much more. If you are looking to enrol in a class please visit the
+			college website directly.</p></div>
 	</div>
-</t:block>
-
-<t:block t:id="studentFieldSet">
-	<div class="contactFields">
-		<p class="clearfix">
-			<t:label for="firstName">First Name</t:label>
-			<span class="textField">
-				<span class="validate">
-					<t:TextField t:id="firstName" size="30" maxlength="100" />
-					<span t:type="HintComponent" validationMessage="${firstNameErrorMessage}"/>
-				</span>
-			</span>
-		</p>
-
-		<p class="clearfix">
-			<t:label for="lastName">Last Name</t:label>
-			<span class="textField">
-				<span class="validate">
-					<t:TextField t:id="lastName" size="30" maxlength="100" />
-					<span t:type="HintComponent" validationMessage="${secondNameErrorMessage}"/>
-				</span>
-			</span>
-		</p>
-	</div>
-</t:block>
-
+</div>
 </html>

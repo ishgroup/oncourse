@@ -13,7 +13,6 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,7 +41,7 @@ public class Login {
 
 	@Persist
 	@Property
-	private Boolean iscompany;
+	private Boolean isCompany;
 	
 	@Persist
 	@Property
@@ -87,8 +86,8 @@ public class Login {
 	@InjectPage
 	private SelectCollege selectCollege;
 
-	@Inject
-	@Id("loginBlock")
+	//@Inject
+	//@Id("loginBlock")
 	private Block loginBlock;
 
 	/**
@@ -101,7 +100,7 @@ public class Login {
     @Inject
     private Messages messages;
 
-    @InjectComponent
+    @InjectComponent(value = "loginForm")
     @Property
     private Form loginForm;
 
@@ -156,13 +155,6 @@ public class Login {
     		this.email = value;
     }
 
-    @OnEvent(value = "onCompanyCheckEvent")
-	Object onCompanyCheck()
-	{
-		iscompany = (iscompany == null || !iscompany);
-		return loginBlock;
-	}
-
 	@OnEvent(value = "onForgotPasswordEvent")
 	Object onForgotPassword() {
 		this.isForgotPassword = true;
@@ -187,7 +179,7 @@ public class Login {
 			}
 		}
 
-		if (iscompany) {
+		if (isCompany) {
 			if (StringUtils.isBlank(companyName)) {
                 companyNameErrorMessage = messages.get("companyNameErrorMessage");
 				loginForm.recordError(companyNameField, companyNameErrorMessage);
@@ -219,7 +211,7 @@ public class Login {
 
     private Object doLogin() {
 		List<Contact> users = new ArrayList<>();
-		if(iscompany) {
+		if(isCompany) {
 			users= authenticationService.authenticateCompany(companyName, email, password);
 		} else {
 			users = authenticationService.authenticate(firstName, lastName, email, password);
@@ -267,7 +259,7 @@ public class Login {
 	private Object forgotPassword() {
 
 		List<Contact> users = new ArrayList<>();
-		if(iscompany) {
+		if(isCompany) {
 			users= authenticationService.findCompanyForPasswordRecovery(companyName, email);
 		} else {
 			users = authenticationService.findForPasswordRecovery(firstName, lastName, email);
@@ -305,5 +297,41 @@ public class Login {
 			selectCollege.setTheUsers(users, collegesWithDuplicates);
 			return selectCollege;
 		}
+	}
+
+	public CompanyCheckStyle getCompanyCheckStyle()
+	{
+		return new CompanyCheckStyle();
+	}
+
+
+	public class CompanyCheckStyle
+	{
+
+		private boolean isCompany()
+		{
+			return isCompany != null && isCompany;
+		}
+		public String getCompanyDisplay()
+		{
+
+			return isCompany() ? "display: block;":"display: none;";
+		}
+
+		public String getStudentDisplay()
+		{
+			return isCompany() ? "display: none;":"display: block;";
+		}
+
+		public String getCompanyOn()
+		{
+			return isCompany() ? "on":StringUtils.EMPTY;
+		}
+
+		public String getLabel()
+		{
+			return isCompany() ? "as company": "as person";
+		}
+
 	}
 }

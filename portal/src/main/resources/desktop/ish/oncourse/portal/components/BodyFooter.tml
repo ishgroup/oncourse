@@ -1,11 +1,12 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-	<div class="footer">
-		<p class="copy pull-left">&#169; ish group 2012</p>
-		
-		<a href="http://www.ish.com.au/oncourse" class="pull-right">
-			<img alt="powered by ish onCourse" height="9" width="102" src="${contextPath}/img/poweredby.png" />
-		</a>
+	<div id="footer">
+		<div class="container clearfix">
+			<!--<p class="text-muted credit pull-left">&copy; 2013</p>-->
+			<p class="text-muted credit pull-right text-right">
+				<a href="#"><img src="/s/portal/img/poweredby.png" alt=""/></a>
+				<small class="pull-right">© 2013</small>
+			</p>
+		</div>
 	</div>
-
 </t:container>

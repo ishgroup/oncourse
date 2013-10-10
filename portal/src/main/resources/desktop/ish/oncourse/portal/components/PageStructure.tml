@@ -5,7 +5,6 @@
 	</head>
 	
 	<body class="${bodyClass}">
-	
 		<div t:type="bodystructure">
 			<t:body/>
 		</div>

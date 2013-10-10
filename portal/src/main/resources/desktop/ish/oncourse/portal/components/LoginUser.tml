@@ -1,7 +1,13 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-	<div class="logged">
-		Hi, <strong>${user.givenName} ${user.familyName}</strong> <a href="#" t:type="ActionLink" t:id="logout" class="btn-log">Logout</a>
+	<div class="collapse logged navbar-collapse">
+		<p>
+		<span>Approvals  <span class="badge">3</span>
+		</span>
+		<span>Hi, <strong>${user.givenName} ${user.familyName}</strong></span>
+			<a href="#" class="btn btn-link" t:type="ActionLink" t:id="logout">
+				<i class="glyphicon glyphicon-off"></i>Logout
+			</a>
+		</p>
 	</div>
-
 </t:container>

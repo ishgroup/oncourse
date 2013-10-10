@@ -1,16 +1,18 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-	<div class="head">
-	
-		<div class="logo"><img src="${contextPath}/img/logo.gif" alt="Logo"/></div>
-		
-		<div class="header-title"></div>
-		
-		<t:if t:test="userInSession">
-			<div t:type="loginuser"/>
-		</t:if>
-
-		<div class="cl"></div>
+	<div class="navbar navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="glyphicon glyphicon-user"></span>
+				</button>
+				<a class="navbar-brand" href="#">
+					<img src="/s/portal/img/logo-v3.png" alt=""/>
+				</a>
+			</div>
+			<t:if t:test="userInSession">
+				<div t:type="loginuser"/>
+			</t:if>
+		</div>
 	</div>
-
 </t:container>
