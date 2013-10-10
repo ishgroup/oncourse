@@ -20,6 +20,5 @@ apply plugin: 'groovy'
 version = '1.0'
 
 dependencies {
-	groovy localGroovy()
 	compile gradleApi()
 }
