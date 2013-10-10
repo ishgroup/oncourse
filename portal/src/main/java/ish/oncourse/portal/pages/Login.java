@@ -16,10 +16,7 @@ import org.apache.tapestry5.services.Request;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Login {
 
@@ -86,10 +83,6 @@ public class Login {
 	@InjectPage
 	private SelectCollege selectCollege;
 
-	//@Inject
-	//@Id("loginBlock")
-	private Block loginBlock;
-
 	/**
 	 * the property should be persist because we set it over ajax request and
 	 * it should be available for the next requests
@@ -124,14 +117,19 @@ public class Login {
     @Property
     private String passwordNameErrorMessage;
 
+    @Persist
+    private Map<String,String> errors;
 
-	@SetupRender
-	void setupRender() {
-        fillStudentFields();
-        //the code makes logout when an user open login page again
-        if (!loginForm.getHasErrors())
+
+    Object onActivate() {
+        if (authenticationService.getUser() != null)
             authenticationService.logout();
-	}
+        if (errors == null)
+            errors = new HashMap<>();
+        fillStudentFields();
+        return null;
+    }
+
 
 
     @AfterRender
@@ -139,6 +137,8 @@ public class Login {
     {
         clearErrorFields();
         isForgotPassword = false;
+        errors.clear();
+
     }
 
     private void fillStudentFields() {
@@ -158,15 +158,44 @@ public class Login {
 	@OnEvent(value = "onForgotPasswordEvent")
 	Object onForgotPassword() {
 		this.isForgotPassword = true;
-		return loginBlock;
+		return loginForm;
 
 	}
 
 	Object onSuccess() throws IOException {
-
         clearErrorFields();
 
+        if (isCompany) {
+            if (StringUtils.isBlank(companyName)) {
+
+                errors.put("companyName", messages.get("companyNameErrorMessage"));
+
+                companyNameErrorMessage = messages.get("companyNameErrorMessage");
+                loginForm.recordError(companyNameField, companyNameErrorMessage);
+            }
+        } else {
+            if (StringUtils.isBlank(firstName)) {
+
+                errors.put("firstName", messages.get("firstNameErrorMessage"));
+
+
+                firstNameErrorMessage = messages.get("firstNameErrorMessage");
+                loginForm.recordError(firstNameField, firstNameErrorMessage);
+            }
+            if (StringUtils.isBlank(lastName)) {
+
+                errors.put("lastName", messages.get("secondNameErrorMessage"));
+
+                secondNameErrorMessage = messages.get("secondNameErrorMessage");
+                loginForm.recordError(lastNameField, secondNameErrorMessage);
+            }
+
+        }
+
 		if (StringUtils.isBlank(email)) {
+
+            errors.put("email", messages.get("emailNameErrorMessage"));
+
             emailNameErrorMessage = messages.get("emailNameErrorMessage");
 			loginForm.recordError(emailField, emailNameErrorMessage);
 		}
@@ -174,26 +203,14 @@ public class Login {
 		if (!isForgotPassword) {
 			if (StringUtils.isBlank(password)) {
 
+                errors.put("password", messages.get("passwordNameErrorMessage"));
+
                 passwordNameErrorMessage = messages.get("passwordNameErrorMessage");
                 loginForm.recordError(passwordField, passwordNameErrorMessage);
 			}
 		}
 
-		if (isCompany) {
-			if (StringUtils.isBlank(companyName)) {
-                companyNameErrorMessage = messages.get("companyNameErrorMessage");
-				loginForm.recordError(companyNameField, companyNameErrorMessage);
-			}
-		} else {
-			if (StringUtils.isBlank(lastName)) {
-                secondNameErrorMessage = messages.get("secondNameErrorMessage");
-                loginForm.recordError(lastNameField, secondNameErrorMessage);
-			}
-			if (StringUtils.isBlank(firstName)) {
-                firstNameErrorMessage =   messages.get("firstNameErrorMessage");
-				loginForm.recordError(firstNameField, firstNameErrorMessage);
-			}
-		}
+
 
 		if (!loginForm.getHasErrors()) {
 			return (isForgotPassword) ? forgotPassword() : doLogin();
@@ -298,6 +315,15 @@ public class Login {
 			return selectCollege;
 		}
 	}
+
+    public String getValidationMessage(String fieldName)
+    {
+        if (errors == null)
+            return StringUtils.EMPTY;
+        String message = errors.get(fieldName);
+        return message != null ? message : StringUtils.EMPTY;
+    }
+
 
 	public CompanyCheckStyle getCompanyCheckStyle()
 	{

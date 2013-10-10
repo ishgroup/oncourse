@@ -11,6 +11,7 @@
 	<title>${title}</title>
 
 	<link rel="stylesheet" type="text/css" href="/s/portal/css/screen.css"/>
+    <link rel="stylesheet" type="text/css" href="/s/portal/css/portal.css"/>
 	<!--[if IE]>
 		<link rel="stylesheet" type="text/css" href="/s/portal/css/ie.css">
 		</link>
@@ -21,7 +22,9 @@
 		</script>
 	<![endif]-->
 
+
 	<script type="text/javascript" src="/s/portal/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/s/portal/js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/s/portal/js/bootstrap.js"></script>
 	<script type="text/javascript" src="/s/portal/js/custom.js"></script>
 	<script type="text/javascript" src="/s/portal/js/initialise.js"></script>
