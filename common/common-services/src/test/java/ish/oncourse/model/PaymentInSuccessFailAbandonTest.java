@@ -263,7 +263,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		paymentIn.getObjectContext().commitChanges();
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", inversePayment.getSessionId(), paymentIn.getSessionId());
 		
-		assertEquals("Check type internal.", PaymentType.INTERNAL, inversePayment.getType());
+		assertEquals("Check type internal.", PaymentType.REVERSE, inversePayment.getType());
 		assertEquals("Zero amount.", 0, inversePayment.getAmount().intValue());
 		
 		//check replication queue

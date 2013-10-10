@@ -810,7 +810,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
-		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
+		assertEquals("Reverse payment should be internal", PaymentType.REVERSE, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
@@ -863,7 +863,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
-		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
+		assertEquals("Reverse payment should be internal", PaymentType.REVERSE, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
@@ -983,7 +983,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Payment status should not change here", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
-		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
+		assertEquals("Reverse payment should be internal", PaymentType.REVERSE, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after create refund invoice should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Enrollment status after create refund invoice should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
@@ -1037,7 +1037,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
-		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
+		assertEquals("Reverse payment should be internal", PaymentType.REVERSE, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
@@ -1314,7 +1314,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
-		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
+		assertEquals("Reverse payment should be internal", PaymentType.REVERSE, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
@@ -1367,7 +1367,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		assertEquals("Reverse payment should be success", PaymentStatus.SUCCESS, reversePaymentIn.getStatus());
 		assertEquals("Reverse payment should be 0 amount", Money.ZERO, reversePaymentIn.getAmount());
-		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
+		assertEquals("Reverse payment should be internal", PaymentType.REVERSE, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());

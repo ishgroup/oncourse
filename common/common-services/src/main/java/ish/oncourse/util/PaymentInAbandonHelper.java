@@ -35,7 +35,9 @@ import ish.oncourse.model.VoucherPaymentIn;
  * This helper also detect what type of abandon should be used (abandon keep invoice or abandon reverse invoice)
  * @author vdavidovich
  *
+ * @deprecated
  */
+@Deprecated
 public class PaymentInAbandonHelper {
 	private static final Logger logger = Logger.getLogger(PaymentInAbandonHelper.class);
 	
