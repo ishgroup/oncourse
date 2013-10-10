@@ -32,7 +32,7 @@ public class Product2ProductConverter extends AbstractProductConverter<Product> 
 		DataLayerFactory.Price price = new DataLayerFactory.Price();
 		price.base = getValue().getPriceExTax();
 		price.withTax = getValue().getPriceIncTax();
-		price.tax = getValue().getFeeGST();
+		price.tax = getValue().getTaxAmount();
 		price.total = price.withTax;
 		return price;
 	}

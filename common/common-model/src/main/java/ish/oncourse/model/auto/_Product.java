@@ -20,7 +20,6 @@ public abstract class _Product extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String DESCRIPTION_PROPERTY = "description";
-    public static final String FEE_GST_PROPERTY = "feeGST";
     public static final String IS_ON_SALE_PROPERTY = "isOnSale";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String MODIFIED_PROPERTY = "modified";
@@ -29,6 +28,7 @@ public abstract class _Product extends CayenneDataObject {
     public static final String PRICE_EX_TAX_PROPERTY = "priceExTax";
     public static final String SKU_PROPERTY = "sku";
     public static final String TAX_ADJUSTMENT_PROPERTY = "taxAdjustment";
+    public static final String TAX_AMOUNT_PROPERTY = "taxAmount";
     public static final String TYPE_PROPERTY = "type";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String PRODUCT_ITEMS_PROPERTY = "productItems";
@@ -54,13 +54,6 @@ public abstract class _Product extends CayenneDataObject {
     }
     public String getDescription() {
         return (String)readProperty("description");
-    }
-
-    public void setFeeGST(Money feeGST) {
-        writeProperty("feeGST", feeGST);
-    }
-    public Money getFeeGST() {
-        return (Money)readProperty("feeGST");
     }
 
     public void setIsOnSale(Boolean isOnSale) {
@@ -117,6 +110,13 @@ public abstract class _Product extends CayenneDataObject {
     }
     public Money getTaxAdjustment() {
         return (Money)readProperty("taxAdjustment");
+    }
+
+    public void setTaxAmount(Money taxAmount) {
+        writeProperty("taxAmount", taxAmount);
+    }
+    public Money getTaxAmount() {
+        return (Money)readProperty("taxAmount");
     }
 
     public void setType(Integer type) {

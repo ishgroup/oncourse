@@ -79,7 +79,7 @@ public class DataLayerFactoryTest {
 			assertNotNull(cproduct.category.primary);
 			assertEquals(product.getPriceExTax(), cproduct.price.base);
 			assertEquals(product.getPriceIncTax(), cproduct.price.withTax);
-			assertEquals(product.getFeeGST(), cproduct.price.tax);
+			assertEquals(product.getTaxAmount(), cproduct.price.tax);
 		}
 
 	}
@@ -279,7 +279,7 @@ public class DataLayerFactoryTest {
 
 
 			money = Money.valueOf(new BigDecimal(RandomUtils.nextInt(100)));
-			Mockito.when(product.getFeeGST()).thenReturn(money);
+			Mockito.when(product.getTaxAmount()).thenReturn(money);
 			Mockito.when(HTMLUtils.getCanonicalLinkPathFor(product, request)).thenReturn(name);
 			return product;
 		}

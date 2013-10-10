@@ -1616,7 +1616,6 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="feeGST" type="ish.math.Money" db-attribute-path="feeGST"/>
 		<obj-attribute name="isOnSale" type="java.lang.Boolean" db-attribute-path="isOnSale"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
@@ -1625,6 +1624,7 @@
 		<obj-attribute name="priceExTax" type="ish.math.Money" db-attribute-path="priceExTax"/>
 		<obj-attribute name="sku" type="java.lang.String" db-attribute-path="sku"/>
 		<obj-attribute name="taxAdjustment" type="ish.math.Money" db-attribute-path="taxAdjustment"/>
+		<obj-attribute name="taxAmount" type="ish.math.Money" db-attribute-path="feeGST"/>
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
 	</obj-entity>
 	<obj-entity name="ProductItem" className="ish.oncourse.model.ProductItem" dbEntityName="ProductItem">

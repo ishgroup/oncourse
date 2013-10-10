@@ -932,7 +932,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		preparedParamethers.add(new ReplicationStubFieldParameter("notes", String.class));
 		preparedParamethers.add(new ReplicationStubFieldParameter("priceExTax", BigDecimal.class));
 		preparedParamethers.add(new ReplicationStubFieldParameter("taxAdjustment", BigDecimal.class));
-		preparedParamethers.add(new ReplicationStubFieldParameter("feeGST", BigDecimal.class));
+		preparedParamethers.add(new ReplicationStubFieldParameter("taxAmount", BigDecimal.class));
 		preparedParamethers.add(new ReplicationStubFieldParameter("taxId", Long.class));
 		preparedParamethers.add(new ReplicationStubFieldParameter("type", Integer.class));		
 		return preparedParamethers;

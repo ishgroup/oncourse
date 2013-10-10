@@ -20,7 +20,7 @@ public class Product extends _Product implements Queueable {
 
 	public Money getPriceIncTax() {
 		if (getPriceExTax() != null)
-			return getPriceExTax().add(getFeeGST());
+			return getPriceExTax().add(getTaxAmount());
 		else
 			return Money.ZERO;
 	}
@@ -30,6 +30,6 @@ public class Product extends _Product implements Queueable {
 		if (getPriceExTax() == null || getPriceExTax().isZero())
 			return BigDecimal.ZERO;
 		else
-			return getFeeGST().divide(getPriceExTax()).toBigDecimal();
+			return getTaxAmount().divide(getPriceExTax()).toBigDecimal();
 	}
 }
