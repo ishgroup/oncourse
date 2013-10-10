@@ -1671,4 +1671,9 @@
         <addUniqueConstraint tableName="Product" columnNames="SKU,collegeId" constraintName="Product_SKU_unique"/>
     </changeSet>
 
+    <changeSet id="112" author="viacheslav" context="production" runOnChange="true">
+        <sql>update ProductItem set status=0 where status is NULL;</sql>
+        <addNotNullConstraint tableName="ProductItem" columnName="status" columnDataType="INTEGER"/>
+    </changeSet>
+
 </databaseChangeLog>

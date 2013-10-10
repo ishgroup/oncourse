@@ -1,15 +1,6 @@
 package ish.oncourse.webservices.replication.v4.builders;
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.PaymentOut;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.Room;
+import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import java.util.LinkedHashSet;
@@ -53,6 +44,10 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 				addRelatedStub(paymentRelated, invoice, version);
 
 				for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
+
+					for (ProductItem productItem : invoiceLine.getProductItem()) {
+						addRelatedStub(paymentRelated, productItem, version);
+					}
 
 					addRelatedStub(paymentRelated, invoiceLine, version);
 

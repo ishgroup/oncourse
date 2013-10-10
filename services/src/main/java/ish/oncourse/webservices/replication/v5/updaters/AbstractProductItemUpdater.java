@@ -24,7 +24,8 @@ public abstract class AbstractProductItemUpdater<S extends ProductItemStub, E ex
 			ProductStatus status = TypesUtil.getEnumForDatabaseValue(stub.getStatus(), ProductStatus.class);
 			entity.setStatus(status);
 		} else {
-			entity.setStatus(null);
+			//set default new status because this may be V4.1 product item and we need to have ability succeed them
+			entity.setStatus(ProductStatus.NEW);
 		}
 	}
 }

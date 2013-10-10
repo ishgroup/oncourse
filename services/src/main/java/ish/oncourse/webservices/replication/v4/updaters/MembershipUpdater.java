@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.replication.v4.updaters;
 
+import ish.common.types.ProductStatus;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Membership;
@@ -20,6 +22,8 @@ public class MembershipUpdater extends AbstractWillowUpdater<MembershipStub, Mem
 		Product product = callback.updateRelationShip(stub.getProductId(), Product.class);
 		entity.setProduct(product);
 		entity.setType(stub.getType());
+		//set default new status to have ability succeed them
+		entity.setStatus(ProductStatus.NEW);
 	}
 
 }
