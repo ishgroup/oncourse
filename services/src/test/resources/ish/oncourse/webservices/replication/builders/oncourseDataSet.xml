@@ -13,7 +13,7 @@
 		reviewDate="2009-07-16 16:50:31" isAccreditedCourse="1" created="2009-07-16 16:50:31" modified="2009-07-16 16:50:31"/>
 	
     <College id="3" name="Sydney Community College" webServicesSecurityCode="345ttn44$%9"
-             communication_key="7059522699886202880" communication_key_status="VALID"
+             communication_key="7059522699886202880" communication_key_status="VALID" angelVersion="development"
              firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
     <Site id="1" collegeId="3" angelId="2" isWebVisible="0" created="2011-09-12 00:17:18.0"
           modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"

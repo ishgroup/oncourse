@@ -255,7 +255,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		assertEquals("Expecting only two failed paymentIn", 2, actualData.getRowCount());
 		
 		actualData = dbUnitConnection.createQueryTable("PaymentIn",
-				String.format("select * from PaymentIn where amount=0 and type=5 and status=3"));
+				String.format("select * from PaymentIn where amount=0 and type=10 and status=3"));
 		
 		assertEquals("There should only be one PaymentIn refund.", 1, actualData.getRowCount());
 		

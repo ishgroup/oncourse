@@ -187,6 +187,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		invoiceLineParamethers.add(new ReplicationStubFieldParameter("unit", String.class));
 		invoiceLineParamethers.add(new ReplicationStubFieldParameter("enrolmentId", Long.class));
 		invoiceLineParamethers.add(new ReplicationStubFieldParameter("invoiceId", Long.class));
+		invoiceLineParamethers.add(new ReplicationStubFieldParameter("sortOrder", Integer.class, false));
 		stubsPropertyMap.put(getStubName(InvoiceLineStub.class), invoiceLineParamethers);
 		final List<ReplicationStubFieldParameter> invoiceParameters = fillDefaultReplicationStubFields();
 		invoiceParameters.add(new ReplicationStubFieldParameter("amountOwing", BigDecimal.class));
