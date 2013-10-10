@@ -620,6 +620,8 @@ public class PurchaseController {
 		boolean result = true;
 		for (ProductItem item : items) {
 			actionEnableProductItem.setProductItem(item);
+            //this step needed, because possible exist voucher product without price
+            actionEnableProductItem.setPrice(item.getInvoiceLine().getPriceEachExTax());
 			boolean valid = actionEnableProductItem.validateProductItem();
 			if (!valid) {
 				ActionDisableProductItem actionDisableProductItem = disableProductItem.createAction(this);

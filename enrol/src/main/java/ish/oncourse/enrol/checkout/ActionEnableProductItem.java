@@ -107,10 +107,10 @@ public class
 
     private boolean validateVoucher() {
         Voucher voucher = (Voucher) productItem;
-        boolean withoutPrice = getController().getVoucherService().isVoucherWithoutPrice(((Voucher) productItem).getVoucherProduct());
+        boolean withoutPrice = getController().getVoucherService().isVoucherWithoutPrice(voucher.getVoucherProduct());
         if (withoutPrice && (price.isZero() || price.isLessThan(Money.ZERO)))
         {
-            String message = enterVoucherPrice.getMessage(getController().getMessages(), productItem.getProduct().getName());
+            String message = enterVoucherPrice.getMessage(getController().getMessages(), voucher.getProduct().getName());
             getController().getErrors().put(enterVoucherPrice.name(), message);
             return false;
         }
