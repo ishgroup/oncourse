@@ -1,24 +1,427 @@
 <html t:type="pagestructure" title="literal:Student Timetable"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_timetable">
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_timetable">
 
-<h1>Timetable</h1>
-
-<div class="tabs">
-	<t:pagelink id="timetableMonth" page="prop:monthPageName" class="act"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Month</span></t:pagelink>
-	<t:pagelink id="timetableList" page="prop:listPageName"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>List</span></t:pagelink>
-</div>
-
-<div id="timetable"></div>
-
-<script type="text/javascript" language="javascript">
-	jQuery(function() {
-		jQuery.calendar('${timetableMonthUrl}');
-	});	
-</script>
-
-<div id="dayInfo"></div>
-
-<div class="cl mb20"></div>
-<div class="cl"></div>
-
+    <div class="col-lg-9 col-sm-9 main-container">
+        <div class="page-header clearfix">
+            <h3>
+                <a href="#">Timetable</a>
+            </h3>
+        </div>
+        <!-- slider content start -->
+        <div class="clearfix session-content">
+            <div t:type="timetable/slider" contact="currentUser"/>
+        </div>
+        <!-- slider content end -->
+        <div class="map-conetnt">
+            <div class="page-header clearfix">
+                <h4 class="pull-left">Location</h4>
+                <button type="button" class="close hide-map" aria-hidden="true">×</button>
+            </div>
+            <div id="venue"
+                 style="height: 447.7px; position: relative; background-color: rgb(229, 227, 223); overflow: hidden; -webkit-transform: translateZ(0);">
+                <div class="gm-style"
+                     style="position: absolute; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 100%; z-index: 0;">
+                    <div style="position: absolute; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 100%; z-index: 0;">
+                        <div style="position: absolute; left: 0px; top: 0px; z-index: 1; cursor: url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur) 8 8, default; -webkit-transform-origin: 0px 0px; -webkit-transform: matrix(1, 0, 0, 1, 0, 0);">
+                            <div style="-webkit-transform: translateZ(0); position: absolute; left: 0px; top: 0px; z-index: 200;">
+                                <div style="-webkit-transform: translateZ(0); position: absolute; left: 0px; top: 0px; z-index: 101;"></div>
+                            </div>
+                            <div style="-webkit-transform: translateZ(0); position: absolute; left: 0px; top: 0px; z-index: 201;">
+                                <div style="-webkit-transform: translateZ(0); position: absolute; left: 0px; top: 0px; z-index: 102;"></div>
+                                <div style="-webkit-transform: translateZ(0); position: absolute; left: 0px; top: 0px; z-index: 103;">
+                                    <div style="position: absolute; left: 0px; top: 0px; z-index: -1;">
+                                        <div style="position: absolute; left: 0px; top: 0px; z-index: 1;">
+                                            <div style="width: 256px; height: 256px; overflow: hidden; -webkit-transform: translateZ(0); position: absolute; left: -268px; top: -226px;"></div>
+                                            <div style="width: 256px; height: 256px; overflow: hidden; -webkit-transform: translateZ(0); position: absolute; left: -268px; top: 30px;"></div>
+                                            <div style="width: 256px; height: 256px; overflow: hidden; -webkit-transform: translateZ(0); position: absolute; left: -12px; top: -226px;"></div>
+                                            <div style="width: 256px; height: 256px; overflow: hidden; -webkit-transform: translateZ(0); position: absolute; left: -12px; top: 30px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="-webkit-transform: translateZ(0); position: absolute; left: 0px; top: 0px; z-index: 202;">
+                                <div style="-webkit-transform: translateZ(0); position: absolute; left: 0px; top: 0px; z-index: 104;"></div>
+                                <div style="-webkit-transform: translateZ(0); position: absolute; left: 0px; top: 0px; z-index: 105;"></div>
+                                <div style="-webkit-transform: translateZ(0); position: absolute; left: 0px; top: 0px; z-index: 106;"></div>
+                            </div>
+                            <div style="-webkit-transform: translateZ(0); position: absolute; left: 0px; top: 0px; z-index: 100;">
+                                <div style="position: absolute; left: 0px; top: 0px; z-index: 0;">
+                                    <div style="position: absolute; left: 0px; top: 0px; z-index: 1;">
+                                        <div style="width: 256px; height: 256px; -webkit-transform: translateZ(0); position: absolute; left: -268px; top: -226px;"></div>
+                                        <div style="width: 256px; height: 256px; -webkit-transform: translateZ(0); position: absolute; left: -268px; top: 30px;"></div>
+                                        <div style="width: 256px; height: 256px; -webkit-transform: translateZ(0); position: absolute; left: -12px; top: -226px;"></div>
+                                        <div style="width: 256px; height: 256px; -webkit-transform: translateZ(0); position: absolute; left: -12px; top: 30px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="position: absolute; z-index: 0; left: 0px; top: 0px;">
+                                <div style="overflow: hidden;"></div>
+                            </div>
+                            <div style="position: absolute; left: 0px; top: 0px; z-index: 0;">
+                                <div style="position: absolute; left: 0px; top: 0px; z-index: 1;">
+                                    <div style="width: 256px; height: 256px; -webkit-transform: translateZ(0); position: absolute; left: -268px; top: -226px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;">
+                                        <img src="https://mts1.googleapis.com/vt?lyrs=m@234000000&amp;src=apiv3&amp;hl=en-US&amp;x=233&amp;y=152&amp;z=8&amp;style=47,37%7Csmartmaps"
+                                             draggable="false"
+                                             style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0);"/>
+                                    </div>
+                                    <div style="width: 256px; height: 256px; -webkit-transform: translateZ(0); position: absolute; left: -268px; top: 30px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;">
+                                        <img src="https://mts1.googleapis.com/vt?lyrs=m@234000000&amp;src=apiv3&amp;hl=en-US&amp;x=233&amp;y=153&amp;z=8&amp;style=47,37%7Csmartmaps"
+                                             draggable="false"
+                                             style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0);"/>
+                                    </div>
+                                    <div style="width: 256px; height: 256px; -webkit-transform: translateZ(0); position: absolute; left: -12px; top: -226px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;">
+                                        <img src="https://mts0.googleapis.com/vt?lyrs=m@234000000&amp;src=apiv3&amp;hl=en-US&amp;x=234&amp;y=152&amp;z=8&amp;style=47,37%7Csmartmaps"
+                                             draggable="false"
+                                             style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0);"/>
+                                    </div>
+                                    <div style="width: 256px; height: 256px; -webkit-transform: translateZ(0); position: absolute; left: -12px; top: 30px; opacity: 1; transition: opacity 200ms ease-out; -webkit-transition: opacity 200ms ease-out;">
+                                        <img src="https://mts0.googleapis.com/vt?lyrs=m@234000000&amp;src=apiv3&amp;hl=en-US&amp;x=234&amp;y=153&amp;z=8&amp;style=47,37%7Csmartmaps"
+                                             draggable="false"
+                                             style="width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; -webkit-transform: translateZ(0);"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-left: 5px; margin-right: 5px; z-index: 1000000; position: absolute; left: 0px; bottom: 0px;">
+                        <a target="_blank"
+                           href="http://maps.google.com/maps?ll=-33,149.13&amp;z=8&amp;t=m&amp;hl=en-US&amp;mapclient=apiv3"
+                           title="Click to see this area on Google Maps"
+                           style="position: static; overflow: visible; float: none; display: inline;">
+                            <div style="width: 62px; height: 26px; cursor: pointer;">
+                                <img src="https://maps.gstatic.com/mapfiles/api-3/images/google_white2.png"
+                                     draggable="false"
+                                     style="position: absolute; left: 0px; top: 0px; width: 62px; height: 26px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"/>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gmnoprint"
+                         style="z-index: 1000001; position: absolute; right: 0px; bottom: 0px; width: 12px;">
+                        <div draggable="false" class="gm-style-cc" style="-webkit-user-select: none;">
+                            <div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;">
+                                <div style="width: 1px;"></div>
+                                <div style="background-color: rgb(245, 245, 245); width: auto; height: 100%; margin-left: 1px;"></div>
+                            </div>
+                            <div style="position: relative; padding-right: 6px; padding-left: 6px; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right;">
+                                <a style="color: rgb(68, 68, 68); text-decoration: none; cursor: pointer; display: none;">
+                                    Map Data
+                                </a>
+                                <span style="display: none;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color: white; padding: 15px 21px; border: 1px solid rgb(171, 171, 171); font-family: Roboto, Arial, sans-serif; color: rgb(34, 34, 34); -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px; z-index: 10000002; display: none; width: 0px; height: 0px; position: absolute; left: 5px; top: 5px;">
+                        <div style="padding: 0px 0px 10px; font-size: 16px;">Map Data</div>
+                        <div style="font-size: 13px;"></div>
+                        <div style="width: 13px; height: 13px; overflow: hidden; position: absolute; opacity: 0.7; right: 12px; top: 12px; z-index: 10000; cursor: pointer;">
+                            <img src="https://maps.gstatic.com/mapfiles/api-3/images/mapcnt3.png" draggable="false"
+                                 style="position: absolute; left: -2px; top: -336px; width: 59px; height: 492px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"/>
+                        </div>
+                    </div>
+                    <div class="gmnoscreen" style="position: absolute; right: 0px; bottom: 0px;">
+                        <div style="font-family: Roboto, Arial, sans-serif; font-size: 11px; color: rgb(68, 68, 68); direction: ltr; text-align: right; background-color: rgb(245, 245, 245);"></div>
+                    </div>
+                    <div class="gmnoprint gm-style-cc" draggable="false"
+                         style="z-index: 1000001; position: absolute; -webkit-user-select: none; right: 0px; bottom: 0px;">
+                        <div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;">
+                            <div style="width: 1px;"></div>
+                            <div style="background-color: rgb(245, 245, 245); width: auto; height: 100%; margin-left: 1px;"></div>
+                        </div>
+                        <div style="position: relative; padding-right: 6px; padding-left: 6px; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right;">
+                            <a href="http://www.google.com/intl/en-US_US/help/terms_maps.html" target="_blank"
+                               style="text-decoration: none; cursor: pointer; color: rgb(68, 68, 68);">Terms of Use
+                            </a>
+                        </div>
+                    </div>
+                    <div draggable="false" class="gm-style-cc"
+                         style="-webkit-user-select: none; position: absolute; right: 0px; bottom: 0px;">
+                        <div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;">
+                            <div style="width: 1px;"></div>
+                            <div style="background-color: rgb(245, 245, 245); width: auto; height: 100%; margin-left: 1px;"></div>
+                        </div>
+                        <div style="position: relative; padding-right: 6px; padding-left: 6px; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right; display: none;">
+                            <a target="_new" title="Report errors in the road map or imagery to Google"
+                               href="http://maps.google.com/maps?ll=-33,149.13&amp;z=8&amp;t=m&amp;hl=en-US&amp;mapclient=apiv3&amp;skstate=action:mps_dialog$apiref:1&amp;output=classic"
+                               style="font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); text-decoration: none; position: relative;">
+                                Report a map error
+                            </a>
+                        </div>
+                    </div>
+                    <div class="gmnoprint" draggable="false" controlwidth="32" controlheight="84"
+                         style="margin: 5px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;">
+                        <div controlwidth="32" controlheight="40"
+                             style="cursor: url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur) 8 8, default; position: absolute; left: 0px; top: 0px;">
+                            <div style="width: 32px; height: 40px; overflow: hidden; position: absolute; left: 0px; top: 0px;">
+                                <img src="https://maps.gstatic.com/mapfiles/api-3/images/cb_scout2.png"
+                                     draggable="false"
+                                     style="position: absolute; left: -9px; top: -102px; width: 1028px; height: 214px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"/>
+                            </div>
+                            <div style="width: 32px; height: 40px; overflow: hidden; position: absolute; left: 0px; top: 0px; visibility: hidden;">
+                                <img src="https://maps.gstatic.com/mapfiles/api-3/images/cb_scout2.png"
+                                     draggable="false"
+                                     style="position: absolute; left: -107px; top: -102px; width: 1028px; height: 214px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"/>
+                            </div>
+                            <div style="width: 32px; height: 40px; overflow: hidden; position: absolute; left: 0px; top: 0px; visibility: hidden;">
+                                <img src="https://maps.gstatic.com/mapfiles/api-3/images/cb_scout2.png"
+                                     draggable="false"
+                                     style="position: absolute; left: -58px; top: -102px; width: 1028px; height: 214px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"/>
+                            </div>
+                            <div style="width: 32px; height: 40px; overflow: hidden; position: absolute; left: 0px; top: 0px; visibility: hidden;">
+                                <img src="https://maps.gstatic.com/mapfiles/api-3/images/cb_scout2.png"
+                                     draggable="false"
+                                     style="position: absolute; left: -205px; top: -102px; width: 1028px; height: 214px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"/>
+                            </div>
+                        </div>
+                        <div class="gmnoprint" controlwidth="0" controlheight="0"
+                             style="opacity: 0.6; display: none; position: absolute;">
+                            <div title="Rotate map 90 degrees"
+                                 style="width: 22px; height: 22px; overflow: hidden; position: absolute; cursor: pointer;">
+                                <img src="https://maps.gstatic.com/mapfiles/api-3/images/mapcnt3.png" draggable="false"
+                                     style="position: absolute; left: -38px; top: -360px; width: 59px; height: 492px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"/>
+                            </div>
+                        </div>
+                        <div class="gmnoprint" controlwidth="20" controlheight="39"
+                             style="position: absolute; left: 6px; top: 45px;">
+                            <div style="width: 20px; height: 39px; overflow: hidden; position: absolute;">
+                                <img src="https://maps.gstatic.com/mapfiles/api-3/images/mapcnt3.png" draggable="false"
+                                     style="position: absolute; left: -39px; top: -401px; width: 59px; height: 492px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"/>
+                            </div>
+                            <div title="Zoom in"
+                                 style="position: absolute; left: 0px; top: 2px; width: 20px; height: 17px; cursor: pointer;"></div>
+                            <div title="Zoom out"
+                                 style="position: absolute; left: 0px; top: 19px; width: 20px; height: 17px; cursor: pointer;"></div>
+                        </div>
+                    </div>
+                    <div class="gmnoprint gm-style-mtc"
+                         style="margin: 5px; z-index: 0; position: absolute; cursor: pointer; text-align: left; width: 85px; right: 0px; top: 0px;">
+                        <div draggable="false" title="Change map style"
+                             style="direction: ltr; overflow: hidden; text-align: left; position: relative; color: rgb(0, 0, 0); font-family: Roboto, Arial, sans-serif; -webkit-user-select: none; font-size: 11px; background-color: rgb(255, 255, 255); padding: 1px 6px; border-bottom-left-radius: 2px; border-top-left-radius: 2px; border-bottom-right-radius: 2px; border-top-right-radius: 2px; -webkit-background-clip: padding-box; background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0.14902); -webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; font-weight: 500;">
+                            Map
+                            <img src="https://maps.gstatic.com/mapfiles/arrow-down.png" draggable="false"
+                                 style="-webkit-user-select: none; border: 0px; padding: 0px; margin: -2px 0px 0px; position: absolute; right: 6px; top: 50%; width: 7px; height: 4px;"/>
+                        </div>
+                        <div style="background-color: white; z-index: -1; padding-top: 2px; -webkit-background-clip: padding-box; background-clip: padding-box; border-width: 0px 1px 1px; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-right-color: rgba(0, 0, 0, 0.14902); border-bottom-color: rgba(0, 0, 0, 0.14902); border-left-color: rgba(0, 0, 0, 0.14902); -webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; position: relative; text-align: left; display: none;">
+                            <div draggable="false" title="Show street map"
+                                 style="color: black; font-family: Roboto, Arial, sans-serif; -webkit-user-select: none; font-size: 11px; background-color: rgb(255, 255, 255); padding: 3px 5px; font-weight: 500;">
+                                Map
+                            </div>
+                            <div draggable="false" title="Show satellite imagery"
+                                 style="color: black; font-family: Roboto, Arial, sans-serif; -webkit-user-select: none; font-size: 11px; background-color: rgb(255, 255, 255); padding: 3px 5px;">
+                                Satellite
+                            </div>
+                            <div style="margin: 1px 0px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(235, 235, 235);"></div>
+                            <div draggable="false" title="Show street map with terrain"
+                                 style="color: rgb(0, 0, 0); font-family: Roboto, Arial, sans-serif; -webkit-user-select: none; font-size: 11px; background-color: rgb(255, 255, 255); padding: 3px 8px 3px 5px; direction: ltr; text-align: left; white-space: nowrap;">
+                                <span role="checkbox"
+                                      style="box-sizing: border-box; position: relative; line-height: 0; font-size: 0px; margin: 0px 5px 0px 0px; display: inline-block; background-color: rgb(255, 255, 255); border: 1px solid rgb(198, 198, 198); border-top-left-radius: 1px; border-top-right-radius: 1px; border-bottom-right-radius: 1px; border-bottom-left-radius: 1px; width: 13px; height: 13px; vertical-align: middle;">
+                                    <div style="position: absolute; left: 1px; top: -2px; width: 13px; height: 11px; overflow: hidden; display: none;">
+                                        <img src="https://maps.gstatic.com/mapfiles/mv/imgs8.png" draggable="false"
+                                             style="position: absolute; left: -52px; top: -44px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; width: 68px; height: 67px;"/>
+                                    </div>
+                                </span>
+                                <label style="vertical-align: middle; cursor: pointer;">Terrain</label>
+                            </div>
+                            <div style="margin: 1px 0px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(235, 235, 235); display: none;"></div>
+                            <div draggable="false" title="Zoom in to show 45 degree view"
+                                 style="color: rgb(184, 184, 184); font-family: Roboto, Arial, sans-serif; -webkit-user-select: none; font-size: 11px; background-color: rgb(255, 255, 255); padding: 3px 8px 3px 5px; direction: ltr; text-align: left; white-space: nowrap; display: none;">
+                                <span role="checkbox"
+                                      style="box-sizing: border-box; position: relative; line-height: 0; font-size: 0px; margin: 0px 5px 0px 0px; display: inline-block; background-color: rgb(255, 255, 255); border: 1px solid rgb(241, 241, 241); border-top-left-radius: 1px; border-top-right-radius: 1px; border-bottom-right-radius: 1px; border-bottom-left-radius: 1px; width: 13px; height: 13px; vertical-align: middle;">
+                                    <div style="position: absolute; left: 1px; top: -2px; width: 13px; height: 11px; overflow: hidden; display: none;">
+                                        <img src="https://maps.gstatic.com/mapfiles/mv/imgs8.png" draggable="false"
+                                             style="position: absolute; left: -52px; top: -44px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; width: 68px; height: 67px;"/>
+                                    </div>
+                                </span>
+                                <label style="vertical-align: middle; cursor: pointer;">45°</label>
+                            </div>
+                            <div draggable="false" title="Show imagery with street names"
+                                 style="color: rgb(0, 0, 0); font-family: Roboto, Arial, sans-serif; -webkit-user-select: none; font-size: 11px; background-color: rgb(255, 255, 255); padding: 3px 8px 3px 5px; direction: ltr; text-align: left; white-space: nowrap; display: none;">
+                                <span role="checkbox"
+                                      style="box-sizing: border-box; position: relative; line-height: 0; font-size: 0px; margin: 0px 5px 0px 0px; display: inline-block; background-color: rgb(255, 255, 255); border: 1px solid rgb(198, 198, 198); border-top-left-radius: 1px; border-top-right-radius: 1px; border-bottom-right-radius: 1px; border-bottom-left-radius: 1px; width: 13px; height: 13px; vertical-align: middle;">
+                                    <div style="position: absolute; left: 1px; top: -2px; width: 13px; height: 11px; overflow: hidden;">
+                                        <img src="https://maps.gstatic.com/mapfiles/mv/imgs8.png" draggable="false"
+                                             style="position: absolute; left: -52px; top: -44px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; width: 68px; height: 67px;"/>
+                                    </div>
+                                </span>
+                                <label style="vertical-align: middle; cursor: pointer;">Labels</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="calendar-container" style="height: 405.45454545454544px;">
+            <div class="custom-calendar-wrap custom-calendar-full">
+                <div class="custom-header clearfix">
+                    <h3 class="custom-month-year">
+                        <nav>
+                            <span id="custom-prev" class="glyphicon glyphicon-chevron-left"
+                                  style="display: inline;"></span>
+                            <span id="custom-month" class="custom-month">October</span>
+                            <span id="custom-year" class="custom-year">2013</span>
+                            <span id="custom-next" class="glyphicon glyphicon-chevron-right"
+                                  style="display: inline;"></span>
+                            <!--<span id="custom-current" class="custom-current" title="Got to current date"></span>-->
+                        </nav>
+                    </h3>
+                    <a class="btn btn-sm btn-default btn-gradient pull-right" href="#">Subscribe to calendar</a>
+                </div>
+                <div id="calendar" class="fc-calendar-container">
+                    <div class="fc-calendar fc-five-rows">
+                        <div class="fc-head">
+                            <div>Monday</div>
+                            <div>Tuesday</div>
+                            <div>Wednesday</div>
+                            <div>Thursday</div>
+                            <div>Friday</div>
+                            <div>Saturday</div>
+                            <div>Sunday</div>
+                        </div>
+                        <div class="fc-body">
+                            <div class="fc-row">
+                                <div></div>
+                                <div style="cursor: default;">
+                                    <span class="fc-date" style="color: rgb(187, 187, 187);">1</span>
+                                    <span class="fc-weekday">Tue</span>
+                                </div>
+                                <div style="cursor: default;">
+                                    <span class="fc-date" style="color: rgb(187, 187, 187);">2</span>
+                                    <span class="fc-weekday">Wed</span>
+                                </div>
+                                <div style="cursor: default;">
+                                    <span class="fc-date" style="color: rgb(187, 187, 187);">3</span>
+                                    <span class="fc-weekday">Thu</span>
+                                </div>
+                                <div style="cursor: default;">
+                                    <span class="fc-date" style="color: rgb(187, 187, 187);">4</span>
+                                    <span class="fc-weekday">Fri</span>
+                                </div>
+                                <div style="cursor: default;">
+                                    <span class="fc-date" style="color: rgb(187, 187, 187);">5</span>
+                                    <span class="fc-weekday">Sat</span>
+                                </div>
+                                <div style="cursor: default;">
+                                    <span class="fc-date" style="color: rgb(187, 187, 187);">6</span>
+                                    <span class="fc-weekday">Sun</span>
+                                </div>
+                            </div>
+                            <div class="fc-row">
+                                <div style="cursor: default;">
+                                    <span class="fc-date" style="color: rgb(187, 187, 187);">7</span>
+                                    <span class="fc-weekday">Mon</span>
+                                </div>
+                                <div style="cursor: default;">
+                                    <span class="fc-date" style="color: rgb(187, 187, 187);">8</span>
+                                    <span class="fc-weekday">Tue</span>
+                                </div>
+                                <div style="cursor: default;">
+                                    <span class="fc-date" style="color: rgb(187, 187, 187);">9</span>
+                                    <span class="fc-weekday">Wed</span>
+                                </div>
+                                <div style="cursor: default;">
+                                    <span class="fc-date" style="color: rgb(187, 187, 187);">10</span>
+                                    <span class="fc-weekday">Thu</span>
+                                </div>
+                                <div class="fc-today ">
+                                    <span class="fc-date">11</span>
+                                    <span class="fc-weekday">Fri</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">12</span>
+                                    <span class="fc-weekday">Sat</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">13</span>
+                                    <span class="fc-weekday">Sun</span>
+                                </div>
+                            </div>
+                            <div class="fc-row">
+                                <div>
+                                    <span class="fc-date">14</span>
+                                    <span class="fc-weekday">Mon</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">15</span>
+                                    <span class="fc-weekday">Tue</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">16</span>
+                                    <span class="fc-weekday">Wed</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">17</span>
+                                    <span class="fc-weekday">Thu</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">18</span>
+                                    <span class="fc-weekday">Fri</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">19</span>
+                                    <span class="fc-weekday">Sat</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">20</span>
+                                    <span class="fc-weekday">Sun</span>
+                                </div>
+                            </div>
+                            <div class="fc-row">
+                                <div>
+                                    <span class="fc-date">21</span>
+                                    <span class="fc-weekday">Mon</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">22</span>
+                                    <span class="fc-weekday">Tue</span>
+                                </div>
+                                <div class="fc-content">
+                                    <span class="fc-date">23</span>
+                                    <span class="fc-weekday">Wed</span>
+                                    <div>
+                                        <a href="#class-147">9am-12:30pm</a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="fc-date">24</span>
+                                    <span class="fc-weekday">Thu</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">25</span>
+                                    <span class="fc-weekday">Fri</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">26</span>
+                                    <span class="fc-weekday">Sat</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">27</span>
+                                    <span class="fc-weekday">Sun</span>
+                                </div>
+                            </div>
+                            <div class="fc-row">
+                                <div>
+                                    <span class="fc-date">28</span>
+                                    <span class="fc-weekday">Mon</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">29</span>
+                                    <span class="fc-weekday">Tue</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">30</span>
+                                    <span class="fc-weekday">Wed</span>
+                                </div>
+                                <div>
+                                    <span class="fc-date">31</span>
+                                    <span class="fc-weekday">Thu</span>
+                                </div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </html>

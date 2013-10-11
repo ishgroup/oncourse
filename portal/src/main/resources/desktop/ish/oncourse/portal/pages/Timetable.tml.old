@@ -1,0 +1,24 @@
+<html t:type="pagestructure" title="literal:Student Timetable"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_timetable">
+
+<h1>Timetable</h1>
+
+<div class="tabs">
+	<t:pagelink id="timetableMonth" page="prop:monthPageName" class="act"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Month</span></t:pagelink>
+	<t:pagelink id="timetableList" page="prop:listPageName"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>List</span></t:pagelink>
+</div>
+
+<div id="timetable"></div>
+
+<script type="text/javascript" language="javascript">
+	jQuery(function() {
+		jQuery.calendar('${timetableMonthUrl}');
+	});	
+</script>
+
+<div id="dayInfo"></div>
+
+<div class="cl mb20"></div>
+<div class="cl"></div>
+
+</html>

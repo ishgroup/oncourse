@@ -1,12 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-
-	<div class="content">
 		<!-- This block in SURVEYS tab. <div class="started">Started: April, 7</div>-->
 		<!-- This block in MESSAGES page <a href="#" class="btn1 fr mt8">New Discussion</a>-->
-
 		<t:body/>
-
-
-	</div>
-
 </t:container>

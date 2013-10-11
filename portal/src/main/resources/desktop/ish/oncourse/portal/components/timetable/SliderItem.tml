@@ -1,0 +1,19 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div class="clearfix" style="width: 272.6666666666667px; float: left;">
+        <ul>
+            <li>
+                <h4>Today</h4>
+            </li>
+            <li>
+                <a href="confirm-classes-detail.html">
+                    <b>Woodworking for beginners</b>
+                </a>
+            </li>
+            <li>24 August 9am - 12.30pm</li>
+            <li>
+                <span class="glyphicon glyphicon-map-marker"></span>
+                <a href="#" class="venue">Carslaw Building</a>
+            </li>
+        </ul>
+    </div>
+</t:container>
