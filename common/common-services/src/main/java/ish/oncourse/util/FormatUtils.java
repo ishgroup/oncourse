@@ -7,6 +7,8 @@ import java.text.*;
 import java.util.Date;
 import java.util.TimeZone;
 
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.commons.lang.StringUtils;
 
 public class FormatUtils {
@@ -27,6 +29,8 @@ public class FormatUtils {
 	public final static String dateFormatForTimeline = "d MMM h:mma";
 
     public final static String timestampFormat = "d MMM yy h:mma z";
+
+    private static  ICookiesService cookiesService;
 
 
     /**
@@ -148,4 +152,23 @@ public class FormatUtils {
     public static String convertDateToISO8601InUserTimezone(Date date, String timeZone) {
     	return FormatUtils.getDateFormat(DATE_FORMAT_ISO8601, timeZone).format(date);
     }
+
+    public static TimeZone getClientTimeZone(CourseClass courseClass) {
+        TimeZone timezone = null;
+        if (!courseClass.isVirtualSiteUsed()) {
+            timezone = TimeZone.getTimeZone(courseClass.getTimeZone());
+        }
+        if (timezone == null) {
+            timezone = cookiesService.getClientTimezone();
+            if (timezone == null) {
+                timezone = cookiesService.getSimpleClientTimezone();
+                if (timezone == null) {
+                    timezone = TimeZone.getTimeZone(courseClass.getTimeZone());
+                }
+            }
+        }
+        return timezone;
+    }
 }
+
+

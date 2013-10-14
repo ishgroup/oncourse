@@ -89,7 +89,7 @@ public class CourseClassItem {
 		timetableLabels.add("Time");
 		timetableLabels.add("Where");
 
-		TimeZone timeZone = getClientTimeZone();
+		TimeZone timeZone =FormatUtils.getClientTimeZone(courseClass);
 
 		dateFormat = FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
 		timeFormat = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
@@ -100,22 +100,7 @@ public class CourseClassItem {
 			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
 	}
 		
-	public TimeZone getClientTimeZone() {
-		TimeZone timezone = null;
-		if (!courseClass.isVirtualSiteUsed()) {
-			timezone = TimeZone.getTimeZone(courseClass.getTimeZone());
-		}
-		if (timezone == null) {
-			timezone = cookiesService.getClientTimezone();
-			if (timezone == null) {
-				timezone = cookiesService.getSimpleClientTimezone();
-				if (timezone == null) {
-					timezone = TimeZone.getTimeZone(courseClass.getTimeZone());
-				}
-			}
-		}
-		return timezone;
-	}
+
 
 	public String getCourseClassDetail() {
 		String detail = textileConverter.convertCustomTextile(courseClass.getDetail(), new ValidationErrors());

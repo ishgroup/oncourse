@@ -2,18 +2,25 @@
     <div class="clearfix" style="width: 272.6666666666667px; float: left;">
         <ul>
             <li>
-                <h4>Today</h4>
+                <h4>${period}</h4>
             </li>
             <li>
-                <a href="confirm-classes-detail.html">
-                    <b>Woodworking for beginners</b>
-                </a>
+                <t:pagelink page="class" context="session.courseClass.id">
+                    <b>${name}</b>
+                </t:pagelink>
             </li>
-            <li>24 August 9am - 12.30pm</li>
             <li>
-                <span class="glyphicon glyphicon-map-marker"></span>
-                <a href="#" class="venue">Carslaw Building</a>
+                ${date}
             </li>
+
+            <t:if test="venue">
+                <li>
+                    <span class="glyphicon glyphicon-map-marker"></span>
+                    <a href="#" class="venue">
+                        ${venue}
+                    </a>
+                </li>
+            </t:if>
         </ul>
     </div>
 </t:container>
