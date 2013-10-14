@@ -64,5 +64,8 @@ public class SliderItem {
             return StringUtils.EMPTY;
     }
 
+    public Session getSession(){
+        return session;
+    }
 }
 
