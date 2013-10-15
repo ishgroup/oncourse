@@ -14,7 +14,7 @@
                         <!--<span id="custom-current" class="custom-current" title="Got to current date"></span>-->
                     </nav>
                 </h3>
-                <a class="btn btn-sm btn-default btn-gradient pull-right" href="#">Subscribe to calendar</a>
+                <a href=" webcal:${userCalendarFilename}" class="btn btn-sm btn-default btn-gradient pull-right" >Subscribe to calendar</a>
             </div>
             <div id="calendar" class="fc-calendar-container">
                 <div class="fc-calendar fc-five-rows">

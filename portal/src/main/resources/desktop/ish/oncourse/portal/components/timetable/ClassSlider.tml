@@ -5,8 +5,8 @@
 <section class="clearfix" style="width: 3276px; margin-left: 0px;">
 
 
-    <t:loop source="sessions" value="session">
-        <div t:type="timetable/sliderItem" session="session"/>
+    <t:loop source="courseClasses" value="courseClass">
+        <div t:type="timetable/classSliderItem" courseClass="courseClass"/>
     </t:loop>
 
 

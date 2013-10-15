@@ -9,7 +9,7 @@
         </div>
         <!-- slider content start -->
         <div class="clearfix session-content">
-            <div t:type="timetable/slider" contact="contact"/>
+            <div t:type="timetable/classSlider" contact="contact"/>
         </div>
         <!-- slider content end -->
         <div class="map-conetnt">

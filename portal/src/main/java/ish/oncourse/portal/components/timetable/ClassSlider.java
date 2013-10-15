@@ -1,6 +1,7 @@
 package ish.oncourse.portal.components.timetable;
 
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.tapestry5.annotations.Parameter;
@@ -15,17 +16,17 @@ import java.util.List;
  * Date: 10/11/13
  * Time: 3:10 PM
  */
-public class Slider {
+public class ClassSlider {
 
     @Parameter
     private Contact contact;
 
 
     @Property
-    private Session session;
+    private CourseClass courseClass;
 
     @Property
-    private List<Session> sessions;
+    private List<CourseClass> courseClasses;
 
     @Inject
     private ICourseClassService courseClassService;
@@ -33,7 +34,7 @@ public class Slider {
 
     @SetupRender
     boolean setupRender() {
-        sessions = courseClassService.getContactSessions(contact);
+        courseClasses = courseClassService.getContactCourseClasses(contact);
         return true;
     }
 }

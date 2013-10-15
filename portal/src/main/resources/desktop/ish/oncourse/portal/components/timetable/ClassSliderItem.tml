@@ -1,11 +1,11 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div class="clearfix" rel="class-${session.id}" style="width: 272.6666666666667px; float: left;">
+    <div class="clearfix" rel="class-${courseClass.id}" style="width: 272.6666666666667px; float: left;">
         <ul>
             <li>
                 <h4>${period}</h4>
             </li>
             <li>
-                <t:pagelink page="class" context="session.courseClass.id">
+                <t:pagelink page="class" context="courseClass.id">
                     <b>${name}</b>
                 </t:pagelink>
             </li>

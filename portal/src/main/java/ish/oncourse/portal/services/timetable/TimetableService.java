@@ -29,7 +29,7 @@ public class TimetableService {
         for (Session session : sessions) {
             TimeZone timeZone = FormatUtils.getClientTimeZone(session.getCourseClass());
             result.put(FormatUtils.getDateFormat("MM-dd-yyyy",timeZone).format(session.getStartDate()),
-                    String.format("<a href='#class-%s'>%s</a>", session.getId(), formatDate(session)));
+                    String.format("<a href='#class-%s'>%s</a>", session.getCourseClass().getId(), formatDate(session)));
         }
         return result;
     }

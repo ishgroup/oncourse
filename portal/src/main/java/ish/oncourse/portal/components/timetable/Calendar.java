@@ -10,6 +10,7 @@ import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.io.IOException;
@@ -28,6 +29,9 @@ public class Calendar {
     @Inject
     private IAuthenticationService authService;
 
+    @Inject
+    private Request request;
+
     @OnEvent(value = "getCalendarEvents")
    public StreamResponse getCalendarEvents() throws IOException {
        TimetableService timetableService = new TimetableService();
@@ -35,4 +39,17 @@ public class Calendar {
 
        return new TextStreamResponse("text/json", timetableService.getJSONCalendarEvents(authService.getUser()).toString());
    }
+
+
+    public String getUserCalendarFilename(){
+
+        String fileName = request.getServerName() + getContextPath() + "/calendar/" + authService.getUser().getUniqueCode() + ".ics";
+
+        return fileName;
+    }
+
+    public String getContextPath() {
+        return request.getContextPath();
+    }
+
 }

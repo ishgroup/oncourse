@@ -1,5 +1,6 @@
 package ish.oncourse.portal.components.timetable;
 
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.util.DateFormatter;
@@ -17,55 +18,51 @@ import java.util.TimeZone;
  * Date: 10/11/13
  * Time: 3:23 PM
  */
-public class SliderItem {
+public class ClassSliderItem {
 
     @Inject
     private ICookiesService cookiesService;
 
     @Parameter
-    private Session session;
+    private CourseClass courseClass;
 
     private TimeZone timeZone;
 
     @SetupRender
     void setupRender() {
-        timeZone = FormatUtils.getClientTimeZone(session.getCourseClass());
+        timeZone = FormatUtils.getClientTimeZone(courseClass);
     }
 
     public String getPeriod()
     {
 
-        return DateFormatter.formatDate(session.getStartDate(),false,FormatUtils.getClientTimeZone(session.getCourseClass()));
+        return DateFormatter.formatDate(courseClass.getSessions().get(0).getStartDate(),false,FormatUtils.getClientTimeZone(courseClass));
     }
 
     public String getName()
     {
-        return session.getCourseClass().getCourse().getName();
+        return courseClass.getCourse().getName();
     }
 
     public String getDate()
     {
         return String.format("%s - %s",
-                FormatUtils.getDateFormat(FormatUtils.dateFormatForTimeline, timeZone).format(session.getStartDate()),
-                FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(session.getEndDate()));
+                FormatUtils.getDateFormat(FormatUtils.dateFormatForTimeline, timeZone).format(courseClass.getSessions().get(0).getStartDate()),
+                FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(courseClass.getSessions().get(0).getEndDate()));
     }
 
-    public Date getEndDate()
-    {
-        return session.getEndDate();
-    }
 
     public String getVenue()
     {
 
-        if (session.getRoom() != null)
-            return String.format("%s, %s", session.getRoom().getName(), session.getRoom().getSite().getName());
+        if (courseClass.getRoom() != null)
+            return String.format("%s, %s", courseClass.getRoom().getName(), courseClass.getRoom().getSite().getName());
         else
             return StringUtils.EMPTY;
     }
 
-    public Session getSession(){
-        return session;
+    public CourseClass getCourseClass(){
+        return courseClass;
     }
 }
 
