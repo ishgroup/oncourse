@@ -40,16 +40,4 @@ public class Calendar {
        return new TextStreamResponse("text/json", timetableService.getJSONCalendarEvents(authService.getUser()).toString());
    }
 
-
-    public String getUserCalendarFilename(){
-
-        String fileName = request.getServerName() + getContextPath() + "/calendar/" + authService.getUser().getUniqueCode() + ".ics";
-
-        return fileName;
-    }
-
-    public String getContextPath() {
-        return request.getContextPath();
-    }
-
 }

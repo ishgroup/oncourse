@@ -11,6 +11,7 @@ import org.apache.tapestry5.services.Request;
 public class Timetable {
 
 	@Inject
+    @Property
 	private IAuthenticationService authService;
 
 	@Property
@@ -20,6 +21,7 @@ public class Timetable {
 	private String timetableMonthUrl;
 	
 	@Inject
+    @Property
 	private Request request;
 
 	@SetupRender

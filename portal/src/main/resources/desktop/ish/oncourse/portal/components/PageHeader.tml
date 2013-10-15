@@ -36,7 +36,6 @@
 
     <script type="text/javascript" src="/s/portal/js/jquery-1.9.1.min.js"></script>
 
-    <script type="text/javascript" src="/s/portal/js/data.js"></script>
     <script type="text/javascript" src="/s/portal/js/jquery.calendario.js"></script>
 	<script type="text/javascript" src="/s/portal/js/bootstrap.js"></script>
     <script type="text/javascript" src="/s/portal/js/jquery.flexisel.js"></script>

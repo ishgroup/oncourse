@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	
-	<a href=" webcal:${userCalendarFilename}" class="btn btn-primary btn-large"><i class="icon-calendar icon-white"></i> Subscribe to Calendar</a>
+	<a href="webcal:${userCalendarFilename}" class="btn btn-primary btn-large"><i class="icon-calendar icon-white"></i> Subscribe to Calendar</a>
 	
 	<!--  
 	<div class="info-bg">
