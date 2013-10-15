@@ -1,0 +1,33 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <t:eventlink t:id="getCalendarEvents"/>
+    <div class="calendar-container" style="height: 405.45454545454544px;">
+        <div class="custom-calendar-wrap custom-calendar-full">
+            <div class="custom-header clearfix">
+                <h3 class="custom-month-year">
+                    <nav>
+                        <span id="custom-prev" class="glyphicon glyphicon-chevron-left"
+                              style="display: inline;"></span>
+                        <span id="custom-month" class="custom-month">October</span>
+                        <span id="custom-year" class="custom-year">2013</span>
+                        <span id="custom-next" class="glyphicon glyphicon-chevron-right"
+                              style="display: inline;"></span>
+                        <!--<span id="custom-current" class="custom-current" title="Got to current date"></span>-->
+                    </nav>
+                </h3>
+                <a class="btn btn-sm btn-default btn-gradient pull-right" href="#">Subscribe to calendar</a>
+            </div>
+            <div id="calendar" class="fc-calendar-container">
+                <div class="fc-calendar fc-five-rows">
+                    <div class="fc-head"></div>
+                    <div class="fc-body">
+                        <div class="fc-row"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</t:container>

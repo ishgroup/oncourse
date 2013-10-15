@@ -13,11 +13,9 @@ public class Timetable {
 	@Inject
 	private IAuthenticationService authService;
 
-	@SuppressWarnings("all")
 	@Property
-	private Contact currentUser;
+	private Contact contact;
 	
-	@SuppressWarnings("all")
 	@Property
 	private String timetableMonthUrl;
 	
@@ -26,7 +24,7 @@ public class Timetable {
 
 	@SetupRender
 	void setupRender() {
-		this.currentUser = authService.getUser();
+		this.contact = authService.getUser();
 		this.timetableMonthUrl = getContextPath() + "/timetableJson";
 	}
 	
