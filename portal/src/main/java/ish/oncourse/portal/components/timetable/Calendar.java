@@ -1,20 +1,17 @@
 package ish.oncourse.portal.components.timetable;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import ish.oncourse.model.Contact;
+
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.timetable.TimetableService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
+
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
 /**
  * User: artem
