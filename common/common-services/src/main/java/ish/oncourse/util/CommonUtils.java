@@ -11,8 +11,9 @@ public class CommonUtils {
 	private static final Logger LOGGER = Logger.getLogger(CommonUtils.class);
 
 	public static final String VERSION_development = "development";
+	public static final String VERSION_trunk_SNAPSHOT = "trunk-SNAPSHOT";
 
-	public static final String VERSION_5_0 = "5.0M0";
+	public static final String VERSION_5_0 = "5.0A0";
 
 	/**
 	 *
@@ -22,8 +23,9 @@ public class CommonUtils {
 	public static int compare(String version1 , String version2)
 	{
 
-		if (VERSION_development.equalsIgnoreCase(version1)) {
-			LOGGER.info("pass the gradle development version");
+		if (VERSION_development.equalsIgnoreCase(version1) ||
+				VERSION_trunk_SNAPSHOT.equalsIgnoreCase(version1)) {
+			LOGGER.info("pass the gradle development and trunk-SNAPSHOT version");
 			return 0;
 		}
 
