@@ -12,7 +12,7 @@ public class CommonUtils {
 
 	public static final String VERSION_development = "development";
 
-	public static final String VERSION_5_0 = "5.0";
+	public static final String VERSION_5_0 = "5.0M0";
 
 	/**
 	 *
