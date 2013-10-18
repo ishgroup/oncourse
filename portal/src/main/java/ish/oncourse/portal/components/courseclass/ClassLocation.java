@@ -17,7 +17,7 @@ public class ClassLocation {
     private  Site site;
 
     @Property
-    private Boolean hasСoordinates;
+    private Boolean hasCoordinates;
 
     @Property
     private double mapPositionLatitude;
@@ -27,7 +27,7 @@ public class ClassLocation {
 
     @SetupRender
     public void beforeRender() {
-        hasСoordinates = true;
+		hasCoordinates = true;
         site= courseClass.getRoom().getSite();
         setupMapPosition();
     }
@@ -43,7 +43,7 @@ public class ClassLocation {
             mapPositionLongitude = site.getLongitude().doubleValue();
 
             }else
-             hasСoordinates=false;
+			 hasCoordinates=false;
 
      }
 }
