@@ -21,7 +21,6 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 
 	private static final long serialVersionUID = 8361159336001022666L;
 	private static final Logger LOG = Logger.getLogger(Enrolment.class);
-	public static final String TO_MANY_INVOICE_LINE_SUPPORT_VERSION = "5.0";
 
 	/**
 	 * Statuses for which the class place is considered to be occupied.

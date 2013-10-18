@@ -1,20 +1,17 @@
 package ish.oncourse.webservices.replication.v5.updaters;
 
-import org.apache.commons.lang.StringUtils;
-
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Student;
-import ish.oncourse.util.CommonUtils;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
 import ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub;
+import org.apache.commons.lang.StringUtils;
 
 public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrolment> {
 
@@ -30,17 +27,19 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
 
         if (StringUtils.trimToNull(stub.getStatus()) == null) {
-            final String message = String.format("Enrolment with angelId = %s with empty status detected!", stub.getAngelId());
+            String message = String.format("Enrolment with angelId = %s with empty status detected!", stub.getAngelId());
             throw new UpdaterException(message);
         }
         entity.setStatus(EnrolmentStatus.valueOf(stub.getStatus()));
-		final Student student = callback.updateRelationShip(stub.getStudentId(), Student.class);
+		Student student = callback.updateRelationShip(stub.getStudentId(), Student.class);
 		entity.setStudent(student);
-		final InvoiceLine invoiceLine = callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class);
+
+		/**
+		 * we need to relate Enrolment and InvoiceLine in this updater to be sure that willow side enrolments is related to InvoiceLine always.
+		 */
+		InvoiceLine invoiceLine = callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class);
 		if (invoiceLine != null) {
-			if (!isSupportOneToManyOnEnrolment_InvoiceLine_Relation(entity)) {
-				invoiceLine.setEnrolment(entity);
-			}
+			invoiceLine.setEnrolment(entity);
 		} else {
 			final String message = String.format("Enrollment with angelId = %s and willowid = %s with missed original invoiceline with id = %s record detected for update! " 
 				+ "If this message occured on enrollment instruction call please add invoiceline instruction and retry enrollment instruction.", 
@@ -48,9 +47,4 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 			throw new UpdaterException(message);
 		}
 	}
-	
-	private boolean isSupportOneToManyOnEnrolment_InvoiceLine_Relation(Queueable entity) {
-		return CommonUtils.compare(getCurrentCollegeAngelVersion(entity), Enrolment.TO_MANY_INVOICE_LINE_SUPPORT_VERSION) >= 0;
-	}
-
 }
