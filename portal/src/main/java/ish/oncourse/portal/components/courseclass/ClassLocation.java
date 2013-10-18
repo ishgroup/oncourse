@@ -1,6 +1,5 @@
 package ish.oncourse.portal.components.courseclass;
 
-import com.sun.xml.internal.ws.api.PropertySet;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Site;
 import org.apache.tapestry5.annotations.Parameter;
