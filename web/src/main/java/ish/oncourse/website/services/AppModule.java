@@ -7,12 +7,12 @@ package ish.oncourse.website.services;
 
 import ish.oncourse.linktransform.PageLinkTransformer;
 import ish.oncourse.model.services.ModelModule;
+import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.ui.services.DisableJavaScriptStack;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import ish.oncourse.website.services.html.CacheMetaProvider;

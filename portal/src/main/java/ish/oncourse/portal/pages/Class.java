@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Class {
 
-	@SuppressWarnings("all")
+
 	@Property
 	private CourseClass courseClass;
 	

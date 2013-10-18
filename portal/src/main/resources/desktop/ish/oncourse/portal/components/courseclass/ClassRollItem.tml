@@ -1,0 +1,35 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<li rel="attendance-time-1" class="col-lg-6 col-sm-6">
+    <div class="row">
+        <div class="col-lg-12 col-sm-11 col-xs-12 student-detail clearfix">
+            <div class="col-lg-2 col-sm-2 col-xs-2 attendance-content">
+                <div class="attendance">
+                    <button type="button" class="btn btn-default btn-gradient btn-ok btn-xs"><span class="glyphicon glyphicon-ok"></span></button>
+                    <button type="button" class="btn btn-default btn-gradient btn-cancel btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
+                </div>
+            </div>
+            <div class="col-lg-7 col-sm-7 col-xs-9">
+                <div class="row">
+                    <h5>${student.fullName}</h5>
+                    <t:if test="enableDetails">
+                         <ul class="list-inline">
+                                <li><a href="mailto:${student.contact.emailAddress}">${student.contact.emailAddress}</a></li>
+                                <li>|</li>
+                                <t:if test="phoneNumber">
+                                    <li><a href="tel:${phoneNumber}">${phoneNumber}</a></li>
+                                </t:if>
+                                <t:unless test="phoneNumber">
+                                    <li>${message:message_withoutPhoneNumber}</li>
+                                </t:unless>
+                         </ul>
+                    </t:if>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-3 col-xs-3 avatar">
+                <img src="${avatarContextPath}" height="50" width="50"></img>
+            </div>
+        </div>
+    </div>
+</li>
+</t:container>

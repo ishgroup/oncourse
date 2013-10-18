@@ -1,0 +1,27 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<div id="class-results" class="tab-pane">
+    <ul class="list-unstyled result-content">
+        <li>
+            <p>Assessments are made against units of competency from the Certificate IV in Training and Assessment <a href="#">TAA40104</a>.</p>
+            <ul class="list-unstyled result-list">
+                <li>
+                    <span>Work effectively in vocational education and training (<a href="#">TAAENV401B</a>)</span>
+                    <strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
+                </li>
+                <li>
+                    <span>Foster and promote and inclusive learning culture (<a href="#">TAAENV402B</a>)</span>
+                    <strong class="text-danger tooltip-info" title="" data-original-title="RPL not granted (52)">FAILED</strong>
+                </li>
+                <li>
+                    <span>Ensure a healthy and safe learning environment (<a href="#">TAAENV402B</a>)</span>
+                    <strong class="text-info tooltip-info" title="" data-original-title="Not set">NO RESULT</strong>
+                </li>
+                <li>
+                    <span>Develop innovative ideas at work (<a href="#">TAAENV402B</a>)</span>
+                    <strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</t:container>

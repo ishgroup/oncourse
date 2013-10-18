@@ -249,6 +249,9 @@
                 </div>
             </div>
         </div>
+        <div>
+            <a  class="btn btn-sm btn-default btn-gradient pull-right" href="webcal:${request.contextPath}/calendar/${authService.user.uniqueCode}.ics" >Subscribe to calendar</a>
+        </div>
         <div t:type="timetable/calendar" contact="contact"/>
     </div>
 </html>

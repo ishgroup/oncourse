@@ -1,30 +1,23 @@
 <html t:type="pagestructure" title="literal:Class"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
-	
-	<h1>${courseClass.course.name}</h1>
-	
-	<span t:type="classTabs" courseClass="courseClass" selected="literal:classInfo"/>
-   
-    <table class="class-info-table">
-		<tr>
-			<td>
-				<div t:type="nextsession" courseClass="courseClass"/>
-				<div t:type="classinformation" courseClass="courseClass"/>
-			</td>
-		</tr>
-	</table>
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
 
 
-	<table class="class-info-materials mb20">
-		<tr>
-			<td>
-				<div t:type="materials" courseClass="courseClass"/>
-			</td>
-		</tr>
-	</table>
+    <div class="col-lg-9 col-sm-9 main-container">
+        <p class="info-text fixed">This course requires approval <a href="#" class="btn btn-default btn-xs">Review now</a></p>
+        <div class="page-header zero-padding clearfix">
+                <ul class="nav nav-tabs header-tabs">
+                    <span t:type="courseclass/classTabs" courseClass="courseClass"/>
+                </ul>
+                <h3><a href="#" name="top">${courseClass.course.name}</a> <small>(TRAS-2)</small></h3>
+                <!--<h4><a href="approval.html" class="label label-primary pull-right">Approval required</a></h4>-->
+        </div>
+        <div class="tab-content">
+            <span t:type="courseclass/classDetails" courseClass="courseClass"></span>
+            <span t:type="courseclass/classLocation" courseClass="courseClass" ></span>
+            <span t:type="courseclass/classResources" courseClass="courseClass"></span>
+            <span t:type="courseclass/classResults"></span>
 
-	<div t:type="messages" courseClass="courseClass"/>
 
-	<div class="cl mb20"></div>
-	<div class="cl"></div>
+        </div>
+    </div>
 </html>

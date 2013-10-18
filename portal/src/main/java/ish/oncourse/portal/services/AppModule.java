@@ -8,6 +8,7 @@ import ish.oncourse.portal.services.discussion.DiscussionServiceImpl;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.portal.services.pageload.*;
 import ish.oncourse.portal.services.site.PortalSiteService;
+import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
@@ -17,6 +18,7 @@ import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.UIRequestExceptionHandler;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
+import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -24,6 +26,8 @@ import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.services.*;
+import org.apache.tapestry5.services.javascript.JavaScriptStack;
+import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
 import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
 import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
 
@@ -96,4 +100,16 @@ public class AppModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
 		configuration.add(RequestExceptionHandler.class, handler);
 	}
+
+    @Contribute(MarkupRenderer.class)
+    public static void deactiveDefaultCSS(OrderedConfiguration<MarkupRendererFilter> configuration)
+    {
+        configuration.override("InjectDefaultStylesheet", null);
+    }
+
+    @Contribute(JavaScriptStackSource.class)
+    public static void deactiveJavaScript(MappedConfiguration<String, JavaScriptStack> configuration)
+    {
+        configuration.overrideInstance(InternalConstants.CORE_STACK_NAME, DisableJavaScriptStack.class);
+    }
 }

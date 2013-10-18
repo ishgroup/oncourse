@@ -1,4 +1,4 @@
-package ish.oncourse.portal.components;
+package ish.oncourse.portal.components.courseclass;
 
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
@@ -15,8 +15,8 @@ public class ClassTabs {
 	@Property
 	private CourseClass courseClass;
 
-	@Parameter
-	private String selected;
+	//@Parameter
+	//private String selected;
 
 	@Inject
 	private JavaScriptSupport javaScriptSupport;
@@ -32,10 +32,10 @@ public class ClassTabs {
 		return request.getContextPath();
 	}
 	
-	@AfterRender
+	/*@AfterRender
 	void afterRender() {
 		javaScriptSupport.addScript("jQuery('#%s').addClass('act');", selected);
-	}
+	}   */
 
 	public String getClassInfoPageName() {
 		return "class";

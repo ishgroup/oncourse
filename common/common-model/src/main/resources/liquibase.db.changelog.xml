@@ -1676,4 +1676,15 @@
         <addNotNullConstraint tableName="ProductItem" columnName="status" columnDataType="INTEGER"/>
     </changeSet>
 
+    <changeSet id="113" author="artyom" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="Contact" columnName="lastLoginTime"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="Contact">
+            <column name="lastLoginTime" type="TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

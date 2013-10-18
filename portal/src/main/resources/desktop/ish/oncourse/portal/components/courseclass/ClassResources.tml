@@ -1,0 +1,17 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+<div id="class-resources" class="tab-pane">
+    <ul class="list-unstyled resources-content">
+        <li>
+            <ul class="list-unstyled resources-list">
+                <t:loop source="materials" value="material">
+                    <div class="${material.type}">
+                        <img src="${contextPath}/img/ico-${material.type}.png" alt=""/>
+                        <a href="${material.contextPath}">${material.name}<t:if test="material.type.empty" negate="true">.${material.type}</t:if></a> ${material.size} kb.
+                    </div>
+                </t:loop>
+            </ul>
+        </li>
+    </ul>
+</div>
+</t:container>

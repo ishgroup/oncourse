@@ -19,11 +19,9 @@ public class Materials {
 	@Inject
 	private IBinaryDataService binaryDataService;
 
-	@SuppressWarnings("all")
 	@Property
 	private List<BinaryInfo> materials;
 
-	@SuppressWarnings("all")
 	@Property
 	private BinaryInfo material;
 	

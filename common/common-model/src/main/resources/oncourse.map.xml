@@ -124,6 +124,7 @@
 		<db-attribute name="isMarketingViaEmailAllowed" type="BIT"/>
 		<db-attribute name="isMarketingViaPostAllowed" type="BIT"/>
 		<db-attribute name="isMarketingViaSMSAllowed" type="BIT"/>
+		<db-attribute name="lastLoginTime" type="TIMESTAMP"/>
 		<db-attribute name="mobilePhoneNumber" type="VARCHAR" length="32"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="password" type="VARCHAR" length="16"/>
@@ -1174,6 +1175,7 @@
 		<obj-attribute name="isMarketingViaEmailAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaEmailAllowed"/>
 		<obj-attribute name="isMarketingViaPostAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaPostAllowed"/>
 		<obj-attribute name="isMarketingViaSMSAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaSMSAllowed"/>
+		<obj-attribute name="lastLoginTime" type="java.util.Date" db-attribute-path="lastLoginTime"/>
 		<obj-attribute name="mobilePhoneNumber" type="java.lang.String" db-attribute-path="mobilePhoneNumber"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>

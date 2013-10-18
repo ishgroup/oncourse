@@ -1,0 +1,53 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+    xmlns:p="tapestry:parameter">
+    <div id="class-location" class="tab-pane">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+
+                <t:if test="hasСoordinates">
+                       <script type="text/javascript">
+
+                           function initialize() {
+                               vLat = "${mapPositionLatitude}";
+                               vLong = "${mapPositionLongitude}";
+                               var mapOptions = {
+                                   zoom: 8,
+                                   center:  new google.maps.LatLng(vLat,vLong),
+                                   mapTypeId: google.maps.MapTypeId.ROADMAP
+                               };
+
+
+
+                               var map = new google.maps.Map(document.getElementById("venue"),
+                                       mapOptions);
+
+                               var marker = new google.maps.Marker({
+                                   position: new google.maps.LatLng(vLat,vLong),
+                                   map: map,
+                                   title: 'Hello World!'
+                               });
+                           }
+
+                           google.maps.event.addDomListener(window, 'load', initialize);
+
+                         /*  function loadMap() {
+                               var script = document.createElement("script");
+                               script.type = "text/javascript";
+                               script.src = jQuery('<div></div>').html('https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;callback=initialize').text();
+                               document.body.appendChild(script);
+                           }*/
+
+
+
+                       </script>
+
+
+                    <div id="venue"></div>
+                </t:if>
+                <t:unless test="hasСoordinates">
+                    <span>${message:message.withoutCoordinates}</span>
+                </t:unless>
+            </div>
+        </div>
+    </div>
+</t:container>

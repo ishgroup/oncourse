@@ -1,0 +1,30 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<li rel="time-1" class="roll" style="width: 282.6666666666667px; float: left;">
+    <div class="clearfix next-session-info">
+        <div class="col-lg-3 col-sm-3 date-content hidden-xs">
+            <p>${day}</p>
+            <small>${month}</small>
+        </div>
+        <div class="col-lg-9 col-sm-9 col-xs-12">
+            <div class="col-12">
+                <span class="glyphicon glyphicon-time"></span>
+                ${date}
+            </div>
+            <div class="col-12">
+                <span class="glyphicon glyphicon-map-marker"></span>
+                ${venue}
+            </div>
+            <t:loop source="tutors" value="tutor">
+                 <div class="row">
+                     <div class="col-lg-12 col-sm-12">
+                         <span class="glyphicon glyphicon-user"></span>
+                         ${tutor.fullName}
+                     </div>
+                 </div>
+            </t:loop>
+            <a href="#" class="mark-roll">Mark Roll</a>
+            <a href="#" class="marking-roll"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> Marking</a>
+        </div>
+    </div>
+</li>
+</t:container>

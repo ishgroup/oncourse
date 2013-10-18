@@ -1,4 +1,4 @@
-package ish.oncourse.ui.services;
+package ish.oncourse.services;
 
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;

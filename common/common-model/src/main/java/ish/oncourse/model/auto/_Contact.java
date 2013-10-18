@@ -42,6 +42,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY = "isMarketingViaEmailAllowed";
     public static final String IS_MARKETING_VIA_POST_ALLOWED_PROPERTY = "isMarketingViaPostAllowed";
     public static final String IS_MARKETING_VIA_SMSALLOWED_PROPERTY = "isMarketingViaSMSAllowed";
+    public static final String LAST_LOGIN_TIME_PROPERTY = "lastLoginTime";
     public static final String MOBILE_PHONE_NUMBER_PROPERTY = "mobilePhoneNumber";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String PASSWORD_PROPERTY = "password";
@@ -72,347 +73,354 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setBusinessPhoneNumber(String businessPhoneNumber) {
-        writeProperty("businessPhoneNumber", businessPhoneNumber);
+        writeProperty(BUSINESS_PHONE_NUMBER_PROPERTY, businessPhoneNumber);
     }
     public String getBusinessPhoneNumber() {
-        return (String)readProperty("businessPhoneNumber");
+        return (String)readProperty(BUSINESS_PHONE_NUMBER_PROPERTY);
     }
 
     public void setCookieHash(String cookieHash) {
-        writeProperty("cookieHash", cookieHash);
+        writeProperty(COOKIE_HASH_PROPERTY, cookieHash);
     }
     public String getCookieHash() {
-        return (String)readProperty("cookieHash");
+        return (String)readProperty(COOKIE_HASH_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
-        writeProperty("dateOfBirth", dateOfBirth);
+        writeProperty(DATE_OF_BIRTH_PROPERTY, dateOfBirth);
     }
     public Date getDateOfBirth() {
-        return (Date)readProperty("dateOfBirth");
+        return (Date)readProperty(DATE_OF_BIRTH_PROPERTY);
     }
 
     public void setEmailAddress(String emailAddress) {
-        writeProperty("emailAddress", emailAddress);
+        writeProperty(EMAIL_ADDRESS_PROPERTY, emailAddress);
     }
     public String getEmailAddress() {
-        return (String)readProperty("emailAddress");
+        return (String)readProperty(EMAIL_ADDRESS_PROPERTY);
     }
 
     public void setFamilyName(String familyName) {
-        writeProperty("familyName", familyName);
+        writeProperty(FAMILY_NAME_PROPERTY, familyName);
     }
     public String getFamilyName() {
-        return (String)readProperty("familyName");
+        return (String)readProperty(FAMILY_NAME_PROPERTY);
     }
 
     public void setFaxNumber(String faxNumber) {
-        writeProperty("faxNumber", faxNumber);
+        writeProperty(FAX_NUMBER_PROPERTY, faxNumber);
     }
     public String getFaxNumber() {
-        return (String)readProperty("faxNumber");
+        return (String)readProperty(FAX_NUMBER_PROPERTY);
     }
 
     public void setGivenName(String givenName) {
-        writeProperty("givenName", givenName);
+        writeProperty(GIVEN_NAME_PROPERTY, givenName);
     }
     public String getGivenName() {
-        return (String)readProperty("givenName");
+        return (String)readProperty(GIVEN_NAME_PROPERTY);
     }
 
     public void setHomePhoneNumber(String homePhoneNumber) {
-        writeProperty("homePhoneNumber", homePhoneNumber);
+        writeProperty(HOME_PHONE_NUMBER_PROPERTY, homePhoneNumber);
     }
     public String getHomePhoneNumber() {
-        return (String)readProperty("homePhoneNumber");
+        return (String)readProperty(HOME_PHONE_NUMBER_PROPERTY);
     }
 
     public void setIsCompany(Boolean isCompany) {
-        writeProperty("isCompany", isCompany);
+        writeProperty(IS_COMPANY_PROPERTY, isCompany);
     }
     public Boolean getIsCompany() {
-        return (Boolean)readProperty("isCompany");
+        return (Boolean)readProperty(IS_COMPANY_PROPERTY);
     }
 
     public void setIsMale(Boolean isMale) {
-        writeProperty("isMale", isMale);
+        writeProperty(IS_MALE_PROPERTY, isMale);
     }
     public Boolean getIsMale() {
-        return (Boolean)readProperty("isMale");
+        return (Boolean)readProperty(IS_MALE_PROPERTY);
     }
 
     public void setIsMarketingViaEmailAllowed(Boolean isMarketingViaEmailAllowed) {
-        writeProperty("isMarketingViaEmailAllowed", isMarketingViaEmailAllowed);
+        writeProperty(IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY, isMarketingViaEmailAllowed);
     }
     public Boolean getIsMarketingViaEmailAllowed() {
-        return (Boolean)readProperty("isMarketingViaEmailAllowed");
+        return (Boolean)readProperty(IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY);
     }
 
     public void setIsMarketingViaPostAllowed(Boolean isMarketingViaPostAllowed) {
-        writeProperty("isMarketingViaPostAllowed", isMarketingViaPostAllowed);
+        writeProperty(IS_MARKETING_VIA_POST_ALLOWED_PROPERTY, isMarketingViaPostAllowed);
     }
     public Boolean getIsMarketingViaPostAllowed() {
-        return (Boolean)readProperty("isMarketingViaPostAllowed");
+        return (Boolean)readProperty(IS_MARKETING_VIA_POST_ALLOWED_PROPERTY);
     }
 
     public void setIsMarketingViaSMSAllowed(Boolean isMarketingViaSMSAllowed) {
-        writeProperty("isMarketingViaSMSAllowed", isMarketingViaSMSAllowed);
+        writeProperty(IS_MARKETING_VIA_SMSALLOWED_PROPERTY, isMarketingViaSMSAllowed);
     }
     public Boolean getIsMarketingViaSMSAllowed() {
-        return (Boolean)readProperty("isMarketingViaSMSAllowed");
+        return (Boolean)readProperty(IS_MARKETING_VIA_SMSALLOWED_PROPERTY);
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        writeProperty(LAST_LOGIN_TIME_PROPERTY, lastLoginTime);
+    }
+    public Date getLastLoginTime() {
+        return (Date)readProperty(LAST_LOGIN_TIME_PROPERTY);
     }
 
     public void setMobilePhoneNumber(String mobilePhoneNumber) {
-        writeProperty("mobilePhoneNumber", mobilePhoneNumber);
+        writeProperty(MOBILE_PHONE_NUMBER_PROPERTY, mobilePhoneNumber);
     }
     public String getMobilePhoneNumber() {
-        return (String)readProperty("mobilePhoneNumber");
+        return (String)readProperty(MOBILE_PHONE_NUMBER_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setPassword(String password) {
-        writeProperty("password", password);
+        writeProperty(PASSWORD_PROPERTY, password);
     }
     public String getPassword() {
-        return (String)readProperty("password");
+        return (String)readProperty(PASSWORD_PROPERTY);
     }
 
     public void setPasswordHash(String passwordHash) {
-        writeProperty("passwordHash", passwordHash);
+        writeProperty(PASSWORD_HASH_PROPERTY, passwordHash);
     }
     public String getPasswordHash() {
-        return (String)readProperty("passwordHash");
+        return (String)readProperty(PASSWORD_HASH_PROPERTY);
     }
 
     public void setPasswordRecoverExpire(Date passwordRecoverExpire) {
-        writeProperty("passwordRecoverExpire", passwordRecoverExpire);
+        writeProperty(PASSWORD_RECOVER_EXPIRE_PROPERTY, passwordRecoverExpire);
     }
     public Date getPasswordRecoverExpire() {
-        return (Date)readProperty("passwordRecoverExpire");
+        return (Date)readProperty(PASSWORD_RECOVER_EXPIRE_PROPERTY);
     }
 
     public void setPasswordRecoveryKey(String passwordRecoveryKey) {
-        writeProperty("passwordRecoveryKey", passwordRecoveryKey);
+        writeProperty(PASSWORD_RECOVERY_KEY_PROPERTY, passwordRecoveryKey);
     }
     public String getPasswordRecoveryKey() {
-        return (String)readProperty("passwordRecoveryKey");
+        return (String)readProperty(PASSWORD_RECOVERY_KEY_PROPERTY);
     }
 
     public void setPostcode(String postcode) {
-        writeProperty("postcode", postcode);
+        writeProperty(POSTCODE_PROPERTY, postcode);
     }
     public String getPostcode() {
-        return (String)readProperty("postcode");
+        return (String)readProperty(POSTCODE_PROPERTY);
     }
 
     public void setState(String state) {
-        writeProperty("state", state);
+        writeProperty(STATE_PROPERTY, state);
     }
     public String getState() {
-        return (String)readProperty("state");
+        return (String)readProperty(STATE_PROPERTY);
     }
 
     public void setStreet(String street) {
-        writeProperty("street", street);
+        writeProperty(STREET_PROPERTY, street);
     }
     public String getStreet() {
-        return (String)readProperty("street");
+        return (String)readProperty(STREET_PROPERTY);
     }
 
     public void setSuburb(String suburb) {
-        writeProperty("suburb", suburb);
+        writeProperty(SUBURB_PROPERTY, suburb);
     }
     public String getSuburb() {
-        return (String)readProperty("suburb");
+        return (String)readProperty(SUBURB_PROPERTY);
     }
 
     public void setTaxFileNumber(String taxFileNumber) {
-        writeProperty("taxFileNumber", taxFileNumber);
+        writeProperty(TAX_FILE_NUMBER_PROPERTY, taxFileNumber);
     }
     public String getTaxFileNumber() {
-        return (String)readProperty("taxFileNumber");
+        return (String)readProperty(TAX_FILE_NUMBER_PROPERTY);
     }
 
     public void setUniqueCode(String uniqueCode) {
-        writeProperty("uniqueCode", uniqueCode);
+        writeProperty(UNIQUE_CODE_PROPERTY, uniqueCode);
     }
     public String getUniqueCode() {
-        return (String)readProperty("uniqueCode");
+        return (String)readProperty(UNIQUE_CODE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void addToContactComments(DiscussionCommentContact obj) {
-        addToManyTarget("contactComments", obj, true);
+        addToManyTarget(CONTACT_COMMENTS_PROPERTY, obj, true);
     }
     public void removeFromContactComments(DiscussionCommentContact obj) {
-        removeToManyTarget("contactComments", obj, true);
+        removeToManyTarget(CONTACT_COMMENTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscussionCommentContact> getContactComments() {
-        return (List<DiscussionCommentContact>)readProperty("contactComments");
+        return (List<DiscussionCommentContact>)readProperty(CONTACT_COMMENTS_PROPERTY);
     }
 
 
     public void setCountry(Country country) {
-        setToOneTarget("country", country, true);
+        setToOneTarget(COUNTRY_PROPERTY, country, true);
     }
 
     public Country getCountry() {
-        return (Country)readProperty("country");
+        return (Country)readProperty(COUNTRY_PROPERTY);
     }
 
 
     public void addToFromContacts(ContactRelation obj) {
-        addToManyTarget("fromContacts", obj, true);
+        addToManyTarget(FROM_CONTACTS_PROPERTY, obj, true);
     }
     public void removeFromFromContacts(ContactRelation obj) {
-        removeToManyTarget("fromContacts", obj, true);
+        removeToManyTarget(FROM_CONTACTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ContactRelation> getFromContacts() {
-        return (List<ContactRelation>)readProperty("fromContacts");
+        return (List<ContactRelation>)readProperty(FROM_CONTACTS_PROPERTY);
     }
 
 
     public void addToInvoices(Invoice obj) {
-        addToManyTarget("invoices", obj, true);
+        addToManyTarget(INVOICES_PROPERTY, obj, true);
     }
     public void removeFromInvoices(Invoice obj) {
-        removeToManyTarget("invoices", obj, true);
+        removeToManyTarget(INVOICES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Invoice> getInvoices() {
-        return (List<Invoice>)readProperty("invoices");
+        return (List<Invoice>)readProperty(INVOICES_PROPERTY);
     }
 
 
     public void addToMemberships(Membership obj) {
-        addToManyTarget("memberships", obj, true);
+        addToManyTarget(MEMBERSHIPS_PROPERTY, obj, true);
     }
     public void removeFromMemberships(Membership obj) {
-        removeToManyTarget("memberships", obj, true);
+        removeToManyTarget(MEMBERSHIPS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Membership> getMemberships() {
-        return (List<Membership>)readProperty("memberships");
+        return (List<Membership>)readProperty(MEMBERSHIPS_PROPERTY);
     }
 
 
     public void addToMessagePeople(MessagePerson obj) {
-        addToManyTarget("messagePeople", obj, true);
+        addToManyTarget(MESSAGE_PEOPLE_PROPERTY, obj, true);
     }
     public void removeFromMessagePeople(MessagePerson obj) {
-        removeToManyTarget("messagePeople", obj, true);
+        removeToManyTarget(MESSAGE_PEOPLE_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<MessagePerson> getMessagePeople() {
-        return (List<MessagePerson>)readProperty("messagePeople");
+        return (List<MessagePerson>)readProperty(MESSAGE_PEOPLE_PROPERTY);
     }
 
 
     public void addToPaymentsIn(PaymentIn obj) {
-        addToManyTarget("paymentsIn", obj, true);
+        addToManyTarget(PAYMENTS_IN_PROPERTY, obj, true);
     }
     public void removeFromPaymentsIn(PaymentIn obj) {
-        removeToManyTarget("paymentsIn", obj, true);
+        removeToManyTarget(PAYMENTS_IN_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentIn> getPaymentsIn() {
-        return (List<PaymentIn>)readProperty("paymentsIn");
+        return (List<PaymentIn>)readProperty(PAYMENTS_IN_PROPERTY);
     }
 
 
     public void addToPaymentsOut(PaymentOut obj) {
-        addToManyTarget("paymentsOut", obj, true);
+        addToManyTarget(PAYMENTS_OUT_PROPERTY, obj, true);
     }
     public void removeFromPaymentsOut(PaymentOut obj) {
-        removeToManyTarget("paymentsOut", obj, true);
+        removeToManyTarget(PAYMENTS_OUT_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentOut> getPaymentsOut() {
-        return (List<PaymentOut>)readProperty("paymentsOut");
+        return (List<PaymentOut>)readProperty(PAYMENTS_OUT_PROPERTY);
     }
 
 
     public void addToProducts(ProductItem obj) {
-        addToManyTarget("products", obj, true);
+        addToManyTarget(PRODUCTS_PROPERTY, obj, true);
     }
     public void removeFromProducts(ProductItem obj) {
-        removeToManyTarget("products", obj, true);
+        removeToManyTarget(PRODUCTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ProductItem> getProducts() {
-        return (List<ProductItem>)readProperty("products");
+        return (List<ProductItem>)readProperty(PRODUCTS_PROPERTY);
     }
 
 
     public void setStudent(Student student) {
-        setToOneTarget("student", student, true);
+        setToOneTarget(STUDENT_PROPERTY, student, true);
     }
 
     public Student getStudent() {
-        return (Student)readProperty("student");
+        return (Student)readProperty(STUDENT_PROPERTY);
     }
 
 
     public void addToToContacts(ContactRelation obj) {
-        addToManyTarget("toContacts", obj, true);
+        addToManyTarget(TO_CONTACTS_PROPERTY, obj, true);
     }
     public void removeFromToContacts(ContactRelation obj) {
-        removeToManyTarget("toContacts", obj, true);
+        removeToManyTarget(TO_CONTACTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ContactRelation> getToContacts() {
-        return (List<ContactRelation>)readProperty("toContacts");
+        return (List<ContactRelation>)readProperty(TO_CONTACTS_PROPERTY);
     }
 
 
     public void setTutor(Tutor tutor) {
-        setToOneTarget("tutor", tutor, true);
+        setToOneTarget(TUTOR_PROPERTY, tutor, true);
     }
 
     public Tutor getTutor() {
-        return (Tutor)readProperty("tutor");
+        return (Tutor)readProperty(TUTOR_PROPERTY);
     }
 
 
     public void addToVouchers(Voucher obj) {
-        addToManyTarget("vouchers", obj, true);
+        addToManyTarget(VOUCHERS_PROPERTY, obj, true);
     }
     public void removeFromVouchers(Voucher obj) {
-        removeToManyTarget("vouchers", obj, true);
+        removeToManyTarget(VOUCHERS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Voucher> getVouchers() {
-        return (List<Voucher>)readProperty("vouchers");
+        return (List<Voucher>)readProperty(VOUCHERS_PROPERTY);
     }
 
 

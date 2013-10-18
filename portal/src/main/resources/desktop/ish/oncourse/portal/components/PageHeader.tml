@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/s/portal/css/slider.css"/>
     <link rel="stylesheet" type="text/css" href="/s/portal/css/screen.css"/>
     <link rel="stylesheet" type="text/css" href="/s/portal/css/portal.css"/>
+    <link rel="stylesheet" type="text/css" href="/s/portal/css/class_detils.css"/>
 
 
 
@@ -32,20 +33,22 @@
 		</script>
 	<![endif]-->
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;"></script>
 
-    <script type="text/javascript" src="/s/portal/js/jquery-1.9.1.min.js"></script>
+
+    <script type="text/javascript" src="/s/portal/js/jquery-1.9.1.js"></script>
 
     <script type="text/javascript" src="/s/portal/js/jquery.calendario.js"></script>
-	<script type="text/javascript" src="/s/portal/js/bootstrap.js"></script>
-    <script type="text/javascript" src="/s/portal/js/jquery.flexisel.js"></script>
-    <script type="text/javascript" src="/s/portal/js/custom.js"></script>
 
-	<script type="text/javascript" src="/s/portal/js/initialise.js"></script>
+     <script type="text/javascript" src="/s/portal/js/bootstrap.js"></script>
+     <script type="text/javascript" src="/s/portal/js/jquery.flexisel.js"></script>
+     <script type="text/javascript" src="/s/portal/js/custom.js"></script>
 
-    <script type="text/javascript" src="/s/portal/js/for_calendar.js"></script>
+     <script type="text/javascript" src="/s/portal/js/initialise.js"></script>
+
+     <script type="text/javascript" src="/s/portal/js/for_calendar.js"></script>
 
 
 
 
-</t:container>
+ </t:container>
