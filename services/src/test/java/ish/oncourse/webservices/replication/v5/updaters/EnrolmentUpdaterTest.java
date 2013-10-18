@@ -32,7 +32,7 @@ public class EnrolmentUpdaterTest extends ServiceTest {
     }
 	
 	@Test
-	public void testValidEnrolmentForAngelVersionNotSupportEnrolmentToManyRelation() {
+	public void testValidEnrolment() {
 		EnrolmentUpdater updater = new EnrolmentUpdater();
 		EnrolmentStub stub = new EnrolmentStub();
 		stub.setAngelId(1l);
@@ -60,8 +60,8 @@ public class EnrolmentUpdaterTest extends ServiceTest {
             updater.updateEntity(stub, entity, relationShipCallback);
             assertNotNull("Course class should not be empty", entity.getCourseClass());
             assertNotNull("Student should not be empty", entity.getStudent());
-            assertNotNull(String.format("InvoiceLine should not be empty and should be setted by updater for angel version %s lover then %s",
-            	college.getAngelVersion(), Enrolment.TO_MANY_INVOICE_LINE_SUPPORT_VERSION), entity.getInvoiceLines());
+            assertNotNull(String.format("InvoiceLine should not be empty and should be setted by updater for angel version %s",
+            	college.getAngelVersion()), entity.getInvoiceLines());
 		} catch (UpdaterException e) {
 			logger.error( e.getMessage(), e);
             assertTrue(e.getMessage(), false);
@@ -71,7 +71,7 @@ public class EnrolmentUpdaterTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testInvalidEnrolmentForAngelVersionNotSupportEnrolmentToManyRelation() {
+	public void testInvalidEnrolment() {
 		EnrolmentUpdater updater = new EnrolmentUpdater();
 		EnrolmentStub stub = new EnrolmentStub();
 		stub.setAngelId(1l);
@@ -105,82 +105,4 @@ public class EnrolmentUpdaterTest extends ServiceTest {
 			objectContext.rollbackChanges();
 		}
 	}
-	
-	@Test
-	public void testValidEnrolmentForAngelVersionSupportEnrolmentToManyRelation() {
-		EnrolmentUpdater updater = new EnrolmentUpdater();
-		EnrolmentStub stub = new EnrolmentStub();
-		stub.setAngelId(1l);
-		stub.setWillowId(1l);
-		stub.setInvoiceLineId(1l);
-		stub.setCourseClassId(1l);
-		stub.setStudentId(1l);
-		stub.setStatus("IN_TRANSACTION");
-		
-		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
-		try {
-			Enrolment entity = objectContext.newObject(Enrolment.class);
-			College college = objectContext.newObject(College.class);
-			college.setAngelVersion(Enrolment.TO_MANY_INVOICE_LINE_SUPPORT_VERSION);
-			entity.setCollege(college);
-			RelationShipCallback relationShipCallback = new RelationShipCallback() {
-                @Override
-                public <M extends Queueable> M updateRelationShip(Long entityId, Class<M> clazz) {
-                    if (clazz == CourseClass.class && entityId == 1l) return objectContext.newObject(clazz);
-                    if (clazz == Student.class && entityId == 1l) return objectContext.newObject(clazz);
-                    if (clazz == InvoiceLine.class && entityId == 1l) return objectContext.newObject(clazz);
-                    return null;
-                }
-            };
-            updater.updateEntity(stub, entity, relationShipCallback);
-            assertNotNull("Course class should not be empty", entity.getCourseClass());
-            assertNotNull("Student should not be empty", entity.getStudent());
-            assertTrue(String.format("InvoiceLines list should be empty and should not be setted by updater for angel version %s lover then %s",
-                college.getAngelVersion(), Enrolment.TO_MANY_INVOICE_LINE_SUPPORT_VERSION), entity.getInvoiceLines().isEmpty());
-            assertNull(String.format("Original InvoiceLine should be null and should not be setted by updater for angel version %s lover then %s",
-                    college.getAngelVersion(), Enrolment.TO_MANY_INVOICE_LINE_SUPPORT_VERSION), entity.getOriginalInvoiceLine());
-		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
-            assertTrue(e.getMessage(), false);
-		} finally {
-			objectContext.rollbackChanges();
-		}
-	}
-	
-	@Test
-	public void testInvalidEnrolmentForAngelVersionSupportEnrolmentToManyRelation() {
-		EnrolmentUpdater updater = new EnrolmentUpdater();
-		EnrolmentStub stub = new EnrolmentStub();
-		stub.setAngelId(1l);
-		stub.setWillowId(1l);
-		stub.setInvoiceLineId(1l);
-		stub.setCourseClassId(1l);
-		stub.setStudentId(1l);
-		stub.setStatus("IN_TRANSACTION");
-		
-		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
-		try {
-			Enrolment entity = objectContext.newObject(Enrolment.class);
-			College college = objectContext.newObject(College.class);
-			college.setAngelVersion(Enrolment.TO_MANY_INVOICE_LINE_SUPPORT_VERSION);
-			entity.setCollege(college);
-			RelationShipCallback relationShipCallback = new RelationShipCallback() {
-                @Override
-                public <M extends Queueable> M updateRelationShip(Long entityId, Class<M> clazz) {
-                    if (clazz == CourseClass.class && entityId == 1l) return objectContext.newObject(clazz);
-                    if (clazz == Student.class && entityId == 1l) return objectContext.newObject(clazz);
-                    return null;
-                }
-            };
-            updater.updateEntity(stub, entity, relationShipCallback);
-            assertTrue(String.format("EnrolmentUpdater should throw en UpdaterException for college with angelversion %s", college.getAngelVersion()), false);
-		} catch (UpdaterException e) {
-			logger.info( e.getMessage(), e);
-			assertTrue("Updater should throw an exception because invoiceline missed in transaction!", 
-				e.getMessage().startsWith("Enrollment with angelId = 1 and willowid = 1 with missed original invoiceline with id = 1 record detected"));
-		} finally {
-			objectContext.rollbackChanges();
-		}
-	}
-
 }
