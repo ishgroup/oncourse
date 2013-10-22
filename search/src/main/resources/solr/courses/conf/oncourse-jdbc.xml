@@ -5,27 +5,48 @@
 		jndiName="java:comp/env/jdbc/oncourse" />
 		
 	<document>
-		<entity name="course" dataSource="onCourseDS"
-			query="select distinct c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId, 
-			(select IFNULL(min(
-			s.startDate
-			), IF(cc.isDistantLearningCourse=1, CURDATE(), CONVERT_TZ(DATE_ADD(NOW(), INTERVAL 100 YEAR),'GMT','GMT') )) 
-			from CourseClass cc left join Session s on s.courseClassId=cc.id left join Room ro on cc.roomId=ro.id left join Site si on ro.siteId=si.id left join College co on cc.collegeId=co.id
-			inner join (
-			select cc1.id, count(s1.id) as cnt from CourseClass cc1 inner join Session s1 on s1.courseClassId=cc1.id where cc1.isWebVisible=1 and cc1.isCancelled=0 and s1.startDate &gt; CURDATE() group by cc1.id having cnt &gt; 0 
-			union select cc3.id, 1 as cnt from CourseClass cc3 where cc3.isWebVisible=1 and cc3.isCancelled=0 and cc3.isDistantLearningCourse=1) as cc2 on cc2.id=cc.id where cc.courseId=c.id) as startDate 
-			from Course c where c.isWebVisible=1"
-			deltaImportQuery="select distinct c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId, 
-			(select IFNULL(min(
-			s.startDate
-			), IF(cc.isDistantLearningCourse=1, CURDATE(), CONVERT_TZ(DATE_ADD(NOW(), INTERVAL 100 YEAR),'GMT','GMT') )) 
-			from CourseClass cc left join Session s on s.courseClassId=cc.id left join Room ro on cc.roomId=ro.id left join Site si on ro.siteId=si.id left join College co on cc.collegeId=co.id
-			inner join (
-			select cc1.id, count(s1.id) as cnt from CourseClass cc1 inner join Session s1 on s1.courseClassId=cc1.id where cc1.isWebVisible=1 and cc1.isCancelled=0 and s1.startDate &gt; CURDATE() group by cc1.id having cnt &gt; 0 
-			union select cc3.id, 1 as cnt from CourseClass cc3 where cc3.isWebVisible=1 and cc3.isCancelled=0 and cc3.isDistantLearningCourse=1) as cc2 on cc2.id=cc.id where cc.courseId=c.id) as startDate 
-			from Course c where c.id='${dataimporter.delta.id}'"
-			deltaQuery="select c.id from Course c where c.isWebVisible=1 and c.modified &gt; '${dataimporter.last_index_time}'"
-			pk="id" transformer="HTMLStripTransformer">
+		<entity name="course" dataSource="onCourseDS" query="
+		/** We should remeber that for correct working of CONVERT_TZ function
+		* we need execute 'mysql_tzinfo_to_sql /usr/share/zoneinfo/ | mysql -u root mysql' before**/
+		select distinct c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId,(
+			select IFNULL(
+			/*min session.startdate*/
+			min(s.startDate),
+			/*if course class is self paced we use today as start date, if the course class is regular we use today + 100 years as startDate*/
+			IF(cc.isDistantLearningCourse=1, CONVERT_TZ(CURDATE(),'GMT','GMT'), CONVERT_TZ(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'GMT','GMT'))
+			)
+			from CourseClass cc
+			/*we should use for index only session when endDate >= NOW*/
+			left join Session s on s.courseClassId=cc.id and s.endDate &gt;= NOW()
+			left join Room ro on cc.roomId=ro.id
+			left join Site si on ro.siteId=si.id
+			left join College co on cc.collegeId=co.id
+			/*we may index only not canceled and web visible not full classes*/
+			where cc.courseId=c.id and cc.isWebVisible=1 and cc.isCancelled=0
+			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (2,3))
+		) as startDate
+		from Course c where c.isWebVisible=1"
+		deltaImportQuery="
+		select distinct c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId,(
+			select IFNULL(
+			min(s.startDate),
+			IF(cc.isDistantLearningCourse=1, CONVERT_TZ(CURDATE(),'GMT','GMT'), CONVERT_TZ(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'GMT','GMT'))
+			)
+			from CourseClass cc
+			left join Session s on s.courseClassId=cc.id and s.endDate &gt;= NOW()
+			left join Room ro on cc.roomId=ro.id
+			left join Site si on ro.siteId=si.id
+			left join College co on cc.collegeId=co.id
+			where cc.courseId=c.id and cc.isWebVisible=1 and cc.isCancelled=0
+			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (2,3))
+		) as startDate
+		from Course c where c.isWebVisible=1 and c.id='${dataimporter.delta.id}'"
+		deltaQuery="
+		select c.id
+		from Course c
+		where c.isWebVisible=1 and (c.modified &gt; '${dataimporter.last_index_time}')
+		"
+		pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
 			<field name="doctype" column="type" />
@@ -37,15 +58,25 @@
 
 			<entity name="courseClass" pk="id" dataSource="onCourseDS"  transformer="TemplateTransformer"
 				query="select distinct cc.id as id, cc.feeExGst as pr, cc.code as code, 
-				IFNULL(IFNULL(CONVERT_TZ(cc.endDate,'GMT',cc.timeZone),IFNULL(CONVERT_TZ(cc.endDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.endDate,'GMT', si.timeZone), CONVERT_TZ(cc.endDate,'GMT', co.timeZone)))), CONVERT_TZ(DATE_ADD(NOW(), INTERVAL 100 YEAR),'GMT','GMT') ) as end, 
+				IFNULL(IFNULL(CONVERT_TZ(cc.endDate,'GMT',cc.timeZone),IFNULL(CONVERT_TZ(cc.endDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.endDate,'GMT', si.timeZone), CONVERT_TZ(cc.endDate,'GMT', co.timeZone)))), CONVERT_TZ(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'GMT','GMT') ) as end,
 				IFNULL(IFNULL(CONVERT_TZ(cc.startDate,'GMT',cc.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT', si.timeZone), CONVERT_TZ(cc.startDate,'GMT', co.timeZone)))), CURDATE()) as start 
-				from CourseClass cc left join Session se on se.courseClassId=cc.id left join Room ro on cc.roomId=ro.id left join Site si on ro.siteId=si.id left join College co on cc.collegeId=co.id 
-				where cc.isWebVisible=1 and cc.courseid='${course.id}' and cc.isCancelled=0 and ((cc.endDate &gt; CURDATE() and cc.isDistantLearningCourse=0) or cc.isDistantLearningCourse=1)"
-				deltaImportQuery="select distinct cc.id as id, cc.feeExGst as pr, cc.code as code, 
-				IFNULL(IFNULL(CONVERT_TZ(cc.endDate,'GMT',cc.timeZone),IFNULL(CONVERT_TZ(cc.endDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.endDate,'GMT', si.timeZone), CONVERT_TZ(cc.endDate,'GMT', co.timeZone)))), CONVERT_TZ(DATE_ADD(NOW(), INTERVAL 100 YEAR),'GMT','GMT') ) as end, 
+				from CourseClass cc
+				left join Session se on se.courseClassId=cc.id
+				left join Room ro on cc.roomId=ro.id
+				left join Site si on ro.siteId=si.id
+				left join College co on cc.collegeId=co.id
+				where cc.isWebVisible=1 and cc.courseid='${course.id}' and cc.isCancelled=0
+				and ((cc.endDate &gt; CURDATE() and cc.isDistantLearningCourse=0) or cc.isDistantLearningCourse=1)"
+				deltaImportQuery="select distinct cc.id as id, cc.feeExGst as pr, cc.code as code,
+				IFNULL(IFNULL(CONVERT_TZ(cc.endDate,'GMT',cc.timeZone),IFNULL(CONVERT_TZ(cc.endDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.endDate,'GMT', si.timeZone), CONVERT_TZ(cc.endDate,'GMT', co.timeZone)))), CONVERT_TZ(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'GMT','GMT') ) as end,
 				IFNULL(IFNULL(CONVERT_TZ(cc.startDate,'GMT',cc.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT', si.timeZone), CONVERT_TZ(cc.startDate,'GMT', co.timeZone)))), CURDATE()) as start 
-				from CourseClass cc left join Session se on se.courseClassId=cc.id left join Room ro on cc.roomId=ro.id left join Site si on ro.siteId=si.id left join College co on cc.collegeId=co.id where cc.id='${dataimporter.delta.id}'"
-				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}' or endDate &lt; NOW()"
+				from CourseClass cc
+				left join Session se on se.courseClassId=cc.id
+				left join Room ro on cc.roomId=ro.id
+				left join Site si on ro.siteId=si.id
+				left join College co on cc.collegeId=co.id
+				where cc.id='${dataimporter.delta.id}'"
+				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}' or endDate &lt; CURDATE()"
 				parentDeltaQuery="select id from Course where id='{courseClass.courseId}'"
 				deletedPkQuery="select id from CourseClass where endDate &lt; NOW()">
 				<field name="id" column="id" />
