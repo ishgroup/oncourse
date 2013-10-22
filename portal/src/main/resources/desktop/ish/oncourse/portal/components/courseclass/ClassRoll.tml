@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 <div class="col-lg-12 class-roll-content">
     <div class="page-header clearfix">
-        <h4 class="class-roll-heading pull-left" >Class roll <small>${numberOfSudents} enrolled students</small></h4>
+        <h4 class="class-roll-heading pull-left" >Class roll <small>${numberOfStudents} enrolled students</small></h4>
     </div>
     <p class="info-text clearfix">You are currently marking <strong>Wednesday 15 September 10:00 am</strong><button type="button" class="finish pull-right btn btn-default btn-xs">Finish <span>×</span></button></p>
     <ul class="list-unstyled student-list">

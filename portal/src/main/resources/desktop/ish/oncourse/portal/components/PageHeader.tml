@@ -33,11 +33,10 @@
 		</script>
 	<![endif]-->
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;"></script>
+   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;"></script>
 
 
     <script type="text/javascript" src="/s/portal/js/jquery-1.9.1.js"></script>
-
     <script type="text/javascript" src="/s/portal/js/jquery.calendario.js"></script>
 
      <script type="text/javascript" src="/s/portal/js/bootstrap.js"></script>

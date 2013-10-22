@@ -4,9 +4,10 @@
         <div class="row">
             <div class="col-lg-12 col-sm-12">
 
-                <t:if test="hasСoordinates">
+                <t:if test="hasCoordinates">
                        <script type="text/javascript">
 
+                           var map
                            function initialize() {
                                vLat = "${mapPositionLatitude}";
                                vLong = "${mapPositionLongitude}";
@@ -18,7 +19,7 @@
 
 
 
-                               var map = new google.maps.Map(document.getElementById("venue"),
+                                 map = new google.maps.Map(document.getElementById("venue"),
                                        mapOptions);
 
                                var marker = new google.maps.Marker({
@@ -30,21 +31,29 @@
 
                            google.maps.event.addDomListener(window, 'load', initialize);
 
-                         /*  function loadMap() {
-                               var script = document.createElement("script");
-                               script.type = "text/javascript";
+
+                           function loadMap() {
+                               var script = document.createElement('script');
+                               script.type = 'text/javascript';
+                               //we use this hard code to convert &amp; to real amp.
                                script.src = jQuery('<div></div>').html('https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;callback=initialize').text();
                                document.body.appendChild(script);
-                           }*/
+                           }
+
+                           jQuery(document).ready(function() {
+
+                               loadMap();
+
+                           });
 
 
 
                        </script>
 
 
-                    <div id="venue"></div>
+                    <div id="venue" ></div>
                 </t:if>
-                <t:unless test="hasСoordinates">
+                <t:unless test="hasCoordinates">
                     <span>${message:message.withoutCoordinates}</span>
                 </t:unless>
             </div>

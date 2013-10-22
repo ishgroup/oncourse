@@ -15,7 +15,7 @@
             <span t:type="courseclass/classDetails" courseClass="courseClass"></span>
             <span t:type="courseclass/classLocation" courseClass="courseClass" ></span>
             <span t:type="courseclass/classResources" courseClass="courseClass"></span>
-            <span t:type="courseclass/classResults"></span>
+            <span t:type="courseclass/classResults" courseClass="courseClass"></span>
 
 
         </div>

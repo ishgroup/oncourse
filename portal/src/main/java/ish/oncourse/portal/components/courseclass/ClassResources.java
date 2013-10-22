@@ -3,12 +3,15 @@ package ish.oncourse.portal.components.courseclass;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,13 +36,30 @@ public class ClassResources {
     private BinaryInfo material;
 
     @Inject
+    private ICookiesService cookieService;
+
+    @Inject
     private Request request;
+
+
+    private Date lastLoginDate;
 
     @SetupRender
     boolean setupRender() {
         if (courseClass == null) {
             return false;
         }
+
+        String sd = cookieService.getCookieValue("lastLoginTime");
+        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
+        try{
+        lastLoginDate= format.parse(sd);
+        }catch (Exception ex){
+
+           new IllegalArgumentException(ex);
+
+        }
+
         materials = binaryDataService.getAttachedFiles(courseClass.getId(), CourseClass.class.getSimpleName(), false);
         return true;
     }
@@ -47,4 +67,9 @@ public class ClassResources {
     public String getContextPath() {
         return request.getContextPath();
     }
+
+    public boolean isNew(Date material){
+       return  material.after(lastLoginDate);
+    }
+
 }

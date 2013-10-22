@@ -149,6 +149,7 @@ public class CourseClassService implements ICourseClassService {
            */
         List<Session> sessions = new ArrayList<>(30);
 
+
         if (contact.getStudent() == null && contact.getTutor() == null) {
             logger.warn(String.format("Contact with ID:%s is neither Student nor Tutor.", contact.getId()));
             return Collections.emptyList();

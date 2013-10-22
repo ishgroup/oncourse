@@ -48,7 +48,7 @@ public class ClassRoll {
     }
 
 
-    public int getNumberOfSudents(){
+    public int getNumberOfStudents(){
         return courseClass.validEnrolmentsCount();
     }
 
