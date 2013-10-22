@@ -42,10 +42,11 @@
 		) as startDate
 		from Course c where c.isWebVisible=1 and c.id='${dataimporter.delta.id}'"
 		deltaQuery="
-		select c.id
+		select distinct c.id
 		from Course c
-		where c.isWebVisible=1 and (c.modified &gt; '${dataimporter.last_index_time}')
-		"
+		left join CourseClass cc on cc.courseId=c.id
+		left join Enrolment e on e.courseClassId=cc.id and e.modified &gt;='${dataimporter.last_index_time}'
+		where c.isWebVisible=1 and (c.modified &gt; '${dataimporter.last_index_time}' or e.id is not NULL)"
 		pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
