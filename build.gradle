@@ -88,8 +88,7 @@ allprojects {
 	}
 
 	ext.sharedManifest = manifest {
-		attributes
-			'SCM-Revision': project.release.scmVersion,
+		attributes 'SCM-Revision': project.release.scmVersion,
 			'Release-Version': version,
 			'Built-Date': System.getProperty('build_number') ? new Date(): new Date().format("yy-MMM-dd"),
 			'Built-JDK': System.getProperty('java.version'),
