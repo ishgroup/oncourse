@@ -52,8 +52,11 @@
 		select distinct c.id
 		from Course c
 		left join CourseClass cc on cc.courseId=c.id
+		/* we need to reindex courses with enrolments modified after last delta import to correctly catch the full classes*/
 		left join Enrolment e on e.courseClassId=cc.id and e.modified &gt;='${dataimporter.last_index_time}'
-		where c.isWebVisible=1 and (c.modified &gt; '${dataimporter.last_index_time}' or e.id is not NULL)"
+		where c.isWebVisible=1 and (c.modified &gt; '${dataimporter.last_index_time}' or e.id is not NULL
+		/* we need to reindex courses with classes finished after last delta import*/
+		or (cc.endDate &gt;= '${dataimporter.last_index_time}' and cc.endDate &lt;= NOW()))"
 		pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
