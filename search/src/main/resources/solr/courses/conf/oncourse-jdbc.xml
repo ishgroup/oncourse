@@ -9,29 +9,35 @@
 		/** We should remeber that for correct working of CONVERT_TZ function
 		* we need execute 'mysql_tzinfo_to_sql /usr/share/zoneinfo/ | mysql -u root mysql' before**/
 		select distinct c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId,(
-			select IFNULL(
-			/*min session.startdate*/
-			min(s.startDate),
-			/*if course class is self paced we use today as start date, if the course class is regular we use today + 100 years as startDate*/
-			IF(cc.isDistantLearningCourse=1, CONVERT_TZ(CURDATE(),'GMT','GMT'), CONVERT_TZ(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'GMT','GMT'))
-			)
+		select IFNULL(DATE_FORMAT(
+		/* select min calculated value because course may contain both self paced and regular classes*/
+			min(
+			IFNULL(s.startDate,
+			/*if course class is self paced we use tomorrow as start date, if the course class is regular we use today + 100 years as startDate*/
+			IF(cc.isDistantLearningCourse=1, DATE_ADD(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 100 YEAR))
+			)),'%Y-%m-%dT%TZ'),
+			/* if no calculated value passed this mean that course have no not canceled and web visible classes so use today + 100 years as startDate*/
+			DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'%Y-%m-%dT%TZ'))
+			/* format the date using DATE_FORMAT to match 1995-12-31T23:59:59Z format as this required for SOLR DateField*/
 			from CourseClass cc
 			/*we should use for index only session when endDate >= NOW*/
 			left join Session s on s.courseClassId=cc.id and s.endDate &gt;= NOW()
 			left join Room ro on cc.roomId=ro.id
 			left join Site si on ro.siteId=si.id
 			left join College co on cc.collegeId=co.id
-			/*we may index only not canceled and web visible not full classes*/
+			/*we may index only not canceled and web visible classes*/
 			where cc.courseId=c.id and cc.isWebVisible=1 and cc.isCancelled=0
 			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (2,3))
 		) as startDate
 		from Course c where c.isWebVisible=1"
 		deltaImportQuery="
 		select distinct c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId,(
-			select IFNULL(
-			min(s.startDate),
-			IF(cc.isDistantLearningCourse=1, CONVERT_TZ(CURDATE(),'GMT','GMT'), CONVERT_TZ(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'GMT','GMT'))
-			)
+		select IFNULL(DATE_FORMAT(
+			min(
+			IFNULL(s.startDate,
+			IF(cc.isDistantLearningCourse=1, DATE_ADD(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 100 YEAR))
+			)),'%Y-%m-%dT%TZ'),
+			DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'%Y-%m-%dT%TZ'))
 			from CourseClass cc
 			left join Session s on s.courseClassId=cc.id and s.endDate &gt;= NOW()
 			left join Room ro on cc.roomId=ro.id
@@ -40,7 +46,8 @@
 			where cc.courseId=c.id and cc.isWebVisible=1 and cc.isCancelled=0
 			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (2,3))
 		) as startDate
-		from Course c where c.isWebVisible=1 and c.id='${dataimporter.delta.id}'"
+		from Course c where c.isWebVisible=1
+		and c.id='${dataimporter.delta.id}'"
 		deltaQuery="
 		select distinct c.id
 		from Course c
