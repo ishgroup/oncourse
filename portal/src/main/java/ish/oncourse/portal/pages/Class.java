@@ -1,6 +1,7 @@
 package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -23,7 +24,10 @@ public class Class {
 	
 	@InjectPage
 	private PageNotFound pageNotFound;
-	
+
+    @Inject
+    private IAuthenticationService authenticationService;
+
 	Object onActivate(String id) {
 		if (id != null && id.length() > 0 && id.matches("\\d+")) {
 			long idLong = Long.parseLong(id);
@@ -39,4 +43,9 @@ public class Class {
 		}
 		return null;
 	}
+
+    public boolean isTutor(){
+
+        return authenticationService.isTutor();
+    }
 }

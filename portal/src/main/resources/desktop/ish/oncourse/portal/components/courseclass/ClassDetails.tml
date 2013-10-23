@@ -9,8 +9,11 @@
     <span t:type="courseclass/sessionSlider" courseClass="courseClass"></span>
 </div>
 
-<div class="row">
-    <span t:type="courseclass/classroll" courseClass="courseClass"></span>
-</div>
+<t:if test="tutor">
+    <div class="row">
+        <span t:type="courseclass/classroll" courseClass="courseClass"></span>
+    </div>
+</t:if>
+
 </div>
 </t:container>

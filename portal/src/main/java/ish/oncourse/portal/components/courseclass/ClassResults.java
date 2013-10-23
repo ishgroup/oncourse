@@ -40,16 +40,16 @@ public class ClassResults {
     boolean setupRender() {
 
 
-
+      if (!isTutor()){
          modules=courseClass.getCourse().getModules();
-
          courseClass.getValidEnrolments();
          for (Enrolment enrolment : courseClass.getValidEnrolments())
              if(enrolment.getStudent().getContact().getId().equals(authenticationService.getUser().getId())){
                 this.enrolment= enrolment;
                 break;
              }
-         return true;
+         }
+      return true;
      }
 
 
@@ -93,6 +93,17 @@ public class ClassResults {
         return "text-danger";
     }
 
+    public Qualification getQualification(){
 
+        if(courseClass.getCourse().getQualification()!=null)
+            return courseClass.getCourse().getQualification();
+
+        return null;
+    }
+
+    public boolean isTutor(){
+
+        return authenticationService.isTutor();
+    }
 
 }

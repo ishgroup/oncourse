@@ -3,11 +3,13 @@ package ish.oncourse.portal.components.courseclass;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
+import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,9 @@ public class SessionSliderItem {
 
     @Property
     private Tutor tutor;
+
+    @Inject
+    private IAuthenticationService authenticationService;
 
 
     @SetupRender
@@ -71,4 +76,7 @@ public class SessionSliderItem {
             return StringUtils.EMPTY;
     }
 
+    public boolean isItTutor(){
+        return authenticationService.isTutor();
+    }
 }

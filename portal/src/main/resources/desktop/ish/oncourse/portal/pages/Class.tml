@@ -3,13 +3,14 @@
 
 
     <div class="col-lg-9 col-sm-9 main-container">
-        <p class="info-text fixed">This course requires approval <a href="#" class="btn btn-default btn-xs">Review now</a></p>
+        <t:if test="tutor">
+            <p class="info-text fixed">This course requires approval <a href="#" class="btn btn-default btn-xs">Review now</a></p>
+        </t:if>
         <div class="page-header zero-padding clearfix">
                 <ul class="nav nav-tabs header-tabs">
                     <span t:type="courseclass/classTabs" courseClass="courseClass"/>
                 </ul>
-                <h3><a href="#" name="top">${courseClass.course.name}</a> <small>(TRAS-2)</small></h3>
-                <!--<h4><a href="approval.html" class="label label-primary pull-right">Approval required</a></h4>-->
+                <h3><a href="#" name="top">${courseClass.course.name}</a> <small>(${courseClass.code})</small></h3>
         </div>
         <div class="tab-content">
             <span t:type="courseclass/classDetails" courseClass="courseClass"></span>

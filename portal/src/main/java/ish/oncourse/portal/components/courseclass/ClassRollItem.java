@@ -1,10 +1,8 @@
 package ish.oncourse.portal.components.courseclass;
 
 
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Preference;
-import ish.oncourse.model.Student;
+import ish.common.types.AttendanceType;
+import ish.oncourse.model.*;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.tapestry5.annotations.Parameter;
@@ -20,6 +18,9 @@ import java.util.List;
  * Time: 3:30 PM
  */
 public class ClassRollItem {
+
+    @Property
+    private Attendance attendance;
 
     @Parameter
     @Property
@@ -72,5 +73,16 @@ public class ClassRollItem {
         else
             return null;
     }
+
+
+    public boolean isAttended() {
+        return AttendanceType.ATTENDED.getDatabaseValue().equals(attendance.getAttendanceType());
+    }
+
+    public boolean isAbsent() {
+        return (AttendanceType.DID_NOT_ATTEND_WITH_REASON.getDatabaseValue().equals(attendance.getAttendanceType())
+                || AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON.getDatabaseValue().equals(attendance.getAttendanceType()));
+    }
+
 
 }

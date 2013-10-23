@@ -4,6 +4,8 @@
         <div class="col-lg-12 col-sm-11 col-xs-12 student-detail clearfix">
             <div class="col-lg-2 col-sm-2 col-xs-2 attendance-content">
                 <div class="attendance">
+                  <!--  <a href="javascript:void(0);" value="${attended}" class="mark-y attended btn" id="attended_${attendance.angelId}" date-attendanceId="${attendance.angelId}"><span class="glyphicon glyphicon-ok"></span></a>
+                    <a href="javascript:void(0);" value="${absent}" class="mark-n absent btn" id="absent_${attendance.angelId}" date-attendanceId="${attendance.angelId}"><span class="glyphicon glyphicon-remove"></span></a> -->
                     <button type="button" class="btn btn-default btn-gradient btn-ok btn-xs"><span class="glyphicon glyphicon-ok"></span></button>
                     <button type="button" class="btn btn-default btn-gradient btn-cancel btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
                 </div>

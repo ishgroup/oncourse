@@ -38,6 +38,9 @@ public class ClassRoll {
 
     @SetupRender
     boolean setupRender() {
+        courseClass.getMaximumPlaces();
+        courseClass.getMinimumPlaces();
+
         List<Enrolment> enrolments = courseClass.getValidEnrolments();
         students = new ArrayList<>();
 

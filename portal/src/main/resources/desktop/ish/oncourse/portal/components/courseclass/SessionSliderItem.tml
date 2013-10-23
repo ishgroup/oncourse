@@ -22,8 +22,10 @@
                      </div>
                  </div>
             </t:loop>
-            <a href="#" class="mark-roll">Mark Roll</a>
-            <a href="#" class="marking-roll"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> Marking</a>
+
+            <t:if test="itTutor">
+                <a href="#" class="mark-roll">Mark Roll</a>
+            </t:if>
         </div>
     </div>
 </li>

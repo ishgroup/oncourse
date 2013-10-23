@@ -2,16 +2,30 @@
 <div id="class-results" class="tab-pane">
     <ul class="list-unstyled result-content">
         <li>
-            <p>Assessments are made against units of competency from the ${courseClass.course.qualification.title} <a href="#"> ${courseClass.course.qualification.nationalCode}</a>.</p>
+
+            <t:if test="tutor" negate="true">
+            <t:if test="qualification">
+                <p>Assessments are made against units of competency from the ${qualification.title} <a href="http://training.gov.au/Training/Details/${qualification.nationalCode}" target="_blank"> ${qualification.nationalCode}</a>.</p>
+            </t:if>
+            <t:unless test="qualification">
+                <p>This course does not have a qualification</p>
+            </t:unless>
+
+
             <ul class="list-unstyled result-list">
 
                 <t:loop source="modules" value="module">
                      <li>
-                         <span>${module.title} (<a href="#">${module.nationalCode}</a>)</span>
+                         <span>${module.title} (<a href="http://training.gov.au/Training/Details/${module.nationalCode}">${module.nationalCode}</a>)</span>
                          <strong class="${getOutComeClass(module.id)} tooltip-info" title="" data-original-title="${getOutComeDisplayName(module.id)}">${getOutComeResult(module.id)}</strong>
                      </li>
                 </t:loop>
             </ul>
+            </t:if>
+            <t:if test="tutor">
+                 <p>Tutor does not have any results</p>
+            </t:if>
+
         </li>
     </ul>
 </div>
