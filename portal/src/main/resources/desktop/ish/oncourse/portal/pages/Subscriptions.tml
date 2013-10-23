@@ -1,0 +1,124 @@
+<html t:type="pagestructure" title="literal:Subscriptions"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:subscriptions">
+	<div class="page-header clearfix zero-padding">
+		<ul class="nav nav-tabs header-tabs">
+			<li class="active"><a data-toggle="tab" href="#mailing-lists">Mailing Lists</a></li>
+			<li><a data-toggle="tab" href="#waiting-lists">Waiting Lists</a></li>
+		</ul>
+		<h3><a href="#">Subscriptions</a></h3>
+	</div>
+	<div class="tab-content">
+		<div class="tab-pane active" id="mailing-lists">
+			<form role="form">
+				<fieldset>
+					<div class="clearfix">
+						<h4>I would like to receive marketing material via:</h4>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="row">
+									<div class="col-lg-4">
+										<div class="checkbox">
+											<input type="checkbox" name="chkEmail" id="chkEmail"/>
+											<label for="chkEmail">
+												E-Mail
+											</label>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="checkbox">
+											<input type="checkbox" name="chkSMS" id="chkSMS"/>
+											<label for="chkSMS">
+												SMS
+											</label>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="checkbox">
+											<input type="checkbox" name="chkPost" id="chkPost"/>
+											<label for="chkPost">
+												Post
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<h4>The following mailing lists are available at ish onCourse:</h4>
+					<div class="checkbox">
+						<input type="checkbox" name="chkMailing" id="chkMailing"/>
+						<label for="chkMailing">
+							onCourse Mailing List
+						</label>
+					</div>
+					<div class="checkbox">
+						<input type="checkbox" name="chkConservatoriumMailing" id="chkConservatoriumMailing"/>
+						<label for="chkConservatoriumMailing">
+							Conservatorium Mailing List
+						</label>
+					</div>
+					<div class="checkbox">
+						<input type="checkbox" name="chkCCMailing" id="chkCCMailing"/>
+						<label for="chkCCMailing">
+							Community College Mailing List
+						</label>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Save</button>
+					</div>
+				</fieldset>
+			</form>
+			<div class="alert alert-info">Please select any mailing lists above which you wish to subscribe to. If you are subscribed you will receive communication from us. You can unsubscribe at any time.</div>
+		</div>
+		<div class="tab-pane" id="waiting-lists">
+			<h4>You are on the waiting list for the following courses.</h4>
+			<div class="waiting-list">
+				<div class="single-waiting clearfix">
+					<div class="col-lg-11 col-sm-10 col-xs-10">
+						<h5><a href="#">Tell Me About Tagging</a></h5>
+						<p>Been setting up your onCourse database and want to know more about what you can do with tags? Some practical examples of how tags can be used to manage your internal data and used to drive the navigation of your website. You should have onCou...</p>
+					</div>
+					<div class="col-lg-1 col-sm-2 col-xs-2 move-to-trash">
+						<a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+					</div>
+				</div>
+				<div class="single-waiting clearfix">
+					<div class="col-lg-11 col-sm-10 col-xs-10">
+						<h5><a href="#">Tell Me About Tagging</a></h5>
+						<p>Been setting up your onCourse database and want to know more about what you can do with tags? Some practical examples of how tags can be used to manage your internal data and used to drive the navigation of your website. You should have onCou...</p>
+					</div>
+					<div class="col-lg-1 col-sm-2 col-xs-2 move-to-trash">
+						<a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+					</div>
+				</div>
+				<div class="single-waiting clearfix">
+					<div class="col-lg-11 col-sm-10 col-xs-10">
+						<h5><a href="#">Tell Me About Tagging</a></h5>
+						<p>Been setting up your onCourse database and want to know more about what you can do with tags? Some practical examples of how tags can be used to manage your internal data and used to drive the navigation of your website. You should have onCou...</p>
+					</div>
+					<div class="col-lg-1 col-sm-2 col-xs-2 move-to-trash">
+						<a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+					</div>
+				</div>
+				<div class="single-waiting clearfix">
+					<div class="col-lg-11 col-sm-10 col-xs-10">
+						<h5><a href="#">Tell Me About Tagging</a></h5>
+						<p>Been setting up your onCourse database and want to know more about what you can do with tags? Some practical examples of how tags can be used to manage your internal data and used to drive the navigation of your website. You should have onCou...</p>
+					</div>
+					<div class="col-lg-1 col-sm-2 col-xs-2 move-to-trash">
+						<a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+					</div>
+				</div>
+				<div class="single-waiting clearfix">
+					<div class="col-lg-11 col-sm-10 col-xs-10">
+						<h5><a href="#">Tell Me About Tagging</a></h5>
+						<p>Been setting up your onCourse database and want to know more about what you can do with tags? Some practical examples of how tags can be used to manage your internal data and used to drive the navigation of your website. You should have onCou...</p>
+					</div>
+					<div class="col-lg-1 col-sm-2 col-xs-2 move-to-trash">
+						<a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</html>

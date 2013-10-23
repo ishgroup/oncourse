@@ -33,28 +33,23 @@ xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 				</t:if>
 			</li>
 			<li class="active">
-				<t:pagelink id="m_timetable" page="prop:timetablePageName">Timetable</t:pagelink>
+				<a id="timetable" href="${request.contextPath}/timetable">Timetable</a>
 			</li>
 			<li>
-				<a href="students-resources.html#top">Resources</a>
+				<a id="resources" href="${request.contextPath}/resources">Resources</a>
 			</li>
 			<li>
-				<a href="students-results.html#top">Results</a>
+				<a id="results" href="${request.contextPath}/results">Results</a>
 			</li>
 			<li>
-				<t:pagelink id="m_profile" page="prop:profilePageName">My Profile</t:pagelink>
+				<a id="profile" href="${request.contextPath}/profile">Profile</a>
 			</li>
 			<li>
-				<a href="subscriptions.html#top">Subscriptions</a>
-				<!--<li><t:pagelink id="m_mailinglists" page="prop:mailinglistsPageName">Mailing Lists<i class="icon-chevron-right"></i></t:pagelink></li>-->
-				<!--<li><t:pagelink id="m_waitinglists" page="prop:waitingListsPageName">Waiting Lists<i class="icon-chevron-right"></i></t:pagelink></li>-->
+				<a id="subscriptions" href="${request.contextPath}/subscriptions">Subscriptions</a>
 			</li>
 			<li>
-				<a href="history.html#top">History</a>
+				<a id="history" href="${request.contextPath}/history">History</a>
 			</li>
-
-			<!--  <t:pagelink id="m_messages" page="prop:discussionsPageName">Messages <t:if test="hasNewMessages"><span class="new">${numberOfNewMessages} new</span></t:if></t:pagelink><div></div> -->
-			<!--  <t:pagelink id="m_surveys" page="prop:surveysPageName">Surveys</t:pagelink><div></div> -->
 		</ul>
 	</div>
 

@@ -1,0 +1,81 @@
+<html t:type="pagestructure" title="literal:History"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:history">
+	<div class="page-header clearfix zero-padding">
+		<ul class="nav nav-tabs header-tabs">
+			<li class="active"><a data-toggle="tab" href="#finance">Finance</a></li>
+			<li class=""><a data-toggle="tab" href="#enrolments">Enrolments</a></li>
+		</ul>
+		<h3><a href="#">History</a></h3>
+	</div>
+	<div class="tab-content">
+		<div class="tab-pane active" id="finance">
+			<div class="row">
+				<div class="col-lg-2 col-sm-3 col-xs-3">
+					<p><a href="invoice.html">3 March 2010</a></p>
+				</div>
+				<div class="col-lg-2 col-sm-3 col-xs-3">
+					<p><a href="invoice.html">Invoice 1234</a></p>
+				</div>
+				<div class="col-lg-2 col-sm-3 col-xs-3 text-right">
+					<p><a href="invoice.html">$4500.00</a></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-2 col-sm-3 col-xs-3">
+					<p><a href="invoice.html">2 March 2010</a></p>
+				</div>
+				<div class="col-lg-2 col-sm-3 col-xs-3">
+					<p><a href="invoice.html">Payment (credit card)</a></p>
+				</div>
+				<div class="col-lg-2 col-sm-3 col-xs-3 text-right">
+					<p><a href="invoice.html">$200.00</a></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-2 col-sm-3 col-xs-3">
+					<p><a href="invoice.html">2 March 2010</a></p>
+				</div>
+				<div class="col-lg-2 col-sm-3 col-xs-3">
+					<p><a href="invoice.html">invoice 1232</a></p>
+				</div>
+				<div class="col-lg-2 col-sm-3 col-xs-3 text-right">
+					<p><a href="invoice.html">$200.00</a></p>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="enrolments">
+			<ul class="list-unstyled classes-content">
+				<li>
+					<p class="arrow-content">
+						<strong><a href="confirm-classes-detail.html">Cert IV Training and Assessment</a></strong> <!--<span class="label label-primary">Approval required</span> --><small class="text-muted">(TRAS-2)</small>
+						<label>24 August 9am</label>
+					</p>
+				</li>
+				<li>
+					<p class="arrow-content">
+						<strong><a href="confirm-classes-detail.html">Advanced Driving</a></strong> <small class="text-muted">(DRV-9)</small>
+						<label>25 August 9am</label>
+					</p>
+				</li>
+				<li>
+					<p class="arrow-content">
+						<strong><a href="confirm-classes-detail.html">Cert IV Training and Assessment</a></strong> <small class="text-muted">(TRAS-3)</small>
+						<label>26 August 9am</label>
+					</p>
+				</li>
+				<li style="display: none;">
+					<p>
+						<strong><a href="confirm-classes-detail.html">Cert III Training</a></strong> <small class="text-muted">(TRAS-4)</small>
+						<label>26 August 9am</label>
+					</p>
+				</li>
+				<li style="display: none;">
+					<p>
+						<strong><a href="confirm-classes-detail.html">Cert V Training and Assessment</a></strong> <small class="text-muted">(TRAS-5)</small>
+						<label>26 August 9am</label>
+					</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</html>

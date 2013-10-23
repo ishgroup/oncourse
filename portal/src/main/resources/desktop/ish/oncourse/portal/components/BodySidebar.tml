@@ -1,13 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div class="sidebar">
-
-
 		<div t:type="menu"/>
-
-		<div t:type="leftblock"/>
-
-
 	</div>
 
 </t:container>

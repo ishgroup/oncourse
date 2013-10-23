@@ -1,7 +1,5 @@
-<html t:type="pagestructure" title="literal:Student Timetable"
+<html t:type="pagestructure" title="literal:Time Table"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_timetable">
-
-    <div class="col-lg-9 col-sm-9 main-container">
         <div class="page-header clearfix">
             <h3>
                 <a href="#">Timetable</a>
@@ -17,5 +15,4 @@
             <a  class="btn btn-sm btn-default btn-gradient pull-right" href="webcal:${request.contextPath}/calendar/${authService.user.uniqueCode}.ics" >Subscribe to calendar</a>
         </div>
         <div t:type="timetable/calendar" contact="contact"/>
-    </div>
 </html>
