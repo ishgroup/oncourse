@@ -70,7 +70,7 @@
 			<entity name="courseClass" pk="id" dataSource="onCourseDS"  transformer="TemplateTransformer"
 				query="select distinct cc.id as id, cc.feeExGst as pr, cc.code as code, 
 				IFNULL(IFNULL(CONVERT_TZ(cc.endDate,'GMT',cc.timeZone),IFNULL(CONVERT_TZ(cc.endDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.endDate,'GMT', si.timeZone), CONVERT_TZ(cc.endDate,'GMT', co.timeZone)))), CONVERT_TZ(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'GMT','GMT') ) as end,
-				IFNULL(IFNULL(CONVERT_TZ(cc.startDate,'GMT',cc.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT', si.timeZone), CONVERT_TZ(cc.startDate,'GMT', co.timeZone)))), CURDATE()) as start 
+				IFNULL(IFNULL(CONVERT_TZ(cc.startDate,'GMT',cc.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT', si.timeZone), CONVERT_TZ(cc.startDate,'GMT', co.timeZone)))), DATE_ADD(CURDATE(), INTERVAL 1 DAY)) as start
 				from CourseClass cc
 				left join Session se on se.courseClassId=cc.id
 				left join Room ro on cc.roomId=ro.id
@@ -80,7 +80,7 @@
 				and ((cc.endDate &gt; CURDATE() and cc.isDistantLearningCourse=0) or cc.isDistantLearningCourse=1)"
 				deltaImportQuery="select distinct cc.id as id, cc.feeExGst as pr, cc.code as code,
 				IFNULL(IFNULL(CONVERT_TZ(cc.endDate,'GMT',cc.timeZone),IFNULL(CONVERT_TZ(cc.endDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.endDate,'GMT', si.timeZone), CONVERT_TZ(cc.endDate,'GMT', co.timeZone)))), CONVERT_TZ(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'GMT','GMT') ) as end,
-				IFNULL(IFNULL(CONVERT_TZ(cc.startDate,'GMT',cc.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT', si.timeZone), CONVERT_TZ(cc.startDate,'GMT', co.timeZone)))), CURDATE()) as start 
+				IFNULL(IFNULL(CONVERT_TZ(cc.startDate,'GMT',cc.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT',se.timeZone), IFNULL(CONVERT_TZ(cc.startDate,'GMT', si.timeZone), CONVERT_TZ(cc.startDate,'GMT', co.timeZone)))), DATE_ADD(CURDATE(), INTERVAL 1 DAY)) as start
 				from CourseClass cc
 				left join Session se on se.courseClassId=cc.id
 				left join Room ro on cc.roomId=ro.id
