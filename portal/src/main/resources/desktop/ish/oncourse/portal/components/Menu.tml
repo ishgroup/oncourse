@@ -1,22 +1,72 @@
 <t:container
-        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-
-	<div class="menu-bg">
-		<div class="menu-b">
-			<ul class="menu">
-				<li><t:pagelink id="m_timetable" page="prop:timetablePageName">Timetable<i class="icon-chevron-right"></i></t:pagelink></li>
-				<!--  <t:pagelink id="m_messages" page="prop:discussionsPageName">Messages <t:if test="hasNewMessages"><span class="new">${numberOfNewMessages} new</span></t:if></t:pagelink><div></div> -->
-				<t:if test="isTutor">
-					<li><t:pagelink id="m_UnconfirmedClasses" page="prop:classesPageName" context="unconfirmed">To confirm<i class="icon-chevron-right"></i></t:pagelink></li>
+xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div data-spy="affix" data-offset-top="90" class="sidebar affix-top">
+		<ul class="nav sidenav">
+			<li class="expanded">
+				<t:if test="nearestCourseClass">
+					<a href="${request.contextPath}/class/${nearestCourseClass.id}">Classes
+						<span class="badge">${courseClasses.size()}</span>
+					</a>
 				</t:if>
-				<li><t:pagelink id="m_CurrentClasses" page="prop:classesPageName" context="current">Current classes<i class="icon-chevron-right"></i></t:pagelink></li>
-                <li><t:pagelink id="m_PastClasses" page="prop:classesPageName" context="past">Past classes<i class="icon-chevron-right"></i></t:pagelink></li>
-                <!--  <t:pagelink id="m_surveys" page="prop:surveysPageName">Surveys</t:pagelink><div></div> -->
-				<li><t:pagelink id="m_profile" page="prop:profilePageName">My Profile<i class="icon-chevron-right"></i></t:pagelink></li>
-				<li><t:pagelink id="m_mailinglists" page="prop:mailinglistsPageName">Mailing Lists<i class="icon-chevron-right"></i></t:pagelink></li>
-                <li><t:pagelink id="m_waitinglists" page="prop:waitingListsPageName">Waiting Lists<i class="icon-chevron-right"></i></t:pagelink></li>
-            </ul>
-		</div>
+				<t:unless test="nearestCourseClass">
+					<a href="#">Classes
+						<span class="badge">${courseClasses.size()}</span>
+					</a>
+				</t:unless>
+				<ul class="list-unstyled classes-content">
+					<t:loop source="courseClasses" value="courseClass">
+						<li>
+							<t:delegate to="block:classInfo"/>
+						</li>
+					</t:loop>
+					<t:loop source="pastCourseClasses" value="courseClass">
+						<li style="display: none;">
+							<t:delegate to="block:classInfo"/>
+						</li>
+					</t:loop>
+				</ul>
+				<t:if test="${pastCourseClasses.isEmpty()}" negate="true">
+					<ul class="list-inline">
+						<li><a class="show-all-sessions" href="#"><span class="icon-arrow-down"></span>Show All</a></li>
+						<!--<li><a href="">Past Classes</a></li>-->
+					</ul>
+				</t:if>
+			</li>
+			<li class="active">
+				<t:pagelink id="m_timetable" page="prop:timetablePageName">Timetable</t:pagelink>
+			</li>
+			<li>
+				<a href="students-resources.html#top">Resources</a>
+			</li>
+			<li>
+				<a href="students-results.html#top">Results</a>
+			</li>
+			<li>
+				<t:pagelink id="m_profile" page="prop:profilePageName">My Profile</t:pagelink>
+			</li>
+			<li>
+				<a href="subscriptions.html#top">Subscriptions</a>
+				<!--<li><t:pagelink id="m_mailinglists" page="prop:mailinglistsPageName">Mailing Lists<i class="icon-chevron-right"></i></t:pagelink></li>-->
+				<!--<li><t:pagelink id="m_waitinglists" page="prop:waitingListsPageName">Waiting Lists<i class="icon-chevron-right"></i></t:pagelink></li>-->
+			</li>
+			<li>
+				<a href="history.html#top">History</a>
+			</li>
+
+			<!--  <t:pagelink id="m_messages" page="prop:discussionsPageName">Messages <t:if test="hasNewMessages"><span class="new">${numberOfNewMessages} new</span></t:if></t:pagelink><div></div> -->
+			<!--  <t:pagelink id="m_surveys" page="prop:surveysPageName">Surveys</t:pagelink><div></div> -->
+		</ul>
 	</div>
+
+
+	<t:block t:id="classInfo">
+		<p>
+			<strong><a href="${request.contextPath}/class/${courseClass.id}">${courseClass.course.name}</a></strong>
+			<!--<span class="label label-primary">Approval required</span> -->
+			<small class="text-muted">(${courseClass.uniqueIdentifier})</small>
+			<label><t:output format="literal:d MMMM yy h:mma z" value="courseClass.startDate"/></label>
+		</p>
+
+	</t:block>
 
 </t:container>
