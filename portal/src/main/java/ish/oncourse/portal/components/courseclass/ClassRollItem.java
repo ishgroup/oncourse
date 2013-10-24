@@ -41,8 +41,16 @@ public class ClassRollItem {
             return false;
         }
         avatar = binaryDataService.getProfilePicture(student.getContact());
+
+
+
+
+
         return true;
     }
+
+
+
 
 
     public boolean isEnableDetails(){

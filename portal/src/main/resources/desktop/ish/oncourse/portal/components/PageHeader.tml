@@ -44,10 +44,7 @@
      <script type="text/javascript" src="/s/portal/js/custom.js"></script>
 
      <script type="text/javascript" src="/s/portal/js/initialise.js"></script>
+     <script type="text/javascript" src="/s/portal/js/attendances.js"></script>
 
      <script type="text/javascript" src="/s/portal/js/for_calendar.js"></script>
-    <script type="text/javascript" src="/s/portal/js/slider.js"></script>
-
-
-
  </t:container>

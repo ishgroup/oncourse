@@ -24,6 +24,7 @@ public class SessionSliderItem {
 
     TimeZone timeZone;
 
+    @Property
     @Parameter
     private Session session;
 

@@ -1,7 +1,9 @@
-package ish.oncourse.portal.services.timetable;
+package ish.oncourse.portal.services;
 
+import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Session;
+import ish.oncourse.portal.services.timetable.CalendarEvent;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.json.JSONObject;
@@ -17,11 +19,29 @@ import java.util.TimeZone;
  * Date: 10/14/13
  * Time: 3:35 PM
  */
-public class TimetableService {
+public class JSONPortalService {
 
     private ICourseClassService courseClassService;
 
-    public JSONObject getJSONCalendarEvents(Contact contact) {
+
+   public JSONObject getAttendences(Session session)
+    {
+       List<Attendance> attendances = session.getAttendances();
+
+        JSONObject result = new JSONObject();
+        for(Attendance attendance : attendances)
+            result.put(String.format("%s",attendance.getStudent().getId()),String.format("%s",attendance.getAttendanceType()));
+
+
+        return result;
+    }
+
+
+    /**
+     * @return contact's sesssions array where entry format is MM-dd-yyyy,<a href='#class-%s'>%s</a>
+     * we use it to show sessions callender for contact in Tempalte page
+     */
+    public JSONObject getCalendarEvents(Contact contact) {
         List<Session> sessions = courseClassService.getContactSessions(contact);
 
 
@@ -33,21 +53,6 @@ public class TimetableService {
         }
         return result;
     }
-
-    public List<CalendarEvent> getCalendarEvents(Contact contact) {
-
-        List<Session> sessions = courseClassService.getContactSessions(contact);
-
-        List<CalendarEvent> result = new ArrayList<>(sessions.size());
-        for (Session session : sessions) {
-            CalendarEvent calendarEvent = new CalendarEvent();
-            calendarEvent.setDate(session.getStartDate());
-            calendarEvent.setContent(String.format("<a href='#class-%s'>%s</a>", session.getId(), formatDate(session)));
-            result.add(calendarEvent);
-        }
-        return result;
-    }
-
 
     public String formatDate(Session session) {
         TimeZone timeZone = FormatUtils.getClientTimeZone(session.getCourseClass());

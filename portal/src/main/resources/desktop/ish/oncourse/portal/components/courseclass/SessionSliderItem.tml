@@ -24,7 +24,7 @@
             </t:loop>
 
             <t:if test="itTutor">
-                <a href="#" class="mark-roll">Mark Roll</a>
+                <a href="#" class="mark-roll" id="${session.id}">Mark Roll</a>
             </t:if>
         </div>
     </div>
