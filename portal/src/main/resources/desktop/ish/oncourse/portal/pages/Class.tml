@@ -2,7 +2,7 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
 
 
-    <div class="col-lg-9 col-sm-9 main-container">
+
         <t:if test="tutor">
             <p class="info-text fixed">This course requires approval <a href="#" class="btn btn-default btn-xs">Review now</a></p>
         </t:if>
@@ -18,5 +18,5 @@
             <span t:type="courseclass/classResources" courseClass="courseClass"></span>
             <span t:type="courseclass/classResults" courseClass="courseClass"></span>
         </div>
-    </div>
+
 </html>

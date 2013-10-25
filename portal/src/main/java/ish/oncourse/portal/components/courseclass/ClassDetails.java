@@ -10,6 +10,8 @@ import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -46,15 +48,13 @@ public class ClassDetails {
     private ICayenneService cayenneService;
 
 
-
-
     public boolean isTutor(){
         return authenticationService.isTutor();
     }
 
     @OnEvent(value = "onSetSession")
     void setSession(Long sessionId) {
-        session = Cayenne.objectForPK(courseClass.getObjectContext(), Session.class, sessionId);
+        session = Cayenne.objectForPK(cayenneService.newContext(), Session.class, sessionId);
     }
 
 
@@ -67,17 +67,12 @@ public class ClassDetails {
 
     @OnEvent(value = "setAttendences")
     public void setAttendences() throws IOException {
-
-        ObjectContext context = cayenneService.newContext();
-
-        Session localSession = context.localObject(session);
-
         List<String> params = request.getParameterNames();
         for (String key : params) {
             Long contactId = new Long(key);
             Integer value = new Integer(request.getParameter(key));
 
-           for(Attendance attendance : localSession.getAttendances()){
+           for(Attendance attendance : session.getAttendances()){
 
               if(attendance.getStudent().getId().equals(contactId)){
                   attendance.setAttendanceType(value);
@@ -85,8 +80,7 @@ public class ClassDetails {
               }
            }
         }
-        context.commitChanges();
-
+        session.getObjectContext().commitChanges();
     }
 
 
