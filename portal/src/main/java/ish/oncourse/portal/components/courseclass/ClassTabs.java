@@ -2,6 +2,7 @@ package ish.oncourse.portal.components.courseclass;
 
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.services.binary.IBinaryDataService;
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -10,6 +11,12 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 public class ClassTabs {
+
+    @Inject
+    private IAuthenticationService authenticationService;
+
+    @Inject
+    private IBinaryDataService binaryDataService;
 
 	@Parameter
 	@Property
@@ -31,13 +38,18 @@ public class ClassTabs {
 	public String getContextPath() {
 		return request.getContextPath();
 	}
-	
-	/*@AfterRender
-	void afterRender() {
-		javaScriptSupport.addScript("jQuery('#%s').addClass('act');", selected);
-	}   */
 
-	public String getClassInfoPageName() {
+    public boolean isClassWithModules(){
+        return !courseClass.getCourse().getModules().isEmpty() && !authenticationService.getUser().getStudent().getEnrolments().isEmpty();
+    }
+
+
+    public boolean isHasResources(){
+
+        return  !binaryDataService.getAttachedFiles(courseClass.getId(), CourseClass.class.getSimpleName(), false).isEmpty();
+    }
+
+    public String getClassInfoPageName() {
 		return "class";
 	}
 

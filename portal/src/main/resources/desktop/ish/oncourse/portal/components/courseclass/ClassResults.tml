@@ -1,9 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:if test="student">
 <div id="class-results" class="tab-pane">
     <ul class="list-unstyled result-content">
         <li>
-
-            <t:if test="tutor" negate="true">
             <t:if test="qualification">
                 <p>Assessments are made against units of competency from the ${qualification.title} <a href="http://training.gov.au/Training/Details/${qualification.nationalCode}" target="_blank"> ${qualification.nationalCode}</a>.</p>
             </t:if>
@@ -21,12 +20,10 @@
                      </li>
                 </t:loop>
             </ul>
-            </t:if>
-            <t:if test="tutor">
-                 <p>Tutor does not have any results</p>
-            </t:if>
+
 
         </li>
     </ul>
 </div>
+</t:if>
 </t:container>

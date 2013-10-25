@@ -40,7 +40,7 @@ public class ClassResults {
     boolean setupRender() {
 
 
-      if (!isTutor()){
+
          modules=courseClass.getCourse().getModules();
          courseClass.getValidEnrolments();
          for (Enrolment enrolment : courseClass.getValidEnrolments())
@@ -48,7 +48,7 @@ public class ClassResults {
                 this.enrolment= enrolment;
                 break;
              }
-         }
+
       return true;
      }
 
@@ -101,9 +101,9 @@ public class ClassResults {
         return null;
     }
 
-    public boolean isTutor(){
-
-        return authenticationService.isTutor();
+    public boolean isStudent(){
+        return !authenticationService.getUser().getStudent().getEnrolments().isEmpty();
     }
+
 
 }
