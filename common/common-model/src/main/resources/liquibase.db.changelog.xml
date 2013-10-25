@@ -1687,4 +1687,16 @@
         </addColumn>
     </changeSet>
 
+	<changeSet id="114" author="dzmitry" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="BinaryInfo" columnName="fileUUID"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="BinaryInfo">
+			<column name="fileUUID" type="VARCHAR(160)"/>
+		</addColumn>
+		<addUniqueConstraint tableName="BinaryInfo" columnNames="fileUUID,collegeId" constraintName="BinaryInfo_FileUUID_unique"/>
+	</changeSet>
+
 </databaseChangeLog>
