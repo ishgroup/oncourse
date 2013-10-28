@@ -1,25 +1,23 @@
 package ish.oncourse.portal.components.courseclass;
 
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.Attendance;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Session;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.pages.*;
-import ish.oncourse.portal.pages.Class;
-import ish.oncourse.portal.services.JSONPortalService;
-import ish.oncourse.services.persistence.CayenneService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.StreamResponse;
-import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Persist;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,6 +45,9 @@ public class ClassDetails {
     @Inject
     private ICayenneService cayenneService;
 
+    @Inject
+    private IPortalService portalService;
+
 
     public boolean isTutor(){
         return authenticationService.isTutor();
@@ -61,7 +62,6 @@ public class ClassDetails {
 
     @OnEvent(value = "getAttendences")
     public StreamResponse getAttendences() throws IOException {
-        JSONPortalService portalService = new JSONPortalService();
         return new TextStreamResponse("text/json", portalService.getAttendences(session).toString());
     }
 

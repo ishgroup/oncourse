@@ -2,6 +2,7 @@ package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
@@ -9,6 +10,7 @@ import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
@@ -23,12 +25,19 @@ public class Class {
 
 	@Inject
 	private ICayenneService cayenneService;
+
+    @Inject
+    @Property
+    private Request request;
 	
 	@InjectPage
 	private PageNotFound pageNotFound;
 
     @Inject
     private IAuthenticationService authenticationService;
+
+    @Inject
+    private IPortalService portalService;
 
 	Object onActivate(String id) {
 		if (id != null && id.length() > 0 && id.matches("\\d+"))
@@ -48,7 +57,11 @@ public class Class {
 
 
     public boolean isTutor(){
-
         return authenticationService.isTutor();
+    }
+
+    public boolean needApprove()
+    {
+        return authenticationService.isTutor() && !portalService.isApproved(authenticationService.getUser(), courseClass);
     }
 }

@@ -48,6 +48,7 @@ public class AppModule {
 		binder.bind(AccessController.class).withId("AccessController");
 		binder.bind(IWebSiteService.class, PortalSiteService.class).withId("WebSiteServiceOverride");
 		binder.bind(IPageRenderer.class, PortalPageRenderer.class).withId("PortalPageRenderer");
+        binder.bind(IPortalService.class, PortalService.class);
 	}
 	
 	@EagerLoad

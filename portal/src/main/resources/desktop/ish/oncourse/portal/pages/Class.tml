@@ -3,8 +3,8 @@
 
 
 
-        <t:if test="tutor">
-            <p class="info-text fixed">This course requires approval <a href="#" class="btn btn-default btn-xs">Review now</a></p>
+        <t:if test="${needApprove()}">
+            <p class="info-text fixed">This course requires approval <a href="${request.contextPath}/tutor/classapproval/${courseClass.id}" class="btn btn-default btn-xs">Review now</a></p>
         </t:if>
         <div class="page-header zero-padding clearfix">
                 <ul class="nav nav-tabs header-tabs">

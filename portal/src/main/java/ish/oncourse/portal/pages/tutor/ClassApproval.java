@@ -7,6 +7,7 @@ import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.mail.EmailBuilder;
 import ish.oncourse.services.mail.IMailService;
@@ -18,6 +19,7 @@ import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextArea;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.util.Date;
 import java.util.List;
@@ -25,125 +27,135 @@ import java.util.List;
 @UserRole("tutor")
 public class ClassApproval {
 
-	/**
-	 * Recover emails from address.
-	 */
-	private static final String FROM_EMAIL = "support@ish.com.au";
+    /**
+     * Recover emails from address.
+     */
+    private static final String FROM_EMAIL = "support@ish.com.au";
 
-	@Property
-	private boolean approved;
+    @Property
+    private boolean approved;
 
-	@SuppressWarnings("all")
-	@Property
-	private boolean declined;
+    @Property
+    @Persist
+    private CourseClass courseClass;
 
-	@Property
-	@Persist
-	private CourseClass courseClass;
+    @Inject
+    private ICourseClassService courseClassService;
 
-	@Inject
-	private ICourseClassService courseClassService;
+    @Inject
+    private IPortalService portalService;
 
-	@Inject
-	private IAuthenticationService authService;
+    @Inject
+    private IAuthenticationService authService;
 
-	@Inject
-	private ICayenneService cayenneService;
+    @Inject
+    private ICayenneService cayenneService;
 
-	@Inject
-	private IMailService mailService;
+    @Inject
+    private IMailService mailService;
 
-	@Inject
-	private PreferenceControllerFactory prefFactory;
+    @Inject
+    private PreferenceControllerFactory prefFactory;
 
-	@Property
-	private String whyDeclined;
-	
-	@Component
-	private Form approvalForm;
-	
-	@InjectComponent("whyDeclined")
-	private TextArea whyDeclinedField;
+    @Inject
+    private Request request;
 
-	@InjectPage
-	private PageNotFound pageNotFound;
-	
-	Object onActivate(String id) {
-		if (id != null && id.length() > 0 && id.matches("\\d+")) {
-			List<CourseClass> list = courseClassService.loadByIds(Long.parseLong(id));
-			this.courseClass = (!list.isEmpty()) ? list.get(0) : null;
-		} else {
-			return pageNotFound;
-		}
-		return null;
-	}
+    @Property
+    private String whyDeclined;
 
-	@OnEvent(component = "approvalForm", value = "selected")
-	void submitDeclined() {
-		this.declined = true;
-	}
+    @Component
+    private Form approvalForm;
 
-	@OnEvent(component = "approvalForm", value = "success")
-	Object submitted() {
-		Contact c = authService.getUser();
+    @InjectComponent("whyDeclined")
+    private TextArea whyDeclinedField;
 
-		if (approved) {
-			for (TutorRole t : courseClass.getTutorRoles()) {
-				if (t.getTutor().getContact().getId().equals(c.getId())) {
-					ObjectContext newContext = cayenneService.newContext();
-					TutorRole local = (TutorRole) newContext.localObject(t.getObjectId(), null);
-					local.setIsConfirmed(approved);
-					if (approved) {
-						local.setConfirmedDate(new Date());
-					}
-					newContext.commitChanges();
-				}
-			}
-		} else {
-			if (whyDeclined == null || whyDeclined.length() == 0) {
-				approvalForm.recordError(whyDeclinedField, "Please enter your feedback for the class.");
-			} else {
-			
-				String subject = String.format("Class feedback from tutor %s %s", c.getGivenName(), c.getFamilyName());
-				String body = String.format("Tutor %s %s has submitted the following feedback for the class %s-%s '%s'.\n%s", c.getGivenName(),
-						c.getFamilyName(), courseClass.getCourse().getCode(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);
-	
-				EmailBuilder email = new EmailBuilder();
-				String tutorEmail = c.getEmailAddress();
-				email.setFromEmail(tutorEmail != null? tutorEmail: FROM_EMAIL);
-				email.setSubject(subject);
-				email.setBody(body);
-				email.setToEmails(getTutorFeedbackEmail());
-				mailService.sendEmail(email, true);
-			}
-		}
+    @InjectPage
+    private PageNotFound pageNotFound;
 
-		return this;
-	}
+    Object onActivate() {
+        if (courseClass == null)
+            return pageNotFound;
+        else
+            return null;
+    }
 
-	public boolean getIsClassApproved() {
-		Contact c = authService.getUser();
+    Object onActivate(String id) {
+        if (id != null && id.length() > 0 && id.matches("\\d+")) {
+            List<CourseClass> list = courseClassService.loadByIds(Long.parseLong(id));
+            this.courseClass = (!list.isEmpty()) ? list.get(0) : null;
+        } else {
+            return pageNotFound;
+        }
+        return null;
+    }
 
-		for (TutorRole t : courseClass.getTutorRoles()) {
-			if (t.getTutor().getContact().getId().equals(c.getId())) {
-				return t.getIsConfirmed();
-			}
-		}
+    @OnEvent(component = "approvalForm")
+    Object submit() {
+        String value = request.getParameter("accept");
+        if (value != null) {
+            accept();
+        } else {
+            declined();
+        }
+        return this;
+    }
 
-		return false;
-	}
 
-	public String getDeclineLabel() {
-		return getIsClassApproved() ? "Accept" : "Decline";
-	}
-	
-	private String getTutorFeedbackEmail() {
-		College college = courseClass.getCollege();
-		PreferenceController prefController = prefFactory.getPreferenceController(college);
-		
-		if (prefController.getTutorFeedbackEmail() != null) {
-			return prefController.getTutorFeedbackEmail();
-		}
-		return prefController.getEmailAdminAddress();
-	}
+    private void declined() {
+        Contact c = authService.getUser();
+
+        if (whyDeclined == null || whyDeclined.length() == 0) {
+            approvalForm.recordError(whyDeclinedField, "Please enter your feedback for the class.");
+        } else {
+
+            String subject = String.format("Class feedback from tutor %s %s", c.getGivenName(), c.getFamilyName());
+            String body = String.format("Tutor %s %s has submitted the following feedback for the class %s-%s '%s'.\n%s", c.getGivenName(),
+                    c.getFamilyName(), courseClass.getCourse().getCode(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);
+
+            EmailBuilder email = new EmailBuilder();
+            String tutorEmail = c.getEmailAddress();
+            email.setFromEmail(tutorEmail != null ? tutorEmail : FROM_EMAIL);
+            email.setSubject(subject);
+            email.setBody(body);
+            email.setToEmails(getTutorFeedbackEmail());
+            mailService.sendEmail(email, true);
+        }
+    }
+
+    void accept() {
+        Contact c = authService.getUser();
+
+        if (approved) {
+            for (TutorRole t : courseClass.getTutorRoles()) {
+                if (t.getTutor().getContact().getId().equals(c.getId())) {
+                    ObjectContext newContext = cayenneService.newContext();
+                    TutorRole local = (TutorRole) newContext.localObject(t.getObjectId(), null);
+                    local.setIsConfirmed(approved);
+                    if (approved) {
+                        local.setConfirmedDate(new Date());
+                    }
+                    newContext.commitChanges();
+                }
+            }
+        }
+    }
+
+    public boolean getIsClassApproved() {
+
+        return portalService.isApproved(authService.getUser(), courseClass);
+    }
+
+    public String getDeclineLabel() {
+        return getIsClassApproved() ? "Accept" : "Decline";
+    }
+
+    private String getTutorFeedbackEmail() {
+        College college = courseClass.getCollege();
+        PreferenceController prefController = prefFactory.getPreferenceController(college);
+
+        if (prefController.getTutorFeedbackEmail() != null) {
+            return prefController.getTutorFeedbackEmail();
+        }
+        return prefController.getEmailAdminAddress();
+    }
 }

@@ -2,15 +2,15 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
 	<h1>${courseClass.course.name}</h1>
-	
-	<span t:type="classTabs" courseClass="courseClass" selected="literal:classApproval"/>
-    
-	<t:form t:id="approvalForm">
+
+
+
+	<t:form t:id="approvalForm" clientValidation="literal:NONE">
 		<t:if test="isClassApproved" negate="true">
-			<t:checkbox t:id="approved"/>
+			<t:checkbox t:id="approved" value="approved"/>
 			<label for="approved"><span>I hereby agree that the date, time, venue and description of the class are all correct and that I am able to teach the class material at the times stated.</span></label>
 			<div class="cl mb15"></div>
-			<t:linksubmit t:id="accept" class="btn1 mb20">Accept</t:linksubmit>
+			<t:submit t:id="accept" value="accept" class="btn1 mb20">Accept</t:submit>
 			<div class="bord mb20"></div>
 			<p:else>
 				<span>The class has already been approved.</span>
@@ -25,9 +25,9 @@
 
 		<t:textarea t:id="whyDeclined" t:value="whyDeclined" style="width:592px;" row="3"></t:textarea>
 		<div class="cl"></div>
-	
-		<t:linksubmit t:id="decline" class="btn">${declineLabel}</t:linksubmit>
-	
+
+		<t:submit t:id="decline" value="decline" class="btn">${declineLabel}</t:submit>
+
 	</t:form>
 	
 </html>

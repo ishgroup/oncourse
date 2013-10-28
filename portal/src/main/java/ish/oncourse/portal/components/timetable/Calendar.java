@@ -2,7 +2,7 @@ package ish.oncourse.portal.components.timetable;
 
 
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.services.JSONPortalService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -28,10 +28,11 @@ public class Calendar {
     @Inject
     private Request request;
 
+    @Inject
+    private IPortalService portalService;
+
     @OnEvent(value = "getCalendarEvents")
    public StreamResponse getCalendarEvents() throws IOException {
-       JSONPortalService portalService = new JSONPortalService();
-        portalService.setCourseClassService(courseClassService);
 
        return new TextStreamResponse("text/json", portalService.getCalendarEvents(authService.getUser()).toString());
    }

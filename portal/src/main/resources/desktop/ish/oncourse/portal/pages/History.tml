@@ -8,41 +8,25 @@
 		<h3><a href="#">History</a></h3>
 	</div>
 	<div class="tab-content">
-		<div class="tab-pane active" id="finance">
-			<div class="row">
-				<div class="col-lg-2 col-sm-3 col-xs-3">
-					<p><a href="invoice.html">3 March 2010</a></p>
-				</div>
-				<div class="col-lg-2 col-sm-3 col-xs-3">
-					<p><a href="invoice.html">Invoice 1234</a></p>
-				</div>
-				<div class="col-lg-2 col-sm-3 col-xs-3 text-right">
-					<p><a href="invoice.html">$4500.00</a></p>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-2 col-sm-3 col-xs-3">
-					<p><a href="invoice.html">2 March 2010</a></p>
-				</div>
-				<div class="col-lg-2 col-sm-3 col-xs-3">
-					<p><a href="invoice.html">Payment (credit card)</a></p>
-				</div>
-				<div class="col-lg-2 col-sm-3 col-xs-3 text-right">
-					<p><a href="invoice.html">$200.00</a></p>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-2 col-sm-3 col-xs-3">
-					<p><a href="invoice.html">2 March 2010</a></p>
-				</div>
-				<div class="col-lg-2 col-sm-3 col-xs-3">
-					<p><a href="invoice.html">invoice 1232</a></p>
-				</div>
-				<div class="col-lg-2 col-sm-3 col-xs-3 text-right">
-					<p><a href="invoice.html">$200.00</a></p>
-				</div>
-			</div>
-		</div>
+
+		    <div class="tab-pane active" id="finance">
+                <t:loop source="invoices" value="invoice">
+                <div class="row">
+				    <div class="col-lg-2 col-sm-3 col-xs-3">
+				    	<p><a href="invoice.html">${getDate(invoice)}</a></p>
+				    </div>
+				    <div class="col-lg-2 col-sm-3 col-xs-3">
+				    	<p><a href="invoice.html">Invoice 1234</a></p>
+				    </div>
+				    <div class="col-lg-2 col-sm-3 col-xs-3 text-right">
+				    	<p><a href="invoice.html">$4500.00</a></p>
+				    </div>
+                </div>
+                </t:loop>  </div>
+		    </div>
+
+
+
 		<div class="tab-pane" id="enrolments">
 			<ul class="list-unstyled classes-content">
 				<li>

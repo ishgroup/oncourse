@@ -1,16 +1,13 @@
 package ish.oncourse.portal.services;
 
-import ish.oncourse.model.Attendance;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Session;
-import ish.oncourse.portal.services.timetable.CalendarEvent;
+import ish.oncourse.model.*;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
+import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -19,8 +16,9 @@ import java.util.TimeZone;
  * Date: 10/14/13
  * Time: 3:35 PM
  */
-public class JSONPortalService {
+public class PortalService implements IPortalService{
 
+    @Inject
     private ICourseClassService courseClassService;
 
 
@@ -54,19 +52,11 @@ public class JSONPortalService {
         return result;
     }
 
-    public String formatDate(Session session) {
+    private String formatDate(Session session) {
         TimeZone timeZone = FormatUtils.getClientTimeZone(session.getCourseClass());
         return String.format("%s - %s",
                 FormatUtils.getDateFormat(FormatUtils.dateFormatForTimeline, timeZone).format(session.getStartDate()),
                 FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(session.getEndDate()));
-    }
-
-    public ICourseClassService getCourseClassService() {
-        return courseClassService;
-    }
-
-    public void setCourseClassService(ICourseClassService courseClassService) {
-        this.courseClassService = courseClassService;
     }
 
     public String getJSONScript(Object bean) throws IOException {
@@ -74,5 +64,14 @@ public class JSONPortalService {
         com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
         mapper.writeValue(writer, bean);
         return writer.toString();
+    }
+
+    public boolean isApproved(Contact tutor, CourseClass courseClass) {
+        for (TutorRole t : courseClass.getTutorRoles()) {
+            if (t.getTutor().getContact().getId().equals(tutor.getId())) {
+                return t.getIsConfirmed();
+            }
+        }
+        return false;
     }
 }
