@@ -1,0 +1,14 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div>
+    <div class="checkbox">
+	    <t:checkbox t:id="listCheckbox" value="selected" />
+
+         <label for="listCheckbox">
+			${mailingList.name}
+		</label>
+    	<div>
+			<t:outputraw value="mailingList.detail" />
+		</div>
+	</div>
+    </div>
+</t:container>

@@ -1,11 +1,8 @@
-package ish.oncourse.portal.components;
+package ish.oncourse.portal.components.subscriptions;
 
 import ish.oncourse.model.Tag;
-import ish.oncourse.portal.pages.MailingLists;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
+
 
 public class MailingListItem {
 
@@ -19,7 +16,8 @@ public class MailingListItem {
 
 	private boolean selected;
 
-	@InjectPage
+
+    @InjectContainer
 	private MailingLists mailingLists;
 
 

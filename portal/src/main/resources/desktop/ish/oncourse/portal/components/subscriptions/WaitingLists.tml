@@ -1,0 +1,15 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <div class="waiting_list">
+
+        <t:if test="waitingLists">
+        	<h4>Your are on the waiting list for the following courses.</h4>
+            <t:loop  source="waitingLists" value="waitingList">
+                <span t:type="subscriptions/waitinglistitem" waitingList="waitingList"/>
+            </t:loop>
+			<p:else>
+				<div>You are not currently on any waiting lists.</div>
+			</p:else>
+        </t:if>
+    </div>
+
+</t:container>

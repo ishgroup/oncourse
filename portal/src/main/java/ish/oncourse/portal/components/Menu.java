@@ -2,7 +2,7 @@ package ish.oncourse.portal.components;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.pages.WaitingLists;
+import ish.oncourse.portal.components.subscriptions.WaitingLists;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;

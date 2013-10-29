@@ -1,23 +1,19 @@
-package ish.oncourse.portal.components;
+package ish.oncourse.portal.components.subscriptions;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.WaitingList;
-import ish.oncourse.portal.pages.WaitingLists;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.List;
 
 import static ish.oncourse.portal.services.PortalUtils.getCourseDetailsURLBy;
 
-public class WaitingListInfo {
+public class WaitingListItem {
 
     @Parameter(required = true)
     @Property
@@ -38,7 +34,7 @@ public class WaitingListInfo {
     @Inject
     private IPlainTextExtractor plainTextExtractor;
 
-    @InjectPage
+    @InjectContainer
     private WaitingLists waitingListsPage;
 
     public String getCourseName() {
@@ -71,7 +67,8 @@ public class WaitingListInfo {
         classes = waitingList.getCourse().getEnrollableClasses();
     }
 
-    public Object onActionFromDelete(int id){
+    @OnEvent(value="delete")
+    public Object delete(int id){
         waitingListsPage.deleteWaitingListBy(id);
         return waitingListsPage;
     }

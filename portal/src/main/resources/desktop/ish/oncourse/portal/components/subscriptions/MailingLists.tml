@@ -1,0 +1,70 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	
+	<t:if test="haveMailingLists">
+        <form t:type="form" t:id="mailingListForm" target="mailingLists">
+        <div class="clearfix">
+            <h4>I would like to receive marketing material via:</h4>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="checkbox">
+                                <t:checkbox t:id="chkEmail"/>
+                                <label for="chkEmail">
+                                    E-Mail
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="checkbox">
+                                <t:checkbox t:id="chkSMS"/>
+                                <label for="chkSMS">
+                                    SMS
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="checkbox">
+                                <t:checkbox t:id="chkPost"/>
+                                <label for="chkPost">
+                                    Post
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		<h4> The following mailing lists are available at ${collegeName}: </h4>
+		
+		<t:if test="isSaved">
+			<h4>Mailing lists subscription was updated</h4>
+		</t:if>
+		
+
+	    	<fieldset>
+				<t:loop source="mailingLists" index="index">
+					<span t:type="subscriptions/mailinglistitem" mailingList="mailingList" tagSelected="${selected}"/>
+				</t:loop>
+	    	</fieldset>
+	    	<br/>
+			<div class="form-group" xml:space="preserve">
+		 		<t:submit  t:id="saveMailingLists" value="Save" class="btn btn-primary" />
+		 	</div>
+		 	
+		</form>
+		
+		<br/>
+
+
+        <div class="alert alert-info">Please select any mailing lists above which you wish to subscribe to. If you are subscribed you will receive communication from us.
+		 You can unsubscribe at any time.</div>
+			
+		 
+		<p:else>
+			<h3>${collegeName} has no available mailing lists.</h3>
+		</p:else>
+	</t:if>
+	
+</t:container>

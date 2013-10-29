@@ -1,0 +1,20 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"  xmlns:p="tapestry:parameter">
+<div class="waiting_list_info_block">
+    <div class="single-waiting clearfix">
+        <div class="col-lg-11 col-sm-10 col-xs-10">
+	    <t:if test="webVisible">
+		    <h5><a href="${courseDetailsURL}">${courseName}</a></h5>
+            <p >${courseDetail}</p>
+		    <p:else>
+			    <h5>${courseName} (This course cannot be visible online.)</h5>
+		    </p:else>
+	    </t:if>
+        </div>
+
+        <div class="col-lg-1 col-sm-2 col-xs-2 move-to-trash">
+            <t:eventlink t:id="delete" class="waiting_list_btn" context="${waitingList.id}"><span class="glyphicon glyphicon-trash"/></t:eventlink>
+        </div>
+
+    </div>
+</div>
+</t:container>

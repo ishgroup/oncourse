@@ -1,7 +1,8 @@
-package ish.oncourse.portal.pages;
+package ish.oncourse.portal.components.subscriptions;
 
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.pages.Login;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
@@ -19,6 +20,20 @@ import java.util.*;
 public class MailingLists {
 
 	private static final Logger LOGGER = Logger.getLogger(MailingLists.class);
+
+
+
+    @Property
+    @Persist
+    private boolean chkEmail;
+
+    @Property
+    @Persist
+    private boolean chkSMS;
+
+    @Property
+    @Persist
+    private boolean chkPost;
 
 	@Property
 	@Persist
@@ -62,9 +77,16 @@ public class MailingLists {
 
 	@SetupRender
 	void beforeRender() {
-		this.currentUser = authService.getUser();
+        ObjectContext objectContext = cayenneService.newContext();
+		this.currentUser = objectContext.localObject(authService.getUser());
+
 		this.mailingLists = tagService.getMailingLists();
 		this.selectedMailingLists = new ArrayList<>();
+
+        this.chkPost = this.currentUser.getIsMarketingViaPostAllowed();
+        this.chkSMS = this.currentUser.getIsMarketingViaSMSAllowed();
+        this.chkEmail = this.currentUser.getIsMarketingViaEmailAllowed();
+
 		initSelectedLists();
 	}
 	
@@ -107,17 +129,25 @@ public class MailingLists {
 
 
 	public void onSubmitFromMailingListForm() {
+
+        ObjectContext objectContext = currentUser.getObjectContext();
+
 		this.isSaved = true;
 
 		Set<Tag> listOfUser = new HashSet<>(tagService.getMailingListsContactSubscribed(currentUser));
-		ObjectContext objectContext = cayenneService.newContext();
+
+        currentUser.setIsMarketingViaEmailAllowed(chkEmail);
+
+        currentUser.setIsMarketingViaSMSAllowed(chkSMS);
+
+        currentUser.setIsMarketingViaPostAllowed(chkPost);
 
 		for (Long id : selectedMailingLists) {
 			List<Tag> tagList = tagService.loadByIds(id);
 			if (!tagList.isEmpty()) {
 				Tag tag = tagList.get(0);
 				if (!listOfUser.contains(tag)) {
-					Tag local = (Tag) objectContext.localObject(tag.getObjectId(), null);
+					Tag local = objectContext.localObject(tag);
 					Taggable taggable = objectContext.newObject(Taggable.class);
 					taggable.setCollege(local.getCollege());
 					Date date = new Date();
@@ -150,8 +180,8 @@ public class MailingLists {
 
 				for (Taggable t : new ArrayList<>(taggableList)) {
 					for (final TaggableTag tg : new ArrayList<>(t.getTaggableTags())) {
-						objectContext.deleteObject(tg);
-						objectContext.deleteObject(t);
+						objectContext.deleteObjects(tg);
+						objectContext.deleteObjects(t);
 					}
 				}
 			}

@@ -1,4 +1,4 @@
-package ish.oncourse.portal.pages;
+package ish.oncourse.portal.components.subscriptions;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.WaitingList;
