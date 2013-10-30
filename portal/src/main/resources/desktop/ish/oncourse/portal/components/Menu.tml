@@ -42,7 +42,7 @@ xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 				<a id="results" href="${request.contextPath}/results">Results</a>
 			</li>
 			<li>
-				<a id="profile" href="${request.contextPath}/myprofile">My Profile</a>
+				<a id="profile" href="${request.contextPath}/profile">My Profile</a>
 			</li>
 			<li>
 				<a id="subscriptions" href="${request.contextPath}/subscriptions">Subscriptions</a>

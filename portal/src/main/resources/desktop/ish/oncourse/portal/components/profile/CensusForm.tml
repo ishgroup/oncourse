@@ -1,0 +1,109 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:if test = "isStudent">
+<t:if test = "isRequiresAvetmiss">
+
+    <t:form  t:id="censusForm" class="form-horizontal" clientValidation="literal:NONE">
+
+
+        <div class="form-group">
+            <div class="col-lg-8 text-left">
+                <div class="alert alert-info">
+                    The Federal Government requires all Colleges to ask the following questions to help with educational planning. Your personal details will remain confidential and will not be identified in any National collection. <strong>Answering these questions is optional</strong>
+                </div>
+            </div>
+        </div>
+        <t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
+        <div class="form-group">
+            <label for="countryOfBirth" class="col-lg-6 text-left">In which country were you born?</label>
+            <div class="col-lg-8">
+                <span class="${validateHandler.validateClass('countryOfBirth')}">
+                        <t:textfield value="countryOfBirthName" t:id="countryOfBirth" class="form-control ${validateHandler.errorClass('countryOfBirth')}"/>
+                        <span t:type="HintComponent" validationMessage="${validateHandler.error('countryOfBirth')}"/>
+                </span>
+
+
+
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="languageHome" class="col-lg-6 text-left">What language do you normally speak at home?</label>
+            <div class="col-lg-8">
+
+                <span class="${validateHandler.validateClass('languageHome')}">
+                        <t:textfield value="languageHomeName" t:id="languageHome" class="form-control ${validateHandler.errorClass('languageHome')}"/>
+                        <span t:type="HintComponent" validationMessage="${validateHandler.error('languageHome')}"/>
+                </span>
+
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="englishProficiency" class="col-lg-6 text-left">How well do you speak English?</label>
+            <div class="col-lg-8">
+                <t:select value="contact.student.englishProficiency" class ="form-control" model="englishProficiencySelectModel" blankOption="NEVER"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="indigenousStatus" class="col-lg-6 text-left">Are you of Aboriginal/Torres Strait Islander origin?</label>
+            <div class="col-lg-8">
+                <t:select value="contact.student.indigenousStatus" class ="form-control" model="indigenousStatusSelectModel" blankOption="NEVER"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="highestSchoolLevel" class="col-lg-6 text-left">What is your highest completed school level?</label>
+            <div class="col-lg-8">
+                <t:select value="contact.student.highestSchoolLevel" class ="form-control" model="schoolLevelSelectModel" blankOption="NEVER"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="yearSchoolCompleted" class="col-lg-6 text-left">In which year did you complete that school level?</label>
+            <div class="col-lg-8">
+
+                <span class="${validateHandler.validateClass('yearSchoolCompleted')}">
+                        <t:textfield value="schoolYearStr" t:id="yearSchoolCompleted" class="form-control ${validateHandler.errorClass('yearSchoolCompleted')}"/>
+                        <span t:type="HintComponent" validationMessage="${validateHandler.error('yearSchoolCompleted')}"/>
+                </span>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="stillAtSchool" class="col-lg-6 text-left">Are you still attending secondary school?</label>
+            <div class="col-lg-8">
+                <t:select t:id="stillAtSchool" value="stillAtSchoolSelection" class ="form-control" model="stillAtSchoolSelectModel" blankOption="NEVER"/>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="priorEducationCode" class="col-lg-6 text-left">What is the highest qualification level you have successfully completed?</label>
+            <div class="col-lg-8">
+                <t:select value="contact.student.priorEducationCode" class ="form-control" model="priorEducationSelectModel" blankOption="NEVER"/>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="labourForceStatus" class="col-lg-6 text-left">Of the following categories, which best describes your current employment status?</label>
+            <div class="col-lg-8">
+                <t:select value="contact.student.labourForceStatus" class ="form-control" model="labourForceStatusSelectModel" blankOption="NEVER"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="disabilityType" class="col-lg-6 text-left">Do you consider yourself to have a disability, impairment or long-term condition? Please contact us ASAP if your disability will affect your course attendance. We may be able to help.</label>
+            <div class="col-lg-8">
+                <t:select t:id="disabilityType" value="contact.student.disabilityType" class ="form-control" model="disabilityTypeSelectModel"  blankOption="NEVER"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-offset-2 col-lg-10">
+                <div class="actions" xml:space="preserve">
+			        <t:submit  t:id="saveCensusAction" value="Save" class="btn btn-primary" clientId="save-student-census"/>
+		        </div>
+            </div>
+        </div>
+    </t:form>
+
+</t:if>
+</t:if>
+</t:container>

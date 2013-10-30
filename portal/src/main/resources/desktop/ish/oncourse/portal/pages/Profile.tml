@@ -1,0 +1,24 @@
+<html t:type="pagestructure" title="literal:Profile"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_profile">
+
+<div class="page-header clearfix zero-padding">
+    <ul class="nav nav-tabs header-tabs">
+        <li class="active"><a data-toggle="tab" href="#profile-form">Profile details</a></li>
+        <li><a data-toggle="tab" href="#password-form">Change password</a></li>
+        <li><a data-toggle="tab" href="#census-questions">Census Questions</a></li>
+    </ul>
+    <h3><a href="#">${contact.fullName}'s Profile</a></h3>
+</div>
+<div class="tab-content">
+<div class="tab-pane active" id="profile-form">
+    <span t:type="profile/profileform" contact="contact"/>
+</div>
+<div class="tab-pane" id="password-form">
+    <span t:type="profile/passwordform" contact="contact"/>
+</div>
+<div class="tab-pane" id="census-questions">
+    <span t:type="profile/censusform" contact="contact"/>
+</div>
+</div>
+
+</html>
