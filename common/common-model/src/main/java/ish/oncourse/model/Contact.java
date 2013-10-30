@@ -444,5 +444,9 @@ public class Contact extends _Contact implements Queueable {
 		final ObjRelationship reverseRelation = relation.getReverseRelationship();
 		return (DataObject) value.readProperty(reverseRelation.getName());
 	}
-	
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

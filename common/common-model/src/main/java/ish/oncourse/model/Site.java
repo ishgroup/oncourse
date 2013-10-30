@@ -13,4 +13,9 @@ public class Site extends _Site implements Queueable {
 	public boolean isHasCoordinates() {
 		return getLatitude() != null && getLongitude() != null;
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

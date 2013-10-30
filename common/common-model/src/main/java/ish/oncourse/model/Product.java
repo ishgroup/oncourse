@@ -32,4 +32,9 @@ public class Product extends _Product implements Queueable {
 		else
 			return getTaxAmount().divide(getPriceExTax()).toBigDecimal();
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return false;
+	}
 }

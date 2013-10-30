@@ -9,4 +9,9 @@ public class SessionTutor extends _SessionTutor implements Queueable {
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

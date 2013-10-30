@@ -9,4 +9,9 @@ public class CourseModule extends _CourseModule implements Queueable {
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

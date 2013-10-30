@@ -508,4 +508,8 @@ public class CourseClass extends _CourseClass implements Queueable {
 		return value;
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

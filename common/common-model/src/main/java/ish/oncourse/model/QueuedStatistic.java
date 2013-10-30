@@ -1,9 +1,9 @@
 package ish.oncourse.model;
 
-import java.util.Date;
-
 import ish.oncourse.model.auto._QueuedStatistic;
 import ish.oncourse.utils.QueueableObjectUtils;
+
+import java.util.Date;
 
 public class QueuedStatistic extends _QueuedStatistic implements Queueable {
 
@@ -33,4 +33,8 @@ public class QueuedStatistic extends _QueuedStatistic implements Queueable {
 		return null;
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

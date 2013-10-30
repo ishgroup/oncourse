@@ -46,10 +46,6 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
      */
     private Map<ObjectId, College> objectIdCollegeMap = new WeakHashMap<>();
 
-    /**
-     * Constructor
-     * @param cayenneService
-     */
     public QueueableLifecycleListener(ICayenneService cayenneService) {
         this.cayenneService = cayenneService;
     }
@@ -162,7 +158,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
                 if (!recordContext.getIsRecordQueueingEnabled()) {
                     return;
                 }
-                if (isAsyncReplicationAllowed(q)) {
+                if (q.isAsyncReplicationAllowed()) {
                     objectIdCollegeMap.put(q.getObjectId(), q.getCollege());
                 }
             }
@@ -172,42 +168,60 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
     /**
      * New record event - post save.
      *
-     * @param entity
+     * @param entity - created entity
      */
 
     public void postPersist(Object entity) {
-        if (entity instanceof Queueable) {
-            Queueable q = (Queueable) entity;
-            if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
-                ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
-                final boolean isAsyncReplicationAllowed = isAsyncReplicationAllowed(q);
-                final boolean replicatedContext = recordContext.getIsRecordQueueingEnabled();
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Post Persist entered with " + (replicatedContext ? "replication context " : "non-replication context ") +
-                            (isAsyncReplicationAllowed ? "async replication allowed for this object ":"async replication not allowed for this object ") +
-                            q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
-                }
-                if (!replicatedContext) {
-                    return;
-                }
-                if (isAsyncReplicationAllowed) {
-                    LOGGER.debug("Post Persist event on : Entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId());
-                    enqueue(q, QueuedRecordAction.CREATE);
-                }
-            }
-        }
+		addRecord(entity, QueuedRecordAction.CREATE);
     }
+
+	/**
+	 * Update record event - post save.
+	 *
+	 * @param entity - changed entity
+	 */
+	public void postUpdate(Object entity) {
+		addRecord(entity, QueuedRecordAction.UPDATE);
+	}
+
+	private void addRecord(Object entity, QueuedRecordAction action)
+	{
+		if (entity instanceof Queueable) {
+			Queueable q = (Queueable) entity;
+			if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
+				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
+				boolean isAsyncReplicationAllowed = q.isAsyncReplicationAllowed();
+				boolean replicatedContext = recordContext.getIsRecordQueueingEnabled();
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug(String.format("Post %s entered with %s %s %s with ID : %s %s", action,
+							(replicatedContext ? "replication context " : "non-replication context "),
+							(isAsyncReplicationAllowed ? "async replication allowed for this object ":"async replication not allowed for this object"),
+							q.getClass().getSimpleName(),
+							q.getObjectId(),
+							traceObjectInfo(q)));
+				}
+				if (!replicatedContext) {
+					return;
+				}
+				if (isAsyncReplicationAllowed) {
+					LOGGER.debug(String.format("Post %s event on : Entity: %s  with ID : %s",
+							action,
+							q.getClass().getSimpleName(),
+							q.getObjectId()));
+					enqueue(q, action);
+				}
+			}
+		}
+	}
 
     /**
      * Delete record event - post delete.
-     *
-     * @param entity
      */
     @PostRemove
     public void postRemove(Object entity) {
         if (entity instanceof Queueable) {
             Queueable q = (Queueable) entity;
-            if (isAsyncReplicationAllowed(q)) {
+            if (q.isAsyncReplicationAllowed()) {
                 LOGGER.debug("Post Remove event on : Entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId());
                 College college = objectIdCollegeMap.remove(q.getObjectId());
                 if (college != null) {
@@ -218,36 +232,6 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         }
 
     }
-
-    /**
-     * Update record event - post save.
-     *
-     * @param entity
-     */
-    public void postUpdate(Object entity) {
-        if ((entity instanceof Queueable)) {
-            Queueable q = (Queueable) entity;
-            if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
-                ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
-                final boolean isAsyncReplicationAllowed = isAsyncReplicationAllowed(q);
-                final boolean replicatedContext = recordContext.getIsRecordQueueingEnabled();
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Post Update entered with " + (replicatedContext ? "replication context " : "non-replication context ") +
-                            (isAsyncReplicationAllowed ? "async replication allowed for this object ":"async replication not allowed for this object ") +
-                            q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
-                }
-                if (!replicatedContext) {
-                    return;
-                }
-                if (isAsyncReplicationAllowed) {
-                    LOGGER.debug("Post Update event on : Entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId());
-                    enqueue(q, QueuedRecordAction.UPDATE);
-                }
-            }
-        }
-    }
-
-
 
     public void postLoad(Object entity) {
         // Not used
@@ -304,7 +288,9 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         }
 
         ObjectContext currentContext = STACK_STORAGE.get().peek().getObjectContext();
-        String transactionKey = commitingContext.getTransactionKey();
+		college = currentContext.localObject(college);
+
+		String transactionKey = commitingContext.getTransactionKey();
 
         //We store transaction using key which is collegeId + transactionKey to
         //properly handle commit() which touches records across several colleges
@@ -317,7 +303,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
             t.setCreated(today);
             t.setModified(today);
             t.setTransactionKey(transactionKey);
-            t.setCollege((College) currentContext.localObject(college.getObjectId(), null));
+            t.setCollege(college);
             STACK_STORAGE.get().peek().getTransactionMapping().put(queuedTransactionKey, t);
         }
         
@@ -329,7 +315,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
                 action, transactionKey));
 
         QueuedRecord qr = currentContext.newObject(QueuedRecord.class);
-        qr.setCollege((College) currentContext.localObject(college.getObjectId(), null));
+        qr.setCollege(college);
         qr.setEntityIdentifier(entityName);
         qr.setEntityWillowId(entityId);
         qr.setAngelId(angelId);
@@ -337,42 +323,5 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         qr.setAction(action);
         qr.setNumberOfAttempts(0);
         qr.setLastAttemptTimestamp(new Date());
-    }
-
-    /**
-     * Method which decides, whether creation of QueuedRecords is allowed. We do
-     * not allow in progress payment transactions to be replicated.
-     *
-     * @param entity
-     *            queued entity
-     * @return true - queued record allowed, false - not allowed.
-     */
-    private boolean isAsyncReplicationAllowed(Queueable entity) {
-        boolean isAsyncAllowed = true;
-        if (entity instanceof Tag || entity instanceof TaggableTag || entity instanceof Session || entity instanceof DiscountMembership ||
-                entity instanceof DiscountMembershipRelationType || entity instanceof ContactRelation || entity instanceof ContactRelationType ||
-                /*entity instanceof Membership || entity instanceof MembershipProduct || */entity instanceof Product || entity instanceof ProductItem 
-                /*|| entity instanceof Voucher*/ || entity instanceof VoucherProduct || entity instanceof Module) {
-            isAsyncAllowed = false;
-        } else if (entity instanceof PaymentIn) {
-            PaymentIn payment = (PaymentIn) entity;
-            isAsyncAllowed = payment.isAsyncReplicationAllowed();
-        } else if (entity instanceof PaymentInLine) {
-            PaymentInLine pLine = (PaymentInLine) entity;
-            isAsyncAllowed = pLine.isAsyncReplicationAllowed();
-        } else if (entity instanceof Enrolment) {
-            Enrolment enrl = (Enrolment) entity;
-            isAsyncAllowed = enrl.isAsyncReplicationAllowed();
-        } else if (entity instanceof Invoice) {
-            Invoice invoice = (Invoice) entity;
-            isAsyncAllowed = invoice.isAsyncReplicationAllowed();
-        } else if (entity instanceof InvoiceLine) {
-            InvoiceLine invoiceLine = (InvoiceLine) entity;
-            isAsyncAllowed = invoiceLine.isAsyncReplicationAllowed();
-        } else if (entity instanceof InvoiceLineDiscount) {
-            InvoiceLineDiscount invoiceLineDiscount = (InvoiceLineDiscount) entity;
-            isAsyncAllowed = invoiceLineDiscount.isAsyncReplicationAllowed();
-        }
-        return isAsyncAllowed;
     }
 }

@@ -47,4 +47,8 @@ public class Session extends _Session implements Queueable {
 		return getRoom() != null && getRoom().getSite() != null && getRoom().getSite().getIsVirtual();
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return false;
+	}
 }

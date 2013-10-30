@@ -9,4 +9,9 @@ public class DiscountConcessionType extends _DiscountConcessionType implements Q
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

@@ -9,4 +9,9 @@ public class SessionModule extends _SessionModule implements Queueable {
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

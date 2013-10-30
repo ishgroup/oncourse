@@ -11,6 +11,8 @@ import ish.oncourse.model.*;
 import ish.util.InvoiceUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -93,7 +95,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     @Test
     public void allActionsTests() throws InterruptedException {
-        init(false);
+		init(Arrays.asList(1186958L,1186959L,1186960L), Arrays.asList(7L, 8L), Arrays.asList(2L), false);
 
         assertTrue(purchaseController.isAddContact());
         assertFalse(purchaseController.isFinished());
@@ -117,10 +119,10 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(purchaseController.getModel().getContacts().get(0), purchaseController.getModel().getPayer());
         assertEquals(3, purchaseController.getModel().getAllEnabledEnrolments().size());
         assertEquals(3, purchaseController.getModel().getAllEnrolments(purchaseController.getModel().getPayer()).size());
-        assertEquals(1, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
+        assertEquals(2, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(3, purchaseController.getModel().getEnabledEnrolments(purchaseController.getModel().getPayer()).size());
         assertEquals(0, purchaseController.getModel().getDisabledEnrolments(purchaseController.getModel().getPayer()).size());
-        assertEquals(1, purchaseController.getModel().getEnabledProductItems(purchaseController.getModel().getPayer()).size());
+        assertEquals(2, purchaseController.getModel().getEnabledProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(0, purchaseController.getModel().getDisabledProductItems(purchaseController.getModel().getPayer()).size());
 
 
@@ -134,7 +136,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(State.editCheckout, purchaseController.getState());
         assertEquals(2, purchaseController.getModel().getEnabledEnrolments(purchaseController.getModel().getPayer()).size());
         assertEquals(1, purchaseController.getModel().getDisabledEnrolments(purchaseController.getModel().getPayer()).size());
-        assertEquals(1, purchaseController.getModel().getEnabledProductItems(purchaseController.getModel().getPayer()).size());
+        assertEquals(2, purchaseController.getModel().getEnabledProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(0, purchaseController.getModel().getDisabledProductItems(purchaseController.getModel().getPayer()).size());
 
 
@@ -148,7 +150,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(State.editCheckout, purchaseController.getState());
         assertEquals(2, purchaseController.getModel().getEnabledEnrolments(purchaseController.getModel().getPayer()).size());
         assertEquals(1, purchaseController.getModel().getDisabledEnrolments(purchaseController.getModel().getPayer()).size());
-        assertEquals(0, purchaseController.getModel().getEnabledProductItems(purchaseController.getModel().getPayer()).size());
+        assertEquals(1, purchaseController.getModel().getEnabledProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(1, purchaseController.getModel().getDisabledProductItems(purchaseController.getModel().getPayer()).size());
 
         //press proceedToPayment
@@ -161,16 +163,17 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(purchaseController.getModel().getContacts().get(0), purchaseController.getModel().getPayer());
         assertEquals(2, purchaseController.getModel().getAllEnabledEnrolments().size());
         assertEquals(2, purchaseController.getModel().getAllEnrolments(purchaseController.getModel().getPayer()).size());
-        assertEquals(0, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(2, purchaseController.getModel().getEnabledEnrolments(purchaseController.getModel().getPayer()).size());
         assertEquals(0, purchaseController.getModel().getDisabledEnrolments(purchaseController.getModel().getPayer()).size());
-        assertEquals(0, purchaseController.getModel().getEnabledProductItems(purchaseController.getModel().getPayer()).size());
+
+		assertEquals(1, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
+        assertEquals(1, purchaseController.getModel().getEnabledProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(0, purchaseController.getModel().getDisabledProductItems(purchaseController.getModel().getPayer()).size());
         assertTrue(purchaseController.getModel().getPayment().getObjectId().isTemporary());
 		assertTrue(purchaseController.getModel().getInvoice().getObjectId().isTemporary());
         assertEquals(1, purchaseController.getModel().getPayment().getPaymentInLines().size());
         assertTrue(purchaseController.getModel().getPayment().getPaymentInLines().get(0).getObjectId().isTemporary());
-        assertEquals(2, purchaseController.getModel().getInvoice().getInvoiceLines().size());
+        assertEquals(3, purchaseController.getModel().getInvoice().getInvoiceLines().size());
         assertTrue(purchaseController.getModel().getInvoice().getInvoiceLines().get(0).getObjectId().isTemporary());
 
         //press makePayment
@@ -178,9 +181,9 @@ public class PurchaseControllerTest extends ACheckoutTest {
         makeInvalidPayment();
 
         assertEquals(2, purchaseController.getModel().getAllEnrolments(purchaseController.getModel().getPayer()).size());
-        assertEquals(0, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
+        assertEquals(1, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(1, purchaseController.getModel().getPayment().getPaymentInLines().size());
-        assertEquals(2, purchaseController.getModel().getInvoice().getInvoiceLines().size());
+        assertEquals(3, purchaseController.getModel().getInvoice().getInvoiceLines().size());
         assertEquals(delegate.getPaymentIn(), purchaseController.getModel().getPayment());
         assertEquals(PaymentStatus.FAILED_CARD_DECLINED, delegate.getPaymentIn().getStatus());
 
@@ -204,9 +207,9 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(State.editPayment, purchaseController.getState());
 		assertNotEquals(oldModel, purchaseController.getModel());
         assertEquals(2, purchaseController.getModel().getAllEnrolments(purchaseController.getModel().getPayer()).size());
-        assertEquals(0, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
+        assertEquals(1, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(1, purchaseController.getModel().getPayment().getPaymentInLines().size());
-        assertEquals(2, purchaseController.getModel().getInvoice().getInvoiceLines().size());
+        assertEquals(3, purchaseController.getModel().getInvoice().getInvoiceLines().size());
         assertEquals(delegate.getPaymentIn(), purchaseController.getModel().getPayment());
         assertEquals(PaymentStatus.IN_TRANSACTION, delegate.getPaymentIn().getStatus());
 
@@ -219,15 +222,20 @@ public class PurchaseControllerTest extends ACheckoutTest {
         }
 
         assertEquals(2, purchaseController.getModel().getAllEnrolments(purchaseController.getModel().getPayer()).size());
-        assertEquals(0, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
+        assertEquals(1, purchaseController.getModel().getAllProductItems(purchaseController.getModel().getPayer()).size());
         assertEquals(1, purchaseController.getModel().getPayment().getPaymentInLines().size());
-        assertEquals(2, purchaseController.getModel().getInvoice().getInvoiceLines().size());
+        assertEquals(3, purchaseController.getModel().getInvoice().getInvoiceLines().size());
         assertEquals(delegate.getPaymentIn(), purchaseController.getModel().getPayment());
         assertEquals(PaymentStatus.SUCCESS, delegate.getPaymentIn().getStatus());
         assertFalse(purchaseController.getModel().getObjectContext().hasChanges());
         assertTrue(purchaseController.isFinished());
         assertTrue(purchaseController.getPaymentEditorDelegate().isProcessFinished());
         assertTrue(purchaseController.getPaymentEditorDelegate().isPaymentSuccess());
+
+		ObjectContext objectContext = purchaseController.getModel().getObjectContext();
+		SelectQuery selectQuery = new SelectQuery(QueuedRecord.class, ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Voucher"));
+		List list = objectContext.performQuery(selectQuery);
+		assertFalse("QueuedRecords for voucher entity should exist in the queue", list.isEmpty());
     }
 
     @Test
@@ -506,17 +514,17 @@ public class PurchaseControllerTest extends ACheckoutTest {
         ObjectContext cContext = context.createChildContext();
         ConcessionType ct = Cayenne.objectForPK(cContext, ConcessionType.class, 1);
         StudentConcession sc = createStudentConcession(cContext,
-                (Student) cContext.localObject(model.getPayer().getStudent()),
+                cContext.localObject(model.getPayer().getStudent()),
                 ct,
-                (College) cContext.localObject(model.getPayer().getCollege()));
+                cContext.localObject(model.getPayer().getCollege()));
 
-        addConcession(purchaseController, sc);
+        addConcession(sc);
 
 
         assertEquals(new Money("730.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
     }
 
-    private void addConcession(PurchaseController purchaseController, StudentConcession sc) {
+    private void addConcession(StudentConcession sc) {
         ActionParameter param = new ActionParameter(Action.startConcessionEditor);
         param.setValue(sc.getStudent().getContact());
         performAction(param);
@@ -539,7 +547,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         StudentConcession sc = createStudentConcession(cContext, (Student) cContext.localObject(model.getPayer().getStudent()),
                 ct, (College) cContext.localObject(model.getPayer().getCollege()));
 
-        addConcession(purchaseController, sc);
+        addConcession(sc);
 
         assertEquals(new Money("730.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 

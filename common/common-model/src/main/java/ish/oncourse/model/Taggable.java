@@ -21,4 +21,9 @@ public class Taggable extends _Taggable implements Queueable {
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

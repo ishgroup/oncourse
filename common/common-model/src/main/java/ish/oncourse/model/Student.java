@@ -90,4 +90,8 @@ public class Student extends _Student implements Queueable {
 			setPriorEducationCode(AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION);
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

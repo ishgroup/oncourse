@@ -10,4 +10,8 @@ public class DiscountMembership extends _DiscountMembership implements Queueable
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return false;
+	}
 }

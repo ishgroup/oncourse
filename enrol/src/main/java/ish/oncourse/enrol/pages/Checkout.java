@@ -9,6 +9,7 @@ import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -134,6 +135,7 @@ public class Checkout {
     }
 
     public void resetCookies() {
+		cookiesService.writeCookieValue(Product.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
         cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
         cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, StringUtils.EMPTY);
         studentService.clearStudentsShortList();

@@ -9,4 +9,9 @@ public class TagGroupRequirement extends _TagGroupRequirement implements Queueab
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

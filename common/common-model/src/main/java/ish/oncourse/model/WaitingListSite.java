@@ -1,10 +1,10 @@
 package ish.oncourse.model;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import ish.oncourse.model.auto._WaitingListSite;
 import ish.oncourse.utils.QueueableObjectUtils;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class WaitingListSite extends _WaitingListSite implements Queueable {
 	private static final long serialVersionUID = -4096249550669641954L;
@@ -26,5 +26,10 @@ public class WaitingListSite extends _WaitingListSite implements Queueable {
         {
 		    getWaitingList().setModified(modified);
         }
+	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
 	}
 }

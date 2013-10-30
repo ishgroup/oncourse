@@ -1,24 +1,10 @@
 package ish.oncourse.services.tag;
 
 import ish.common.types.NodeSpecialType;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.Taggable;
-import ish.oncourse.model.TaggableTag;
+import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -26,6 +12,10 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.*;
 
 public class TagService extends BaseService<Tag> implements ITagService {
 
@@ -250,9 +240,9 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		
 		Date date = new Date();
 		
-		College college = (College) context.localObject(contact.getCollege().getObjectId(), null);
+		College college = context.localObject(contact.getCollege());
 		
-		Tag list = (Tag) context.localObject(mailingList.getObjectId(), null);
+		Tag list = context.localObject(mailingList);
 		
 		Taggable taggable = context.newObject(Taggable.class);
 		taggable.setCollege(college);

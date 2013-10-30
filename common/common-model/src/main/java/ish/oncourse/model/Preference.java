@@ -8,5 +8,10 @@ public class Preference extends _Preference implements Queueable {
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
-	}	
+	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

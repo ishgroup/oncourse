@@ -9,4 +9,10 @@ public class Message extends _Message implements Queueable {
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
+
 }

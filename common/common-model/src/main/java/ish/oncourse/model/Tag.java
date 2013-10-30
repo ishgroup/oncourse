@@ -3,6 +3,9 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._Tag;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.TagsTextileEntityTypes;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SelectQuery;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -10,10 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
 
 public class Tag extends _Tag implements Queueable {
 	private static final long serialVersionUID = -1118193158649089145L;
@@ -187,5 +186,10 @@ public class Tag extends _Tag implements Queueable {
 	public boolean isHasDetails() {
 		String detail = getDetail();
 		return detail != null && !"".equals(detail);
+	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return false;
 	}
 }

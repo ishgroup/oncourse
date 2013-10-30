@@ -10,4 +10,8 @@ public class TutorRole extends _TutorRole implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

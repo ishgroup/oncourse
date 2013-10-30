@@ -33,4 +33,9 @@ public class BinaryInfo extends _BinaryInfo implements Queueable {
     {
         return String.format(CONTEXT_PATH_TEMPLATE, getFilePath(), getName(), getType());
     }
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

@@ -10,4 +10,8 @@ public class Outcome extends _Outcome implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

@@ -2,13 +2,12 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Discount;
 import ish.oncourse.utils.QueueableObjectUtils;
-
-import java.util.Date;
-
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import java.util.Date;
 
 public class Discount extends _Discount implements Queueable {
 	private static final long serialVersionUID = 2398560052340467949L;
@@ -44,5 +43,10 @@ public class Discount extends _Discount implements Queueable {
 		return getStudentEnrolledWithinDays() != null || getStudentAge() != null
 				|| !(getDiscountConcessionTypes() == null || getDiscountConcessionTypes().isEmpty())
 				|| getStudentPostcodes() != null;
+	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
 	}
 }

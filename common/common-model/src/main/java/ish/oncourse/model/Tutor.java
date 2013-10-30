@@ -1,16 +1,15 @@
 package ish.oncourse.model;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
+import ish.oncourse.model.auto._Tutor;
+import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 
-import ish.oncourse.model.auto._Tutor;
-import ish.oncourse.utils.QueueableObjectUtils;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class Tutor extends _Tutor implements Queueable {
 	private static final long serialVersionUID = 6926881335601111383L;
@@ -71,4 +70,8 @@ public class Tutor extends _Tutor implements Queueable {
 		return result == null ? new ArrayList<TutorRole>() : result;
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

@@ -9,4 +9,9 @@ public class DiscountCourseClass extends _DiscountCourseClass implements Queueab
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

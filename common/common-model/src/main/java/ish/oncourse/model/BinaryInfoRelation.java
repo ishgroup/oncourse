@@ -10,4 +10,8 @@ public class BinaryInfoRelation extends _BinaryInfoRelation implements Queueable
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

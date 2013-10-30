@@ -1,12 +1,11 @@
 package ish.oncourse.model;
 
-import java.io.UnsupportedEncodingException;
-
-import org.apache.commons.lang.StringUtils;
-
 import ish.oncourse.model.auto._SystemUser;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.SecurityUtil;
+import org.apache.commons.lang.StringUtils;
+
+import java.io.UnsupportedEncodingException;
 
 public class SystemUser extends _SystemUser implements Queueable {
 	private static final long serialVersionUID = -9096815651354984411L;
@@ -27,4 +26,8 @@ public class SystemUser extends _SystemUser implements Queueable {
 		}
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

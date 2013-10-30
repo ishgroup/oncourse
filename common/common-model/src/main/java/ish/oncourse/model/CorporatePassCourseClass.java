@@ -11,4 +11,8 @@ public class CorporatePassCourseClass extends _CorporatePassCourseClass implemen
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

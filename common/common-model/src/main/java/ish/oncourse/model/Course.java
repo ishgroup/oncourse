@@ -134,4 +134,8 @@ public class Course extends _Course implements Queueable {
 		return relatedList;
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

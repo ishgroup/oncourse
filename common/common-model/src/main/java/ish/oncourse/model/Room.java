@@ -10,4 +10,8 @@ public class Room extends _Room implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

@@ -9,4 +9,9 @@ public class VoucherProductCourse extends _VoucherProductCourse implements Queue
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

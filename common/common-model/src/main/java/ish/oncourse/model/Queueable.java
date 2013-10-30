@@ -1,8 +1,8 @@
 package ish.oncourse.model;
 
-import java.util.Date;
-
 import org.apache.cayenne.Persistent;
+
+import java.util.Date;
 
 
 /**
@@ -27,4 +27,6 @@ public interface Queueable extends Persistent {
 	void setModified(Date modified);
 
     Date getCreated();
+
+	boolean isAsyncReplicationAllowed();
 }

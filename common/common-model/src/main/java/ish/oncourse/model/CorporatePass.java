@@ -11,4 +11,8 @@ public class CorporatePass extends _CorporatePass implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

@@ -11,4 +11,8 @@ public class EntityRelation extends _EntityRelation implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

@@ -38,5 +38,9 @@ public class MessagePerson extends _MessagePerson implements Queueable {
 		}
 		super.setStatus(status);
 	}
-	
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }

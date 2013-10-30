@@ -9,4 +9,9 @@ public class DiscountMembershipRelationType extends _DiscountMembershipRelationT
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return false;
+	}
 }

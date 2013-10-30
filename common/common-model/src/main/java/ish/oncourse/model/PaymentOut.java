@@ -4,7 +4,6 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.auto._PaymentOut;
 import ish.oncourse.utils.QueueableObjectUtils;
-
 import org.apache.log4j.Logger;
 
 public class PaymentOut extends _PaymentOut implements Queueable {
@@ -115,6 +114,9 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 		}
 		super.setStatus(status);
 	}
-	
-	
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return true;
+	}
 }
