@@ -271,7 +271,7 @@ public abstract class ACheckoutTest extends ServiceTest {
     }
 
     protected PurchaseController init(boolean addPayer) {
-        return init(Arrays.asList(1186958L,1186959L,1186960L), Arrays.asList(7L),Arrays.asList(2L), addPayer);
+        return init(Arrays.asList(1186958L,1186959L,1186960L), Arrays.asList(7L), Arrays.asList(2L), addPayer);
     }
 
     protected PurchaseController init(List<Long> courseClassIds, List<Long> productIds,  List<Long> discountIds, boolean addPayer) {
