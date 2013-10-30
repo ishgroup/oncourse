@@ -3,6 +3,7 @@ dependencies {
 	
 	// cxf-bundle-mini contains cxf-rt-frontend-jaxws, cxf-rt-transports-http, cxf-tools-common dependencies
 	compile 'org.apache.cxf:cxf-bundle-mini:2.6.1'
+    //compile 'org.apache.cxf:cxf-bundle:2.6.1'
 }
 
 jar {
@@ -13,8 +14,8 @@ jar {
 
 //the task generates Stubs by wsdl
 task wsdl2Java(type: JavaExec) {
-        wsdlFile =  file("${projectDir}/src/main/resources/wsdl/v5_replication.wsdl")
-        bindingFile = file("${projectDir}/src/main/resources/wsdl/replication5_binding.xml")
+        wsdlFile =  file("${projectDir}/src/main/resources/wsdl/v6_replication.wsdl")
+        bindingFile = file("${projectDir}/src/main/resources/wsdl/replication6_binding.xml")
         destDir = file ("${projectDir}/src/main/java")
         main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
         classpath = project.configurations.compile
