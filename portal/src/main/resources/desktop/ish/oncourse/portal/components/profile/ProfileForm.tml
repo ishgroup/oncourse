@@ -5,7 +5,7 @@
             <label for="email"  class="col-lg-2 control-label">Email*</label>
             <div class="col-lg-6">
 
-                <span class="${validateHandler.validateClass('postcode')}">
+                <span class="${validateHandler.validateClass('email')}">
                     <t:textfield value="contact.emailAddress" t:id="email" class="form-control ${validateHandler.errorClass('email')}"/>
                     <span t:type="HintComponent" validationMessage="${validateHandler.error('email')}"/>
                 </span>

@@ -107,6 +107,7 @@ public class CensusForm {
             validateHandler = new ValidateHandler();
 
 
+
         englishProficiencySelectModel = new ISHEnumSelectModel(
                 AvetmissStudentEnglishProficiency.class, getAvetmissMessages());
         indigenousStatusSelectModel = new ISHEnumSelectModel(
@@ -117,7 +118,11 @@ public class CensusForm {
                 AvetmissStudentPriorEducation.class, getAvetmissMessages());
     }
 
+    @AfterRender
+    void   afterRender (){
+        validateHandler.getErrors().clear();
 
+    }
 
 
 
@@ -132,6 +137,8 @@ public class CensusForm {
 
 
     public String getCountryOfBirthName() {
+
+
         Country countryOfBirth = contact.getStudent().getCountryOfBirth();
         if (countryOfBirth == null) {
             return ICountryService.DEFAULT_COUNTRY_NAME;
@@ -140,6 +147,7 @@ public class CensusForm {
     }
 
     public void setCountryOfBirthName(String countryOfBirthName) {
+
         if (StringUtils.trimToNull(countryOfBirthName) == null) {
             return;
         }
@@ -237,16 +245,17 @@ public class CensusForm {
 
     boolean validate() {
 
-        validateHandler.getErrors().clear();
+
 
             countryOfBirthErrorMessage = validateHandler.error(Student.COUNTRY_OF_BIRTH_PROPERTY);
+
             if (countryOfBirthErrorMessage != null) {
                 validateHandler.getErrors().put("countryOfBirth", countryOfBirthErrorMessage);
                 censusForm.recordError(countryOfBirthErrorMessage);
             }
 
-            languageHomeErrorMessage=validateHandler.error(Student.LANGUAGE_HOME_PROPERTY);
-            if(languageHomeErrorMessage!=null) {
+            languageHomeErrorMessage = validateHandler.error(Student.LANGUAGE_HOME_PROPERTY);
+            if(languageHomeErrorMessage != null) {
                 validateHandler.getErrors().put("languageHome",languageHomeErrorMessage);
                 censusForm.recordError(languageHomeErrorMessage);
             }

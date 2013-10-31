@@ -81,6 +81,7 @@ public class PasswordForm {
      if(validate()) {
         if (password != null) {
             contact.setPassword(password);
+
         }
         contact.getObjectContext().commitChanges();
      }
