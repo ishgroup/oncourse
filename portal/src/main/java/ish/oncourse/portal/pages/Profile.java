@@ -5,6 +5,8 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -30,6 +32,10 @@ public class Profile {
     @Property
     private Contact contact;
 
+    @Property
+    @Persist
+    private String activeTabId;
+
   @SetupRender
   void setupRender()
     {
@@ -37,8 +43,19 @@ public class Profile {
 
         contact = context.localObject(authenticationService.getUser());
 
+        if (activeTabId == null)
+            activeTabId = "tab_profile";
+    }
 
+    @OnEvent(value = "setActiveTab")
+    public void setActiveTab(String activeTabId)
+    {
+        this.activeTabId = activeTabId;
+    }
 
+    public String getActiveClass(String tabId)
+    {
+        return tabId.equals(activeTabId) ? "active": StringUtils.EMPTY;
     }
 
 }

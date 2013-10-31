@@ -39,10 +39,10 @@ public class PasswordForm {
     private String confirmPassword;
 
     @InjectComponent
-    private TextField passwordFild;
+    private PasswordField passwordFild;
 
     @InjectComponent
-    private TextField confirmPasswordFild;
+    private PasswordField confirmPasswordFild;
 
     @Property
     private String passwordErrorMessage;
@@ -91,6 +91,7 @@ public class PasswordForm {
 
 
     boolean validate(){
+        validateHandler.getErrors().clear();
 
         if (password != null && password.length() > 0) {
 

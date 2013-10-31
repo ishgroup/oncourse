@@ -46,6 +46,6 @@
      <script type="text/javascript" src="/s/portal/js/initialise.js"></script>
      <script type="text/javascript" src="/s/portal/js/attendances.js"></script>
      <script type="text/javascript" src="/s/portal/js/subscriptions.js"></script>
-
+     <script type="text/javascript" src="/s/portal/js/profile.js"></script>
      <script type="text/javascript" src="/s/portal/js/for_calendar.js"></script>
  </t:container>
