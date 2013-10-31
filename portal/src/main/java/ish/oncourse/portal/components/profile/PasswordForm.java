@@ -24,6 +24,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  */
 public class PasswordForm {
 
+    @Persist
+    @Property
+    private boolean success;
 
     @Inject
     private Messages messages;
@@ -69,6 +72,10 @@ public class PasswordForm {
 
      }
 
+    @AfterRender
+    void afterRende(){
+        success=false;
+    }
 
 
 
@@ -83,6 +90,7 @@ public class PasswordForm {
             contact.setPassword(password);
 
         }
+         success=true;
         contact.getObjectContext().commitChanges();
      }
         return this;
@@ -94,34 +102,39 @@ public class PasswordForm {
     boolean validate(){
         validateHandler.getErrors().clear();
 
-        if (password != null && password.length() > 0) {
+        if (password != null && password.length() > 0 && confirmPassword != null && confirmPassword.length() > 0) {
 
             passwordErrorMessage = validatedPassword(password, false);
             if(passwordErrorMessage!=null){
             validateHandler.getErrors().put("password",passwordErrorMessage);
-            passwordForm.recordError(confirmPasswordErrorMessage);
+            passwordForm.recordError(passwordErrorMessage);
             }
 
             confirmPasswordErrorMessage = validatedPassword(confirmPassword, true);
             if(confirmPasswordErrorMessage!=null){
-            passwordForm.recordError(passwordErrorMessage);
-            validateHandler.getErrors().put("confirmpassword",confirmPasswordErrorMessage);
-            }
-            return !passwordForm.getHasErrors();
-        }
-
-
-        if(password==null && confirmPassword==null){
-            passwordErrorMessage="Password can not be empty";
-            confirmPasswordErrorMessage="Confirm password can not be empty";
-            passwordForm.recordError(passwordErrorMessage);
             passwordForm.recordError(confirmPasswordErrorMessage);
             validateHandler.getErrors().put("confirmpassword",confirmPasswordErrorMessage);
-            validateHandler.getErrors().put("password",passwordErrorMessage);
+            }
 
         }
 
+
+        if(confirmPassword==null){
+            confirmPasswordErrorMessage="Confirm password can not be empty";
+            passwordForm.recordError(confirmPasswordErrorMessage);
+            validateHandler.getErrors().put("confirmpassword",confirmPasswordErrorMessage);
+        }
+
+
+        if(password==null){
+            passwordErrorMessage="Password can not be empty";
+            passwordForm.recordError(passwordErrorMessage);
+            validateHandler.getErrors().put("password",passwordErrorMessage);
+        }
+
+
         return !passwordForm.getHasErrors();
+
     }
 
 
