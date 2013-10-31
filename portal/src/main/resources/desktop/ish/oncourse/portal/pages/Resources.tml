@@ -4,32 +4,19 @@
 		<h3><a href="#">Resources</a></h3>
 	</div>
 	<ul class="list-unstyled resources-content">
+
+        <t:loop source="courseClasses" value="courseClass">
+
+        <t:if test="${hasResources(courseClass)}">
 		<li>
-			<h4><a href="#">Cert IV Training and Assessment</a> <small>(TRAS-2)</small></h4>
-			<small class="text-muted">17 August 2013 - 24 October 2014</small>
+			<h4><a href="#">${courseClass.course.name} </a> <small> (${courseClass.uniqueIdentifier})</small></h4>
+			<small class="text-muted">${getDate(courseClass)}</small>
 			<ul class="list-unstyled resources-list">
-				<li><span class="glyphicon glyphicon-file"></span> <a href="#">Week_2_Reading.pdf</a> <span class="label label-primary">NEW</span></li>
-				<li><span class="glyphicon glyphicon-file"></span> <a href="#">Week_1_Reading.pdf</a> <span class="label label-primary">NEW</span></li>
-				<li><span class="glyphicon glyphicon-file"></span> <a href="#">enrolment_pre_reading.pdf</a></li>
-				<li><span class="glyphicon glyphicon-file"></span> <a href="#">enrolment_employer_details.pdf</a></li>
+				<span t:type="courseclass/classresources" courseClass="courseClass"></span>
 			</ul>
 		</li>
-		<li>
-			<h4><a href="#">MS Word - Word Processing Essentials</a> <small>(MSW-1)</small></h4>
-			<small class="text-muted">1 August 2012 - 24 August 2012</small>
-			<ul class="list-unstyled resources-list">
-				<li><span class="glyphicon glyphicon-file"></span> <a href="#">final_assessment_task.zip</a></li>
-			</ul>
-		</li>
-		<li>
-			<h4><a href="#">Diploma of Community Services Work in Person Centredness</a> <small>(CHC506012-2)</small></h4>
-			<small class="text-muted">14 May 2011- 17 December 2012</small>
-			<ul class="list-unstyled resources-list">
-				<li><span class="glyphicon glyphicon-file"></span> <a href="#">assessment_two.pdf</a></li>
-				<li><span class="glyphicon glyphicon-file"></span> <a href="#">assessment_one.pdf</a> <span class="label label-primary">NEW</span></li>
-				<li><span class="glyphicon glyphicon-file"></span> <a href="#">enrolment_pre_reading.pdf</a></li>
-				<li><span class="glyphicon glyphicon-file"></span> <a href="#">enrolment_employer_details.pdf</a></li>
-			</ul>
-		</li>
+        </t:if>
+
+        </t:loop>
 	</ul>
 </html>
