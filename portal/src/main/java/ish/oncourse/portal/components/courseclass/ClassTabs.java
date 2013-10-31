@@ -3,6 +3,7 @@ package ish.oncourse.portal.components.courseclass;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -12,8 +13,7 @@ import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 public class ClassTabs {
 
-    @Inject
-    private IAuthenticationService authenticationService;
+
 
     @Inject
     private IBinaryDataService binaryDataService;
@@ -22,11 +22,7 @@ public class ClassTabs {
 	@Property
 	private CourseClass courseClass;
 
-	//@Parameter
-	//private String selected;
 
-	@Inject
-	private JavaScriptSupport javaScriptSupport;
 
 	@Inject
 	@Property
@@ -40,7 +36,22 @@ public class ClassTabs {
 	}
 
     public boolean isClassWithModules(){
-        return !courseClass.getCourse().getModules().isEmpty() && !authenticationService.getUser().getStudent().getEnrolments().isEmpty();
+
+       boolean result=false;
+
+             if(authService.getUser().getStudent()!=null){
+
+                for(Enrolment enrolment : authService.getUser().getStudent().getEnrolments()){
+
+                    if(enrolment.getCourseClass().getId().equals(courseClass.getId())){
+                        result=true;
+                        break;
+                    }
+
+                }
+             }
+
+        return (!courseClass.getCourse().getModules().isEmpty() || courseClass.getCourse().getQualification()!=null) &&  result;
     }
 
 
@@ -49,42 +60,7 @@ public class ClassTabs {
         return  !binaryDataService.getAttachedFiles(courseClass.getId(), CourseClass.class.getSimpleName(), false).isEmpty();
     }
 
-    public String getClassInfoPageName() {
-		return "class";
-	}
 
-	public String getClassDetailsPageName() {
-		return "classdetails";
-	}
 
-	public String getClassSurveyPageName()
-	{
-		return authService.isTutor() ? "tutor/surveys" : "student/surveys";
-	}
 
-	public boolean isShowTutorTabs() {
-		if(authService.isTutor()) {
-			Tutor tutor = authService.getUser().getTutor();
-			boolean isInCourseClassOrSessions = false;
-			for (TutorRole t: courseClass.getTutorRoles()) {
-				isInCourseClassOrSessions = (tutor.getId().equals(t.getTutor().getId()));
-				if(isInCourseClassOrSessions){
-					break;
-				}
-			}
-			if(!isInCourseClassOrSessions){
-				for (Session s: courseClass.getSessions()) {
-					for(SessionTutor t: s.getSessionTutors()) {
-						isInCourseClassOrSessions = (tutor.getId().equals(t.getTutor().getId()));
-						if(isInCourseClassOrSessions){
-							break;
-						}
-					}
-				}
-			}
-			
-			return isInCourseClassOrSessions;
-		}
-		return  false;
-	}
 }

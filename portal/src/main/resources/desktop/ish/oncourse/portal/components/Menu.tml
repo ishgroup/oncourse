@@ -28,19 +28,22 @@ xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 				<t:if test="${pastCourseClasses.isEmpty()}" negate="true">
 					<ul class="list-inline">
 						<li><a class="show-all-sessions" href="#"><span class="icon-arrow-down"></span>Show All</a></li>
-						<!--<li><a href="">Past Classes</a></li>-->
 					</ul>
 				</t:if>
 			</li>
 			<li class="active">
 				<a id="timetable" href="${request.contextPath}/timetable">Timetable</a>
 			</li>
-			<li>
-				<a id="resources" href="${request.contextPath}/resources">Resources</a>
-			</li>
-			<li>
-				<a id="results" href="${request.contextPath}/results">Results</a>
-			</li>
+            <t:if test="hasResources">
+                <li>
+                    <a id="resources" href="${request.contextPath}/resources">Resources</a>
+                </li>
+            </t:if>
+            <t:if test="hasResults">
+                <li>
+                    <a id="results" href="${request.contextPath}/results">Results</a>
+                </li>
+            </t:if>
 			<li>
 				<a id="profile" href="${request.contextPath}/profile">My Profile</a>
 			</li>

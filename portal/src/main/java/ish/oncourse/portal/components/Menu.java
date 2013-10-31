@@ -1,9 +1,12 @@
 package ish.oncourse.portal.components;
 
+import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.components.subscriptions.WaitingLists;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
+import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
@@ -19,6 +22,9 @@ public class Menu {
 
 	@Inject
 	private IAuthenticationService authenticationService;
+
+    @Inject
+    private IBinaryDataService binaryDataService;
 
 	@Inject
 	private IDiscussionService discussionService;
@@ -114,5 +120,41 @@ public class Menu {
 	public String getContextPath() {
 		return request.getContextPath();
 	}
+
+
+
+
+
+    public boolean isHasResources(){
+
+        boolean result=false;
+
+        for(CourseClass courseClass : courseClasses){
+             if(!binaryDataService.getAttachedFiles(courseClass.getId(), CourseClass.class.getSimpleName(), false).isEmpty()){
+                 result=true;
+                 break;
+             }
+        }
+        return  result;
+    }
+
+
+
+    public boolean isHasResults(){
+       boolean result=false;
+
+        if(authenticationService.getUser().getStudent()!=null){
+          for(Enrolment enrolment : authenticationService.getUser().getStudent().getEnrolments()){
+              Course course = enrolment.getCourseClass().getCourse();
+              if(!course.getModules().isEmpty() || course.getQualification()!=null){
+                  result=true;
+                  break;
+              }
+          }
+        }
+
+       return result;
+    }
+
 
 }
