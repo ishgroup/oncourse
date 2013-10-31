@@ -101,9 +101,25 @@ public class ClassResults {
         return null;
     }
 
-    public boolean isStudent(){
-        return !authenticationService.getUser().getStudent().getEnrolments().isEmpty();
+
+    public boolean isVisible(){
+
+        boolean result=false;
+
+        if(authenticationService.getUser().getStudent()!=null){
+            for(Enrolment enrolment : authenticationService.getUser().getStudent().getEnrolments()){
+                if(enrolment.getCourseClass().getId().equals(courseClass.getId())){
+                    result=true;
+                    break;
+                }
+            }
+        }
+
+        return (!courseClass.getCourse().getModules().isEmpty() || courseClass.getCourse().getQualification()!=null) &&  result;
     }
 
 
+    public boolean isHasModules(){
+        return !courseClass.getCourse().getModules().isEmpty();
+    }
 }

@@ -45,8 +45,8 @@ public class Resources {
          TimeZone timeZone = FormatUtils.getClientTimeZone(courseClass);
 
         return String.format("%s - %s",
-                FormatUtils.getDateFormat("dd MMM EEE", timeZone).format(courseClass.getStartDate()),
-                FormatUtils.getDateFormat("dd MMM EEE", timeZone).format(courseClass.getEndDate()));
+                FormatUtils.getDateFormat("dd MMMMMM yyyy", timeZone).format(courseClass.getStartDate()),
+                FormatUtils.getDateFormat("dd MMMMMM yyyy", timeZone).format(courseClass.getEndDate()));
     }
 
 

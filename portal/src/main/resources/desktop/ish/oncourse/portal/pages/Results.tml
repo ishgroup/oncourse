@@ -4,85 +4,16 @@
 		<h3><a href="#">Results</a></h3>
 	</div>
 	<ul class="list-unstyled result-content">
+        <t:loop source="courseClasses" value="courseClass">
+
+        <t:if test="${isVisible(courseClass)}">
 		<li>
-			<h4><a href="#">Cert IV Training and Assessment</a> <small>(TRAS-2)</small></h4>
-			<p><small class="text-muted">17 August 2013 - 24 October 2014</small></p>
-			<p>Assessments are made against units of competency from the Certificate IV in Training and Assessment <a href="#">TAA40104</a>.</p>
-			<ul class="list-unstyled result-list">
-				<li>
-					<span>Work effectively in vocational education and training (<a href="#">TAAENV401B</a>)</span>
-					<strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
-				</li>
-				<li>
-					<span>Foster and promote and inclusive learning culture (<a href="#">TAAENV402B</a>)</span>
-					<strong class="text-danger tooltip-info" title="" data-original-title="RPL not granted (52)">FAILED</strong>
-				</li>
-				<li>
-					<span>Ensure a healthy and safe learning environment (<a href="#">TAAENV402B</a>)</span>
-					<strong class="text-info tooltip-info" title="" data-original-title="Not set">NO RESULT</strong>
-				</li>
-				<li>
-					<span>Develop innovative ideas at work (<a href="#">TAAENV402B</a>)</span>
-					<strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
-				</li>
-			</ul>
+            <h4><a href="#">${courseClass.course.name} </a> <small> (${courseClass.uniqueIdentifier})</small></h4>
+            <small class="text-muted">${getDate(courseClass)}</small>
+			<span t:type="courseclass/classresults" courseClass="courseClass"/>
 		</li>
-		<li>
-			<h4><a href="#">MS Word - Word Processing Essentials</a> <small>(MSW-1)</small></h4>
-			<p><small class="text-muted">1 August 2012 - 24 August 2012</small></p>
-			<p>Assessments are made against units of competency from the Certificate IV in Training and Assessment <a href="#">ICA10105</a>.</p>
-			<ul class="list-unstyled result-list">
-				<li>
-					<span> Operate a word processing application (<a href="#">ICAU1129B</a>)</span>
-					<strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<h4><a href="#">Macro Photography</a> <small>(MCPH-1)</small></h4>
-			<p><small class="text-muted">1 August 2012 - 24 August 2012</small></p>
-			<p>This course is not linked to any nationally recognised training components.</p>
-			<ul class="list-unstyled result-list">
-				<li>
-					<span>Macro Photography</span>
-					<strong class="text-info tooltip-info" title="" data-original-title="Not set">NO RESULT</strong>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<h4><a href="#">Diploma of Community Services Work in Person Centredness</a> <small>(CHC506012-2)</small></h4>
-			<p><small class="text-muted">14 May 2011- 17 December 2012</small></p>
-			<p>Assessments are made against units of competency from the Diploma of Community Services Work <a href="#">CHC50612</a>.</p>
-			<ul class="list-unstyled result-list">
-				<li>
-					<span>Establish and develop community organisations (<a href="#">CHCCD606C</a>)</span>
-					<strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
-				</li>
-				<li>
-					<span>Support community participation and inclusion (<a href="#">CHCDIS322A</a>)</span>
-					<strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
-				</li>
-				<li>
-					<span>Support clients in decision making processes (<a href="#">CHCCSL507B</a>)</span>
-					<strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
-				</li>
-				<li>
-					<span>Develop, implement and promote effective workplace communication (<a href="#">CHCOM504B</a>)</span>
-					<strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
-				</li>
-				<li>
-					<span>Work intensively with clients (<a href="#">CHCCW503A</a>)</span>
-					<strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
-				</li>
-				<li>
-					<span>Work within organisation and government structures to enable community development outcomes (<a href="#">CHCCD516B</a>)</span>
-					<strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
-				</li>
-				<li>
-					<span>Conduct complex assessment and referral (<a href="#">CHCCS500B</a>)</span>
-					<strong class="text-success tooltip-info" title="" data-original-title="Competency achieved/passed (20)">PASS</strong>
-				</li>
-			</ul>
-		</li>
+         </t:if>
+
+        </t:loop>
 	</ul>
 </html>
