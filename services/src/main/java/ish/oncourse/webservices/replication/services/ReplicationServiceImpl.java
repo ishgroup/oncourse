@@ -204,7 +204,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 			// clean remove group if it's empty
 			for (GenericTransactionGroup g : new ArrayList<>(result.getGenericGroups())) {
-				if (g.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+				if (g.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
 					result.getGroups().remove(g);
 				}
 			}

@@ -84,8 +84,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
 		try {
 			// check if group from angel is empty
-			if (transaction.getAttendanceOrBinaryDataOrBinaryInfo() == null
-					|| transaction.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+			if (transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo() == null
+					|| transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
 				throw new Exception("Got an empty paymentIn transaction group from angel.");
 			}
 
@@ -276,8 +276,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	public GenericTransactionGroup processRefund(GenericTransactionGroup refundGroup) throws InternalReplicationFault {
 		try {
 			// check if paymentOut group is empty
-			if (refundGroup.getAttendanceOrBinaryDataOrBinaryInfo() == null
-					|| refundGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+			if (refundGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo() == null
+					|| refundGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
 				throw new Exception("Got an empty paymentOut transaction group from angel.");
 			}
 

@@ -102,7 +102,7 @@ public class ReplicationUtils {
 	}
 
 	private static GenericPaymentInStub getPaymentInStub(final GenericTransactionGroup group) {
-		for (GenericReplicationStub stub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
 				return (GenericPaymentInStub) stub;
 			}
@@ -120,7 +120,7 @@ public class ReplicationUtils {
 	}
 
 	public static GenericPaymentOutStub getPaymentOutStub(final GenericTransactionGroup group) {
-		for (GenericReplicationStub stub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentOutStub) {
 				return (GenericPaymentOutStub) stub;
 			}
@@ -156,7 +156,7 @@ public class ReplicationUtils {
 	}
 
 	public static GenericEnrolmentStub getEnrolmentStub(final GenericTransactionGroup group) {
-		for (GenericReplicationStub stub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericEnrolmentStub) {
 				return (GenericEnrolmentStub) stub;
 			}

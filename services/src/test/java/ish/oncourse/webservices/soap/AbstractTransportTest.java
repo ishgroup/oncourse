@@ -5,6 +5,7 @@ import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferenceService;
 import ish.oncourse.webservices.soap.v4.ReplicationPortType;
 import ish.oncourse.webservices.soap.v4.ReplicationService;
+import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
@@ -147,7 +148,7 @@ public abstract class AbstractTransportTest {
 		List<String> stubClassNames = AbstractTransportTest.getReplicationStubBeanNames();
 
 		ArrayList<ReplicationStub> stubs = createStubsBy(stubClassNames,PACKAGE_NAME_REPLICATION_STUBS, ReplicationStub.class);
-		transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo().addAll(stubs);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(stubs);
 		return transactionGroup;
 	}
 
@@ -166,8 +167,8 @@ public abstract class AbstractTransportTest {
 	}
 
 	public static void assertTransactionGroup(TransactionGroup transactionGroup) {
-		List<ReplicationStub> replicationStubs = transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo();
-		assertListStubs(replicationStubs, PACKAGE_NAME_REPLICATION_STUBS, ReplicationStub.class);
+		List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		assertListStubs(replicationStubs, PACKAGE_NAME_REPLICATION_STUBS, GenericReplicationStub.class);
 	}
 
 	public static <T> void  assertListStubs(List<T> stubs, String packageName, Class<T> parentStubClass) {

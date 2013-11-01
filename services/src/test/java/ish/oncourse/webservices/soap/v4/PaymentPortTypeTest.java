@@ -122,7 +122,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertNotNull("Check Response Group is not null", respGroup);
 		GenericEnrolmentStub respEnrolStub = null;
 		GenericPaymentInStub respPaymentInStub = null;
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				respEnrolStub = (GenericEnrolmentStub) stub;
 				assertEquals("Check enrolment status.", "IN_TRANSACTION", respEnrolStub.getStatus());
@@ -243,7 +243,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		final List<GenericEnrolmentStub> enrolStubs = new ArrayList<GenericEnrolmentStub>(2);
 		final List<GenericPaymentInStub> paymentStubs = new ArrayList<GenericPaymentInStub>(2);
 		final List<GenericInvoiceStub> invoiceStubs = new ArrayList<GenericInvoiceStub>();
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				GenericEnrolmentStub enrol = (GenericEnrolmentStub) stub;
 				assertEquals("Check enrolment status.", "FAILED", enrol.getStatus());
@@ -376,7 +376,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertNotNull("Check Response Group is not null", respGroup);
 		GenericEnrolmentStub respEnrolStub = null;
 		GenericPaymentInStub respPaymentInStub = null;
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				respEnrolStub = (GenericEnrolmentStub) stub;
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
@@ -567,7 +567,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertNotNull("Check Response Group is not null", respGroup);
 		GenericEnrolmentStub respEnrolStub = null;
 		GenericPaymentInStub respPaymentInStub = null;
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				respEnrolStub = (GenericEnrolmentStub) stub;
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
@@ -786,7 +786,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertNotNull("Check Response Group is not null", respGroup);
 		GenericEnrolmentStub respEnrolStub = null;
 		GenericPaymentInStub respPaymentInStub = null;
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				respEnrolStub = (GenericEnrolmentStub) stub;
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
@@ -994,7 +994,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		GenericEnrolmentStub respEnrolStub = null;
 		GenericPaymentInStub respPaymentInStub = null;
 
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				respEnrolStub = (GenericEnrolmentStub) stub;
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
@@ -1039,16 +1039,16 @@ public class PaymentPortTypeTest extends ServiceTest {
 		String sessionId = "AAVV#$%%%#$3333";
 		GenericTransactionGroup respGroup = port.getPaymentStatus(sessionId, version);
 		assertNotNull("Check transaction group is not null.", respGroup);
-		assertTrue("Check that group is empty.", respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+		assertTrue("Check that group is empty.", respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		//sessionId for payment in success status, we expect not empty group with paymentIn record inside.
 		sessionId = "jfjf790aaajjj9900";
 		respGroup = port.getPaymentStatus(sessionId, version);
 		assertNotNull("Check transaction group is not null.", respGroup);
-		assertTrue("Check that group isn't empty.", !respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+		assertTrue("Check that group isn't empty.", !respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		
 		GenericPaymentInStub respPaymentInStub = null;
 		GenericEnrolmentStub respEnrolmentStub = null;
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (PaymentIn.class.getSimpleName().equals(stub.getEntityIdentifier())) {
 				respPaymentInStub = (GenericPaymentInStub) stub;
 			}
@@ -1069,11 +1069,11 @@ public class PaymentPortTypeTest extends ServiceTest {
 		sessionId = "AAVV#$%%%#$3333";
 		respGroup = port.getPaymentStatus(sessionId, version);
 		assertNotNull("Check transaction group is not null.", respGroup);
-		assertTrue("Check that group is empty.", !respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+		assertTrue("Check that group is empty.", !respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		
 		respPaymentInStub = null;
 		respEnrolmentStub = null;
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (PaymentIn.class.getSimpleName().equals(stub.getEntityIdentifier())) {
 				respPaymentInStub = (GenericPaymentInStub) stub;
 			}
@@ -1175,7 +1175,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		GenericPaymentOutStub pResp = null;
 		Long willowId = null;
 
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("PaymentOut".equals(stub.getEntityIdentifier())) {
 				pResp = (GenericPaymentOutStub) stub;
 				willowId = stub.getWillowId();
@@ -1201,7 +1201,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		GenericPaymentOutStub pResp = null;
 		Long willowId = null;
 
-		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("PaymentOut".equals(stub.getEntityIdentifier())) {
 				pResp = (GenericPaymentOutStub) stub;
 				willowId = stub.getWillowId();

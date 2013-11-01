@@ -97,15 +97,15 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		this.transactionGroup = group;
 		this.result = new ArrayList<>();
 
-		for (GenericReplicationStub currentStub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub currentStub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub, false);
 			result.add(replRecord);
 		}
 
         try {
 
-			while (!group.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-				GenericReplicationStub currentStub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
+			while (!group.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+				GenericReplicationStub currentStub = group.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(0);
 				processStub(currentStub);
 			}
 
@@ -432,9 +432,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 		String angelIdentifier = EntityMapping.getAngelEntityIdentifer(entityName);
 
-		for (GenericReplicationStub s : new ArrayList<>(transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo())) {
+		for (GenericReplicationStub s : new ArrayList<>(transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo())) {
 			if (angelId.equals(s.getAngelId()) && s.getEntityIdentifier().equals(angelIdentifier)) {
-				transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo().remove(s);
+				transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(s);
 				return s;
 			}
 		}
