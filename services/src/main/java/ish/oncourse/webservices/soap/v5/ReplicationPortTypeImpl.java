@@ -20,7 +20,6 @@ import ish.oncourse.webservices.v5.stubs.replication.ReplicationResult;
 import ish.oncourse.webservices.v5.stubs.replication.UnreplicatedEntitiesStub;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -133,14 +132,14 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Override
 	public List<InstructionStub> getInstructions() {
-		return PortHelper.convertv5InstructionsList(instructionService.getInstructions(SupportedVersions.V5));
+		return PortHelper.convertV5InstructionsList(instructionService.getInstructions(SupportedVersions.V5));
 	}
 
 	@Override
 	@WebMethod(operationName = "getRecords")
 	public ReplicationRecords getRecords() throws ReplicationFault {
 		try {
-			return PortHelper.getv5ReplicationRecords(replicationService.getRecords(SupportedVersions.V5));
+			return PortHelper.getV5ReplicationRecords(replicationService.getRecords(SupportedVersions.V5));
 		} catch (InternalReplicationFault e) {
 			throw createReplicationFaultForException(e);
 		}
@@ -150,7 +149,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	@WebMethod(operationName = "sendRecords")
 	public ReplicationResult sendRecords(ReplicationRecords replicationRecords) throws ReplicationFault {
 		try {
-			return PortHelper.getv5ReplicationResult(replicationService.sendRecords(replicationRecords));
+			return PortHelper.getV5ReplicationResult(replicationService.sendRecords(replicationRecords));
 		} catch (InternalReplicationFault e) {
 			throw createReplicationFaultForException(e);
 		}
