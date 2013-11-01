@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -20,7 +19,7 @@ import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  * Stub compatibility check for V6 stubs.
@@ -29,7 +28,9 @@ import static junit.framework.Assert.*;
  * @author vdavidovich
  */
 public class StubsCompatibilityCheckTest extends ServiceTest {
-
+	private static final String REPLICATION_STUB_FIELD_NAME = "replicationStub";
+	private static final String GENERIC_ATTENDANCE_OR_BINARY_DATA_OR_BINARY_INFO_METHOD_NAME = "genericAttendanceOrBinaryDataOrBinaryInfo";
+	private static final String ATTENDANCE_OR_BINARY_DATA_OR_BINARY_INFO_METHOD_NAME = "attendanceOrBinaryDataOrBinaryInfo";
 	/**
 	 * Map with defined stub's fields paramethers.
 	 */
@@ -500,79 +501,17 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		stubsPropertyMap.put(getName(FaultReason.class), faultReasonParamethers);
 		final List<ReplicationStubFieldParameter> transactionGroupParamethers = new ArrayList<>();
 		transactionGroupParamethers.add(new ReplicationStubFieldParameter("transactionKeys", List.class));
-		final ReplicationStubFieldParameter attendanceOrBinaryDataOrBinaryInfo = new ReplicationStubFieldParameter(
-				"attendanceOrBinaryDataOrBinaryInfo", List.class, false);
+		final ReplicationStubFieldParameter replicationStub = new ReplicationStubFieldParameter(
+				REPLICATION_STUB_FIELD_NAME, List.class, false);
 		@SuppressWarnings("rawtypes")
-		final List<Class> attendanceOrBinaryDataOrBinaryInfoAvailableClasses = new ArrayList<>();
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CertificateStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SystemUserStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ProductStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(InvoiceLineDiscountStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SessionStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ContactRelationTypeStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(PaymentOutStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(BinaryDataStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountMembershipStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ContactStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(WaitingListStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TagRelationStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherProductStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CourseModuleStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SiteStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(MessagePersonStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(MessageTemplateStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(MembershipProductStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(AttendanceStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(BinaryInfoStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(BinaryInfoRelationStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(PaymentInLineStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountMembershipRelationTypeStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ConcessionTypeStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(InvoiceLineStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(MembershipStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TagRequirementStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TagStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(PaymentInStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ProductItemStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(InvoiceStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(StudentStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(EnrolmentStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(AclRoleStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(AclAccessKeyStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(MessageStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(QueuedStatisticStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(PreferenceStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DeletedStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(WaitingListSiteStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(OutcomeStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ContactRelationStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TutorStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountConcessionTypeStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(StudentConcessionStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CourseClassStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(RoomStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CertificateOutcomeStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CourseClassTutorStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CourseStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountCourseClassStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TutorAttendanceStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherProductCourseStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherPaymentInStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SurveyStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SessionModuleStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(EntityRelationStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CorporatePassStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CorporatePassCourseClassStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ArticleProductStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ArticleStub.class);
+		final List<Class> replicationStubAvailableClasses = new ArrayList<>();
+		replicationStubAvailableClasses.add(ReplicationStub.class);
 
-		attendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
-		transactionGroupParamethers.add(attendanceOrBinaryDataOrBinaryInfo);
+		replicationStub.getAvailableClasses().addAll(replicationStubAvailableClasses);
+		transactionGroupParamethers.add(replicationStub);
 		final ReplicationStubFieldParameter genericAttendanceOrBinaryDataOrBinaryInfo = new ReplicationStubFieldParameter(
-				"genericAttendanceOrBinaryDataOrBinaryInfo", "attendanceOrBinaryDataOrBinaryInfo", List.class, false, null);
-		genericAttendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
+				GENERIC_ATTENDANCE_OR_BINARY_DATA_OR_BINARY_INFO_METHOD_NAME, REPLICATION_STUB_FIELD_NAME, List.class, false, null);
+		genericAttendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(replicationStubAvailableClasses);
 		transactionGroupParamethers.add(genericAttendanceOrBinaryDataOrBinaryInfo);
 		stubsPropertyMap.put(getName(TransactionGroup.class), transactionGroupParamethers);
 	}
@@ -1002,7 +941,10 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		final PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(stub);
 		fillFieldDependency(paramethers, stub);
 		for (final PropertyDescriptor descriptor : descriptors) {
-			if ("class".equals(descriptor.getName())) {
+			//we should skipp class
+			// and attendanceOrBinaryDataOrBinaryInfo because in V6 this property replaced with replicationStub
+			// but method should exists to have backward compatibility with  V4 and V5
+			if ("class".equals(descriptor.getName()) || ATTENDANCE_OR_BINARY_DATA_OR_BINARY_INFO_METHOD_NAME.equals(descriptor.getName())) {
 				continue;
 			}
 			Field field = ReflectionUtils.findField(stub.getClass(), descriptor.getName());
@@ -1015,7 +957,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 					assertNotNull(String.format("No field could be loaded for descriptor with name %s for stub %s with alias %s", descriptor.getName(),
 							stub.getClass().getName(), paramether.getName()), field);
 				} else if (descriptor.getName().startsWith("generic")) {
-					paramether = getReplicationParametherForReplacement(paramethers, descriptor.getName().replaceFirst("generic", StringUtils.EMPTY));
+					paramether = getReplicationParametherForReplacement(paramethers, descriptor.getName()
+						.replaceFirst(GENERIC_ATTENDANCE_OR_BINARY_DATA_OR_BINARY_INFO_METHOD_NAME, REPLICATION_STUB_FIELD_NAME).replaceFirst("generic", StringUtils.EMPTY));
 					if (paramether != null) {
 						field = ReflectionUtils.findField(stub.getClass(), paramether.getReplacementName());
 						assertNotNull(String.format("No field could be loaded for generic descriptor with name %s for stub %s with alias %s",
@@ -1032,14 +975,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 					stub.getClass().getName()), field);
 			final XmlElement elementAnotation = field.getAnnotation(XmlElement.class);
 			final boolean requiredField = elementAnotation != null && elementAnotation.required();
-			final XmlElements availableElementsAnotation = field.getAnnotation(XmlElements.class);
-			@SuppressWarnings("rawtypes")
-			final List<Class> availableElements = new ArrayList<>();
-			if (availableElementsAnotation != null) {
-				for (final XmlElement element : availableElementsAnotation.value()) {
-					availableElements.add(element.type());
-				}
-			}
 			boolean founded = false;
 			for (final ReplicationStubFieldParameter paramether : paramethers) {
 				if (descriptor.getName().equals(useReplacement? paramether.getReplacementName() : paramether.getName())) {
@@ -1050,10 +985,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 					assertFalse(String.format("Not used alias defined for paramether with name %s and alias %s", paramether.getName(),
 							paramether.getReplacementName()), !useReplacement && !paramether.isEmptyReplacement());
 					paramether.setFound(founded);
-					for (@SuppressWarnings("rawtypes") final Class availableElement : availableElements) {
-						assertTrue(String.format("%s type should be  available for %s field but not defined", availableElement, paramether.getName()),
-								paramether.getAvailableClasses().contains(availableElement));
-					}
 					//we should check this descriptor
 					Method readMethod = descriptor.getReadMethod();
 					if (readMethod == null) {
