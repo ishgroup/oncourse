@@ -5,9 +5,7 @@ import ish.oncourse.model.College;
 public interface IAuthenticateService {
 
 	long authenticate(String webServicesSecurityCode, long lastCommKey) throws InternalAuthenticationException;
-	
-	void logout(long newCommKey);
-	
+
 	/**
 	 * Generates new communication key for college, for details refer
 	 * http://intranet.ish.com.au/drupal/ReplicationWorkflow#Use of the
@@ -49,7 +47,7 @@ public interface IAuthenticateService {
 		}
 
 		/**
-		 * @param errorCodeIndex the errorCodeIndex to set
+		 * @param errorCode the errorCodeIndex to set
 		 */
 		public void setErrorCode(InternalErrorCode errorCode) {
 			this.errorCode = errorCode;

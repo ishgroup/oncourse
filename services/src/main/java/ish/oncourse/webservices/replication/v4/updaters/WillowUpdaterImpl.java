@@ -9,6 +9,7 @@ import ish.oncourse.webservices.exception.UpdaterNotFoundException;
 import ish.oncourse.webservices.replication.services.PortHelper;
 import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.replication.v5.updaters.V5UpdatersMap;
+import ish.oncourse.webservices.replication.v6.updaters.V6UpdatersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +22,9 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 	/**
 	 * Willow updaters mappings
 	 */
-	private Map<String, IWillowUpdater> v4updaterMap = new HashMap<String, IWillowUpdater>();
-	private Map<String, IWillowUpdater> v5updaterMap = new HashMap<String, IWillowUpdater>();
+	private Map<String, IWillowUpdater> v4updaterMap = new HashMap<>();
+	private Map<String, IWillowUpdater> v5updaterMap = new HashMap<>();
+	private Map<String, IWillowUpdater> v6updaterMap = new HashMap<>();
 	
 	public WillowUpdaterImpl(@Inject ITextileConverter textileConverter) {
 		final V4UpdatersMap v4map = new V4UpdatersMap();
@@ -31,6 +33,9 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		final V5UpdatersMap v5map = new V5UpdatersMap();
 		v5map.initMap(textileConverter);
 		v5updaterMap = v5map.getUpdaterMap();
+		final V6UpdatersMap v6map = new V6UpdatersMap();
+		v6map.initMap(textileConverter);
+		v6updaterMap = v6map.getUpdaterMap();
 	}
 
 	@Override
@@ -40,7 +45,20 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 			throw new IllegalArgumentException("Unsupported stub version used.");
 		}
 		String key = EntityMapping.getWillowEntityIdentifer(stub.getEntityIdentifier());
-		final IWillowUpdater updater = SupportedVersions.V4.equals(version) ? v4updaterMap.get(key) : v5updaterMap.get(key) ;
+		final IWillowUpdater updater;
+		switch (version) {
+			case V4:
+				updater = v4updaterMap.get(key);
+				break;
+			case V5:
+				updater = v5updaterMap.get(key);
+				break;
+			case V6:
+				updater = v6updaterMap.get(key);
+				break;
+			default:
+				updater = null;
+		}
 		if (updater == null) {
 			throw new UpdaterNotFoundException(String.format("Updater not found for entity with key:%s", key), key);
 		}

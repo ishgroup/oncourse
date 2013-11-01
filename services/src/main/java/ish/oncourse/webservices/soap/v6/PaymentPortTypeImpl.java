@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap.v5;
+package ish.oncourse.webservices.soap.v6;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -10,21 +10,21 @@ import ish.oncourse.webservices.replication.services.InternalPaymentService;
 import ish.oncourse.webservices.replication.services.PortHelper;
 import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
-import ish.oncourse.webservices.v5.stubs.replication.TransactionGroup;
+import ish.oncourse.webservices.v6.stubs.replication.TransactionGroup;
 
-@WebService(endpointInterface = "ish.oncourse.webservices.soap.v5.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType", 
-	targetNamespace = "http://repl.v5.soap.webservices.oncourse.ish/")
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.v6.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType",
+		targetNamespace = "http://repl.v6.soap.webservices.oncourse.ish/")
 public class PaymentPortTypeImpl implements PaymentPortType {
 
 	@Inject
 	@Autowired
 	private InternalPaymentService paymentPort;
-	
+
 	@WebMethod(action = "getPaymentStatus")
 	@Override
 	public TransactionGroup getPaymentStatus(String sessionId) throws ReplicationFault {
 		try {
-			return PortHelper.getV5TransactionGroup(paymentPort.getPaymentStatus(sessionId, SupportedVersions.V5));
+			return PortHelper.getV6TransactionGroup(paymentPort.getPaymentStatus(sessionId, SupportedVersions.V6));
 		} catch (InternalReplicationFault e) {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}
@@ -34,7 +34,7 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 	@Override
 	public TransactionGroup processPayment(TransactionGroup transaction) throws ReplicationFault {
 		try {
-			return PortHelper.getV5TransactionGroup(paymentPort.processPayment(transaction));
+			return PortHelper.getV6TransactionGroup(paymentPort.processPayment(transaction));
 		} catch (InternalReplicationFault e) {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}
@@ -44,7 +44,7 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 	@Override
 	public TransactionGroup processRefund(TransactionGroup paymentOut) throws ReplicationFault {
 		try {
-			return PortHelper.getV5TransactionGroup(paymentPort.processRefund(paymentOut));
+			return PortHelper.getV6TransactionGroup(paymentPort.processRefund(paymentOut));
 		} catch (InternalReplicationFault e) {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}

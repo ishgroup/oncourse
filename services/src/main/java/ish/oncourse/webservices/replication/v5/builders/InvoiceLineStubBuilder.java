@@ -14,7 +14,6 @@ public class InvoiceLineStubBuilder extends AbstractWillowStubBuilder<InvoiceLin
 		stub.setCreated(entity.getCreated());
 		stub.setDescription(entity.getDescription());
 		stub.setDiscountEachExTax(entity.getDiscountEachExTax().toBigDecimal());
-		
 		Enrolment enrolment = entity.getEnrolment();
 		if (enrolment != null){
 			stub.setEnrolmentId(enrolment.getId());
@@ -26,12 +25,6 @@ public class InvoiceLineStubBuilder extends AbstractWillowStubBuilder<InvoiceLin
 		stub.setTaxEach(entity.getTaxEach().toBigDecimal());
 		stub.setTitle(entity.getTitle());
 		stub.setUnit(entity.getUnit());
-
-		// ugly hack to handle InvoiceLine.sortOrder logic without migration to new stub version
-		if (CommonUtils.compare(CommonUtils.getCurrentCollegeAngelVersion(entity), CommonUtils.VERSION_5_0) >= 0) {
-			stub.setSortOrder(entity.getSortOrder());
-		}
-
 		return stub;
 	}
 }

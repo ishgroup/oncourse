@@ -8,18 +8,14 @@ import ish.oncourse.webservices.replication.services.PortHelper;
 import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 
-public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends GenericReplicationStub> implements
-		IWillowStubBuilder {
-
+public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends GenericReplicationStub> implements IWillowStubBuilder {
 	protected static final Logger logger = Logger.getLogger(AbstractWillowStubBuilder.class);
 
 	/**
 	 * @see IWillowStubBuilder#convert(QueuedRecord)
 	 */
 	public GenericReplicationStub convert(final QueuedRecord queuedRecord, final SupportedVersions version) {
-
-		GenericReplicationStub soapStub = null;
-
+		GenericReplicationStub soapStub;
 		switch (queuedRecord.getAction()) {
 		case CREATE:
 		case UPDATE:
@@ -59,12 +55,10 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 	public GenericReplicationStub convert(final Queueable entity, final SupportedVersions version) {
 		@SuppressWarnings("unchecked")
 		V soapStub = createFullStub((T) entity);
-
 		soapStub.setWillowId(entity.getId());
 		soapStub.setAngelId(entity.getAngelId());
 		soapStub.setEntityIdentifier(entity.getObjectId().getEntityName());
-		PortHelper.updateCreated(soapStub, entity.getCreated());
-
+		soapStub.setCreated(entity.getCreated());
 		return soapStub;
 	}
 

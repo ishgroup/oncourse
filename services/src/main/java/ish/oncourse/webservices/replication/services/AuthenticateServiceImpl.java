@@ -98,8 +98,7 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 					LOGGER.warn(String.format("Invalid communication key:%s, for college:%s, expected:%s.", lastCommKey, college.getId(),
 							currentKey), ex);
 					putCollegeInHaltState(college);
-					// TODO: !!!!! Here should be exception, since we're in HALT
-					// state !!!!!!
+					// TODO: !!!!! Here should be exception, since we're in HALT state !!!!!!
 					return generateNewKey(college);// throw ex;
 				}
 			}
@@ -112,11 +111,6 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 				throw new InternalAuthenticationException(message);
 			}
 		}
-	}
-
-	@Override
-	@Deprecated //todo the method should be removed after all college will go to V4 version.
-	public void logout(long newCommKey) {
 	}
 
 	@Override

@@ -33,7 +33,7 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 	@WebMethod(operationName = "processRefund")
 	public TransactionGroup processRefund(TransactionGroup paymentOut) throws ReplicationFault {
 		try {
-			return PortHelper.getv4TransactionGroup(paymentPort.processRefund(paymentOut));
+			return PortHelper.getV4TransactionGroup(paymentPort.processRefund(paymentOut));
 		} catch (InternalReplicationFault e) {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}
@@ -43,7 +43,7 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 	@WebMethod(operationName = "processPayment")
 	public TransactionGroup processPayment(TransactionGroup transaction) throws ReplicationFault {
 		try {
-			return PortHelper.getv4TransactionGroup(paymentPort.processPayment(transaction));
+			return PortHelper.getV4TransactionGroup(paymentPort.processPayment(transaction));
 		} catch (InternalReplicationFault e) {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}
@@ -53,7 +53,7 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 	@WebMethod(action = "getPaymentStatus")
 	public TransactionGroup getPaymentStatus(String sessionId) throws ReplicationFault {
 		try {
-			return PortHelper.getv4TransactionGroup(paymentPort.getPaymentStatus(sessionId, SupportedVersions.V4));
+			return PortHelper.getV4TransactionGroup(paymentPort.getPaymentStatus(sessionId, SupportedVersions.V4));
 		} catch (InternalReplicationFault e) {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}

@@ -79,10 +79,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 * Constructor
 	 */
 	@Inject
-	public TransactionGroupProcessorImpl(ICayenneService cayenneService,
-                                         IWebSiteService webSiteService,
-                                         IWillowUpdater willowUpdater,
-                                         IFileStorageAssetService fileStorageAssetService) {
+	public TransactionGroupProcessorImpl(ICayenneService cayenneService, IWebSiteService webSiteService,
+		IWillowUpdater willowUpdater, IFileStorageAssetService fileStorageAssetService) {
 		super();
 		this.webSiteService = webSiteService;
 		this.willowUpdater = willowUpdater;

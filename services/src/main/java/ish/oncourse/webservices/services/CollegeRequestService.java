@@ -14,7 +14,6 @@ public class CollegeRequestService implements ICollegeRequestService {
 
 	@Override
 	public College getRequestingCollege() {
-		College college = (College) request.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE);
-		return college;
+		return (College) request.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE);
 	}
 }

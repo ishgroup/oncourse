@@ -3,7 +3,6 @@ package ish.oncourse.webservices.replication.v5.updaters;
 import ish.math.Money;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.util.CommonUtils;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub;
@@ -22,11 +21,5 @@ public class InvoiceLineUpdater extends AbstractWillowUpdater<InvoiceLineStub, I
 		entity.setTaxEach(Money.valueOf(stub.getTaxEach()));
 		entity.setTitle(stub.getTitle());
 		entity.setUnit(stub.getUnit());
-		entity.setSortOrder(stub.getSortOrder());
-
-		// ugly hack to handle InvoiceLine.sortOrder logic without migration to new stubs version
-		if (CommonUtils.compare(getCurrentCollegeAngelVersion(entity), CommonUtils.VERSION_5_0) >= 0) {
-			entity.setSortOrder(stub.getSortOrder());
-		}
 	}
 }
