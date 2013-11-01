@@ -1,0 +1,86 @@
+<html t:type="pagestructure" title="literal:Invoice"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:invoice">
+
+    <div class="page-header clearfix">
+        <h3><a href="#">Tax invoice</a></h3>
+    </div>
+    <table width="100%" class="address-table">
+        <tbody><tr>
+            <td width="50%"></td>
+            <td width="50%" class="text-right" valign="top">
+                ${controller.avetmissCollegeName}<br/>
+                ${controller.avetmissAddress1}  ${controller.avetmissAddress2}<br/>
+                ${controller.avetmissSuburb} ${controller.avetmissStateName} ${controller.avetmissPostcode}<br/>
+                ABN: ${controller.collegeABN}<br/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        </tbody></table>
+    <br/>
+    <table width="100%" class="address-table">
+        <tbody><tr>
+            <td width="50%">${invoice.contact.fullName}<br/>
+                ${invoice.contact.street}<br/>
+                ${invoice.contact.suburb}, ${invoice.contact.state}, ${invoice.contact.postcode} <br/>
+                ${phoneNumber}
+            </td>
+            <td width="50%" class="text-right" valign="top">
+                ${date} <br/>
+                Invoice ${invoice.invoiceNumber} <br/>
+
+            </td>
+        </tr>
+        </tbody></table>
+    <br/>
+    <table class="table">
+        <thead>
+        <tr>
+            <th width="40%">Title</th>
+            <th class="text-right">Price each</th>
+            <th class="text-right">Discount</th>
+            <th class="text-right">Tax</th>
+            <th class="text-right">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <t:loop source="invoiceLines" value="invoiceLine">
+        <tr>
+            <td>${invoiceLine.title}</td>
+            <td class="text-right">${invoiceLine.priceTotalExTax}</td>
+            <td class="text-right">${invoiceLine.discountTotalExTax}</td>
+            <td class="text-right">${invoiceLine.totalTax}</td>
+            <td class="text-right">${invoiceLine.priceTotalIncTax}</td>
+        </tr>
+        </t:loop>
+        </tbody>
+    <thead>
+    <tr>
+        <th colspan="3" width="40%">Total</th>
+        <th class="text-right">${invoice.totalGst}</th>
+        <th class="text-right">${totalAmount}</th>
+    </tr>
+    </thead>
+
+        <tbody><tr>
+            <td colspan="2"></td>
+            <td colspan="2">Less amount paid</td>
+            <td class="text-right">${paidAmount}</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2">Total owing</td>
+            <td class="text-right">${invoice.amountOwing}</td>
+        </tr>
+
+        <tr>
+            <td class="zero-padding" colspan="5"></td>
+        </tr>
+
+        </tbody></table>
+
+</html>

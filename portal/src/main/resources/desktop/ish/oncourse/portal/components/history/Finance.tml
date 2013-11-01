@@ -1,0 +1,52 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:loop source="items" value="item">
+    <t:if test="${isInvoice(item)}">
+        <t:delegate to="block:invoice"/>
+    </t:if>
+
+    <t:unless test="${isInvoice(item)}">
+        <t:delegate to="block:payment"/>
+    </t:unless>
+</t:loop>
+
+<t:block t:id="invoice">
+<div class="row">
+    <div class="col-lg-2 col-sm-3 col-xs-3">
+        <p>
+            <t:pagelink page="invoicedetails" context="${getId(item)}">${getDate(item)}</t:pagelink>
+        </p>
+    </div>
+    <div class="col-lg-2 col-sm-3 col-xs-3">
+        <p>
+            <t:pagelink page="invoicedetails" context="${getId(item)}">Invoice ${getInvoiceNumber(item)}</t:pagelink>
+        </p>
+    </div>
+    <div class="col-lg-2 col-sm-3 col-xs-3 text-right">
+        <p>
+            <t:pagelink page="invoicedetails" context="${getId(item)}">${getAmount(item)}</t:pagelink>
+        </p>
+    </div>
+</div>
+</t:block>
+
+<t:block t:id="payment">
+<div class="row">
+    <div class="col-lg-2 col-sm-3 col-xs-3">
+        <p>
+            <t:pagelink page="invoicedetails" context="${getId(item)}">${getDate(item)}</t:pagelink>
+        </p>
+    </div>
+    <div class="col-lg-2 col-sm-3 col-xs-3">
+        <p>
+            <t:pagelink page="invoicedetails" context="${getId(item)}">Payment(${getPaymentType(item)})</t:pagelink>
+        </p>
+    </div>
+    <div class="col-lg-2 col-sm-3 col-xs-3 text-right">
+        <p>
+            <t:pagelink page="invoicedetails" context="${getId(item)}">${getAmount(item)}</t:pagelink>
+        </p>
+    </div>
+</div>
+
+</t:block>
+</t:container>
