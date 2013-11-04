@@ -937,6 +937,7 @@
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="enrolmentsCount" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="invoiceLineId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="paymentInId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true"/>
@@ -2506,6 +2507,9 @@
 	<db-relationship name="productItem" source="InvoiceLine" target="ProductItem" toMany="true">
 		<db-attribute-pair source="id" target="invoiceLineId"/>
 	</db-relationship>
+	<db-relationship name="voucherPaymentIn" source="InvoiceLine" target="VoucherPaymentIn" toMany="true">
+		<db-attribute-pair source="id" target="invoiceLineId"/>
+	</db-relationship>
 	<db-relationship name="college" source="InvoiceLine_Discount" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -2856,6 +2860,9 @@
 	</db-relationship>
 	<db-relationship name="college" source="VoucherPaymentIn" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="invoiceLine" source="VoucherPaymentIn" target="InvoiceLine" toMany="false">
+		<db-attribute-pair source="invoiceLineId" target="id"/>
 	</db-relationship>
 	<db-relationship name="payment" source="VoucherPaymentIn" target="PaymentIn" toMany="false">
 		<db-attribute-pair source="paymentInId" target="id"/>
@@ -3281,6 +3288,7 @@
 	<obj-relationship name="payments" source="Voucher" target="PaymentIn" deleteRule="Nullify" db-relationship-path="voucherPaymentIn.payment"/>
 	<obj-relationship name="voucherPaymentIns" source="Voucher" target="VoucherPaymentIn" deleteRule="Deny" db-relationship-path="voucherPaymentIn"/>
 	<obj-relationship name="college" source="VoucherPaymentIn" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="invoiceLine" source="VoucherPaymentIn" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="payment" source="VoucherPaymentIn" target="PaymentIn" deleteRule="Nullify" db-relationship-path="payment"/>
 	<obj-relationship name="voucher" source="VoucherPaymentIn" target="Voucher" deleteRule="Nullify" db-relationship-path="voucher"/>
 	<obj-relationship name="redemptionCourses" source="VoucherProduct" target="Course" deleteRule="Deny" db-relationship-path="voucherProductCourses.course"/>

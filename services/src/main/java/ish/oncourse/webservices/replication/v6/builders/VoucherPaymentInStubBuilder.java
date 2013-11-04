@@ -15,7 +15,7 @@ public class VoucherPaymentInStubBuilder extends AbstractWillowStubBuilder<Vouch
 		stub.setPaymentInId(entity.getPayment().getId());
 		stub.setVoucherId(entity.getVoucher().getId());
 		stub.setStatus(entity.getStatus().getDatabaseValue());
-		//stub.setInvoiceLineId(entity.get);//TODO: set invoiceline id
+		stub.setInvoiceLineId(entity.getInvoiceLine().getId());
 		return stub;
 	}
 

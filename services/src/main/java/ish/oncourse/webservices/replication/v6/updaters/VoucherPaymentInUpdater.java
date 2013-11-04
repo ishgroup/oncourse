@@ -25,9 +25,7 @@ public class VoucherPaymentInUpdater extends AbstractWillowUpdater<VoucherPaymen
 			entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), VoucherPaymentStatus.class));
 		}
 		entity.setVoucher(callback.updateRelationShip(stub.getVoucherId(), Voucher.class));
-		//TODO: set Invoiceline
-		//entity.setinvoiceline
-		//callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class);
+		entity.setInvoiceLine(callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class));
 	}
 
 }

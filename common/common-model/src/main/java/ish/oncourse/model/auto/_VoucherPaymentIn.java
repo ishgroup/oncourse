@@ -6,6 +6,7 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.common.types.VoucherPaymentStatus;
 import ish.oncourse.model.College;
+import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Voucher;
 
@@ -23,70 +24,80 @@ public abstract class _VoucherPaymentIn extends CayenneDataObject {
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String STATUS_PROPERTY = "status";
     public static final String COLLEGE_PROPERTY = "college";
+    public static final String INVOICE_LINE_PROPERTY = "invoiceLine";
     public static final String PAYMENT_PROPERTY = "payment";
     public static final String VOUCHER_PROPERTY = "voucher";
 
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty(ANGEL_ID_PROPERTY, angelId);
+        writeProperty("angelId", angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty(ANGEL_ID_PROPERTY);
+        return (Long)readProperty("angelId");
     }
 
     public void setCreated(Date created) {
-        writeProperty(CREATED_PROPERTY, created);
+        writeProperty("created", created);
     }
     public Date getCreated() {
-        return (Date)readProperty(CREATED_PROPERTY);
+        return (Date)readProperty("created");
     }
 
     public void setEnrolmentsCount(Integer enrolmentsCount) {
-        writeProperty(ENROLMENTS_COUNT_PROPERTY, enrolmentsCount);
+        writeProperty("enrolmentsCount", enrolmentsCount);
     }
     public Integer getEnrolmentsCount() {
-        return (Integer)readProperty(ENROLMENTS_COUNT_PROPERTY);
+        return (Integer)readProperty("enrolmentsCount");
     }
 
     public void setModified(Date modified) {
-        writeProperty(MODIFIED_PROPERTY, modified);
+        writeProperty("modified", modified);
     }
     public Date getModified() {
-        return (Date)readProperty(MODIFIED_PROPERTY);
+        return (Date)readProperty("modified");
     }
 
     public void setStatus(VoucherPaymentStatus status) {
-        writeProperty(STATUS_PROPERTY, status);
+        writeProperty("status", status);
     }
     public VoucherPaymentStatus getStatus() {
-        return (VoucherPaymentStatus)readProperty(STATUS_PROPERTY);
+        return (VoucherPaymentStatus)readProperty("status");
     }
 
     public void setCollege(College college) {
-        setToOneTarget(COLLEGE_PROPERTY, college, true);
+        setToOneTarget("college", college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty(COLLEGE_PROPERTY);
+        return (College)readProperty("college");
+    }
+
+
+    public void setInvoiceLine(InvoiceLine invoiceLine) {
+        setToOneTarget("invoiceLine", invoiceLine, true);
+    }
+
+    public InvoiceLine getInvoiceLine() {
+        return (InvoiceLine)readProperty("invoiceLine");
     }
 
 
     public void setPayment(PaymentIn payment) {
-        setToOneTarget(PAYMENT_PROPERTY, payment, true);
+        setToOneTarget("payment", payment, true);
     }
 
     public PaymentIn getPayment() {
-        return (PaymentIn)readProperty(PAYMENT_PROPERTY);
+        return (PaymentIn)readProperty("payment");
     }
 
 
     public void setVoucher(Voucher voucher) {
-        setToOneTarget(VOUCHER_PROPERTY, voucher, true);
+        setToOneTarget("voucher", voucher, true);
     }
 
     public Voucher getVoucher() {
-        return (Voucher)readProperty(VOUCHER_PROPERTY);
+        return (Voucher)readProperty("voucher");
     }
 
 

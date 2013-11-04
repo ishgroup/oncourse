@@ -1699,4 +1699,18 @@
 		<addUniqueConstraint tableName="BinaryInfo" columnNames="fileUUID,collegeId" constraintName="BinaryInfo_FileUUID_unique"/>
 	</changeSet>
 
+    <changeSet id="115" author="viacheslav" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="VoucherPaymentIn" columnName="invoiceLineId"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="VoucherPaymentIn">
+            <column name="invoiceLineId" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="VoucherPaymentIn" baseColumnNames="invoiceLineId"
+            constraintName="fk_VoucherPaymentIn_InvoiceLine" referencedTableName="InvoiceLine" referencedColumnNames="id"/>
+
+    </changeSet>
+
 </databaseChangeLog>
