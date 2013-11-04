@@ -16,38 +16,7 @@
 
 
 		<div class="tab-pane" id="enrolments">
-			<ul class="list-unstyled classes-content">
-				<li>
-					<p class="arrow-content">
-						<strong><a href="confirm-classes-detail.html">Cert IV Training and Assessment</a></strong> <!--<span class="label label-primary">Approval required</span> --><small class="text-muted">(TRAS-2)</small>
-						<label>24 August 9am</label>
-					</p>
-				</li>
-				<li>
-					<p class="arrow-content">
-						<strong><a href="confirm-classes-detail.html">Advanced Driving</a></strong> <small class="text-muted">(DRV-9)</small>
-						<label>25 August 9am</label>
-					</p>
-				</li>
-				<li>
-					<p class="arrow-content">
-						<strong><a href="confirm-classes-detail.html">Cert IV Training and Assessment</a></strong> <small class="text-muted">(TRAS-3)</small>
-						<label>26 August 9am</label>
-					</p>
-				</li>
-				<li style="display: none;">
-					<p>
-						<strong><a href="confirm-classes-detail.html">Cert III Training</a></strong> <small class="text-muted">(TRAS-4)</small>
-						<label>26 August 9am</label>
-					</p>
-				</li>
-				<li style="display: none;">
-					<p>
-						<strong><a href="confirm-classes-detail.html">Cert V Training and Assessment</a></strong> <small class="text-muted">(TRAS-5)</small>
-						<label>26 August 9am</label>
-					</p>
-				</li>
-			</ul>
+            <span t:type="history/enrolments"/>
 		</div>
 	</div>
 

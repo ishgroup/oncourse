@@ -1,0 +1,49 @@
+<html t:type="pagestructure" title="literal:Payment"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:payment">
+
+<div class="page-header clearfix">
+    <h3><a href="#">Payment details</a></h3>
+</div>
+
+<table width="100%" class="address-table">
+    <tbody><tr>
+        <td width="50%">${payment.contact.fullName}<br/>
+            ${payment.contact.street}<br/>
+            ${payment.contact.suburb}, ${payment.contact.state}, ${payment.contact.postcode} <br/>
+            ${phoneNumber}
+        </td>
+        <td width="50%" class="text-right" valign="top">
+            ${date} <br/>
+            Payment (${payment.type}) <br/>
+         </td>
+    </tr>
+    </tbody></table>
+<br/>
+
+<table width="100%" class="address-table">
+    <tbody><tr>
+        <td width="50%">
+            Type: ${payment.type}<br/>
+            Status: ${payment.status.displayName}<br/>
+            Amount: ${payment.amount} <br/>
+            Sourse: ${payment.source.displayName}<br/>
+            CC Transaction: ${payment.clientReference}<br/>
+            Date created: ${payment.created}<br/>
+            <t:if test="${payment.dateBanked}">
+                Date banked: ${payment.dateBanked}<br/>
+            </t:if>
+            <br/>
+            <t:if test="${payment.statusNotes}">
+                Status notes: ${payment.statusNotes}
+            </t:if>
+
+
+        </td>
+    </tr>
+    </tbody></table>
+<br/>
+
+
+
+
+</html>
