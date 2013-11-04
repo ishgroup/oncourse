@@ -16,6 +16,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.sql.DataSource;
@@ -34,13 +35,10 @@ public class AllStubBuildersTest extends ServiceTest {
     }
 
     private void initOncourseDataSet() throws Exception {
-
-
         InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/builders/oncourseDataSet.xml");
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
         builder.setColumnSensing(true);
         FlatXmlDataSet dataSet = builder.build(st);
-
 
         DataSource onDataSource = getDataSource("jdbc/oncourse");
         DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
@@ -50,36 +48,187 @@ public class AllStubBuildersTest extends ServiceTest {
     }
 
     private <E extends Queueable, S extends GenericReplicationStub> void testStubBuilder(Class<E> entityClass,
-                                                                                  AbstractWillowStubBuilder<E, S> stubBuilder, Long entityId,
-                                                                                  String... excludeProperty
-    ) {
+		AbstractWillowStubBuilder<E, S> stubBuilder, Long entityId, String... excludeProperty) {
         ICayenneService cayenneService = getService(ICayenneService.class);
         E entity = Cayenne.objectForPK(cayenneService.sharedContext(), entityClass, entityId);
         StubBuilderTestHelper<E, S> stubBuilderTestHelper = new StubBuilderTestHelper<>(entity,excludeProperty);
         stubBuilderTestHelper.assertStubBuilder(stubBuilder);
     }
 
-    private <E extends Queueable, S extends GenericReplicationStub> void testStubBuilder(Class<E> entityClass, 
-                                                                                  AbstractWillowStubBuilder<E, S> stubBuilder, 
-                                                                                  String... excludeProperty
-    ) {
+    private <E extends Queueable, S extends GenericReplicationStub> void testStubBuilder(Class<E> entityClass,
+		AbstractWillowStubBuilder<E, S> stubBuilder, String... excludeProperty) {
         this.testStubBuilder(entityClass,stubBuilder, 1l, excludeProperty);
     }
-    
-    //@Test
-    public void testV5VoucherStubBuilder() {
-        this.testStubBuilder(Voucher.class, new ish.oncourse.webservices.replication.v5.builders.VoucherStubBuilder());
-    }
-    
-    //@Test
-    public void testV5VoucherPaymentInStubBuilder() {
-    	this.testStubBuilder(VoucherPaymentIn.class, new ish.oncourse.webservices.replication.v5.builders.VoucherPaymentInStubBuilder());
-    }
-    
-    //@Test
-    public void testV5VoucherProductCourseStubBuilder() {
-        this.testStubBuilder(VoucherProductCourse.class, new ish.oncourse.webservices.replication.v5.builders.VoucherProductCourseStubBuilder());
-    }
+
+	@Ignore
+	@Test
+	public void testV6VoucherStubBuilder() {//TODO: enable test when structure will be completed
+		this.testStubBuilder(Voucher.class, new ish.oncourse.webservices.replication.v5.builders.VoucherStubBuilder());
+	}
+
+	@Ignore
+	@Test
+	public void testV6VoucherPaymentInStubBuilder() {//TODO: enable test when structure will be completed
+		this.testStubBuilder(VoucherPaymentIn.class, new ish.oncourse.webservices.replication.v5.builders.VoucherPaymentInStubBuilder());
+	}
+
+	@Ignore
+	@Test
+	public void testV6VoucherProductCourseStubBuilder() {//TODO: enable test when structure will be completed
+		this.testStubBuilder(VoucherProductCourse.class, new ish.oncourse.webservices.replication.v5.builders.VoucherProductCourseStubBuilder());
+	}
+
+	@Test
+	public void testV6AttendanceStubBuilder() {
+		this.testStubBuilder(Attendance.class, new ish.oncourse.webservices.replication.v5.builders.AttendanceStubBuilder());
+	}
+
+
+	@Test
+	public void testV6BinaryInfoStubBuilder() {
+		this.testStubBuilder(BinaryInfo.class, new BinaryInfoStubBuilder(),"webVisible");
+	}
+
+	@Test
+	public void testV6ConcessionTypeStubBuilder() {
+		this.testStubBuilder(ConcessionType.class, new ish.oncourse.webservices.replication.v5.builders.ConcessionTypeStubBuilder());
+	}
+
+	@Test
+	public void testV6ContactStubBuilder() {
+		this.testStubBuilder(Contact.class, new ish.oncourse.webservices.replication.v5.builders.ContactStubBuilder());
+	}
+
+	@Test
+	public void testV6CourseClassStubBuilder() {
+		this.testStubBuilder(CourseClass.class, new ish.oncourse.webservices.replication.v5.builders.CourseClassStubBuilder(),
+				"materialsTextile","modified","sessionDetailTextile", "startDate","startingMinutePerSession", "timeZone");
+	}
+
+	@Test
+	public void testV6CourseStubBuilder() {
+		this.testStubBuilder(Course.class, new ish.oncourse.webservices.replication.v5.builders.CourseStubBuilder());
+	}
+
+	@Test
+	public void testV6DiscountStubBuilder() {
+		this.testStubBuilder(Discount.class, new ish.oncourse.webservices.replication.v5.builders.DiscountStubBuilder(), "codeRequired");
+	}
+
+	@Test
+	public void testV6EnrolmentStubBuilder() {
+		//invoiceLineId added to exclude property because relationship updated to many
+		this.testStubBuilder(Enrolment.class, new ish.oncourse.webservices.replication.v5.builders.EnrolmentStubBuilder(), "invoiceLineId");
+	}
+
+
+	@Test
+	public void testV6InvoiceLineDiscountStubBuilder() {
+		this.testStubBuilder(InvoiceLineDiscount.class, new ish.oncourse.webservices.replication.v5.builders.InvoiceLineDiscountStubBuilder());
+	}
+
+	@Test
+	public void testV6InvoiceLineStubBuilder() {
+		this.testStubBuilder(InvoiceLine.class, new ish.oncourse.webservices.replication.v5.builders.InvoiceLineStubBuilder());
+	}
+
+	@Test
+	public void testV6InvoiceStubBuilder() {
+		this.testStubBuilder(Invoice.class, new ish.oncourse.webservices.replication.v5.builders.InvoiceStubBuilder(), "status", "customerPO");
+	}
+
+	@Test
+	public void testV6MessagePersonStubBuilder() {
+		this.testStubBuilder(MessagePerson.class, new ish.oncourse.webservices.replication.v5.builders.MessagePersonStubBuilder(),1l, "tutorId");
+		this.testStubBuilder(MessagePerson.class, new ish.oncourse.webservices.replication.v5.builders.MessagePersonStubBuilder(),2l, "studentId");
+	}
+
+	@Test
+	public void testV6OutcomeStubBuilder() {
+		this.testStubBuilder(Outcome.class, new ish.oncourse.webservices.replication.v5.builders.OutcomeStubBuilder(),"endDate","hoursAttended","startDate","status");
+	}
+
+	@Test
+	public void testV6PaymentInLineStubBuilder() {
+		this.testStubBuilder(PaymentInLine.class, new ish.oncourse.webservices.replication.v5.builders.PaymentInLineStubBuilder());
+	}
+
+	@Test
+	public void testV6PaymentInStubBuilder() {
+		this.testStubBuilder(PaymentIn.class, new ish.oncourse.webservices.replication.v5.builders.PaymentInStubBuilder());
+	}
+
+	@Test
+	public void testV6PaymentOutStubBuilder() {
+		this.testStubBuilder(PaymentOut.class, new ish.oncourse.webservices.replication.v5.builders.PaymentOutStubBuilder());
+	}
+
+	@Test
+	public void testV6PreferenceStubBuilder() {
+		this.testStubBuilder(Preference.class, new ish.oncourse.webservices.replication.v5.builders.PreferenceStubBuilder());
+	}
+
+	@Test
+	public void testV6RoomStubBuilder() {
+		this.testStubBuilder(Room.class, new ish.oncourse.webservices.replication.v5.builders.RoomStubBuilder(), "directions","facilities");
+	}
+
+	@Test
+	public void testV6SiteStubBuilder() {
+		/**
+		 * TODO: The stub builder sets drivingDirectionsTextile to  drivingDirections
+		 * TODO: The stub builder sets publicTransportDirections_textile to publicTransportDirections
+		 * TODO: The stub builder sets specialInstructions_textile to specialInstructions
+		 */
+		this.testStubBuilder(Site.class, new ish.oncourse.webservices.replication.v5.builders.SiteStubBuilder(), "drivingDirections", "publicTransportDirections",
+				"specialInstructions","timeZone", "webVisible");
+	}
+
+	@Test
+	public void testV6StudentConcessionStubBuilder() {
+		this.testStubBuilder(StudentConcession.class, new ish.oncourse.webservices.replication.v5.builders.StudentConcessionStubBuilder());
+	}
+
+	@Test
+	public void testV6StudentStubBuilder() {
+		this.testStubBuilder(Student.class, new ish.oncourse.webservices.replication.v5.builders.StudentStubBuilder());
+	}
+
+	@Test
+	public void testV6SystemUserStubBuilder() {
+		this.testStubBuilder(SystemUser.class, new ish.oncourse.webservices.replication.v5.builders.SystemUserStubBuilder());
+	}
+
+	@Test
+
+	public void testV6TaggableStubBuilder() {
+		this.testStubBuilder(Taggable.class, new ish.oncourse.webservices.replication.v5.builders.TaggableStubBuilder());
+	}
+
+	@Test
+	public void testV6TutorRoleStubBuilder() {
+		this.testStubBuilder(TutorRole.class, new ish.oncourse.webservices.replication.v5.builders.TutorRoleStubBuilder(), "inPublicity");
+	}
+
+	@Test
+	public void testV6TutorStubBuilder() {
+		this.testStubBuilder(Tutor.class, new ish.oncourse.webservices.replication.v5.builders.TutorStubBuilder(), "resume");
+	}
+
+	@Test
+	public void testV6WaitingListStubBuilder() {
+		this.testStubBuilder(WaitingList.class, new ish.oncourse.webservices.replication.v5.builders.WaitingListStubBuilder());
+	}
+
+	@Test
+	public void testV6CertificateStubBuilder() {
+		this.testStubBuilder(Certificate.class, new ish.oncourse.webservices.replication.v5.builders.CertificateStubBuilder());
+	}
+
+	@Test
+	public void testV6CertificateOutcome() {
+		this.testStubBuilder(CertificateOutcome.class, new ish.oncourse.webservices.replication.v5.builders.CertificateOutcomeStubBuilder());
+	}
 
     @Test
     public void testV5AttendanceStubBuilder() {
@@ -178,11 +327,6 @@ public class AllStubBuildersTest extends ServiceTest {
 
     @Test
     public void testV5SiteStubBuilder() {
-        /**
-         * TODO: The stub builder sets drivingDirectionsTextile to  drivingDirections
-         * TODO: The stub builder sets publicTransportDirections_textile to publicTransportDirections
-         * TODO: The stub builder sets specialInstructions_textile to specialInstructions
-         */
         this.testStubBuilder(Site.class, new ish.oncourse.webservices.replication.v5.builders.SiteStubBuilder(), "drivingDirections", "publicTransportDirections",
                 "specialInstructions","timeZone", "webVisible");
     }
@@ -329,11 +473,6 @@ public class AllStubBuildersTest extends ServiceTest {
 
     @Test
     public void testSiteStubBuilder() {
-        /**
-         * TODO: The stub builder sets drivingDirectionsTextile to  drivingDirections
-         * TODO: The stub builder sets publicTransportDirections_textile to publicTransportDirections
-         * TODO: The stub builder sets specialInstructions_textile to specialInstructions
-         */
         this.testStubBuilder(Site.class, new SiteStubBuilder(), "drivingDirections", "publicTransportDirections",
                 "specialInstructions","timeZone", "webVisible");
     }
