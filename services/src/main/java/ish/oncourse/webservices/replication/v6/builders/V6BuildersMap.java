@@ -63,6 +63,7 @@ private Map<String, IWillowStubBuilder> builderMap;
         builderMap.put(getEntityName(CourseProductRelation.class), new EntityRelationStubBuilder());
         builderMap.put(getEntityName(CorporatePass.class), new CorporatePassStubBuilder());
         builderMap.put(getEntityName(CorporatePassCourseClass.class), new CorporatePassCourseClassStubBuilder());
-		//TODO: register Article and ArticleProduct StubBuilders
+		builderMap.put(getEntityName(Article.class), new ArticleStubBuilder());
+		builderMap.put(getEntityName(ArticleProduct.class), new ArticleProductStubBuilder());
     }
 }

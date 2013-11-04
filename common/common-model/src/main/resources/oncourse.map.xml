@@ -1080,6 +1080,12 @@
 		<db-attribute name="suburb" type="VARCHAR" isPrimaryKey="true" isMandatory="true" length="45"/>
 		<db-attribute name="type" type="VARCHAR" isMandatory="true" length="45"/>
 	</db-entity>
+	<obj-entity name="Article" superEntityName="ProductItem" className="ish.oncourse.model.Article">
+		<qualifier><![CDATA[type = 1]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ArticleProduct" superEntityName="Product" className="ish.oncourse.model.ArticleProduct">
+		<qualifier><![CDATA[type = 1]]></qualifier>
+	</obj-entity>
 	<obj-entity name="Attendance" className="ish.oncourse.model.Attendance" dbEntityName="Attendance">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="attendanceType" type="java.lang.Integer" db-attribute-path="attendanceType"/>
@@ -2992,6 +2998,7 @@
 	<db-relationship name="logs" source="WillowUser" target="Log" toMany="true">
 		<db-attribute-pair source="id" target="userId"/>
 	</db-relationship>
+	<obj-relationship name="contact" source="Article" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="college" source="Attendance" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="marker" source="Attendance" target="Tutor" deleteRule="Nullify" db-relationship-path="marker"/>
 	<obj-relationship name="session" source="Attendance" target="Session" deleteRule="Nullify" db-relationship-path="session"/>

@@ -73,7 +73,8 @@ private Map<String, IWillowUpdater> updaterMap;
         //updaterMap.put(getEntityName(CourseProductRelation.class), new EntityRelationUpdater());
         updaterMap.put(getEntityName(CorporatePass.class), new CorporatePassUpdater());
         updaterMap.put(getEntityName(CorporatePassCourseClass.class), new CorporatePassCourseClassUpdater());
-		//TODO: register Article and ArticleProduct updaters
+		updaterMap.put(getEntityName(ArticleProduct.class), new ArticleProductUpdater());
+		updaterMap.put(getEntityName(Article.class), new ArticleUpdater());
     }
 
 	/**
