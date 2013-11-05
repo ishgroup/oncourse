@@ -26,9 +26,14 @@ public class ClassLocation {
 
     @SetupRender
     public void beforeRender() {
-		hasCoordinates = true;
-        site= courseClass.getRoom().getSite();
-        setupMapPosition();
+        if (courseClass.isHasRoom())
+        {
+            hasCoordinates = true;
+            site= courseClass.getRoom().getSite();
+            setupMapPosition();
+        }
+        else
+            hasCoordinates = false;
     }
 
 
