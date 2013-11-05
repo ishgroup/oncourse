@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-<li rel="time-1" class="roll" style="width: 282.6666666666667px; float: left;">
+<li rel="time-1" class="roll ${currentClass}" style="width: 282.6666666666667px; float: left;">
     <div class="clearfix next-session-info">
         <div class="col-lg-3 col-sm-3 date-content hidden-xs">
             <p>${day}</p>

@@ -1,10 +1,7 @@
 package ish.oncourse.portal.components.courseclass;
 
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.*;
 
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Student;
 import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -33,6 +30,7 @@ public class ClassRoll {
     @Property
     private List<Student> students;
 
+
     @Inject
     private ICourseClassService courseClassService;
 
@@ -54,5 +52,4 @@ public class ClassRoll {
     public int getNumberOfStudents(){
         return courseClass.validEnrolmentsCount();
     }
-
 }

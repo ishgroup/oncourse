@@ -1,8 +1,12 @@
 package ish.oncourse.portal.services;
 
 import ish.oncourse.model.*;
+import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 
@@ -21,18 +25,52 @@ public class PortalService implements IPortalService{
     @Inject
     private ICourseClassService courseClassService;
 
+    @Inject
+    private PreferenceController preferenceController;
 
-   public JSONObject getAttendences(Session session)
-    {
+    @Inject
+    private IBinaryDataService binaryDataService;
+
+    @Inject
+    private IAuthenticationService authenticationService;
+
+
+
+    @Override
+    public JSONObject getSession(Session session) {
+        JSONObject result = new JSONObject();
+        result.put("startDate",FormatUtils.getDateFormat("EEEE dd MMMMM h:mma", session.getTimeZone()).format(session.getStartDate()));
+        result.put("endDate", FormatUtils.getDateFormat("EEEE dd MMMMM h:mma", session.getTimeZone()).format(session.getEndDate()));
+        return result;
+    }
+
+    public JSONObject getAttendences(Session session)
+   {
        List<Attendance> attendances = session.getAttendances();
 
-        JSONObject result = new JSONObject();
+       JSONObject result = new JSONObject();
+       result.append("session", getSession(session));
+
         for(Attendance attendance : attendances)
+        {
             result.put(String.format("%s",attendance.getStudent().getId()),String.format("%s",attendance.getAttendanceType()));
+        }
+
 
 
         return result;
     }
+
+
+
+    public JSONObject getNearesSessionIndex(Integer i)
+   {
+
+        JSONObject result = new JSONObject();
+        result.append("nearesIndex", i);
+
+        return result;
+   }
 
 
     /**
@@ -73,5 +111,39 @@ public class PortalService implements IPortalService{
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean isHistoryEnabled() {
+        return preferenceController.isPortalHistoryEnabled();
+    }
+
+    @Override
+    public boolean isHasResources(List<CourseClass> courseClasses) {
+        boolean result=false;
+
+        for(CourseClass courseClass : courseClasses){
+            if(!binaryDataService.getAttachedFiles(courseClass.getId(), CourseClass.class.getSimpleName(), false).isEmpty()){
+                result=true;
+                break;
+            }
+        }
+        return  result;
+    }
+
+    @Override
+    public boolean isHasResult() {
+        boolean result=false;
+
+        if(authenticationService.getUser().getStudent()!=null){
+            for(Enrolment enrolment : authenticationService.getUser().getStudent().getEnrolments()){
+                Course course = enrolment.getCourseClass().getCourse();
+                if(!course.getModules().isEmpty() || course.getQualification()!=null){
+                    result=true;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 }

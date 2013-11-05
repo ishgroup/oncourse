@@ -5,10 +5,13 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.components.subscriptions.WaitingLists;
+import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PortalService;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
@@ -28,6 +31,9 @@ public class Menu {
 
 	@Inject
 	private IDiscussionService discussionService;
+
+    @Inject
+    private IPortalService portalService;
 
 	@Inject
 	@Property
@@ -122,38 +128,18 @@ public class Menu {
 	}
 
 
-
-
-
     public boolean isHasResources(){
-
-        boolean result=false;
-
-        for(CourseClass courseClass : courseClasses){
-             if(!binaryDataService.getAttachedFiles(courseClass.getId(), CourseClass.class.getSimpleName(), false).isEmpty()){
-                 result=true;
-                 break;
-             }
-        }
-        return  result;
+        return portalService.isHasResources(courseClasses);
     }
 
 
-
     public boolean isHasResults(){
-       boolean result=false;
+        return portalService.isHasResult();
+    }
 
-        if(authenticationService.getUser().getStudent()!=null){
-          for(Enrolment enrolment : authenticationService.getUser().getStudent().getEnrolments()){
-              Course course = enrolment.getCourseClass().getCourse();
-              if(!course.getModules().isEmpty() || course.getQualification()!=null){
-                  result=true;
-                  break;
-              }
-          }
-        }
-
-       return result;
+    public boolean isHistoryEnabled()
+    {
+        return portalService.isHistoryEnabled();
     }
 
 

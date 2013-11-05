@@ -8,7 +8,7 @@
         <div class="session-list-content">
             <ul class="list-unstyled session-list" style="width: 1698px; left: 0px;">
                 <t:loop source="sessions" value="session">
-                    <span t:type="courseClass/sessionSliderItem" session="session"></span>
+                    <span t:type="courseClass/sessionSliderItem" session="session" nearestSession="nSession"></span>
                 </t:loop>
             </ul>
         </div>

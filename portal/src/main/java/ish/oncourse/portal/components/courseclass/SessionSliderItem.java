@@ -22,7 +22,12 @@ import java.util.TimeZone;
  */
 public class SessionSliderItem {
 
-    TimeZone timeZone;
+    private TimeZone timeZone;
+
+
+    @Property
+    @Parameter
+    private Session nearestSession;
 
     @Property
     @Parameter
@@ -80,4 +85,11 @@ public class SessionSliderItem {
     public boolean isItTutor(){
         return authenticationService.isTutor();
     }
+
+    public String getCurrentClass(){
+
+        return session.getId().equals(nearestSession.getId()) ? "current" : StringUtils.EMPTY;
+    }
+
+
 }

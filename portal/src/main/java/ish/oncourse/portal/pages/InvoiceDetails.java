@@ -1,12 +1,13 @@
 package ish.oncourse.portal.pages;
 
 import ish.math.Money;
-import ish.oncourse.model.*;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.cayenne.Cayenne;
-
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -45,13 +46,12 @@ public class InvoiceDetails {
     @Property
     private InvoiceLine invoiceLine;
 
-    private final static String FORMAT="dd MMMMM yyyy";
+    private final static String FORMAT = "dd MMMMM yyyy";
 
     private DateFormat dateFormat = new SimpleDateFormat(FORMAT);
 
     Object onActivate(String id) {
-        if (id != null && id.length() > 0 && id.matches("\\d+"))
-        {
+        if (id != null && id.length() > 0 && id.matches("\\d+")) {
             long idLong = Long.parseLong(id);
             /**
              * We need to use not shared cayenne context to be sure that we get actual data
@@ -67,26 +67,26 @@ public class InvoiceDetails {
     }
 
     @SetupRender
-    void setupRender(){
+    void setupRender() {
 
 
-        invoiceLines=invoice.getInvoiceLines();
+        invoiceLines = invoice.getInvoiceLines();
 
 
     }
 
 
-     public String getPhoneNumber(){
+    public String getPhoneNumber() {
 
-         Contact contact = invoice.getContact();
+        Contact contact = invoice.getContact();
 
-        if(contact.getMobilePhoneNumber()!=null)
+        if (contact.getMobilePhoneNumber() != null)
             return contact.getMobilePhoneNumber();
-        else if(contact.getHomePhoneNumber()!=null)
+        else if (contact.getHomePhoneNumber() != null)
             return contact.getHomePhoneNumber();
-        else if(contact.getBusinessPhoneNumber()!=null)
+        else if (contact.getBusinessPhoneNumber() != null)
             return contact.getBusinessPhoneNumber();
-        else if(contact.getFaxNumber()!=null)
+        else if (contact.getFaxNumber() != null)
             return contact.getFaxNumber();
         else
             return null;
@@ -97,29 +97,15 @@ public class InvoiceDetails {
 
     {
 
-       return String.format("%s ", dateFormat.format(invoice.getCreated()));
+        return String.format("%s ", dateFormat.format(invoice.getCreated()));
 
     }
 
-
-
-
-
-    public Money getTotalAmount(){
-
-            Money summ = Money.ZERO;
-
-            for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
-                summ = summ.add(invoiceLine.getPriceTotalExTax());
-            }
-            return summ;
+    public Money getTotalTax() {
+        return invoice.getTotalGst().subtract(invoice.getTotalExGst());
     }
 
-       public Money getPaidAmount(){
-
-           Money summ = Money.ZERO;
-           summ = getTotalAmount().subtract(invoice.getAmountOwing());
-           return summ;
-
-       }
+    public Money getPaidAmount() {
+        return invoice.getTotalGst().subtract(invoice.getAmountOwing());
+    }
 }

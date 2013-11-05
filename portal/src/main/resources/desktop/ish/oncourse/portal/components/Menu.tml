@@ -1,39 +1,39 @@
 <t:container
-xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<div data-spy="affix" data-offset-top="90" class="sidebar affix-top">
-		<ul class="nav sidenav">
-			<li class="expanded">
-				<t:if test="nearestCourseClass">
-					<a href="${request.contextPath}/class/${nearestCourseClass.id}">Classes
-						<span class="badge">${courseClasses.size()}</span>
-					</a>
-				</t:if>
-				<t:unless test="nearestCourseClass">
-					<a href="#">Classes
-						<span class="badge">${courseClasses.size()}</span>
-					</a>
-				</t:unless>
-				<ul class="list-unstyled classes-content">
-					<t:loop source="courseClasses" value="courseClass">
-						<li>
-							<t:delegate to="block:classInfo"/>
-						</li>
-					</t:loop>
-					<t:loop source="pastCourseClasses" value="courseClass">
-						<li style="display: none;">
-							<t:delegate to="block:classInfo"/>
-						</li>
-					</t:loop>
-				</ul>
-				<t:if test="${pastCourseClasses.isEmpty()}" negate="true">
-					<ul class="list-inline">
-						<li><a class="show-all-sessions" href="#"><span class="icon-arrow-down"></span>Show All</a></li>
-					</ul>
-				</t:if>
-			</li>
-			<li class="active">
-				<a id="timetable" href="${request.contextPath}/timetable">Timetable</a>
-			</li>
+        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div data-spy="affix" data-offset-top="90" class="sidebar affix-top">
+        <ul class="nav sidenav">
+            <li class="expanded">
+                <t:if test="nearestCourseClass">
+                    <a href="${request.contextPath}/class/${nearestCourseClass.id}">Classes
+                        <span class="badge">${courseClasses.size()}</span>
+                    </a>
+                </t:if>
+                <t:unless test="nearestCourseClass">
+                    <a href="#">Classes
+                        <span class="badge">${courseClasses.size()}</span>
+                    </a>
+                </t:unless>
+                <ul class="list-unstyled classes-content">
+                    <t:loop source="courseClasses" value="courseClass">
+                        <li>
+                            <t:delegate to="block:classInfo"/>
+                        </li>
+                    </t:loop>
+                    <t:loop source="pastCourseClasses" value="courseClass">
+                        <li style="display: none;">
+                            <t:delegate to="block:classInfo"/>
+                        </li>
+                    </t:loop>
+                </ul>
+                <t:if test="${pastCourseClasses.isEmpty()}" negate="true">
+                    <ul class="list-inline">
+                        <li><a class="show-all-sessions" href="#"><span class="icon-arrow-down"></span>Show All</a></li>
+                    </ul>
+                </t:if>
+            </li>
+            <li class="active">
+                <a id="timetable" href="${request.contextPath}/timetable">Timetable</a>
+            </li>
             <t:if test="hasResources">
                 <li>
                     <a id="resources" href="${request.contextPath}/resources">Resources</a>
@@ -44,27 +44,31 @@ xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
                     <a id="results" href="${request.contextPath}/results">Results</a>
                 </li>
             </t:if>
-			<li>
-				<a id="profile" href="${request.contextPath}/profile">My Profile</a>
-			</li>
-			<li>
-				<a id="subscriptions" href="${request.contextPath}/subscriptions">Subscriptions</a>
-			</li>
-			<li>
-				<a id="history" href="${request.contextPath}/history">History</a>
-			</li>
-		</ul>
-	</div>
+            <li>
+                <a id="profile" href="${request.contextPath}/profile">My Profile</a>
+            </li>
+            <li>
+                <a id="subscriptions" href="${request.contextPath}/subscriptions">Subscriptions</a>
+            </li>
+            <t:if test="historyEnabled">
+                <li>
+                    <a id="history" href="${request.contextPath}/history">History</a>
+                </li>
+            </t:if>
+        </ul>
+    </div>
 
 
-	<t:block t:id="classInfo">
-		<p>
-			<strong><a href="${request.contextPath}/class/${courseClass.id}">${courseClass.course.name}</a></strong>
-			<!--<span class="label label-primary">Approval required</span> -->
-			<small class="text-muted">(${courseClass.uniqueIdentifier})</small>
-			<label><t:output format="literal:d MMMM yy h:mma z" value="courseClass.startDate"/></label>
-		</p>
+    <t:block t:id="classInfo">
+        <p>
+            <strong><a href="${request.contextPath}/class/${courseClass.id}">${courseClass.course.name}</a></strong>
+            <!--<span class="label label-primary">Approval required</span> -->
+            <small class="text-muted">(${courseClass.uniqueIdentifier})</small>
+            <label>
+                <t:output format="literal:d MMMM yy h:mma z" value="courseClass.startDate"/>
+            </label>
+        </p>
 
-	</t:block>
+    </t:block>
 
 </t:container>

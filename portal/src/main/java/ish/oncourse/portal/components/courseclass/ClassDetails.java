@@ -9,10 +9,7 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
 import org.apache.tapestry5.StreamResponse;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
@@ -47,7 +44,6 @@ public class ClassDetails {
 
     @Inject
     private IPortalService portalService;
-
 
     public boolean isTutor(){
         return authenticationService.isTutor();

@@ -166,9 +166,14 @@ public class ProfileForm {
             contactFieldHelper = new ContactFieldHelper(preferenceController, PreferenceController.ContactFiledsSet.enrolment);
         }
 
+    }
 
+    @AfterRender
+    void afteRender(){
+        validateHandler.getErrors().clear();
 
     }
+
 
     public boolean visible(String fieldName) {
         return contactFieldHelper.getVisibleFields(contact, false).contains(fieldName);
@@ -241,7 +246,7 @@ public class ProfileForm {
 
     boolean validate() {
 
-            validateHandler.getErrors().clear();
+
 
             emailErrorMessage = contact.validateEmail();
             if (emailErrorMessage != null) {

@@ -54,13 +54,18 @@ public class PreferenceController extends CommonPreferenceController {
 	@Deprecated
 	public static final String LICENSE_SUPPORT_PLAN_EXPIRY = "license.support.plan.expiry";
 
-	@Inject
+    /**
+     * If value of the property is true, portal shows history page for student/tutor. Default value is true;
+     */
+    private static final String PORTAL_HISTORY_ENABLED = "portal.history.enabled";
+
+    @Inject
 	private ICayenneService cayenneService;
 
 	@Inject
 	private IWebSiteService webSiteService;
 
-	/**
+    /**
 	 * Default constructor used for auto injection
 	 */
 	public PreferenceController() {
@@ -704,8 +709,15 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(ENROLMENT_CREDITCARD_PAYMENT_ENABLED, false, Boolean.toString(value));
 	}
 
+    public boolean isPortalHistoryEnabled() {
+        String value = getValue(PORTAL_HISTORY_ENABLED, false);
+        if (value == null)
+            return true;
+        return Boolean.valueOf(value);
+    }
 
-	public static enum ContactFiledsSet {
+
+    public static enum ContactFiledsSet {
 		enrolment,
 		waitinglist,
 		mailinglist,
