@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Profile"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_profile">
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:profile">
 
 <div class="page-header clearfix zero-padding">
     <ul class="nav nav-tabs header-tabs">

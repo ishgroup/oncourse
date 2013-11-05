@@ -5,7 +5,7 @@
 	</head>
 	
 	<body class="${bodyClass}">
-		<div t:type="bodystructure">
+		<div t:type="bodystructure" activeMenu="activeMenu">
 			<t:body/>
 		</div>
 		

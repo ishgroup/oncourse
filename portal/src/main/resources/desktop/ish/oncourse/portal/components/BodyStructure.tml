@@ -9,7 +9,9 @@
 			</div>
             <div class="col-lg-3 col-sm-3">
                 <t:if t:test="userInSession">
-                    <div t:type="bodysidebar"/>
+                    <div class="sidebar">
+                        <div t:type="menu" activeMenu="activeMenu"/>
+                    </div>
                 </t:if>
             </div>
         </div>

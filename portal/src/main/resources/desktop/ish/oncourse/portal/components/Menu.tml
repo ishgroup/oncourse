@@ -31,27 +31,27 @@
                     </ul>
                 </t:if>
             </li>
-            <li class="active">
+            <li class="${getActiveClassBy('m_timetable')}">
                 <a id="timetable" href="${request.contextPath}/timetable">Timetable</a>
             </li>
             <t:if test="hasResources">
-                <li>
+                <li class="${getActiveClassBy('resources')}">
                     <a id="resources" href="${request.contextPath}/resources">Resources</a>
                 </li>
             </t:if>
             <t:if test="hasResults">
-                <li>
+                <li class="${getActiveClassBy('results')}">
                     <a id="results" href="${request.contextPath}/results">Results</a>
                 </li>
             </t:if>
-            <li>
+            <li class="${getActiveClassBy('profile')}">
                 <a id="profile" href="${request.contextPath}/profile">My Profile</a>
             </li>
-            <li>
+            <li class="${getActiveClassBy('subscriptions')}">
                 <a id="subscriptions" href="${request.contextPath}/subscriptions">Subscriptions</a>
             </li>
             <t:if test="historyEnabled">
-                <li>
+                <li class="${getActiveClassBy('history')}">
                     <a id="history" href="${request.contextPath}/history">History</a>
                 </li>
             </t:if>

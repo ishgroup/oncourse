@@ -1,27 +1,29 @@
 package ish.oncourse.portal.components;
 
-import ish.oncourse.model.Course;
+
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.components.subscriptions.WaitingLists;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.portal.services.PortalService;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-
 import java.util.List;
 
 public class Menu {
+
+
+    @Parameter
+    private String activeMenu;
 
 	@Inject
 	private IAuthenticationService authenticationService;
@@ -141,6 +143,19 @@ public class Menu {
     {
         return portalService.isHistoryEnabled();
     }
+
+
+    public String getActiveClassBy(String menutItem)
+    {
+        if(menutItem.equals(activeMenu))
+            return "active";
+        return StringUtils.EMPTY;
+
+    }
+
+
+
+
 
 
 }
