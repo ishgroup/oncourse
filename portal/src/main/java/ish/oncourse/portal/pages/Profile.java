@@ -58,4 +58,10 @@ public class Profile {
         return tabId.equals(activeTabId) ? "active": StringUtils.EMPTY;
     }
 
+    public boolean isStudent(){
+
+       return contact.getStudent()!=null;
+    }
+
+
 }

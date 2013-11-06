@@ -3,7 +3,7 @@
 	<div class="collapse logged navbar-collapse">
 		<p>
 		<t:if test="user.tutor">
-			<span>Approvals  <span class="badge"></span></span>
+			<span>Approvals  <span class="badge">${approvalsCount}</span></span>
 		</t:if>
 		<span>Hi, <strong>${user.givenName} ${user.familyName}</strong></span>
 			<a href="#" class="btn btn-link" t:type="ActionLink" t:id="logout">

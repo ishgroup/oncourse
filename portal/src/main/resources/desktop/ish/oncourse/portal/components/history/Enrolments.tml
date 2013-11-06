@@ -1,6 +1,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
     <ul class="list-unstyled classes-content">
+        <t:if test="enrolments" negate="true">
+            <div>Now you do not have enrolments history</div>
+        </t:if>
+
         <t:loop source="enrolments" value="enrolment">
         <li>
             <p class="arrow-content">

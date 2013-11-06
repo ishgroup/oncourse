@@ -3,21 +3,25 @@
 	<div class="page-header clearfix zero-padding">
 		<ul class="nav nav-tabs header-tabs">
 			<li class="active"><a data-toggle="tab" href="#finance">Finance</a></li>
-			<li class=""><a data-toggle="tab" href="#enrolments">Enrolments</a></li>
-		</ul>
+
+            <t:if test="student">
+		    	<li class=""><a data-toggle="tab" href="#enrolments">Enrolments</a></li>
+		    </t:if>
+        </ul>
 		<h3><a href="#">History</a></h3>
 	</div>
 	<div class="tab-content">
 
-		    <div class="tab-pane active" id="finance">
-               <span t:type="history/finance"/>
-		    </div>
-
-
-
-		<div class="tab-pane" id="enrolments">
-            <span t:type="history/enrolments"/>
+		<div class="tab-pane active" id="finance">
+           <span t:type="history/finance"/>
 		</div>
+
+
+        <t:if test="student">
+		    <div class="tab-pane" id="enrolments">
+                <span t:type="history/enrolments"/>
+		    </div>
+        </t:if>
 	</div>
 
 

@@ -1,4 +1,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+    <t:if test="items" negate="true">
+         <div>Now you do not have financial history</div>
+    </t:if>
+
+
 <t:loop source="items" value="item">
     <t:if test="${isInvoice(item)}">
         <t:delegate to="block:invoice"/>

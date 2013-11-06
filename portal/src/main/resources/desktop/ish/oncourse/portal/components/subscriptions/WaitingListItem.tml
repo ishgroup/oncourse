@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"  xmlns:p="tapestry:parameter">
-<div class="waiting_list_info_block">
+
     <div class="single-waiting clearfix">
         <div class="col-lg-11 col-sm-10 col-xs-10">
 	    <t:if test="webVisible">
@@ -16,5 +16,5 @@
         </div>
 
     </div>
-</div>
+
 </t:container>
