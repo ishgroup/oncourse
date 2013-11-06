@@ -678,7 +678,12 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 					}
 				}
 
-				List<ProductItem> productItems = il.getProductItem();
+				List<ProductItem> productItems = new ArrayList<>();
+
+				productItems.addAll(il.getArticles());
+				productItems.addAll(il.getMemberships());
+				productItems.addAll(il.getVouchers());
+
 				for (ProductItem productItem : productItems) {
 					if (productItem.getStatus() == ProductStatus.NEW)
 						productItem.setStatus(productStatus);

@@ -3166,11 +3166,14 @@
 	<obj-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
 	<obj-relationship name="webSite" source="Invoice" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
+	<obj-relationship name="articles" source="InvoiceLine" target="Article" deleteRule="Nullify" db-relationship-path="productItem"/>
 	<obj-relationship name="college" source="InvoiceLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="InvoiceLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="invoice" source="InvoiceLine" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="invoiceLineDiscounts" source="InvoiceLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoicelineDiscounts"/>
+	<obj-relationship name="memberships" source="InvoiceLine" target="Membership" deleteRule="Nullify" db-relationship-path="productItem"/>
 	<obj-relationship name="productItem" source="InvoiceLine" target="ProductItem" deleteRule="Deny" db-relationship-path="productItem"/>
+	<obj-relationship name="vouchers" source="InvoiceLine" target="Voucher" deleteRule="Nullify" db-relationship-path="productItem"/>
 	<obj-relationship name="college" source="InvoiceLineDiscount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>

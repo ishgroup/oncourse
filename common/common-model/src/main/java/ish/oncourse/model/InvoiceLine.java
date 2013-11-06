@@ -50,24 +50,4 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 	public boolean isAsyncReplicationAllowed() {
 		return getInvoice() != null && getInvoice().isAsyncReplicationAllowed();
 	}
-	
-	public List<Voucher> getVouchers() {
-		List<Voucher> vouchers = new ArrayList<>();
-		for (ProductItem productItem : getProductItem()) {
-			if (productItem instanceof Voucher) {
-				vouchers.add((Voucher) productItem);
-			}
-		}
-		return vouchers;
-	}
-	
-	public List<Membership> getMemberShips() {
-		List<Membership> memberships = new ArrayList<>();
-		for (ProductItem productItem : getProductItem()) {
-			if (productItem instanceof Membership) {
-				memberships.add((Membership) productItem);
-			}
-		}
-		return memberships;
-	}
 }

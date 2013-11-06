@@ -16,15 +16,7 @@ public class Voucher extends _Voucher implements Queueable {
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
-	
-	@Override
-	public void setCode(String code) {
-		if (!isNewRecord() && getCode() != null) {
-			throw new IllegalStateException("Cannot change code for already persisted voucher.");
-		}
-		super.setCode(code);
-	}
-	
+
 	/**
 	 * @return true if object is new
 	 */
