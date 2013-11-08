@@ -2,7 +2,7 @@ package ish.oncourse.portal.components.timetable;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Session;
+import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -34,7 +34,9 @@ public class ClassSlider {
 
     @SetupRender
     boolean setupRender() {
-        courseClasses = courseClassService.getContactCourseClasses(contact);
+        courseClasses = courseClassService.getContactCourseClasses(contact, CourseClassFilter.CURRENT);
+        if (contact.getTutor() != null)
+            courseClasses.addAll(courseClassService.getContactCourseClasses(contact, CourseClassFilter.UNCONFIRMED));
         return true;
     }
 }

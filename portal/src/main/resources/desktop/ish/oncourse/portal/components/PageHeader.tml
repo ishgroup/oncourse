@@ -37,6 +37,7 @@
 
 
     <script type="text/javascript" src="/s/portal/js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="/s/portal/js/jquery-ui-1.9.1.min.js"></script>
     <script type="text/javascript" src="/s/portal/js/jquery.calendario.js"></script>
 
      <script type="text/javascript" src="/s/portal/js/bootstrap.js"></script>
@@ -47,6 +48,10 @@
      <script type="text/javascript" src="/s/portal/js/attendances.js"></script>
      <script type="text/javascript" src="/s/portal/js/subscriptions.js"></script>
      <script type="text/javascript" src="/s/portal/js/profile.js"></script>
+
      <script type="text/javascript" src="/s/portal/js/for_calendar.js"></script>
+     <script type="text/javascript" src="/s/portal/js/search.js"></script>
+     <script type="text/javascript" src="/s/portal/js/autocomplete.js"></script>
+
 
  </t:container>

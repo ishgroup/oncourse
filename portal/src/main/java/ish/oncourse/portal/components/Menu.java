@@ -12,7 +12,6 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -59,6 +58,8 @@ public class Menu {
 	@SetupRender
 	public void setupRender() {
 		courseClasses = courseClassService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
+        if (isTutor())
+            courseClasses.addAll(courseClassService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.UNCONFIRMED));
 		pastCourseClasses = courseClassService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.PAST);
 		nearestCourseClass = !courseClasses.isEmpty() ? courseClasses.get(0) : null;
 		if (nearestCourseClass == null)
@@ -81,7 +82,7 @@ public class Menu {
 		return discussionService.getNumberOfNewMessages(authenticationService.getUser());
 	}
 
-	public boolean getIsTutor() {
+	public boolean isTutor() {
 		return authenticationService.isTutor();
 	}
 
@@ -90,7 +91,7 @@ public class Menu {
 	}
 
 	public String getDiscussionsPageName() {
-		return getIsTutor() ? "tutor/messages" : "student/messages";
+		return isTutor() ? "tutor/messages" : "student/messages";
 	}
 
 	public String getClassesPageName() {
@@ -106,7 +107,7 @@ public class Menu {
 	}
 
 	public String getSurveysPageName() {
-		return getIsTutor() ? "tutor/surveys" : "student/surveys";
+		return isTutor() ? "tutor/surveys" : "student/surveys";
 	}
 
 	public String getUnconfirmed() {

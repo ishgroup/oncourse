@@ -5,6 +5,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
 
@@ -36,7 +37,7 @@ public class Resources {
     @SetupRender
     void  setupRender(){
 
-        courseClasses = courseClassService.getContactCourseClasses(authenticationService.getUser());
+        courseClasses = courseClassService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
     }
 
 

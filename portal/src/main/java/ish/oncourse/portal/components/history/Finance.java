@@ -79,12 +79,8 @@ public class Finance {
     public Money getAmount(CayenneDataObject item){
 
         if(item instanceof Invoice){
-            Money summ = Money.ZERO;
 
-            for (InvoiceLine invoiceLine : ((Invoice) item).getInvoiceLines()) {
-                summ = summ.add(invoiceLine.getPriceTotalExTax());
-            }
-            return summ;
+            return ((Invoice) item).getTotalGst();
         }
 
         return ((PaymentIn) item).getAmount();

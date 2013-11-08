@@ -3,6 +3,7 @@ package ish.oncourse.portal.pages;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.annotations.Property;
@@ -29,7 +30,7 @@ public class Results {
     @SetupRender
     void  setupRender(){
 
-        courseClasses = courseClassService.getContactCourseClasses(authenticationService.getUser());
+        courseClasses = courseClassService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
     }
 
     public String getDate(CourseClass courseClass)
