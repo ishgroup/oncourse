@@ -35,6 +35,8 @@ public class ClassSliderItem {
 
     public String getPeriod()
     {
+         if(courseClass.getIsDistantLearningCourse())
+             return "self paced";
 
         return DateFormatter.formatDate(courseClass.getSessions().get(0).getStartDate(),false,FormatUtils.getClientTimeZone(courseClass));
     }
@@ -46,6 +48,9 @@ public class ClassSliderItem {
 
     public String getDate()
     {
+        if(courseClass.getIsDistantLearningCourse())
+            return "self paced";
+
         return String.format("%s - %s",
                 FormatUtils.getDateFormat(FormatUtils.dateFormatForTimeline, timeZone).format(courseClass.getSessions().get(0).getStartDate()),
                 FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(courseClass.getSessions().get(0).getEndDate()));

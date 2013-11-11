@@ -30,8 +30,6 @@ public class Enrolments {
     @Inject
     private IAuthenticationService authenticationService;
 
-    @Inject
-    private ICourseClassService courseClassService;
 
     @Property
     private List<Enrolment> enrolments;

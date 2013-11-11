@@ -1,19 +1,29 @@
 package ish.oncourse.portal.services;
 
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.cache.CacheGroup;
+import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * User: artem
@@ -24,6 +34,9 @@ public class PortalService implements IPortalService{
 
     @Inject
     private ICourseClassService courseClassService;
+
+    @Inject
+    private ICayenneService cayenneService;
 
     @Inject
     private PreferenceController preferenceController;
@@ -146,4 +159,192 @@ public class PortalService implements IPortalService{
         }
         return result;
     }
+
+    @Override
+    public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter) {
+        List<CourseClass> courseClasses = new ArrayList<>();
+
+        if(contact.getTutor()!=null)
+            courseClasses.addAll(getTutorCourseClasses(contact, filter));
+
+        if(contact.getStudent()!=null && filter!=CourseClassFilter.UNCONFIRMED)
+            courseClasses.addAll(getStudentCourseClasses(contact, filter));
+
+        Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.DESCENDING);
+        ordering.orderList(courseClasses);
+
+        return courseClasses;
+    }
+
+
+    private List<CourseClass> getStudentCourseClasses(Contact contact, CourseClassFilter filter) {
+        if(contact.getStudent() != null){
+        Expression expr;
+        expr = ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, contact.getStudent());
+        expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
+        expr = expr.andExp(ExpressionFactory.noMatchExp(CourseClass.CANCELLED_PROPERTY, Boolean.TRUE));
+
+        SelectQuery q = new SelectQuery(CourseClass.class, expr);
+        q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+        q.setCacheGroups(CacheGroup.COURSES.name());
+
+        List <CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
+
+            switch (filter) {
+
+                case CURRENT:
+                    return getCurrentStudentClasses(courseClasses, contact);
+                case PAST:
+                    return getPastStudentClasses(courseClasses, contact);
+                case ALL:
+                    return courseClasses;
+                default:
+                    throw new IllegalArgumentException();
+            }
+
+
+
+        }
+
+
+        return null;
+
+    }
+
+
+    private List<CourseClass> getTutorCourseClasses(Contact contact, CourseClassFilter filter) {
+        if(contact.getTutor() != null){
+            Expression expr = ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.TUTOR_PROPERTY, contact.getTutor());
+            expr = expr.andExp(ExpressionFactory.noMatchExp(CourseClass.CANCELLED_PROPERTY, Boolean.TRUE));
+            SelectQuery q = new SelectQuery(CourseClass.class, expr);
+            q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+            q.setCacheGroups(CacheGroup.COURSES.name());
+
+            List <CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
+            switch (filter) {
+                case UNCONFIRMED:
+                   return getUnconfirmedTutorClasses(courseClasses,contact);
+                case CURRENT:
+                   return getCurrentTutorClasses(courseClasses);
+                case PAST:
+                    return getPastTutorClasses(courseClasses);
+                case ALL:
+                    return courseClasses;
+                default:
+                    throw new IllegalArgumentException();
+            }
+
+
+
+        }
+        return null;
+    }
+
+    private  List<CourseClass>  getPastTutorClasses(List<CourseClass> courseClasses){
+        Date date = new Date();
+        List<CourseClass> past = new ArrayList<>();
+
+        for(CourseClass courseClass : courseClasses){
+            if(courseClass.getEndDate().before(date))
+                past.add(courseClass);
+        }
+
+        return past;
+    }
+
+    private  List<CourseClass> getCurrentTutorClasses(List<CourseClass> courseClasses){
+        List<CourseClass> current = new ArrayList<>();
+        Date date = new Date();
+
+             for(CourseClass courseClass : courseClasses){
+
+                 if(courseClass.getIsDistantLearningCourse()){
+                     current.add(courseClass);
+                 }else if(courseClass.getEndDate().after(date)){
+                     current.add(courseClass);
+                 }
+             }
+
+        return  current;
+    }
+
+
+
+    private List<CourseClass> getUnconfirmedTutorClasses(List<CourseClass> courseClasses, Contact contact){
+        List<CourseClass> unconfirmed = new ArrayList<>();
+        Date date = new Date();
+
+        for(CourseClass courseClass : courseClasses){
+           for(TutorRole tutorRole : courseClass.getTutorRoles()){
+                 if(tutorRole.getTutor().getId().equals(contact.getTutor().getId()))
+                    if(tutorRole.getIsConfirmed()==false){
+                        if(courseClass.getIsDistantLearningCourse()){
+                            unconfirmed.add(courseClass);
+                        }else if(courseClass.getEndDate().after(date)){
+                            unconfirmed.add(courseClass);
+                        }
+                    }
+           }
+        }
+        return unconfirmed;
+    }
+
+
+
+    private List<CourseClass> getCurrentStudentClasses(List<CourseClass> courseClasses, Contact contact){
+
+        List<CourseClass> current = new ArrayList<>();
+        Date date = new Date();
+
+        for(CourseClass courseClass : courseClasses){
+
+           if(courseClass.getIsDistantLearningCourse()){
+
+              for(Enrolment enrolment : courseClass.getEnrolments()){
+                  if(enrolment.getStudent().getId().equals(contact.getStudent().getId())){
+                     if(DateUtils.addDays(enrolment.getCreated(),courseClass.getMaximumDays()).after(date))
+                         current.add(courseClass);
+                     break;
+                  }
+              }
+           }else{
+
+              if(courseClass.getEndDate().after(date))
+                  current.add(courseClass);
+           }
+        }
+
+        return current;
+    }
+
+
+    private List<CourseClass> getPastStudentClasses(List<CourseClass> courseClasses, Contact contact){
+
+        List<CourseClass> past = new ArrayList<>();
+        Date date = new Date();
+
+        for(CourseClass courseClass : courseClasses){
+
+            if(courseClass.getIsDistantLearningCourse()){
+
+                for(Enrolment enrolment : courseClass.getEnrolments()){
+                    if(enrolment.getStudent().getId().equals(contact.getStudent().getId())){
+                        if(DateUtils.addDays(enrolment.getCreated(),courseClass.getMaximumDays()).before(date))
+                            past.add(courseClass);
+                        break;
+                    }
+                }
+            }else{
+
+                if(courseClass.getEndDate().before(date))
+                    past.add(courseClass);
+            }
+        }
+
+        return past;
+    }
+
+
+
+
 }
