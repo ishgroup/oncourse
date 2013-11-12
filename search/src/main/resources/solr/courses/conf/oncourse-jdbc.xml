@@ -12,7 +12,9 @@
 		select IFNULL(DATE_FORMAT(
 		/* select min calculated value because course may contain both self paced and regular classes*/
 			min(
-			IFNULL(s.startDate,
+			IFNULL(
+			/* check that both class startdate and session startdate is not NULL to avoid cases when partially replicated data may affect on index */
+			IF(cc.startDate is not NULL and s.startDate is not NULL, cc.startDate, NULL),
 			/*if course class is self paced we use tomorrow as start date, if the course class is regular we use today + 100 years as startDate*/
 			IF(cc.isDistantLearningCourse=1, DATE_ADD(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 100 YEAR))
 			)),'%Y-%m-%dT%TZ'),
@@ -34,7 +36,7 @@
 		select distinct c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId,(
 		select IFNULL(DATE_FORMAT(
 			min(
-			IFNULL(s.startDate,
+			IFNULL(IF(cc.startDate is not NULL and s.startDate is not NULL, cc.startDate, NULL),
 			IF(cc.isDistantLearningCourse=1, DATE_ADD(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 100 YEAR))
 			)),'%Y-%m-%dT%TZ'),
 			DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'%Y-%m-%dT%TZ'))
