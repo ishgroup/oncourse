@@ -2,6 +2,7 @@ package ish.oncourse.webservices.replication.services;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.enrol.IEnrolmentService;
@@ -115,7 +116,10 @@ public class PaymentServiceImpl implements InternalPaymentService {
 								.getAngelId(),r.getStub().getWillowId()));
 					}
 
-					paymentIn = newContext.localObject(p);
+					// ignore voucher payments here since further processing is based on money payment
+					if (!PaymentType.VOUCHER.equals(p.getType())) {
+						paymentIn = newContext.localObject(p);
+					}
 				}
 			}
 
