@@ -4,6 +4,7 @@ import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -22,7 +23,7 @@ public class Resources {
     private IAuthenticationService authenticationService;
 
     @Inject
-    private ICourseClassService courseClassService;
+    private IPortalService portalService;
 
     @Property
     private CourseClass courseClass;
@@ -37,13 +38,16 @@ public class Resources {
     @SetupRender
     void  setupRender(){
 
-        courseClasses = courseClassService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
+        courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
     }
 
 
     public String getDate(CourseClass courseClass)
     {
-         TimeZone timeZone = FormatUtils.getClientTimeZone(courseClass);
+        if(courseClass.getIsDistantLearningCourse())
+            return  portalService.SELF_PACED;
+
+        TimeZone timeZone = FormatUtils.getClientTimeZone(courseClass);
 
         return String.format("%s - %s",
                 FormatUtils.getDateFormat("dd MMMMMM yyyy", timeZone).format(courseClass.getStartDate()),

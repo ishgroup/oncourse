@@ -6,7 +6,7 @@ import ish.common.types.OutcomeStatus;
 import ish.oncourse.model.*;
 
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.services.courseclass.ICourseClassService;
+
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;

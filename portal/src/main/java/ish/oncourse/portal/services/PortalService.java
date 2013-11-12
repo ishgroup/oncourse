@@ -17,7 +17,6 @@ import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 
@@ -170,7 +169,7 @@ public class PortalService implements IPortalService{
         if(contact.getStudent()!=null && filter!=CourseClassFilter.UNCONFIRMED)
             courseClasses.addAll(getStudentCourseClasses(contact, filter));
 
-        Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.DESCENDING);
+        Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
         ordering.orderList(courseClasses);
 
         return courseClasses;
@@ -245,7 +244,7 @@ public class PortalService implements IPortalService{
         List<CourseClass> past = new ArrayList<>();
 
         for(CourseClass courseClass : courseClasses){
-            if(courseClass.getEndDate().before(date))
+            if(!courseClass.getIsDistantLearningCourse() && courseClass.getEndDate().before(date))
                 past.add(courseClass);
         }
 

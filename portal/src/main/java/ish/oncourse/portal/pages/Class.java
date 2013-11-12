@@ -19,9 +19,6 @@ public class Class {
     @Persist
 	@Property
 	private CourseClass courseClass;
-	
-	@Inject
-	private ICourseClassService courseClassService;
 
 	@Inject
 	private ICayenneService cayenneService;

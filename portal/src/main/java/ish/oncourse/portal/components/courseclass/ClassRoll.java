@@ -2,13 +2,11 @@ package ish.oncourse.portal.components.courseclass;
 
 import ish.oncourse.model.*;
 
-import ish.oncourse.services.contact.ContactServiceImpl;
-import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.services.preference.PreferenceController;
+
+
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +28,6 @@ public class ClassRoll {
     @Property
     private List<Student> students;
 
-
-    @Inject
-    private ICourseClassService courseClassService;
 
     @SetupRender
     boolean setupRender() {

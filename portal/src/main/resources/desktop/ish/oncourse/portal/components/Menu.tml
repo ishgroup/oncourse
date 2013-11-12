@@ -65,7 +65,14 @@
             <!--<span class="label label-primary">Approval required</span> -->
             <small class="text-muted">(${courseClass.uniqueIdentifier})</small>
             <label>
-                <t:output format="literal:d MMMM yy h:mma z" value="courseClass.startDate"/>
+
+                <t:if test="courseClass.startDate">
+                    <t:output format="literal:d MMMM yy h:mma z" value="courseClass.startDate"/>
+                </t:if>
+                <t:unless test="courseClass.startDate">
+                    <span>Self paced class</span>
+                </t:unless>
+
             </label>
         </p>
 

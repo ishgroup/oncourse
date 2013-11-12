@@ -19,14 +19,11 @@ import java.io.IOException;
  */
 public class Calendar {
 
-    @Inject
-    private ICourseClassService courseClassService;
+
 
     @Inject
     private IAuthenticationService authService;
 
-    @Inject
-    private Request request;
 
     @Inject
     private IPortalService portalService;

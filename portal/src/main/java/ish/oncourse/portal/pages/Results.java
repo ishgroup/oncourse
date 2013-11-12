@@ -3,6 +3,7 @@ package ish.oncourse.portal.pages;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
@@ -18,7 +19,7 @@ public class Results {
     private IAuthenticationService authenticationService;
 
     @Inject
-    private ICourseClassService courseClassService;
+    private IPortalService portalService;
 
     @Property
     private CourseClass courseClass;
@@ -30,11 +31,14 @@ public class Results {
     @SetupRender
     void  setupRender(){
 
-        courseClasses = courseClassService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
+        courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
     }
 
     public String getDate(CourseClass courseClass)
     {
+        if(courseClass.getIsDistantLearningCourse())
+            return  portalService.SELF_PACED;
+
         TimeZone timeZone = FormatUtils.getClientTimeZone(courseClass);
 
         return String.format("%s - %s",

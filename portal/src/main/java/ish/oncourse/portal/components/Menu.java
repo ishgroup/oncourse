@@ -8,8 +8,6 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
-import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -33,15 +31,12 @@ public class Menu {
 	@Inject
 	private IDiscussionService discussionService;
 
-    @Inject
-    private IPortalService portalService;
-
 	@Inject
 	@Property
 	private Request request;
 
 	@Inject
-	private ICourseClassService courseClassService;
+	private IPortalService portalService;
 
 	@Property
 	private List<CourseClass> courseClasses;
@@ -55,24 +50,18 @@ public class Menu {
 	@Property
 	private CourseClass nearestCourseClass;
 
+
+
 	@SetupRender
 	public void setupRender() {
-		courseClasses = courseClassService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
-        if (isTutor())
-            courseClasses.addAll(courseClassService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.UNCONFIRMED));
-		pastCourseClasses = courseClassService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.PAST);
+		courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
+
+		pastCourseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.PAST);
 		nearestCourseClass = !courseClasses.isEmpty() ? courseClasses.get(0) : null;
 		if (nearestCourseClass == null)
 			nearestCourseClass = !pastCourseClasses.isEmpty() ? pastCourseClasses.get(0) : null;
 	}
 
-	public String getDate()
-	{
-		if (courseClass.getStartDate() != null)
-			return FormatUtils.getDateFormat(FormatUtils.dateFormatString,courseClass.getTimeZone()).format(courseClass.getStartDate());
-		else
-			return StringUtils.EMPTY;
-	}
 
 	public boolean isHasNewMessages() {
 		return getNumberOfNewMessages() > 0;
