@@ -23,6 +23,10 @@ public class VoucherPaymentInUpdater extends AbstractWillowUpdater<VoucherPaymen
 		entity.setPayment(callback.updateRelationShip(stub.getPaymentInId(), PaymentIn.class));
 		if (stub.getStatus() != null) {
 			entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), VoucherPaymentStatus.class));
+		} else {
+			// TODO: temporarily (while we are not redeeming vouchers on willow) this defaults to APPROVED since
+			// there is no logic checking voucher for concurrent usage or consistency
+			entity.setStatus(VoucherPaymentStatus.APPROVED);
 		}
 		entity.setVoucher(callback.updateRelationShip(stub.getVoucherId(), Voucher.class));
 		entity.setInvoiceLine(callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class));

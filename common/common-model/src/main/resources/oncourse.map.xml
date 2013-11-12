@@ -3173,6 +3173,7 @@
 	<obj-relationship name="invoiceLineDiscounts" source="InvoiceLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoicelineDiscounts"/>
 	<obj-relationship name="memberships" source="InvoiceLine" target="Membership" deleteRule="Nullify" db-relationship-path="productItem"/>
 	<obj-relationship name="productItem" source="InvoiceLine" target="ProductItem" deleteRule="Deny" db-relationship-path="productItem"/>
+	<obj-relationship name="voucherPaymentsIn" source="InvoiceLine" target="VoucherPaymentIn" deleteRule="Cascade" db-relationship-path="voucherPaymentIn"/>
 	<obj-relationship name="vouchers" source="InvoiceLine" target="Voucher" deleteRule="Nullify" db-relationship-path="productItem"/>
 	<obj-relationship name="college" source="InvoiceLineDiscount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>

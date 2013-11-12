@@ -2,7 +2,6 @@ package ish.oncourse.webservices.soap.v4;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
-import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
@@ -14,8 +13,6 @@ import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -293,597 +290,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 	public void testV5ProcessNotCreditCardPayment() throws Exception {
 		notCreditCardOrZeroPaymentV5(false, false, false);
 	}
-	
-	private GenericTransactionGroup conflictPaymentProcessingV4WithTheSameInvoiceData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
-		
-		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV4();
-		enrolStub2.setAngelId(2l);
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = invoiceV4();
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV4();
-		invLineStub2.setAngelId(2L);
-		invLineStub2.setEnrolmentId(2l);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub2 = paymentInV4();
-		paymentInStub2.setAngelId(2l);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub2 = paymentInLineV4();
-		pLineStub2.setAngelId(2l);
-		pLineStub2.setPaymentInId(2l);
-		
-		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub = enrolmentV4();
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV4();
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = paymentInV4();
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV4();
-		ish.oncourse.webservices.v4.stubs.replication.ContactStub contactStub = contactV4();
-		ish.oncourse.webservices.v4.stubs.replication.StudentStub studentStub = studentV4();
 
-		
-		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		stubs.add(enrolStub2);
-		stubs.add(paymentInStub2);
-		stubs.add(pLineStub2);
-		stubs.add(invLineStub2);
-		
-		stubs.add(enrolStub);
-		stubs.add(paymentInStub);
-		stubs.add(pLineStub);
-		stubs.add(invoiceStub);
-		stubs.add(invLineStub);
-		stubs.add(contactStub);
-		stubs.add(studentStub);
-		return group;
-	}
-	
-	private GenericTransactionGroup conflictPaymentProcessingV5WithTheSameInvoiceData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
-		
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = invoiceV5();
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV5();
-		invLineStub2.setAngelId(2L);
-		invLineStub2.setEnrolmentId(null);
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub2 = paymentInV5();
-		paymentInStub2.setAngelId(2l);
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub2 = paymentInLineV5();
-		pLineStub2.setAngelId(2l);
-		pLineStub2.setPaymentInId(2l);
-		
-		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub = enrolmentV5();
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV5();
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub = paymentInV5();
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV5();
-		ish.oncourse.webservices.v5.stubs.replication.ContactStub contactStub = contactV5();
-		ish.oncourse.webservices.v5.stubs.replication.StudentStub studentStub = studentV5();
-
-		
-		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-
-		stubs.add(paymentInStub2);
-		stubs.add(pLineStub2);
-		stubs.add(invLineStub2);
-		
-		stubs.add(enrolStub);
-		stubs.add(paymentInStub);
-		stubs.add(pLineStub);
-		stubs.add(invoiceStub);
-		stubs.add(invLineStub);
-		stubs.add(contactStub);
-		stubs.add(studentStub);
-		return group;
-	}
-	
-	private void conflictPaymentProcessingWithTheSameInvoice(GenericTransactionGroup respGroup) {
-		ICayenneService service = getService(ICayenneService.class);
-		ObjectContext context = service.newContext();
-		assertNotNull("Check Response Group is not null", respGroup);
-		GenericEnrolmentStub respEnrolStub = null;
-		GenericPaymentInStub respPaymentInStub = null;
-		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
-			if ("Enrolment".equals(stub.getEntityIdentifier())) {
-				respEnrolStub = (GenericEnrolmentStub) stub;
-			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
-				respPaymentInStub = (GenericPaymentInStub) stub;
-			}
-		}
-		assertNotNull("Check enrolment presents in response.", respEnrolStub);
-		assertNotNull("Check payment presents in response.", respPaymentInStub);
-		assertEquals("Check enrolment status.", "IN_TRANSACTION", respEnrolStub.getStatus());
-		
-		@SuppressWarnings("unchecked")
-		List<PaymentIn> payments = context.performQuery(new SelectQuery(PaymentIn.class, ExpressionFactory.inDbExp(PaymentIn.ID_PK_COLUMN, 1l,2l)));
-		for (PaymentIn paymentIn : payments) {
-			if (paymentIn.getAngelId().equals(1l)) {
-				assertEquals("Check payment status. ", PaymentStatus.FAILED, paymentIn.getStatus());
-				assertEquals("Only 1 paymentin line for failed payment should exist", 1, paymentIn.getPaymentInLines().size());
-				Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
-				for (PaymentInLine paymentInLine : invoice.getPaymentInLines()) {
-					//check that there are no reverse invoices linked
-					assertFalse("Invoice should not be linked with any success payment", 
-						PaymentStatus.SUCCESS.equals(paymentInLine.getPaymentIn().getStatus()));
-				}
-				for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
-					assertTrue("InvoiceLine price is positive", invoiceLine.getPriceEachIncTax().isGreaterThan(Money.ZERO));
-					Enrolment enrolment = invoiceLine.getEnrolment();
-					if (invoiceLine.getAngelId().equals(2l)) {
-						assertNull("This positive invoice have no enrolment", enrolment);
-					} else if (invoiceLine.getAngelId().equals(1l)) {
-						assertNotNull("This positive invoice have enrolment", enrolment);
-						assertEquals("Enrolment should be in transaction", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
-					} else {
-						assertFalse("Unexpected invoiceline", true);
-					}
-				}
-			} else if (paymentIn.getAngelId().equals(2l)) {
-				assertEquals("Check payment status. ", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
-			}
-		}
-	}
-	
-	@Test
-	public void conflictPaymentProcessingV4WithTheSameInvoice() throws Exception {
-		InternalPaymentService port = getService(InternalPaymentService.class);
-		GenericTransactionGroup respGroup = port.processPayment(conflictPaymentProcessingV4WithTheSameInvoiceData());
-		conflictPaymentProcessingWithTheSameInvoice(respGroup);
-	}
-	
-	@Test
-	public void conflictPaymentProcessingV5WithTheSameInvoice() throws Exception {
-		InternalPaymentService port = getService(InternalPaymentService.class);
-		GenericTransactionGroup respGroup = port.processPayment(conflictPaymentProcessingV5WithTheSameInvoiceData());
-		conflictPaymentProcessingWithTheSameInvoice(respGroup);
-	}
-	
-	private GenericTransactionGroup conflictPaymentProcessingV4WithManyInvoicesFirstPartData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
-		
-		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV4();
-		enrolStub2.setAngelId(2l);
-		enrolStub2.setInvoiceLineId(2l);
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = invoiceV4();		
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV4();
-		invLineStub2.setAngelId(2L);
-		invLineStub2.setEnrolmentId(2l);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub2 = paymentInV4();
-		paymentInStub2.setAngelId(2l);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub2 = paymentInLineV4();
-		pLineStub2.setAngelId(2l);
-		pLineStub2.setPaymentInId(2l);
-		
-		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		stubs.add(enrolStub2);
-		stubs.add(paymentInStub2);
-		stubs.add(pLineStub2);
-		stubs.add(invoiceStub);
-		stubs.add(invLineStub2);
-		return group;
-	}
-	
-	private GenericTransactionGroup conflictPaymentProcessingV4WithManyInvoicesSecondPartData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
-		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub = enrolmentV4();
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV4();
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = invoiceV4();
-		invoiceStub.setAmountOwing(invoiceStub.getAmountOwing().add(invLineStub.getPriceEachExTax()).add(invLineStub.getTaxEach()));
-		invoiceStub.setTotalExGst(invoiceStub.getTotalExGst().add(invLineStub.getPriceEachExTax()));
-		invoiceStub.setTotalGst(invoiceStub.getTotalGst().add(invLineStub.getPriceEachExTax()).add(invLineStub.getTaxEach()));
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = paymentInV4();
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV4();
-		ish.oncourse.webservices.v4.stubs.replication.ContactStub contactStub = contactV4();
-		ish.oncourse.webservices.v4.stubs.replication.StudentStub studentStub = studentV4();
-		
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub3 = invoiceV4();
-		invoiceStub3.setAngelId(3l);
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub3 = invoiceLineV4();
-		invLineStub3.setAngelId(3L);
-		invLineStub3.setInvoiceId(3l);
-		invLineStub3.setEnrolmentId(null);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub3 = paymentInLineV4();
-		pLineStub3.setAngelId(3l);
-		pLineStub3.setInvoiceId(3l);
-		
-		paymentInStub.setAmount(paymentInStub.getAmount().add(pLineStub3.getAmount()));
-		
-		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		stubs.add(enrolStub);
-		stubs.add(paymentInStub);
-		stubs.add(pLineStub);
-		stubs.add(invoiceStub);
-		stubs.add(invLineStub);
-		stubs.add(contactStub);
-		stubs.add(studentStub);
-		
-		stubs.add(invoiceStub3);
-		stubs.add(invLineStub3);
-		stubs.add(pLineStub3);
-		return group;
-	}
-	
-	private GenericTransactionGroup conflictPaymentProcessingV5WithManyInvoicesFirstPartData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
-		
-		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV5();
-		enrolStub2.setAngelId(2l);
-		enrolStub2.setInvoiceLineId(2l);
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = invoiceV5();		
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV5();
-		invLineStub2.setAngelId(2L);
-		invLineStub2.setEnrolmentId(2l);
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub2 = paymentInV5();
-		paymentInStub2.setAngelId(2l);
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub2 = paymentInLineV5();
-		pLineStub2.setAngelId(2l);
-		pLineStub2.setPaymentInId(2l);
-		
-		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		stubs.add(enrolStub2);
-		stubs.add(paymentInStub2);
-		stubs.add(pLineStub2);
-		stubs.add(invoiceStub);
-		stubs.add(invLineStub2);
-		return group;
-	}
-	
-	private GenericTransactionGroup conflictPaymentProcessingV5WithManyInvoicesSecondPartData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
-		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub = enrolmentV5();
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV5();
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = invoiceV5();
-		invoiceStub.setAmountOwing(invoiceStub.getAmountOwing().add(invLineStub.getPriceEachExTax()).add(invLineStub.getTaxEach()));
-		invoiceStub.setTotalExGst(invoiceStub.getTotalExGst().add(invLineStub.getPriceEachExTax()));
-		invoiceStub.setTotalGst(invoiceStub.getTotalGst().add(invLineStub.getPriceEachExTax()).add(invLineStub.getTaxEach()));
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub = paymentInV5();
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV5();
-		ish.oncourse.webservices.v5.stubs.replication.ContactStub contactStub = contactV5();
-		ish.oncourse.webservices.v5.stubs.replication.StudentStub studentStub = studentV5();
-		
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub3 = invoiceV5();
-		invoiceStub3.setAngelId(3l);
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub3 = invoiceLineV5();
-		invLineStub3.setAngelId(3L);
-		invLineStub3.setInvoiceId(3l);
-		invLineStub3.setEnrolmentId(null);
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub3 = paymentInLineV5();
-		pLineStub3.setAngelId(3l);
-		pLineStub3.setInvoiceId(3l);
-		
-		paymentInStub.setAmount(paymentInStub.getAmount().add(pLineStub3.getAmount()));
-		
-		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		stubs.add(enrolStub);
-		stubs.add(paymentInStub);
-		stubs.add(pLineStub);
-		stubs.add(invoiceStub);
-		stubs.add(invLineStub);
-		stubs.add(contactStub);
-		stubs.add(studentStub);
-		
-		stubs.add(invoiceStub3);
-		stubs.add(invLineStub3);
-		stubs.add(pLineStub3);
-		return group;
-	}
-	
-	private void conflictPaymentProcessingWithManyInvoices(GenericTransactionGroup respGroup) {
-		ICayenneService service = getService(ICayenneService.class);
-		ObjectContext context = service.newContext();
-		assertNotNull("Check Response Group is not null", respGroup);
-		GenericEnrolmentStub respEnrolStub = null;
-		GenericPaymentInStub respPaymentInStub = null;
-		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
-			if ("Enrolment".equals(stub.getEntityIdentifier())) {
-				respEnrolStub = (GenericEnrolmentStub) stub;
-			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
-				respPaymentInStub = (GenericPaymentInStub) stub;
-			}
-		}
-		assertNotNull("Check enrolment presents in response.", respEnrolStub);
-		assertNotNull("Check payment presents in response.", respPaymentInStub);
-		assertEquals("Check enrolment status.", "IN_TRANSACTION", respEnrolStub.getStatus());
-		
-		@SuppressWarnings("unchecked")
-		List<PaymentIn> payments = context.performQuery(new SelectQuery(PaymentIn.class, ExpressionFactory.inDbExp(PaymentIn.ID_PK_COLUMN, 1l,2l)));
-		for (PaymentIn paymentIn : payments) {
-			if (paymentIn.getAngelId().equals(1l)) {
-				assertEquals("Check payment status. ", PaymentStatus.FAILED, paymentIn.getStatus());
-				assertEquals("2 paymentin lines for failed payment should exist", 2, paymentIn.getPaymentInLines().size());
-				for (PaymentInLine payLine : paymentIn.getPaymentInLines()) {
-					Invoice invoice = payLine.getInvoice();
-					for (PaymentInLine paymentInLine : invoice.getPaymentInLines()) {
-						//check that there are no reverse invoices linked
-						assertFalse("Invoice should not be linked with any success payment", 
-							PaymentStatus.SUCCESS.equals(paymentInLine.getPaymentIn().getStatus()));
-					}
-					if (invoice.getAngelId().equals(1l)) {
-						assertEquals("2 invoicelines should be linked with this invoice", 2, invoice.getInvoiceLines().size());
-						for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
-							assertTrue("InvoiceLine price is positive", invoiceLine.getPriceEachIncTax().isGreaterThan(Money.ZERO));
-							Enrolment enrolment = invoiceLine.getEnrolment();
-							assertNotNull("This positive invoice have enrolment", enrolment);
-							assertEquals("Enrolment should be in transaction", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
-						}
-					} else if (invoice.getAngelId().equals(3l)) {
-						assertEquals("1 invoiceline should be linked with this invoice", 1, invoice.getInvoiceLines().size());
-						InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
-						assertTrue("InvoiceLine price is positive", invoiceLine.getPriceEachIncTax().isGreaterThan(Money.ZERO));
-						assertNull("This positive invoice have no enrolment", invoiceLine.getEnrolment());
-					} else {
-						assertFalse("Unexpected invoice id=" + invoice.getAngelId(), true);
-					}
-				}
-			} else if (paymentIn.getAngelId().equals(2l)) {
-				assertEquals("Check payment status. ", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
-			} else {
-				assertFalse("Unexpected payment id=" + paymentIn.getAngelId(), true);
-			}
-		}
-	}
-	
-	@Test
-	public void conflictPaymentProcessingV4WithManyInvoices() throws Exception {
-		InternalPaymentService port = getService(InternalPaymentService.class);
-		//process first payment attempt
-		port.processPayment(conflictPaymentProcessingV4WithManyInvoicesFirstPartData());
-		//process concurent payment attempt
-		GenericTransactionGroup respGroup = port.processPayment(conflictPaymentProcessingV4WithManyInvoicesSecondPartData());
-		conflictPaymentProcessingWithManyInvoices(respGroup);
-	}
-	
-	@Test
-	public void conflictPaymentProcessingV5WithManyInvoices() throws Exception {
-		InternalPaymentService port = getService(InternalPaymentService.class);
-		//process first payment attempt
-		port.processPayment(conflictPaymentProcessingV5WithManyInvoicesFirstPartData());
-		//process concurent payment attempt
-		GenericTransactionGroup respGroup = port.processPayment(conflictPaymentProcessingV5WithManyInvoicesSecondPartData());
-		conflictPaymentProcessingWithManyInvoices(respGroup);
-	}
-	
-	private GenericTransactionGroup conflictPaymentProcessingV4WithManyInvoicesWhenFailedPaymentAlsoFailEnrollmentFirstPartData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
-		
-		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV4();
-		enrolStub2.setAngelId(2l);
-		enrolStub2.setInvoiceLineId(2L);
-		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub3 = enrolmentV4();
-		enrolStub3.setAngelId(3l);
-		enrolStub3.setInvoiceLineId(3l);
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = invoiceV4();
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub3 = invoiceV4();
-		invoiceStub3.setAngelId(3l);
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub3 = invoiceLineV4();
-		invLineStub3.setAngelId(3L);
-		invLineStub3.setInvoiceId(3l);
-		invLineStub3.setEnrolmentId(3l);
-		
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV4();
-		invLineStub2.setAngelId(2L);
-		invLineStub2.setEnrolmentId(2l);
-				
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub2 = paymentInV4();
-		paymentInStub2.setAngelId(2l);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub2 = paymentInLineV4();
-		pLineStub2.setAngelId(2l);
-		pLineStub2.setPaymentInId(2l);
-		
-		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		stubs.add(enrolStub2);
-		stubs.add(enrolStub3);
-		stubs.add(paymentInStub2);
-		stubs.add(pLineStub2);
-		stubs.add(invoiceStub3);
-		stubs.add(invLineStub2);
-		stubs.add(invLineStub3);
-		stubs.add(invoiceStub);
-		return group;
-	}
-	
-	private GenericTransactionGroup conflictPaymentProcessingV4WithManyInvoicesWhenFailedPaymentAlsoFailEnrollmentSecondPartData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub3 = paymentInLineV4();
-		pLineStub3.setAngelId(3l);
-		pLineStub3.setInvoiceId(3l);
-		
-		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub = enrolmentV4();
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = invoiceV4();
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV4();
-		//adjust concurent invoice owing
-		invoiceStub.setAmountOwing(invoiceStub.getAmountOwing().add(invLineStub.getPriceEachExTax()).add(invLineStub.getTaxEach()));
-		invoiceStub.setTotalExGst(invoiceStub.getTotalExGst().add(invLineStub.getPriceEachExTax()));
-		invoiceStub.setTotalGst(invoiceStub.getTotalGst().add(invLineStub.getPriceEachExTax()).add(invLineStub.getTaxEach()));
-		
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = paymentInV4();
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV4();
-		ish.oncourse.webservices.v4.stubs.replication.ContactStub contactStub = contactV4();
-		ish.oncourse.webservices.v4.stubs.replication.StudentStub studentStub = studentV4();
-		
-		paymentInStub.setAmount(paymentInStub.getAmount().add(pLineStub3.getAmount()));
-
-		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		stubs.add(pLineStub3);
-		
-		stubs.add(enrolStub);
-		stubs.add(paymentInStub);
-		stubs.add(pLineStub);
-		stubs.add(invoiceStub);
-		stubs.add(invLineStub);
-		stubs.add(contactStub);
-		stubs.add(studentStub);
-		return group;
-	}
-	
-	private GenericTransactionGroup conflictPaymentProcessingV5WithManyInvoicesWhenFailedPaymentAlsoFailEnrollmentFirstPartData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
-		
-		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV5();
-		enrolStub2.setAngelId(2l);
-		enrolStub2.setInvoiceLineId(2L);
-		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub3 = enrolmentV5();
-		enrolStub3.setAngelId(3l);
-		enrolStub3.setInvoiceLineId(3l);
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = invoiceV5();
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub3 = invoiceV5();
-		invoiceStub3.setAngelId(3l);
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub3 = invoiceLineV5();
-		invLineStub3.setAngelId(3L);
-		invLineStub3.setInvoiceId(3l);
-		invLineStub3.setEnrolmentId(3l);
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV5();
-		invLineStub2.setAngelId(2L);
-		invLineStub2.setEnrolmentId(2l);
-		
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub2 = paymentInV5();
-		paymentInStub2.setAngelId(2l);
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub2 = paymentInLineV5();
-		pLineStub2.setAngelId(2l);
-		pLineStub2.setPaymentInId(2l);
-		
-		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		stubs.add(enrolStub2);
-		stubs.add(enrolStub3);
-		stubs.add(paymentInStub2);
-		stubs.add(pLineStub2);
-		stubs.add(invoiceStub3);
-		stubs.add(invLineStub2);
-		stubs.add(invLineStub3);
-		stubs.add(invoiceStub);
-		return group;
-	}
-	
-	private GenericTransactionGroup conflictPaymentProcessingV5WithManyInvoicesWhenFailedPaymentAlsoFailEnrollmentSecondPartData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub3 = paymentInLineV5();
-		pLineStub3.setAngelId(3l);
-		pLineStub3.setInvoiceId(3l);
-		
-		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub = enrolmentV5();
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV5();
-		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = invoiceV5();
-		//adjust concurent invoice owing
-		invoiceStub.setAmountOwing(invoiceStub.getAmountOwing().add(invLineStub.getPriceEachExTax()).add(invLineStub.getTaxEach()));
-		invoiceStub.setTotalExGst(invoiceStub.getTotalExGst().add(invLineStub.getPriceEachExTax()));
-		invoiceStub.setTotalGst(invoiceStub.getTotalGst().add(invLineStub.getPriceEachExTax()).add(invLineStub.getTaxEach()));
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub = paymentInV5();
-		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV5();
-		ish.oncourse.webservices.v5.stubs.replication.ContactStub contactStub = contactV5();
-		ish.oncourse.webservices.v5.stubs.replication.StudentStub studentStub = studentV5();
-		
-		paymentInStub.setAmount(paymentInStub.getAmount().add(pLineStub3.getAmount()));
-
-		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-		stubs.add(pLineStub3);
-		
-		stubs.add(enrolStub);
-		stubs.add(paymentInStub);
-		stubs.add(pLineStub);
-		//stubs.add(invoiceStub);
-		stubs.add(invLineStub);
-		stubs.add(contactStub);
-		stubs.add(studentStub);
-		return group;
-	}
-	
-	private void conflictPaymentProcessingWithManyInvoicesWhenFailedPaymentAlsoFailEnrollment(GenericTransactionGroup respGroup) {
-		ICayenneService service = getService(ICayenneService.class);
-		ObjectContext context = service.newContext();
-		assertNotNull("Check Response Group is not null", respGroup);
-		GenericEnrolmentStub respEnrolStub = null;
-		GenericPaymentInStub respPaymentInStub = null;
-		for (GenericReplicationStub stub : respGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
-			if ("Enrolment".equals(stub.getEntityIdentifier())) {
-				respEnrolStub = (GenericEnrolmentStub) stub;
-			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
-				respPaymentInStub = (GenericPaymentInStub) stub;
-			}
-		}
-		assertNotNull("Check enrolment presents in response.", respEnrolStub);
-		assertNotNull("Check payment presents in response.", respPaymentInStub);
-		
-		@SuppressWarnings("unchecked")
-		List<PaymentIn> payments = context.performQuery(new SelectQuery(PaymentIn.class, ExpressionFactory.inDbExp(PaymentIn.ID_PK_COLUMN, 1l,2l)));
-		for (PaymentIn paymentIn : payments) {
-			if (paymentIn.getAngelId().equals(1l)) {
-				assertEquals("Check payment status. ", PaymentStatus.FAILED, paymentIn.getStatus());
-				assertEquals("2 paymentin lines for failed payment should exist", 2, paymentIn.getPaymentInLines().size());
-				for (PaymentInLine payLine : paymentIn.getPaymentInLines()) {
-					Invoice invoice = payLine.getInvoice();
-					for (PaymentInLine paymentInLine : invoice.getPaymentInLines()) {
-						//check that there are no reverse invoices linked
-						PaymentIn pay = paymentInLine.getPaymentIn();
-						if (pay.getId() != null && pay.getAngelId() != null) {
-							assertFalse("Payments passed to system for processing should not be success", 
-								PaymentStatus.SUCCESS.equals(pay.getStatus()));
-						} else {
-							assertTrue("Payment without angelid is a reverse payment",PaymentStatus.SUCCESS.equals(pay.getStatus()));
-							assertEquals("Two invoices should be linked with this payment", 2, pay.getPaymentInLines().size());pay.getPaymentInLines().size();
-							for (PaymentInLine line : pay.getPaymentInLines()) {
-								Invoice inv = line.getInvoice();
-								if (inv.getAngelId() != null && inv.getAngelId().equals(3l)) {
-									assertTrue("Incorrect amount for paymentInline with angelid="+ line.getAngelId(), line.getAmount().compareTo(Money.ZERO) > 0);
-								} else if (inv.getAngelId() == null) {
-									assertTrue("Incorrect amount for paymentInline with angelid="+ line.getAngelId(), line.getAmount().compareTo(Money.ZERO) < 0);
-									assertEquals("1 invoiceline should be linked with reverse invoice", 1, inv.getInvoiceLines().size());
-									assertNull("No enrolment should be linked to reverse invoice", inv.getInvoiceLines().get(0).getEnrolment());
-								} else {
-									assertFalse("Unexpected invoice with id=" + inv.getId(), true);
-								}
-							}
-						}
-					}
-					if (invoice.getAngelId().equals(1l)) {
-						assertEquals("Invoice should be linked with both payments", 2, invoice.getPaymentInLines().size());
-						assertEquals("2 invoicelines should be linked with this invoice", 2, invoice.getInvoiceLines().size());
-						for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
-							Enrolment enrol = invoiceLine.getEnrolment();
-							if (invoiceLine.getAngelId().equals(2l)) {
-								assertNotNull("Enrol for invoiceline with angelid=2 should not be empty", enrol);
-								assertEquals("Enrol for invoiceline with angelid=2 should have angelid=2", 2l, enrol.getAngelId().longValue());
-							} else if(invoiceLine.getAngelId().equals(1l)) {
-								assertNotNull("Enrol for invoiceline with angelid=1 should not be empty", enrol);
-								assertEquals("Enrol for invoiceline with angelid=1 should have angelid=1", 1l, enrol.getAngelId().longValue());
-							} else {
-								assertFalse("Unexpected invoiceline with angelid="+ invoiceLine.getAngelId(), true);
-							}
-							assertEquals("Enrolment for this invoice should have in transaction status", EnrolmentStatus.IN_TRANSACTION, enrol.getStatus());
-						}
-					} else if(invoice.getAngelId().equals(3l)) {
-						assertEquals("Invoice should be linked with both payments", 2, invoice.getPaymentInLines().size());
-						assertEquals("1 invoiceline should be linked with this invoice", 1, invoice.getInvoiceLines().size());
-						InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
-						assertEquals("Invoice line should have angelid=3", 3l, invoiceLine.getAngelId().longValue());
-						Enrolment enrol = invoiceLine.getEnrolment();
-						assertNotNull("Enrolment linked with this invoiceline shoul be not null", enrol);
-						assertEquals("Enrolment should have angelid=3", 3l, enrol.getAngelId().longValue());
-						assertEquals("This enrollment should be failed", EnrolmentStatus.FAILED, enrol.getStatus());
-					} else {
-						assertFalse("Unexpected invoice with angelid="+ invoice.getAngelId(), true);
-					}
-				}
-			} else if (paymentIn.getAngelId().equals(2l)) {
-				assertEquals("Check payment status. ", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
-			} else {
-				assertFalse("Unexpected payment with angelid="+ paymentIn.getAngelId(), true);
-			}
-		}
-	}
-	
-	@Test
-	public void conflictPaymentProcessingV4WithManyInvoicesWhenFailedPaymentAlsoFailEnrollment() throws Exception {
-		InternalPaymentService port = getService(InternalPaymentService.class);
-		//process first payment attempt
-		port.processPayment(conflictPaymentProcessingV4WithManyInvoicesWhenFailedPaymentAlsoFailEnrollmentFirstPartData());
-		//process concurent payment attempt
-		GenericTransactionGroup respGroup = port.processPayment(conflictPaymentProcessingV4WithManyInvoicesWhenFailedPaymentAlsoFailEnrollmentSecondPartData());
-		conflictPaymentProcessingWithManyInvoicesWhenFailedPaymentAlsoFailEnrollment(respGroup);
-	}
-	
-	@Test
-	public void conflictPaymentProcessingV5WithManyInvoicesWhenFailedPaymentAlsoFailEnrollment() throws Exception {
-		InternalPaymentService port = getService(InternalPaymentService.class);
-		//process first payment attempt
-		port.processPayment(conflictPaymentProcessingV5WithManyInvoicesWhenFailedPaymentAlsoFailEnrollmentFirstPartData());
-		//process concurent payment attempt
-		GenericTransactionGroup respGroup = port.processPayment(conflictPaymentProcessingV5WithManyInvoicesWhenFailedPaymentAlsoFailEnrollmentSecondPartData());
-		conflictPaymentProcessingWithManyInvoicesWhenFailedPaymentAlsoFailEnrollment(respGroup);
-	}
-	
 	@Test
 	public void testV4ZeroPaymentForFreeInvoice() throws Exception {
 		notCreditCardOrZeroPaymentV4(true, true, false);
@@ -903,7 +310,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 	public void testV5ZeroPaymentForFreeInvoiceWithoutPlaces() throws Exception {
 		notCreditCardOrZeroPaymentV5(true, true, true);
 	}
-	
+
 	private GenericTransactionGroup notCreditCardOrZeroPaymentV5Data(boolean isZeroPayment, boolean isFreeInvoice, boolean withoutPlaces) {
 		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
 		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub = enrolmentV5();
@@ -936,7 +343,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 			enrolStub.setCourseClassId(courseClassStub.getAngelId());
 			stubs.add(courseClassStub);
 		}
-		
+
 		stubs.add(enrolStub);
 		stubs.add(paymentInStub);
 		stubs.add(pLineStub);
@@ -946,7 +353,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		stubs.add(studentStub);
 		return group;
 	}
-	
+
 	private GenericTransactionGroup notCreditCardOrZeroPaymentV4Data(boolean isZeroPayment, boolean isFreeInvoice, boolean withoutPlaces) {
 		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
 		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub = enrolmentV4();
@@ -987,7 +394,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		stubs.add(studentStub);
 		return group;
 	}
-	
+
 	private void notCreditCardOrZeroPayment(GenericTransactionGroup respGroup, boolean isZeroPayment, boolean isFreeInvoice, boolean withoutPlaces) {
 		assertNotNull("Check Response Group is not null", respGroup);
 
@@ -1021,7 +428,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		GenericTransactionGroup respGroup = port.processPayment(notCreditCardOrZeroPaymentV4Data(isZeroPayment, isFreeInvoice, withoutPlaces));
 		notCreditCardOrZeroPayment(respGroup, isZeroPayment, isFreeInvoice, withoutPlaces);
 	}
-	
+
 	private void notCreditCardOrZeroPaymentV5(boolean isZeroPayment, boolean isFreeInvoice, boolean withoutPlaces) throws Exception {
 		InternalPaymentService port = getService(InternalPaymentService.class);
 		GenericTransactionGroup respGroup = port.processPayment(notCreditCardOrZeroPaymentV5Data(isZeroPayment, isFreeInvoice, withoutPlaces));
@@ -1256,7 +663,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		
 		assertTrue(attendanceCount != 0);
 		
-		PaymentIn inversePayment = payment.abandonPayment();
+		PaymentIn inversePayment = payment.abandonPayment().iterator().next();
 		context.commitChanges();
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", inversePayment.getSessionId(), payment.getSessionId());
 		assertEquals("Expecting that attendances remain in the database. Will be deleted later from Angel.", attendanceCount, dbUnitConnection.getRowCount("Attendance"));

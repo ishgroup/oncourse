@@ -9,10 +9,13 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.util.payment.PaymentInAbandonUtil;
+import ish.oncourse.utils.PaymentInUtil;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -22,6 +25,7 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -41,7 +45,6 @@ private ICayenneService cayenneService;
 		this.cayenneService = getService(ICayenneService.class);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testMultipleEnrollmentsExpireAbandon() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -99,7 +102,7 @@ private ICayenneService cayenneService;
 		assertEquals("InvoiceLines list should have 2 records", 2, invoice.getInvoiceLines().size());
 
 		//emulate run abandon by system
-		PaymentInAbandonUtil.abandonPayment(paymentIn, true);
+		PaymentInUtil.abandonPayment(paymentIn, true);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class,
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -138,7 +141,6 @@ private ICayenneService cayenneService;
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testInTransactionEnrollManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -191,7 +193,7 @@ private ICayenneService cayenneService;
 		assertNotNull("Now enrollment should be linked to invoice line", enrolment);
 		assertEquals("Initial enrollment status should be in transaction", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
 		//emulate run abandon by user
-		PaymentInAbandonUtil.abandonPayment(paymentIn, true);
+		PaymentInUtil.abandonPayment(paymentIn, true);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -216,8 +218,7 @@ private ICayenneService cayenneService;
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, reverseInvoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Test
 	public void testInTransactionEnrollNotManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -270,7 +271,7 @@ private ICayenneService cayenneService;
 		assertNotNull("Now enrollment should be linked to invoice line", enrolment);
 		assertEquals("Initial enrollment status should be in transaction", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
 		//emulate run abandon by expire job
-		PaymentInAbandonUtil.abandonPayment(paymentIn, false);
+		PaymentInUtil.abandonPayment(paymentIn, false);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -281,8 +282,7 @@ private ICayenneService cayenneService;
 			invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Test
 	public void testSuccessEnrollManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -335,7 +335,7 @@ private ICayenneService cayenneService;
 		assertNotNull("Now enrollment should be linked to invoice line", enrolment);
 		assertEquals("Initial enrollment status should be in success", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 		//emulate run abandon by user
-		PaymentInAbandonUtil.abandonPayment(paymentIn, true);
+		PaymentInUtil.abandonPayment(paymentIn, true);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -346,8 +346,7 @@ private ICayenneService cayenneService;
 		assertEquals("Amount owing after abandon should be original", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be success", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Test
 	public void testSuccessEnrollNotManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -400,7 +399,7 @@ private ICayenneService cayenneService;
 		assertNotNull("Now enrollment should be linked to invoice line", enrolment);
 		assertEquals("Initial enrollment status should be success", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 		//emulate run abandon by expire job
-		PaymentInAbandonUtil.abandonPayment(paymentIn, false);
+		PaymentInUtil.abandonPayment(paymentIn, false);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -410,8 +409,7 @@ private ICayenneService cayenneService;
 		assertEquals("Amount owing after abandon should be original", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should success", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Test
 	public void testManuallyAbandonPaymentReverseInvoiceForManuallInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -438,7 +436,7 @@ private ICayenneService cayenneService;
 		context.commitChanges();
 		
 		//emulate run abandon by user
-		PaymentInAbandonUtil.abandonPayment(paymentIn, true);
+		PaymentInUtil.abandonPayment(paymentIn, true);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -462,8 +460,7 @@ private ICayenneService cayenneService;
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, invoice.getAmountOwing());
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, reverseInvoice.getAmountOwing());
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Test
 	public void testNotManuallyAbandonPaymentReverseInvoiceForManuallInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -490,7 +487,7 @@ private ICayenneService cayenneService;
 		context.commitChanges();
 		
 		//emulate run abandon by expire job
-		PaymentInAbandonUtil.abandonPayment(paymentIn, false);
+		PaymentInUtil.abandonPayment(paymentIn, false);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -499,8 +496,7 @@ private ICayenneService cayenneService;
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 120", new Money("120.00"), invoice.getAmountOwing());
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Test
 	public void testActiveVoucherManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -557,7 +553,7 @@ private ICayenneService cayenneService;
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
 		//emulate run abandon by user
-		PaymentInAbandonUtil.abandonPayment(paymentIn, true);
+		PaymentInUtil.abandonPayment(paymentIn, true);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -582,8 +578,7 @@ private ICayenneService cayenneService;
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO, reverseInvoice.getAmountOwing());
 		//assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Test
 	public void testActiveVoucherNotManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -640,7 +635,7 @@ private ICayenneService cayenneService;
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
 		//emulate run abandon by expire job
-		PaymentInAbandonUtil.abandonPayment(paymentIn, false);
+		PaymentInUtil.abandonPayment(paymentIn, false);
 		//re-load data
 		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
 			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
@@ -652,4 +647,159 @@ private ICayenneService cayenneService;
 		//assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 	}
 
+	@Test
+	public void testFailVoucherPaymentReverseInvoice() {
+		ObjectContext context = cayenneService.newContext();
+
+		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 5);
+
+		Invoice invoice = Cayenne.objectForPK(context, Invoice.class, 4);
+
+		PaymentIn moneyPayment = Cayenne.objectForPK(context, PaymentIn.class, 400);
+		PaymentIn voucherPayment = Cayenne.objectForPK(context, PaymentIn.class, 500);
+
+		assertEquals(ProductStatus.REDEEMED, voucher.getStatus());
+		assertEquals(Money.ZERO, voucher.getValueRemaining());
+
+		assertEquals(2, invoice.getPaymentInLines().size());
+		assertEquals(1, invoice.getInvoiceLines().size());
+		assertEquals(new Money("120.0"), invoice.getInvoiceLines().get(0).getPriceTotalIncTax());
+
+		assertEquals(new Money("50.0"), moneyPayment.getAmount());
+		assertEquals(new Money("70.0"), voucherPayment.getAmount());
+
+		assertEquals(PaymentStatus.IN_TRANSACTION, moneyPayment.getStatus());
+		assertEquals(PaymentStatus.IN_TRANSACTION, voucherPayment.getStatus());
+
+		PaymentInUtil.abandonPayment(moneyPayment, true);
+
+		assertEquals(ProductStatus.ACTIVE, voucher.getStatus());
+		assertEquals(new Money("70.0"), voucher.getValueRemaining());
+
+		assertEquals(4, invoice.getPaymentInLines().size());
+		assertEquals(1, invoice.getInvoiceLines().size());
+		assertEquals(new Money("120.0"), invoice.getInvoiceLines().get(0).getPriceTotalIncTax());
+
+		assertEquals(new Money("50.0"), moneyPayment.getAmount());
+		assertEquals(new Money("70.0"), voucherPayment.getAmount());
+
+		assertEquals(PaymentStatus.FAILED, moneyPayment.getStatus());
+		assertEquals(PaymentStatus.FAILED, voucherPayment.getStatus());
+
+		assertEquals(Money.ZERO, invoice.getAmountOwing());
+
+		SelectQuery query = new SelectQuery(Invoice.class);
+		query.addOrdering(new Ordering(Invoice.INVOICE_DATE_PROPERTY, SortOrder.DESCENDING));
+
+		Invoice refundInvoice = (Invoice) context.performQuery(query).get(0);
+
+		assertNotEquals(invoice, refundInvoice);
+
+		assertEquals(1, refundInvoice.getInvoiceLines().size());
+		assertEquals(new Money("-120.0"), refundInvoice.getInvoiceLines().get(0).getPriceTotalIncTax());
+
+		assertEquals(2, refundInvoice.getPaymentInLines().size());
+
+		List<PaymentInLine> refundPaymentLines = refundInvoice.getPaymentInLines();
+
+		Ordering.orderList(refundPaymentLines, Arrays.asList(new Ordering(PaymentInLine.AMOUNT_PROPERTY, SortOrder.ASCENDING)));
+
+		assertEquals(new Money("-70.0"), refundInvoice.getPaymentInLines().get(0).getAmount());
+		assertEquals(new Money("-50.0"), refundInvoice.getPaymentInLines().get(1).getAmount());
+
+		PaymentIn voucherReversePayment = refundInvoice.getPaymentInLines().get(0).getPaymentIn();
+		PaymentIn moneyReversePayment = refundInvoice.getPaymentInLines().get(1).getPaymentIn();
+
+		assertNotEquals(voucherReversePayment, moneyReversePayment);
+		assertEquals(PaymentType.REVERSE, voucherReversePayment.getType());
+		assertEquals(PaymentType.REVERSE, moneyReversePayment.getType());
+
+		assertEquals(PaymentStatus.SUCCESS, voucherReversePayment.getStatus());
+		assertEquals(PaymentStatus.SUCCESS, moneyReversePayment.getStatus());
+	}
+
+	@Test
+	public void testFailVoucherPaymentKeepInvoice() {
+		ObjectContext context = cayenneService.newContext();
+
+		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 5);
+
+		Invoice invoice = Cayenne.objectForPK(context, Invoice.class, 4);
+
+		PaymentIn moneyPayment = Cayenne.objectForPK(context, PaymentIn.class, 400);
+		PaymentIn voucherPayment = Cayenne.objectForPK(context, PaymentIn.class, 500);
+
+		assertEquals(ProductStatus.REDEEMED, voucher.getStatus());
+		assertEquals(Money.ZERO, voucher.getValueRemaining());
+
+		assertEquals(2, invoice.getPaymentInLines().size());
+		assertEquals(1, invoice.getInvoiceLines().size());
+		assertEquals(new Money("120.0"), invoice.getInvoiceLines().get(0).getPriceTotalIncTax());
+
+		assertEquals(new Money("50.0"), moneyPayment.getAmount());
+		assertEquals(new Money("70.0"), voucherPayment.getAmount());
+
+		assertEquals(PaymentStatus.IN_TRANSACTION, moneyPayment.getStatus());
+		assertEquals(PaymentStatus.IN_TRANSACTION, voucherPayment.getStatus());
+
+		PaymentInUtil.abandonPayment(moneyPayment, false);
+
+		assertEquals(ProductStatus.ACTIVE, voucher.getStatus());
+		assertEquals(new Money("70.0"), voucher.getValueRemaining());
+
+		assertEquals(2, invoice.getPaymentInLines().size());
+		assertEquals(1, invoice.getInvoiceLines().size());
+		assertEquals(new Money("120.0"), invoice.getInvoiceLines().get(0).getPriceTotalIncTax());
+
+		assertEquals(new Money("50.0"), moneyPayment.getAmount());
+		assertEquals(new Money("70.0"), voucherPayment.getAmount());
+
+		assertEquals(PaymentStatus.FAILED, moneyPayment.getStatus());
+		assertEquals(PaymentStatus.FAILED, voucherPayment.getStatus());
+
+		assertEquals(new Money("120.0"), invoice.getAmountOwing());
+	}
+
+	@Test
+	public void testSucceedVoucherPayment() {
+		ObjectContext context = cayenneService.newContext();
+
+		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 5);
+
+		Invoice invoice = Cayenne.objectForPK(context, Invoice.class, 4);
+
+		PaymentIn moneyPayment = Cayenne.objectForPK(context, PaymentIn.class, 400);
+		PaymentIn voucherPayment = Cayenne.objectForPK(context, PaymentIn.class, 500);
+
+		assertEquals(ProductStatus.REDEEMED, voucher.getStatus());
+		assertEquals(Money.ZERO, voucher.getValueRemaining());
+
+		assertEquals(2, invoice.getPaymentInLines().size());
+		assertEquals(1, invoice.getInvoiceLines().size());
+		assertEquals(new Money("120.0"), invoice.getInvoiceLines().get(0).getPriceTotalIncTax());
+
+		assertEquals(new Money("50.0"), moneyPayment.getAmount());
+		assertEquals(new Money("70.0"), voucherPayment.getAmount());
+
+		assertEquals(PaymentStatus.IN_TRANSACTION, moneyPayment.getStatus());
+		assertEquals(PaymentStatus.IN_TRANSACTION, voucherPayment.getStatus());
+
+		// succeed payment
+		moneyPayment.succeed();
+
+		assertEquals(ProductStatus.REDEEMED, voucher.getStatus());
+		assertEquals(Money.ZERO, voucher.getValueRemaining());
+
+		assertEquals(2, invoice.getPaymentInLines().size());
+		assertEquals(1, invoice.getInvoiceLines().size());
+		assertEquals(new Money("120.0"), invoice.getInvoiceLines().get(0).getPriceTotalIncTax());
+
+		assertEquals(new Money("50.0"), moneyPayment.getAmount());
+		assertEquals(new Money("70.0"), voucherPayment.getAmount());
+
+		assertEquals(PaymentStatus.SUCCESS, moneyPayment.getStatus());
+		assertEquals(PaymentStatus.SUCCESS, voucherPayment.getStatus());
+
+		assertEquals(Money.ZERO, invoice.getAmountOwing());
+	}
 }

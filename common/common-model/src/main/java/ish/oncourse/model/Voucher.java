@@ -124,5 +124,12 @@ public class Voucher extends _Voucher implements Queueable {
 	public boolean canBeUsedBy(Contact contact) {
 		return getContact() == null || getContact().equals(contact);
 	}
-	
+
+	/**
+	 * Returns true if voucher can be redeemed for money, false if it can be redeemed for
+	 * enrolments count.
+	 */
+	public boolean isMoneyVoucher() {
+		return getVoucherProduct().getMaxCoursesRedemption() == null;
+	}
 }

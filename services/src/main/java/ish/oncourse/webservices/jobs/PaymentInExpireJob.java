@@ -7,7 +7,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.util.payment.PaymentInAbandonUtil;
+import ish.oncourse.utils.PaymentInUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -70,7 +70,7 @@ public class PaymentInExpireJob implements Job {
 					//web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.
 					boolean shouldReverseInvoice = PaymentSource.SOURCE_WEB.equals(p.getSource());
 					p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
-					PaymentInAbandonUtil.abandonPayment(p, shouldReverseInvoice);
+					PaymentInUtil.abandonPayment(p, shouldReverseInvoice);
 				}
             }
 			logger.debug("PaymentInExpireJob finished.");

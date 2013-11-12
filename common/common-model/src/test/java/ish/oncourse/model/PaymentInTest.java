@@ -544,7 +544,7 @@ public class PaymentInTest {
 
 		context.commitChanges();
 
-		PaymentIn inversePayment = paymentIn.abandonPayment();
+		PaymentIn inversePayment = paymentIn.abandonPayment().iterator().next();
 
 		assertNotNull("Expecting not null inverse payment.", inversePayment);
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", inversePayment.getSessionId(), paymentIn.getSessionId());

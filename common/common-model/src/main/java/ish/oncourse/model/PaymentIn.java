@@ -4,6 +4,7 @@ import ish.common.types.*;
 import ish.common.util.ExternalValidation;
 import ish.math.Money;
 import ish.oncourse.model.auto._PaymentIn;
+import ish.oncourse.utils.PaymentInUtil;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.CreditCardUtil;
 import org.apache.cayenne.validation.ValidationResult;
@@ -225,12 +226,19 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	public void succeed() {
 		setStatus(PaymentStatus.SUCCESS);
 
+		// succeed all related voucher payments
+		for (PaymentIn voucherPayment : PaymentInUtil.getRelatedVoucherPayments(this)) {
+			if (!PaymentStatus.STATUSES_FINAL.contains(voucherPayment.getStatus())) {
+				voucherPayment.setStatus(PaymentStatus.SUCCESS);
+			}
+		}
+
 		Invoice activeInvoice = findActiveInvoice();
 		Date today = new Date();
 
 		if (activeInvoice != null) {
 			activeInvoice.setModified(today);
-			new PaymentInUtils().makeSuccess(activeInvoice.getInvoiceLines());
+			PaymentInUtil.makeSuccess(activeInvoice.getInvoiceLines());
 		}
 	}
 		
@@ -257,46 +265,55 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		return activeInvoice;
 	}
 	
-	public static PaymentIn createRefundInvoice(PaymentInLine paymentInLineToRefund, Date modifiedTime) {
-		// Creating internal payment, with zero amount which will be
-		// linked to invoiceToRefund, and refundInvoice.
-		Invoice invoiceToRefund = paymentInLineToRefund.getInvoice();
+	public Collection<PaymentIn> createRefundInvoice(Invoice invoiceToRefund, Collection<PaymentInLine> paymentInLinesToRefund) {
 		invoiceToRefund.updateAmountOwing();
-		PaymentIn internalPayment = null;
+
+		Set<PaymentIn> refundPayments = new HashSet<>();
+
 		//if the owing already balanced, no reason to create any refund invoice
 		if (!Money.isZeroOrEmpty(invoiceToRefund.getAmountOwing())) {
-			internalPayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
-			internalPayment.setAmount(Money.ZERO);
-			internalPayment.setType(PaymentType.REVERSE);
-			internalPayment.setStatus(PaymentStatus.SUCCESS);
-			String sessionId = paymentInLineToRefund.getPaymentIn().getSessionId();
-			if (StringUtils.trimToNull(sessionId) != null) {
-				internalPayment.setSessionId(sessionId);
-			}
-			
+
 			// Creating refund invoice
 			Invoice refundInvoice = invoiceToRefund.createRefundInvoice();
 			LOG.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
-				invoiceToRefund.getId()));
+					invoiceToRefund.getId()));
 
-			PaymentInLine refundPL = paymentInLineToRefund.getObjectContext().newObject(PaymentInLine.class);
-			refundPL.setAmount(Money.ZERO.subtract(paymentInLineToRefund.getAmount()));
-			refundPL.setCollege(paymentInLineToRefund.getCollege());
-			refundPL.setInvoice(refundInvoice);
-			refundPL.setPaymentIn(internalPayment);
+			for (PaymentInLine paymentInLineToRefund : paymentInLinesToRefund) {
 
-			PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
-			paymentInLineToRefundCopy.setPaymentIn(internalPayment);
+				PaymentIn internalPayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
+				internalPayment.setAmount(Money.ZERO);
+				internalPayment.setType(PaymentType.REVERSE);
+				internalPayment.setStatus(PaymentStatus.SUCCESS);
+				String sessionId = paymentInLineToRefund.getPaymentIn().getSessionId();
+				if (StringUtils.trimToNull(sessionId) != null) {
+					internalPayment.setSessionId(sessionId);
+				}
+
+				PaymentInLine refundPL = paymentInLineToRefund.getObjectContext().newObject(PaymentInLine.class);
+				refundPL.setAmount(Money.ZERO.subtract(paymentInLineToRefund.getAmount()));
+				refundPL.setCollege(paymentInLineToRefund.getCollege());
+				refundPL.setInvoice(refundInvoice);
+				refundPL.setPaymentIn(internalPayment);
+
+				PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
+				paymentInLineToRefundCopy.setPaymentIn(internalPayment);
+
+				invoiceToRefund.setModified(getModified());
+				paymentInLineToRefund.setModified(getModified());
+
+				refundPayments.add(internalPayment);
+			}
+
 		} else {
-			internalPayment = paymentInLineToRefund.getPaymentIn();
+			for (PaymentInLine paymentInLine : paymentInLinesToRefund) {
+				refundPayments.add(paymentInLine.getPaymentIn());
+			}
 		}
-		invoiceToRefund.setModified(modifiedTime);
-		paymentInLineToRefund.setModified(modifiedTime);
-		
-		// Fail enrollments on invoiceToRefund
-		new PaymentInUtils().makeFail(invoiceToRefund.getInvoiceLines());
 
-		return internalPayment;
+		// Fail enrollments on invoiceToRefund
+		PaymentInUtil.makeFail(invoiceToRefund.getInvoiceLines());
+
+		return refundPayments;
 	}
 
 	/**
@@ -305,7 +322,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * statuses to the related invoice and enrolment ( {@link EnrolmentStatus#FAILED} ).
 	 * Creates the refund invoice.
 	 */
-	public PaymentIn abandonPayment() {
+	public Collection<PaymentIn> abandonPayment() {
 
 		switch (getStatus()) {
 		case FAILED:
@@ -316,20 +333,24 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			setStatus(PaymentStatus.FAILED);
 		}
 
+		for (PaymentIn voucherPayment : PaymentInUtil.getRelatedVoucherPayments(this)) {
+			if (!PaymentStatus.STATUSES_FINAL.contains(voucherPayment.getStatus())) {
+				PaymentInUtil.reverseVoucherPayment(voucherPayment);
+			}
+		}
+
 		Date today = new Date();
 		setModified(today);
 
 		if (!getPaymentInLines().isEmpty()) {
 
 			// Pick up the newest invoice for refund.
-			PaymentInLine paymentInLineToRefund = null;
 			Invoice invoiceToRefund = null;
 
 			for (PaymentInLine line : getPaymentInLines()) {
 				Invoice invoice = line.getInvoice();
 				invoice.updateAmountOwing();
 				if (invoiceToRefund == null) {
-					paymentInLineToRefund = line;
 					invoiceToRefund = invoice;
 				} else {
 					// For angel payments use invoiceNumber to determine the
@@ -338,68 +359,30 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 					// across several invoices
 					if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
 						if (invoice.getInvoiceNumber() > invoiceToRefund.getInvoiceNumber()) {
-							paymentInLineToRefund = line;
 							invoiceToRefund = invoice;
 						}
 					} else {
 						// For willow payments, use willowId to determine
 						// the newest invoice.
 						if (invoice.getId() > invoiceToRefund.getId()) {
-							paymentInLineToRefund = line;
 							invoiceToRefund = invoice;
 						}
 					}
 				}
 			}
 			if (invoiceToRefund != null) {
-				PaymentIn internalPayment = createRefundInvoice(paymentInLineToRefund, today);
-				return internalPayment;
+				return createRefundInvoice(invoiceToRefund, new ArrayList<>(invoiceToRefund.getPaymentInLines()));
 			} else {
 				LOG.error(String.format("Can not find invoice to refund on paymentIn:%s.", getId()));
 			}
 		} else {
 			LOG.error(String.format("Can not abandon paymentIn:%s, since it doesn't have paymentInLines.", getId()));
 		}
-		return null;
-	}
-	
-	/**
-	 * Deprecated functionality
-	 * We should use PaymentInAbandonHelper#makeAbandon() instead of abandon.
-	 */
-	@Deprecated
-	private void revertTheVoucherRedemption() {
-		//also check that vouchers linked with the payment to avoid the state when vouchers will be partially used with abandoned payment.
-		final List<VoucherPaymentIn> objectsForDelete = new ArrayList<>();
-		for (VoucherPaymentIn voucherPaymentIn : getVoucherPaymentIns()) {
-			if (!PaymentType.VOUCHER.equals(getType())) {
-				LOG.error(String.format("Not voucher paymentIn with id %s have linked vouchers!", getId()));
-			}
-			if (VoucherPaymentStatus.APPROVED.equals(voucherPaymentIn.getStatus())) {
-				LOG.debug(String.format("We request abandon of paymentIn with id %s which contain the VoucherPaymentIn with id %s in %s status!", 
-					getId(), voucherPaymentIn.getId(), voucherPaymentIn.getStatus()));
-			}
-			Voucher voucher = voucherPaymentIn.getVoucher();
-			if (voucher.getVoucherProduct().getMaxCoursesRedemption() == null || 0 == voucher.getVoucherProduct().getMaxCoursesRedemption()) {
-				voucher.setRedemptionValue(voucher.getRedemptionValue().add(this.getAmount()));
-			} else {
-				voucher.setRedeemedCoursesCount(voucher.getRedeemedCoursesCount() - voucherPaymentIn.getEnrolmentsCount());
-			}
-			if (!voucher.isFullyRedeemed()) {
-				voucher.setStatus(ProductStatus.ACTIVE);
-			}
-			objectsForDelete.add(voucherPaymentIn);
-		}
-		if (!objectsForDelete.isEmpty()) {
-			//delete the relation after we successfully revert the voucher 
-			getObjectContext().deleteObjects(objectsForDelete);
-		}
+		return Collections.emptyList();
 	}
 
 	/**
 	 * Fails payment but makes invoice and enrolment sucess.
-	 * 
-	 * @return
 	 */
 	public void abandonPaymentKeepInvoice() {
 
@@ -413,12 +396,18 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			setStatus(PaymentStatus.FAILED);
 		}
 
+		for (PaymentIn voucherPayment : PaymentInUtil.getRelatedVoucherPayments(this)) {
+			if (!PaymentStatus.STATUSES_FINAL.contains(voucherPayment.getStatus())) {
+				PaymentInUtil.reverseVoucherPayment(voucherPayment);
+			}
+		}
+
 		Invoice activeInvoice = findActiveInvoice();
 		Date today = new Date();
 
 		if (activeInvoice != null) {
 			activeInvoice.setModified(today);
-			new PaymentInUtils().makeSuccess(activeInvoice.getInvoiceLines());
+			PaymentInUtil.makeSuccess(activeInvoice.getInvoiceLines());
 		}
 	}
 
@@ -634,62 +623,15 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		return getAmount().isZero();
 	}
 
-
 	/**
-	 * The class in the first step to move abandone paymentIn functionality to separate class
+	 * Returns voucher linked to the payment of {@link PaymentType#VOUCHER} type. Returns null for
+	 * payments of other types.
 	 */
-	private static class PaymentInUtils
-	{
-		private EnrolmentStatus enrolmentStatus;
-		private ProductStatus productStatus;
-		private List<InvoiceLine> invoiceLines;
-
-
-		public void makeFail(List<InvoiceLine> invoiceLines)
-		{
-			this.invoiceLines = invoiceLines;
-			enrolmentStatus = EnrolmentStatus.FAILED;
-			productStatus = ProductStatus.CANCELLED;
-			processInvoiceLines();
-
+	public Voucher getVoucher() {
+		if (PaymentType.VOUCHER.equals(getType()) && !getVoucherPaymentIns().isEmpty()) {
+			return getVoucherPaymentIns().get(0).getVoucher();
 		}
 
-		public void makeSuccess(List<InvoiceLine> invoiceLines)
-		{
-			this.invoiceLines = invoiceLines;
-			enrolmentStatus = EnrolmentStatus.SUCCESS;
-			productStatus = ProductStatus.ACTIVE;
-			processInvoiceLines();
-		}
-
-		private void processInvoiceLines() {
-			Date date = new Date();
-			for (InvoiceLine il : invoiceLines) {
-				il.setModified(date);
-				for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
-					ilDiscount.setModified(date);
-				}
-
-				Enrolment enrol = il.getEnrolment();
-				if (enrol != null) {
-					enrol.setModified(date);
-					if (enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
-						enrol.setStatus(enrolmentStatus);
-					}
-				}
-
-				List<ProductItem> productItems = new ArrayList<>();
-
-				productItems.addAll(il.getArticles());
-				productItems.addAll(il.getMemberships());
-				productItems.addAll(il.getVouchers());
-
-				for (ProductItem productItem : productItems) {
-					if (productItem.getStatus() == ProductStatus.NEW)
-						productItem.setStatus(productStatus);
-				}
-			}
-		}
-
+		return null;
 	}
 }

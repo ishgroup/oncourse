@@ -6,6 +6,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.utils.PaymentInUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
@@ -206,7 +207,6 @@ public class PaymentProcessController {
 
     }
 
-
     /**
      * Abandon payment, reverses invoices
      *
@@ -215,7 +215,7 @@ public class PaymentProcessController {
      */
     private void abandonPayment(PaymentAction action, boolean reverseInvoice) {
         changeProcessState(PROCESSING_ABANDON);
-        PaymentInAbandonUtil.abandonPayment(paymentIn, reverseInvoice);
+        PaymentInUtil.abandonPayment(paymentIn, reverseInvoice);
 		switch (action)
 		{
 			case ABANDON_PAYMENT:
