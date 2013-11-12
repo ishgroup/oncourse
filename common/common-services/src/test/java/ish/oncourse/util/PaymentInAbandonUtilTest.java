@@ -48,11 +48,8 @@ private ICayenneService cayenneService;
 	@Test
 	public void testMultipleEnrollmentsExpireAbandon() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class,
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 20L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn paymentIn = paymentIns.get(0);
+
+		PaymentIn paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 20);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -88,11 +85,7 @@ private ICayenneService cayenneService;
 		context.commitChanges();
 
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class,
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 20L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		paymentIn = paymentIns.get(0);
+		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 20);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -104,11 +97,10 @@ private ICayenneService cayenneService;
 		//emulate run abandon by system
 		PaymentInUtil.abandonPayment(paymentIn, true);
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class,
-			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn reversePaymentIn = paymentIns.get(0);
+
+		// this logic unreliably assumes that db generated PK equal to 1 for new payment
+		// probably this should be replaced with something more certain
+		PaymentIn reversePaymentIn = Cayenne.objectForPK(context, PaymentIn.class, 1);
 		assertNotNull("Reverse payment should exist for this abandon", reversePaymentIn);
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
@@ -144,11 +136,8 @@ private ICayenneService cayenneService;
 	@Test
 	public void testInTransactionEnrollManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn paymentIn = paymentIns.get(0);
+
+		PaymentIn paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -175,11 +164,7 @@ private ICayenneService cayenneService;
 		
 		context.commitChanges();
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		paymentIn = paymentIns.get(0);
+		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -195,11 +180,10 @@ private ICayenneService cayenneService;
 		//emulate run abandon by user
 		PaymentInUtil.abandonPayment(paymentIn, true);
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn reversePaymentIn = paymentIns.get(0);
+
+		// this logic unreliably assumes that db generated PK equal to 1 for new payment
+		// probably this should be replaced with something more certain
+		PaymentIn reversePaymentIn = Cayenne.objectForPK(context, PaymentIn.class, 1);
 		assertNotNull("Reverse payment should exist for this abandon", reversePaymentIn);
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
@@ -222,11 +206,8 @@ private ICayenneService cayenneService;
 	@Test
 	public void testInTransactionEnrollNotManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn paymentIn = paymentIns.get(0);
+
+		PaymentIn paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -253,11 +234,7 @@ private ICayenneService cayenneService;
 		
 		context.commitChanges();
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		paymentIn = paymentIns.get(0);
+		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -273,9 +250,10 @@ private ICayenneService cayenneService;
 		//emulate run abandon by expire job
 		PaymentInUtil.abandonPayment(paymentIn, false);
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertTrue("Payments list should be empty", paymentIns.isEmpty());
+
+		// this logic unreliably assumes that db generated PK equal to 1 for new payment
+		// probably this should be replaced with something more certain
+		assertNull("Payments list should be empty", Cayenne.objectForPK(context, PaymentIn.class, 1));
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be equal to original invoice amount", invoiceLine.getFinalPriceToPayIncTax(), 
@@ -286,11 +264,8 @@ private ICayenneService cayenneService;
 	@Test
 	public void testSuccessEnrollManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn paymentIn = paymentIns.get(0);
+
+		PaymentIn paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -317,11 +292,7 @@ private ICayenneService cayenneService;
 		
 		context.commitChanges();
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		paymentIn = paymentIns.get(0);
+		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -337,9 +308,8 @@ private ICayenneService cayenneService;
 		//emulate run abandon by user
 		PaymentInUtil.abandonPayment(paymentIn, true);
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertTrue("Payments list should be empty", paymentIns.isEmpty());
+
+		assertNull("Payments list should be empty", Cayenne.objectForPK(context, PaymentIn.class, 1));
 		
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
@@ -350,11 +320,8 @@ private ICayenneService cayenneService;
 	@Test
 	public void testSuccessEnrollNotManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn paymentIn = paymentIns.get(0);
+
+		PaymentIn paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -367,8 +334,8 @@ private ICayenneService cayenneService;
 		
 		//link enrollment to the invoice line
 		//load courseclass for enrolment
-		CourseClass courseClass = (CourseClass) context.performQuery(new SelectQuery(CourseClass.class, 
-			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+		CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1);
+
 		//prepare and add the enrollment to the invoiceLine
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
@@ -381,11 +348,7 @@ private ICayenneService cayenneService;
 		
 		context.commitChanges();
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		paymentIn = paymentIns.get(0);
+		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -401,9 +364,9 @@ private ICayenneService cayenneService;
 		//emulate run abandon by expire job
 		PaymentInUtil.abandonPayment(paymentIn, false);
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertTrue("Payments list should  be empty", paymentIns.isEmpty());
+		// this logic unreliably assumes that db generated PK equal to 1 for new payment
+		// probably this should be replaced with something more certain
+		assertNull("Payments list should be empty", Cayenne.objectForPK(context, PaymentIn.class, 1));
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be original", new Money("120.00"), invoice.getAmountOwing());
@@ -413,11 +376,8 @@ private ICayenneService cayenneService;
 	@Test
 	public void testManuallyAbandonPaymentReverseInvoiceForManuallInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn paymentIn = paymentIns.get(0);
+
+		PaymentIn paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -438,11 +398,11 @@ private ICayenneService cayenneService;
 		//emulate run abandon by user
 		PaymentInUtil.abandonPayment(paymentIn, true);
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn reversePaymentIn = paymentIns.get(0);
+
+		// this logic unreliably assumes that db generated PK equal to 1 for new payment
+		// probably this should be replaced with something more certain
+		PaymentIn reversePaymentIn = Cayenne.objectForPK(context, PaymentIn.class, 1);
+
 		assertNotNull("Reverse payment should exist for this abandon", reversePaymentIn);
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
@@ -464,11 +424,8 @@ private ICayenneService cayenneService;
 	@Test
 	public void testNotManuallyAbandonPaymentReverseInvoiceForManuallInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn paymentIn = paymentIns.get(0);
+
+		PaymentIn paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -489,9 +446,10 @@ private ICayenneService cayenneService;
 		//emulate run abandon by expire job
 		PaymentInUtil.abandonPayment(paymentIn, false);
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertTrue("Payments list should be empty", paymentIns.isEmpty());
+
+		// this logic unreliably assumes that db generated PK equal to 1 for new payment
+		// probably this should be replaced with something more certain
+		assertNull("Payments list should be empty", Cayenne.objectForPK(context, PaymentIn.class, 1));
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 120", new Money("120.00"), invoice.getAmountOwing());
@@ -500,11 +458,8 @@ private ICayenneService cayenneService;
 	@Test
 	public void testActiveVoucherManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn paymentIn = paymentIns.get(0);
+
+		PaymentIn paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -514,14 +469,10 @@ private ICayenneService cayenneService;
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
-		Enrolment enrolment = invoiceLine.getEnrolment();
+		Enrolment enrolment;
 		
 		//link voucher for invoiceline
-		List<Voucher> vouchers = context.performQuery(new SelectQuery(Voucher.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Vouchers list should not be empty", vouchers.isEmpty());
-		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
-		Voucher voucher = vouchers.get(0);
+		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 2);
 		assertNotNull("Voucher for test should not be empty", voucher);
 		assertEquals("Payment status should be in transaction", ProductStatus.ACTIVE, voucher.getStatus());
 		voucher.setStatus(ProductStatus.NEW);
@@ -531,11 +482,7 @@ private ICayenneService cayenneService;
 		context.commitChanges();
 		
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		paymentIn = paymentIns.get(0);
+		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -555,11 +502,10 @@ private ICayenneService cayenneService;
 		//emulate run abandon by user
 		PaymentInUtil.abandonPayment(paymentIn, true);
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn reversePaymentIn = paymentIns.get(0);
+
+		// this logic unreliably assumes that db generated PK equal to 1 for new payment
+		// probably this should be replaced with something more certain
+		PaymentIn reversePaymentIn = Cayenne.objectForPK(context, PaymentIn.class, 1);
 		assertNotNull("Reverse payment should exist for this abandon", reversePaymentIn);
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
@@ -582,11 +528,8 @@ private ICayenneService cayenneService;
 	@Test
 	public void testActiveVoucherNotManuallyAbandonPaymentReverseInvoice() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		PaymentIn paymentIn = paymentIns.get(0);
+
+		PaymentIn paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -596,14 +539,10 @@ private ICayenneService cayenneService;
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
-		Enrolment enrolment = invoiceLine.getEnrolment();
+		Enrolment enrolment;
 		
 		//link voucher for invoiceline
-		List<Voucher> vouchers = context.performQuery(new SelectQuery(Voucher.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Vouchers list should not be empty", vouchers.isEmpty());
-		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
-		Voucher voucher = vouchers.get(0);
+		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 2);
 		assertNotNull("Voucher for test should not be empty", voucher);
 		assertEquals("Payment status should be in transaction", ProductStatus.ACTIVE, voucher.getStatus());
 		voucher.setStatus(ProductStatus.NEW);
@@ -613,11 +552,7 @@ private ICayenneService cayenneService;
 		context.commitChanges();
 		
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
-		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
-		paymentIn = paymentIns.get(0);
+		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
 		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
@@ -637,9 +572,10 @@ private ICayenneService cayenneService;
 		//emulate run abandon by expire job
 		PaymentInUtil.abandonPayment(paymentIn, false);
 		//re-load data
-		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
-			ExpressionFactory.lessDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
-		assertTrue("Payments list should not be empty", paymentIns.isEmpty());
+
+		// this logic unreliably assumes that db generated PK equal to 1 for new payment
+		// probably this should be replaced with something more certain
+		assertNull("Payments list should be empty", Cayenne.objectForPK(context, PaymentIn.class, 1));
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be the equal to original invoice owing", invoiceLine.getFinalPriceToPayIncTax(), 
