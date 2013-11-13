@@ -11,6 +11,7 @@ import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
+import ish.oncourse.utils.PaymentInUtil;
 import ish.oncourse.utils.SessionIdGenerator;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
@@ -136,6 +137,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			GenericTransactionGroup response = PortHelper.createTransactionGroup(transaction);
 			List<PaymentIn> updatedPayments = new LinkedList<>();
 			updatedPayments.add(paymentIn);
+			updatedPayments.addAll(PaymentInUtil.getRelatedVoucherPayments(paymentIn));
 
 			// check places
 			boolean isPlacesAvailable = true;

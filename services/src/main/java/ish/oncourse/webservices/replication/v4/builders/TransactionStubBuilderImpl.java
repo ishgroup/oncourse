@@ -25,7 +25,7 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 	/**
 	 * Convert paymentIn object to soap stub
 	 * 
-	 * @param paymentIn paymentIn object
+	 * @param payments paymentIn objects
 	 * @return soap stub
 	 */
 	public Set<GenericReplicationStub> createPaymentInTransaction(List<PaymentIn> payments, final SupportedVersions version) {
@@ -58,6 +58,10 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 
 					for (Article article : invoiceLine.getArticles()) {
 						addRelatedStub(paymentRelated, article, version);
+					}
+
+					for (VoucherPaymentIn vp : invoiceLine.getVoucherPaymentsIn()) {
+						addRelatedStub(paymentRelated, vp, version);
 					}
 
 					addRelatedStub(paymentRelated, invoiceLine, version);
