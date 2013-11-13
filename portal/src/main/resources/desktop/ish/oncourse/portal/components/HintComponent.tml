@@ -1,10 +1,14 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<span class="validate-text">
 		<t:if test="validationMessage">
-			<span class="reason hidden-text"> ${validationMessage} <span class="reason-pointer" />
-			</span>
+			<div class="reason hidden-text">
+                <div class="tooltip-arrow"></div>
+			    <span>${validationMessage}</span>
+                <span class="reason-pointer" />
+			</div>
 		</t:if>
 		<t:if test="hint">
+            <div class="tooltip-arrow" style=""></div>
 			<span class="hint hidden-text" id="givenName-hint"> ${hint} <span class="hint-pointer" />
 			</span>
 		</t:if>
