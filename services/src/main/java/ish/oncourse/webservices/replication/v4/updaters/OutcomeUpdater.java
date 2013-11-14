@@ -30,12 +30,16 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 		}
 		
 		entity.setFundingSource(stub.getFundingSource());
-		entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
+		if (stub.getModuleId() != null) {
+			entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
+		}
 		BigDecimal reportableHours = stub.getReportableHours();
 		if (reportableHours != null) {
 			entity.setReportableHours(reportableHours.doubleValue());
 		}
-		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), OutcomeStatus.class));
+		if (stub.getStatus() != null) {
+			entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), OutcomeStatus.class));
+		}
 	}
 
 }

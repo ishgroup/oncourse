@@ -28,11 +28,15 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 			logger.error(String.format("Can not find enrolment by angelId:%s", stub.getEnrolmentId()));
 		}
 		entity.setFundingSource(stub.getFundingSource());
-		entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
+		if (stub.getModuleId() != null) {
+			entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
+		}
 		if (stub.getReportableHours() != null) {
 			entity.setReportableHours(stub.getReportableHours().doubleValue());
 		}
-		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), OutcomeStatus.class));
+		if (stub.getStatus() != null) {
+			entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), OutcomeStatus.class));
+		}
 	}
 
 }
