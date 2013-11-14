@@ -230,7 +230,7 @@
         moduleId="1"
         reportableHours="1.11"
         startDate="2011-09-20 11:14:54"
-        status="1"/>
+        status="0"/>
 
     <PaymentIn
             amount="1.11"

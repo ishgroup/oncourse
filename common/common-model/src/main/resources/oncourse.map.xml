@@ -1521,10 +1521,9 @@
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 		<obj-attribute name="fundingSource" type="java.lang.Integer" db-attribute-path="fundingSource"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="moduleId" type="java.lang.Long" db-attribute-path="moduleId"/>
 		<obj-attribute name="reportableHours" type="java.lang.Double" db-attribute-path="reportableHours"/>
 		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="startDate"/>
-		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="status"/>
+		<obj-attribute name="status" type="ish.common.types.OutcomeStatus" db-attribute-path="status"/>
 	</obj-entity>
 	<obj-entity name="PaymentIn" className="ish.oncourse.model.PaymentIn" dbEntityName="PaymentIn">
 		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
@@ -2561,6 +2560,9 @@
 	<db-relationship name="moduleCourses" source="Module" target="CourseModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
 	</db-relationship>
+	<db-relationship name="outcomes" source="Module" target="Outcome" toMany="true">
+		<db-attribute-pair source="id" target="moduleId"/>
+	</db-relationship>
 	<db-relationship name="sessionModules" source="Module" target="SessionModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
 	</db-relationship>
@@ -2575,6 +2577,9 @@
 	</db-relationship>
 	<db-relationship name="enrolment" source="Outcome" target="Enrolment" toMany="false">
 		<db-attribute-pair source="enrolmentId" target="id"/>
+	</db-relationship>
+	<db-relationship name="module" source="Outcome" target="Module" toMany="false">
+		<db-attribute-pair source="moduleId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="PaymentIn" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3199,6 +3204,7 @@
 	<obj-relationship name="certificateOutcomes" source="Outcome" target="CertificateOutcome" deleteRule="Cascade" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="college" source="Outcome" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="Outcome" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
+	<obj-relationship name="module" source="Outcome" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
 	<obj-relationship name="college" source="PaymentIn" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="PaymentIn" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="paymentInLines" source="PaymentIn" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>

@@ -2,6 +2,10 @@ package ish.oncourse.webservices.replication.v4.updaters;
 
 import java.math.BigDecimal;
 
+import ish.common.types.OutcomeStatus;
+import ish.common.types.TypesUtil;
+import ish.oncourse.model.Module;
+import org.apache.cayenne.Cayenne;
 import org.apache.log4j.Logger;
 
 import ish.oncourse.model.Enrolment;
@@ -26,12 +30,12 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 		}
 		
 		entity.setFundingSource(stub.getFundingSource());
-		entity.setModuleId(stub.getModuleId());
+		entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
 		BigDecimal reportableHours = stub.getReportableHours();
 		if (reportableHours != null) {
 			entity.setReportableHours(reportableHours.doubleValue());
 		}
-		entity.setStatus(stub.getStatus());
+		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), OutcomeStatus.class));
 	}
 
 }

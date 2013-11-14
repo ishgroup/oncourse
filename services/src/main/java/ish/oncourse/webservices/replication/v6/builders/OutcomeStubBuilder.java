@@ -20,8 +20,11 @@ public class OutcomeStubBuilder extends AbstractWillowStubBuilder<Outcome, Outco
 			stub.setFundingSource(entity.getFundingSource());
 		}
 		stub.setModified(entity.getModified());
-		if (entity.getModuleId() != null) {
-			stub.setModuleId(entity.getModuleId());
+		if (entity.getModule() != null) {
+			stub.setModuleId(entity.getModule().getId());
+		}
+		if (entity.getStatus() != null) {
+			stub.setStatus(entity.getStatus().getDatabaseValue());
 		}
 		stub.setReportableHours(new BigDecimal(entity.getReportableHours()));
 		return stub;

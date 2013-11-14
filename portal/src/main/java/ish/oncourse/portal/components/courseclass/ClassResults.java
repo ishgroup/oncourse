@@ -54,16 +54,15 @@ public class ClassResults {
 
 
 
-    private OutcomeStatus getOutComeStatus(Long moduleId){
-        for(Outcome outcome : enrolment.getOutcomes()){
-          if(outcome.getModuleId().equals(moduleId))
-              for(OutcomeStatus status : OutcomeStatus.values()){
-                  if(status.getDatabaseValue().equals(outcome.getStatus()))
-                      return status;
-              }
-        }
-        return OutcomeStatus.STATUS_NOT_SET;
-    }
+	private OutcomeStatus getOutComeStatus(Long moduleId){
+		for (Outcome outcome : enrolment.getOutcomes()) {
+			Module module = outcome.getModule();
+			if (module != null && module.getId().equals(moduleId)) {
+				return outcome.getStatus();
+			}
+		}
+		return OutcomeStatus.STATUS_NOT_SET;
+	}
 
 
     public String getOutComeDisplayName(Long moduleId){
