@@ -57,7 +57,7 @@ public class ClassResults {
 	private OutcomeStatus getOutComeStatus(Long moduleId){
 		for (Outcome outcome : enrolment.getOutcomes()) {
 			Module module = outcome.getModule();
-			if (module != null && module.getId().equals(moduleId)) {
+			if (module != null && module.getId().equals(moduleId) && outcome.getStatus() != null) {
 				return outcome.getStatus();
 			}
 		}
