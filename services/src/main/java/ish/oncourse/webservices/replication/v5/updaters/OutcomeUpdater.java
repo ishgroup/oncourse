@@ -41,6 +41,8 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 		}
 		if (stub.getStatus() != null) {
 			entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), OutcomeStatus.class));
+		} else {
+			entity.setStatus(OutcomeStatus.STATUS_NOT_SET);
 		}
 	}
 

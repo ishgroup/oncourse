@@ -1713,4 +1713,13 @@
 
     </changeSet>
 
+    <changeSet id="116" author="viacheslav" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sqlCheck expectedResult="0">select count(*) from Outcome where status is NULL</sqlCheck>
+            </not>
+        </preConditions>
+        <sql>update Outcome set status=0 where status is NULL;</sql>
+    </changeSet>
+
 </databaseChangeLog>
