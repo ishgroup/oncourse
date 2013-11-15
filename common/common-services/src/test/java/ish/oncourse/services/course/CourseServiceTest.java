@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 
 public class CourseServiceTest extends ServiceTest {
 	private ITagService tagService;
-	@SuppressWarnings("unused")
+
 	private ICayenneService cayenneService;
 	private ICourseService service;
 	
@@ -56,8 +56,7 @@ public class CourseServiceTest extends ServiceTest {
 		result = service.getCourses(3, 5);
 		assertEquals("2 courses should be available because we limit the count and shift from the start", 2, result.size());
 	}
-	
-	@Test
+
 	public void testGetCoursesForTagNameSortOrderAndLimit() {
 		assertNotNull("Not able to init course service", service);
 		//test default alphabetical desc sorting
@@ -94,16 +93,16 @@ public class CourseServiceTest extends ServiceTest {
 		assertEquals("5 courses should be available", 5, result.size());
 		assertEquals("The id of the top course should be 3", 3L, result.get(0).getId().longValue());
 		//test with unexisted tag
-		result = service.getCourses("unexisted tag name", Sort.date, true, null);
+		result = service.getCourses(new Tag(), Sort.date, true, null);
 		assertTrue("getCourses should return empty list", result.isEmpty());
 		Tag subjects = tagService.getSubjectsTag();
 		assertNotNull("Subjects tag should be founded", subjects);
 		//test with existed tag
-		result = service.getCourses(subjects.getName(), Sort.date, true, null);
+		result = service.getCourses(subjects, Sort.date, true, null);
 		assertTrue("getCourses should return not empty list", !result.isEmpty());
 		assertEquals("5 courses should be linked with tag", 5, result.size());
 		assertEquals("The id of the top course should be 1", 1L, result.get(0).getId().longValue());
-		result = service.getCourses(subjects.getName(), Sort.date, false, null);
+		result = service.getCourses(subjects, Sort.date, false, null);
 		assertTrue("getCourses should return not empty list", !result.isEmpty());
 		assertEquals("5 courses should be linked with tag", 5, result.size());
 		assertEquals("The id of the top course should be 3", 3L, result.get(0).getId().longValue());

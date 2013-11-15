@@ -4,6 +4,7 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.course.Sort;
+import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.courseList.CourseListTextileRenderer;
@@ -39,6 +40,9 @@ public class CourseListTextileRendererTest {
 	@Mock
 	private ITagService tagService;
 
+	@Mock
+	private ISearchService searchService;
+
 	/**
 	 * service under the test
 	 */
@@ -47,7 +51,7 @@ public class CourseListTextileRendererTest {
 	@Before
 	public void init() {
 		renderer = new CourseListTextileRenderer(courseService, pageRenderer,
-				tagService);
+				tagService, searchService);
 	}
 
 	@Test
@@ -63,7 +67,7 @@ public class CourseListTextileRendererTest {
 		Tag subject = mock(Tag.class);
 		when(tagService.getTagByFullPath(tagName)).thenReturn(tag);
 		when(tagService.getSubjectsTag()).thenReturn(subject);
-		when(courseService.getCourses(tagName, sort, isAscending, limit)).thenReturn(courses);
+		when(courseService.getCourses(tag, sort, isAscending, limit)).thenReturn(courses);
 		when(pageRenderer.renderPage(eq(TextileUtil.TEXTILE_COURSE_LIST_PAGE), Matchers.any(HashMap.class))).thenReturn(
 				SUCCESSFULLY_RENDERED);
 		String result = renderer.render("{courses tag:\"" + tagName

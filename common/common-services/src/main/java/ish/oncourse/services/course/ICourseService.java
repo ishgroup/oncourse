@@ -1,6 +1,7 @@
 package ish.oncourse.services.course;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.model.Tag;
 
 import java.util.Date;
 import java.util.List;
@@ -19,14 +20,14 @@ public interface ICourseService {
 	List<Course> getCourses(Integer startDefault, Integer rowsDefault);
 
 	/**
-	 * Load courses by tagName and sort settings and limit.
-	 * @param tagName
+	 * Load courses by tag and sort settings and limit.
+	 * @param tag
 	 * @param sort
 	 * @param isAscending
 	 * @param limit
 	 * @return
 	 */
-	List<Course> getCourses(String tagName, Sort sort, Boolean isAscending,
+	List<Course> getCourses(Tag tag, Sort sort, Boolean isAscending,
 			Integer limit);
 
 	/**

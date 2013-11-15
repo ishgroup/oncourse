@@ -1,6 +1,7 @@
 package ish.oncourse.services.textile.courseList;
 
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.renderer.AbstractRenderer;
@@ -37,12 +38,15 @@ public class CourseListTextileRenderer extends AbstractRenderer {
 	private ICourseService courseService;
 	private IPageRenderer pageRenderer;
 	private ITagService tagService;
+	private ISearchService searchService;
 
 	public CourseListTextileRenderer(ICourseService courseService, IPageRenderer pageRenderer,
-									 ITagService tagService) {
+									 ITagService tagService,
+									 ISearchService searchService) {
 		this.courseService = courseService;
 		this.pageRenderer = pageRenderer;
 		this.tagService = tagService;
+		this.searchService = searchService;
 		validator = new CourseListTextileValidator(tagService);
 	}
 
@@ -59,6 +63,7 @@ public class CourseListTextileRenderer extends AbstractRenderer {
 		pageModel.setTagParams(tagParams);
 		pageModel.setCourseService(courseService);
 		pageModel.setTagService(tagService);
+		pageModel.setSearchService(searchService);
 		pageModel.init();
 
 		if (pageModel.isEmpty())

@@ -6,6 +6,7 @@ import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.courseList.CourseListTextileRenderer;
 import ish.oncourse.services.textile.renderer.*;
@@ -51,6 +52,9 @@ public class TextileConverter implements ITextileConverter {
 
 	@Inject
 	private IPlainTextExtractor extractor;
+
+	@Inject
+	private ISearchService searchService;
 
 	public TextileConverter() {
 	}
@@ -167,7 +171,7 @@ public class TextileConverter implements ITextileConverter {
 		case COURSE:
 			return new CourseTextileRenderer(courseService, pageRenderer, tagService);
 		case COURSE_LIST:
-			return new CourseListTextileRenderer(courseService, pageRenderer, tagService);
+			return new CourseListTextileRenderer(courseService, pageRenderer, tagService, searchService);
 		case PAGE:
 			return new PageTextileRenderer(webNodeService, pageRenderer);
 		case TAGS:

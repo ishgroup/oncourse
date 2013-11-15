@@ -249,7 +249,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 
 		if (ADD_TO_COOKIES_PATH.equalsIgnoreCase(path) || REMOVE_FROM_COOKIES_PATH.equalsIgnoreCase(path)) {
-			System.out.println(request.isXHR());
 			boolean isAddAction = ADD_TO_COOKIES_PATH.equalsIgnoreCase(path);
 			String key = request.getParameter(KEY_PARAMETER);
 			String value = isAddAction ? request.getParameter(ADD_ITEM_ID_PARAMETER) : request.getParameter(REMOVE_ITEM_ID_PARAMETER);

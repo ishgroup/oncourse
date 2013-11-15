@@ -3,6 +3,7 @@ package ish.oncourse.services.textile.courseList;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.tag.ITagService;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class PageModel {
 	private TagParams tagParams;
 	private ITagService tagService;
 	private ICourseService courseService;
+
+	private ISearchService searchService;
 
 	//can be null
 	private Tag tag;
@@ -41,8 +44,14 @@ public class PageModel {
 
 		if (showTags)
 		{
-			for (Tag tag : childTags) {
-				courses.put(tag, courseService.getCourses(tag.getDefaultPath(), tagParams.getSort(), tagParams.isAscending(), tagParams.getLimit()));
+			int limit = childTags.size();
+			//limit number for childrent
+			if (tagParams.getLimit() != null && limit > tagParams.getLimit())
+				limit = tagParams.getLimit();
+
+			for (int i = 0; i < limit; i++) {
+				Tag tag = childTags.get(i);
+				courses.put(tag, courseService.getCourses(tag, tagParams.getSort(), tagParams.isAscending(), tagParams.getLimit()));
 			}
 		}
 		else
@@ -50,7 +59,7 @@ public class PageModel {
 			courses.put(tag,
 					courseService.getCourses(
 							//when tag paremeter in this rich-tag is not defiend we need load all courses.
-							tag.getId().equals(tagService.getSubjectsTag().getId()) ? null: tag.getDefaultPath(),
+							tag.getId().equals(tagService.getSubjectsTag().getId()) ? null: tag,
 							tagParams.getSort(),
 							tagParams.isAscending(),
 							tagParams.getLimit()));
@@ -116,4 +125,11 @@ public class PageModel {
 		return courses.isEmpty();
 	}
 
+	public ISearchService getSearchService() {
+		return searchService;
+	}
+
+	public void setSearchService(ISearchService searchService) {
+		this.searchService = searchService;
+	}
 }

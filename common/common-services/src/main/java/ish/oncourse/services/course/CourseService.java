@@ -1,9 +1,11 @@
 package ish.oncourse.services.course;
 
-import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.search.SearchParams;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.cayenne.Cayenne;
@@ -16,6 +18,9 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.*;
@@ -33,6 +38,9 @@ public class CourseService implements ICourseService {
 
 	@Inject
 	private ITagService tagService;
+
+	@Inject
+	private ISearchService searchService;
 
 	/**
 	 * @see ICourseService#getCourses(Integer, Integer)
@@ -58,33 +66,19 @@ public class CourseService implements ICourseService {
 	}
 
 	@Override
-	public List<Course> getCourses(String tagName, Sort sort, Boolean isAscending, Integer limit) {
-		List<Course> result = new ArrayList<>();
-		Long collegeId = webSiteService.getCurrentCollege().getId();
-		Expression expression = ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true)
-			.andExp(ExpressionFactory.matchDbExp(Course.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, collegeId));
-		if (tagName != null) {
-			List<Long> taggedIds = tagService.getEntityIdsByTagPath(tagName, Course.class.getSimpleName());
-			if (taggedIds.isEmpty()) {
-				return result;
-			}
-			expression = expression.andExp(ExpressionFactory.inDbExp(Course.ID_PK_COLUMN, taggedIds));
+	public List<Course> getCourses(Tag tag, Sort sort, Boolean isAscending, Integer limit) {
+
+		SearchParams searchParams = new SearchParams();
+		searchParams.setSubject(tag);
+		QueryResponse queryResponse = searchService.searchCourses(searchParams,0, limit);
+		SolrDocumentList documents = queryResponse.getResults();
+
+		List<Long> list = new LinkedList<>();
+		for (SolrDocument document : documents) {
+			list.add(Long.valueOf(document.get(CourseClass.ID_PK_COLUMN).toString()));
 		}
-		SelectQuery query = new SelectQuery(Course.class, expression);
-		
-		// TODO: uncomment when after upgrading to newer cayenne where
-		// https://issues.apache.org/jira/browse/CAY-1585 is fixed.
 
-		// query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		// query.setCacheGroups(CacheGroup.COURSES.name());
-
-		query.addPrefetch(Course.COURSE_CLASSES_PROPERTY);
-		query.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.ROOM_PROPERTY);
-		query.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.SESSIONS_PROPERTY);
-		query.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.TUTOR_ROLES_PROPERTY);
-		query.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.DISCOUNT_COURSE_CLASSES_PROPERTY);
-
-		result = cayenneService.sharedContext().performQuery(query);
+		List<Course> result = loadByIds(list.toArray());
 		if (sort == null) {
 			//if nothing specified use default
 			sort = Sort.alphabetical;

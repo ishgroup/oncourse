@@ -12,6 +12,5 @@ public class Details {
 
 	@BeginRender
 	void beginRender() {
-		System.out.println(course);
 	}
 }
