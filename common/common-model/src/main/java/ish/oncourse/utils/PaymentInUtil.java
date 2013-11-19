@@ -77,9 +77,7 @@ public class PaymentInUtil {
 
 			List<ProductItem> productItems = new ArrayList<>();
 
-			productItems.addAll(il.getArticles());
-			productItems.addAll(il.getMemberships());
-			productItems.addAll(il.getVouchers());
+			productItems.addAll(il.getProductItems());
 
 			for (ProductItem productItem : productItems) {
 				if (productItem.getStatus() == ProductStatus.NEW) {

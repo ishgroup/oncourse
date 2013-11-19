@@ -98,8 +98,8 @@ public class VoucherServiceTest extends ServiceTest {
 		voucher = service.getVoucherByCode("qwerty_2");
 		assertNotNull("Voucher product we found should be limited to a student", voucher.getContact());
 		assertEquals("Contact 1 should be linked with voucher", contact, voucher.getContact());
-		assertEquals("Contact 1 should be linked with voucher", contact.getVouchers().get(0), voucher);
-		assertEquals("This voucher should be only 1 for this contact", 1, contact.getVouchers().size());
+		assertEquals("Contact 1 should be linked with voucher", contact.getProducts().get(0), voucher);
+		assertEquals("This voucher should be only 1 for this contact", 1, contact.getProducts().size());
 		List<Voucher> availableVouchers = service.getAvailableVouchersForUser(contact);
 		assertFalse("Available vouchers list should not be empty", availableVouchers.isEmpty());
 		assertEquals("Available vouchers list should contain 4 vouchers", 4, availableVouchers.size());

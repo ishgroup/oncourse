@@ -1,6 +1,5 @@
 package ish.oncourse.model.auto;
 
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.ProductItem;
 
 /**
@@ -11,17 +10,7 @@ import ish.oncourse.model.ProductItem;
  */
 public abstract class _Article extends ProductItem {
 
-    public static final String CONTACT_PROPERTY = "contact";
 
     public static final String ID_PK_COLUMN = "id";
-
-    public void setContact(Contact contact) {
-        setToOneTarget("contact", contact, true);
-    }
-
-    public Contact getContact() {
-        return (Contact)readProperty("contact");
-    }
-
 
 }

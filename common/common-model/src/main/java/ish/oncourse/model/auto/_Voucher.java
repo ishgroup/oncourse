@@ -1,11 +1,9 @@
 package ish.oncourse.model.auto;
 
-import java.util.Date;
 import java.util.List;
 
 import ish.common.types.PaymentSource;
 import ish.math.Money;
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.VoucherPaymentIn;
@@ -19,12 +17,10 @@ import ish.oncourse.model.VoucherPaymentIn;
 public abstract class _Voucher extends ProductItem {
 
     public static final String CODE_PROPERTY = "code";
-    public static final String EXPIRY_DATE_PROPERTY = "expiryDate";
     public static final String ID_KEY_PROPERTY = "idKey";
     public static final String REDEEMED_COURSES_COUNT_PROPERTY = "redeemedCoursesCount";
     public static final String REDEMPTION_VALUE_PROPERTY = "redemptionValue";
     public static final String SOURCE_PROPERTY = "source";
-    public static final String CONTACT_PROPERTY = "contact";
     public static final String PAYMENTS_PROPERTY = "payments";
     public static final String VOUCHER_PAYMENT_INS_PROPERTY = "voucherPaymentIns";
 
@@ -35,13 +31,6 @@ public abstract class _Voucher extends ProductItem {
     }
     public String getCode() {
         return (String)readProperty(CODE_PROPERTY);
-    }
-
-    public void setExpiryDate(Date expiryDate) {
-        writeProperty(EXPIRY_DATE_PROPERTY, expiryDate);
-    }
-    public Date getExpiryDate() {
-        return (Date)readProperty(EXPIRY_DATE_PROPERTY);
     }
 
     public void setIdKey(String idKey) {
@@ -71,15 +60,6 @@ public abstract class _Voucher extends ProductItem {
     public PaymentSource getSource() {
         return (PaymentSource)readProperty(SOURCE_PROPERTY);
     }
-
-    public void setContact(Contact contact) {
-        setToOneTarget(CONTACT_PROPERTY, contact, true);
-    }
-
-    public Contact getContact() {
-        return (Contact)readProperty(CONTACT_PROPERTY);
-    }
-
 
     public void addToPayments(PaymentIn obj) {
         addToManyTarget(PAYMENTS_PROPERTY, obj, true);

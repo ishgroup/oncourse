@@ -713,8 +713,8 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
-		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
-		voucher = invoiceLine.getVouchers().get(0);
+		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getProductItems().size());
+		voucher = (Voucher) invoiceLine.getProductItems().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
@@ -732,8 +732,8 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
-		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
-		voucher = invoiceLine.getVouchers().get(0);
+		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getProductItems().size());
+		voucher = (Voucher) invoiceLine.getProductItems().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
 		assertEquals("Voucher status should be active after abandon keep invoice", ProductStatus.ACTIVE, voucher.getStatus());
 		
@@ -848,8 +848,8 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
-		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
-		voucher = invoiceLine.getVouchers().get(0);
+		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getProductItems().size());
+		voucher = (Voucher) invoiceLine.getProductItems().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
@@ -1022,8 +1022,8 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
-		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
-		voucher = invoiceLine.getVouchers().get(0);
+		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getProductItems().size());
+		voucher = (Voucher) invoiceLine.getProductItems().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
@@ -1080,6 +1080,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		//now we should create the voucher payment in structure and change the payment type
 		paymentIn.setType(PaymentType.VOUCHER);
 		VoucherPaymentIn voucherPaymentIn = context.newObject(VoucherPaymentIn.class);
+		voucherPaymentIn.setInvoiceLine(invoiceLine);
 		voucherPaymentIn.setPayment(paymentIn);
 		voucherPaymentIn.setVoucher(voucher);
 		voucherPaymentIn.setCollege(paymentIn.getCollege());
@@ -1160,6 +1161,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertNull("Voucher should not be linked to any contact because the payer and owner equal", voucher.getContact());
 		
 		voucherPaymentIn = context.newObject(VoucherPaymentIn.class);
+		voucherPaymentIn.setInvoiceLine(invoiceLine);
 		voucherPaymentIn.setPayment(paymentIn);
 		voucherPaymentIn.setVoucher(voucher);
 		voucherPaymentIn.setCollege(paymentIn.getCollege());
@@ -1352,8 +1354,8 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
-		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
-		voucher = invoiceLine.getVouchers().get(0);
+		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getProductItems().size());
+		voucher = (Voucher) invoiceLine.getProductItems().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
@@ -1518,8 +1520,8 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
-		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
-		voucher = invoiceLine.getVouchers().get(0);
+		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getProductItems().size());
+		voucher = (Voucher) invoiceLine.getProductItems().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		

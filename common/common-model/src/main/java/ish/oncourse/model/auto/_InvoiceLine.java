@@ -5,15 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import ish.math.Money;
-import ish.oncourse.model.Article;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLineDiscount;
 import ish.oncourse.model.InvoicePayableLine;
-import ish.oncourse.model.Membership;
 import ish.oncourse.model.ProductItem;
-import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherPaymentIn;
 
 /**
@@ -35,15 +32,12 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
     public static final String TAX_EACH_PROPERTY = "taxEach";
     public static final String TITLE_PROPERTY = "title";
     public static final String UNIT_PROPERTY = "unit";
-    public static final String ARTICLES_PROPERTY = "articles";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String ENROLMENT_PROPERTY = "enrolment";
     public static final String INVOICE_PROPERTY = "invoice";
     public static final String INVOICE_LINE_DISCOUNTS_PROPERTY = "invoiceLineDiscounts";
-    public static final String MEMBERSHIPS_PROPERTY = "memberships";
-    public static final String PRODUCT_ITEM_PROPERTY = "productItem";
+    public static final String PRODUCT_ITEMS_PROPERTY = "productItems";
     public static final String VOUCHER_PAYMENTS_IN_PROPERTY = "voucherPaymentsIn";
-    public static final String VOUCHERS_PROPERTY = "vouchers";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -124,18 +118,6 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
         return (String)readProperty(UNIT_PROPERTY);
     }
 
-    public void addToArticles(Article obj) {
-        addToManyTarget(ARTICLES_PROPERTY, obj, true);
-    }
-    public void removeFromArticles(Article obj) {
-        removeToManyTarget(ARTICLES_PROPERTY, obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<Article> getArticles() {
-        return (List<Article>)readProperty(ARTICLES_PROPERTY);
-    }
-
-
     public void setCollege(College college) {
         setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
@@ -175,27 +157,15 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
     }
 
 
-    public void addToMemberships(Membership obj) {
-        addToManyTarget(MEMBERSHIPS_PROPERTY, obj, true);
+    public void addToProductItems(ProductItem obj) {
+        addToManyTarget(PRODUCT_ITEMS_PROPERTY, obj, true);
     }
-    public void removeFromMemberships(Membership obj) {
-        removeToManyTarget(MEMBERSHIPS_PROPERTY, obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<Membership> getMemberships() {
-        return (List<Membership>)readProperty(MEMBERSHIPS_PROPERTY);
-    }
-
-
-    public void addToProductItem(ProductItem obj) {
-        addToManyTarget(PRODUCT_ITEM_PROPERTY, obj, true);
-    }
-    public void removeFromProductItem(ProductItem obj) {
-        removeToManyTarget(PRODUCT_ITEM_PROPERTY, obj, true);
+    public void removeFromProductItems(ProductItem obj) {
+        removeToManyTarget(PRODUCT_ITEMS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<ProductItem> getProductItem() {
-        return (List<ProductItem>)readProperty(PRODUCT_ITEM_PROPERTY);
+    public List<ProductItem> getProductItems() {
+        return (List<ProductItem>)readProperty(PRODUCT_ITEMS_PROPERTY);
     }
 
 
@@ -208,18 +178,6 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
     @SuppressWarnings("unchecked")
     public List<VoucherPaymentIn> getVoucherPaymentsIn() {
         return (List<VoucherPaymentIn>)readProperty(VOUCHER_PAYMENTS_IN_PROPERTY);
-    }
-
-
-    public void addToVouchers(Voucher obj) {
-        addToManyTarget(VOUCHERS_PROPERTY, obj, true);
-    }
-    public void removeFromVouchers(Voucher obj) {
-        removeToManyTarget(VOUCHERS_PROPERTY, obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<Voucher> getVouchers() {
-        return (List<Voucher>)readProperty(VOUCHERS_PROPERTY);
     }
 
 

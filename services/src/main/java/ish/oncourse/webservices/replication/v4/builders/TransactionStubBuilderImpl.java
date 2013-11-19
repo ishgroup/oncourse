@@ -45,19 +45,8 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 
 				for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
 
-					// invoiceLine.getProductItems() can't be used here since it will
-					// fetch only fields declared in ProductItem obj entity
-
-					for (Membership membership : invoiceLine.getMemberships()) {
-						addRelatedStub(paymentRelated, membership, version);
-					}
-
-					for (Voucher voucher : invoiceLine.getVouchers()) {
-						addRelatedStub(paymentRelated, voucher, version);
-					}
-
-					for (Article article : invoiceLine.getArticles()) {
-						addRelatedStub(paymentRelated, article, version);
+					for (ProductItem item : invoiceLine.getProductItems()) {
+						addRelatedStub(paymentRelated, item, version);
 					}
 
 					for (VoucherPaymentIn vp : invoiceLine.getVoucherPaymentsIn()) {

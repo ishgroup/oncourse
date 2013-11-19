@@ -274,15 +274,15 @@ public class PaymentInAbandonHelper {
 						enrol.setStatus(EnrolmentStatus.SUCCESS);
 					}
 				}
-				List<Voucher> vouchers = il.getVouchers();
-				for (Voucher voucher : vouchers) {
+
+				List<ProductItem> productItems = il.getProductItems();
+				for (ProductItem item : productItems) {
 					//we should change new vouchers to active in this case
-					voucher.setModified(today);
-					if (ProductStatus.NEW.equals(voucher.getStatus())) {
-						voucher.setStatus(ProductStatus.ACTIVE);
+					item.setModified(today);
+					if (ProductStatus.NEW.equals(item.getStatus())) {
+						item.setStatus(ProductStatus.ACTIVE);
 					}
 				}
-				//TODO: we should also add the memberships changes here when they receive the status
 			}
 		}
 		return null;
@@ -383,15 +383,15 @@ public class PaymentInAbandonHelper {
 					enrol.setStatus(EnrolmentStatus.FAILED);
 				}
 			}
-			List<Voucher> vouchers = il.getVouchers();
-			for (Voucher voucher : vouchers) {
+
+			List<ProductItem> productItems = il.getProductItems();
+			for (ProductItem item : productItems) {
 				//we should change new vouchers to canceled in this case
-				voucher.setModified(modifiedTime);
-				if (ProductStatus.NEW.equals(voucher.getStatus())) {
-					voucher.setStatus(ProductStatus.CANCELLED);
+				item.setModified(modifiedTime);
+				if (ProductStatus.NEW.equals(item.getStatus())) {
+					item.setStatus(ProductStatus.CANCELLED);
 				}
 			}
-			//TODO: we should also add the memberships changes here when they receive the status
 		}
 		return reversePayment;
 	}

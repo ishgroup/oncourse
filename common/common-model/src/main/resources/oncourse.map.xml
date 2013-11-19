@@ -1444,7 +1444,6 @@
 	</obj-entity>
 	<obj-entity name="Membership" superEntityName="ProductItem" className="ish.oncourse.model.Membership">
 		<qualifier><![CDATA[type = 2]]></qualifier>
-		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
 	</obj-entity>
 	<obj-entity name="MembershipProduct" superEntityName="Product" className="ish.oncourse.model.MembershipProduct">
 		<qualifier><![CDATA[type = 2]]></qualifier>
@@ -1641,6 +1640,7 @@
 		<qualifier><![CDATA[type = 1]]></qualifier>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="status" type="ish.common.types.ProductStatus" db-attribute-path="status"/>
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
@@ -1862,7 +1862,6 @@
 	<obj-entity name="Voucher" superEntityName="ProductItem" className="ish.oncourse.model.Voucher">
 		<qualifier><![CDATA[type = 3]]></qualifier>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
-		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
 		<obj-attribute name="idKey" type="java.lang.String" db-attribute-path="idKey"/>
 		<obj-attribute name="redeemedCoursesCount" type="java.lang.Integer" db-attribute-path="redeemedCoursesCount"/>
 		<obj-attribute name="redemptionValue" type="ish.math.Money" db-attribute-path="value"/>
@@ -3010,7 +3009,6 @@
 	<db-relationship name="logs" source="WillowUser" target="Log" toMany="true">
 		<db-attribute-pair source="id" target="userId"/>
 	</db-relationship>
-	<obj-relationship name="contact" source="Article" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="college" source="Attendance" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="marker" source="Attendance" target="Tutor" deleteRule="Nullify" db-relationship-path="marker"/>
 	<obj-relationship name="session" source="Attendance" target="Session" deleteRule="Nullify" db-relationship-path="session"/>
@@ -3088,7 +3086,6 @@
 	<obj-relationship name="country" source="Contact" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
 	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
-	<obj-relationship name="memberships" source="Contact" target="Membership" deleteRule="Deny" db-relationship-path="products"/>
 	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
@@ -3096,7 +3093,6 @@
 	<obj-relationship name="student" source="Contact" target="Student" deleteRule="Deny" db-relationship-path="student"/>
 	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="toContacts"/>
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Deny" db-relationship-path="tutor"/>
-	<obj-relationship name="vouchers" source="Contact" target="Voucher" deleteRule="Deny" db-relationship-path="products"/>
 	<obj-relationship name="college" source="ContactRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="fromContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="fromContact"/>
 	<obj-relationship name="relationType" source="ContactRelation" target="ContactRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
@@ -3171,15 +3167,12 @@
 	<obj-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
 	<obj-relationship name="webSite" source="Invoice" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="articles" source="InvoiceLine" target="Article" deleteRule="Deny" db-relationship-path="productItem"/>
 	<obj-relationship name="college" source="InvoiceLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="InvoiceLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="invoice" source="InvoiceLine" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="invoiceLineDiscounts" source="InvoiceLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoicelineDiscounts"/>
-	<obj-relationship name="memberships" source="InvoiceLine" target="Membership" deleteRule="Deny" db-relationship-path="productItem"/>
-	<obj-relationship name="productItem" source="InvoiceLine" target="ProductItem" deleteRule="Deny" db-relationship-path="productItem"/>
+	<obj-relationship name="productItems" source="InvoiceLine" target="ProductItem" deleteRule="Deny" db-relationship-path="productItem"/>
 	<obj-relationship name="voucherPaymentsIn" source="InvoiceLine" target="VoucherPaymentIn" deleteRule="Cascade" db-relationship-path="voucherPaymentIn"/>
-	<obj-relationship name="vouchers" source="InvoiceLine" target="Voucher" deleteRule="Deny" db-relationship-path="productItem"/>
 	<obj-relationship name="college" source="InvoiceLineDiscount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
@@ -3187,7 +3180,6 @@
 	<obj-relationship name="webSite" source="LicenseFee" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="Log" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="user" source="Log" target="WillowUser" deleteRule="Nullify" db-relationship-path="user"/>
-	<obj-relationship name="contact" source="Membership" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="discountMembershipProducts" source="MembershipProduct" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discountMembershipProducts"/>
 	<obj-relationship name="discountsAvailable" source="MembershipProduct" target="Discount" deleteRule="Deny" db-relationship-path="discountMembershipProducts.discount"/>
 	<obj-relationship name="college" source="Message" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -3224,6 +3216,7 @@
 	<obj-relationship name="college" source="Product" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="college" source="ProductItem" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="contact" source="ProductItem" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="product" source="ProductItem" target="Product" deleteRule="Nullify" db-relationship-path="product"/>
 	<obj-relationship name="certificates" source="Qualification" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
@@ -3294,7 +3287,6 @@
 	<obj-relationship name="college" source="TutorRole" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="TutorRole" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="tutor" source="TutorRole" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
-	<obj-relationship name="contact" source="Voucher" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="payments" source="Voucher" target="PaymentIn" deleteRule="Nullify" db-relationship-path="voucherPaymentIn.payment"/>
 	<obj-relationship name="voucherPaymentIns" source="Voucher" target="VoucherPaymentIn" deleteRule="Deny" db-relationship-path="voucherPaymentIn"/>
 	<obj-relationship name="college" source="VoucherPaymentIn" target="College" deleteRule="Nullify" db-relationship-path="college"/>

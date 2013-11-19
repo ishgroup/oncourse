@@ -72,8 +72,7 @@ public class ProductItemTest extends ACheckoutTest {
 			Product p = products.get(i);
 			ProductItem productItem = model.getProductItemBy(model.getPayer(), p);
 
-
-			assertEquals(model.getProductItemBy(model.getPayer(), p), il.getProductItem().get(i));
+			assertEquals(model.getProductItemBy(model.getPayer(), p), il.getProductItems().get(i));
 
 			assertNotNull(productItem.getCollege());
 			assertEquals(p.getCollege(), productItem.getCollege());

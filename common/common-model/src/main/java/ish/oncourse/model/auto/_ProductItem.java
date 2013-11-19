@@ -6,6 +6,7 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.common.types.ProductStatus;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Product;
 
@@ -19,10 +20,12 @@ public abstract class _ProductItem extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
+    public static final String EXPIRY_DATE_PROPERTY = "expiryDate";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String STATUS_PROPERTY = "status";
     public static final String TYPE_PROPERTY = "type";
     public static final String COLLEGE_PROPERTY = "college";
+    public static final String CONTACT_PROPERTY = "contact";
     public static final String INVOICE_LINE_PROPERTY = "invoiceLine";
     public static final String PRODUCT_PROPERTY = "product";
 
@@ -40,6 +43,13 @@ public abstract class _ProductItem extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty(CREATED_PROPERTY);
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        writeProperty(EXPIRY_DATE_PROPERTY, expiryDate);
+    }
+    public Date getExpiryDate() {
+        return (Date)readProperty(EXPIRY_DATE_PROPERTY);
     }
 
     public void setModified(Date modified) {
@@ -69,6 +79,15 @@ public abstract class _ProductItem extends CayenneDataObject {
 
     public College getCollege() {
         return (College)readProperty(COLLEGE_PROPERTY);
+    }
+
+
+    public void setContact(Contact contact) {
+        setToOneTarget(CONTACT_PROPERTY, contact, true);
+    }
+
+    public Contact getContact() {
+        return (Contact)readProperty(CONTACT_PROPERTY);
     }
 
 

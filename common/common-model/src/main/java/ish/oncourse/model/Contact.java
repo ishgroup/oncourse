@@ -18,7 +18,9 @@ import org.apache.log4j.Logger;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Contact extends _Contact implements Queueable {
 	
@@ -448,5 +450,17 @@ public class Contact extends _Contact implements Queueable {
 	@Override
 	public boolean isAsyncReplicationAllowed() {
 		return true;
+	}
+
+	public List<Membership> getMemberships() {
+		List<Membership> memberships = new ArrayList<>();
+
+		for (ProductItem item : getProducts()) {
+			if (item instanceof Membership) {
+				memberships.add((Membership) item);
+			}
+		}
+
+		return memberships;
 	}
 }

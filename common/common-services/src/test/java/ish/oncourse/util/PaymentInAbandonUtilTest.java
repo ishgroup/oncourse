@@ -494,8 +494,8 @@ private ICayenneService cayenneService;
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
-		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
-		voucher = invoiceLine.getVouchers().get(0);
+		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getProductItems().size());
+		voucher = (Voucher) invoiceLine.getProductItems().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
@@ -564,8 +564,8 @@ private ICayenneService cayenneService;
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
-		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
-		voucher = invoiceLine.getVouchers().get(0);
+		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getProductItems().size());
+		voucher = (Voucher) invoiceLine.getProductItems().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
