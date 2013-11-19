@@ -78,7 +78,12 @@ public class CourseService implements ICourseService {
 			list.add(Long.valueOf(document.get(CourseClass.ID_PK_COLUMN).toString()));
 		}
 
-		List<Course> result = loadByIds(list.toArray());
+		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN,list).andExp(getSiteQualifier());
+
+		SelectQuery q = new SelectQuery(Course.class, expr);
+
+		List<Course> result = cayenneService.sharedContext().performQuery(q);
+
 		if (sort == null) {
 			//if nothing specified use default
 			sort = Sort.alphabetical;
