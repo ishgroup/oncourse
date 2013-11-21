@@ -8,6 +8,7 @@ import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
@@ -20,6 +21,9 @@ import java.util.TimeZone;
  */
 public class ClassSliderItem {
 
+	private static final String KEY_selfPacedMessage = "selfPacedMessage";
+	private static final String KEY_classNotHaveSessionsMessage = "classNotHaveSessionsMessage";
+
     @Inject
     private ICookiesService cookiesService;
 
@@ -28,6 +32,9 @@ public class ClassSliderItem {
 
     private TimeZone timeZone;
 
+	@Inject
+	private Messages messages;
+
     @SetupRender
     void setupRender() {
         timeZone = FormatUtils.getClientTimeZone(courseClass);
@@ -35,8 +42,11 @@ public class ClassSliderItem {
 
     public String getPeriod()
     {
-         if(courseClass.getIsDistantLearningCourse())
-             return "self paced";
+		if(courseClass.getIsDistantLearningCourse())
+			return  messages.get(KEY_selfPacedMessage);
+
+		if(courseClass.getSessions().isEmpty())
+			return messages.get(KEY_classNotHaveSessionsMessage);
 
         return DateFormatter.formatDate(courseClass.getSessions().get(0).getStartDate(),false,FormatUtils.getClientTimeZone(courseClass));
     }
@@ -48,8 +58,11 @@ public class ClassSliderItem {
 
     public String getDate()
     {
-        if(courseClass.getIsDistantLearningCourse())
-            return "self paced";
+		if(courseClass.getIsDistantLearningCourse())
+			return  messages.get(KEY_selfPacedMessage);
+
+		if(courseClass.getSessions().isEmpty())
+			return messages.get(KEY_classNotHaveSessionsMessage);
 
         return String.format("%s - %s",
                 FormatUtils.getDateFormat(FormatUtils.dateFormatForTimeline, timeZone).format(courseClass.getSessions().get(0).getStartDate()),

@@ -62,7 +62,6 @@
     <t:block t:id="classInfo">
         <p>
             <strong><a href="${request.contextPath}/class/${courseClass.id}">${courseClass.course.name}</a></strong>
-            <!--<span class="label label-primary">Approval required</span> -->
             <small class="text-muted">(${courseClass.uniqueIdentifier})</small>
             <label>
 
@@ -70,7 +69,12 @@
                     <t:output format="literal:d MMMM yy h:mma z" value="courseClass.startDate"/>
                 </t:if>
                 <t:unless test="courseClass.startDate">
-                    <span>Self paced class</span>
+                    <t:if test="${courseClass.getIsDistantLearningCourse()}">
+                        <span>Self paced class</span>
+                    </t:if>
+                    <t:unless test="${courseClass.getIsDistantLearningCourse()}">
+                        <span>This class does not have sessions</span>
+                    </t:unless>
                 </t:unless>
 
             </label>

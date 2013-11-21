@@ -35,11 +35,7 @@ public class ClassSlider {
 
     @SetupRender
     boolean setupRender() {
-        courseClasses =   portalService.getContactCourseClasses(contact,CourseClassFilter.CURRENT);
-
-
-        if (contact.getTutor() != null)
-            courseClasses.addAll(portalService.getContactCourseClasses(contact, CourseClassFilter.UNCONFIRMED));
+        courseClasses = portalService.getContactCourseClasses(contact,CourseClassFilter.CURRENT);
         return true;
     }
 }

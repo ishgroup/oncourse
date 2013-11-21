@@ -15,8 +15,6 @@ import java.util.List;
  */
 public interface IPortalService {
 
-    public static final String SELF_PACED = "Self paced class";
-
     public JSONObject getSession(Session session);
     public JSONObject getAttendences(Session session);
     public JSONObject getCalendarEvents(Contact contact);

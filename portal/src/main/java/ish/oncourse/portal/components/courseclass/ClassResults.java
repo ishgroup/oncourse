@@ -39,16 +39,14 @@ public class ClassResults {
     @SetupRender
     boolean setupRender() {
 
-
-
          modules=courseClass.getCourse().getModules();
          courseClass.getValidEnrolments();
+
          for (Enrolment enrolment : courseClass.getValidEnrolments())
              if(enrolment.getStudent().getContact().getId().equals(authenticationService.getUser().getId())){
                 this.enrolment= enrolment;
                 break;
              }
-
       return true;
      }
 

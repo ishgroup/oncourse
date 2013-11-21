@@ -12,12 +12,16 @@ import ish.oncourse.util.FormatUtils;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.List;
 import java.util.TimeZone;
 
 public class Resources {
+
+	private static final String KEY_selfPacedMessage = "selfPacedMessage";
+	private static final String KEY_classNotHaveSessionsMessage = "classNotHaveSessionsMessage";
 
     @Inject
     private IAuthenticationService authenticationService;
@@ -34,6 +38,8 @@ public class Resources {
     @Inject
     private IBinaryDataService binaryDataService;
 
+	@Inject
+	private Messages messages;
 
     @SetupRender
     void  setupRender(){
@@ -44,8 +50,11 @@ public class Resources {
 
     public String getDate(CourseClass courseClass)
     {
-        if(courseClass.getIsDistantLearningCourse())
-            return  portalService.SELF_PACED;
+		if(courseClass.getIsDistantLearningCourse())
+			return  messages.get(KEY_selfPacedMessage);
+
+		if(courseClass.getSessions().isEmpty())
+			return messages.get(KEY_classNotHaveSessionsMessage);
 
         TimeZone timeZone = FormatUtils.getClientTimeZone(courseClass);
 

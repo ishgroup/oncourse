@@ -151,7 +151,7 @@ public class PortalService implements IPortalService{
             for(Enrolment enrolment : authenticationService.getUser().getStudent().getEnrolments()){
                 Course course = enrolment.getCourseClass().getCourse();
                 if(!course.getModules().isEmpty() || course.getQualification()!=null){
-                    result=true;
+                    result = true;
                     break;
                 }
             }
@@ -163,10 +163,10 @@ public class PortalService implements IPortalService{
     public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter) {
         List<CourseClass> courseClasses = new ArrayList<>();
 
-        if(contact.getTutor()!=null)
+        if(contact.getTutor() != null)
             courseClasses.addAll(getTutorCourseClasses(contact, filter));
 
-        if(contact.getStudent()!=null && filter!=CourseClassFilter.UNCONFIRMED)
+        if(contact.getStudent() != null && filter != CourseClassFilter.UNCONFIRMED)
             courseClasses.addAll(getStudentCourseClasses(contact, filter));
 
         Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
@@ -200,13 +200,8 @@ public class PortalService implements IPortalService{
                 default:
                     throw new IllegalArgumentException();
             }
-
-
-
-        }
-
-
-        return null;
+	    }
+		return null;
 
     }
 
@@ -240,13 +235,11 @@ public class PortalService implements IPortalService{
     }
 
     private  List<CourseClass>  getPastTutorClasses(List<CourseClass> courseClasses){
-        Date date = new Date();
-        List<CourseClass> past = new ArrayList<>();
 
-        for(CourseClass courseClass : courseClasses){
-            if(!courseClass.getIsDistantLearningCourse() && courseClass.getEndDate().before(date))
-                past.add(courseClass);
-        }
+
+		List<CourseClass> past = new ArrayList<>();
+		past.addAll(courseClasses);
+		past.removeAll(getCurrentTutorClasses(courseClasses));
 
         return past;
     }
@@ -259,9 +252,20 @@ public class PortalService implements IPortalService{
 
                  if(courseClass.getIsDistantLearningCourse()){
                      current.add(courseClass);
-                 }else if(courseClass.getEndDate().after(date)){
-                     current.add(courseClass);
                  }
+
+
+				 if(!courseClass.getIsDistantLearningCourse() && !courseClass.getSessions().isEmpty()) {
+
+					 if(courseClass.getEndDate().after(date))
+						 current.add(courseClass);
+				 }
+
+				 if(!courseClass.getIsDistantLearningCourse() && courseClass.getSessions().isEmpty()) {
+
+					 current.add(courseClass);
+				 }
+
              }
 
         return  current;
@@ -275,14 +279,13 @@ public class PortalService implements IPortalService{
 
         for(CourseClass courseClass : courseClasses){
            for(TutorRole tutorRole : courseClass.getTutorRoles()){
-                 if(tutorRole.getTutor().getId().equals(contact.getTutor().getId()))
-                    if(tutorRole.getIsConfirmed()==false){
-                        if(courseClass.getIsDistantLearningCourse()){
-                            unconfirmed.add(courseClass);
-                        }else if(courseClass.getEndDate().after(date)){
-                            unconfirmed.add(courseClass);
-                        }
-                    }
+                 if(tutorRole.getTutor().getId().equals(contact.getTutor().getId())
+			        && tutorRole.getIsConfirmed()==false
+					&& getCurrentTutorClasses(courseClasses).contains(courseClass)) {
+
+							unconfirmed.add(courseClass);
+
+                 }
            }
         }
         return unconfirmed;
@@ -306,13 +309,24 @@ public class PortalService implements IPortalService{
                      break;
                   }
               }
-           }else if(courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() == null) {
+           }
+
+		   if(courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() == null) {
 			   current.add(courseClass);
-		   }else{
+		   }
+
+		   if(!courseClass.getIsDistantLearningCourse() && !courseClass.getSessions().isEmpty()) {
 
               if(courseClass.getEndDate().after(date))
                   current.add(courseClass);
            }
+
+		   if(!courseClass.getIsDistantLearningCourse() && courseClass.getSessions().isEmpty()) {
+
+			   current.add(courseClass);
+		   }
+
+
         }
 
         return current;
@@ -322,9 +336,12 @@ public class PortalService implements IPortalService{
     private List<CourseClass> getPastStudentClasses(List<CourseClass> courseClasses, Contact contact){
 
         List<CourseClass> past = new ArrayList<>();
-        Date date = new Date();
+      //  Date date = new Date();
+		past.addAll(courseClasses);
+		past.removeAll(getCurrentStudentClasses(courseClasses,contact));
+		return  past;
 
-        for(CourseClass courseClass : courseClasses){
+       /* for(CourseClass courseClass : courseClasses){
 
             if(courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() != null){
 
@@ -342,7 +359,7 @@ public class PortalService implements IPortalService{
             }
         }
 
-        return past;
+        return past;            */
     }
 
 
