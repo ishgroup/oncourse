@@ -48,17 +48,22 @@
 			where cc.courseId=c.id and cc.isWebVisible=1 and cc.isCancelled=0
 			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (2,3))
 		) as startDate
-		from Course c where c.isWebVisible=1
-		and c.id='${dataimporter.delta.id}'"
+		from Course c where c.id='${dataimporter.delta.id}'"
 		deltaQuery="
 		select distinct c.id
 		from Course c
 		left join CourseClass cc on cc.courseId=c.id
-		/* we need to reindex courses with enrolments modified after last delta import to correctly catch the full classes*/
-		left join Enrolment e on e.courseClassId=cc.id and e.modified &gt;='${dataimporter.last_index_time}'
-		where c.isWebVisible=1 and (c.modified &gt; '${dataimporter.last_index_time}' or e.id is not NULL
-		/* we need to reindex courses with classes finished after last delta import*/
-		or (cc.endDate &gt;= '${dataimporter.last_index_time}' and cc.endDate &lt;= NOW()))"
+		left join Enrolment e on e.courseClassId=cc.id
+		left join Session se on se.courseClassId=cc.id
+		where c.isWebVisible=1 and (
+		/* check is course modified */
+		c.modified &gt;='${dataimporter.last_index_time}'
+		/* check is course class modified or finished */
+		or cc.modified &gt;='${dataimporter.last_index_time}' or cc.endDate &lt;= '${dataimporter.last_index_time}'
+		/* check is enrolments linked to course class  modified */
+		or e.modified &gt;='${dataimporter.last_index_time}'
+		/* check is sessions linked to course class  modified */
+		or se.modified &gt;='${dataimporter.last_index_time}')"
 		pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
