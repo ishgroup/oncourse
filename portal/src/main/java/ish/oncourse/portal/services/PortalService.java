@@ -297,7 +297,7 @@ public class PortalService implements IPortalService{
 
         for(CourseClass courseClass : courseClasses){
 
-           if(courseClass.getIsDistantLearningCourse()){
+           if(courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() != null){
 
               for(Enrolment enrolment : courseClass.getEnrolments()){
                   if(enrolment.getStudent().getId().equals(contact.getStudent().getId())){
@@ -306,7 +306,9 @@ public class PortalService implements IPortalService{
                      break;
                   }
               }
-           }else{
+           }else if(courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() == null) {
+			   current.add(courseClass);
+		   }else{
 
               if(courseClass.getEndDate().after(date))
                   current.add(courseClass);
@@ -324,7 +326,7 @@ public class PortalService implements IPortalService{
 
         for(CourseClass courseClass : courseClasses){
 
-            if(courseClass.getIsDistantLearningCourse()){
+            if(courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() != null){
 
                 for(Enrolment enrolment : courseClass.getEnrolments()){
                     if(enrolment.getStudent().getId().equals(contact.getStudent().getId())){
@@ -333,7 +335,7 @@ public class PortalService implements IPortalService{
                         break;
                     }
                 }
-            }else{
+            }else if(!courseClass.getIsDistantLearningCourse()){
 
                 if(courseClass.getEndDate().before(date))
                     past.add(courseClass);
