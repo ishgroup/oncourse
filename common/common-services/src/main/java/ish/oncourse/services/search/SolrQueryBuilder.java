@@ -67,14 +67,20 @@ public class SolrQueryBuilder {
 
     private SearchParams params;
     private String collegeId;
-    private final int start;
-    private final int rows;
+    private final Integer start;
+    private final Integer rows;
 
+	/**
+	 * @param params cannot be null
+	 * @param collegeId cannot be null
+	 * @param start can be null
+	 * @param rows can be null
+	 */
     public SolrQueryBuilder(
                             SearchParams params,
                             String collegeId,
-                            int start,
-                            int rows) {
+                            Integer start,
+                            Integer rows) {
         this.params = params;
         this.collegeId = collegeId;
         this.start = start;

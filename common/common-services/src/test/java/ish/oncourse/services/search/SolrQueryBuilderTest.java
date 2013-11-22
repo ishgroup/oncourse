@@ -2,7 +2,6 @@ package ish.oncourse.services.search;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.util.FormatUtils;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -76,7 +75,6 @@ public class SolrQueryBuilderTest {
 		assertEquals("Commons parameters", GEOFILTER_QUERY, value);
 	}
 	
-	@SuppressWarnings("serial")
 	@Test
     public void testCreate() throws UnsupportedEncodingException, ParseException {
         SearchParams searchParams = new SearchParams();
@@ -164,5 +162,16 @@ public class SolrQueryBuilderTest {
         //System.out.println(value);
         assertEquals("Query parameters", expectedValue, value);
     }
+
+	@Test
+	public void testNulls() throws UnsupportedEncodingException, ParseException {
+		SearchParams searchParams = new SearchParams();
+		SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(searchParams,"1",null,null);
+		String value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
+
+		assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
+				"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
+				"&sort=score desc,startDate asc,name asc&debugQuery=false", value);
+	}
 
 }
