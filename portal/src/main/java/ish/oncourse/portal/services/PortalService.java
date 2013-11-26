@@ -22,7 +22,10 @@ import org.apache.tapestry5.json.JSONObject;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  * User: artem
@@ -95,7 +98,7 @@ public class PortalService implements IPortalService{
 
         JSONObject result = new JSONObject();
         for (Session session : sessions) {
-            TimeZone timeZone = FormatUtils.getClientTimeZone(session.getCourseClass());
+            TimeZone timeZone = courseClassService.getClientTimeZone(session.getCourseClass());
             result.put(FormatUtils.getDateFormat("MM-dd-yyyy",timeZone).format(session.getStartDate()),
                     String.format("<a href='#class-%s'>%s</a>", session.getCourseClass().getId(), formatDate(session)));
         }
@@ -103,7 +106,7 @@ public class PortalService implements IPortalService{
     }
 
     private String formatDate(Session session) {
-        TimeZone timeZone = FormatUtils.getClientTimeZone(session.getCourseClass());
+        TimeZone timeZone = courseClassService.getClientTimeZone(session.getCourseClass());
         return String.format("%s - %s",
                 FormatUtils.getDateFormat(FormatUtils.dateFormatForTimeline, timeZone).format(session.getStartDate()),
                 FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(session.getEndDate()));

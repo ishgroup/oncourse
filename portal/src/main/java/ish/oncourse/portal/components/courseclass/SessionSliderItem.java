@@ -45,7 +45,7 @@ public class SessionSliderItem {
 
     @SetupRender
     boolean setupRender() {
-        timeZone = FormatUtils.getClientTimeZone(session.getCourseClass());
+        timeZone = session.getCourseClass().getClassTimeZone();
 
         tutors = new ArrayList<>();
         List<TutorRole> tutorRoles = session.getCourseClass().getTutorRoles();

@@ -5,6 +5,7 @@ import org.apache.cayenne.ObjectContext;
 
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * 
@@ -81,4 +82,10 @@ public interface ICourseClassService {
 	 * Returns all surveys  for this courseClass
 	 */
 	public List<Survey> getSurveysFor(CourseClass courseClass);
+
+
+	/**
+	 * Returns client time zone for CourseClass
+	 */
+	public TimeZone getClientTimeZone(CourseClass courseClass);
 }

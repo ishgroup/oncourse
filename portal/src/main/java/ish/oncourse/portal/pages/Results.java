@@ -25,6 +25,9 @@ public class Results {
     @Inject
     private IPortalService portalService;
 
+	@Inject
+	private ICourseClassService courseClassService;
+
     @Property
     private CourseClass courseClass;
 
@@ -49,7 +52,7 @@ public class Results {
 		if(courseClass.getSessions().isEmpty())
 			return messages.get(KEY_classNotHaveSessionsMessage);
 
-        TimeZone timeZone = FormatUtils.getClientTimeZone(courseClass);
+        TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
 
         return String.format("%s - %s",
                 FormatUtils.getDateFormat("dd MMMMMM yyyy", timeZone).format(courseClass.getStartDate()),

@@ -1,8 +1,8 @@
 package ish.oncourse.portal.components.timetable;
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Session;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.DateFormatter;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
@@ -11,7 +11,6 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -27,6 +26,9 @@ public class ClassSliderItem {
     @Inject
     private ICookiesService cookiesService;
 
+	@Inject
+	private ICourseClassService courseClassService;
+
     @Parameter
     private CourseClass courseClass;
 
@@ -37,7 +39,7 @@ public class ClassSliderItem {
 
     @SetupRender
     void setupRender() {
-        timeZone = FormatUtils.getClientTimeZone(courseClass);
+        timeZone = courseClassService.getClientTimeZone(courseClass);
     }
 
     public String getPeriod()
@@ -48,7 +50,7 @@ public class ClassSliderItem {
 		if(courseClass.getSessions().isEmpty())
 			return messages.get(KEY_classNotHaveSessionsMessage);
 
-        return DateFormatter.formatDate(courseClass.getSessions().get(0).getStartDate(),false,FormatUtils.getClientTimeZone(courseClass));
+        return DateFormatter.formatDate(courseClass.getSessions().get(0).getStartDate(),false,courseClassService.getClientTimeZone(courseClass));
     }
 
     public String getName()

@@ -5,6 +5,7 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.CustomizedDateFormat;
@@ -40,6 +41,9 @@ public class CourseClassItem {
 	
 	@Inject
 	private PreferenceController preferenceController;
+
+	@Inject
+	private ICourseClassService courseClassService;
 
 	@Parameter
 	@Property
@@ -89,7 +93,7 @@ public class CourseClassItem {
 		timetableLabels.add("Time");
 		timetableLabels.add("Where");
 
-		TimeZone timeZone =FormatUtils.getClientTimeZone(courseClass);
+		TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
 
 		dateFormat = FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
 		timeFormat = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);

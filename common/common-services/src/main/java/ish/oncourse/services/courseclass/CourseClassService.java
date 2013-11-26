@@ -3,6 +3,7 @@ package ish.oncourse.services.courseclass;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cache.CacheGroup;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.Cayenne;
@@ -28,11 +29,14 @@ public class CourseClassService implements ICourseClassService {
     private final ICayenneService cayenneService;
 
     private final IWebSiteService webSiteService;
+
+	private final ICookiesService cookiesService;
     
     @Inject
-	public CourseClassService(ICayenneService cayenneService, IWebSiteService webSiteService) {
+	public CourseClassService(ICayenneService cayenneService, IWebSiteService webSiteService, ICookiesService cookiesService) {
 		this.cayenneService = cayenneService;
 		this.webSiteService = webSiteService;
+		this.cookiesService = cookiesService;
 	}
 
 	public CourseClass getCourseClassByFullCode(String code) {
@@ -328,5 +332,19 @@ public class CourseClassService implements ICourseClassService {
 		return cayenneService.sharedContext().performQuery(query);
 	}
 
+	@Override
+	public TimeZone getClientTimeZone(CourseClass courseClass) {
+		TimeZone timezone = TimeZone.getTimeZone(courseClass.getTimeZone());
 
+		if (timezone == null && cookiesService != null) {
+			timezone = cookiesService.getClientTimezone();
+			if (timezone == null) {
+				timezone = cookiesService.getSimpleClientTimezone();
+				if (timezone == null) {
+					timezone = TimeZone.getTimeZone(courseClass.getTimeZone());
+				}
+			}
+		}
+		return timezone;
+	}
 }

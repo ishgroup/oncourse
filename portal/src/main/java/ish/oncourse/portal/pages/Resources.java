@@ -3,13 +3,11 @@ package ish.oncourse.portal.pages;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
-
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
-
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
@@ -28,6 +26,9 @@ public class Resources {
 
     @Inject
     private IPortalService portalService;
+
+	@Inject
+	private ICourseClassService courseClassService;
 
     @Property
     private CourseClass courseClass;
@@ -56,7 +57,7 @@ public class Resources {
 		if(courseClass.getSessions().isEmpty())
 			return messages.get(KEY_classNotHaveSessionsMessage);
 
-        TimeZone timeZone = FormatUtils.getClientTimeZone(courseClass);
+        TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
 
         return String.format("%s - %s",
                 FormatUtils.getDateFormat("dd MMMMMM yyyy", timeZone).format(courseClass.getStartDate()),
