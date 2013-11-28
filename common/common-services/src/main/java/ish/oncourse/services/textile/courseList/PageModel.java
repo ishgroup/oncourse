@@ -122,7 +122,7 @@ public class PageModel {
 
 	public boolean isEmpty()
 	{
-		return courses.isEmpty();
+		return courses.isEmpty() && childTags.isEmpty() && tag == null;
 	}
 
 	public ISearchService getSearchService() {
