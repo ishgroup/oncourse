@@ -6,7 +6,6 @@ import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -143,7 +142,7 @@ public class SearchService implements ISearchService {
             return null;
     }
 
-    public QueryResponse searchCourses(SearchParams params, int start, int rows) {
+    public QueryResponse searchCourses(SearchParams params, int start, Integer rows) {
 
         try {
             String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
