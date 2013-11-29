@@ -1447,8 +1447,6 @@
 	</obj-entity>
 	<obj-entity name="MembershipProduct" superEntityName="Product" className="ish.oncourse.model.MembershipProduct">
 		<qualifier><![CDATA[type = 2]]></qualifier>
-		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
-		<obj-attribute name="expiryType" type="ish.common.types.ExpiryType" db-attribute-path="expiryType"/>
 	</obj-entity>
 	<obj-entity name="Message" className="ish.oncourse.model.Message" dbEntityName="Message">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1625,6 +1623,8 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
+		<obj-attribute name="expiryType" type="ish.common.types.ExpiryType" db-attribute-path="expiryType"/>
 		<obj-attribute name="isOnSale" type="java.lang.Boolean" db-attribute-path="isOnSale"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
@@ -1876,8 +1876,6 @@
 	</obj-entity>
 	<obj-entity name="VoucherProduct" superEntityName="Product" className="ish.oncourse.model.VoucherProduct">
 		<qualifier><![CDATA[type = 3]]></qualifier>
-		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
-		<obj-attribute name="expiryType" type="ish.common.types.ExpiryType" db-attribute-path="expiryType"/>
 		<obj-attribute name="maxCoursesRedemption" type="java.lang.Integer" db-attribute-path="maxCoursesRedemption"/>
 		<obj-attribute name="value" type="ish.math.Money" db-attribute-path="value"/>
 		<attribute-override name="expiryDays" db-attribute-path="expiryDays"/>

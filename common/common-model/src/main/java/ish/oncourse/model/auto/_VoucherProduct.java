@@ -2,7 +2,6 @@ package ish.oncourse.model.auto;
 
 import java.util.List;
 
-import ish.common.types.ExpiryType;
 import ish.math.Money;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Product;
@@ -15,27 +14,11 @@ import ish.oncourse.model.Product;
  */
 public abstract class _VoucherProduct extends Product {
 
-    public static final String EXPIRY_DAYS_PROPERTY = "expiryDays";
-    public static final String EXPIRY_TYPE_PROPERTY = "expiryType";
     public static final String MAX_COURSES_REDEMPTION_PROPERTY = "maxCoursesRedemption";
     public static final String VALUE_PROPERTY = "value";
     public static final String REDEMPTION_COURSES_PROPERTY = "redemptionCourses";
 
     public static final String ID_PK_COLUMN = "id";
-
-    public void setExpiryDays(Integer expiryDays) {
-        writeProperty(EXPIRY_DAYS_PROPERTY, expiryDays);
-    }
-    public Integer getExpiryDays() {
-        return (Integer)readProperty(EXPIRY_DAYS_PROPERTY);
-    }
-
-    public void setExpiryType(ExpiryType expiryType) {
-        writeProperty(EXPIRY_TYPE_PROPERTY, expiryType);
-    }
-    public ExpiryType getExpiryType() {
-        return (ExpiryType)readProperty(EXPIRY_TYPE_PROPERTY);
-    }
 
     public void setMaxCoursesRedemption(Integer maxCoursesRedemption) {
         writeProperty(MAX_COURSES_REDEMPTION_PROPERTY, maxCoursesRedemption);
