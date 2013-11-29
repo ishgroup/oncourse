@@ -118,6 +118,10 @@ allprojects {
 		maxHeapSize = '1024m'
 		jvmArgs "-XX:MaxPermSize=256m"
 		ignoreFailures = true
+
+		jacoco {
+			enabled = project.hasProperty('jacoco-enabled') ? true : false;
+		}
 	}
 }
 
