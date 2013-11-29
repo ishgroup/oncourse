@@ -100,6 +100,11 @@ allprojects {
 		systemProperties 'java.awt.headless': 'true'
 		maxHeapSize = '1024m'
 		jvmArgs "-XX:MaxPermSize=256m"
+
+		jacoco {
+			enabled = project.hasProperty('jacoco-enabled') ? true : false;
+		}
+
 		ignoreFailures = true
 		
 		// log each starting test
