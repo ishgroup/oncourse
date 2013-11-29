@@ -6,9 +6,6 @@ buildscript {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/ish'
 		}
-		maven {
-			url 'http://maven.tmatesoft.com/content/repositories/snapshots/'
-		}
 		add(new org.apache.ivy.plugins.resolver.URLResolver()) {
 			name = 'GitHub cargo'
 			addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
@@ -21,7 +18,7 @@ buildscript {
 		classpath 'org.codehaus.cargo:cargo-core-uberjar:1.2.2'
 		classpath 'org.codehaus.cargo:cargo-ant:1.2.2'
 		classpath 'au.com.ish.gradle:release:2.1.3'
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.3'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.4'
 	}
 }
 
