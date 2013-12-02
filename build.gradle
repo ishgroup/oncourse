@@ -156,15 +156,15 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 					executable = 'security'
 					args = ['unlock-keychain', '-p', project.osxKeychainPassword, project.osxKeychain]
 				}
-				logger.lifecycle("Unlocking the keychain: "+project.windowsKeychain)
+				logger.lifecycle("Unlocking the keychain: "+project.osxKeychain)
 				exec {
 					executable = 'security'
-					args = ['unlock-keychain', '-p', project.osxKeychainPassword, project.windowsKeychain]
+					args = ['unlock-keychain', '-p', project.osxKeychainPassword, project.osxKeychain]
 				}
 				logger.lifecycle("Exporting the windows keychain into pkcs12 format: "+project.codeSigningTemporaryKeystore)
 				exec {
 					executable= 'security'
-					args = ['export', 	'-k', project.windowsKeychain,  
+					args = ['export', 	'-k', project.osxKeychain,
 							'-t', 'all', 
 							'-f', 'pkcs12',
 							'-P', project.codeSigningTemporaryPassword, 
