@@ -181,6 +181,25 @@ task installer_osx(dependsOn: [codeSign, createDmg]) {
 	}
 }
 
+task installer_osx_java7(dependsOn: [fatJar, prepareKeychains], type: au.com.ish.AppBundlerTask) {
+    distributionPath = "${distsDir}/macosx_java7"
+    appName = "onCourseServer"
+    appIdentifier = "ish.oncourse"
+    mainClassName = "ish.oncourse.server.AngelServer"
+    iconFile = file("${projectDir}/src/packaging/macosx/onCourseServer.icns")
+    jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
+    keychain = project.osxKeychain
+    certIdentity = project.osxKeychainIdentity
+
+    jvmOptions = ["-Dapple.awt.textantialiasing=true",
+                  "-DJFileChooser.appBundleIsTraversable=true",
+                  "-DJFileChooser.packageIsTraversable=true",
+                  "-Dapple.awt.antialiasing=true",
+                  "-Dapple.awt.showGrowBox=true",
+                  "-Xmx${project.maxmemoryServer}",
+                  "-XX:MaxPermSize=${project.maxpermgenServer}"]
+}
+
 project.ext.unixAppFiles = copySpec {
 	into('.') {
 		from("${projectDir}/src/packaging/unix/")
