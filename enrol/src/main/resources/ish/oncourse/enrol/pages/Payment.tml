@@ -48,11 +48,13 @@
 						<a href="#credit-card">Credit card</a>
 					</li>
 				</t:if>
-				<t:if test="purchaseController.corporatePassPaymentEnabled">
-					<li class="${corporatePassTabClass}">
-						<a href="#corporate-pass">CorporatePass</a>
-					</li>
-				</t:if>
+                <t:if test="containsProduct" negate="true">
+				    <t:if test="purchaseController.corporatePassPaymentEnabled">
+					    <li class="${corporatePassTabClass}">
+					    	<a href="#corporate-pass">CorporatePass</a>
+					    </li>
+				    </t:if>
+                </t:if>
             </ul>
             <div class="tab-content">
 				<t:if test="purchaseController.creditCardPaymentEnabled">
