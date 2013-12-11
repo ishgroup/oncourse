@@ -23,12 +23,7 @@ public class PaymentInStubBuilder extends AbstractWillowStubBuilder<PaymentIn, P
 			stub.setSource(PaymentSource.SOURCE_WEB.getDatabaseValue());
 		}
 		stub.setStatus(entity.getStatus().getDatabaseValue());
-		PaymentType type = entity.getType();
-		// older angel versions used INTERNAL payment type instead of REVERSE
-		if (PaymentType.REVERSE.equals(type)) {
-			type = PaymentType.INTERNAL;
-		}
-		stub.setType(type.getDatabaseValue());
+		stub.setType(entity.getType().getDatabaseValue());
 		stub.setGatewayReference(entity.getGatewayReference());
 		stub.setGatewayResponse(entity.getGatewayResponse());
 		stub.setSessionId(entity.getSessionId());
