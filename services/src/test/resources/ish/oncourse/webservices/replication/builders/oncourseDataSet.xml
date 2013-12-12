@@ -11,7 +11,7 @@
 	<TrainingPackage id="1" ishVersion="1" nationalISC="AGR05" title="Conditionally Endorsed Agri-Food Qualifications Training Package"  endorsementFrom="2010-02-03 09:18:09" endorsementTo="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" purchaseFrom="2010-02-03 09:18:09"/>
 	<Qualification id="1" ishVersion="1" nationalCode="10351TAS" level="Certificate IV in" title="Youth &amp; Community Work (Christian)" anzsco="411716" asco="GEN19" fieldOfStudy="1103" fieldOfEducation="0899" nominalHours="13" 
 		reviewDate="2009-07-16 16:50:31" isAccreditedCourse="1" created="2009-07-16 16:50:31" modified="2009-07-16 16:50:31"/>
-	
+
     <College id="3" name="Sydney Community College" webServicesSecurityCode="345ttn44$%9"
              communication_key="7059522699886202880" communication_key_status="VALID" angelVersion="development"
              firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
@@ -26,7 +26,6 @@
     <Room id="1"  collegeId="3" siteId="1" angelId="2" capacity="30" created="2011-09-12 00:47:01.0"
           modified="2011-09-12 01:02:00.0" name="TestRoom" directions="directions" directions_textile="directions_textile"
           facilities="facilities" facilities_textile="facilities_textile"/>
-
 
     <Tutor id="1" collegeId="3" angelId="2" created="2011-09-12 00:47:26.0"
            modified="2011-09-12 01:02:00.0" resume="&lt;p&gt;This is mister Putin resume.&lt;/p&gt;"
@@ -60,6 +59,11 @@
              highestSchoolLevel="1" concessionType="1" indigenousStatus="1" isOverseasClient="1"
              isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1" yearSchoolCompleted="1" created="2011-09-12 00:56:00.0"/>
 
+    <SessionModule
+            id="1" collegeId="3" angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 01:02:00.0"
+            moduleId="1"
+            sessionId="1"
+            />
 
     <Contact id="1"
              collegeId="3"
@@ -255,6 +259,29 @@
             studentId="1"
             type="1"/>
 
+    <PaymentIn
+            amount="1.11"
+            angelId="2"
+            collegeId="3"
+            contactId="1"
+            created="2011-09-20 11:14:54"
+            creditCardCVV="QWER"
+            creditCardExpiry="creditCardExpiry"
+            creditCardName="creditCardName"
+            creditCardNumber="creditCardNumberX"
+            creditCardType="VISA"
+            dateBanked="2011-09-20 11:14:54"
+            gatewayReference="gatewayReference"
+            gatewayResponse="gatewayResponse"
+            id="2"
+            modified="2011-09-20 11:14:54"
+            sessionId="sessionId"
+            source="W"
+            status="10"
+            statusNotes="statusNotes"
+            studentId="1"
+            type="1"/>
+
     <PaymentOut
             angelId="2"
             collegeId="3"
@@ -294,6 +321,38 @@
         value="value"
         value_string="value_string"/>
 
+
+    <Product SKU="m123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="1" ID="1" ISONSALE="1"
+             ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00" TYPE="2"
+             TAXADJUSTMENT="0.00" maxCoursesRedemption="3" notes="notes"
+             expiryDays="365" collegeId="3" angelId="2"/>
+
+    <Product SKU="m123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="1" ID="2" ISONSALE="1"
+             ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00" TYPE="1"
+             TAXADJUSTMENT="0.00" maxCoursesRedemption="3" notes="notes"
+             expiryDays="365" collegeId="3" angelId="2"/>
+
+    <Product SKU="m123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="1" ID="3" ISONSALE="1"
+             ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00" TYPE="3"
+             TAXADJUSTMENT="0.00" maxCoursesRedemption="3" notes="notes"
+             expiryDays="365" collegeId="3" angelId="2"/>
+
+    <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="1"
+                 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="2" code="qwertyb" value="50.00" redeemedCoursesCount="0" source="W"
+                 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2"/>
+
+    <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="2"
+                 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="2" TYPE="1" code="qwertyb" value="50.00" redeemedCoursesCount="0" source="W"
+                 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2"/>
+
+    <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="3"
+                 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" code="qwertyb" value="50.00" redeemedCoursesCount="0" source="W"
+                 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2"/>
+
+    <VoucherProductCourse id="1" voucherProductId="3" courseId="1" collegeId="3" angelId="2" created="2012-05-14 14:33:16.537" modified="2012-05-14 14:33:16.537"/>
+
+    <VoucherPaymentIn id="1" collegeId="3" angelId="2" created="2012-05-14 14:33:16.537" modified="2012-05-14 14:33:16.537"
+                      paymentInId="1" voucherId="3" enrolmentsCount="1" status="1" INVOICELINEID="1" />
 
     <StudentConcession
         angelId="2"
@@ -420,5 +479,14 @@
 
     <Survey id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
             comment="comment" courseScore="1" enrolmentId="1" tutorScore="2" uniqueCode="uniqueCo" venueScore="3"/>
+
+    <EntityRelation
+            id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="2"
+            fromRecordId="1"
+            toRecordId="1"
+
+            />
 
 </dataset>

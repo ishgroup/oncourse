@@ -132,7 +132,31 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
         	if (propertyName.equals("corporatePassId")) {
         		return ((Invoice) entity).getCorporatePassUsed().getId();
         	}
-        }
+        }  else if (entity instanceof Product) {
+			if (propertyName.equals("expiryType")) {
+				return ((Product) entity).getExpiryType().getDatabaseValue();
+			}
+		}   else if (entity instanceof ProductItem) {
+			if (propertyName.equals("status")) {
+				return ((ProductItem) entity).getStatus().getDatabaseValue();
+			}
+		}   else if (entity instanceof VoucherPaymentIn) {
+			if (propertyName.equals("paymentInId")) {
+				return ((VoucherPaymentIn) entity).getPayment().getId();
+			}
+			if (propertyName.equals("status")) {
+				return ((VoucherPaymentIn) entity).getStatus().getDatabaseValue();
+			}
+		}   else if (entity instanceof EntityRelation) {
+			if (propertyName.equals("fromEntityIdentifier")) {
+				return ((EntityRelation) entity).getFromEntityIdentifier().getDatabaseValue();
+			}
+			if (propertyName.equals("toEntityIdentifier")) {
+				return ((EntityRelation) entity).getToEntityIdentifier().getDatabaseValue();
+			}
+
+		}
+
 
 
         if (propertyName.equals("willowId"))

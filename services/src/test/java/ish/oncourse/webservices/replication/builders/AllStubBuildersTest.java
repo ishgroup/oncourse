@@ -26,39 +26,7 @@ import java.io.InputStream;
  * The bash command line generates test methods for all stubs
  * ls | grep -Ev '(^Abstract|^Willow)' | awk -F . '{print $1}' | awk '{print "@Test\npublic void test"$1"(){\n         this.testStubBuilder(.class, new "$1"());\n}"}'
  */
-public class AllStubBuildersTest extends ServiceTest {
-
-    @Before
-    public void setupDataSet() throws Exception {
-        initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
-        initOncourseDataSet();
-    }
-
-    private void initOncourseDataSet() throws Exception {
-        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/builders/oncourseDataSet.xml");
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-        builder.setColumnSensing(true);
-        FlatXmlDataSet dataSet = builder.build(st);
-
-        DataSource onDataSource = getDataSource("jdbc/oncourse");
-        DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
-        dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-
-        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
-    }
-
-    private <E extends Queueable, S extends GenericReplicationStub> void testStubBuilder(Class<E> entityClass,
-		AbstractWillowStubBuilder<E, S> stubBuilder, Long entityId, String... excludeProperty) {
-        ICayenneService cayenneService = getService(ICayenneService.class);
-        E entity = Cayenne.objectForPK(cayenneService.sharedContext(), entityClass, entityId);
-        StubBuilderTestHelper<E, S> stubBuilderTestHelper = new StubBuilderTestHelper<>(entity,excludeProperty);
-        stubBuilderTestHelper.assertStubBuilder(stubBuilder);
-    }
-
-    private <E extends Queueable, S extends GenericReplicationStub> void testStubBuilder(Class<E> entityClass,
-		AbstractWillowStubBuilder<E, S> stubBuilder, String... excludeProperty) {
-        this.testStubBuilder(entityClass,stubBuilder, 1l, excludeProperty);
-    }
+public class AllStubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Ignore
 	@Test
