@@ -2,16 +2,16 @@
 		<t:if test="model.showTags">
 			<ul class="tagList">
 				<t:loop source="model.getChildTags()" index="index">
-					<li><a href="${tag.link}">${tag.name}</a></li>
-					<div t:type="textile/delegate" to="courses"/>
+					<li><a href="${tag.link}">${tag.name}</a>
+						<div t:type="textile/delegate" to="courses"/>
+					</li>
 				</t:loop>
 			</ul>
 		</t:if>
 		<t:unless test="model.showTags">
-			<t:remove>Tapestry does not show the content without this div. I didn't not find why</t:remove>
-			<div>
+			<ul class="courseList">
 				<div t:type="textile/delegate" to="courses"/>
-			</div>
+			</ul>
 		</t:unless>
 
 	<t:block t:id="titles">

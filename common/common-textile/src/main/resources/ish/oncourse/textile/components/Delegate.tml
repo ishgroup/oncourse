@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<!-- The body is replaced with component(s) for the child nodes. -->
-	<t:body/>
-</div>
