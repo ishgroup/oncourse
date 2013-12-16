@@ -1,11 +1,8 @@
 package org.apache.tapestry5.internal.pageload;
 
 import ish.oncourse.model.WebSite;
+import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.site.WebSiteService;
-
-import java.util.Locale;
-import java.util.Map;
-
 import org.apache.tapestry5.internal.services.PageLoader;
 import org.apache.tapestry5.internal.services.PageSource;
 import org.apache.tapestry5.internal.structure.Page;
@@ -14,16 +11,21 @@ import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.services.InvalidationListener;
 import org.apache.tapestry5.services.Request;
 
+import java.util.Locale;
+import java.util.Map;
+
 public class PageSourceOverride implements PageSource, InvalidationListener {
 	private final PageLoader pageLoader;
+	private IWebNodeService webNodeService;
 
 	private Request request;
 
 	private final Map<MultiKey, Page> pageCache = CollectionFactory
 			.newConcurrentMap();
 
-	public PageSourceOverride(PageLoader pageLoader, Request request) {
+	public PageSourceOverride(PageLoader pageLoader, IWebNodeService webNodeService, Request request) {
 		this.pageLoader = pageLoader;
+		this.webNodeService = webNodeService;
 		this.request = request;
 	}
 
@@ -32,11 +34,12 @@ public class PageSourceOverride implements PageSource, InvalidationListener {
 	}
 
 	public Page getPage(String canonicalPageName, Locale locale) {
-		
+
+		String layout = webNodeService.getLayoutKey();
 		WebSite site = (WebSite) request.getAttribute(WebSiteService.CURRENT_WEB_SITE);
-		
+
 		MultiKey key = new MultiKey(canonicalPageName,
-				site != null ? site.getSiteKey() : request.getServerName());
+				site != null ? site.getSiteKey() : request.getServerName(), layout);
 
 		if (!pageCache.containsKey(key)) {
 			// In rare race conditions, we may see the same page loaded multiple

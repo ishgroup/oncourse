@@ -1,5 +1,6 @@
 package org.apache.tapestry5.internal.pageload;
 
+import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
 import org.apache.tapestry5.*;
@@ -50,7 +51,7 @@ import java.util.Map;
  */
 public class PageLoaderOverride implements PageLoader, InvalidationListener, ComponentAssemblerSource
 {
-    private static final class Key
+	private static final class Key
     {
         private final String className;
 
@@ -130,6 +131,8 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
     
     private Request request;
 
+	private IWebNodeService webNodeService;
+
     public PageLoaderOverride(ComponentInstantiatorSource instantiatorSource, ComponentTemplateSource templateSource,
             PageElementFactory elementFactory, ComponentPageElementResourcesSource resourcesSource,
             ComponentClassResolver componentClassResolver, PersistentFieldManager persistentFieldManager,
@@ -193,7 +196,8 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
     public ComponentAssembler getAssembler(String className, Locale locale)
     {
 		CustomTemplateDefinition ctd = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
-    	MultiKey key = CustomTemplateDefinition.getMultiKeyBy(className, ctd, request.getServerName(), locale);
+		String layout = webNodeService.getLayoutKey();
+    	MultiKey key = CustomTemplateDefinition.getMultiKeyBy(className, ctd, request.getServerName(), locale, layout);
 
         ComponentAssembler result = cache.get(key);
 
@@ -1022,4 +1026,11 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
         context.addComposable(new TextPageElement(textToken.getText()));
     }
 
+	public IWebNodeService getWebNodeService() {
+		return webNodeService;
+	}
+
+	public void setWebNodeService(IWebNodeService webNodeService) {
+		this.webNodeService = webNodeService;
+	}
 }

@@ -30,13 +30,13 @@ public class CustomTemplateDefinition {
 	}
 
 
-	public static MultiKey getMultiKeyBy(String className, CustomTemplateDefinition ctd, String serverName, Locale locale)
+	public static MultiKey getMultiKeyBy(String className, CustomTemplateDefinition ctd, String serverName, Locale locale, String layout)
 	{
 		//we should use anouther key to cache ComponentAssembler for component when user defines custom template
 		if (ctd != null && className.endsWith(ctd.getTemplateClassName()))
-			return new MultiKey(className, ctd.getTemplateFileName(), locale, serverName);
+			return new MultiKey(className, ctd.getTemplateFileName(), locale, serverName, layout);
 		else
-			return new MultiKey(className, locale, serverName);
+			return new MultiKey(className, locale, serverName, layout);
 	}
 
 

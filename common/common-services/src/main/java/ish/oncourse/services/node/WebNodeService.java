@@ -230,4 +230,18 @@ public class WebNodeService implements IWebNodeService {
 		 * query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		 */
 	}
+
+	@Override
+	public String getLayoutKey() {
+		String layoutKey = null;
+
+		WebNode webNode = getCurrentNode();
+		if (webNode != null) {
+			layoutKey = webNode.getWebNodeType().getLayoutKey();
+		}
+		else if (webNodeTypeService.getDefaultWebNodeType() != null) {
+			layoutKey = webNodeTypeService.getDefaultWebNodeType().getLayoutKey();
+		}
+		return layoutKey;
+	}
 }

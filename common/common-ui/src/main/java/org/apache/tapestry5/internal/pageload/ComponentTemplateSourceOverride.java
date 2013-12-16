@@ -1,6 +1,5 @@
 package org.apache.tapestry5.internal.pageload;
 
-import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.resource.IResourceService;
@@ -114,7 +113,6 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 	}
 
 
-
     /**
      * Resolves the component name to a localized {@link Resource} (using the
      * {@link ComponentTemplateLocator} chain of command service). The localized
@@ -131,8 +129,10 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
         CustomTemplateDefinition ctd  = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
         //we need reset the attribute to exclude effect to other pages/components
         request.setAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION, null);
+
+		String layout = webNodeService.getLayoutKey();
         //we should use anouther key to cache Resource for component when user defines custom template
-        MultiKey key = CustomTemplateDefinition.getMultiKeyBy(componentName, ctd, request.getServerName(), locale);
+        MultiKey key = CustomTemplateDefinition.getMultiKeyBy(componentName, ctd, request.getServerName(), locale, layout);
 
         // First cache is key to resource.
 
@@ -220,16 +220,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 
 			String templatePath = templateBaseResource.getPath();
             String templateFile = templatePath.substring(templatePath.lastIndexOf("/") + 1);
-			String layoutKey = null;
-			
-			WebNode currrentNode = webNodeService.getCurrentNode();
-			
-			if (currrentNode != null) {
-				layoutKey = webNodeService.getCurrentNode().getWebNodeType().getLayoutKey();
-			}
-			else if (webNodeTypeService.getDefaultWebNodeType() != null) {
-				layoutKey = webNodeTypeService.getDefaultWebNodeType().getLayoutKey();
-			}
+			String layoutKey = webNodeService.getLayoutKey();
 			
 			if (layoutKey != null) {
 

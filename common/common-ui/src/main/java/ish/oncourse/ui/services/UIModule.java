@@ -37,6 +37,7 @@ public class UIModule {
 
 	public PageLoader buildPageLoaderOverride(@Autobuild PageLoaderOverride service, @ComponentTemplates InvalidationEventHub templatesHub,
 			@ComponentMessages InvalidationEventHub messagesHub, @ComponentClasses InvalidationEventHub classesInvalidationEventHub,
+			IWebNodeService webNodeService,
 			Request request) {
 
 		service.setRequest(request);
@@ -44,14 +45,16 @@ public class UIModule {
 		templatesHub.addInvalidationListener(service);
 		messagesHub.addInvalidationListener(service);
 
+		service.setWebNodeService(webNodeService);
 		return service;
 	}
 
 	public PageSource buildPageSourceOverride(PageLoader pageLoader, @ComponentTemplates InvalidationEventHub templatesHub,
 			@ComponentMessages InvalidationEventHub messagesHub, @ComponentClasses InvalidationEventHub classesInvalidationEventHub,
+			IWebNodeService webNodeService,
 			Request request) {
 
-		PageSourceOverride service = new PageSourceOverride(pageLoader, request);
+		PageSourceOverride service = new PageSourceOverride(pageLoader, webNodeService, request);
 		classesInvalidationEventHub.addInvalidationListener(service);
 
 		messagesHub.addInvalidationListener(service);

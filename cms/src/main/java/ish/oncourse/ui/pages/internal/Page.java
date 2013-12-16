@@ -68,7 +68,8 @@ public class Page {
 		WebNode currentNode = webNodeService.getCurrentNode();
 		
 		if (currentNode != null) {
-			this.node = (WebNode) cayenneService.newContext().localObject(currentNode.getObjectId(), null);
+			this.node = cayenneService.newContext().localObject(currentNode);
+			request.setAttribute(IWebNodeService.CURRENT_WEB_NODE_LAYOUT, this.node.getWebNodeType().getLayoutKey());
 		} else {
             logger.error(String.format("CurrentNode is null in %s/%s",
                     request.getServerName(),

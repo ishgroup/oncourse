@@ -9,7 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface IWebNodeService {
-	
+
+	public static final String CURRENT_WEB_NODE_LAYOUT = "CURRENT_WEB_NODE_LAYOUT";
+
 	static final String NODE = "node";
 	static final String NODE_NUMBER_PARAMETER = "n";
 	static final String PAGE_PATH_PARAMETER = "p";
@@ -62,6 +64,8 @@ public interface IWebNodeService {
 	 * @return the current page
 	 */
 	WebNode getCurrentNode();
+
+	String getLayoutKey();
 	
 	/**
 	 * Return random webNode for the current website.
