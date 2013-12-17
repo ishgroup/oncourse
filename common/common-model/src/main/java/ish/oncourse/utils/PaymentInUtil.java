@@ -91,12 +91,14 @@ public class PaymentInUtil {
 
 		Set<PaymentIn> voucherPayments = new HashSet<>();
 
-		for (PaymentInLine paymentInLine : moneyPayment.getPaymentInLines()) {
-			for (InvoiceLine invoiceLine : paymentInLine.getInvoice().getInvoiceLines()) {
-				for (VoucherPaymentIn vp : invoiceLine.getVoucherPaymentsIn()) {
-					PaymentIn voucherPayment = vp.getPayment();
-					if (PaymentType.VOUCHER.equals(voucherPayment.getType())) {
-						voucherPayments.add(voucherPayment);
+		for (PaymentInLine moneyPaymentLine : moneyPayment.getPaymentInLines()) {
+
+			for (PaymentInLine paymentLine : moneyPaymentLine.getInvoice().getPaymentInLines()) {
+				if (moneyPaymentLine != paymentLine) {
+					PaymentIn payment = paymentLine.getPaymentIn();
+
+					if (PaymentType.VOUCHER.equals(payment.getType())) {
+						voucherPayments.add(payment);
 					}
 				}
 			}
