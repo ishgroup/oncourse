@@ -1722,4 +1722,8 @@
         <sql>update Outcome set status=0 where status is NULL;</sql>
     </changeSet>
 
+    <changeSet id="117" author="viacheslav" context="production" runOnChange="true">
+        <addUniqueConstraint tableName="ProductItem" columnNames="collegeId,code" constraintName="unique_code_constraint"/>
+    </changeSet>
+
 </databaseChangeLog>
