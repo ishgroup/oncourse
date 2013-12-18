@@ -937,7 +937,7 @@
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="enrolmentsCount" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="invoiceLineId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="invoiceLineId" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="paymentInId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true"/>
