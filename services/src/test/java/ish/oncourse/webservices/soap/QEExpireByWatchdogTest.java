@@ -18,12 +18,10 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
 import ish.oncourse.webservices.replication.services.PortHelper;
-import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v6.stubs.replication.TransactionGroup;
 
 import java.util.List;
 
@@ -107,7 +105,7 @@ public class QEExpireByWatchdogTest extends RealWSTransportTest {
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
 		fillV4PaymentStubsForCases1_4(transaction);
 		//process payment
-		transaction = getPaymentPortType().processPayment((TransactionGroup) transaction);
+		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction));
 		//check the response, validate the data and receive the sessionid
 		String sessionId = null;
 		assertEquals("11 stubs should be in response for this processing", 11, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());

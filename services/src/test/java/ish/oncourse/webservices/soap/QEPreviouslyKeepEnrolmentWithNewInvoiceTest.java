@@ -18,12 +18,10 @@ import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.webservices.replication.services.PortHelper;
-import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v6.stubs.replication.TransactionGroup;
 
 import java.util.HashMap;
 import java.util.List;
@@ -195,7 +193,7 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
 		fillV4PaymentStubsForCase5_6(transaction);
 		//process payment
-		transaction = getPaymentPortType().processPayment((TransactionGroup) transaction);
+		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction));
 		//check the response, validate the data and receive the sessionid
 		String sessionId = null;
 		assertEquals("14 stubs should be in response for this processing", 14, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
