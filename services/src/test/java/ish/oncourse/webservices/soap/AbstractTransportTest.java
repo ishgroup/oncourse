@@ -1,14 +1,14 @@
 package ish.oncourse.webservices.soap;
 
-import ish.oncourse.webservices.soap.v4.PaymentPortType;
+import ish.oncourse.webservices.soap.v6.PaymentPortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferenceService;
-import ish.oncourse.webservices.soap.v4.ReplicationPortType;
-import ish.oncourse.webservices.soap.v4.ReplicationService;
+import ish.oncourse.webservices.soap.v6.ReplicationPortType;
+import ish.oncourse.webservices.soap.v6.ReplicationService;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
-import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
+import ish.oncourse.webservices.v6.stubs.replication.ReplicationStub;
+import ish.oncourse.webservices.v6.stubs.replication.TransactionGroup;
 import org.apache.cxf.common.util.StringUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -43,7 +43,7 @@ public abstract class AbstractTransportTest {
 	public static final long PAYMENT_SERVICE_TIMEOUT = 1000l * 60 * 25;
 	//protected static TestServer server;
 
-	public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v4.stubs.replication";
+	public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v6.stubs.replication";
 	public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v4.stubs.reference";
 
 	

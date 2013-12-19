@@ -1,8 +1,8 @@
-package ish.oncourse.webservices.soap.v4;
+package ish.oncourse.webservices.soap.v6;
 
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
 import ish.oncourse.webservices.soap.AbstractTransportTest;
-import ish.oncourse.webservices.v4.stubs.replication.*;
+import ish.oncourse.webservices.v6.stubs.replication.*;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-@WebService(endpointInterface = "ish.oncourse.webservices.soap.v4.ReplicationPortType", serviceName = "ReplicationService", portName = "ReplicationPort", targetNamespace = "http://repl.v4.soap.webservices.oncourse.ish/")
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.v6.ReplicationPortType", serviceName = "ReplicationService", portName = "ReplicationPort", targetNamespace = "http://repl.v6.soap.webservices.oncourse.ish/")
 public class TestReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Override
@@ -46,8 +46,12 @@ public class TestReplicationPortTypeImpl implements ReplicationPortType {
 		return replicationRecords;
 	}
 
-
 	@Override
+	public List<UnreplicatedEntitiesStub> getUnreplicatedEntities() {
+		return new ArrayList<>();
+	}
+
+	//@Override
 	public void logout(@WebParam(partName = "communicationKey", name = "communicationKey", targetNamespace = "") long l) {
 		assertEquals(Long.MAX_VALUE, l);
 	}

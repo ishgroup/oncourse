@@ -15,7 +15,7 @@ import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
+import ish.oncourse.webservices.v6.stubs.replication.TransactionGroup;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class QESuccessPaymentTest extends RealWSTransportTest {
 		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
 		authenticate();
 		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(SupportedVersions.V4);
+		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
 		fillV4PaymentStubsForCases1_4(transaction);
 		//process payment
 		transaction = getPaymentPortType().processPayment((TransactionGroup) transaction);

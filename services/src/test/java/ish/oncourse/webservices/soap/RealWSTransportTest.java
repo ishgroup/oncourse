@@ -22,8 +22,9 @@ import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.PaymentProcessController;
-import ish.oncourse.webservices.soap.v4.PaymentPortType;
-import ish.oncourse.webservices.soap.v4.ReplicationPortType;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.soap.v6.PaymentPortType;
+import ish.oncourse.webservices.soap.v6.ReplicationPortType;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 
@@ -31,7 +32,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,6 +42,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
 
+import ish.oncourse.webservices.v6.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -63,9 +64,9 @@ import org.junit.Before;
 
 public abstract class RealWSTransportTest extends AbstractTransportTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessDataset.xml";
-	protected static final String V4_PAYMENT_ENDPOINT_PATH = TestServer.DEFAULT_CONTEXT_PATH + "/v4/payment";
-	protected static final String V4_REPLICATION_ENDPOINT_PATH = TestServer.DEFAULT_CONTEXT_PATH + "/v4/replication";
-	protected static final String V4_REPLICATION_WSDL = "wsdl/v4_replication.wsdl";
+	protected static final String PAYMENT_ENDPOINT_PATH = TestServer.DEFAULT_CONTEXT_PATH + "/v6/payment";
+	protected static final String REPLICATION_ENDPOINT_PATH = TestServer.DEFAULT_CONTEXT_PATH + "/v6/replication";
+	protected static final String REPLICATION_WSDL = "wsdl/v6_replication.wsdl";
 	protected static final String CARD_HOLDER_NAME = "john smith";
 	protected static final String VALID_CARD_NUMBER = "5431111111111111";
 	protected static final String DECLINED_CARD_NUMBER = "9999990000000378";
@@ -100,6 +101,10 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected String getDataSetFile() {
 		return DEFAULT_DATASET_XML;
 	}
+
+	protected SupportedVersions getSupportedVersion() {
+		return SupportedVersions.V6;
+	}
 	
 	@Before
 	public void setup() throws Exception {
@@ -129,7 +134,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInStub();
+		PaymentInStub paymentInStub = new PaymentInStub();
 		paymentInStub.setAngelId(1l);
 		paymentInStub.setAmount(hundredDollars.toBigDecimal());
 		paymentInStub.setContactId(1l);
@@ -140,7 +145,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentInStub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
 		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
 		stubs.add(paymentInStub);
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceStub();
+		InvoiceStub invoiceStub = new InvoiceStub();
 		invoiceStub.setContactId(1l);
 		invoiceStub.setAmountOwing(hundredDollars.toBigDecimal());
 		invoiceStub.setAngelId(1l);
@@ -154,7 +159,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
 		stubs.add(invoiceStub);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		PaymentInLineStub paymentLineStub = new PaymentInLineStub();
 		paymentLineStub.setAngelId(1l);
 		paymentLineStub.setAmount(paymentInStub.getAmount());
 		paymentLineStub.setCreated(current);
@@ -163,7 +168,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentLineStub.setModified(current);
 		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLineStub);
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invoiceLineStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub();
+		InvoiceLineStub invoiceLineStub = new InvoiceLineStub();
 		invoiceLineStub.setAngelId(1l);
 		invoiceLineStub.setCreated(current);
 		invoiceLineStub.setDescription(StringUtils.EMPTY);
@@ -176,7 +181,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		invoiceLineStub.setTaxEach(BigDecimal.ZERO);
 		invoiceLineStub.setTitle(StringUtils.EMPTY);
 		stubs.add(invoiceLineStub);
-		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolmentStub = new ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub();
+		EnrolmentStub enrolmentStub = new EnrolmentStub();
 		enrolmentStub.setAngelId(1l);
 		enrolmentStub.setCourseClassId(1l);
 		enrolmentStub.setCreated(current);
@@ -196,7 +201,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInStub();
+		PaymentInStub paymentInStub = new PaymentInStub();
 		paymentInStub.setAngelId(1l);
 		paymentInStub.setAmount(hundredDollars.toBigDecimal());
 		paymentInStub.setContactId(1l);
@@ -207,7 +212,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentInStub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
 		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
 		stubs.add(paymentInStub);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		PaymentInLineStub paymentLineStub = new PaymentInLineStub();
 		paymentLineStub.setAngelId(1l);
 		paymentLineStub.setAmount(hundredDollars.multiply(2l).toBigDecimal());//to match original (partially reversed) invoice amount
 		paymentLineStub.setCreated(current);
@@ -216,7 +221,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentLineStub.setModified(current);
 		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLineStub);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub2 = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		PaymentInLineStub paymentLineStub2 = new PaymentInLineStub();
 		paymentLineStub2.setAngelId(2l);
 		paymentLineStub2.setAmount(Money.ZERO.subtract(hundredDollars).toBigDecimal());//to match reverse invoice amount
 		paymentLineStub2.setCreated(current);
@@ -232,7 +237,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money twoHundredDollars = new Money("200.00");
 		final Date current = new Date();
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInStub();
+		PaymentInStub paymentInStub = new PaymentInStub();
 		paymentInStub.setAngelId(1l);
 		paymentInStub.setAmount(twoHundredDollars.toBigDecimal());
 		paymentInStub.setContactId(1l);
@@ -243,7 +248,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentInStub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
 		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
 		stubs.add(paymentInStub);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		PaymentInLineStub paymentLineStub = new PaymentInLineStub();
 		paymentLineStub.setAngelId(1l);
 		paymentLineStub.setAmount(paymentInStub.getAmount());
 		paymentLineStub.setCreated(current);
@@ -259,7 +264,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInStub();
+		PaymentInStub paymentInStub = new PaymentInStub();
 		paymentInStub.setAngelId(1l);
 		paymentInStub.setAmount(hundredDollars.multiply(2).toBigDecimal());
 		paymentInStub.setContactId(1l);
@@ -270,7 +275,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentInStub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
 		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
 		stubs.add(paymentInStub);
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceStub();
+		InvoiceStub invoiceStub = new InvoiceStub();
 		invoiceStub.setContactId(1l);
 		invoiceStub.setAmountOwing(hundredDollars.toBigDecimal());
 		invoiceStub.setAngelId(1l);
@@ -284,7 +289,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
 		stubs.add(invoiceStub);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		PaymentInLineStub paymentLineStub = new PaymentInLineStub();
 		paymentLineStub.setAngelId(1l);
 		paymentLineStub.setAmount(hundredDollars.toBigDecimal());
 		paymentLineStub.setCreated(current);
@@ -293,7 +298,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentLineStub.setModified(current);
 		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLineStub);
-		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentLine2Stub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		PaymentInLineStub paymentLine2Stub = new PaymentInLineStub();
 		paymentLine2Stub.setAngelId(2l);
 		paymentLine2Stub.setAmount(hundredDollars.toBigDecimal());
 		paymentLine2Stub.setCreated(current);
@@ -302,7 +307,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentLine2Stub.setModified(current);
 		paymentLine2Stub.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLine2Stub);
-		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invoiceLineStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub();
+		InvoiceLineStub invoiceLineStub = new InvoiceLineStub();
 		invoiceLineStub.setAngelId(1l);
 		invoiceLineStub.setCreated(current);
 		invoiceLineStub.setDescription(StringUtils.EMPTY);
@@ -319,7 +324,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	}
 	
 	protected boolean pingServer() {
-		String address = getServer().getServerUrl() + V4_REPLICATION_ENDPOINT_PATH + "?wsdl";
+		String address = getServer().getServerUrl() + REPLICATION_ENDPOINT_PATH + "?wsdl";
 		try {
 			URL url = new URL(address);
 			HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
@@ -351,7 +356,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		
 	protected void logout() throws Exception {
 		//logout
-		getReplicationPortType().logout(getCommunicationKey());
+		//getReplicationPortType().logout(getCommunicationKey());
 	}
 	
 	@Override
@@ -379,11 +384,11 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	}
 
 	protected ReplicationPortType getReplicationPortType() throws JAXBException {
-		return getReplicationPortType(V4_REPLICATION_WSDL, V4_REPLICATION_ENDPOINT_PATH);
+		return getReplicationPortType(REPLICATION_WSDL, REPLICATION_ENDPOINT_PATH);
 	}
 	
 	protected PaymentPortType getPaymentPortType() throws JAXBException {
-		return getPaymentPortType(V4_REPLICATION_WSDL, V4_PAYMENT_ENDPOINT_PATH);
+		return getPaymentPortType(REPLICATION_WSDL, PAYMENT_ENDPOINT_PATH);
 	}
 	
 	protected final void renderPaymentPageWithKeepInvoiceProcessing(String sessionId) {
