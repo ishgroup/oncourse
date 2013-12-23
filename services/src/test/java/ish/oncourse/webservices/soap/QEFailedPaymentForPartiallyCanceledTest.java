@@ -146,7 +146,7 @@ public class QEFailedPaymentForPartiallyCanceledTest extends RealWSTransportTest
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
-				if (stub.getWillowId() == 1l) {
+				if (stub.getAngelId() == 1l) {
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
 				} else {
@@ -154,10 +154,10 @@ public class QEFailedPaymentForPartiallyCanceledTest extends RealWSTransportTest
 						((GenericPaymentInStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
-				if (stub.getWillowId() == 10l) {
+				if (stub.getAngelId() == 10l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
 					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.SUCCESS, status);
-				} else if (stub.getWillowId() == 11l) {
+				} else if (stub.getAngelId() == 11l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
 					assertEquals("Oncourse enrollment should be refunded after expiration", EnrolmentStatus.CANCELLED, status);
 				} else {
@@ -165,12 +165,12 @@ public class QEFailedPaymentForPartiallyCanceledTest extends RealWSTransportTest
 						((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
-				if (stub.getWillowId() != 10l) {
+				if (stub.getAngelId() != 10l) {
 					assertFalse(String.format("Unexpected invoice stub with willowid= %s and angelid= %s found in a queue", 
 						stub.getWillowId(), stub.getAngelId()), true);
 				}
 			} else if (INVOICE_LINE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
-					if ((stub.getWillowId() != 10l) && (stub.getWillowId() != 11l)
+					if ((stub.getAngelId() != 10l) && (stub.getAngelId() != 11l)
 						&& (stub.getAngelId() != 2l) && (stub.getAngelId() != 3l) && (stub.getAngelId() != 4l)) {
 						assertFalse(String.format("Unexpected invoiceline stub with willowid= %s and angelid= %s found in a queue", 
 								stub.getWillowId(), stub.getAngelId()), true);

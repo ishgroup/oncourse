@@ -292,7 +292,7 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
-				if (stub.getWillowId() == 1l) {
+				if (stub.getAngelId() == 1l) {
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
 				} else {
@@ -300,7 +300,7 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 						((GenericPaymentInStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
-				if (stub.getWillowId() == 10l) {
+				if (stub.getAngelId() == 10l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
 					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.SUCCESS, status);
 				} else {

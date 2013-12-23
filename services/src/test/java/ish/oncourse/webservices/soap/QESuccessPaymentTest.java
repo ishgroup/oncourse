@@ -133,7 +133,7 @@ public class QESuccessPaymentTest extends RealWSTransportTest {
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
-				if (stub.getWillowId() == 1l) {
+				if (stub.getAngelId() == 1l) {
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.SUCCESS, status);
 				} else {
