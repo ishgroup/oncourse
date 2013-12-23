@@ -71,5 +71,17 @@
 
     <Preference id="1" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
     <Preference id="2" collegeId="1" name="license.ccprocessing" value_string="true" />
+
+    <Product collegeId="1" SKU="123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="voucher product" EXPIRYTYPE="4" ID="1" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="voucher product" PRICEEXTAX="10.00" TYPE="3" angelId="1"
+             TAXADJUSTMENT="0.00" maxCoursesRedemption="0" feeGST="0.00"/>
+
+    <Product collegeId="1" SKU="234" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="membership product" EXPIRYTYPE="4" ID="2" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="membership product" PRICEEXTAX="10.00" TYPE="2" angelId="2"
+             TAXADJUSTMENT="0.00" maxCoursesRedemption="0" feeGST="0.00"/>
+
+    <Product collegeId="1" SKU="345" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="article product" EXPIRYTYPE="4" ID="3" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="article product" PRICEEXTAX="10.00" TYPE="1" angelId="3"
+             TAXADJUSTMENT="0.00" maxCoursesRedemption="0" feeGST="0.00"/>
     
 </dataset>

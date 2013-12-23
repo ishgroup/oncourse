@@ -5,20 +5,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import ish.common.types.CreditCardType;
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
+
+import ish.common.types.*;
 import ish.math.Money;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.Student;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.PaymentProcessController;
@@ -31,6 +21,7 @@ import ish.oncourse.webservices.util.GenericTransactionGroup;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
@@ -82,7 +73,10 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected static final String PAYMENT_IDENTIFIER = PaymentIn.class.getSimpleName();
 	protected static final String CONTACT_IDENTIFIER = Contact.class.getSimpleName();
 	protected static final String STUDENT_IDENTIFIER = Student.class.getSimpleName();
-	
+	protected static final String MEMBERSHIP_IDENTIFIER = Membership.class.getSimpleName();
+	protected static final String VOUCHER_IDENTIFIER = Voucher.class.getSimpleName();
+	protected static final String ARTICLE_IDENTIFIER = Article.class.getSimpleName();
+
 	protected ServiceTest serviceTest;
 	protected PageTester tester;
 	protected ICayenneService cayenneService;
@@ -134,7 +128,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		after();
 	}
 		
-	protected void fillV4PaymentStubsForCases1_4(GenericTransactionGroup transaction) {
+	protected void fillV6PaymentStubsForCases1_4(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
@@ -172,6 +166,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentLineStub.setModified(current);
 		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLineStub);
+
 		InvoiceLineStub invoiceLineStub = new InvoiceLineStub();
 		invoiceLineStub.setAngelId(1l);
 		invoiceLineStub.setCreated(current);
@@ -180,11 +175,54 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		invoiceLineStub.setInvoiceId(invoiceStub.getAngelId());
 		invoiceLineStub.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
 		invoiceLineStub.setModified(current);
-		invoiceLineStub.setPriceEachExTax(invoiceStub.getAmountOwing());
+		invoiceLineStub.setPriceEachExTax(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
 		invoiceLineStub.setQuantity(BigDecimal.ONE);
 		invoiceLineStub.setTaxEach(BigDecimal.ZERO);
 		invoiceLineStub.setTitle(StringUtils.EMPTY);
 		stubs.add(invoiceLineStub);
+
+		InvoiceLineStub invoiceLineStub2 = new InvoiceLineStub();
+		invoiceLineStub2.setAngelId(2l);
+		invoiceLineStub2.setCreated(current);
+		invoiceLineStub2.setDescription(StringUtils.EMPTY);
+		invoiceLineStub2.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub2.setInvoiceId(invoiceStub.getAngelId());
+		invoiceLineStub2.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub2.setModified(current);
+		invoiceLineStub2.setPriceEachExTax(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
+		invoiceLineStub2.setQuantity(BigDecimal.ONE);
+		invoiceLineStub2.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub2.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub2);
+
+		InvoiceLineStub invoiceLineStub3 = new InvoiceLineStub();
+		invoiceLineStub3.setAngelId(3l);
+		invoiceLineStub3.setCreated(current);
+		invoiceLineStub3.setDescription(StringUtils.EMPTY);
+		invoiceLineStub3.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub3.setInvoiceId(invoiceStub.getAngelId());
+		invoiceLineStub3.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub3.setModified(current);
+		invoiceLineStub3.setPriceEachExTax(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
+		invoiceLineStub3.setQuantity(BigDecimal.ONE);
+		invoiceLineStub3.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub3.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub3);
+
+		InvoiceLineStub invoiceLineStub4 = new InvoiceLineStub();
+		invoiceLineStub4.setAngelId(4l);
+		invoiceLineStub4.setCreated(current);
+		invoiceLineStub4.setDescription(StringUtils.EMPTY);
+		invoiceLineStub4.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub4.setInvoiceId(invoiceStub.getAngelId());
+		invoiceLineStub4.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub4.setModified(current);
+		invoiceLineStub4.setPriceEachExTax(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
+		invoiceLineStub4.setQuantity(BigDecimal.ONE);
+		invoiceLineStub4.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub4.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub4);
+
 		EnrolmentStub enrolmentStub = new EnrolmentStub();
 		enrolmentStub.setAngelId(1l);
 		enrolmentStub.setCourseClassId(1l);
@@ -198,10 +236,52 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		//link the invoiceLine with enrolment
 		invoiceLineStub.setEnrolmentId(enrolmentStub.getAngelId());
 		stubs.add(enrolmentStub);
+
+		MembershipStub membershipStub = new MembershipStub();
+		membershipStub.setAngelId(1l);
+		membershipStub.setContactId(1l);
+		membershipStub.setCreated(current);
+		membershipStub.setEntityIdentifier(MEMBERSHIP_IDENTIFIER);
+		membershipStub.setInvoiceLineId(invoiceLineStub2.getAngelId());
+		membershipStub.setModified(current);
+		membershipStub.setProductId(2l);
+		membershipStub.setType(ProductType.MEMBERSHIP.getDatabaseValue());
+		membershipStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		stubs.add(membershipStub);
+
+		VoucherStub voucherStub = new VoucherStub();
+		voucherStub.setAngelId(2l);
+		voucherStub.setContactId(1l);
+		voucherStub.setCreated(current);
+		voucherStub.setEntityIdentifier(VOUCHER_IDENTIFIER);
+		voucherStub.setInvoiceLineId(invoiceLineStub3.getAngelId());
+		voucherStub.setModified(current);
+		voucherStub.setProductId(1l);
+		voucherStub.setType(ProductType.VOUCHER.getDatabaseValue());
+		voucherStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		voucherStub.setCode("some code");
+		voucherStub.setExpiryDate(current);
+		voucherStub.setRedeemedCoursesCount(0);
+		voucherStub.setRedemptionValue(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
+		voucherStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		stubs.add(voucherStub);
+
+		ArticleStub articleStub = new ArticleStub();
+		articleStub.setAngelId(2l);
+		articleStub.setContactId(1l);
+		articleStub.setCreated(current);
+		articleStub.setEntityIdentifier(ARTICLE_IDENTIFIER);
+		articleStub.setInvoiceLineId(invoiceLineStub4.getAngelId());
+		articleStub.setModified(current);
+		articleStub.setProductId(3l);
+		articleStub.setType(ProductType.ARTICLE.getDatabaseValue());
+		articleStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		stubs.add(articleStub);
+
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
 	
-	protected void fillV4PaymentStubsForCases7(GenericTransactionGroup transaction) {
+	protected void fillV6PaymentStubsForCases7(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
@@ -234,10 +314,94 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentLineStub2.setModified(current);
 		paymentLineStub2.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLineStub2);
+
+		InvoiceLineStub invoiceLineStub2 = new InvoiceLineStub();
+		invoiceLineStub2.setAngelId(2l);
+		invoiceLineStub2.setCreated(current);
+		invoiceLineStub2.setDescription(StringUtils.EMPTY);
+		invoiceLineStub2.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub2.setInvoiceId(10l);
+		invoiceLineStub2.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub2.setModified(current);
+		invoiceLineStub2.setPriceEachExTax(hundredDollars.divide(new BigDecimal(4)).toBigDecimal());
+		invoiceLineStub2.setQuantity(BigDecimal.ONE);
+		invoiceLineStub2.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub2.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub2);
+
+		InvoiceLineStub invoiceLineStub3 = new InvoiceLineStub();
+		invoiceLineStub3.setAngelId(3l);
+		invoiceLineStub3.setCreated(current);
+		invoiceLineStub3.setDescription(StringUtils.EMPTY);
+		invoiceLineStub3.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub3.setInvoiceId(10l);
+		invoiceLineStub3.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub3.setModified(current);
+		invoiceLineStub3.setPriceEachExTax(hundredDollars.divide(new BigDecimal(4)).toBigDecimal());
+		invoiceLineStub3.setQuantity(BigDecimal.ONE);
+		invoiceLineStub3.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub3.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub3);
+
+		InvoiceLineStub invoiceLineStub4 = new InvoiceLineStub();
+		invoiceLineStub4.setAngelId(4l);
+		invoiceLineStub4.setCreated(current);
+		invoiceLineStub4.setDescription(StringUtils.EMPTY);
+		invoiceLineStub4.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub4.setInvoiceId(10l);
+		invoiceLineStub4.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub4.setModified(current);
+		invoiceLineStub4.setPriceEachExTax(hundredDollars.divide(new BigDecimal(4)).toBigDecimal());
+		invoiceLineStub4.setQuantity(BigDecimal.ONE);
+		invoiceLineStub4.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub4.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub4);
+
+		MembershipStub membershipStub = new MembershipStub();
+		membershipStub.setAngelId(1l);
+		membershipStub.setContactId(1l);
+		membershipStub.setCreated(current);
+		membershipStub.setEntityIdentifier(MEMBERSHIP_IDENTIFIER);
+		membershipStub.setInvoiceLineId(invoiceLineStub2.getAngelId());
+		membershipStub.setModified(current);
+		membershipStub.setProductId(2l);
+		membershipStub.setType(ProductType.MEMBERSHIP.getDatabaseValue());
+		membershipStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		stubs.add(membershipStub);
+
+		VoucherStub voucherStub = new VoucherStub();
+		voucherStub.setAngelId(2l);
+		voucherStub.setContactId(1l);
+		voucherStub.setCreated(current);
+		voucherStub.setEntityIdentifier(VOUCHER_IDENTIFIER);
+		voucherStub.setInvoiceLineId(invoiceLineStub3.getAngelId());
+		voucherStub.setModified(current);
+		voucherStub.setProductId(1l);
+		voucherStub.setType(ProductType.VOUCHER.getDatabaseValue());
+		voucherStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		voucherStub.setCode("some code");
+		voucherStub.setExpiryDate(current);
+		voucherStub.setRedeemedCoursesCount(0);
+		voucherStub.setRedemptionValue(hundredDollars.divide(new BigDecimal(4)).toBigDecimal());
+		voucherStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		stubs.add(voucherStub);
+
+		ArticleStub articleStub = new ArticleStub();
+		articleStub.setAngelId(3l);
+		articleStub.setContactId(1l);
+		articleStub.setCreated(current);
+		articleStub.setEntityIdentifier(ARTICLE_IDENTIFIER);
+		articleStub.setInvoiceLineId(invoiceLineStub4.getAngelId());
+		articleStub.setModified(current);
+		articleStub.setProductId(3l);
+		articleStub.setType(ProductType.ARTICLE.getDatabaseValue());
+		articleStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		stubs.add(articleStub);
+
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
 	
-	protected void fillV4PaymentStubsForCases8(GenericTransactionGroup transaction) {
+	protected void fillV6PaymentStubsForCases8(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money twoHundredDollars = new Money("200.00");
 		final Date current = new Date();
@@ -261,10 +425,94 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentLineStub.setModified(current);
 		paymentLineStub.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLineStub);
+
+		InvoiceLineStub invoiceLineStub2 = new InvoiceLineStub();
+		invoiceLineStub2.setAngelId(2l);
+		invoiceLineStub2.setCreated(current);
+		invoiceLineStub2.setDescription(StringUtils.EMPTY);
+		invoiceLineStub2.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub2.setInvoiceId(10l);
+		invoiceLineStub2.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub2.setModified(current);
+		invoiceLineStub2.setPriceEachExTax(twoHundredDollars.divide(new BigDecimal(8)).toBigDecimal());
+		invoiceLineStub2.setQuantity(BigDecimal.ONE);
+		invoiceLineStub2.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub2.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub2);
+
+		InvoiceLineStub invoiceLineStub3 = new InvoiceLineStub();
+		invoiceLineStub3.setAngelId(3l);
+		invoiceLineStub3.setCreated(current);
+		invoiceLineStub3.setDescription(StringUtils.EMPTY);
+		invoiceLineStub3.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub3.setInvoiceId(10l);
+		invoiceLineStub3.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub3.setModified(current);
+		invoiceLineStub3.setPriceEachExTax(twoHundredDollars.divide(new BigDecimal(8)).toBigDecimal());
+		invoiceLineStub3.setQuantity(BigDecimal.ONE);
+		invoiceLineStub3.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub3.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub3);
+
+		InvoiceLineStub invoiceLineStub4 = new InvoiceLineStub();
+		invoiceLineStub4.setAngelId(4l);
+		invoiceLineStub4.setCreated(current);
+		invoiceLineStub4.setDescription(StringUtils.EMPTY);
+		invoiceLineStub4.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub4.setInvoiceId(10l);
+		invoiceLineStub4.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub4.setModified(current);
+		invoiceLineStub4.setPriceEachExTax(twoHundredDollars.divide(new BigDecimal(8)).toBigDecimal());
+		invoiceLineStub4.setQuantity(BigDecimal.ONE);
+		invoiceLineStub4.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub4.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub4);
+
+		MembershipStub membershipStub = new MembershipStub();
+		membershipStub.setAngelId(1l);
+		membershipStub.setContactId(1l);
+		membershipStub.setCreated(current);
+		membershipStub.setEntityIdentifier(MEMBERSHIP_IDENTIFIER);
+		membershipStub.setInvoiceLineId(invoiceLineStub2.getAngelId());
+		membershipStub.setModified(current);
+		membershipStub.setProductId(2l);
+		membershipStub.setType(ProductType.MEMBERSHIP.getDatabaseValue());
+		membershipStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		stubs.add(membershipStub);
+
+		VoucherStub voucherStub = new VoucherStub();
+		voucherStub.setAngelId(2l);
+		voucherStub.setContactId(1l);
+		voucherStub.setCreated(current);
+		voucherStub.setEntityIdentifier(VOUCHER_IDENTIFIER);
+		voucherStub.setInvoiceLineId(invoiceLineStub3.getAngelId());
+		voucherStub.setModified(current);
+		voucherStub.setProductId(1l);
+		voucherStub.setType(ProductType.VOUCHER.getDatabaseValue());
+		voucherStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		voucherStub.setCode("some code");
+		voucherStub.setExpiryDate(current);
+		voucherStub.setRedeemedCoursesCount(0);
+		voucherStub.setRedemptionValue(twoHundredDollars.divide(new BigDecimal(8)).toBigDecimal());
+		voucherStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		stubs.add(voucherStub);
+
+		ArticleStub articleStub = new ArticleStub();
+		articleStub.setAngelId(3l);
+		articleStub.setContactId(1l);
+		articleStub.setCreated(current);
+		articleStub.setEntityIdentifier(ARTICLE_IDENTIFIER);
+		articleStub.setInvoiceLineId(invoiceLineStub4.getAngelId());
+		articleStub.setModified(current);
+		articleStub.setProductId(3l);
+		articleStub.setType(ProductType.ARTICLE.getDatabaseValue());
+		articleStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		stubs.add(articleStub);
+
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
 	
-	protected void fillV4PaymentStubsForCase5_6(GenericTransactionGroup transaction) {
+	protected void fillV6PaymentStubsForCase5_6(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
@@ -311,6 +559,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		paymentLine2Stub.setModified(current);
 		paymentLine2Stub.setPaymentInId(paymentInStub.getAngelId());
 		stubs.add(paymentLine2Stub);
+
 		InvoiceLineStub invoiceLineStub = new InvoiceLineStub();
 		invoiceLineStub.setAngelId(1l);
 		invoiceLineStub.setCreated(current);
@@ -319,11 +568,95 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		invoiceLineStub.setInvoiceId(invoiceStub.getAngelId());
 		invoiceLineStub.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
 		invoiceLineStub.setModified(current);
-		invoiceLineStub.setPriceEachExTax(invoiceStub.getAmountOwing());
+		invoiceLineStub.setPriceEachExTax(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
 		invoiceLineStub.setQuantity(BigDecimal.ONE);
 		invoiceLineStub.setTaxEach(BigDecimal.ZERO);
 		invoiceLineStub.setTitle(StringUtils.EMPTY);
 		stubs.add(invoiceLineStub);
+
+		InvoiceLineStub invoiceLineStub2 = new InvoiceLineStub();
+		invoiceLineStub2.setAngelId(2l);
+		invoiceLineStub2.setCreated(current);
+		invoiceLineStub2.setDescription(StringUtils.EMPTY);
+		invoiceLineStub2.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub2.setInvoiceId(invoiceStub.getAngelId());
+		invoiceLineStub2.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub2.setModified(current);
+		invoiceLineStub2.setPriceEachExTax(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
+		invoiceLineStub2.setQuantity(BigDecimal.ONE);
+		invoiceLineStub2.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub2.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub2);
+
+		InvoiceLineStub invoiceLineStub3 = new InvoiceLineStub();
+		invoiceLineStub3.setAngelId(3l);
+		invoiceLineStub3.setCreated(current);
+		invoiceLineStub3.setDescription(StringUtils.EMPTY);
+		invoiceLineStub3.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub3.setInvoiceId(invoiceStub.getAngelId());
+		invoiceLineStub3.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub3.setModified(current);
+		invoiceLineStub3.setPriceEachExTax(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
+		invoiceLineStub3.setQuantity(BigDecimal.ONE);
+		invoiceLineStub3.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub3.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub3);
+
+		InvoiceLineStub invoiceLineStub4 = new InvoiceLineStub();
+		invoiceLineStub4.setAngelId(4l);
+		invoiceLineStub4.setCreated(current);
+		invoiceLineStub4.setDescription(StringUtils.EMPTY);
+		invoiceLineStub4.setDiscountEachExTax(BigDecimal.ZERO);
+		invoiceLineStub4.setInvoiceId(invoiceStub.getAngelId());
+		invoiceLineStub4.setEntityIdentifier(INVOICE_LINE_IDENTIFIER);
+		invoiceLineStub4.setModified(current);
+		invoiceLineStub4.setPriceEachExTax(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
+		invoiceLineStub4.setQuantity(BigDecimal.ONE);
+		invoiceLineStub4.setTaxEach(BigDecimal.ZERO);
+		invoiceLineStub4.setTitle(StringUtils.EMPTY);
+		stubs.add(invoiceLineStub4);
+
+		MembershipStub membershipStub = new MembershipStub();
+		membershipStub.setAngelId(1l);
+		membershipStub.setContactId(1l);
+		membershipStub.setCreated(current);
+		membershipStub.setEntityIdentifier(MEMBERSHIP_IDENTIFIER);
+		membershipStub.setInvoiceLineId(invoiceLineStub2.getAngelId());
+		membershipStub.setModified(current);
+		membershipStub.setProductId(2l);
+		membershipStub.setType(ProductType.MEMBERSHIP.getDatabaseValue());
+		membershipStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		stubs.add(membershipStub);
+
+		VoucherStub voucherStub = new VoucherStub();
+		voucherStub.setAngelId(2l);
+		voucherStub.setContactId(1l);
+		voucherStub.setCreated(current);
+		voucherStub.setEntityIdentifier(VOUCHER_IDENTIFIER);
+		voucherStub.setInvoiceLineId(invoiceLineStub3.getAngelId());
+		voucherStub.setModified(current);
+		voucherStub.setProductId(1l);
+		voucherStub.setType(ProductType.VOUCHER.getDatabaseValue());
+		voucherStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		voucherStub.setCode("some code");
+		voucherStub.setExpiryDate(current);
+		voucherStub.setRedeemedCoursesCount(0);
+		voucherStub.setRedemptionValue(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
+		voucherStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+		stubs.add(voucherStub);
+
+		ArticleStub articleStub = new ArticleStub();
+		articleStub.setAngelId(2l);
+		articleStub.setContactId(1l);
+		articleStub.setCreated(current);
+		articleStub.setEntityIdentifier(ARTICLE_IDENTIFIER);
+		articleStub.setInvoiceLineId(invoiceLineStub4.getAngelId());
+		articleStub.setModified(current);
+		articleStub.setProductId(3l);
+		articleStub.setType(ProductType.ARTICLE.getDatabaseValue());
+		articleStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+		stubs.add(articleStub);
+
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
 	}
 	

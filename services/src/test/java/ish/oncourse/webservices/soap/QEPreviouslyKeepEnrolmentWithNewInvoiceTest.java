@@ -5,17 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import ish.common.types.CreditCardType;
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentStatus;
-import ish.common.types.TypesUtil;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.QueuedRecord;
+
+import ish.common.types.*;
+import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.webservices.replication.services.PortHelper;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
@@ -99,12 +91,37 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 			Invoice invoice = paymentInLine.getInvoice();
 			assertNotNull("Invoice should not be empty", invoice);
 			List<InvoiceLine> invoiceLines = invoice.getInvoiceLines();
-			assertTrue("InvoiceLines size should be 1", invoiceLines.size() == 1);
-			List<InvoiceLineDiscount> discounts = invoiceLines.get(0).getInvoiceLineDiscounts();
-			assertTrue("No discounts should be applied", discounts.size() == 0);
-			Enrolment enrolment = invoiceLines.get(0).getEnrolment();
-			if (enrolment != null) {
-				assertEquals("Enrolment status should be in transaction", EnrolmentStatus.SUCCESS, enrolment.getStatus());
+			if (paymentInLine.getAngelId().equals(1l)) {
+			assertTrue("InvoiceLines size should be 4", invoiceLines.size() == 4);
+				for (InvoiceLine invoiceLine : invoiceLines) {
+					List<InvoiceLineDiscount> discounts = invoiceLine.getInvoiceLineDiscounts();
+					assertTrue("No discounts should be applied", discounts.size() == 0);
+					if (invoiceLine.getAngelId().equals(1l)) {
+						Enrolment enrolment = invoiceLine.getEnrolment();
+						assertNull("Enrolment should  be empty", enrolment);
+					} else if (invoiceLine.getAngelId().equals(2l)) {
+						Membership membership = (Membership) invoiceLine.getProductItems().get(0);
+						assertNotNull("Membership should not be empty", membership);
+						assertEquals("Membership status should be new", ProductStatus.NEW, membership.getStatus());
+					} else if (invoiceLine.getAngelId().equals(3l)) {
+						Voucher voucher = (Voucher) invoiceLine.getProductItems().get(0);
+						assertNotNull("Voucher should not be empty", voucher);
+						assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
+					} else if (invoiceLine.getAngelId().equals(4l)) {
+						Article article = (Article) invoiceLine.getProductItems().get(0);
+						assertNotNull("Article should not be empty", article);
+						assertEquals("Article status should be new", ProductStatus.NEW, article.getStatus());
+					} else {
+						assertFalse("Unexpected invoice line", true);
+					}
+				}
+			} else if (paymentInLine.getAngelId().equals(2l)) {
+				assertTrue("InvoiceLines size should be 1", invoiceLines.size() == 1);
+				List<InvoiceLineDiscount> discounts = invoiceLines.get(0).getInvoiceLineDiscounts();
+				assertTrue("No discounts should be applied", discounts.size() == 0);
+				Enrolment enrolment = invoiceLines.get(0).getEnrolment();
+				assertNotNull("Enrolment should not be empty", enrolment);
+				assertEquals("Enrolment status should be success", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 			}
 		}
 		
@@ -191,12 +208,12 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 		authenticate();
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		fillV4PaymentStubsForCase5_6(transaction);
+		fillV6PaymentStubsForCase5_6(transaction);
 		//process payment
 		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction));
 		//check the response, validate the data and receive the sessionid
 		String sessionId = null;
-		assertEquals("14 stubs should be in response for this processing", 14, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("20 stubs should be in response for this processing", 20, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			assertNotNull("Willowid after the first payment processing should not be NULL", stub.getWillowId());
 			if (PAYMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
@@ -208,6 +225,15 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 			} else if (ENROLMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.SUCCESS.name(), 
 					((GenericEnrolmentStub) stub).getStatus());
+			} else if (MEMBERSHIP_IDENTIFIER.equals(stub.getEntityIdentifier())) {
+				assertEquals("Membership status should not change after this processing",
+					ProductStatus.NEW.getDatabaseValue(), ((ish.oncourse.webservices.v6.stubs.replication.MembershipStub)stub).getStatus());
+			} else if (VOUCHER_IDENTIFIER.equals(stub.getEntityIdentifier())) {
+				assertEquals("Voucher status should not change after this processing",
+					ProductStatus.NEW.getDatabaseValue(), ((ish.oncourse.webservices.v6.stubs.replication.VoucherStub)stub).getStatus());
+			} else if (ARTICLE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
+				assertEquals("Article status should not change after this processing",
+					ProductStatus.NEW.getDatabaseValue(), ((ish.oncourse.webservices.v6.stubs.replication.ArticleStub)stub).getStatus());
 			}
 		}
 		assertTrue("Queue should be empty after processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
@@ -221,8 +247,10 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 5 records.", 5, queuedRecords.size());
-		int isPaymentFound = 0, isPaymentLineFound = 0, isInvoiceFound = 0, isInvoiceLineFound = 0;
+		assertEquals("Queue should contain 11 records.", 11, queuedRecords.size());
+		int isPaymentFound = 0, isPaymentLineFound = 0, isInvoiceFound = 0, isInvoiceLineFound = 0,
+			isEnrolmentFound = 0, isContactFound = 0, isStudentFound = 0, isMembershipFound = 0, isVoucherFound = 0,
+			isArticleFound = 0;
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				assertFalse("Only 1 paymentIn should exist in a queue", isPaymentFound >= 1);
@@ -234,8 +262,17 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 				assertFalse("Only 1 invoice should exist in a queue", isInvoiceFound >= 1);
 				isInvoiceFound++;
 			} else if (INVOICE_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 1 invoiceLine should exist in a queue", isInvoiceLineFound >= 1);
+				assertFalse("Only 4 invoiceLine should exist in a queue", isInvoiceLineFound >= 4);
 				isInvoiceLineFound++;
+			} else if (MEMBERSHIP_IDENTIFIER.equals(record.getEntityIdentifier())){
+				assertFalse("Only 1 membership should exist in a queue", isMembershipFound >= 1);
+				isMembershipFound++;
+			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())){
+				assertFalse("Only 1 voucher should exist in a queue", isVoucherFound >= 1);
+				isVoucherFound++;
+			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())){
+				assertFalse("Only 1 article should exist in a queue", isArticleFound >= 1);
+				isArticleFound++;
 			} else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
 			}
@@ -243,12 +280,15 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 		assertEquals("Not all PaymentIns found in a queue", 1, isPaymentFound);
 		assertEquals("Not all PaymentInLines found in a queue", 2, isPaymentLineFound);
 		assertEquals("Not all Invoices found in a queue", 1, isInvoiceFound);
-		assertEquals("Not all InvoiceLines found in a  queue", 1, isInvoiceLineFound);
+		assertEquals("Not all InvoiceLines found in a  queue", 4, isInvoiceLineFound);
+		assertEquals("Membership not found in a queue", 1, isMembershipFound);
+		assertEquals("Voucher not found in a queue", 1, isVoucherFound);
+		assertEquals("Article not found in a queue", 1, isArticleFound);
 		//check the status via service when processing complete
 		transaction = getPaymentPortType().getPaymentStatus(sessionId);
 		assertFalse("Get status call should not return empty response for payment in final status", 
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("14 elements should be replicated for this payment", 14, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("20 elements should be replicated for this payment", 20, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
