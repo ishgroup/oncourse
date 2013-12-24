@@ -51,6 +51,7 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 
 					for (VoucherPaymentIn vp : invoiceLine.getVoucherPaymentsIn()) {
 						addRelatedStub(paymentRelated, vp, version);
+						addRelatedStub(paymentRelated, vp.getVoucher(), version);
 					}
 
 					addRelatedStub(paymentRelated, invoiceLine, version);

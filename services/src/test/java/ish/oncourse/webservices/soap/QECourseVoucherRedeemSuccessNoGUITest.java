@@ -1,9 +1,6 @@
 package ish.oncourse.webservices.soap;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.TypesUtil;
+import ish.common.types.*;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
@@ -14,6 +11,7 @@ import org.apache.cayenne.query.SelectQuery;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -47,7 +45,7 @@ public class QECourseVoucherRedeemSuccessNoGUITest extends CommonRealWSTransport
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("14 elements should be replicated for this payment", 14, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("15 elements should be replicated for this payment", 15, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
@@ -72,6 +70,10 @@ public class QECourseVoucherRedeemSuccessNoGUITest extends CommonRealWSTransport
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((GenericEnrolmentStub)stub).getStatus()), true);
 				}
+			} else if (isVoucherStub(stub)) {
+				assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("10.00"));
+				assertEquals("Check of voucher status failed", getVoucherProductStatus(stub), ProductStatus.ACTIVE.getDatabaseValue());
+				assertEquals("Check of voucher redeemed courses count failed", getVoucherRedeemedCoursesCount(stub), Integer.valueOf(1));
 			}
 		}
 	}

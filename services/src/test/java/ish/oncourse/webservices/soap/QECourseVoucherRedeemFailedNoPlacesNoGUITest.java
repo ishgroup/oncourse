@@ -42,7 +42,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends CommonRealWSTr
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("22 elements should be replicated for this payment", 22, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("23 elements should be replicated for this payment", 23, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
@@ -88,9 +88,10 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends CommonRealWSTr
 				}
 			} else if (isVoucherPaymentInStub(stub)) {
 				assertEquals("Incorrect VoucherPaymentIn status", getVoucherPaymentInStatus(stub), VoucherPaymentStatus.APPROVED.getDatabaseValue());
-			} else {
-				//TODO: here we expect to check voucher stub after TransactionStubBuilderImpl adjustment
-				System.out.println(stub);
+			} else if (isVoucherStub(stub)) {
+				assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("10.00"));
+				assertEquals("Check of voucher status failed", getVoucherProductStatus(stub), ProductStatus.ACTIVE.getDatabaseValue());
+				assertEquals("Check of voucher redeemed courses count failed", getVoucherRedeemedCoursesCount(stub), Integer.valueOf(0));
 			}
 		}
 	}

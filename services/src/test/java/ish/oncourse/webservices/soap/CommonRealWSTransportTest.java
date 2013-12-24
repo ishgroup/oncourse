@@ -62,12 +62,28 @@ public abstract class CommonRealWSTransportTest extends RealWSTransportTest {
 		return ((InvoiceStub) stub).getTotalGst();
 	}
 
-	protected boolean isVoucherPaymentInStub(GenericReplicationStub stub) {
+	protected final boolean isVoucherPaymentInStub(GenericReplicationStub stub) {
 		return stub instanceof VoucherPaymentInStub;
 	}
 
-	protected Integer getVoucherPaymentInStatus(GenericReplicationStub stub) {
+	protected final Integer getVoucherPaymentInStatus(GenericReplicationStub stub) {
 		return ((VoucherPaymentInStub) stub).getStatus();
+	}
+
+	protected final boolean isVoucherStub(GenericReplicationStub stub) {
+		return stub instanceof VoucherStub;
+	}
+
+	protected final BigDecimal getVoucherRedemptionValue(GenericReplicationStub stub) {
+		return ((VoucherStub) stub).getRedemptionValue();
+	}
+
+	protected final Integer getVoucherRedeemedCoursesCount(GenericReplicationStub stub) {
+		return ((VoucherStub) stub).getRedeemedCoursesCount();
+	}
+
+	protected final Integer getVoucherProductStatus(GenericReplicationStub stub) {
+		return ((VoucherStub) stub).getStatus();
 	}
 
 	protected Date getValidExpiryDate() {
