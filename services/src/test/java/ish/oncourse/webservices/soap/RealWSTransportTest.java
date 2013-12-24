@@ -47,6 +47,7 @@ import org.apache.tapestry5.services.Session;
 import org.apache.tapestry5.test.PageTester;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
@@ -112,10 +113,12 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		tester = serviceTest.getPageTester();
 		InputStream st = RealWSTransportTest.class.getClassLoader().getResourceAsStream(getDataSetFile());
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
+		ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet);
+		replacementDataSet.addReplacementObject("[null]", null);
         DataSource onDataSource = ServiceTest.getDataSource("jdbc/oncourse");
         DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
         dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
+        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, replacementDataSet);
         cayenneService = serviceTest.getService(ICayenneService.class);
 	}
 	

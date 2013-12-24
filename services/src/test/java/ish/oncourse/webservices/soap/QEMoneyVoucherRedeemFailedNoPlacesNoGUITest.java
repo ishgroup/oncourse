@@ -14,8 +14,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends CommonRealWSTransportTest {
-	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemFailedNoPlacesDataSet.xml";
+public class QEMoneyVoucherRedeemFailedNoPlacesNoGUITest extends CommonRealWSTransportTest {
+	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEMoneyVoucherRedeemFailedNoPlacesDataSet.xml";
 	private static TestServer server;
 
 	@Override
@@ -25,7 +25,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends CommonRealWSTr
 
 	@BeforeClass
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9103);
+		server = startRealWSServer(9105);
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends CommonRealWSTr
 
 	@Override
 	protected GenericTransactionGroup prepareStubsForReplication(GenericTransactionGroup transaction) {
-		return prepareCourseVoucherNoMoneyPayment(transaction);
+		return prepareMoneyVoucherNoMoneyPayment(transaction);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends CommonRealWSTr
 					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.FAILED, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
-							((GenericEnrolmentStub)stub).getStatus()), true);
+						((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
 				GenericInvoiceStub invoiceStub = (GenericInvoiceStub) stub;
@@ -89,7 +89,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends CommonRealWSTr
 			} else if (isVoucherPaymentInStub(stub)) {
 				assertEquals("Incorrect VoucherPaymentIn status", getVoucherPaymentInStatus(stub), VoucherPaymentStatus.APPROVED.getDatabaseValue());
 			} else if (isVoucherStub(stub)) {
-				assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("10.00"));
+				assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("200.00"));
 				assertEquals("Check of voucher status failed", getVoucherProductStatus(stub), ProductStatus.ACTIVE.getDatabaseValue());
 				assertEquals("Check of voucher redeemed courses count failed", getVoucherRedeemedCoursesCount(stub), Integer.valueOf(0));
 			}
@@ -102,7 +102,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends CommonRealWSTr
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
 		assertEquals("Queue should contain 18 records.", 18, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0,
-		vouchersFound = 0, contactsFound = 0, studentsFound = 0;
+				vouchersFound = 0, contactsFound = 0, studentsFound = 0;
 
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {

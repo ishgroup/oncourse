@@ -110,16 +110,6 @@ public class QECourseVoucherRedeemSuccessNoGUITest extends CommonRealWSTransport
 
 	@Test
 	public void testQESuccessPayment() throws Exception {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-
-		checkQueueBeforeProcessing(context);
-
-		GenericTransactionGroup transaction = processPayment();
-
-		checkAsyncReplication(context);
-
-		checkProcessedResponse(transaction);
-
-		logout();
+		testNoGUICases();
 	}
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="1" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
+             paymentGatewayPass="test1234"/>
+
+    <Course id="1" collegeId="1" angelId="1" code="AAV"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"/>
+
+    <Site id="1" collegeId="1" angelId="1" isWebVisible="0"
+          created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
+
+    <Room id="1" collegeId="1" siteId="1" angelId="200"
+          capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+          name="TestRoom" />
+
+    <Student id="1" collegeId="1" angelId="1"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+    <Contact id="1" collegeId="1" angelId="1" studentId="1"
+             countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+             isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir"
+             emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <CourseClass id="1" collegeId="1" code="1" courseId="1"
+                 roomId="1" angelId="1" startDate="2011-10-12 00:55:59.0"
+                 endDate="2011-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+
+    <Preference id="1" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
+    <Preference id="2" collegeId="1" name="license.ccprocessing" value_string="true" />
+
+    <Invoice id="4" angelId="4" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54"
+             description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91" />
+
+    <InvoiceLine id="4" angelId="4" collegeId="1" invoiceId="4" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
+                 taxEach="10.91" title="Test Invoice Line"/>
+
+    <Product collegeId="1" SKU="123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product" EXPIRYTYPE="4" ID="8" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test voucher product" PRICEEXTAX="100.00" TYPE="3" angelId="8"
+             TAXADJUSTMENT="0.00" maxCoursesRedemption="[null]" feeGST="0.00"/>
+
+    <ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="4"
+                 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="3" angelId="4" code="qwerty" value="100.00" redeemedCoursesCount="0" source="O"
+                 status="0" INVOICELINEID="4"/>
+</dataset>

@@ -35,6 +35,13 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 		for (PaymentIn paymentIn : payments) {
 			
 			addRelatedStub(paymentRelated, paymentIn, version);
+			for (VoucherPaymentIn voucherPaymentIn : paymentIn.getVoucherPaymentIns()) {
+				if (voucherPaymentIn.getInvoiceLine() == null) {
+					//money voucher
+					addRelatedStub(paymentRelated, voucherPaymentIn, version);
+					addRelatedStub(paymentRelated, voucherPaymentIn.getVoucher(), version);
+				}
+			}
 
 			for (PaymentInLine paymentLine : paymentIn.getPaymentInLines()) {
 
