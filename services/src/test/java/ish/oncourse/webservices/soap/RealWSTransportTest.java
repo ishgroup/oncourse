@@ -76,6 +76,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected static final String MEMBERSHIP_IDENTIFIER = Membership.class.getSimpleName();
 	protected static final String VOUCHER_IDENTIFIER = Voucher.class.getSimpleName();
 	protected static final String ARTICLE_IDENTIFIER = Article.class.getSimpleName();
+	protected static final String VOUCHER_PAYMENT_IN_IDENTIFIER = VoucherPaymentIn.class.getSimpleName();
 
 	protected ServiceTest serviceTest;
 	protected PageTester tester;

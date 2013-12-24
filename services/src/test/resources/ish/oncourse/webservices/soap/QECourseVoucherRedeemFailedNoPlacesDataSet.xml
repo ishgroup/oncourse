@@ -37,22 +37,38 @@
                  roomId="1" angelId="1" startDate="2011-10-12 00:55:59.0"
                  endDate="2011-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
                  created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
-                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
+                 maximumPlaces="1" minimumPlaces="1" countOfSessions="3"
                  deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
-
-    <Product collegeId="1" SKU="123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="voucher product" EXPIRYTYPE="4" ID="1" ISONSALE="1"
-             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="voucher product" PRICEEXTAX="10.00" TYPE="3" angelId="1"
-             TAXADJUSTMENT="0.00" maxCoursesRedemption="0" feeGST="0.00"/>
-
-    <Product collegeId="1" SKU="234" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="membership product" EXPIRYTYPE="4" ID="2" ISONSALE="1"
-             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="membership product" PRICEEXTAX="10.00" TYPE="2" angelId="2"
-             TAXADJUSTMENT="0.00" maxCoursesRedemption="0" feeGST="0.00"/>
-
-    <Product collegeId="1" SKU="345" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="article product" EXPIRYTYPE="4" ID="3" ISONSALE="1"
-             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="article product" PRICEEXTAX="10.00" TYPE="1" angelId="3"
-             TAXADJUSTMENT="0.00" maxCoursesRedemption="0" feeGST="0.00"/>
 
     <Preference id="1" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
     <Preference id="2" collegeId="1" name="license.ccprocessing" value_string="true" />
-    
+
+    <Invoice id="4" angelId="4" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54"
+             description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91" />
+
+    <InvoiceLine id="4" angelId="4" collegeId="1" invoiceId="4" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
+                 taxEach="10.91" title="Test Invoice Line"/>
+
+    <Product collegeId="1" SKU="234567" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="8" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 6" TYPE="3" angelId="8"
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" maxCoursesRedemption="1" feeGST="0.00"/>
+
+    <VoucherProductCourse id="10" voucherProductId="8" courseId="1" collegeId="1" angelId="10" created="2012-05-14 14:33:16.537" modified="2012-05-14 14:33:16.537"/>
+
+    <ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="4"
+                 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="3" angelId="4" code="qwerty_4" value="10.00" redeemedCoursesCount="0" source="O"
+                 status="0" INVOICELINEID="4"/>
+    <Enrolment id="10" source="O" collegeId="1" courseClassId="1" angelId="10"
+               studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+
+    <Invoice id="5" source="O" amountOwing="100.00" contactId="1" angelId="5"
+             collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+             invoiceDate="2011-09-10 11:14:54" invoiceNumber="100" totalExGst="320.00"
+             totalGst="10.91" />
+
+    <InvoiceLine id="5" collegeId="1" enrolmentId="10" angelId="5"
+                 invoiceId="5" quantity="1.0" discountEachExTax="0.00"
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" created="2011-09-12 00:47:26.0"/>
+
 </dataset>
