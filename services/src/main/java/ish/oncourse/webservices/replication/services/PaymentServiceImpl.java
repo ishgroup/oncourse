@@ -256,11 +256,6 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
 			if (!shouldWait) {
 				//we should also add the voucher payments in this list
-				//but before this we need to refresh voucher payments
-				for (PaymentIn voucherpayment : voucherPaymentsList) {
-					final ObjectIdQuery query = new ObjectIdQuery(voucherpayment.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
-					Cayenne.objectForQuery(voucherpayment.getObjectContext(), query);
-				}
 				pList.addAll(voucherPaymentsList);
 				tGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createPaymentInTransaction(pList, version));
 			}

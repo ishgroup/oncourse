@@ -68,9 +68,6 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 					Enrolment enrol = invoiceLine.getEnrolment();
 
 					if (enrol != null) {
-						//request refresh enrolment because we may have not updated after payment succeed status
-						final ObjectIdQuery query = new ObjectIdQuery(enrol.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
-						enrol = (Enrolment) Cayenne.objectForQuery(enrol.getObjectContext(), query);
 						addRelatedStub(paymentRelated, enrol, version);
 
 						CourseClass courseClass = enrol.getCourseClass();
