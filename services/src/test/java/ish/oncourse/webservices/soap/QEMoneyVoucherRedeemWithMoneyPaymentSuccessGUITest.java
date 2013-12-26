@@ -16,10 +16,9 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonRealWSTransportTest {
-	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemWithMoneyPaymentSuccessDataSet.xml";
+public class QEMoneyVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonRealWSTransportTest {
+	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEMoneyVoucherRedeemWithMoneyPaymentSuccessDataSet.xml";
 	private static TestServer server;
 
 	@Override
@@ -29,7 +28,7 @@ public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonR
 
 	@BeforeClass
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9106);
+		server = startRealWSServer(9107);
 	}
 
 	@Override
@@ -39,13 +38,13 @@ public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonR
 
 	@Override
 	protected GenericTransactionGroup prepareStubsForReplication(GenericTransactionGroup transaction) {
-		return preparePaymentStructureForCourseVoucherAndMoneyPayment(transaction);
+		return preparePaymentStructureForMoneyVoucherAndMoneyPayment(transaction);
 	}
 
 	@Override
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
-			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		assertEquals("19 elements should be replicated for this payment", 19, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
@@ -61,7 +60,7 @@ public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonR
 					assertEquals("Payment status should be success", PaymentStatus.SUCCESS, status);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s angelid=%s and status= %s found in a queue",
-						stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
+							stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
 				if (stub.getAngelId() == 1l || stub.getAngelId() == 2l) {
@@ -69,12 +68,12 @@ public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonR
 					assertEquals("Oncourse enrollment should be success", EnrolmentStatus.SUCCESS, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((GenericEnrolmentStub)stub).getStatus()), true);
+							((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			} else if (isVoucherStub(stub)) {
-				assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("10.00"));
+				assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("100.00"));
 				assertEquals("Check of voucher status failed", getVoucherProductStatus(stub), ProductStatus.ACTIVE.getDatabaseValue());
-				assertEquals("Check of voucher redeemed courses count failed", getVoucherRedeemedCoursesCount(stub), Integer.valueOf(1));
+				assertEquals("Check of voucher redeemed courses count failed", getVoucherRedeemedCoursesCount(stub), Integer.valueOf(0));
 			}
 		}
 	}
@@ -129,10 +128,10 @@ public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonR
 				}
 			} else if (ENROLMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.IN_TRANSACTION.name(),
-					((GenericEnrolmentStub) stub).getStatus());
+						((GenericEnrolmentStub) stub).getStatus());
 			} else if (VOUCHER_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Voucher status should not change after this processing",
-					ProductStatus.ACTIVE.getDatabaseValue(), ((ish.oncourse.webservices.v6.stubs.replication.VoucherStub)stub).getStatus());
+						ProductStatus.ACTIVE.getDatabaseValue(), ((ish.oncourse.webservices.v6.stubs.replication.VoucherStub)stub).getStatus());
 			}
 		}
 		return sessionId;

@@ -106,7 +106,34 @@ public abstract class CommonRealWSTransportTest extends RealWSTransportTest {
 		logout();
 	}
 
-	protected GenericTransactionGroup preparePaymentStructureForCourseVoucherAndMoneyPayment(GenericTransactionGroup transaction) {
+	protected void testGUICases() throws Exception {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+
+		checkQueueBeforeProcessing(context);
+
+		GenericTransactionGroup transaction = processPayment();
+
+		String sessionId = checkResponseAndReceiveSessionId(transaction);
+
+		checkQueueAfterProcessing(context);
+
+		transaction = getPaymentStatus(sessionId);
+
+		checkNotProcessedResponse(transaction);
+
+		//call page processing
+		renderPaymentPageWithSuccessProcessing(sessionId);
+
+		checkAsyncReplication(context);
+
+		transaction = getPaymentStatus(sessionId);
+
+		checkProcessedResponse(transaction);
+
+		logout();
+	}
+
+	private GenericTransactionGroup preparePaymentStructureForTwoEnrolmentsWithoutVoucher(GenericTransactionGroup transaction) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
@@ -226,14 +253,39 @@ public abstract class CommonRealWSTransportTest extends RealWSTransportTest {
 		invoiceLineStub2.setEnrolmentId(enrolmentStub2.getAngelId());
 		stubs.add(enrolmentStub2);
 
+		return transaction;
+	}
+
+	protected GenericTransactionGroup preparePaymentStructureForMoneyVoucherAndMoneyPayment(GenericTransactionGroup transaction) {
+		List<GenericReplicationStub> stubs = preparePaymentStructureForTwoEnrolmentsWithoutVoucher(transaction).getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		final Date current = new Date();
+
 		VoucherPaymentInStub voucherPaymentInStub = new VoucherPaymentInStub();
 		voucherPaymentInStub.setAngelId(1l);
 		voucherPaymentInStub.setCreated(current);
 		voucherPaymentInStub.setModified(current);
 		voucherPaymentInStub.setEntityIdentifier(VOUCHER_PAYMENT_IN_IDENTIFIER);
-		voucherPaymentInStub.setInvoiceLineId(invoiceLineStub.getAngelId());
 		voucherPaymentInStub.setEnrolmentsCount(1);
-		voucherPaymentInStub.setPaymentInId(paymentInStub2.getAngelId());
+		voucherPaymentInStub.setPaymentInId(2l);
+		voucherPaymentInStub.setVoucherId(4l);
+		voucherPaymentInStub.setStatus(VoucherPaymentStatus.APPROVED.getDatabaseValue());
+		stubs.add(voucherPaymentInStub);
+
+		return transaction;
+	}
+
+	protected GenericTransactionGroup preparePaymentStructureForCourseVoucherAndMoneyPayment(GenericTransactionGroup transaction) {
+		List<GenericReplicationStub> stubs = preparePaymentStructureForTwoEnrolmentsWithoutVoucher(transaction).getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		final Date current = new Date();
+
+		VoucherPaymentInStub voucherPaymentInStub = new VoucherPaymentInStub();
+		voucherPaymentInStub.setAngelId(1l);
+		voucherPaymentInStub.setCreated(current);
+		voucherPaymentInStub.setModified(current);
+		voucherPaymentInStub.setEntityIdentifier(VOUCHER_PAYMENT_IN_IDENTIFIER);
+		voucherPaymentInStub.setInvoiceLineId(1l);
+		voucherPaymentInStub.setEnrolmentsCount(1);
+		voucherPaymentInStub.setPaymentInId(2l);
 		voucherPaymentInStub.setVoucherId(4l);
 		voucherPaymentInStub.setStatus(VoucherPaymentStatus.APPROVED.getDatabaseValue());
 		stubs.add(voucherPaymentInStub);
