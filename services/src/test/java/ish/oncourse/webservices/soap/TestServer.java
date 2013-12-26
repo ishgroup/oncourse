@@ -1,5 +1,8 @@
 package ish.oncourse.webservices.soap;
 
+import ish.oncourse.test.InitialContextFactoryMock;
+import ish.oncourse.test.TestContextUtil;
+import ish.oncourse.util.ContextUtil;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
@@ -61,6 +64,11 @@ public class TestServer {
         server.setHandler(context);
 
         try {
+        	//this is local workaround to pass the tests with this settings
+			//System.setProperty("https.proxyHost", "fish.ish.com.au");
+			//System.setProperty("https.proxyPort", "8080");
+
+			InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
             server.start();
         } catch (Exception e) {
             server.stop();
