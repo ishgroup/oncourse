@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.inject.Inject;
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.query.ObjectIdQuery;
 
 /**
  * @author anton
@@ -66,6 +68,9 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 					Enrolment enrol = invoiceLine.getEnrolment();
 
 					if (enrol != null) {
+						//request refresh enrolment because we may have not updated after payment succeed status
+						final ObjectIdQuery query = new ObjectIdQuery(enrol.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+						enrol = (Enrolment) Cayenne.objectForQuery(enrol.getObjectContext(), query);
 						addRelatedStub(paymentRelated, enrol, version);
 
 						CourseClass courseClass = enrol.getCourseClass();

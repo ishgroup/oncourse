@@ -21,7 +21,9 @@ import ish.oncourse.webservices.soap.v4.FaultCode;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -239,6 +241,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			GenericTransactionGroup tGroup = PortHelper.createTransactionGroup(version);
 
 			List<PaymentIn> pList = paymentInService.getPaymentsBySessionId(sessionId);
+			List<PaymentIn> voucherPaymentsList = new ArrayList<PaymentIn>();
 
 			boolean shouldWait = false;
 
@@ -246,10 +249,19 @@ public class PaymentServiceImpl implements InternalPaymentService {
 				if (!p.isAsyncReplicationAllowed()) {
 					shouldWait = true;
 					break;
+				} else {
+					voucherPaymentsList.addAll(PaymentInUtil.getRelatedVoucherPayments(p));
 				}
 			}
 
 			if (!shouldWait) {
+				//we should also add the voucher payments in this list
+				//but before this we need to refresh voucher payments
+				for (PaymentIn voucherpayment : voucherPaymentsList) {
+					final ObjectIdQuery query = new ObjectIdQuery(voucherpayment.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+					Cayenne.objectForQuery(voucherpayment.getObjectContext(), query);
+				}
+				pList.addAll(voucherPaymentsList);
 				tGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createPaymentInTransaction(pList, version));
 			}
 
