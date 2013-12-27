@@ -14,8 +14,8 @@ import java.math.BigDecimal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends CommonRealWSTransportTest {
-	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceDataSet.xml";
+public class QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends CommonRealWSTransportTest {
+	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceDataSet.xml";
 	private static TestServer server;
 
 	@Override
@@ -25,7 +25,7 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends C
 
 	@BeforeClass
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9108);
+		server = startRealWSServer(9109);
 	}
 
 	@Override
@@ -35,13 +35,13 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends C
 
 	@Override
 	protected GenericTransactionGroup prepareStubsForReplication(GenericTransactionGroup transaction) {
-		return preparePaymentStructureForMoneyVoucherAndMoneyPayment(transaction);
+		return preparePaymentStructureForCourseVoucherAndMoneyPayment(transaction);
 	}
 
 	@Override
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
-			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		assertEquals("25 elements should be replicated for this payment", 25, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
@@ -58,7 +58,7 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends C
 						assertEquals("Payment status should be success", PaymentStatus.FAILED, status);
 					} else {
 						assertFalse(String.format("Unexpected PaymentIn with id= %s angelid=%s and status= %s found in a queue",
-							stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
+								stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
 					}
 				} else {
 					if (stub.getWillowId() == 4l) {
@@ -67,7 +67,7 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends C
 						assertEquals("Payment status should be success", PaymentStatus.SUCCESS, status);
 					} else {
 						assertFalse(String.format("Unexpected PaymentIn with id= %s angelid=%s and status= %s found in a queue",
-							stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
+								stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
 					}
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
@@ -81,7 +81,7 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends C
 			} else if (isVoucherStub(stub)) {
 				switch (getVoucherRedeemedCoursesCount(stub)) {
 					case 0 :
-						assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("200.00"));
+						assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("10.00"));
 						break;
 					default:
 						assertFalse("Unexpected voucher redeemed course count", true);
@@ -105,5 +105,4 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends C
 	protected void checkAsyncReplication(ObjectContext context) {
 		checkAsyncReplicationForVoucherAndCreditCardReverseInvoicePayment(context);
 	}
-
 }
