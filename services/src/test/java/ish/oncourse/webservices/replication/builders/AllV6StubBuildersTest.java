@@ -3,26 +3,10 @@
  */
 package ish.oncourse.webservices.replication.builders;
 
-import ish.oncourse.model.Queueable;
 import ish.oncourse.model.*;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.replication.v6.builders.*;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import org.apache.cayenne.Cayenne;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import javax.sql.DataSource;
-import java.io.InputStream;
 
 public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
@@ -85,7 +69,10 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testCourseClassStubBuilder() {
-		this.testStubBuilder(CourseClass.class, new CourseClassStubBuilder(), "materialsTextile","modified","sessionDetailTextile", "startDate","startingMinutePerSession", "timeZone");
+		this.testStubBuilder(CourseClass.class, new CourseClassStubBuilder(),
+				"materialsTextile", "modified", "sessionDetailTextile", "startDate",
+				"startingMinutePerSession", "timeZone", "attendanceType",
+				"feeHelpClass", "reportingPeriod");
 	}
 
 	@Test
@@ -100,7 +87,10 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testEnrolmentStubBuilder() {
-		this.testStubBuilder(Enrolment.class, new EnrolmentStubBuilder(), "invoiceLineId");
+		this.testStubBuilder(Enrolment.class, new EnrolmentStubBuilder(),
+				"invoiceLineId", "censusDate", "feeHelpStatus", "creditOfferedValue", "creditProvider",
+				"creditUsedValue", "creditType", "creditFoeId", "creditLevel", "creditProviderType",
+				"feeStatus", "creditTotal");
 	}
 
 	@Test
@@ -189,7 +179,8 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testStudentStubBuilder() {
-		this.testStubBuilder(Student.class, new StudentStubBuilder());
+		this.testStubBuilder(Student.class, new StudentStubBuilder(),
+				"chessn", "citizenship", "feeHelpEligible", "specialNeedsAssistance");
 	}
 
 	@Test

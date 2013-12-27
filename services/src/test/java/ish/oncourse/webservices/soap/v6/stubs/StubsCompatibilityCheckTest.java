@@ -106,7 +106,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		contactParamethers.add(new ReplicationStubFieldParameter("studentId", Long.class));
 		contactParamethers.add(new ReplicationStubFieldParameter("tutorId", Long.class));
 		stubsPropertyMap.put(getStubName(ContactStub.class), contactParamethers);
-		final List<ReplicationStubFieldParameter> courseClassParameters = fillDefaultReplicationStubFields();
+
+		List<ReplicationStubFieldParameter> courseClassParameters = fillDefaultReplicationStubFields();
 		courseClassParameters.add(new ReplicationStubFieldParameter("cancelled", Boolean.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("code", String.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("countOfSessions", Integer.class));
@@ -132,7 +133,11 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		courseClassParameters.add(new ReplicationStubFieldParameter("distantLearningCourse", Boolean.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("maximumDays", Integer.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("expectedHours", BigDecimal.class));
+		courseClassParameters.add(new ReplicationStubFieldParameter("feeHelpClass", Boolean.class));
+		courseClassParameters.add(new ReplicationStubFieldParameter("attendanceType", Integer.class));
+		courseClassParameters.add(new ReplicationStubFieldParameter("reportingPeriod", Integer.class));
 		stubsPropertyMap.put(getStubName(CourseClassStub.class), courseClassParameters);
+
 		final List<ReplicationStubFieldParameter> courseParamethers = fillDefaultReplicationStubFields();
 		courseParamethers.add(new ReplicationStubFieldParameter("allowWaitingList", Boolean.class));
 		courseParamethers.add(new ReplicationStubFieldParameter("code", String.class));
@@ -167,14 +172,27 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		discountParameters.add(new ReplicationStubFieldParameter("hideOnWeb", Boolean.class));
 		discountParameters.add(new ReplicationStubFieldParameter("availableOnWeb", Boolean.class));
 		stubsPropertyMap.put(getStubName(DiscountStub.class), discountParameters);
-		final List<ReplicationStubFieldParameter> enrolmentParamethers = fillDefaultReplicationStubFields();
-		enrolmentParamethers.add(new ReplicationStubFieldParameter("reasonForStudy", Integer.class));
-		enrolmentParamethers.add(new ReplicationStubFieldParameter("status", String.class));
-		enrolmentParamethers.add(new ReplicationStubFieldParameter("source", String.class));
-		enrolmentParamethers.add(new ReplicationStubFieldParameter("studentId", Long.class));
-		enrolmentParamethers.add(new ReplicationStubFieldParameter("courseClassId", Long.class));
-		enrolmentParamethers.add(new ReplicationStubFieldParameter("invoiceLineId", Long.class));
-		stubsPropertyMap.put(getStubName(EnrolmentStub.class), enrolmentParamethers);
+
+		List<ReplicationStubFieldParameter> enrolmentParameters = fillDefaultReplicationStubFields();
+		enrolmentParameters.add(new ReplicationStubFieldParameter("reasonForStudy", Integer.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("status", String.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("source", String.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("studentId", Long.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("courseClassId", Long.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("invoiceLineId", Long.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("feeHelpStatus", Integer.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("creditOfferedValue", String.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("creditProvider", Integer.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("creditUsedValue", String.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("creditType", Integer.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("creditFoeId", String.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("creditLevel", Integer.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("creditProviderType", Integer.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("feeStatus", String.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("creditTotal", String.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("censusDate", Date.class));
+		stubsPropertyMap.put(getStubName(EnrolmentStub.class), enrolmentParameters);
+
 		final List<ReplicationStubFieldParameter> invoiceLineDiscountParamethers = fillDefaultReplicationStubFields();
 		invoiceLineDiscountParamethers.add(new ReplicationStubFieldParameter("discountId", Long.class));
 		invoiceLineDiscountParamethers.add(new ReplicationStubFieldParameter("invoiceLineId", Long.class));
@@ -302,22 +320,28 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		studentConcessionParamethers.add(new ReplicationStubFieldParameter("concessionTypeId", Long.class));
 		studentConcessionParamethers.add(new ReplicationStubFieldParameter("studentId", Long.class));
 		stubsPropertyMap.put(getStubName(StudentConcessionStub.class), studentConcessionParamethers);
-		final List<ReplicationStubFieldParameter> studentParamethers = fillDefaultReplicationStubFields();
-		studentParamethers.add(new ReplicationStubFieldParameter("concessionType", Integer.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("disabilityType", Integer.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("englishProficiency", Integer.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("highestSchoolLevel", Integer.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("indigenousStatus", Integer.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("overseasClient", Boolean.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("stillAtSchool", Boolean.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("priorEducationCode", Integer.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("labourForceType", Integer.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("yearSchoolCompleted", Integer.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("contactId", Long.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("languageId", Long.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("countryOfBirthId", Long.class));
-		studentParamethers.add(new ReplicationStubFieldParameter("languageHomeId", Long.class));
-		stubsPropertyMap.put(getStubName(StudentStub.class), studentParamethers);
+
+		List<ReplicationStubFieldParameter> studentParameters = fillDefaultReplicationStubFields();
+		studentParameters.add(new ReplicationStubFieldParameter("concessionType", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("disabilityType", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("englishProficiency", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("highestSchoolLevel", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("indigenousStatus", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("overseasClient", Boolean.class));
+		studentParameters.add(new ReplicationStubFieldParameter("stillAtSchool", Boolean.class));
+		studentParameters.add(new ReplicationStubFieldParameter("priorEducationCode", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("labourForceType", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("yearSchoolCompleted", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("contactId", Long.class));
+		studentParameters.add(new ReplicationStubFieldParameter("languageId", Long.class));
+		studentParameters.add(new ReplicationStubFieldParameter("countryOfBirthId", Long.class));
+		studentParameters.add(new ReplicationStubFieldParameter("languageHomeId", Long.class));
+		studentParameters.add(new ReplicationStubFieldParameter("chessn", String.class));
+		studentParameters.add(new ReplicationStubFieldParameter("feeHelpEligible", Boolean.class));
+		studentParameters.add(new ReplicationStubFieldParameter("specialNeedsAssistance", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("citizenship", Integer.class));
+		stubsPropertyMap.put(getStubName(StudentStub.class), studentParameters);
+
 		final List<ReplicationStubFieldParameter> systemUserParamethers = fillDefaultReplicationStubFields();
 		systemUserParamethers.add(new ReplicationStubFieldParameter("editCMS", Boolean.class));
 		systemUserParamethers.add(new ReplicationStubFieldParameter("editTara", Boolean.class));
