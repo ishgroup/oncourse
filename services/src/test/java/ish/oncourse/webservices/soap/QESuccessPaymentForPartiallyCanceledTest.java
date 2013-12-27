@@ -25,7 +25,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotEquals;
 
-public class QESuccessPaymentForPartiallyCanceledTest extends RealWSTransportTest {
+public class QESuccessPaymentForPartiallyCanceledTest extends QEPaymentProcess8CaseGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase8Dataset.xml";
 	private static TestServer server;
 

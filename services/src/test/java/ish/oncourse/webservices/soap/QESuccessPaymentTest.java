@@ -23,7 +23,7 @@ import org.apache.cayenne.query.SelectQuery;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class QESuccessPaymentTest extends RealWSTransportTest {
+public class QESuccessPaymentTest extends QEPaymentProcess1_4CasesGUITest {
 	
 	private static TestServer server;
 	
@@ -45,7 +45,7 @@ public class QESuccessPaymentTest extends RealWSTransportTest {
 		authenticate();
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		fillV6PaymentStubsForCases1_4(transaction);
+		fillV6PaymentStubs(transaction);
 		//process payment
 		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction));
 		//check the response, validate the data and receive the sessionid

@@ -49,18 +49,18 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
 							((GenericEnrolmentStub)stub).getStatus()), true);
 				}
-			} else if (isVoucherStub(stub)) {
-				switch (getVoucherRedeemedCoursesCount(stub)) {
+			} else if (stub instanceof VoucherStub) {
+				switch (((VoucherStub) stub).getRedeemedCoursesCount()) {
 					case 0 :
-						assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("100.00"));
+						assertEquals("Check of voucher redemption value failed", ((VoucherStub) stub).getRedemptionValue(), new BigDecimal("100.00"));
 						break;
 					case 1 :
-						assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("10.00"));
+						assertEquals("Check of voucher redemption value failed", ((VoucherStub) stub).getRedemptionValue(), new BigDecimal("10.00"));
 						break;
 					default:
 						assertFalse("Unexpected voucher redeemed course count", true);
 				}
-				assertEquals("Check of voucher status failed", getVoucherProductStatus(stub), ProductStatus.ACTIVE.getDatabaseValue());
+				assertEquals("Check of voucher status failed", ((VoucherStub) stub).getStatus(), ProductStatus.ACTIVE.getDatabaseValue());
 			}
 		}
 	}

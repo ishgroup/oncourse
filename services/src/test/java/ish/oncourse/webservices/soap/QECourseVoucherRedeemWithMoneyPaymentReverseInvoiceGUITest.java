@@ -5,6 +5,7 @@ import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.v6.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -80,15 +81,15 @@ public class QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends 
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
 							((GenericEnrolmentStub)stub).getStatus()), true);
 				}
-			} else if (isVoucherStub(stub)) {
-				switch (getVoucherRedeemedCoursesCount(stub)) {
+			} else if (stub instanceof VoucherStub) {
+				switch (((VoucherStub) stub).getRedeemedCoursesCount()) {
 					case 0 :
-						assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("10.00"));
+						assertEquals("Check of voucher redemption value failed", ((VoucherStub) stub).getRedemptionValue(), new BigDecimal("10.00"));
 						break;
 					default:
 						assertFalse("Unexpected voucher redeemed course count", true);
 				}
-				assertEquals("Check of voucher status failed", getVoucherProductStatus(stub), ProductStatus.ACTIVE.getDatabaseValue());
+				assertEquals("Check of voucher status failed", ((VoucherStub) stub).getStatus(), ProductStatus.ACTIVE.getDatabaseValue());
 			}
 		}
 	}

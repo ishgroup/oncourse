@@ -8,29 +8,20 @@ import static org.junit.Assert.assertTrue;
 
 import ish.common.types.*;
 import ish.oncourse.model.*;
-import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.webservices.replication.services.PortHelper;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.tapestry5.dom.Document;
-import org.apache.tapestry5.dom.Element;
-import org.apache.tapestry5.dom.Node;
-import org.apache.tapestry5.internal.test.TestableRequest;
-import org.apache.tapestry5.internal.test.TestableResponse;
-import org.apache.tapestry5.services.Session;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class QEFailedPaymentReverseInvoiceTest extends RealWSTransportTest {
+public class QEFailedPaymentReverseInvoiceTest extends QEPaymentProcess1_4CasesGUITest {
 	private static TestServer server;
 
 	@Override
@@ -51,7 +42,7 @@ public class QEFailedPaymentReverseInvoiceTest extends RealWSTransportTest {
 		authenticate();
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		fillV6PaymentStubsForCases1_4(transaction);
+		fillV6PaymentStubs(transaction);
 		//process payment
 		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction));
 		//check the response, validate the data and receive the sessionid

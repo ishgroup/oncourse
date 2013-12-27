@@ -2,6 +2,7 @@ package ish.oncourse.webservices.soap;
 
 import ish.common.types.*;
 import ish.oncourse.webservices.util.*;
+import ish.oncourse.webservices.v6.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -85,10 +86,10 @@ public class QEMoneyVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedeem
 				}
 			} else if (isVoucherPaymentInStub(stub)) {
 				assertEquals("Incorrect VoucherPaymentIn status", getVoucherPaymentInStatus(stub), VoucherPaymentStatus.APPROVED.getDatabaseValue());
-			} else if (isVoucherStub(stub)) {
-				assertEquals("Check of voucher redemption value failed", getVoucherRedemptionValue(stub), new BigDecimal("200.00"));
-				assertEquals("Check of voucher status failed", getVoucherProductStatus(stub), ProductStatus.ACTIVE.getDatabaseValue());
-				assertEquals("Check of voucher redeemed courses count failed", getVoucherRedeemedCoursesCount(stub), Integer.valueOf(0));
+			} else if (stub instanceof VoucherStub) {
+				assertEquals("Check of voucher redemption value failed", ((VoucherStub) stub).getRedemptionValue(), new BigDecimal("200.00"));
+				assertEquals("Check of voucher status failed", ((VoucherStub) stub).getStatus(), ProductStatus.ACTIVE.getDatabaseValue());
+				assertEquals("Check of voucher redeemed courses count failed", ((VoucherStub) stub).getRedeemedCoursesCount(), Integer.valueOf(0));
 			}
 		}
 	}

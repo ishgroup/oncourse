@@ -17,11 +17,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-public abstract class QEVoucherRedeemNoGUITest extends RealWSTransportTest {
-
-	protected final boolean isVoucherStub(GenericReplicationStub stub) {
-		return stub instanceof VoucherStub;
-	}
+public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 
 	protected void testNoGUICases() throws Exception {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -35,18 +31,6 @@ public abstract class QEVoucherRedeemNoGUITest extends RealWSTransportTest {
 		checkProcessedResponse(transaction);
 
 		logout();
-	}
-
-	protected final BigDecimal getVoucherRedemptionValue(GenericReplicationStub stub) {
-		return ((VoucherStub) stub).getRedemptionValue();
-	}
-
-	protected final Integer getVoucherRedeemedCoursesCount(GenericReplicationStub stub) {
-		return ((VoucherStub) stub).getRedeemedCoursesCount();
-	}
-
-	protected final Integer getVoucherProductStatus(GenericReplicationStub stub) {
-		return ((VoucherStub) stub).getStatus();
 	}
 
 	protected final GenericTransactionGroup preparePaymentStructureWithoutVoucher(GenericTransactionGroup transaction) {

@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class QEFailedPaymentForPartiallyRefundedTest extends RealWSTransportTest {
+public class QEFailedPaymentForPartiallyRefundedTest extends QEPaymentProcess7CaseGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase7Dataset.xml";
 	private static TestServer server;
 

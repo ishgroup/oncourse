@@ -30,7 +30,7 @@ import org.apache.tapestry5.services.Session;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class QEExpireByWatchdogTest extends RealWSTransportTest {
+public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 	private static TestServer server;
 
 	@Override
@@ -117,7 +117,7 @@ public class QEExpireByWatchdogTest extends RealWSTransportTest {
 		authenticate();
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		fillV6PaymentStubsForCases1_4(transaction);
+		fillV6PaymentStubs(transaction);
 		//process payment
 		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction));
 		//check the response, validate the data and receive the sessionid
