@@ -96,7 +96,7 @@ public class QEFailedPaymentForPartiallyCanceledTest extends QEPaymentProcess8Ca
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(),
-							((GenericPaymentInStub) stub).getStatus()), true);
+						((GenericPaymentInStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
 				if (stub.getAngelId() == 10l) {
@@ -107,42 +107,42 @@ public class QEFailedPaymentForPartiallyCanceledTest extends QEPaymentProcess8Ca
 					assertEquals("Oncourse enrollment should be refunded after expiration", EnrolmentStatus.CANCELLED, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
-							((GenericEnrolmentStub)stub).getStatus()), true);
+						((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
 				if (stub.getAngelId() != 10l) {
 					assertFalse(String.format("Unexpected invoice stub with willowid= %s and angelid= %s found in a queue",
-							stub.getWillowId(), stub.getAngelId()), true);
+						stub.getWillowId(), stub.getAngelId()), true);
 				}
 			} else if (INVOICE_LINE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				if ((stub.getAngelId() != 10l) && (stub.getAngelId() != 11l)
 						&& (stub.getAngelId() != 2l) && (stub.getAngelId() != 3l) && (stub.getAngelId() != 4l)) {
 					assertFalse(String.format("Unexpected invoiceline stub with willowid= %s and angelid= %s found in a queue",
-							stub.getWillowId(), stub.getAngelId()), true);
+						stub.getWillowId(), stub.getAngelId()), true);
 				}
 			}  else if (stub instanceof VoucherStub) {
 				if (stub.getAngelId().equals(2l)) {
-					assertNotEquals("Voucher status should be active because success enrolment in the same invoice can not be canceled",
-							ProductStatus.CANCELLED.getDatabaseValue(), ((VoucherStub) stub).getStatus());
+					assertEquals("Voucher status should be active because success enrolment in the same invoice can not be canceled",
+						ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Voucher with id= %s and status= %s found in a queue", stub.getWillowId(),
-							((VoucherStub) stub).getStatus()), true);
+						((VoucherStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof ArticleStub) {
 				if (stub.getAngelId().equals(3l)) {
-					assertNotEquals("Article status should be active because success enrolment in the same invoice can not be canceled",
-							ProductStatus.CANCELLED.getDatabaseValue(), ((ArticleStub) stub).getStatus());
+					assertEquals("Article status should be active because success enrolment in the same invoice can not be canceled",
+						ProductStatus.ACTIVE.getDatabaseValue(), ((ArticleStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Article with id= %s and status= %s found in a queue", stub.getWillowId(),
-							((ArticleStub) stub).getStatus()), true);
+						((ArticleStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof MembershipStub) {
 				if (stub.getAngelId().equals(1l)) {
-					assertNotEquals("Membership status should be active because success enrolment in the same invoice can not be canceled",
-							ProductStatus.CANCELLED.getDatabaseValue(), ((MembershipStub) stub).getStatus());
+					assertEquals("Membership status should be active because success enrolment in the same invoice can not be canceled",
+						ProductStatus.ACTIVE.getDatabaseValue(), ((MembershipStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Membership with id= %s and status= %s found in a queue", stub.getWillowId(),
-							((MembershipStub) stub).getStatus()), true);
+						((MembershipStub) stub).getStatus()), true);
 				}
 			}
 		}

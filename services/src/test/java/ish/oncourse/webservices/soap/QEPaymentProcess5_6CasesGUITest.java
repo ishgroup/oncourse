@@ -149,7 +149,7 @@ public abstract class QEPaymentProcess5_6CasesGUITest extends QEPaymentProcessTe
 		stubs.add(voucherStub);
 
 		ArticleStub articleStub = new ArticleStub();
-		articleStub.setAngelId(2l);
+		articleStub.setAngelId(3l);
 		articleStub.setContactId(1l);
 		articleStub.setCreated(current);
 		articleStub.setEntityIdentifier(ARTICLE_IDENTIFIER);

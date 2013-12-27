@@ -1,25 +1,22 @@
 package ish.oncourse.webservices.soap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import ish.common.types.*;
 import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.services.PortHelper;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.util.*;
 
 import java.util.List;
 
+import ish.oncourse.webservices.v6.stubs.replication.ArticleStub;
+import ish.oncourse.webservices.v6.stubs.replication.MembershipStub;
+import ish.oncourse.webservices.v6.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
 
 public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProcess5_6CasesGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase5Dataset.xml";
@@ -38,19 +35,9 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProces
 	protected String getDataSetFile() {
 		return DEFAULT_DATASET_XML;
 	}
-	
-	@Test
-	public void testQEReverseInvoice() throws Exception {
-		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
-		authenticate();
-		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		fillV6PaymentStubs(transaction);
-		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction));
-		//check the response, validate the data and receive the sessionid
+
+	@Override
+	protected String checkResponseAndReceiveSessionId(GenericTransactionGroup transaction) {
 		String sessionId = null;
 		assertEquals("20 stubs should be in response for this processing", 20, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
@@ -62,70 +49,62 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProces
 				assertNotNull("PaymentIn entity should contain the sessionid after processing", sessionId);
 				assertEquals("Payment status should not change after this processing", PaymentStatus.IN_TRANSACTION.getDatabaseValue(), payment.getStatus());
 			} else if (ENROLMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
-				assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.SUCCESS.name(), 
+				assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.SUCCESS.name(),
 					((GenericEnrolmentStub) stub).getStatus());
 			} else if (MEMBERSHIP_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Membership status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((ish.oncourse.webservices.v6.stubs.replication.MembershipStub)stub).getStatus());
+					ProductStatus.NEW.getDatabaseValue(), ((MembershipStub)stub).getStatus());
 			} else if (VOUCHER_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Voucher status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((ish.oncourse.webservices.v6.stubs.replication.VoucherStub)stub).getStatus());
+					ProductStatus.NEW.getDatabaseValue(), ((VoucherStub)stub).getStatus());
 			} else if (ARTICLE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Article status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((ish.oncourse.webservices.v6.stubs.replication.ArticleStub)stub).getStatus());
+					ProductStatus.NEW.getDatabaseValue(), ((ArticleStub)stub).getStatus());
 			}
 		}
-		assertTrue("Queue should be empty after processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
-		//check the status via service
-		transaction = getPaymentPortType().getPaymentStatus(sessionId);
-		assertTrue("Get status call should return empty response for in transaction payment", 
-			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		//call page processing
-		testRenderPaymentPageWithReverseInvoice(sessionId);
+		return sessionId;
+	}
+
+	@Override
+	protected void checkAsyncReplication(ObjectContext context) {
 		//check that async replication works correct
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
 		assertEquals("Queue should contain 11 records.", 11, queuedRecords.size());
-		int isPaymentFound = 0, isPaymentLineFound = 0, isInvoiceFound = 0, isInvoiceLineFound = 0,
-			isEnrolmentFound = 0, isContactFound = 0, isStudentFound = 0, isMembershipFound = 0, isVoucherFound = 0,
-			isArticleFound = 0;
+		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0,
+			membershipsFound = 0, vouchersFound = 0, articlesFound = 0;
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 1 paymentIn should exist in a queue", isPaymentFound >= 1);
-				isPaymentFound++;
+				paymentsFound++;
 			} else if (PAYMENT_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 2 paymentInLine should exist in a queue", isPaymentLineFound >= 2);
-				isPaymentLineFound++;
+				paymentLinesFound++;
 			} else if (INVOICE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 1 invoice should exist in a queue", isInvoiceFound >= 1);
-				isInvoiceFound++;
+				invoicesFound++;
 			} else if (INVOICE_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				assertFalse("Only 4 invoiceLine should exist in a queue", isInvoiceLineFound >= 4);
-				isInvoiceLineFound++;
+				invoiceLinesFound++;
 			} else if (MEMBERSHIP_IDENTIFIER.equals(record.getEntityIdentifier())){
-				assertFalse("Only 1 membership should exist in a queue", isMembershipFound >= 1);
-				isMembershipFound++;
+				membershipsFound++;
 			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())){
-				assertFalse("Only 1 voucher should exist in a queue", isVoucherFound >= 1);
-				isVoucherFound++;
+				vouchersFound++;
 			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())){
-				assertFalse("Only 1 article should exist in a queue", isArticleFound >= 1);
-				isArticleFound++;
+				articlesFound++;
 			} else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
 			}
 		}
-		assertEquals("Not all PaymentIns found in a queue", 1, isPaymentFound);
-		assertEquals("Not all PaymentInLines found in a queue", 2, isPaymentLineFound);
-		assertEquals("Not all Invoices found in a queue", 1, isInvoiceFound);
-		assertEquals("Not all InvoiceLines found in a  queue", 4, isInvoiceLineFound);
-		assertEquals("Membership not found in a queue", 1, isMembershipFound);
-		assertEquals("Voucher not found in a queue", 1, isVoucherFound);
-		assertEquals("Article not found in a queue", 1, isArticleFound);
-		//check the status via service when processing complete
-		transaction = getPaymentPortType().getPaymentStatus(sessionId);
-		assertFalse("Get status call should not return empty response for payment in final status", 
+		assertEquals("Not all PaymentIns found in a queue", 1, paymentsFound);
+		assertEquals("Not all PaymentInLines found in a queue", 2, paymentLinesFound);
+		assertEquals("Not all Invoices found in a queue", 1, invoicesFound);
+		assertEquals("Not all InvoiceLines found in a  queue", 4, invoiceLinesFound);
+		assertEquals("Membership not found in a queue", 1, membershipsFound);
+		assertEquals("Voucher not found in a queue", 1, vouchersFound);
+		assertEquals("Article not found in a queue", 1, articlesFound);
+	}
+
+	@Override
+	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
+		assertFalse("Get status call should not return empty response for payment in final status",
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		assertEquals("20 elements should be replicated for this payment", 20, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
@@ -135,7 +114,7 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProces
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
 				} else {
-					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(), 
+					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((GenericPaymentInStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
@@ -143,11 +122,61 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProces
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
 					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.SUCCESS, status);
 				} else {
-					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(), 
+					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((GenericEnrolmentStub)stub).getStatus()), true);
+				}
+			}  else if (stub instanceof VoucherStub) {
+				if (stub.getAngelId().equals(2l)) {
+					assertEquals("Voucher status should be active because success enrolment in the same invoice can not be canceled",
+						ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
+				} else {
+					assertFalse(String.format("Unexpected Voucher with id= %s and status= %s found in a queue", stub.getWillowId(),
+						((VoucherStub) stub).getStatus()), true);
+				}
+			} else if (stub instanceof ArticleStub) {
+				if (stub.getAngelId().equals(3l)) {
+					assertEquals("Article status should be active because success enrolment in the same invoice can not be canceled",
+						ProductStatus.ACTIVE.getDatabaseValue(), ((ArticleStub) stub).getStatus());
+				} else {
+					assertFalse(String.format("Unexpected Article with id= %s and status= %s found in a queue", stub.getWillowId(),
+						((ArticleStub) stub).getStatus()), true);
+				}
+			} else if (stub instanceof MembershipStub) {
+				if (stub.getAngelId().equals(1l)) {
+					assertEquals("Membership status should be active because success enrolment in the same invoice can not be canceled",
+						ProductStatus.ACTIVE.getDatabaseValue(), ((MembershipStub) stub).getStatus());
+				} else {
+					assertFalse(String.format("Unexpected Membership with id= %s and status= %s found in a queue", stub.getWillowId(),
+						((MembershipStub) stub).getStatus()), true);
 				}
 			}
 		}
+	}
+	
+	@Test
+	public void testQEReverseInvoice() throws Exception {
+		//check that empty queuedRecords
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		checkQueueBeforeProcessing(context);
+		authenticate();
+		// prepare the stubs for replication
+		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
+		fillV6PaymentStubs(transaction);
+		//process payment
+		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction));
+		//check the response, validate the data and receive the sessionid
+		String sessionId = checkResponseAndReceiveSessionId(transaction);
+		checkQueueAfterProcessing(context);
+		//check the status via service
+		checkNotProcessedResponse(getPaymentStatus(sessionId));
+		//call page processing
+		testRenderPaymentPageWithReverseInvoice(sessionId);
+		//check that async replication works correct
+		checkAsyncReplication(context);
+
+		//check the status via service when processing complete
+		checkProcessedResponse(getPaymentStatus(sessionId));
+
 		logout();
 	}
 
