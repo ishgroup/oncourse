@@ -1,21 +1,14 @@
 package ish.oncourse.webservices.soap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import ish.common.types.*;
-import ish.oncourse.model.*;
+import ish.common.types.PaymentStatus;
+import ish.common.types.ProductStatus;
+import ish.common.types.TypesUtil;
+import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.replication.services.PortHelper;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-
-import java.util.List;
-
 import ish.oncourse.webservices.v6.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v6.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v6.stubs.replication.VoucherStub;
@@ -24,9 +17,14 @@ import org.apache.cayenne.query.SelectQuery;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentProcess5_6CasesGUITest {
-	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase6Dataset.xml";
-	
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentProcess5_6CasesGUITest {
+	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase6AdjustedDataset.xml";
+
 	private static TestServer server;
 
 	@Override
@@ -38,7 +36,7 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentPro
 	public static void initTestServer() throws Exception {
 		server = startRealWSServer(QE_PREVIOUSLY_KEEP_NON_ENROLMENT_NEW_INVOICE_TEST_PORT);
 	}
-	
+
 	protected String getDataSetFile() {
 		return DEFAULT_DATASET_XML;
 	}
@@ -47,40 +45,43 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentPro
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("16 elements should be replicated for this payment", 16, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("23 elements should be replicated for this payment", 23, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
 				if (stub.getWillowId() == 1l) {
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
+				} else if (stub.getWillowId() == 2l) {
+					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
+					assertEquals("Payment status should be failed after expiration", PaymentStatus.SUCCESS, status);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((GenericPaymentInStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
 				assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
-					((GenericEnrolmentStub)stub).getStatus()), true);
+						((GenericEnrolmentStub)stub).getStatus()), true);
 			} else if (stub instanceof VoucherStub) {
-				if (stub.getAngelId().equals(2l) || stub.getAngelId().equals(10l)) {
-					assertEquals("Voucher status should be active",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
+				if (stub.getAngelId().equals(2l)) {
+					assertEquals("Voucher status should be canceled",
+						ProductStatus.CANCELLED.getDatabaseValue(), ((VoucherStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Voucher with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((VoucherStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof ArticleStub) {
 				if (stub.getAngelId().equals(3l)) {
-					assertEquals("Article status should be active",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((ArticleStub) stub).getStatus());
+					assertEquals("Article status should be canceled",
+						ProductStatus.CANCELLED.getDatabaseValue(), ((ArticleStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Article with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((ArticleStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof MembershipStub) {
 				if (stub.getAngelId().equals(1l)) {
-					assertEquals("Membership status should be active",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((MembershipStub) stub).getStatus());
+					assertEquals("Membership status should be canceled",
+						ProductStatus.CANCELLED.getDatabaseValue(), ((MembershipStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Membership with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((MembershipStub) stub).getStatus()), true);
@@ -95,9 +96,9 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentPro
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 11 records.", 11, queuedRecords.size());
+		assertEquals("Queue should contain 21 records.", 21, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0,
-			membershipsFound = 0, vouchersFound = 0, articlesFound = 0, contactsFound = 0, studentsFound = 0;
+				membershipsFound = 0, vouchersFound = 0, articlesFound = 0, contactsFound = 0, studentsFound = 0;
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				paymentsFound++;
@@ -124,12 +125,12 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentPro
 			}
 		}
 
-		assertEquals("Not all PaymentIns found in a queue", 1, paymentsFound);
-		assertEquals("Not all PaymentInLines found in a queue", 2, paymentLinesFound);
-		assertEquals("Not all Invoices found in a queue", 1, invoicesFound);
-		assertEquals("Not all InvoiceLines found in a  queue", 4, invoiceLinesFound);
-		assertEquals("Contact not found in a queue", 0, contactsFound);
-		assertEquals("Student not found in a queue", 0, studentsFound);
+		assertEquals("Not all PaymentIns found in a queue", 2, paymentsFound);
+		assertEquals("Not all PaymentInLines found in a queue", 4, paymentLinesFound);
+		assertEquals("Not all Invoices found in a queue", 2, invoicesFound);
+		assertEquals("Not all InvoiceLines found in a  queue", 8, invoiceLinesFound);
+		assertEquals("Contact not found in a queue", 1, contactsFound);
+		assertEquals("Student not found in a queue", 1, studentsFound);
 		assertEquals("Membership not found in a queue", 1, membershipsFound);
 		assertEquals("Voucher not found in a queue", 1, vouchersFound);
 		assertEquals("Article not found in a queue", 1, articlesFound);
@@ -138,7 +139,7 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentPro
 	@Override
 	protected String checkResponseAndReceiveSessionId(GenericTransactionGroup transaction) {
 		String sessionId = null;
-		assertEquals("16 stubs should be in response for this processing", 16, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("15 stubs should be in response for this processing", 15, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			assertNotNull("Willowid after the first payment processing should not be NULL", stub.getWillowId());
 			if (PAYMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
@@ -153,13 +154,8 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentPro
 				assertEquals("Membership status should not change after this processing",
 					ProductStatus.NEW.getDatabaseValue(), ((MembershipStub)stub).getStatus());
 			} else if (VOUCHER_IDENTIFIER.equals(stub.getEntityIdentifier())) {
-				if (stub.getAngelId() == 2) {
-					assertEquals("Voucher status should not change after this processing",
+				assertEquals("Voucher status should not change after this processing",
 					ProductStatus.NEW.getDatabaseValue(), ((VoucherStub)stub).getStatus());
-				} else if (stub.getAngelId() == 10) {
-					assertEquals("Voucher status should not change after this processing",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub)stub).getStatus());
-				}
 			} else if (ARTICLE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Article status should not change after this processing",
 					ProductStatus.NEW.getDatabaseValue(), ((ArticleStub)stub).getStatus());
@@ -167,7 +163,7 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentPro
 		}
 		return sessionId;
 	}
-	
+
 	@Test
 	public void testQEReverseInvoice() throws Exception {
 		//check that empty queuedRecords
