@@ -5,7 +5,7 @@ import org.apache.cayenne.ObjectContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonRealWSTransportTest {
+public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends QECourseVoucherRedeemWithMoneyPaymentTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemWithMoneyPaymentSuccessDataSet.xml";
 	private static TestServer server;
 
@@ -46,6 +46,6 @@ public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonR
 
 	@Test
 	public void testQESuccessPayment() throws Exception {
-		testGUICases();
+		testSuccessGUICases();
 	}
 }

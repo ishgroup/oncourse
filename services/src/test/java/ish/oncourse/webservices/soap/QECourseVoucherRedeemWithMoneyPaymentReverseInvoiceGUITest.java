@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends CommonRealWSTransportTest {
+public class QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends QECourseVoucherRedeemWithMoneyPaymentTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceDataSet.xml";
 	private static TestServer server;
 
