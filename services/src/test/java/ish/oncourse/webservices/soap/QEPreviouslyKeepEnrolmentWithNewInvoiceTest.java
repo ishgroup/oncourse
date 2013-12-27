@@ -41,7 +41,7 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends RealWSTransport
 
 	@BeforeClass	
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9096);
+		server = startRealWSServer(QE_PREVIOUSLY_KEEP_ENROLMENT_NEW_INVOICE_TEST_PORT);
 	}
 	
 	protected String getDataSetFile() {

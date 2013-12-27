@@ -16,7 +16,7 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonRe
 
 	@BeforeClass
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9107);
+		server = startRealWSServer(QE_MONEY_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_SUCCESS_GUI_TEST_PORT);
 	}
 
 	@Override

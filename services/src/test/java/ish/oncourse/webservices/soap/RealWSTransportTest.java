@@ -79,6 +79,26 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected static final String ARTICLE_IDENTIFIER = Article.class.getSimpleName();
 	protected static final String VOUCHER_PAYMENT_IN_IDENTIFIER = VoucherPaymentIn.class.getSimpleName();
 
+	protected static final int QE_EXPIRE_BY_WATCHDOG_TEST_PORT = 9092;
+	protected static final int QE_FAILED_PAYMENT_KEEP_INVOICE_TEST_PORT = 9093;
+	protected static final int QE_SUCCESS_PAYMENT_TEST_PORT = 9094;
+	protected static final int QE_FAILED_PAYMENT_REVERSE_INVOICE_TEST_PORT = 9095;
+	protected static final int QE_PREVIOUSLY_KEEP_ENROLMENT_NEW_INVOICE_TEST_PORT = 9096;
+	protected static final int QE_PREVIOUSLY_KEEP_NON_ENROLMENT_NEW_INVOICE_TEST_PORT = 9097;
+	protected static final int QE_SUCCESS_PAYMENT_FOR_PARTIALLY_REFUNDED_TEST_PORT = 9098;
+	protected static final int QE_SUCCESS_PAYMENT_FOR_PARTIALLY_CANCELED_TEST_PORT = 9099;
+	protected static final int QE_FAILED_PAYMENT_FOR_PARTIALLY_REFUNDED_TEST_PORT = 9100;
+	protected static final int QE_FAILED_PAYMENT_FOR_PARTIALLY_CANCELED_TEST_PORT = 9101;
+
+	protected static final int QE_COURSE_VOUCHER_REDEEM_SUCCESS_NO_GUI_TEST_PORT = 9102;
+	protected static final int QE_COURSE_VOUCHER_REDEEM_FAILED_NO_GUI_TEST_PORT = 9103;
+	protected static final int QE_MONEY_VOUCHER_REDEEM_SUCCESS_NO_GUI_TEST_PORT = 9104;
+	protected static final int QE_MONEY_VOUCHER_REDEEM_FAILED_NO_GUI_TEST_PORT = 9105;
+	protected static final int QE_COURSE_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_SUCCESS_GUI_TEST_PORT = 9106;
+	protected static final int QE_MONEY_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_SUCCESS_GUI_TEST_PORT = 9107;
+	protected static final int QE_MONEY_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_REVERSE_INVOICE_GUI_TEST_PORT = 9108;
+	protected static final int QE_COURSE_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_REVERSE_INVOICE_GUI_TEST_PORT = 9109;
+
 	protected ServiceTest serviceTest;
 	protected PageTester tester;
 	protected ICayenneService cayenneService;

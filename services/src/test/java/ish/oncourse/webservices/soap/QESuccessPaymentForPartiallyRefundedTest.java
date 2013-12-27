@@ -35,7 +35,7 @@ public class QESuccessPaymentForPartiallyRefundedTest extends RealWSTransportTes
 
 	@BeforeClass	
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9098);
+		server = startRealWSServer(QE_SUCCESS_PAYMENT_FOR_PARTIALLY_REFUNDED_TEST_PORT);
 	}
 	
 	protected String getDataSetFile() {

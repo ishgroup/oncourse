@@ -22,7 +22,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends CommonRealWSTr
 
 	@BeforeClass
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9103);
+		server = startRealWSServer(QE_COURSE_VOUCHER_REDEEM_FAILED_NO_GUI_TEST_PORT);
 	}
 
 	@Override

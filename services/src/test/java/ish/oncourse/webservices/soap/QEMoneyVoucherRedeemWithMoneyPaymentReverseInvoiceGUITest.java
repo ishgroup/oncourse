@@ -25,7 +25,7 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends C
 
 	@BeforeClass
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9108);
+		server = startRealWSServer(QE_MONEY_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_REVERSE_INVOICE_GUI_TEST_PORT);
 	}
 
 	@Override

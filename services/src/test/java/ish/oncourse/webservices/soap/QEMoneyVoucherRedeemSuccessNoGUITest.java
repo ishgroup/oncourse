@@ -16,7 +16,7 @@ public class QEMoneyVoucherRedeemSuccessNoGUITest extends CommonRealWSTransportT
 
 	@BeforeClass
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9104);
+		server = startRealWSServer(QE_MONEY_VOUCHER_REDEEM_SUCCESS_NO_GUI_TEST_PORT);
 	}
 
 	@Override

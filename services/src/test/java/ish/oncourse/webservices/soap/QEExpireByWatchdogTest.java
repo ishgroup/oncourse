@@ -40,7 +40,7 @@ public class QEExpireByWatchdogTest extends RealWSTransportTest {
 
 	@BeforeClass	
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9092);
+		server = startRealWSServer(QE_EXPIRE_BY_WATCHDOG_TEST_PORT);
 	}
 	
 	private void testRenderPaymentPageForExpiration(String sessionId) {

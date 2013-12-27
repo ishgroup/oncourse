@@ -40,7 +40,7 @@ public class QEFailedPaymentReverseInvoiceTest extends RealWSTransportTest {
 
 	@BeforeClass		
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9095);
+		server = startRealWSServer(QE_FAILED_PAYMENT_REVERSE_INVOICE_TEST_PORT);
 	}
 
 	@Test

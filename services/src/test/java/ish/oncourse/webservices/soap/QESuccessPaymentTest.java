@@ -34,7 +34,7 @@ public class QESuccessPaymentTest extends RealWSTransportTest {
 	
 	@BeforeClass
 	public static void initTestServer() throws Exception {
-		server = startRealWSServer(9094);
+		server = startRealWSServer(QE_SUCCESS_PAYMENT_TEST_PORT);
 	}
 		
 	@Test
