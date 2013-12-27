@@ -167,6 +167,15 @@ public class VoucherService implements IVoucherService {
 	}
 
 	@Override
+	public List<ProductItem> loadProductItemsByIds(List<Long> ids) {
+		if (ids == null || ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+		SelectQuery q = new SelectQuery(ProductItem.class, ExpressionFactory.inDbExp(ProductItem.ID_PK_COLUMN, ids));
+		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	@Override
 	public boolean isAbleToPurchaseProductsOnline() {
 		String angelVersion = takeWebSiteService().getCurrentCollege().getAngelVersion();
 		return CommonUtils.compare(angelVersion, CommonUtils.VERSION_5_0) >= 0;

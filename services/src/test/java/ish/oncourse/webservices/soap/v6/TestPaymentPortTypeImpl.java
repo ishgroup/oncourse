@@ -30,4 +30,9 @@ public class TestPaymentPortTypeImpl implements PaymentPortType {
 	public TransactionGroup processPayment(@WebParam(partName = "transaction", name = "transaction", targetNamespace = "") TransactionGroup transactionGroup) throws ReplicationFault {
 		return transactionGroup;
 	}
+
+	@Override
+	public TransactionGroup getVouchers(@WebParam(partName = "transactionRequest", name = "transactionRequest", targetNamespace = "") TransactionGroup group) throws ReplicationFault {
+		return group;
+	}
 }

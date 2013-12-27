@@ -126,6 +126,13 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 		assertTransactionGroup(transactionGroupResult);
 	}
 
+	@Test
+	public void test_getVouchers() throws Throwable {
+		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
+		TransactionGroup transactionGroupResult = getPortType().getVouchers(transactionGroup);
+		assertTransactionGroup(transactionGroupResult);
+	}
+
 	private PaymentPortType getPortType() throws JAXBException {
 		return getPaymentPortType("wsdl/v6_replication.wsdl", "/services/v6/payment");
 	}

@@ -49,4 +49,14 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}
 	}
+
+	@WebMethod(operationName = "getVouchers")
+	@Override
+	public TransactionGroup getVouchers(TransactionGroup transactionGroup) throws ReplicationFault {
+		try {
+			return PortHelper.getV6TransactionGroup(paymentPort.getVouchers(transactionGroup, SupportedVersions.V6));
+		} catch (InternalReplicationFault e) {
+			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
+		}
+	}
 }

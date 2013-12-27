@@ -11,6 +11,7 @@ import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
+import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.utils.PaymentInUtil;
 import ish.oncourse.utils.SessionIdGenerator;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
@@ -21,9 +22,7 @@ import ish.oncourse.webservices.soap.v4.FaultCode;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -41,6 +40,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
 	private final IPaymentService paymentInService;
 
+	private final IVoucherService voucherService;
+
 	private final IEnrolmentService enrolService;
 
 	private final ITransactionStubBuilder transactionBuilder;
@@ -53,7 +54,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
 	@Inject
 	public PaymentServiceImpl(ITransactionGroupProcessor groupProcessor, IPaymentGatewayService paymentGatewayService,
-			ICayenneService cayenneService, IPaymentService paymentInService, IEnrolmentService enrolService,
+			ICayenneService cayenneService, IPaymentService paymentInService, IEnrolmentService enrolService, IVoucherService voucherService,
 			ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder, PreferenceControllerFactory prefsFactory) {
 		super();
 		this.groupProcessor = groupProcessor;
@@ -61,6 +62,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 		this.cayenneService = cayenneService;
 		this.paymentInService = paymentInService;
 		this.enrolService = enrolService;
+		this.voucherService = voucherService;
 		this.transactionBuilder = transactionBuilder;
 		this.stubBuilder = stubBuilder;
 		this.prefsFactory = prefsFactory;
@@ -265,6 +267,43 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			logger.error("Unable to get payment status.", e);
 			throw new InternalReplicationFault("Unable to get payment status.", FaultCode.GENERIC_EXCEPTION, 
 				String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
+		}
+	}
+
+	/**
+	 * Retrieves vouchers matching voucher stubs received in request from willow db and returns back transaction group
+	 * consisting of voucher stubs generated for these freshly fetched stubs to enable angel to check if vouchers
+	 * being redeemed there are in consistent state with willow data. Vouchers which are currently in use by willow
+	 * (have linked payments in non final state) are not included into response transaction group.
+	 *
+	 * @throws InternalReplicationFault
+	 */
+	@Override
+	public GenericTransactionGroup getVouchers(GenericTransactionGroup transactionGroup, SupportedVersions version) throws InternalReplicationFault {
+		try {
+			List<Long> voucherIds = new ArrayList<>();
+			for (GenericReplicationStub stub : transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+				if (ReplicationUtils.getEntityName(Voucher.class).equalsIgnoreCase(stub.getEntityIdentifier())) {
+					voucherIds.add(stub.getWillowId());
+				}
+			}
+
+			List<ProductItem> vouchers = voucherService.loadProductItemsByIds(voucherIds);
+
+			GenericTransactionGroup response = PortHelper.createTransactionGroup(version);
+
+			for (ProductItem productItem : vouchers) {
+				Voucher voucher = (Voucher) productItem;
+				if (!voucher.isInUse()) {
+					response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(voucher, version));
+				}
+			}
+
+			return response;
+		} catch (Exception e) {
+			logger.error("Unable to get voucher info.", e);
+			throw new InternalReplicationFault("Unable to get voucher info.", FaultCode.GENERIC_EXCEPTION,
+					String.format("Unable to get voucher info. Willow exception: %s", e.getMessage()));
 		}
 	}
 	
