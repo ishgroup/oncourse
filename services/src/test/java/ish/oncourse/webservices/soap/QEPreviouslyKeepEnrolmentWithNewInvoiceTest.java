@@ -125,7 +125,7 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProces
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((GenericEnrolmentStub)stub).getStatus()), true);
 				}
-			}  else if (stub instanceof VoucherStub) {
+			} else if (stub instanceof VoucherStub) {
 				if (stub.getAngelId().equals(2l)) {
 					assertEquals("Voucher status should be active because success enrolment in the same invoice can not be canceled",
 						ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
