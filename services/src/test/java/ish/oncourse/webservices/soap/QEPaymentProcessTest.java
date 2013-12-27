@@ -3,7 +3,11 @@ package ish.oncourse.webservices.soap;
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.util.payment.PaymentProcessController;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.dom.Node;
@@ -310,5 +314,30 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		assertNotNull("Success message should be included", successMessage);
 		//System.out.println(successMessage);
 		assertEquals("Unexpected message", "Payment was successful.", successMessage.toString());
+	}
+
+	protected final void checkQueueBeforeProcessing(ObjectContext context) {
+		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
+	}
+
+	protected final void checkQueueAfterProcessing(ObjectContext context) {
+		assertTrue("Queue should be empty after processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
+	}
+
+	protected final GenericTransactionGroup getPaymentStatus(String sessionId) throws Exception {
+		return getPaymentPortType().getPaymentStatus(sessionId);
+	}
+
+	protected final void checkNotProcessedResponse(GenericTransactionGroup transaction) {
+		assertTrue("Get status call should return empty response for in transaction payment",
+			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+	}
+
+	protected void checkAsyncReplication(ObjectContext context) {}
+
+	protected void checkProcessedResponse(GenericTransactionGroup transaction) {}
+
+	protected String checkResponseAndReceiveSessionId(GenericTransactionGroup transaction) {
+		return null;
 	}
 }

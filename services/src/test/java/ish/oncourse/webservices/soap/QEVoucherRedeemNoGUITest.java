@@ -128,14 +128,6 @@ public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 		return transaction;
 	}
 
-	protected final void checkQueueBeforeProcessing(ObjectContext context) {
-		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
-	}
-
-	protected void checkAsyncReplication(ObjectContext context) {}
-
-	protected abstract void checkProcessedResponse(GenericTransactionGroup transaction);
-
 	protected abstract GenericTransactionGroup prepareStubsForReplication(GenericTransactionGroup transaction);
 
 	protected final GenericTransactionGroup processPayment() throws Exception {

@@ -337,21 +337,4 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 
 		return transaction;
 	}
-
-	protected String checkResponseAndReceiveSessionId(GenericTransactionGroup transaction) {
-		return null;
-	}
-
-	protected final GenericTransactionGroup getPaymentStatus(String sessionId) throws Exception {
-		return getPaymentPortType().getPaymentStatus(sessionId);
-	}
-
-	protected final void checkNotProcessedResponse(GenericTransactionGroup transaction) {
-		assertTrue("Get status call should return empty response for in transaction payment",
-				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-	}
-
-	protected final void checkQueueAfterProcessing(ObjectContext context) {
-		assertTrue("Queue should be empty after processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
-	}
 }
