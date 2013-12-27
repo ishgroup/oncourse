@@ -105,6 +105,33 @@ public abstract class CommonRealWSTransportTest extends RealWSTransportTest {
 		logout();
 	}
 
+	protected void testFailedGUICases() throws Exception {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+
+		checkQueueBeforeProcessing(context);
+
+		GenericTransactionGroup transaction = processPayment();
+
+		String sessionId = checkResponseAndReceiveSessionId(transaction);
+
+		checkQueueAfterProcessing(context);
+
+		transaction = getPaymentStatus(sessionId);
+
+		checkNotProcessedResponse(transaction);
+
+		//call page processing
+		testRenderPaymentPageWithReverseInvoice(sessionId);
+
+		checkAsyncReplication(context);
+
+		transaction = getPaymentStatus(sessionId);
+
+		checkProcessedResponse(transaction);
+
+		logout();
+	}
+
 	protected void testGUICases() throws Exception {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 

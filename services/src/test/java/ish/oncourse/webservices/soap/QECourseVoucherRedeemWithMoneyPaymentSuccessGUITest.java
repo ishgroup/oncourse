@@ -5,7 +5,7 @@ import org.apache.cayenne.ObjectContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonRealWSTransportTest {
+public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends CommonRealWSTransportTest {//
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemWithMoneyPaymentSuccessDataSet.xml";
 	private static TestServer server;
 
