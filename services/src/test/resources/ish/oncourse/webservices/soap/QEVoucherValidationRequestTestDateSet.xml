@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+			 communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT"
+			 firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+	<WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	<WebSite id="2" collegeId="2" name="Tasmania Adult Education" siteKey="tae" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<WebHostName name="tasm.education.com.au" webSiteId="2" collegeId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<Language id="1" name="English" isActive="1" ishVersion="1"/>
+
+	<Student id="1" angelId="1" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+	<Contact id="1" angelId="1" collegeId="1" studentId="1" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07"
+			 emailAddress="1@kremlin.ru" familyName="1" givenName="1"  faxNumber="1234-567" suburb="Moscow"/>
+	<Student id="3" angelId="3" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+	<Contact id="3" angelId="3" collegeId="1" studentId="3" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07"
+			 emailAddress="1@kremlin.ru" familyName="1" givenName="1"  faxNumber="1234-567" suburb="Moscow"/>
+	<Contact id="2" angelId="2" collegeId="1"  businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07"
+			 emailAddress="2@kremlin.ru" familyName="2" givenName="2"  faxNumber="1234-567" suburb="Moscow"/>
+
+	<Invoice id="1" angelId="1" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54"
+			 description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91" />
+	<InvoiceLine id="1" angelId="1" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
+				 taxEach="10.91" title="Test Invoice Line"/>
+	<InvoiceLine id="2" angelId="2" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
+				 taxEach="10.91" title="Test Invoice Line"/>
+	<InvoiceLine id="3" angelId="3" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
+				 taxEach="10.91" title="Test Invoice Line"/>
+	<InvoiceLine id="4" angelId="4" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
+				 taxEach="10.91" title="Test Invoice Line"/>
+
+	<PaymentIn
+			amount="1.11"
+			angelId="1"
+			collegeId="1"
+			contactId="1"
+			created="2011-09-20 11:14:54"
+			id="1"
+			modified="2011-09-20 11:14:54"
+			source="O"
+			status="2"
+			studentId="1"
+			type="8"/>
+
+	<PaymentInLine
+			amount="1.11"
+			angelId="1"
+			collegeId="1"
+			created="2011-09-20 11:14:54"
+			id="1"
+			invoiceId="1"
+			modified="2011-09-20 11:14:54"
+			paymentInId="1"/>
+
+	<Product ID="1" collegeId="1" SKU="123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$10 voucher" EXPIRYTYPE="1" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="$10 voucher" PRICEEXTAX="10.00" TYPE="3" angelId="1"
+			 value="10.00" TAXADJUSTMENT="0.00" feeGST="0.00"/>
+
+	<Product ID="2" collegeId="1" SKU="12345" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 voucher" EXPIRYTYPE="1" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="$11 voucher" PRICEEXTAX="11.00" TYPE="3" angelId="3"
+			 value="11.00" TAXADJUSTMENT="0.00" feeGST="0.00"/>
+
+	<Product ID="3" collegeId="1" SKU="23456" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="2 enrolments voucher" EXPIRYTYPE="4" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="2 enrolments voucher" TYPE="3" angelId="7"
+			 TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" maxCoursesRedemption="2" feeGST="0.00"/>
+
+	<Product ID="4" collegeId="1" SKU="234567" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="4 enrolments voucher" EXPIRYTYPE="1" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="4 enrolments voucher" TYPE="3" angelId="8"
+			 TAXADJUSTMENT="0.00" PRICEEXTAX="100.00" maxCoursesRedemption="4" feeGST="0.00"/>
+
+	<Site id="1" collegeId="1" angelId="1" isWebVisible="0" created="2011-09-12 00:17:18.0"
+		  modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
+		  drivingDirections="drivingDirections" drivingDirections_textile="drivingDirections_textile" latitude="1.11"
+		  longitude="1.11" postcode="postcode" publicTransportDirections="publicTransportDirections"
+		  publicTransportDirections_textile="publicTransportDirections_textile" specialInstructions="specialInstructions"
+		  specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="timeZone" isVirtual="0"/>
+
+	<Room id="1" collegeId="1" siteId="1" angelId="1" capacity="30" created="2011-09-12 00:47:01.0"
+		  modified="2011-09-12 01:02:00.0" name="TestRoom" directions="directions" directions_textile="directions_textile"
+		  facilities="facilities" facilities_textile="facilities_textile"/>
+
+	<Qualification id="1" ishVersion="1" nationalCode="10351TAS" level="Certificate IV in" title="Youth &amp; Community Work (Christian)" anzsco="411716" asco="GEN19" fieldOfStudy="1103" fieldOfEducation="0899" nominalHours="13"
+				   reviewDate="2009-07-16 16:50:31" isAccreditedCourse="1" created="2009-07-16 16:50:31" modified="2009-07-16 16:50:31"/>
+
+	<Course id="1" collegeId="1" angelId="1" code="AAV" isWebVisible="1" isVETCourse="0"
+			isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+			allowWaitingList="1" name="Managerial Accounting" detail="detail"
+			detail_textile="detailTextile" fieldOfEducation="fieldOfEducation"
+			nominalHours="1.1" qualificationId="1" searchText="searchText"/>
+
+	<CourseClass id="1" collegeId="1"
+				 code="1" courseId="1" roomId="1" angelId="1"
+				 startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0"
+				 isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="454.55"
+				 feeGst="90.00"
+				 detail="detail" detail_textile="detailTextile" materials="materials"
+				 materials_textile="materials_textile"
+				 minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
+				 startingMinutePerSession="1" timeZone="timeZone" isDistantLearningCourse="0" expectedHours="2.0"
+				 maximumDays="3"/>
+
+	<Course id="2" collegeId="1" angelId="2" code="AAV" isWebVisible="1" isVETCourse="0"
+			isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+			allowWaitingList="1" name="Managerial Accounting" detail="detail"
+			detail_textile="detailTextile" fieldOfEducation="fieldOfEducation"
+			nominalHours="1.1" qualificationId="1" searchText="searchText"/>
+
+	<CourseClass id="2" collegeId="1"
+				 code="1" courseId="2" roomId="1" angelId="1"
+				 startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0"
+				 isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="454.55"
+				 feeGst="90.00"
+				 detail="detail" detail_textile="detailTextile" materials="materials"
+				 materials_textile="materials_textile"
+				 minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
+				 startingMinutePerSession="1" timeZone="timeZone" isDistantLearningCourse="0" expectedHours="2.0"
+				 maximumDays="3"/>
+
+	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="1"
+				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="3" angelId="1" code="qwerty" value="10.00" source="W"
+				 status="0" INVOICELINEID="1"/>
+
+	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="2"
+				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="2" TYPE="3" angelId="2" code="qwerty_2" value="5.00" source="O"
+				 status="0" INVOICELINEID="2"/>
+
+	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="3"
+				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" angelId="3" code="qwerty_3" redeemedCoursesCount="0" source="O"
+				 status="0" INVOICELINEID="3"/>
+
+	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="4"
+				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="4" TYPE="3" angelId="4" code="qwerty_4" redeemedCoursesCount="2" source="O"
+				 status="0" INVOICELINEID="4"/>
+
+	<VoucherPaymentIn id="1" angelId="1" collegeId="1" paymentInId="1" voucherId="1" status="0"/>
+</dataset>

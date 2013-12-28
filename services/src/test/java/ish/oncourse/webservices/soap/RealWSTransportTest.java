@@ -83,6 +83,9 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected static final int QE_MONEY_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_REVERSE_INVOICE_GUI_TEST_PORT = 9108;
 	protected static final int QE_COURSE_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_REVERSE_INVOICE_GUI_TEST_PORT = 9109;
 
+	// TODO: this is ridiculous... why we should define separate server port for each unit test???
+	protected static final int QE_VOUCHER_VALIDATION_REQUEST_TEST_PORT = 9110;
+
 	protected ServiceTest serviceTest;
 	protected PageTester tester;
 	protected ICayenneService cayenneService;
