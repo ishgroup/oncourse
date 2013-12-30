@@ -61,7 +61,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedee
 				} else if (stub.getAngelId() == 2l) {
 					assertEquals("This should be voucher payment", PaymentType.VOUCHER.getDatabaseValue(), paymentInStub.getType());
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(paymentInStub.getStatus(), PaymentStatus.class);
-					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED, status);
+					assertEquals("Payment status should be failed", PaymentStatus.FAILED, status);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s angelid=%s and status= %s found in a queue",
 							stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
@@ -69,7 +69,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedee
 			} else if (stub instanceof GenericEnrolmentStub) {
 				if (stub.getAngelId() == 1l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
-					assertEquals("Oncourse enrollment should be success after expiration", EnrolmentStatus.FAILED, status);
+					assertEquals("Oncourse enrollment should be failed", EnrolmentStatus.FAILED, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
 							((GenericEnrolmentStub)stub).getStatus()), true);

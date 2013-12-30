@@ -16,7 +16,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotEquals;
 
 public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProcess5_6CasesGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase5Dataset.xml";
