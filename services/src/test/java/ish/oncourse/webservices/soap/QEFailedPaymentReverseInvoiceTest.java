@@ -178,7 +178,6 @@ public class QEFailedPaymentReverseInvoiceTest extends QEPaymentProcess1_4CasesG
 		
 		//check the status via service when processing complete
 		checkProcessedResponse(getPaymentStatus(sessionId));
-		logout();
 	}
 
 }

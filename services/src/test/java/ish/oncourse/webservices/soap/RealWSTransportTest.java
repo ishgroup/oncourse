@@ -169,12 +169,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		assertTrue("Communication keys should be different before and after authenticate call", oldCommunicationKey.compareTo(newCommunicationKey) != 0);
 		assertTrue("New communication key should be equal to actual", newCommunicationKey.compareTo(getCommunicationKey()) == 0);
 	}
-		
-	protected void logout() throws Exception {
-		//logout
-		//getReplicationPortType().logout(getCommunicationKey());
-	}
-	
+
 	@Override
 	protected Long getCommunicationKey() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();

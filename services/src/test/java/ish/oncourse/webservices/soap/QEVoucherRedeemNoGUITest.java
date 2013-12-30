@@ -29,8 +29,6 @@ public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 		checkAsyncReplication(context);
 
 		checkProcessedResponse(transaction);
-
-		logout();
 	}
 
 	protected final GenericTransactionGroup preparePaymentStructureWithoutVoucher(GenericTransactionGroup transaction) {

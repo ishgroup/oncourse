@@ -191,7 +191,5 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentPro
 		checkAsyncReplication(context);
 		//check the status via service when processing complete
 		checkProcessedResponse(getPaymentStatus(sessionId));
-
-		logout();
 	}
 }

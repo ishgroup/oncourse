@@ -175,8 +175,6 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProces
 
 		//check the status via service when processing complete
 		checkProcessedResponse(getPaymentStatus(sessionId));
-
-		logout();
 	}
 
 }

@@ -204,7 +204,5 @@ public class QESuccessPaymentForPartiallyCanceledTest extends QEPaymentProcess8C
 		checkAsyncReplication(context);
 		//check the status via service when processing complete
 		checkProcessedResponse(getPaymentStatus(sessionId));
-
-		logout();
 	}
 }

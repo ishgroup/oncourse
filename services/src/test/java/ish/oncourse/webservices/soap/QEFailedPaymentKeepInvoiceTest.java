@@ -158,7 +158,6 @@ public class QEFailedPaymentKeepInvoiceTest extends QEPaymentProcess1_4CasesGUIT
 		checkAsyncReplication(context);
 		//check the status via service when processing complete
 		checkProcessedResponse(getPaymentStatus(sessionId));
-		logout();
 	}
 
 }

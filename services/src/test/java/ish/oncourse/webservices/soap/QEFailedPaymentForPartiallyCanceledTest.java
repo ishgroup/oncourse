@@ -208,7 +208,5 @@ public class QEFailedPaymentForPartiallyCanceledTest extends QEPaymentProcess8Ca
 
 		//check the status via service when processing complete
 		checkProcessedResponse(getPaymentStatus(sessionId));
-
-		logout();
 	}
 }

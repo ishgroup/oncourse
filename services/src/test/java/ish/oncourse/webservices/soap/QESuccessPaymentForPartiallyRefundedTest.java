@@ -205,8 +205,6 @@ public class QESuccessPaymentForPartiallyRefundedTest extends QEPaymentProcess7C
 		
 		//check the status via service when processing complete
 		checkProcessedResponse(getPaymentStatus(sessionId));
-
-		logout();
 	}
 
 }

@@ -184,8 +184,6 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 		transaction = getPaymentStatus(sessionId);
 
 		checkProcessedResponse(transaction);
-
-		logout();
 	}
 
 	protected void testSuccessGUICases() throws Exception {
@@ -211,8 +209,6 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 		transaction = getPaymentStatus(sessionId);
 
 		checkProcessedResponse(transaction);
-
-		logout();
 	}
 
 	protected final GenericTransactionGroup preparePaymentStructureForTwoEnrolmentsWithoutVoucher(GenericTransactionGroup transaction) {

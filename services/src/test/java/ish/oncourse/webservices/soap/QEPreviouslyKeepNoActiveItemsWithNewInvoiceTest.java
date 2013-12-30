@@ -187,7 +187,5 @@ public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentPr
 		checkAsyncReplication(context);
 		//check the status via service when processing complete
 		checkProcessedResponse(getPaymentStatus(sessionId));
-
-		logout();
 	}
 }

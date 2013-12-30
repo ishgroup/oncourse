@@ -180,8 +180,6 @@ public class QESuccessPaymentTest extends QEPaymentProcess1_4CasesGUITest {
 		checkAsyncReplication(context);
 		//check the status via service when processing complete
 		checkProcessedResponse(getPaymentStatus(sessionId));
-
-		logout();
 	}
 	
 }
