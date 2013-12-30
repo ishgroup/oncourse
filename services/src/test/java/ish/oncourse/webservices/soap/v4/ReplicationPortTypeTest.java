@@ -232,7 +232,9 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityWillowId = 1 or entityWillowId = 1482"));
-		
+
+		//use new context to check the data
+		objectContext = cayenneService.newNonReplicatingContext();
 		CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1482);
 		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 1);
 		
