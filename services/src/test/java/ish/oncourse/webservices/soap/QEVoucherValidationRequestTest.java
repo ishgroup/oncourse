@@ -3,8 +3,6 @@
  */
 package ish.oncourse.webservices.soap;
 
-import static org.junit.Assert.*;
-
 import ish.oncourse.model.Voucher;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
@@ -22,7 +20,6 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.sql.DataSource;
@@ -31,14 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.*;
+
 public class QEVoucherValidationRequestTest extends RealWSTransportTest {
-
-	private static TestServer server;
-
-	@BeforeClass
-	public static void initTestServer() throws Exception {
-		server = startRealWSServer(QE_VOUCHER_VALIDATION_REQUEST_TEST_PORT);
-	}
 
 	@Before
 	public void setup() throws Exception {
@@ -62,11 +54,6 @@ public class QEVoucherValidationRequestTest extends RealWSTransportTest {
 	@Override
 	protected String getDataSetFile() {
 		return "ish/oncourse/webservices/soap/QEVoucherValidationRequestTestDateSet.xml";
-	}
-
-	@Override
-	protected TestServer getServer() {
-		return server;
 	}
 
 	@Test

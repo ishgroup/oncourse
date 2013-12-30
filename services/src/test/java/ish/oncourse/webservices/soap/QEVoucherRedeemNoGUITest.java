@@ -2,20 +2,16 @@ package ish.oncourse.webservices.soap;
 
 import ish.common.types.*;
 import ish.math.Money;
-import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.replication.services.PortHelper;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.v6.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-
-import static org.junit.Assert.assertTrue;
 
 public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 

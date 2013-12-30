@@ -1,36 +1,29 @@
 package ish.oncourse.webservices.soap;
 
-import ish.common.types.*;
-import ish.oncourse.model.*;
+import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentStatus;
+import ish.common.types.ProductStatus;
+import ish.common.types.TypesUtil;
+import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.replication.services.PortHelper;
-import ish.oncourse.webservices.util.*;
-
-import java.util.List;
-
+import ish.oncourse.webservices.util.GenericEnrolmentStub;
+import ish.oncourse.webservices.util.GenericPaymentInStub;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.v6.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v6.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v6.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProcess5_6CasesGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase5Dataset.xml";
-	private static TestServer server;
 
-	@Override
-	protected TestServer getServer() {
-		return server;
-	}
-
-	@BeforeClass	
-	public static void initTestServer() throws Exception {
-		server = startRealWSServer(QE_PREVIOUSLY_KEEP_ENROLMENT_NEW_INVOICE_TEST_PORT);
-	}
-	
 	protected String getDataSetFile() {
 		return DEFAULT_DATASET_XML;
 	}

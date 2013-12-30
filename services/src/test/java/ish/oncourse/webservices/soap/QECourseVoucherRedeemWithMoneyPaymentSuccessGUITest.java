@@ -2,22 +2,10 @@ package ish.oncourse.webservices.soap;
 
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import org.apache.cayenne.ObjectContext;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends QECourseVoucherRedeemWithMoneyPaymentTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemWithMoneyPaymentSuccessDataSet.xml";
-	private static TestServer server;
-
-	@Override
-	protected TestServer getServer() {
-		return server;
-	}
-
-	@BeforeClass
-	public static void initTestServer() throws Exception {
-		server = startRealWSServer(QE_COURSE_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_SUCCESS_GUI_TEST_PORT);
-	}
 
 	@Override
 	protected String getDataSetFile() {

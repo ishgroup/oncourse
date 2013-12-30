@@ -1,12 +1,11 @@
 package ish.oncourse.webservices.soap.v4.auth;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MockHttpSession implements HttpSession {
 	

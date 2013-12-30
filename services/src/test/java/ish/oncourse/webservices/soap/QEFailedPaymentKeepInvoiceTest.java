@@ -1,10 +1,5 @@
 package ish.oncourse.webservices.soap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.ProductStatus;
@@ -15,29 +10,18 @@ import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-
-import java.util.List;
-
 import ish.oncourse.webservices.v6.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v6.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v6.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.List;
+
+import static org.junit.Assert.*;
+
 public class QEFailedPaymentKeepInvoiceTest extends QEPaymentProcess1_4CasesGUITest {
-	private static TestServer server;
-
-	@Override
-	protected TestServer getServer() {
-		return server;
-	}
-
-	@BeforeClass	
-	public static void initTestServer() throws Exception {
-		server = startRealWSServer(QE_FAILED_PAYMENT_KEEP_INVOICE_TEST_PORT);
-	}
 
 	@Override
 	protected void checkAsyncReplication(ObjectContext context) {

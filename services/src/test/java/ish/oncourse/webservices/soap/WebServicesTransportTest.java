@@ -1,14 +1,15 @@
 package ish.oncourse.webservices.soap;
 
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
-import ish.oncourse.webservices.soap.v6.*;
+import ish.oncourse.webservices.soap.v6.PaymentPortType;
+import ish.oncourse.webservices.soap.v6.ReplicationFault;
+import ish.oncourse.webservices.soap.v6.ReplicationPortType;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
 import ish.oncourse.webservices.v6.stubs.replication.InstructionStub;
 import ish.oncourse.webservices.v6.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v6.stubs.replication.ReplicationResult;
 import ish.oncourse.webservices.v6.stubs.replication.TransactionGroup;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

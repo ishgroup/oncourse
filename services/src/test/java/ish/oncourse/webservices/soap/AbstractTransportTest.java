@@ -1,8 +1,8 @@
 package ish.oncourse.webservices.soap;
 
-import ish.oncourse.webservices.soap.v6.PaymentPortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferenceService;
+import ish.oncourse.webservices.soap.v6.PaymentPortType;
 import ish.oncourse.webservices.soap.v6.ReplicationPortType;
 import ish.oncourse.webservices.soap.v6.ReplicationService;
 import ish.oncourse.webservices.util.GenericReplicationStub;

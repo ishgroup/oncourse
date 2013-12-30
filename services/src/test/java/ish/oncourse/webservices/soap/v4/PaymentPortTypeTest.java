@@ -2,7 +2,10 @@ package ish.oncourse.webservices.soap.v4;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
-import ish.oncourse.model.*;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentOut;
+import ish.oncourse.model.Session;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;

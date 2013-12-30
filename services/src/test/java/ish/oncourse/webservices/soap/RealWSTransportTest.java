@@ -1,9 +1,5 @@
 package ish.oncourse.webservices.soap;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
@@ -11,18 +7,7 @@ import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.soap.v6.PaymentPortType;
 import ish.oncourse.webservices.soap.v6.ReplicationPortType;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Calendar;
-import java.util.List;
-
-import javax.sql.DataSource;
-import javax.xml.bind.JAXBException;
-
-import ish.oncourse.webservices.v6.stubs.replication.*;
+import ish.oncourse.webservices.v6.stubs.replication.TransactionGroup;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -36,6 +21,18 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
+
+import javax.sql.DataSource;
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public abstract class RealWSTransportTest extends AbstractTransportTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessDataset.xml";
@@ -63,32 +60,22 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected static final String ARTICLE_IDENTIFIER = Article.class.getSimpleName();
 	protected static final String VOUCHER_PAYMENT_IN_IDENTIFIER = VoucherPaymentIn.class.getSimpleName();
 
-	protected static final int QE_EXPIRE_BY_WATCHDOG_TEST_PORT = 9092;
-	protected static final int QE_FAILED_PAYMENT_KEEP_INVOICE_TEST_PORT = 9093;
-	protected static final int QE_SUCCESS_PAYMENT_TEST_PORT = 9094;
-	protected static final int QE_FAILED_PAYMENT_REVERSE_INVOICE_TEST_PORT = 9095;
-	protected static final int QE_PREVIOUSLY_KEEP_ENROLMENT_NEW_INVOICE_TEST_PORT = 9096;
-	protected static final int QE_PREVIOUSLY_KEEP_NON_ENROLMENT_NEW_INVOICE_TEST_PORT = 9097;
-	protected static final int QE_SUCCESS_PAYMENT_FOR_PARTIALLY_REFUNDED_TEST_PORT = 9098;
-	protected static final int QE_SUCCESS_PAYMENT_FOR_PARTIALLY_CANCELED_TEST_PORT = 9099;
-	protected static final int QE_FAILED_PAYMENT_FOR_PARTIALLY_REFUNDED_TEST_PORT = 9100;
-	protected static final int QE_FAILED_PAYMENT_FOR_PARTIALLY_CANCELED_TEST_PORT = 9101;
-
-	protected static final int QE_COURSE_VOUCHER_REDEEM_SUCCESS_NO_GUI_TEST_PORT = 9102;
-	protected static final int QE_COURSE_VOUCHER_REDEEM_FAILED_NO_GUI_TEST_PORT = 9103;
-	protected static final int QE_MONEY_VOUCHER_REDEEM_SUCCESS_NO_GUI_TEST_PORT = 9104;
-	protected static final int QE_MONEY_VOUCHER_REDEEM_FAILED_NO_GUI_TEST_PORT = 9105;
-	protected static final int QE_COURSE_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_SUCCESS_GUI_TEST_PORT = 9106;
-	protected static final int QE_MONEY_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_SUCCESS_GUI_TEST_PORT = 9107;
-	protected static final int QE_MONEY_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_REVERSE_INVOICE_GUI_TEST_PORT = 9108;
-	protected static final int QE_COURSE_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_REVERSE_INVOICE_GUI_TEST_PORT = 9109;
-
-	// TODO: this is ridiculous... why we should define separate server port for each unit test???
-	protected static final int QE_VOUCHER_VALIDATION_REQUEST_TEST_PORT = 9110;
+	private static final int QE_REAL_WS_TEST_PORT = 9092;
 
 	protected ServiceTest serviceTest;
 	protected PageTester tester;
 	protected ICayenneService cayenneService;
+	private static TestServer server;
+
+	@Override
+	protected final TestServer getServer() {
+		return server;
+	}
+
+	@BeforeClass
+	public static void initTestServer() throws Exception {
+		server = startRealWSServer(QE_REAL_WS_TEST_PORT);
+	}
 		
 	protected static TestServer startRealWSServer(int port) throws Exception {
 		TestServer server = new TestServer(port, TestServer.DEFAULT_CONTEXT_PATH, "src/main/webapp/WEB-INF", TestServer.DEFAULT_HOST, 

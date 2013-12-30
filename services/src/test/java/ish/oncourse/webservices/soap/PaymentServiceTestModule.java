@@ -52,16 +52,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
-import ish.oncourse.services.reference.CountryService;
-import ish.oncourse.services.reference.ICountryService;
-import ish.oncourse.services.reference.ILanguageService;
-import ish.oncourse.services.reference.IModuleService;
-import ish.oncourse.services.reference.IQualificationService;
-import ish.oncourse.services.reference.ITrainingPackageService;
-import ish.oncourse.services.reference.LanguageService;
-import ish.oncourse.services.reference.ModuleService;
-import ish.oncourse.services.reference.QualificationService;
-import ish.oncourse.services.reference.TrainingPackageService;
+import ish.oncourse.services.reference.*;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.room.IRoomService;
@@ -95,7 +86,6 @@ import ish.oncourse.webservices.replication.v4.builders.TransactionStubBuilderIm
 import ish.oncourse.webservices.replication.v4.builders.WillowStubBuilderImpl;
 import ish.oncourse.webservices.replication.v4.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.WillowUpdaterImpl;
-
 import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;

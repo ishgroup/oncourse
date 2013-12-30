@@ -1,13 +1,5 @@
 package ish.oncourse.webservices.soap.v4.auth;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -20,14 +12,6 @@ import ish.oncourse.webservices.soap.v4.ReplicationPortType;
 import ish.oncourse.webservices.soap.v4.ReplicationPortTypeImpl;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.v4.stubs.replication.ErrorCode;
-
-import java.io.InputStream;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
-
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
@@ -36,6 +20,18 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
+import java.io.InputStream;
+
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit test for all major authentication flows.

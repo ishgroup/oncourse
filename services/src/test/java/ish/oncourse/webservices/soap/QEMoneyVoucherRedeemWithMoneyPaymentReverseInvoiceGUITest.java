@@ -7,7 +7,6 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.v6.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -17,17 +16,6 @@ import static org.junit.Assert.assertFalse;
 
 public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends QEMoneyVoucherRedeemWithMoneyPaymentTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceDataSet.xml";
-	private static TestServer server;
-
-	@Override
-	protected TestServer getServer() {
-		return server;
-	}
-
-	@BeforeClass
-	public static void initTestServer() throws Exception {
-		server = startRealWSServer(QE_MONEY_VOUCHER_REDEEM_WITH_MONEY_PAYMENT_REVERSE_INVOICE_GUI_TEST_PORT);
-	}
 
 	@Override
 	protected String getDataSetFile() {

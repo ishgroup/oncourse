@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRedeemNoGUITest {
 

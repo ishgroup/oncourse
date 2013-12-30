@@ -14,28 +14,14 @@ import ish.oncourse.webservices.v6.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v6.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentProcess5_6CasesGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase6AdjustedDataset.xml";
-
-	private static TestServer server;
-
-	@Override
-	protected TestServer getServer() {
-		return server;
-	}
-
-	@BeforeClass
-	public static void initTestServer() throws Exception {
-		server = startRealWSServer(QE_PREVIOUSLY_KEEP_NON_ENROLMENT_NEW_INVOICE_TEST_PORT);
-	}
 
 	protected String getDataSetFile() {
 		return DEFAULT_DATASET_XML;
