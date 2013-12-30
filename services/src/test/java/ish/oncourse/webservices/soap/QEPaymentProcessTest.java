@@ -21,6 +21,10 @@ import java.util.Map;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Use cases described in squish task
+ * https://squish.ish.com.au/tasks/17142
+ */
 public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 
 	protected final void testRenderPaymentPageWithReverseInvoice(String sessionId) {
