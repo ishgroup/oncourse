@@ -14,9 +14,15 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import ish.oncourse.util.MoneyFormatter;
+
 
 import java.text.Format;
+
+import java.text.ParseException;
 import java.util.List;
+
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
 
 public class ProductItem {
 	private static final Logger LOGGER = Logger.getLogger(ProductItem.class);
@@ -58,9 +64,6 @@ public class ProductItem {
     @Inject
     private IVoucherService voucherService;
 
-
-
-
 	@SetupRender
 	void beforeRender() {
 
@@ -96,22 +99,18 @@ public class ProductItem {
 		if (!request.isXHR())
 			return null;
 
-        String priceValue =  StringUtils.trimToNull(request.getParameter("priceValue"));
-        Money price = null;
+		MoneyFormatter formatter = MoneyFormatter.getInstance();
 
+        String priceValue =  StringUtils.trimToNull(request.getParameter("priceValue"));
+        Money price = Money.ZERO;
         if (priceValue != null)
         {
-            try {
-                price = new Money(priceValue);
-            } catch (Exception e) {
-                //todo add error message
-            }
+			try {
+				price = (Money) formatter.stringToValue(priceValue);
+			} catch (ParseException e) {
+				price = null;
+			}
         }
-        else
-        {
-            //todo add error message
-        }
-
 
 		if (delegate != null) {
 			delegate.onChange(contactIndex, productItemIndex, price);
