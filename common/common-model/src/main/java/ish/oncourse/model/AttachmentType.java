@@ -1,6 +1,8 @@
 package ish.oncourse.model;
 
 
+import org.apache.commons.lang.StringUtils;
+
 public enum AttachmentType {
 	
 	JPEG("image/jpeg", "jpeg"),
@@ -29,7 +31,8 @@ public enum AttachmentType {
 				return type.extention;
 			}
 		}
-		return null;
+
+		return StringUtils.EMPTY;
 	}
 
 	

@@ -5,6 +5,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
@@ -12,7 +13,10 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -42,8 +46,38 @@ public class Resources {
 	@Inject
 	private Messages messages;
 
+	@Property
+	private List<BinaryInfo> tutorsMaterials;
+
+	@Property
+	private BinaryInfo tutorsMaterial;
+
+	@Inject
+	private Request request;
+
+	@Inject
+	private ICookiesService cookieService;
+
+	private Date lastLoginDate;
+
+
     @SetupRender
     void  setupRender(){
+
+		String sd = cookieService.getCookieValue("lastLoginTime");
+		SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
+		try{
+			lastLoginDate= format.parse(sd);
+		}catch (Exception ex){
+
+			new IllegalArgumentException(ex);
+
+		}
+
+
+		if(authenticationService.isTutor()){
+			tutorsMaterials = portalService.getCommonTutorsBinaryInfo();
+		}
 
         courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
     }
@@ -65,11 +99,18 @@ public class Resources {
     }
 
 
-        public boolean hasResources(CourseClass courseClass){
+    public boolean hasResources(CourseClass courseClass){
 
-        List<BinaryInfo> materials = binaryDataService.getAttachedFiles(courseClass.getId(), CourseClass.class.getSimpleName(), false);
+        List<BinaryInfo> materials = portalService.getAttachedFiles(courseClass,authenticationService.getUser());
         return !materials.isEmpty();
     }
 
+	public String getContextPath() {
+		return request.getContextPath();
+	}
+
+	public boolean isNew(Date material){
+		return  material.after(lastLoginDate);
+	}
 
 }

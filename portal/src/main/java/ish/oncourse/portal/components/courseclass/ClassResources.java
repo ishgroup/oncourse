@@ -2,6 +2,8 @@ package ish.oncourse.portal.components.courseclass;
 
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.tapestry5.annotations.Parameter;
@@ -26,9 +28,6 @@ public class ClassResources {
     @Property
     private CourseClass courseClass;
 
-    @Inject
-    private IBinaryDataService binaryDataService;
-
     @Property
     private List<BinaryInfo> materials;
 
@@ -41,6 +40,11 @@ public class ClassResources {
     @Inject
     private Request request;
 
+	@Inject
+	private IAuthenticationService authenticationService;
+
+	@Inject
+	private IPortalService portalService;
 
     private Date lastLoginDate;
 
@@ -60,7 +64,7 @@ public class ClassResources {
 
         }
 
-        materials = binaryDataService.getAttachedFiles(courseClass.getId(), CourseClass.class.getSimpleName(), false);
+        materials = portalService.getAttachedFiles(courseClass, authenticationService.getUser());
         return true;
     }
 

@@ -1,5 +1,6 @@
 package ish.oncourse.portal.services;
 
+import ish.common.types.AttachmentInfoVisibility;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
@@ -10,6 +11,7 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
@@ -33,6 +35,7 @@ import java.util.TimeZone;
  * Time: 3:35 PM
  */
 public class PortalService implements IPortalService{
+
 
     @Inject
     private ICourseClassService courseClassService;
@@ -143,7 +146,13 @@ public class PortalService implements IPortalService{
                 break;
             }
         }
-        return  result;
+
+		if(authenticationService.isTutor()) {
+			  if(!getCommonTutorsBinaryInfo().isEmpty())
+				  result = true;
+		}
+
+        return result;
     }
 
     @Override
@@ -153,7 +162,7 @@ public class PortalService implements IPortalService{
         if(authenticationService.getUser().getStudent()!=null){
             for(Enrolment enrolment : authenticationService.getUser().getStudent().getEnrolments()){
                 Course course = enrolment.getCourseClass().getCourse();
-                if(!course.getModules().isEmpty() || course.getQualification()!=null){
+                if((!course.getModules().isEmpty() || course.getQualification()!=null) && enrolment.getStatus().equals(EnrolmentStatus.SUCCESS)){
                     result = true;
                     break;
                 }
@@ -230,15 +239,11 @@ public class PortalService implements IPortalService{
                 default:
                     throw new IllegalArgumentException();
             }
-
-
-
         }
         return null;
     }
 
     private  List<CourseClass>  getPastTutorClasses(List<CourseClass> courseClasses){
-
 
 		List<CourseClass> past = new ArrayList<>();
 		past.addAll(courseClasses);
@@ -252,13 +257,10 @@ public class PortalService implements IPortalService{
         Date date = new Date();
 
              for(CourseClass courseClass : courseClasses){
-
                  if(courseClass.getIsDistantLearningCourse()){
                      current.add(courseClass);
                  }
-
-
-				 if(!courseClass.getIsDistantLearningCourse() && !courseClass.getSessions().isEmpty()) {
+                 if(!courseClass.getIsDistantLearningCourse() && !courseClass.getSessions().isEmpty()) {
 
 					 if(courseClass.getEndDate().after(date))
 						 current.add(courseClass);
@@ -278,7 +280,6 @@ public class PortalService implements IPortalService{
 
     private List<CourseClass> getUnconfirmedTutorClasses(List<CourseClass> courseClasses, Contact contact){
         List<CourseClass> unconfirmed = new ArrayList<>();
-        Date date = new Date();
 
         for(CourseClass courseClass : courseClasses){
            for(TutorRole tutorRole : courseClass.getTutorRoles()){
@@ -335,37 +336,60 @@ public class PortalService implements IPortalService{
         return current;
     }
 
-
     private List<CourseClass> getPastStudentClasses(List<CourseClass> courseClasses, Contact contact){
-
         List<CourseClass> past = new ArrayList<>();
-      //  Date date = new Date();
 		past.addAll(courseClasses);
 		past.removeAll(getCurrentStudentClasses(courseClasses,contact));
 		return  past;
-
-       /* for(CourseClass courseClass : courseClasses){
-
-            if(courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() != null){
-
-                for(Enrolment enrolment : courseClass.getEnrolments()){
-                    if(enrolment.getStudent().getId().equals(contact.getStudent().getId())){
-                        if(DateUtils.addDays(enrolment.getCreated(),courseClass.getMaximumDays()).before(date))
-                            past.add(courseClass);
-                        break;
-                    }
-                }
-            }else if(!courseClass.getIsDistantLearningCourse()){
-
-                if(courseClass.getEndDate().before(date))
-                    past.add(courseClass);
-            }
-        }
-
-        return past;            */
     }
 
+	@Override
+	public List<BinaryInfo> getCommonTutorsBinaryInfo(){
 
+		ObjectContext sharedContext = cayenneService.sharedContext();
+
+		SelectQuery query = new SelectQuery(BinaryInfo.class, ExpressionFactory.matchExp(
+				BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.TUTORS).andExp(
+				ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "+." + BinaryInfoRelation.CREATED_PROPERTY, null)));
+
+		return (List<BinaryInfo>) sharedContext.performQuery(query);
+
+	}
+
+	@Override
+	public List<BinaryInfo> getAttachedFiles(CourseClass courseClass, Contact contact) {
+
+		ObjectContext sharedContext = cayenneService.sharedContext();
+
+		if (contact.getTutor() !=null) {
+			SelectQuery query = new SelectQuery(TutorRole.class, ExpressionFactory.matchExp(
+					TutorRole.COURSE_CLASS_PROPERTY, courseClass).andExp(
+					ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY, contact.getTutor())));
+			List<TutorRole> tutorRole = sharedContext.performQuery(query);
+			if (!tutorRole.isEmpty()) {
+				return getAttachedFilesForTutor(courseClass);
+			}
+		}
+		return getAttachedFilesForStudent(courseClass);
+	}
+
+	private List<BinaryInfo> getAttachedFilesForStudent(CourseClass courseClass) {
+
+		ObjectContext sharedContext = cayenneService.sharedContext();
+
+		Expression exp = ExpressionFactory.inExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
+				.andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
+				.andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
+		return sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp));
+	}
+
+	private List<BinaryInfo> getAttachedFilesForTutor(CourseClass courseClass) {
+		ObjectContext sharedContext = cayenneService.sharedContext();
+
+		Expression exp = ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId())
+				.andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
+		return sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp));
+	}
 
 
 }

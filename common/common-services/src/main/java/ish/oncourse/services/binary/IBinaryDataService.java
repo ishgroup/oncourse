@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IBinaryDataService {
 	BinaryInfo getBinaryInfoById(Object id);
-	
+
 	BinaryInfo getBinaryInfo(String searchProperty, Object value);
 
 	BinaryInfo getRandomImage();

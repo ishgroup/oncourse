@@ -1,5 +1,6 @@
 package ish.oncourse.portal.services;
 
+import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
@@ -27,6 +28,10 @@ public interface IPortalService {
     boolean isHasResources(List<CourseClass> courseClasses);
 
     boolean isHasResult();
+
+	public List<BinaryInfo> getCommonTutorsBinaryInfo();
+
+	public List<BinaryInfo> getAttachedFiles(CourseClass courseClass, Contact contact);
 
     public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter);
 }

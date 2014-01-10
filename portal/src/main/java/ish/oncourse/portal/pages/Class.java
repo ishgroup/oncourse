@@ -1,6 +1,7 @@
 package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -61,4 +62,29 @@ public class Class {
     {
         return authenticationService.isTutor() && !portalService.isApproved(authenticationService.getUser(), courseClass);
     }
+
+	public boolean isClassWithModules(){
+
+		boolean result=false;
+
+		if(authenticationService.getUser().getStudent()!=null){
+
+			for(Enrolment enrolment : courseClass.getValidEnrolments()){
+
+				if(enrolment.getStudent().getContact().getId().equals(authenticationService.getUser().getId())){
+					result=true;
+					break;
+				}
+
+			}
+		}
+
+		return (!courseClass.getCourse().getModules().isEmpty() || courseClass.getCourse().getQualification()!=null) &&  result;
+	}
+
+	public boolean isHasResources(){
+
+		return  !portalService.getAttachedFiles(courseClass, authenticationService.getUser()).isEmpty();
+	}
+
 }

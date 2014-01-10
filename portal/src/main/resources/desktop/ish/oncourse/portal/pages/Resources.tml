@@ -5,6 +5,25 @@
 	</div>
 	<ul class="list-unstyled resources-content">
 
+        <t:if test="tutorsMaterials">
+            <li>
+            <h4><a href="#">Tutors informations</a></h4>
+
+            <t:loop source="tutorsMaterials" value="tutorsMaterial">
+                <ul class="list-unstyled resources-list">
+                <div class="${tutorsMaterial.type}">
+                    <img src="${contextPath}/img/ico-${tutorsMaterial.type}.png" alt=""/>
+                    <a href="${tutorsMaterial.contextPath}">${tutorsMaterial.name}<t:if test="tutorsMaterial.type.empty" negate="true">.${tutorsMaterial.type}</t:if></a> ${tutorsMaterial.size} kb.
+                    <t:if test="isNew(tutorsMaterial.modified)">
+                        <span class="label label-primary">NEW</span>
+                    </t:if>
+                </div>
+                </ul>
+            </t:loop>
+            </li>
+        </t:if>
+
+
         <t:loop source="courseClasses" value="courseClass">
 
         <t:if test="${hasResources(courseClass)}">

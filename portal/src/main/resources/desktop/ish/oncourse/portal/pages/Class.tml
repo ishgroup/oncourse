@@ -15,8 +15,12 @@
         <div class="tab-content">
             <span t:type="courseclass/classDetails" courseClass="courseClass"></span>
             <span t:type="courseclass/classLocation" courseClass="courseClass" ></span>
-            <span t:type="courseclass/classResources" courseClass="courseClass"></span>
-            <span t:type="courseclass/classResults" courseClass="courseClass"></span>
+            <t:if test="hasResources">
+                <span t:type="courseclass/classResources" courseClass="courseClass"></span>
+            </t:if>
+            <t:if test="classWithModules">
+                <span t:type="courseclass/classResults" courseClass="courseClass"></span>
+            </t:if>
         </div>
 
 </html>
