@@ -120,7 +120,7 @@ public class ProductItemTest extends ACheckoutTest {
 		assertEquals(1, model.getAllEnabledProductItems().size());
 
 		assertEquals(1, purchaseController.getErrors().size());
-		assertEquals("Enter price for voucher: my test voucher product part 6.", purchaseController.getErrors().get(enterVoucherPrice.name()));
+		assertEquals("Please enter the correct price for voucher: my test voucher product part 6.", purchaseController.getErrors().get(enterVoucherPrice.name()));
 
 
 		proceedToPayment();
