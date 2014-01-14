@@ -37,4 +37,8 @@ public class ActionAddProduct extends APurchaseAction {
     protected boolean validate() {
         return !getModel().getProducts().contains(product);
     }
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
 }

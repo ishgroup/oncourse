@@ -1,9 +1,9 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.AddContactController;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.*;
 import ish.oncourse.services.preference.ContactFieldHelper;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addCourseClass;
@@ -72,14 +72,16 @@ public abstract class AAddContactAction extends APurchaseAction {
         //add the first contact
         if (shouldChangePayer())
             changePayer();
-        if (shouldAddEnrolments())
+        if (shouldAddEnrolments()){
             initEnrolments();
+			initProductItems();
+		}
 
         getController().setState(getFinalState());
         getController().resetContactEditorController();
     }
 
-    protected void changePayer() {
+	protected void changePayer() {
         ActionChangePayer actionChangePayer = changePayer.createAction(getController());
         actionChangePayer.setContact(contact);
         actionChangePayer.action();
@@ -96,6 +98,19 @@ public abstract class AAddContactAction extends APurchaseAction {
             actionAddCourseClass.action();
         }
     }
+
+	private void initProductItems() {
+		for (Product product : getController().getModel().getProducts()) {
+			if(!(product instanceof VoucherProduct)) {
+				ProductItem productItem = getController().createProductItem(contact, product);
+				getController().getModel().addProductItem(productItem);
+				ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
+				actionEnableProductItem.setProductItem(productItem);
+				actionEnableProductItem.setPrice(Money.ZERO);
+				actionEnableProductItem.action();
+			}
+		}
+	}
 
     @Override
     protected void parse() {

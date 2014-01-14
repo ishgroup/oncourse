@@ -25,13 +25,13 @@ public class
         }else{
 			throw new IllegalArgumentException("Unsupported product type.");
 		}
-		getModel().enableProductItem(productItem);
+		getModel().enableProductItem(productItem, productItem.getContact());
 	}
 
     private void enableMembership() {
         Membership membership = (Membership) productItem;
         InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForMembership(membership,
-                getModel().getPayer());
+				productItem.getContact());
         il.setInvoice(getModel().getInvoice());
         membership.setInvoiceLine(il);
     }

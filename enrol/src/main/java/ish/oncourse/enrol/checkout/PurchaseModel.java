@@ -166,7 +166,7 @@ public class PurchaseModel {
 
 
     public void addProductItem(ProductItem p) {
-        getContactNode(payer).addProductItem(p);
+        getContactNode(p.getContact()).addProductItem(p);
     }
 
     public void removeProductItem(Contact contact, ProductItem p) {
@@ -184,6 +184,15 @@ public class PurchaseModel {
             this.removeProductItem(contact, productItem);
         }
     }
+
+	public void removeVoucherProductItems(Contact contact) {
+		List<ProductItem> productItems = getAllProductItems(contact);
+		for (ProductItem productItem : productItems) {
+			if (productItem.getProduct() instanceof VoucherProduct) {
+				this.removeProductItem(contact, productItem);
+			}
+		}
+	}
 
 
     public void addVoucherPayments(Collection<PaymentIn> vps) {
@@ -211,15 +220,15 @@ public class PurchaseModel {
         getContactNode(e.getStudent().getContact()).disableEnrolment(e);
     }
 
-    public void enableProductItem(ProductItem p) {
-        getContactNode(payer).enableProductItem(p);
+    public void enableProductItem(ProductItem p, Contact contact) {
+        getContactNode(contact).enableProductItem(p);
     }
 
     public void disableProductItem(ProductItem p) {
         InvoiceLine il = p.getInvoiceLine();
         p.setInvoiceLine(null);
         objectContext.deleteObjects(il);
-        getContactNode(payer).disableProductItem(p);
+        getContactNode(p.getContact()).disableProductItem(p);
     }
 
     public List<Enrolment> getEnabledEnrolments(Contact contact) {
@@ -263,7 +272,7 @@ public class PurchaseModel {
     }
 
     public boolean isProductItemEnabled(ProductItem productItem) {
-        return getEnabledProductItems(payer).contains(productItem);
+        return getEnabledProductItems(productItem.getContact()).contains(productItem);
     }
 
 

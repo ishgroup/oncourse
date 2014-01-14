@@ -77,13 +77,13 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	}
 
 	@Override
-	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer) {
-		return this.createInvoiceLineForVoucher(voucher, payer, voucher.getVoucherProduct().getPriceExTax());
+	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact) {
+		return this.createInvoiceLineForVoucher(voucher, contact, voucher.getVoucherProduct().getPriceExTax());
 	}
 
 	@Override
-	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer, Money priceExTax) {
-		return createInvoiceLineForProductItem(voucher, payer, priceExTax);
+	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact, Money priceExTax) {
+		return createInvoiceLineForProductItem(voucher, contact, priceExTax);
 
 	}
 
@@ -108,8 +108,8 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	}
 
 	@Override
-	public InvoiceLine createInvoiceLineForMembership(Membership membership, Contact payer) {
-		return createInvoiceLineForProductItem(membership, payer, membership.getProduct().getPriceExTax());
+	public InvoiceLine createInvoiceLineForMembership(Membership membership, Contact contact) {
+		return createInvoiceLineForProductItem(membership, contact, membership.getProduct().getPriceExTax());
 	}
 
 	/**

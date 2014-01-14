@@ -7,6 +7,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.ProductItem;
+import ish.oncourse.model.VoucherProduct;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -86,19 +87,21 @@ public class ActionChangePayer extends APurchaseAction {
         Contact oldPayer = getController().getModel().getPayer();
 
         if (oldPayer!= null && !contact.equals(oldPayer))
-            getController().getModel().removeAllProductItems(oldPayer);
+            getController().getModel().removeVoucherProductItems(oldPayer);
 
         getController().getModel().setPayer(contact);
 
 		if (!contact.equals(oldPayer))
 		{
 			for (Product product : getController().getModel().getProducts()) {
-				ProductItem productItem = getController().createProductItem(contact, product);
-				getController().getModel().addProductItem(productItem);
-				ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
-				actionEnableProductItem.setProductItem(productItem);
-                actionEnableProductItem.setPrice(Money.ZERO);
-				actionEnableProductItem.action();
+				if(product instanceof VoucherProduct) {
+					ProductItem productItem = getController().createProductItem(contact, product);
+					getController().getModel().addProductItem(productItem);
+					ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
+					actionEnableProductItem.setProductItem(productItem);
+					actionEnableProductItem.setPrice(Money.ZERO);
+					actionEnableProductItem.action();
+				}
 			}
 		}
         getController().refreshPrevOwingStatus();
