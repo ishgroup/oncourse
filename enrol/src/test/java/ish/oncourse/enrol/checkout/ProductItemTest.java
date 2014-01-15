@@ -1,10 +1,16 @@
 package ish.oncourse.enrol.checkout;
 
 
+import ish.common.types.PaymentStatus;
 import ish.common.types.ProductStatus;
+import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.model.*;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +21,8 @@ import java.util.List;
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.duplicatedMembership;
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.enterVoucherPrice;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -150,5 +158,47 @@ public class ProductItemTest extends ACheckoutTest {
 		assertEquals("Vladimir Putin is already has this membership 23458.", purchaseController.getErrors().get(duplicatedMembership.name()));
 	}
 
+	@Test
+	public void testArticleProduct() throws InterruptedException {
+		purchaseController = init(Collections.EMPTY_LIST, Arrays.asList(12L), Collections.EMPTY_LIST, false);
+		PurchaseModel model = purchaseController.getModel();
+
+		assertEquals(1, model.getProducts().size());
+		assertTrue(model.getProducts().get(0) instanceof ArticleProduct);
+
+		Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1189159);
+		addContact(contact);
+
+		//check purchaseModel
+		assertEquals(1,model.getAllEnabledProductItems().size());
+		assertEquals(1,model.getAllProductItems(contact).size());
+		assertEquals(1,model.getEnabledProductItems(contact).size());
+		assertEquals(0,model.getDisabledProductItems(contact).size());
+		assertTrue(model.getEnabledProductItems(contact).get(0) instanceof Article);
+
+		//check persistence state
+		assertEquals(ProductStatus.NEW, model.getEnabledProductItems(contact).get(0).getStatus());
+
+		//proceed to payment
+		proceedToPayment();
+
+		assertEquals(1,model.getEnabledProductItems(contact).size());
+
+		//check payment
+		assertEquals(new Money("11"), model.getPayment().getAmount());
+		assertEquals(1, model.getPayment().getPaymentInLines().size());
+		assertEquals(1, model.getInvoice().getInvoiceLines().size());
+
+		//make payment
+		makeValidPayment();
+
+		assertEquals(ProductStatus.ACTIVE ,model.getAllEnabledProductItems().get(0).getStatus());
+		assertEquals(PaymentStatus.SUCCESS, purchaseController.getPaymentEditorDelegate().getPaymentIn().getStatus());
+
+		ObjectContext objectContext = purchaseController.getModel().getObjectContext();
+		SelectQuery selectQuery = new SelectQuery(QueuedRecord.class, ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Article"));
+		List list = objectContext.performQuery(selectQuery);
+		assertFalse("QueuedRecords for article entity should exist in the queue", list.isEmpty());
+	}
 
 }

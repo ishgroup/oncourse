@@ -262,6 +262,14 @@ public class PurchaseController {
 			membership.setProduct(mp);
 			membership.setStatus(ProductStatus.NEW);
 			return membership;
+		} else if (product instanceof ArticleProduct) {
+			ArticleProduct ap = (ArticleProduct) product;
+			Article article =  getModel().getObjectContext().newObject(Article.class);
+			article.setCollege(ap.getCollege());
+			article.setContact(contact);
+			article.setProduct(ap);
+			article.setStatus(ProductStatus.NEW);
+			return article;
 		} else {
 			throw new IllegalArgumentException("Unsupported product type.");
 		}

@@ -112,6 +112,11 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		return createInvoiceLineForProductItem(membership, contact, membership.getProduct().getPriceExTax());
 	}
 
+	@Override
+	public InvoiceLine createInvoiceLineForArticle(Article article, Contact contact) {
+		return createInvoiceLineForProductItem(article, contact, article.getProduct().getPriceExTax());
+	}
+
 	/**
 	 * {@inheritDoc}
 	 *

@@ -43,11 +43,11 @@ public interface IInvoiceProcessingService {
 	 * Creates the {@link InvoiceLine} object for the given voucher.
 	 * 
 	 * @param voucher
-	 * @param payer
+	 * @param contact
 	 * @return invoiceLine object created
 	 */
-	InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer);
-    InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer, Money price);
+	InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact);
+    InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact, Money price);
 	
 	/**
 	 * Sets the discounted values to the given invoiceLine for the given enrolment.
@@ -60,8 +60,16 @@ public interface IInvoiceProcessingService {
     /**
      *
      * @param membership
-     * @param payer
+     * @param contact
      * @return
      */
-    InvoiceLine createInvoiceLineForMembership(Membership membership, Contact payer);
+    InvoiceLine createInvoiceLineForMembership(Membership membership, Contact contact);
+
+	/**
+	 *
+	 * @param article
+	 * @param contact
+	 * @return
+	 */
+	InvoiceLine createInvoiceLineForArticle(Article article, Contact contact);
 }

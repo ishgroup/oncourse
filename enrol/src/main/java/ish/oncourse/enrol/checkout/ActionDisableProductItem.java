@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.math.Money;
+import ish.oncourse.model.Article;
 import ish.oncourse.model.Membership;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.Voucher;
@@ -15,9 +16,9 @@ public class ActionDisableProductItem extends APurchaseAction{
                 ((Voucher) productItem).setRedemptionValue(Money.ZERO);
             }
 			getModel().disableProductItem(productItem);
-		}else if(productItem instanceof Membership){
+		}else if(productItem instanceof Membership || productItem instanceof Article) {
             getModel().disableProductItem(productItem);
-        } else {
+        }  else {
 			throw new IllegalArgumentException("Unsupported product type.");
 		}
 	}

@@ -10,8 +10,7 @@ import static ish.oncourse.enrol.checkout.PurchaseController.Message.duplicatedM
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.enterVoucherPrice;
 
 
-public class
-        ActionEnableProductItem extends APurchaseAction {
+public class ActionEnableProductItem extends APurchaseAction {
 	private ProductItem productItem;
     //the value which payer entered in price field on gui for voucher without price
     private Money price;
@@ -22,13 +21,23 @@ public class
             enableVoucher();
 		} else if (productItem instanceof Membership){
             enableMembership();
-        }else{
+        }else if (productItem instanceof  Article) {
+			enableArticle();
+		} else {
 			throw new IllegalArgumentException("Unsupported product type.");
 		}
 		getModel().enableProductItem(productItem, productItem.getContact());
 	}
 
-    private void enableMembership() {
+	private void enableArticle() {
+		Article article = (Article) productItem;
+		InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForArticle(article,
+				productItem.getContact());
+		il.setInvoice(getModel().getInvoice());
+		article.setInvoiceLine(il);
+	}
+
+	private void enableMembership() {
         Membership membership = (Membership) productItem;
         InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForMembership(membership,
 				productItem.getContact());
@@ -79,15 +88,23 @@ public class
     }
 
     public boolean validateProductItem() {
-        if (productItem instanceof Membership)
+        if (productItem instanceof Membership) {
             return validateMembership();
-        else if (productItem instanceof Voucher)
+		} else if (productItem instanceof Voucher) {
             return validateVoucher();
-        else
+		} else if (productItem instanceof Article) {
+			return validateArticle();
+		}
+        else {
             throw new IllegalArgumentException();
+		}
     }
 
-    private boolean validateMembership() {
+	private boolean validateArticle() {
+		return true;
+	}
+
+	private boolean validateMembership() {
         Contact contact = ((Membership) productItem).getContact();
         List<Membership> memberships = contact.getMemberships();
         for (Membership membership : memberships) {
