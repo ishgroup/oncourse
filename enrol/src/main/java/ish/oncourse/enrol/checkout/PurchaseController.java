@@ -712,7 +712,7 @@ public class PurchaseController {
 
 			for (Product oldProduct : oldProducts) {
 				Product product = model.localizeObject(oldProduct);
-				ProductItem productItem = createProductItem(model.getPayer(), product);
+				ProductItem productItem = createProductItem(contact, product);
 				model.addProductItem(productItem);
 				ProductItem oldProductItem = oldModel.getProductItemBy(oldContact, oldProduct);
 				if (oldProductItem != null) {

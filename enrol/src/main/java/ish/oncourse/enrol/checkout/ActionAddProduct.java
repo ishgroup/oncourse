@@ -4,6 +4,7 @@ import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.ProductItem;
+import ish.oncourse.model.VoucherProduct;
 
 
 public class ActionAddProduct extends APurchaseAction {
@@ -15,17 +16,19 @@ public class ActionAddProduct extends APurchaseAction {
 
         getModel().addProduct(product);
 
-        Contact contact = getModel().getPayer();
-        ProductItem productItem = getModel().getProductItemBy(contact, product);
-        if (productItem == null) {
-            productItem = getController().createProductItem(contact, product);
-            getModel().addProductItem(productItem);
+        for (Contact contact : getModel().getContacts()) {
+        	ProductItem productItem = getModel().getProductItemBy(contact, product);
+			//vouchers can be added only for payer
+			if (productItem == null && (!(product instanceof VoucherProduct) || contact.equals(getModel().getPayer()))) {
+				productItem = getController().createProductItem(contact, product);
+				getModel().addProductItem(productItem);
 
-            ActionEnableProductItem action = PurchaseController.Action.enableProductItem.createAction(getController());
-            action.setProductItem(productItem);
-            action.setPrice(Money.ZERO);
-            action.action();
-        }
+				ActionEnableProductItem action = PurchaseController.Action.enableProductItem.createAction(getController());
+				action.setProductItem(productItem);
+				action.setPrice(Money.ZERO);
+				action.action();
+			}
+		}
     }
 
     @Override

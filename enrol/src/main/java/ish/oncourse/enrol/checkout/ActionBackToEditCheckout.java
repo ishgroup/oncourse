@@ -37,13 +37,16 @@ public class ActionBackToEditCheckout extends APurchaseAction {
         /**
          * create disabled productItems which were deleted after an user pressed ProceedToPayment
          */
-        for (Product product : products) {
-            ProductItem productItem = getModel().getProductItemBy(getModel().getPayer(), product);
-            if (productItem == null)
-            {
-                productItem = getController().createProductItem(getModel().getPayer(), product);
-                getModel().addProductItem(productItem);
-            }
+		for (Contact contact : contacts) {
+			for (Product product : products) {
+				ProductItem productItem = getModel().getProductItemBy(contact, product);
+				//vouchers can be added only for payer
+				if (productItem == null && (!(product instanceof VoucherProduct) || contact.equals(getModel().getPayer())))
+				{
+					productItem = getController().createProductItem(contact, product);
+					getModel().addProductItem(productItem);
+				}
+			}
 		}
 	}
 
