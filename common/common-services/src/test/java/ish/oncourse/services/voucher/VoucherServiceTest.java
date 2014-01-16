@@ -54,13 +54,13 @@ public class VoucherServiceTest extends ServiceTest {
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
 		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
-		assertEquals("SCC should contain six defined Voucher Products", 6, service.getAvailableProducts().size());
+		assertEquals("SCC should contain six defined Voucher Products", 6, service.getProductCount().intValue());
 		
 		Request request2 = mock(Request.class);
 		when(request2.getServerName()).thenReturn("tae.test.oncourse.net.au");
 		final VoucherService service2 = new VoucherService(new WebSiteService(request2, cayenneService), cayenneService);
 		assertEquals("Checking site key.", "tae", service2.takeWebSiteService().getCurrentWebSite().getSiteKey());
-		assertEquals("Tae have no defined Voucher Products", 1, service2.getAvailableProducts().size());
+		assertEquals("Tae have no defined Voucher Products", 1, service2.getProductCount().intValue());
 	}
 	
 	@Test

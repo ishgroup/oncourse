@@ -22,7 +22,9 @@ public interface IVoucherService {
 	List<ProductItem> loadProductItemsByIds(List<Long> ids);
 	
 	Product loadAvailableVoucherProductBySKU(String sku);
-	
+
+	public Integer getProductCount();
+
 	Product loadAvailableVoucherProductById(Long id);
 
     @Deprecated //TODO: the method should be delete after all colleges will be upgrated to version 5.0

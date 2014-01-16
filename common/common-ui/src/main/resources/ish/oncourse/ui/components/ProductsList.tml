@@ -7,7 +7,7 @@
 	</t:loop>
 	<t:if t:test="hasMoreItems">
 		<div id="showMore">
-			<a id="showMoreProducts" href="${request.path}?${searchParamsStr}">
+			<a id="showMoreCourses" href="${request.path}?${searchParamsStr}">
 				<div class="showMoreAction">Show more products</div>
 			</a>
 		</div>	

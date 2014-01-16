@@ -11,6 +11,7 @@ import ish.util.ProductUtil;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
@@ -49,6 +50,23 @@ public class VoucherService implements IVoucherService {
 	public List<Product> getAvailableProducts() {
 		return getAvailableProducts(null, null);
 	}
+	@Override
+	public Integer getProductCount() {
+		return ((Number) cayenneService.sharedContext()
+				.performQuery(new EJBQLQuery("select count(p) from Product p where " + getSiteQualifier().toEJBQL("p")))
+				.get(0)).intValue();
+	}
+
+	private Expression getSiteQualifier() {
+		return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
+				getAvailabilityQualifier());
+	}
+
+	private Expression getAvailabilityQualifier() {
+		return ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true);
+	}
+
+
 
 	@Override
 	public Product loadAvailableVoucherProductBySKU(String sku) {

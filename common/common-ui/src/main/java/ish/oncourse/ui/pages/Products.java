@@ -63,7 +63,7 @@ public class Products {
 		this.itemIndex = start;
 		this.isException = false;
 		this.products = voucherService.getAvailableProducts(start, rows);
-		this.productsCount = voucherService.getAvailableProducts().size();
+		this.productsCount = voucherService.getProductCount();
 
 		productsIds = new ArrayList<>();
 		updateIdsAndIndexes();
