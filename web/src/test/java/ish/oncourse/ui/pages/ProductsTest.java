@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages;
 
-
+import ish.oncourse.ui.services.DbEnabledTestModule;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.ui.services.TestModule;
@@ -30,7 +30,7 @@ public class ProductsTest extends ServiceTest {
 	public static final String CONTEXT_PATH = "src/main/resources/ish/oncourse/ui/pages";
 	
 	public void setup() throws Exception {
-		initTest(APP_PACKAGE, "", CONTEXT_PATH, TestModule.class);
+		initTest(APP_PACKAGE, "", CONTEXT_PATH, DbEnabledTestModule.class);
 		InputStream st = ProductsTest.class.getClassLoader().getResourceAsStream("ish/oncourse/ui/pages/products/voucherDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource refDataSource = getDataSource("jdbc/oncourse");
