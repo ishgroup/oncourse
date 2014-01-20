@@ -34,7 +34,7 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testBinaryInfoStubBuilder() {
-		this.testStubBuilder(BinaryInfo.class, new BinaryInfoStubBuilder(), "webVisible", "fileUUID");
+		this.testStubBuilder(BinaryInfo.class, new BinaryInfoStubBuilder(), "webVisible", "fileUUID", "thumbnail");
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 		this.testStubBuilder(CourseClass.class, new CourseClassStubBuilder(),
 				"materialsTextile", "modified", "sessionDetailTextile", "startDate",
 				"startingMinutePerSession", "timeZone", "attendanceType",
-				"feeHelpClass", "reportingPeriod");
+				"feeHelpClass", "reportingPeriod", "censusDate");
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 	@Test
 	public void testEnrolmentStubBuilder() {
 		this.testStubBuilder(Enrolment.class, new EnrolmentStubBuilder(),
-				"invoiceLineId", "censusDate", "feeHelpStatus", "creditOfferedValue", "creditProvider",
+				"invoiceLineId", "feeHelpStatus", "creditOfferedValue", "creditProvider",
 				"creditUsedValue", "creditType", "creditFoeId", "creditLevel", "creditProviderType",
 				"feeStatus", "creditTotal");
 	}
