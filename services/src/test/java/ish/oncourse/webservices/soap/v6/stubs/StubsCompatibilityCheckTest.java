@@ -69,6 +69,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		binaryInfoParamethers.add(new ReplicationStubFieldParameter("pixelWidth", Integer.class));
 		binaryInfoParamethers.add(new ReplicationStubFieldParameter("referenceNumber", Integer.class));
 		binaryInfoParamethers.add(new ReplicationStubFieldParameter("fileUUID", String.class));
+		binaryInfoParamethers.add(new ReplicationStubFieldParameter("thumbnail", byte[].class));
 		stubsPropertyMap.put(getStubName(BinaryInfoStub.class), binaryInfoParamethers);
 		final List<ReplicationStubFieldParameter> concessionTypeParamethers = fillDefaultReplicationStubFields();
 		concessionTypeParamethers.add(new ReplicationStubFieldParameter("credentialExpiryDays", Integer.class));
@@ -136,6 +137,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		courseClassParameters.add(new ReplicationStubFieldParameter("feeHelpClass", Boolean.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("attendanceType", Integer.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("reportingPeriod", Integer.class));
+		courseClassParameters.add(new ReplicationStubFieldParameter("censusDate", Date.class));
 		stubsPropertyMap.put(getStubName(CourseClassStub.class), courseClassParameters);
 
 		final List<ReplicationStubFieldParameter> courseParamethers = fillDefaultReplicationStubFields();
@@ -182,15 +184,14 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		enrolmentParameters.add(new ReplicationStubFieldParameter("invoiceLineId", Long.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("feeHelpStatus", Integer.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("creditOfferedValue", String.class));
-		enrolmentParameters.add(new ReplicationStubFieldParameter("creditProvider", Integer.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("creditProvider", String.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("creditUsedValue", String.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("creditType", Integer.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("creditFoeId", String.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("creditLevel", Integer.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("creditProviderType", Integer.class));
-		enrolmentParameters.add(new ReplicationStubFieldParameter("feeStatus", String.class));
-		enrolmentParameters.add(new ReplicationStubFieldParameter("creditTotal", String.class));
-		enrolmentParameters.add(new ReplicationStubFieldParameter("censusDate", Date.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("feeStatus", Integer.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("creditTotal", Integer.class));
 		stubsPropertyMap.put(getStubName(EnrolmentStub.class), enrolmentParameters);
 
 		final List<ReplicationStubFieldParameter> invoiceLineDiscountParamethers = fillDefaultReplicationStubFields();
