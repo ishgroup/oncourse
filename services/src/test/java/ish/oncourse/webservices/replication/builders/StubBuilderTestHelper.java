@@ -175,6 +175,9 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
 			if (propertyName.equals("feeStatus")) {
 				return ((Enrolment) entity).getFeeStatus().getDatabaseValue();
 			}
+			if (propertyName.equals("feeHelpStatus")) {
+				return ((Enrolment) entity).getFeeHelpStatus().getDatabaseValue();
+			}
 			if (propertyName.equals("creditFoeId")) {
 				propertyName = Enrolment.CREDIT_FOEID_PROPERTY;
 			}

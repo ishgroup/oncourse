@@ -58,5 +58,8 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 		if (stub.getCreditTotal() != null) {
 			entity.setCreditTotal(TypesUtil.getEnumForDatabaseValue(stub.getCreditTotal(), RecognitionOfPriorLearningIndicator.class));
 		}
+		if (stub.getFeeHelpStatus() != null) {
+			entity.setFeeHelpStatus(TypesUtil.getEnumForDatabaseValue(stub.getFeeHelpStatus(), EnrolmentVETFeeHelpStatus.class));
+		}
 	}
 }

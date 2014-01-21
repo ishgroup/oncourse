@@ -9,6 +9,7 @@ import ish.common.types.CreditLevel;
 import ish.common.types.CreditProviderType;
 import ish.common.types.CreditType;
 import ish.common.types.EnrolmentStatus;
+import ish.common.types.EnrolmentVETFeeHelpStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.RecognitionOfPriorLearningIndicator;
 import ish.common.types.StudentStatusForUnitOfStudy;
@@ -37,6 +38,7 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final String CREDIT_TOTAL_PROPERTY = "creditTotal";
     public static final String CREDIT_TYPE_PROPERTY = "creditType";
     public static final String CREDIT_USED_VALUE_PROPERTY = "creditUsedValue";
+    public static final String FEE_HELP_STATUS_PROPERTY = "feeHelpStatus";
     public static final String FEE_STATUS_PROPERTY = "feeStatus";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String REASON_FOR_STUDY_PROPERTY = "reasonForStudy";
@@ -119,6 +121,13 @@ public abstract class _Enrolment extends CayenneDataObject {
     }
     public String getCreditUsedValue() {
         return (String)readProperty("creditUsedValue");
+    }
+
+    public void setFeeHelpStatus(EnrolmentVETFeeHelpStatus feeHelpStatus) {
+        writeProperty("feeHelpStatus", feeHelpStatus);
+    }
+    public EnrolmentVETFeeHelpStatus getFeeHelpStatus() {
+        return (EnrolmentVETFeeHelpStatus)readProperty("feeHelpStatus");
     }
 
     public void setFeeStatus(StudentStatusForUnitOfStudy feeStatus) {

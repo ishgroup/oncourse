@@ -87,7 +87,7 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 	@Test
 	public void testEnrolmentStubBuilder() {
 		this.testStubBuilder(Enrolment.class, new EnrolmentStubBuilder(),
-				"invoiceLineId", "feeHelpStatus");
+				"invoiceLineId");
 	}
 
 	@Test

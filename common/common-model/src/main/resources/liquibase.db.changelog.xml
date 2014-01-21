@@ -1801,4 +1801,16 @@
 
     </changeSet>
 
+    <changeSet id="121" author="viacheslav" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="Enrolment" columnName="feeHelpStatus"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="Enrolment">
+            <column name="feeHelpStatus" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

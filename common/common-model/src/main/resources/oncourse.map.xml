@@ -354,6 +354,7 @@
 		<db-attribute name="creditTotal" type="INTEGER"/>
 		<db-attribute name="creditType" type="INTEGER"/>
 		<db-attribute name="creditUsedValue" type="VARCHAR" length="4"/>
+		<db-attribute name="feeHelpStatus" type="INTEGER"/>
 		<db-attribute name="feeStatus" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
@@ -1382,6 +1383,7 @@
 		<obj-attribute name="creditTotal" type="ish.common.types.RecognitionOfPriorLearningIndicator" db-attribute-path="creditTotal"/>
 		<obj-attribute name="creditType" type="ish.common.types.CreditType" db-attribute-path="creditType"/>
 		<obj-attribute name="creditUsedValue" type="java.lang.String" db-attribute-path="creditUsedValue"/>
+		<obj-attribute name="feeHelpStatus" type="ish.common.types.EnrolmentVETFeeHelpStatus" db-attribute-path="feeHelpStatus"/>
 		<obj-attribute name="feeStatus" type="ish.common.types.StudentStatusForUnitOfStudy" db-attribute-path="feeStatus"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="reasonForStudy" type="java.lang.Integer" db-attribute-path="reasonForStudy"/>
