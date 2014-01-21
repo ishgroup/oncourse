@@ -22,6 +22,26 @@ public class EnrolmentStubBuilder extends AbstractWillowStubBuilder<Enrolment, E
 			stub.setStatus(entity.getStatus().name());
 		}
 		stub.setStudentId(entity.getStudent().getId());
+
+		stub.setCreditOfferedValue(entity.getCreditOfferedValue());
+		stub.setCreditProvider(entity.getCreditProvider());
+		stub.setCreditUsedValue(entity.getCreditUsedValue());
+		if (entity.getCreditType() != null) {
+			stub.setCreditType(entity.getCreditType().getDatabaseValue());
+		}
+		stub.setCreditFoeId(entity.getCreditFOEId());
+		if (entity.getCreditLevel() != null) {
+			stub.setCreditLevel(entity.getCreditLevel().getDatabaseValue());
+		}
+		if (entity.getCreditProviderType() != null) {
+			stub.setCreditProviderType(entity.getCreditProviderType().getDatabaseValue());
+		}
+		if (entity.getFeeStatus() != null) {
+			stub.setFeeStatus(entity.getFeeStatus().getDatabaseValue());
+		}
+		if (entity.getCreditTotal() != null) {
+			stub.setCreditTotal(entity.getCreditTotal().getDatabaseValue());
+		}
 		return stub;
 	}
 }

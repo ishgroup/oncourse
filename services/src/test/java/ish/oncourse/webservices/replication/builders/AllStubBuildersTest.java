@@ -28,29 +28,10 @@ import java.io.InputStream;
  */
 public class AllStubBuildersTest extends AbstractAllStubBuildersTest {
 
-	@Ignore
-	@Test
-	public void testV6VoucherStubBuilder() {//TODO: enable test when structure will be completed
-		this.testStubBuilder(Voucher.class, new ish.oncourse.webservices.replication.v5.builders.VoucherStubBuilder());
-	}
-
-	@Ignore
-	@Test
-	public void testV6VoucherPaymentInStubBuilder() {//TODO: enable test when structure will be completed
-		this.testStubBuilder(VoucherPaymentIn.class, new ish.oncourse.webservices.replication.v5.builders.VoucherPaymentInStubBuilder());
-	}
-
-	@Ignore
-	@Test
-	public void testV6VoucherProductCourseStubBuilder() {//TODO: enable test when structure will be completed
-		this.testStubBuilder(VoucherProductCourse.class, new ish.oncourse.webservices.replication.v5.builders.VoucherProductCourseStubBuilder());
-	}
-
 	@Test
 	public void testV6AttendanceStubBuilder() {
 		this.testStubBuilder(Attendance.class, new ish.oncourse.webservices.replication.v5.builders.AttendanceStubBuilder());
 	}
-
 
 	@Test
 	public void testV6BinaryInfoStubBuilder() {

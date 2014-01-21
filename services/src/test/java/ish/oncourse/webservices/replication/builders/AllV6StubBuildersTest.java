@@ -13,7 +13,7 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testArticleProductStubBuilder() {
-		this.testStubBuilder(ArticleProduct.class, new ArticleProductStubBuilder(), 2l,"incomeAccountId","taxAmount","taxId","weight");
+		this.testStubBuilder(ArticleProduct.class, new ArticleProductStubBuilder(), 2l, "incomeAccountId", "taxAmount", "taxId", "weight");
 	}
 
 	@Test
@@ -34,7 +34,7 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testBinaryInfoStubBuilder() {
-		this.testStubBuilder(BinaryInfo.class, new BinaryInfoStubBuilder(), "webVisible", "fileUUID", "thumbnail");
+		this.testStubBuilder(BinaryInfo.class, new BinaryInfoStubBuilder(), "fileUUID", "thumbnail");
 	}
 
 	@Test
@@ -70,9 +70,8 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 	@Test
 	public void testCourseClassStubBuilder() {
 		this.testStubBuilder(CourseClass.class, new CourseClassStubBuilder(),
-				"materialsTextile", "modified", "sessionDetailTextile", "startDate",
-				"startingMinutePerSession", "timeZone", "attendanceType",
-				"feeHelpClass", "reportingPeriod", "censusDate");
+				"materialsTextile", "sessionDetailTextile", "startDate",
+				"startingMinutePerSession", "timeZone");
 	}
 
 	@Test
@@ -88,9 +87,7 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 	@Test
 	public void testEnrolmentStubBuilder() {
 		this.testStubBuilder(Enrolment.class, new EnrolmentStubBuilder(),
-				"invoiceLineId", "feeHelpStatus", "creditOfferedValue", "creditProvider",
-				"creditUsedValue", "creditType", "creditFoeId", "creditLevel", "creditProviderType",
-				"feeStatus", "creditTotal");
+				"invoiceLineId", "feeHelpStatus");
 	}
 
 	@Test
@@ -131,7 +128,7 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testOutcomeStubBuilder() {
-		this.testStubBuilder(Outcome.class, new OutcomeStubBuilder(),"endDate","hoursAttended","startDate","status");
+		this.testStubBuilder(Outcome.class, new OutcomeStubBuilder(),"endDate","hoursAttended","startDate");
 	}
 
 	@Test
@@ -179,8 +176,7 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testStudentStubBuilder() {
-		this.testStubBuilder(Student.class, new StudentStubBuilder(),
-				"chessn", "citizenship", "feeHelpEligible", "specialNeedsAssistance");
+		this.testStubBuilder(Student.class, new StudentStubBuilder());
 	}
 
 	@Test

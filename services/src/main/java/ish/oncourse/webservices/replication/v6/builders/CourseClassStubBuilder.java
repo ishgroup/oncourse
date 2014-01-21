@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v6.builders;
 
+import ish.common.types.AttendanceType;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
@@ -14,7 +15,7 @@ public class CourseClassStubBuilder extends AbstractWillowStubBuilder<CourseClas
 		stub.setCode(entity.getCode());
 		stub.setCountOfSessions(entity.getCountOfSessions());
 		stub.setCourseId(entity.getCourse().getId());
-		stub.setCreated(entity.getCreated());
+		stub.setModified(entity.getModified());
 		stub.setDeliveryMode(entity.getDeliveryMode());
 		stub.setDetail(entity.getDetail());
 		stub.setDetailTextile(entity.getDetailTextile());
@@ -34,6 +35,14 @@ public class CourseClassStubBuilder extends AbstractWillowStubBuilder<CourseClas
 		stub.setDistantLearningCourse(entity.getIsDistantLearningCourse());
 		stub.setMaximumDays(entity.getMaximumDays());
 		stub.setExpectedHours(entity.getExpectedHours());
+		stub.setFeeHelpClass(Boolean.TRUE.equals(entity.getFeeHelpClass()));
+		if (entity.getAttendanceType() != null) {
+			stub.setAttendanceType(entity.getAttendanceType().getDatabaseValue());
+		} else {
+			stub.setAttendanceType(AttendanceType.UNMARKED.getDatabaseValue());
+		}
+		stub.setReportingPeriod(entity.getReportingPeriod());
+		stub.setCensusDate(entity.getCensusDate());
 		return stub;
 	}
 }

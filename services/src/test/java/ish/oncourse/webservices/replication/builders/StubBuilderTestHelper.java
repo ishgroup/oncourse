@@ -155,6 +155,37 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
 				return ((EntityRelation) entity).getToEntityIdentifier().getDatabaseValue();
 			}
 
+		} else if (entity instanceof CourseClass) {
+			if (propertyName.equals("attendanceType")) {
+				return ((CourseClass) entity).getAttendanceType().getDatabaseValue();
+			}
+		} else if (entity instanceof Enrolment) {
+			if (propertyName.equals("creditLevel")) {
+				return ((Enrolment) entity).getCreditLevel().getDatabaseValue();
+			}
+			if (propertyName.equals("creditProviderType")) {
+				return ((Enrolment) entity).getCreditProviderType().getDatabaseValue();
+			}
+			if (propertyName.equals("creditTotal")) {
+				return ((Enrolment) entity).getCreditTotal().getDatabaseValue();
+			}
+			if (propertyName.equals("creditType")) {
+				return ((Enrolment) entity).getCreditType().getDatabaseValue();
+			}
+			if (propertyName.equals("feeStatus")) {
+				return ((Enrolment) entity).getFeeStatus().getDatabaseValue();
+			}
+			if (propertyName.equals("creditFoeId")) {
+				propertyName = Enrolment.CREDIT_FOEID_PROPERTY;
+			}
+		} else if (entity instanceof Student) {
+			if (propertyName.equals("citizenship")) {
+				return ((Student) entity).getCitizenship().getDatabaseValue();
+			}
+		} else  if (entity instanceof Outcome) {
+			if (propertyName.equals("status")) {
+				return ((Outcome) entity).getStatus().getDatabaseValue();
+			}
 		}
 
 

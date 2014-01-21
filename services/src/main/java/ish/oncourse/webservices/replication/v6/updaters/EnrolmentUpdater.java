@@ -1,8 +1,6 @@
 package ish.oncourse.webservices.replication.v6.updaters;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.TypesUtil;
+import ish.common.types.*;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
@@ -40,6 +38,25 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 				+ "If this message occured on enrollment instruction call please add invoiceline instruction and retry enrollment instruction.", 
 				stub.getAngelId(), stub.getWillowId(), stub.getInvoiceLineId());
 			throw new UpdaterException(message);
+		}
+		entity.setCreditOfferedValue(stub.getCreditOfferedValue());
+		entity.setCreditProvider(stub.getCreditProvider());
+		entity.setCreditUsedValue(stub.getCreditUsedValue());
+		entity.setCreditFOEId(stub.getCreditFoeId());
+		if (stub.getCreditType() != null) {
+			entity.setCreditType(TypesUtil.getEnumForDatabaseValue(stub.getCreditType(), CreditType.class));
+		}
+		if (stub.getCreditLevel() != null) {
+			entity.setCreditLevel(TypesUtil.getEnumForDatabaseValue(stub.getCreditLevel(), CreditLevel.class));
+		}
+		if (stub.getCreditProviderType() != null) {
+			entity.setCreditProviderType(TypesUtil.getEnumForDatabaseValue(stub.getCreditProviderType(), CreditProviderType.class));
+		}
+		if (stub.getFeeStatus() != null) {
+			entity.setFeeStatus(TypesUtil.getEnumForDatabaseValue(stub.getFeeStatus(), StudentStatusForUnitOfStudy.class));
+		}
+		if (stub.getCreditTotal() != null) {
+			entity.setCreditTotal(TypesUtil.getEnumForDatabaseValue(stub.getCreditTotal(), RecognitionOfPriorLearningIndicator.class));
 		}
 	}
 }

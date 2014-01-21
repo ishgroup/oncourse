@@ -53,6 +53,14 @@ public class StudentStubBuilder extends AbstractWillowStubBuilder<Student, Stude
 		}
 		stub.setStillAtSchool(entity.getIsStillAtSchool());
 		stub.setYearSchoolCompleted(entity.getYearSchoolCompleted());
+		stub.setChessn(entity.getChessn());
+		stub.setFeeHelpEligible(Boolean.TRUE.equals(entity.getFeeHelpEligible()));
+		stub.setSpecialNeedsAssistance(entity.getSpecialNeedsAssistance());
+		if (entity.getCitizenship() != null) {
+			stub.setCitizenship(entity.getCitizenship().getDatabaseValue());
+		} else {
+			stub.setCitizenship(StudentCitizenship.NO_INFORMATION.getDatabaseValue());
+		}
 		return stub;
 	}
 }

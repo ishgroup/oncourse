@@ -48,7 +48,7 @@
                  materials_textile="materials_textile"
                  minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
                  startingMinutePerSession="1" timeZone="timeZone" isDistantLearningCourse="0" expectedHours="2.0"
-                 maximumDays="3"
+                 maximumDays="3" attendanceType="0" feeHelpClass="0" reportingPeriod="1" censusDate="2011-10-16 01:55:59.0"
             />
 
     <Session id="1" collegeId="3" courseClassId="1" roomId="1" angelId="2" startDate="2011-10-12 00:55:59.0"
@@ -57,7 +57,8 @@
 
     <Student id="1" angelId="2" countryOfBirthId="1" languageId="1" collegeId="3" disabilityType="1" englishProficiency="1"
              highestSchoolLevel="1" concessionType="1" indigenousStatus="1" isOverseasClient="1"
-             isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1" yearSchoolCompleted="1" created="2011-09-12 00:56:00.0"/>
+             isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1"
+             yearSchoolCompleted="1" created="2011-09-12 00:56:00.0" feeHelpEligible="0" citizenship="9" chessn="A123456789" specialNeedsAssistance="1"/>
 
     <SessionModule
             id="1" collegeId="3" angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 01:02:00.0"
@@ -152,7 +153,9 @@
 
     <Enrolment id="1" angelId="2" source="W" collegeId="3" courseClassId="1"
                studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="2" reasonForStudy="1"/>
+               status="2" reasonForStudy="1" creditFOEId="1234" creditLevel="0" creditOfferedValue="1234"
+               creditProvider="ABCD" creditUsedValue="1234" creditType="0" creditProviderType="0" feeStatus="201"
+               creditTotal="0"/>
                
 	<CorporatePass id="1" angelId="2" collegeId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" expiryDate="2112-02-03 09:18:09"
 				invoiceEmail="test@test.test" password="test" contactId="1"/>
