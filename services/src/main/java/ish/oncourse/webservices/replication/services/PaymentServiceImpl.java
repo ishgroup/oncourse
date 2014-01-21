@@ -23,6 +23,9 @@ import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -151,6 +154,18 @@ public class PaymentServiceImpl implements InternalPaymentService {
 				int availPlaces = clazz.getMaximumPlaces() - clazz.getValidEnrolments().size();
 				if (availPlaces < 0) {
 					logger.info(String.format("No places available for courseClass:%s.", clazz.getId()));
+					isPlacesAvailable = false;
+					break;
+				}
+				//check that no duplicated enrolments exist
+				Expression studentEnrolment = ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, clazz)
+					.andExp(ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, Arrays.asList(Enrolment.VALID_ENROLMENTS)))
+						.andExp(ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, enrolment.getStudent()));
+				SelectQuery studentClassEnrolments = new SelectQuery(Enrolment.class, studentEnrolment);
+				List<Enrolment> studentEnrolments = newContext.performQuery(studentClassEnrolments);
+				//we use this flag also to say about duplicated student enrolments
+				//see 18618
+				if (studentEnrolments.size() > 1) {
 					isPlacesAvailable = false;
 					break;
 				}
