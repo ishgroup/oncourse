@@ -10,6 +10,7 @@ import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.common.types.StudentCitizenship;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.College;
@@ -31,10 +32,13 @@ import ish.oncourse.model.WaitingList;
 public abstract class _Student extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
+    public static final String CHESSN_PROPERTY = "chessn";
+    public static final String CITIZENSHIP_PROPERTY = "citizenship";
     public static final String CONCESSION_TYPE_PROPERTY = "concessionType";
     public static final String CREATED_PROPERTY = "created";
     public static final String DISABILITY_TYPE_PROPERTY = "disabilityType";
     public static final String ENGLISH_PROFICIENCY_PROPERTY = "englishProficiency";
+    public static final String FEE_HELP_ELIGIBLE_PROPERTY = "feeHelpEligible";
     public static final String HIGHEST_SCHOOL_LEVEL_PROPERTY = "highestSchoolLevel";
     public static final String INDIGENOUS_STATUS_PROPERTY = "indigenousStatus";
     public static final String IS_OVERSEAS_CLIENT_PROPERTY = "isOverseasClient";
@@ -42,6 +46,7 @@ public abstract class _Student extends CayenneDataObject {
     public static final String LABOUR_FORCE_TYPE_PROPERTY = "labourForceType";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String PRIOR_EDUCATION_CODE_PROPERTY = "priorEducationCode";
+    public static final String SPECIAL_NEEDS_ASSISTANCE_PROPERTY = "specialNeedsAssistance";
     public static final String YEAR_SCHOOL_COMPLETED_PROPERTY = "yearSchoolCompleted";
     public static final String ATTENDANCES_PROPERTY = "attendances";
     public static final String CERTIFICATES_PROPERTY = "certificates";
@@ -63,6 +68,20 @@ public abstract class _Student extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
+    }
+
+    public void setChessn(String chessn) {
+        writeProperty("chessn", chessn);
+    }
+    public String getChessn() {
+        return (String)readProperty("chessn");
+    }
+
+    public void setCitizenship(StudentCitizenship citizenship) {
+        writeProperty("citizenship", citizenship);
+    }
+    public StudentCitizenship getCitizenship() {
+        return (StudentCitizenship)readProperty("citizenship");
     }
 
     public void setConcessionType(Integer concessionType) {
@@ -91,6 +110,13 @@ public abstract class _Student extends CayenneDataObject {
     }
     public AvetmissStudentEnglishProficiency getEnglishProficiency() {
         return (AvetmissStudentEnglishProficiency)readProperty("englishProficiency");
+    }
+
+    public void setFeeHelpEligible(Boolean feeHelpEligible) {
+        writeProperty("feeHelpEligible", feeHelpEligible);
+    }
+    public Boolean getFeeHelpEligible() {
+        return (Boolean)readProperty("feeHelpEligible");
     }
 
     public void setHighestSchoolLevel(AvetmissStudentSchoolLevel highestSchoolLevel) {
@@ -140,6 +166,13 @@ public abstract class _Student extends CayenneDataObject {
     }
     public AvetmissStudentPriorEducation getPriorEducationCode() {
         return (AvetmissStudentPriorEducation)readProperty("priorEducationCode");
+    }
+
+    public void setSpecialNeedsAssistance(Integer specialNeedsAssistance) {
+        writeProperty("specialNeedsAssistance", specialNeedsAssistance);
+    }
+    public Integer getSpecialNeedsAssistance() {
+        return (Integer)readProperty("specialNeedsAssistance");
     }
 
     public void setYearSchoolCompleted(Integer yearSchoolCompleted) {

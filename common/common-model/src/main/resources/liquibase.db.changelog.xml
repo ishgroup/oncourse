@@ -1726,4 +1726,79 @@
         <addUniqueConstraint tableName="ProductItem" columnNames="collegeId,code" constraintName="unique_code_constraint"/>
     </changeSet>
 
+    <changeSet id="118" author="viacheslav" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="CourseClass" columnName="attendanceType"/>
+                <columnExists tableName="CourseClass" columnName="feeHelpClass"/>
+                <columnExists tableName="CourseClass" columnName="reportingPeriod"/>
+                <columnExists tableName="CourseClass" columnName="censusDate"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="CourseClass">
+            <column name="attendanceType" type="INTEGER" defaultValueNumeric="0"/>
+            <column name="feeHelpClass" type="TINYINT(1)" defaultValueNumeric="0"/>
+            <column name="reportingPeriod" type="INTEGER"/>
+            <column name="censusDate" type="DATETIME"/>
+        </addColumn>
+
+        <sql>
+            update CourseClass set attendanceType = 0 where attendanceType is null;
+            update CourseClass set feeHelpClass = 0 where feeHelpClass is null;
+        </sql>
+    </changeSet>
+
+    <changeSet id="119" author="viacheslav" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="Student" columnName="chessn"/>
+                <columnExists tableName="Student" columnName="feeHelpEligible"/>
+                <columnExists tableName="Student" columnName="specialNeedsAssistance"/>
+                <columnExists tableName="Student" columnName="citizenship"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="Student">
+            <column name="chessn" type="VARCHAR(10)"/>
+            <column name="feeHelpEligible" type="TINYINT(1)" defaultValueNumeric="0"/>
+            <column name="specialNeedsAssistance" type="INTEGER"/>
+            <column name="citizenship" type="INTEGER" defaultValueNumeric="9"/>
+        </addColumn>
+
+        <sql>
+            update Student set feeHelpEligible = 0 where feeHelpEligible is null;
+            update Student set citizenship = 9 where citizenship is null;
+        </sql>
+    </changeSet>
+
+    <changeSet id="120" author="viacheslav" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="Enrolment" columnName="creditFOEId"/>
+                <columnExists tableName="Enrolment" columnName="creditLevel"/>
+                <columnExists tableName="Enrolment" columnName="creditOfferedValue"/>
+                <columnExists tableName="Enrolment" columnName="creditProvider"/>
+                <columnExists tableName="Enrolment" columnName="creditUsedValue"/>
+                <columnExists tableName="Enrolment" columnName="creditType"/>
+                <columnExists tableName="Enrolment" columnName="creditProviderType"/>
+                <columnExists tableName="Enrolment" columnName="feeStatus"/>
+                <columnExists tableName="Enrolment" columnName="creditTotal"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="Enrolment">
+            <column name="creditFOEId" type="VARCHAR(4)"/>
+            <column name="creditLevel" type="INTEGER"/>
+            <column name="creditOfferedValue" type="VARCHAR(4)"/>
+            <column name="creditProvider" type="VARCHAR(4)"/>
+            <column name="creditUsedValue" type="VARCHAR(4)"/>
+            <column name="creditType" type="INTEGER"/>
+            <column name="creditProviderType" type="INTEGER"/>
+            <column name="feeStatus" type="INTEGER"/>
+            <column name="creditTotal" type="INTEGER"/>
+        </addColumn>
+
+    </changeSet>
+
 </databaseChangeLog>

@@ -88,6 +88,12 @@ public class Student extends _Student implements Queueable {
 			setIsOverseasClient(Boolean.FALSE);
 		if (getPriorEducationCode() == null)
 			setPriorEducationCode(AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION);
+		if (getFeeHelpEligible() == null) {
+			setFeeHelpEligible(Boolean.FALSE);
+		}
+		if (getCitizenship() == null) {
+			setCitizenship(StudentCitizenship.NO_INFORMATION);
+		}
 	}
 
 	@Override

@@ -213,6 +213,8 @@
 	</db-entity>
 	<db-entity name="CourseClass" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="attendanceType" type="INTEGER"/>
+		<db-attribute name="censusDate" type="TIMESTAMP"/>
 		<db-attribute name="code" type="VARCHAR" length="32"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="countOfSessions" type="INTEGER" length="10"/>
@@ -225,6 +227,7 @@
 		<db-attribute name="expectedHours" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="feeExGst" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="feeGst" type="DECIMAL" length="14" scale="2"/>
+		<db-attribute name="feeHelpClass" type="SMALLINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isCancelled" type="BIT"/>
 		<db-attribute name="isDistantLearningCourse" type="SMALLINT" isMandatory="true"/>
@@ -236,6 +239,7 @@
 		<db-attribute name="minimumPlaces" type="INTEGER" length="10"/>
 		<db-attribute name="minutesPerSession" type="INTEGER" length="10"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="reportingPeriod" type="INTEGER"/>
 		<db-attribute name="roomId" type="BIGINT" length="19"/>
 		<db-attribute name="sessionDetail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="sessionDetail_textile" type="LONGVARCHAR" length="16777215"/>
@@ -342,6 +346,15 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="creditFOEId" type="VARCHAR" length="4"/>
+		<db-attribute name="creditLevel" type="INTEGER"/>
+		<db-attribute name="creditOfferedValue" type="VARCHAR" length="4"/>
+		<db-attribute name="creditProvider" type="VARCHAR" length="4"/>
+		<db-attribute name="creditProviderType" type="INTEGER"/>
+		<db-attribute name="creditTotal" type="INTEGER"/>
+		<db-attribute name="creditType" type="INTEGER"/>
+		<db-attribute name="creditUsedValue" type="VARCHAR" length="4"/>
+		<db-attribute name="feeStatus" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="reasonForStudy" type="INTEGER" length="10"/>
@@ -783,12 +796,15 @@
 	</db-entity>
 	<db-entity name="Student" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="chessn" type="VARCHAR" length="10"/>
+		<db-attribute name="citizenship" type="INTEGER"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="concessionType" type="INTEGER" length="10"/>
 		<db-attribute name="countryOfBirthId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="disabilityType" type="INTEGER" length="10"/>
 		<db-attribute name="englishProficiency" type="INTEGER" length="10"/>
+		<db-attribute name="feeHelpEligible" type="SMALLINT"/>
 		<db-attribute name="highestSchoolLevel" type="INTEGER" length="10"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="indigenousStatus" type="INTEGER" length="10"/>
@@ -798,6 +814,7 @@
 		<db-attribute name="languageId" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="priorEducationCode" type="INTEGER" length="10"/>
+		<db-attribute name="specialNeedsAssistance" type="INTEGER"/>
 		<db-attribute name="yearSchoolCompleted" type="INTEGER" length="10"/>
 	</db-entity>
 	<db-entity name="StudentConcession" catalog="willow_college">
@@ -1254,7 +1271,9 @@
 	</obj-entity>
 	<obj-entity name="CourseClass" className="ish.oncourse.model.CourseClass" dbEntityName="CourseClass">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="attendanceType" type="ish.common.types.AttendanceType" db-attribute-path="attendanceType"/>
 		<obj-attribute name="cancelled" type="boolean" db-attribute-path="isCancelled"/>
+		<obj-attribute name="censusDate" type="java.util.Date" db-attribute-path="censusDate"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="countOfSessions" type="java.lang.Integer" db-attribute-path="countOfSessions"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -1265,6 +1284,7 @@
 		<obj-attribute name="expectedHours" type="java.math.BigDecimal" db-attribute-path="expectedHours"/>
 		<obj-attribute name="feeExGst" type="ish.math.Money" db-attribute-path="feeExGst"/>
 		<obj-attribute name="feeGst" type="ish.math.Money" db-attribute-path="feeGst"/>
+		<obj-attribute name="feeHelpClass" type="java.lang.Boolean" db-attribute-path="feeHelpClass"/>
 		<obj-attribute name="isDistantLearningCourse" type="java.lang.Boolean" db-attribute-path="isDistantLearningCourse"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
@@ -1274,6 +1294,7 @@
 		<obj-attribute name="minimumPlaces" type="java.lang.Integer" db-attribute-path="minimumPlaces"/>
 		<obj-attribute name="minutesPerSession" type="java.lang.Integer" db-attribute-path="minutesPerSession"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="reportingPeriod" type="java.lang.Integer" db-attribute-path="reportingPeriod"/>
 		<obj-attribute name="sessionDetail" type="java.lang.String" db-attribute-path="sessionDetail"/>
 		<obj-attribute name="sessionDetailTextile" type="java.lang.String" db-attribute-path="sessionDetail_textile"/>
 		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="startDate"/>
@@ -1353,6 +1374,15 @@
 	<obj-entity name="Enrolment" className="ish.oncourse.model.Enrolment" dbEntityName="Enrolment">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="creditFOEId" type="java.lang.String" db-attribute-path="creditFOEId"/>
+		<obj-attribute name="creditLevel" type="ish.common.types.CreditLevel" db-attribute-path="creditLevel"/>
+		<obj-attribute name="creditOfferedValue" type="java.lang.String" db-attribute-path="creditOfferedValue"/>
+		<obj-attribute name="creditProvider" type="java.lang.String" db-attribute-path="creditProvider"/>
+		<obj-attribute name="creditProviderType" type="ish.common.types.CreditProviderType" db-attribute-path="creditProviderType"/>
+		<obj-attribute name="creditTotal" type="ish.common.types.RecognitionOfPriorLearningIndicator" db-attribute-path="creditTotal"/>
+		<obj-attribute name="creditType" type="ish.common.types.CreditType" db-attribute-path="creditType"/>
+		<obj-attribute name="creditUsedValue" type="java.lang.String" db-attribute-path="creditUsedValue"/>
+		<obj-attribute name="feeStatus" type="ish.common.types.StudentStatusForUnitOfStudy" db-attribute-path="feeStatus"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="reasonForStudy" type="java.lang.Integer" db-attribute-path="reasonForStudy"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
@@ -1740,10 +1770,13 @@
 	</obj-entity>
 	<obj-entity name="Student" className="ish.oncourse.model.Student" dbEntityName="Student">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="chessn" type="java.lang.String" db-attribute-path="chessn"/>
+		<obj-attribute name="citizenship" type="ish.common.types.StudentCitizenship" db-attribute-path="citizenship"/>
 		<obj-attribute name="concessionType" type="java.lang.Integer" db-attribute-path="concessionType"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="disabilityType" type="ish.common.types.AvetmissStudentDisabilityType" db-attribute-path="disabilityType"/>
 		<obj-attribute name="englishProficiency" type="ish.common.types.AvetmissStudentEnglishProficiency" db-attribute-path="englishProficiency"/>
+		<obj-attribute name="feeHelpEligible" type="java.lang.Boolean" db-attribute-path="feeHelpEligible"/>
 		<obj-attribute name="highestSchoolLevel" type="ish.common.types.AvetmissStudentSchoolLevel" db-attribute-path="highestSchoolLevel"/>
 		<obj-attribute name="indigenousStatus" type="ish.common.types.AvetmissStudentIndigenousStatus" db-attribute-path="indigenousStatus"/>
 		<obj-attribute name="isOverseasClient" type="java.lang.Boolean" db-attribute-path="isOverseasClient"/>
@@ -1751,6 +1784,7 @@
 		<obj-attribute name="labourForceType" type="java.lang.Integer" db-attribute-path="labourForceType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="priorEducationCode" type="ish.common.types.AvetmissStudentPriorEducation" db-attribute-path="priorEducationCode"/>
+		<obj-attribute name="specialNeedsAssistance" type="java.lang.Integer" db-attribute-path="specialNeedsAssistance"/>
 		<obj-attribute name="yearSchoolCompleted" type="java.lang.Integer" db-attribute-path="yearSchoolCompleted"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>

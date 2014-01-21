@@ -5,8 +5,13 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.CreditLevel;
+import ish.common.types.CreditProviderType;
+import ish.common.types.CreditType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
+import ish.common.types.RecognitionOfPriorLearningIndicator;
+import ish.common.types.StudentStatusForUnitOfStudy;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.InvoiceLine;
@@ -24,6 +29,15 @@ public abstract class _Enrolment extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
+    public static final String CREDIT_FOEID_PROPERTY = "creditFOEId";
+    public static final String CREDIT_LEVEL_PROPERTY = "creditLevel";
+    public static final String CREDIT_OFFERED_VALUE_PROPERTY = "creditOfferedValue";
+    public static final String CREDIT_PROVIDER_PROPERTY = "creditProvider";
+    public static final String CREDIT_PROVIDER_TYPE_PROPERTY = "creditProviderType";
+    public static final String CREDIT_TOTAL_PROPERTY = "creditTotal";
+    public static final String CREDIT_TYPE_PROPERTY = "creditType";
+    public static final String CREDIT_USED_VALUE_PROPERTY = "creditUsedValue";
+    public static final String FEE_STATUS_PROPERTY = "feeStatus";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String REASON_FOR_STUDY_PROPERTY = "reasonForStudy";
     public static final String SOURCE_PROPERTY = "source";
@@ -38,107 +52,170 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty(ANGEL_ID_PROPERTY, angelId);
+        writeProperty("angelId", angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty(ANGEL_ID_PROPERTY);
+        return (Long)readProperty("angelId");
     }
 
     public void setCreated(Date created) {
-        writeProperty(CREATED_PROPERTY, created);
+        writeProperty("created", created);
     }
     public Date getCreated() {
-        return (Date)readProperty(CREATED_PROPERTY);
+        return (Date)readProperty("created");
+    }
+
+    public void setCreditFOEId(String creditFOEId) {
+        writeProperty("creditFOEId", creditFOEId);
+    }
+    public String getCreditFOEId() {
+        return (String)readProperty("creditFOEId");
+    }
+
+    public void setCreditLevel(CreditLevel creditLevel) {
+        writeProperty("creditLevel", creditLevel);
+    }
+    public CreditLevel getCreditLevel() {
+        return (CreditLevel)readProperty("creditLevel");
+    }
+
+    public void setCreditOfferedValue(String creditOfferedValue) {
+        writeProperty("creditOfferedValue", creditOfferedValue);
+    }
+    public String getCreditOfferedValue() {
+        return (String)readProperty("creditOfferedValue");
+    }
+
+    public void setCreditProvider(String creditProvider) {
+        writeProperty("creditProvider", creditProvider);
+    }
+    public String getCreditProvider() {
+        return (String)readProperty("creditProvider");
+    }
+
+    public void setCreditProviderType(CreditProviderType creditProviderType) {
+        writeProperty("creditProviderType", creditProviderType);
+    }
+    public CreditProviderType getCreditProviderType() {
+        return (CreditProviderType)readProperty("creditProviderType");
+    }
+
+    public void setCreditTotal(RecognitionOfPriorLearningIndicator creditTotal) {
+        writeProperty("creditTotal", creditTotal);
+    }
+    public RecognitionOfPriorLearningIndicator getCreditTotal() {
+        return (RecognitionOfPriorLearningIndicator)readProperty("creditTotal");
+    }
+
+    public void setCreditType(CreditType creditType) {
+        writeProperty("creditType", creditType);
+    }
+    public CreditType getCreditType() {
+        return (CreditType)readProperty("creditType");
+    }
+
+    public void setCreditUsedValue(String creditUsedValue) {
+        writeProperty("creditUsedValue", creditUsedValue);
+    }
+    public String getCreditUsedValue() {
+        return (String)readProperty("creditUsedValue");
+    }
+
+    public void setFeeStatus(StudentStatusForUnitOfStudy feeStatus) {
+        writeProperty("feeStatus", feeStatus);
+    }
+    public StudentStatusForUnitOfStudy getFeeStatus() {
+        return (StudentStatusForUnitOfStudy)readProperty("feeStatus");
     }
 
     public void setModified(Date modified) {
-        writeProperty(MODIFIED_PROPERTY, modified);
+        writeProperty("modified", modified);
     }
     public Date getModified() {
-        return (Date)readProperty(MODIFIED_PROPERTY);
+        return (Date)readProperty("modified");
     }
 
     public void setReasonForStudy(Integer reasonForStudy) {
-        writeProperty(REASON_FOR_STUDY_PROPERTY, reasonForStudy);
+        writeProperty("reasonForStudy", reasonForStudy);
     }
     public Integer getReasonForStudy() {
-        return (Integer)readProperty(REASON_FOR_STUDY_PROPERTY);
+        return (Integer)readProperty("reasonForStudy");
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty(SOURCE_PROPERTY, source);
+        writeProperty("source", source);
     }
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty(SOURCE_PROPERTY);
+        return (PaymentSource)readProperty("source");
     }
 
     public void setStatus(EnrolmentStatus status) {
-        writeProperty(STATUS_PROPERTY, status);
+        writeProperty("status", status);
     }
     public EnrolmentStatus getStatus() {
-        return (EnrolmentStatus)readProperty(STATUS_PROPERTY);
+        return (EnrolmentStatus)readProperty("status");
     }
 
     public void setCollege(College college) {
-        setToOneTarget(COLLEGE_PROPERTY, college, true);
+        setToOneTarget("college", college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty(COLLEGE_PROPERTY);
+        return (College)readProperty("college");
     }
 
 
     public void setCourseClass(CourseClass courseClass) {
-        setToOneTarget(COURSE_CLASS_PROPERTY, courseClass, true);
+        setToOneTarget("courseClass", courseClass, true);
     }
 
     public CourseClass getCourseClass() {
-        return (CourseClass)readProperty(COURSE_CLASS_PROPERTY);
+        return (CourseClass)readProperty("courseClass");
     }
 
 
     public void addToInvoiceLines(InvoiceLine obj) {
-        addToManyTarget(INVOICE_LINES_PROPERTY, obj, true);
+        addToManyTarget("invoiceLines", obj, true);
     }
     public void removeFromInvoiceLines(InvoiceLine obj) {
-        removeToManyTarget(INVOICE_LINES_PROPERTY, obj, true);
+        removeToManyTarget("invoiceLines", obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<InvoiceLine> getInvoiceLines() {
-        return (List<InvoiceLine>)readProperty(INVOICE_LINES_PROPERTY);
+        return (List<InvoiceLine>)readProperty("invoiceLines");
     }
 
 
     public void addToOutcomes(Outcome obj) {
-        addToManyTarget(OUTCOMES_PROPERTY, obj, true);
+        addToManyTarget("outcomes", obj, true);
     }
     public void removeFromOutcomes(Outcome obj) {
-        removeToManyTarget(OUTCOMES_PROPERTY, obj, true);
+        removeToManyTarget("outcomes", obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Outcome> getOutcomes() {
-        return (List<Outcome>)readProperty(OUTCOMES_PROPERTY);
+        return (List<Outcome>)readProperty("outcomes");
     }
 
 
     public void setStudent(Student student) {
-        setToOneTarget(STUDENT_PROPERTY, student, true);
+        setToOneTarget("student", student, true);
     }
 
     public Student getStudent() {
-        return (Student)readProperty(STUDENT_PROPERTY);
+        return (Student)readProperty("student");
     }
 
 
     public void addToSurveys(Survey obj) {
-        addToManyTarget(SURVEYS_PROPERTY, obj, true);
+        addToManyTarget("surveys", obj, true);
     }
     public void removeFromSurveys(Survey obj) {
-        removeToManyTarget(SURVEYS_PROPERTY, obj, true);
+        removeToManyTarget("surveys", obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Survey> getSurveys() {
-        return (List<Survey>)readProperty(SURVEYS_PROPERTY);
+        return (List<Survey>)readProperty("surveys");
     }
 
 
