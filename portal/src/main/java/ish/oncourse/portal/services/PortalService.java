@@ -47,11 +47,6 @@ public class PortalService implements IPortalService{
     @Inject
     private IBinaryDataService binaryDataService;
 
-    @Inject
-    private IAuthenticationService authenticationService;
-
-
-
     @Override
     public JSONObject getSession(Session session) {
         JSONObject result = new JSONObject();
@@ -60,8 +55,7 @@ public class PortalService implements IPortalService{
         return result;
     }
 
-    public JSONObject getAttendences(Session session)
-   {
+    public JSONObject getAttendences(Session session) {
        List<Attendance> attendances = session.getAttendances();
 
        JSONObject result = new JSONObject();
@@ -72,21 +66,18 @@ public class PortalService implements IPortalService{
             result.put(String.format("%s",attendance.getStudent().getId()),String.format("%s",attendance.getAttendanceType()));
         }
 
-
-
         return result;
     }
 
 
 
-    public JSONObject getNearesSessionIndex(Integer i)
-   {
+	public JSONObject getNearesSessionIndex(Integer i) {
 
         JSONObject result = new JSONObject();
         result.append("nearesIndex", i);
 
         return result;
-   }
+	}
 
 
     /**
@@ -135,7 +126,7 @@ public class PortalService implements IPortalService{
     }
 
     @Override
-    public boolean isHasResources(List<CourseClass> courseClasses) {
+    public boolean hasResources(Contact contact, List<CourseClass> courseClasses) {
         boolean result=false;
 
         for(CourseClass courseClass : courseClasses){
@@ -145,7 +136,7 @@ public class PortalService implements IPortalService{
             }
         }
 
-		if(authenticationService.isTutor()) {
+		if(contact.getTutor() != null) {
 			  if(!getCommonTutorsBinaryInfo().isEmpty())
 				  result = true;
 		}
@@ -374,16 +365,12 @@ public class PortalService implements IPortalService{
 	}
 
 	@Override
-	public boolean isHasResult(CourseClass courseClass) {
+	public boolean hasResult(Contact user, CourseClass courseClass) {
 
-		Student student = authenticationService.getUser().getStudent();
+		Student student = user.getStudent();
 		Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY , student);
 		List<Enrolment> enrolments = exp.filterObjects(courseClass.getValidEnrolments());
 
-		if (enrolments.isEmpty()) {
-			return false;
-		}
-
-		return true;
+		return !enrolments.isEmpty();
 	}
 }

@@ -61,7 +61,7 @@ public class Results {
     }
 
     public boolean isVisible(CourseClass courseClass) {
-		return portalService.isHasResult(courseClass);
+		return portalService.hasResult(authenticationService.getUser(), courseClass);
     }
 
 }

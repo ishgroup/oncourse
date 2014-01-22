@@ -10,11 +10,6 @@ import org.apache.tapestry5.json.JSONObject;
 
 import java.util.List;
 
-/**
- * User: artem
- * Date: 10/25/13
- * Time: 2:53 PM
- */
 public interface IPortalService {
 
     public JSONObject getSession(Session session);
@@ -26,9 +21,22 @@ public interface IPortalService {
 
     public boolean isHistoryEnabled();
 
-    boolean isHasResources(List<CourseClass> courseClasses);
+	/**
+	 * return true if courseClasses has attached for contact
+	 *
+	 * @param contact
+	 * @param courseClasses
+	 * @return
+	 */
+    boolean hasResources(Contact contact, List<CourseClass> courseClasses);
 
-	boolean isHasResult(CourseClass courseClass);
+	/**
+	 * return true if contact has valid enrolment on the courseClass
+	 * @param contact
+	 * @param courseClass
+	 * @return
+	 */
+	boolean hasResult(Contact contact, CourseClass courseClass);
 
 	public List<BinaryInfo> getCommonTutorsBinaryInfo();
 

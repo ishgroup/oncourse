@@ -68,7 +68,7 @@ public class Class {
 
 	public boolean isHasResults(){
 		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
-		return portalService.isHasResult(courseClass);
+		return portalService.hasResult(authenticationService.getUser(), courseClass);
 	}
 
 	public boolean isHasResources(){

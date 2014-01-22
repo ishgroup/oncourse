@@ -121,7 +121,7 @@ public class Menu {
 
 
     public boolean isHasResources(){
-        return portalService.isHasResources(courseClasses);
+        return portalService.hasResources(authenticationService.getUser(), courseClasses);
     }
 
 
