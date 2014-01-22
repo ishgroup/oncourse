@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-<t:if test="visible">
+
 <div id="class-results" class="tab-pane">
     <ul class="list-unstyled result-content">
         <li>
@@ -7,23 +7,43 @@
                 <p>Assessments are made against units of competency from the ${qualification.title} <a href="http://training.gov.au/Training/Details/${qualification.nationalCode}" target="_blank"> ${qualification.nationalCode}</a>.</p>
             </t:if>
             <t:unless test="qualification">
-                <p>This course does not have a qualification</p>
+                <p>${getDefaultTitle()}</p>
             </t:unless>
 
-            <t:if test="hasModules">
-            <ul class="list-unstyled result-list">
+            <t:loop source="enrolments" value="enrolment">
 
-                <t:loop source="modules" value="module">
-                     <li>
-                         <span>${module.title} (<a href="http://training.gov.au/Training/Details/${module.nationalCode}">${module.nationalCode}</a>)</span>
-                         <strong class="${getOutComeClass(module.id)} tooltip-info" title="" data-original-title="${getOutComeDisplayName(module.id)}">${getOutComeResult(module.id)}</strong>
-                     </li>
-                </t:loop>
-            </ul>
-            </t:if>
+                <t:if test="hasModules">
+                    <ul class="list-unstyled result-list">
 
+                        <t:loop source="enrolment.outcomes" value="outcome">
+                            <li>
+                                <span>${outcome.module.title} (<a href="http://training.gov.au/Training/Details/${outcome.module.nationalCode}">${outcome.module.nationalCode}</a>)</span>
+                                <strong class="${getOutComeClass()} tooltip-info" title="" data-original-title="${getOutComeDisplayName()}">${getOutComeResult()}</strong>
+                            </li>
+                        </t:loop>
+                    </ul>
+                </t:if>
+
+                <t:unless test="hasModules">
+                    <ul class="list-unstyled result-list">
+                        <t:loop source="enrolment.outcomes" value="outcome">
+                        <li>
+                            <span>${courseClass.course.name}</span>
+                            <t:if test = "notSetStatus" negate="true">
+                                <t:if test = "completed">
+                                    <strong class="text-success tooltip-info" title="" data-original-title="${getOutComeDisplayName()}"> PASS</strong>
+                                </t:if>
+                                <t:unless test = "completed">
+                                    <strong class="text-danger tooltip-info" title="" data-original-title="${getOutComeDisplayName()}"> FAILED</strong>
+                                </t:unless>
+                            </t:if>
+                        </li>
+                        </t:loop>
+                    </ul>
+                </t:unless>
+
+            </t:loop>
         </li>
     </ul>
 </div>
-</t:if>
 </t:container>

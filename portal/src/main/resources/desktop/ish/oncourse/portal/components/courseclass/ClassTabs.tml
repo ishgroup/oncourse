@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-    <t:if test="classWithModules">
+    <t:if test="hasResults">
         <li><a data-toggle="tab" href="#class-results">Results</a></li>
     </t:if>
     <t:if test="hasResources">

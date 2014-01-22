@@ -1,7 +1,8 @@
 package ish.oncourse.portal.pages;
 
+
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
+
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
@@ -41,7 +42,7 @@ public class Results {
     @SetupRender
     void  setupRender(){
 
-        courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
+        courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.ALL);
     }
 
     public String getDate(CourseClass courseClass)
@@ -59,24 +60,8 @@ public class Results {
                 FormatUtils.getDateFormat("dd MMMMMM yyyy", timeZone).format(courseClass.getEndDate()));
     }
 
-
-
-
-    public boolean isVisible(CourseClass courseClass){
-
-        boolean result=false;
-
-        if(authenticationService.getUser().getStudent()!=null){
-            for(Enrolment enrolment : authenticationService.getUser().getStudent().getEnrolments()){
-                if(enrolment.getCourseClass().getId().equals(courseClass.getId())){
-                    result=true;
-                    break;
-                }
-            }
-        }
-
-        return (!courseClass.getCourse().getModules().isEmpty() || courseClass.getCourse().getQualification()!=null) &&  result;
+    public boolean isVisible(CourseClass courseClass) {
+		return portalService.isHasResult(courseClass);
     }
-
 
 }

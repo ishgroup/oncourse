@@ -2,6 +2,7 @@ package ish.oncourse.portal.services;
 
 import ish.common.types.AttachmentInfoVisibility;
 import ish.common.types.EnrolmentStatus;
+import ish.common.types.OutcomeStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.binary.IBinaryDataService;
@@ -24,10 +25,7 @@ import org.apache.tapestry5.json.JSONObject;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * User: artem
@@ -152,22 +150,6 @@ public class PortalService implements IPortalService{
 				  result = true;
 		}
 
-        return result;
-    }
-
-    @Override
-    public boolean isHasResult() {
-        boolean result=false;
-
-        if(authenticationService.getUser().getStudent()!=null){
-            for(Enrolment enrolment : authenticationService.getUser().getStudent().getEnrolments()){
-                Course course = enrolment.getCourseClass().getCourse();
-                if((!course.getModules().isEmpty() || course.getQualification()!=null) && enrolment.getStatus().equals(EnrolmentStatus.SUCCESS)){
-                    result = true;
-                    break;
-                }
-            }
-        }
         return result;
     }
 
@@ -391,5 +373,17 @@ public class PortalService implements IPortalService{
 		return sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp));
 	}
 
+	@Override
+	public boolean isHasResult(CourseClass courseClass) {
 
+		Student student = authenticationService.getUser().getStudent();
+		Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY , student);
+		List<Enrolment> enrolments = exp.filterObjects(courseClass.getValidEnrolments());
+
+		if (enrolments.isEmpty()) {
+			return false;
+		}
+
+		return true;
+	}
 }

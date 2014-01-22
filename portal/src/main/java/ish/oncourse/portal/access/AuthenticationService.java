@@ -49,7 +49,7 @@ public class AuthenticationService implements IAuthenticationService {
 		query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, lastName));
 
 		@SuppressWarnings("unchecked")
-		List<Contact> users = cayenneService.newContext().performQuery(query);
+		List<Contact> users = cayenneService.sharedContext().performQuery(query);
 		return users;
 	}
 	
@@ -71,7 +71,7 @@ public class AuthenticationService implements IAuthenticationService {
 		query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, companyName));
 
 		@SuppressWarnings("unchecked")
-		List<Contact> users = cayenneService.newContext().performQuery(query);
+		List<Contact> users = cayenneService.sharedContext().performQuery(query);
 		return users;
 	}
 
@@ -92,7 +92,7 @@ public class AuthenticationService implements IAuthenticationService {
 		query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, lastName));
 
 		@SuppressWarnings("unchecked")
-		List<Contact> users = cayenneService.newContext().performQuery(query);
+		List<Contact> users = cayenneService.sharedContext().performQuery(query);
 		return users;
 	}
 	
@@ -110,7 +110,7 @@ public class AuthenticationService implements IAuthenticationService {
 		query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, companyName));
 
 		@SuppressWarnings("unchecked")
-		List<Contact> users = cayenneService.newContext().performQuery(query);
+		List<Contact> users = cayenneService.sharedContext().performQuery(query);
 		return users;
 	}
 

@@ -2,14 +2,18 @@ package ish.oncourse.portal.components.courseclass;
 
 
 
+
 import ish.common.types.OutcomeStatus;
 import ish.oncourse.model.*;
-
 import ish.oncourse.portal.access.IAuthenticationService;
 
+import ish.oncourse.services.persistence.ICayenneService;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.List;
@@ -21,6 +25,12 @@ import java.util.List;
  */
 public class ClassResults {
 
+	private static final String KEY_withoutQualification = "withoutQualification";
+	private static final String KEY_notLinkedToComponents = "notLinkedToComponents";
+
+	@Inject
+	private ICayenneService cayenneService;
+
     @Property
     @Parameter
     private CourseClass courseClass;
@@ -28,63 +38,53 @@ public class ClassResults {
     @Inject
     private IAuthenticationService authenticationService;
 
-    @Property
-    private List<Module> modules;
 
     @Property
-    private Module module;
+    private Outcome outcome;
 
+
+	@Property
+	private List<Enrolment> enrolments;
+
+	@Property
     private Enrolment enrolment;
+
+	@Inject
+	private Messages messages;
 
     @SetupRender
     boolean setupRender() {
 
-         modules=courseClass.getCourse().getModules();
-         courseClass.getValidEnrolments();
+		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
 
-         for (Enrolment enrolment : courseClass.getValidEnrolments())
-             if(enrolment.getStudent().getContact().getId().equals(authenticationService.getUser().getId())){
-                this.enrolment= enrolment;
-                break;
-             }
-      return true;
-     }
+		Student student = authenticationService.getUser().getStudent();
+		Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student);
+		enrolments = exp.filterObjects(courseClass.getValidEnrolments());
 
-
-
-	private OutcomeStatus getOutComeStatus(Long moduleId){
-		for (Outcome outcome : enrolment.getOutcomes()) {
-			Module module = outcome.getModule();
-			if (module != null && module.getId().equals(moduleId) && outcome.getStatus() != null) {
-				return outcome.getStatus();
-			}
-		}
-		return OutcomeStatus.STATUS_NOT_SET;
-	}
-
-
-    public String getOutComeDisplayName(Long moduleId){
-          return  getOutComeStatus(moduleId).getDisplayName();
+		return true;
     }
 
-    public String getOutComeResult(Long moduleId){
-        if(OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(getOutComeStatus(moduleId))){
+    public String getOutComeDisplayName(){
+          return  outcome.getStatus().getDisplayName();
+    }
+
+    public String getOutComeResult(){
+        if(OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(outcome.getStatus())){
             return "PASS";
         }
-        if(OutcomeStatus.STATUS_NOT_SET.equals(getOutComeStatus(moduleId))){
+        if(OutcomeStatus.STATUS_NOT_SET.equals(outcome.getStatus())){
             return "NO RESULT";
         }
         return "FAILED";
 
     }
 
+    public String getOutComeClass(){
 
-    public String getOutComeClass(Long moduleId){
-
-        if(OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(getOutComeStatus(moduleId))){
+        if(OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(outcome.getStatus())){
             return "text-success";
         }
-        if(OutcomeStatus.STATUS_NOT_SET.equals(getOutComeStatus(moduleId))){
+        if(OutcomeStatus.STATUS_NOT_SET.equals(outcome.getStatus())){
             return "text-info";
         }
         return "text-danger";
@@ -94,29 +94,25 @@ public class ClassResults {
 
         if(courseClass.getCourse().getQualification()!=null)
             return courseClass.getCourse().getQualification();
-
         return null;
     }
-
-
-    public boolean isVisible(){
-
-        boolean result=false;
-
-        if(authenticationService.getUser().getStudent()!=null){
-            for(Enrolment enrolment : authenticationService.getUser().getStudent().getEnrolments()){
-                if(enrolment.getCourseClass().getId().equals(courseClass.getId())){
-                    result=true;
-                    break;
-                }
-            }
-        }
-
-        return (!courseClass.getCourse().getModules().isEmpty() || courseClass.getCourse().getQualification()!=null) &&  result;
-    }
-
 
     public boolean isHasModules(){
         return !courseClass.getCourse().getModules().isEmpty();
     }
+
+	public String getDefaultTitle() {
+
+		return isHasModules() ? messages.get(KEY_withoutQualification) : messages.get(KEY_notLinkedToComponents);
+	}
+
+	public boolean isNotSetStatus() {
+
+		return OutcomeStatus.STATUS_NOT_SET.equals(outcome.getStatus());
+	}
+
+	public boolean isCompleted() {
+		return OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED.equals(outcome.getStatus());
+	}
+
 }

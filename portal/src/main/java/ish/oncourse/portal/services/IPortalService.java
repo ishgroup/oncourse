@@ -3,6 +3,7 @@ package ish.oncourse.portal.services;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import org.apache.tapestry5.json.JSONObject;
@@ -27,7 +28,7 @@ public interface IPortalService {
 
     boolean isHasResources(List<CourseClass> courseClasses);
 
-    boolean isHasResult();
+	boolean isHasResult(CourseClass courseClass);
 
 	public List<BinaryInfo> getCommonTutorsBinaryInfo();
 

@@ -126,7 +126,7 @@ public class Menu {
 
 
     public boolean isHasResults(){
-        return portalService.isHasResult();
+        return authenticationService.getUser().getStudent() != null;
     }
 
     public boolean isHistoryEnabled()
