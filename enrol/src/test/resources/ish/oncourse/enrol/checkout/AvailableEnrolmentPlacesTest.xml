@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="1" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0"/>
+
+    <Site id="1" collegeId="1" angelId="1000" isWebVisible="0"
+          created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
+
+    <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+    <Room id="1" collegeId="1" siteId="1" angelId="1000"
+          capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+          name="TestRoom" />
+
+    <Student id="1001" collegeId="1" angelId="1000"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+    <Student id="1002" collegeId="1" angelId="1001"
+             created="2011-09-12 01:02:30.0" modified="2011-09-12 01:02:30.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+    <Student id="1003" collegeId="1" angelId="1002"
+             created="2011-09-12 01:03:00.0" modified="2011-09-12 01:03:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+    <Student id="1004" collegeId="1" angelId="1003"
+             created="2011-09-12 01:03:00.0" modified="2011-09-12 01:03:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+    <Tutor id="1000" collegeId="1" angelId="1000" created="2011-09-12 00:47:26.0"
+           modified="2011-09-12 01:02:00.0" resume="&lt;p&gt;This is mister Putin resume.&lt;/p&gt;"
+           resume_textile="This is mister Putin resume." />
+
+    <Contact id="1000" collegeId="1" tutorId="1000" angelId="1000"
+             countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+             isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir"
+             emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+    <Contact id="1001" collegeId="1" studentId="1001"
+             angelId="1001" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Ledger" givenName="Alex" emailAddress="av@noname.by"
+             dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+    <Contact id="1002" collegeId="1" studentId="1002"
+             angelId="1002" countryId="1" created="2011-09-12 01:02:30.0" isCompany="0"
+             familyName="TestStudent1" givenName="TestStudent1" emailAddress="test@test.au"
+             street="test address" suburb="test suburb" isMarketingViaEmailAllowed="1"
+             isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" />
+    <Contact id="1003" collegeId="1" studentId="1003"
+             angelId="1003" countryId="1" created="2011-09-12 01:03:00.0" isCompany="0"
+             isMale="1" familyName="TestStudent2" givenName="TestStudent2" street="test address2"
+             suburb="test suburb" state="wa" isMarketingViaEmailAllowed="1"
+             isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" />
+    <Contact id="1004" collegeId="1" studentId="1004"
+             angelId="1004" countryId="1" created="2011-09-12 01:03:00.0" isCompany="0"
+             isMale="1" familyName="TestStudent3" givenName="TestStudent3" street="test address2"
+             suburb="test suburb" state="wa" isMarketingViaEmailAllowed="1"
+             isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" />
+
+    <Course id="1001" collegeId="1" angelId="1001" code="AAV"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting" />
+    <Course id="1002" collegeId="1" angelId="1002" code="MSC"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:57:38.0" modified="2011-09-12 00:59:00.0"
+            allowWaitingList="1" name="Microsoft Word" />
+    <Course id="1003" collegeId="1" angelId="1003" code="PPO"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:59:38.0" modified="2011-09-12 01:02:00.0"
+            allowWaitingList="1" name="Adobe Photoshop essentials" />
+
+    <CourseClass id="1001" collegeId="1" code="1" courseId="1001"
+                 roomId="1" angelId="1001" startDate="2011-10-12 00:55:59.0"
+                 endDate="2111-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+    <CourseClass id="1002" collegeId="1" code="2" courseId="1002"
+                 roomId="1" angelId="1002" startDate="2010-09-13 00:58:59.0"
+                 endDate="2011-01-01 01:58:59.0" isWebVisible="1" isCancelled="0"
+                 created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:01.0"
+                 maximumPlaces="4" minimumPlaces="1" countOfSessions="5" deliveryMode="1"
+                 feeExGst="300.00" feeGst="30.00" isDistantLearningCourse="0"/>
+    <CourseClass id="1003" collegeId="1" code="3" courseId="1003"
+                 roomId="1" angelId="1003" startDate="2011-11-03 01:01:59.0"
+                 endDate="2111-11-03 02:01:59.0" isWebVisible="0" isCancelled="0"
+                 created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                 maximumPlaces="1" minimumPlaces="1" countOfSessions="1" deliveryMode="1"
+                 feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"/>
+
+    <Enrolment id="1001" source="O" collegeId="1" courseClassId="1001"
+               studentId="1001" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="2" />
+
+    <Enrolment id="1002" source="O" collegeId="1" courseClassId="1001"
+               studentId="1002" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="2" />
+
+
+    <Discount
+            id="1003"
+            angelId="1"
+            collegeId="1"
+            combinationType="1"
+            created="2011-09-12 00:56:00.0"
+            detail="detail"
+            discountAmount="100.0"
+            discountRate="1.11"
+            discountType="2"
+            modified="2011-09-12 00:56:00.0"
+            name="name"
+            roundingMode="1"
+            timeZone="timeZone"
+            validFrom="2011-09-12 00:56:00.0"
+            validTo="2111-09-12 00:56:00.0"
+            hideOnWeb="0"
+            isAvailableOnWeb="1"/>
+
+    <DiscountCourseClass id="1003" angelId="1003" collegeId="1" courseClassId="1003"
+                         created="2011-09-12 00:56:00.0"
+                         modified="2011-09-12 00:56:00.0"
+                         discountId="1003"/>
+
+
+
+    <Preference id="1" collegeId="1" name="license.ccprocessing"
+                value_string="true" />
+    <Preference id="2" collegeId="1" name="payment.gateway.type"
+                value_string="TEST" />
+
+</dataset>

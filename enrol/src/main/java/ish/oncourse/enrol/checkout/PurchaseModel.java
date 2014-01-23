@@ -9,6 +9,8 @@ import ish.oncourse.model.*;
 import ish.oncourse.util.InvoiceUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 
 import java.util.*;
 
@@ -510,6 +512,17 @@ public class PurchaseModel {
         }
         return false;
     }
+
+	public List<Enrolment> getAllEnableEnrolmentBy(CourseClass courseClass) {
+
+		Expression expression = ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass);
+		List<Enrolment> result = new ArrayList<Enrolment>();
+
+		for (ContactNode node : contacts.values()) {
+			result.addAll(expression.filterObjects(node.enabledEnrolments));
+		}
+		return result;
+	}
 
     private class ContactNode {
 

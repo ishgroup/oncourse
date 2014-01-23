@@ -2,13 +2,12 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.ProductStatus;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.ProductItem;
+import ish.oncourse.model.*;
 
 import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
+
 
 public class ActionMakePayment extends APurchaseAction {
 	@Override
@@ -59,6 +58,17 @@ public class ActionMakePayment extends APurchaseAction {
 			return false;
 		}
 
+		for (Enrolment enrolment : getModel().getAllEnabledEnrolments()) {
+			boolean hasPlaces = getController().hasAvailableEnrolmentPlaces(enrolment);
+			if (!hasPlaces) {
+				String message = noPlacesLeft.getMessage(getController().getMessages(),
+						getController().getClassName(enrolment.getCourseClass()));
+				getController().getModel().setErrorFor(enrolment,message);
+				getController().getErrors().put(noPlacesLeft.name(), message);
+
+				return false;
+			}
+		}
 
 		if (getController().isEditCorporatePass()) {
 			if (getController().getModel().getCorporatePass() == null) {

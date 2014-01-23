@@ -30,6 +30,13 @@ public class ActionBackToEditCheckout extends APurchaseAction {
 				{
 					enrolment = getController().createEnrolment(courseClass, contact.getStudent());
 					getModel().addEnrolment(enrolment);
+				} else {
+					PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.disableEnrolment);
+					parameter.setValue(enrolment);
+					getController().performAction(parameter);
+					parameter = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
+					parameter.setValue(enrolment);
+					getController().performAction(parameter);
 				}
 			}
 		}

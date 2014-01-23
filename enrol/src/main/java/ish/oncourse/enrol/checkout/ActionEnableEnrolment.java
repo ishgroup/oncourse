@@ -1,13 +1,8 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
-import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-
-import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
 
@@ -50,8 +45,8 @@ public class ActionEnableEnrolment extends APurchaseAction {
             }
         }
 
-        boolean hasPalces = hasAvailableEnrolmentPlaces(enrolment.getCourseClass());
-        if (!hasPalces) {
+        boolean hasPlaces = getController().hasAvailableEnrolmentPlaces(enrolment);
+        if (!hasPlaces) {
 			String message = noCourseClassPlaces.getMessage(getController().getMessages(),
 					getController().getClassName(enrolment.getCourseClass()),
 					enrolment.getCourseClass().getCourse().getCode());
@@ -70,15 +65,6 @@ public class ActionEnableEnrolment extends APurchaseAction {
             return false;
         }
         return true;
-    }
-
-    boolean hasAvailableEnrolmentPlaces(CourseClass courseClass) {
-        List<Enrolment> enrolments = courseClass.getEnrolments();
-
-        Expression expression = ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS, EnrolmentStatus.IN_TRANSACTION);
-        List<Enrolment> activeEnrolments = expression.filterObjects(enrolments);
-        int count = activeEnrolments.contains(enrolment) ? activeEnrolments.size() : activeEnrolments.size() + 1;
-        return courseClass.getMaximumPlaces() >= count;
     }
 
     public Enrolment getEnrolment() {

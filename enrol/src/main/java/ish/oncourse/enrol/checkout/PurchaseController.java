@@ -23,6 +23,9 @@ import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.util.InvoiceUtil;
 import ish.util.ProductUtil;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -726,6 +729,20 @@ public class PurchaseController {
 		}
 	}
 
+	public boolean hasAvailableEnrolmentPlaces(Enrolment enrolment) {
+		CourseClass courseClass = enrolment.getCourseClass();
+
+		SelectQuery query = new SelectQuery(Enrolment.class);
+		query.setQualifier(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass).andExp(ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.IN_TRANSACTION,EnrolmentStatus.SUCCESS)));
+		List<Enrolment> activeEnrolments = getModel().getObjectContext().performQuery(query);
+
+		List<Enrolment> currentEnrolments = model.getAllEnableEnrolmentBy(courseClass);
+		int count = (currentEnrolments.contains(enrolment) ? currentEnrolments.size() : currentEnrolments.size() + 1) + activeEnrolments.size();
+
+		return courseClass.getMaximumPlaces() >= count;
+
+
+	}
 
 	public static enum State {
 		init(Action.init, Action.addContact),
@@ -733,7 +750,7 @@ public class PurchaseController {
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
 		editContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
-		editPayment(makePayment, backToEditCheckout, addDiscount, creditAccess, owingApply, changePayer, addPayer, selectCorporatePassEditor),
+		editPayment(makePayment, backToEditCheckout, addDiscount, creditAccess, owingApply, changePayer, addPayer, selectCorporatePassEditor, disableEnrolment),
 		editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
 		paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment, showPaymentResult);
@@ -905,7 +922,8 @@ public class PurchaseController {
 		corporatePassNotEnabled,
 		creditCardPaymentNotEnabled,
 		duplicatedMembership,
-		enterVoucherPrice;
+		enterVoucherPrice,
+		noPlacesLeft;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);
