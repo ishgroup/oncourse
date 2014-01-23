@@ -750,7 +750,7 @@ public class PurchaseController {
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
 		editContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
-		editPayment(makePayment, backToEditCheckout, addDiscount, creditAccess, owingApply, changePayer, addPayer, selectCorporatePassEditor, disableEnrolment),
+		editPayment(makePayment, backToEditCheckout, addDiscount, creditAccess, owingApply, changePayer, addPayer, selectCorporatePassEditor),
 		editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
 		paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment, showPaymentResult);
