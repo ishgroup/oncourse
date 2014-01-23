@@ -35,5 +35,6 @@ public abstract class AbstractProductUpdater<S extends ProductStub, E extends Pr
 		if (stub.getTaxAdjustment() != null) {
 			entity.setTaxAdjustment(new Money(stub.getTaxAdjustment()));
 		}
+		entity.setTaxAmount(Money.ZERO);
 	}
 }
