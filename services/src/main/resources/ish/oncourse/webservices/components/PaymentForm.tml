@@ -6,7 +6,7 @@
             <div class="${cardTypeClass}">
                 <label>Card Type<sup>*</sup></label>
                    <span class="pay-form-cardtype">
-                   	<t:radiogroup t:id="cardTypeField" value="paymentIn.creditCardType">
+                   	<t:radiogroup t:id="cardTypeField" value="creditCardType">
                    	    <t:radio t:id="masterCard" class="radio"/><t:label for="masterCard"/>
                    	    <t:radio t:id="visa" class="radio"/><t:label for="visa"/>
                    	    <t:if test="preferenceService.servicesAmexEnabled">
@@ -21,7 +21,7 @@
             <div class="${cardNameInputClass}">
                 <label>${message:nameOnCard}<sup>*</sup></label>
                    <span class="pay-form-control">
-                       <t:textfield t:id="cardName" type="text" maxlength="500" class="field" value="paymentIn.creditCardName" autocomplete = "off"/>
+                       <t:textfield t:id="cardName" type="text" maxlength="500" class="field" value="creditCardName" autocomplete = "off"/>
                    </span>
                    <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardName"/>
             </div>
@@ -29,7 +29,7 @@
             <div class="${cardNumberInputClass}">
                 <label>${message:cardNumber}<sup>*</sup></label>
                    <span class="pay-form-control">
-                   	<t:textfield value="paymentIn.creditCardNumber" class ="field" clientId="cardnumber" t:id="cardNumber" maxlength="20" autocomplete = "off"/>
+                   	<t:textfield value="creditCardNumber" class ="field" clientId="cardnumber" t:id="cardNumber" maxlength="20" autocomplete = "off"/>
                    </span>
                    <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardNumber"/>
             </div>
@@ -45,7 +45,7 @@
             <div class="${cardcvvInputClass}">
                 <label>${message:cvv}<sup>*</sup></label>
                    <span class="pay-form-control">
-                   	<t:textfield value="paymentIn.creditCardCVV" class ="field small"
+                   	<t:textfield value="creditCardCVV" class ="field small"
 									clientId="cardcvv" t:id="cardcvv" maxlength="4" autocomplete = "off"/>
                    </span>
                    <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardcvv"/>

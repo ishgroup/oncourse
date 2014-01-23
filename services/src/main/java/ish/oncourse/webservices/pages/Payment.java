@@ -131,8 +131,7 @@ public class Payment {
      * Returns true if user tried to use a few tabs
      * @return
      */
-    public boolean isIllegalState()
-    {
+    public boolean isIllegalState() {
         return paymentProcessController.isIllegalState();
     }
 
@@ -142,10 +141,8 @@ public class Payment {
 
 
 	@AfterRender
-    public void afterRender()
-    {
-        if (paymentProcessController.isProcessFinished())
-        {
+    public void afterRender() {
+        if (paymentProcessController != null && paymentProcessController.isProcessFinished()) {
             clearPersistedProperties();
         }
     }
@@ -176,10 +173,10 @@ public class Payment {
     }
 
     public boolean isShowResult() {
-        return   paymentProcessController.isFinalState();
+        return paymentProcessController.isFinalState();
     }
 
     public boolean isShowProcessing() {
-        return paymentProcessController.isProcessingState();
+        return paymentProcessController != null && paymentProcessController.isProcessingState();
     }
 }

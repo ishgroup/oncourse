@@ -19,9 +19,10 @@
 	        <h1 class="header-title">${message:headerTitle}</h1>
 	        <a href="#" class="logo"></a>
 	    </div>
-	
+
+        <t:if test="paymentProcessController">
 	    <div class="process">
-	
+
 	        <h2 class="page-title">${paymentTitle}</h2>
 	
 	        <ul class="process-list">
@@ -51,6 +52,11 @@
     	<t:if test="showResult">
 			<t:PaymentResult t:id="result" payment="payment"/>
     	</t:if>
+
+        <p:else>
+            <h2 class="page-title">This payment processing session has already been completed.</h2>
+        </p:else>
+        </t:if>
     	<t:if test="showProcessing">
 			<div class="pay-form">
 				<div class="pay-process">

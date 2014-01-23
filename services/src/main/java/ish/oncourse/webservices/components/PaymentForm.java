@@ -16,6 +16,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -85,15 +86,54 @@ public class PaymentForm {
     @InjectPage
     private Payment paymentPage;
 
+	//We store this value before render to have ability redirect to pageURL from duplicated tabs when session ended.
+	@Property
+	private URL pageURL;
 
     @SetupRender
     public void beforeRender() {
         initYears();
+		pageURL = paymentPage.getPageURL();
     }
 
-    public PaymentIn getPaymentIn()
-    {
-        return paymentPage.getPaymentProcessController().getPaymentIn();
+	public void setCreditCardType(CreditCardType creditCardType) {
+		if (getPaymentIn() != null) {
+			getPaymentIn().setCreditCardType(creditCardType);
+		}
+	}
+	public CreditCardType getCreditCardType() {
+		return getPaymentIn().getCreditCardType();
+	}
+
+	public void setCreditCardName(String creditCardName) {
+		if (getPaymentIn() != null) {
+			getPaymentIn().setCreditCardName(creditCardName);
+		}
+	}
+	public String getCreditCardName() {
+		return getPaymentIn().getCreditCardName();
+	}
+
+	public void setCreditCardNumber(String creditCardNumber) {
+		if (getPaymentIn() != null) {
+			getPaymentIn().setCreditCardNumber(creditCardNumber);
+		}
+	}
+	public String getCreditCardNumber() {
+		return getPaymentIn().getCreditCardNumber();
+	}
+
+	public void setCreditCardCVV(String creditCardCVV) {
+		if (getPaymentIn() != null) {
+			getPaymentIn().setCreditCardCVV(creditCardCVV);
+		}
+	}
+	public String getCreditCardCVV() {
+		return getPaymentIn().getCreditCardCVV();
+	}
+
+    public PaymentIn getPaymentIn() {
+        return paymentPage != null && paymentPage.getPaymentProcessController() != null ? paymentPage.getPaymentProcessController().getPaymentIn() : null;
     }
 
     private void initYears() {
@@ -170,6 +210,12 @@ public class PaymentForm {
     @OnEvent(component = "paymentDetailsForm", value = "success")
     Object submitted() {
         paymentDetailsForm.clearErrors();
+
+		//check is session still active and redirect to original URL if session data cleared.
+		if (paymentPage.getPaymentProcessController() == null) {
+			return pageURL;
+		}
+
         synchronized (paymentPage.getPaymentProcessController()) {
             validate();
             if (!paymentDetailsForm.getHasErrors()) {
