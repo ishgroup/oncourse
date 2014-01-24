@@ -10,8 +10,4 @@ public class Article extends _Article implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
-	@Override
-	public boolean isAsyncReplicationAllowed() {
-		return true;
-	}
 }
