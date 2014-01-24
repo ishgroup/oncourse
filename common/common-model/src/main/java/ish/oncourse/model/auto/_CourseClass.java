@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
-import ish.common.types.AttendanceType;
+import ish.common.types.CourseClassAttendanceType;
 import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
@@ -73,11 +73,11 @@ public abstract class _CourseClass extends CayenneDataObject {
         return (Long)readProperty("angelId");
     }
 
-    public void setAttendanceType(AttendanceType attendanceType) {
+    public void setAttendanceType(CourseClassAttendanceType attendanceType) {
         writeProperty("attendanceType", attendanceType);
     }
-    public AttendanceType getAttendanceType() {
-        return (AttendanceType)readProperty("attendanceType");
+    public CourseClassAttendanceType getAttendanceType() {
+        return (CourseClassAttendanceType)readProperty("attendanceType");
     }
 
     public void setCancelled(boolean cancelled) {

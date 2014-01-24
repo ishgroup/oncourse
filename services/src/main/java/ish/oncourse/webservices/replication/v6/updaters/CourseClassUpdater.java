@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.v6.updaters;
 
 import ish.common.types.AttendanceType;
+import ish.common.types.CourseClassAttendanceType;
 import ish.common.types.TypesUtil;
 import ish.math.Money;
 import ish.oncourse.model.Course;
@@ -51,7 +52,7 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setExpectedHours(stub.getExpectedHours());
 		entity.setFeeHelpClass(Boolean.TRUE.equals(stub.isFeeHelpClass()));
 		if (stub.getAttendanceType() != null) {
-			entity.setAttendanceType(TypesUtil.getEnumForDatabaseValue(stub.getAttendanceType(), AttendanceType.class));
+			entity.setAttendanceType(TypesUtil.getEnumForDatabaseValue(stub.getAttendanceType(), CourseClassAttendanceType.class));
 		}
 		entity.setReportingPeriod(stub.getReportingPeriod());
 		entity.setCensusDate(stub.getCensusDate());

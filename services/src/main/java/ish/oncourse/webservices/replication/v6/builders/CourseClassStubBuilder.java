@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.v6.builders;
 
 import ish.common.types.AttendanceType;
+import ish.common.types.CourseClassAttendanceType;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
@@ -39,7 +40,7 @@ public class CourseClassStubBuilder extends AbstractWillowStubBuilder<CourseClas
 		if (entity.getAttendanceType() != null) {
 			stub.setAttendanceType(entity.getAttendanceType().getDatabaseValue());
 		} else {
-			stub.setAttendanceType(AttendanceType.UNMARKED.getDatabaseValue());
+			stub.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION.getDatabaseValue());
 		}
 		stub.setReportingPeriod(entity.getReportingPeriod());
 		stub.setCensusDate(entity.getCensusDate());

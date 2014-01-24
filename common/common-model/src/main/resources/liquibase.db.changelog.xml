@@ -1960,4 +1960,18 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="122" author="viacheslav" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="CourseClass" columnName="attendanceType"/>
+        </preConditions>
+
+        <sql>
+            update CourseClass set attendanceType = 9 where attendanceType = 0;
+        </sql>
+
+        <dropDefaultValue tableName="CourseClass" columnName="attendanceType" columnDataType="INTEGER"/>
+
+        <addDefaultValue tableName="CourseClass" columnName="attendanceType" columnDataType="INTEGER" defaultValueNumeric="9"/>
+    </changeSet>
+
 </databaseChangeLog>

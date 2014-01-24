@@ -1272,7 +1272,7 @@
 	</obj-entity>
 	<obj-entity name="CourseClass" className="ish.oncourse.model.CourseClass" dbEntityName="CourseClass">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="attendanceType" type="ish.common.types.AttendanceType" db-attribute-path="attendanceType"/>
+		<obj-attribute name="attendanceType" type="ish.common.types.CourseClassAttendanceType" db-attribute-path="attendanceType"/>
 		<obj-attribute name="cancelled" type="boolean" db-attribute-path="isCancelled"/>
 		<obj-attribute name="censusDate" type="java.util.Date" db-attribute-path="censusDate"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
