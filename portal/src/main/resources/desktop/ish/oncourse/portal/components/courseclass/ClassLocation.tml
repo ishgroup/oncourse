@@ -22,8 +22,7 @@
 
                                var marker = new google.maps.Marker({
                                    position: new google.maps.LatLng(vLat,vLong),
-                                   map: map,
-                                   title: 'Hello World!'
+                                   map: map
                                });
                            }
                     </script>
