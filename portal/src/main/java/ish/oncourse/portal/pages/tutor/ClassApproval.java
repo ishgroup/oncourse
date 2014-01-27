@@ -129,7 +129,7 @@ public class ClassApproval {
             for (TutorRole t : courseClass.getTutorRoles()) {
                 if (t.getTutor().getContact().getId().equals(c.getId())) {
                     ObjectContext newContext = cayenneService.newContext();
-                    TutorRole local = (TutorRole) newContext.localObject(t.getObjectId(), null);
+                    TutorRole local = newContext.localObject(t);
                     local.setIsConfirmed(approved);
                     if (approved) {
                         local.setConfirmedDate(new Date());

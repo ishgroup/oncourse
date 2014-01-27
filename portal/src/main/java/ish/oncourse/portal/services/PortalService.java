@@ -126,13 +126,19 @@ public class PortalService implements IPortalService{
                 FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(session.getEndDate()));
     }
 
-    public boolean isApproved(Contact tutor, CourseClass courseClass) {
-        for (TutorRole t : courseClass.getTutorRoles()) {
-            if (t.getTutor().getContact().getId().equals(tutor.getId())) {
-                return t.getIsConfirmed();
-            }
+    public boolean isApproved(Contact contact, CourseClass courseClass) {
+
+		Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY,contact.getTutor()).andExp(ExpressionFactory.matchExp(TutorRole.COURSE_CLASS_PROPERTY, courseClass));
+		SelectQuery q = new SelectQuery(TutorRole.class, exp);
+
+		List <TutorRole> tutorRoles = cayenneService.sharedContext().performQuery(q);
+
+        for (TutorRole t : tutorRoles) {
+			if (!t.getIsConfirmed()) {
+				return false;
+			}
         }
-        return false;
+        return true;
     }
 
     @Override
