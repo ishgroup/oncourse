@@ -69,8 +69,6 @@ public class PortalService implements IPortalService{
         return result;
     }
 
-
-
 	public JSONObject getNearesSessionIndex(Integer i) {
 
         JSONObject result = new JSONObject();
@@ -79,7 +77,6 @@ public class PortalService implements IPortalService{
         return result;
 	}
 
-
     /**
      * @return contact's sesssions array where entry format is MM-dd-yyyy,<a href='#class-%s'>%s</a>
      * we use it to show sessions callender for contact in Tempalte page
@@ -87,28 +84,46 @@ public class PortalService implements IPortalService{
     public JSONObject getCalendarEvents(Contact contact) {
         List<Session> sessions = courseClassService.getContactSessions(contact);
 
-
         JSONObject result = new JSONObject();
+
+		Map<String, List<Session>> daysSessionMap = new HashMap<>();
+
         for (Session session : sessions) {
             TimeZone timeZone = courseClassService.getClientTimeZone(session.getCourseClass());
-            result.put(FormatUtils.getDateFormat("MM-dd-yyyy",timeZone).format(session.getStartDate()),
-                    String.format("<a href='#class-%s'>%s</a>", session.getCourseClass().getId(), formatDate(session)));
-        }
+			String key = FormatUtils.getDateFormat("MM-dd-yyyy",timeZone).format(session.getStartDate());
+
+			if (daysSessionMap.get(key) == null) {
+				daysSessionMap.put(key, new ArrayList<Session>());
+			}
+
+			daysSessionMap.get(key).add(session);
+		}
+
+		for (String key : daysSessionMap.keySet()) {
+			String events =	builEventsString(daysSessionMap.get(key));
+			result.put(key, events);
+		}
+
         return result;
     }
 
-    private String formatDate(Session session) {
+	private String builEventsString(List<Session> sessions) {
+
+		StringBuilder events = new StringBuilder();
+
+		for (Session session : sessions) {
+			events.append(String.format("<li><a href='#class-%s' class=\"event\">%s</a></li>", session.getCourseClass().getId(), formatDate(session)));
+		}
+
+		return String.format("<ul>%s</ul>",events);
+	}
+
+
+	private String formatDate(Session session) {
         TimeZone timeZone = courseClassService.getClientTimeZone(session.getCourseClass());
         return String.format("%s - %s",
-                FormatUtils.getDateFormat(FormatUtils.dateFormatForTimeline, timeZone).format(session.getStartDate()),
+                FormatUtils.getDateFormat(FormatUtils.shortTimeFormatString, timeZone).format(session.getStartDate()),
                 FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(session.getEndDate()));
-    }
-
-    public String getJSONScript(Object bean) throws IOException {
-        StringWriter writer = new StringWriter();
-        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-        mapper.writeValue(writer, bean);
-        return writer.toString();
     }
 
     public boolean isApproved(Contact tutor, CourseClass courseClass) {
