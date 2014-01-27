@@ -16,6 +16,14 @@ public class ActionBackToEditCheckout extends APurchaseAction {
 		getController().setState(PurchaseController.State.editCheckout);
         getController().getModel().setApplyPrevOwing(false);
 
+		/**
+		 * clear credit card information
+		 */
+		getController().getModel().getPayment().setCreditCardCVV(null);
+		getController().getModel().getPayment().setCreditCardName(null);
+		getController().getModel().getPayment().setCreditCardNumber(null);
+		getController().getModel().getPayment().setCreditCardExpiry(null);
+
 		List<Contact> contacts = getModel().getContacts();
 		List<CourseClass> classes = getModel().getClasses();
 		List<Product> products = getModel().getProducts();
