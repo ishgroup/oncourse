@@ -138,6 +138,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		courseClassParameters.add(new ReplicationStubFieldParameter("attendanceType", Integer.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("reportingPeriod", Integer.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("censusDate", Date.class));
+		courseClassParameters.add(new ReplicationStubFieldParameter("fullTimeLoad", String.class));
 		stubsPropertyMap.put(getStubName(CourseClassStub.class), courseClassParameters);
 
 		final List<ReplicationStubFieldParameter> courseParamethers = fillDefaultReplicationStubFields();
@@ -339,8 +340,9 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		studentParameters.add(new ReplicationStubFieldParameter("languageHomeId", Long.class));
 		studentParameters.add(new ReplicationStubFieldParameter("chessn", String.class));
 		studentParameters.add(new ReplicationStubFieldParameter("feeHelpEligible", Boolean.class));
-		studentParameters.add(new ReplicationStubFieldParameter("specialNeedsAssistance", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("specialNeedsAssistance", String.class));
 		studentParameters.add(new ReplicationStubFieldParameter("citizenship", Integer.class));
+		studentParameters.add(new ReplicationStubFieldParameter("disabilitySupportRequested", Boolean.class));
 		stubsPropertyMap.put(getStubName(StudentStub.class), studentParameters);
 
 		final List<ReplicationStubFieldParameter> systemUserParamethers = fillDefaultReplicationStubFields();
