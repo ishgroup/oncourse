@@ -40,6 +40,7 @@ public abstract class _CourseClass extends CayenneDataObject {
     public static final String FEE_EX_GST_PROPERTY = "feeExGst";
     public static final String FEE_GST_PROPERTY = "feeGst";
     public static final String FEE_HELP_CLASS_PROPERTY = "feeHelpClass";
+    public static final String FULL_TIME_LOAD_PROPERTY = "fullTimeLoad";
     public static final String IS_DISTANT_LEARNING_COURSE_PROPERTY = "isDistantLearningCourse";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String MATERIALS_PROPERTY = "materials";
@@ -170,6 +171,13 @@ public abstract class _CourseClass extends CayenneDataObject {
     }
     public Boolean getFeeHelpClass() {
         return (Boolean)readProperty("feeHelpClass");
+    }
+
+    public void setFullTimeLoad(String fullTimeLoad) {
+        writeProperty("fullTimeLoad", fullTimeLoad);
+    }
+    public String getFullTimeLoad() {
+        return (String)readProperty("fullTimeLoad");
     }
 
     public void setIsDistantLearningCourse(Boolean isDistantLearningCourse) {

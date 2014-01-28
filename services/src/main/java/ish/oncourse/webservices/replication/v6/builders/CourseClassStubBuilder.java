@@ -44,6 +44,7 @@ public class CourseClassStubBuilder extends AbstractWillowStubBuilder<CourseClas
 		}
 		stub.setReportingPeriod(entity.getReportingPeriod());
 		stub.setCensusDate(entity.getCensusDate());
+		stub.setFullTimeLoad(entity.getFullTimeLoad());
 		return stub;
 	}
 }

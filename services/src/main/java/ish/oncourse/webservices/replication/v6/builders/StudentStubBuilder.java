@@ -56,6 +56,7 @@ public class StudentStubBuilder extends AbstractWillowStubBuilder<Student, Stude
 		stub.setChessn(entity.getChessn());
 		stub.setFeeHelpEligible(Boolean.TRUE.equals(entity.getFeeHelpEligible()));
 		stub.setSpecialNeedsAssistance(entity.getSpecialNeedsAssistance());
+		stub.setDisabilitySupportRequested(Boolean.TRUE.equals(entity.getDisabilitySupportRequested()));
 		if (entity.getCitizenship() != null) {
 			stub.setCitizenship(entity.getCitizenship().getDatabaseValue());
 		} else {

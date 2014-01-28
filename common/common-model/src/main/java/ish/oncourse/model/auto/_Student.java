@@ -36,6 +36,7 @@ public abstract class _Student extends CayenneDataObject {
     public static final String CITIZENSHIP_PROPERTY = "citizenship";
     public static final String CONCESSION_TYPE_PROPERTY = "concessionType";
     public static final String CREATED_PROPERTY = "created";
+    public static final String DISABILITY_SUPPORT_REQUESTED_PROPERTY = "disabilitySupportRequested";
     public static final String DISABILITY_TYPE_PROPERTY = "disabilityType";
     public static final String ENGLISH_PROFICIENCY_PROPERTY = "englishProficiency";
     public static final String FEE_HELP_ELIGIBLE_PROPERTY = "feeHelpEligible";
@@ -96,6 +97,13 @@ public abstract class _Student extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
+    }
+
+    public void setDisabilitySupportRequested(Boolean disabilitySupportRequested) {
+        writeProperty("disabilitySupportRequested", disabilitySupportRequested);
+    }
+    public Boolean getDisabilitySupportRequested() {
+        return (Boolean)readProperty("disabilitySupportRequested");
     }
 
     public void setDisabilityType(AvetmissStudentDisabilityType disabilityType) {
@@ -168,11 +176,11 @@ public abstract class _Student extends CayenneDataObject {
         return (AvetmissStudentPriorEducation)readProperty("priorEducationCode");
     }
 
-    public void setSpecialNeedsAssistance(Integer specialNeedsAssistance) {
+    public void setSpecialNeedsAssistance(String specialNeedsAssistance) {
         writeProperty("specialNeedsAssistance", specialNeedsAssistance);
     }
-    public Integer getSpecialNeedsAssistance() {
-        return (Integer)readProperty("specialNeedsAssistance");
+    public String getSpecialNeedsAssistance() {
+        return (String)readProperty("specialNeedsAssistance");
     }
 
     public void setYearSchoolCompleted(Integer yearSchoolCompleted) {
