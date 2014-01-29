@@ -1974,18 +1974,6 @@
         <addDefaultValue tableName="CourseClass" columnName="attendanceType" columnDataType="INTEGER" defaultValueNumeric="9"/>
     </changeSet>
 
-    <changeSet id="123" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Student" columnName="disabilitySupportRequested"/>
-            </not>
-        </preConditions>
-
-        <addColumn tableName="Student">
-            <column name="disabilitySupportRequested" type="TINYINT(1)" defaultValueNumeric="0"/>
-        </addColumn>
-    </changeSet>
-
     <changeSet id="124" author="viacheslav" context="production" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <columnExists tableName="Student" columnName="specialNeedsAssistance"/>
@@ -2007,6 +1995,14 @@
         <addColumn tableName="CourseClass">
             <column name="fullTimeLoad" type="VARCHAR(10)"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="126" author="viacheslav" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="Student" columnName="disabilitySupportRequested"/>
+        </preConditions>
+
+        <dropColumn tableName="Student" columnName="disabilitySupportRequested"/>
     </changeSet>
 
 </databaseChangeLog>

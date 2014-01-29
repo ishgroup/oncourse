@@ -804,7 +804,6 @@
 		<db-attribute name="concessionType" type="INTEGER" length="10"/>
 		<db-attribute name="countryOfBirthId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="disabilitySupportRequested" type="SMALLINT"/>
 		<db-attribute name="disabilityType" type="INTEGER" length="10"/>
 		<db-attribute name="englishProficiency" type="INTEGER" length="10"/>
 		<db-attribute name="feeHelpEligible" type="SMALLINT"/>
@@ -1779,7 +1778,6 @@
 		<obj-attribute name="citizenship" type="ish.common.types.StudentCitizenship" db-attribute-path="citizenship"/>
 		<obj-attribute name="concessionType" type="java.lang.Integer" db-attribute-path="concessionType"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="disabilitySupportRequested" type="java.lang.Boolean" db-attribute-path="disabilitySupportRequested"/>
 		<obj-attribute name="disabilityType" type="ish.common.types.AvetmissStudentDisabilityType" db-attribute-path="disabilityType"/>
 		<obj-attribute name="englishProficiency" type="ish.common.types.AvetmissStudentEnglishProficiency" db-attribute-path="englishProficiency"/>
 		<obj-attribute name="feeHelpEligible" type="java.lang.Boolean" db-attribute-path="feeHelpEligible"/>

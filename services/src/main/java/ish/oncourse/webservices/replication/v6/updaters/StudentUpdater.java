@@ -45,7 +45,6 @@ public class StudentUpdater extends AbstractWillowUpdater<StudentStub, Student> 
 		entity.setChessn(stub.getChessn());
 		entity.setFeeHelpEligible(Boolean.TRUE.equals(stub.isFeeHelpEligible()));
 		entity.setSpecialNeedsAssistance(stub.getSpecialNeedsAssistance());
-		entity.setDisabilitySupportRequested(Boolean.TRUE.equals(stub.isDisabilitySupportRequested()));
 		if (stub.getCitizenship() != null) {
 			entity.setCitizenship(TypesUtil.getEnumForDatabaseValue(stub.getCitizenship(), StudentCitizenship.class));
 		}

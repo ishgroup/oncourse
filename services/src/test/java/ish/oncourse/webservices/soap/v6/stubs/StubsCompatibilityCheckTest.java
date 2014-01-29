@@ -342,7 +342,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		studentParameters.add(new ReplicationStubFieldParameter("feeHelpEligible", Boolean.class));
 		studentParameters.add(new ReplicationStubFieldParameter("specialNeedsAssistance", String.class));
 		studentParameters.add(new ReplicationStubFieldParameter("citizenship", Integer.class));
-		studentParameters.add(new ReplicationStubFieldParameter("disabilitySupportRequested", Boolean.class));
 		stubsPropertyMap.put(getStubName(StudentStub.class), studentParameters);
 
 		final List<ReplicationStubFieldParameter> systemUserParamethers = fillDefaultReplicationStubFields();
