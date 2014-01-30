@@ -16,7 +16,6 @@ import net.fortuna.ical4j.model.TimeZone;
 import net.fortuna.ical4j.model.TimeZoneRegistry;
 import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
 import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Description;
 import net.fortuna.ical4j.model.property.ProdId;
@@ -75,7 +74,8 @@ public class Calendar {
 					List<Session> sessions = courseClassService.getContactSessions(contact);
 
 					List<VEvent> events = new ArrayList<>();
-					
+					UidGenerator ug = new UidGenerator("uidGen");
+
 					for (Session s : sessions) {
 						
 						StringBuilder sessionInformation = new StringBuilder();
@@ -110,8 +110,7 @@ public class Calendar {
 						VEvent event = new VEvent(dateTime, dur, courseInformation.toString());
 						event.getProperties().add(new Description(sessionInformation.toString()));
 						
-						UidGenerator ug = new UidGenerator("uidGen");
-						Uid uid = ug.generateUid();          
+						Uid uid = ug.generateUid();
 						event.getProperties().add(uid);
 
 						events.add(event);

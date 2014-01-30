@@ -9,8 +9,6 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.util.Date;
-
 public class Timetable {
 
 	@Inject
@@ -33,12 +31,6 @@ public class Timetable {
 	void setupRender() {
 		this.contact = authService.getUser();
 		this.timetableMonthUrl = getContextPath() + "/timetableJson";
-
-
-
-
-
-
 	}
 	
 	public String getMonthPageName() {

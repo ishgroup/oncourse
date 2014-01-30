@@ -1,19 +1,22 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <t:eventlink t:id="getCalendarEvents"/>
-    <div class="calendar-container" style="height: 405.45454545454544px;">
+    <div class="calendar-container">
         <div class="custom-calendar-wrap custom-calendar-full">
             <div class="custom-header clearfix">
                 <h3 class="custom-month-year">
                     <nav>
                         <span id="custom-prev" class="glyphicon glyphicon-chevron-left"
                               style="display: inline;"></span>
-                        <span id="custom-month" class="custom-month">October</span>
-                        <span id="custom-year" class="custom-year">2013</span>
+                        <span id="custom-month" class="custom-month"/>
+                        <span id="custom-year" class="custom-year"/>
                         <span id="custom-next" class="glyphicon glyphicon-chevron-right"
                               style="display: inline;"></span>
                         <!--<span id="custom-current" class="custom-current" title="Got to current date"></span>-->
                     </nav>
                 </h3>
+                <div class="btn-group pull-right">
+                    <a  class="btn btn-default btn-gradient btn-sm" href=" webcal:${request.serverName}${request.contextPath}/calendar/${authService.user.uniqueCode}.ics">Subscribe to calendar</a>
+                </div>
             </div>
             <div id="calendar" class="fc-calendar-container">
                 <div class="fc-calendar fc-five-rows">
