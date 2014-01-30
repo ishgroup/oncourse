@@ -57,6 +57,10 @@ public class SessionSlider {
 
     }
 
+	public boolean isShowSlider() {
+		return !sessions.isEmpty();
+	}
+
 
 
     /**

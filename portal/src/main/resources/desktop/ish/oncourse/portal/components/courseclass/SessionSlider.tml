@@ -4,15 +4,17 @@
         <div class="no-border clearfix">
             <h4 class="pull-left">Timetable <small>${numberOfSessions} sessions</small></h4>
         </div>
-        <a href="#" id="timetable-session-up" class="past-sessions" style="visibility: hidden;"><span class="glyphicon glyphicon-chevron-left"></span></a>
-        <div class="session-list-content">
-            <ul class="list-unstyled session-list" style="width: 1698px; left: 0px;">
-                <t:loop source="sessions" value="session">
-                    <span t:type="courseClass/sessionSliderItem" session="session" nearestSession="nSession"></span>
-                </t:loop>
-            </ul>
-        </div>
-        <a href="#" id="timetable-session-down" class="past-sessions" style="visibility: visible;"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        <t:if test = "showSlider">
+            <a href="#" id="timetable-session-up" class="past-sessions"><span class="glyphicon glyphicon-chevron-left"></span></a>
+            <div class="session-list-content">
+                <ul class="list-unstyled session-list">
+                    <t:loop source="sessions" value="session">
+                        <span t:type="courseClass/sessionSliderItem" session="session" nearestSession="nSession"></span>
+                    </t:loop>
+                </ul>
+            </div>
+            <a href="#" id="timetable-session-down" class="past-sessions"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </t:if>
     </div>
 
 </t:container>
