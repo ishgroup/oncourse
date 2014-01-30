@@ -1,14 +1,15 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div class="collapse logged navbar-collapse">
-		<p>
-		<t:if test="user.tutor">
-			<span>Approvals  <span class="badge">${approvalsCount}</span></span>
-		</t:if>
-		<span>Hi, <strong>${user.givenName} ${user.familyName}</strong></span>
-			<a href="#" class="btn btn-link" t:type="ActionLink" t:id="logout">
-				<i class="glyphicon glyphicon-off"></i>Logout
-			</a>
-		</p>
+		<ul class="clearfix">
+            <t:if test="user.tutor">
+                <li><span>Approvals  <span class="badge">${approvalsCount}</span></span></li>
+            </t:if>
+            <li><span> Hi, <strong>${user.givenName} ${user.familyName}</strong></span></li>
+            <li>	<a href="#" class="btn btn-link logout" t:type="ActionLink" t:id="logout">
+                    <i class="glyphicon glyphicon-off"></i>Logout
+                </a>
+            </li>
+		</ul>
 	</div>
 </t:container>

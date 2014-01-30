@@ -2,9 +2,10 @@
 	<span class="validate-text">
 		<t:if test="validationMessage">
 			<div class="reason hidden-text">
-                <div class="tooltip-arrow"></div>
-			    <span>${validationMessage}</span>
-                <span class="reason-pointer" />
+                <div class="tooltip fade top in">
+                    <div class="tooltip-arrow" style=""></div>
+                    <div class="tooltip-inner">${validationMessage}</div>
+                </div>
 			</div>
 		</t:if>
 		<t:if test="hint">

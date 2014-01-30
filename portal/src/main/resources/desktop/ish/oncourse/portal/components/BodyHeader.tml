@@ -6,9 +6,9 @@
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 					<span class="glyphicon glyphicon-user"></span>
 				</button>
-				<a class="navbar-brand" href="#">
+				<span class="navbar-brand">
 					<img src="/s/portal/img/logo-v3.png" alt=""/>
-				</a>
+				</span>
 			</div>
 			<t:if t:test="userInSession">
 				<div t:type="loginuser"/>
