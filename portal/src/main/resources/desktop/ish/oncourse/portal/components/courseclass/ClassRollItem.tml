@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-12 col-sm-12 col-xs-12 student-detail clearfix">
             <div class="col-lg-1 col-sm-2 col-xs-2 attendance-content">
-                <div class="attendance" id="${student.id}">
+                <div class="row attendance-button-field" id="${student.id}">
                     <button type="button" class="btn btn-default btn-gradient btn-ok btn-xs"><span class="glyphicon glyphicon-ok"></span></button>
                     <button type="button" class="btn btn-default btn-gradient btn-cancel btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
                 </div>
@@ -24,7 +24,9 @@
             </div>
 
             <div class="col-lg-2 col-sm-3 col-xs-3 avatar">
-                <img src="${avatarContextPath}" height="50" width="50"></img>
+                <div class="row">
+                    <img src="${avatarContextPath}" height="50" width="50"></img>
+                </div>
             </div>
         </div>
     </div>
