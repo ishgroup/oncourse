@@ -22,7 +22,8 @@ public class SolrQueryBuilderTest {
     	"boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&" +
     	"qq=(*:*)&sort=score desc,startDate asc,name asc&debugQuery=false";
 	private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
-		"end:[NOW TO *]&fq=(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)&q={!boost b=$boostfunction v=$qq}" +
+		"end:[NOW TO *]&fq=(tagId:10 || tagId:11 || tagId:12 || tagId:13 || tagId:14 || tagId:15 tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)" +
+		"&fq=(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)&q={!boost b=$boostfunction v=$qq}" +
 		"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) " +
 		"AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO *] AND end:[NOW TO 2012-01-01T00:00:00Z])" +
 		"&sort=score desc,startDate asc,name asc&debugQuery=false";
@@ -31,7 +32,6 @@ public class SolrQueryBuilderTest {
 
 	@Test
 	public void testConvertPostcodeParameterToLong() {
-		//SearchParamsParser parser = new SearchParamsParser(null, null, null);
 		final String POSTCODE_1234 = "1234",POSTCODE_0700 = "0700",POSTCODE_0050 = "0050",POSTCODE_0003 = "0003",POSTCODE_0000 = "0000";
 		assertEquals("Postcode should not changes after the conversion", POSTCODE_1234, SearchParamsParser.convertPostcodeParameterToLong(POSTCODE_1234));
 		assertEquals("Postcode starting from 0 like '0700' should be converted to 700 string", "700", 
@@ -99,7 +99,6 @@ public class SolrQueryBuilderTest {
 
             @Override
             public List<Tag> getAllWebVisibleChildren() {
-
                 ArrayList<Tag> list = new ArrayList<>();
                 for (int i = 0; i < 5; i++) {
                     final long id = i+1;
@@ -115,6 +114,54 @@ public class SolrQueryBuilderTest {
                 return list;
             }
         });
+
+		searchParams.setTag1(new Tag() {
+			@Override
+			public Long getId() {
+				return 10L;
+			}
+
+			@Override
+			public List<Tag> getAllWebVisibleChildren() {
+				ArrayList<Tag> list = new ArrayList<>();
+				for (int i = 10; i < 15; i++) {
+					final long id = i+1;
+					Tag tag = new Tag()
+					{
+						@Override
+						public Long getId() {
+							return id;
+						}
+					};
+					list.add(tag);
+				}
+				return list;
+			}
+		});
+
+		searchParams.setTag2(new Tag() {
+			@Override
+			public Long getId() {
+				return 5L;
+			}
+
+			@Override
+			public List<Tag> getAllWebVisibleChildren() {
+				ArrayList<Tag> list = new ArrayList<>();
+				for (int i = 5; i < 10; i++) {
+					final long id = i+1;
+					Tag tag = new Tag()
+					{
+						@Override
+						public Long getId() {
+							return id;
+						}
+					};
+					list.add(tag);
+				}
+				return list;
+			}
+		});
 
         solrQueryBuilder = new SolrQueryBuilder(searchParams,"1",0,100);
         ArrayList<String> filters = new ArrayList<>();
@@ -146,6 +193,13 @@ public class SolrQueryBuilderTest {
         assertEquals("Test filter query first element for filter SearchParam.subject", "(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)", 
         	q.getFilterQueries()[0]);
 
+		q = new SolrQuery();
+		solrQueryBuilder.appendFilterTag(q);
+		assertEquals("Test filter query length for filter SearchParam.tag1 and SearchParam.tag2", 1, q.getFilterQueries().length);
+		assertEquals("Test filter query first element for filter SearchParam.tag1 and SearchParam.tag2",
+			"(tagId:10 || tagId:11 || tagId:12 || tagId:13 || tagId:14 || tagId:15 tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)",
+			q.getFilterQueries()[0]);
+
         filters.clear();
         solrQueryBuilder.appendFilterAfter(filters);
         assertEquals("Test filters.size for filter SearchParam.after",1,filters.size());
@@ -159,8 +213,23 @@ public class SolrQueryBuilderTest {
         value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
         String expectedValue = String.format(EXPECTED_RESULT_VALUE, EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM, 
         	EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM);
-        //System.out.println(value);
         assertEquals("Query parameters", expectedValue, value);
+
+		//check that if tag1 or tag2 not specified everuthing works too
+		searchParams.setTag1(null);
+		solrQueryBuilder = new SolrQueryBuilder(searchParams, "1", 0, 100);
+		q = new SolrQuery();
+		solrQueryBuilder.appendFilterTag(q);
+		assertEquals("Test filter query length for filter SearchParam.tag2", 1, q.getFilterQueries().length);
+		assertEquals("Test filter query first element for filter SearchParam.tag2",
+			"(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)",
+				q.getFilterQueries()[0]);
+
+		searchParams.setTag2(null);
+		solrQueryBuilder = new SolrQueryBuilder(searchParams, "1", 0, 100);
+		q = new SolrQuery();
+		solrQueryBuilder.appendFilterTag(q);
+		assertNull("Test filter query length for empty filter SearchParam.tag1 and tag2", q.getFilterQueries());
     }
 
 	@Test

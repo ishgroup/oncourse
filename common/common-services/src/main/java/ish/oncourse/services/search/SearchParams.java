@@ -22,7 +22,25 @@ public class SearchParams {
     private List<Suburb> suburbs;
     private Boolean debugQuery = Boolean.FALSE;
     private TimeZone clientTimezone;
-    
+	private Tag tag1;
+	private Tag tag2;
+
+	public Tag getTag1() {
+		return tag1;
+	}
+
+	public void setTag1(Tag tag1) {
+		this.tag1 = tag1;
+	}
+
+	public Tag getTag2() {
+		return tag2;
+	}
+
+	public void setTag2(Tag tag2) {
+		this.tag2 = tag2;
+	}
+
 	public TimeZone getClientTimezone() {
 		return clientTimezone;
 	}

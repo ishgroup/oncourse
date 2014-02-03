@@ -112,6 +112,8 @@ public class SolrQueryBuilder {
         appendFilterBefore(filters);
         appendAnd(filters);
 
+		appendFilterTag(q);
+
         appendFilterSubject(q);
 
         clearLastAnd(filters);
@@ -155,7 +157,7 @@ public class SolrQueryBuilder {
 
     void clearLastAnd(List<String> filters)
     {
-        if (filters.size() > 0 && filters.get(filters.size() - 1) == QUERY_AND)
+        if (filters.size() > 0 && QUERY_AND.equals(filters.get(filters.size() - 1)))
         {
             filters.remove(filters.size() - 1);
         }
@@ -164,7 +166,7 @@ public class SolrQueryBuilder {
 
     void appendAnd(List<String> filters)
     {
-        if (filters.size() > 0 && filters.get(filters.size() - 1) != QUERY_AND)
+        if (filters.size() > 0 && !QUERY_AND.equals(filters.get(filters.size() - 1)))
         {
             filters.add(QUERY_AND);
         }
@@ -217,6 +219,28 @@ public class SolrQueryBuilder {
     void appendFilterTime(List<String> filters) {
          appendFilterWhen(filters, params.getTime());
     }
+
+	void appendFilterTag(SolrQuery query) {
+		ArrayList<String> tags = new ArrayList<>();
+		Tag tag1 = params.getTag1(), tag2 = params.getTag2();
+		if (tag1 != null) {
+			tags.add(String.format(FILTER_TEMPLATE_tagId, tag1.getId()));
+			for (Tag subTag : tag1.getAllWebVisibleChildren()) {
+				tags.add(QUERY_OR);
+				tags.add(String.format(FILTER_TEMPLATE_tagId, subTag.getId()));
+			}
+		}
+		if (tag2 != null) {
+			tags.add(String.format(FILTER_TEMPLATE_tagId, tag2.getId()));
+			for (Tag subTag : tag2.getAllWebVisibleChildren()) {
+				tags.add(QUERY_OR);
+				tags.add(String.format(FILTER_TEMPLATE_tagId, subTag.getId()));
+			}
+		}
+		if (!tags.isEmpty()) {
+			query.addFilterQuery(String.format(QUERY_brackets, StringUtils.join(tags.toArray(), QUERY_DELIMITER)));
+		}
+	}
 
     void appendFilterSubject(SolrQuery query) {
         if (params.getSubject() != null) {
@@ -277,7 +301,6 @@ public class SolrQueryBuilder {
     }
     
 	public static String replaceSOLRSyntaxisCharacters(String original) {
-    	String resultString = original.replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, SPACE_REPLACEMENT_CHARACTER);
-    	return resultString;
+    	return original.replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, SPACE_REPLACEMENT_CHARACTER);
     }
 }

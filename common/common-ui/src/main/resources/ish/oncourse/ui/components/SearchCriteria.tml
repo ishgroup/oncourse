@@ -50,6 +50,12 @@
 			<t:if t:test="searchTime">in the <span class="match-10 search-value">${searchTime}</span></t:if>
 			<t:if t:test="searchPrice">up to <span class="match-12 search-value">${searchPrice}</span></t:if>
 			<t:if t:test="searchNear"><span class="match-11 search-value"> near ${searchNear}</span></t:if>
+            <t:if t:test="tag1">
+                <span class="tag-crumb-title search-value no-highlight">${tag1}</span>
+            </t:if>
+            <t:if t:test="tag2">
+                <span class="tag-crumb-title search-value no-highlight">${tag2}</span>
+            </t:if>
 		</div>
 		<t:if t:test="hasMapItemList">
 			<div id="toggle-results-map">

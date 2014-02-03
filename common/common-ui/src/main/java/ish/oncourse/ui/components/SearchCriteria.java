@@ -50,10 +50,16 @@ public class SearchCriteria {
 	@Property
 	private int tagIndex;
 
+	@Property
+	private String tag1;
+
+	@Property
+	private String tag2;
+
 	@SetupRender
 	void beforeRender() {
 		browseTagPath = new ArrayList<>();
-		
+
 		Tag browseTag = tagService.getBrowseTag();
 		
 		while (browseTag != null && browseTag.hasParentTag()) {
@@ -72,6 +78,9 @@ public class SearchCriteria {
 		String near = request.getParameter("near");
 		//TODO if near is geohash, get the human place view
 		searchNear = near;
+
+		tag1 = request.getParameter("tag1");
+		tag2 = request.getParameter("tag2");
 	}
 
 	public boolean getShowTagRaquo() {
