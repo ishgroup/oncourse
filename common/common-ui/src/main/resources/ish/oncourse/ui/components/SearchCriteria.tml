@@ -50,11 +50,13 @@
 			<t:if t:test="searchTime">in the <span class="match-10 search-value">${searchTime}</span></t:if>
 			<t:if t:test="searchPrice">up to <span class="match-12 search-value">${searchPrice}</span></t:if>
 			<t:if t:test="searchNear"><span class="match-11 search-value"> near ${searchNear}</span></t:if>
-            <t:if t:test="tag1">
-                <span class="tag-crumb-title search-value no-highlight">${tag1}</span>
-            </t:if>
-            <t:if t:test="tag2">
-                <span class="tag-crumb-title search-value no-highlight">${tag2}</span>
+            <t:if t:test="tagNames">
+                <t:loop source="tagNames" value="tagName" index="tagIndex">
+                    <t:if t:test="addTagComma">
+                        <span>;</span>
+                    </t:if>
+                    <span class="tag-crumb-title search-value no-highlight">${tagName}</span>
+                </t:loop>
             </t:if>
 		</div>
 		<t:if t:test="hasMapItemList">

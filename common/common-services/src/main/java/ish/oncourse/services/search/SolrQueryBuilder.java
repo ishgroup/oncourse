@@ -222,21 +222,14 @@ public class SolrQueryBuilder {
 
 	void appendFilterTag(SolrQuery query) {
 		ArrayList<String> tags = new ArrayList<>();
-		Tag tag1 = params.getTag1(), tag2 = params.getTag2();
-		if (tag1 != null) {
-			tags.add(String.format(FILTER_TEMPLATE_tagId, tag1.getId()));
-			for (Tag subTag : tag1.getAllWebVisibleChildren()) {
+		for (Tag tag : params.getTags()) {
+			tags.add(String.format(FILTER_TEMPLATE_tagId, tag.getId()));
+			for (Tag subTag : tag.getAllWebVisibleChildren()) {
 				tags.add(QUERY_OR);
 				tags.add(String.format(FILTER_TEMPLATE_tagId, subTag.getId()));
 			}
 		}
-		if (tag2 != null) {
-			tags.add(String.format(FILTER_TEMPLATE_tagId, tag2.getId()));
-			for (Tag subTag : tag2.getAllWebVisibleChildren()) {
-				tags.add(QUERY_OR);
-				tags.add(String.format(FILTER_TEMPLATE_tagId, subTag.getId()));
-			}
-		}
+
 		if (!tags.isEmpty()) {
 			query.addFilterQuery(String.format(QUERY_brackets, StringUtils.join(tags.toArray(), QUERY_DELIMITER)));
 		}

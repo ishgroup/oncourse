@@ -115,7 +115,7 @@ public class SolrQueryBuilderTest {
             }
         });
 
-		searchParams.setTag1(new Tag() {
+		searchParams.addTag(new Tag() {
 			@Override
 			public Long getId() {
 				return 10L;
@@ -139,7 +139,7 @@ public class SolrQueryBuilderTest {
 			}
 		});
 
-		searchParams.setTag2(new Tag() {
+		searchParams.addTag(new Tag() {
 			@Override
 			public Long getId() {
 				return 5L;
@@ -216,7 +216,7 @@ public class SolrQueryBuilderTest {
         assertEquals("Query parameters", expectedValue, value);
 
 		//check that if tag1 or tag2 not specified everuthing works too
-		searchParams.setTag1(null);
+		searchParams.getTags().remove(0);
 		solrQueryBuilder = new SolrQueryBuilder(searchParams, "1", 0, 100);
 		q = new SolrQuery();
 		solrQueryBuilder.appendFilterTag(q);
@@ -225,7 +225,7 @@ public class SolrQueryBuilderTest {
 			"(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)",
 				q.getFilterQueries()[0]);
 
-		searchParams.setTag2(null);
+		searchParams.getTags().remove(0);
 		solrQueryBuilder = new SolrQueryBuilder(searchParams, "1", 0, 100);
 		q = new SolrQuery();
 		solrQueryBuilder.appendFilterTag(q);

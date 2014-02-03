@@ -53,7 +53,7 @@ public class SearchParamsParser
 	}
 
 	public void parse() {
-        Tag browseTag = null, tag1 = null, tag2 = null;
+        Tag browseTag = null, tag = null;
 
         searchParams.setClientTimezone(clientTimezone);
         for (SearchParam name : SearchParam.values()) {
@@ -82,15 +82,15 @@ public class SearchParamsParser
                         searchParams.setSubject(browseTag);
                         value = searchParams.getSubject();
                         break;
-					case tag1:
-						tag1 = parseSubject(parameter);
-						searchParams.setTag1(tag1);
-						value = searchParams.getTag1();
-						break;
-					case tag2:
-						tag2 = parseSubject(parameter);
-						searchParams.setTag2(tag2);
-						value = searchParams.getTag2();
+					case tag:
+						String[] parameters = request.getParameters(name.name());
+						for (String tagParameter : parameters) {
+							tag = parseSubject(tagParameter);
+							if (tag != null) {
+								searchParams.addTag(tag);
+							}
+						}
+						value = tag;
 						break;
                     case time:
                         searchParams.setTime(parseTime(parameter));

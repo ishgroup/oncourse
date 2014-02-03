@@ -51,10 +51,10 @@ public class SearchCriteria {
 	private int tagIndex;
 
 	@Property
-	private String tag1;
+	private String[] tagNames;
 
 	@Property
-	private String tag2;
+	private String tagName;
 
 	@SetupRender
 	void beforeRender() {
@@ -79,8 +79,11 @@ public class SearchCriteria {
 		//TODO if near is geohash, get the human place view
 		searchNear = near;
 
-		tag1 = request.getParameter("tag1");
-		tag2 = request.getParameter("tag2");
+		tagNames = request.getParameters("tag");
+	}
+
+	public boolean getAddTagComma() {
+		return tagIndex > 0;
 	}
 
 	public boolean getShowTagRaquo() {
