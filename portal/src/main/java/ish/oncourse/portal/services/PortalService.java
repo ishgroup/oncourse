@@ -11,6 +11,7 @@ import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -44,8 +45,8 @@ public class PortalService implements IPortalService{
     @Inject
     private PreferenceController preferenceController;
 
-    @Inject
-    private IBinaryDataService binaryDataService;
+	@Inject
+	private IWebSiteService webSiteService;
 
     @Override
     public JSONObject getSession(Session session) {
@@ -147,25 +148,6 @@ public class PortalService implements IPortalService{
     }
 
     @Override
-    public boolean hasResources(Contact contact, List<CourseClass> courseClasses) {
-        boolean result=false;
-
-        for(CourseClass courseClass : courseClasses){
-            if(!binaryDataService.getAttachedFiles(courseClass.getId(), CourseClass.class.getSimpleName(), false).isEmpty()){
-                result=true;
-                break;
-            }
-        }
-
-		if(contact.getTutor() != null) {
-			  if(!getCommonTutorsBinaryInfo().isEmpty())
-				  result = true;
-		}
-
-        return result;
-    }
-
-    @Override
     public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter) {
         List<CourseClass> courseClasses = new ArrayList<>();
 
@@ -187,11 +169,12 @@ public class PortalService implements IPortalService{
         Expression expr;
         expr = ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, contact.getStudent());
         expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
-        expr = expr.andExp(ExpressionFactory.noMatchExp(CourseClass.CANCELLED_PROPERTY, Boolean.TRUE));
+        expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
 
         SelectQuery q = new SelectQuery(CourseClass.class, expr);
         q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
         q.setCacheGroups(CacheGroup.COURSES.name());
+		q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
 
         List <CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
 
@@ -215,10 +198,11 @@ public class PortalService implements IPortalService{
     private List<CourseClass> getTutorCourseClasses(Contact contact, CourseClassFilter filter) {
         if(contact.getTutor() != null){
             Expression expr = ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.TUTOR_PROPERTY, contact.getTutor());
-            expr = expr.andExp(ExpressionFactory.noMatchExp(CourseClass.CANCELLED_PROPERTY, Boolean.TRUE));
+            expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
             SelectQuery q = new SelectQuery(CourseClass.class, expr);
             q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
             q.setCacheGroups(CacheGroup.COURSES.name());
+			q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
 
             List <CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
             switch (filter) {
@@ -344,6 +328,7 @@ public class PortalService implements IPortalService{
 
 		SelectQuery query = new SelectQuery(BinaryInfo.class, ExpressionFactory.matchExp(
 				BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.TUTORS).andExp(
+				ExpressionFactory.matchExp(BinaryInfo.COLLEGE_PROPERTY, webSiteService.getCurrentCollege())).andExp(
 				ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "+." + BinaryInfoRelation.CREATED_PROPERTY, null)));
 
 		return (List<BinaryInfo>) sharedContext.performQuery(query);

@@ -25,9 +25,6 @@ public class Menu {
 	@Inject
 	private IAuthenticationService authenticationService;
 
-    @Inject
-    private IBinaryDataService binaryDataService;
-
 	@Inject
 	private IDiscussionService discussionService;
 
@@ -121,12 +118,28 @@ public class Menu {
 
 
     public boolean isHasResources(){
-        return portalService.hasResources(authenticationService.getUser(), courseClasses);
+
+		for (CourseClass courseClass : courseClasses) {
+			if (!portalService.getAttachedFiles(courseClass, authenticationService.getUser()).isEmpty()) {
+				return true;
+			}
+		}
+
+		if (authenticationService.isTutor()) {
+			return !portalService.getCommonTutorsBinaryInfo().isEmpty();
+		}
+
+		return false;
     }
 
 
     public boolean isHasResults(){
-        return authenticationService.getUser().getStudent() != null;
+
+		if (authenticationService.getUser().getStudent() != null){
+			authenticationService.getUser().getStudent().getEnrolments();
+			return !authenticationService.getUser().getStudent().getEnrolments().isEmpty();
+		}
+        return false;
     }
 
     public boolean isHistoryEnabled()
@@ -142,11 +155,5 @@ public class Menu {
         return StringUtils.EMPTY;
 
     }
-
-
-
-
-
-
 
 }

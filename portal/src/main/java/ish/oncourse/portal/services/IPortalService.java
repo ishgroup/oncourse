@@ -13,22 +13,16 @@ import java.util.List;
 public interface IPortalService {
 
     public JSONObject getSession(Session session);
+
     public JSONObject getAttendences(Session session);
+
     public JSONObject getCalendarEvents(Contact contact);
+
     public JSONObject getNearesSessionIndex(Integer i);
 
     public boolean isApproved(Contact tutor, CourseClass courseClass);
 
     public boolean isHistoryEnabled();
-
-	/**
-	 * return true if courseClasses has attached for contact
-	 *
-	 * @param contact
-	 * @param courseClasses
-	 * @return
-	 */
-    boolean hasResources(Contact contact, List<CourseClass> courseClasses);
 
 	/**
 	 * return true if contact has valid enrolment on the courseClass
