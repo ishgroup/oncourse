@@ -63,20 +63,26 @@ public class PortalUtils {
                                            ITextileConverter textileConverter,
                                            IPlainTextExtractor extractor)
     {
-        StringBuilder textileDetails = new StringBuilder();
-        if(courseClass.getDetail() != null && courseClass.getDetail().length() > 0) {
-            textileDetails.append(courseClass.getDetail());
-        }
-
-        if (courseClass.getCourse().getDetail() != null &&  courseClass.getCourse().getDetail().length() > 0) {
-            if(textileDetails.toString().length() < 0) {
-                textileDetails.append("\n");
-            }
-            textileDetails.append(courseClass.getCourse().getDetail());
-        }
-
-        return stringToTextileStringBy(textileDetails.toString(),CLASS_DETAILS_LENGTH, textileConverter,extractor);
+        return stringToTextileStringBy(getClassDetails(courseClass),CLASS_DETAILS_LENGTH, textileConverter,extractor);
     }
+
+	public static String getClassDetails(CourseClass courseClass) {
+
+		StringBuilder textileDetails = new StringBuilder();
+		if(courseClass.getDetail() != null && courseClass.getDetail().length() > 0) {
+			textileDetails.append(courseClass.getDetail());
+		}
+
+		if (courseClass.getCourse().getDetail() != null &&  courseClass.getCourse().getDetail().length() > 0) {
+			if(textileDetails.toString().length() < 0) {
+				textileDetails.append("\n");
+			}
+			textileDetails.append(courseClass.getCourse().getDetail());
+		}
+
+		return textileDetails.toString();
+
+	}
 
     public static String getCourseDetailsBy(Course course,
                                            ITextileConverter textileConverter,

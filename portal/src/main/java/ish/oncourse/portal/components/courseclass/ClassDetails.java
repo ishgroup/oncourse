@@ -7,7 +7,12 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PortalUtils;
+import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.StreamResponse;
@@ -51,6 +56,18 @@ public class ClassDetails {
     @Inject
     private IPortalService portalService;
 
+	@Property
+	private String details;
+
+	@Property
+	private String fullDetails;
+
+	@Inject
+	private ITextileConverter textileConverter;
+
+	@Inject
+	private IPlainTextExtractor extractor;
+
     @SetupRender
 	void setupRender() {
 
@@ -60,6 +77,11 @@ public class ClassDetails {
 			isTutor = !exp.filterObjects(courseClass.getTutorRoles()).isEmpty();
 		} else {
 			isTutor = false;
+		}
+
+		if (courseClass != null) {
+			details = PortalUtils.getClassDetailsBy(courseClass, textileConverter, extractor);
+			fullDetails = textileConverter.convertCustomTextile(PortalUtils.getClassDetails(courseClass), new ValidationErrors());
 		}
 	}
 

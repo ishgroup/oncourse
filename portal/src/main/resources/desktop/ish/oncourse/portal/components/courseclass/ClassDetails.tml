@@ -1,7 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 <div class="tab-pane active" id="class-details">
 <div class="course-detail">
-    <div class="class-detail"><t:outputraw value="${courseClass.course.detail}"/><strong></strong></div>
+    <div class="class-detail"><t:outputraw value="details"/><strong></strong></div>
+    <div class="full-class-detail"><t:outputraw value="fullDetails"/></div>
     <p class="clearfix"><a href="#" class="pull-right show-full-description"><span class="icon-arrow-down"></span> <span class="text">Show all</span></a></p>
 </div>
 

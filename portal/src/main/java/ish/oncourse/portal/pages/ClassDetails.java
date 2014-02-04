@@ -12,6 +12,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.List;
 
+@Deprecated
 public class ClassDetails {
 	
     private static final String URL_TEMPLATE = "http://%s/class/%s-%s";
