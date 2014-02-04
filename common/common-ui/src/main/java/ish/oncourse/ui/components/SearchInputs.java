@@ -69,6 +69,36 @@ public class SearchInputs {
 	}
 
 	/**
+	 * Methods added for old template backward compatibility
+	 * @return Subjects sub tag names.
+	 */
+	@Deprecated
+	public List<String> getTagNames() {
+		return tagGroupModelMap.get(Tag.SUBJECTS_TAG_NAME);
+	}
+
+	/**
+	 * Methods added for old template backward compatibility
+	 * @return Subjects selected sub tag name.
+	 */
+	@Deprecated
+	public String getTagName() {
+		return selectedTagMap.get(Tag.SUBJECTS_TAG_NAME);
+	}
+
+	/**
+	 * Methods added for old template backward compatibility
+	 * @param value - Subjects selected sub tag name
+	 */
+	@Deprecated
+	public void setTagName(String value) {
+		if (selectedTagMap == null) {
+			fillTagGroups(false);
+		}
+		selectedTagMap.put(Tag.SUBJECTS_TAG_NAME, value);
+	}
+
+	/**
 	 * Getter to receive the default mapped value for match of browseTag.
 	 * Used to access values from map by dynamic tagGroup on component render.
 	 * @return default mapped value

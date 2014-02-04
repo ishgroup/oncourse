@@ -12,11 +12,6 @@
                         <label for="tagGroup">In ${tagGroup}</label>
                         <t:select id="tagGroup" name="subject" model="tagGroupModel" blankLabel="all" value="selectedTagValue" />
                     </t:loop>
-                    <!--
-                    loop construction should be used instead of old Subjects hardcoded code
-                    <label for="subject_selection">In Subject</label>
-					<t:select id="subject_selection" name="subject" model="tagNames" blankLabel="all" value="tagName" />
-                    -->
 				</div>
 				<div id="adv_search_location">
 					<label title="Enter a suburb or postcode near where you'd like to do the course" for="suburb-autocomplete">Closest to</label>
