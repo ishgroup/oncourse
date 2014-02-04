@@ -7,7 +7,11 @@
 			<input type="text" id="s" class="quicksearch" name="s" size="15" autocomplete="off" placeholder="search" />
 			<button type="submit" id="find" class="find">Go!</button>
 		</form>
-		<span t:type="ui/SearchInputs" />
+        <!-- searchTagNames="literal:Subjects" by default even if no property specified,
+        if we need to add more then one element we need to separate then using ';' character without extra spaces
+        for example searchTagNames="literal:Subjects;some_group_tag_1;some_group_tag_1"
+        please note that group elements available only for tag group with valid names -->
+		<span t:type="ui/SearchInputs" searchTagNames="literal:Subjects"/>
 		<div class="advanced-search-button">
 			<a class="show-advanced-search">
 				<span>More options</span>

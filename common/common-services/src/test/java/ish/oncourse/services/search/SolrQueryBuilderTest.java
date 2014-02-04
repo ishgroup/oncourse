@@ -22,7 +22,8 @@ public class SolrQueryBuilderTest {
     	"boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&" +
     	"qq=(*:*)&sort=score desc,startDate asc,name asc&debugQuery=false";
 	private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
-		"end:[NOW TO *]&fq=(tagId:10 || tagId:11 || tagId:12 || tagId:13 || tagId:14 || tagId:15 tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)" +
+		"end:[NOW TO *]&fq=(tagId:10 || tagId:11 || tagId:12 || tagId:13 || tagId:14 || tagId:15)" +
+		"&fq=(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)" +
 		"&fq=(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)&q={!boost b=$boostfunction v=$qq}" +
 		"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) " +
 		"AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO *] AND end:[NOW TO 2012-01-01T00:00:00Z])" +
@@ -195,10 +196,11 @@ public class SolrQueryBuilderTest {
 
 		q = new SolrQuery();
 		solrQueryBuilder.appendFilterTag(q);
-		assertEquals("Test filter query length for filter SearchParam.tag1 and SearchParam.tag2", 1, q.getFilterQueries().length);
-		assertEquals("Test filter query first element for filter SearchParam.tag1 and SearchParam.tag2",
-			"(tagId:10 || tagId:11 || tagId:12 || tagId:13 || tagId:14 || tagId:15 tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)",
-			q.getFilterQueries()[0]);
+		assertEquals("Test filter query length for filter SearchParam.tag1 and SearchParam.tag2", 2, q.getFilterQueries().length);
+		assertEquals("Test filter query first element for filter SearchParam.tag1",
+			"(tagId:10 || tagId:11 || tagId:12 || tagId:13 || tagId:14 || tagId:15)", q.getFilterQueries()[0]);
+		assertEquals("Test filter query first element for filter SearchParam.tag2",
+			"(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)", q.getFilterQueries()[1]);
 
         filters.clear();
         solrQueryBuilder.appendFilterAfter(filters);
