@@ -6,10 +6,10 @@
 </div>
 
 <div class="row">
-    <span t:type="courseclass/sessionSlider" courseClass="courseClass"></span>
+    <span t:type="courseclass/sessionSlider" courseClass="courseClass" isTutor="isTutor"></span>
 </div>
 
-<t:if test="tutor">
+<t:if test="isTutor">
     <div class="row">
         <span t:type="courseclass/classroll" courseClass="courseClass"></span>
     </div>

@@ -27,6 +27,9 @@ import java.util.List;
  */
 public class ClassDetails {
 
+	@Property
+	@Parameter
+	private boolean isTutor;
 
     @Inject
     private IAuthenticationService authenticationService;
@@ -48,15 +51,16 @@ public class ClassDetails {
     @Inject
     private IPortalService portalService;
 
-    public boolean isTutor(){
+    @SetupRender
+	void setupRender() {
 
 		if (authenticationService.isTutor()) {
 			CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
 			Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY, authenticationService.getUser().getTutor());
-			return !exp.filterObjects(courseClass.getTutorRoles()).isEmpty();
+			isTutor = !exp.filterObjects(courseClass.getTutorRoles()).isEmpty();
+		} else {
+			isTutor = false;
 		}
-
-    	return false;
 	}
 
     @OnEvent(value = "onSetSession")

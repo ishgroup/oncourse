@@ -23,7 +23,7 @@
                  </div>
             </t:loop>
 
-            <t:if test="itTutor">
+            <t:if test="isTutor">
                 <a href="#" class="mark-roll" id="${session.id}">Mark Roll</a>
             </t:if>
         </div>

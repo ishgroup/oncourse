@@ -24,6 +24,9 @@ public class SessionSliderItem {
 
     private TimeZone timeZone;
 
+	@Property
+	@Parameter
+	private boolean isTutor;
 
     @Property
     @Parameter
@@ -80,10 +83,6 @@ public class SessionSliderItem {
             return String.format("%s, %s", session.getCourseClass().getRoom().getName(), session.getCourseClass().getRoom().getSite().getName());
         else
             return StringUtils.EMPTY;
-    }
-
-    public boolean isItTutor(){
-        return authenticationService.isTutor();
     }
 
     public String getCurrentClass(){

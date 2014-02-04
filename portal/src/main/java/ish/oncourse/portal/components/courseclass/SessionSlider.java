@@ -29,6 +29,9 @@ public class SessionSlider {
     @Property
     private CourseClass courseClass;
 
+	@Property
+	@Parameter
+	private boolean isTutor;
 
     @Property
     private Session session;
