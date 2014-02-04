@@ -1,9 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<object width="${videoWidth}" height="${videoHeight}">
-		<param name="movie" value="http://www.youtube.com/v/${videoYoutubeId}"/>
+		<param name="movie" value="https://www.youtube.com/v/${videoYoutubeId}"/>
 		<param name="allowFullScreen" value="true"/>
 		<param name="allowscriptaccess" value="always"/>
-		<embed type="application/x-shockwave-flash" src="http://www.youtube.com/v/${videoYoutubeId}"
+		<embed type="application/x-shockwave-flash" src="https://www.youtube.com/v/${videoYoutubeId}"
 				allowscriptaccess="always" allowfullscreen="true"  width="${videoWidth}" height="${videoHeight}"/>
 	</object>
 </t:container>
