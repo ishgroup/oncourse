@@ -115,14 +115,12 @@ public class CourseClassItem {
 		return sessionDays.size() != courseClass.getTimelineableSessions().size();
 	}
 
-	public SessionDay getFirstSessionDay() {
-		return sessionDays.get(0);
+	public Date getFirstSessionStartDate() {
+		return isHasSessionsInTheSameDay() ? sessionDays.get(0).getDayStartTime() : courseClass.getFirstSession().getStartDate();
 	}
 
-	public String getClassDaySessions() {
-		int numberOfDay = sessionDays.size();
-		String key = (numberOfDay > 1) ? "%s days, %s hours total" : "%s day, %s hours total";
-		return String.format(key, numberOfDay, FormatUtils.hoursFormat.format(courseClass.getTotalDurationHours().doubleValue()));
+	public Date getFirstSessionEndDate() {
+		return isHasSessionsInTheSameDay() ? sessionDays.get(0).getDayEndTime() : courseClass.getFirstSession().getEndDate();
 	}
 
 	public String getCourseClassDetail() {
@@ -193,8 +191,11 @@ public class CourseClassItem {
 
 	public String getClassSessions() {
 		int numberOfSession = courseClass.getSessions().size();
-		String key = (numberOfSession > 1) ? "%s sessions, %s hours total" : "%s session, %s hours total";
-		return String.format(key, numberOfSession,
+		int numberOfDay = sessionDays.size();
+		String key = isHasSessionsInTheSameDay() ?
+			(numberOfDay > 1) ? "%s days, %s hours total" : "%s day, %s hours total" :
+				(numberOfSession > 1) ? "%s sessions, %s hours total" : "%s session, %s hours total";
+		return String.format(key, isHasSessionsInTheSameDay() ? numberOfDay : numberOfSession,
 				FormatUtils.hoursFormat.format(courseClass.getTotalDurationHours().doubleValue()));
 	}
 	
