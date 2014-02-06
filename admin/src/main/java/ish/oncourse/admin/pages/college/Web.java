@@ -66,6 +66,9 @@ public class Web {
 	private String newSiteGoogleAnalyticsValue;
 
 	@Property
+	private String newSiteCoursesRootTagName;
+
+	@Property
 	private String newDomainValue;
 	
 	@Property
@@ -199,6 +202,7 @@ public class Web {
 				if (webSite != null) {
 					webSite.setGoogleAnalyticsAccount(sites.get(key).getGoogleAnalyticsAccount());
 					webSite.setGoogleTagmanagerAccount(sites.get(key).getGoogleTagmanagerAccount());
+					webSite.setCoursesRootTagName(sites.get(key).getCoursesRootTagName());
 				}
 			}
 		}
@@ -219,6 +223,7 @@ public class Web {
 		site.setSiteKey(newSiteKeyValue);
 		site.setGoogleAnalyticsAccount(newSiteGoogleAnalyticsValue);
 		site.setGoogleTagmanagerAccount(newSiteGoogleTagmanagerValue);
+		site.setCoursesRootTagName(newSiteCoursesRootTagName);
 		site.setCreated(now);
 		site.setModified(now);
 		

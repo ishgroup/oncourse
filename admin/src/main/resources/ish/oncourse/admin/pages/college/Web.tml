@@ -67,6 +67,7 @@
 					<th>Site Key</th>
 					<th>Google Analytics</th>
 					<th>Google TagManager</th>
+                    <th>Courses root tag name</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -83,13 +84,18 @@
 							<td>
 								<div class="input-append">
 									<t:textfield t:id="googleTagmanagerAccount" value="currentWebSite.googleTagmanagerAccount"/>
-									<t:actionlink t:id="deleteSite" class="btn" context="currentWebSite.siteKey"><i class="icon-trash"></i></t:actionlink>
 								</div>
 							</td>
+                            <td>
+                                <div class="input-append">
+                                    <t:textfield t:id="coursesRootTagName" value="currentWebSite.coursesRootTagName"/>
+                                    <t:actionlink t:id="deleteSite" class="btn" context="currentWebSite.siteKey"><i class="icon-trash"></i></t:actionlink>
+                                </div>
+                            </td>
 						</tr>
 					</t:loop>
 					<tr>
-						<td colspan="4"><t:submit t:id="saveSites" class="btn btn-primary" value="Save"/></td>
+						<td colspan="5"><t:submit t:id="saveSites" class="btn btn-primary" value="Save"/></td>
 					</tr>
 				</t:form>
 				<t:form t:id="sitesForm">
@@ -104,9 +110,14 @@
 					<td>
 						<div class="input-append">
 							<t:textfield t:id="newSiteGoogleTagmanager" value="newSiteGoogleTagmanagerValue"/>
-							<t:submit t:id="addNewSite" class="btn btn-success" value="Add"/>
 						</div>
 					</td>
+                    <td>
+                        <div class="input-append">
+                            <t:textfield t:id="newSiteCoursesRootTagName" value="newSiteCoursesRootTagName"/>
+                            <t:submit t:id="addNewSite" class="btn btn-success" value="Add"/>
+                        </div>
+                    </td>
 					<td></td>
 				</tr>
 				</t:form>

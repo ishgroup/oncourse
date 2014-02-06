@@ -1,6 +1,7 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
@@ -146,7 +147,7 @@ public class SearchService implements ISearchService {
 
         try {
             String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
-            SolrQuery q = new SolrQueryBuilder(params, collegeId, start, rows).create();
+            SolrQuery q = applyCourseRootTag(new SolrQueryBuilder(params, collegeId, start, rows).create());
 
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("Solr query:%s", solrQueryToString(q)));
@@ -156,6 +157,22 @@ public class SearchService implements ISearchService {
             throw new SearchException("Unable to find courses.", e);
         }
     }
+
+	/**
+	 * Apply course root tag for all the queries for Courses core if available.
+	 * @param query - query to adjust
+	 * @return query with added tag filter query.
+	 */
+	private SolrQuery applyCourseRootTag(SolrQuery query) {
+		String coursesRootTagName = webSiteService.getCurrentWebSite().getCoursesRootTagName();
+		if (StringUtils.trimToNull(coursesRootTagName) != null) {
+			Tag tag = tagService.getTagByFullPath(coursesRootTagName);
+			if (tag != null) {
+				query.addFilterQuery(String.format(SolrQueryBuilder.QUERY_brackets, String.format(SolrQueryBuilder.FILTER_TEMPLATE_tagId, tag.getId())));
+			}
+		}
+		return query;
+	}
     
     private String solrQueryToString(SolrQuery q) {
         try {
@@ -212,7 +229,7 @@ public class SearchService implements ISearchService {
 
             SolrDocumentList results = new SolrDocumentList();
             if (coursesQuery.length() != 0) {
-            	QueryResponse coursesResults = query(new SolrQuery(coursesQuery.toString()), SolrCore.courses);
+            	QueryResponse coursesResults = query(applyCourseRootTag(new SolrQuery(coursesQuery.toString())), SolrCore.courses);
             	if (coursesResults != null && coursesResults.getResults() != null && !coursesResults.getResults().isEmpty()) {
             		results.addAll(coursesResults.getResults());
             	}

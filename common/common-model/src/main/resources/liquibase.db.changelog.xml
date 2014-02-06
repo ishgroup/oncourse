@@ -2005,4 +2005,19 @@
         <dropColumn tableName="Student" columnName="disabilitySupportRequested"/>
     </changeSet>
 
+    <changeSet id="127" author="viacheslav" context="production" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="WebSite" columnName="coursesRootTagName"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="WebSite">
+            <column name="coursesRootTagName" type="VARCHAR(256)"/>
+        </addColumn>
+        <createIndex tableName="WebSite" indexName="WebSite_coursesRootTagName">
+            <column name="coursesRootTagName"/>
+        </createIndex>
+    </changeSet>
+
 </databaseChangeLog>
