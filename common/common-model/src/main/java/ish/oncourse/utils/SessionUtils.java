@@ -35,7 +35,7 @@ public class SessionUtils {
 			Calendar start = Calendar.getInstance(), sessionStart = Calendar.getInstance();
 			start.setTime(DateTimeUtil.trancateToMidnight(day.getDayStartTime()));
 			sessionStart.setTime(DateTimeUtil.trancateToMidnight(session.getStartDate()));
-			return DateUtils.isTheSameDate(start, sessionStart) ? day : null;
+			return org.apache.commons.lang.time.DateUtils.isSameDay(start, sessionStart) ? day : null;
 		}
 	}
 
