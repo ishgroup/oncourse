@@ -5,29 +5,57 @@
 		<div class="class-item-info">
 			<div class="class-item-info-l">
 				<t:if t:test="courseClass.firstSession">
-					<div class="date">
-						<a timezone="10" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline">
-							<abbr itemprop="startDate" class="dtstart" title="">
-								<t:output format="dateFormat" value="courseClass.firstSession.startDate" />
-							</abbr>
+                    <t:if t:test="hasSessionsInTheSameDay">
+                        <div class="date">
+                            <a timezone="10" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline">
+                                <abbr itemprop="startDate" class="dtstart" title="">
+                                    <t:output format="dateFormat" value="courseClass.firstSession.startDate" />
+                                </abbr>
 
-							<t:if t:test="showDateEnd"> - <abbr class="dtend" itemprop="endDate" title="">
-									<t:output format="dateFormat" value="courseClass.endDate" />
-								</abbr>
-							</t:if>
-						</a>
-						<br />
-						<a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">
-							<abbr itemprop="startDate" class="dtstart" title="">
-								<t:output format="timeFormat" value="courseClass.firstSession.startDate" />
-							</abbr> - <abbr itemprop="endDate" class="dtend" title="">
-								<t:output format="timeFormatWithTimeZone" value="courseClass.firstSession.endDate" />
-							</abbr>
-							<t:if t:test="hasManySessions"> (first session)</t:if> 
-						</a>
-						<br />
-						<a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" itemprop="duration" class="timeline" rel="session">${classSessions}</a>
-					</div>
+                                <t:if t:test="showDateEnd"> - <abbr class="dtend" itemprop="endDate" title="">
+                                    <t:output format="dateFormat" value="courseClass.endDate" />
+                                </abbr>
+                                </t:if>
+                            </a>
+                            <br />
+                            <a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">
+                                <abbr itemprop="startDate" class="dtstart" title="">
+                                    <t:output format="timeFormat" value="firstSessionDay.dayStartTime" />
+                                </abbr> - <abbr itemprop="endDate" class="dtend" title="">
+                                <t:output format="timeFormatWithTimeZone" value="firstSessionDay.dayEndTime" />
+                            </abbr>
+                                (first session)
+                            </a>
+                            <br />
+                            <a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" itemprop="duration" class="timeline" rel="session">${classDaySessions}</a>
+                        </div>
+                        <p:else>
+                            <div class="date">
+                                <a timezone="10" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline">
+                                    <abbr itemprop="startDate" class="dtstart" title="">
+                                        <t:output format="dateFormat" value="courseClass.firstSession.startDate" />
+                                    </abbr>
+
+                                    <t:if t:test="showDateEnd"> - <abbr class="dtend" itemprop="endDate" title="">
+                                        <t:output format="dateFormat" value="courseClass.endDate" />
+                                    </abbr>
+                                    </t:if>
+                                </a>
+                                <br />
+                                <a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">
+                                    <abbr itemprop="startDate" class="dtstart" title="">
+                                        <t:output format="timeFormat" value="courseClass.firstSession.startDate" />
+                                    </abbr> - <abbr itemprop="endDate" class="dtend" title="">
+                                    <t:output format="timeFormatWithTimeZone" value="courseClass.firstSession.endDate" />
+                                </abbr>
+                                    <t:if t:test="hasManySessions"> (first session)</t:if>
+                                </a>
+                                <br />
+                                <a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" itemprop="duration" class="timeline" rel="session">${classSessions}</a>
+                            </div>
+                        </p:else>
+                    </t:if>
+
 					<p:else>
 						<t:if t:test="selfPacedClass">
 							<div class="date">Self paced<br/>${expectedHours}<br/>${maximumDaysToComplete}</div>

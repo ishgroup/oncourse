@@ -11,6 +11,7 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -23,6 +24,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.text.Format;
 import java.util.*;
 
+import static ish.oncourse.utils.SessionUtils.SessionDay;
 public class CourseClassItem {
 
     private static final String VALUE_yes = "yes";
@@ -85,6 +87,9 @@ public class CourseClassItem {
 
 	@Property
 	private int dayIndex;
+
+	@Property
+	private List<SessionDay> sessionDays;
 	
 	@SetupRender
 	public void beforeRender() {
@@ -102,9 +107,23 @@ public class CourseClassItem {
 			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
 		else
 			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
-	}
-		
 
+		sessionDays = SessionUtils.getSessionDays(courseClass.getTimelineableSessions());
+	}
+
+	public boolean isHasSessionsInTheSameDay() {
+		return sessionDays.size() != courseClass.getTimelineableSessions().size();
+	}
+
+	public SessionDay getFirstSessionDay() {
+		return sessionDays.get(0);
+	}
+
+	public String getClassDaySessions() {
+		int numberOfDay = sessionDays.size();
+		String key = (numberOfDay > 1) ? "%s days, %s hours total" : "%s day, %s hours total";
+		return String.format(key, numberOfDay, FormatUtils.hoursFormat.format(courseClass.getTotalDurationHours().doubleValue()));
+	}
 
 	public String getCourseClassDetail() {
 		String detail = textileConverter.convertCustomTextile(courseClass.getDetail(), new ValidationErrors());
@@ -173,7 +192,6 @@ public class CourseClassItem {
 	}
 
 	public String getClassSessions() {
-
 		int numberOfSession = courseClass.getSessions().size();
 		String key = (numberOfSession > 1) ? "%s sessions, %s hours total" : "%s session, %s hours total";
 		return String.format(key, numberOfSession,

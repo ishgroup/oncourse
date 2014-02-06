@@ -1,14 +1,46 @@
 package ish.oncourse.utils;
 
 import ish.oncourse.model.Session;
+import ish.util.DateTimeUtil;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SortOrder;
 
 import java.util.*;
 
 public class SessionUtils {
 
+	public static List<SessionDay> getSessionDays(List<Session> sessions) {
+		new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING).orderList(sessions);
+		List<SessionDay> days = new ArrayList<>();
+		for (Session session : sessions) {
+			SessionDay day = getSameDaySession(days, session);
+			if (day == null) {
+				day = new SessionDay();
+				day.setDayStartTime(session.getStartDate());
+				day.setDayEndTime(session.getEndDate());
+				days.add(day);
+			} else {
+				day.setDayEndTime(session.getEndDate());
+			}
+		}
+		Collections.sort(days);
+		return days;
+	}
 
-	public static boolean isSameTime(List<Session> sessions)
-	{
+	private static SessionDay getSameDaySession(List<SessionDay> days, Session session) {
+		if (days.isEmpty()) {
+			return null;
+		} else {
+			SessionDay day = days.get(days.size() - 1);
+			Calendar start = Calendar.getInstance(), sessionStart = Calendar.getInstance();
+			start.setTime(DateTimeUtil.trancateToMidnight(day.getDayStartTime()));
+			sessionStart.setTime(DateTimeUtil.trancateToMidnight(session.getStartDate()));
+			return DateUtils.isTheSameDate(start, sessionStart) ? day : null;
+		}
+	}
+
+
+	public static boolean isSameTime(List<Session> sessions) {
 		if (sessions.size() < 2)
 			return true;
 		ArrayList<StartEndTime> times = new ArrayList<StartEndTime>();
@@ -21,11 +53,9 @@ public class SessionUtils {
 		StartEndTime last = times.get(times.size() -1);
 
 		return first.equals(last);
-
 	}
 
-	static StartEndTime valueOf(Session session)
-	{
+	static StartEndTime valueOf(Session session) {
 		StartEndTime t = new StartEndTime();
 		t.setStartTime(session.getStartDate() != null? adjustDate2Time(session.getStartDate()):0);
 		t.setEndTime(session.getEndDate() != null ? adjustDate2Time(session.getEndDate()): 0);
@@ -44,8 +74,45 @@ public class SessionUtils {
 		return calendar.getTime().getTime();
 	}
 
-	public static final class StartEndTime implements Comparable<StartEndTime>
-	{
+	public static final class SessionDay implements Comparable<SessionDay>{
+		private Date dayStartTime;
+		private Date dayEndTime;
+
+		public Date getDayStartTime() {
+			return dayStartTime;
+		}
+
+		public void setDayStartTime(Date dayStartTime) {
+			this.dayStartTime = dayStartTime;
+		}
+
+		public Date getDayEndTime() {
+			return dayEndTime;
+		}
+
+		public void setDayEndTime(Date dayEndTime) {
+			this.dayEndTime = dayEndTime;
+		}
+
+		@Override
+		public boolean equals(Object object) {
+			return object instanceof SessionDay
+				&& (this == object ||
+					(this.dayStartTime == ((SessionDay) object).dayStartTime
+						&& this.dayEndTime == ((SessionDay) object).dayEndTime));
+		}
+
+		@Override
+		public int compareTo(SessionDay object) {
+			int result = dayStartTime.compareTo(object.dayStartTime);
+			if (result == 0) {
+				result = dayEndTime.compareTo(object.dayEndTime);
+			}
+			return result;
+		}
+	}
+
+	public static final class StartEndTime implements Comparable<StartEndTime> {
 		private long startTime;
 		private long endTime;
 
