@@ -95,14 +95,6 @@ public class SessionUtils {
 		}
 
 		@Override
-		public boolean equals(Object object) {
-			return object instanceof SessionDay
-				&& (this == object ||
-					(this.dayStartTime == ((SessionDay) object).dayStartTime
-						&& this.dayEndTime == ((SessionDay) object).dayEndTime));
-		}
-
-		@Override
 		public int compareTo(SessionDay object) {
 			int result = dayStartTime.compareTo(object.dayStartTime);
 			if (result == 0) {
