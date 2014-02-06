@@ -9,31 +9,31 @@ import java.util.*;
 
 public class SessionUtils {
 
-	public static List<SessionDay> getSessionDays(List<Session> sessions) {
+	public static List<StartEndTime> getSessionDays(List<Session> sessions) {
 		new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING).orderList(sessions);
-		List<SessionDay> days = new ArrayList<>();
+		List<StartEndTime> days = new ArrayList<StartEndTime>();
 		for (Session session : sessions) {
-			SessionDay day = getSameDaySession(days, session);
+			StartEndTime day = getSameDaySession(days, session);
 			if (day == null) {
-				day = new SessionDay();
-				day.setDayStartTime(session.getStartDate());
-				day.setDayEndTime(session.getEndDate());
+				day = new StartEndTime();
+				day.setStartTime(session.getStartDate().getTime());
+				day.setEndTime(session.getEndDate().getTime());
 				days.add(day);
 			} else {
-				day.setDayEndTime(session.getEndDate());
+				day.setEndTime(session.getEndDate().getTime());
 			}
 		}
 		Collections.sort(days);
 		return days;
 	}
 
-	private static SessionDay getSameDaySession(List<SessionDay> days, Session session) {
+	private static StartEndTime getSameDaySession(List<StartEndTime> days, Session session) {
 		if (days.isEmpty()) {
 			return null;
 		} else {
-			SessionDay day = days.get(days.size() - 1);
+			StartEndTime day = days.get(days.size() - 1);
 			Calendar start = Calendar.getInstance(), sessionStart = Calendar.getInstance();
-			start.setTime(DateTimeUtil.trancateToMidnight(day.getDayStartTime()));
+			start.setTime(DateTimeUtil.trancateToMidnight(new Date(day.getStartTime())));
 			sessionStart.setTime(DateTimeUtil.trancateToMidnight(session.getStartDate()));
 			return org.apache.commons.lang.time.DateUtils.isSameDay(start, sessionStart) ? day : null;
 		}
@@ -72,36 +72,6 @@ public class SessionUtils {
 		calendar.set(Calendar.MILLISECOND, 0);
 		calendar.set(Calendar.SECOND, 0);
 		return calendar.getTime().getTime();
-	}
-
-	public static final class SessionDay implements Comparable<SessionDay>{
-		private Date dayStartTime;
-		private Date dayEndTime;
-
-		public Date getDayStartTime() {
-			return dayStartTime;
-		}
-
-		public void setDayStartTime(Date dayStartTime) {
-			this.dayStartTime = dayStartTime;
-		}
-
-		public Date getDayEndTime() {
-			return dayEndTime;
-		}
-
-		public void setDayEndTime(Date dayEndTime) {
-			this.dayEndTime = dayEndTime;
-		}
-
-		@Override
-		public int compareTo(SessionDay object) {
-			int result = dayStartTime.compareTo(object.dayStartTime);
-			if (result == 0) {
-				result = dayEndTime.compareTo(object.dayEndTime);
-			}
-			return result;
-		}
 	}
 
 	public static final class StartEndTime implements Comparable<StartEndTime> {

@@ -24,7 +24,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.text.Format;
 import java.util.*;
 
-import static ish.oncourse.utils.SessionUtils.SessionDay;
+import static ish.oncourse.utils.SessionUtils.StartEndTime;
 public class CourseClassItem {
 
     private static final String VALUE_yes = "yes";
@@ -89,7 +89,7 @@ public class CourseClassItem {
 	private int dayIndex;
 
 	@Property
-	private List<SessionDay> sessionDays;
+	private List<StartEndTime> sessionDays;
 	
 	@SetupRender
 	public void beforeRender() {
@@ -116,11 +116,11 @@ public class CourseClassItem {
 	}
 
 	public Date getFirstSessionStartDate() {
-		return isHasSessionsInTheSameDay() ? sessionDays.get(0).getDayStartTime() : courseClass.getFirstSession().getStartDate();
+		return isHasSessionsInTheSameDay() ? new Date(sessionDays.get(0).getStartTime()) : courseClass.getFirstSession().getStartDate();
 	}
 
 	public Date getFirstSessionEndDate() {
-		return isHasSessionsInTheSameDay() ? sessionDays.get(0).getDayEndTime() : courseClass.getFirstSession().getEndDate();
+		return isHasSessionsInTheSameDay() ? new Date(sessionDays.get(0).getEndTime()) : courseClass.getFirstSession().getEndDate();
 	}
 
 	public String getCourseClassDetail() {
