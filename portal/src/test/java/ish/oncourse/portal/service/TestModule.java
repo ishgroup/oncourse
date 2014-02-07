@@ -8,7 +8,6 @@ import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.AppModule;
-import ish.oncourse.portal.services.pageload.IUserAgentDetector;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 
@@ -95,17 +94,6 @@ public class TestModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 			@Local ICourseClassService courseClassServiceOverride) {
 		configuration.add(ICourseClassService.class, courseClassServiceOverride);
-	}
-	
-//	public IUserAgentDetector buildIUserAgentDetectorOverride() {
-//		IUserAgentDetector mock = mock(IUserAgentDetector.class);
-//		when(mock.getUserAgent()).thenReturn(UserAgent.DESKTOP);
-//		return mock;
-//	}
-
-	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
-			@Local IUserAgentDetector iUserAgentDetector) {
-		configuration.add(IUserAgentDetector.class, iUserAgentDetector);
 	}
 	
 	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {

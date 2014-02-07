@@ -37,9 +37,6 @@ public class AppModule {
 	private static final String HMAC_PASSPHRASE = "T88LkO4uVSAH72BSU85FzhI6e3O31N6J";
 
 	public static void bind(ServiceBinder binder) {
-//		binder.bind(IUserAgentDetector.class, UserAgentDetectorImpl.class);
-//		binder.bind(ComponentRequestSelectorAnalyzer.class, PortalComponentRequestSelectorAnalyzer.class).withId(
-//				"PortalComponentRequestSelectorAnalyzer");
 
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 		binder.bind(IDiscussionService.class, DiscussionServiceImpl.class);
@@ -60,22 +57,11 @@ public class AppModule {
 	public static void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
 		configuration.add(IWebSiteService.class, webSiteService);
 	}
-
-//	@Contribute(ServiceOverride.class)
-//	public static void overrideSelectorAnalyzer(MappedConfiguration<Class<?>, Object> cfg,
-//			@InjectService("PortalComponentRequestSelectorAnalyzer") ComponentRequestSelectorAnalyzer analyzer) {
-//		cfg.add(ComponentRequestSelectorAnalyzer.class, analyzer);
-//	}
 	
 	@Contribute(ServiceOverride.class)
 	public static void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IPageRenderer pageRenderer) {
 		configuration.add(IPageRenderer.class, pageRenderer);
 	}
-
-//	@Decorate(serviceInterface = ComponentResourceLocator.class)
-//	public static Object customComponentResourceLocator(ComponentResourceLocator delegate) {
-//		return new PortalComponentResourceLocator(delegate);
-//	}
 
 	public void contributeMasterDispatcher(OrderedConfiguration<Dispatcher> configuration,
 			@InjectService("AccessController") Dispatcher accessController) {
