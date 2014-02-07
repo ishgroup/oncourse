@@ -1,5 +1,0 @@
-<html t:type="pagestructure" bodyId="literal:PageNotFound" bodyClass="literal:internal-page"
-	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<h2>Page Not Found</h2>
-	<p>The page you are looking for was not found. You may have used an outdated link or may have typed the address (URL) incorrectly.</p>
-</html>

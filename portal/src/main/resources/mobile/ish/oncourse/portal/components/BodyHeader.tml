@@ -1,5 +1,0 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<t:if t:test="userInSession">
-		<div t:type="loginuser"/>
-	</t:if>
-</t:container>

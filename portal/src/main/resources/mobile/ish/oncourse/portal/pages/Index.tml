@@ -1,7 +1,0 @@
-<html t:type="pagestructure" title="literal:Login page" bodyClass="literal:login-wrapper"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<div>
-		<h1>Index page of mobile tara.</h1>
-	</div>
-	
-</html>

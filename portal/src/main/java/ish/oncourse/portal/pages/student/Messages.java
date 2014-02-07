@@ -11,7 +11,7 @@ import ish.oncourse.model.Discussion;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.services.courseclass.ICourseClassService;
-
+@Deprecated
 @UserRole("student")
 public class Messages {
 	

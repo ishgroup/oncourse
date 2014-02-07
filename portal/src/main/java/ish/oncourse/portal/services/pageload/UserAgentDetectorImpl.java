@@ -2,7 +2,7 @@ package ish.oncourse.portal.services.pageload;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-
+@Deprecated
 public class UserAgentDetectorImpl implements IUserAgentDetector {
 	private static final String SYSTEM_PROPERTY_TEST_AGENT_ID = "TEST_AGENT_ID";
 	private static final String HEADER_USER_AGENT = "User-Agent";

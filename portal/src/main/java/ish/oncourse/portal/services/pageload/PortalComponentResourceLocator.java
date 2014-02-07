@@ -8,7 +8,7 @@ import org.apache.tapestry5.ioc.internal.util.ClasspathResource;
 import org.apache.tapestry5.model.ComponentModel;
 import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
 import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
-
+@Deprecated
 public class PortalComponentResourceLocator implements ComponentResourceLocator {
 	
 	private static final String MOBILE_FOLDER = "mobile/";

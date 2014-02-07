@@ -5,8 +5,6 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.components.subscriptions.WaitingLists;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.portal.services.discussion.IDiscussionService;
-import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -24,9 +22,6 @@ public class Menu {
 
 	@Inject
 	private IAuthenticationService authenticationService;
-
-	@Inject
-	private IDiscussionService discussionService;
 
 	@Inject
 	@Property
@@ -57,15 +52,6 @@ public class Menu {
 		nearestCourseClass = !courseClasses.isEmpty() ? courseClasses.get(0) : null;
 		if (nearestCourseClass == null)
 			nearestCourseClass = !pastCourseClasses.isEmpty() ? pastCourseClasses.get(0) : null;
-	}
-
-
-	public boolean isHasNewMessages() {
-		return getNumberOfNewMessages() > 0;
-	}
-
-	public Integer getNumberOfNewMessages() {
-		return discussionService.getNumberOfNewMessages(authenticationService.getUser());
 	}
 
 	public boolean isTutor() {

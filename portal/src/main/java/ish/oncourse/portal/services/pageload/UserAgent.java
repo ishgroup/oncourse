@@ -1,7 +1,7 @@
 package ish.oncourse.portal.services.pageload;
 
 import org.apache.log4j.Logger;
-
+@Deprecated
 public enum UserAgent {
 
 

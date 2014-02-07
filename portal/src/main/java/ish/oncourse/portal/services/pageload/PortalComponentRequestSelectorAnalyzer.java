@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
 import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
-
+@Deprecated
 public class PortalComponentRequestSelectorAnalyzer implements ComponentRequestSelectorAnalyzer {
 	
 	private final ThreadLocale threadLocale;

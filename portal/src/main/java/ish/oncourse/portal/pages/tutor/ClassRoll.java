@@ -32,7 +32,7 @@ import java.util.List;
 
 import static ish.oncourse.util.FormatUtils.getDateFormat_dd_MMM_E;
 import static ish.oncourse.util.FormatUtils.getShortDateFormat;
-
+@Deprecated
 @UserRole("tutor")
 public class ClassRoll {
 

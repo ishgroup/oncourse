@@ -1,4 +1,0 @@
-<html t:type="pagestructure" bodyId="literal:ErrorPage" bodyClass="literal:internal-page"
-	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<h2>${exception.message}</h2>
-</html>

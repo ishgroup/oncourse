@@ -223,14 +223,6 @@ public class CensusForm {
         contact.getStudent().setIsStillAtSchool(selection.getValue());
     }
 
-
-
-
-
-
-
-
-
     @OnEvent(component = "censusForm")
     Object submitted() {
 
@@ -238,14 +230,10 @@ public class CensusForm {
         contact.getObjectContext().commitChanges();
 
         return this;
-
-
     }
 
 
     boolean validate() {
-
-
 
             countryOfBirthErrorMessage = validateHandler.error(Student.COUNTRY_OF_BIRTH_PROPERTY);
 

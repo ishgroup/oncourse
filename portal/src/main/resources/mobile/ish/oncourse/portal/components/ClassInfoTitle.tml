@@ -1,8 +1,0 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<div class="class-info-title">
-		<t:pagelink page="classes" class="back-class">Classes</t:pagelink>
-		<span>${courseClass.course.name}</span>
-		<div class="clear"></div>
-		<span t:type="classTabs" courseClass="courseClass" selected="${selected}"/>
-	</div>
-</t:container>
