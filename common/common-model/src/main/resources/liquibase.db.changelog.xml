@@ -2019,13 +2019,9 @@
 
     <changeSet id="128" author="viacheslav" context="production" runOnChange="true">
         <preConditions onFail="MARK_RAN">
-            <not>
-                <indexExists tableName="WebSite" columnNames="coursesRootTagName" indexName="WebSite_coursesRootTagName"/>
-            </not>
+            <indexExists tableName="WebSite" columnNames="coursesRootTagName" indexName="WebSite_coursesRootTagName"/>
         </preConditions>
-        <createIndex indexName="WebSite_coursesRootTagName" tableName="WebSite">
-            <column name="coursesRootTagName" type="VARCHAR(255)"/>
-        </createIndex>
+        <dropIndex tableName="WebSite" indexName="WebSite_coursesRootTagName"/>
     </changeSet>
 
 </databaseChangeLog>
