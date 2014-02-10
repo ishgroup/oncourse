@@ -17,7 +17,7 @@
             <div class="col-lg-6">
 
                 <t:textarea value="contact.street" class="form-control"
-                             clientId="street" t:id="street" placeholder="Adress"/>
+                             clientId="street" t:id="street" placeholder="Address"/>
 
             </div>
         </div>

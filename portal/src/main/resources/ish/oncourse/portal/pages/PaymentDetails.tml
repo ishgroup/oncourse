@@ -8,8 +8,7 @@
 <table width="100%" class="address-table">
     <tbody><tr>
         <td width="50%">${payment.contact.fullName}<br/>
-            ${payment.contact.street}<br/>
-            ${payment.contact.suburb}, ${payment.contact.state}, ${payment.contact.postcode} <br/>
+            ${payment.contact.address}<br/><br/>
             ${phoneNumber}
         </td>
         <td width="50%" class="text-right" valign="top">
@@ -26,7 +25,7 @@
             Type: ${payment.type}<br/>
             Status: ${payment.status.displayName}<br/>
             Amount: ${payment.amount} <br/>
-            Sourse: ${payment.source.displayName}<br/>
+            Source: ${payment.source.displayName}<br/>
             CC Transaction: ${payment.clientReference}<br/>
             Date created: ${payment.created}<br/>
             <t:if test="${payment.dateBanked}">

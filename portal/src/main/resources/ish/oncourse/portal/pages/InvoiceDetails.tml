@@ -11,7 +11,9 @@
                 ${controller.avetmissCollegeName}<br/>
                 ${controller.avetmissAddress1}  ${controller.avetmissAddress2}<br/>
                 ${controller.avetmissSuburb} ${controller.avetmissStateName} ${controller.avetmissPostcode}<br/>
-                ABN: ${controller.collegeABN}<br/>
+                <t:if test="${controller.collegeABN}">
+                    ABN: ${controller.collegeABN}<br/>
+                </t:if>
             </td>
         </tr>
         <tr>
@@ -25,8 +27,7 @@
     <table width="100%" class="address-table">
         <tbody><tr>
             <td width="50%">${invoice.contact.fullName}<br/>
-                ${invoice.contact.street}<br/>
-                ${invoice.contact.suburb}, ${invoice.contact.state}, ${invoice.contact.postcode} <br/>
+                ${invoice.contact.address}<br/>
                 ${phoneNumber}
             </td>
             <td width="50%" class="text-right" valign="top">

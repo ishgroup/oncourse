@@ -7,7 +7,7 @@
 
         <t:if test="tutorsMaterials">
             <li>
-            <h4><a href="#">Tutors informations</a></h4>
+            <h4><a href="#">Tutors information</a></h4>
 
             <t:loop source="tutorsMaterials" value="tutorsMaterial">
                 <ul class="list-unstyled resources-list">
