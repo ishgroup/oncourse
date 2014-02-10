@@ -65,6 +65,8 @@ import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.room.RoomService;
+import ish.oncourse.services.s3.IS3Service;
+import ish.oncourse.services.s3.S3Service;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -185,6 +187,7 @@ public class ServiceModule {
 			binder.bind(ISMSService.class, DefaultSMSService.class);
 		}
 		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
+		binder.bind(IS3Service.class, S3Service.class);
 		binder.bind(IVoucherService.class, VoucherService.class);
 		binder.bind(IFacebookMetaProvider.class, FacebookMetaProvider.class);
 		binder.bind(ICacheMetaProvider.class, NoCacheMetaProvider.class).eagerLoad();

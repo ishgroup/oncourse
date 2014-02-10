@@ -2023,5 +2023,9 @@
         </preConditions>
         <dropIndex tableName="WebSite" indexName="WebSite_coursesRootTagName"/>
     </changeSet>
+	
+	<changeSet id="129" author="dzmitry" context="production" runOnChange="true">
+		<dropNotNullConstraint tableName="BinaryInfo" columnName="filePath" columnDataType="VARCHAR(512)"/>
+	</changeSet>
 
 </databaseChangeLog>
