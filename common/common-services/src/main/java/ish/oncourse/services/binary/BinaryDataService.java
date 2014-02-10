@@ -7,6 +7,8 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -25,8 +27,11 @@ import java.util.Random;
 public class BinaryDataService implements IBinaryDataService {
 
 	private static final Logger LOGGER = Logger.getLogger(BinaryDataService.class);
+	
 	public static final String NAME_PROFILE_PICTURE = "Profile picture";
+	public static final String CONTEXT_PATH_TEMPLATE = "/a/%s/%s.%s";
 
+	public static final Long URL_EXPIRE_TIMEOUT = 600000L;
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -39,6 +44,12 @@ public class BinaryDataService implements IBinaryDataService {
 
     @Inject
     private IFileStorageAssetService fileStorageAssetService;
+	
+	@Inject
+	private PreferenceController preferenceController;
+	
+	@Inject
+	private IS3Service s3Service;
 
 	@Override
 	public BinaryInfo getBinaryInfoById(Object id) {
@@ -138,5 +149,17 @@ public class BinaryDataService implements IBinaryDataService {
 				.andExp(ExpressionFactory.matchExp(BinaryInfo.NAME_PROPERTY, NAME_PROFILE_PICTURE)));
 		List<BinaryInfo> binaryInfos = sharedContext.performQuery(query);
 		return binaryInfos.size() > 0 ? binaryInfos.get(0): null;
+	}
+
+	@Override
+	public String getUrl(BinaryInfo binaryInfo) {
+		if (binaryInfo.getFileUUID() != null) {
+			if (AttachmentInfoVisibility.PUBLIC.equals(binaryInfo.getWebVisible())) {
+				return s3Service.getPermanentUrl(preferenceController.getStorageBucketName(), binaryInfo.getFileUUID());
+			} else {
+				return s3Service.getTemporaryUrl(preferenceController.getStorageBucketName(), binaryInfo.getFileUUID(), URL_EXPIRE_TIMEOUT);
+			}
+		}
+		return String.format(CONTEXT_PATH_TEMPLATE, binaryInfo.getFilePath(), binaryInfo.getName(), binaryInfo.getType());
 	}
 }

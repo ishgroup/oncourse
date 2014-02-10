@@ -84,5 +84,13 @@ public class Attachments {
     public boolean isHasAttachments() {
         return attachments != null && !attachments.isEmpty();
     }
+	
+	public String getAttachmentUrl() {
+		return binaryDataService.getUrl(attachment);
+	}
+	
+	public String getImageUrl() {
+		return binaryDataService.getUrl(image);
+	}
 
 }

@@ -13,7 +13,7 @@
                 <ul class="list-unstyled resources-list">
                 <div class="${tutorsMaterial.type}">
                     <img src="${contextPath}/img/ico-${tutorsMaterial.type}.png" alt=""/>
-                    <a href="${tutorsMaterial.contextPath}">${tutorsMaterial.name}<t:if test="tutorsMaterial.type.empty" negate="true">.${tutorsMaterial.type}</t:if></a> ${tutorsMaterial.size} kb.
+                    <a href="${tutorsMaterialUrl}">${tutorsMaterial.name}<t:if test="tutorsMaterial.type.empty" negate="true">.${tutorsMaterial.type}</t:if></a> ${tutorsMaterial.size} kb.
                     <t:if test="isNew(tutorsMaterial.modified)">
                         <span class="label label-primary">NEW</span>
                     </t:if>

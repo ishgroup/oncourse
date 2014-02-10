@@ -31,5 +31,9 @@ public class TextileAttachment {
 
         attachment = binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, attachmentName);
 	}
+	
+	public String getAttachmentUrl() {
+		return binaryDataService.getUrl(attachment);
+	}
 
 }

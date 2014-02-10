@@ -23,7 +23,6 @@ import java.util.List;
  */
 public class ClassResources {
 
-
     @Parameter
     @Property
     private CourseClass courseClass;
@@ -45,6 +44,9 @@ public class ClassResources {
 
 	@Inject
 	private IPortalService portalService;
+	
+	@Inject
+	private IBinaryDataService binaryDataService;
 
     private Date lastLoginDate;
 
@@ -56,12 +58,10 @@ public class ClassResources {
 
         String sd = cookieService.getCookieValue("lastLoginTime");
         SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
-        try{
-        lastLoginDate= format.parse(sd);
-        }catch (Exception ex){
-
-           new IllegalArgumentException(ex);
-
+        try {
+        	lastLoginDate= format.parse(sd);
+        } catch (Exception ex){
+           throw new IllegalArgumentException(ex);
         }
 
         materials = portalService.getAttachedFiles(courseClass, authenticationService.getUser());
@@ -76,4 +76,7 @@ public class ClassResources {
        return  material.after(lastLoginDate);
     }
 
+	public String getMaterialUrl() {
+		return binaryDataService.getUrl(material);
+	}
 }

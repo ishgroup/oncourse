@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <t:if test="attachment">
         <div class="attachment">
-            <a href="${attachment.contextPath}" name="${attachment.name}">${attachment.name}</a>
+            <a href="${attachmentUrl}" name="${attachment.name}">${attachment.name}</a>
             <span class="attachmentSize">${attachment.size} kB</span>
             <span class="attachmentType">${attachment.type}</span>
         </div>

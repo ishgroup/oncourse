@@ -113,4 +113,7 @@ public class Resources {
 		return  material.after(lastLoginDate);
 	}
 
+	public String getTutorsMaterialUrl() {
+		return binaryDataService.getUrl(tutorsMaterial);
+	}
 }

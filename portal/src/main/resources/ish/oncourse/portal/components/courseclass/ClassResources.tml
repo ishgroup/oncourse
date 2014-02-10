@@ -7,7 +7,7 @@
                 <t:loop source="materials" value="material">
                     <div class="${material.type}">
                         <img src="${contextPath}/img/ico-${material.type}.png" alt=""/>
-                        <a href="${material.contextPath}">${material.name}<t:if test="material.type.empty" negate="true">.${material.type}</t:if></a> ${material.size} kb.
+                        <a href="${materialUrl}">${material.name}<t:if test="material.type.empty" negate="true">.${material.type}</t:if></a> ${material.size} kb.
                         <t:if test="isNew(material.modified)">
                              <span class="label label-primary">NEW</span>
                         </t:if>

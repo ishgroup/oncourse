@@ -7,7 +7,7 @@
 			<div class="tutor_info">
 				<t:if t:test="${profilePicture}">
 					<div class="tutor_pic">
-						<img class="profilePicture" src="${profilePicture.contextPath}" alt=""/>
+						<img class="profilePicture" src="${profilePictureUrl}" alt=""/>
 					</div>
 				</t:if>
 				<t:if t:test="${hasResume}">

@@ -10,8 +10,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.List;
-
 /**
  * User: artem
  * Date: 10/16/13
@@ -34,7 +32,6 @@ public class ClassRollItem {
     @Inject
     private IBinaryDataService binaryDataService;
 
-
     @SetupRender
     boolean setupRender() {
         if (student == null) {
@@ -42,31 +39,21 @@ public class ClassRollItem {
         }
         avatar = binaryDataService.getProfilePicture(student.getContact());
 
-
-
-
-
         return true;
     }
 
-
-
-
-
     public boolean isEnableDetails(){
         return !preferenceController.getHideStudentDetailsFromTutor();
-
     }
 
     public String getAvatarContextPath()
     {
         if (avatar != null && isEnableDetails())
         {
-           return avatar.getContextPath();
+           return binaryDataService.getUrl(avatar);
         }
         return "/s/portal/img/ico-student-default.png";
     }
-
 
     public String getPhoneNumber(){
 
@@ -82,7 +69,6 @@ public class ClassRollItem {
             return null;
     }
 
-
     public boolean isAttended() {
         return AttendanceType.ATTENDED.getDatabaseValue().equals(attendance.getAttendanceType());
     }
@@ -91,6 +77,4 @@ public class ClassRollItem {
         return (AttendanceType.DID_NOT_ATTEND_WITH_REASON.getDatabaseValue().equals(attendance.getAttendanceType())
                 || AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON.getDatabaseValue().equals(attendance.getAttendanceType()));
     }
-
-
 }

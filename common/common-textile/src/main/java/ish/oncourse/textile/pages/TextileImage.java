@@ -68,7 +68,7 @@ public class TextileImage {
 
 		BinaryInfo imageBinaryInfo = getBinaryInfoBy(name);
 
-		imagePath = imageBinaryInfo != null ? (imageBinaryInfo.getContextPath()) : StringUtils.EMPTY;
+		imagePath = imageBinaryInfo != null ? binaryDataService.getUrl(imageBinaryInfo) : StringUtils.EMPTY;
 		imageAlign = align != null ? align : StringUtils.EMPTY;
 		imageAlt = alt != null ? alt : StringUtils.EMPTY;
 		imageTitle = title != null ? title : StringUtils.EMPTY;
@@ -81,7 +81,8 @@ public class TextileImage {
 		else if (attachment != null)
 		{
 			BinaryInfo attachmentBinaryInfo = getBinaryInfoBy(attachment);
-			imageLink = attachmentBinaryInfo != null ? attachmentBinaryInfo.getContextPath():StringUtils.EMPTY;
+			imageLink = attachmentBinaryInfo != null ? 
+					binaryDataService.getUrl(attachmentBinaryInfo) : StringUtils.EMPTY;
 		}
 		else
 			imageLink = StringUtils.EMPTY;

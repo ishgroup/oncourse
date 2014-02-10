@@ -76,4 +76,8 @@ public class TutorDetails {
 	{
 		return binaryDataService.getProfilePicture(tutor.getContact());
 	}
+	
+	public String getProfilePictureUrl() {
+		return binaryDataService.getUrl(getProfilePicture());
+	}
 }

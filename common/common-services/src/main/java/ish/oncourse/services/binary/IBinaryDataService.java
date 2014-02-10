@@ -6,6 +6,7 @@ import ish.oncourse.model.Contact;
 import java.util.List;
 
 public interface IBinaryDataService {
+	
 	BinaryInfo getBinaryInfoById(Object id);
 
 	BinaryInfo getBinaryInfo(String searchProperty, Object value);
@@ -18,4 +19,6 @@ public interface IBinaryDataService {
 	 * The method returns  Profile Picture BinaryInfo for the contact
 	 */
 	BinaryInfo getProfilePicture(Contact contact);
+	
+	String getUrl(BinaryInfo binaryInfo);
 }

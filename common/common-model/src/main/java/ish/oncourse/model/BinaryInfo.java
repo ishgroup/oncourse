@@ -29,6 +29,10 @@ public class BinaryInfo extends _BinaryInfo implements Queueable {
 		return ExpressionFactory.likeExp(BinaryInfo.MIME_TYPE_PROPERTY, "image/%");
 	}
 
+	/**
+	 * @deprecated - replaced with IBinaryInfoService.getUrl()
+	 */
+	@Deprecated
     public String getContextPath()
     {
         return String.format(CONTEXT_PATH_TEMPLATE, getFilePath(), getName(), getType());
