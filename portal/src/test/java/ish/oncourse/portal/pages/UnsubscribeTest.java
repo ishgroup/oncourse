@@ -25,7 +25,7 @@ import org.junit.Test;
 public class UnsubscribeTest extends ServiceTest {
 	
 	public static final String APP_PACKAGE = "ish.oncourse.portal";
-	public static final String CONTEXT_PATH = "src/main/resources/desktop/ish/oncourse/portal/pages";
+	public static final String CONTEXT_PATH = "src/main/resources/ish/oncourse/portal/pages";
 	
 	@Before
 	public void setup() throws Exception {
