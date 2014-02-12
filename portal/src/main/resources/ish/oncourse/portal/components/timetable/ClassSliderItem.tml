@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div class="clearfix" rel="class-${courseClass.id}" style="width: 272.6666666666667px; float: left;">
+    <div class="clearfix" rel="class-${courseClass.id}">
         <ul>
             <li>
                 <h4>${period}</h4>
@@ -16,9 +16,9 @@
             <t:if test="venue">
                 <li>
                     <span class="glyphicon glyphicon-map-marker"></span>
-                    <a href="#" class="venue">
+                    <t:pagelink page="class" context="accountContext" class="venue">
                         ${venue}
-                    </a>
+                    </t:pagelink>
                 </li>
             </t:if>
         </ul>

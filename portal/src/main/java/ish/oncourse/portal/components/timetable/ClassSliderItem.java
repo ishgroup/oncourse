@@ -7,6 +7,7 @@ import ish.oncourse.util.DateFormatter;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -84,5 +85,10 @@ public class ClassSliderItem {
     public CourseClass getCourseClass(){
         return courseClass;
     }
+
+	public Object[] getAccountContext()
+	{
+		return new Object[] { courseClass.getId(), "location" };
+	}
 }
 

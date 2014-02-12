@@ -30,6 +30,9 @@ public class Class {
     @Inject
     @Property
     private Request request;
+
+	@Property
+	private boolean showLocation = false;
 	
 	@InjectPage
 	private PageNotFound pageNotFound;
@@ -39,6 +42,17 @@ public class Class {
 
     @Inject
     private IPortalService portalService;
+
+	private static final String LOCATION = "location";
+
+	Object onActivate(String id, String tab) {
+
+		if (tab.equals(LOCATION)) {
+			showLocation = true;
+		}
+
+		return onActivate(id);
+	}
 
 	Object onActivate(String id) {
 		if (id != null && id.length() > 0 && id.matches("\\d+"))
