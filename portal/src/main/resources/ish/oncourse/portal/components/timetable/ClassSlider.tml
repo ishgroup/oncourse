@@ -1,12 +1,12 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-<span id="session-prev" class="glyphicon glyphicon-chevron-right" style="display: inline;"></span>
-<span id="session-next" class="glyphicon glyphicon-chevron-left" style="display: none;"></span>
+<span id="session-prev" class="glyphicon glyphicon-chevron-right"></span>
+<span id="session-next" class="glyphicon glyphicon-chevron-left"></span>
 <div>
-<section class="clearfix" style="width: 3276px; margin-left: 0px;">
+<section class="clearfix">
 
 
-    <t:loop source="courseClasses" value="courseClass">
-        <div t:type="timetable/classSliderItem" courseClass="courseClass"/>
+    <t:loop source="pCourseClasses" value="pCourseClass">
+        <div t:type="timetable/classSliderItem" pCourseClass="pCourseClass"/>
     </t:loop>
 
 

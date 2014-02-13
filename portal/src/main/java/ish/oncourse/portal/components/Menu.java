@@ -5,7 +5,11 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.components.subscriptions.WaitingLists;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PCourseClass;
 import ish.oncourse.services.courseclass.CourseClassFilter;
+import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.util.DateFormatter;
+import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -13,6 +17,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import java.util.List;
+import java.util.TimeZone;
 
 public class Menu {
 
@@ -28,13 +33,13 @@ public class Menu {
 	private Request request;
 
 	@Inject
+	private ICourseClassService courseClassService;
+
+	@Inject
 	private IPortalService portalService;
 
 	@Property
-	private List<CourseClass> courseClasses;
-
-	@Property
-	private CourseClass courseClass;
+	private CourseClass pastCourseClass;
 
 	@Property
 	private List<CourseClass> pastCourseClasses;
@@ -42,14 +47,26 @@ public class Menu {
 	@Property
 	private CourseClass nearestCourseClass;
 
+	@Property
+	private List<PCourseClass> pCourseClasses;
+
+	@Property
+	private PCourseClass pCourseClass;
+
+	private static final String DATE_FORMAT = "d MMMM h:mma ('UTC'Z)";
 
 
 	@SetupRender
 	public void setupRender() {
-		courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
+
+		List<CourseClass> courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
+
+		pCourseClasses = portalService.fillCourseClassSessions(courseClasses);
 
 		pastCourseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.PAST);
-		nearestCourseClass = !courseClasses.isEmpty() ? courseClasses.get(0) : null;
+
+		nearestCourseClass = !pCourseClasses.isEmpty() ? pCourseClasses.get(0).getCourseClass() : null;
+
 		if (nearestCourseClass == null)
 			nearestCourseClass = !pastCourseClasses.isEmpty() ? pastCourseClasses.get(0) : null;
 	}
@@ -105,8 +122,8 @@ public class Menu {
 
     public boolean isHasResources(){
 
-		for (CourseClass courseClass : courseClasses) {
-			if (!portalService.getAttachedFiles(courseClass, authenticationService.getUser()).isEmpty()) {
+		for (PCourseClass pCourseClasse : pCourseClasses) {
+			if (!portalService.getAttachedFiles(pCourseClasse.getCourseClass(), authenticationService.getUser()).isEmpty()) {
 				return true;
 			}
 		}
@@ -141,5 +158,21 @@ public class Menu {
         return StringUtils.EMPTY;
 
     }
+
+	public String getDate(Object courseClass) {
+		TimeZone timeZone;
+
+		if (courseClass instanceof PCourseClass) {
+			timeZone = courseClassService.getClientTimeZone(pCourseClass.getCourseClass());
+			return 	FormatUtils.getDateFormat(DATE_FORMAT, timeZone).format(pCourseClass.getStartDate());
+		}
+
+		if (courseClass instanceof CourseClass) {
+			timeZone = courseClassService.getClientTimeZone(pastCourseClass);
+			return 	FormatUtils.getDateFormat(DATE_FORMAT, timeZone).format(pastCourseClass.getStartDate());
+		}
+		return StringUtils.EMPTY;
+
+	}
 
 }

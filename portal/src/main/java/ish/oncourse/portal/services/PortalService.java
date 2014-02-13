@@ -157,7 +157,7 @@ public class PortalService implements IPortalService{
         if(contact.getStudent() != null && filter != CourseClassFilter.UNCONFIRMED)
             courseClasses.addAll(getStudentCourseClasses(contact, filter));
 
-        Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
+        Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.DESCENDING);
         ordering.orderList(courseClasses);
 
         return courseClasses;
@@ -378,5 +378,37 @@ public class PortalService implements IPortalService{
 		List<Enrolment> enrolments = exp.filterObjects(courseClass.getValidEnrolments());
 
 		return !enrolments.isEmpty();
+	}
+
+	@Override
+	public List<PCourseClass> fillCourseClassSessions(List<CourseClass> courseClasses) {
+
+		List<PCourseClass> pCourseClasses = new ArrayList<>();
+		List<Session> sessions = new ArrayList<>();
+
+		for (CourseClass courseClass : courseClasses) {
+
+			if (courseClass.getSessions().isEmpty()) {
+				pCourseClasses.add(new PCourseClass(courseClass, null, null));
+			} else {
+				sessions.addAll(courseClass.getSessions());
+			}
+		}
+
+		Ordering.orderList(sessions, Arrays.asList(new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING)));
+		Expression ex = ExpressionFactory.greaterExp(Session.START_DATE_PROPERTY, new Date());
+
+		sessions = ex.filterObjects(sessions);
+
+		for (Session session : sessions) {
+			PCourseClass pCourseClass = new PCourseClass(session.getCourseClass(), session.getStartDate(), session.getEndDate());
+
+			if (!pCourseClasses.contains(pCourseClass)) {
+				pCourseClasses.add(pCourseClass);
+			}
+
+		}
+
+		return pCourseClasses;
 	}
 }

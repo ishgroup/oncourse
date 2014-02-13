@@ -5,23 +5,23 @@
             <li class="expanded">
                 <t:if test="nearestCourseClass">
                     <a href="${request.contextPath}/class/${nearestCourseClass.id}">Classes
-                        <span class="badge">${courseClasses.size()}</span>
+                        <span class="badge">${pCourseClasses.size()}</span>
                     </a>
                 </t:if>
                 <t:unless test="nearestCourseClass">
                     <a href="#">Classes
-                        <span class="badge">${courseClasses.size()}</span>
+                        <span class="badge">${pCourseClasses.size()}</span>
                     </a>
                 </t:unless>
                 <ul class="list-unstyled classes-content">
-                    <t:loop source="courseClasses" value="courseClass">
+                    <t:loop source="pCourseClasses" value="pCourseClass">
                         <li>
-                            <t:delegate to="block:classInfo"/>
+                            <t:delegate to="block:currentClassInfo"/>
                         </li>
                     </t:loop>
-                    <t:loop source="pastCourseClasses" value="courseClass">
+                    <t:loop source="pastCourseClasses" value="pastCourseClass">
                         <li style="display: none;">
-                            <t:delegate to="block:classInfo"/>
+                            <t:delegate to="block:pastClassInfo"/>
                         </li>
                     </t:loop>
                 </ul>
@@ -59,20 +59,43 @@
     </div>
 
 
-    <t:block t:id="classInfo">
+    <t:block t:id="pastClassInfo">
         <p>
-            <strong><a href="${request.contextPath}/class/${courseClass.id}">${courseClass.course.name}</a></strong>
-            <small class="text-muted">(${courseClass.uniqueIdentifier})</small>
+            <strong><a href="${request.contextPath}/class/${pastCourseClass.id}">${pastCourseClass.course.name}</a></strong>
+            <small class="text-muted">(${pastCourseClass.uniqueIdentifier})</small>
             <label>
 
-                <t:if test="courseClass.startDate">
-                    <t:output format="literal:d MMMM yy h:mma z" value="courseClass.startDate"/>
+                <t:if test="pastCourseClass.startDate">
+                    <span>${getDate(pastCourseClass)}</span>
                 </t:if>
-                <t:unless test="courseClass.startDate">
-                    <t:if test="${courseClass.getIsDistantLearningCourse()}">
+                <t:unless test="pastCourseClass.startDate">
+                    <t:if test="${pastCourseClass.getIsDistantLearningCourse()}">
                         <span>Self paced class</span>
                     </t:if>
-                    <t:unless test="${courseClass.getIsDistantLearningCourse()}">
+                    <t:unless test="${pastCourseClass.getIsDistantLearningCourse()}">
+                        <span>This class does not have sessions</span>
+                    </t:unless>
+                </t:unless>
+
+            </label>
+        </p>
+
+    </t:block>
+
+    <t:block t:id="currentClassInfo">
+        <p>
+            <strong><a href="${request.contextPath}/class/${pCourseClass.courseClass.id}">${pCourseClass.courseClass.course.name}</a></strong>
+            <small class="text-muted">(${pCourseClass.courseClass.uniqueIdentifier})</small>
+            <label>
+
+                <t:if test="pCourseClass.startDate">
+                    <span>${getDate(pCourseClass)}</span>
+                </t:if>
+                <t:unless test="pCourseClass.startDate">
+                    <t:if test="${pCourseClass.courseClass.getIsDistantLearningCourse()}">
+                        <span>Self paced class</span>
+                    </t:if>
+                    <t:unless test="${pCourseClass.courseClass.getIsDistantLearningCourse()}">
                         <span>This class does not have sessions</span>
                     </t:unless>
                 </t:unless>

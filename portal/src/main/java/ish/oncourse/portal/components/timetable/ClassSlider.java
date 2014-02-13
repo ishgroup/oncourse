@@ -3,13 +3,14 @@ package ish.oncourse.portal.components.timetable;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PCourseClass;
 import ish.oncourse.services.courseclass.CourseClassFilter;
-import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,20 +23,22 @@ public class ClassSlider {
     @Parameter
     private Contact contact;
 
+	@Property
+	private List<PCourseClass> pCourseClasses;
 
-    @Property
-    private CourseClass courseClass;
+	@Property
+	private PCourseClass pCourseClass;
 
-    @Property
-    private List<CourseClass> courseClasses;
-
-
-    @Inject
+	@Inject
     private IPortalService portalService;
 
     @SetupRender
     boolean setupRender() {
-        courseClasses = portalService.getContactCourseClasses(contact,CourseClassFilter.CURRENT);
+		List<CourseClass> courseClasses = portalService.getContactCourseClasses(contact,CourseClassFilter.CURRENT);
+		pCourseClasses = portalService.fillCourseClassSessions(courseClasses);
         return true;
     }
+
+
+
 }

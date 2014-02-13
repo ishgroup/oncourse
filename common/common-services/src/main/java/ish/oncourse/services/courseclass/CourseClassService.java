@@ -340,9 +340,6 @@ public class CourseClassService implements ICourseClassService {
 			timezone = cookiesService.getClientTimezone();
 			if (timezone == null) {
 				timezone = cookiesService.getSimpleClientTimezone();
-				if (timezone == null) {
-					timezone = TimeZone.getTimeZone(courseClass.getTimeZone());
-				}
 			}
 		}
 		return timezone;

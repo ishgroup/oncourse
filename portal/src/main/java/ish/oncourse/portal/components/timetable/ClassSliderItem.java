@@ -1,13 +1,13 @@
 package ish.oncourse.portal.components.timetable;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.portal.services.PCourseClass;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.DateFormatter;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -31,7 +31,7 @@ public class ClassSliderItem {
 	private ICourseClassService courseClassService;
 
     @Parameter
-    private CourseClass courseClass;
+	private PCourseClass pCourseClass;
 
     private TimeZone timeZone;
 
@@ -40,55 +40,55 @@ public class ClassSliderItem {
 
     @SetupRender
     void setupRender() {
-        timeZone = courseClassService.getClientTimeZone(courseClass);
+        timeZone = courseClassService.getClientTimeZone(pCourseClass.getCourseClass());
     }
 
     public String getPeriod()
     {
-		if(courseClass.getIsDistantLearningCourse())
+		if(pCourseClass.getCourseClass().getIsDistantLearningCourse())
 			return  messages.get(KEY_selfPacedMessage);
 
-		if(courseClass.getSessions().isEmpty())
+		if(pCourseClass.getCourseClass().getSessions().isEmpty())
 			return messages.get(KEY_classNotHaveSessionsMessage);
 
-        return DateFormatter.formatDate(courseClass.getSessions().get(0).getStartDate(),false,courseClassService.getClientTimeZone(courseClass));
+        return DateFormatter.formatDate(pCourseClass.getStartDate(), false, courseClassService.getClientTimeZone(pCourseClass.getCourseClass()));
     }
 
     public String getName()
     {
-        return courseClass.getCourse().getName();
+        return pCourseClass.getCourseClass().getCourse().getName();
     }
 
     public String getDate()
     {
-		if(courseClass.getIsDistantLearningCourse())
+		if(pCourseClass.getCourseClass().getIsDistantLearningCourse())
 			return  messages.get(KEY_selfPacedMessage);
 
-		if(courseClass.getSessions().isEmpty())
+		if(pCourseClass.getCourseClass().getSessions().isEmpty())
 			return messages.get(KEY_classNotHaveSessionsMessage);
 
         return String.format("%s - %s",
-                FormatUtils.getDateFormat(FormatUtils.dateFormatForTimeline, timeZone).format(courseClass.getSessions().get(0).getStartDate()),
-                FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(courseClass.getSessions().get(0).getEndDate()));
+				FormatUtils.getDateFormat(FormatUtils.dateFormatForTimeline, timeZone).format(pCourseClass.getStartDate()),
+				FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(pCourseClass.getEndDate()));
     }
 
 
     public String getVenue()
     {
 
-        if (courseClass.getRoom() != null)
-            return String.format("%s, %s", courseClass.getRoom().getName(), courseClass.getRoom().getSite().getName());
+        if (pCourseClass.getCourseClass().getRoom() != null)
+            return String.format("%s, %s", pCourseClass.getCourseClass().getRoom().getName(), pCourseClass.getCourseClass().getRoom().getSite().getName());
         else
             return StringUtils.EMPTY;
     }
 
     public CourseClass getCourseClass(){
-        return courseClass;
+        return pCourseClass.getCourseClass();
     }
 
 	public Object[] getAccountContext()
 	{
-		return new Object[] { courseClass.getId(), "location" };
+		return new Object[] { pCourseClass.getCourseClass().getId(), "location" };
 	}
 }
 

@@ -37,4 +37,6 @@ public interface IPortalService {
 	public List<BinaryInfo> getAttachedFiles(CourseClass courseClass, Contact contact);
 
     public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter);
+
+	public List<PCourseClass> fillCourseClassSessions(List<CourseClass> courseClasses) ;
 }
