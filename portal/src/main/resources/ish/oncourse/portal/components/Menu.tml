@@ -1,6 +1,6 @@
 <t:container
         xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div data-spy="affix" data-offset-top="90" class="sidebar affix-top">
+    <div data-spy="affix" data-offset-top="0" class="sidebar affix">
         <ul class="nav sidenav">
             <li class="expanded">
                 <t:if test="nearestCourseClass">
@@ -16,12 +16,12 @@
                 <ul class="list-unstyled classes-content">
                     <t:loop source="pCourseClasses" value="pCourseClass">
                         <li>
-                            <t:delegate to="block:currentClassInfo"/>
+                            <t:delegate to="block:currentClassInfo"/><br/>
                         </li>
                     </t:loop>
                     <t:loop source="pastCourseClasses" value="pastCourseClass">
                         <li style="display: none;">
-                            <t:delegate to="block:pastClassInfo"/>
+                            <t:delegate to="block:pastClassInfo"/><br/>
                         </li>
                     </t:loop>
                 </ul>
