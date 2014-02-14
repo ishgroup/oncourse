@@ -6,7 +6,7 @@
 </div>
 
 <t:block t:id="concessionEditor">
-	<span t:type="checkout/concession/concessiontypes" delegate="delegate" returnBlock="checkout.checkoutBlock"/>
+	<span t:type="checkout/concession/concessiontypes" delegate="delegate" returnBlock="checkout.checkoutBlock" returnBlockId="literal:#checkout"/>
 	<t:if test="studentConcession.concessionType">
 		<t:form t:id="concessionForm" clientValidation="literal:NONE" secure="true">
 			<fieldset>

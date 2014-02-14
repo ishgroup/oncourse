@@ -55,7 +55,12 @@
 		<div id="concessionBlock">
 			<fieldset class="concessions">
 				<br/>
-				<span t:type="checkout/concession/concessiontypes" delegate="delegate.concessionDelegate" parentForm="contactEditorForm"/>
+                <t:remove>we are refreshing only concessionBlock when a student choises some concession type.
+                    we use returnBlock="concessionBlock" and  returnBlockId="literal:#concessionBlock" for the goal.
+                    see checkout.js@initConcessionEditorHandle() function.
+                </t:remove>
+				<span t:type="checkout/concession/concessiontypes" delegate="delegate.concessionDelegate" parentForm="contactEditorForm" returnBlock="concessionBlock"
+                      returnBlockId="literal:#concessionBlock"/>
 				<t:if test="delegate.concessionDelegate.studentConcession.concessionType">
 					<span t:type="checkout/concession/concessionfieldset" delegate="delegate.concessionDelegate"
 						  validateHandler="validateHandler"/>

@@ -2,7 +2,7 @@
 	<p>
 		<label for="concessionTypes">New Concession</label>
 
-		<select id="concessionTypes" data-formId="${formId}">
+		<select id="concessionTypes" data-formId="${formId}"  data-refreshId="${returnBlockId}">
 			<t:if test="delegate.studentConcession">
 				<option value="-1">no concession</option>
 				<p:else>
@@ -18,6 +18,6 @@
 				</t:if>
 			</t:loop>
 		</select>
-		<t:eventlink t:id="changeConcessionTypeEvent"  style="display:none" data-refreshId="${returnBlockId}"/>
+		<t:eventlink t:id="changeConcessionTypeEvent"  style="display:none"/>
 	</p>
 </t:container>

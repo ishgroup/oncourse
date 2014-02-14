@@ -3,7 +3,8 @@
 		<p>
 			<label for="concessionNumber">Concession number <em title="${message:message-required}">*</em></label>
 						<span class="${validateHandler.validateClass('concessionNumber')}">
-							<t:textfield t:id="concessionNumber" value="studentConcession.concessionNumber" size="15" class ="input-fixed ${validateHandler.errorClass('concessionNumber')}"/>
+                            <t:remove>We can not use tapestry componenets because the componnent can be rendered outside t:form</t:remove>
+							<input class="input-fixed ${validateHandler.errorClass('concessionNumber')}" size="15" id="concessionNumber" name="concessionNumber" type="text" value="${studentConcession.concessionNumber}"/>
 							<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('concessionNumber')}"/>
 						</span>
 		</p>
@@ -12,7 +13,8 @@
 		<p>
 			<label for="expiresOn">Expiry date <em title="${message:message-required}">*</em></label>
 						<span class="${validateHandler.validateClass('expiresOn')}">
-							<t:textfield t:id="expiresOn" value="expiresOn" class ="input-fixed ${validateHandler.errorClass('expiresOn')}"/>
+                            <t:remove>We can not use tapestry componenets because the componnent can be rendered outside t:form</t:remove>
+                            <input class="input-fixed ${validateHandler.errorClass('expiresOn')}" value="${expiresOn}" id="expiresOn" name="expiresOn" type="text"/>
 							<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('expiresOn')}"/>
 						</span>
 		</p>
@@ -20,7 +22,8 @@
 	<div class="conditions">
 		<label>
 						<span class="${validateHandler.validateClass('concessionAgree')}">
-							<t:checkbox t:id="concessionAgree" value="concessionAgree"/>
+                            <t:remove>We can not use tapestry componenets because the componnent can be rendered outside t:form</t:remove>
+                            <input id="concessionAgree" name="concessionAgree" type="checkbox"/>
 							<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('concessionAgree')}"/>
 						</span>
 			${message:message-concessionConfirmationMessage}
