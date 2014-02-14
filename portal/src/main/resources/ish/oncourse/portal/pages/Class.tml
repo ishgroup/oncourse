@@ -10,7 +10,12 @@
                 <ul class="nav nav-tabs header-tabs">
                     <span t:type="courseclass/classTabs" courseClass="courseClass"/>
                 </ul>
-                <h3><a href="#" name="top">${courseClass.course.name}  </a> <small>   (${courseClass.uniqueIdentifier})</small></h3>
+                <h3>
+                    <a href="${classDetailsURL}" target="_blank">
+                        ${courseClass.course.name}
+                    </a>
+                    <small> (${courseClass.uniqueIdentifier})</small>
+                </h3>
         </div>
         <div class="tab-content">
             <span t:type="courseclass/classDetails" courseClass="courseClass"></span>

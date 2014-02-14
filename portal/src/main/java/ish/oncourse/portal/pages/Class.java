@@ -5,8 +5,10 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Student;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -33,7 +35,10 @@ public class Class {
 
 	@Property
 	private boolean showLocation = false;
-	
+
+	@Inject
+	private IWebSiteService webSiteService;
+
 	@InjectPage
 	private PageNotFound pageNotFound;
 
@@ -90,4 +95,7 @@ public class Class {
 		return  !portalService.getAttachedFiles(courseClass, authenticationService.getUser()).isEmpty();
 	}
 
+	public String getClassDetailsURL(){
+		return PortalUtils.getClassDetailsURLBy(courseClass, webSiteService);
+	}
 }

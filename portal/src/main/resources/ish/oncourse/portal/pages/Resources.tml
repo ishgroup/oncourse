@@ -28,7 +28,12 @@
 
         <t:if test="${hasResources(courseClass)}">
 		<li>
-			<h4><a href="#">${courseClass.course.name} </a> <small> (${courseClass.uniqueIdentifier})</small></h4>
+            <h4>
+                <a href="${classDetailsURL}" target="_blank">
+                    ${courseClass.course.name}
+                </a>
+                <small> (${courseClass.uniqueIdentifier})</small>
+            </h4>
 			<small class="text-muted">${getDate(courseClass)}</small>
 			<ul class="list-unstyled resources-list">
 				<span t:type="courseclass/classresources" courseClass="courseClass"></span>

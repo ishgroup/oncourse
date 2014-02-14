@@ -4,10 +4,12 @@ import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -33,6 +35,9 @@ public class Resources {
 
 	@Inject
 	private ICourseClassService courseClassService;
+
+	@Inject
+	private IWebSiteService webSiteService;
 
     @Property
     private CourseClass courseClass;
@@ -115,5 +120,8 @@ public class Resources {
 
 	public String getTutorsMaterialUrl() {
 		return binaryDataService.getUrl(tutorsMaterial);
+	}
+	public String getClassDetailsURL(){
+		return PortalUtils.getClassDetailsURLBy(courseClass, webSiteService);
 	}
 }

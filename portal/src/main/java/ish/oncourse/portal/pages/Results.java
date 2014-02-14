@@ -12,6 +12,8 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import ish.oncourse.portal.services.PortalUtils;
+import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;
 import java.util.TimeZone;
@@ -27,6 +29,9 @@ public class Results {
     private IPortalService portalService;
 
 	@Inject
+	private IWebSiteService webSiteService;
+
+	@Inject
 	private ICourseClassService courseClassService;
 
     @Property
@@ -37,6 +42,7 @@ public class Results {
 
 	@Inject
 	private Messages messages;
+
 
 
     @SetupRender
@@ -64,4 +70,7 @@ public class Results {
 		return portalService.hasResult(authenticationService.getUser(), courseClass);
     }
 
+	public String getClassDetailsURL(){
+		return PortalUtils.getClassDetailsURLBy(courseClass,webSiteService);
+	}
 }

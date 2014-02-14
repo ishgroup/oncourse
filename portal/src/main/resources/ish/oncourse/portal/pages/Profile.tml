@@ -9,7 +9,7 @@
             <li id="tab_census" class="${getActiveClass('tab_census')}"><a data-toggle="tab" href="#census-questions">Census Questions</a></li>
         </t:if>
     </ul>
-    <h3><a href="#">${contact.fullName}'s Profile</a></h3>
+    <h3>${contact.fullName}'s Profile</h3>
 </div>
 <div class="tab-content">
 <div class="tab-pane ${getActiveClass('tab_profile')}" id="profile-form">
