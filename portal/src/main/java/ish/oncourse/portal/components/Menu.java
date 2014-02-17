@@ -59,9 +59,7 @@ public class Menu {
 	@SetupRender
 	public void setupRender() {
 
-		List<CourseClass> courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
-
-		pCourseClasses = portalService.fillCourseClassSessions(courseClasses);
+		pCourseClasses = portalService.fillCourseClassSessions(authenticationService.getUser(), CourseClassFilter.CURRENT);
 
 		pastCourseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.PAST);
 

@@ -157,7 +157,7 @@ public class PortalService implements IPortalService{
         if(contact.getStudent() != null && filter != CourseClassFilter.UNCONFIRMED)
             courseClasses.addAll(getStudentCourseClasses(contact, filter));
 
-        Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.DESCENDING);
+        Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
         ordering.orderList(courseClasses);
 
         return courseClasses;
@@ -381,7 +381,9 @@ public class PortalService implements IPortalService{
 	}
 
 	@Override
-	public List<PCourseClass> fillCourseClassSessions(List<CourseClass> courseClasses) {
+	public List<PCourseClass> fillCourseClassSessions(Contact contact, CourseClassFilter filter) {
+
+		List<CourseClass> courseClasses = getContactCourseClasses(contact, filter);
 
 		List<PCourseClass> pCourseClasses = new ArrayList<>();
 		List<Session> sessions = new ArrayList<>();

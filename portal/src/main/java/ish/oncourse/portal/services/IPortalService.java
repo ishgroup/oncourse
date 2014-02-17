@@ -38,5 +38,5 @@ public interface IPortalService {
 
     public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter);
 
-	public List<PCourseClass> fillCourseClassSessions(List<CourseClass> courseClasses) ;
+	public List<PCourseClass> fillCourseClassSessions(Contact contact, CourseClassFilter filter) ;
 }
