@@ -11,6 +11,7 @@ import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -130,5 +131,9 @@ public class Resources {
 		String[] params = portalService.getUrlBy(courseClass);
 		target = params[1];
 		return params[0];
+	}
+
+	public String getSize() {
+		return FileUtils.byteCountToDisplaySize(tutorsMaterial.getByteSize());
 	}
 }

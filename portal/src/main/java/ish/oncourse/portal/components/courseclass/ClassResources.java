@@ -6,6 +6,7 @@ import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
+import org.apache.commons.io.FileUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -78,5 +79,9 @@ public class ClassResources {
 
 	public String getMaterialUrl() {
 		return binaryDataService.getUrl(material);
+	}
+
+	public String getSize() {
+		return FileUtils.byteCountToDisplaySize(material.getByteSize());
 	}
 }
