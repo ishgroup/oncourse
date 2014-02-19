@@ -11,6 +11,7 @@ import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
@@ -65,8 +66,11 @@ public class Resources {
 
 	private Date lastLoginDate;
 
+	@Property
+	private String target;
 
-    @SetupRender
+
+	@SetupRender
     void  setupRender(){
 
 		String sd = cookieService.getCookieValue("lastLoginTime");
@@ -121,7 +125,10 @@ public class Resources {
 	public String getTutorsMaterialUrl() {
 		return binaryDataService.getUrl(tutorsMaterial);
 	}
-	public String getClassDetailsURL(){
-		return PortalUtils.getClassDetailsURLBy(courseClass, webSiteService);
+
+	public String getUrl() {
+		String[] params = portalService.getUrlBy(courseClass);
+		target = params[1];
+		return params[0];
 	}
 }

@@ -2,16 +2,17 @@ package ish.oncourse.portal.components.subscriptions;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.WaitingList;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.List;
 
-import static ish.oncourse.portal.services.PortalUtils.getCourseDetailsURLBy;
 
 public class WaitingListItem {
 
@@ -31,20 +32,31 @@ public class WaitingListItem {
     @Inject
     private ITextileConverter textileConverter;
 
+	@Inject
+	private IPortalService portalService;
+
     @Inject
     private IPlainTextExtractor plainTextExtractor;
 
     @InjectContainer
     private WaitingLists waitingListsPage;
 
+	@Property
+	private String target;
+
+	@Property
+	private String URL;
+
     public String getCourseName() {
         return waitingList.getCourse().getName();
     }
 
-    public String getCourseDetailsURL() {
-
-        return getCourseDetailsURLBy(waitingList.getCourse(), webSiteService);
-    }
+ 	@BeginRender
+	public void befoRender() {
+		String[] params = portalService.getUrlBy(waitingList.getCourse());
+		URL = params[0];
+		target = params[1];
+	}
 
     public String getCourseDetail() {
         return PortalUtils.getCourseDetailsBy(waitingList.getCourse(), textileConverter, plainTextExtractor);
@@ -74,8 +86,7 @@ public class WaitingListItem {
     }
 
 	public boolean isWebVisible() {
-		return waitingList != null && waitingList.getCourse().getIsWebVisible() &&
-			webSiteService.getCurrentDomain() != null;
+		return waitingList != null && waitingList.getCourse().getIsWebVisible();
 	}
 
 }

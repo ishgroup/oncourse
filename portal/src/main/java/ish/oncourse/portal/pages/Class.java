@@ -12,6 +12,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -50,6 +51,9 @@ public class Class {
 
 	private static final String LOCATION = "location";
 
+	@Property
+	private String target;
+
 	Object onActivate(String id, String tab) {
 
 		if (tab.equals(LOCATION)) {
@@ -85,17 +89,19 @@ public class Class {
         return authenticationService.isTutor() && !portalService.isApproved(authenticationService.getUser(), courseClass);
     }
 
-	public boolean isHasResults(){
+	public boolean isHasResults() {
 		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
 		return portalService.hasResult(authenticationService.getUser(), courseClass);
 	}
 
-	public boolean isHasResources(){
+	public boolean isHasResources() {
 
 		return  !portalService.getAttachedFiles(courseClass, authenticationService.getUser()).isEmpty();
 	}
 
-	public String getClassDetailsURL(){
-		return PortalUtils.getClassDetailsURLBy(courseClass, webSiteService);
+	public String getUrl() {
+		String[] params = portalService.getUrlBy(courseClass);
+		target = params[1];
+		return params[0];
 	}
 }

@@ -8,6 +8,7 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
@@ -43,9 +44,13 @@ public class Results {
 	@Inject
 	private Messages messages;
 
+	@Property
+	private String target;
 
+	@Property
+	private String URL;
 
-    @SetupRender
+	@SetupRender
     void  setupRender(){
 
         courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.ALL);
@@ -70,7 +75,10 @@ public class Results {
 		return portalService.hasResult(authenticationService.getUser(), courseClass);
     }
 
-	public String getClassDetailsURL(){
-		return PortalUtils.getClassDetailsURLBy(courseClass,webSiteService);
+
+	public String getUrl() {
+		String[] params = portalService.getUrlBy(courseClass);
+		target = params[1];
+		return params[0];
 	}
 }

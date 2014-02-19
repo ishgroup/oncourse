@@ -2,10 +2,7 @@ package ish.oncourse.portal.services;
 
 import ish.common.types.AttachmentInfoVisibility;
 import ish.common.types.EnrolmentStatus;
-import ish.common.types.OutcomeStatus;
 import ish.oncourse.model.*;
-import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -20,12 +17,11 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -47,6 +43,8 @@ public class PortalService implements IPortalService{
 
 	@Inject
 	private IWebSiteService webSiteService;
+
+	private static final String TARGET_BLANK = "_blank";
 
     @Override
     public JSONObject getSession(Session session) {
@@ -412,5 +410,21 @@ public class PortalService implements IPortalService{
 		}
 
 		return pCourseClasses;
+	}
+
+	public String[] getUrlBy(CourseClass courseClass)
+	{
+		if (webSiteService.getCurrentDomain() != null) {
+			return new String[]{PortalUtils.getClassDetailsURLBy(courseClass, webSiteService), TARGET_BLANK};
+		}
+		return new String[]{"#", StringUtils.EMPTY};
+	}
+
+	public String[] getUrlBy(Course course)
+	{
+		if (webSiteService.getCurrentDomain() != null) {
+			return new String[]{PortalUtils.getCourseDetailsURLBy(course, webSiteService), TARGET_BLANK};
+		}
+		return new String[]{"#", StringUtils.EMPTY};
 	}
 }

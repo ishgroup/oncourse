@@ -1,10 +1,6 @@
 package ish.oncourse.portal.services;
 
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Session;
+import ish.oncourse.model.*;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import org.apache.tapestry5.json.JSONObject;
 
@@ -39,4 +35,9 @@ public interface IPortalService {
     public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter);
 
 	public List<PCourseClass> fillCourseClassSessions(Contact contact, CourseClassFilter filter) ;
+
+	public String[] getUrlBy(CourseClass courseClass);
+
+	public String[] getUrlBy(Course course);
+
 }
