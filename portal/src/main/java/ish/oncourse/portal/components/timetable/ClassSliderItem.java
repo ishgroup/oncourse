@@ -1,6 +1,8 @@
 package ish.oncourse.portal.components.timetable;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PCourseClass;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -8,9 +10,11 @@ import ish.oncourse.util.DateFormatter;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.util.TimeZone;
 
@@ -31,12 +35,23 @@ public class ClassSliderItem {
 	private ICourseClassService courseClassService;
 
     @Parameter
+    @Property
 	private PCourseClass pCourseClass;
 
     private TimeZone timeZone;
 
 	@Inject
 	private Messages messages;
+
+    @Inject
+    @Property
+    private Request request;
+
+    @Inject
+    private IAuthenticationService authenticationService;
+
+    @Inject
+    private IPortalService portalService;
 
     @SetupRender
     void setupRender() {
@@ -90,5 +105,9 @@ public class ClassSliderItem {
 	{
 		return new Object[] { pCourseClass.getCourseClass().getId(), "location" };
 	}
+
+    public boolean needApprove() {
+        return authenticationService.isTutor() && !portalService.isApproved(authenticationService.getUser(), pCourseClass.getCourseClass());
+    }
 }
 

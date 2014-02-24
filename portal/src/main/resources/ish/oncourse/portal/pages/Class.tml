@@ -4,7 +4,7 @@
 
 
         <t:if test="${needApprove()}">
-            <p class="info-text fixed">This course requires approval <a href="${request.contextPath}/tutor/classapproval/${courseClass.id}" class="btn btn-default btn-xs">Review now</a></p>
+            <p class="info-text fixed">This course requires approval <a href="${request.contextPath}/tutor/classapproval/${courseClass.id}" class="btn btn-primary btn-xs">Review now</a></p>
         </t:if>
         <div class="page-header zero-padding clearfix">
                 <ul class="nav nav-tabs header-tabs">
@@ -12,7 +12,12 @@
                 </ul>
                 <h3>
                     <a href="${URL}" target="${target}">${courseClass.course.name}</a>
-                    <small> (${courseClass.uniqueIdentifier})</small>
+                    <span class="info">
+                        <small>  (${courseClass.uniqueIdentifier})</small>
+                        <t:if test="${needApprove()}">
+                            <a href="${request.contextPath}/tutor/classapproval/${courseClass.id}" class="label label-primary">Review now</a>
+                        </t:if>
+                    </span>
                 </h3>
         </div>
         <div class="tab-content">

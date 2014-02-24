@@ -62,7 +62,7 @@
     <t:block t:id="pastClassInfo">
         <p>
             <strong><a href="${request.contextPath}/class/${pastCourseClass.id}">${pastCourseClass.course.name}</a></strong>
-            <small class="text-muted">(${pastCourseClass.uniqueIdentifier})</small>
+            <small class="text-muted">  (${pastCourseClass.uniqueIdentifier})</small> <br/>
             <label>
 
                 <t:if test="pastCourseClass.startDate">
@@ -85,20 +85,24 @@
     <t:block t:id="currentClassInfo">
         <p>
             <strong><a href="${request.contextPath}/class/${pCourseClass.courseClass.id}">${pCourseClass.courseClass.course.name}</a></strong>
-            <small class="text-muted">(${pCourseClass.courseClass.uniqueIdentifier})</small>
+            <small class="text-muted">  (${pCourseClass.courseClass.uniqueIdentifier})</small> <br/>
             <label>
 
                 <t:if test="pCourseClass.startDate">
-                    <span>${getDate(pCourseClass)}</span>
+                    <span>${getDate(pCourseClass)}  </span>
                 </t:if>
                 <t:unless test="pCourseClass.startDate">
                     <t:if test="${pCourseClass.courseClass.getIsDistantLearningCourse()}">
-                        <span>Self paced class</span>
+                        <span>Self paced class  </span>
                     </t:if>
                     <t:unless test="${pCourseClass.courseClass.getIsDistantLearningCourse()}">
-                        <span>This class does not have sessions</span>
+                        <span>This class does not have sessions  </span>
                     </t:unless>
                 </t:unless>
+
+                <t:if test="${needApprove()}">
+                    <a href="${request.contextPath}/tutor/classapproval/${pCourseClass.courseClass.id}" class="label label-primary">Review now</a>
+                </t:if>
 
             </label>
         </p>

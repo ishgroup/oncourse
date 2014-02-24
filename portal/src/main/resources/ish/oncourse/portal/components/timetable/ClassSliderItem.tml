@@ -21,6 +21,12 @@
                     </t:pagelink>
                 </li>
             </t:if>
+
+            <t:if test="${needApprove()}">
+                <li>
+                    <a href="${request.contextPath}/tutor/classapproval/${pCourseClass.courseClass.id}" class="label label-primary">Review now</a>
+                </li>
+            </t:if>
         </ul>
     </div>
 </t:container>

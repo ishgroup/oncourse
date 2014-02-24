@@ -173,4 +173,8 @@ public class Menu {
 
 	}
 
+    public boolean needApprove() {
+        return authenticationService.isTutor() && !portalService.isApproved(authenticationService.getUser(), pCourseClass.getCourseClass());
+    }
+
 }
