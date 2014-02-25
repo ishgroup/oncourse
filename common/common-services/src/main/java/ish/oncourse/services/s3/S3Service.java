@@ -77,11 +77,19 @@ public class S3Service implements IS3Service {
 	}
 
 	@Override
-	public Bucket createBucket(String name) {
+	public void createBucket(String name) {
 		AmazonS3Client client = new AmazonS3Client(credentials);
 
 		CreateBucketRequest request = new CreateBucketRequest(name, Region.AP_Sydney);
-		return client.createBucket(request);
+		client.createBucket(request);
+		
+		// enable bucket versioning
+		BucketVersioningConfiguration versioningConfiguration = 
+				new BucketVersioningConfiguration(BucketVersioningConfiguration.ENABLED);
+		SetBucketVersioningConfigurationRequest versioningConfigurationRequest = 
+				new SetBucketVersioningConfigurationRequest(name, versioningConfiguration);
+		
+		client.setBucketVersioningConfiguration(versioningConfigurationRequest);
 	}
 
 	@Override

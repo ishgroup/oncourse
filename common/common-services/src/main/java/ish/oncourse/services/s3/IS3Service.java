@@ -4,7 +4,6 @@
 package ish.oncourse.services.s3;
 
 import com.amazonaws.services.identitymanagement.model.AccessKey;
-import com.amazonaws.services.s3.model.Bucket;
 
 public interface IS3Service {
 
@@ -21,9 +20,8 @@ public interface IS3Service {
 	 * Creates new S3 bucket.
 	 * 
 	 * @param name - name of a bucket
-	 * @return {@link Bucket} object for the created bucket
 	 */
-	Bucket createBucket(String name);
+	void createBucket(String name);
 
 	/**
 	 * Generates temporary URL to access specified file.
