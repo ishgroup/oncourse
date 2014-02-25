@@ -3,6 +3,7 @@ package ish.oncourse.admin.pages.college;
 import ish.oncourse.admin.pages.Index;
 import ish.oncourse.admin.services.billing.StockCodes;
 import ish.oncourse.admin.utils.LicenseFeeUtil;
+import ish.oncourse.admin.utils.PreferenceUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -197,13 +198,8 @@ public class Billing {
 				}
 			}
 			if (!found) {
-				Date now = new Date();
-				Preference p = context.newObject(Preference.class);
-				p.setCollege(college);
-				p.setName(CommonPreferenceController.SERVICES_CC_AMEX_ENABLED);
-				p.setValueString(Boolean.toString(this.amexEnabled));
-				p.setCreated(now);
-				p.setModified(now);
+				PreferenceUtil.createPreference(context, college, 
+						CommonPreferenceController.SERVICES_CC_AMEX_ENABLED, Boolean.toString(this.amexEnabled));
 			}
 		}
 

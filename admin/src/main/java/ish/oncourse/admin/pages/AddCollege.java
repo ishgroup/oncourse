@@ -2,8 +2,8 @@ package ish.oncourse.admin.pages;
 
 import ish.oncourse.admin.pages.college.Billing;
 import ish.oncourse.admin.utils.LicenseFeeUtil;
+import ish.oncourse.admin.utils.PreferenceUtil;
 import ish.oncourse.model.College;
-import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.system.ICollegeService;
@@ -70,16 +70,6 @@ public class AddCollege {
 		return prls.createPageRenderLinkWithContext(Billing.class, collegeId);
 	}
 	
-	private Preference createPreference(ObjectContext context, College college, String name, String value) {
-		Preference pref = context.newObject(Preference.class);
-		
-		pref.setCollege(college);
-		pref.setName(name);
-		pref.setValueString(value);
-		
-		return pref;
-	}
-	
 	private void initializeLicenseFees(ObjectContext context, College college) {
 		LicenseFeeUtil.createFee(context, college, null, LicenseFeeUtil.SMS_FEE_CODE);
 		LicenseFeeUtil.createFee(context, college, null, LicenseFeeUtil.CC_OFFICE_FEE_CODE);
@@ -87,17 +77,17 @@ public class AddCollege {
 	}
 	
 	private void initializeLicensePreferences(ObjectContext context, College college) {
-		createPreference(context, college, PreferenceController.LICENSE_ACCESS_CONTROL, String.valueOf(false));
-		createPreference(context, college, PreferenceController.LICENSE_LDAP, String.valueOf(false));
-		createPreference(context, college, PreferenceController.LICENSE_BUDGET, String.valueOf(false));
-		createPreference(context, college, PreferenceController.LICENSE_EXTENRNAL_DB, String.valueOf(false));
-		createPreference(context, college, PreferenceController.LICENSE_SSL, String.valueOf(false));
-		createPreference(context, college, PreferenceController.LICENSE_SMS, String.valueOf(false));
-		createPreference(context, college, PreferenceController.LICENSE_CC_PROCESSING, String.valueOf(false));
-		createPreference(context, college, PreferenceController.LICENSE_PAYROLL, String.valueOf(false));
-		createPreference(context, college, PreferenceController.LICENSE_WEBSITE, String.valueOf(false));
-		createPreference(context, college, PreferenceController.LICENSE_VOUCHER, String.valueOf(false));
-		createPreference(context, college, PreferenceController.LICENSE_MEMBERSHIP, String.valueOf(true));
-		createPreference(context, college, PreferenceController.LICENSE_ATTENDANCE, String.valueOf(true));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_ACCESS_CONTROL, String.valueOf(false));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_LDAP, String.valueOf(false));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_BUDGET, String.valueOf(false));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_EXTENRNAL_DB, String.valueOf(false));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_SSL, String.valueOf(false));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_SMS, String.valueOf(false));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_CC_PROCESSING, String.valueOf(false));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_PAYROLL, String.valueOf(false));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_WEBSITE, String.valueOf(false));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_VOUCHER, String.valueOf(false));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_MEMBERSHIP, String.valueOf(true));
+		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_ATTENDANCE, String.valueOf(true));
 	}
 }

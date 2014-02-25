@@ -1,5 +1,6 @@
 package ish.oncourse.admin.pages.college;
 
+import ish.oncourse.admin.utils.PreferenceUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -16,7 +17,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -72,20 +72,13 @@ public class Preferences {
 	
 	@OnEvent(component = "prefForm", value="success")
 	void submitted() {
-		
-		Date now = new Date();
 		ObjectContext context = cayenneService.newContext();
 			
 		if (isNew) {
 			College college = (College) context.localObject(this.college.getObjectId(), null);
 			if (college != null && StringUtils.trimToNull(newPreferenceKey) != null 
 					&& StringUtils.trimToNull(newPreferenceValue) != null) {
-				Preference p = context.newObject(Preference.class);
-				p.setCollege(college);
-				p.setName(newPreferenceKey);
-				p.setValueString(newPreferenceValue);
-				p.setCreated(now);
-				p.setModified(now);
+				PreferenceUtil.createPreference(context, college, newPreferenceKey, newPreferenceValue);
 			}
 		}
 		else {
