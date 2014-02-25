@@ -5,7 +5,11 @@ package ish.oncourse.admin.utils;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 
 import java.util.Date;
 
@@ -23,5 +27,13 @@ public class PreferenceUtil {
 		pref.setModified(now);
 
 		return pref;
+	}
+	
+	public static Preference getPreference(ObjectContext context, College college, String name) {
+		Expression prefExp = ExpressionFactory.matchExp(Preference.NAME_PROPERTY, name)
+				.andExp(ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, college));
+		
+		SelectQuery query = new SelectQuery(Preference.class, prefExp);
+		return (Preference) Cayenne.objectForQuery(context, query);
 	}
 }
