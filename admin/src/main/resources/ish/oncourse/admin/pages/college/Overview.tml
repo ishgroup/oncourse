@@ -22,11 +22,22 @@
 			<td>Last replication:</td>
 			<td>${lastReplication}</td>
 		</tr>
+		<tr>
+			<td>S3 bucket name:</td>
+			<td>
+				<t:if test="bucketName">
+					${bucketName}
+					<p:else>
+						<a href="#enableStorageModal" role="button" class="btn btn-btn-primary" data-toggle="modal" data-target="#enableStorageModal">Enable S3</a>	
+					</p:else>
+				</t:if>
+			</td>
+		</tr>
 	</table>
 
 	<a href="#disableModal" role="button" class="btn btn-danger" data-toggle="modal" data-target="#disableModal">Disable College</a>
 	
-	<div id="disableModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="diableLabel" aria-hidden="true">
+	<div id="disableModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="disableLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<h3 id="disableLabel">Disable College</h3>
@@ -38,6 +49,20 @@
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 			<t:actionlink t:id="disableCollege" class="btn btn-primary btn-danger">Disable College</t:actionlink>
 		</div>
-	</div>	
+	</div>
+
+	<div id="enableStorageModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="enableStorageLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="enableStorageLabel">Enable S3</h3>
+		</div>
+		<div class="modal-body">
+			<p>This will create a new S3 bucket and access keys for college. Are you sure you want to proceed?</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			<t:actionlink t:id="enableExternalStorage" class="btn btn-primary btn-success">Enable S3</t:actionlink>
+		</div>
+	</div>
 
 </html>

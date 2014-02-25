@@ -18,6 +18,9 @@ public class ContextUtil {
 	public static final String CACHE_ENABLED_PROPERTY_KEY = "cache.enabled";
 	public static final String OSCACHE_CAPACITY_PROPERTY_KEY = "oscache.cache.capacity";
 	
+	public static final String STORAGE_ACCESS_ID_PROPERTY_KEY = "storage.access.id";
+	public static final String STORAGE_ACCESS_KEY_PROPERTY_KEY = "storage.access.key";
+	
 	/**
 	 * Look up specified path in the apps context
 	 * 
@@ -68,5 +71,23 @@ public class ContextUtil {
     		return null;
     	}
     }
+	
+	public static String getStorageAccessId() {
+		try {
+			return (String) lookup(STORAGE_ACCESS_ID_PROPERTY_KEY);
+		} catch (Exception e) {
+			LOGGER.warn("storage.access.id is not configured in context.xml, S3 operations won't be available.");
+			return null;
+		}
+	}
+	
+	public static String getStorageAccessKey() {
+		try {
+			return (String) lookup(STORAGE_ACCESS_KEY_PROPERTY_KEY);
+		} catch (Exception e) {
+			LOGGER.warn("storage.access.key is not configured in context.xml, S3 operations won't be available.");
+			return null;
+		}
+	}
 
 }

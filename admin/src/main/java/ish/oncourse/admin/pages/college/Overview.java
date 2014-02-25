@@ -4,10 +4,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import com.amazonaws.services.identitymanagement.model.AccessKey;
+import ish.oncourse.admin.utils.PreferenceUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.system.ICollegeService;
 
 import org.apache.cayenne.Cayenne;
@@ -15,12 +18,14 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.tapestry5.annotations.Persist;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class Overview {
+	
+	private static final String BUCKET_NAME_TEMPLATE = "%s-ish-oncourse";
 	
 	private static final String[] LICENSE_KEYS = new String[] {
 		PreferenceController.LICENSE_ACCESS_CONTROL,
@@ -40,6 +45,9 @@ public class Overview {
 	
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	private IS3Service s3Service;
 	
 	@Property
 	private College college;
@@ -83,6 +91,15 @@ public class Overview {
 		
 		return "Index";
 	}
+	
+	Object onActionFromEnableExternalStorage() {
+		ObjectContext context = cayenneService.newContext();
+		College college = context.localObject(this.college);
+
+		enableExternalStorage(context, college);
+
+		return null;
+	}
 
 	private void disableCollege(ObjectContext context, College college) {
 		college.setBillingCode(null);
@@ -107,5 +124,26 @@ public class Overview {
 		}
 		
 		context.commitChanges();
+	}
+
+	private void enableExternalStorage(ObjectContext context, College college) {
+		String bucketName = String.format(BUCKET_NAME_TEMPLATE, StringUtils.lowerCase(college.getName()));
+		s3Service.createBucket(bucketName);
+		AccessKey key = s3Service.createS3User(college.getName(), bucketName);
+
+		PreferenceUtil.createPreference(context, college, PreferenceController.STORAGE_BUCKET_NAME, bucketName);
+		PreferenceUtil.createPreference(context, college, PreferenceController.STORAGE_ACCESS_ID, key.getAccessKeyId());
+		PreferenceUtil.createPreference(context, college, PreferenceController.STORAGE_ACCESS_KEY, key.getSecretAccessKey());
+		
+		context.commitChanges();
+	}
+	
+	public String getBucketName() {
+		Preference bucketPref = PreferenceUtil.getPreference(
+				college.getObjectContext(), college, PreferenceController.STORAGE_BUCKET_NAME);
+		if (bucketPref == null || StringUtils.trimToNull(bucketPref.getValueString()) == null) {
+			return null;
+		}
+		return bucketPref.getValueString();
 	}
 }

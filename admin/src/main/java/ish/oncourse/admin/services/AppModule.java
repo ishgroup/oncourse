@@ -7,10 +7,12 @@ import ish.oncourse.admin.services.ntis.INTISUpdater;
 import ish.oncourse.admin.services.ntis.NTISUpdaterImpl;
 import ish.oncourse.admin.services.ntis.OrganisationServiceBuilder;
 import ish.oncourse.admin.services.ntis.TrainingComponentServiceBuilder;
+import ish.oncourse.admin.services.storage.S3ServiceBuilder;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
+import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.site.IWebSiteService;
 
 import org.apache.tapestry5.MetaDataConstants;
@@ -38,6 +40,7 @@ public class AppModule {
 		binder.bind(IOrganisationService.class, new OrganisationServiceBuilder());
 		binder.bind(INTISUpdater.class, NTISUpdaterImpl.class);
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("WebSiteServiceAdmin");
+		binder.bind(IS3Service.class, new S3ServiceBuilder()).withId("s3ServiceAdmin");
 	}
 	
 	@EagerLoad
@@ -53,5 +56,9 @@ public class AppModule {
 	
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
 		configuration.add(IWebSiteService.class, webSiteService);
+	}
+	
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IS3Service s3Service) {
+		configuration.add(IS3Service.class, s3Service);
 	}
 }
