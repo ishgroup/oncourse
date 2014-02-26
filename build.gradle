@@ -114,6 +114,10 @@ allprojects {
 		jacoco {
 			enabled = project.hasProperty('jacoco-enabled') ? true : false;
 		}
+
+		// log each starting test
+  		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor)
+  		}
 	}
 }
 
