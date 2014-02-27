@@ -3,7 +3,6 @@ package ish.oncourse.webservices.replication.v6.updaters;
 import ish.common.types.ProductStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Product;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
@@ -16,7 +15,6 @@ public abstract class AbstractProductItemUpdater<S extends ProductItemStub, E ex
 		entity.setCreated(stub.getCreated());
 		entity.setInvoiceLine(callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class));
 		entity.setModified(stub.getModified());
-		entity.setProduct(callback.updateRelationShip(stub.getProductId(), Product.class));
 		entity.setType(stub.getType());
 		if (stub.getStatus() != null) {
 			entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), ProductStatus.class));
