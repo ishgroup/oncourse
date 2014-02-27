@@ -325,20 +325,25 @@
         value_string="value_string"/>
 
 
-    <Product SKU="m123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="1" ID="1" ISONSALE="1"
+    <Product SKU="m1" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="1" ID="1" ISONSALE="1"
              ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00" TYPE="2"
-             TAXADJUSTMENT="0.00" maxCoursesRedemption="3" notes="notes"
-             expiryDays="365" collegeId="3" angelId="2"/>
+             TAXADJUSTMENT="0.00" notes="notes"
+             expiryDays="365" collegeId="3" angelId="1"/>
 
-    <Product SKU="m123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="1" ID="2" ISONSALE="1"
+    <Product SKU="m2" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="1" ID="2" ISONSALE="1"
              ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00" TYPE="1"
-             TAXADJUSTMENT="0.00" maxCoursesRedemption="3" notes="notes"
+             TAXADJUSTMENT="0.00" notes="notes"
              expiryDays="365" collegeId="3" angelId="2"/>
 
-    <Product SKU="m123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="1" ID="3" ISONSALE="1"
-             ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00" TYPE="3"
+    <Product SKU="m3" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$10 product" EXPIRYTYPE="1" ID="3" ISONSALE="1"
+             ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23.13" NAME="test course voucher" PRICEEXTAX="10.00" TYPE="3"
              TAXADJUSTMENT="0.00" maxCoursesRedemption="3" notes="notes"
-             expiryDays="365" collegeId="3" angelId="2"/>
+             expiryDays="365" collegeId="3" angelId="3"/>
+
+	<Product SKU="m4" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$10 product" EXPIRYTYPE="1" ID="4" ISONSALE="1"
+			 ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23.13" NAME="test money voucher" PRICEEXTAX="10.00" TYPE="3"
+			 TAXADJUSTMENT="0.00" value="10.0" notes="notes"
+			 expiryDays="365" collegeId="3" angelId="4"/>
 
     <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="1"
                  MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="2" code="qwertyb" value="50.00" redeemedCoursesCount="0" source="W"

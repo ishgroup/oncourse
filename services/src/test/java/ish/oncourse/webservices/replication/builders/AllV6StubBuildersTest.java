@@ -220,6 +220,15 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 	}
 
 	@Test
+	public void testVoucherProductStubBuilder() {
+		// test course voucher
+		this.testStubBuilder(VoucherProduct.class, new VoucherProductStubBuilder(), 3l, "incomeAccountId", "taxAmount", "taxId", "value");
+		
+		// test money voucher
+		this.testStubBuilder(VoucherProduct.class, new VoucherProductStubBuilder(), 4l, "incomeAccountId", "taxAmount", "taxId", "maxCoursesRedemption");
+	}
+
+	@Test
 	public void testWaitingListStubBuilder() {
 		this.testStubBuilder(WaitingList.class, new WaitingListStubBuilder());
 	}

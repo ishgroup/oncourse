@@ -53,6 +53,7 @@ private Map<String, IWillowStubBuilder> builderMap;
         builderMap.put(getEntityName(Certificate.class), new CertificateStubBuilder());
         builderMap.put(getEntityName(CertificateOutcome.class), new CertificateOutcomeStubBuilder());
         builderMap.put(getEntityName(Voucher.class), new VoucherStubBuilder());
+		builderMap.put(getEntityName(VoucherProduct.class), new VoucherProductStubBuilder());
         builderMap.put(getEntityName(VoucherPaymentIn.class), new VoucherPaymentInStubBuilder());
         builderMap.put(getEntityName(VoucherProductCourse.class), new VoucherProductCourseStubBuilder());
         builderMap.put(getEntityName(Survey.class), new SurveyStubBuilder());

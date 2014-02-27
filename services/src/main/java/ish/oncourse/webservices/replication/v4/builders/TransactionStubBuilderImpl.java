@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.inject.Inject;
-import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.query.ObjectIdQuery;
 
 /**
  * @author anton
@@ -56,6 +54,7 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 
 					for (ProductItem item : invoiceLine.getProductItems()) {
 						addRelatedStub(paymentRelated, item, version);
+						addRelatedStub(paymentRelated, item.getProduct(), version);
 					}
 
 					for (VoucherPaymentIn vp : invoiceLine.getVoucherPaymentsIn()) {
