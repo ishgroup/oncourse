@@ -18,6 +18,9 @@ public class VoucherStubBuilder extends AbstractProductItemStubBuilder<Voucher, 
 		if (entity.getRedemptionValue() != null) {
 			stub.setRedemptionValue(entity.getRedemptionValue().toBigDecimal());
 		}
+		if (entity.getValueOnPurchase() != null) {
+			stub.setValueOnPurchase(entity.getValueOnPurchase().toBigDecimal());
+		}
 		stub.setSource(entity.getSource().getDatabaseValue());
 		return stub;
 	}
