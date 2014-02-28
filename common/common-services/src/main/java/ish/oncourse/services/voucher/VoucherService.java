@@ -160,6 +160,7 @@ public class VoucherService implements IVoucherService {
 
         voucher.setExpiryDate(ProductUtil.calculateExpiryDate(new Date(), voucherProduct.getExpiryType(), voucherProduct.getExpiryDays()));
         voucher.setRedemptionValue(voucherProduct.getValue());
+		voucher.setValueOnPurchase(voucherProduct.getValue());
 		return voucher;
 	}
 

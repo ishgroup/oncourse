@@ -52,6 +52,7 @@ public class ActionEnableProductItem extends APurchaseAction {
         if (getController().getVoucherService().isVoucherWithoutPrice(voucher.getVoucherProduct()))
         {
             voucher.setRedemptionValue(price);
+			voucher.setValueOnPurchase(price);
             il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
                     getModel().getPayer(), price);
         } else

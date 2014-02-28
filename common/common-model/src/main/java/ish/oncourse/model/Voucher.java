@@ -39,24 +39,14 @@ public class Voucher extends _Voucher implements Queueable {
 		if (getSource() == null) {
 			result.addFailure(ValidationFailure.validationFailure(this, SOURCE_PROPERTY, "Source cannot be null."));
 		}
+		if (getVoucherProduct() != null && getVoucherProduct().getMaxCoursesRedemption() == null && getValueOnPurchase() == null) {
+			result.addFailure(ValidationFailure.validationFailure(
+					this, VALUE_ON_PURCHASE_PROPERTY, "Value on purchase must be set for money vouchers."));
+		}
 	}
 	
 	public VoucherProduct getVoucherProduct() {
 		return (VoucherProduct) getProduct();
-	}
-	
-	public Voucher makeShallowCopy() {
-		Voucher voucherCopy = getObjectContext().newObject(Voucher.class);
-		voucherCopy.setCode(getCode());
-		voucherCopy.setCollege(getCollege());
-		voucherCopy.setSource(getSource());
-		voucherCopy.setExpiryDate(getExpiryDate());
-		voucherCopy.setProduct(getVoucherProduct());
-		voucherCopy.setInvoiceLine(getInvoiceLine());
-		voucherCopy.setRedemptionValue(getRedemptionValue());
-		voucherCopy.setRedeemedCoursesCount(getRedeemedCoursesCount());
-		voucherCopy.setStatus(getStatus());
-		return voucherCopy;
 	}
 	
 	public boolean isFullyRedeemed() {
