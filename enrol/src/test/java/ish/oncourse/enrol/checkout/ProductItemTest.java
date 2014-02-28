@@ -39,8 +39,6 @@ public class ProductItemTest extends ACheckoutTest {
 	@Before
 	public void setup() throws Exception {
 		setup("ish/oncourse/enrol/checkout/ProductItemTestDataSet.xml");
-
-
 	}
 
 	@Test
@@ -111,6 +109,51 @@ public class ProductItemTest extends ACheckoutTest {
 				throw new IllegalArgumentException();
 
 		}
+	}
+	
+	@Test
+	public void testVoucherPurchase() throws InterruptedException {
+		purchaseController = init(Collections.EMPTY_LIST, Arrays.asList(7L), Collections.EMPTY_LIST, false);
+		PurchaseModel model = purchaseController.getModel();
+
+		assertEquals(1, model.getProducts().size());
+		assertTrue(model.getProducts().get(0) instanceof VoucherProduct);
+
+		Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1189159);
+		addContact(contact);
+
+		//check purchaseModel
+		assertEquals(1,model.getAllEnabledProductItems().size());
+		assertEquals(1,model.getAllProductItems(contact).size());
+		assertEquals(1,model.getEnabledProductItems(contact).size());
+		assertEquals(0,model.getDisabledProductItems(contact).size());
+		assertTrue(model.getEnabledProductItems(contact).get(0) instanceof Voucher);
+
+		//check persistence state
+		assertEquals(ProductStatus.NEW, model.getEnabledProductItems(contact).get(0).getStatus());
+
+		//proceed to payment
+		proceedToPayment();
+
+		assertEquals(1,model.getEnabledProductItems(contact).size());
+
+		//check payment
+		assertEquals(new Money("10.0"), model.getPayment().getAmount());
+		assertEquals(1, model.getPayment().getPaymentInLines().size());
+		assertEquals(1, model.getInvoice().getInvoiceLines().size());
+
+		//make payment
+		makeValidPayment();
+
+		ProductItem productItem = model.getAllEnabledProductItems().get(0);
+		
+		assertTrue(productItem instanceof Voucher);
+		assertEquals(ProductStatus.ACTIVE, productItem.getStatus());
+		assertEquals(new Money("100.0"), ((Voucher) productItem).getRedemptionValue());
+		assertEquals(new Money("100.0"), ((Voucher) productItem).getValueRemaining());
+		assertEquals(new Money("100.0"), ((Voucher) productItem).getValueOnPurchase());
+		
+		assertEquals(PaymentStatus.SUCCESS, purchaseController.getPaymentEditorDelegate().getPaymentIn().getStatus());
 	}
 
 	@Test
