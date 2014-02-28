@@ -2031,5 +2031,16 @@
     <changeSet id="130" author="aryom" context="production" runOnChange="false">
         <modifyDataType tableName="Course" columnName="code" newDataType="VARCHAR(50)"/>
     </changeSet>
+	
+	<changeSet id="131" author="dzmitry" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="ProductItem" columnName="valueOnPurchase"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="ProductItem">
+			<column name="valueOnPurchase" type="DECIMAL(10,2)"/>
+		</addColumn>
+	</changeSet>
 
 </databaseChangeLog>

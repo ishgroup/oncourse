@@ -21,6 +21,7 @@ public abstract class _Voucher extends ProductItem {
     public static final String REDEEMED_COURSES_COUNT_PROPERTY = "redeemedCoursesCount";
     public static final String REDEMPTION_VALUE_PROPERTY = "redemptionValue";
     public static final String SOURCE_PROPERTY = "source";
+    public static final String VALUE_ON_PURCHASE_PROPERTY = "valueOnPurchase";
     public static final String PAYMENTS_PROPERTY = "payments";
     public static final String VOUCHER_PAYMENT_INS_PROPERTY = "voucherPaymentIns";
 
@@ -59,6 +60,13 @@ public abstract class _Voucher extends ProductItem {
     }
     public PaymentSource getSource() {
         return (PaymentSource)readProperty(SOURCE_PROPERTY);
+    }
+
+    public void setValueOnPurchase(Money valueOnPurchase) {
+        writeProperty(VALUE_ON_PURCHASE_PROPERTY, valueOnPurchase);
+    }
+    public Money getValueOnPurchase() {
+        return (Money)readProperty(VALUE_ON_PURCHASE_PROPERTY);
     }
 
     public void addToPayments(PaymentIn obj) {

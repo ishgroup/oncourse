@@ -679,6 +679,7 @@
 		<db-attribute name="status" type="INTEGER"/>
 		<db-attribute name="type" type="INTEGER"/>
 		<db-attribute name="value" type="DECIMAL" length="10" scale="2"/>
+		<db-attribute name="valueOnPurchase" type="DECIMAL" length="10" scale="2"/>
 	</db-entity>
 	<db-entity name="Qualification" catalog="willow_reference">
 		<db-attribute name="anzsco" type="VARCHAR" length="256"/>
@@ -1905,6 +1906,7 @@
 		<obj-attribute name="redeemedCoursesCount" type="java.lang.Integer" db-attribute-path="redeemedCoursesCount"/>
 		<obj-attribute name="redemptionValue" type="ish.math.Money" db-attribute-path="value"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
+		<obj-attribute name="valueOnPurchase" type="ish.math.Money" db-attribute-path="valueOnPurchase"/>
 	</obj-entity>
 	<obj-entity name="VoucherPaymentIn" className="ish.oncourse.model.VoucherPaymentIn" dbEntityName="VoucherPaymentIn">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
