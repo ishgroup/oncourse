@@ -216,7 +216,11 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testVoucherStubBuilder() {
-		this.testStubBuilder(Voucher.class, new VoucherStubBuilder(),3l,"key");
+		// test course voucher
+		this.testStubBuilder(Voucher.class, new VoucherStubBuilder(), 3l, "key", "valueOnPurchase", "redemptionValue");
+		
+		// test money voucher
+		this.testStubBuilder(Voucher.class, new VoucherStubBuilder(), 4l, "key", "redeemedCoursesCount");
 	}
 
 	@Test
