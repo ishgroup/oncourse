@@ -31,7 +31,7 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProces
 	@Override
 	protected String checkResponseAndReceiveSessionId(GenericTransactionGroup transaction) {
 		String sessionId = null;
-		assertEquals("20 stubs should be in response for this processing", 20, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("23 stubs should be in response for this processing", 23, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			assertNotNull("Willowid after the first payment processing should not be NULL", stub.getWillowId());
 			if (PAYMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
@@ -98,7 +98,7 @@ public class QEPreviouslyKeepEnrolmentWithNewInvoiceTest extends QEPaymentProces
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("20 elements should be replicated for this payment", 20, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("23 elements should be replicated for this payment", 23, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {

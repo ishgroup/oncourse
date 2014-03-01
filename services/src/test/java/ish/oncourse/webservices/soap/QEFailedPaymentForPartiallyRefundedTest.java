@@ -68,7 +68,7 @@ public class QEFailedPaymentForPartiallyRefundedTest extends QEPaymentProcess7Ca
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("22 elements should be replicated for this payment", 22, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("25 elements should be replicated for this payment", 25, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
@@ -132,7 +132,7 @@ public class QEFailedPaymentForPartiallyRefundedTest extends QEPaymentProcess7Ca
 	@Override
 	protected String checkResponseAndReceiveSessionId(GenericTransactionGroup transaction) {
 		String sessionId = null;
-		assertEquals("22 stubs should be in response for this processing", 22, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("25 stubs should be in response for this processing", 25, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			assertNotNull("Willowid after the first payment processing should not be NULL", stub.getWillowId());
 			if (PAYMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
