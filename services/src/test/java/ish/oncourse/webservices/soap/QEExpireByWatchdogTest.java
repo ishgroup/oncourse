@@ -140,7 +140,7 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("17 elements should be replicated for this payment", 17, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("20 elements should be replicated for this payment", 20, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
