@@ -420,16 +420,19 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		stubsPropertyMap.put(getStubName(ProductItemStub.class), productItemParamethers);
 		final List<ReplicationStubFieldParameter> productParamethers = fillProductStubFields(fillDefaultReplicationStubFields());
 		stubsPropertyMap.put(getStubName(ProductStub.class), productParamethers);
-		final List<ReplicationStubFieldParameter> voucherParamethers = fillProductItemStubFields(fillDefaultReplicationStubFields());
-		voucherParamethers.add(new ReplicationStubFieldParameter("expiryDate", Date.class));
-		voucherParamethers.add(new ReplicationStubFieldParameter("key", String.class));
-		voucherParamethers.add(new ReplicationStubFieldParameter("contactId", Long.class));
-		voucherParamethers.add(new ReplicationStubFieldParameter("code", String.class));
-		voucherParamethers.add(new ReplicationStubFieldParameter("redeemedCoursesCount", Integer.class));
-		voucherParamethers.add(new ReplicationStubFieldParameter("redemptionValue", BigDecimal.class));
-		voucherParamethers.add(new ReplicationStubFieldParameter("status", Integer.class));
-		voucherParamethers.add(new ReplicationStubFieldParameter("source", String.class));
-		stubsPropertyMap.put(getStubName(VoucherStub.class), voucherParamethers);
+		
+		final List<ReplicationStubFieldParameter> voucherParameters = fillProductItemStubFields(fillDefaultReplicationStubFields());
+		voucherParameters.add(new ReplicationStubFieldParameter("expiryDate", Date.class));
+		voucherParameters.add(new ReplicationStubFieldParameter("key", String.class));
+		voucherParameters.add(new ReplicationStubFieldParameter("contactId", Long.class));
+		voucherParameters.add(new ReplicationStubFieldParameter("code", String.class));
+		voucherParameters.add(new ReplicationStubFieldParameter("redeemedCoursesCount", Integer.class));
+		voucherParameters.add(new ReplicationStubFieldParameter("redemptionValue", BigDecimal.class));
+		voucherParameters.add(new ReplicationStubFieldParameter("status", Integer.class));
+		voucherParameters.add(new ReplicationStubFieldParameter("source", String.class));
+		voucherParameters.add(new ReplicationStubFieldParameter("valueOnPurchase", BigDecimal.class));
+		stubsPropertyMap.put(getStubName(VoucherStub.class), voucherParameters);
+		
 		final List<ReplicationStubFieldParameter> voucherProductParamethers = fillProductStubFields(fillDefaultReplicationStubFields());
 		voucherProductParamethers.add(new ReplicationStubFieldParameter("expiryDays", Integer.class));
 		voucherProductParamethers.add(new ReplicationStubFieldParameter("expiryType", Integer.class));
