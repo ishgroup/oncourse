@@ -77,7 +77,7 @@ public class QEMoneyVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedeem
 			} else if (stub instanceof VoucherStub) {
 				assertEquals("Check of voucher redemption value failed", ((VoucherStub) stub).getRedemptionValue(), new BigDecimal("200.00"));
 				assertEquals("Check of voucher status failed", ((VoucherStub) stub).getStatus(), ProductStatus.ACTIVE.getDatabaseValue());
-				assertEquals("Check of voucher redeemed courses count failed", ((VoucherStub) stub).getRedeemedCoursesCount(), Integer.valueOf(0));
+				assertEquals("Value on purchase shouldn't change", new BigDecimal("200.00"), ((VoucherStub) stub).getValueOnPurchase());
 			}
 		}
 	}
