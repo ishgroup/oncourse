@@ -64,10 +64,10 @@
 
     <Product collegeId="1" SKU="123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product" EXPIRYTYPE="4" ID="8" ISONSALE="1"
              ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test voucher product" PRICEEXTAX="100.00" TYPE="3" angelId="8"
-             TAXADJUSTMENT="0.00" maxCoursesRedemption="[null]" feeGST="0.00"/>
+             TAXADJUSTMENT="0.00" value="200.0" maxCoursesRedemption="[null]" feeGST="0.00"/>
 
     <ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="4"
-                 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="3" angelId="4" code="qwerty" value="100.00" redeemedCoursesCount="0" source="O"
+                 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="3" angelId="4" code="qwerty" value="100.00" valueOnPurchase="200.0" source="O"
                  status="0" INVOICELINEID="9"/>
 
 </dataset>

@@ -70,14 +70,8 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends Q
 							((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			} else if (stub instanceof VoucherStub) {
-				switch (((VoucherStub) stub).getRedeemedCoursesCount()) {
-					case 0 :
-						assertEquals("Check of voucher redemption value failed", ((VoucherStub) stub).getRedemptionValue(), new BigDecimal("200.00"));
-						break;
-					default:
-						assertFalse("Unexpected voucher redeemed course count", true);
-				}
 				assertEquals("Check of voucher status failed", ((VoucherStub) stub).getStatus(), ProductStatus.ACTIVE.getDatabaseValue());
+				assertEquals("Value on purchase should not change", new BigDecimal("200.00"), ((VoucherStub) stub).getValueOnPurchase());
 			}
 		}
 	}
