@@ -2,7 +2,7 @@
 	<div t:type="ui/confirmorderdialog"/>
 	<t:loop source="products" value="product">
 		<div class="single-product">
-			<span t:type="ui/productitem" product="product" isList="false"></span>
+			<span t:type="ui/productitem" product="product" isList="true"></span>
 		</div>
 	</t:loop>
 	<t:if t:test="hasMoreItems">

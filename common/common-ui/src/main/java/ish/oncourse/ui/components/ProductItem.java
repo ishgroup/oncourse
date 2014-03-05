@@ -53,9 +53,6 @@ public class ProductItem {
 	@Inject
 	private Messages messages;
 	
-	//@Property
-	private Format feeFormat;
-	
 	public boolean isPaymentGatewayEnabled() {
 		return product != null && preferenceController.isPaymentGatewayEnabled();
 	}
@@ -76,7 +73,7 @@ public class ProductItem {
 	public String getPurchaseHoverTitle() {
 		return messages.get("message.hover.button.purchase.current");
 	}
-	
+
 	public String getDetailText() {
 		String detail = textileConverter.convertCustomTextile(product.getDescription(), new ValidationErrors());
 		if (detail == null) {
@@ -146,7 +143,6 @@ public class ProductItem {
 				//TODO: here we should throw the exception but till the data replication not finished we need only log the error.
 			}
 		}
-		this.feeFormat = FormatUtils.chooseMoneyFormat(price);
 		return price;
 	}
 

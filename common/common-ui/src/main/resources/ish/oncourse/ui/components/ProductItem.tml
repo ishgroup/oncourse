@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <div class="vevent courseItem producItem">
         <t:if t:test="isList"  >
             <t:delegate to="block:list"/>
@@ -8,7 +8,7 @@
         </t:unless>
     </div>
 
-    <t:block t:id="nonlist">
+    <t:block t:id="list">
         <h2>
             <a href="/product/${product.sku}" class="url">${product.name}</a>
         </h2>
@@ -21,12 +21,12 @@
 
     </t:block>
 
-    <t:block t:id="list">
+    <t:block t:id="nonlist">
         <h1 class="summary page-title">${product.name}</h1>
         <div class="clearboth"></div>
 
         <div class="courseDescription">
-            <t:outputraw value="${detailText}" />
+            <t:outputraw value="${product.description}" />
         </div>
         <t:delegate to="block:main"/>
     </t:block>
@@ -36,29 +36,29 @@
             <div class="class-item-info">
                 <div class="class-item-info-l">
                     <div class="info">
-                        <dt class="label">Price</dt>
+                        <div class="label">Price</div>
                         <t:if t:test="voucherProductWithoutPrice">
-                            <dd itemprop="price">This voucher have no specified price</dd>
+                            <div itemprop="price">This voucher have no specified price</div>
                         </t:if>
                         <t:unless test="voucherProductWithoutPrice" >
-                            <dd>${price}</dd>
+                            <div class="fee"><t:output value="price" format="moneyFormat(price)" /></div>
                         </t:unless>
 
                         <t:if t:test="courseVoucherProduct">
-                            <dt class="label">Valid for</dt>
-                            <dd>
+                            <div class="label">Valid for</div>
+                            <div>
                                 ${courseVoucherDescription}
                                 <ul class="class-listing">
                                     <t:loop source="redemptionCourses" value="course">
                                         <li>${course.name}</li>
                                     </t:loop>
                                 </ul>
-                            </dd>
+                            </div>
                         </t:if>
                         <t:unless test="courseVoucherProduct" >
                             <t:if t:test="voucherProductWithValue">
-                                <dt class="label">Value</dt>
-                                <dd>${value}</dd>
+                                <div class="label">Value</div>
+                                <div><t:output value="value" format="moneyFormat(value)" /></div>
                             </t:if>
                         </t:unless>
                     </div>
