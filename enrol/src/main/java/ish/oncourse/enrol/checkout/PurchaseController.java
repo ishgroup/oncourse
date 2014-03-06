@@ -23,7 +23,6 @@ import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.util.InvoiceUtil;
 import ish.util.ProductUtil;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
@@ -267,7 +266,7 @@ public class PurchaseController {
 			return membership;
 		} else if (product instanceof ArticleProduct) {
 			ArticleProduct ap = (ArticleProduct) product;
-			Article article =  getModel().getObjectContext().newObject(Article.class);
+			Article article = getModel().getObjectContext().newObject(Article.class);
 			article.setCollege(ap.getCollege());
 			article.setContact(contact);
 			article.setProduct(ap);
@@ -627,12 +626,12 @@ public class PurchaseController {
 
 	boolean validateProductItems() {
 		ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(this);
-		List<ProductItem> items = this.getModel().getAllProductItems(getModel().getPayer());
+		List<ProductItem> items = this.getModel().getEnabledProductItems(getModel().getPayer());
 		boolean result = true;
 		for (ProductItem item : items) {
 			actionEnableProductItem.setProductItem(item);
-            //this step needed, because possible exist voucher product without price
-            actionEnableProductItem.setPrice(item.getInvoiceLine().getPriceEachExTax());
+			//this step needed, because possible exist voucher product without price
+			actionEnableProductItem.setPrice(item.getInvoiceLine().getPriceEachExTax());
 			boolean valid = actionEnableProductItem.validateProductItem();
 			if (!valid) {
 				ActionDisableProductItem actionDisableProductItem = disableProductItem.createAction(this);
@@ -733,7 +732,7 @@ public class PurchaseController {
 		CourseClass courseClass = enrolment.getCourseClass();
 
 		SelectQuery query = new SelectQuery(Enrolment.class);
-		query.setQualifier(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass).andExp(ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.IN_TRANSACTION,EnrolmentStatus.SUCCESS)));
+		query.setQualifier(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass).andExp(ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.IN_TRANSACTION, EnrolmentStatus.SUCCESS)));
 		List<Enrolment> activeEnrolments = getModel().getObjectContext().performQuery(query);
 
 		List<Enrolment> currentEnrolments = model.getAllEnableEnrolmentBy(courseClass);

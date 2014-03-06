@@ -559,11 +559,13 @@ public class PurchaseModel {
 		}
 
         private List<Enrolment> getAllEnrolments() {
-            return Collections.unmodifiableList(allEnrolments);
-        }
+			ArrayList<Enrolment> result = new ArrayList<>(allEnrolments);
+			return Collections.unmodifiableList(result);
+		}
 
         private List<ProductItem> getAllProductItems() {
-			return Collections.unmodifiableList(allProductItem);
+			ArrayList<ProductItem> result = new ArrayList<>(allProductItem);
+			return Collections.unmodifiableList(result);
 		}
 
         public void addConcession(ConcessionType c) {
@@ -597,7 +599,7 @@ public class PurchaseModel {
             if (!this.enabledProductItems.remove(p)) {
                 this.disabledProductItems.remove(p);
             }
-			this.allProductItem.add(p);
+			this.allProductItem.remove(p);
 		}
 
 		public void enableEnrolment(Enrolment e) {

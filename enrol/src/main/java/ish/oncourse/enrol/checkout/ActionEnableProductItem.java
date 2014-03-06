@@ -47,19 +47,28 @@ public class ActionEnableProductItem extends APurchaseAction {
 
     private void enableVoucher() {
         Voucher voucher = (Voucher) productItem;
+		VoucherProduct product = voucher.getVoucherProduct();
+		InvoiceLine il;
 
-        InvoiceLine il;
-        if (getController().getVoucherService().isVoucherWithoutPrice(voucher.getVoucherProduct()))
-        {
-            voucher.setRedemptionValue(price);
+		if (getController().getVoucherService().isVoucherWithoutPrice(product)) {
+			voucher.setRedemptionValue(price);
 			voucher.setValueOnPurchase(price);
-            il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
-                    getModel().getPayer(), price);
-        } else
-            il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
-                    getModel().getPayer());
-        il.setInvoice(getModel().getInvoice());
-        voucher.setInvoiceLine(il);
+			il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
+					getModel().getPayer(), price);
+		} else if (product.getPriceExTax() != null) {
+			voucher.setRedemptionValue(product.getValue());
+			voucher.setValueOnPurchase(product.getValue());
+			il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
+					getModel().getPayer(), product.getPriceExTax());
+
+		} else {
+			il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
+					getModel().getPayer());
+		}
+
+		il.setInvoice(getModel().getInvoice());
+
+		voucher.setInvoiceLine(il);
     }
 
     @Override
@@ -69,7 +78,7 @@ public class ActionEnableProductItem extends APurchaseAction {
         {
 			productItem = getParameter().getValue(ProductItem.class);
             price = getParameter().getValue(Money.class);
-        }
+		}
 	}
 
 
