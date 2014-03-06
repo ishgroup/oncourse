@@ -539,8 +539,10 @@ public class PurchaseModel {
 		 * This property was introduced to keep enrolment ordering.
 		 */
 		private List<Enrolment> allEnrolments;
+		private List<ProductItem> allProductItem;
 
-        private List<ProductItem> enabledProductItems;
+
+		private List<ProductItem> enabledProductItems;
         private List<ProductItem> disabledProductItems;
 
         public ContactNode() {
@@ -552,19 +554,17 @@ public class PurchaseModel {
 
             this.enabledProductItems = new ArrayList<>();
             this.disabledProductItems = new ArrayList<>();
-        }
+			this.allProductItem = new ArrayList<>();
+
+		}
 
         private List<Enrolment> getAllEnrolments() {
-            List<Enrolment> result = new ArrayList<>(enabledEnrolments);
-            result.addAll(disabledEnrolments);
             return Collections.unmodifiableList(allEnrolments);
         }
 
         private List<ProductItem> getAllProductItems() {
-            List<ProductItem> result = new ArrayList<>(enabledProductItems);
-            result.addAll(disabledProductItems);
-            return Collections.unmodifiableList(result);
-        }
+			return Collections.unmodifiableList(allProductItem);
+		}
 
         public void addConcession(ConcessionType c) {
             this.concessions.add(c);
@@ -590,15 +590,17 @@ public class PurchaseModel {
 
         public void addProductItem(ProductItem p) {
             this.disabledProductItems.add(p);
-        }
+			this.allProductItem.add(p);
+		}
 
         public void removeProductItem(ProductItem p) {
             if (!this.enabledProductItems.remove(p)) {
                 this.disabledProductItems.remove(p);
             }
-        }
+			this.allProductItem.add(p);
+		}
 
-        public void enableEnrolment(Enrolment e) {
+		public void enableEnrolment(Enrolment e) {
             courseClassErrors.remove(e.getCourseClass().getId());
             if (disabledEnrolments.contains(e)) {
                 disabledEnrolments.remove(e);
