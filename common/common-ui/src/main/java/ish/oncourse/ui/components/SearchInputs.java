@@ -2,19 +2,15 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.PersistenceConstants;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class SearchInputs {
 	private static final String SEARCH_TAG_NAMES_SEPARATOR = ";";
@@ -158,9 +154,13 @@ public class SearchInputs {
 			selectedTagMap.put(requestedTagGroup, value);
 		}
 	}
-	
-	@SetupRender
-	void beforeRender() {
+
+	/**
+	 * We need to use onPrepare() tapestry lifecycle method to be sure that tagGroups will be intitalize for
+	 * any request including form submit.
+	 */
+	void onPrepare()
+	{
 		fillTagGroups(true);
 	}
 
