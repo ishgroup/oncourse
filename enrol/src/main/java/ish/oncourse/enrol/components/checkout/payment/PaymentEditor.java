@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static ish.oncourse.enrol.services.Constants.EVENT_changePayerEvent;
+
 public class PaymentEditor implements IPaymentControlDelegate {
 
 	/**
@@ -168,9 +170,8 @@ public class PaymentEditor implements IPaymentControlDelegate {
 		return FormatUtils.chooseMoneyFormat(delegate.getPaymentIn().getAmount());
 	}
 
-    @OnEvent(value = "changePayerEvent")
-    public Object changePayer()
-    {
+	@OnEvent(value = EVENT_changePayerEvent)
+	public Object changePayer() {
         if (!request.isXHR())
             return null;
         PaymentEditorParser paymentEditorParser = getPaymentEditorParser();

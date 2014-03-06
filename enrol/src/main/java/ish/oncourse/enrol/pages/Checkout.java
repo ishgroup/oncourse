@@ -5,6 +5,7 @@ import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.enrol.checkout.PurchaseModel;
+import ish.oncourse.enrol.services.PageExceptionHandler;
 import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.CourseClass;
@@ -200,30 +201,54 @@ public class Checkout {
     }
 
     public Object onException(Throwable cause) {
-		/**
-		 * purchaseController controller can be null only when session was expired.
-		 */
-        if (purchaseController == null) {
-            expired = true;
-        } else {
-			//in other cases we have illegal behavior.
-            expired = false;
-            purchaseController = null;
-            throw new IllegalArgumentException(cause);
-        }
 
-		/**
-		 * the code renders only a defined block (not whole page) for ajax requests.
-		 */
-		if (request.isXHR())
-			return paymentPage.getPaymentBlock();
-		else
-        	return paymentPage;
-    }
+		PageExceptionHandler handler = new PageExceptionHandler();
+		handler.setPurchaseController(purchaseController);
+		handler.setCause(cause);
+		handler.setRequest(request);
+		handler.handle();
 
-    public boolean isExpired() {
-        return expired;
-    }
+		expired = handler.isExpired();
+
+		if (handler.isUnexpected()) {
+			purchaseController = null;
+			throw new IllegalArgumentException(cause);
+		}
+
+
+		if (handler.isRedirect()) {
+			return redirect();
+		} else {
+			/**
+			 * the code renders only a defined block (not whole page) for ajax requests.
+			 */
+			if (request.isXHR()) {
+				return paymentPage.getPaymentBlock();
+			} else {
+				return paymentPage;
+			}
+		}
+	}
+
+	private Object redirect() {
+		if (purchaseController.isPaymentState()) {
+			if (request.isXHR()) {
+				return paymentPage.getPaymentBlock();
+			} else {
+				return paymentPage;
+			}
+		} else {
+			if (request.isXHR()) {
+				return checkoutBlock;
+			} else {
+				return this;
+			}
+		}
+	}
+
+	public boolean isExpired() {
+		return expired;
+	}
 
     public Format moneyFormat(Money money) {
         return FormatUtils.chooseMoneyFormat(money);
@@ -238,4 +263,8 @@ public class Checkout {
             resetPersistProperties();
         }
     }
+
+	public Payment getPaymentPage() {
+		return paymentPage;
+	}
 }

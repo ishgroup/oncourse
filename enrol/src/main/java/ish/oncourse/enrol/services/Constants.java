@@ -28,4 +28,15 @@ public class Constants {
 		}
 	}
 
+
+	/**
+	 * Used components names.
+	 */
+	public static final String COMPONENT_submitContact = "submitContact";
+	public static final String COMPONENT_paymentSubmit = "paymentSubmit";
+
+	/**
+	 * Event names
+	 */
+	public static final String EVENT_changePayerEvent = "changePayerEvent";
 }

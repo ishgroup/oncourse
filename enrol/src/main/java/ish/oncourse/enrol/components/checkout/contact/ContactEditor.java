@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ish.oncourse.enrol.services.Constants.COMPONENT_submitContact;
+
 public class ContactEditor {
 
 	@Parameter(required = true)
@@ -87,7 +89,7 @@ public class ContactEditor {
 		return delegate.getContact();
 	}
 
-	@OnEvent(component = "submitContact", value = "selected")
+	@OnEvent(component = COMPONENT_submitContact, value = "selected")
 	public  Object submitContact() {
 
 		if (delegate != null)

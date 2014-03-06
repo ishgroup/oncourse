@@ -14,15 +14,17 @@ import org.apache.tapestry5.services.Request;
 
 import java.util.Collections;
 
+import static ish.oncourse.enrol.services.Constants.COMPONENT_submitContact;
+
 public class AddContact {
 
-    @Parameter (required = true)
+	@Parameter(required = true)
 	@Property
 	private AddContactDelegate delegate;
 
-    @Parameter
-    @Property
-    private boolean showCancelLink;
+	@Parameter
+	@Property
+	private boolean showCancelLink;
 
 	@Property
 	private ValidateHandler validateHandler;
@@ -33,8 +35,8 @@ public class AddContact {
 	@Inject
 	private Request request;
 
-    @Inject
-    private Messages messages;
+	@Inject
+	private Messages messages;
 
 	private boolean reset;
 
@@ -47,18 +49,16 @@ public class AddContact {
 
 	@OnEvent(value = "cancelContact")
 	public Object cancelContact() {
-		if (delegate != null)
-		{
+		if (delegate != null) {
 			delegate.setErrors(Collections.EMPTY_MAP);
 			delegate.resetContact();
 		}
 		return returnPage;
 	}
 
-	@OnEvent(component = "submitContact", value = "selected")
+	@OnEvent(component = COMPONENT_submitContact, value = "selected")
 	public Object submitContact() {
-		if (delegate != null)
-		{
+		if (delegate != null) {
 			AddContactParser addContactValidator = new AddContactParser();
 			addContactValidator.setContactCredentials(delegate.getContactCredentials());
 			addContactValidator.setRequest(request);
@@ -69,8 +69,7 @@ public class AddContact {
 		return returnPage;
 	}
 
-    public boolean isPayer()
-    {
-        return (returnPage instanceof Payment);
-    }
+	public boolean isPayer() {
+		return (returnPage instanceof Payment);
+	}
 }
