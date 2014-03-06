@@ -142,9 +142,10 @@
 	<PaymentInLine amount="70.0" angelId="5" collegeId="1" id="500" invoiceId="4" paymentInId="500"/>
 
             	
-	<Product collegeId="1" SKU="123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product" EXPIRYTYPE="4" ID="1" ISONSALE="1" 
-		ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product" PRICEEXTAX="10.00" TYPE="3" angelId="1" 
-		TAXADJUSTMENT="0.00" maxCoursesRedemption="0" feeGST="0.00"/>
+	<Product collegeId="1" SKU="123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product" EXPIRYTYPE="4" ID="1" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product" PRICEEXTAX="10.00"
+			 TYPE="3" angelId="1"
+			 TAXADJUSTMENT="0.00" maxCoursesRedemption="0" feeGST="0.00"/>
 		
 	<Product collegeId="1" SKU="1234" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product 123" EXPIRYTYPE="4" ID="2" ISONSALE="1" 
 		ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product qwerty" PRICEEXTAX="10.00" TYPE="3" angelId="2" 
@@ -165,13 +166,15 @@
 		ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 4" TYPE="3" angelId="6" 
 		TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" maxCoursesRedemption="0" feeGST="0.00"/>
 	
-	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="1" 
-		MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="3" angelId="1" code="qwerty" value="100.00" redeemedCoursesCount="0" source="W"
-		status="0" INVOICELINEID="11"/>
+	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="1"
+				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="3" angelId="1" code="qwerty"
+				 valueOnPurchase="100.00" value="100.00" redeemedCoursesCount="0" source="W"
+				 status="0" INVOICELINEID="11"/>
 		
-	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="2" 
-		MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" angelId="2" code="qwerty_2" value="101.00" redeemedCoursesCount="0" source="O"
-		status="0" INVOICELINEID="12"/>
+	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="2"
+				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" angelId="2" code="qwerty_2"
+				 valueOnPurchase="101.00" value="101.00" redeemedCoursesCount="0" source="O"
+				 status="0" INVOICELINEID="12"/>
 		
 	<Site id="1" collegeId="1" angelId="1" isWebVisible="0" created="2011-09-12 00:17:18.0"
 		modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
@@ -227,24 +230,27 @@
 		ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 5" TYPE="3" angelId="7" 
 		TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" maxCoursesRedemption="1" feeGST="0.00"/>
 		
-	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="3" 
-		MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="7" TYPE="3" angelId="3" code="qwerty_3" value="10.00" redeemedCoursesCount="0" source="O"
-		status="0" INVOICELINEID="13"/>
+	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="3"
+				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="7" TYPE="3" angelId="3" code="qwerty_3"
+				 valueOnPurchase="10.00" value="10.00" redeemedCoursesCount="0" source="O"
+				 status="0" INVOICELINEID="13"/>
 	
 	<Product collegeId="1" SKU="234567" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="8" ISONSALE="1" 
 		ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 6" TYPE="3" angelId="8" 
 		TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" maxCoursesRedemption="1" feeGST="0.00"/>
 		
-	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="4" 
-		MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="3" angelId="4" code="qwerty_4" value="10.00" redeemedCoursesCount="0" source="O"
-		status="0" INVOICELINEID="14"/>
+	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="4"
+				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="3" angelId="4" code="qwerty_4"
+				 valueOnPurchase="10.00" value="10.00" redeemedCoursesCount="0" source="O"
+				 status="0" INVOICELINEID="14"/>
 
 	<Product collegeId="1" SKU="money" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$70" EXPIRYTYPE="4" ID="9" ISONSALE="1"
 			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="$70 voucher" TYPE="3" angelId="8"
 			 TAXADJUSTMENT="0.00" PRICEEXTAX="70.00" value="70.0" feeGST="70.00"/>
 
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="5"
-				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="9" TYPE="3" angelId="5" code="qwerty_4" value="0.00" redeemedCoursesCount="0" source="O"
+				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="9" TYPE="3" angelId="5" code="qwerty_4"
+				 valueOnPurchase="70.00" value="0.0" redeemedCoursesCount="0" source="O"
 				 status="3" INVOICELINEID="14"/>
 
 	<VoucherPaymentIn id="5" angelId="5" invoiceLineId="7" paymentInId="500" voucherId="5" collegeId="1" status="0"/>
