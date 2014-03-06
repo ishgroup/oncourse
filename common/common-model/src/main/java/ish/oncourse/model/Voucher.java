@@ -1,13 +1,12 @@
 package ish.oncourse.model;
 
-import org.apache.cayenne.PersistenceState;
-import org.apache.cayenne.validation.ValidationResult;
-import org.apache.commons.lang.StringUtils;
-
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._Voucher;
 import ish.oncourse.utils.QueueableObjectUtils;
+import org.apache.cayenne.PersistenceState;
+import org.apache.cayenne.validation.ValidationResult;
+import org.apache.commons.lang.StringUtils;
 
 public class Voucher extends _Voucher implements Queueable {
 	private static final long serialVersionUID = -836996096054884238L;
@@ -39,9 +38,15 @@ public class Voucher extends _Voucher implements Queueable {
 		if (getSource() == null) {
 			result.addFailure(ValidationFailure.validationFailure(this, SOURCE_PROPERTY, "Source cannot be null."));
 		}
-		if (getVoucherProduct() != null && getVoucherProduct().getMaxCoursesRedemption() == null && getValueOnPurchase() == null) {
-			result.addFailure(ValidationFailure.validationFailure(
-					this, VALUE_ON_PURCHASE_PROPERTY, "Value on purchase must be set for money vouchers."));
+
+		if (getVoucherProduct() != null && getVoucherProduct().getMaxCoursesRedemption() == null) {
+			if (getValueOnPurchase() == null) {
+				result.addFailure(ValidationFailure.validationFailure(
+						this, VALUE_ON_PURCHASE_PROPERTY, "Value on purchase must be set for money vouchers."));
+			} else if (!getValueOnPurchase().isGreaterThan(Money.ZERO)) {
+				result.addFailure(ValidationFailure.validationFailure(
+						this, VALUE_ON_PURCHASE_PROPERTY, "Voucher purchase value must be greater than zero."));
+			}
 		}
 	}
 	
