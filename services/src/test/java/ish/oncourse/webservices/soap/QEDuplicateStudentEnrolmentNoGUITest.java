@@ -3,10 +3,12 @@ package ish.oncourse.webservices.soap;
 import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v6.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
@@ -137,7 +139,7 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 	}
 
 	@Override
-	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
+	protected void checkProcessedResponse(GenericTransactionGroup transaction) throws Exception {
 		assertFalse("Get status call should not return empty response for payment in final status",
 				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		assertEquals("16 elements should be replicated for this payment", 16, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
@@ -157,7 +159,9 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 				} else if (stub.getAngelId() == 1l) {
 					assertEquals("This should be 100$ amount cash payment", PaymentType.CASH.getDatabaseValue(), paymentInStub.getType());
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(paymentInStub.getStatus(), PaymentStatus.class);
-					assertEquals("Payment status should be failed no places", PaymentStatus.FAILED_NO_PLACES, status);
+					assertEquals("Payment status should be failed", PaymentStatus.FAILED, status);
+					assertEquals("Payment status should be failed", BeanUtils.getProperty(paymentInStub, "privateNotes"), PaymentServiceImpl.MESSAGE_activeEnrolmentExists);
+
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s angelid=%s and status= %s found in a queue",
 							stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
@@ -182,6 +186,7 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 			}
 		}
 	}
+
 
 	@Test
 	public void testQEFailedPayment() throws Exception {

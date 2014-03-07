@@ -27,9 +27,14 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 public class PaymentServiceImpl implements InternalPaymentService {
+
+	public static final String MESSAGE_activeEnrolmentExists = "Student %s already has a enrollment in transaction for class %s and he/she cannot be enrolled twice.";
 
 	private static final Logger logger = Logger.getLogger(PaymentServiceImpl.class);
 
@@ -147,6 +152,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			// check places
 			boolean isPlacesAvailable = true;
 
+			Enrolment activeEnrolment = null;
+
 			for (Enrolment enrolment : enrolments) {
 				CourseClass clazz = enrolment.getCourseClass();
 				List<Enrolment> validEnrolments = clazz.getValidEnrolments();
@@ -161,7 +168,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 				//we use this flag also to say about duplicated student enrolments
 				//see 18618
 				if (studentEnrolments.size() > 1) {
-					isPlacesAvailable = false;
+					activeEnrolment = enrolments.get(0);
 					break;
 				}
 			}
@@ -173,6 +180,12 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			} else if (!isPlacesAvailable) {
 				paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
 				updatedPayments.addAll(paymentIn.abandonPayment());
+			} else if (activeEnrolment != null) {
+				paymentIn.setStatus(PaymentStatus.FAILED);
+				updatedPayments.addAll(paymentIn.abandonPayment());
+				String message = String.format(MESSAGE_activeEnrolmentExists, activeEnrolment.getStudent().getFullName(), activeEnrolment.getCourseClass().getUniqueIdentifier());
+				paymentIn.setStatusNotes(message);
+				logger.info(message);
 			} else {
 				// if credit card and not-zero payment, generate sessionId.
 				if (isCreditCardPayment && paymentIn.getAmount().compareTo(Money.ZERO) != 0) {

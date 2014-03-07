@@ -338,7 +338,8 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 
 	protected void checkAsyncReplication(ObjectContext context) {}
 
-	protected void checkProcessedResponse(GenericTransactionGroup transaction) {}
+	protected void checkProcessedResponse(GenericTransactionGroup transaction) throws Exception {
+	}
 
 	protected String checkResponseAndReceiveSessionId(GenericTransactionGroup transaction) {
 		return null;
