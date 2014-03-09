@@ -59,9 +59,9 @@ allprojects {
 	dependencies {
 		testCompile 'junit:junit:4.11'
 		testCompile 'dbunit:dbunit:2.4.8'
-        testCompile 'org.mockito:mockito-core:1.9.5'
+		testCompile 'org.mockito:mockito-core:1.9.5'
 
-        compile 'log4j:log4j:1.2.17'
+		compile 'log4j:log4j:1.2.17'
 		providedCompile 'javax.servlet:servlet-api:2.5'
 
 		deployerJars 'org.apache.maven.wagon:wagon-http:2.3'
@@ -116,22 +116,25 @@ allprojects {
 		}
 
 		// log each starting test
-  		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor)
-  		}
+		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor)
+		}
 	}
 }
 
 apply plugin: "sonar-runner"
 sonarRunner {
 	sonarProperties {
-    	property "sonar.host.url", "http://sonar.ish.com.au"
-        property "sonar.jdbc.url", "jdbc:mysql://delish.ish.com.au:3306/sonar"
-        property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-        property "sonar.jdbc.username", 'sonar'
-        property "sonar.jdbc.password", sonarPassword // sonar password comes from users gradle.properties file
+		property "sonar.host.url", "http://sonar.ish.com.au"
+		property "sonar.jdbc.url", "jdbc:mysql://delish.ish.com.au:3306/sonar"
+		property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+		property "sonar.jdbc.username", 'sonar'
+		property "sonar.jdbc.password", sonarPassword // sonar password comes from users gradle.properties file
+		property "sonar.links.scm", "https://svn.ish.com.au/ish/willow/trunk"
+		property "sonar.links.ci", "http://build.ish.com.au/job/willow-sonar"
+		property "sonar.links.issue", "https://squish.ish.com.au"
 	}
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "1.9"
+	gradleVersion = "1.11"
 }
