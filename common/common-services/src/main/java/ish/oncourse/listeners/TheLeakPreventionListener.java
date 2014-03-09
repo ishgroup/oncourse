@@ -23,7 +23,7 @@ public class TheLeakPreventionListener extends OverrideLog4JListener {
 		org.apache.log4j.LogManager.shutdown();
 		LogFactory.release(classLoader);
 
-		for (@SuppressWarnings("rawtypes")
+		for (@SuppressWarnings("unchecked")
 		Enumeration e = DriverManager.getDrivers(); e.hasMoreElements();) {
 			Driver driver = (Driver) e.nextElement();
 			if (driver.getClass().getClassLoader() == getClass().getClassLoader()) {
