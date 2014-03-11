@@ -2,7 +2,7 @@ apply plugin: 'macAppBundle'
 apply plugin: 'cayenne'
 
 dependencies {
-	def jettyVersion = '8.1.11.v20130520'
+	def jettyVersion = '8.1.14.v20131031'
 
 	compile project(':common')
 	compile project(':webservices-client')
