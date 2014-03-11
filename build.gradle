@@ -44,8 +44,8 @@ allprojects {
 	apply plugin: 'versions' // adds the task 'dependencyUpdates'
 	apply plugin: 'jacoco' // adds the task 'jacocoTestReport'
 
-	sourceCompatibility = 1.6
-	targetCompatibility = 1.6
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
 
 	configurations {
 		deployerJars {
