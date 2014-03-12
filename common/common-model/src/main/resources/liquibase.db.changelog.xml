@@ -1,170 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+				   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
 	<!-- if once executed changeSet is updated, checksum will failed, so, create 
 		the new changeSet item for the new update see http://www.liquibase.org/manual/changeset -->
 	<changeSet id="1" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<!-- if precondition fail, the further changes are not performed -->
 		<preConditions onFail="MARK_RAN">
-			<indexExists indexName="collegeId_invoiceNumber_uniq_idx" />
+			<indexExists indexName="collegeId_invoiceNumber_uniq_idx"/>
 		</preConditions>
 		<dropNotNullConstraint tableName="Invoice"
-			columnName="invoiceNumber" columnDataType="BIGINT" />
+							   columnName="invoiceNumber" columnDataType="BIGINT"/>
 		<dropForeignKeyConstraint constraintName="Invoice_ibfk_1"
-			baseTableName="Invoice" />
-		<dropIndex tableName="Invoice" indexName="collegeId_invoiceNumber_uniq_idx" />
+								  baseTableName="Invoice"/>
+		<dropIndex tableName="Invoice" indexName="collegeId_invoiceNumber_uniq_idx"/>
 		<addForeignKeyConstraint constraintName="Invoice_ibfk_1"
-			baseTableName="Invoice" baseColumnNames="collegeId"
-			referencedTableName="College" referencedColumnNames="id" />
+								 baseTableName="Invoice" baseColumnNames="collegeId"
+								 referencedTableName="College" referencedColumnNames="id"/>
 	</changeSet>
 
 	<changeSet id="2" author="anton" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="College" columnName="communication_key" />
+				<columnExists tableName="College" columnName="communication_key"/>
 			</not>
 		</preConditions>
 		<addColumn tableName="College">
-			<column name="communication_key" type="bigint" />
+			<column name="communication_key" type="bigint"/>
 		</addColumn>
 		<addColumn tableName="College">
-			<column name="communication_key_status" type="varchar(20)" />
+			<column name="communication_key_status" type="varchar(20)"/>
 		</addColumn>
 		<sql>update College set communication_key=(select c.communication_key
 			from CommunicationKey c where c.collegeId=id and
-			communication_key_type='REPLICATION')</sql>
+			communication_key_type='REPLICATION')
+		</sql>
 		<sql>update College set communication_key_status=(select
 			c.communication_key_status from CommunicationKey c where
-			c.collegeId=id and communication_key_type='REPLICATION')</sql>
-		<dropTable tableName="CommunicationKey" />
+			c.collegeId=id and communication_key_type='REPLICATION')
+		</sql>
+		<dropTable tableName="CommunicationKey"/>
 	</changeSet>
 
 	<changeSet id="3" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="CONTINUE"
-			onFailMessage="There are path duplicates in WebURLAlias">
+					   onFailMessage="There are path duplicates in WebURLAlias">
 			<sqlCheck expectedResult="0">
 				SELECT count(*) FROM (SELECT
 				webSiteId, urlPath, count(*) FROM WebURLAlias GROUP BY webSiteId,
 				urlPath HAVING count(*) > 1) duplicates
 			</sqlCheck>
 		</preConditions>
-		<comment>If the precondition fails, then there are the duplicates: WebURLAlias  with the same webSiteId and urlPath or the index has been already created</comment>
+		<comment>If the precondition fails, then there are the duplicates: WebURLAlias with the same webSiteId and
+			urlPath or the index has been already created
+		</comment>
 		<modifyDataType tableName="WebURLAlias" columnName="urlPath"
-			newDataType="varchar(100)" />
+						newDataType="varchar(100)"/>
 		<addUniqueConstraint tableName="WebURLAlias"
-			columnNames="webSiteId,urlPath" constraintName="urlalias_unique" />
+							 columnNames="webSiteId,urlPath" constraintName="urlalias_unique"/>
 	</changeSet>
 
 	<changeSet id="4" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
-			<columnExists tableName="Instruction" columnName="type" />
+			<columnExists tableName="Instruction" columnName="type"/>
 		</preConditions>
-		<dropColumn tableName="Instruction" columnName="type" />
+		<dropColumn tableName="Instruction" columnName="type"/>
 		<addColumn tableName="Instruction">
-			<column name="message" type="varchar(100)" />
+			<column name="message" type="varchar(100)"/>
 		</addColumn>
 	</changeSet>
 
 	<changeSet id="5" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="Instruction" columnName="response" />
-				<columnExists tableName="Instruction" columnName="executed" />
+				<columnExists tableName="Instruction" columnName="response"/>
+				<columnExists tableName="Instruction" columnName="executed"/>
 			</not>
 		</preConditions>
 		<addColumn tableName="Instruction">
-			<column name="response" type="varchar(1024)" />
+			<column name="response" type="varchar(1024)"/>
 		</addColumn>
 		<addColumn tableName="Instruction">
-			<column name="executed" type="DATETIME" />
+			<column name="executed" type="DATETIME"/>
 		</addColumn>
 	</changeSet>
 
 	<changeSet id="6" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
-			<columnExists tableName="Discount" columnName="detail_textile" />
+			<columnExists tableName="Discount" columnName="detail_textile"/>
 		</preConditions>
-		<dropColumn tableName="Discount" columnName="detail_textile" />
+		<dropColumn tableName="Discount" columnName="detail_textile"/>
 	</changeSet>
 
 	<changeSet id="7" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<and>
-				<columnExists tableName="TutorRole" columnName="detail" />
-				<columnExists tableName="TutorRole" columnName="detail_textile" />
+				<columnExists tableName="TutorRole" columnName="detail"/>
+				<columnExists tableName="TutorRole" columnName="detail_textile"/>
 			</and>
 		</preConditions>
-		<dropColumn tableName="TutorRole" columnName="detail" />
-		<dropColumn tableName="TutorRole" columnName="detail_textile" />
+		<dropColumn tableName="TutorRole" columnName="detail"/>
+		<dropColumn tableName="TutorRole" columnName="detail_textile"/>
 	</changeSet>
 
 	<changeSet id="8" author="anton" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<and>
 				<columnExists tableName="PaymentTransaction"
-					columnName="sessionId" />
+							  columnName="sessionId"/>
 			</and>
 		</preConditions>
-		<dropColumn tableName="PaymentTransaction" columnName="sessionId" />
+		<dropColumn tableName="PaymentTransaction" columnName="sessionId"/>
 		<addColumn tableName="PaymentIn">
-			<column name="sessionId" type="varchar(100)" />
+			<column name="sessionId" type="varchar(100)"/>
 		</addColumn>
 		<addColumn tableName="PaymentIn">
-			<column name="gatewayReference" type="varchar(64)" />
+			<column name="gatewayReference" type="varchar(64)"/>
 		</addColumn>
 		<addColumn tableName="PaymentIn">
-			<column name="gatewayResponse" type="MEDIUMTEXT" />
+			<column name="gatewayResponse" type="MEDIUMTEXT"/>
 		</addColumn>
 	</changeSet>
 
 	<changeSet id="9" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<modifyDataType tableName="Enrolment" columnName="status"
-			newDataType="enum('Pending','In Transaction','Success','Failed','Cancelled', 'Refunded')" />
+						newDataType="enum('Pending','In Transaction','Success','Failed','Cancelled', 'Refunded')"/>
 	</changeSet>
 
 	<changeSet id="9" author="olga" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<addColumn tableName="Discount">
-			<column name="discountType" type="enum('Percent','Dollar','Fee override')" />
+			<column name="discountType" type="enum('Percent','Dollar','Fee override')"/>
 		</addColumn>
 	</changeSet>
 
 	<changeSet id="11" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
-			<columnExists tableName="Discount" columnName="discountType" />
+			<columnExists tableName="Discount" columnName="discountType"/>
 		</preConditions>
 		<modifyDataType tableName="Discount" columnName="discountType"
-			newDataType="smallint" />
+						newDataType="smallint"/>
 	</changeSet>
 
 	<changeSet id="12" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="PaymentIn" columnName="type" />
+				<columnExists tableName="PaymentIn" columnName="type"/>
 			</not>
 		</preConditions>
 		<addColumn tableName="PaymentIn">
-			<column name="type" type="smallint" />
+			<column name="type" type="smallint"/>
 		</addColumn>
 	</changeSet>
 
 	<changeSet id="13" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<sqlCheck expectedResult="0">
@@ -175,110 +179,117 @@
 		</preConditions>
 		<!-- All payments with credit cards are set to 2=Credit Card -->
 		<sql>update PaymentIn set type=2 where type is null and
-			creditCardNumber is not null;</sql>
+			creditCardNumber is not null;
+		</sql>
 		<!-- All payments without credit cards are set to 0=Cash -->
 		<sql>update PaymentIn set type=0 where type is null and
-			creditCardNumber is null;</sql>
+			creditCardNumber is null;
+		</sql>
 	</changeSet>
 
 	<changeSet id="14" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<sql>alter table PaymentIn change type type smallint(6) NOT NULL
-			DEFAULT 2</sql>
+			DEFAULT 2
+		</sql>
 	</changeSet>
 
 	<changeSet id="15" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<indexExists indexName="WebNode_defaultWebURLalias"
-				tableName="WebNode" />
+						 tableName="WebNode"/>
 		</preConditions>
 		<dropForeignKeyConstraint constraintName="WebNode_defaultWebURLalias"
-			baseTableName="WebNode" />
-		<dropIndex tableName="WebNode" indexName="WebNode_defaultWebURLalias" />
+								  baseTableName="WebNode"/>
+		<dropIndex tableName="WebNode" indexName="WebNode_defaultWebURLalias"/>
 	</changeSet>
 
 	<changeSet id="16" author="anton" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<addColumn tableName="Contact">
-			<column name="passwordRecoveryKey" type="varchar(16)" />
-			<column name="passwordRecoverExpire" type="DATETIME" />
+			<column name="passwordRecoveryKey" type="varchar(16)"/>
+			<column name="passwordRecoverExpire" type="DATETIME"/>
 		</addColumn>
 	</changeSet>
 
 	<changeSet id="17" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<foreignKeyConstraintExists
-					foreignKeyName="WebNode_defaultWebURLalias" foreignKeyTableName="WebNode" />
+						foreignKeyName="WebNode_defaultWebURLalias" foreignKeyTableName="WebNode"/>
 			</not>
 		</preConditions>
 		<addForeignKeyConstraint constraintName="WebNode_defaultWebURLalias"
-			baseTableName="WebNode" baseColumnNames="defaultURLalias"
-			referencedTableName="WebURLAlias" referencedColumnNames="id" />
+								 baseTableName="WebNode" baseColumnNames="defaultURLalias"
+								 referencedTableName="WebURLAlias" referencedColumnNames="id"/>
 	</changeSet>
 
 	<changeSet id="18" author="anton" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<preConditions onFail="MARK_RAN">
-			<columnExists tableName="Contact" columnName="passwordRecoveryKey" />
+			<columnExists tableName="Contact" columnName="passwordRecoveryKey"/>
 		</preConditions>
 		<addUniqueConstraint tableName="Contact"
-			columnNames="passwordRecoveryKey" constraintName="recoverKey_unique" />
+							 columnNames="passwordRecoveryKey" constraintName="recoverKey_unique"/>
 	</changeSet>
 
 	<changeSet id="19" author="ksenia" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<update tableName="BinaryInfo">
-			<column name="isWebVisible" value="1" />
+			<column name="isWebVisible" value="1"/>
 			<where>isWebVisible IS NULL</where>
 		</update>
 		<modifyDataType tableName="BinaryInfo" columnName="isWebVisible"
-			newDataType="tinyint(1) NOT NULL" />
+						newDataType="tinyint(1) NOT NULL"/>
 	</changeSet>
 
 	<changeSet id="20" author="anton" context="production"
-		runOnChange="true">
+			   runOnChange="true">
 		<addColumn tableName="PaymentIn">
-			<column name="dateBanked" type="DATETIME" />
+			<column name="dateBanked" type="DATETIME"/>
 		</addColumn>
 		<addColumn tableName="PaymentOut">
-			<column name="dateBanked" type="DATETIME" />
-			<column name="datePaid" type="DATETIME" />
+			<column name="dateBanked" type="DATETIME"/>
+			<column name="datePaid" type="DATETIME"/>
 		</addColumn>
 	</changeSet>
 
 	<changeSet id="21" author="anton" context="production"
-		runOnChange="true">
-		
+			   runOnChange="true">
+
 		<createTable tableName="Discussion">
 			<column name="id" type="BIGINT(20)">
-				<constraints primaryKey="true" nullable="false" />
+				<constraints primaryKey="true" nullable="false"/>
 			</column>
 			<column name="courseClassId" type="BIGINT(20)">
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
-		
+
 		<addAutoIncrement tableName="Discussion" columnName="id" columnDataType="BIGINT"/>
-		<addForeignKeyConstraint constraintName="courseClassFK" baseTableName="Discussion" baseColumnNames="courseClassId" referencedTableName="CourseClass" referencedColumnNames="id"/>
+		<addForeignKeyConstraint constraintName="courseClassFK" baseTableName="Discussion"
+								 baseColumnNames="courseClassId" referencedTableName="CourseClass"
+								 referencedColumnNames="id"/>
 
 		<createTable tableName="DiscussionThread">
 			<column name="id" type="BIGINT(20)">
-				<constraints primaryKey="true" nullable="false" />
+				<constraints primaryKey="true" nullable="false"/>
 			</column>
 			<column name="discussionId" type="BIGINT(20)">
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
-		
+
 		<addAutoIncrement tableName="DiscussionThread" columnName="id" columnDataType="BIGINT"/>
-		<addForeignKeyConstraint constraintName="discussionFK" baseTableName="DiscussionThread" baseColumnNames="discussionId" referencedTableName="Discussion" referencedColumnNames="id"/>
-		
+		<addForeignKeyConstraint constraintName="discussionFK" baseTableName="DiscussionThread"
+								 baseColumnNames="discussionId" referencedTableName="Discussion"
+								 referencedColumnNames="id"/>
+
 		<createTable tableName="DiscussionComment">
 			<column name="id" type="BIGINT(20)">
-				<constraints primaryKey="true" nullable="false" />
+				<constraints primaryKey="true" nullable="false"/>
 			</column>
 			<column name="discussionThreadId" type="BIGINT(20)">
 				<constraints nullable="false"/>
@@ -290,14 +301,16 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
-		
+
 		<addDefaultValue tableName="DiscussionComment" columnName="isDeleted" defaultValue="0"/>
 		<addAutoIncrement tableName="DiscussionComment" columnName="id" columnDataType="BIGINT"/>
-		<addForeignKeyConstraint constraintName="discussionThreadFK" baseTableName="DiscussionComment" baseColumnNames="discussionThreadId" referencedTableName="DiscussionThread" referencedColumnNames="id"/>
-		
+		<addForeignKeyConstraint constraintName="discussionThreadFK" baseTableName="DiscussionComment"
+								 baseColumnNames="discussionThreadId" referencedTableName="DiscussionThread"
+								 referencedColumnNames="id"/>
+
 		<createTable tableName="DiscussionCommentContact">
 			<column name="id" type="BIGINT(20)">
-				<constraints primaryKey="true" nullable="false" />
+				<constraints primaryKey="true" nullable="false"/>
 			</column>
 			<column name="discussionCommentId" type="BIGINT(20)">
 				<constraints nullable="false"/>
@@ -309,19 +322,24 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
-		
+
 		<addDefaultValue tableName="DiscussionCommentContact" columnName="isNew" defaultValue="1"/>
 		<addAutoIncrement tableName="DiscussionCommentContact" columnName="id" columnDataType="BIGINT"/>
-		<addForeignKeyConstraint constraintName="commentFK" baseTableName="DiscussionCommentContact" baseColumnNames="discussionCommentId" referencedTableName="DiscussionComment" referencedColumnNames="id"/>
-		<addForeignKeyConstraint constraintName="contactFK" baseTableName="DiscussionCommentContact" baseColumnNames="contactId" referencedTableName="Contact" referencedColumnNames="id"/>
-		
+		<addForeignKeyConstraint constraintName="commentFK" baseTableName="DiscussionCommentContact"
+								 baseColumnNames="discussionCommentId" referencedTableName="DiscussionComment"
+								 referencedColumnNames="id"/>
+		<addForeignKeyConstraint constraintName="contactFK" baseTableName="DiscussionCommentContact"
+								 baseColumnNames="contactId" referencedTableName="Contact" referencedColumnNames="id"/>
+
 	</changeSet>
-	
+
 	<changeSet id="22" author="anton" context="production" runOnChange="true">
-		<addNotNullConstraint tableName="ConcessionType" columnName="isConcession" columnDataType="TINYINT(1)" defaultNullValue="1" />
-		<addNotNullConstraint tableName="ConcessionType" columnName="isEnabled" columnDataType="TINYINT(1)" defaultNullValue="1" />
+		<addNotNullConstraint tableName="ConcessionType" columnName="isConcession" columnDataType="TINYINT(1)"
+							  defaultNullValue="1"/>
+		<addNotNullConstraint tableName="ConcessionType" columnName="isEnabled" columnDataType="TINYINT(1)"
+							  defaultNullValue="1"/>
 	</changeSet>
-	
+
 	<changeSet id="23" author="anton" context="production" runOnChange="true">
 		<sqlFile path="tables_mysql_innodb.sql"/>
 	</changeSet>
@@ -336,7 +354,7 @@
 			<column name="timeZone" type="varchar(64)"/>
 		</addColumn>
 	</changeSet>
-	
+
 	<changeSet id="25" author="olga" context="production" runOnChange="true">
 		<update tableName="PaymentIn">
 			<column name="source" value="W"/>
@@ -344,25 +362,28 @@
 		</update>
 		<modifyDataType tableName="PaymentIn" columnName="source" newDataType="VARCHAR(1) NOT NULL"/>
 	</changeSet>
-	
+
 	<changeSet id="26" author="xenia" context="production" runOnChange="true">
-		<addNotNullConstraint tableName="College" columnDataType="varchar(64)" columnName="timeZone" defaultNullValue="Australia/Sydney" />
+		<addNotNullConstraint tableName="College" columnDataType="varchar(64)" columnName="timeZone"
+							  defaultNullValue="Australia/Sydney"/>
 		<sql>update College set timeZone='Australia/Perth' where id=3219</sql>
 	</changeSet>
-	
+
 	<changeSet id="27" author="anton" context="production" runOnChange="true">
 		<!-- setting default value to IN_TRANSACTION -->
-		<addNotNullConstraint tableName="PaymentOut" columnDataType="INT(11)" columnName="status" defaultNullValue="2" />
-		<addNotNullConstraint tableName="PaymentOut" columnDataType="varchar(1)" columnName="source" defaultNullValue="O" />
+		<addNotNullConstraint tableName="PaymentOut" columnDataType="INT(11)" columnName="status" defaultNullValue="2"/>
+		<addNotNullConstraint tableName="PaymentOut" columnDataType="varchar(1)" columnName="source"
+							  defaultNullValue="O"/>
 	</changeSet>
-	
+
 	<changeSet id="28" author="anton" context="production" runOnChange="true">
 		<!-- Fix source for refunds, which should be 'O' not 'W' -->
 		<sql>update Invoice set source='O' where description='Refund for enrolments' and source='W'</sql>
-		<addNotNullConstraint tableName="Invoice" columnDataType="varchar(1)" columnName="source" defaultNullValue="O" />
-		<addNotNullConstraint tableName="Enrolment" columnDataType="varchar(1)" columnName="source" defaultNullValue="O" />	
+		<addNotNullConstraint tableName="Invoice" columnDataType="varchar(1)" columnName="source" defaultNullValue="O"/>
+		<addNotNullConstraint tableName="Enrolment" columnDataType="varchar(1)" columnName="source"
+							  defaultNullValue="O"/>
 	</changeSet>
-	
+
 	<changeSet id="29" author="olga" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
@@ -373,7 +394,7 @@
 			<column name="specialType" type="SMALLINT"/>
 		</addColumn>
 	</changeSet>
-	
+
 	<changeSet id="30" author="olga" context="production" runOnChange="true">
 		<sql>update TutorRole set isConfirmed=true where confirmedDate is not null;</sql>
 		<sql>update TutorRole set isConfirmed=false where confirmedDate is null;</sql>
@@ -381,10 +402,11 @@
 
 	<changeSet id="31" author="viacheslav" context="production" runOnChange="true">
 		<sql>update Contact set uniqueCode=SUBSTR(MD5(RAND()), 1, 16) where uniqueCode is null;</sql>
-		<addNotNullConstraint tableName="Contact" columnDataType="varchar(16)" columnName="uniqueCode" defaultNullValue="SUBSTR(MD5(RAND()), 1, 16)"/>
-		<addUniqueConstraint tableName="Contact" columnNames="uniqueCode" constraintName="uniqueCode_unique" />
+		<addNotNullConstraint tableName="Contact" columnDataType="varchar(16)" columnName="uniqueCode"
+							  defaultNullValue="SUBSTR(MD5(RAND()), 1, 16)"/>
+		<addUniqueConstraint tableName="Contact" columnNames="uniqueCode" constraintName="uniqueCode_unique"/>
 	</changeSet>
-	
+
 	<changeSet id="32" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
@@ -393,7 +415,7 @@
 		</preConditions>
 		<createTable tableName="ContactRelation">
 			<column name="id" type="BIGINT" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
+				<constraints primaryKey="true" nullable="false"/>
 			</column>
 			<column name="angelId" type="BIGINT"></column>
 			<column name="collegeId" type="BIGINT">
@@ -411,10 +433,11 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
-		<addUniqueConstraint tableName="ContactRelation" columnNames="angelId,collegeId" constraintName="angelAndCollegeForContactRelation_unique"/>
+		<addUniqueConstraint tableName="ContactRelation" columnNames="angelId,collegeId"
+							 constraintName="angelAndCollegeForContactRelation_unique"/>
 	</changeSet>
-	
-	<changeSet id="33" author="viacheslav" context="production" runOnChange="true">	
+
+	<changeSet id="33" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="ContactRelationType"/>
@@ -437,10 +460,11 @@
 			</column>
 			<column name="modifiedOn" type="DATETIME"></column>
 		</createTable>
-		<addUniqueConstraint tableName="ContactRelationType" columnNames="angelId,collegeId" constraintName="angelAndCollegeForContactRelationType_unique"/>
+		<addUniqueConstraint tableName="ContactRelationType" columnNames="angelId,collegeId"
+							 constraintName="angelAndCollegeForContactRelationType_unique"/>
 	</changeSet>
-	
-	<changeSet id="34" author="viacheslav" context="production" runOnChange="true">	
+
+	<changeSet id="34" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="DiscountMembership"/>
@@ -466,10 +490,11 @@
 			</column>
 			<column name="modifiedOn" type="DATETIME"></column>
 		</createTable>
-		<addUniqueConstraint tableName="DiscountMembership" columnNames="angelId,collegeId" constraintName="angelAndCollegeForDiscountMembership_unique"/>
+		<addUniqueConstraint tableName="DiscountMembership" columnNames="angelId,collegeId"
+							 constraintName="angelAndCollegeForDiscountMembership_unique"/>
 	</changeSet>
-	
-	<changeSet id="35" author="viacheslav" context="production" runOnChange="true">	
+
+	<changeSet id="35" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="DiscountMembershipRelationType"/>
@@ -488,16 +513,16 @@
 			<column name="membershipDiscountId" type="BIGINT"></column>
 			<column name="modifiedOn" type="DATETIME"></column>
 		</createTable>
-		<addUniqueConstraint tableName="DiscountMembershipRelationType" columnNames="angelId,collegeId" 
-			constraintName="angelAndCollegeForDiscountMembershipRelationType_unique"/>
+		<addUniqueConstraint tableName="DiscountMembershipRelationType" columnNames="angelId,collegeId"
+							 constraintName="angelAndCollegeForDiscountMembershipRelationType_unique"/>
 	</changeSet>
-	
-	<changeSet id="36" author="viacheslav" context="production" runOnChange="true">	
+
+	<changeSet id="36" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="Product"/>
 			</not>
-		</preConditions>	
+		</preConditions>
 		<createTable tableName="Product">
 			<column name="id" type="BIGINT" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false"/>
@@ -524,10 +549,11 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
-		<addUniqueConstraint tableName="Product" columnNames="angelId,collegeId" constraintName="angelAndCollegeForProduct_unique"/>
+		<addUniqueConstraint tableName="Product" columnNames="angelId,collegeId"
+							 constraintName="angelAndCollegeForProduct_unique"/>
 	</changeSet>
-	
-	<changeSet id="37" author="viacheslav" context="production" runOnChange="true">	
+
+	<changeSet id="37" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="ProductItem"/>
@@ -555,27 +581,28 @@
 			<column name="redeemedInvoiceLineId" type="BIGINT"></column>
 			<column name="type" type="INT"></column>
 		</createTable>
-		<addUniqueConstraint tableName="ProductItem" columnNames="angelId,collegeId" constraintName="angelAndCollegeForProductItem_unique"/>
+		<addUniqueConstraint tableName="ProductItem" columnNames="angelId,collegeId"
+							 constraintName="angelAndCollegeForProductItem_unique"/>
 	</changeSet>
-	
+
 	<changeSet id="38" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<columnExists tableName="Discount" columnName="isCodeRequired"/>
 		</preConditions>
 		<dropColumn tableName="Discount" columnName="isCodeRequired"/>
 	</changeSet>
-	
+
 	<changeSet id="39" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<columnExists tableName="Discount" columnName="isConcession"/>
 		</preConditions>
 		<dropColumn tableName="Discount" columnName="isConcession"/>
 	</changeSet>
-	
+
 	<changeSet id="40" author="anton" context="production" runOnChange="true">
 		<sql>alter table Invoice change column status status VARCHAR(30)</sql>
 	</changeSet>
-	
+
 	<changeSet id="41" author="anton" context="production" runOnChange="true">
 		<sql>alter table Enrolment change column status status_tmp VARCHAR(30)</sql>
 		<sql>alter table Enrolment add column status INTEGER</sql>
@@ -587,296 +614,303 @@
 		<sql>alter table Enrolment change column status status INTEGER not null</sql>
 		<dropColumn tableName="Enrolment" columnName="status_tmp"/>
 	</changeSet>
-	
+
 	<changeSet id="42" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-			<indexExists indexName="session"
-				tableName="PaymentIn" />
+				<indexExists indexName="session"
+							 tableName="PaymentIn"/>
 			</not>
 		</preConditions>
 		<sql>ALTER TABLE PaymentIn ADD INDEX session (sessionId ( 8 ) );</sql>
 	</changeSet>
-	
+
 	<changeSet id="43" author="dzmitry" context="production" runOnChange="true">
-		<sql>insert into Preference (collegeId, name, value_string) 
-				select c.id, 'payment.gateway.type', 
-				case  
-    				when c.paymentGatewayType = 2 then 'PAYMENT_EXPRESS'
-    				when c.paymentGatewayType = 0 then 'TEST'
-    				when c.paymentGatewayType is null then 'DISABLED'
-				end
-			 from College c where c.billingCode is not null;</sql>
+		<sql>insert into Preference (collegeId, name, value_string)
+			select c.id, 'payment.gateway.type',
+			case
+			when c.paymentGatewayType = 2 then 'PAYMENT_EXPRESS'
+			when c.paymentGatewayType = 0 then 'TEST'
+			when c.paymentGatewayType is null then 'DISABLED'
+			end
+			from College c where c.billingCode is not null;
+		</sql>
 	</changeSet>
-	
+
 	<changeSet id="44" author="anton" context="production" runOnChange="true">
 		<dropColumn tableName="Invoice" columnName="status"/>
 	</changeSet>
-	
+
 	<changeSet id="45" author="anton" context="production" runOnChange="true">
 		<update tableName="Preference">
 			<column name="value_string" value="/terms-conditions?wrap=false"/>
 			<where>name='feature.enrolmentDisclosure' and collegeId=3093</where>
 		</update>
 	</changeSet>
-	
+
 	<changeSet id="46" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-			<indexExists indexName="status"
-				tableName="PaymentIn" />
+				<indexExists indexName="status"
+							 tableName="PaymentIn"/>
 			</not>
 		</preConditions>
 		<sql>ALTER TABLE PaymentIn ADD INDEX status (status);</sql>
 	</changeSet>
-	
+
 	<changeSet id="47" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-			<indexExists indexName="modified"
-				tableName="PaymentIn" />
+				<indexExists indexName="modified"
+							 tableName="PaymentIn"/>
 			</not>
 		</preConditions>
 		<sql>ALTER TABLE PaymentIn ADD INDEX modified (modified);</sql>
 	</changeSet>
-	
+
 	<changeSet id="48" author="anton" context="production" runOnChange="true">
 		<addColumn tableName="PaymentOut">
-			<column name="statusNotes" type="varchar(100)" />
+			<column name="statusNotes" type="varchar(100)"/>
 		</addColumn>
 	</changeSet>
-	
+
 	<changeSet id="49" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="PaymentTransaction" columnName="soapResponse"/>
 			</not>
 		</preConditions>
-		<sql>ALTER TABLE PaymentTransaction ADD COLUMN soapResponse TEXT NULL  AFTER response ;</sql>
+		<sql>ALTER TABLE PaymentTransaction ADD COLUMN soapResponse TEXT NULL AFTER response ;</sql>
 	</changeSet>
-	
+
 	<changeSet id="50" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="PaymentOutTransaction" columnName="soapResponse"/>
 			</not>
 		</preConditions>
-		<sql>ALTER TABLE PaymentOutTransaction ADD COLUMN soapResponse TEXT NULL  AFTER response ;</sql>
+		<sql>ALTER TABLE PaymentOutTransaction ADD COLUMN soapResponse TEXT NULL AFTER response ;</sql>
 	</changeSet>
-	
+
 	<changeSet id="51" author="anton" context="production" runOnChange="true">
 		<dropNotNullConstraint tableName="Certificate" columnName="qualificationId" columnDataType="BIGINT(20)"/>
 	</changeSet>
-	
+
 	<changeSet id="52" author="dzmitry" context="production" runOnChange="true">
 		<addNotNullConstraint tableName="Attendance" columnName="angelId" columnDataType="BIGINT"/>
 	</changeSet>
-	
+
 	<changeSet id="53" author="viacheslav" context="production" runOnChange="true">
 		<addColumn tableName="TutorRole">
 			<column name="inPublicity" type="TINYINT(1)" defaultValue="1"/>
 		</addColumn>
 		<addNotNullConstraint tableName="TutorRole" columnName="inPublicity" columnDataType="TINYINT(1)"/>
 	</changeSet>
-	
+
 	<changeSet id="54" author="viacheslav" context="production" runOnChange="true">
 		<delete tableName="MessagePerson">
 			<where>messageId IS NULL</where>
 		</delete>
 	</changeSet>
-	
+
 	<changeSet id="55" author="dzmitry" context="production" runOnChange="true">
 		<addUniqueConstraint tableName="WebSite" columnNames="siteKey" constraintName="siteKey_unique"/>
 	</changeSet>
-	
-    <changeSet id="56" author="akoyro" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<indexExists tableName="Contact" indexName="studentId_unique"/>
-    		</not>
-    	</preConditions>
-        <addUniqueConstraint tableName="Contact" columnNames="studentId" constraintName="studentId_unique"/>
-    </changeSet>
-    
-    <changeSet id="57" author="akoyro" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<indexExists tableName="Contact" indexName="tutorId_unique"/>
-    		</not>
-    	</preConditions>
-        <addUniqueConstraint tableName="Contact" columnNames="tutorId" constraintName="tutorId_unique"/>
-    </changeSet>
-    
-    <changeSet id="58" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<tableExists tableName="SystemUser"/>
-    		</not>
-    	</preConditions>
-    	<createTable tableName="SystemUser">
-    		<column name="id" type="BIGINT">
-    			<constraints primaryKey="true" nullable="false" unique="true"/>
-    		</column>
-    		<column name="angelId" type="BIGINT"/>
-    		<column name="canEditCMS" type="TINYINT(1)" defaultValue="0">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="canEditTara" type="TINYINT(1)" defaultValue="0">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="collegeId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="created" type="DATETIME"/>
-    		<column name="defaultAdministrationCentreId" type="BIGINT"/>
-    		<column name="email" type="VARCHAR(500)">
-    			<constraints nullable="true"/>
-    		</column>
-    		<column name="firstName" type="VARCHAR(100)">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="isActive" type="TINYINT(1)" defaultValue="0">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="isAdmin" type="TINYINT(1)" defaultValue="0">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="lastLoginIP" type="VARCHAR(100)">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="lastLoginOn" type="DATETIME"/>
-    		<column name="lastName" type="VARCHAR(100)">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="login" type="VARCHAR(100)">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="modified" type="DATETIME"/>
-    		<column name="password" type="VARCHAR(128)">
-    			<constraints nullable="false"/>
-    		</column>
-    	</createTable>
-    	<addForeignKeyConstraint constraintName="systemUserCollegeId_ind" referencedTableName="College" baseColumnNames="collegeId" 
-    		baseTableName="SystemUser" referencedColumnNames="id"/>
-    </changeSet>
-    
-	<changeSet id="59" author="dzmitry" context="production" runOnChange="true">
-    	<sql>update College set requiresAvetmiss = 0 where requiresAvetmiss is null;</sql>
-    	<addNotNullConstraint tableName="College" columnName="requiresAvetmiss" columnDataType="TINYINT(1)" defaultNullValue="0"/>
+
+	<changeSet id="56" author="akoyro" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="Contact" indexName="studentId_unique"/>
+			</not>
+		</preConditions>
+		<addUniqueConstraint tableName="Contact" columnNames="studentId" constraintName="studentId_unique"/>
 	</changeSet>
-	
+
+	<changeSet id="57" author="akoyro" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="Contact" indexName="tutorId_unique"/>
+			</not>
+		</preConditions>
+		<addUniqueConstraint tableName="Contact" columnNames="tutorId" constraintName="tutorId_unique"/>
+	</changeSet>
+
+	<changeSet id="58" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="SystemUser"/>
+			</not>
+		</preConditions>
+		<createTable tableName="SystemUser">
+			<column name="id" type="BIGINT">
+				<constraints primaryKey="true" nullable="false" unique="true"/>
+			</column>
+			<column name="angelId" type="BIGINT"/>
+			<column name="canEditCMS" type="TINYINT(1)" defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="canEditTara" type="TINYINT(1)" defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="defaultAdministrationCentreId" type="BIGINT"/>
+			<column name="email" type="VARCHAR(500)">
+				<constraints nullable="true"/>
+			</column>
+			<column name="firstName" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="isActive" type="TINYINT(1)" defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="isAdmin" type="TINYINT(1)" defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="lastLoginIP" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="lastLoginOn" type="DATETIME"/>
+			<column name="lastName" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="login" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modified" type="DATETIME"/>
+			<column name="password" type="VARCHAR(128)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<addForeignKeyConstraint constraintName="systemUserCollegeId_ind" referencedTableName="College"
+								 baseColumnNames="collegeId"
+								 baseTableName="SystemUser" referencedColumnNames="id"/>
+	</changeSet>
+
+	<changeSet id="59" author="dzmitry" context="production" runOnChange="true">
+		<sql>update College set requiresAvetmiss = 0 where requiresAvetmiss is null;</sql>
+		<addNotNullConstraint tableName="College" columnName="requiresAvetmiss" columnDataType="TINYINT(1)"
+							  defaultNullValue="0"/>
+	</changeSet>
+
 	<changeSet id="60" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
-    			<tableExists tableName="SystemUser"/>
-    	</preConditions>
-    	<addAutoIncrement tableName="SystemUser" columnName="id" columnDataType="BIGINT"/>
+			<tableExists tableName="SystemUser"/>
+		</preConditions>
+		<addAutoIncrement tableName="SystemUser" columnName="id" columnDataType="BIGINT"/>
 	</changeSet>
 
 	<changeSet id="61" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-    			<tableExists tableName="QueuedStatistic"/>
-    		</not>
+				<tableExists tableName="QueuedStatistic"/>
+			</not>
 		</preConditions>
 		<createTable tableName="QueuedStatistic">
 			<column name="id" type="BIGINT">
-    			<constraints primaryKey="true" nullable="false" unique="true"/>
-    		</column>
-    		<column name="collegeId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="entityIdentifier" type="VARCHAR(64)">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="receivedTimestamp" type="DATETIME"/>
-    		<column name="stackedCount" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="stackedTransactionsCount" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
+				<constraints primaryKey="true" nullable="false" unique="true"/>
+			</column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="entityIdentifier" type="VARCHAR(64)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="receivedTimestamp" type="DATETIME"/>
+			<column name="stackedCount" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="stackedTransactionsCount" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
 		</createTable>
 		<addAutoIncrement tableName="QueuedStatistic" columnName="id" columnDataType="BIGINT"/>
 	</changeSet>
 
-    <changeSet id="62" author="andrey" context="production" runOnChange="true">
-        <sql>alter table BinaryInfo add column filePath VARCHAR(512)</sql>
-    </changeSet>
-    
-    <changeSet id="63" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
+	<changeSet id="62" author="andrey" context="production" runOnChange="true">
+		<sql>alter table BinaryInfo add column filePath VARCHAR(512)</sql>
+	</changeSet>
+
+	<changeSet id="63" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
 			<not>
-    			<tableExists tableName="Country"/>
-    		</not>
+				<tableExists tableName="Country"/>
+			</not>
 		</preConditions>
 		<createTable tableName="Country">
 			<column name="id" type="BIGINT(20)">
-    			<constraints primaryKey="true" nullable="false" unique="true"/>
-    		</column>
-    		<column name="asccssCode" type="VARCHAR(10)"/>
-    		<column name="created" type="DATETIME"/>
-    		<column name="ishVersion" type="BIGINT(11)"/>
-    		<column name="isoCodeAlpha2" type="CHAR(3)"/>
-    		<column name="isoCodeAlpha3" type="CHAR(3)"/>
-    		<column name="isoCodeNumeric" type="INT(11)"/>
-    		<column name="modified" type="DATETIME"/>
-    		<column name="name" type="VARCHAR(50)"/>
-    		<column name="saccCode" type="INT(11)"/>
+				<constraints primaryKey="true" nullable="false" unique="true"/>
+			</column>
+			<column name="asccssCode" type="VARCHAR(10)"/>
+			<column name="created" type="DATETIME"/>
+			<column name="ishVersion" type="BIGINT(11)"/>
+			<column name="isoCodeAlpha2" type="CHAR(3)"/>
+			<column name="isoCodeAlpha3" type="CHAR(3)"/>
+			<column name="isoCodeNumeric" type="INT(11)"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="name" type="VARCHAR(50)"/>
+			<column name="saccCode" type="INT(11)"/>
 		</createTable>
 		<addAutoIncrement tableName="Country" columnName="id" columnDataType="BIGINT(20)"/>
 		<addNotNullConstraint tableName="Country"
-			columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
-    </changeSet>
-    
-    <changeSet id="64" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
+							  columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+	</changeSet>
+
+	<changeSet id="64" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
 			<not>
-    			<tableExists tableName="Language"/>
-    		</not>
+				<tableExists tableName="Language"/>
+			</not>
 		</preConditions>
 		<createTable tableName="Language">
 			<column name="id" type="BIGINT(20)">
-    			<constraints primaryKey="true" nullable="false" unique="true"/>
-    		</column>
-    		<column name="absCode" type="VARCHAR(10)"/>
-    		<column name="created" type="DATETIME"/>
-    		<column name="ishVersion" type="BIGINT(11)"/>
-    		<column name="isActive" type="TINYINT(4)"/>
-    		<column name="modified" type="DATETIME"/>
-    		<column name="name" type="VARCHAR(50)"/>
+				<constraints primaryKey="true" nullable="false" unique="true"/>
+			</column>
+			<column name="absCode" type="VARCHAR(10)"/>
+			<column name="created" type="DATETIME"/>
+			<column name="ishVersion" type="BIGINT(11)"/>
+			<column name="isActive" type="TINYINT(4)"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="name" type="VARCHAR(50)"/>
 		</createTable>
 		<addAutoIncrement tableName="Language" columnName="id" columnDataType="BIGINT(20)"/>
-		<addNotNullConstraint tableName="Language" columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
-		<addNotNullConstraint tableName="Language" columnName="isActive" defaultNullValue="0" columnDataType="TINYINT(4)"/>
+		<addNotNullConstraint tableName="Language" columnName="ishVersion" defaultNullValue="1"
+							  columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="Language" columnName="isActive" defaultNullValue="0"
+							  columnDataType="TINYINT(4)"/>
 		<createTable tableName="Module">
 			<column name="id" type="BIGINT(20)">
-    			<constraints primaryKey="true" nullable="false" unique="true"/>
-    		</column>
-    		<column name="nationalCode" type="VARCHAR(16)">
-    			<constraints primaryKey="false" nullable="false" unique="true"/>
-    		</column>
-    		<column name="created" type="DATETIME"/>
-    		<column name="ishVersion" type="BIGINT(11)"/>
-    		<column name="title" type="VARCHAR(256)"/>
-    		<column name="modified" type="DATETIME"/>
-    		<column name="disciplineCode" type="VARCHAR(8)"/>
-    		<column name="fieldOfEducation" type="VARCHAR(8)"/>
-    		<column name="isModule" type="TINYINT(4)"/>
-    		<column name="trainingPackageId" type="BIGINT(20)"/>
+				<constraints primaryKey="true" nullable="false" unique="true"/>
+			</column>
+			<column name="nationalCode" type="VARCHAR(16)">
+				<constraints primaryKey="false" nullable="false" unique="true"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="ishVersion" type="BIGINT(11)"/>
+			<column name="title" type="VARCHAR(256)"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="disciplineCode" type="VARCHAR(8)"/>
+			<column name="fieldOfEducation" type="VARCHAR(8)"/>
+			<column name="isModule" type="TINYINT(4)"/>
+			<column name="trainingPackageId" type="BIGINT(20)"/>
 		</createTable>
 		<addAutoIncrement tableName="Module" columnName="id" columnDataType="BIGINT(20)"/>
-		<addNotNullConstraint tableName="Module" columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
-		<addNotNullConstraint tableName="Module" columnName="isModule" defaultNullValue="0" columnDataType="TINYINT(4)"/>
+		<addNotNullConstraint tableName="Module" columnName="ishVersion" defaultNullValue="1"
+							  columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="Module" columnName="isModule" defaultNullValue="0"
+							  columnDataType="TINYINT(4)"/>
 		<createTable tableName="Qualification">
 			<column name="id" type="BIGINT(20)">
-    			<constraints primaryKey="true" nullable="false" unique="true"/>
-    		</column>
-    		<column name="nationalCode" type="VARCHAR(16)">
-    			<constraints primaryKey="false" nullable="true" unique="true"/>
-    		</column>
-    		<column name="created" type="DATETIME"/>
-    		<column name="ishVersion" type="BIGINT(11)"/>
-    		<column name="modified" type="DATETIME"/>
+				<constraints primaryKey="true" nullable="false" unique="true"/>
+			</column>
+			<column name="nationalCode" type="VARCHAR(16)">
+				<constraints primaryKey="false" nullable="true" unique="true"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="ishVersion" type="BIGINT(11)"/>
+			<column name="modified" type="DATETIME"/>
 			<column name="level" type="VARCHAR(256)"/>
 			<column name="title" type="VARCHAR(256)"/>
 			<column name="anzsco" type="VARCHAR(256)"/>
@@ -892,68 +926,75 @@
 			<column name="levelCode" type="VARCHAR(3)"/>
 		</createTable>
 		<addAutoIncrement tableName="Qualification" columnName="id" columnDataType="BIGINT(20)"/>
-		<addNotNullConstraint tableName="Qualification" columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
-		<addNotNullConstraint tableName="Qualification" columnName="isAccreditedCourse" defaultNullValue="0" columnDataType="TINYINT(4)"/>
+		<addNotNullConstraint tableName="Qualification" columnName="ishVersion" defaultNullValue="1"
+							  columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="Qualification" columnName="isAccreditedCourse" defaultNullValue="0"
+							  columnDataType="TINYINT(4)"/>
 		<createTable tableName="TrainingPackage">
 			<column name="id" type="BIGINT(20)">
-    			<constraints primaryKey="true" nullable="false" unique="true"/>
-    		</column>
-    		<column name="nationalISC" type="VARCHAR(64)">
-    			<constraints primaryKey="false" nullable="true" unique="true"/>
-    		</column>
-    		<column name="created" type="DATETIME"/>
-    		<column name="ishVersion" type="BIGINT(11)"/>
-    		<column name="title" type="VARCHAR(256)"/>
-    		<column name="modified" type="DATETIME"/>
-    		<column name="copyrightCategory" type="VARCHAR(64)"/>
-    		<column name="copyrightContact" type="VARCHAR(64)"/>
-    		<column name="developer" type="VARCHAR(64)"/>
-    		<column name="endorsementFrom" type="DATETIME"/>
-    		<column name="endorsementTo" type="DATETIME"/>
-    		<column name="purchaseFrom" type="VARCHAR(128)"/>
-    		<column name="type" type="VARCHAR(32)"/>
+				<constraints primaryKey="true" nullable="false" unique="true"/>
+			</column>
+			<column name="nationalISC" type="VARCHAR(64)">
+				<constraints primaryKey="false" nullable="true" unique="true"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="ishVersion" type="BIGINT(11)"/>
+			<column name="title" type="VARCHAR(256)"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="copyrightCategory" type="VARCHAR(64)"/>
+			<column name="copyrightContact" type="VARCHAR(64)"/>
+			<column name="developer" type="VARCHAR(64)"/>
+			<column name="endorsementFrom" type="DATETIME"/>
+			<column name="endorsementTo" type="DATETIME"/>
+			<column name="purchaseFrom" type="VARCHAR(128)"/>
+			<column name="type" type="VARCHAR(32)"/>
 		</createTable>
 		<addAutoIncrement tableName="TrainingPackage" columnName="id" columnDataType="BIGINT(20)"/>
-		<addNotNullConstraint tableName="TrainingPackage" columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="TrainingPackage" columnName="ishVersion" defaultNullValue="1"
+							  columnDataType="BIGINT(11)"/>
 		<createTable tableName="postcode">
-    		<column name="postcode" type="SMALLINT(6)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="ishVersion" type="BIGINT(11)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="locality" type="VARCHAR(60)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="state" type="CHAR(3)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="comments" type="VARCHAR(255)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="deliveryOffice" type="VARCHAR(60)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="presortIndicator" type="SMALLINT(6)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="parcelZone" type="CHAR(3)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="BSPnumber" type="SMALLINT(6)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="BSPname" type="VARCHAR(60)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="category" type="VARCHAR(60)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
+			<column name="postcode" type="SMALLINT(6)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="ishVersion" type="BIGINT(11)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="locality" type="VARCHAR(60)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="state" type="CHAR(3)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="comments" type="VARCHAR(255)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="deliveryOffice" type="VARCHAR(60)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="presortIndicator" type="SMALLINT(6)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="parcelZone" type="CHAR(3)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="BSPnumber" type="SMALLINT(6)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="BSPname" type="VARCHAR(60)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="category" type="VARCHAR(60)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
 		</createTable>
-		<addNotNullConstraint tableName="postcode" columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
-		<addNotNullConstraint tableName="postcode" columnName="postcode" defaultNullValue="0" columnDataType="SMALLINT(6)"/>
-		<addNotNullConstraint tableName="postcode" columnName="presortIndicator" defaultNullValue="0" columnDataType="SMALLINT(6)"/>
-		<addNotNullConstraint tableName="postcode" columnName="BSPnumber" defaultNullValue="0" columnDataType="SMALLINT(6)"/>
+		<addNotNullConstraint tableName="postcode" columnName="ishVersion" defaultNullValue="1"
+							  columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="postcode" columnName="postcode" defaultNullValue="0"
+							  columnDataType="SMALLINT(6)"/>
+		<addNotNullConstraint tableName="postcode" columnName="presortIndicator" defaultNullValue="0"
+							  columnDataType="SMALLINT(6)"/>
+		<addNotNullConstraint tableName="postcode" columnName="BSPnumber" defaultNullValue="0"
+							  columnDataType="SMALLINT(6)"/>
 		<createIndex tableName="postcode" indexName="postcode">
 			<column name="postcode"/>
 			<column name="locality"/>
@@ -961,27 +1002,27 @@
 			<column name="comments"/>
 		</createIndex>
 		<createTable tableName="postcode_db">
-    		<column name="postcode" type="INT(4)">
-    			<constraints primaryKey="false" nullable="false" unique="true"/>
-    		</column>
-    		<column name="suburb" type="VARCHAR(45)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="state" type="VARCHAR(4)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="dc" type="VARCHAR(45)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="type" type="VARCHAR(45)">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="lat" type="DOUBLE">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
-    		<column name="lon" type="DOUBLE">
-    			<constraints primaryKey="false" nullable="false" unique="false"/>
-    		</column>
+			<column name="postcode" type="INT(4)">
+				<constraints primaryKey="false" nullable="false" unique="true"/>
+			</column>
+			<column name="suburb" type="VARCHAR(45)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="state" type="VARCHAR(4)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="dc" type="VARCHAR(45)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="type" type="VARCHAR(45)">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="lat" type="DOUBLE">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
+			<column name="lon" type="DOUBLE">
+				<constraints primaryKey="false" nullable="false" unique="false"/>
+			</column>
 		</createTable>
 		<createIndex tableName="postcode_db" indexName="idx_lat">
 			<column name="lat"/>
@@ -990,182 +1031,188 @@
 			<column name="lon"/>
 		</createIndex>
 		<addPrimaryKey tableName="postcode_db" columnNames="postcode,suburb"/>
-    </changeSet>
-    
-    
-    <changeSet id="65" author="viacheslav" context="production" runOnChange="true">
-    <preConditions onFail="MARK_RAN">
-    	<indexExists tableName="postcode_db" indexName="postcode"/>
-	</preConditions>
-    <sql>ALTER TABLE postcode_db CHANGE COLUMN postcode postcode INT(4) UNSIGNED NOT NULL </sql>
-    <dropIndex tableName="postcode_db" indexName="postcode"/>
-    </changeSet>
-    
-    <changeSet id="66" author="viacheslav" context="production" runOnChange="true">
-    	<customChange class="ish.oncourse.utils.MigrateReferencesUpgrage"/>
-    </changeSet>
-    
-    <changeSet id="67" author="andrey" context="production" runOnChange="true">
-        <sql>ALTER TABLE WebContentVisibility DROP FOREIGN KEY WebContentVisibility_WebNode</sql>
-        <sql>ALTER TABLE WebContentVisibility ADD CONSTRAINT WebContentVisibility_WebNode FOREIGN KEY (WebNodeId) REFERENCES WebNode (id) ON DELETE CASCADE ON UPDATE NO ACTION</sql>
-        <sql>ALTER TABLE WebURLAlias DROP FOREIGN KEY WebURLAlias_webNode</sql>
-        <sql>ALTER TABLE WebURLAlias ADD CONSTRAINT WebURLAlias_webNode FOREIGN KEY (webNodeId) REFERENCES WebNode (id) ON DELETE CASCADE</sql>
-    </changeSet>
-    
-    <changeSet id="68" author="dzmitry" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<columnExists tableName="LicenseFee" columnName="paidUntil"/>
-    			<columnExists tableName="LicenseFee" columnName="renewalDate"/>
-    		</not>
-    	</preConditions>
-    	<addColumn tableName="LicenseFee">
-    		<column name="paidUntil" type="DATETIME"/>
-    		<column name="renewalDate" type="DATETIME"/>
-    	</addColumn>
-    </changeSet>
-    
-    <changeSet id="69" author="dzmitry" context="production" runOnChange="true">
-    	<customChange class="ish.oncourse.model.liquibase.LicenseFeeBillingMonthUpgrade"/>
-    </changeSet>
-    
-    <changeSet id="70" author="dzmitry" context="production" runOnChange="true">
-    	<preConditions>
-    		<not>
-    			<columnExists tableName="Site" columnName="isVirtual"/>
-    		</not>
-    	</preConditions>
-    	<addColumn tableName="Site">
-    		<column name="isVirtual" type="TINYINT(1)" defaultValueNumeric="0">
-    			<constraints nullable="false"/>
-    		</column>
-    	</addColumn>
-    </changeSet>
-    
-    <changeSet id="71" author="dzmitry" context="production" runOnChange="true">
-    	<preConditions>
-    		<not>
-    			<columnExists tableName="CourseClass" columnName="isDistantLearningCourse"/>
-    			<columnExists tableName="CourseClass" columnName="maximumDays"/>
-    			<columnExists tableName="CourseClass" columnName="expectedHours"/>
-    		</not>
-    	</preConditions>
-    	<addColumn tableName="CourseClass">
-    		<column name="isDistantLearningCourse" type="TINYINT(1)" defaultValueNumeric="0">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="maximumDays" type="INTEGER"/>
-    		<column name="expectedHours" type="DOUBLE"/>
-    	</addColumn>
-    </changeSet>
-    
-    <changeSet id="72" author="dzmitry" context="production" runOnChange="true">
-    	<preConditions>
-    		<not>
-    			<columnExists tableName="Discount" columnName="hideOnWeb"/>
-    		</not>
-    	</preConditions>
-    	<addColumn tableName="Discount">
-    		<column name="hideOnWeb" type="TINYINT(1)" defaultValueNumeric="0">
-    			<constraints nullable="false"/>
-    		</column>
-    	</addColumn>
-    </changeSet>
-    
-    <changeSet id="73" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<indexExists tableName="Contact" indexName="studentId_unique"/>
-    	</preConditions>
-    	<dropUniqueConstraint tableName="Contact" constraintName="studentId_unique"/>
-    	<dropUniqueConstraint tableName="Contact" constraintName="tutorId_unique"/>
-    </changeSet>
-    
-    <changeSet id="74" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<columnExists tableName="Product" columnName="maxCoursesRedemption"/>
-    			<columnExists tableName="Product" columnName="value"/>
-    			<columnExists tableName="Product" columnName="priceExTax"/>
-    			<columnExists tableName="Product" columnName="taxAdjustment"/>
-    		</not>
-    	</preConditions>
-    	<addColumn tableName="Product">
-    		<column name="maxCoursesRedemption" type="INTEGER"/>
-    	</addColumn>
-    	<addColumn tableName="Product">
-    		<column name="value" type="DECIMAL(10,2)"/>
-    	</addColumn>
-    	<addColumn tableName="Product">
-    		<column name="priceExTax" type="DECIMAL(10,2)"/>
-    	</addColumn>
-    	<addColumn tableName="Product">
-    		<column name="taxAdjustment" type="DECIMAL(10,2)"/>
-    	</addColumn>
-    </changeSet>
-    
-    <changeSet id="75" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<columnExists tableName="ProductItem" columnName="code"/>
-    			<columnExists tableName="ProductItem" columnName="value"/>
-    			<columnExists tableName="ProductItem" columnName="redeemedCoursesCount"/>
-    			<columnExists tableName="ProductItem" columnName="status"/>
-    			<columnExists tableName="ProductItem" columnName="source"/>
-    			<columnExists tableName="ProductItem" columnName="valueRemaining"/>
-    		</not>
-    	</preConditions>
-    	<addColumn tableName="ProductItem">
-    		<column name="code" type="VARCHAR(10)"/>
-    		<column name="value" type="DECIMAL(10,2)"/>
-    		<column name="redeemedCoursesCount" type="INTEGER"/>
-    		<column name="status" type="INTEGER"/>
-    		<column name="source" type="CHAR(1)"/>
-    	</addColumn>
-    	
-    	<createIndex tableName="ProductItem" indexName="ProductItem_code">
-    		<column name="code"/>
-    	</createIndex>
-    	<createIndex tableName="ProductItem" indexName="ProductItem_status">
-    		<column name="status"/>
-    	</createIndex>
-    	<createIndex tableName="ProductItem" indexName="ProductItem_source">
-    		<column name="source"/>
-    	</createIndex>
-    </changeSet>
-    
-    <changeSet id="76" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<tableExists tableName="VoucherProductCourse"/>
-    		</not>
-    	</preConditions>
-    	<createTable tableName="VoucherProductCourse">
-    		<column name="id" type="BIGINT">
-    			<constraints nullable="false" primaryKey="true"/>
-    		</column>
-    		<column name="angelId" type="BIGINT"/>
-    		<column name="collegeId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="created" type="DATETIME"/>
-    		<column name="modified" type="DATETIME"/>
-    		<column name="courseId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="voucherProductId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    	</createTable>
-    	
-    	<addForeignKeyConstraint constraintName="fk_VoucherProductCourse_Course" referencedTableName="Course" baseColumnNames="courseId" 
-    		baseTableName="VoucherProductCourse" referencedColumnNames="id"/>
-    	<addForeignKeyConstraint constraintName="fk_VoucherProductCourse_Product" referencedTableName="Product" baseColumnNames="voucherProductId" 
-    		baseTableName="VoucherProductCourse" referencedColumnNames="id"/>
-    	<createIndex tableName="VoucherProductCourse" indexName="collegeId_angelId_uniq_idx" unique="true">
-    		<column name="angelId"/>
-    		<column name="collegeId"/>
-    	</createIndex>
-    </changeSet>
+	</changeSet>
+
+
+	<changeSet id="65" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<indexExists tableName="postcode_db" indexName="postcode"/>
+		</preConditions>
+		<sql>ALTER TABLE postcode_db CHANGE COLUMN postcode postcode INT(4) UNSIGNED NOT NULL</sql>
+		<dropIndex tableName="postcode_db" indexName="postcode"/>
+	</changeSet>
+
+	<changeSet id="66" author="viacheslav" context="production" runOnChange="true">
+		<customChange class="ish.oncourse.utils.MigrateReferencesUpgrage"/>
+	</changeSet>
+
+	<changeSet id="67" author="andrey" context="production" runOnChange="true">
+		<sql>ALTER TABLE WebContentVisibility DROP FOREIGN KEY WebContentVisibility_WebNode</sql>
+		<sql>ALTER TABLE WebContentVisibility ADD CONSTRAINT WebContentVisibility_WebNode FOREIGN KEY (WebNodeId)
+			REFERENCES WebNode (id) ON DELETE CASCADE ON UPDATE NO ACTION
+		</sql>
+		<sql>ALTER TABLE WebURLAlias DROP FOREIGN KEY WebURLAlias_webNode</sql>
+		<sql>ALTER TABLE WebURLAlias ADD CONSTRAINT WebURLAlias_webNode FOREIGN KEY (webNodeId) REFERENCES WebNode (id)
+			ON DELETE CASCADE
+		</sql>
+	</changeSet>
+
+	<changeSet id="68" author="dzmitry" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="LicenseFee" columnName="paidUntil"/>
+				<columnExists tableName="LicenseFee" columnName="renewalDate"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="LicenseFee">
+			<column name="paidUntil" type="DATETIME"/>
+			<column name="renewalDate" type="DATETIME"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="69" author="dzmitry" context="production" runOnChange="true">
+		<customChange class="ish.oncourse.model.liquibase.LicenseFeeBillingMonthUpgrade"/>
+	</changeSet>
+
+	<changeSet id="70" author="dzmitry" context="production" runOnChange="true">
+		<preConditions>
+			<not>
+				<columnExists tableName="Site" columnName="isVirtual"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Site">
+			<column name="isVirtual" type="TINYINT(1)" defaultValueNumeric="0">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="71" author="dzmitry" context="production" runOnChange="true">
+		<preConditions>
+			<not>
+				<columnExists tableName="CourseClass" columnName="isDistantLearningCourse"/>
+				<columnExists tableName="CourseClass" columnName="maximumDays"/>
+				<columnExists tableName="CourseClass" columnName="expectedHours"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="CourseClass">
+			<column name="isDistantLearningCourse" type="TINYINT(1)" defaultValueNumeric="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="maximumDays" type="INTEGER"/>
+			<column name="expectedHours" type="DOUBLE"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="72" author="dzmitry" context="production" runOnChange="true">
+		<preConditions>
+			<not>
+				<columnExists tableName="Discount" columnName="hideOnWeb"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Discount">
+			<column name="hideOnWeb" type="TINYINT(1)" defaultValueNumeric="0">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="73" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<indexExists tableName="Contact" indexName="studentId_unique"/>
+		</preConditions>
+		<dropUniqueConstraint tableName="Contact" constraintName="studentId_unique"/>
+		<dropUniqueConstraint tableName="Contact" constraintName="tutorId_unique"/>
+	</changeSet>
+
+	<changeSet id="74" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Product" columnName="maxCoursesRedemption"/>
+				<columnExists tableName="Product" columnName="value"/>
+				<columnExists tableName="Product" columnName="priceExTax"/>
+				<columnExists tableName="Product" columnName="taxAdjustment"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Product">
+			<column name="maxCoursesRedemption" type="INTEGER"/>
+		</addColumn>
+		<addColumn tableName="Product">
+			<column name="value" type="DECIMAL(10,2)"/>
+		</addColumn>
+		<addColumn tableName="Product">
+			<column name="priceExTax" type="DECIMAL(10,2)"/>
+		</addColumn>
+		<addColumn tableName="Product">
+			<column name="taxAdjustment" type="DECIMAL(10,2)"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="75" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="ProductItem" columnName="code"/>
+				<columnExists tableName="ProductItem" columnName="value"/>
+				<columnExists tableName="ProductItem" columnName="redeemedCoursesCount"/>
+				<columnExists tableName="ProductItem" columnName="status"/>
+				<columnExists tableName="ProductItem" columnName="source"/>
+				<columnExists tableName="ProductItem" columnName="valueRemaining"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="ProductItem">
+			<column name="code" type="VARCHAR(10)"/>
+			<column name="value" type="DECIMAL(10,2)"/>
+			<column name="redeemedCoursesCount" type="INTEGER"/>
+			<column name="status" type="INTEGER"/>
+			<column name="source" type="CHAR(1)"/>
+		</addColumn>
+
+		<createIndex tableName="ProductItem" indexName="ProductItem_code">
+			<column name="code"/>
+		</createIndex>
+		<createIndex tableName="ProductItem" indexName="ProductItem_status">
+			<column name="status"/>
+		</createIndex>
+		<createIndex tableName="ProductItem" indexName="ProductItem_source">
+			<column name="source"/>
+		</createIndex>
+	</changeSet>
+
+	<changeSet id="76" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="VoucherProductCourse"/>
+			</not>
+		</preConditions>
+		<createTable tableName="VoucherProductCourse">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="angelId" type="BIGINT"/>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="courseId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="voucherProductId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="fk_VoucherProductCourse_Course" referencedTableName="Course"
+								 baseColumnNames="courseId"
+								 baseTableName="VoucherProductCourse" referencedColumnNames="id"/>
+		<addForeignKeyConstraint constraintName="fk_VoucherProductCourse_Product" referencedTableName="Product"
+								 baseColumnNames="voucherProductId"
+								 baseTableName="VoucherProductCourse" referencedColumnNames="id"/>
+		<createIndex tableName="VoucherProductCourse" indexName="collegeId_angelId_uniq_idx" unique="true">
+			<column name="angelId"/>
+			<column name="collegeId"/>
+		</createIndex>
+	</changeSet>
 
 	<changeSet id="77" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
@@ -1195,9 +1242,11 @@
 			</column>
 		</createTable>
 
-		<addForeignKeyConstraint constraintName="fk_VoucherPaymentIn_PaymentIn" referencedTableName="PaymentIn" baseColumnNames="paymentInId"
+		<addForeignKeyConstraint constraintName="fk_VoucherPaymentIn_PaymentIn" referencedTableName="PaymentIn"
+								 baseColumnNames="paymentInId"
 								 baseTableName="VoucherPaymentIn" referencedColumnNames="id"/>
-		<addForeignKeyConstraint constraintName="fk_VoucherPaymentIn_ProductItem" referencedTableName="ProductItem" baseColumnNames="voucherId"
+		<addForeignKeyConstraint constraintName="fk_VoucherPaymentIn_ProductItem" referencedTableName="ProductItem"
+								 baseColumnNames="voucherId"
 								 baseTableName="VoucherPaymentIn" referencedColumnNames="id"/>
 		<createIndex tableName="VoucherPaymentIn" indexName="collegeId_angelId_uniq_idx" unique="true">
 			<column name="angelId"/>
@@ -1206,38 +1255,39 @@
 	</changeSet>
 
 	<changeSet id="78" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<columnExists tableName="Discount" columnName="isAvailableOnWeb"/>
-    		</not>
-    	</preConditions>
-    	<addColumn tableName="Discount">
-    		<column name="isAvailableOnWeb" type="SMALLINT" defaultValueNumeric="1">
-    			<constraints nullable="false"/>
-    		</column>
-    	</addColumn>
-    </changeSet>
-    
-    <changeSet id="79" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<tableExists tableName="VoucherPaymentIn"/>
-    	</preConditions>
-    	<dropTable tableName="VoucherPaymentIn"/>
-    </changeSet>
-    
-    <changeSet id="80" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<columnExists tableName="ProductItem" columnName="paymentInId"/>
-    		</not>
-    	</preConditions>
-    	<addColumn tableName="ProductItem">
-    		<column name="paymentInId" type="BIGINT"/>
-    	</addColumn>
-    	<addForeignKeyConstraint constraintName="fk_Voucher_PaymentIn" referencedTableName="PaymentIn" baseColumnNames="paymentInId" 
-    		baseTableName="ProductItem" referencedColumnNames="id"/>
-    </changeSet>
-    
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Discount" columnName="isAvailableOnWeb"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Discount">
+			<column name="isAvailableOnWeb" type="SMALLINT" defaultValueNumeric="1">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="79" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="VoucherPaymentIn"/>
+		</preConditions>
+		<dropTable tableName="VoucherPaymentIn"/>
+	</changeSet>
+
+	<changeSet id="80" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="ProductItem" columnName="paymentInId"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="ProductItem">
+			<column name="paymentInId" type="BIGINT"/>
+		</addColumn>
+		<addForeignKeyConstraint constraintName="fk_Voucher_PaymentIn" referencedTableName="PaymentIn"
+								 baseColumnNames="paymentInId"
+								 baseTableName="ProductItem" referencedColumnNames="id"/>
+	</changeSet>
+
 	<changeSet id="81" author="akoyro" runOnChange="true" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
@@ -1272,7 +1322,8 @@
 			<column name="comment" type="VARCHAR(500)"/>
 		</createTable>
 
-		<addForeignKeyConstraint constraintName="fk_Survey_Enrolment" referencedTableName="Enrolment" baseColumnNames="enrolmentId" baseTableName="Survey" referencedColumnNames="id"/>
+		<addForeignKeyConstraint constraintName="fk_Survey_Enrolment" referencedTableName="Enrolment"
+								 baseColumnNames="enrolmentId" baseTableName="Survey" referencedColumnNames="id"/>
 
 		<createIndex tableName="Survey" indexName="Survey_angelId">
 			<column name="angelId"/>
@@ -1283,22 +1334,22 @@
 			<column name="collegeId"/>
 		</createIndex>
 	</changeSet>
-	
+
 	<changeSet id="82" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
- 			<columnExists tableName="VoucherPaymentIn" columnName="status"/>
-    	</preConditions>
-    	<sql>ALTER TABLE VoucherPaymentIn CHANGE COLUMN status status INT(11) NULL  ;</sql>
-     </changeSet>
-     
-     <changeSet id="83" author="viacheslav" context="production" runOnChange="true">
-     	<preConditions onFail="MARK_RAN">
-     		<not>
-     			<tableExists tableName="SessionModule"/>
-     		</not>
-     	</preConditions>
-     	<createTable tableName="SessionModule">
-     		<column name="id" type="BIGINT">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="VoucherPaymentIn" columnName="status"/>
+		</preConditions>
+		<sql>ALTER TABLE VoucherPaymentIn CHANGE COLUMN status status INT(11) NULL ;</sql>
+	</changeSet>
+
+	<changeSet id="83" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="SessionModule"/>
+			</not>
+		</preConditions>
+		<createTable tableName="SessionModule">
+			<column name="id" type="BIGINT">
 				<constraints nullable="false" primaryKey="true"/>
 			</column>
 			<column name="collegeId" type="BIGINT">
@@ -1313,141 +1364,152 @@
 			<column name="sessionId" type="BIGINT">
 				<constraints nullable="false"/>
 			</column>
-     	</createTable>
-     	
-     	<addForeignKeyConstraint constraintName="fk_SessionModule_Module" referencedTableName="Module" baseColumnNames="moduleId" 
-     		baseTableName="SessionModule" referencedColumnNames="id"/>
-     	<addForeignKeyConstraint constraintName="fk_SessionModule_Session" referencedTableName="Session" baseColumnNames="sessionId" 
-     		baseTableName="SessionModule" referencedColumnNames="id"/>
-     </changeSet>
-    
-    <changeSet id="84" author="dzmitry" context="production" runOnChange="true">
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="fk_SessionModule_Module" referencedTableName="Module"
+								 baseColumnNames="moduleId"
+								 baseTableName="SessionModule" referencedColumnNames="id"/>
+		<addForeignKeyConstraint constraintName="fk_SessionModule_Session" referencedTableName="Session"
+								 baseColumnNames="sessionId"
+								 baseTableName="SessionModule" referencedColumnNames="id"/>
+	</changeSet>
+
+	<changeSet id="84" author="dzmitry" context="production" runOnChange="true">
 		<addAutoIncrement tableName="Survey" columnName="id" columnDataType="BIGINT"/>
 		<addAutoIncrement tableName="SessionModule" columnName="id" columnDataType="BIGINT"/>
 		<addAutoIncrement tableName="VoucherPaymentIn" columnName="id" columnDataType="BIGINT"/>
 		<addAutoIncrement tableName="VoucherProductCourse" columnName="id" columnDataType="BIGINT"/>
-    </changeSet>
-    
-    <changeSet id="85" author="dzmitry" context="production" runOnChange="true">
-    	    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<tableExists tableName="EntityRelation"/>
-    		</not>
-    	</preConditions>
-    	<createTable tableName="EntityRelation">
-    		<column name="id" type="BIGINT">
-    			<constraints nullable="false" primaryKey="true"/>
-    		</column>
-    		<column name="angelId" type="BIGINT"/>
-    		<column name="collegeId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="fromEntityIdentifier" type="SMALLINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="toEntityIdentifier" type="SMALLINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="fromRecordId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="toRecordId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="created" type="DATETIME"/>
-    		<column name="modified" type="DATETIME"/>
-    	</createTable>
-    	
-    	<addForeignKeyConstraint constraintName="fk_EntityRelation_College" referencedTableName="College" baseColumnNames="collegeId" baseTableName="EntityRelation" referencedColumnNames="id"/>
-    	
-    	<createIndex tableName="EntityRelation" indexName="EntityRelation_angelId">
-    		<column name="angelId"/>
-    	</createIndex>
-    	<createIndex tableName="EntityRelation" indexName="EntityRelation_fromEntityIdentifier">
-    		<column name="fromEntityIdentifier"/>
-    	</createIndex>
-    	<createIndex tableName="EntityRelation" indexName="EntityRelation_toEntityIdentifier">
-    		<column name="toEntityIdentifier"/>
-    	</createIndex>
-    	<createIndex tableName="EntityRelation" indexName="EntityRelation_fromRecordId">
-    		<column name="fromRecordId"/>
-    	</createIndex>
-    	<createIndex tableName="EntityRelation" indexName="EntityRelation_toRecordId">
-    		<column name="toRecordId"/>
-    	</createIndex>
-    	
-    	<addAutoIncrement tableName="EntityRelation" columnName="id" columnDataType="BIGINT"/>
-    </changeSet>
-    
-    <changeSet id="86" author="dzmitry" context="production" runOnChange="true">
-    	    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<tableExists tableName="CorporatePass"/>
-    		</not>
-    	</preConditions>
-    	
-    	<!-- CorporatePass table -->
-    	<createTable tableName="CorporatePass">
-    		<column name="id" type="BIGINT">
-    			<constraints nullable="false" primaryKey="true"/>
-    		</column>
-    		<column name="contactId" type="BIGINT"/>
-    		<column name="expiryDate" type="DATETIME"/>
-    		<column name="invoiceEmail" type="VARCHAR(100)"/>
-    		<column name="password" type="VARCHAR(100)">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="angelId" type="BIGINT"/>
-    		<column name="collegeId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="created" type="DATETIME"/>
-    		<column name="modified" type="DATETIME"/>
-    	</createTable>
-    	
-    	<addForeignKeyConstraint constraintName="fk_CorporatePass_Contact" referencedTableName="Contact" baseColumnNames="contactId" baseTableName="CorporatePass" referencedColumnNames="id"/>
-    	<addForeignKeyConstraint constraintName="fk_CorporatePass_College" referencedTableName="College" baseColumnNames="collegeId" baseTableName="CorporatePass" referencedColumnNames="id"/>
-    	
-    	<createIndex tableName="CorporatePass" indexName="CorporatePass_angelId">
-    		<column name="angelId"/>
-    	</createIndex>
-    	<createIndex tableName="CorporatePass" indexName="CorporatePass_password">
-    		<column name="password"/>
-    	</createIndex>
-    	<createIndex tableName="CorporatePass" indexName="CorporatePass_invoiceEmail">
-    		<column name="invoiceEmail"/>
-    	</createIndex>
-    	
-    	<!-- CorporatePass_CourseClass table -->
-    	<createTable tableName="CorporatePass_CourseClass">
-    		<column name="id" type="BIGINT">
-    			<constraints nullable="false" primaryKey="true"/>
-    		</column>
-    		<column name="corporatePassId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="courseClassId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="angelId" type="BIGINT"/>
-    		<column name="collegeId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="created" type="DATETIME"/>
-    		<column name="modified" type="DATETIME"/>
-    	</createTable>
-    	
-    	<addForeignKeyConstraint constraintName="fk_CorporatePassCourseClass_CorporatePass" referencedTableName="CorporatePass" baseColumnNames="corporatePassId" baseTableName="CorporatePass_CourseClass" referencedColumnNames="id"/>
-    	<addForeignKeyConstraint constraintName="fk_CorporatePassCourseClass_CourseClass" referencedTableName="CourseClass" baseColumnNames="courseClassId" baseTableName="CorporatePass_CourseClass" referencedColumnNames="id"/>
-    	<addForeignKeyConstraint constraintName="fk_CorporatePassCourseClass_College" referencedTableName="College" baseColumnNames="collegeId" baseTableName="CorporatePass_CourseClass" referencedColumnNames="id"/>
-    	
-    	<createIndex tableName="CorporatePass_CourseClass" indexName="CorporatePassCourseClass_angelId">
-    		<column name="angelId"/>
-    	</createIndex>
-    	
-    	<addAutoIncrement tableName="CorporatePass" columnName="id" columnDataType="BIGINT"/>
-    	<addAutoIncrement tableName="CorporatePass_CourseClass" columnName="id" columnDataType="BIGINT"/>
-    </changeSet>
+	</changeSet>
+
+	<changeSet id="85" author="dzmitry" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="EntityRelation"/>
+			</not>
+		</preConditions>
+		<createTable tableName="EntityRelation">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="angelId" type="BIGINT"/>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="fromEntityIdentifier" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="toEntityIdentifier" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="fromRecordId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="toRecordId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="fk_EntityRelation_College" referencedTableName="College"
+								 baseColumnNames="collegeId" baseTableName="EntityRelation" referencedColumnNames="id"/>
+
+		<createIndex tableName="EntityRelation" indexName="EntityRelation_angelId">
+			<column name="angelId"/>
+		</createIndex>
+		<createIndex tableName="EntityRelation" indexName="EntityRelation_fromEntityIdentifier">
+			<column name="fromEntityIdentifier"/>
+		</createIndex>
+		<createIndex tableName="EntityRelation" indexName="EntityRelation_toEntityIdentifier">
+			<column name="toEntityIdentifier"/>
+		</createIndex>
+		<createIndex tableName="EntityRelation" indexName="EntityRelation_fromRecordId">
+			<column name="fromRecordId"/>
+		</createIndex>
+		<createIndex tableName="EntityRelation" indexName="EntityRelation_toRecordId">
+			<column name="toRecordId"/>
+		</createIndex>
+
+		<addAutoIncrement tableName="EntityRelation" columnName="id" columnDataType="BIGINT"/>
+	</changeSet>
+
+	<changeSet id="86" author="dzmitry" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="CorporatePass"/>
+			</not>
+		</preConditions>
+
+		<!-- CorporatePass table -->
+		<createTable tableName="CorporatePass">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="contactId" type="BIGINT"/>
+			<column name="expiryDate" type="DATETIME"/>
+			<column name="invoiceEmail" type="VARCHAR(100)"/>
+			<column name="password" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="angelId" type="BIGINT"/>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="fk_CorporatePass_Contact" referencedTableName="Contact"
+								 baseColumnNames="contactId" baseTableName="CorporatePass" referencedColumnNames="id"/>
+		<addForeignKeyConstraint constraintName="fk_CorporatePass_College" referencedTableName="College"
+								 baseColumnNames="collegeId" baseTableName="CorporatePass" referencedColumnNames="id"/>
+
+		<createIndex tableName="CorporatePass" indexName="CorporatePass_angelId">
+			<column name="angelId"/>
+		</createIndex>
+		<createIndex tableName="CorporatePass" indexName="CorporatePass_password">
+			<column name="password"/>
+		</createIndex>
+		<createIndex tableName="CorporatePass" indexName="CorporatePass_invoiceEmail">
+			<column name="invoiceEmail"/>
+		</createIndex>
+
+		<!-- CorporatePass_CourseClass table -->
+		<createTable tableName="CorporatePass_CourseClass">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="corporatePassId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="courseClassId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="angelId" type="BIGINT"/>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="fk_CorporatePassCourseClass_CorporatePass"
+								 referencedTableName="CorporatePass" baseColumnNames="corporatePassId"
+								 baseTableName="CorporatePass_CourseClass" referencedColumnNames="id"/>
+		<addForeignKeyConstraint constraintName="fk_CorporatePassCourseClass_CourseClass"
+								 referencedTableName="CourseClass" baseColumnNames="courseClassId"
+								 baseTableName="CorporatePass_CourseClass" referencedColumnNames="id"/>
+		<addForeignKeyConstraint constraintName="fk_CorporatePassCourseClass_College" referencedTableName="College"
+								 baseColumnNames="collegeId" baseTableName="CorporatePass_CourseClass"
+								 referencedColumnNames="id"/>
+
+		<createIndex tableName="CorporatePass_CourseClass" indexName="CorporatePassCourseClass_angelId">
+			<column name="angelId"/>
+		</createIndex>
+
+		<addAutoIncrement tableName="CorporatePass" columnName="id" columnDataType="BIGINT"/>
+		<addAutoIncrement tableName="CorporatePass_CourseClass" columnName="id" columnDataType="BIGINT"/>
+	</changeSet>
 
 	<changeSet id="88" author="akoyro" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
@@ -1459,7 +1521,8 @@
 		<addColumn tableName="Invoice">
 			<column name="corporatePassId" type="BIGINT"/>
 		</addColumn>
-		<addForeignKeyConstraint constraintName="fk_Invoice_CorporatePass" referencedTableName="CorporatePass" baseColumnNames="corporatePassId" baseTableName="Invoice" referencedColumnNames="id"/>
+		<addForeignKeyConstraint constraintName="fk_Invoice_CorporatePass" referencedTableName="CorporatePass"
+								 baseColumnNames="corporatePassId" baseTableName="Invoice" referencedColumnNames="id"/>
 	</changeSet>
 
 	<changeSet id="89" author="akoyro" context="production" runOnChange="true">
@@ -1471,64 +1534,66 @@
 		<addColumn tableName="Invoice">
 			<column name="webSiteId" type="BIGINT"/>
 		</addColumn>
-		<addForeignKeyConstraint constraintName="fk_Invoice_WebSite" referencedTableName="WebSite" referencedColumnNames="id" baseColumnNames="webSiteId"
+		<addForeignKeyConstraint constraintName="fk_Invoice_WebSite" referencedTableName="WebSite"
+								 referencedColumnNames="id" baseColumnNames="webSiteId"
 								 baseTableName="Invoice"/>
 	</changeSet>
 
 
 	<changeSet id="90" author="viacheslav" context="production" runOnChange="true">
-			<preConditions>
-				<columnExists tableName="ProductItem" columnName="paymentInId"/>
-				<columnExists tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
-			</preConditions>
+		<preConditions>
+			<columnExists tableName="ProductItem" columnName="paymentInId"/>
+			<columnExists tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
+		</preConditions>
 
-			<dropForeignKeyConstraint baseTableName="ProductItem" constraintName="fk_Voucher_PaymentIn"/>
-			<dropColumn tableName="ProductItem" columnName="paymentInId"/>
-			<dropColumn tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
+		<dropForeignKeyConstraint baseTableName="ProductItem" constraintName="fk_Voucher_PaymentIn"/>
+		<dropColumn tableName="ProductItem" columnName="paymentInId"/>
+		<dropColumn tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
 	</changeSet>
-    
-    <changeSet id="91" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<indexExists tableName="College" columnNames="webServicesLogin,webServicesPass"/>
-    	</preConditions>
-    	<dropIndex tableName="College" indexName="webServicesLogin_idx"/>
-    </changeSet>
-    
-    <changeSet id="92" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<columnExists tableName="College" columnName="webServicesLogin"/>
-    	</preConditions>
-    	<dropColumn tableName="College" columnName="webServicesLogin"/>
-    	<dropColumn tableName="College" columnName="webServicesPass"/>
-    	<dropColumn tableName="College" columnName="nationalProviderCode"/>
-    </changeSet>
-    
-    <changeSet id="93" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<columnExists tableName="College" columnName="paymentGatewayType"/>
-    	</preConditions>
-    	<dropColumn tableName="College" columnName="paymentGatewayType"/>
-    </changeSet>
-    
-    <changeSet id="94" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<columnExists tableName="Qualification" columnName="anzsic"/>
-    	</preConditions>
-    	<dropColumn tableName="Qualification" columnName="anzsic"/>
-    </changeSet>
-    
-    <changeSet id="95" author="viacheslav" context="production" runOnChange="true">
-    	<customChange class="ish.oncourse.model.liquibase.CleanupDuplicatedPaymentInLinesUpgrage"/>
-    </changeSet>
-    
-    <changeSet id="96" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<indexExists tableName="PaymentInLine" columnNames="paymentInId,invoiceId"/>
-    		</not>
-    	</preConditions>
-    	<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInId_invoiceId_uniq_idx"/>
-    </changeSet>
+
+	<changeSet id="91" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<indexExists tableName="College" columnNames="webServicesLogin,webServicesPass"/>
+		</preConditions>
+		<dropIndex tableName="College" indexName="webServicesLogin_idx"/>
+	</changeSet>
+
+	<changeSet id="92" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="College" columnName="webServicesLogin"/>
+		</preConditions>
+		<dropColumn tableName="College" columnName="webServicesLogin"/>
+		<dropColumn tableName="College" columnName="webServicesPass"/>
+		<dropColumn tableName="College" columnName="nationalProviderCode"/>
+	</changeSet>
+
+	<changeSet id="93" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="College" columnName="paymentGatewayType"/>
+		</preConditions>
+		<dropColumn tableName="College" columnName="paymentGatewayType"/>
+	</changeSet>
+
+	<changeSet id="94" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Qualification" columnName="anzsic"/>
+		</preConditions>
+		<dropColumn tableName="Qualification" columnName="anzsic"/>
+	</changeSet>
+
+	<changeSet id="95" author="viacheslav" context="production" runOnChange="true">
+		<customChange class="ish.oncourse.model.liquibase.CleanupDuplicatedPaymentInLinesUpgrage"/>
+	</changeSet>
+
+	<changeSet id="96" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="PaymentInLine" columnNames="paymentInId,invoiceId"/>
+			</not>
+		</preConditions>
+		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId"
+							 constraintName="paymentInId_invoiceId_uniq_idx"/>
+	</changeSet>
 
 	<changeSet id="97" author="akoyro" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
@@ -1536,35 +1601,36 @@
 				<indexExists tableName="CorporatePass" columnNames="collegeId,password"/>
 			</not>
 		</preConditions>
-		<addUniqueConstraint tableName="CorporatePass" columnNames="collegeId,password" constraintName="collegeId_password_uniq_idx"/>
+		<addUniqueConstraint tableName="CorporatePass" columnNames="collegeId,password"
+							 constraintName="collegeId_password_uniq_idx"/>
 	</changeSet>
-	
+
 	<changeSet id="98" author="viacheslav" context="production" runOnChange="true">
 		<addNotNullConstraint tableName="BinaryInfo" columnName="filePath" columnDataType="VARCHAR(512)"/>
 	</changeSet>
-	
+
 	<changeSet id="99" author="viacheslav" context="production" runOnChange="true">
 		<update tableName="Contact">
-			<column name="isMarketingViaEmailAllowed" value="1" />
+			<column name="isMarketingViaEmailAllowed" value="1"/>
 			<where>isMarketingViaEmailAllowed IS NULL</where>
 		</update>
-		<modifyDataType tableName="Contact" columnName="isMarketingViaEmailAllowed" newDataType="tinyint(1) NOT NULL" />
+		<modifyDataType tableName="Contact" columnName="isMarketingViaEmailAllowed" newDataType="tinyint(1) NOT NULL"/>
 	</changeSet>
-	
+
 	<changeSet id="100" author="viacheslav" context="production" runOnChange="true">
 		<update tableName="Contact">
-			<column name="isMarketingViaPostAllowed" value="1" />
+			<column name="isMarketingViaPostAllowed" value="1"/>
 			<where>isMarketingViaPostAllowed IS NULL</where>
 		</update>
-		<modifyDataType tableName="Contact" columnName="isMarketingViaPostAllowed" newDataType="tinyint(1) NOT NULL" />
+		<modifyDataType tableName="Contact" columnName="isMarketingViaPostAllowed" newDataType="tinyint(1) NOT NULL"/>
 	</changeSet>
-	
+
 	<changeSet id="101" author="viacheslav" context="production" runOnChange="true">
 		<update tableName="Contact">
-			<column name="isMarketingViaSMSAllowed" value="1" />
+			<column name="isMarketingViaSMSAllowed" value="1"/>
 			<where>isMarketingViaSMSAllowed IS NULL</where>
 		</update>
-		<modifyDataType tableName="Contact" columnName="isMarketingViaSMSAllowed" newDataType="tinyint(1) NOT NULL" />
+		<modifyDataType tableName="Contact" columnName="isMarketingViaSMSAllowed" newDataType="tinyint(1) NOT NULL"/>
 	</changeSet>
 
 	<changeSet id="102" author="dzmitry" context="production" runOnChange="true">
@@ -1576,29 +1642,33 @@
 		<addColumn tableName="LicenseFee">
 			<column name="webSiteId" type="BIGINT"/>
 		</addColumn>
-		<addForeignKeyConstraint baseTableName="LicenseFee" baseColumnNames="webSiteId" constraintName="fk_LicenseFee_WebSite" referencedTableName="WebSite"
+		<addForeignKeyConstraint baseTableName="LicenseFee" baseColumnNames="webSiteId"
+								 constraintName="fk_LicenseFee_WebSite" referencedTableName="WebSite"
 								 referencedColumnNames="id"/>
 	</changeSet>
 
 	<changeSet id="103" author="dzmitry" context="production" runOnChange="true">
 		<dropUniqueConstraint tableName="LicenseFee" constraintName="college_key_uniq_idx"/>
-		<addUniqueConstraint tableName="LicenseFee" constraintName="college_website_key_uniq_idx" columnNames="college_id,webSiteId,key_code"/>
+		<addUniqueConstraint tableName="LicenseFee" constraintName="college_website_key_uniq_idx"
+							 columnNames="college_id,webSiteId,key_code"/>
 	</changeSet>
 
 	<changeSet id="104" author="dzmitry" context="production" runOnChange="true">
-		<sql>update LicenseFee set webSiteId = (select id from WebSite ws where ws.collegeId = college_id limit 1) where key_code in ('hosting', 'cc-web', 'ecommerce')</sql>
+		<sql>update LicenseFee set webSiteId = (select id from WebSite ws where ws.collegeId = college_id limit 1) where
+			key_code in ('hosting', 'cc-web', 'ecommerce')
+		</sql>
 	</changeSet>
-	
+
 	<changeSet id="105" author="dzmitry" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="Organisation"/>
 			</not>
 		</preConditions>
-		
+
 		<createTable tableName="Organisation">
 			<column name="id" type="BIGINT(20)">
-				<constraints primaryKey="true" nullable="false" />
+				<constraints primaryKey="true" nullable="false"/>
 			</column>
 			<column name="code" type="VARCHAR(32)"/>
 			<column name="created" type="TIMESTAMP"/>
@@ -1652,40 +1722,40 @@
 		<customChange class="ish.oncourse.model.liquibase.ReplaceId2NameForImageTag"/>
 	</changeSet>
 
-    <changeSet id="110" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Product" columnName="feeGST"/>
-            </not>
-        </preConditions>
-        <addColumn tableName="Product">
-            <column name="feeGST" type="DECIMAL(10,2)">
-                <constraints nullable="false" unique="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
+	<changeSet id="110" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Product" columnName="feeGST"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Product">
+			<column name="feeGST" type="DECIMAL(10,2)">
+				<constraints nullable="false" unique="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="111" author="viacheslav" context="production" runOnChange="true">
-        <sql>update Product set SKU=CAST(angelId AS CHAR(100)) where SKU is NULL or SKU='';</sql>
-        <addNotNullConstraint tableName="Product" columnName="SKU" columnDataType="varchar(100)"/>
-        <addUniqueConstraint tableName="Product" columnNames="SKU,collegeId" constraintName="Product_SKU_unique"/>
-    </changeSet>
+	<changeSet id="111" author="viacheslav" context="production" runOnChange="true">
+		<sql>update Product set SKU=CAST(angelId AS CHAR(100)) where SKU is NULL or SKU='';</sql>
+		<addNotNullConstraint tableName="Product" columnName="SKU" columnDataType="varchar(100)"/>
+		<addUniqueConstraint tableName="Product" columnNames="SKU,collegeId" constraintName="Product_SKU_unique"/>
+	</changeSet>
 
-    <changeSet id="112" author="viacheslav" context="production" runOnChange="true">
-        <sql>update ProductItem set status=0 where status is NULL;</sql>
-        <addNotNullConstraint tableName="ProductItem" columnName="status" columnDataType="INTEGER"/>
-    </changeSet>
+	<changeSet id="112" author="viacheslav" context="production" runOnChange="true">
+		<sql>update ProductItem set status=0 where status is NULL;</sql>
+		<addNotNullConstraint tableName="ProductItem" columnName="status" columnDataType="INTEGER"/>
+	</changeSet>
 
-    <changeSet id="113" author="artyom" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Contact" columnName="lastLoginTime"/>
-            </not>
-        </preConditions>
-        <addColumn tableName="Contact">
-            <column name="lastLoginTime" type="TIMESTAMP"/>
-        </addColumn>
-    </changeSet>
+	<changeSet id="113" author="artyom" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Contact" columnName="lastLoginTime"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Contact">
+			<column name="lastLoginTime" type="TIMESTAMP"/>
+		</addColumn>
+	</changeSet>
 
 	<changeSet id="114" author="dzmitry" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
@@ -1696,342 +1766,346 @@
 		<addColumn tableName="BinaryInfo">
 			<column name="fileUUID" type="VARCHAR(160)"/>
 		</addColumn>
-		<addUniqueConstraint tableName="BinaryInfo" columnNames="fileUUID,collegeId" constraintName="BinaryInfo_FileUUID_unique"/>
+		<addUniqueConstraint tableName="BinaryInfo" columnNames="fileUUID,collegeId"
+							 constraintName="BinaryInfo_FileUUID_unique"/>
 	</changeSet>
 
-    <changeSet id="115" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="VoucherPaymentIn" columnName="invoiceLineId"/>
-            </not>
-        </preConditions>
-        <addColumn tableName="VoucherPaymentIn">
-            <column name="invoiceLineId" type="BIGINT"/>
-        </addColumn>
-        <addForeignKeyConstraint baseTableName="VoucherPaymentIn" baseColumnNames="invoiceLineId"
-            constraintName="fk_VoucherPaymentIn_InvoiceLine" referencedTableName="InvoiceLine" referencedColumnNames="id"/>
+	<changeSet id="115" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="VoucherPaymentIn" columnName="invoiceLineId"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="VoucherPaymentIn">
+			<column name="invoiceLineId" type="BIGINT"/>
+		</addColumn>
+		<addForeignKeyConstraint baseTableName="VoucherPaymentIn" baseColumnNames="invoiceLineId"
+								 constraintName="fk_VoucherPaymentIn_InvoiceLine" referencedTableName="InvoiceLine"
+								 referencedColumnNames="id"/>
 
-    </changeSet>
+	</changeSet>
 
-    <changeSet id="116" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <sqlCheck expectedResult="0">select count(*) from Outcome where status is NULL</sqlCheck>
-            </not>
-        </preConditions>
-        <sql>update Outcome set status=0 where status is NULL;</sql>
-    </changeSet>
+	<changeSet id="116" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<sqlCheck expectedResult="0">select count(*) from Outcome where status is NULL</sqlCheck>
+			</not>
+		</preConditions>
+		<sql>update Outcome set status=0 where status is NULL;</sql>
+	</changeSet>
 
-    <changeSet id="117" author="viacheslav" context="production" runOnChange="true">
-        <addUniqueConstraint tableName="ProductItem" columnNames="collegeId,code" constraintName="unique_code_constraint"/>
-    </changeSet>
+	<changeSet id="117" author="viacheslav" context="production" runOnChange="true">
+		<addUniqueConstraint tableName="ProductItem" columnNames="collegeId,code"
+							 constraintName="unique_code_constraint"/>
+	</changeSet>
 
-    <changeSet id="118_attendanceType" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="CourseClass" columnName="attendanceType"/>
-            </not>
-        </preConditions>
+	<changeSet id="118_attendanceType" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CourseClass" columnName="attendanceType"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="CourseClass">
-            <column name="attendanceType" type="INTEGER" defaultValueNumeric="0"/>
-        </addColumn>
+		<addColumn tableName="CourseClass">
+			<column name="attendanceType" type="INTEGER" defaultValueNumeric="0"/>
+		</addColumn>
 
-        <sql>
-            update CourseClass set attendanceType = 0 where attendanceType is null;
-        </sql>
-    </changeSet>
+		<sql>
+			update CourseClass set attendanceType = 0 where attendanceType is null;
+		</sql>
+	</changeSet>
 
-    <changeSet id="118_feeHelpClass" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="CourseClass" columnName="feeHelpClass"/>
-            </not>
-        </preConditions>
+	<changeSet id="118_feeHelpClass" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CourseClass" columnName="feeHelpClass"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="CourseClass">
-            <column name="feeHelpClass" type="TINYINT(1)" defaultValueNumeric="0"/>
-        </addColumn>
+		<addColumn tableName="CourseClass">
+			<column name="feeHelpClass" type="TINYINT(1)" defaultValueNumeric="0"/>
+		</addColumn>
 
-        <sql>
-            update CourseClass set feeHelpClass = 0 where feeHelpClass is null;
-        </sql>
-    </changeSet>
+		<sql>
+			update CourseClass set feeHelpClass = 0 where feeHelpClass is null;
+		</sql>
+	</changeSet>
 
-    <changeSet id="118_reportingPeriod" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="CourseClass" columnName="reportingPeriod"/>
-            </not>
-        </preConditions>
+	<changeSet id="118_reportingPeriod" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CourseClass" columnName="reportingPeriod"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="CourseClass">
-            <column name="reportingPeriod" type="INTEGER"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="CourseClass">
+			<column name="reportingPeriod" type="INTEGER"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="118_censusDate" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="CourseClass" columnName="censusDate"/>
-            </not>
-        </preConditions>
+	<changeSet id="118_censusDate" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CourseClass" columnName="censusDate"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="CourseClass">
-            <column name="censusDate" type="DATETIME"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="CourseClass">
+			<column name="censusDate" type="DATETIME"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="119_chessn" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Student" columnName="chessn"/>
-            </not>
-        </preConditions>
+	<changeSet id="119_chessn" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Student" columnName="chessn"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Student">
-            <column name="chessn" type="VARCHAR(10)"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="Student">
+			<column name="chessn" type="VARCHAR(10)"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="119_feeHelpEligible" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Student" columnName="feeHelpEligible"/>
-            </not>
-        </preConditions>
+	<changeSet id="119_feeHelpEligible" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Student" columnName="feeHelpEligible"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Student">
-            <column name="feeHelpEligible" type="TINYINT(1)" defaultValueNumeric="0"/>
-        </addColumn>
+		<addColumn tableName="Student">
+			<column name="feeHelpEligible" type="TINYINT(1)" defaultValueNumeric="0"/>
+		</addColumn>
 
-        <sql>
-            update Student set feeHelpEligible = 0 where feeHelpEligible is null;
-        </sql>
-    </changeSet>
+		<sql>
+			update Student set feeHelpEligible = 0 where feeHelpEligible is null;
+		</sql>
+	</changeSet>
 
-    <changeSet id="119_specialNeedsAssistance" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Student" columnName="specialNeedsAssistance"/>
-            </not>
-        </preConditions>
+	<changeSet id="119_specialNeedsAssistance" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Student" columnName="specialNeedsAssistance"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Student">
-            <column name="specialNeedsAssistance" type="INTEGER"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="Student">
+			<column name="specialNeedsAssistance" type="INTEGER"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="119_citizenship" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Student" columnName="citizenship"/>
-            </not>
-        </preConditions>
+	<changeSet id="119_citizenship" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Student" columnName="citizenship"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Student">
-            <column name="citizenship" type="INTEGER" defaultValueNumeric="9"/>
-        </addColumn>
+		<addColumn tableName="Student">
+			<column name="citizenship" type="INTEGER" defaultValueNumeric="9"/>
+		</addColumn>
 
-        <sql>
-            update Student set citizenship = 9 where citizenship is null;
-        </sql>
-    </changeSet>
+		<sql>
+			update Student set citizenship = 9 where citizenship is null;
+		</sql>
+	</changeSet>
 
-    <changeSet id="120_creditFOEId" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Enrolment" columnName="creditFOEId"/>
-            </not>
-        </preConditions>
+	<changeSet id="120_creditFOEId" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="creditFOEId"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Enrolment">
-            <column name="creditFOEId" type="VARCHAR(4)"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="Enrolment">
+			<column name="creditFOEId" type="VARCHAR(4)"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="120_creditLevel" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Enrolment" columnName="creditLevel"/>
-            </not>
-        </preConditions>
+	<changeSet id="120_creditLevel" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="creditLevel"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Enrolment">
-            <column name="creditLevel" type="INTEGER"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="Enrolment">
+			<column name="creditLevel" type="INTEGER"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="120_creditOfferedValue" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Enrolment" columnName="creditOfferedValue"/>
-            </not>
-        </preConditions>
+	<changeSet id="120_creditOfferedValue" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="creditOfferedValue"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Enrolment">
-            <column name="creditOfferedValue" type="VARCHAR(4)"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="Enrolment">
+			<column name="creditOfferedValue" type="VARCHAR(4)"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="120_creditProvider" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Enrolment" columnName="creditProvider"/>
-            </not>
-        </preConditions>
+	<changeSet id="120_creditProvider" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="creditProvider"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Enrolment">
-            <column name="creditProvider" type="VARCHAR(4)"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="Enrolment">
+			<column name="creditProvider" type="VARCHAR(4)"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="120_creditUsedValue" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Enrolment" columnName="creditUsedValue"/>
-            </not>
-        </preConditions>
+	<changeSet id="120_creditUsedValue" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="creditUsedValue"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Enrolment">
-            <column name="creditUsedValue" type="VARCHAR(4)"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="Enrolment">
+			<column name="creditUsedValue" type="VARCHAR(4)"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="120_creditType" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Enrolment" columnName="creditType"/>
-            </not>
-        </preConditions>
+	<changeSet id="120_creditType" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="creditType"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Enrolment">
-            <column name="creditType" type="INTEGER"/>
-        </addColumn>
+		<addColumn tableName="Enrolment">
+			<column name="creditType" type="INTEGER"/>
+		</addColumn>
 
-    </changeSet>
+	</changeSet>
 
-    <changeSet id="120_creditProviderType" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Enrolment" columnName="creditProviderType"/>
-            </not>
-        </preConditions>
+	<changeSet id="120_creditProviderType" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="creditProviderType"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Enrolment">
-            <column name="creditProviderType" type="INTEGER"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="Enrolment">
+			<column name="creditProviderType" type="INTEGER"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="120_feeStatus" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Enrolment" columnName="feeStatus"/>
-            </not>
-        </preConditions>
+	<changeSet id="120_feeStatus" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="feeStatus"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Enrolment">
-            <column name="feeStatus" type="INTEGER"/>
-        </addColumn>
+		<addColumn tableName="Enrolment">
+			<column name="feeStatus" type="INTEGER"/>
+		</addColumn>
 
-    </changeSet>
+	</changeSet>
 
-    <changeSet id="120_creditTotal" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Enrolment" columnName="creditTotal"/>
-            </not>
-        </preConditions>
+	<changeSet id="120_creditTotal" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="creditTotal"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Enrolment">
-            <column name="creditTotal" type="INTEGER"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="Enrolment">
+			<column name="creditTotal" type="INTEGER"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="121" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="Enrolment" columnName="feeHelpStatus"/>
-            </not>
-        </preConditions>
+	<changeSet id="121" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="feeHelpStatus"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="Enrolment">
-            <column name="feeHelpStatus" type="INTEGER"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="Enrolment">
+			<column name="feeHelpStatus" type="INTEGER"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="122" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <columnExists tableName="CourseClass" columnName="attendanceType"/>
-        </preConditions>
+	<changeSet id="122" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="CourseClass" columnName="attendanceType"/>
+		</preConditions>
 
-        <sql>
-            update CourseClass set attendanceType = 9 where attendanceType = 0;
-        </sql>
+		<sql>
+			update CourseClass set attendanceType = 9 where attendanceType = 0;
+		</sql>
 
-        <dropDefaultValue tableName="CourseClass" columnName="attendanceType" columnDataType="INTEGER"/>
+		<dropDefaultValue tableName="CourseClass" columnName="attendanceType" columnDataType="INTEGER"/>
 
-        <addDefaultValue tableName="CourseClass" columnName="attendanceType" columnDataType="INTEGER" defaultValueNumeric="9"/>
-    </changeSet>
+		<addDefaultValue tableName="CourseClass" columnName="attendanceType" columnDataType="INTEGER"
+						 defaultValueNumeric="9"/>
+	</changeSet>
 
-    <changeSet id="124" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <columnExists tableName="Student" columnName="specialNeedsAssistance"/>
-        </preConditions>
+	<changeSet id="124" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Student" columnName="specialNeedsAssistance"/>
+		</preConditions>
 
-        <dropColumn tableName="Student" columnName="specialNeedsAssistance"/>
-        <addColumn tableName="Student">
-            <column name="specialNeedsAssistance" type="VARCHAR(8)"/>
-        </addColumn>
-    </changeSet>
+		<dropColumn tableName="Student" columnName="specialNeedsAssistance"/>
+		<addColumn tableName="Student">
+			<column name="specialNeedsAssistance" type="VARCHAR(8)"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="125" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="CourseClass" columnName="fullTimeLoad"/>
-            </not>
-        </preConditions>
+	<changeSet id="125" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CourseClass" columnName="fullTimeLoad"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="CourseClass">
-            <column name="fullTimeLoad" type="VARCHAR(10)"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="CourseClass">
+			<column name="fullTimeLoad" type="VARCHAR(10)"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="126" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <columnExists tableName="Student" columnName="disabilitySupportRequested"/>
-        </preConditions>
+	<changeSet id="126" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Student" columnName="disabilitySupportRequested"/>
+		</preConditions>
 
-        <dropColumn tableName="Student" columnName="disabilitySupportRequested"/>
-    </changeSet>
+		<dropColumn tableName="Student" columnName="disabilitySupportRequested"/>
+	</changeSet>
 
-    <changeSet id="127" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="WebSite" columnName="coursesRootTagName"/>
-            </not>
-        </preConditions>
+	<changeSet id="127" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebSite" columnName="coursesRootTagName"/>
+			</not>
+		</preConditions>
 
-        <addColumn tableName="WebSite">
-            <column name="coursesRootTagName" type="VARCHAR(256)"/>
-        </addColumn>
-    </changeSet>
+		<addColumn tableName="WebSite">
+			<column name="coursesRootTagName" type="VARCHAR(256)"/>
+		</addColumn>
+	</changeSet>
 
-    <changeSet id="128" author="viacheslav" context="production" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <indexExists tableName="WebSite" columnNames="coursesRootTagName" indexName="WebSite_coursesRootTagName"/>
-        </preConditions>
-        <dropIndex tableName="WebSite" indexName="WebSite_coursesRootTagName"/>
-    </changeSet>
-	
+	<changeSet id="128" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<indexExists tableName="WebSite" columnNames="coursesRootTagName" indexName="WebSite_coursesRootTagName"/>
+		</preConditions>
+		<dropIndex tableName="WebSite" indexName="WebSite_coursesRootTagName"/>
+	</changeSet>
+
 	<changeSet id="129" author="dzmitry" context="production" runOnChange="true">
 		<dropNotNullConstraint tableName="BinaryInfo" columnName="filePath" columnDataType="VARCHAR(512)"/>
 	</changeSet>
 
-    <changeSet id="130" author="aryom" context="production" runOnChange="false">
-        <modifyDataType tableName="Course" columnName="code" newDataType="VARCHAR(50)"/>
-    </changeSet>
-	
+	<changeSet id="130" author="aryom" context="production" runOnChange="false">
+		<modifyDataType tableName="Course" columnName="code" newDataType="VARCHAR(50)"/>
+	</changeSet>
+
 	<changeSet id="131" author="dzmitry" context="production" runOnChange="false">
 		<preConditions onFail="MARK_RAN">
 			<not>
@@ -2043,4 +2117,7 @@
 		</addColumn>
 	</changeSet>
 
+	<changeSet id="132" author="andrey" context="production" runOnChange="false">
+		<sql>ALTER TABLE PaymentIn MODIFY statusNotes VARCHAR(8192);</sql>
+	</changeSet>
 </databaseChangeLog>

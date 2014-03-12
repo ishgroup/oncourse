@@ -578,7 +578,7 @@
 		<db-attribute name="sessionId" type="VARCHAR" length="100"/>
 		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="25"/>
-		<db-attribute name="statusNotes" type="VARCHAR" length="100"/>
+		<db-attribute name="statusNotes" type="VARCHAR" length="1000"/>
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 		<db-attribute name="type" type="SMALLINT"/>
 	</db-entity>

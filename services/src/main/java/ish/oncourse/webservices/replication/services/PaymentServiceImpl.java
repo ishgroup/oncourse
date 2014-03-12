@@ -34,7 +34,7 @@ import java.util.Set;
 
 public class PaymentServiceImpl implements InternalPaymentService {
 
-	public static final String MESSAGE_activeEnrolmentExists = "Student %s already has a enrollment in transaction for class %s and he/she cannot be enrolled twice.";
+	public static final String MESSAGE_activeEnrolmentExists = "Student %s already has an enrollment in transaction for class %s and he/she cannot be enrolled twice.";
 
 	private static final Logger logger = Logger.getLogger(PaymentServiceImpl.class);
 
