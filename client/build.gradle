@@ -35,7 +35,6 @@ cayenne {
 
 macAppBundle {
 	appOutputDir = 'distributions/macosx'
-	//dmgOutputDir = 'distributions/macosx'
 	creatorCode = "ishS"
 	backgroundImage = "${projectDir}/src/packaging/macosx/dmg.background.png"
     mainClassName = "ish.oncourse.AngelApp"
