@@ -9,3 +9,6 @@ dependencies {
 	compile 'commons-lang:commons-lang:2.6'
 	compile 'joda-time:joda-time:1.6.2'
 }
+
+// group from when this module was part of the angel project
+group = 'ish.oncourse.angel'
