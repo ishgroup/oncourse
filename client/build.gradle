@@ -6,7 +6,6 @@ dependencies {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
-	compile 'commons-lang:commons-lang:2.6' // TODO: upgrade this to 3.1
 	compile 'org.apache.cayenne:cayenne-client:3.2M1.2'
 	compile 'foxtrot:foxtrot-core:4.0'
 	compile 'com.miglayout:miglayout-swing:4.2'
