@@ -1,5 +1,5 @@
 dependencies {
-	compile project(':waCommon')
+	compile 'ish.oncourse.angel:waCommon:5.0rc2'
 
 	compile 'javax.jmdns:jmdns:3.4.1'
 	compile 'javax.mail:mail:1.4.6'

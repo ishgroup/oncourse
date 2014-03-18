@@ -65,22 +65,6 @@ allprojects {
 	dependencies {
 		testCompile 'junit:junit:4.11'
 		compile 'log4j:log4j:1.2.17'
-		deployerJars 'org.apache.maven.wagon:wagon-http:2.6'
-	}
-
-	uploadArchives.dependsOn install
-	group = 'ish.oncourse.angel'
-	uploadArchives {
-		repositories.mavenDeployer {
-			name = 'ishRepo'
-			configuration = configurations.deployerJars
-			repository(id:'internal-releases', url: 'http://repo.ish.com.au/content/repositories/ish-releases') {
-				authentication(userName: nexusUsername, password: nexusPassword)
-			}
-			snapshotRepository(id:'internal-snapshots', url: 'http://repo.ish.com.au/content/repositories/ish-snapshots') {
-				authentication(userName: nexusUsername, password: nexusPassword)
-			}
-		}
 	}
 
 	ext.sharedManifest = manifest {

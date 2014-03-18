@@ -1,5 +1,5 @@
 dependencies {
-	compile project(':waCommon')
+	compile 'ish.oncourse.angel:waCommon:5.0rc2'
 	
 	// cxf-bundle-mini contains cxf-rt-frontend-jaxws, cxf-rt-transports-http, cxf-tools-common dependencies
 	compile 'org.apache.cxf:cxf-bundle-mini:2.6.1'
