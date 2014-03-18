@@ -72,13 +72,13 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
             StringBuilder resultDetails = new StringBuilder();
 
             if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
-                resultDetails.append("Payment succeed.");
-                payment.setStatusNotes("Payment succeed.");
+                resultDetails.append(SUCCESS_PAYMENT_IN);
+                payment.setStatusNotes(SUCCESS_PAYMENT_IN);
                 payment.succeed();
                 payment.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getDateSettlement()));
             } else {
-                resultDetails.append("Payment failed. Card declined.");
-                payment.setStatusNotes("Payment failed. Card declined");
+                resultDetails.append(FAILED_PAYMENT_IN);
+                payment.setStatusNotes(FAILED_PAYMENT_IN);
                 payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
                 payment.failPayment();
             }
@@ -111,15 +111,15 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
             StringBuilder resultDetails = new StringBuilder();
             if (tr != null) {
                 if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
-                    resultDetails.append("PaymentOut succeed.");
-                    paymentOut.setStatusNotes("PaymentOut succeed.");
+                    resultDetails.append(SUCCESS_PAYMENT_OUT);
+                    paymentOut.setStatusNotes(SUCCESS_PAYMENT_OUT);
                     paymentOut.succeed();
                     paymentOut.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getDateSettlement()));
                     paymentOut.setDatePaid(new Date());
                 } else {
                     // TODO set statusNotes="cardDeclined" to payment here
-                    resultDetails.append("PaymentOut failed. Declined by paymentExpress.");
-                    paymentOut.setStatusNotes("PaymentOut failed. Declined by paymentExpress.");
+                    resultDetails.append(FAILED_PAYMENT_OUT);
+                    paymentOut.setStatusNotes(FAILED_PAYMENT_OUT);
                     paymentOut.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
                     paymentOut.failed();
                 }
@@ -134,8 +134,8 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
                         .append(", statusRequired:").append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
                         .append(", transactionRef:").append(tr.getDpsTxnRef());
             } else {
-                resultDetails.append("PaymentOut failed with null transaction response.");
-                paymentOut.setStatusNotes("PaymentOut failed with null transaction response.");
+                resultDetails.append(FAILED_PAYMENT_OUT_NULL_RESPONSE);
+                paymentOut.setStatusNotes(FAILED_PAYMENT_OUT_NULL_RESPONSE);
                 paymentOut.failed();
             }
 

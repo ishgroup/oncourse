@@ -148,15 +148,14 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
                 paymentTransaction.setResponse(result.getStatusNotes());
 
                 payment.setGatewayResponse(result.getStatusNotes());
-                payment.setStatusNotes(result.getStatusNotes());
+                payment.setStatusNotes(SUCCESS_PAYMENT_IN);
                 payment.setGatewayReference(paymentTransaction.getTxnReference());
 
                 payment.succeed();
 
             } else {
-                paymentTransaction.setResponse(result.statusNotes);
-
-                payment.setStatusNotes(result.statusNotes);
+                paymentTransaction.setResponse(result.getStatusNotes());
+                payment.setStatusNotes(FAILED_PAYMENT_IN);
                 payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
 
                 payment.failPayment();
