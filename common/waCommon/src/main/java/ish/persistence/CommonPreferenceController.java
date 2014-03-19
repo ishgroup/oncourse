@@ -1615,6 +1615,41 @@ public abstract class CommonPreferenceController {
 		setFilePreference(AVETMISS_EXPORT_PATH, value.getAbsolutePath());
 	}
 
+	// **************************************
+	// External storage preferences
+	// **************************************
+	public static final String STORAGE_BUCKET_NAME = "storage.bucket";
+	public static final String STORAGE_ACCESS_ID = "storage.access.id";
+	public static final String STORAGE_ACCESS_KEY = "storage.access.key";
+
+	public synchronized void setStorageBucketName(String value) {
+		setValue(STORAGE_BUCKET_NAME, false, value);
+	}
+
+	public synchronized String getStorageBucketName() {
+		return getValue(STORAGE_BUCKET_NAME, false);
+	}
+
+	public synchronized void setStorageAccessId(String value) {
+		setValue(STORAGE_ACCESS_ID, false, value);
+	}
+
+	public synchronized String getStorageAccessId() {
+		return getValue(STORAGE_ACCESS_ID, false);
+	}
+
+	public synchronized void setStorageAccessKey(String value) {
+		setValue(STORAGE_ACCESS_KEY, false, value);
+	}
+
+	public synchronized String getStorageAccessKey() {
+		return getValue(STORAGE_ACCESS_KEY, false);
+	}
+
+	public synchronized boolean isUsingExternalStorage() {
+		return StringUtils.trimToNull(getStorageAccessId()) != null;
+	}
+
 	/*
 	 * Other preferences
 	 */
