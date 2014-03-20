@@ -7,6 +7,7 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -59,11 +60,14 @@ public class ClassResources {
 
         String sd = cookieService.getCookieValue("lastLoginTime");
         SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
-        try {
-        	lastLoginDate= format.parse(sd);
-        } catch (Exception ex){
-           throw new IllegalArgumentException(ex);
-        }
+		
+		if ( StringUtils.trimToNull(sd) != null) {
+			try {
+				lastLoginDate = format.parse(sd);
+			} catch (Exception ex) {
+				throw new IllegalArgumentException(ex);
+			}
+		}
 
         materials = portalService.getAttachedFiles(courseClass, authenticationService.getUser());
         return true;
@@ -73,9 +77,13 @@ public class ClassResources {
         return request.getContextPath();
     }
 
-    public boolean isNew(Date material){
-       return  material.after(lastLoginDate);
-    }
+    public boolean isNew(Date material) {
+		if (lastLoginDate == null) {
+			return true;
+		} else {
+			return material.after(lastLoginDate);
+		}
+	}
 
 	public String getMaterialUrl() {
 		return binaryDataService.getUrl(material);

@@ -76,14 +76,13 @@ public class Resources {
 
 		String sd = cookieService.getCookieValue("lastLoginTime");
 		SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
-		try{
-			lastLoginDate= format.parse(sd);
-		}catch (Exception ex){
-
-			new IllegalArgumentException(ex);
-
+		if ( StringUtils.trimToNull(sd) != null) {
+			try {
+				lastLoginDate = format.parse(sd);
+			} catch (Exception ex) {
+				new IllegalArgumentException(ex);
+			}
 		}
-
 
 		if(authenticationService.isTutor()){
 			tutorsMaterials = portalService.getCommonTutorsBinaryInfo();
@@ -120,7 +119,11 @@ public class Resources {
 	}
 
 	public boolean isNew(Date material){
-		return  material.after(lastLoginDate);
+		if (lastLoginDate == null) {
+			return true;
+		} else {
+			return material.after(lastLoginDate);
+		}
 	}
 
 	public String getTutorsMaterialUrl() {
