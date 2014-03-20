@@ -17,7 +17,6 @@ buildscript {
 allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
-	apply plugin: 'war'
 	apply plugin: 'versions' // adds the task 'dependencyUpdates'
 	apply plugin: 'release'
 	apply plugin: 'jacoco'
@@ -62,7 +61,6 @@ allprojects {
 		testCompile 'org.mockito:mockito-core:1.9.5'
 
 		compile 'log4j:log4j:1.2.17'
-		providedCompile 'javax.servlet:servlet-api:2.5'
 
 		deployerJars 'org.apache.maven.wagon:wagon-http:2.3'
 	}
@@ -93,13 +91,6 @@ allprojects {
 	}
 
 	jar {
-		manifest {
-			from sharedManifest
-		}
-	}
-
-	war {
-		archiveName = baseName+'.war'
 		manifest {
 			from sharedManifest
 		}

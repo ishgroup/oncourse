@@ -1,4 +1,8 @@
+apply plugin: 'war'
+
 dependencies {
+	providedCompile 'javax.servlet:servlet-api:2.5'
+
 	compile project(':common:common-services')
 	compile project(':common:common-model')
 	compile project(':common:common-ui')
@@ -15,4 +19,11 @@ dependencies {
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
+}
+
+war {
+	archiveName = 'cms.war'
+	manifest {
+		from sharedManifest
+	}
 }

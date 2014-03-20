@@ -1,6 +1,10 @@
+apply plugin: 'war'
+
 dependencies {
-    compile project(':common:common-services')
-    //compile 'commons-lang:commons-lang:2.6'
+	providedCompile 'javax.servlet:servlet-api:2.5'
+	
+	compile project(':common:common-services')
+	//compile 'commons-lang:commons-lang:2.6'
 
 	compile 'org.apache.solr:solr:4.3.1@war'
 	compile 'org.apache.solr:solr-dataimporthandler:4.3.1'
@@ -15,10 +19,14 @@ dependencies {
 	//testCompile project(':common:common-services')
 }
 
-war
-{
-    into('/') {
-        from zipTree(project.configurations.compile.find { it.name.startsWith("solr-") })
-        exclude 'WEB-INF/*'
-    }
+war {
+	archiveName = 'search.war'
+	manifest {
+		from sharedManifest
+	}
+
+	into('/') {
+		from zipTree(project.configurations.compile.find { it.name.startsWith("solr-") })
+		exclude 'WEB-INF/*'
+	}
 }

@@ -1,4 +1,8 @@
+apply plugin: 'war'
+
 dependencies {
+	providedCompile 'javax.servlet:servlet-api:2.5'
+
 	compile 'org.apache.tapestry:tapestry-core:5.3.7'
 	compile 'org.apache.tapestry:plastic:5.3.7'
 	compile 'org.apache.tapestry:tapestry5-annotations:5.3.7'
@@ -15,4 +19,11 @@ dependencies {
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
+}
+
+war {
+	archiveName = 'portal.war'
+	manifest {
+		from sharedManifest
+	}
 }

@@ -1,4 +1,8 @@
+apply plugin: 'war'
+
 dependencies {
+	providedCompile 'javax.servlet:servlet-api:2.5'
+
 	compile project(':common:common-model')
 	compile (project(':common:common-services'))  {
 		exclude group: 'axis', module: 'axis'
@@ -23,7 +27,7 @@ dependencies {
 archivesBaseName = "willowAdmin"
 
 war {
-	archiveName = archivesBaseName+'.war'
+	archiveName = 'willowAdmin.war'
 	manifest {
 		from sharedManifest
 	}
