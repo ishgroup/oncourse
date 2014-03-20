@@ -2046,4 +2046,41 @@
 	<changeSet id="132" author="andrey" context="production" runOnChange="false">
 		<sql>ALTER TABLE PaymentIn MODIFY statusNotes VARCHAR(8192);</sql>
 	</changeSet>
+
+	<changeSet id="133" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="SupportPassword"/>
+			</not>
+		</preConditions>
+		<createTable tableName="SupportPassword">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="contactId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="expiresOn" type="TIMESTAMP">
+				<constraints nullable="false"/>
+			</column>
+			<column name="createdOn" type="TIMESTAMP"/>
+			<column name="modifiedOn" type="TIMESTAMP"/>
+			<column name="password" type="VARCHAR(32)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addAutoIncrement tableName="SupportPassword" columnName="id" columnDataType="BIGINT"/>
+		
+		<addForeignKeyConstraint constraintName="fk_SupportPassword_Contact" referencedTableName="Contact" baseColumnNames="contactId"
+								 baseTableName="SupportPassword" referencedColumnNames="id"/>
+		
+		<addUniqueConstraint tableName="SupportPassword" columnNames="contactId" constraintName="contactForSupportPassword_unique"/>
+
+		<createIndex tableName="SupportPassword" indexName="supportPassword_password_uniq_idx" >
+			<column name="password"/>
+		</createIndex>
+
+	</changeSet>
+
 </databaseChangeLog>

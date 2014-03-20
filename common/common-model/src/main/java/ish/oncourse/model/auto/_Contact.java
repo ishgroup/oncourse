@@ -7,6 +7,7 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.ContactRelation;
+import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.DiscussionCommentContact;
 import ish.oncourse.model.Invoice;
@@ -15,6 +16,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.Student;
+import ish.oncourse.model.SupportPassword;
 import ish.oncourse.model.Tutor;
 
 /**
@@ -55,6 +57,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_COMMENTS_PROPERTY = "contactComments";
+    public static final String CORPORATE_PASSES_PROPERTY = "corporatePasses";
     public static final String COUNTRY_PROPERTY = "country";
     public static final String FROM_CONTACTS_PROPERTY = "fromContacts";
     public static final String INVOICES_PROPERTY = "invoices";
@@ -63,6 +66,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String PAYMENTS_OUT_PROPERTY = "paymentsOut";
     public static final String PRODUCTS_PROPERTY = "products";
     public static final String STUDENT_PROPERTY = "student";
+    public static final String SUPPORT_PASSWORD_PROPERTY = "supportPassword";
     public static final String TO_CONTACTS_PROPERTY = "toContacts";
     public static final String TUTOR_PROPERTY = "tutor";
 
@@ -285,6 +289,15 @@ public abstract class _Contact extends CayenneDataObject {
     }
 
 
+    public void setCorporatePasses(CorporatePass corporatePasses) {
+        setToOneTarget(CORPORATE_PASSES_PROPERTY, corporatePasses, true);
+    }
+
+    public CorporatePass getCorporatePasses() {
+        return (CorporatePass)readProperty(CORPORATE_PASSES_PROPERTY);
+    }
+
+
     public void setCountry(Country country) {
         setToOneTarget(COUNTRY_PROPERTY, country, true);
     }
@@ -372,6 +385,15 @@ public abstract class _Contact extends CayenneDataObject {
 
     public Student getStudent() {
         return (Student)readProperty(STUDENT_PROPERTY);
+    }
+
+
+    public void setSupportPassword(SupportPassword supportPassword) {
+        setToOneTarget(SUPPORT_PASSWORD_PROPERTY, supportPassword, true);
+    }
+
+    public SupportPassword getSupportPassword() {
+        return (SupportPassword)readProperty(SUPPORT_PASSWORD_PROPERTY);
     }
 
 

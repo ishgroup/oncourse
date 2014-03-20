@@ -834,6 +834,14 @@
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="32"/>
 	</db-entity>
+	<db-entity name="SupportPassword" catalog="willow_college">
+		<db-attribute name="contactId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="expiresOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="32"/>
+	</db-entity>
 	<db-entity name="Survey">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -1804,6 +1812,12 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 	</obj-entity>
+	<obj-entity name="SupportPassword" className="ish.oncourse.model.SupportPassword" dbEntityName="SupportPassword">
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="expiresOn" type="java.util.Date" db-attribute-path="expiresOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
+	</obj-entity>
 	<obj-entity name="Survey" className="ish.oncourse.model.Survey" dbEntityName="Survey">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="comment" type="java.lang.String" db-attribute-path="comment"/>
@@ -2257,7 +2271,7 @@
 	<db-relationship name="contactComments" source="Contact" target="DiscussionCommentContact" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
-	<db-relationship name="corporatePasses" source="Contact" target="CorporatePass" toMany="true">
+	<db-relationship name="corporatePasses" source="Contact" target="CorporatePass" toMany="false">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="country" source="Contact" target="Country" toMany="false">
@@ -2283,6 +2297,9 @@
 	</db-relationship>
 	<db-relationship name="student" source="Contact" target="Student" toMany="false">
 		<db-attribute-pair source="studentId" target="id"/>
+	</db-relationship>
+	<db-relationship name="supportPassword" source="Contact" target="SupportPassword" toMany="false">
+		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="toContacts" source="Contact" target="ContactRelation" toMany="true">
 		<db-attribute-pair source="id" target="fromContactId"/>
@@ -2827,6 +2844,9 @@
 	<db-relationship name="student" source="StudentConcession" target="Student" toMany="false">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
+	<db-relationship name="contact" source="SupportPassword" target="Contact" toMany="false">
+		<db-attribute-pair source="contactId" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="Survey" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -3123,6 +3143,7 @@
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="college" source="Contact" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contactComments" source="Contact" target="DiscussionCommentContact" deleteRule="Deny" db-relationship-path="contactComments"/>
+	<obj-relationship name="corporatePasses" source="Contact" target="CorporatePass" deleteRule="Deny" db-relationship-path="corporatePasses"/>
 	<obj-relationship name="country" source="Contact" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
 	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
@@ -3131,6 +3152,7 @@
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="products" source="Contact" target="ProductItem" deleteRule="Deny" db-relationship-path="products"/>
 	<obj-relationship name="student" source="Contact" target="Student" deleteRule="Deny" db-relationship-path="student"/>
+	<obj-relationship name="supportPassword" source="Contact" target="SupportPassword" deleteRule="Cascade" db-relationship-path="supportPassword"/>
 	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="toContacts"/>
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Deny" db-relationship-path="tutor"/>
 	<obj-relationship name="college" source="ContactRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -3302,6 +3324,7 @@
 	<obj-relationship name="college" source="StudentConcession" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="concessionType" source="StudentConcession" target="ConcessionType" deleteRule="Nullify" db-relationship-path="concessionType"/>
 	<obj-relationship name="student" source="StudentConcession" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
+	<obj-relationship name="contact" source="SupportPassword" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="college" source="Survey" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="Survey" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="college" source="SystemUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>
