@@ -1,0 +1,76 @@
+<html t:type="pagestructure" title="literal:Support Login"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+	<span t:type="editTabs" college="college" selected="literal:supportLogin"/>
+	
+	<h1>${college.name}</h1>
+	
+	<t:if test="${contact}">
+		<a href="${supportURL}" target="_blank">Link to portal support access for ${contact.fullName} (available for two minutes)</a>
+	</t:if>
+	
+	<t:unless test="${contact}">
+
+
+
+		
+		<t:form t:id="loginForm">
+			<t:errors/>
+
+			<label class="checkbox">
+				<t:checkbox t:id="isCompany" value="isCompany"/> is company
+			</label> 
+			
+			<table class="table table-striped table-condensed">
+
+					<tr class="company-login" style="display: ${companyShow};">
+						<td>Company name</td>
+						<td><t:textfield t:id="companyName" value="companyName" validate="required"/></td>
+					</tr>
+
+					<tr class="user-login" style="display: ${userShow};"> 
+						<td>First name</td>
+						<td><t:textfield t:id="firstName" value="firstName" validate="required" /></td>
+					</tr>
+
+					<tr class="user-login" style="display: ${userShow};">
+					<td>Last namer</td>
+						<td><t:textfield t:id="lastName" value="lastName" validate="required" />
+						</td>
+					</tr>
+
+				
+				<tr>
+					<td>Email</td>
+					<td><t:textfield t:id="email" value="email" validate="required"/>
+					</td>
+				</tr>
+			</table>
+			<div class="form-actions">
+				<t:submit t:id="save" class="btn btn-primary" value="Get password"/>
+			</div>
+		</t:form>
+		
+	</t:unless>
+
+	<script type="text/javascript">
+		var $j = jQuery.noConflict();
+		
+		$j(document).ready(function() {
+			$j("#isCompany").click(function() {
+				
+				if(this.checked==true)
+				{
+					$j(".company-login").removeAttr("style");
+					$j(".user-login").css( "display", "none" );
+				}
+				else
+				{
+					$j(".company-login").css( "display", "none" );
+					$j(".user-login").removeAttr("style");
+				}
+				
+			});
+		});
+	</script>
+</html>

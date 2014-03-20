@@ -52,4 +52,8 @@ public class EditTabs {
 	public String getInstructionsPageName() {
 		return "college/instructions";
 	}
+
+	public String getSupportLoginPageName() {
+		return "college/supportLogin";
+	}
 }

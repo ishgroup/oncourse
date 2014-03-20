@@ -6,6 +6,7 @@
        	<li><t:pagelink id="preferences" page="prop:preferencesPageName" context="college.id"><span>Preferences</span></t:pagelink></li>
        	<li><t:pagelink id="billing" page="prop:billingPageName" context="college.id"><span>Billing</span></t:pagelink></li>
        	<li><t:pagelink id="instructions" page="prop:instructionsPageName" context="college.id"><span>Instructions</span></t:pagelink></li>
+		<li><t:pagelink id="supportLogin" page="prop:supportLoginPageName" context="college.id"><span>SkillsOnCourse support login</span></t:pagelink></li>
     </ul>
 
 </t:container>
