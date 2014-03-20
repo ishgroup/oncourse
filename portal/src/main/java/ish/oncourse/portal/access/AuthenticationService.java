@@ -1,6 +1,7 @@
 package ish.oncourse.portal.access;
 
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.SupportPassword;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 
@@ -8,10 +9,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
 import org.apache.tapestry5.services.Request;
@@ -52,7 +57,34 @@ public class AuthenticationService implements IAuthenticationService {
 		List<Contact> users = cayenneService.sharedContext().performQuery(query);
 		return users;
 	}
-	
+
+	@Override
+	public boolean authenticate(String supportLogin) {
+		
+		if (StringUtils.trimToNull(supportLogin) == null) {
+			return false;
+		}
+
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+
+		SelectQuery query = new SelectQuery(SupportPassword.class);
+		query.andQualifier(ExpressionFactory.matchExp(SupportPassword.PASSWORD_PROPERTY, supportLogin));
+		query.andQualifier(ExpressionFactory.greaterExp(SupportPassword.EXPIRES_ON_PROPERTY, new Date()));
+		query.addOrdering(SupportPassword.CREATED_ON_PROPERTY, SortOrder.DESCENDING);
+		query.setPageSize(1);
+		List<SupportPassword> supportPasswords = context.performQuery(query);
+
+		if	(supportPasswords.isEmpty()) {
+			return false;
+		} else{
+			
+			SupportPassword  value = supportPasswords.get(0);
+			Contact contact = cayenneService.sharedContext().localObject(value.getContact());
+			applicationStateManager.set(Contact.class, contact);
+			return true;
+		}
+	}
+
 	/**
 	 * @see IAuthenticationService#authenticate(String, String, String, String)
 	 */

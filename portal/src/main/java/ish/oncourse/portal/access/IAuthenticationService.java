@@ -21,6 +21,13 @@ public interface IAuthenticationService {
 	 * @return list of users
 	 */
 	List<Contact> authenticate(String firstName, String lastName, String email, String password);
+
+	/**
+	 * Look for user by supportLogin.
+	 * @param supportLogin user's password
+	 * @return true when the supportLogin is correct and actual  
+	 */
+	boolean authenticate(String supportLogin);
 	
 	/**
 	 * Look for user as a company by company name, email and password across all colleges.

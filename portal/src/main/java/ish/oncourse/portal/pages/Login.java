@@ -22,6 +22,7 @@ public class Login {
 	private static final String PARAMETER_firstName = "firstName";
 	private static final String PARAMETER_lastName = "lastName";
 	private static final String PARAMETER_emailAddress = "emailAddress";
+	private static final String PARAMETER_oneTimePassword = "oneTimePassword";
 
 	@Persist
 	@Property
@@ -129,6 +130,15 @@ public class Login {
 	private static final String AS_PERSON =  "as person";
 
 	Object onActivate() {
+		String value = StringUtils.trimToNull(request.getParameter(PARAMETER_oneTimePassword));
+		if (value != null) {
+			if (authenticationService.authenticate(value)) {
+				return index;
+			} else {
+				loginForm.recordError("The attempt for support login was unsuccessful.");
+			}
+		}
+			
 		if (authenticationService.getUser() != null)
 			authenticationService.logout();
 		if (errors == null)
