@@ -1,0 +1,27 @@
+dependencies {
+	compile 'ish.oncourse.angel:waCommon:5.0rc2'
+	
+	// cxf-bundle-mini contains cxf-rt-frontend-jaxws, cxf-rt-transports-http, cxf-tools-common dependencies
+	compile 'org.apache.cxf:cxf-bundle-mini:2.6.1'
+    //compile 'org.apache.cxf:cxf-bundle:2.6.1'
+}
+
+jar {
+	manifest {
+		from sharedManifest
+	}
+}
+
+//the task generates Stubs by wsdl
+task wsdl2Java(type: JavaExec) {
+        wsdlFile =  file("${projectDir}/src/main/resources/wsdl/v6_replication.wsdl")
+        bindingFile = file("${projectDir}/src/main/resources/wsdl/replication6_binding.xml")
+        destDir = file ("${projectDir}/src/main/java")
+        main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
+        classpath = project.configurations.compile
+        args = ['-d',destDir,
+                '-b', bindingFile,
+                '-verbose',
+                wsdlFile]
+}
+

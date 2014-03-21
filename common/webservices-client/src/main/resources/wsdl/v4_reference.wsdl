@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ReferenceService"
+	targetNamespace="http://ref.v4.soap.webservices.oncourse.ish/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="http://ref.v4.soap.webservices.oncourse.ish/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:tns="http://ref.v4.soap.webservices.oncourse.ish/"
+			elementFormDefault="unqualified" targetNamespace="http://ref.v4.soap.webservices.oncourse.ish/"
+			version="1.0">
+			
+			<xs:element name="country" type="tns:countryStub" />			
+			<xs:element name="language" type="tns:languageStub" />
+			<xs:element name="module" type="tns:moduleStub" />
+			<xs:element name="qualification" type="tns:qualificationStub" />
+			<xs:element name="referenceResult" type="tns:referenceResult" />
+			<xs:element name="trainingPackage" type="tns:trainingPackageStub" />
+			
+			<xs:complexType name="referenceResult">
+				<xs:sequence>
+					<xs:choice maxOccurs="unbounded" minOccurs="0">
+						<xs:element ref="tns:country" />
+						<xs:element ref="tns:language" />
+						<xs:element ref="tns:module" />
+						<xs:element ref="tns:trainingPackage" />
+						<xs:element ref="tns:qualification" />
+					</xs:choice>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="countryStub">
+				<xs:complexContent>
+					<xs:extension base="tns:referenceStub">
+						<xs:sequence>
+							<xs:element minOccurs="0" name="asccssCode" type="xs:string" />
+							<xs:element minOccurs="0" name="created" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="ishVersion" type="xs:long" />
+							<xs:element minOccurs="0" name="isoCodeAlpha2" type="xs:string" />
+							<xs:element minOccurs="0" name="isoCodeAlpha3" type="xs:string" />
+							<xs:element minOccurs="0" name="isoCodeNumeric" type="xs:int" />
+							<xs:element minOccurs="0" name="modified" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="name" type="xs:string" />
+							<xs:element minOccurs="0" name="saccCode" type="xs:int" />
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			
+			<xs:complexType abstract="true" name="referenceStub">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="willowId" type="xs:long" />
+				</xs:sequence>
+			</xs:complexType>
+			
+			<xs:complexType name="languageStub">
+				<xs:complexContent>
+					<xs:extension base="tns:referenceStub">
+						<xs:sequence>
+							<xs:element minOccurs="0" name="absCode" type="xs:string" />
+							<xs:element minOccurs="0" name="created" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="isActive" type="xs:boolean" />
+							<xs:element minOccurs="0" name="ishVersion" type="xs:long" />
+							<xs:element minOccurs="0" name="modified" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="name" type="xs:string" />
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="moduleStub">
+				<xs:complexContent>
+					<xs:extension base="tns:referenceStub">
+						<xs:sequence>
+							<xs:element minOccurs="0" name="created" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="disciplineCode" type="xs:string" />
+							<xs:element minOccurs="0" name="fieldOfEducation"
+								type="xs:string" />
+							<xs:element minOccurs="0" name="isModule" type="xs:boolean" />
+							<xs:element minOccurs="0" name="ishVersion" type="xs:long" />
+							<xs:element minOccurs="0" name="modified" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="nationalCode" type="xs:string" />
+							<xs:element minOccurs="0" name="title" type="xs:string" />
+							<xs:element minOccurs="0" name="trainingPackageId"
+								type="xs:long" />
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="qualificationStub">
+				<xs:complexContent>
+					<xs:extension base="tns:referenceStub">
+						<xs:sequence>
+							<xs:element minOccurs="0" name="anzsco" type="xs:string" />
+							<xs:element minOccurs="0" name="anzsic" type="xs:string" />
+							<xs:element minOccurs="0" name="asco" type="xs:string" />
+							<xs:element minOccurs="0" name="created" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="fieldOfEducation"
+								type="xs:string" />
+							<xs:element minOccurs="0" name="fieldOfStudy" type="xs:string" />
+							<xs:element minOccurs="0" name="isAccreditedCourse"
+								type="xs:boolean" />
+							<xs:element minOccurs="0" name="ishVersion" type="xs:long" />
+							<xs:element minOccurs="0" name="level" type="xs:string" />
+							<xs:element minOccurs="0" name="modified" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="nationalCode" type="xs:string" />
+							<xs:element minOccurs="0" name="newApprentices" type="xs:string" />
+							<xs:element minOccurs="0" name="nominalHours" type="xs:float" />
+							<xs:element minOccurs="0" name="reviewDate" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="title" type="xs:string" />
+							<xs:element minOccurs="0" name="trainingPackageId"
+								type="xs:long" />
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="trainingPackageStub">
+				<xs:complexContent>
+					<xs:extension base="tns:referenceStub">
+						<xs:sequence>
+							<xs:element minOccurs="0" name="copyrightCategory"
+								type="xs:string" />
+							<xs:element minOccurs="0" name="copyrightContract"
+								type="xs:string" />
+							<xs:element minOccurs="0" name="created" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="developer" type="xs:string" />
+							<xs:element minOccurs="0" name="endorsementFrom" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="endorsementTo" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="ishVersion" type="xs:long" />
+							<xs:element minOccurs="0" name="modified" type="xs:dateTime" />
+							<xs:element minOccurs="0" name="nationalISC" type="xs:string" />
+							<xs:element minOccurs="0" name="purchaseFrom" type="xs:string" />
+							<xs:element minOccurs="0" name="title" type="xs:string" />
+							<xs:element minOccurs="0" name="type" type="xs:string" />
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="getRecordsResponse">
+		<wsdl:part name="results" type="tns:referenceResult"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getRecords">
+		<wsdl:part name="ishVersion" type="xsd:long"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getMaximumVersionResponse">
+		<wsdl:part name="maxVersion" type="xsd:long"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getMaximumVersion"/>
+	
+	<wsdl:portType name="ReferencePortType">
+		<wsdl:operation name="getMaximumVersion">
+			<wsdl:input name="getMaximumVersion" message="tns:getMaximumVersion">
+			</wsdl:input>
+			<wsdl:output name="getMaximumVersionResponse" message="tns:getMaximumVersionResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRecords">
+			<wsdl:input name="getRecords" message="tns:getRecords">
+			</wsdl:input>
+			<wsdl:output name="getRecordsResponse" message="tns:getRecordsResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="ReferenceServiceSoapBinding" type="tns:ReferencePortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getMaximumVersion">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="getMaximumVersion">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="getMaximumVersionResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRecords">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="getRecords">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="getRecordsResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:service name="ReferenceService">
+		<wsdl:port name="ReferencePort" binding="tns:ReferenceServiceSoapBinding">
+			<soap:address location="https://oncourse-replicate.ish.com.au/services/v4/reference" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

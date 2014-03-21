@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxws:bindings
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" wsdlLocation="v4_replication.wsdl"
+	xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb">
+	<jaxws:package name="ish.oncourse.webservices.soap.v4" />
+	<jaxws:bindings node="wsdl:definitions/wsdl:types/xsd:schema">
+		<jaxb:schemaBindings>
+			<jaxb:package name="ish.oncourse.webservices.v4.stubs.replication" />
+		</jaxb:schemaBindings>
+        <jaxb:globalBindings xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+                >
+			<jaxb:javaType name="java.lang.Boolean" xmlType="xsd:boolean" />
+			<jaxb:javaType name="java.lang.Long" xmlType="xsd:long" />
+			<jaxb:javaType name="java.lang.Integer" xmlType="xsd:int" />
+			<jaxb:javaType name="java.lang.Short" xmlType="xsd:short" />
+			<jxb:javaType name="java.util.Date" xmlType="xs:dateTime"
+				parseMethod="org.apache.cxf.tools.common.DataTypeAdapter.parseDateTime"
+				printMethod="org.apache.cxf.tools.common.DataTypeAdapter.printDateTime" />
+		</jaxb:globalBindings>
+	</jaxws:bindings>
+</jaxws:bindings>
