@@ -24,6 +24,7 @@ dependencies {
 	compile 'org.quartz-scheduler:quartz:2.1.7'
 	compile 'org.slf4j:slf4j-log4j12:1.7.2'
 
+	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
     compile ('net.sf.jasperreports:jasperreports:5.1.2') {
         exclude group: 'org.apache.poi', module: 'poi-ooxml'
 
