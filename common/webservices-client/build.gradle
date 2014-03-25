@@ -1,6 +1,8 @@
 dependencies {
-	compile 'ish.oncourse.angel:waCommon:5.0rc2'
+    compile project(':common:waCommon')
 	compile 'org.apache.cxf:cxf-bundle-mini:2.6.1'
+    //we need uncomment this depedency when use task wsdl2Java    
+    //compile 'org.apache.cxf:cxf-bundle:2.6.1'
 }
 
 jar {
