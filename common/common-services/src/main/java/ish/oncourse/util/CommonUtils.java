@@ -26,7 +26,7 @@ public class CommonUtils {
 		if (VERSION_development.equalsIgnoreCase(version1) ||
 				VERSION_trunk_SNAPSHOT.equalsIgnoreCase(version1)) {
 			LOGGER.info("pass the gradle development and trunk-SNAPSHOT version");
-			return 0;
+			return 1;
 		}
 
 		DefaultArtifactVersion aVersion1 = new DefaultArtifactVersion(version1);

@@ -16,6 +16,6 @@ public class CommonUtilsTest {
 		assertTrue(0 < CommonUtils.compare("5.1", "4.0"));
 		assertTrue(0 > CommonUtils.compare("3.1", "4.0"));
 		assertTrue(0 > CommonUtils.compare("4.0-SNAPSHOT", "4.0"));
-		assertTrue(0 == CommonUtils.compare("development", "4.0"));
+		assertTrue(0 < CommonUtils.compare("development", "4.0"));
 	}
 }
