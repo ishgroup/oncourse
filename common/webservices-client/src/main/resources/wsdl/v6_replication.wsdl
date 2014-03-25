@@ -190,6 +190,8 @@
                             <xs:element name="markerId" type="xs:long" nillable="false" />
                             <xs:element name="sessionId" type="xs:long" nillable="false" />
                             <xs:element name="studentId" type="xs:long" nillable="false" />
+							<xs:element name="durationMinutes" type="xs:int" minOccurs="0" />
+							<xs:element name="note" type="xs:string" minOccurs="0" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

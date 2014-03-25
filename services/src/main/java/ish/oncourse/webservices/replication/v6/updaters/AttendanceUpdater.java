@@ -28,5 +28,7 @@ public class AttendanceUpdater extends AbstractWillowUpdater<AttendanceStub, Att
 		entity.setModified(stub.getModified());
 		entity.setSession(callback.updateRelationShip(stub.getSessionId(), Session.class));
 		entity.setStudent(callback.updateRelationShip(stub.getStudentId(), Student.class));
+		entity.setDurationMinutes(stub.getDurationMinutes());
+		entity.setNote(stub.getNote());
 	}
 }

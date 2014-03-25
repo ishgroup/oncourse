@@ -25,6 +25,8 @@ import org.w3._2001.xmlschema.Adapter5;
  *         &lt;element name="markerId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="durationMinutes" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="note" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -38,7 +40,9 @@ import org.w3._2001.xmlschema.Adapter5;
     "attendanceType",
     "markerId",
     "sessionId",
-    "studentId"
+    "studentId",
+    "durationMinutes",
+    "note"
 })
 public class AttendanceStub
     extends ReplicationStub
@@ -60,6 +64,11 @@ public class AttendanceStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long studentId;
+    @XmlElement(type = String.class)
+    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer durationMinutes;
+    protected String note;
 
     /**
      * Gets the value of the attendanceType property.
@@ -155,6 +164,54 @@ public class AttendanceStub
      */
     public void setStudentId(Long value) {
         this.studentId = value;
+    }
+
+    /**
+     * Gets the value of the durationMinutes property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getDurationMinutes() {
+        return durationMinutes;
+    }
+
+    /**
+     * Sets the value of the durationMinutes property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDurationMinutes(Integer value) {
+        this.durationMinutes = value;
+    }
+
+    /**
+     * Gets the value of the note property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNote() {
+        return note;
+    }
+
+    /**
+     * Sets the value of the note property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNote(String value) {
+        this.note = value;
     }
 
 }
