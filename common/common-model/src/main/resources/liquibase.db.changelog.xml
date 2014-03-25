@@ -2083,4 +2083,28 @@
 
 	</changeSet>
 
+	<changeSet id="134" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Attendance" columnName="durationMinutes"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="Attendance">
+			<column name="durationMinutes" type="INTEGER"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="135" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Attendance" columnName="note"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="Attendance">
+			<column name="note" type="TEXT"/>
+		</addColumn>
+	</changeSet>
+
 </databaseChangeLog>

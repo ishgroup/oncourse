@@ -20,7 +20,9 @@ public abstract class _Attendance extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String ATTENDANCE_TYPE_PROPERTY = "attendanceType";
     public static final String CREATED_PROPERTY = "created";
+    public static final String DURATION_MINUTES_PROPERTY = "durationMinutes";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String NOTE_PROPERTY = "note";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String MARKER_PROPERTY = "marker";
     public static final String SESSION_PROPERTY = "session";
@@ -49,11 +51,25 @@ public abstract class _Attendance extends CayenneDataObject {
         return (Date)readProperty(CREATED_PROPERTY);
     }
 
+    public void setDurationMinutes(Integer durationMinutes) {
+        writeProperty(DURATION_MINUTES_PROPERTY, durationMinutes);
+    }
+    public Integer getDurationMinutes() {
+        return (Integer)readProperty(DURATION_MINUTES_PROPERTY);
+    }
+
     public void setModified(Date modified) {
         writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
         return (Date)readProperty(MODIFIED_PROPERTY);
+    }
+
+    public void setNote(String note) {
+        writeProperty(NOTE_PROPERTY, note);
+    }
+    public String getNote() {
+        return (String)readProperty(NOTE_PROPERTY);
     }
 
     public void setCollege(College college) {
