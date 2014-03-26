@@ -1,18 +1,52 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div class="navbar navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="glyphicon glyphicon-user"></span>
-				</button>
-				<span class="navbar-brand">
-					<img src="/s/portal/img/logo-v3.png" alt=""/>
-				</span>
-			</div>
-			<t:if t:test="userInSession">
-				<div t:type="loginuser"/>
-			</t:if>
-		</div>
+    <div class="header-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="glyphicon glyphicon-user"></span>
+          </button>
+          <span class="navbar-brand">
+            <img src="/s/portal/img/logo-v3.png" alt=""/>
+          </span>
+        </div>
+        <t:if t:test="userInSession">
+          <div t:type="loginuser"/>
+        </t:if>
+      </div>
+    </div>
+    <t:if t:test="userInSession">
+      <div class="header-nav">
+        <div class="container">
+          <ul class="main-nav">
+						<li class="${getActiveClassBy('m_timetable')}">
+                <a id="timetable" href="${request.contextPath}/timetable"><i class="icon-timetable"></i>Timetable</a>
+            </li>
+						<t:if test="hasResources">
+                <li class="${getActiveClassBy('resources')}">
+                    <a id="resources" href="${request.contextPath}/resources"><i class="icon-resources"></i>Resources</a>
+                </li>
+            </t:if>
+						<t:if test="hasResults">
+                <li class="${getActiveClassBy('results')}">
+                    <a id="results" href="${request.contextPath}/results"><i class="icon-results"></i>Results</a>
+                </li>
+            </t:if>
+						<li class="${getActiveClassBy('profile')}">
+                <a id="profile" href="${request.contextPath}/profile"><i class="icon-profile"></i>My Profile</a>
+            </li>
+            <li class="${getActiveClassBy('subscriptions')}">
+                <a id="subscriptions" href="${request.contextPath}/subscriptions"><i class="icon-subscribe"></i>Subscriptions</a>
+            </li>
+            <t:if test="historyEnabled">
+                <li class="${getActiveClassBy('history')}">
+                    <a id="history" href="${request.contextPath}/history"><i class="icon-history"></i>History</a>
+                </li>
+            </t:if>
+          </ul>
+        </div>
+      </div>
+    </t:if>
 	</div>
 </t:container>
