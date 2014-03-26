@@ -98,7 +98,7 @@
              suburb="Moscow"/>
 
     <Attendance id="1" angelId="2" attendanceType="1" collegeId="3" sessionId="1" studentId="1" markerId="1"
-                created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+                created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0" note="Note1" durationMinutes="100"/>
 
     <BinaryInfo id="1"
                 angelId="2"

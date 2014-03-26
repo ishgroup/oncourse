@@ -55,6 +55,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		attendanceParamethers.add(new ReplicationStubFieldParameter("markerId", Long.class));
 		attendanceParamethers.add(new ReplicationStubFieldParameter("sessionId", Long.class));
 		attendanceParamethers.add(new ReplicationStubFieldParameter("studentId", Long.class));
+        attendanceParamethers.add(new ReplicationStubFieldParameter("durationMinutes", Integer.class,false));
+        attendanceParamethers.add(new ReplicationStubFieldParameter("note", String.class, false));
 		stubsPropertyMap.put(getStubName(AttendanceStub.class), attendanceParamethers);
 		final List<ReplicationStubFieldParameter> binaryDataParamethers = fillDefaultReplicationStubFields();
 		binaryDataParamethers.add(new ReplicationStubFieldParameter("binaryInfoId", Long.class));
