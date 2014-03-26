@@ -20,30 +20,12 @@
       <div class="header-nav">
         <div class="container">
           <ul class="main-nav">
-						<li class="${getActiveClassBy('m_timetable')}">
-                <a id="timetable" href="${request.contextPath}/timetable"><i class="icon-timetable"></i>Timetable</a>
-            </li>
-						<t:if test="hasResources">
-                <li class="${getActiveClassBy('resources')}">
-                    <a id="resources" href="${request.contextPath}/resources"><i class="icon-resources"></i>Resources</a>
-                </li>
-            </t:if>
-						<t:if test="hasResults">
-                <li class="${getActiveClassBy('results')}">
-                    <a id="results" href="${request.contextPath}/results"><i class="icon-results"></i>Results</a>
-                </li>
-            </t:if>
-						<li class="${getActiveClassBy('profile')}">
-                <a id="profile" href="${request.contextPath}/profile"><i class="icon-profile"></i>My Profile</a>
-            </li>
-            <li class="${getActiveClassBy('subscriptions')}">
-                <a id="subscriptions" href="${request.contextPath}/subscriptions"><i class="icon-subscribe"></i>Subscriptions</a>
-            </li>
-            <t:if test="historyEnabled">
-                <li class="${getActiveClassBy('history')}">
-                    <a id="history" href="${request.contextPath}/history"><i class="icon-history"></i>History</a>
-                </li>
-            </t:if>
+            <li><i class="icon-timetable"></i><a href="#">Timetable</a></li>
+            <li><i class="icon-resources"></i><a href="#">Resources</a></li>
+            <li><i class="icon-results"></i><a href="#">Results</a></li>
+            <li><i class="icon-profile"></i><a href="#">My Profile</a></li>
+            <li><i class="icon-subscribe"></i><a href="#">Subscriptions</a></li>
+            <li><i class="icon-history"></i><a href="#">History</a></li>
           </ul>
         </div>
       </div>
