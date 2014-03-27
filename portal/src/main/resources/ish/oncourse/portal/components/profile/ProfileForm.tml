@@ -122,12 +122,12 @@
                             <label for="" class="control-label">Gender</label>
                             <t:radiogroup t:value="contact.isMale">
                             <div class="row">
-                                <div class="col-lg-2">
+                                <div class="col-lg-6">
 
                                         <label for="male" class="radio"><input type="radio" t:type="radio" t:value="true"/>Male</label>
 
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-6">
 
                                         <label for="female" class="radio"><input type="radio" t:type="radio" t:value="false"/>Female</label>
 
@@ -138,9 +138,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-lg-12">
-                        <div class="actions" xml:space="preserve">
-                            <t:submit  t:id="saveProfileAction" value="Save" class="btn btn-primary" clientId="save-student-profile"/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="actions" xml:space="preserve">
+                                <t:submit  t:id="saveProfileAction" value="Save" class="btn btn-primary" clientId="save-student-profile"/>
+                            </div>
                         </div>
                     </div>
                 </div>
