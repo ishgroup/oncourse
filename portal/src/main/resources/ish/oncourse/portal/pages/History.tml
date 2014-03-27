@@ -12,13 +12,13 @@
 	</div>
 	<div class="tab-content">
 
-		<div class="tab-pane active" id="finance">
+		<table class="table" id="finance-history">
            <span t:type="history/finance"/>
-		</div>
+		</table>
 
 
         <t:if test="student">
-		    <div class="tab-pane" id="enrolments">
+		    <div class="tab-pane" id="enrolments-history">
                 <span t:type="history/enrolments"/>
 		    </div>
         </t:if>

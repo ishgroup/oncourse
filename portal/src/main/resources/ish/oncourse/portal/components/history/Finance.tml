@@ -16,43 +16,31 @@
 </t:loop>
 
 <t:block t:id="invoice">
-<div class="row">
-    <div class="col-lg-2 col-sm-3 col-xs-3">
-        <p>
-            <t:pagelink page="invoicedetails" context="${getId(item)}">${getDate(item)}</t:pagelink>
-        </p>
-    </div>
-    <div class="col-lg-2 col-sm-3 col-xs-3">
-        <p>
-            <t:pagelink page="invoicedetails" context="${getId(item)}">Invoice ${getInvoiceNumber(item)}</t:pagelink>
-        </p>
-    </div>
-    <div class="col-lg-2 col-sm-3 col-xs-3 text-right">
-        <p>
-            <t:pagelink page="invoicedetails" context="${getId(item)}">${getAmount(item)}</t:pagelink>
-        </p>
-    </div>
-</div>
+<tr>
+    <td>
+      <t:pagelink page="invoicedetails" context="${getId(item)}">${getDate(item)}</t:pagelink>
+    </td>
+    <td>
+      <t:pagelink page="invoicedetails" context="${getId(item)}">Invoice ${getInvoiceNumber(item)}</t:pagelink>
+    </td>
+    <td>
+      <t:pagelink page="invoicedetails" context="${getId(item)}">${getAmount(item)}</t:pagelink>
+    </td>
+</tr>
 </t:block>
 
 <t:block t:id="payment">
-<div class="row">
-    <div class="col-lg-2 col-sm-3 col-xs-3">
-        <p>
-            <t:pagelink page="paymentdetails" context="${getId(item)}">${getDate(item)}</t:pagelink>
-        </p>
-    </div>
-    <div class="col-lg-2 col-sm-3 col-xs-3">
-        <p>
-            <t:pagelink page="paymentdetails" context="${getId(item)}">Payment(${getPaymentType(item)})</t:pagelink>
-        </p>
-    </div>
-    <div class="col-lg-2 col-sm-3 col-xs-3 text-right">
-        <p>
-            <t:pagelink page="paymentdetails" context="${getId(item)}">${getAmount(item)}</t:pagelink>
-        </p>
-    </div>
-</div>
+<tr>
+    <td>
+      <t:pagelink page="paymentdetails" context="${getId(item)}">${getDate(item)}</t:pagelink>
+    </td>
+    <td>
+      <t:pagelink page="paymentdetails" context="${getId(item)}">Payment(${getPaymentType(item)})</t:pagelink>
+    </td>
+    <td>
+      <t:pagelink page="paymentdetails" context="${getId(item)}">${getAmount(item)}</t:pagelink>
+    </td>
+</tr>
 
 </t:block>
 </t:container>
