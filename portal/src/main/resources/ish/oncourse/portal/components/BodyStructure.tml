@@ -1,25 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div id="wrap">
-		<div class="navbar navbar-fixed-top">
-			<div t:type="bodyheader"/>
-			<t:if t:test="userInSession">
-				<div class="header-nav">
-					<div class="container">
-						<!--<ul class="main-nav">
-							<li><a href="#"><i class="icon-timetable"></i>Timetable</a></li>
-							<li><a href="#"><i class="icon-resources"></i>Resources</a></li>
-							<li><a href="#"><i class="icon-results"></i>Results</a></li>
-							<li><a href="#"><i class="icon-profile"></i>My Profile</a></li>
-							<li><a href="#"><i class="icon-subscribe"></i>Subscriptions</a></li>
-							<li><a href="#"><i class="icon-history"></i>History</a></li>
-						</ul> -->
-						<div t:type="topmenu"/>
-					</div>
-				</div>
-			</t:if>
-	
-		</div>
+
+		<div t:type="bodyheader"/>
 		<div class="container">
 			<div t:type="bodycontent">
 				<t:body/>
