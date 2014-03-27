@@ -5,7 +5,7 @@
 			<li id='tab-mailing' class="${getActiveClass('tab-mailing')}"><a data-toggle="tab" href="#mailing-lists">Mailing Lists</a></li>
 			<li id='tab-waiting' class="${getActiveClass('tab-waiting')}"><a data-toggle="tab" href="#waiting-lists">Waiting Lists</a></li>
 		</ul>
-		<h3><a href="#">Subscriptions</a></h3>
+		<h1><a href="#">Subscriptions</a></h1>
 	</div>
 	<div class="tab-content">
 		<div class="tab-pane ${getActiveClass('tab-mailing')}" id="mailing-lists">

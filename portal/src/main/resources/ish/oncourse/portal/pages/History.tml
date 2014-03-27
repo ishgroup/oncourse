@@ -8,7 +8,7 @@
 		    	<li class=""><a data-toggle="tab" href="#enrolments">Enrolments</a></li>
 		    </t:if>
         </ul>
-		<h3><a href="#">History</a></h3>
+		<h1><a href="#">History</a></h1>
 	</div>
 	<div class="tab-content">
 
