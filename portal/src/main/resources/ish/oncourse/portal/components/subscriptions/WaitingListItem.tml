@@ -3,12 +3,12 @@
     <div class="single-waiting clearfix">
         <div class="col-lg-11 col-sm-10 col-xs-10">
 	    <t:if test="webVisible">
-		    <h5>
+		    <strong>
                 <a href="${URL}" target="${target}">${courseName}</a>
-		    </h5>
+		    </strong>
             <p >${courseDetail}</p>
 		    <p:else>
-			    <h5>${courseName} (This course cannot be visible online.)</h5>
+			    </strong>${courseName} (This course cannot be visible online.)</strong>
 		    </p:else>
 	    </t:if>
         </div>

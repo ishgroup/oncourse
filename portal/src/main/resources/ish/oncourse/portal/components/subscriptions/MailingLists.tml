@@ -3,7 +3,7 @@
 	<t:if test="haveMailingLists">
         <form t:type="form" t:id="mailingListForm" target="mailingLists">
         <div class="clearfix">
-            <h4>I would like to receive marketing material via:</h4>
+            <h6>I would like to receive marketing material via:</h6>
             <div class="row">
                 <div class="col-lg-6">
                     <div class="row">
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-		<h4> The following mailing lists are available at ${collegeName}: </h4>
+		<h6> The following mailing lists are available at ${collegeName}: </h6>
 
 		<t:if test="isSaved">
 			<h4>Mailing lists subscription was updated</h4>
