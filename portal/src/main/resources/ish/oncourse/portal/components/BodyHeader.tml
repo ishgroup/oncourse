@@ -19,14 +19,15 @@
     <t:if t:test="userInSession">
       <div class="header-nav">
         <div class="container">
-          <ul class="main-nav">
+          <!--<ul class="main-nav">
             <li><a href="#"><i class="icon-timetable"></i>Timetable</a></li>
             <li><a href="#"><i class="icon-resources"></i>Resources</a></li>
             <li><a href="#"><i class="icon-results"></i>Results</a></li>
             <li><a href="#"><i class="icon-profile"></i>My Profile</a></li>
             <li><a href="#"><i class="icon-subscribe"></i>Subscriptions</a></li>
             <li><a href="#"><i class="icon-history"></i>History</a></li>
-          </ul>
+          </ul> -->
+					<div t:type="topmenu"/>
         </div>
       </div>
     </t:if>
