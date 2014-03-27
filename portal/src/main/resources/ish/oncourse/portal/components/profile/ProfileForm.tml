@@ -121,6 +121,7 @@
                         <div class="form-group">
                             <label for="" class="control-label">Gender</label>
                             <t:radiogroup t:value="contact.isMale">
+                            <div class="row">
                                 <div class="col-lg-2">
 
                                         <label for="male" class="radio"><input type="radio" t:type="radio" t:value="true"/>Male</label>
@@ -131,6 +132,7 @@
                                         <label for="female" class="radio"><input type="radio" t:type="radio" t:value="false"/>Female</label>
 
                                 </div>
+                            </div>
                             </t:radiogroup>
                         </div>
                     </div>
