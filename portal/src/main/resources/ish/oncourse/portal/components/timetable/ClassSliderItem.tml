@@ -2,7 +2,7 @@
     <div class="clearfix" rel="class-${courseClass.id}">
         <ul>
             <li>
-                <h4>${period}</h4>
+                <h6>${period}</h6>
             </li>
             <li>
                 <t:pagelink page="class" context="courseClass.id">
