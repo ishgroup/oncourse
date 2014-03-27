@@ -15,12 +15,10 @@
         <t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
         <div class="form-group">
             <label for="countryOfBirth" class="control-label">In which country were you born?</label>
-            <div class="col-lg-8">
-                <span class="${validateHandler.validateClass('countryOfBirth')}">
-                    <t:textfield value="countryOfBirthName" t:id="countryOfBirth" class="form-control ${validateHandler.errorClass('countryOfBirth')}"/>
-                    <span t:type="HintComponent" validationMessage="${validateHandler.error('countryOfBirth')}"/>
-                </span>
-            </div>
+            <span class="${validateHandler.validateClass('countryOfBirth')}">
+                <t:textfield value="countryOfBirthName" t:id="countryOfBirth" class="form-control ${validateHandler.errorClass('countryOfBirth')}"/>
+                <span t:type="HintComponent" validationMessage="${validateHandler.error('countryOfBirth')}"/>
+            </span>
         </div>
         <div class="form-group">
             <label for="languageHome" class="control-label">What language do you normally speak at home?</label>
