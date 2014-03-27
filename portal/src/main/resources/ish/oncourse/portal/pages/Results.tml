@@ -1,7 +1,7 @@
 <html t:type="pagestructure" title="literal:Results"
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:results">
 	<div class="page-header clearfix">
-		<h3><a href="#">Results</a></h3>
+		<h1><a href="#">Results</a></h1>
 	</div>
 	<ul class="list-unstyled result-content">
         <t:loop source="courseClasses" value="courseClass">
@@ -12,7 +12,7 @@
                 <a href="${URL}" target="${target}">${courseClass.course.name}</a>
                 <small> (${courseClass.uniqueIdentifier})</small>
             </h4>
-            <small class="text-muted">${getDate(courseClass)}</small>
+            <p><small class="text-muted">${getDate(courseClass)}</small></p>
 			<span t:type="courseclass/classresults" courseClass="courseClass"/>
 		</li>
          </t:if>
