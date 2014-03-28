@@ -3,9 +3,6 @@
 	<div class="collapse logged navbar-collapse">
 		<strong>${user.givenName} ${user.familyName}</strong><span class="caret"></span>
 		<ul class="clearfix">
-            <!--<t:if test="user.tutor">
-                <li><span>Approvals  <span class="badge">${approvalsCount}</span></span></li>
-            </t:if>-->
             <li>
               <a href="#" t:type="ActionLink" t:id="logout">Logout</a>
             </li>
