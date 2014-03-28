@@ -31,7 +31,7 @@
                     </ul>
                 </t:if>
             </li>
-            <li class="${getActiveClassBy('m_timetable')}">
+           <!--<li class="${getActiveClassBy('m_timetable')}">
                 <a id="timetable" href="${request.contextPath}/timetable">Timetable</a>
             </li>
             <t:if test="hasResources">
@@ -54,7 +54,7 @@
                 <li class="${getActiveClassBy('history')}">
                     <a id="history" href="${request.contextPath}/history">History</a>
                 </li>
-            </t:if>
+            </t:if>-->
         </ul>
     </div>
 
