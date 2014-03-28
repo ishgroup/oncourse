@@ -5,7 +5,7 @@
 
 
         <t:form t:id="loginForm" method="post" clientValidation="literal:NONE">
-            <t:errors banner="literal:Please correct the following mistakes:" class="literal:validation alert alert-block alert-error"/>
+            <t:errors banner="literal:Please correct the following mistakes:" class="literal:validation alert alert-block alert-danger"/>
             <fieldset><h2 class="form-title">Log In</h2>
 
 				<div class="login-option clearfix form-group">
