@@ -27,7 +27,7 @@
                 </ul>
                 <t:if test="${pastCourseClasses.isEmpty()}" negate="true">
                     <ul class="list-inline">
-                        <li><a class="show-all-sessions" href="#"><span class="icon-arrow-down"></span>Show All</a></li>
+                        <li class="show-all-courses"><a class="show-all-sessions" href="#">Show All <span class="icon-arrow-down"></span></a></li>
                     </ul>
                 </t:if>
             </li>
