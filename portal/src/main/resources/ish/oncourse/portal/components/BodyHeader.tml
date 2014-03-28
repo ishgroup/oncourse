@@ -27,10 +27,9 @@
             <li><a href="#"><i class="icon-subscribe"></i>Subscriptions</a></li>
             <li><a href="#"><i class="icon-history"></i>History</a></li>
           </ul>
-					<t:if test="user.tutor">
-                Approvals  <span class="badge">${approvalsCount}</span><!--<span class="badge">${approvalsCount}</span>-->
-								<a href="#" class="btn btn-primary btn-lg">Approval</a>
-            </t:if>
+					<a href="#" class="btn btn-primary btn-lg">
+            Approvals  <span class="badge">3</span>
+          </a>
         </div>
       </div>
     </t:if>
