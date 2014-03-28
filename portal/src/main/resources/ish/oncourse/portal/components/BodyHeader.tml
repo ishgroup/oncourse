@@ -27,7 +27,7 @@
             <li><a href="#"><i class="icon-subscribe"></i>Subscriptions</a></li>
             <li><a href="#"><i class="icon-history"></i>History</a></li>
           </ul>
-					<a href="#" class="btn btn-primary btn-lg">
+					<a href="#" class="btn btn-primary btn-lg btn-approval">
             Approvals  <span class="badge">3</span>
           </a>
         </div>
