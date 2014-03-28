@@ -7,7 +7,7 @@
 			<div t:type="bodycontent">
 				<t:body/>
 			</div>
-            <div class="col-lg-3 col-sm-3">
+            <div class="col-lg-3 col-sm-4">
                 <t:if t:test="userInSession">
                     <div class="sidebar">
                         <div t:type="menu" activeMenu="activeMenu"/>
