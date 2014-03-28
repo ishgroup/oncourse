@@ -1,6 +1,7 @@
 <t:container
         xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div data-spy="affix" data-offset-top="0" class="sidebar affix">
+    <!--<div data-spy="affix" data-offset-top="0" class="sidebar affix">-->
+    <div class="sidebar">
         <ul class="nav sidenav">
             <li class="expanded">
                 <t:if test="nearestCourseClass">
