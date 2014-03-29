@@ -20,7 +20,7 @@
       <div class="header-nav">
         <div class="container">
           <ul class="main-nav">
-            <li><a href="/portal/profile"><i class="icon-timetable"></i>Timetable</a></li>
+            <li><a href="/portal/timetable"><i class="icon-timetable"></i>Timetable</a></li>
             <li><a href="/portal/resources"><i class="icon-resources"><!--<small>2</small>--></i>Resources</a></li>
             <li><a href="/portal/results"><i class="icon-results"></i>Results</a></li>
             <li><a href="/portal/profile"><i class="icon-profile"></i>My Profile</a></li>
