@@ -20,16 +20,16 @@
       <div class="header-nav">
         <div class="container">
           <ul class="main-nav">
-            <li><a href="#"><i class="icon-timetable"></i>Timetable</a></li>
-            <li><a href="#"><i class="icon-resources"><small>2</small></i>Resources</a></li>
-            <li><a href="#"><i class="icon-results"></i>Results</a></li>
-            <li><a href="#"><i class="icon-profile"></i>My Profile</a></li>
-            <li><a href="#"><i class="icon-subscribe"><small>2</small></i>Subscriptions</a></li>
-            <li><a href="#"><i class="icon-history"></i>History</a></li>
+            <li><a href="/portal/profile"><i class="icon-timetable"></i>Timetable</a></li>
+            <li><a href="/portal/resources"><i class="icon-resources"><!--<small>2</small>--></i>Resources</a></li>
+            <li><a href="/portal/results"><i class="icon-results"></i>Results</a></li>
+            <li><a href="/portal/profile"><i class="icon-profile"></i>My Profile</a></li>
+            <li><a href="/portal/subscriptions"><i class="icon-subscribe"><!--<small>2</small>--></i>Subscriptions</a></li>
+            <li><a href="/portal/history"><i class="icon-history"></i>History</a></li>
           </ul>
-					<a href="#" class="btn btn-primary btn-lg btn-approval">
+					<!--<a href="#" class="btn btn-primary btn-lg btn-approval">
             Approvals  <span class="badge">3</span>
-          </a>
+          </a>-->
         </div>
       </div>
     </t:if>
