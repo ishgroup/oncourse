@@ -2,19 +2,11 @@
 
 	<div id="wrap">
 		<div t:type="bodyheader"/>
-		<div class="container">
-
-			<t:if t:test="userInSession">
-				<p:else><div class="login-container"></p:else>
-			</t:if>
+		<div class="container <t:if t:test="userInSession"><p:else>login-container</p:else></t:if>">
 
 			<div t:type="bodycontent">
 				<t:body/>
 			</div>
-
-			<t:if t:test="userInSession">
-				<p:else></div></p:else>
-			</t:if>
 
       <div class="col-lg-3 col-sm-4">
         <t:if t:test="userInSession">
