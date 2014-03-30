@@ -1,20 +1,34 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div id="wrap">
-
 		<div t:type="bodyheader"/>
 		<div class="container">
+
+			<t:if t:test="userInSession">
+				<p:else>
+					<div class="login-container">
+				</p:else>
+			</t:if>
+
 			<div t:type="bodycontent">
 				<t:body/>
 			</div>
-            <div class="col-lg-3 col-sm-4">
-                <t:if t:test="userInSession">
-                    <div class="sidebar">
-                        <div t:type="menu" activeMenu="activeMenu"/>
-                    </div>
-                </t:if>
-            </div>
-        </div>
+
+			<t:if t:test="userInSession">
+				<p:else>
+					</div>
+				</p:else>
+			</t:if>
+
+      <div class="col-lg-3 col-sm-4">
+        <t:if t:test="userInSession">
+          <div class="sidebar">
+            <div t:type="menu" activeMenu="activeMenu"/>
+          </div>
+        </t:if>
+      </div>
+    </div>
 	</div>
-    <div t:type="bodyfooter"/>
+
+  <div t:type="bodyfooter"/>
 </t:container>
