@@ -1,8 +1,8 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div id="wrap">
 		<div t:type="bodyheader"/>
-		<div class="container ${userInSession ? '' : 'login-container'}">
+		<div class="container">
 
 			<div t:type="bodycontent">
 				<t:body/>
