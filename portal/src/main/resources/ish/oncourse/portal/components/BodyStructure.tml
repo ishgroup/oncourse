@@ -1,13 +1,11 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
 	<div id="wrap">
 		<div t:type="bodyheader"/>
 		<div class="container">
 
 			<t:if t:test="userInSession">
-				<p:else>
-					<div class="login-container">
-				</p:else>
+				<p:else><div class="login-container"></p:else>
 			</t:if>
 
 			<div t:type="bodycontent">
@@ -15,9 +13,7 @@
 			</div>
 
 			<t:if t:test="userInSession">
-				<p:else>
-					</div>
-				</p:else>
+				<p:else></div></p:else>
 			</t:if>
 
       <div class="col-lg-3 col-sm-4">
