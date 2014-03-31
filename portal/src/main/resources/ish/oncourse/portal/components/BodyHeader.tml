@@ -19,13 +19,13 @@
     <t:if t:test="userInSession">
       <div class="header-nav">
         <div class="container">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-menu">
+					<button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".main-menu">
 							<span class="sr-only">Toggle navigation</span>
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
           </button>
-          <div class="main-menu">
+          <div class="main-menu collapse">
             <ul class="main-nav">
               <li><a href="/portal/timetable"><i class="icon-timetable"></i>Timetable</a></li>
               <li><a href="/portal/resources"><i class="icon-resources"><!--<small>2</small>--></i>Resources</a></li>
