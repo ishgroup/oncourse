@@ -1,9 +1,9 @@
 <html t:type="pagestructure" title="literal:Time Table"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_timetable">
         <div class="page-header clearfix">
-            <h3>
+            <h1>
                 <a href="#">Timetable</a>
-            </h3>
+            </h1>
         </div>
         <!-- slider content start -->
         <div class="clearfix session-content">

@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-lg-8 col-sm-12">
             <t:form t:id="profileForm" class="form" clientValidation="literal:NONE" >
                 <t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
                 <div class="row">
