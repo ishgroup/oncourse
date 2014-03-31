@@ -75,7 +75,7 @@ public class ClassResults {
         if(OutcomeStatus.STATUS_NOT_SET.equals(outcome.getStatus())){
             return "NO RESULT";
         }
-        return "FAILED";
+        return "NOT YET COMPETENT";
 
     }
 

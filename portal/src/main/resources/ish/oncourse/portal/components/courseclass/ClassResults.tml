@@ -12,35 +12,19 @@
 
             <t:loop source="enrolments" value="enrolment">
 
-                <t:if test="hasModules">
-                    <ul class="list-unstyled result-list">
-
-                        <t:loop source="enrolment.outcomes" value="outcome">
-                            <li>
-                                <span>${outcome.module.title} (<a href="http://training.gov.au/Training/Details/${outcome.module.nationalCode}">${outcome.module.nationalCode}</a>)</span>
-                                <strong class="${getOutComeClass()} tooltip-info pull-right" title="" data-original-title="${getOutComeDisplayName()}">${getOutComeResult()}</strong>
-                            </li>
-                        </t:loop>
-                    </ul>
-                </t:if>
-
-                <t:unless test="hasModules">
-                    <ul class="list-unstyled result-list">
-                        <t:loop source="enrolment.outcomes" value="outcome">
+                <ul class="list-unstyled result-list">
+                    <t:loop source="enrolment.outcomes" value="outcome">
                         <li>
-                            <span>${courseClass.course.name}</span>
-                            <t:if test = "notSetStatus" negate="true">
-                                <t:if test = "completed">
-                                    <strong class="text-success tooltip-info pull-right" title="" data-original-title="${getOutComeDisplayName()}"> PASS</strong>
-                                </t:if>
-                                <t:unless test = "completed">
-                                    <strong class="text-danger tooltip-info pull-right" title="" data-original-title="${getOutComeDisplayName()}"> FAILED</strong>
-                                </t:unless>
+                            <t:if test="hasModules">
+                                <span>${outcome.module.title} (<a href="http://training.gov.au/Training/Details/${outcome.module.nationalCode}">${outcome.module.nationalCode}</a>)</span>
                             </t:if>
+                            <t:unless test="hasModules">
+                                <span>${courseClass.course.name}</span>
+                            </t:if>
+                            <strong class="${getOutComeClass()} tooltip-info pull-right" title="" data-original-title="${getOutComeDisplayName()}">${getOutComeResult()}</strong>
                         </li>
-                        </t:loop>
-                    </ul>
-                </t:unless>
+                    </t:loop>
+                </ul>
 
             </t:loop>
         </li>
