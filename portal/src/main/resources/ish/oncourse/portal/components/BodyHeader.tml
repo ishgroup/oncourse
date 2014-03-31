@@ -4,7 +4,7 @@
     <div class="header-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-links">
             <span class="glyphicon glyphicon-user"></span>
           </button>
           <span class="navbar-brand">
