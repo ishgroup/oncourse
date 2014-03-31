@@ -8,7 +8,7 @@
 		    </strong>
             <p >${courseDetail}</p>
 		    <p:else>
-			    <strong>${courseName} (This course cannot be visible online.)</strong>
+			    <strong>${courseName}</strong>
 		    </p:else>
 	    </t:if>
         </div>
