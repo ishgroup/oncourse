@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
     <t:if test="items" negate="true">
-         <div>Now you do not have financial history</div>
+         <div>We do not yet have any financial history to show you.</div>
     </t:if>
 
 
