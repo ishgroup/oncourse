@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div id="wrap">
-		<div t:type="bodyheader"/>
+		<div t:type="bodyheader" activeMenu="activeMenu"/>
 		<div class="container">
 
 			<div t:type="bodycontent">
@@ -11,7 +11,7 @@
       <div class="col-lg-3 col-sm-4">
         <t:if t:test="userInSession">
           <div class="sidebar">
-            <div t:type="menu" activeMenu="activeMenu"/>
+            <div t:type="menu"  activeMenu="activeMenu"/>
           </div>
         </t:if>
       </div>

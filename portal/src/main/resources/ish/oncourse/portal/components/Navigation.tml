@@ -1,0 +1,35 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+    <div class="main-menu collapse navbar-collapse">
+        <ul class="main-nav">
+            <li class="${getActiveClassBy('m_timetable')}">
+                 <a id="timetable" href="${request.contextPath}/timetable"><i class="icon-timetable"/>Timetable</a>
+             </li>
+             <t:if test="hasResources">
+                 <li class="${getActiveClassBy('resources')}">
+                     <a id="resources" href="${request.contextPath}/resources"><i class="icon-resources"/>Resources</a>
+                 </li>
+             </t:if>
+             <t:if test="hasResults">
+                 <li class="${getActiveClassBy('results')}">
+                     <a id="results" href="${request.contextPath}/results"><i class="icon-results"/>Results</a>
+                 </li>
+             </t:if>
+             <li class="${getActiveClassBy('profile')}">
+                 <a id="profile" href="${request.contextPath}/profile"><i class="icon-profile"/>My Profile</a>
+             </li>
+             <li class="${getActiveClassBy('subscriptions')}">
+                 <a id="subscriptions" href="${request.contextPath}/subscriptions"><i class="icon-subscribe"/>Subscriptions</a>
+             </li>
+             <t:if test="historyEnabled">
+                 <li class="${getActiveClassBy('history')}">
+                     <a id="history" href="${request.contextPath}/history"><i class="icon-history"/>History</a>
+                 </li>
+             </t:if>
+        </ul>
+        <!--<a href="#" class="btn btn-primary btn-lg btn-approval">
+          Approvals  <span class="badge">3</span>
+        </a>-->
+    </div>
+
+</t:container>
