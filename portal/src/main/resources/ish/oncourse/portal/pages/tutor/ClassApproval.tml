@@ -2,7 +2,7 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
     <div class="page-header clearfix">
-        <h3><a href="#">${courseClass.course.name} </a> <small> (${courseClass.uniqueIdentifier})</small></h3>
+        <h1><a href="#">${courseClass.course.name} </a> <small> (${courseClass.uniqueIdentifier})</small></h1>
         <h4><span class="label label-primary pull-right">Approval required</span></h4>
     </div>
 
