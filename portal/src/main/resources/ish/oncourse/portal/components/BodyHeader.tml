@@ -4,9 +4,11 @@
     <div class="header-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-links">
-            <span class="glyphicon glyphicon-user"></span>
-          </button>
+          <t:if t:test="userInSession">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-links">
+              <span class="glyphicon glyphicon-user"></span>
+            </button>
+          </t:if>
           <span class="navbar-brand">
             <img src="/s/portal/img/logo-v3.png" alt=""/>
           </span>
