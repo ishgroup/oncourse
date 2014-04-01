@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -64,6 +63,9 @@ public class Navigation {
     @Property
     private CourseClass unconfirmedClass;
 
+    @Property
+    private Notification notification;
+
     @SetupRender
     public void setupRender() {
 
@@ -85,6 +87,8 @@ public class Navigation {
                 unconfirmedClass = unconfirmedClasses.get(0);
             }
         }
+
+        notification = new Notification();
     }
 
     public boolean hasApprovals()
@@ -93,12 +97,7 @@ public class Navigation {
     }
 
 
-    public int getNewResourcesCount()
-    {
-        return 0;
-    }
-
-    public boolean isHasResources() {
+    public boolean hasResources() {
 
         for (PCourseClass pCourseClasse : pCourseClasses) {
             if (!portalService.getAttachedFiles(pCourseClasse.getCourseClass(), authenticationService.getUser()).isEmpty()) {
@@ -113,7 +112,7 @@ public class Navigation {
 
 
 
-    public boolean isHasResults() {
+    public boolean hasResults() {
 
         return authenticationService.getUser().getStudent() != null &&
                 (pastCourseClasses.size() + pCourseClasses.size()) > 0;
@@ -129,5 +128,51 @@ public class Navigation {
             return messages.get("class.active");
         return StringUtils.EMPTY;
 
+    }
+
+    public class Notification
+    {
+        private int newResourcesCount;
+        private int newResultsCount;
+        private int newHistoryCount;
+
+        public boolean hasNewResources()
+        {
+            return newResourcesCount > 0;
+        }
+
+        public boolean hasNewResults()
+        {
+            return newResultsCount > 0;
+        }
+
+        public boolean hasNewHistory()
+        {
+            return newHistoryCount > 0;
+        }
+
+        public int getNewResourcesCount() {
+            return newResourcesCount;
+        }
+
+        public void setNewResourcesCount(int newResourcesCount) {
+            this.newResourcesCount = newResourcesCount;
+        }
+
+        public int getNewResultsCount() {
+            return newResultsCount;
+        }
+
+        public void setNewResultsCount(int newResultsCount) {
+            this.newResultsCount = newResultsCount;
+        }
+
+        public int getNewHistoryCount() {
+            return newHistoryCount;
+        }
+
+        public void setNewHistoryCount(int newHistoryCount) {
+            this.newHistoryCount = newHistoryCount;
+        }
     }
 }
