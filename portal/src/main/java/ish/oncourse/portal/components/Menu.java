@@ -5,6 +5,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PCourseClass;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
@@ -18,7 +19,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.List;
 import java.util.TimeZone;
 
-import static ish.oncourse.portal.services.PortalUtils.DATE_FORMAT_D_MMMM_H_MMA_UTC_Z;
+import static ish.oncourse.portal.services.PortalUtils.DATE_FORMAT_d_MMMM_h_mma_UTC_Z;
 
 public class Menu {
 
@@ -73,12 +74,12 @@ public class Menu {
 
 		if (courseClass instanceof PCourseClass) {
 			timeZone = courseClassService.getClientTimeZone(pCourseClass.getCourseClass());
-			return 	FormatUtils.getDateFormat(DATE_FORMAT_D_MMMM_H_MMA_UTC_Z, timeZone).format(pCourseClass.getStartDate());
+			return 	FormatUtils.getDateFormat(DATE_FORMAT_d_MMMM_h_mma_UTC_Z, timeZone).format(pCourseClass.getStartDate());
 		}
 
 		if (courseClass instanceof CourseClass) {
 			timeZone = courseClassService.getClientTimeZone(pastCourseClass);
-			return 	FormatUtils.getDateFormat(DATE_FORMAT_D_MMMM_H_MMA_UTC_Z, timeZone).format(pastCourseClass.getStartDate());
+			return 	FormatUtils.getDateFormat(DATE_FORMAT_d_MMMM_h_mma_UTC_Z, timeZone).format(pastCourseClass.getStartDate());
 		}
 		return StringUtils.EMPTY;
 
