@@ -11,7 +11,7 @@
 		<t:if test="isClassApproved" negate="true">
             <div class="checkbox">
 			    <t:checkbox t:id="approved" value="approved"/>
-			    <label for="approved"><span>I hereby agree that the date, time, venue and description of the class are all correct and that I am able to teach the class material at the times stated.</span></label>
+			    <label for="approved"><span>I agree that the date, time, venue and description of the class are all correct and that I am able to teach the class material at the times stated.</span></label>
 			</div>
             <p>
 			    <t:submit t:id="accept" value="Accept" disabled="approved"  class="btn btn-success agree-btn btn1 mb20"/>
@@ -27,13 +27,13 @@
 		<!-- textarea -->
         <div class="row decline-content">
             <div class="col-lg-12 col-sm-12">
-                <label>I have feedback for this class details as follows:</label>
+                <label>I don't agree for the following reasons:</label>
                 <div class="row">
                     <p class="col-lg-8 col-sm-8">
                         <t:textarea t:id="whyDeclined" t:value="whyDeclined" class="form-control"  row="3"></t:textarea>
                     </p>
                 </div>
-                <t:submit t:id="decline" value="${declineLabel}" class="btn btn-default btn-sm"/>
+                <t:submit t:id="decline" value="Submit" class="btn btn-default btn-sm"/>
             </div>
         </div>
 	</t:form>
