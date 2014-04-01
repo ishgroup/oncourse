@@ -142,10 +142,6 @@ public class ClassApproval {
         return portalService.isApproved(authService.getUser(), courseClass);
     }
 
-    public String getDeclineLabel() {
-        return getIsClassApproved() ? messages.get("label-accept") :  messages.get("label-decline");
-    }
-
     private String getTutorFeedbackEmail() {
         College college = courseClass.getCollege();
         PreferenceController prefController = prefFactory.getPreferenceController(college);
