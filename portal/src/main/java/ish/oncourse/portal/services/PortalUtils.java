@@ -25,8 +25,8 @@ public class PortalUtils {
     public static final int MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
     public static final String CONTENT_TYPE = "text/json";
 
-    private static final String URL_CLASS_TEMPLATE = "http://%s/class/%s-%s";
-    private static final String URL_COURSE_TEMPLATE = "http://%s/course/%s";
+    public static final String URL_CLASS_TEMPLATE = "http://%s/class/%s-%s";
+    public static final String URL_COURSE_TEMPLATE = "http://%s/course/%s";
 
     private static final int CLASS_DETAILS_LENGTH = 490;
     private static final int COURSE_DETAILS_LENGTH = 245;
