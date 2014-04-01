@@ -20,6 +20,8 @@ import static ish.oncourse.util.FormatUtils.*;
 
 public class PortalUtils {
 
+    public final static String COOKIE_NAME_lastLoginTime = "lastLoginTime";
+
     public static final int MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
     public static final String CONTENT_TYPE = "text/json";
 
@@ -35,6 +37,8 @@ public class PortalUtils {
     private static final String CLASS_SESSION_INFO_TEMPLATE = " %s session, %s hours";
 
     private static final String CLASS_SESSIONS_INFO_TEMPLATE = " %s sessions, %s hours";
+
+    public static final String DATE_FORMAT = "d MMMM h:mma ('UTC'Z)";
 
     private final static Logger LOGGER = Logger.getLogger(PortalUtils.class);
 

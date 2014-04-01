@@ -2,6 +2,7 @@ package ish.oncourse.portal.access;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.SupportPassword;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 
@@ -21,6 +22,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
+
+import static ish.oncourse.portal.services.PortalUtils.COOKIE_NAME_lastLoginTime;
 
 public class AuthenticationService implements IAuthenticationService {
 
@@ -181,7 +184,7 @@ public class AuthenticationService implements IAuthenticationService {
 	@Override
 	public void storeCurrentUser(Contact user) {
 
-            cookieService.writeCookieValue("lastLoginTime", user.getLastLoginTime() != null ?
+            cookieService.writeCookieValue(COOKIE_NAME_lastLoginTime, user.getLastLoginTime() != null ?
                     user.getLastLoginTime().toString() : new Date(0l).toString());
 
         ObjectContext context = cayenneService.newContext();

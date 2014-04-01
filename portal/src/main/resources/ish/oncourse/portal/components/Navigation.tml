@@ -27,9 +27,11 @@
                  </li>
              </t:if>
         </ul>
-        <!--<a href="#" class="btn btn-primary btn-lg btn-approval">
-          Approvals  <span class="badge">3</span>
-        </a>-->
+        <t:if test="hasApprovals()">
+            <a href="${request.contextPath}/tutor/classapproval/${unconfirmedClass.id}" class="btn btn-primary btn-lg btn-approval">
+                Approvals  <span class="badge">${approvals}</span>
+            </a>
+        </t:if>
     </div>
 
 </t:container>

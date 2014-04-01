@@ -1,6 +1,7 @@
 package ish.oncourse.portal.components;
 
 
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
@@ -50,8 +51,14 @@ public class Navigation {
     @Property
     private PCourseClass pCourseClass;
 
-    private static final String DATE_FORMAT = "d MMMM h:mma ('UTC'Z)";
+    @Property
+    private int approvals = 0;
 
+    @Property
+    private Contact contact;
+
+    @Property
+    private CourseClass unconfirmedClass;
 
     @SetupRender
     public void setupRender() {
@@ -64,6 +71,21 @@ public class Navigation {
 
         if (nearestCourseClass == null)
             nearestCourseClass = !pastCourseClasses.isEmpty() ? pastCourseClasses.get(0) : null;
+
+        contact = authenticationService.getUser();
+        if (contact.getTutor() != null) {
+            List<CourseClass> unconfirmedClasses = courseClassService.getContactCourseClasses(contact, CourseClassFilter.UNCONFIRMED);
+            approvals = unconfirmedClasses.size();
+            if (approvals > 0)
+            {
+                unconfirmedClass = unconfirmedClasses.get(0);
+            }
+        }
+    }
+
+    public boolean hasApprovals()
+    {
+        return contact.getTutor() != null && approvals > 0;
     }
 
 
@@ -81,11 +103,8 @@ public class Navigation {
 
     public boolean isHasResults() {
 
-        if (authenticationService.getUser().getStudent() != null) {
-            authenticationService.getUser().getStudent().getEnrolments();
-            return !authenticationService.getUser().getStudent().getEnrolments().isEmpty();
-        }
-        return false;
+        return authenticationService.getUser().getStudent() != null &&
+                (pastCourseClasses.size() + pCourseClasses.size()) > 0;
     }
 
     public boolean isHistoryEnabled() {

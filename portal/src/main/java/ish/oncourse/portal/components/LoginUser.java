@@ -14,25 +14,20 @@ public class LoginUser {
 	
 	@Inject
 	private IAuthenticationService authService;
-	
+
 	@Property
-	private Contact user;
-	
+	private Contact contact;
+
 	@InjectPage
 	private Login login;
 
-	@Inject
-	private ICourseClassService courseClassService;
 
-	@Property
-	private int approvalsCount = 0;
-	
+
 	@SetupRender
 	void setupRender() {
-		this.user = authService.getUser();
-		approvalsCount = courseClassService.getContactCourseClasses(this.user, CourseClassFilter.UNCONFIRMED).size();
+		this.contact = authService.getUser();
 	}
-	
+
 	public Object onActionFromLogout() throws Exception {
 		authService.logout();
 		return login;

@@ -8,7 +8,6 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PCourseClass;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.util.DateFormatter;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -16,8 +15,11 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
 import java.util.List;
 import java.util.TimeZone;
+
+import static ish.oncourse.portal.services.PortalUtils.DATE_FORMAT;
 
 public class Menu {
 
@@ -52,8 +54,6 @@ public class Menu {
 
 	@Property
 	private PCourseClass pCourseClass;
-
-	private static final String DATE_FORMAT = "d MMMM h:mma ('UTC'Z)";
 
 
 	@SetupRender
