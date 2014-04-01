@@ -19,6 +19,11 @@ import java.util.Date;
 import static ish.oncourse.util.FormatUtils.*;
 
 public class PortalUtils {
+    /**
+     * from address.
+     */
+    public static final String FROM_EMAIL = "support@ish.com.au";
+
 
     public final static String COOKIE_NAME_lastLoginTime = "lastLoginTime";
 

@@ -1,6 +1,7 @@
 package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.Contact;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.mail.EmailBuilder;
 import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -24,10 +25,6 @@ public class ForgotPassword {
 	 */
 	private static final int RECOVER_LINK_TTL = 24;
 	
-	/**
-	 * Recover emails from address.
-	 */
-	private static final String FROM_EMAIL = "support@ish.com.au";
 
 	@Persist
 	private Contact user;
@@ -77,7 +74,7 @@ public class ForgotPassword {
 
 		EmailBuilder email = new EmailBuilder();
 		
-		email.setFromEmail(FROM_EMAIL);
+		email.setFromEmail(PortalUtils.FROM_EMAIL);
 		email.setSubject("Password reset.");
 		
 		StringBuilder textBody = new StringBuilder();

@@ -72,6 +72,11 @@ public class Finance {
         return item instanceof Invoice;
     }
 
+    public long getId(CayenneDataObject item)
+    {
+        return item instanceof Invoice ? ((Invoice) item).getId(): ((PaymentIn) item).getId();
+    }
+
 
     public Object getInvoiceNumber(Invoice item) {
 

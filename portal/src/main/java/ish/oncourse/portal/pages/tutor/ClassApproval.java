@@ -1,13 +1,11 @@
 package ish.oncourse.portal.pages.tutor;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.TutorRole;
+import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.mail.EmailBuilder;
 import ish.oncourse.services.mail.IMailService;
@@ -18,6 +16,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextArea;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -26,11 +25,6 @@ import java.util.List;
 
 @UserRole("tutor")
 public class ClassApproval {
-
-    /**
-     * Recover emails from address.
-     */
-    private static final String FROM_EMAIL = "support@ish.com.au";
 
     @Property
     private boolean approved;
@@ -59,6 +53,9 @@ public class ClassApproval {
 
     @Inject
     private Request request;
+
+    @Inject
+    private Messages messages;
 
     @Property
     private String whyDeclined;
@@ -105,16 +102,16 @@ public class ClassApproval {
         Contact c = authService.getUser();
 
         if (whyDeclined == null || whyDeclined.length() == 0) {
-            approvalForm.recordError(whyDeclinedField, "Please enter your feedback for the class.");
+            approvalForm.recordError(whyDeclinedField, messages.get("message-feedbackEmpty"));
         } else {
 
-            String subject = String.format("Class feedback from tutor %s %s", c.getGivenName(), c.getFamilyName());
-            String body = String.format("Tutor %s %s has submitted the following feedback for the class %s-%s '%s'.\n%s", c.getGivenName(),
+            String subject = String.format(messages.get("email-subject"), c.getGivenName(), c.getFamilyName());
+            String body = messages.format("email-body", c.getGivenName(),
                     c.getFamilyName(), courseClass.getCourse().getCode(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);
 
             EmailBuilder email = new EmailBuilder();
             String tutorEmail = c.getEmailAddress();
-            email.setFromEmail(tutorEmail != null ? tutorEmail : FROM_EMAIL);
+            email.setFromEmail(tutorEmail != null ? tutorEmail : PortalUtils.FROM_EMAIL);
             email.setSubject(subject);
             email.setBody(body);
             email.setToEmails(getTutorFeedbackEmail());
@@ -146,7 +143,7 @@ public class ClassApproval {
     }
 
     public String getDeclineLabel() {
-        return getIsClassApproved() ? "Accept" : "Decline";
+        return getIsClassApproved() ? messages.get("label-accept") :  messages.get("label-decline");
     }
 
     private String getTutorFeedbackEmail() {

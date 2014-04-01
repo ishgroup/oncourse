@@ -18,13 +18,13 @@
 <t:block t:id="invoice">
 <tr>
     <td>
-      <t:pagelink page="invoicedetails" context="${item.id}">${getDate(item)}</t:pagelink>
+      <t:pagelink page="invoicedetails" context="${getId(item)}">${getDate(item)}</t:pagelink>
     </td>
     <td>
-      <t:pagelink page="invoicedetails" context="${item.id}">Invoice ${getInvoiceNumber(item)}</t:pagelink>
+      <t:pagelink page="invoicedetails" context="${getId(item)}">Invoice ${getInvoiceNumber(item)}</t:pagelink>
     </td>
     <td>
-      <t:pagelink page="invoicedetails" context="${item.id}">${getAmount(item)}</t:pagelink>
+      <t:pagelink page="invoicedetails" context="${getId(item)}">${getAmount(item)}</t:pagelink>
     </td>
 </tr>
 </t:block>
@@ -32,13 +32,13 @@
 <t:block t:id="payment">
 <tr>
     <td>
-      <t:pagelink page="paymentdetails" context="${item.id}">${getDate(item)}</t:pagelink>
+      <t:pagelink page="paymentdetails" context="${getId(item)}">${getDate(item)}</t:pagelink>
     </td>
     <td>
-      <t:pagelink page="paymentdetails" context="${item.id}">Payment(${getPaymentType(item)})</t:pagelink>
+      <t:pagelink page="paymentdetails" context="${getId(item)}">Payment(${getPaymentType(item)})</t:pagelink>
     </td>
     <td>
-      <t:pagelink page="paymentdetails" context="${item.id}">${getAmount(item)}</t:pagelink>
+      <t:pagelink page="paymentdetails" context="${getId(item)}">${getAmount(item)}</t:pagelink>
     </td>
 </tr>
 
