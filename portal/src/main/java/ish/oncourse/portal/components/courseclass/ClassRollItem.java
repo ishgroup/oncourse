@@ -52,7 +52,10 @@ public class ClassRollItem {
         {
            return binaryDataService.getUrl(avatar);
         }
-        return "/s/portal/img/ico-student-default.png";
+        else
+        {
+            return null;
+        }
     }
 
     public String getPhoneNumber(){

@@ -2,6 +2,7 @@ package ish.oncourse.portal.components.history;
 
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.annotations.Property;
@@ -40,7 +41,7 @@ public class Enrolments {
     public String getDate(Enrolment enrolment)
     {
         TimeZone timeZone = courseClassService.getClientTimeZone(enrolment.getCourseClass());
-        return String.format("%s", FormatUtils.getDateFormat("d MMMMM h:mma", timeZone).format(enrolment.getCreated()));
+        return String.format("%s", FormatUtils.getDateFormat(PortalUtils.DATE_FORMAT_d_MMMMM_h_mma, timeZone).format(enrolment.getCreated()));
     }
 
 

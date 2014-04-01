@@ -3,12 +3,12 @@ package ish.oncourse.portal.components.history;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.portal.access.IAuthenticationService;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -25,12 +25,6 @@ import java.util.Collections;
  */
 public class Finance {
 
-    /**
-     *CREATED - is common property for all
-     * CayenneDataObject (including PaymentIn and Invoice)
-     */
-    private static final String CREATED = "created";
-
     @Inject
     private IAuthenticationService authenticationService;
 
@@ -44,14 +38,12 @@ public class Finance {
     private CayenneDataObject item;
 
 
-
-
-    private final static String FORMAT="dd MMMMM yyyy";
+    private final static String FORMAT = "dd MMMMM yyyy";
 
     DateFormat dateFormat = new SimpleDateFormat(FORMAT);
 
     @SetupRender
-    void setupRender(){
+    void setupRender() {
 
         contact = authenticationService.getUser();
 
@@ -59,63 +51,38 @@ public class Finance {
         items.addAll(contact.getInvoices());
         items.addAll(contact.getPaymentsIn());
 
-        Ordering.orderList(items, Collections.singletonList(new Ordering(CREATED, SortOrder.DESCENDING)));
+        Ordering.orderList(items, Collections.singletonList(new Ordering(PaymentIn.CREATED_PROPERTY, SortOrder.DESCENDING)));
 
     }
 
 
+    public String getDate(CayenneDataObject item) {
 
-    public String getDate(CayenneDataObject item)
-
-    {
-        if(item instanceof Invoice)
-            return String.format("%s ", dateFormat.format(((Invoice) item).getCreated()));
-
-        return String.format("%s ", dateFormat.format(((PaymentIn) item).getCreated()));
+        return String.format("%s ", item instanceof Invoice ?
+                        new SimpleDateFormat(FORMAT).format(((Invoice) item).getCreated()) :
+                        new SimpleDateFormat(FORMAT).format(((PaymentIn) item).getCreated())
+        );
     }
 
 
+    public Money getAmount(CayenneDataObject item) {
 
-    public Money getAmount(CayenneDataObject item){
-
-        if(item instanceof Invoice){
-
-            return ((Invoice) item).getTotalGst();
-        }
-
-        return ((PaymentIn) item).getAmount();
+        return item instanceof Invoice ? ((Invoice) item).getTotalGst() : ((PaymentIn) item).getAmount();
     }
 
 
+    public boolean isInvoice(CayenneDataObject item) {
 
-
-    public boolean isInvoice(CayenneDataObject item){
-
-        if(item instanceof Invoice)
-            return true;
-
-        return  false;
+        return item instanceof Invoice;
     }
 
 
-    public Object getInvoiceNumber(CayenneDataObject item){
-        if(((Invoice) item).getInvoiceNumber()!=null)
-            return ((Invoice) item).getInvoiceNumber();
+    public Object getInvoiceNumber(Invoice item) {
 
-        return "";
+        return item.getInvoiceNumber() != null ? item.getInvoiceNumber() : StringUtils.EMPTY;
     }
 
-    public long getId(CayenneDataObject item){
-
-        if(item instanceof Invoice)
-            return ((Invoice) item).getId();
-
-        return ((PaymentIn) item).getId();
-    }
-
-    public String getPaymentType(CayenneDataObject item){
-
-
-        return   ((PaymentIn) item).getType().getDisplayName();
+    public String getPaymentType(PaymentIn item) {
+        return item.getType().getDisplayName();
     }
 }

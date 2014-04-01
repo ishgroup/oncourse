@@ -38,7 +38,9 @@ public class PortalUtils {
 
     private static final String CLASS_SESSIONS_INFO_TEMPLATE = " %s sessions, %s hours";
 
-    public static final String DATE_FORMAT = "d MMMM h:mma ('UTC'Z)";
+    public static final String DATE_FORMAT_d_MMMM_h_mma_UTC_Z = "d MMMM h:mma ('UTC'Z)";
+    public static final String DATE_FORMAT_d_MMMMM_h_mma = "d MMMMM h:mma";
+    public static final String DATE_FORMAT_EEE_MMM_dd_hh_mm_ss_z_yyyy = "EEE MMM dd hh:mm:ss z yyyy";
 
     private final static Logger LOGGER = Logger.getLogger(PortalUtils.class);
 

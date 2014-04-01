@@ -14,10 +14,7 @@ public class Messages {
 
 	@SetupRender
 	boolean setupRender() {
-		if (courseClass == null) {
-			return false;
-		}
-		return true;
-	}
+        return courseClass != null;
+    }
 	
 }

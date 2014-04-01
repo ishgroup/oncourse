@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -35,6 +36,9 @@ public class Navigation {
 
     @Inject
     private IPortalService portalService;
+
+    @Inject
+    private org.apache.tapestry5.ioc.Messages messages;
 
     @Property
     private CourseClass pastCourseClass;
@@ -89,6 +93,11 @@ public class Navigation {
     }
 
 
+    public int getNewResourcesCount()
+    {
+        return 0;
+    }
+
     public boolean isHasResources() {
 
         for (PCourseClass pCourseClasse : pCourseClasses) {
@@ -99,6 +108,9 @@ public class Navigation {
 
         return authenticationService.isTutor() && !portalService.getCommonTutorsBinaryInfo().isEmpty();
     }
+
+
+
 
 
     public boolean isHasResults() {
@@ -114,7 +126,7 @@ public class Navigation {
 
     public String getActiveClassBy(String menutItem) {
         if (menutItem.equals(activeMenu))
-            return "active";
+            return messages.get("li.class.active");
         return StringUtils.EMPTY;
 
     }

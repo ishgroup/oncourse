@@ -4,6 +4,7 @@ import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.commons.io.FileUtils;
@@ -17,6 +18,9 @@ import org.apache.tapestry5.services.Request;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static ish.oncourse.portal.services.PortalUtils.COOKIE_NAME_lastLoginTime;
+import static ish.oncourse.portal.services.PortalUtils.DATE_FORMAT_EEE_MMM_dd_hh_mm_ss_z_yyyy;
 
 /**
  * User: artem
@@ -58,8 +62,8 @@ public class ClassResources {
             return false;
         }
 
-        String sd = cookieService.getCookieValue("lastLoginTime");
-        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
+        String sd = cookieService.getCookieValue(COOKIE_NAME_lastLoginTime);
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_EEE_MMM_dd_hh_mm_ss_z_yyyy);
 		
 		if ( StringUtils.trimToNull(sd) != null) {
 			try {

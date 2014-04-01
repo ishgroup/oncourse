@@ -24,19 +24,5 @@ public class PageStructure {
 	private String activeMenu;
 
 	@Inject
-	private JavaScriptSupport javaScriptSupport;
-
-	@Inject
 	private ComponentResources resources;
-
-	public boolean shouldMarkMenuItem() {
-		return resources.isBound("activeMenu");
-	}
-
-	@AfterRender
-	void afterRender() {
-		if (shouldMarkMenuItem()) {
-			javaScriptSupport.addScript("jQuery('#%s').addClass('act');", activeMenu);
-		}
-	}
 }

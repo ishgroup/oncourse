@@ -3,7 +3,6 @@ package ish.oncourse.portal.components;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.components.subscriptions.WaitingLists;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PCourseClass;
 import ish.oncourse.services.courseclass.CourseClassFilter;
@@ -19,7 +18,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.List;
 import java.util.TimeZone;
 
-import static ish.oncourse.portal.services.PortalUtils.DATE_FORMAT;
+import static ish.oncourse.portal.services.PortalUtils.DATE_FORMAT_D_MMMM_H_MMA_UTC_Z;
 
 public class Menu {
 
@@ -69,105 +68,17 @@ public class Menu {
 			nearestCourseClass = !pastCourseClasses.isEmpty() ? pastCourseClasses.get(0) : null;
 	}
 
-	public boolean isTutor() {
-		return authenticationService.isTutor();
-	}
-
-	public String getTimetablePageName() {
-		return "timetable";
-	}
-
-	public String getDiscussionsPageName() {
-		return isTutor() ? "tutor/messages" : "student/messages";
-	}
-
-	public String getClassesPageName() {
-		return "classes";
-	}
-
-	public String getProfilePageName() {
-		return "profile";
-	}
-
-	public String getMailinglistsPageName() {
-		return "mailinglists";
-	}
-
-	public String getSurveysPageName() {
-		return isTutor() ? "tutor/surveys" : "student/surveys";
-	}
-
-	public String getUnconfirmed() {
-		return CourseClassFilter.UNCONFIRMED.name();
-	}
-
-	public String getCurrent() {
-		return CourseClassFilter.CURRENT.name();
-	}
-
-	public String getPast() {
-		return CourseClassFilter.PAST.name();
-	}
-
-	public String getWaitingListsPageName() {
-		return WaitingLists.class.getSimpleName();
-	}
-
-	public String getContextPath() {
-		return request.getContextPath();
-	}
-
-
-    public boolean isHasResources(){
-
-		for (PCourseClass pCourseClasse : pCourseClasses) {
-			if (!portalService.getAttachedFiles(pCourseClasse.getCourseClass(), authenticationService.getUser()).isEmpty()) {
-				return true;
-			}
-		}
-
-		if (authenticationService.isTutor()) {
-			return !portalService.getCommonTutorsBinaryInfo().isEmpty();
-		}
-
-		return false;
-    }
-
-
-    public boolean isHasResults(){
-
-		if (authenticationService.getUser().getStudent() != null){
-			authenticationService.getUser().getStudent().getEnrolments();
-			return !authenticationService.getUser().getStudent().getEnrolments().isEmpty();
-		}
-        return false;
-    }
-
-    public boolean isHistoryEnabled()
-    {
-        return portalService.isHistoryEnabled();
-    }
-
-
-    public String getActiveClassBy(String menutItem)
-    {
-        if(menutItem.equals(activeMenu))
-            return "active";
-        return StringUtils.EMPTY;
-
-    }
-
 	public String getDate(Object courseClass) {
 		TimeZone timeZone;
 
 		if (courseClass instanceof PCourseClass) {
 			timeZone = courseClassService.getClientTimeZone(pCourseClass.getCourseClass());
-			return 	FormatUtils.getDateFormat(DATE_FORMAT, timeZone).format(pCourseClass.getStartDate());
+			return 	FormatUtils.getDateFormat(DATE_FORMAT_D_MMMM_H_MMA_UTC_Z, timeZone).format(pCourseClass.getStartDate());
 		}
 
 		if (courseClass instanceof CourseClass) {
 			timeZone = courseClassService.getClientTimeZone(pastCourseClass);
-			return 	FormatUtils.getDateFormat(DATE_FORMAT, timeZone).format(pastCourseClass.getStartDate());
+			return 	FormatUtils.getDateFormat(DATE_FORMAT_D_MMMM_H_MMA_UTC_Z, timeZone).format(pastCourseClass.getStartDate());
 		}
 		return StringUtils.EMPTY;
 

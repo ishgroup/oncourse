@@ -70,31 +70,28 @@ public class ClassResults {
 
     public String getOutComeResult(){
         if(OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(outcome.getStatus())){
-            return "PASS";
+            return messages.get("outComeResult.STATUSES_VALID_FOR_CERTIFICATE");
         }
         if(OutcomeStatus.STATUS_NOT_SET.equals(outcome.getStatus())){
-            return "NO RESULT";
+            return messages.get("outComeResult.STATUS_NOT_SET");
         }
-        return "NOT YET COMPETENT";
+        return messages.get("outComeResult.NOT_YET_COMPETENT");
 
     }
 
     public String getOutComeClass(){
 
         if(OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(outcome.getStatus())){
-            return "text-success";
+            return messages.get("outComeClass.STATUSES_VALID_FOR_CERTIFICATE");
         }
         if(OutcomeStatus.STATUS_NOT_SET.equals(outcome.getStatus())){
-            return "text-info";
+            return messages.get("outComeClass.STATUS_NOT_SET");
         }
-        return "text-danger";
+        return messages.get("outComeClass.NOT_YET_COMPETENT");
     }
 
     public Qualification getQualification(){
-
-        if(courseClass.getCourse().getQualification()!=null)
-            return courseClass.getCourse().getQualification();
-        return null;
+        return courseClass.getCourse().getQualification();
     }
 
     public boolean isHasModules(){

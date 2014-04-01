@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ public class SessionSliderItem {
 
     @Inject
     private IAuthenticationService authenticationService;
+
+    @Inject
+    private Messages messages;
 
 
     @SetupRender
@@ -87,7 +91,7 @@ public class SessionSliderItem {
 
     public String getCurrentClass(){
 
-        return session.getId().equals(nearestSession.getId()) ? "current" : StringUtils.EMPTY;
+        return session.getId().equals(nearestSession.getId()) ? messages.get("li.class.current") : StringUtils.EMPTY;
     }
 
 
