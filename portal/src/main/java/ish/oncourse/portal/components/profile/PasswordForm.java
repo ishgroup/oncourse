@@ -120,16 +120,16 @@ public class PasswordForm {
 
 
         if(confirmPassword==null){
-            confirmPasswordErrorMessage="Confirm password can not be empty";
+            confirmPasswordErrorMessage = messages.get("message-confirmPasswordEmpty");
             passwordForm.recordError(confirmPasswordErrorMessage);
             validateHandler.getErrors().put("confirmpassword",confirmPasswordErrorMessage);
         }
 
 
         if(password==null){
-            passwordErrorMessage="Password can not be empty";
+            passwordErrorMessage = messages.get("message-passwordEmpty");
             passwordForm.recordError(passwordErrorMessage);
-            validateHandler.getErrors().put("password",passwordErrorMessage);
+            validateHandler.getErrors().put("password", passwordErrorMessage);
         }
 
 
@@ -141,17 +141,15 @@ public class PasswordForm {
 
     private String validatedPassword(String aValue, boolean isConfirm) {
 
-        String prefix = "The password" + (isConfirm ? " confirm" : "") + " ";
         int minimumPasswordChars = 4;
         if (aValue == null || aValue.length() < minimumPasswordChars) {
-            return prefix + "must be at least " + minimumPasswordChars
-                    + " characters long.";
+            return messages.format("message-passwordMinChars", minimumPasswordChars);
         }
         if (aValue.split("\\s").length != 1) {
-            return prefix + "cannot contain blank spaces.";
+            return messages.format("message-passwordHasSpaces");
         }
         if (isConfirm && !aValue.equals(password)) {
-            return prefix + "does not match the given password.";
+            return messages.get("message-confirmPasswordNotMatch");
         }
         return null;
     }

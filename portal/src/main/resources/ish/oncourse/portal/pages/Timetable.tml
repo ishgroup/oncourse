@@ -10,5 +10,5 @@
             <div t:type="timetable/classSlider" contact="contact"/>
         </div>
         <!-- slider content end -->
-        <div t:type="timetable/calendar" contact="contact"/>
+        <div t:type="timetable/calendar"/>
 </html>

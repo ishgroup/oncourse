@@ -5,6 +5,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.cayenne.Cayenne;
@@ -46,9 +47,6 @@ public class InvoiceDetails {
     @Property
     private InvoiceLine invoiceLine;
 
-    private final static String FORMAT = "dd MMMMM yyyy";
-
-    private DateFormat dateFormat = new SimpleDateFormat(FORMAT);
 
     Object onActivate(String id) {
         if (id != null && id.length() > 0 && id.matches("\\d+")) {
@@ -68,12 +66,8 @@ public class InvoiceDetails {
 
     @SetupRender
     void setupRender() {
-
-
         invoiceLines = invoice.getInvoiceLines();
-
-
-    }
+   }
 
 
     public String getPhoneNumber() {
@@ -94,11 +88,8 @@ public class InvoiceDetails {
 
 
     public String getDate()
-
     {
-
-        return String.format("%s ", dateFormat.format(invoice.getCreated()));
-
+        return String.format("%s ", new SimpleDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy).format(invoice.getCreated()));
     }
 
     public Money getTotalTax() {

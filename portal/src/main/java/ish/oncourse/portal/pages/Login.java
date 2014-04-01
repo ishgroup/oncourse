@@ -120,14 +120,7 @@ public class Login {
 	@Persist
 	private Map<String, String> errors;
 
-	private static final String UNABLE_TO_LOG = "You are unable to log into this site with this set of credentials. Please contact the college and let them know that there are two contacts with identical login details. If they merge those contacts, the problem will be resolved.";
-	private static final String USER_NOT_EXIST = "User doesn't exist in ";
-	private static final String HAS_ERROR = "has-error";
-	private static final String DISPLAY_BLOCK = "display: block;";
-	private static final String DISPLAY_NONE =  "display: none;";
 	private static final String ON =  "on";
-	private static final String AS_COMPANY =  "as company";
-	private static final String AS_PERSON =  "as person";
 
 	Object onActivate() {
 		String value = StringUtils.trimToNull(request.getParameter(PARAMETER_oneTimePassword));
@@ -279,7 +272,7 @@ public class Login {
 			colleges.removeAll(collegesWithDuplicates);
 
 			if (colleges.size() < 1) {
-				loginForm.recordError(UNABLE_TO_LOG);
+				loginForm.recordError(messages.get("message-unableToLoginDuplicateContacts"));
 				return this;
 			}
 
@@ -298,7 +291,7 @@ public class Login {
 		}
 
 		if (users.isEmpty()) {
-			loginForm.recordError(USER_NOT_EXIST);
+			loginForm.recordError(messages.get("message-userNotExist"));
 			return this;
 		} else if (users.size() == 1) {
 			forgotPassword.setUser(users.get(0));
@@ -322,7 +315,7 @@ public class Login {
 			colleges.removeAll(collegesWithDuplicates);
 
 			if (colleges.size() < 1) {
-				loginForm.recordError(UNABLE_TO_LOG);
+				loginForm.recordError(messages.get("message-unableToLoginDuplicateContacts"));
 				return this;
 			}
 
@@ -342,7 +335,7 @@ public class Login {
 		if (errors == null)
 			return StringUtils.EMPTY;
 		String message = errors.get(fieldName);
-		return message != null ? HAS_ERROR : StringUtils.EMPTY;
+		return message != null ? messages.get("div.class.error") : StringUtils.EMPTY;
 
 	}
 
@@ -363,11 +356,11 @@ public class Login {
 
 		public String getCompanyDisplay() {
 
-			return isCompany() ? DISPLAY_BLOCK : DISPLAY_NONE;
+			return isCompany() ? messages.get("css.display.block") : messages.get("css.display.none");
 		}
 
 		public String getStudentDisplay() {
-			return isCompany() ? DISPLAY_NONE : DISPLAY_BLOCK;
+			return isCompany() ? messages.get("css.display.none") : messages.get("css.display.block");
 		}
 
 		public String getCompanyOn() {
@@ -375,7 +368,7 @@ public class Login {
 		}
 
 		public String getLabel() {
-			return isCompany() ? AS_COMPANY : AS_PERSON;
+			return isCompany() ? messages.get("label-asCompany") : messages.get("label-asPerson");
 		}
 
 	}

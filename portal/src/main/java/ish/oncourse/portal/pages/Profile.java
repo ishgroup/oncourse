@@ -10,6 +10,7 @@ import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 
@@ -21,6 +22,9 @@ import java.util.Date;
  * Time: 10:33 AM
  */
 public class Profile {
+
+    @Inject
+    private Messages messages;
 
     @Inject
     private ICayenneService cayenneService;
@@ -55,13 +59,6 @@ public class Profile {
 
     public String getActiveClass(String tabId)
     {
-        return tabId.equals(activeTabId) ? "active": StringUtils.EMPTY;
+        return tabId.equals(activeTabId) ? messages.get("class.active") : StringUtils.EMPTY;
     }
-
-    public boolean isStudent(){
-
-       return contact.getStudent()!=null;
-    }
-
-
 }

@@ -3,6 +3,7 @@ package ish.oncourse.portal.pages;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -28,11 +29,6 @@ public class PaymentDetails {
     @InjectPage
     private PageNotFound pageNotFound;
 
-    private final static String FORMAT="dd MMMMM yyyy";
-
-    private DateFormat dateFormat = new SimpleDateFormat(FORMAT);
-
-
     Object onActivate(String id) {
         if (id != null && id.length() > 0 && id.matches("\\d+"))
         {
@@ -51,11 +47,8 @@ public class PaymentDetails {
     }
 
     public String getDate()
-
     {
-
-        return String.format("%s ", dateFormat.format(payment.getCreated()));
-
+        return String.format("%s ", new SimpleDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy).format(payment.getCreated()));
     }
 
 

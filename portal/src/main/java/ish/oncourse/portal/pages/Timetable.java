@@ -32,16 +32,8 @@ public class Timetable {
 		this.contact = authService.getUser();
 		this.timetableMonthUrl = getContextPath() + "/timetableJson";
 	}
-	
-	public String getMonthPageName() {
-		return "timetable";
-	}
-	
+
 	public String getContextPath() {
 		return request.getContextPath();
-	}
-	
-	public String getListPageName() {
-		return "timetableList";
 	}
 }

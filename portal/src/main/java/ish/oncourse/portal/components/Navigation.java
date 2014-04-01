@@ -126,7 +126,7 @@ public class Navigation {
 
     public String getActiveClassBy(String menutItem) {
         if (menutItem.equals(activeMenu))
-            return messages.get("li.class.active");
+            return messages.get("class.active");
         return StringUtils.EMPTY;
 
     }

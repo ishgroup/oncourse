@@ -5,6 +5,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.PortalUtils;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
@@ -37,11 +38,6 @@ public class Finance {
     @Property
     private CayenneDataObject item;
 
-
-    private final static String FORMAT = "dd MMMMM yyyy";
-
-    DateFormat dateFormat = new SimpleDateFormat(FORMAT);
-
     @SetupRender
     void setupRender() {
 
@@ -59,8 +55,8 @@ public class Finance {
     public String getDate(CayenneDataObject item) {
 
         return String.format("%s ", item instanceof Invoice ?
-                        new SimpleDateFormat(FORMAT).format(((Invoice) item).getCreated()) :
-                        new SimpleDateFormat(FORMAT).format(((PaymentIn) item).getCreated())
+                        new SimpleDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy).format(((Invoice) item).getCreated()) :
+                        new SimpleDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy).format(((PaymentIn) item).getCreated())
         );
     }
 

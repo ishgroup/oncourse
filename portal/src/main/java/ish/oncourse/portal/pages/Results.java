@@ -67,8 +67,8 @@ public class Results {
         TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
 
         return String.format("%s - %s",
-                FormatUtils.getDateFormat("dd MMMMMM yyyy", timeZone).format(courseClass.getStartDate()),
-                FormatUtils.getDateFormat("dd MMMMMM yyyy", timeZone).format(courseClass.getEndDate()));
+                FormatUtils.getDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy, timeZone).format(courseClass.getStartDate()),
+                FormatUtils.getDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy, timeZone).format(courseClass.getEndDate()));
     }
 
     public boolean isVisible(CourseClass courseClass) {

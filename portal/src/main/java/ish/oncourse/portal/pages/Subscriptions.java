@@ -5,8 +5,14 @@ import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class Subscriptions {
+
+    @Inject
+
+    private Messages messages;
 
     @Property
     @Persist
@@ -27,6 +33,6 @@ public class Subscriptions {
 
     public String getActiveClass(String tabId)
     {
-        return tabId.equals(activeTabId) ? "active": StringUtils.EMPTY;
+        return tabId.equals(activeTabId) ? messages.get("class.active") : StringUtils.EMPTY;
     }
 }

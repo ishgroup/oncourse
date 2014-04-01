@@ -80,7 +80,7 @@ public class Resources {
     void setupRender() {
 
         String sd = cookieService.getCookieValue(COOKIE_NAME_lastLoginTime);
-        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
+        SimpleDateFormat format = new SimpleDateFormat(PortalUtils.DATE_FORMAT_EEE_MMM_dd_hh_mm_ss_z_yyyy);
         if (StringUtils.trimToNull(sd) != null) {
             try {
                 lastLoginDate = format.parse(sd);
@@ -107,8 +107,8 @@ public class Resources {
         TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
 
         return String.format("%s - %s",
-                FormatUtils.getDateFormat("dd MMMMMM yyyy", timeZone).format(courseClass.getStartDate()),
-                FormatUtils.getDateFormat("dd MMMMMM yyyy", timeZone).format(courseClass.getEndDate()));
+                FormatUtils.getDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy, timeZone).format(courseClass.getStartDate()),
+                FormatUtils.getDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy, timeZone).format(courseClass.getEndDate()));
     }
 
 

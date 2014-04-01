@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.io.IOException;
@@ -35,6 +36,9 @@ public class PasswordRecovery {
 
 	@Inject
 	private ICayenneService cayenneService;
+
+    @Inject
+    private Messages messages;
 
 	@Property
 	@Persist
@@ -64,13 +68,13 @@ public class PasswordRecovery {
 	Object onSuccess() throws IOException {
 
 		if (StringUtils.isBlank(password)) {
-			recoveryForm.recordError(passwordField, "Please enter your password");
+			recoveryForm.recordError(passwordField, messages.get("message-enterPassword"));
 		}
         else if (StringUtils.isBlank(confirmpassword)) {
-			recoveryForm.recordError(confirmPasswordField, "Please, confirm your password");
+			recoveryForm.recordError(confirmPasswordField, messages.get("message-confirmPassowrd"));
 		}
         else if (!password.equals(confirmpassword)) {
-			recoveryForm.recordError(confirmPasswordField, "Password does not match the confirm password.");
+			recoveryForm.recordError(confirmPasswordField, messages.get("message-confirmPassowrdNotMatch"));
 		}
 		
 		if (recoveryForm.getHasErrors()) {

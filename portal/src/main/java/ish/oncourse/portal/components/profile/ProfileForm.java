@@ -211,7 +211,7 @@ public class ProfileForm {
                 contact.setDateOfBirth(parsedDate);
             }
         } catch (ParseException e) {
-            birthDateErrorMessage = "Please enter a valid date of birth and formatted as indicated: in the form 25/12/2000";
+            birthDateErrorMessage = messages.get("message-birthDateWrongFormat");
         }
     }
 

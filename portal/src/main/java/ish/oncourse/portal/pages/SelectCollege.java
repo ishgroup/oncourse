@@ -9,6 +9,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.net.URL;
@@ -44,6 +45,9 @@ public class SelectCollege {
 
 	@Inject
 	private IAuthenticationService authService;
+
+    @Inject
+    private Messages messages;
 
 	@InjectPage
 	private ForgotPassword forgotPassword;
@@ -99,7 +103,7 @@ public class SelectCollege {
 
 		if (collegesWithDuplicates.contains(String.valueOf(c.getCollege().getId()))) {
 			collegeForm
-					.recordError("You are unable to log into this site with this set of credentials. Please contact the college and let them know that there are two contacts with identical login details. If they merge those contacts, the problem will be resolved.");
+					.recordError(messages.get("message-unableToLoginDuplicateContacts"));
 			return this;
 		}
 

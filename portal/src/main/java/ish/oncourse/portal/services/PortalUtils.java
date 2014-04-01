@@ -25,8 +25,8 @@ public class PortalUtils {
     public static final int MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
     public static final String CONTENT_TYPE = "text/json";
 
-    static final String URL_CLASS_TEMPLATE = "http://%s/class/%s-%s";
-    static final String URL_COURSE_TEMPLATE = "http://%s/course/%s";
+    private static final String URL_CLASS_TEMPLATE = "http://%s/class/%s-%s";
+    private static final String URL_COURSE_TEMPLATE = "http://%s/course/%s";
 
     private static final int CLASS_DETAILS_LENGTH = 490;
     private static final int COURSE_DETAILS_LENGTH = 245;
@@ -40,7 +40,9 @@ public class PortalUtils {
 
     public static final String DATE_FORMAT_d_MMMM_h_mma_UTC_Z = "d MMMM h:mma ('UTC'Z)";
     public static final String DATE_FORMAT_d_MMMMM_h_mma = "d MMMMM h:mma";
+    public static final String DATE_FORMAT_dd_MMMMM_yyyy = "dd MMMMM yyyy";
     public static final String DATE_FORMAT_EEE_MMM_dd_hh_mm_ss_z_yyyy = "EEE MMM dd hh:mm:ss z yyyy";
+
 
     private final static Logger LOGGER = Logger.getLogger(PortalUtils.class);
 
