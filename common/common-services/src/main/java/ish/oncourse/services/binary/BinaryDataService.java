@@ -31,7 +31,7 @@ public class BinaryDataService implements IBinaryDataService {
 	public static final String NAME_PROFILE_PICTURE = "Profile picture";
 	public static final String CONTEXT_PATH_TEMPLATE = "/a/%s/%s.%s";
 
-	public static final Long URL_EXPIRE_TIMEOUT = 600000L;
+	public static final Long URL_EXPIRE_TIMEOUT = 3600000L;
 
 	@Inject
 	private ICayenneService cayenneService;
