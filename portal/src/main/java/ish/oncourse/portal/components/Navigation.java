@@ -108,10 +108,6 @@ public class Navigation {
         return authenticationService.isTutor() && !portalService.getCommonTutorsBinaryInfo().isEmpty();
     }
 
-
-
-
-
     public boolean hasResults() {
 
            return portalService.hasResults();
@@ -123,10 +119,7 @@ public class Navigation {
 
 
     public String getActiveClassBy(String menutItem) {
-        if (menutItem.equals(activeMenu))
-            return messages.get("class.active");
-        return StringUtils.EMPTY;
-
+       return (menutItem.equals(activeMenu)) ? messages.get("class.active"):  StringUtils.EMPTY;
     }
 
     public class Notification

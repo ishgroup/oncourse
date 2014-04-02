@@ -53,8 +53,6 @@ public class PortalService implements IPortalService{
     @Inject
     private ITagService tagService;
 
-	private static final String TARGET_BLANK = "_blank";
-
     @Override
     public Contact getContact() {
         return authenticationService.getUser();
@@ -511,19 +509,13 @@ public class PortalService implements IPortalService{
 		return pCourseClasses;
 	}
 
-	public String[] getUrlBy(CourseClass courseClass)
+	public String getUrlBy(CourseClass courseClass)
 	{
-		if (webSiteService.getCurrentDomain() != null) {
-			return new String[]{getClassDetailsURLBy(courseClass, webSiteService), TARGET_BLANK};
-		}
-		return new String[]{"#", StringUtils.EMPTY};
+        return webSiteService.getCurrentDomain() != null ? getClassDetailsURLBy(courseClass, webSiteService) : null;
 	}
 
-	public String[] getUrlBy(Course course)
+	public String getUrlBy(Course course)
 	{
-		if (webSiteService.getCurrentDomain() != null) {
-			return new String[]{getCourseDetailsURLBy(course, webSiteService), TARGET_BLANK};
-		}
-		return new String[]{"#", StringUtils.EMPTY};
+        return webSiteService.getCurrentDomain() != null ? getCourseDetailsURLBy(course, webSiteService): null;
 	}
 }

@@ -4,7 +4,12 @@
         <div class="col-lg-11 col-sm-10 col-xs-10">
 	    <t:if test="webVisible">
 		    <strong>
-                <a href="${URL}" target="${target}">${courseName}</a>
+                <t:if test="url">
+                    <a href="url" target="_blank">${courseName}</a>
+                </t:if>
+                <t:unless test="url">
+                    <a href="#">${courseName}</a>
+                </t:unless>
 		    </strong>
             <p >${courseDetail}</p>
 		    <p:else>

@@ -131,9 +131,7 @@ public class Resources {
     }
 
     public String getUrl() {
-        String[] params = portalService.getUrlBy(courseClass);
-        target = params[1];
-        return params[0];
+        return portalService.getUrlBy(courseClass);
     }
 
     public String getSize() {

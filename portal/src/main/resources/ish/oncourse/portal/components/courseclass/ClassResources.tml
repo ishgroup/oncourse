@@ -14,7 +14,7 @@
                                 </t:if>
                         </a>
                         ${size}.
-                        <t:if test="isNew(material.modified)">
+                        <t:if test="isNew()">
                              <span class="label label-primary">NEW</span>
                         </t:if>
 

@@ -42,10 +42,7 @@ public class WaitingListItem {
     private WaitingLists waitingListsPage;
 
 	@Property
-	private String target;
-
-	@Property
-	private String URL;
+	private String url;
 
     public String getCourseName() {
         return waitingList.getCourse().getName();
@@ -53,9 +50,7 @@ public class WaitingListItem {
 
  	@BeginRender
 	public void befoRender() {
-		String[] params = portalService.getUrlBy(waitingList.getCourse());
-		URL = params[0];
-		target = params[1];
+		url = portalService.getUrlBy(waitingList.getCourse());
 	}
 
     public String getCourseDetail() {

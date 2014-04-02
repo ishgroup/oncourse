@@ -89,19 +89,17 @@ public class Class {
         return authenticationService.isTutor() && !portalService.isApproved(courseClass);
     }
 
-	public boolean isHasResults() {
+	public boolean hasResults() {
 		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
 		return portalService.hasResult(courseClass);
 	}
 
-	public boolean isHasResources() {
+	public boolean hasResources() {
 
-		return  !portalService.getAttachedFiles(courseClass).isEmpty();
+		return !portalService.getAttachedFiles(courseClass).isEmpty();
 	}
 
 	public String getUrl() {
-		String[] params = portalService.getUrlBy(courseClass);
-		target = params[1];
-		return params[0];
+		return portalService.getUrlBy(courseClass);
 	}
 }

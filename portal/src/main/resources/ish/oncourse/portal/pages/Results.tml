@@ -6,13 +6,18 @@
 	<ul class="list-unstyled result-content">
         <t:loop source="courseClasses" value="courseClass">
 
-        <t:if test="${isVisible(courseClass)}">
+        <t:if test="hasResult()">
 		<li>
             <h6>
-                <a href="${URL}" target="${target}">${courseClass.course.name}</a>
+                <t:if test="url">
+                    <a href="url" target='_blank'>${courseClass.course.name}</a>
+                </t:if>
+                <t:unless test="url">
+                    <a href="#">${courseClass.course.name}</a>
+                </t:unless>
                 <small> (${courseClass.uniqueIdentifier})</small>
             </h6>
-            <p><small class="text-muted">${getDate(courseClass)}</small></p>
+            <p><small class="text-muted">${date}</small></p>
 			<span t:type="courseclass/classresults" courseClass="courseClass"/>
 		</li>
          </t:if>

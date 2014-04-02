@@ -81,12 +81,8 @@ public class ClassResources {
         return request.getContextPath();
     }
 
-    public boolean isNew(Date material) {
-		if (lastLoginDate == null) {
-			return true;
-		} else {
-			return material.after(lastLoginDate);
-		}
+    public boolean isNew() {
+        return lastLoginDate == null || material.getModified().after(lastLoginDate);
 	}
 
 	public String getMaterialUrl() {

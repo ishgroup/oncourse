@@ -44,19 +44,13 @@ public class Results {
 	@Inject
 	private Messages messages;
 
-	@Property
-	private String target;
-
-	@Property
-	private String URL;
-
 	@SetupRender
     void  setupRender(){
 
         courseClasses = portalService.getContactCourseClasses(CourseClassFilter.ALL);
     }
 
-    public String getDate(CourseClass courseClass)
+    public String getDate()
     {
         if(courseClass.getIsDistantLearningCourse())
             return  messages.get(KEY_selfPacedMessage);
@@ -71,14 +65,12 @@ public class Results {
                 FormatUtils.getDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy, timeZone).format(courseClass.getEndDate()));
     }
 
-    public boolean isVisible(CourseClass courseClass) {
+    public boolean hasResult() {
 		return portalService.hasResult(courseClass);
     }
 
 
 	public String getUrl() {
-		String[] params = portalService.getUrlBy(courseClass);
-		target = params[1];
-		return params[0];
+		return portalService.getUrlBy(courseClass);
 	}
 }

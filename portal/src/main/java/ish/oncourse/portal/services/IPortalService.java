@@ -37,9 +37,9 @@ public interface IPortalService {
 
 	public List<PCourseClass> fillCourseClassSessions(CourseClassFilter filter) ;
 
-	public String[] getUrlBy(CourseClass courseClass);
+	public String getUrlBy(CourseClass courseClass);
 
-	public String[] getUrlBy(Course course);
+	public String getUrlBy(Course course);
 
 
     /**
