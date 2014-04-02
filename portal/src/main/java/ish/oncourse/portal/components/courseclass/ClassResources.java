@@ -4,7 +4,6 @@ import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.commons.io.FileUtils;
@@ -73,7 +72,7 @@ public class ClassResources {
 			}
 		}
 
-        materials = portalService.getAttachedFiles(courseClass);
+        materials = portalService.getResourcesBy(courseClass);
         return true;
     }
 

@@ -79,18 +79,9 @@ public class Resources {
     @SetupRender
     void setupRender() {
 
-        String sd = cookieService.getCookieValue(COOKIE_NAME_lastLoginTime);
-        SimpleDateFormat format = new SimpleDateFormat(PortalUtils.DATE_FORMAT_EEE_MMM_dd_hh_mm_ss_z_yyyy);
-        if (StringUtils.trimToNull(sd) != null) {
-            try {
-                lastLoginDate = format.parse(sd);
-            } catch (Exception ex) {
-                logger.error(ex.getMessage(), ex);
-            }
-        }
-
+        lastLoginDate = portalService.getLastLoginTime();
         if (authenticationService.isTutor()) {
-            tutorsMaterials = portalService.getCommonTutorsBinaryInfo();
+            tutorsMaterials = portalService.getTutorCommonResources();
         }
 
         courseClasses = portalService.getContactCourseClasses(CourseClassFilter.CURRENT);
@@ -114,7 +105,7 @@ public class Resources {
 
     public boolean hasResources(CourseClass courseClass) {
 
-        List<BinaryInfo> materials = portalService.getAttachedFiles(courseClass);
+        List<BinaryInfo> materials = portalService.getResourcesBy(courseClass);
         return !materials.isEmpty();
     }
 

@@ -5,11 +5,13 @@ import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.cache.CacheGroup;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.ObjectContext;
@@ -21,9 +23,11 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static ish.oncourse.portal.services.PortalUtils.*;
@@ -34,6 +38,8 @@ import static ish.oncourse.portal.services.PortalUtils.*;
  * Time: 3:35 PM
  */
 public class PortalService implements IPortalService{
+
+    private static final Logger logger = Logger.getLogger(PortalService.class);
 
     @Inject
     private IAuthenticationService authenticationService;
@@ -53,9 +59,30 @@ public class PortalService implements IPortalService{
     @Inject
     private ITagService tagService;
 
+    @Inject
+    private ICookiesService cookiesService;
+
     @Override
     public Contact getContact() {
         return authenticationService.getUser();
+    }
+
+    @Override
+    public Date getLastLoginTime() {
+
+        String sd = cookiesService.getCookieValue(COOKIE_NAME_lastLoginTime);
+        SimpleDateFormat format = new SimpleDateFormat(PortalUtils.DATE_FORMAT_EEE_MMM_dd_hh_mm_ss_z_yyyy);
+        if (StringUtils.trimToNull(sd) != null) {
+            try {
+                return format.parse(sd);
+            } catch (Exception ex) {
+                logger.error(ex.getMessage(), ex);
+                return new Date(0);
+            }
+        }
+        else {
+            return new Date(0);
+        }
     }
 
     @Override
@@ -409,21 +436,27 @@ public class PortalService implements IPortalService{
     }
 
     @Override
-	public List<BinaryInfo> getCommonTutorsBinaryInfo(){
+	public List<BinaryInfo> getTutorCommonResources(){
 
-		ObjectContext sharedContext = cayenneService.sharedContext();
+        if (authenticationService.isTutor()) {
+            ObjectContext sharedContext = cayenneService.sharedContext();
 
-		SelectQuery query = new SelectQuery(BinaryInfo.class, ExpressionFactory.matchExp(
-				BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.TUTORS).andExp(
-				ExpressionFactory.matchExp(BinaryInfo.COLLEGE_PROPERTY, webSiteService.getCurrentCollege())).andExp(
-				ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "+." + BinaryInfoRelation.CREATED_PROPERTY, null)));
+            SelectQuery query = new SelectQuery(BinaryInfo.class, ExpressionFactory.matchExp(
+                    BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.TUTORS).andExp(
+                    ExpressionFactory.matchExp(BinaryInfo.COLLEGE_PROPERTY, webSiteService.getCurrentCollege())).andExp(
+                    ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "+." + BinaryInfoRelation.CREATED_PROPERTY, null)));
 
-		return (List<BinaryInfo>) sharedContext.performQuery(query);
+            return (List<BinaryInfo>) sharedContext.performQuery(query);
+        }
+        else
+        {
+            return Collections.EMPTY_LIST;
+        }
 
 	}
 
 	@Override
-	public List<BinaryInfo> getAttachedFiles(CourseClass courseClass) {
+	public List<BinaryInfo> getResourcesBy(CourseClass courseClass) {
 
         Contact contact = authenticationService.getUser();
 		ObjectContext sharedContext = cayenneService.sharedContext();
@@ -462,12 +495,22 @@ public class PortalService implements IPortalService{
 	@Override
 	public boolean hasResult(CourseClass courseClass) {
 
-		Student student = authenticationService.getUser().getStudent();
+		Student student = getContact().getStudent();
 		Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY , student);
 		List<Enrolment> enrolments = exp.filterObjects(courseClass.getValidEnrolments());
 
 		return !enrolments.isEmpty();
 	}
+
+    public int getNewResultsCount()
+    {
+        Expression expression = ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS);
+        expression = expression.andExp(ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, getContact().getStudent()));
+        expression = expression.andExp(ExpressionFactory.greaterOrEqualExp(Outcome.MODIFIED_PROPERTY, getLastLoginTime()));
+
+        ObjectContext sharedContext = cayenneService.sharedContext();
+        return sharedContext.performQuery(new SelectQuery(Outcome.class,expression)).size();
+    }
 
     @Override
     public boolean hasResults() {

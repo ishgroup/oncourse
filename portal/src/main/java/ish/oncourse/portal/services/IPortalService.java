@@ -4,11 +4,14 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import org.apache.tapestry5.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IPortalService {
 
     public Contact getContact();
+
+    public Date getLastLoginTime();
 
     public JSONObject getSession(Session session);
 
@@ -29,9 +32,9 @@ public interface IPortalService {
 	 */
 	boolean hasResult(CourseClass courseClass);
 
-	public List<BinaryInfo> getCommonTutorsBinaryInfo();
+	public List<BinaryInfo> getTutorCommonResources();
 
-	public List<BinaryInfo> getAttachedFiles(CourseClass courseClass);
+	public List<BinaryInfo> getResourcesBy(CourseClass courseClass);
 
     public List<CourseClass> getContactCourseClasses(CourseClassFilter filter);
 
@@ -63,5 +66,7 @@ public interface IPortalService {
      */
     public Tag getMailingList(long id);
 
-    boolean hasResults();
+    public boolean hasResults();
+
+    public int getNewResultsCount();
 }

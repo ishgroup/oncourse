@@ -1,25 +1,15 @@
 package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Student;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.portal.services.PortalUtils;
-import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-
-import java.util.List;
 
 public class Class {
 
@@ -96,7 +86,7 @@ public class Class {
 
 	public boolean hasResources() {
 
-		return !portalService.getAttachedFiles(courseClass).isEmpty();
+		return !portalService.getResourcesBy(courseClass).isEmpty();
 	}
 
 	public String getUrl() {
