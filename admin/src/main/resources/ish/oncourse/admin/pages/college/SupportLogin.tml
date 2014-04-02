@@ -34,7 +34,7 @@
 					</tr>
 
 					<tr class="user-login" style="display: ${userShow};">
-					<td>Last namer</td>
+					<td>Last name</td>
 						<td><t:textfield t:id="lastName" value="lastName" validate="required" />
 						</td>
 					</tr>
