@@ -72,8 +72,8 @@ public class Class {
 			 * for all related objects of the course class (sessions, room, sites).
 			 * It is important when we define timezone for start and end time.
 			 */
-            this.courseClass = Cayenne.objectForPK(cayenneService.newNonReplicatingContext(),CourseClass.class, idLong);
-            return null;
+            this.courseClass = portalService.getCourseClassBy(idLong);
+            return this.courseClass == null ? pageNotFound:null;
 		} else {
 			return pageNotFound;
         }
@@ -86,17 +86,17 @@ public class Class {
 
     public boolean needApprove()
     {
-        return authenticationService.isTutor() && !portalService.isApproved(authenticationService.getUser(), courseClass);
+        return authenticationService.isTutor() && !portalService.isApproved(courseClass);
     }
 
 	public boolean isHasResults() {
 		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
-		return portalService.hasResult(authenticationService.getUser(), courseClass);
+		return portalService.hasResult(courseClass);
 	}
 
 	public boolean isHasResources() {
 
-		return  !portalService.getAttachedFiles(courseClass, authenticationService.getUser()).isEmpty();
+		return  !portalService.getAttachedFiles(courseClass).isEmpty();
 	}
 
 	public String getUrl() {

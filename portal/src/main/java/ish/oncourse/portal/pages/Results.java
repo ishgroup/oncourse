@@ -53,7 +53,7 @@ public class Results {
 	@SetupRender
     void  setupRender(){
 
-        courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.ALL);
+        courseClasses = portalService.getContactCourseClasses(CourseClassFilter.ALL);
     }
 
     public String getDate(CourseClass courseClass)
@@ -72,7 +72,7 @@ public class Results {
     }
 
     public boolean isVisible(CourseClass courseClass) {
-		return portalService.hasResult(authenticationService.getUser(), courseClass);
+		return portalService.hasResult(courseClass);
     }
 
 

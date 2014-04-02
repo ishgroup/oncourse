@@ -6,6 +6,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.tag.ITagService;
@@ -36,9 +37,11 @@ public class Unsubscribe {
 	@Property
 	@Persist
 	private boolean postUnsubscribe;
-	
+
+    @Inject ITagService tagService;
+
 	@Inject
-	private ITagService tagService;
+	private IPortalService portalService;
 	
 	@Inject
 	private IContactService contactService;
@@ -50,23 +53,15 @@ public class Unsubscribe {
 	private PageNotFound pageNotFound;
 	
 	private boolean unsubscribe;
-	
+
 	Object onActivate(String param) {
 		try {
 			Long mailingListId = Long.parseLong(param.substring(0, param.indexOf(PARAM_DELIMETER)));
-			String contactUniqueCode = param.substring(param.indexOf(PARAM_DELIMETER) + 1);
-			
-			List<Tag> tagList = tagService.loadByIds(mailingListId);
-			if (!tagList.isEmpty()) {
-				this.mailingList = tagList.get(0);
-			}
-			this.contact = contactService.findByUniqueCode(contactUniqueCode);
+
+			this.mailingList = portalService.getMailingList(mailingListId);
+			this.contact = portalService.getContact();
 		
-			if (this.mailingList == null || this.contact == null) {
-				return pageNotFound;
-			}
-			
-			return null;
+			return (this.mailingList == null || this.contact == null) ? pageNotFound : null;
 		} catch (Exception e) {
 			return pageNotFound;
 		}

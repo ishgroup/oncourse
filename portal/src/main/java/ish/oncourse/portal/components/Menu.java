@@ -59,9 +59,9 @@ public class Menu {
 	@SetupRender
 	public void setupRender() {
 
-		pCourseClasses = portalService.fillCourseClassSessions(authenticationService.getUser(), CourseClassFilter.CURRENT);
+		pCourseClasses = portalService.fillCourseClassSessions(CourseClassFilter.CURRENT);
 
-		pastCourseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.PAST);
+		pastCourseClasses = portalService.getContactCourseClasses(CourseClassFilter.PAST);
 
 		nearestCourseClass = !pCourseClasses.isEmpty() ? pCourseClasses.get(0).getCourseClass() : null;
 
@@ -86,7 +86,7 @@ public class Menu {
 	}
 
     public boolean needApprove() {
-        return authenticationService.isTutor() && !portalService.isApproved(authenticationService.getUser(), pCourseClass.getCourseClass());
+        return authenticationService.isTutor() && !portalService.isApproved(pCourseClass.getCourseClass());
     }
 
 }

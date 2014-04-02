@@ -78,12 +78,11 @@ public class ClassApproval {
 
     Object onActivate(String id) {
         if (id != null && id.length() > 0 && id.matches("\\d+")) {
-            List<CourseClass> list = courseClassService.loadByIds(Long.parseLong(id));
-            this.courseClass = (!list.isEmpty()) ? list.get(0) : null;
+            this.courseClass = portalService.getCourseClassBy(Long.parseLong(id));
+            return this.courseClass == null ? pageNotFound : null;
         } else {
             return pageNotFound;
         }
-        return null;
     }
 
     @OnEvent(component = "approvalForm")
@@ -139,7 +138,7 @@ public class ClassApproval {
 
     public boolean getIsClassApproved() {
 
-        return portalService.isApproved(authService.getUser(), courseClass);
+        return portalService.isApproved(courseClass);
     }
 
     private String getTutorFeedbackEmail() {

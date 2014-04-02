@@ -69,9 +69,9 @@ public class Navigation {
     @SetupRender
     public void setupRender() {
 
-        pCourseClasses = portalService.fillCourseClassSessions(authenticationService.getUser(), CourseClassFilter.CURRENT);
+        pCourseClasses = portalService.fillCourseClassSessions(CourseClassFilter.CURRENT);
 
-        pastCourseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.PAST);
+        pastCourseClasses = portalService.getContactCourseClasses(CourseClassFilter.PAST);
 
         nearestCourseClass = !pCourseClasses.isEmpty() ? pCourseClasses.get(0).getCourseClass() : null;
 
@@ -100,7 +100,7 @@ public class Navigation {
     public boolean hasResources() {
 
         for (PCourseClass pCourseClasse : pCourseClasses) {
-            if (!portalService.getAttachedFiles(pCourseClasse.getCourseClass(), authenticationService.getUser()).isEmpty()) {
+            if (!portalService.getAttachedFiles(pCourseClasse.getCourseClass()).isEmpty()) {
                 return true;
             }
         }
@@ -114,8 +114,7 @@ public class Navigation {
 
     public boolean hasResults() {
 
-        return authenticationService.getUser().getStudent() != null &&
-                (pastCourseClasses.size() + pCourseClasses.size()) > 0;
+           return portalService.hasResults();
     }
 
     public boolean isHistoryEnabled() {

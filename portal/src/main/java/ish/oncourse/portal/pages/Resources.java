@@ -93,7 +93,7 @@ public class Resources {
             tutorsMaterials = portalService.getCommonTutorsBinaryInfo();
         }
 
-        courseClasses = portalService.getContactCourseClasses(authenticationService.getUser(), CourseClassFilter.CURRENT);
+        courseClasses = portalService.getContactCourseClasses(CourseClassFilter.CURRENT);
     }
 
 
@@ -114,7 +114,7 @@ public class Resources {
 
     public boolean hasResources(CourseClass courseClass) {
 
-        List<BinaryInfo> materials = portalService.getAttachedFiles(courseClass, authenticationService.getUser());
+        List<BinaryInfo> materials = portalService.getAttachedFiles(courseClass);
         return !materials.isEmpty();
     }
 

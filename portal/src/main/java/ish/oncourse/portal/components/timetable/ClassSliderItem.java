@@ -107,7 +107,7 @@ public class ClassSliderItem {
 	}
 
     public boolean needApprove() {
-        return authenticationService.isTutor() && !portalService.isApproved(authenticationService.getUser(), pCourseClass.getCourseClass());
+        return !portalService.isApproved(pCourseClass.getCourseClass());
     }
 }
 

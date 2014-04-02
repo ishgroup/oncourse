@@ -47,6 +47,7 @@ public class PortalUtils {
     public static final String DATE_FORMAT_d_MMMMM_h_mma = "d MMMMM h:mma";
     public static final String DATE_FORMAT_dd_MMMMM_yyyy = "dd MMMMM yyyy";
     public static final String DATE_FORMAT_EEE_MMM_dd_hh_mm_ss_z_yyyy = "EEE MMM dd hh:mm:ss z yyyy";
+    public static final String DATE_FORMAT_EEEE_dd_MMMMM_h_mma = "EEEE dd MMMMM h:mma";
 
 
     private final static Logger LOGGER = Logger.getLogger(PortalUtils.class);

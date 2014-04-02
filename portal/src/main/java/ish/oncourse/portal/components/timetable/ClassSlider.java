@@ -34,7 +34,7 @@ public class ClassSlider {
 
     @SetupRender
     boolean setupRender() {
-		pCourseClasses = portalService.fillCourseClassSessions(contact,CourseClassFilter.CURRENT);
+		pCourseClasses = portalService.fillCourseClassSessions(CourseClassFilter.CURRENT);
         return true;
     }
 

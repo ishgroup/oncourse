@@ -37,11 +37,7 @@ import java.util.regex.Pattern;
 public class Calendar {
 
     @Inject
-	@Property
-    private IAuthenticationService authService;
-
-
-    @Inject
+    @Property
     private IPortalService portalService;
 
 	@Inject
@@ -51,6 +47,6 @@ public class Calendar {
     @OnEvent(value = "getCalendarEvents")
 	public StreamResponse getCalendarEvents() throws IOException {
 
-       return new TextStreamResponse("text/json", portalService.getCalendarEvents(authService.getUser()).toString());
+       return new TextStreamResponse("text/json", portalService.getCalendarEvents().toString());
 	}
 }

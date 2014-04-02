@@ -15,7 +15,7 @@
                     </nav>
                 </h3>
                 <div class="btn-group pull-right">
-                    <a  class="btn btn-primary btn-sm" href=" webcal:${request.serverName}${request.contextPath}/calendar/${authService.user.uniqueCode}.ics">Subscribe to calendar</a>
+                    <a  class="btn btn-primary btn-sm" href=" webcal:${request.serverName}${request.contextPath}/calendar/${portalService.contact.uniqueCode}.ics">Subscribe to calendar</a>
                 </div>
             </div>
             <div id="calendar" class="fc-calendar-container">

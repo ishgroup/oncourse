@@ -1,9 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-    <t:if test="hasResults">
+    <t:if test="hasResults()">
         <li><a data-toggle="tab" href="#class-results">Results</a></li>
     </t:if>
-    <t:if test="hasResources">
+    <t:if test="hasResources()">
         <li><a data-toggle="tab" href="#class-resources">Resources</a></li>
     </t:if>
     <li><a data-toggle="tab" href="#class-location">Location</a></li>

@@ -73,7 +73,7 @@ public class ClassResources {
 			}
 		}
 
-        materials = portalService.getAttachedFiles(courseClass, authenticationService.getUser());
+        materials = portalService.getAttachedFiles(courseClass);
         return true;
     }
 

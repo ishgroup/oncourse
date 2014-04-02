@@ -3,6 +3,7 @@ package ish.oncourse.portal.pages;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
@@ -24,7 +25,7 @@ public class PaymentDetails {
     private PaymentIn payment;
 
     @Inject
-    private ICayenneService cayenneService;
+    private IPortalService portalService;
 
     @InjectPage
     private PageNotFound pageNotFound;
@@ -38,8 +39,8 @@ public class PaymentDetails {
              * for all related objects of the course class (sessions, room, sites).
              * It is important when we define timezone for start and end time.
              */
-            this.payment = Cayenne.objectForPK(cayenneService.newNonReplicatingContext(), PaymentIn.class, idLong);
-            return null;
+            this.payment =  portalService.getPaymentInBy(idLong);
+            return payment == null ? pageNotFound:null;
         } else {
             return pageNotFound;
         }

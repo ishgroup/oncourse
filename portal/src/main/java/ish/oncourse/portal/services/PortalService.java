@@ -3,12 +3,14 @@ package ish.oncourse.portal.services;
 import ish.common.types.AttachmentInfoVisibility;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
+import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -24,6 +26,8 @@ import org.apache.tapestry5.json.JSONObject;
 
 import java.util.*;
 
+import static ish.oncourse.portal.services.PortalUtils.*;
+
 /**
  * User: artem
  * Date: 10/14/13
@@ -31,6 +35,8 @@ import java.util.*;
  */
 public class PortalService implements IPortalService{
 
+    @Inject
+    private IAuthenticationService authenticationService;
 
     @Inject
     private ICourseClassService courseClassService;
@@ -44,13 +50,21 @@ public class PortalService implements IPortalService{
 	@Inject
 	private IWebSiteService webSiteService;
 
+    @Inject
+    private ITagService tagService;
+
 	private static final String TARGET_BLANK = "_blank";
+
+    @Override
+    public Contact getContact() {
+        return authenticationService.getUser();
+    }
 
     @Override
     public JSONObject getSession(Session session) {
         JSONObject result = new JSONObject();
-        result.put("startDate",FormatUtils.getDateFormat("EEEE dd MMMMM h:mma", session.getTimeZone()).format(session.getStartDate()));
-        result.put("endDate", FormatUtils.getDateFormat("EEEE dd MMMMM h:mma", session.getTimeZone()).format(session.getEndDate()));
+        result.put("startDate",FormatUtils.getDateFormat(DATE_FORMAT_EEEE_dd_MMMMM_h_mma, session.getTimeZone()).format(session.getStartDate()));
+        result.put("endDate", FormatUtils.getDateFormat(DATE_FORMAT_EEEE_dd_MMMMM_h_mma, session.getTimeZone()).format(session.getEndDate()));
         return result;
     }
 
@@ -80,8 +94,8 @@ public class PortalService implements IPortalService{
      * @return contact's sesssions array where entry format is MM-dd-yyyy,<a href='#class-%s'>%s</a>
      * we use it to show sessions callender for contact in Tempalte page
      */
-    public JSONObject getCalendarEvents(Contact contact) {
-        List<Session> sessions = courseClassService.getContactSessions(contact);
+    public JSONObject getCalendarEvents() {
+        List<Session> sessions = courseClassService.getContactSessions(authenticationService.getUser());
 
         JSONObject result = new JSONObject();
 
@@ -125,9 +139,10 @@ public class PortalService implements IPortalService{
                 FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(session.getEndDate()));
     }
 
-    public boolean isApproved(Contact contact, CourseClass courseClass) {
+    public boolean isApproved(CourseClass courseClass) {
 
-		Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY,contact.getTutor()).andExp(ExpressionFactory.matchExp(TutorRole.COURSE_CLASS_PROPERTY, courseClass));
+		Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY,
+                authenticationService.getUser().getTutor()).andExp(ExpressionFactory.matchExp(TutorRole.COURSE_CLASS_PROPERTY, courseClass));
 		SelectQuery q = new SelectQuery(TutorRole.class, exp);
 
 		List <TutorRole> tutorRoles = cayenneService.sharedContext().performQuery(q);
@@ -146,9 +161,10 @@ public class PortalService implements IPortalService{
     }
 
     @Override
-    public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter) {
+    public List<CourseClass> getContactCourseClasses(CourseClassFilter filter) {
         List<CourseClass> courseClasses = new ArrayList<>();
 
+        Contact contact = authenticationService.getUser();
         if(contact.getTutor() != null)
             courseClasses.addAll(getTutorCourseClasses(contact, filter));
 
@@ -164,17 +180,14 @@ public class PortalService implements IPortalService{
 
     private List<CourseClass> getStudentCourseClasses(Contact contact, CourseClassFilter filter) {
         if(contact.getStudent() != null){
-        Expression expr;
-        expr = ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, contact.getStudent());
-        expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
-        expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
+            Expression expr = getStudentClassesExpression(contact);
 
-        SelectQuery q = new SelectQuery(CourseClass.class, expr);
-        q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-        q.setCacheGroups(CacheGroup.COURSES.name());
-		q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
+            SelectQuery q = new SelectQuery(CourseClass.class, expr);
+            q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+            q.setCacheGroups(CacheGroup.COURSES.name());
+            q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
 
-        List <CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
+            List <CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
 
             switch (filter) {
 
@@ -192,12 +205,9 @@ public class PortalService implements IPortalService{
 
     }
 
-
     private List<CourseClass> getTutorCourseClasses(Contact contact, CourseClassFilter filter) {
         if(contact.getTutor() != null){
-            Expression expr = ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.TUTOR_PROPERTY, contact.getTutor());
-            expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
-            SelectQuery q = new SelectQuery(CourseClass.class, expr);
+            SelectQuery q = new SelectQuery(CourseClass.class, getTutorClassesExpression());
             q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
             q.setCacheGroups(CacheGroup.COURSES.name());
 			q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
@@ -217,6 +227,21 @@ public class PortalService implements IPortalService{
             }
         }
         return null;
+    }
+
+    private Expression getStudentClassesExpression(Contact contact) {
+        Expression expr = ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, getContact().getStudent());
+        expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
+        expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
+        return expr;
+    }
+
+
+    private Expression getTutorClassesExpression()
+    {
+        Expression expr = ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.TUTOR_PROPERTY, getContact().getTutor());
+        expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
+        return expr;
     }
 
     private  List<CourseClass>  getPastTutorClasses(List<CourseClass> courseClasses){
@@ -260,7 +285,7 @@ public class PortalService implements IPortalService{
         for(CourseClass courseClass : courseClasses){
            for(TutorRole tutorRole : courseClass.getTutorRoles()){
                  if(tutorRole.getTutor().getId().equals(contact.getTutor().getId())
-			        && tutorRole.getIsConfirmed()==false
+			        && !tutorRole.getIsConfirmed()
 					&& getCurrentTutorClasses(courseClasses).contains(courseClass)) {
 
 							unconfirmed.add(courseClass);
@@ -319,7 +344,73 @@ public class PortalService implements IPortalService{
 		return  past;
     }
 
-	@Override
+    public CourseClass getCourseClassBy(long id)
+    {
+        ObjectContext context = cayenneService.newContext();
+        List<CourseClass> result = new ArrayList<>();
+        if (getContact().getTutor() != null)
+        {
+            Expression expression = getTutorClassesExpression();
+            expression = expression.andExp(ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, id));
+            SelectQuery q = new SelectQuery(CourseClass.class, expression);
+            result.addAll(context.performQuery(q));
+        }
+
+        if (getContact().getStudent() != null)
+        {
+            Expression expression = getStudentClassesExpression(getContact());
+            expression = expression.andExp(ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, id));
+
+            SelectQuery q = new SelectQuery(CourseClass.class, expression);
+            result.addAll(context.performQuery(q));
+        }
+
+        return result.isEmpty() ? null : result.get(0);
+
+
+    }
+
+    public Invoice getInvoiceBy(long id)
+    {
+        ObjectContext context = cayenneService.newContext();
+        Expression expression = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, getContact());
+        expression = expression.andExp(ExpressionFactory.matchDbExp(Invoice.ID_PK_COLUMN, id));
+        SelectQuery q = new SelectQuery(Invoice.class, expression);
+        List<Invoice> result = context.performQuery(q);
+        return result.isEmpty() ? null : result.get(0);
+    }
+
+
+    public PaymentIn getPaymentInBy(long id)
+    {
+        ObjectContext context = cayenneService.newContext();
+        Expression expression = ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, getContact());
+        expression = expression.andExp(ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, id));
+        SelectQuery q = new SelectQuery(Invoice.class, expression);
+        List<PaymentIn> result = context.performQuery(q);
+        return result.isEmpty() ? null : result.get(0);
+    }
+
+    public Tag getMailingList(long id)
+    {
+        ObjectContext context = cayenneService.newContext();
+
+        Expression expression = ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, getContact().getCollege());
+        expression = expression.andExp(ExpressionFactory.matchExp(Tag.TAGGABLE_TAGS_PROPERTY + "." +
+                        TaggableTag.TAGGABLE_PROPERTY + "." +
+                        Taggable.ENTITY_IDENTIFIER_PROPERTY,
+                Contact.class.getSimpleName()));
+        expression = expression.andExp(ExpressionFactory.matchExp(Tag.TAGGABLE_TAGS_PROPERTY + "." +
+                        TaggableTag.TAGGABLE_PROPERTY + "." +
+                        Taggable.ENTITY_WILLOW_ID_PROPERTY,
+                getContact().getId()));
+        SelectQuery selectQuery = new SelectQuery(Tag.class,expression);
+
+        List<Tag> result = context.performQuery(selectQuery);
+        return result.isEmpty() ? null : result.get(0);
+    }
+
+    @Override
 	public List<BinaryInfo> getCommonTutorsBinaryInfo(){
 
 		ObjectContext sharedContext = cayenneService.sharedContext();
@@ -334,9 +425,11 @@ public class PortalService implements IPortalService{
 	}
 
 	@Override
-	public List<BinaryInfo> getAttachedFiles(CourseClass courseClass, Contact contact) {
+	public List<BinaryInfo> getAttachedFiles(CourseClass courseClass) {
 
+        Contact contact = authenticationService.getUser();
 		ObjectContext sharedContext = cayenneService.sharedContext();
+        contact = sharedContext.localObject(contact);
 
 		if (contact.getTutor() !=null) {
 			SelectQuery query = new SelectQuery(TutorRole.class, ExpressionFactory.matchExp(
@@ -369,19 +462,25 @@ public class PortalService implements IPortalService{
 	}
 
 	@Override
-	public boolean hasResult(Contact user, CourseClass courseClass) {
+	public boolean hasResult(CourseClass courseClass) {
 
-		Student student = user.getStudent();
+		Student student = authenticationService.getUser().getStudent();
 		Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY , student);
 		List<Enrolment> enrolments = exp.filterObjects(courseClass.getValidEnrolments());
 
 		return !enrolments.isEmpty();
 	}
 
-	@Override
-	public List<PCourseClass> fillCourseClassSessions(Contact contact, CourseClassFilter filter) {
+    @Override
+    public boolean hasResults() {
+        return getContact().getStudent() != null && !getStudentCourseClasses(getContact(), CourseClassFilter.CURRENT).isEmpty();
+    }
 
-		List<CourseClass> courseClasses = getContactCourseClasses(contact, filter);
+
+	@Override
+	public List<PCourseClass> fillCourseClassSessions(CourseClassFilter filter) {
+
+		List<CourseClass> courseClasses = getContactCourseClasses(filter);
 
 		List<PCourseClass> pCourseClasses = new ArrayList<>();
 		List<Session> sessions = new ArrayList<>();
@@ -415,7 +514,7 @@ public class PortalService implements IPortalService{
 	public String[] getUrlBy(CourseClass courseClass)
 	{
 		if (webSiteService.getCurrentDomain() != null) {
-			return new String[]{PortalUtils.getClassDetailsURLBy(courseClass, webSiteService), TARGET_BLANK};
+			return new String[]{getClassDetailsURLBy(courseClass, webSiteService), TARGET_BLANK};
 		}
 		return new String[]{"#", StringUtils.EMPTY};
 	}
@@ -423,7 +522,7 @@ public class PortalService implements IPortalService{
 	public String[] getUrlBy(Course course)
 	{
 		if (webSiteService.getCurrentDomain() != null) {
-			return new String[]{PortalUtils.getCourseDetailsURLBy(course, webSiteService), TARGET_BLANK};
+			return new String[]{getCourseDetailsURLBy(course, webSiteService), TARGET_BLANK};
 		}
 		return new String[]{"#", StringUtils.EMPTY};
 	}

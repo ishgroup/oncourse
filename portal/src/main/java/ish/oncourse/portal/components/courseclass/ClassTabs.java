@@ -43,16 +43,16 @@ public class ClassTabs {
 
 
 
-	public boolean isHasResults(){
+	public boolean hasResults(){
 		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
 
-		return portalService.hasResult(authService.getUser(), courseClass);
+		return portalService.hasResult(courseClass);
 		}
 
 
-    public boolean isHasResources(){
+    public boolean hasResources(){
 
-        return  !portalService.getAttachedFiles(courseClass, authService.getUser()).isEmpty();
+        return  !portalService.getAttachedFiles(this.courseClass).isEmpty();
     }
 
 

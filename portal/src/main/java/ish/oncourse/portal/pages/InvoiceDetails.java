@@ -5,6 +5,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -41,23 +42,20 @@ public class InvoiceDetails {
     @Inject
     private PreferenceController controller;
 
+    @Inject
+    private IPortalService portalService;
+
     @Property
     private List<InvoiceLine> invoiceLines;
 
     @Property
     private InvoiceLine invoiceLine;
 
-
     Object onActivate(String id) {
         if (id != null && id.length() > 0 && id.matches("\\d+")) {
             long idLong = Long.parseLong(id);
-            /**
-             * We need to use not shared cayenne context to be sure that we get actual data
-             * for all related objects of the course class (sessions, room, sites).
-             * It is important when we define timezone for start and end time.
-             */
-            this.invoice = Cayenne.objectForPK(cayenneService.newNonReplicatingContext(), Invoice.class, idLong);
-            return null;
+            this.invoice = portalService.getInvoiceBy(idLong);
+            return this.invoice == null ? pageNotFound : null;
         } else {
             return pageNotFound;
         }
