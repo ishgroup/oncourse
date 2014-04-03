@@ -55,16 +55,24 @@ public class Unsubscribe {
 	private boolean unsubscribe;
 
 	Object onActivate(String param) {
-		try {
-			Long mailingListId = Long.parseLong(param.substring(0, param.indexOf(PARAM_DELIMETER)));
+        try {
+            Long mailingListId = Long.parseLong(param.substring(0, param.indexOf(PARAM_DELIMETER)));
+            String contactUniqueCode = param.substring(param.indexOf(PARAM_DELIMETER) + 1);
 
-			this.mailingList = portalService.getMailingList(mailingListId);
-			this.contact = portalService.getContact();
-		
-			return (this.mailingList == null || this.contact == null) ? pageNotFound : null;
-		} catch (Exception e) {
-			return pageNotFound;
-		}
+            List<Tag> tagList = tagService.loadByIds(mailingListId);
+            if (!tagList.isEmpty()) {
+                this.mailingList = tagList.get(0);
+            }
+            this.contact = contactService.findByUniqueCode(contactUniqueCode);
+
+            if (this.mailingList == null || this.contact == null) {
+                return pageNotFound;
+            }
+
+            return null;
+        } catch (Exception e) {
+            return pageNotFound;
+        }
 	}
 	
 	@SetupRender
