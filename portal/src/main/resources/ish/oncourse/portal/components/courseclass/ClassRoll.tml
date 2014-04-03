@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-<div class="col-lg-12 class-roll-content">
+<div class="col-lg-12 class-roll-content clearfix">
     <div class="page-header clearfix">
         <h4 class="pull-left tooltip-info" title="" data-original-title="Enrolments:${numberOfStudents}|Maximum:${courseClass.maximumPlaces}|Minimum:${courseClass.minimumPlaces}">
         Class roll <small>${numberOfStudents} enrolled students</small>
