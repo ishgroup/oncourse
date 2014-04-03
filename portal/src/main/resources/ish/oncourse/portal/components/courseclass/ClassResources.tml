@@ -1,27 +1,25 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-<div id="class-resources" class="tab-pane">
-    <ul class="list-unstyled resources-content">
-        <li>
-            <ul class="list-unstyled resources-list">
-                <t:loop source="materials" value="material">
-                    <div class="${material.type}">
-                        <img src="${contextPath}/img/ico-${material.type}.png" alt=""/>
-                        <a href="${materialUrl}">
-                            ${material.name}
-                                <t:if test="material.type.empty" negate="true">
-                                    .${material.type}
-                                </t:if>
-                        </a>
-                        ${size}.
-                        <t:if test="isNew()">
-                             <span class="label label-primary">NEW</span>
-                        </t:if>
+  <ul class="list-unstyled resources-content">
+      <li>
+          <ul class="list-unstyled resources-list">
+              <t:loop source="materials" value="material">
+                  <div class="${material.type}">
+                      <img src="${contextPath}/img/ico-${material.type}.png" alt=""/>
+                      <a href="${materialUrl}">
+                          ${material.name}
+                              <t:if test="material.type.empty" negate="true">
+                                  .${material.type}
+                              </t:if>
+                      </a>
+                      ${size}.
+                      <t:if test="isNew()">
+                           <span class="label label-primary">NEW</span>
+                      </t:if>
 
-                    </div>
-                </t:loop>
-            </ul>
-        </li>
-    </ul>
-</div>
+                  </div>
+              </t:loop>
+          </ul>
+      </li>
+  </ul>
 </t:container>
