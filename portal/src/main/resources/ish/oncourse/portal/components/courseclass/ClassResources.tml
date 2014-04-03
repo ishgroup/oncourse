@@ -5,7 +5,7 @@
           <ul class="list-unstyled resources-list">
               <t:loop source="materials" value="material">
                   <li class="${material.type}">
-                      <img src="${contextPath}/img/ico-${material.type}.png" alt=""/>
+                      <span class="glyphicon glyphicon-file"></span>
                       <a href="${materialUrl}">
                           ${material.name}
                               <t:if test="material.type.empty" negate="true">
