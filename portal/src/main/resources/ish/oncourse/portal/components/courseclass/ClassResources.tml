@@ -4,7 +4,7 @@
       <li>
           <ul class="list-unstyled resources-list">
               <t:loop source="materials" value="material">
-                  <div class="${material.type}">
+                  <li class="${material.type}">
                       <img src="${contextPath}/img/ico-${material.type}.png" alt=""/>
                       <a href="${materialUrl}">
                           ${material.name}
@@ -12,12 +12,12 @@
                                   .${material.type}
                               </t:if>
                       </a>
-                      ${size}.
+                      <span>${size}.</span>
                       <t:if test="isNew()">
                            <span class="label label-primary">NEW</span>
                       </t:if>
 
-                  </div>
+                  </li>
               </t:loop>
           </ul>
       </li>
