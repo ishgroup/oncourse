@@ -112,4 +112,10 @@ public class ClassResults {
 		return OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED.equals(outcome.getStatus());
 	}
 
+
+    public boolean needResult()
+    {
+        return isHasModules() || !isNotSetStatus();
+    }
+
 }

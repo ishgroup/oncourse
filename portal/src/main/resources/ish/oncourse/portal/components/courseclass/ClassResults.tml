@@ -21,7 +21,9 @@
                             <t:unless test="hasModules">
                                 <span>${courseClass.course.name}</span>
                             </t:unless>
-                            <strong class="${getOutComeClass()} tooltip-info pull-right" title="" data-original-title="${getOutComeDisplayName()}">${getOutComeResult()}</strong>
+                            <t:if test="needResult()">
+                                <strong class="${getOutComeClass()} tooltip-info pull-right" title="" data-original-title="${getOutComeDisplayName()}">${getOutComeResult()}</strong>
+                            </t:if>
                         </li>
                     </t:loop>
                 </ul>
