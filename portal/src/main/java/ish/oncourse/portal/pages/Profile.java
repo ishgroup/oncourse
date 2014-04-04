@@ -61,4 +61,9 @@ public class Profile {
     {
         return tabId.equals(activeTabId) ? messages.get("class.active") : StringUtils.EMPTY;
     }
+
+    public boolean showCensusTab() {
+        return authenticationService.getUser().getStudent() != null &&
+                authenticationService.getUser().getCollege().getRequiresAvetmiss();
+    }
 }

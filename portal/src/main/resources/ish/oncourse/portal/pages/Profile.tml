@@ -18,7 +18,7 @@
 <div class="tab-pane ${getActiveClass('tab_password')}" id="password-form">
     <span t:type="profile/passwordform" contact="contact"/>
 </div>
-    <t:if test="contact.student">
+    <t:if test="showCensusTab()">
         <div class="tab-pane ${getActiveClass('tab_census')}" id="census-questions">
             <span t:type="profile/censusform" contact="contact"/>
         </div>

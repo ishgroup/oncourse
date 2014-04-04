@@ -88,5 +88,4 @@ public class Menu {
     public boolean needApprove() {
         return authenticationService.isTutor() && !portalService.isApproved(pCourseClass.getCourseClass());
     }
-
 }
