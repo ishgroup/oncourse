@@ -27,6 +27,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
+import org.apache.tapestry5.services.ApplicationStateManager;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -63,9 +64,25 @@ public class PortalService implements IPortalService{
     @Inject
     private ICookiesService cookiesService;
 
+    @Inject
+    private ApplicationStateManager applicationStateManager;
+
     @Override
     public Contact getContact() {
         return authenticationService.getUser();
+    }
+
+
+    public Notification getNotification() {
+        if (!applicationStateManager.exists(Notification.class))
+        {
+            Notification notification = new Notification();
+            notification.setNewHistoryCount(getNewPaymentsCount() + getNewInvoicesCount() + getNewEnrolmentsCount());
+            notification.setNewResultsCount(getNewResultsCount());
+            notification.setNewResourcesCount(getNewResourcesCount());
+            applicationStateManager.set(Notification.class,notification);
+        }
+        return applicationStateManager.get(Notification.class);
     }
 
     @Override
@@ -494,6 +511,22 @@ public class PortalService implements IPortalService{
 		return sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp));
 	}
 
+    public List<BinaryInfo> getResources()
+    {
+        ArrayList<BinaryInfo> resources = new ArrayList<>();
+        resources.addAll(getTutorCommonResources());
+
+        List<PCourseClass> courseClasses = fillCourseClassSessions(CourseClassFilter.CURRENT);
+
+        for (PCourseClass courseClass : courseClasses) {
+            {
+                resources.addAll(getResourcesBy(courseClass.getCourseClass()));
+            }
+        }
+        return resources;
+    }
+
+
 	@Override
 	public boolean hasResult(CourseClass courseClass) {
 
@@ -504,7 +537,7 @@ public class PortalService implements IPortalService{
 		return !enrolments.isEmpty();
 	}
 
-    public int getNewResultsCount()
+    private int getNewResultsCount()
     {
         Expression expression = ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS);
         expression = expression.andExp(ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, getContact().getStudent()));
@@ -512,6 +545,20 @@ public class PortalService implements IPortalService{
 
         ObjectContext sharedContext = cayenneService.sharedContext();
         return sharedContext.performQuery(new SelectQuery(Outcome.class,expression)).size();
+    }
+
+
+    private int getNewResourcesCount()
+    {
+        Date lastLoginTime = getLastLoginTime();
+        int newResourcesCount = 0;
+
+        for (BinaryInfo binaryInfo : getResources()) {
+            if (binaryInfo.getModified().after(lastLoginTime)) {
+                newResourcesCount++;
+            }
+        }
+        return newResourcesCount;
     }
 
     @Override

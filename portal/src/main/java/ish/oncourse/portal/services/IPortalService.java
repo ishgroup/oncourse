@@ -36,6 +36,8 @@ public interface IPortalService {
 
 	public List<BinaryInfo> getResourcesBy(CourseClass courseClass);
 
+    public List<BinaryInfo> getResources();
+
     public List<CourseClass> getContactCourseClasses(CourseClassFilter filter);
 
 	public List<PCourseClass> fillCourseClassSessions(CourseClassFilter filter) ;
@@ -61,20 +63,10 @@ public interface IPortalService {
      */
     public PaymentIn getPaymentInBy(long id);
 
-    /**
-     * @return null if the contact is not related to the mailingList
-     */
-    public Tag getMailingList(long id);
-
     public boolean hasResults();
-
-    public int getNewResultsCount();
-
 
     public List<PaymentIn> getPayments();
 
-    public int getNewPaymentsCount();
-    public int getNewInvoicesCount();
-    public int getNewEnrolmentsCount();
+    public Notification getNotification();
 
 }

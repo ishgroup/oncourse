@@ -2,7 +2,7 @@
 
     <div class="main-menu collapse navbar-collapse">
         <ul class="main-nav">
-            <li class="${getActiveClassBy('m_timetable')}">
+            <li class="${getActiveClassBy('timetable')}">
                  <a id="timetable" href="${request.contextPath}/timetable"><i class="icon-timetable"/>Timetable</a>
              </li>
              <t:if test="hasResources()">

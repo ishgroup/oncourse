@@ -6,11 +6,14 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.Notification;
 import ish.oncourse.portal.services.PCourseClass;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -22,6 +25,7 @@ import java.util.List;
 
 public class Navigation {
 
+    private static final Logger logger = Logger.getLogger(Navigation.class);
 
     @Parameter
     private String activeMenu;
@@ -93,34 +97,40 @@ public class Navigation {
             }
         }
 
-        notification = new Notification();
-        notification.setNewResultsCount(portalService.getNewResultsCount());
+        notification = portalService.getNotification();
 
-        resources = new ArrayList<>();
+        resources = portalService.getResources();
 
-        fillResources();
-
-        notification.setNewHistoryCount(portalService.getNewPaymentsCount() +
-                portalService.getNewEnrolmentsCount() +
-                portalService.getNewInvoicesCount());
+        updateNotification();
     }
 
-    private void fillResources() {
-        Date lastLoginTime = portalService.getLastLoginTime();
-        int newResourcesCount = 0;
-        this.resources.addAll(portalService.getTutorCommonResources());
-        for (PCourseClass pCourseClasse : pCourseClasses) {
-            {
-                this.resources.addAll(portalService.getResourcesBy(pCourseClasse.getCourseClass()));
+    private void updateNotification() {
+        if (activeMenu != null) {
+            try {
+                NavId navId = NavId.valueOf(activeMenu);
+                switch (navId) {
+                    case timetable:
+                        break;
+                    case resources:
+                        notification.setNewResourcesCount(0);
+                        break;
+                    case results:
+                        notification.setNewResultsCount(0);
+                        break;
+                    case profile:
+                        break;
+                    case subscriptions:
+                        break;
+                    case history:
+                        notification.setNewHistoryCount(0);
+                        break;
+                    default:
+                        throw new IllegalArgumentException();
+                }
+            } catch (IllegalArgumentException e) {
+                logger.warn(e.getMessage(), e);
             }
         }
-
-        for (BinaryInfo binaryInfo : resources) {
-            if (binaryInfo.getModified().after(lastLoginTime)) {
-                newResourcesCount++;
-            }
-        }
-        notification.setNewResourcesCount(newResourcesCount);
     }
 
     public boolean hasApprovals() {
@@ -146,45 +156,13 @@ public class Navigation {
         return (menutItem.equals(activeMenu)) ? messages.get("class.active") : StringUtils.EMPTY;
     }
 
-    public class Notification {
-        private int newResourcesCount = 0;
-        private int newResultsCount = 0;
-        private int newHistoryCount = 0;
-
-        public boolean hasNewResources() {
-            return newResourcesCount > 0;
-        }
-
-        public boolean hasNewResults() {
-            return newResultsCount > 0;
-        }
-
-        public boolean hasNewHistory() {
-            return newHistoryCount > 0;
-        }
-
-        public int getNewResourcesCount() {
-            return newResourcesCount;
-        }
-
-        public void setNewResourcesCount(int newResourcesCount) {
-            this.newResourcesCount = newResourcesCount;
-        }
-
-        public int getNewResultsCount() {
-            return newResultsCount;
-        }
-
-        public void setNewResultsCount(int newResultsCount) {
-            this.newResultsCount = newResultsCount;
-        }
-
-        public int getNewHistoryCount() {
-            return newHistoryCount;
-        }
-
-        public void setNewHistoryCount(int newHistoryCount) {
-            this.newHistoryCount = newHistoryCount;
-        }
+    public static enum NavId
+    {
+        timetable,
+        resources,
+        results,
+        profile,
+        subscriptions,
+        history,
     }
 }

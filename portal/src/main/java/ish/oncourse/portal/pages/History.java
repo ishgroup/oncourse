@@ -13,7 +13,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class History {
 
-
     @Inject
     private IAuthenticationService authenticationService;
 
@@ -31,7 +30,6 @@ public class History {
       else
           return pageNotFound;
     }
-
 
     public boolean isStudent(){
         return authenticationService.getUser().getStudent() != null;
