@@ -82,7 +82,6 @@ public class AppModule {
 
     public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
         configuration.add(SymbolConstants.HMAC_PASSPHRASE, HMAC_PASSPHRASE);
-        configuration.add(SymbolConstants.PRODUCTION_MODE , "false");
     }
 
     public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request,
@@ -104,34 +103,4 @@ public class AppModule {
     public static void deactiveJavaScript(MappedConfiguration<String, JavaScriptStack> configuration) {
         configuration.overrideInstance(InternalConstants.CORE_STACK_NAME, DisableJavaScriptStack.class);
     }
-
-    public ICayenneService decorateCayenneService(final ICayenneService delegate) {
-        delegate.addFilter(new DataChannelFilter() {
-            @Override
-            public void init(DataChannel channel) {
-
-            }
-
-            @Override
-            public QueryResponse onQuery(ObjectContext originatingContext, Query query, DataChannelFilterChain filterChain) {
-                if (query instanceof SelectQuery) {
-                    SelectQuery selectQuery = (SelectQuery) query;
-                    Expression expression = selectQuery.getQualifier();
-                    if (((SelectQuery) query).getRoot() == CourseClass.class)
-                    {
-                    }
-                    return filterChain.onQuery(originatingContext, query);
-                } else {
-                    return filterChain.onQuery(originatingContext, query);
-                }
-            }
-
-            @Override
-            public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelFilterChain filterChain) {
-                return filterChain.onSync(originatingContext, changes, syncType);
-            }
-        });
-        return delegate;
-    }
-
 }
