@@ -2,19 +2,21 @@
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:history">
 	<div class="page-header clearfix zero-padding">
 		<ul class="nav nav-tabs header-tabs">
-			<li class="active"><a data-toggle="tab" href="#finance">Finance</a></li>
+			<li class="active"><a data-toggle="tab" href="#finance-history">Finance</a></li>
 
             <t:if test="student">
-		    	<li class=""><a data-toggle="tab" href="#enrolments">Enrolments</a></li>
+		    	<li class=""><a data-toggle="tab" href="#enrolments-history">Enrolments</a></li>
 		    </t:if>
         </ul>
 		<h1><a href="#">History</a></h1>
 	</div>
 	<div class="tab-content">
-
-		<table class="table" id="finance-history">
-           <span t:type="history/finance"/>
-		</table>
+    
+    <div class="tab-pane" id="finance-history">
+      <table class="table">
+        <span t:type="history/finance"/>
+      </table>
+    </div>
 
 
         <t:if test="student">
