@@ -8,13 +8,13 @@
              <t:if test="hasResources()">
                  <li class="${getActiveClassBy('resources')}">
                      <a id="resources" href="${request.contextPath}/resources"><i class="icon-resources">
-                         <t:if test="notification.hasNewResources()"><small>${notification.newResourcesCount}</small></t:if>Resources</i></a>
+                         <t:if test="notification.hasNewResources()"><small>${notification.newResourcesCount}</small></t:if></i>Resources</a>
                  </li>
              </t:if>
              <t:if test="hasResults()">
                  <li class="${getActiveClassBy('results')}">
                      <a id="results" href="${request.contextPath}/results"><i class="icon-results">
-                         <t:if test="notification.hasNewResults()"><small>${notification.newResultsCount}</small></t:if>Results</i></a>
+                         <t:if test="notification.hasNewResults()"><small>${notification.newResultsCount}</small></t:if></i>Results</a>
                  </li>
              </t:if>
              <li class="${getActiveClassBy('profile')}">
@@ -26,7 +26,7 @@
              <t:if test="historyEnabled">
                  <li class="${getActiveClassBy('history')}">
                      <a id="history" href="${request.contextPath}/history"><i class="icon-history">
-                         <t:if test="notification.hasNewHistory()"><small>${notification.newHistoryCount}</small></t:if>History</i></a>
+                         <t:if test="notification.hasNewHistory()"><small>${notification.newHistoryCount}</small></t:if></i>History</a>
                  </li>
              </t:if>
         </ul>
