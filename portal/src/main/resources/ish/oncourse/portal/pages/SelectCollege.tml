@@ -3,7 +3,7 @@
 	
 		<h1>Select College</h1>
 		<t:form t:id="collegeForm">
-			<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
+			<t:errors class="literal:validation"/>
 			<t:radiogroup t:value="selectedUser">
 				<t:loop source="users" value="user">
 					<input t:type="radio" value="user"/>${collegeName}<br/>

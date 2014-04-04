@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-8 col-sm-12">
             <t:form t:id="profileForm" class="form" clientValidation="literal:NONE" >
-                <t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
+                <t:errors class="literal:validation"/>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">

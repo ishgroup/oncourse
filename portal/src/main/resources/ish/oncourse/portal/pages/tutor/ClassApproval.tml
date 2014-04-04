@@ -22,7 +22,7 @@
 				<div class="bord mb20"></div>
 			</p:else>
 	 	</t:if>
-		<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
+		<t:errors class="literal:validation"/>
 
 		<!-- textarea -->
         <div class="row decline-content">
