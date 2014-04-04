@@ -24,7 +24,7 @@
         <td width="50%">
             Type: ${payment.type}<br/>
             Status: ${payment.status.displayName}<br/>
-            Amount: ${payment.amount} <br/>
+            Amount: <t:output value="payment.amount" format="moneyFormat(payment.amount)"/><br/>
             Source: ${payment.source.displayName}<br/>
             CC Transaction: ${payment.clientReference}<br/>
             Date created: ${payment.created}<br/>

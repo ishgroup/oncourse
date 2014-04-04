@@ -6,6 +6,7 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
+import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
@@ -14,6 +15,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,7 +53,7 @@ public class Finance {
     }
 
 
-    public String getDate(CayenneDataObject item) {
+    public String getDate() {
 
         return String.format("%s ", item instanceof Invoice ?
                         new SimpleDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy).format(((Invoice) item).getCreated()) :
@@ -60,29 +62,34 @@ public class Finance {
     }
 
 
-    public Money getAmount(CayenneDataObject item) {
+    public Money getAmount() {
 
         return item instanceof Invoice ? ((Invoice) item).getTotalGst() : ((PaymentIn) item).getAmount();
     }
 
+    public Format moneyFormat(Money money)
+    {
+        return FormatUtils.chooseMoneyFormat(money);
+    }
 
-    public boolean isInvoice(CayenneDataObject item) {
+
+    public boolean isInvoice() {
 
         return item instanceof Invoice;
     }
 
-    public long getId(CayenneDataObject item)
+    public long getId()
     {
         return item instanceof Invoice ? ((Invoice) item).getId(): ((PaymentIn) item).getId();
     }
 
 
-    public Object getInvoiceNumber(Invoice item) {
+    public Object getInvoiceNumber() {
 
-        return item.getInvoiceNumber() != null ? item.getInvoiceNumber() : StringUtils.EMPTY;
+        return ((Invoice)item).getInvoiceNumber() != null ? ((Invoice)item).getInvoiceNumber() : StringUtils.EMPTY;
     }
 
-    public String getPaymentType(PaymentIn item) {
-        return item.getType().getDisplayName();
+    public String getPaymentType() {
+        return ((PaymentIn)item).getType().getDisplayName();
     }
 }

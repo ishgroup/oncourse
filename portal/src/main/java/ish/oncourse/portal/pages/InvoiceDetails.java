@@ -9,6 +9,7 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
@@ -16,6 +17,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -97,4 +99,10 @@ public class InvoiceDetails {
     public Money getPaidAmount() {
         return invoice.getTotalGst().subtract(invoice.getAmountOwing());
     }
+
+    public Format moneyFormat(Money money)
+    {
+        return FormatUtils.chooseMoneyFormat(money);
+    }
+
 }

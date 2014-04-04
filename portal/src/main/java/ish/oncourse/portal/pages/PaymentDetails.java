@@ -1,17 +1,20 @@
 package ish.oncourse.portal.pages;
 
+import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 
 /**
@@ -68,5 +71,11 @@ public class PaymentDetails {
         else
             return null;
     }
+
+    public Format moneyFormat(Money money)
+    {
+        return FormatUtils.chooseMoneyFormat(money);
+    }
+
 
 }

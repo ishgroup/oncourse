@@ -52,30 +52,30 @@
         <t:loop source="invoiceLines" value="invoiceLine">
         <tr>
             <td>${invoiceLine.title}</td>
-            <td class="text-right">${invoiceLine.priceTotalExTax}</td>
-            <td class="text-right">${invoiceLine.discountTotalExTax}</td>
-            <td class="text-right">${invoiceLine.totalTax}</td>
-            <td class="text-right">${invoiceLine.priceTotalIncTax}</td>
+            <td class="text-right"><t:output value="invoiceLine.priceTotalExTax" format="moneyFormat(invoiceLine.priceTotalExTax)"/></td>
+            <td class="text-right"><t:output value="invoiceLine.discountTotalExTax" format="moneyFormat(invoiceLine.discountTotalExTax)"/></td>
+            <td class="text-right"><t:output value="invoiceLine.totalTax" format="moneyFormat(invoiceLine.totalTax)"/></td>
+            <td class="text-right"><t:output value="invoiceLine.priceTotalIncTax" format="moneyFormat(invoiceLine.priceTotalIncTax)"/></td>
         </tr>
         </t:loop>
         </tbody>
     <thead>
     <tr>
         <th colspan="3" width="40%">Total</th>
-        <th class="text-right">${totalTax}</th>
-        <th class="text-right">${invoice.totalGst}</th>
+        <th class="text-right"><t:output value="totalTax" format="moneyFormat(totalTax)"/></th>
+        <th class="text-right"><t:output value="invoice.totalGst" format="moneyFormat(invoice.totalGst)"/></th>
     </tr>
     </thead>
 
         <tbody><tr>
             <td colspan="2"></td>
             <td colspan="2">Less amount paid</td>
-            <td class="text-right">${paidAmount}</td>
+            <td class="text-right"><t:output value="paidAmount" format="moneyFormat(paidAmount)"/></td>
         </tr>
         <tr>
             <td colspan="2"></td>
             <td colspan="2">Total owing</td>
-            <td class="text-right">${invoice.amountOwing}</td>
+            <td class="text-right"><t:output value="invoice.amountOwing" format="moneyFormat(invoice.amountOwing)"/></td>
         </tr>
 
         <tr>

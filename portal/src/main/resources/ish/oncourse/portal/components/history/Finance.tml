@@ -6,11 +6,11 @@
 
 
 <t:loop source="items" value="item">
-    <t:if test="${isInvoice(item)}">
+    <t:if test="isInvoice()">
         <t:delegate to="block:invoice"/>
     </t:if>
 
-    <t:unless test="${isInvoice(item)}">
+    <t:unless test="isInvoice()">
         <t:delegate to="block:payment"/>
     </t:unless>
 </t:loop>
@@ -18,13 +18,13 @@
 <t:block t:id="invoice">
 <tr>
     <td>
-      <t:pagelink page="invoicedetails" context="${getId(item)}">${getDate(item)}</t:pagelink>
+      <t:pagelink page="invoicedetails" context="id">${date}</t:pagelink>
     </td>
     <td>
-      <t:pagelink page="invoicedetails" context="${getId(item)}">Invoice ${getInvoiceNumber(item)}</t:pagelink>
+      <t:pagelink page="invoicedetails" context="id">Invoice ${invoiceNumber}</t:pagelink>
     </td>
     <td>
-      <t:pagelink page="invoicedetails" context="${getId(item)}">${getAmount(item)}</t:pagelink>
+      <t:pagelink page="invoicedetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
     </td>
 </tr>
 </t:block>
@@ -32,13 +32,13 @@
 <t:block t:id="payment">
 <tr>
     <td>
-      <t:pagelink page="paymentdetails" context="${getId(item)}">${getDate(item)}</t:pagelink>
+      <t:pagelink page="paymentdetails" context="id">${date}</t:pagelink>
     </td>
     <td>
-      <t:pagelink page="paymentdetails" context="${getId(item)}">Payment(${getPaymentType(item)})</t:pagelink>
+      <t:pagelink page="paymentdetails" context="id">Payment(${paymentType})</t:pagelink>
     </td>
     <td>
-      <t:pagelink page="paymentdetails" context="${getId(item)}">${getAmount(item)}</t:pagelink>
+      <t:pagelink page="paymentdetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
     </td>
 </tr>
 

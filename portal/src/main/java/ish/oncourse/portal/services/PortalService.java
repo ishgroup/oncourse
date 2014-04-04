@@ -412,7 +412,7 @@ public class PortalService implements IPortalService{
         ObjectContext context = cayenneService.newContext();
         Expression expression = ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, getContact());
         expression = expression.andExp(ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, id));
-        SelectQuery q = new SelectQuery(Invoice.class, expression);
+        SelectQuery q = new SelectQuery(PaymentIn.class, expression);
         List<PaymentIn> result = context.performQuery(q);
         return result.isEmpty() ? null : result.get(0);
     }
