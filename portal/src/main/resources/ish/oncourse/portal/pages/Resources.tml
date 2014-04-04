@@ -44,7 +44,7 @@
                   <small> (${courseClass.uniqueIdentifier})</small>
               </h4>
               <small class="text-muted">${getDate(courseClass)}</small>
-              <ul class="list-unstyled resources-list">
+              <ul class="list-unstyled">
                 <span t:type="courseclass/classresources" courseClass="courseClass"/>
               </ul>
             </li>
