@@ -72,4 +72,9 @@ public interface IPortalService {
 
 
     public List<PaymentIn> getPayments();
+
+    public int getNewPaymentsCount();
+    public int getNewInvoicesCount();
+    public int getNewEnrolmentsCount();
+
 }

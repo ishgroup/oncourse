@@ -99,6 +99,10 @@ public class Navigation {
         resources = new ArrayList<>();
 
         fillResources();
+
+        notification.setNewHistoryCount(portalService.getNewPaymentsCount() +
+                portalService.getNewEnrolmentsCount() +
+                portalService.getNewInvoicesCount());
     }
 
     private void fillResources() {

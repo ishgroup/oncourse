@@ -577,4 +577,46 @@ public class PortalService implements IPortalService{
                 ExpressionFactory.noMatchExp(PaymentIn.AMOUNT_PROPERTY, Money.ZERO)));
         return (List<PaymentIn>) sharedContext.performQuery(query);
     }
+
+    public int getNewPaymentsCount()
+    {
+        Contact contact = getContact();
+        Date lastLoginTime  = getLastLoginTime();
+
+        ObjectContext sharedContext = cayenneService.sharedContext();
+        SelectQuery query = new SelectQuery(PaymentIn.class, ExpressionFactory.matchExp(
+                PaymentIn.CONTACT_PROPERTY, contact).andExp(
+                ExpressionFactory.noMatchExp(PaymentIn.AMOUNT_PROPERTY, Money.ZERO)).andExp(
+                ExpressionFactory.greaterOrEqualExp(PaymentIn.MODIFIED_PROPERTY, lastLoginTime)));
+
+        return sharedContext.performQuery(query).size();
+    }
+
+    public int getNewInvoicesCount()
+    {
+        Contact contact = getContact();
+        Date lastLoginTime  = getLastLoginTime();
+
+        ObjectContext sharedContext = cayenneService.sharedContext();
+        SelectQuery query = new SelectQuery(Invoice.class, ExpressionFactory.matchExp(
+                Invoice.CONTACT_PROPERTY, contact).andExp(
+                ExpressionFactory.greaterOrEqualExp(Invoice.MODIFIED_PROPERTY, lastLoginTime)));
+
+        return sharedContext.performQuery(query).size();
+    }
+
+    public int getNewEnrolmentsCount()
+    {
+        Contact contact = getContact();
+        Date lastLoginTime  = getLastLoginTime();
+
+        ObjectContext sharedContext = cayenneService.sharedContext();
+        SelectQuery query = new SelectQuery(Enrolment.class, ExpressionFactory.matchExp(
+                Enrolment.STUDENT_PROPERTY, contact.getStudent()).andExp(
+                ExpressionFactory.greaterOrEqualExp(Enrolment.MODIFIED_PROPERTY, lastLoginTime)));
+
+        return sharedContext.performQuery(query).size();
+    }
+
+
 }
