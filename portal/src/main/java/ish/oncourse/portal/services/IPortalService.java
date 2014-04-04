@@ -69,4 +69,7 @@ public interface IPortalService {
     public boolean hasResults();
 
     public int getNewResultsCount();
+
+
+    public List<PaymentIn> getPayments();
 }

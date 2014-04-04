@@ -55,7 +55,6 @@ public class UnsubscribeTest extends ServiceTest {
 		assertNotNull(doc.getElementById("unsubscribed"));
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testUnsubscribe() {
 		PageTester tester = getPageTester();

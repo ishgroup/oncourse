@@ -4,7 +4,7 @@ import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
-import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.query.Ordering;
@@ -14,7 +14,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +26,7 @@ import java.util.Collections;
 public class Finance {
 
     @Inject
-    private IAuthenticationService authenticationService;
+    private IPortalService portalService;
 
     @Property
     private Contact contact;
@@ -41,11 +40,11 @@ public class Finance {
     @SetupRender
     void setupRender() {
 
-        contact = authenticationService.getUser();
+        contact = portalService.getContact();
 
         items = new ArrayList<>();
         items.addAll(contact.getInvoices());
-        items.addAll(contact.getPaymentsIn());
+        items.addAll(portalService.getPayments());
 
         Ordering.orderList(items, Collections.singletonList(new Ordering(PaymentIn.CREATED_PROPERTY, SortOrder.DESCENDING)));
 

@@ -2,6 +2,7 @@ package ish.oncourse.portal.services;
 
 import ish.common.types.AttachmentInfoVisibility;
 import ish.common.types.EnrolmentStatus;
+import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.cache.CacheGroup;
@@ -424,7 +425,8 @@ public class PortalService implements IPortalService{
         expression = expression.andExp(ExpressionFactory.matchExp(Tag.TAGGABLE_TAGS_PROPERTY + "." +
                         TaggableTag.TAGGABLE_PROPERTY + "." +
                         Taggable.ENTITY_IDENTIFIER_PROPERTY,
-                Contact.class.getSimpleName()));
+                Contact.class.getSimpleName()
+        ));
         expression = expression.andExp(ExpressionFactory.matchExp(Tag.TAGGABLE_TAGS_PROPERTY + "." +
                         TaggableTag.TAGGABLE_PROPERTY + "." +
                         Taggable.ENTITY_WILLOW_ID_PROPERTY,
@@ -561,4 +563,18 @@ public class PortalService implements IPortalService{
 	{
         return webSiteService.getCurrentDomain() != null ? getCourseDetailsURLBy(course, webSiteService): null;
 	}
+
+
+    @Override
+    public List<PaymentIn> getPayments() {
+
+        Contact contact = getContact();
+
+        ObjectContext sharedContext = cayenneService.sharedContext();
+
+        SelectQuery query = new SelectQuery(PaymentIn.class, ExpressionFactory.matchExp(
+                PaymentIn.CONTACT_PROPERTY, contact).andExp(
+                ExpressionFactory.noMatchExp(PaymentIn.AMOUNT_PROPERTY, Money.ZERO)));
+        return (List<PaymentIn>) sharedContext.performQuery(query);
+    }
 }
