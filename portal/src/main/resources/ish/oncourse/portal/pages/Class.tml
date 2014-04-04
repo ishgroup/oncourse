@@ -10,7 +10,7 @@
                 <ul class="nav nav-tabs header-tabs">
                     <span t:type="courseclass/classTabs" courseClass="courseClass"/>
                 </ul>
-                <h3>
+                <h1>
                     <t:if test="url">
                         <a href="${url}" target="_blank">${courseClass.course.name}</a>
                     </t:if>
@@ -24,7 +24,7 @@
                             <a href="${request.contextPath}/tutor/classapproval/${courseClass.id}" class="label label-primary">Review now</a>
                         </t:if>
                     </span>
-                </h3>
+                </h1>
         </div>
         <div class="tab-content">
             <span t:type="courseclass/classDetails" courseClass="courseClass"></span>
