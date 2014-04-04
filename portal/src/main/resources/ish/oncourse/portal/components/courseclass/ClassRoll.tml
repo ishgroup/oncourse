@@ -6,7 +6,7 @@
         </h4>
     </div>
     <p class="info-text clearfix">You are currently marking <strong id='sessionDate'></strong><button type="button" class="finish pull-right btn btn-default btn-xs">Finish <span>×</span></button></p>
-    <ul class="list-unstyled student-list">
+    <ul class="list-unstyled student-list clearfix">
         <t:loop source="students" value="student">
             <span t:type="courseclass/classRollItem" student="student" ></span>
         </t:loop>
