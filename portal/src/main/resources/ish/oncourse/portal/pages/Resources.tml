@@ -3,7 +3,7 @@
 	<div class="page-header clearfix">
 		<h1><a href="#">Resources</a></h1>
 	</div>
-	<ul class="list-unstyled">
+	<ul class="list-unstyled resources-content">
 
         <t:if test="tutorsMaterials">
             <li>
@@ -36,7 +36,7 @@
             <li>
               <h4>
                   <t:if test="url">
-                      <a href="url" target="_blank">${courseClass.course.name}</a>
+                      <a href="${url}" target="_blank">${courseClass.course.name}</a>
                   </t:if>
                   <t:unless test="url">
                       <a href="#">${courseClass.course.name}</a>

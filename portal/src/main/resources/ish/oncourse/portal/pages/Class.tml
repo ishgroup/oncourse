@@ -12,7 +12,7 @@
                 </ul>
                 <h3>
                     <t:if test="url">
-                        <a href="url" target="_blank">${courseClass.course.name}</a>
+                        <a href="${url}" target="_blank">${courseClass.course.name}</a>
                     </t:if>
                     <t:unless test="url">
                         <a href="#">${courseClass.course.name}</a>

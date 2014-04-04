@@ -5,7 +5,7 @@
 	    <t:if test="webVisible">
 		    <strong>
                 <t:if test="url">
-                    <a href="url" target="_blank">${courseName}</a>
+                    <a href="${url}" target="_blank">${courseName}</a>
                 </t:if>
                 <t:unless test="url">
                     <a href="#">${courseName}</a>
