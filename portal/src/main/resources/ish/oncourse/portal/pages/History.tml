@@ -12,7 +12,7 @@
 	</div>
 	<div class="tab-content">
     
-    <div class="tab-pane" id="finance-history">
+    <div class="tab-pane active" id="finance-history">
       <table class="table">
         <span t:type="history/finance"/>
       </table>
