@@ -25,6 +25,7 @@
                                    map: map
                                });
                            }
+                           google.maps.event.addDomListener(window, 'load', initialize);
                     </script>
                     <div id="venue" ></div>
                 </t:if>
