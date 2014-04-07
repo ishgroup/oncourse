@@ -62,30 +62,6 @@ public class TestModule {
 		return mockService;
 	}
 	
-	public static IAuthenticationService buildAuthenticationServiceOverride() {
-
-		IAuthenticationService mockService = mock(IAuthenticationService.class);
-
-		Date today = new Date();
-
-		Contact user = new Contact();
-		user.setCreated(today);
-		user.setFamilyName("familyName");
-		user.setGivenName("givenName");
-		user.setEmailAddress("test@test.com");
-		user.setModified(today);
-		user.setPassword("12345");
-
-		when(mockService.getUser()).thenReturn(user);
-		
-		return mockService;
-	}
-	
-	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
-			@Local IAuthenticationService authServiceOverride) {
-		configuration.add(IAuthenticationService.class, authServiceOverride);
-	}
-	
 	public ICourseClassService buildCourseClassServiceOverride() {
 		ICourseClassService mock = mock(ICourseClassService.class);
 		return mock;

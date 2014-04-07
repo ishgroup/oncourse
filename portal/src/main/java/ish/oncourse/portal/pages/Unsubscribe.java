@@ -74,7 +74,12 @@ public class Unsubscribe {
             return pageNotFound;
         }
 	}
-	
+
+    public Object onActivate()
+    {
+        return this.mailingList == null || this.contact == null ?  pageNotFound :  null;
+    }
+
 	@SetupRender
 	Object setupRender() {
 		if (this.mailingList != null && this.contact != null) {

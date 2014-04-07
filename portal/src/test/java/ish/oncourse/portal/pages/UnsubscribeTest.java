@@ -9,6 +9,7 @@ import java.util.Collections;
 import javax.sql.DataSource;
 
 import ish.oncourse.portal.service.TestModule;
+import ish.oncourse.portal.services.AppModule;
 import ish.oncourse.test.ServiceTest;
 
 import org.apache.tapestry5.dom.Document;
