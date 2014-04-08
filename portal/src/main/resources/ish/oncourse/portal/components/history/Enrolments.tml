@@ -2,7 +2,7 @@
 
     <ul class="list-unstyled classes-content">
         <t:if test="enrolments" negate="true">
-            <div>Now you do not have enrolments history</div>
+            <div>You have no enrolment history.</div>
         </t:if>
 
         <t:loop source="enrolments" value="enrolment">
