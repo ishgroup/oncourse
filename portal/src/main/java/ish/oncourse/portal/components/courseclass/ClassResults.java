@@ -7,6 +7,7 @@ import ish.common.types.OutcomeStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -31,13 +32,12 @@ public class ClassResults {
 	@Inject
 	private ICayenneService cayenneService;
 
+    @Inject
+    private IPortalService portalService;
+
     @Property
     @Parameter
     private CourseClass courseClass;
-
-    @Inject
-    private IAuthenticationService authenticationService;
-
 
     @Property
     private Outcome outcome;
@@ -57,7 +57,7 @@ public class ClassResults {
 
 		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
 
-		Student student = authenticationService.getUser().getStudent();
+		Student student = portalService.getContact().getStudent();
 		Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student);
 		enrolments = exp.filterObjects(courseClass.getValidEnrolments());
 
@@ -116,6 +116,11 @@ public class ClassResults {
     public boolean needResult()
     {
         return isHasModules() || !isNotSetStatus();
+    }
+
+    public boolean isNew()
+    {
+        return portalService.isNew(outcome);
     }
 
 }

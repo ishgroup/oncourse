@@ -2,6 +2,7 @@ package ish.oncourse.portal.components.history;
 
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
@@ -19,11 +20,12 @@ import java.util.TimeZone;
  */
 public class Enrolments {
 
-    @Inject
-    private IAuthenticationService authenticationService;
 
 	@Inject
 	private  ICourseClassService courseClassService;
+
+    @Inject
+    private IPortalService portalService;
 
 
     @Property
@@ -34,7 +36,7 @@ public class Enrolments {
 
     @SetupRender
     void setupRender(){
-        enrolments = authenticationService.getUser().getStudent().getEnrolments();
+        enrolments = portalService.getEnrolments();
 
     }
 
@@ -42,6 +44,12 @@ public class Enrolments {
     {
         TimeZone timeZone = courseClassService.getClientTimeZone(enrolment.getCourseClass());
         return String.format("%s", FormatUtils.getDateFormat(PortalUtils.DATE_FORMAT_d_MMMMM_h_mma, timeZone).format(enrolment.getCreated()));
+    }
+
+
+    public boolean isNew()
+    {
+        return portalService.isNew(enrolment);
     }
 
 

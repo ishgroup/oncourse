@@ -61,6 +61,10 @@ public class Finance {
         );
     }
 
+    public boolean isNew()
+    {
+        return portalService.isNew(item);
+    }
 
     public Money getAmount() {
 

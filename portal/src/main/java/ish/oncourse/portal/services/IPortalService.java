@@ -2,6 +2,7 @@ package ish.oncourse.portal.services;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.courseclass.CourseClassFilter;
+import org.apache.cayenne.CayenneDataObject;
 import org.apache.tapestry5.json.JSONObject;
 
 import java.util.Date;
@@ -32,7 +33,9 @@ public interface IPortalService {
 	 */
 	boolean hasResult(CourseClass courseClass);
 
-	public List<BinaryInfo> getTutorCommonResources();
+    public List<Outcome> getResultsBy(CourseClass courseClass);
+
+    public List<BinaryInfo> getTutorCommonResources();
 
 	public List<BinaryInfo> getResourcesBy(CourseClass courseClass);
 
@@ -67,6 +70,9 @@ public interface IPortalService {
 
     public List<PaymentIn> getPayments();
 
+    public List<Enrolment> getEnrolments();
+
     public Notification getNotification();
 
+    public boolean isNew(CayenneDataObject object);
 }

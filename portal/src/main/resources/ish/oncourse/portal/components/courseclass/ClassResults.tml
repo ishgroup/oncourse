@@ -22,9 +22,14 @@
                                 <span>${courseClass.course.name}</span>
                             </t:unless>
                             <t:if test="needResult()">
-                                <strong class="${getOutComeClass()} tooltip-info pull-right" title="" data-original-title="${getOutComeDisplayName()}">${getOutComeResult()}</strong>
+                                <strong class="${getOutComeClass()} tooltip-info pull-right" title="" data-original-title="${getOutComeDisplayName()}">
+                                    ${getOutComeResult()}
+                                    <t:if test="isNew()">
+                                        <span class="label label-primary">NEW</span>
+                                    </t:if>
+                                </strong>
                             </t:if>
-                        </li>
+                       </li>
                     </t:loop>
                 </ul>
 

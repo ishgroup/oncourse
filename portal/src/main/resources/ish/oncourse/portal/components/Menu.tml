@@ -26,11 +26,11 @@
                         </li>
                     </t:loop>
                 </ul>
-                <t:if test="${pastCourseClasses.isEmpty()}" negate="true">
-                    <ul class="list-inline">
-                        <li class="show-all-courses"><a class="show-all-sessions" href="#">Show All <span class="icon-arrow-down"></span></a></li>
-                    </ul>
-                </t:if>
+                <!--<t:if test="${pastCourseClasses.isEmpty()}" negate="true">-->
+                <ul class="list-inline">
+                    <li class="show-all-courses"><a class="show-all-sessions" href="#">Show All <span class="icon-arrow-down"></span></a></li>
+                </ul>
+                <!--</t:if>-->
             </li>
         </ul>
     </div>

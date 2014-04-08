@@ -25,22 +25,27 @@
     </td>
     <td>
       <t:pagelink page="invoicedetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
+        <t:if test="isNew()">
+            <span class="label label-primary">NEW</span>
+        </t:if>
     </td>
 </tr>
 </t:block>
 
 <t:block t:id="payment">
-<tr>
-    <td>
-      <t:pagelink page="paymentdetails" context="id">${date}</t:pagelink>
-    </td>
-    <td>
-      <t:pagelink page="paymentdetails" context="id">Payment(${paymentType})</t:pagelink>
-    </td>
-    <td>
-      <t:pagelink page="paymentdetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
-    </td>
-</tr>
-
+    <tr>
+        <td>
+          <t:pagelink page="paymentdetails" context="id">${date}</t:pagelink>
+        </td>
+        <td>
+          <t:pagelink page="paymentdetails" context="id">Payment(${paymentType})</t:pagelink>
+        </td>
+        <td>
+          <t:pagelink page="paymentdetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
+            <t:if test="isNew()">
+                <span class="label label-primary">NEW</span>
+            </t:if>
+        </td>
+    </tr>
 </t:block>
 </t:container>

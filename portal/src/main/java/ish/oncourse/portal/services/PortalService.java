@@ -2,6 +2,7 @@ package ish.oncourse.portal.services;
 
 import ish.common.types.AttachmentInfoVisibility;
 import ish.common.types.EnrolmentStatus;
+import ish.common.types.OutcomeStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
@@ -12,9 +13,9 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.FormatUtils;
+import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -22,6 +23,7 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
@@ -39,7 +41,7 @@ import static ish.oncourse.portal.services.PortalUtils.*;
  * Date: 10/14/13
  * Time: 3:35 PM
  */
-public class PortalService implements IPortalService{
+public class PortalService implements IPortalService {
 
     private static final Logger logger = Logger.getLogger(PortalService.class);
 
@@ -55,8 +57,8 @@ public class PortalService implements IPortalService{
     @Inject
     private PreferenceController preferenceController;
 
-	@Inject
-	private IWebSiteService webSiteService;
+    @Inject
+    private IWebSiteService webSiteService;
 
     @Inject
     private ITagService tagService;
@@ -74,13 +76,12 @@ public class PortalService implements IPortalService{
 
 
     public Notification getNotification() {
-        if (!applicationStateManager.exists(Notification.class))
-        {
+        if (!applicationStateManager.exists(Notification.class)) {
             Notification notification = new Notification();
             notification.setNewHistoryCount(getNewPaymentsCount() + getNewInvoicesCount() + getNewEnrolmentsCount());
             notification.setNewResultsCount(getNewResultsCount());
             notification.setNewResourcesCount(getNewResourcesCount());
-            applicationStateManager.set(Notification.class,notification);
+            applicationStateManager.set(Notification.class, notification);
         }
         return applicationStateManager.get(Notification.class);
     }
@@ -97,8 +98,7 @@ public class PortalService implements IPortalService{
                 logger.error(ex.getMessage(), ex);
                 return new Date(0);
             }
-        }
-        else {
+        } else {
             return new Date(0);
         }
     }
@@ -106,32 +106,31 @@ public class PortalService implements IPortalService{
     @Override
     public JSONObject getSession(Session session) {
         JSONObject result = new JSONObject();
-        result.put("startDate",FormatUtils.getDateFormat(DATE_FORMAT_EEEE_dd_MMMMM_h_mma, session.getTimeZone()).format(session.getStartDate()));
+        result.put("startDate", FormatUtils.getDateFormat(DATE_FORMAT_EEEE_dd_MMMMM_h_mma, session.getTimeZone()).format(session.getStartDate()));
         result.put("endDate", FormatUtils.getDateFormat(DATE_FORMAT_EEEE_dd_MMMMM_h_mma, session.getTimeZone()).format(session.getEndDate()));
         return result;
     }
 
     public JSONObject getAttendences(Session session) {
-       List<Attendance> attendances = session.getAttendances();
+        List<Attendance> attendances = session.getAttendances();
 
-       JSONObject result = new JSONObject();
-       result.append("session", getSession(session));
+        JSONObject result = new JSONObject();
+        result.append("session", getSession(session));
 
-        for(Attendance attendance : attendances)
-        {
-            result.put(String.format("%s",attendance.getStudent().getId()),String.format("%s",attendance.getAttendanceType()));
+        for (Attendance attendance : attendances) {
+            result.put(String.format("%s", attendance.getStudent().getId()), String.format("%s", attendance.getAttendanceType()));
         }
 
         return result;
     }
 
-	public JSONObject getNearesSessionIndex(Integer i) {
+    public JSONObject getNearesSessionIndex(Integer i) {
 
         JSONObject result = new JSONObject();
         result.append("nearesIndex", i);
 
         return result;
-	}
+    }
 
     /**
      * @return contact's sesssions array where entry format is MM-dd-yyyy,<a href='#class-%s'>%s</a>
@@ -142,40 +141,40 @@ public class PortalService implements IPortalService{
 
         JSONObject result = new JSONObject();
 
-		Map<String, List<Session>> daysSessionMap = new HashMap<>();
+        Map<String, List<Session>> daysSessionMap = new HashMap<>();
 
         for (Session session : sessions) {
             TimeZone timeZone = courseClassService.getClientTimeZone(session.getCourseClass());
-			String key = FormatUtils.getDateFormat("MM-dd-yyyy",timeZone).format(session.getStartDate());
+            String key = FormatUtils.getDateFormat("MM-dd-yyyy", timeZone).format(session.getStartDate());
 
-			if (daysSessionMap.get(key) == null) {
-				daysSessionMap.put(key, new ArrayList<Session>());
-			}
+            if (daysSessionMap.get(key) == null) {
+                daysSessionMap.put(key, new ArrayList<Session>());
+            }
 
-			daysSessionMap.get(key).add(session);
-		}
+            daysSessionMap.get(key).add(session);
+        }
 
-		for (String key : daysSessionMap.keySet()) {
-			String events =	builEventsString(daysSessionMap.get(key));
-			result.put(key, events);
-		}
+        for (String key : daysSessionMap.keySet()) {
+            String events = builEventsString(daysSessionMap.get(key));
+            result.put(key, events);
+        }
 
         return result;
     }
 
-	private String builEventsString(List<Session> sessions) {
+    private String builEventsString(List<Session> sessions) {
 
-		StringBuilder events = new StringBuilder();
+        StringBuilder events = new StringBuilder();
 
-		for (Session session : sessions) {
-			events.append(String.format("<li><a href='#class-%s' class=\"event\">%s</a></li>", session.getCourseClass().getId(), formatDate(session)));
-		}
+        for (Session session : sessions) {
+            events.append(String.format("<li><a href='#class-%s' class=\"event\">%s</a></li>", session.getCourseClass().getId(), formatDate(session)));
+        }
 
-		return String.format("<ul>%s</ul>",events);
-	}
+        return String.format("<ul>%s</ul>", events);
+    }
 
 
-	private String formatDate(Session session) {
+    private String formatDate(Session session) {
         TimeZone timeZone = courseClassService.getClientTimeZone(session.getCourseClass());
         return String.format("%s - %s",
                 FormatUtils.getDateFormat(FormatUtils.shortTimeFormatString, timeZone).format(session.getStartDate()),
@@ -184,16 +183,16 @@ public class PortalService implements IPortalService{
 
     public boolean isApproved(CourseClass courseClass) {
 
-		Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY,
+        Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY,
                 authenticationService.getUser().getTutor()).andExp(ExpressionFactory.matchExp(TutorRole.COURSE_CLASS_PROPERTY, courseClass));
-		SelectQuery q = new SelectQuery(TutorRole.class, exp);
+        SelectQuery q = new SelectQuery(TutorRole.class, exp);
 
-		List <TutorRole> tutorRoles = cayenneService.sharedContext().performQuery(q);
+        List<TutorRole> tutorRoles = cayenneService.sharedContext().performQuery(q);
 
         for (TutorRole t : tutorRoles) {
-			if (!t.getIsConfirmed()) {
-				return false;
-			}
+            if (!t.getIsConfirmed()) {
+                return false;
+            }
         }
         return true;
     }
@@ -208,10 +207,10 @@ public class PortalService implements IPortalService{
         List<CourseClass> courseClasses = new ArrayList<>();
 
         Contact contact = authenticationService.getUser();
-        if(contact.getTutor() != null)
+        if (contact.getTutor() != null)
             courseClasses.addAll(getTutorCourseClasses(contact, filter));
 
-        if(contact.getStudent() != null && filter != CourseClassFilter.UNCONFIRMED)
+        if (contact.getStudent() != null && filter != CourseClassFilter.UNCONFIRMED)
             courseClasses.addAll(getStudentCourseClasses(contact, filter));
 
         Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
@@ -222,7 +221,7 @@ public class PortalService implements IPortalService{
 
 
     private List<CourseClass> getStudentCourseClasses(Contact contact, CourseClassFilter filter) {
-        if(contact.getStudent() != null){
+        if (contact.getStudent() != null) {
             Expression expr = getStudentClassesExpression(contact);
 
             SelectQuery q = new SelectQuery(CourseClass.class, expr);
@@ -230,7 +229,7 @@ public class PortalService implements IPortalService{
             q.setCacheGroups(CacheGroup.COURSES.name());
             q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
 
-            List <CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
+            List<CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
 
             switch (filter) {
 
@@ -243,24 +242,24 @@ public class PortalService implements IPortalService{
                 default:
                     throw new IllegalArgumentException();
             }
-	    }
-		return null;
+        }
+        return null;
 
     }
 
     private List<CourseClass> getTutorCourseClasses(Contact contact, CourseClassFilter filter) {
-        if(contact.getTutor() != null){
+        if (contact.getTutor() != null) {
             SelectQuery q = new SelectQuery(CourseClass.class, getTutorClassesExpression());
             q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
             q.setCacheGroups(CacheGroup.COURSES.name());
-			q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
+            q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
 
-            List <CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
+            List<CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
             switch (filter) {
                 case UNCONFIRMED:
-                   return getUnconfirmedTutorClasses(courseClasses,contact);
+                    return getUnconfirmedTutorClasses(courseClasses, contact);
                 case CURRENT:
-                   return getCurrentTutorClasses(courseClasses);
+                    return getCurrentTutorClasses(courseClasses);
                 case PAST:
                     return getPastTutorClasses(courseClasses);
                 case ALL:
@@ -280,99 +279,96 @@ public class PortalService implements IPortalService{
     }
 
 
-    private Expression getTutorClassesExpression()
-    {
+    private Expression getTutorClassesExpression() {
         Expression expr = ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.TUTOR_PROPERTY, getContact().getTutor());
         expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
         return expr;
     }
 
-    private  List<CourseClass>  getPastTutorClasses(List<CourseClass> courseClasses){
+    private List<CourseClass> getPastTutorClasses(List<CourseClass> courseClasses) {
 
-		List<CourseClass> past = new ArrayList<>();
-		past.addAll(courseClasses);
-		past.removeAll(getCurrentTutorClasses(courseClasses));
+        List<CourseClass> past = new ArrayList<>();
+        past.addAll(courseClasses);
+        past.removeAll(getCurrentTutorClasses(courseClasses));
 
         return past;
     }
 
-    private  List<CourseClass> getCurrentTutorClasses(List<CourseClass> courseClasses){
+    private List<CourseClass> getCurrentTutorClasses(List<CourseClass> courseClasses) {
         List<CourseClass> current = new ArrayList<>();
         Date date = new Date();
 
-             for(CourseClass courseClass : courseClasses){
-                 if(courseClass.getIsDistantLearningCourse()){
-                     current.add(courseClass);
-                 }
-                 if(!courseClass.getIsDistantLearningCourse() && !courseClass.getSessions().isEmpty()) {
+        for (CourseClass courseClass : courseClasses) {
+            if (courseClass.getIsDistantLearningCourse()) {
+                current.add(courseClass);
+            }
+            if (!courseClass.getIsDistantLearningCourse() && !courseClass.getSessions().isEmpty()) {
 
-					 if(courseClass.getEndDate().after(date))
-						 current.add(courseClass);
-				 }
+                if (courseClass.getEndDate().after(date))
+                    current.add(courseClass);
+            }
 
-				 if(!courseClass.getIsDistantLearningCourse() && courseClass.getSessions().isEmpty()) {
+            if (!courseClass.getIsDistantLearningCourse() && courseClass.getSessions().isEmpty()) {
 
-					 current.add(courseClass);
-				 }
+                current.add(courseClass);
+            }
 
-             }
+        }
 
-        return  current;
+        return current;
     }
 
 
-
-    private List<CourseClass> getUnconfirmedTutorClasses(List<CourseClass> courseClasses, Contact contact){
+    private List<CourseClass> getUnconfirmedTutorClasses(List<CourseClass> courseClasses, Contact contact) {
         List<CourseClass> unconfirmed = new ArrayList<>();
 
-        for(CourseClass courseClass : courseClasses){
-           for(TutorRole tutorRole : courseClass.getTutorRoles()){
-                 if(tutorRole.getTutor().getId().equals(contact.getTutor().getId())
-			        && !tutorRole.getIsConfirmed()
-					&& getCurrentTutorClasses(courseClasses).contains(courseClass)) {
+        for (CourseClass courseClass : courseClasses) {
+            for (TutorRole tutorRole : courseClass.getTutorRoles()) {
+                if (tutorRole.getTutor().getId().equals(contact.getTutor().getId())
+                        && !tutorRole.getIsConfirmed()
+                        && getCurrentTutorClasses(courseClasses).contains(courseClass)) {
 
-							unconfirmed.add(courseClass);
+                    unconfirmed.add(courseClass);
 
-                 }
-           }
+                }
+            }
         }
         return unconfirmed;
     }
 
 
-
-    private List<CourseClass> getCurrentStudentClasses(List<CourseClass> courseClasses, Contact contact){
+    private List<CourseClass> getCurrentStudentClasses(List<CourseClass> courseClasses, Contact contact) {
 
         List<CourseClass> current = new ArrayList<>();
         Date date = new Date();
 
-        for(CourseClass courseClass : courseClasses){
+        for (CourseClass courseClass : courseClasses) {
 
-           if(courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() != null){
+            if (courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() != null) {
 
-              for(Enrolment enrolment : courseClass.getEnrolments()){
-                  if(enrolment.getStudent().getId().equals(contact.getStudent().getId())){
-                     if(DateUtils.addDays(enrolment.getCreated(),courseClass.getMaximumDays()).after(date))
-                         current.add(courseClass);
-                     break;
-                  }
-              }
-           }
+                for (Enrolment enrolment : courseClass.getEnrolments()) {
+                    if (enrolment.getStudent().getId().equals(contact.getStudent().getId())) {
+                        if (DateUtils.addDays(enrolment.getCreated(), courseClass.getMaximumDays()).after(date))
+                            current.add(courseClass);
+                        break;
+                    }
+                }
+            }
 
-		   if(courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() == null) {
-			   current.add(courseClass);
-		   }
+            if (courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() == null) {
+                current.add(courseClass);
+            }
 
-		   if(!courseClass.getIsDistantLearningCourse() && !courseClass.getSessions().isEmpty()) {
+            if (!courseClass.getIsDistantLearningCourse() && !courseClass.getSessions().isEmpty()) {
 
-              if(courseClass.getEndDate().after(date))
-                  current.add(courseClass);
-           }
+                if (courseClass.getEndDate().after(date))
+                    current.add(courseClass);
+            }
 
-		   if(!courseClass.getIsDistantLearningCourse() && courseClass.getSessions().isEmpty()) {
+            if (!courseClass.getIsDistantLearningCourse() && courseClass.getSessions().isEmpty()) {
 
-			   current.add(courseClass);
-		   }
+                current.add(courseClass);
+            }
 
 
         }
@@ -380,27 +376,24 @@ public class PortalService implements IPortalService{
         return current;
     }
 
-    private List<CourseClass> getPastStudentClasses(List<CourseClass> courseClasses, Contact contact){
+    private List<CourseClass> getPastStudentClasses(List<CourseClass> courseClasses, Contact contact) {
         List<CourseClass> past = new ArrayList<>();
-		past.addAll(courseClasses);
-		past.removeAll(getCurrentStudentClasses(courseClasses,contact));
-		return  past;
+        past.addAll(courseClasses);
+        past.removeAll(getCurrentStudentClasses(courseClasses, contact));
+        return past;
     }
 
-    public CourseClass getCourseClassBy(long id)
-    {
+    public CourseClass getCourseClassBy(long id) {
         ObjectContext context = cayenneService.newContext();
         List<CourseClass> result = new ArrayList<>();
-        if (getContact().getTutor() != null)
-        {
+        if (getContact().getTutor() != null) {
             Expression expression = getTutorClassesExpression();
             expression = expression.andExp(ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, id));
             SelectQuery q = new SelectQuery(CourseClass.class, expression);
             result.addAll(context.performQuery(q));
         }
 
-        if (getContact().getStudent() != null)
-        {
+        if (getContact().getStudent() != null) {
             Expression expression = getStudentClassesExpression(getContact());
             expression = expression.andExp(ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, id));
 
@@ -413,8 +406,7 @@ public class PortalService implements IPortalService{
 
     }
 
-    public Invoice getInvoiceBy(long id)
-    {
+    public Invoice getInvoiceBy(long id) {
         ObjectContext context = cayenneService.newContext();
         Expression expression = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, getContact());
         expression = expression.andExp(ExpressionFactory.matchDbExp(Invoice.ID_PK_COLUMN, id));
@@ -424,8 +416,7 @@ public class PortalService implements IPortalService{
     }
 
 
-    public PaymentIn getPaymentInBy(long id)
-    {
+    public PaymentIn getPaymentInBy(long id) {
         ObjectContext context = cayenneService.newContext();
         Expression expression = ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, getContact());
         expression = expression.andExp(ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, id));
@@ -434,8 +425,7 @@ public class PortalService implements IPortalService{
         return result.isEmpty() ? null : result.get(0);
     }
 
-    public Tag getMailingList(long id)
-    {
+    public Tag getMailingList(long id) {
         ObjectContext context = cayenneService.newContext();
 
         Expression expression = ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, getContact().getCollege());
@@ -447,15 +437,16 @@ public class PortalService implements IPortalService{
         expression = expression.andExp(ExpressionFactory.matchExp(Tag.TAGGABLE_TAGS_PROPERTY + "." +
                         TaggableTag.TAGGABLE_PROPERTY + "." +
                         Taggable.ENTITY_WILLOW_ID_PROPERTY,
-                getContact().getId()));
-        SelectQuery selectQuery = new SelectQuery(Tag.class,expression);
+                getContact().getId()
+        ));
+        SelectQuery selectQuery = new SelectQuery(Tag.class, expression);
 
         List<Tag> result = context.performQuery(selectQuery);
         return result.isEmpty() ? null : result.get(0);
     }
 
     @Override
-	public List<BinaryInfo> getTutorCommonResources(){
+    public List<BinaryInfo> getTutorCommonResources() {
 
         if (authenticationService.isTutor()) {
             ObjectContext sharedContext = cayenneService.sharedContext();
@@ -466,53 +457,65 @@ public class PortalService implements IPortalService{
                     ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "+." + BinaryInfoRelation.CREATED_PROPERTY, null)));
 
             return (List<BinaryInfo>) sharedContext.performQuery(query);
-        }
-        else
-        {
+        } else {
             return Collections.EMPTY_LIST;
         }
 
-	}
+    }
 
-	@Override
-	public List<BinaryInfo> getResourcesBy(CourseClass courseClass) {
+
+    public List<Enrolment> getEnrolments() {
+        Student student = getContact().getStudent();
+        if (student != null) {
+            ObjectContext sharedContext = cayenneService.sharedContext();
+            Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student);
+            exp = exp.andExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
+            SelectQuery query = new SelectQuery(Enrolment.class, exp);
+            query.addOrdering(Enrolment.MODIFIED_PROPERTY, SortOrder.DESCENDING);
+            return (List<Enrolment>) sharedContext.performQuery(query);
+        } else {
+            return Collections.EMPTY_LIST;
+        }
+    }
+
+    @Override
+    public List<BinaryInfo> getResourcesBy(CourseClass courseClass) {
 
         Contact contact = authenticationService.getUser();
-		ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.sharedContext();
         contact = sharedContext.localObject(contact);
 
-		if (contact.getTutor() !=null) {
-			SelectQuery query = new SelectQuery(TutorRole.class, ExpressionFactory.matchExp(
-					TutorRole.COURSE_CLASS_PROPERTY, courseClass).andExp(
-					ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY, contact.getTutor())));
-			List<TutorRole> tutorRole = sharedContext.performQuery(query);
-			if (!tutorRole.isEmpty()) {
-				return getAttachedFilesForTutor(courseClass);
-			}
-		}
-		return getAttachedFilesForStudent(courseClass);
-	}
+        if (contact.getTutor() != null) {
+            SelectQuery query = new SelectQuery(TutorRole.class, ExpressionFactory.matchExp(
+                    TutorRole.COURSE_CLASS_PROPERTY, courseClass).andExp(
+                    ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY, contact.getTutor())));
+            List<TutorRole> tutorRole = sharedContext.performQuery(query);
+            if (!tutorRole.isEmpty()) {
+                return getAttachedFilesForTutor(courseClass);
+            }
+        }
+        return getAttachedFilesForStudent(courseClass);
+    }
 
-	private List<BinaryInfo> getAttachedFilesForStudent(CourseClass courseClass) {
+    private List<BinaryInfo> getAttachedFilesForStudent(CourseClass courseClass) {
 
-		ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.sharedContext();
 
-		Expression exp = ExpressionFactory.inExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
-				.andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
-				.andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
-		return sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp));
-	}
+        Expression exp = ExpressionFactory.inExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
+                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
+                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
+        return sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp));
+    }
 
-	private List<BinaryInfo> getAttachedFilesForTutor(CourseClass courseClass) {
-		ObjectContext sharedContext = cayenneService.sharedContext();
+    private List<BinaryInfo> getAttachedFilesForTutor(CourseClass courseClass) {
+        ObjectContext sharedContext = cayenneService.sharedContext();
 
-		Expression exp = ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId())
-				.andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
-		return sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp));
-	}
+        Expression exp = ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId())
+                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
+        return sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp));
+    }
 
-    public List<BinaryInfo> getResources()
-    {
+    public List<BinaryInfo> getResources() {
         ArrayList<BinaryInfo> resources = new ArrayList<>();
         resources.addAll(getTutorCommonResources());
 
@@ -527,29 +530,43 @@ public class PortalService implements IPortalService{
     }
 
 
-	@Override
-	public boolean hasResult(CourseClass courseClass) {
+    @Override
+    public boolean hasResult(CourseClass courseClass) {
 
-		Student student = getContact().getStudent();
-		Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY , student);
-		List<Enrolment> enrolments = exp.filterObjects(courseClass.getValidEnrolments());
+        Student student = getContact().getStudent();
+        Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student);
+        List<Enrolment> enrolments = exp.filterObjects(courseClass.getValidEnrolments());
 
-		return !enrolments.isEmpty();
-	}
+        return !enrolments.isEmpty();
+    }
 
-    private int getNewResultsCount()
-    {
-        Expression expression = ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS);
-        expression = expression.andExp(ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, getContact().getStudent()));
+    private int getNewResultsCount() {
+        Expression expression = getOutcomeExpression();
         expression = expression.andExp(ExpressionFactory.greaterOrEqualExp(Outcome.MODIFIED_PROPERTY, getLastLoginTime()));
 
         ObjectContext sharedContext = cayenneService.sharedContext();
-        return sharedContext.performQuery(new SelectQuery(Outcome.class,expression)).size();
+        return sharedContext.performQuery(new SelectQuery(Outcome.class, expression)).size();
     }
 
+    private Expression getOutcomeExpression() {
+        Expression expression = ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS);
+        expression = expression.andExp(ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, getContact().getStudent()));
+        expression = expression.andExp(ExpressionFactory.noMatchExp(Outcome.MODULE_PROPERTY, null)
+                .orExp(ExpressionFactory.noMatchExp(Outcome.STATUS_PROPERTY, OutcomeStatus.STATUS_NOT_SET)));
+        return expression;
+    }
 
-    private int getNewResourcesCount()
-    {
+    public List<Outcome> getResultsBy(CourseClass courseClass) {
+        Expression expression = getOutcomeExpression();
+        expression = expression.andExp( ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass));
+
+        ObjectContext sharedContext = cayenneService.sharedContext();
+        SelectQuery selectQuery = new SelectQuery(Outcome.class, expression);
+        selectQuery.addOrdering(Outcome.MODIFIED_PROPERTY, SortOrder.DESCENDING);
+        return sharedContext.performQuery(selectQuery);
+    }
+
+    private int getNewResourcesCount() {
         Date lastLoginTime = getLastLoginTime();
         int newResourcesCount = 0;
 
@@ -567,49 +584,47 @@ public class PortalService implements IPortalService{
     }
 
 
-	@Override
-	public List<PCourseClass> fillCourseClassSessions(CourseClassFilter filter) {
+    @Override
+    public List<PCourseClass> fillCourseClassSessions(CourseClassFilter filter) {
 
-		List<CourseClass> courseClasses = getContactCourseClasses(filter);
+        List<CourseClass> courseClasses = getContactCourseClasses(filter);
 
-		List<PCourseClass> pCourseClasses = new ArrayList<>();
-		List<Session> sessions = new ArrayList<>();
+        List<PCourseClass> pCourseClasses = new ArrayList<>();
+        List<Session> sessions = new ArrayList<>();
 
-		for (CourseClass courseClass : courseClasses) {
+        for (CourseClass courseClass : courseClasses) {
 
-			if (courseClass.getSessions().isEmpty()) {
-				pCourseClasses.add(new PCourseClass(courseClass, null, null));
-			} else {
-				sessions.addAll(courseClass.getSessions());
-			}
-		}
+            if (courseClass.getSessions().isEmpty()) {
+                pCourseClasses.add(new PCourseClass(courseClass, null, null));
+            } else {
+                sessions.addAll(courseClass.getSessions());
+            }
+        }
 
-		Ordering.orderList(sessions, Arrays.asList(new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING)));
-		Expression ex = ExpressionFactory.greaterExp(Session.START_DATE_PROPERTY, new Date());
+        Ordering.orderList(sessions, Arrays.asList(new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING)));
+        Expression ex = ExpressionFactory.greaterExp(Session.START_DATE_PROPERTY, new Date());
 
-		sessions = ex.filterObjects(sessions);
+        sessions = ex.filterObjects(sessions);
 
-		for (Session session : sessions) {
-			PCourseClass pCourseClass = new PCourseClass(session.getCourseClass(), session.getStartDate(), session.getEndDate());
+        for (Session session : sessions) {
+            PCourseClass pCourseClass = new PCourseClass(session.getCourseClass(), session.getStartDate(), session.getEndDate());
 
-			if (!pCourseClasses.contains(pCourseClass)) {
-				pCourseClasses.add(pCourseClass);
-			}
+            if (!pCourseClasses.contains(pCourseClass)) {
+                pCourseClasses.add(pCourseClass);
+            }
 
-		}
+        }
 
-		return pCourseClasses;
-	}
+        return pCourseClasses;
+    }
 
-	public String getUrlBy(CourseClass courseClass)
-	{
+    public String getUrlBy(CourseClass courseClass) {
         return webSiteService.getCurrentDomain() != null ? getClassDetailsURLBy(courseClass, webSiteService) : null;
-	}
+    }
 
-	public String getUrlBy(Course course)
-	{
-        return webSiteService.getCurrentDomain() != null ? getCourseDetailsURLBy(course, webSiteService): null;
-	}
+    public String getUrlBy(Course course) {
+        return webSiteService.getCurrentDomain() != null ? getCourseDetailsURLBy(course, webSiteService) : null;
+    }
 
 
     @Override
@@ -625,10 +640,9 @@ public class PortalService implements IPortalService{
         return (List<PaymentIn>) sharedContext.performQuery(query);
     }
 
-    public int getNewPaymentsCount()
-    {
+    public int getNewPaymentsCount() {
         Contact contact = getContact();
-        Date lastLoginTime  = getLastLoginTime();
+        Date lastLoginTime = getLastLoginTime();
 
         ObjectContext sharedContext = cayenneService.sharedContext();
         SelectQuery query = new SelectQuery(PaymentIn.class, ExpressionFactory.matchExp(
@@ -639,10 +653,9 @@ public class PortalService implements IPortalService{
         return sharedContext.performQuery(query).size();
     }
 
-    public int getNewInvoicesCount()
-    {
+    public int getNewInvoicesCount() {
         Contact contact = getContact();
-        Date lastLoginTime  = getLastLoginTime();
+        Date lastLoginTime = getLastLoginTime();
 
         ObjectContext sharedContext = cayenneService.sharedContext();
         SelectQuery query = new SelectQuery(Invoice.class, ExpressionFactory.matchExp(
@@ -652,10 +665,9 @@ public class PortalService implements IPortalService{
         return sharedContext.performQuery(query).size();
     }
 
-    public int getNewEnrolmentsCount()
-    {
+    public int getNewEnrolmentsCount() {
         Contact contact = getContact();
-        Date lastLoginTime  = getLastLoginTime();
+        Date lastLoginTime = getLastLoginTime();
 
         ObjectContext sharedContext = cayenneService.sharedContext();
         SelectQuery query = new SelectQuery(Enrolment.class, ExpressionFactory.matchExp(
@@ -663,6 +675,16 @@ public class PortalService implements IPortalService{
                 ExpressionFactory.greaterOrEqualExp(Enrolment.MODIFIED_PROPERTY, lastLoginTime)));
 
         return sharedContext.performQuery(query).size();
+    }
+
+
+    public boolean isNew(CayenneDataObject object) {
+        try {
+            Date value = (Date) BeanUtilsBean.getInstance().getPropertyUtils().getProperty(object, Enrolment.MODIFIED_PROPERTY);
+            return value.after(getLastLoginTime());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

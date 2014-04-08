@@ -3,6 +3,7 @@ package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.CourseClass;
 
+import ish.oncourse.model.Outcome;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
