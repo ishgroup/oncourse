@@ -103,7 +103,10 @@ public class ClassApproval {
         if (whyDeclined == null || whyDeclined.length() == 0) {
             approvalForm.recordError(whyDeclinedField, messages.get("message-feedbackEmpty"));
         } else {
-
+            if (getTutorFeedbackEmail() == null) {
+                approvalForm.recordError(whyDeclinedField, messages.get("message-feedbackEmailNotSet"));
+                return;
+            }
             String subject = String.format(messages.get("email-subject"), c.getGivenName(), c.getFamilyName());
             String body = messages.format("email-body", c.getGivenName(),
                     c.getFamilyName(), courseClass.getCourse().getCode(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);

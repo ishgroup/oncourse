@@ -3,7 +3,7 @@
 	<div class="col-xs-12 col-sm-12 col-lg-12">
 		<div class="login-form well">
 			<t:form t:id="loginForm" method="post" clientValidation="literal:NONE">
-				<t:errors class="literal:validation alert alert-block alert-danger"/>
+				<t:errors banner="literal:" class="literal:validation alert alert-block alert-danger"/>
          <fieldset><h2 class="form-title">Log In</h2>
 
 				<div class="login-option clearfix form-group">

@@ -6,7 +6,7 @@
 	<span t:type="classTabs" courseClass="courseClass" selected="literal:classSurvey"/>
 
 	<t:form t:id="surveyForm">
-	<t:errors/>
+	<t:errors banner="literal:" class="literal:validation"/>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="survey-table">
 		<tr>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-course-b.png" alt="" /></div></td>
