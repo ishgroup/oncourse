@@ -1,25 +1,26 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <div class="tab-pane" id="class-resources">
+    <ul class="list-unstyled resources-content">
+        <li>
+            <ul class="list-unstyled resources-list">
+                <t:loop source="materials" value="material">
+                    <li class="${material.type}">
+                        <span class="glyphicon glyphicon-file"></span>
+                        <a href="${materialUrl}">
+                            ${material.name}
+                                <t:if test="material.type.empty" negate="true">
+                                    .${material.type}
+                                </t:if>
+                        </a>
+                        <span>${size}.</span>
+                        <t:if test="isNew()">
+                             <span class="label label-primary">NEW</span>
+                        </t:if>
 
-  <ul class="list-unstyled resources-content">
-      <li>
-          <ul class="list-unstyled resources-list">
-              <t:loop source="materials" value="material">
-                  <li class="${material.type}">
-                      <span class="glyphicon glyphicon-file"></span>
-                      <a href="${materialUrl}">
-                          ${material.name}
-                              <t:if test="material.type.empty" negate="true">
-                                  .${material.type}
-                              </t:if>
-                      </a>
-                      <span>${size}.</span>
-                      <t:if test="isNew()">
-                           <span class="label label-primary">NEW</span>
-                      </t:if>
-
-                  </li>
-              </t:loop>
-          </ul>
-      </li>
-  </ul>
+                    </li>
+                </t:loop>
+            </ul>
+        </li>
+    </ul>
+  </div>
 </t:container>
