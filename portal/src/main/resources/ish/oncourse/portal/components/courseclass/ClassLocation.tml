@@ -6,27 +6,26 @@
 
                 <t:if test="hasCoordinates">
                        <script type="text/javascript">
-                          $j(document).ready(function(){
-                             var map
-                             function initialize() {
-                                 vLat = "${mapPositionLatitude}";
-                                 vLong = "${mapPositionLongitude}";
-                                 var mapOptions = {
-                                     zoom: 8,
-                                     center:  new google.maps.LatLng(vLat,vLong),
-                                     mapTypeId: google.maps.MapTypeId.ROADMAP
-                                 };
 
-                                   map = new google.maps.Map(document.getElementById("venue"),
-                                         mapOptions);
+                           var map
+                           function initialize() {
+                               vLat = "${mapPositionLatitude}";
+                               vLong = "${mapPositionLongitude}";
+                               var mapOptions = {
+                                   zoom: 8,
+                                   center:  new google.maps.LatLng(vLat,vLong),
+                                   mapTypeId: google.maps.MapTypeId.ROADMAP
+                               };
 
-                                 var marker = new google.maps.Marker({
-                                     position: new google.maps.LatLng(vLat,vLong),
-                                     map: map
-                                 });
-                             }
-                             google.maps.event.addDomListener(window, 'load', initialize);
-                           });
+                                 map = new google.maps.Map(document.getElementById("venue"),
+                                       mapOptions);
+
+                               var marker = new google.maps.Marker({
+                                   position: new google.maps.LatLng(vLat,vLong),
+                                   map: map
+                               });
+                           }
+                           google.maps.event.addDomListener(window, 'load', initialize);
                     </script>
                     <div id="venue" ></div>
                 </t:if>
