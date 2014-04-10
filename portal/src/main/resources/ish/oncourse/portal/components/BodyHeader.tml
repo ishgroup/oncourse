@@ -10,7 +10,7 @@
             </button>
           </t:if>
           <span class="navbar-brand">
-            <img src="/s/portal/img/logo-v3.png" alt=""/>
+            <a href="${request.contextPath}"><img src="/s/portal/img/logo-v3.png" alt=""/></a>
           </span>
         </div>
         <t:if t:test="userInSession">

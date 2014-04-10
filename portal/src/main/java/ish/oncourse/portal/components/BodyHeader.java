@@ -17,6 +17,7 @@ public class BodyHeader {
 	private IAuthenticationService authenticationService;
 	
 	@Inject
+    @Property
 	private Request request;
 
 	public boolean isUserInSession() {
