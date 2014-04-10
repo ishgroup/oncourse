@@ -43,6 +43,7 @@ public abstract class AConcessionDelegate extends ADelegate implements Concessio
 		{
 			studentConcession = objectContext.newObject(StudentConcession.class);
 			studentConcession.setStudent(getStudent());
+			studentConcession.setCollege(contact.getCollege());
 		}
 		return studentConcession;
 	}
