@@ -826,7 +826,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="authorisationExpiresOn" type="TIMESTAMP" length="19"/>
 		<db-attribute name="authorisedOn" type="TIMESTAMP" length="19"/>
-		<db-attribute name="collegeId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="concessionNumber" type="VARCHAR" length="32"/>
 		<db-attribute name="concessionTypeId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
