@@ -68,7 +68,7 @@ public class PurchaseController {
 	private Messages messages;
 
 
-	private VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper();
+	private VoucherRedemptionHelper voucherRedemptionHelper;
 
 
 	private State state = State.init;
@@ -468,6 +468,10 @@ public class PurchaseController {
 		this.paymentEditorController = paymentEditorController;
 	}
 
+    public void setVoucherRedemptionHelper(VoucherRedemptionHelper voucherRedemptionHelper)
+    {
+        this.voucherRedemptionHelper = voucherRedemptionHelper;
+    }
 
 	public synchronized VoucherRedemptionHelper getVoucherRedemptionHelper() {
 		return voucherRedemptionHelper;
@@ -743,7 +747,7 @@ public class PurchaseController {
 
 	}
 
-	public static enum State {
+    public static enum State {
 		init(Action.init, Action.addContact),
 		editCheckout(COMMON_ACTIONS, addDiscount, removeDiscount, proceedToPayment, addCourseClass, addProduct),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),

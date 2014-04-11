@@ -17,8 +17,8 @@ public class ActionAddVoucher extends APurchaseAction {
 
 	@Override
 	protected void makeAction() {
-		getController().getVoucherRedemptionHelper().addVoucher(voucher);
-		getController().getVoucherRedemptionHelper().calculateVouchersRedeemPayment();
+        getController().getVoucherRedemptionHelper().clear();
+		getController().getVoucherRedemptionHelper().processAgainstInvoices();
 		getModel().clearVoucherPayments();
 		getModel().addVoucherPayments(getController().getVoucherRedemptionHelper().getPayments());
 	}

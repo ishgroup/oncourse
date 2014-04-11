@@ -20,6 +20,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.CommonUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -89,6 +90,7 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		purchaseController.setTagService(tagService);
         purchaseController.setParallelExecutor(parallelExecutor);
 		purchaseController.setPaymentService(paymentService);
+        purchaseController.setVoucherRedemptionHelper(new VoucherRedemptionHelper(model.getObjectContext(), model.getCollege()));
 		return purchaseController;
 	}
 
