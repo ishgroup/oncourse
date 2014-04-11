@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <Language id="1" name="English" isActive="1" ishVersion="1"/>
+    <Qualification id="1" ishVersion="1" nationalCode="10351TAS" level="Certificate IV in" title="Youth &amp; Community Work (Christian)" anzsco="411716" asco="GEN19" fieldOfStudy="1103" fieldOfEducation="0899" nominalHours="13"
+                   reviewDate="2009-07-16 16:50:31" isAccreditedCourse="1" created="2009-07-16 16:50:31" modified="2009-07-16 16:50:31"/>
+
+    <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+
+
+    <Course id="1" collegeId="1" angelId="1" code="ATT1" isWebVisible="1" isVETCourse="0"
+            isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Test 1" detail="detail"
+            detail_textile="detailTextile" fieldOfEducation="fieldOfEducation"
+            nominalHours="1.1" qualificationId="1" searchText="searchText"/>
+
+    <Course id="2" collegeId="1" angelId="2" code="ATT2" isWebVisible="1" isVETCourse="0"
+            isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Test 2" detail="detail"
+            detail_textile="detailTextile" fieldOfEducation="fieldOfEducation"
+            nominalHours="1.1" qualificationId="1" searchText="searchText"/>
+		
+    <Site id="1" collegeId="1" angelId="1" isWebVisible="0" created="2011-09-12 00:17:18.0"
+          modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
+          drivingDirections="drivingDirections" drivingDirections_textile="drivingDirections_textile" latitude="1.11"
+          longitude="1.11" postcode="postcode" publicTransportDirections="publicTransportDirections"
+          publicTransportDirections_textile="publicTransportDirections_textile" specialInstructions="specialInstructions"
+          specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="Australia/Sydney" isVirtual="0"/>
+
+    <Room id="1" collegeId="1" siteId="1" angelId="1" capacity="30" created="2011-09-12 00:47:01.0"
+          modified="2011-09-12 01:02:00.0" name="TestRoom" directions="directions" directions_textile="directions_textile"
+          facilities="facilities" facilities_textile="facilities_textile"/>
+
+    <CourseClass id="1" angelId="1" collegeId="1"
+                 code="123" courseId="1" roomId="1"
+                 startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0"
+                 isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="100.00"
+                 feeGst="10.00"
+                 detail="detail" detail_textile="detailTextile" materials="materials"
+                 materials_textile="materials_textile"
+                 minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
+                 startingMinutePerSession="1" timeZone="timeZone" isDistantLearningCourse="0" expectedHours="2.0"
+                 maximumDays="3"/>
+    <CourseClass id="2" angelId="2" collegeId="1"
+                 code="124" courseId="2" roomId="1"
+                 startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0"
+                 isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="100.00"
+                 feeGst="10.00"
+                 detail="detail" detail_textile="detailTextile" materials="materials"
+                 materials_textile="materials_textile"
+                 minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
+                 startingMinutePerSession="1" timeZone="timeZone" isDistantLearningCourse="0" expectedHours="2.0"
+                 maximumDays="3"/>
+    <CourseClass id="3" angelId="3" collegeId="1"
+                 code="125" courseId="2" roomId="1"
+                 startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0"
+                 isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="100.00"
+                 feeGst="10.00"
+                 detail="detail" detail_textile="detailTextile" materials="materials"
+                 materials_textile="materials_textile"
+                 minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
+                 startingMinutePerSession="1" timeZone="timeZone" isDistantLearningCourse="0" expectedHours="2.0"
+                 maximumDays="3"/>
+    <CourseClass id="4" angelId="4" collegeId="1"
+                 code="126" courseId="2" roomId="1"
+                 startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0"
+                 isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="100.00"
+                 feeGst="10.00"
+                 detail="detail" detail_textile="detailTextile" materials="materials"
+                 materials_textile="materials_textile"
+                 minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
+                 startingMinutePerSession="1" timeZone="timeZone" isDistantLearningCourse="0" expectedHours="2.0"
+                 maximumDays="3"/>
+
+    <Discount
+            id="1"
+            angelId="1"
+            code="[null]"
+            collegeId="1"
+            combinationType="1"
+            created="2011-09-12 00:56:00.0"
+            detail="detail"
+            discountRate="0.5"
+            discountType="1"
+            modified="2011-09-12 00:56:00.0"
+            name="discountPercent1"
+            roundingMode="0"
+            timeZone="timeZone"
+            validFrom="[null]"
+            validTo="[null]"
+            hideOnWeb="0"
+            isAvailableOnWeb="1"/>
+
+    <DiscountCourseClass id="1" angelId="1" collegeId="1" courseClassId="1"
+                         created="2011-09-12 00:56:00.0"
+                         modified="2011-09-12 00:56:00.0"
+                         discountId="1"/>
+
+    <Student id="1" angelId="1" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Student id="2" angelId="2" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Student id="3" angelId="3" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Student id="4" angelId="4" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Student id="5" angelId="5" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Student id="6" angelId="6" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Student id="7" angelId="7" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Student id="8" angelId="8" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Student id="9" angelId="9" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Student id="10" angelId="10" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+
+    <Contact id="1" angelId="1" uniqueCode="1abc" collegeId="1" studentId="1" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="1@kremlin.ru" familyName="1" givenName="1"  faxNumber="1234-567" suburb="Moscow"/>
+    <Contact id="2" angelId="2" uniqueCode="2abc" collegeId="1" studentId="2" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="2@kremlin.ru" familyName="2" givenName="2"  faxNumber="1234-567" suburb="Moscow"/>
+    <Contact id="3" angelId="3" uniqueCode="3abc" collegeId="1" studentId="3" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="3@kremlin.ru" familyName="3" givenName="3"  faxNumber="1234-567" suburb="Moscow"/>
+    <Contact id="4" angelId="4" uniqueCode="4abc" collegeId="1" studentId="4" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="4@kremlin.ru" familyName="4" givenName="4"  faxNumber="1234-567" suburb="Moscow"/>
+    <Contact id="5" angelId="5" uniqueCode="5abc" collegeId="1" studentId="5" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="5@kremlin.ru" familyName="5" givenName="5"  faxNumber="1234-567" suburb="Moscow"/>
+    <Contact id="6" angelId="6" uniqueCode="6abc" collegeId="1" studentId="6" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="6@kremlin.ru" familyName="6" givenName="6"  faxNumber="1234-567" suburb="Moscow"/>
+    <Contact id="7" angelId="7" uniqueCode="7abc" collegeId="1" studentId="7" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="7@kremlin.ru" familyName="7" givenName="7"  faxNumber="1234-567" suburb="Moscow"/>
+    <Contact id="8" angelId="8" uniqueCode="8abc" collegeId="1" studentId="8" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="8@kremlin.ru" familyName="8" givenName="8"  faxNumber="1234-567" suburb="Moscow"/>
+    <Contact id="9" angelId="9" uniqueCode="9abc" collegeId="1" studentId="9" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="9@kremlin.ru" familyName="9" givenName="9"  faxNumber="1234-567" suburb="Moscow"/>
+    <Contact id="10" angelId="10" uniqueCode="10abc" collegeId="1" studentId="10" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="10@kremlin.ru" familyName="10" givenName="10"  faxNumber="1234-567" suburb="Moscow"/>
+
+    <Session id="1" collegeId="1" courseClassId="1"
+             roomId="1" angelId="1" startDate="[start_date1]"
+             endDate="[end_date1]" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+    <Session id="2" collegeId="1" courseClassId="1"
+             roomId="1" angelId="2" startDate="[start_date2]"
+             endDate="[end_date2]" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+    <Session id="3" collegeId="1" courseClassId="1"
+             roomId="1" angelId="3" startDate="[start_date3]"
+             endDate="[end_date3]" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+
+    <Session id="4" collegeId="1" courseClassId="2"
+             roomId="1" angelId="4" startDate="[start_date1]"
+             endDate="[end_date1]" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+    <Session id="5" collegeId="1" courseClassId="2"
+             roomId="1" angelId="5" startDate="[start_date2]"
+             endDate="[end_date2]" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+    <Session id="6" collegeId="1" courseClassId="2"
+             roomId="1" angelId="6" startDate="[start_date3]"
+             endDate="[end_date3]" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+
+    <Session id="7" collegeId="1" courseClassId="3"
+             roomId="1" angelId="7" startDate="[start_date1]"
+             endDate="[end_date1]" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+    <Session id="8" collegeId="1" courseClassId="3"
+             roomId="1" angelId="8" startDate="[start_date2]"
+             endDate="[end_date2]" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+
+
+    <Session id="9" collegeId="1" courseClassId="4"
+             roomId="1" angelId="9" startDate="[start_date3]"
+             endDate="[end_date3]" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+    <Session id="10" collegeId="1" courseClassId="4"
+             roomId="1" angelId="10" startDate="[start_date4]"
+             endDate="[end_date4]" created="2011-09-12 00:56:00.0"
+             modified="2011-09-12 00:56:00.0" />
+
+
+    <Enrolment id="1" source="O" collegeId="1" courseClassId="1"
+               studentId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+    <Enrolment id="2" source="O" collegeId="1" courseClassId="1"
+               studentId="4" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+    <Enrolment id="3" source="O" collegeId="1" courseClassId="2"
+               studentId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+    <Enrolment id="4" source="O" collegeId="1" courseClassId="2"
+               studentId="4" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+    <Enrolment id="5" source="O" collegeId="1" courseClassId="3"
+               studentId="5" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+    <Enrolment id="6" source="O" collegeId="1" courseClassId="4"
+               studentId="6" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+    <Enrolment id="7" source="O" collegeId="1" courseClassId="2"
+               studentId="7" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+    <Enrolment id="8" source="O" collegeId="1" courseClassId="2"
+               studentId="8" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+    <Enrolment id="9" source="O" collegeId="1" courseClassId="1"
+               studentId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+    <Enrolment id="10" source="O" collegeId="1" courseClassId="2"
+               studentId="10" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="3" />
+    <Enrolment id="11" source="O" collegeId="1" courseClassId="2"
+               studentId="10" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="8" />
+    <Enrolment id="12" source="O" collegeId="1" courseClassId="4"
+               studentId="10" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="4" />
+
+
+    <Invoice id="1" source="O" amountOwing="0" contactId="3"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="10.00" />
+    <Invoice id="2" source="O" amountOwing="0" contactId="3"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="10.00" />
+    <Invoice id="3" source="O" amountOwing="0" contactId="4"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="10.00" />
+    <Invoice id="4" source="O" amountOwing="0" contactId="4"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="10.00" />
+    <Invoice id="5" source="O" amountOwing="0" contactId="5"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="10.00" />
+    <Invoice id="6" source="O" amountOwing="0" contactId="6"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="10.00" />
+    <Invoice id="7" source="O" amountOwing="0" contactId="7"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="10.00" />
+    <Invoice id="8" source="O" amountOwing="0" contactId="8"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="8.00" />
+    <Invoice id="9" source="O" amountOwing="0" contactId="9"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="10.00" />
+    <Invoice id="10" source="O" amountOwing="0" contactId="10"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="8.00" />
+    <Invoice id="11" source="O" amountOwing="110.00" contactId="10"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
+             totalGst="10.00" />
+    <Invoice id="12" source="O" amountOwing="220.00" contactId="3"
+             collegeId="1" dateDue="[start_date4]" description="invoice for testing"
+             invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="200.00"
+             totalGst="20.00" />
+
+
+    <InvoiceLine id="1" collegeId="1" invoiceId="1" quantity="1.0" enrolmentId="[null]" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
+    <InvoiceLine id="2" collegeId="1" invoiceId="1" quantity="1.0" enrolmentId="1" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
+    <InvoiceLine id="3" collegeId="1" invoiceId="2" quantity="1.0" enrolmentId="2" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
+    <InvoiceLine id="4" collegeId="1" invoiceId="3" quantity="1.0" enrolmentId="3" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
+    <InvoiceLine id="5" collegeId="1" invoiceId="4" quantity="1.0" enrolmentId="4" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
+    <InvoiceLine id="6" collegeId="1" invoiceId="5" quantity="1.0" enrolmentId="5" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
+    <InvoiceLine id="7" collegeId="1" invoiceId="6" quantity="1.0" enrolmentId="6" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
+    <InvoiceLine id="8" collegeId="1" invoiceId="7" quantity="1.0" enrolmentId="7" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
+    <InvoiceLine id="9" collegeId="1" invoiceId="8" quantity="1.0" enrolmentId="8" discountEachExTax="20.00" priceEachExTax="100.00" taxEach="8.00" title="Test Invoice Line" />
+    <InvoiceLine id="10" collegeId="1" invoiceId="10" quantity="1.0" enrolmentId="9" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
+    <InvoiceLine id="11" collegeId="1" invoiceId="10" quantity="1.0" enrolmentId="10" discountEachExTax="20.00" priceEachExTax="100.00" taxEach="8.00" title="Test Invoice Line" />
+    <InvoiceLine id="12" collegeId="1" invoiceId="11" quantity="1.0" enrolmentId="11" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
+    <InvoiceLine id="13" collegeId="1" invoiceId="12" quantity="1.0" enrolmentId="12" discountEachExTax="0.00" priceEachExTax="200.00" taxEach="20.00" title="Test Invoice Line" />
+
+
+    <Product id="1" collegeId="1" angelId="1" SKU="234" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 5" TYPE="3"
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00" maxCoursesRedemption="3" expiryDays="365"/>
+    <Product id="2" collegeId="1" angelId="2" SKU="1234" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product 123" EXPIRYTYPE="4" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 5" TYPE="3"
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00" expiryDays="365"/>
+    <Product id="3" collegeId="1" angelId="3" SKU="456" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product double edition" EXPIRYTYPE="4" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 5" TYPE="3"
+             TAXADJUSTMENT="0.00" PRICEEXTAX="11.00" feeGST="0.00" expiryDays="365"/>
+    <Product id="4" collegeId="1" angelId="4" SKU="123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product tae" EXPIRYTYPE="4" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 5" TYPE="3"
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00" expiryDays="365"/>
+    <Product id="5" collegeId="1" angelId="5" SKU="aaaa" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="1 course" EXPIRYTYPE="4" ISONSALE="1"
+             ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 5" TYPE="3"
+             TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00" maxCoursesRedemption="1" expiryDays="365"/>
+
+    <ProductItem ID="1" angelId="1" collegeId="1" INVOICELINEID="1" PRODUCTID="1"  TYPE="3"
+                 code="qwerty" value="100.00" redeemedCoursesCount="0" source="W" status="0" valueOnPurchase="100.00"
+                 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
+                 MODIFIEDON="2012-05-14 14:35:01.618" />
+    <ProductItem ID="2" angelId="2" collegeId="1" INVOICELINEID="3" PRODUCTID="3"  TYPE="3"
+                 code="qwerty_2" value="110.00" redeemedCoursesCount="0" source="O" status="0" valueOnPurchase="110.0"
+                 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
+                 MODIFIEDON="2012-05-14 14:35:01.618" />
+    <ProductItem ID="3" angelId="3" collegeId="1" INVOICELINEID="3" PRODUCTID="1"  TYPE="3"
+                 code="qwertyb" value="50.00" redeemedCoursesCount="0" source="O" status="0" valueOnPurchase="50.00"
+                 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
+                 MODIFIEDON="2012-05-14 14:35:01.618" />
+    <ProductItem ID="4" angelId="4" collegeId="1" INVOICELINEID="3" PRODUCTID="3"  TYPE="3"
+                 code="qwerty_3" value="200.00" redeemedCoursesCount="0" source="W" status="0" valueOnPurchase="200.0"
+                 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
+                 MODIFIEDON="2012-05-14 14:35:01.618" />
+    <ProductItem ID="5" angelId="5" collegeId="1" INVOICELINEID="3" PRODUCTID="3"  TYPE="3"
+                 code="qwerty_5" value="50.00" redeemedCoursesCount="0" source="O" status="0" valueOnPurchase="50.0"
+                 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
+                 MODIFIEDON="2012-05-14 14:35:01.618" />
+    <ProductItem ID="6" angelId="6" collegeId="1" INVOICELINEID="3" PRODUCTID="3"  TYPE="3"
+                 code="qwerty_6" value="120.00" redeemedCoursesCount="0" source="O" status="0" valueOnPurchase="120.0"
+                 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
+                 MODIFIEDON="2012-05-14 14:35:01.618" />
+    <ProductItem ID="7" angelId="7" collegeId="1" INVOICELINEID="3" PRODUCTID="5"  TYPE="3"
+                 code="qwertya" value="50.00" redeemedCoursesCount="0" source="O" status="0"  valueOnPurchase="50.0"
+                 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
+                 MODIFIEDON="2012-05-14 14:35:01.618" />
+
+
+	<VoucherProductCourse id="1" collegeId="1" voucherProductId="1" courseId="1"/>
+	<VoucherProductCourse id="2" collegeId="1" voucherProductId="5" courseId="1"/>
+</dataset>

@@ -117,20 +117,22 @@ public class VoucherService implements IVoucherService {
 
 	@Override
 	public Voucher getVoucherByCode(String code) {
-		College currentCollege = takeWebSiteService().getCurrentCollege();
-		Expression qualifier = ExpressionFactory.matchExp(Voucher.CODE_PROPERTY, code)
-				.andExp(ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege))
-				.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
-				.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO)
-						.andExp(ExpressionFactory.matchExp(Voucher.STATUS_PROPERTY, ProductStatus.ACTIVE)));
-		@SuppressWarnings("unchecked")
-		List<Voucher> results = cayenneService.sharedContext().performQuery(new SelectQuery(Voucher.class, qualifier));
+
+        College currentCollege = takeWebSiteService().getCurrentCollege();
+		Expression exp = ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege);
+        exp = exp.andExp(ExpressionFactory.matchExp(Voucher.CODE_PROPERTY, code));
+        exp = exp.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO));
+        exp = exp.andExp(ExpressionFactory.matchExp(Voucher.STATUS_PROPERTY, ProductStatus.ACTIVE));
+		exp = exp.andExp(ExpressionFactory.greaterExp(Voucher.EXPIRY_DATE_PROPERTY,new Date()).orExp(ExpressionFactory.matchExp(Voucher.EXPIRY_DATE_PROPERTY, null)));
+
+
+        List<Voucher> results = cayenneService.sharedContext().performQuery(new SelectQuery(Voucher.class, exp));
 		LOGGER.info(String.format("%s found for code %s for college %s", results.size(), code, currentCollege.getId()));
 		if (results.size() > 1) {
 			LOGGER.warn(String.format("%s vouchers found for code %s for college %s. Maybe we need to enlarge the code size?", results.size(), code,
 					currentCollege.getId()));
 		}
-		return !results.isEmpty() ? results.get(0) : null;
+		return results.isEmpty() ? null : results.get(0);
 	}
 
 	@Override

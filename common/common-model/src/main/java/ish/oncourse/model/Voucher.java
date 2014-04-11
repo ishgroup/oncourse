@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.PaymentStatus;
+import ish.common.types.ProductStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._Voucher;
 import ish.oncourse.utils.QueueableObjectUtils;
@@ -127,4 +128,11 @@ public class Voucher extends _Voucher implements Queueable {
 	public boolean isMoneyVoucher() {
 		return getVoucherProduct().getMaxCoursesRedemption() == null;
 	}
+
+    /**
+     * returns true when the voucher is expired, there is special job (VoucherExpiryJob) on angel side which sets the status for expired vouchers.
+     */
+    public boolean isExpired() {
+        return ProductStatus.EXPIRED.equals(getStatus());
+    }
 }
