@@ -11,16 +11,41 @@ jar {
 	}
 }
 
-//the task generates Stubs by wsdl
-task wsdl2Java(type: JavaExec) {
-        wsdlFile =  file("${projectDir}/src/main/resources/wsdl/v6_replication.wsdl")
-        bindingFile = file("${projectDir}/src/main/resources/wsdl/replication6_binding.xml")
-        destDir = file ("${projectDir}/src/main/java")
-        main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
-        classpath = project.configurations.compile
-        args = ['-d',destDir,
-                '-b', bindingFile,
-                '-verbose',
-                wsdlFile]
+
+configurations {
+    ws
+}
+ 
+dependencies{
+    ws "org.apache.cxf:cxf-tools:2.6.1",
+        "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.1",
+        "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.1",
+        "log4j:log4j:1.2.17"
+}
+
+project.ext {
+    wsdlDir = file("${projectDir}/src/main/resources/wsdl")
+    generatedWsdlDir = file("${projectDir}/src/main/java")
+    wsdlsToGenerate = [
+        ['-xjc', '-b', "$wsdlDir/replication6_binding.xml", "$wsdlDir/v6_replication.wsdl"],
+    ]
+}
+
+task wsdl2Java() {
+    inputs.files wsdlDir.listFiles()
+    outputs.files generatedWsdlDir
+
+    doLast {
+        wsdlsToGenerate.each { argsin ->
+            argsin.add(argsin.size - 1, '-d')
+            argsin.add(argsin.size - 1, generatedWsdlDir)
+            javaexec {
+                classpath configurations.ws
+                main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
+                args = argsin
+                systemProperties = ['exitOnFinish':'TRUE']
+            }
+        }
+    }
 }
 
