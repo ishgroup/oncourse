@@ -1,6 +1,9 @@
 package ish.oncourse.portal.pages.tutor;
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
@@ -21,13 +24,16 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.util.Date;
-import java.util.List;
 
 @UserRole("tutor")
 public class ClassApproval {
 
     @Property
     private boolean approved;
+
+    @Property
+    @Persist
+    private boolean messageSent;
 
     @Property
     @Persist
@@ -118,7 +124,14 @@ public class ClassApproval {
             email.setBody(body);
             email.setToEmails(getTutorFeedbackEmail());
             mailService.sendEmail(email, true);
+            messageSent = true;
         }
+    }
+
+    @AfterRender
+    public void afterRender()
+    {
+        messageSent = false;
     }
 
     void accept() {
@@ -139,7 +152,7 @@ public class ClassApproval {
         }
     }
 
-    public boolean getIsClassApproved() {
+    public boolean isClassApproved() {
 
         return portalService.isApproved(courseClass);
     }

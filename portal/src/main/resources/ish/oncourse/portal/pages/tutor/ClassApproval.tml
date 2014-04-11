@@ -8,7 +8,7 @@
 
 
 	<t:form t:id="approvalForm" clientValidation="literal:NONE">
-		<t:if test="isClassApproved" negate="true">
+		<t:if test="isClassApproved()" negate="true">
             <div class="checkbox">
 			    <t:checkbox t:id="approved" value="approved"/>
 			    <label for="approved"><span>I agree that the date, time, venue and description of the class are all correct and that I am able to teach the class material at the times stated.</span></label>
@@ -23,6 +23,9 @@
 			</p:else>
 	 	</t:if>
 		<t:errors banner="literal:" class="literal:validation alert alert-block alert-danger"/>
+        <t:if test="messageSent">
+            <div>${message:message-emailWasSent}</div>
+        </t:if>
 
 		<!-- textarea -->
         <div class="row decline-content">
