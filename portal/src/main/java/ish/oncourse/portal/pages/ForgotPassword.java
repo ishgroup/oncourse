@@ -78,7 +78,7 @@ public class ForgotPassword {
 		email.setSubject("Password reset.");
 		
 		StringBuilder textBody = new StringBuilder();
-		textBody.append(String.format("Dear %s %s, <br/><br/>", user.getGivenName(), user.getFamilyName()));
+		textBody.append(String.format("Dear %s, <br/><br/>", user.getFullName()));
 		textBody.append("To reset your SkillsOnCourse password, simply click the link below. That will take you to a web page where you can create a new password.<br/>");
 		textBody.append("Please note that the link will expire 24 hours after this email was sent.<br/><br/>");
 		textBody.append(String.format("<a href=\"%s\">%s</a><br/><br/>", recoveryLink, recoveryLink));
