@@ -636,7 +636,7 @@ public class PortalService implements IPortalService {
 
         SelectQuery query = new SelectQuery(PaymentIn.class, ExpressionFactory.matchExp(
                 PaymentIn.CONTACT_PROPERTY, contact).andExp(
-                ExpressionFactory.noMatchExp(PaymentIn.AMOUNT_PROPERTY, Money.ZERO)));
+                ExpressionFactory.greaterExp(PaymentIn.AMOUNT_PROPERTY, Money.ZERO)));
         return (List<PaymentIn>) sharedContext.performQuery(query);
     }
 
@@ -647,7 +647,7 @@ public class PortalService implements IPortalService {
         ObjectContext sharedContext = cayenneService.sharedContext();
         SelectQuery query = new SelectQuery(PaymentIn.class, ExpressionFactory.matchExp(
                 PaymentIn.CONTACT_PROPERTY, contact).andExp(
-                ExpressionFactory.noMatchExp(PaymentIn.AMOUNT_PROPERTY, Money.ZERO)).andExp(
+                ExpressionFactory.greaterExp(PaymentIn.AMOUNT_PROPERTY, Money.ZERO)).andExp(
                 ExpressionFactory.greaterOrEqualExp(PaymentIn.MODIFIED_PROPERTY, lastLoginTime)));
 
         return sharedContext.performQuery(query).size();
