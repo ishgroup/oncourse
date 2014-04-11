@@ -1,12 +1,8 @@
 package ish.oncourse.portal.components.courseclass;
 
 
-
-
 import ish.common.types.OutcomeStatus;
 import ish.oncourse.model.*;
-import ish.oncourse.portal.access.IAuthenticationService;
-
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.exp.Expression;
@@ -65,7 +61,7 @@ public class ClassResults {
     }
 
     public String getOutComeDisplayName(){
-          return  outcome.getStatus().getDisplayName();
+          return  outcome.getStatus() != null ? outcome.getStatus().getDisplayName() : OutcomeStatus.STATUS_NOT_SET.getDisplayName();
     }
 
     public String getOutComeResult(){
