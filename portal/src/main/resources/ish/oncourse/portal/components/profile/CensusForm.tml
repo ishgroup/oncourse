@@ -15,17 +15,17 @@
         <t:errors banner="literal:"  class="literal:validation"/>
         <div class="form-group">
             <label for="countryOfBirth" class="control-label">In which country were you born?</label>
-            <span class="${validateHandler.validateClass('countryOfBirth')}">
+            <div class="${validateHandler.validateClass('countryOfBirth')}">
                 <t:textfield value="countryOfBirthName" t:id="countryOfBirth" class="form-control ${validateHandler.errorClass('countryOfBirth')}"/>
                 <span t:type="HintComponent" validationMessage="${validateHandler.error('countryOfBirth')}"/>
-            </span>
+            </div>
         </div>
         <div class="form-group">
             <label for="languageHome" class="control-label">What language do you normally speak at home?</label>
-            <span class="${validateHandler.validateClass('languageHome')}">
+            <div class="${validateHandler.validateClass('languageHome')}">
                 <t:textfield value="languageHomeName" t:id="languageHome" class="form-control ${validateHandler.errorClass('languageHome')}"/>
                 <span t:type="HintComponent" validationMessage="${validateHandler.error('languageHome')}"/>
-            </span>
+            </div>
         </div>
         <div class="form-group">
             <label for="englishProficiency" class="control-label">How well do you speak English?</label>
@@ -41,10 +41,10 @@
         </div>
         <div class="form-group">
             <label for="yearSchoolCompleted" class="control-label">In which year did you complete that school level?</label>
-            <span class="${validateHandler.validateClass('yearSchoolCompleted')}">
+            <div class="${validateHandler.validateClass('yearSchoolCompleted')}">
                 <t:textfield value="schoolYearStr" t:id="yearSchoolCompleted" class="form-control ${validateHandler.errorClass('yearSchoolCompleted')}"/>
                 <span t:type="HintComponent" validationMessage="${validateHandler.error('yearSchoolCompleted')}"/>
-            </span>
+            </div>
         </div>
         <div class="form-group">
             <label for="stillAtSchool" class="control-label">Are you still attending secondary school?</label>
