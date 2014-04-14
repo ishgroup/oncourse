@@ -29,14 +29,9 @@ public class AttendanceStubBuilder extends AbstractWillowStubBuilder<Attendance,
 				stub.setMarkerId(marker.getId());
 			}
 		}
-		/**
-		 * The code needs until while our system has colleges with version less or equal 5.0rc8
-		 */
-		if (CommonUtils.compare(entity.getCollege().getAngelVersion(), "5.0rc8") > 0)
-		{
-				stub.setDurationMinutes(entity.getDurationMinutes());
-				stub.setNote(entity.getNote());
-		}
+		stub.setDurationMinutes(entity.getDurationMinutes());
+		stub.setNote(entity.getNote());
+		
 		return stub;
 	}
 }
