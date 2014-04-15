@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Payment"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:payment">
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:history">
 
 <div class="page-header clearfix">
     <h3><a href="#">Payment details</a></h3>

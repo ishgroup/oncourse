@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Invoice"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:invoice">
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:history">
 
     <div class="page-header clearfix">
         <h3><a href="#">Tax invoice</a></h3>
@@ -27,7 +27,7 @@
     <table width="100%" class="address-table">
         <tbody><tr>
             <td width="50%">${invoice.contact.fullName}<br/>
-                ${invoice.contact.address}<br/>
+                ${invoice.billToAddress}<br/>
                 ${phoneNumber}
             </td>
             <td width="50%" class="text-right" valign="top">
