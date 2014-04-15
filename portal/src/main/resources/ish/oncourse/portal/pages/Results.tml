@@ -1,27 +1,32 @@
 <html t:type="pagestructure" title="literal:Results"
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:results">
-	<div class="page-header clearfix">
-		<h1><a href="#">Results</a></h1>
-	</div>
-	<ul class="list-unstyled result-content">
-        <t:loop source="courseClasses" value="courseClass">
+    <t:if test="hasAnyResults()">
+        <div class="page-header clearfix">
+            <h1><a href="#">Results</a></h1>
+        </div>
+        <ul class="list-unstyled result-content">
+            <t:loop source="courseClasses" value="courseClass">
 
-        <t:if test="hasResult()">
-		<li>
-            <h6>
-                <t:if test="url">
-                    <a href="${url}" target='_blank'>${courseClass.course.name}</a>
-                </t:if>
-                <t:unless test="url">
-                    <a href="#">${courseClass.course.name}</a>
-                </t:unless>
-                <small> (${courseClass.uniqueIdentifier})</small>
-            </h6>
-            <p><small class="text-muted">${date}</small></p>
-			<span t:type="courseclass/classresults" courseClass="courseClass"/>
-		</li>
-         </t:if>
+            <t:if test="hasResult()">
+            <li>
+                <h6>
+                    <t:if test="url">
+                        <a href="${url}" target='_blank'>${courseClass.course.name}</a>
+                    </t:if>
+                    <t:unless test="url">
+                        <a href="#">${courseClass.course.name}</a>
+                    </t:unless>
+                    <small> (${courseClass.uniqueIdentifier})</small>
+                </h6>
+                <p><small class="text-muted">${date}</small></p>
+                <span t:type="courseclass/classresults" courseClass="courseClass"/>
+            </li>
+             </t:if>
 
-        </t:loop>
-	</ul>
+            </t:loop>
+        </ul>
+    </t:if>
+    <t:unless test="hasAnyResults()">
+        <h3>We do not yet have any results to show you.</h3>
+    </t:unless>
 </html>

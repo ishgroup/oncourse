@@ -12,7 +12,6 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -20,12 +19,9 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
-import static ish.oncourse.portal.services.PortalUtils.COOKIE_NAME_lastLoginTime;
 
 public class Resources {
 
@@ -108,6 +104,12 @@ public class Resources {
         List<BinaryInfo> materials = portalService.getResourcesBy(courseClass);
         return !materials.isEmpty();
     }
+
+    public boolean hasAnyResources()
+    {
+        return !portalService.getResources().isEmpty();
+    }
+
 
     public String getContextPath() {
         return request.getContextPath();

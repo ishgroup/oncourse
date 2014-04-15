@@ -1,5 +1,6 @@
 <html t:type="pagestructure" title="literal:Resources"
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:resources">
+    <t:if test="hasAnyResources()">
 	<div class="page-header clearfix">
 		<h1><a href="#">Resources</a></h1>
 	</div>
@@ -52,4 +53,8 @@
 
         </t:loop>
 	</ul>
+</t:if>
+    <t:unless test="hasAnyResources()">
+        <h3>We do not have any resources to show you.</h3>
+    </t:unless>
 </html>

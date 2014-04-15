@@ -2,20 +2,17 @@ package ish.oncourse.portal.pages;
 
 
 import ish.oncourse.model.CourseClass;
-
-import ish.oncourse.model.Outcome;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import ish.oncourse.portal.services.PortalUtils;
-import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;
 import java.util.TimeZone;
@@ -68,6 +65,10 @@ public class Results {
 
     public boolean hasResult() {
 		return portalService.hasResult(courseClass);
+    }
+
+    public boolean hasAnyResults() {
+        return portalService.hasResults();
     }
 
 

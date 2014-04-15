@@ -13,14 +13,11 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Navigation {
@@ -135,16 +132,6 @@ public class Navigation {
 
     public boolean hasApprovals() {
         return contact.getTutor() != null && approvals > 0;
-    }
-
-
-    public boolean hasResources() {
-        return !resources.isEmpty();
-    }
-
-    public boolean hasResults() {
-
-        return portalService.hasResults();
     }
 
     public boolean isHistoryEnabled() {

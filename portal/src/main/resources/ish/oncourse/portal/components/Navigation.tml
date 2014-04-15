@@ -5,18 +5,16 @@
             <li class="${getActiveClassBy('timetable')}">
                  <a id="timetable" href="${request.contextPath}/timetable"><i class="icon-timetable"/>Timetable</a>
              </li>
-             <t:if test="hasResources()">
-                 <li class="${getActiveClassBy('resources')}">
-                     <a id="resources" href="${request.contextPath}/resources"><i class="icon-resources">
-                         <t:if test="notification.hasNewResources()"><small>${notification.newResourcesCount}</small></t:if></i>Resources</a>
-                 </li>
-             </t:if>
-             <t:if test="hasResults()">
+             <li class="${getActiveClassBy('resources')}">
+                 <a id="resources" href="${request.contextPath}/resources"><i class="icon-resources">
+                     <t:if test="notification.hasNewResources()"><small>${notification.newResourcesCount}</small></t:if></i>Resources</a>
+             </li>
+            <t:if test="contact.student">
                  <li class="${getActiveClassBy('results')}">
                      <a id="results" href="${request.contextPath}/results"><i class="icon-results">
                          <t:if test="notification.hasNewResults()"><small>${notification.newResultsCount}</small></t:if></i>Results</a>
                  </li>
-             </t:if>
+            </t:if>
              <li class="${getActiveClassBy('profile')}">
                  <a id="profile" href="${request.contextPath}/profile"><i class="icon-profile"/>My Profile</a>
              </li>
