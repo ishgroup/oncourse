@@ -61,29 +61,48 @@ public class ClassResults {
     }
 
     public String getOutComeDisplayName(){
-          return  outcome.getStatus() != null ? outcome.getStatus().getDisplayName() : OutcomeStatus.STATUS_NOT_SET.getDisplayName();
+        return  outcome.getStatus() != null ? outcome.getStatus().getDisplayName() : OutcomeStatus.STATUS_NOT_SET.getDisplayName();
     }
 
     public String getOutComeResult(){
+        if (OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED.equals(outcome.getStatus())){
+            return messages.format("outcomeResult.STATUS_NON_ASSESSABLE_COMPLETED",
+                    outcome.getEnrolment().getCourseClass().getCourse().getName());
+        }
+
+        if (OutcomeStatus.STATUS_NON_ASSESSABLE_NOT_COMPLETED.equals(outcome.getStatus())){
+            return messages.format("outcomeResult.STATUS_NON_ASSESSABLE_NOT_COMPLETED", outcome.getEnrolment().getCourseClass().getUniqueIdentifier());
+        }
+
         if(OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(outcome.getStatus())){
-            return messages.get("outComeResult.STATUSES_VALID_FOR_CERTIFICATE");
+            return messages.get("outcomeResult.STATUSES_VALID_FOR_CERTIFICATE");
         }
         if(OutcomeStatus.STATUS_NOT_SET.equals(outcome.getStatus())){
-            return messages.get("outComeResult.STATUS_NOT_SET");
+            return messages.get("outcomeResult.STATUS_NOT_SET");
         }
-        return messages.get("outComeResult.NOT_YET_COMPETENT");
+        return messages.get("outcomeResult.NOT_YET_COMPETENT");
 
     }
 
     public String getOutComeClass(){
 
+        if (OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED.equals(outcome.getStatus()))
+        {
+            return messages.get("outcomeClass.STATUSES_VALID_FOR_CERTIFICATE");
+        }
+
+        if (OutcomeStatus.STATUS_NON_ASSESSABLE_NOT_COMPLETED.equals(outcome.getStatus()))
+        {
+            return messages.get("outcomeClass.STATUS_NON_ASSESSABLE_NOT_COMPLETED");
+        }
+
         if(OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(outcome.getStatus())){
-            return messages.get("outComeClass.STATUSES_VALID_FOR_CERTIFICATE");
+            return messages.get("outcomeClass.STATUSES_VALID_FOR_CERTIFICATE");
         }
         if(OutcomeStatus.STATUS_NOT_SET.equals(outcome.getStatus())){
-            return messages.get("outComeClass.STATUS_NOT_SET");
+            return messages.get("outcomeClass.STATUS_NOT_SET");
         }
-        return messages.get("outComeClass.NOT_YET_COMPETENT");
+        return messages.get("outcomeClass.NOT_YET_COMPETENT");
     }
 
     public Qualification getQualification(){
@@ -103,11 +122,6 @@ public class ClassResults {
 
 		return OutcomeStatus.STATUS_NOT_SET.equals(outcome.getStatus());
 	}
-
-	public boolean isCompleted() {
-		return OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED.equals(outcome.getStatus());
-	}
-
 
     public boolean needResult()
     {
