@@ -88,7 +88,7 @@ public class ClassResults {
 
         if (OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED.equals(outcome.getStatus()))
         {
-            return messages.get("outcomeClass.STATUSES_VALID_FOR_CERTIFICATE");
+            return messages.get("outcomeClass.STATUS_NON_ASSESSABLE_COMPLETED");
         }
 
         if (OutcomeStatus.STATUS_NON_ASSESSABLE_NOT_COMPLETED.equals(outcome.getStatus()))
