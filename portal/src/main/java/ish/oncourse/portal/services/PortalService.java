@@ -619,11 +619,11 @@ public class PortalService implements IPortalService {
     }
 
     public String getUrlBy(CourseClass courseClass) {
-        return webSiteService.getCurrentDomain() != null ? getClassDetailsURLBy(courseClass, webSiteService) : null;
+        return getClassDetailsURLBy(courseClass, getDomainName(preferenceController));
     }
 
     public String getUrlBy(Course course) {
-        return webSiteService.getCurrentDomain() != null ? getCourseDetailsURLBy(course, webSiteService) : null;
+        return getCourseDetailsURLBy(course, getDomainName(preferenceController));
     }
 
 

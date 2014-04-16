@@ -3,11 +3,10 @@ package ish.oncourse.portal.services;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
-import ish.oncourse.model.WebHostName;
 import ish.oncourse.services.html.IPlainTextExtractor;
-import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
+import ish.persistence.CommonPreferenceController;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -52,24 +51,36 @@ public class PortalUtils {
 
     private final static Logger LOGGER = Logger.getLogger(PortalUtils.class);
 
-    public static String getCourseDetailsURLBy(Course course, IWebSiteService webSiteService) {
-    	WebHostName currentDomain = webSiteService.getCurrentDomain();
-    	String domainName = currentDomain.getName();
-    	if (domainName.endsWith("/")) {
-    		LOGGER.error(String.format("Incorrect domain name defined for id=%s with name %s", currentDomain.getId(), domainName));
-    		domainName = domainName.substring(0, domainName.length()-1);
-    	}
-        return course != null ? String.format(URL_COURSE_TEMPLATE, domainName, course.getCode()) : EMPTY_STRING;
+    /**
+     * Build url for course details.
+     */
+    public static String getCourseDetailsURLBy(Course course, String domainName) {
+        return  (domainName == null || course == null) ? null :  String.format(URL_COURSE_TEMPLATE, domainName, course.getCode());
     }
 
-    public static String getClassDetailsURLBy(CourseClass courseClass, IWebSiteService webSiteService) {
-    	WebHostName currentDomain = webSiteService.getCurrentDomain();
-    	String domainName = currentDomain.getName();
-    	if (domainName.endsWith("/")) {
-    		LOGGER.error(String.format("Incorrect domain name defined for id=%s with name %s", currentDomain.getId(), domainName));
-    		domainName = domainName.substring(0, domainName.length()-1);
-    	}
-    	return courseClass != null ? String.format(URL_CLASS_TEMPLATE, domainName, courseClass.getCourse().getCode(), courseClass.getCode()) : EMPTY_STRING;
+    /**
+     * Build domain name from preference <source>web.url<source/> without protocol prefix and without last slash.
+     */
+    public static String getDomainName(CommonPreferenceController preferenceController) {
+        String domainName = StringUtils.trimToNull(preferenceController.getCollegeURL());
+        if (domainName == null)
+            return null;
+        if (domainName.contains("://"))
+            domainName = domainName.substring(domainName.lastIndexOf("://") + 3);
+
+        if (domainName.endsWith("/")) {
+            LOGGER.error(String.format("Incorrect domain name %s", domainName));
+            domainName = domainName.substring(0, domainName.length()-1);
+        }
+        return domainName;
+    }
+
+    /**
+     * Build url for class details
+     */
+    public static String getClassDetailsURLBy(CourseClass courseClass,  String domainName) {
+    	return courseClass == null || domainName == null ? null :
+                String.format(URL_CLASS_TEMPLATE, domainName, courseClass.getCourse().getCode(), courseClass.getCode());
     }
 
 
