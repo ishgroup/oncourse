@@ -2107,4 +2107,36 @@
 		</addColumn>
 	</changeSet>
 
+    <changeSet id="136" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE ConcessionType CHANGE COLUMN collegeId collegeId bigint NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="137" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE DiscountConcessionType CHANGE COLUMN collegeId collegeId bigint NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="138" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE DiscountCourseClass CHANGE COLUMN collegeId collegeId bigint NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="139" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE NotificationTemplate CHANGE COLUMN collegeId collegeId bigint NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="140" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE Session CHANGE COLUMN collegeId collegeId bigint NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="141" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE SessionTutor CHANGE COLUMN collegeId collegeId bigint NOT NULL
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
+

@@ -96,7 +96,7 @@
 	</db-entity>
 	<db-entity name="ConcessionType" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="collegeId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="credentialExpiryDays" type="INTEGER" length="10"/>
 		<db-attribute name="hasConcessionNumber" type="BIT"/>
@@ -288,7 +288,7 @@
 	</db-entity>
 	<db-entity name="DiscountConcessionType" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="collegeId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="concessionTypeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
@@ -297,7 +297,7 @@
 	</db-entity>
 	<db-entity name="DiscountCourseClass" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="collegeId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
@@ -524,7 +524,7 @@
 		<db-attribute name="allowWebobjectsTags" type="BIT"/>
 		<db-attribute name="allowedInTextileTags" type="BIT"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="collegeId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="message" type="LONGVARCHAR" length="16777215"/>
@@ -745,7 +745,7 @@
 	</db-entity>
 	<db-entity name="Session" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="collegeId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="endDate" type="TIMESTAMP" length="19"/>
@@ -767,7 +767,7 @@
 	</db-entity>
 	<db-entity name="SessionTutor" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="collegeId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
