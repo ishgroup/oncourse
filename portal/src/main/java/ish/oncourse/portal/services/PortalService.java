@@ -198,11 +198,6 @@ public class PortalService implements IPortalService {
     }
 
     @Override
-    public boolean isHistoryEnabled() {
-        return preferenceController.isPortalHistoryEnabled();
-    }
-
-    @Override
     public List<CourseClass> getContactCourseClasses(CourseClassFilter filter) {
         List<CourseClass> courseClasses = new ArrayList<>();
 

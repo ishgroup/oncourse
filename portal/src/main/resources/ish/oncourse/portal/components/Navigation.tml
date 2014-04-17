@@ -21,12 +21,10 @@
              <li class="${getActiveClassBy('subscriptions')}">
                  <a id="subscriptions" href="${request.contextPath}/subscriptions"><i class="icon-subscribe"/>Subscriptions</a>
              </li>
-             <t:if test="historyEnabled">
-                 <li class="${getActiveClassBy('history')}">
-                     <a id="history" href="${request.contextPath}/history"><i class="icon-history">
-                         <t:if test="notification.hasNewHistory()"><small>${notification.newHistoryCount}</small></t:if></i>History</a>
-                 </li>
-             </t:if>
+             <li class="${getActiveClassBy('history')}">
+                 <a id="history" href="${request.contextPath}/history"><i class="icon-history">
+                     <t:if test="notification.hasNewHistory()"><small>${notification.newHistoryCount}</small></t:if></i>History</a>
+             </li>
         </ul>
         <t:if test="hasApprovals()">
             <a href="${request.contextPath}/tutor/classapproval/${unconfirmedClass.id}" class="btn btn-primary btn-lg btn-approval">

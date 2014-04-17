@@ -134,11 +134,6 @@ public class Navigation {
         return contact.getTutor() != null && approvals > 0;
     }
 
-    public boolean isHistoryEnabled() {
-        return portalService.isHistoryEnabled();
-    }
-
-
     public String getActiveClassBy(String menutItem) {
         return (menutItem.equals(activeMenu)) ? messages.get("class.active") : StringUtils.EMPTY;
     }
