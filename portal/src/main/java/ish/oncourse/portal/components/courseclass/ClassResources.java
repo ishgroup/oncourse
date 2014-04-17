@@ -7,19 +7,13 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-
-import static ish.oncourse.portal.services.PortalUtils.COOKIE_NAME_lastLoginTime;
-import static ish.oncourse.portal.services.PortalUtils.DATE_FORMAT_EEE_MMM_dd_hh_mm_ss_z_yyyy;
 
 /**
  * User: artem
@@ -53,24 +47,11 @@ public class ClassResources {
 	@Inject
 	private IBinaryDataService binaryDataService;
 
-    private Date lastLoginDate;
-
     @SetupRender
     boolean setupRender() {
         if (courseClass == null) {
             return false;
         }
-
-        String sd = cookieService.getCookieValue(COOKIE_NAME_lastLoginTime);
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_EEE_MMM_dd_hh_mm_ss_z_yyyy);
-		
-		if ( StringUtils.trimToNull(sd) != null) {
-			try {
-				lastLoginDate = format.parse(sd);
-			} catch (Exception ex) {
-				throw new IllegalArgumentException(ex);
-			}
-		}
 
         materials = portalService.getResourcesBy(courseClass);
         return true;
@@ -81,7 +62,11 @@ public class ClassResources {
     }
 
     public boolean isNew() {
-        return lastLoginDate == null || material.getModified().after(lastLoginDate);
+        /**
+         * we added material.getModified() != null condition to exlude NPE when some old material has null value in create Modified.
+         * TODO The condition should be deleted after 21309 will be closed
+         */
+        return material.getModified() != null && material.getModified().after(portalService.getLastLoginTime());
 	}
 
 	public String getMaterialUrl() {

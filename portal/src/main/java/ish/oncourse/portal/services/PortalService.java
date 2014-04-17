@@ -343,7 +343,12 @@ public class PortalService implements IPortalService {
 
                 for (Enrolment enrolment : courseClass.getEnrolments()) {
                     if (enrolment.getStudent().getId().equals(contact.getStudent().getId())) {
-                        if (DateUtils.addDays(enrolment.getCreated(), courseClass.getMaximumDays()).after(date))
+                        /**
+                         * we added enrolment.getCreated() != null condition to exlude NPE when some old enrolment has null value in create field
+                         * TODO The condition should be deleted after 21309 will be closed
+                         */
+                        if (enrolment.getCreated() != null &&
+                                DateUtils.addDays(enrolment.getCreated(), courseClass.getMaximumDays()).after(date))
                             current.add(courseClass);
                         break;
                     }
@@ -566,7 +571,11 @@ public class PortalService implements IPortalService {
         int newResourcesCount = 0;
 
         for (BinaryInfo binaryInfo : getResources()) {
-            if (binaryInfo.getModified().after(lastLoginTime)) {
+            /**
+             * we added binaryInfo.getModified() != null condition to exlude NPE when some old binaryInfo has null value in create Modified.
+             * TODO The condition should be deleted after 21309 will be closed
+             */
+            if (binaryInfo.getModified() != null && binaryInfo.getModified().after(lastLoginTime)) {
                 newResourcesCount++;
             }
         }
@@ -674,9 +683,15 @@ public class PortalService implements IPortalService {
 
 
     public boolean isNew(CayenneDataObject object) {
+
+        /**
+         * we added value != null condition to exlude NPE when some old CayenneDataObject has null value in create field.
+         * If the field has null value we show "(not set)" string
+         * TODO The condition should be deleted after 21309 will be closed
+         */
         try {
             Date value = (Date) BeanUtilsBean.getInstance().getPropertyUtils().getProperty(object, Enrolment.MODIFIED_PROPERTY);
-            return value.after(getLastLoginTime());
+            return value != null && value.after(getLastLoginTime());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

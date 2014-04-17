@@ -10,15 +10,15 @@ import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
-import org.apache.cayenne.Cayenne;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,6 +52,9 @@ public class InvoiceDetails {
 
     @Property
     private InvoiceLine invoiceLine;
+
+    @Inject
+    private Messages messages;
 
     Object onActivate(String id) {
         if (id != null && id.length() > 0 && id.matches("\\d+")) {
@@ -89,7 +92,21 @@ public class InvoiceDetails {
 
     public String getDate()
     {
-        return String.format("%s ", new SimpleDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy).format(invoice.getCreated()));
+
+        Date created = invoice.getCreated();
+        /**
+         * we added created != null condition to exlude NPE when some old payment has null value in create field.
+         * If the field has null value we show "(not set)" string
+         * TODO The condition should be deleted after 21309 will be closed
+         */
+        if (created != null)
+        {
+            return String.format("%s ", new SimpleDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy).format(created));
+        }
+        else
+        {
+            return messages.get(PortalUtils.MESSAGE_KEY_notSet);
+        }
     }
 
     public Money getTotalTax() {

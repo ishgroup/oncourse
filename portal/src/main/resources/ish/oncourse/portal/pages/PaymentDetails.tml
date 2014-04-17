@@ -27,7 +27,10 @@
             Amount: <t:output value="payment.amount" format="moneyFormat(payment.amount)"/><br/>
             Source: ${payment.source.displayName}<br/>
             CC Transaction: ${payment.clientReference}<br/>
-            Date created: ${payment.created}<br/>
+            <t:remove>TODO The condition should be deleted after 21309 will be closed</t:remove>
+            <t:if test="payment.created">
+                Date created: ${payment.created}<br/>
+            </t:if>
             <t:if test="${payment.dateBanked}">
                 Date banked: ${payment.dateBanked}<br/>
             </t:if>

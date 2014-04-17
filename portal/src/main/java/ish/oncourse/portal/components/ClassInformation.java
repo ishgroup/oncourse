@@ -1,26 +1,20 @@
 package ish.oncourse.portal.components;
 
-import static ish.oncourse.util.FormatUtils.getDateFormat;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.TutorRole;
+import com.ocpsoft.pretty.time.PrettyTime;
+import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
-
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import com.ocpsoft.pretty.time.PrettyTime;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static ish.oncourse.util.FormatUtils.getDateFormat;
 
 public class ClassInformation {
 
@@ -76,7 +70,11 @@ public class ClassInformation {
 			}
 
 			Date created = e.getCreated();
-			if (latestEnrol == null || created.after(latestEnrol)) {
+            /**
+             * we added enrolment.getCreated() != null condition to exlude NPE when some old enrolment has null value in create field
+             * TODO The condition should be deleted after 21309 will be closed
+             */
+            if (created != null && (latestEnrol == null || created.after(latestEnrol))) {
 				latestEnrol = created;
 			}
 		}

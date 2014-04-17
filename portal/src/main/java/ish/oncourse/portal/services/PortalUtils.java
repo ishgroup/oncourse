@@ -24,6 +24,12 @@ public class PortalUtils {
     public static final String FROM_EMAIL = "support@ish.com.au";
 
 
+    /**
+     * key to for "(not set)" message. We show the message if some value is null (Invoice.created for example)
+     */
+    public static final String MESSAGE_KEY_notSet = "message-notSet";
+
+
     public final static String COOKIE_NAME_lastLoginTime = "lastLoginTime";
 
     public static final int MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
@@ -187,7 +193,5 @@ public class PortalUtils {
             values.add(room);
         return StringUtils.join(values,", ");
     }
-
-
 
 }

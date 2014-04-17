@@ -9,7 +9,7 @@
         <li>
             <p class="arrow-content">
                 <strong> <t:pagelink page="class" context="enrolment.courseClass.id">${enrolment.courseClass.course.name}</t:pagelink></strong><small class="text-muted"> (${enrolment.courseClass.uniqueIdentifier})</small>
-                <label>${getDate(enrolment)}</label>
+                <label>${getDate()}</label>
                 <t:if test="isNew()">
                     <span class="label label-primary">NEW</span>
                 </t:if>
