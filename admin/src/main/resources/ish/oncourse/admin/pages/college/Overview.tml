@@ -57,12 +57,51 @@
 			<h3 id="enableStorageLabel">Enable S3</h3>
 		</div>
 		<div class="modal-body">
-			<p>This will create a new S3 bucket and access keys for college. Are you sure you want to proceed?</p>
+			<p>Please enter bucket and user name to proceed. This will create a new S3 bucket and access key for the college.</p>
+			<label for="bucketName">Bucket name:</label>
+			<input id="bucketName" type="text"/>
+			<label for="userName">AWS user name:</label>
+			<input id="userName" type="text"/>
+		</div>
+		<div id="errors" style="background-color: #f2dede">
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-			<t:actionlink t:id="enableExternalStorage" class="btn btn-primary btn-success">Enable S3</t:actionlink>
+			<t:eventlink t:id="enableExternalStorageEvent" id="enableExternalStorage" style="{display: none;}" class="enableExternalStorage"/>
+			<button id="enableS3Button" class="btn btn-primary btn-success">Enable S3</button>
 		</div>
 	</div>
+
+	<script type="text/javascript">
+		jQuery(function() {
+			jQuery("#enableS3Button").click(function() {
+
+				var bucketName = jQuery("#bucketName").attr("value");
+				var userName = jQuery("#userName").attr("value");
+				
+				var url = jQuery("#enableExternalStorage").attr("href");
+
+				jQuery.ajax({
+					type: "POST",
+					url: url,
+					async: false,
+					data: {
+						bucket_name: bucketName,
+						user_name: userName
+					},
+					success: function(data) {
+						if (data["result"] == "success") {
+							location.reload();
+						} else {
+							var errorBlock = jQuery("#errors")
+							errorBlock.empty();
+							errorBlock.append(data["error"]);
+						}
+					},
+					dataType: "json"
+				});
+			});
+		});
+	</script>
 
 </html>

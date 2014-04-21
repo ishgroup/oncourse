@@ -19,13 +19,19 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.StreamResponse;
+import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.json.JSONObject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.util.TextStreamResponse;
 
 public class Overview {
 	
-	private static final String BUCKET_NAME_TEMPLATE = "%s-ish-oncourse";
+	private static final String BUCKET_NAME_PARAMETER = "bucket_name";
+	private static final String USER_NAME_PARAMETER = "user_name";
 	
 	private static final String[] LICENSE_KEYS = new String[] {
 		PreferenceController.LICENSE_ACCESS_CONTROL,
@@ -48,6 +54,9 @@ public class Overview {
 	
 	@Inject
 	private IS3Service s3Service;
+	
+	@Inject
+	private Request request;
 	
 	@Property
 	private College college;
@@ -91,14 +100,32 @@ public class Overview {
 		
 		return "Index";
 	}
-	
-	Object onActionFromEnableExternalStorage() {
-		ObjectContext context = cayenneService.newContext();
-		College college = context.localObject(this.college);
 
-		enableExternalStorage(context, college);
+	@OnEvent(value = "enableExternalStorageEvent")
+	public StreamResponse enableExternalStorage() {
+		if (!request.isXHR()) {
+			return null;
+		}
+		
+		String newBucketName = request.getParameter(BUCKET_NAME_PARAMETER);
+		String newUserName = request.getParameter(USER_NAME_PARAMETER);
 
-		return null;
+		JSONObject response = new JSONObject();
+		
+		if (newBucketName != null && newUserName != null) {
+			ObjectContext context = cayenneService.newContext();
+			College college = context.localObject(this.college);
+			
+			try {
+				enableExternalStorage(context, college, newBucketName, newUserName);
+				response.put("result", "success");
+			} catch (Exception e) {
+				response.put("result", "failure");
+				response.put("error", e.getMessage());
+			}
+		}
+		
+		return new TextStreamResponse("text/json", response.toString());
 	}
 
 	private void disableCollege(ObjectContext context, College college) {
@@ -126,10 +153,9 @@ public class Overview {
 		context.commitChanges();
 	}
 
-	private void enableExternalStorage(ObjectContext context, College college) {
-		String bucketName = String.format(BUCKET_NAME_TEMPLATE, StringUtils.lowerCase(college.getName()));
+	private void enableExternalStorage(ObjectContext context, College college, String bucketName, String newUserName) {
 		s3Service.createBucket(bucketName);
-		AccessKey key = s3Service.createS3User(college.getName(), bucketName);
+		AccessKey key = s3Service.createS3User(newUserName, bucketName);
 
 		PreferenceUtil.createPreference(context, college, PreferenceController.STORAGE_BUCKET_NAME, bucketName);
 		PreferenceUtil.createPreference(context, college, PreferenceController.STORAGE_ACCESS_ID, key.getAccessKeyId());
