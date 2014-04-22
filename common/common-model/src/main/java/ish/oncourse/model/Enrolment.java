@@ -12,10 +12,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.log4j.Logger;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueable {
 
@@ -56,6 +53,11 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 		if (getSource() == null) {
 			setSource(PaymentSource.SOURCE_WEB);
 		}
+        if (getCreated() == null) {
+            setCreated(new Date());
+            setModified(getCreated());
+        }
+
 	}
 
 	@Override

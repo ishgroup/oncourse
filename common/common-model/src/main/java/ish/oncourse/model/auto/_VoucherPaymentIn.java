@@ -100,5 +100,5 @@ public abstract class _VoucherPaymentIn extends CayenneDataObject {
         return (Voucher)readProperty(VOUCHER_PROPERTY);
     }
 
-
+    protected abstract void onPostAdd();
 }

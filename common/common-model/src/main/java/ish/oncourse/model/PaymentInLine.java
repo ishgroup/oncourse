@@ -6,6 +6,8 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.log4j.Logger;
 
+import java.util.Date;
+
 public class PaymentInLine extends _PaymentInLine implements Queueable {
 
 	private static final long serialVersionUID = -6157950790523998485L;
@@ -32,6 +34,10 @@ public class PaymentInLine extends _PaymentInLine implements Queueable {
 	}
 
 	protected void onPostAdd() {
+        if (getCreated() == null) {
+            setCreated(new Date());
+            setModified(getCreated());
+        }
 	}
 
 	protected void onPrePersist() {

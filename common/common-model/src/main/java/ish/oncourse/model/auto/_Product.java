@@ -163,5 +163,6 @@ public abstract class _Product extends CayenneDataObject {
         return (List<ProductItem>)readProperty(PRODUCT_ITEMS_PROPERTY);
     }
 
+    protected abstract void onPostAdd();
 
 }

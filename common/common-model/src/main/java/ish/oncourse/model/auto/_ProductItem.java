@@ -108,5 +108,5 @@ public abstract class _ProductItem extends CayenneDataObject {
         return (Product)readProperty(PRODUCT_PROPERTY);
     }
 
-
+    protected abstract void onPostAdd();
 }

@@ -10,7 +10,7 @@ import ish.oncourse.model.auto._InvoiceLine;
 import ish.oncourse.utils.QueueableObjectUtils;
 
 public class InvoiceLine extends _InvoiceLine implements Queueable {
-	
+
 	private static final long serialVersionUID = 8005646295584671217L;
 
 	/**
@@ -24,7 +24,7 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
-	
+
 	public void refund(final org.apache.cayenne.validation.ValidationResult result, final Invoice invoiceToRefund, final Invoice refundInvoice) {
 
 		final InvoiceLine refundInvoiceLine = getObjectContext().newObject(InvoiceLine.class);
@@ -42,7 +42,7 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 		refundInvoiceLine.setPriceEachExTax(Money.ZERO.subtract(getPriceEachExTax()));
 		refundInvoiceLine.setDiscountEachExTax(Money.ZERO.subtract(getDiscountEachExTax()));
 	}
-	
+
 	/**
 	 * Check if async replication is allowed on this object.
 	 * @return
@@ -50,4 +50,9 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 	public boolean isAsyncReplicationAllowed() {
 		return getInvoice() != null && getInvoice().isAsyncReplicationAllowed();
 	}
+
+    @Override
+    protected void onPostAdd() {
+
+    }
 }

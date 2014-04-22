@@ -2137,6 +2137,73 @@
             ALTER TABLE SessionTutor CHANGE COLUMN collegeId collegeId bigint NOT NULL
         </sql>
     </changeSet>
+    <changeSet id="142" author="andrey" context="production" runOnChange="true">
+        <customChange class="ish.oncourse.model.liquibase.CreatedAndModifiedFieldFix"/>
+    </changeSet>
+    <changeSet id="143" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE Enrolment MODIFY created DATETIME NOT NULL
+        </sql>
+        <sql>
+            ALTER TABLE Enrolment MODIFY modified DATETIME NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="144" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE Invoice MODIFY created DATETIME NOT NULL
+        </sql>
+        <sql>
+            ALTER TABLE Invoice MODIFY modified DATETIME NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="145" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE InvoiceLine MODIFY created DATETIME NOT NULL
+        </sql>
+        <sql>
+            ALTER TABLE InvoiceLine MODIFY modified DATETIME NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="146" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE PaymentIn MODIFY created DATETIME NOT NULL
+        </sql>
+        <sql>
+            ALTER TABLE PaymentIn MODIFY modified DATETIME NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="147" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE PaymentInLine MODIFY created DATETIME NOT NULL
+        </sql>
+        <sql>
+            ALTER TABLE PaymentInLine MODIFY modified DATETIME NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="148" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE Product MODIFY createdOn DATETIME NOT NULL
+        </sql>
+        <sql>
+            ALTER TABLE Product MODIFY modifiedOn DATETIME NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="149" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE ProductItem MODIFY createdOn DATETIME NOT NULL
+        </sql>
+        <sql>
+            ALTER TABLE ProductItem MODIFY modifiedOn DATETIME NOT NULL
+        </sql>
+    </changeSet>
+    <changeSet id="150" author="andrey" context="production" runOnChange="true">
+        <sql>
+            ALTER TABLE VoucherPaymentIn MODIFY created DATETIME NOT NULL
+        </sql>
+        <sql>
+            ALTER TABLE VoucherPaymentIn MODIFY modified DATETIME NOT NULL
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>
 

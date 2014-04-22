@@ -5,6 +5,7 @@ import ish.oncourse.model.auto._Product;
 import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Product extends _Product implements Queueable {
 	private static final long serialVersionUID = 8422903473669633877L;
@@ -37,4 +38,12 @@ public class Product extends _Product implements Queueable {
 	public boolean isAsyncReplicationAllowed() {
 		return false;
 	}
+
+    @Override
+    protected void onPostAdd() {
+        if (getCreated() == null) {
+            setCreated(new Date());
+            setModified(getCreated());
+        }
+    }
 }

@@ -180,5 +180,6 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
         return (List<VoucherPaymentIn>)readProperty(VOUCHER_PAYMENTS_IN_PROPERTY);
     }
 
+    protected abstract void onPostAdd();
 
 }

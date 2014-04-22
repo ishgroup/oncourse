@@ -529,6 +529,10 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		if (getType() == null) {
 			setType(PaymentType.CREDIT_CARD);
 		}
+        if (getCreated() == null) {
+            setCreated(new Date());
+            setModified(getCreated());
+        }
 	}
 
 	@Override

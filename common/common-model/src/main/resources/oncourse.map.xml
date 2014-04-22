@@ -348,7 +348,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="creditFOEId" type="VARCHAR" length="4"/>
 		<db-attribute name="creditLevel" type="INTEGER"/>
 		<db-attribute name="creditOfferedValue" type="VARCHAR" length="4"/>
@@ -360,7 +360,7 @@
 		<db-attribute name="feeHelpStatus" type="INTEGER"/>
 		<db-attribute name="feeStatus" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="reasonForStudy" type="INTEGER" length="10"/>
 		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="25"/>
@@ -399,14 +399,14 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="contactId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="corporatePassId" type="BIGINT"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="customerReference" type="LONGVARCHAR" length="65535"/>
 		<db-attribute name="dateDue" type="DATE" isMandatory="true" length="10"/>
 		<db-attribute name="description" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceDate" type="DATE" isMandatory="true" length="10"/>
 		<db-attribute name="invoiceNumber" type="BIGINT" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="publicNotes" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="shippingAddress" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="source" type="CHAR" isMandatory="true" length="1"/>
@@ -417,13 +417,13 @@
 	<db-entity name="InvoiceLine" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="description" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="discountEachExTax" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="enrolmentId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="priceEachExTax" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="quantity" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="sortOrder" type="INTEGER" length="10"/>
@@ -566,7 +566,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="creditCardCVV" type="VARCHAR" length="4"/>
 		<db-attribute name="creditCardExpiry" type="VARCHAR" length="16"/>
 		<db-attribute name="creditCardName" type="VARCHAR" length="64"/>
@@ -576,7 +576,7 @@
 		<db-attribute name="gatewayReference" type="VARCHAR" length="64"/>
 		<db-attribute name="gatewayResponse" type="CLOB" length="32000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="sessionId" type="VARCHAR" length="100"/>
 		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="25"/>
@@ -588,10 +588,10 @@
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="paymentInId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="PaymentOut" catalog="willow_college">
@@ -646,7 +646,7 @@
 	<db-entity name="Product">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="VARCHAR" length="8000"/>
 		<db-attribute name="expiryDays" type="INTEGER"/>
 		<db-attribute name="expiryType" type="INTEGER"/>
@@ -655,7 +655,7 @@
 		<db-attribute name="isOnSale" type="BOOLEAN" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="BOOLEAN" isMandatory="true"/>
 		<db-attribute name="maxCoursesRedemption" type="INTEGER"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" length="500"/>
 		<db-attribute name="notes" type="VARCHAR" length="8000"/>
 		<db-attribute name="priceExTax" type="DECIMAL" length="10" scale="2"/>
@@ -669,12 +669,12 @@
 		<db-attribute name="code" type="VARCHAR" length="10"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="expiryDate" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="idKey" type="VARCHAR" length="50"/>
 		<db-attribute name="invoiceLineId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="productId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="redeemedCoursesCount" type="INTEGER"/>
 		<db-attribute name="source" type="CHAR" length="1"/>
@@ -964,11 +964,11 @@
 	<db-entity name="VoucherPaymentIn">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="enrolmentsCount" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceLineId" type="BIGINT" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="paymentInId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="voucherId" type="BIGINT" isMandatory="true" length="19"/>
