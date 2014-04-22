@@ -121,7 +121,6 @@ public class VoucherService implements IVoucherService {
         College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression exp = ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege);
         exp = exp.andExp(ExpressionFactory.matchExp(Voucher.CODE_PROPERTY, code));
-        exp = exp.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO));
         exp = exp.andExp(ExpressionFactory.matchExp(Voucher.STATUS_PROPERTY, ProductStatus.ACTIVE));
 		exp = exp.andExp(ExpressionFactory.greaterExp(Voucher.EXPIRY_DATE_PROPERTY,new Date()).orExp(ExpressionFactory.matchExp(Voucher.EXPIRY_DATE_PROPERTY, null)));
 

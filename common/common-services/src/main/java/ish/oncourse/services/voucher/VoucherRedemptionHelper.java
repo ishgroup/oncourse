@@ -35,20 +35,17 @@ public class VoucherRedemptionHelper {
     private List<InvoiceLine> invoiceLines;
     private List<Invoice> previousOwingInvoices;
 
-    private Map<Voucher, Collection<InvoiceLine>> courseRedemptionMap;
-
     private Set<VoucherPaymentIn> voucherPayments;
     private Map<Voucher, PaymentIn> paymentMap;
 
     public VoucherRedemptionHelper(ObjectContext context, College college) {
         this.context = context;
 
-        this.vouchers = new HashMap<Voucher, Money>();
-        this.invoiceLines = new ArrayList<InvoiceLine>();
-        this.previousOwingInvoices = new ArrayList<Invoice>();
-        this.courseRedemptionMap = new HashMap<Voucher, Collection<InvoiceLine>>();
-        this.voucherPayments = new HashSet<VoucherPaymentIn>();
-        this.paymentMap = new HashMap<Voucher, PaymentIn>();
+        this.vouchers = new HashMap<>();
+        this.invoiceLines = new ArrayList<>();
+        this.previousOwingInvoices = new ArrayList<>();
+        this.voucherPayments = new HashSet<>();
+        this.paymentMap = new HashMap<>();
         this.college = college;
     }
 
@@ -84,22 +81,10 @@ public class VoucherRedemptionHelper {
         return false;
     }
 
-    public void setCourseVoucherRedemptionList(Voucher voucher, Collection<InvoiceLine> invoiceLines) {
-        courseRedemptionMap.put(voucher, invoiceLines);
-    }
-
     public Collection<VoucherPaymentIn> getVoucherPayments() {
         return Collections.unmodifiableCollection(voucherPayments);
     }
 
-    /**
-     * Removes voucher from processing.
-     *
-     * @param voucher
-     */
-    public void removeVoucher(Voucher voucher) {
-        this.vouchers.remove(voucher);
-    }
 
     /**
      * Get all vouchers used in processing.
@@ -112,8 +97,6 @@ public class VoucherRedemptionHelper {
 
     /**
      * Add list of invoice lines for processing.
-     *
-     * @param invoiceLinesList
      */
     public void addInvoiceLines(Collection<InvoiceLine> invoiceLinesList) {
         this.invoiceLines.addAll(invoiceLinesList);
@@ -134,8 +117,8 @@ public class VoucherRedemptionHelper {
      *
      * @return list of voucher payments
      */
-    public List<PaymentIn> getPayments() {
-        return Collections.unmodifiableList(new ArrayList<>(this.paymentMap.values()));
+    public Map<Voucher,PaymentIn> getPayments() {
+        return Collections.unmodifiableMap(new HashMap<>(this.paymentMap));
     }
 
     /**
@@ -186,7 +169,6 @@ public class VoucherRedemptionHelper {
         discardChanges();
         invoiceLines.clear();
         previousOwingInvoices.clear();
-        courseRedemptionMap.clear();
         vouchers.clear();
     }
 
@@ -194,7 +176,7 @@ public class VoucherRedemptionHelper {
         if (!vouchersList.isEmpty()) {
 
             if (!invoiceLinesList.isEmpty()) {
-                List<InvoiceLine> processedInvoiceLines = new ArrayList<InvoiceLine>();
+                List<InvoiceLine> processedInvoiceLines = new ArrayList<>();
                 processCourseVouchers(vouchersList, invoiceLinesList, processedInvoiceLines);
 
                 invoiceLinesList.removeAll(processedInvoiceLines);
@@ -221,13 +203,12 @@ public class VoucherRedemptionHelper {
             if (!courseVouchers.isEmpty()) {
                 for (Voucher voucher : courseVouchers) {
                     for (InvoiceLine il : enrolmentLines) {
-                        if (courseRedemptionMap.get(voucher) != null && courseRedemptionMap.get(voucher).contains(il))
-                            if (!processedInvoiceLines.contains(il)) {
-                                if (voucher.getVoucherProduct().getRedemptionCourses().contains(il.getEnrolment().getCourseClass().getCourse())) {
-                                    redeemVoucherForCourse(voucher, il);
-                                    processedInvoiceLines.add(il);
-                                }
+                        if (!processedInvoiceLines.contains(il)) {
+                            if (voucher.getVoucherProduct().getRedemptionCourses().contains(il.getEnrolment().getCourseClass().getCourse())) {
+                                redeemVoucherForCourse(voucher, il);
+                                processedInvoiceLines.add(il);
                             }
+                        }
 
                         if (ProductStatus.REDEEMED.equals(voucher.getStatus())) {
                             // if current voucher is fully redeemed then skip to next one
@@ -247,6 +228,9 @@ public class VoucherRedemptionHelper {
         Money leftToPayForCurrentInvoice = Money.ZERO;
 
         for (InvoiceLine il : invoiceLinesList) {
+            // we suppress to redem a money voucher for vouchers purchase
+            if (isVoucherInvoiceLine(il))
+                continue;
             leftToPayForCurrentInvoice = leftToPayForCurrentInvoice
                     .add(il.getPriceTotalIncTax().subtract(il.getDiscountTotalIncTax()));
         }
@@ -384,7 +368,6 @@ public class VoucherRedemptionHelper {
                 payment.setType(PaymentType.VOUCHER);
                 payment.setContact(invoice.getContact());
                 payment.setAmount(Money.ZERO);
-                //payment.setAccount(vp.getVoucher().getVoucherProduct().getLiabilityAccount());
                 payment.setSource(PaymentSource.SOURCE_WEB);
 
                 paymentMap.put(voucher, payment);
@@ -400,5 +383,15 @@ public class VoucherRedemptionHelper {
 
     public College getCollege() {
         return college;
+    }
+
+    private boolean isVoucherInvoiceLine(InvoiceLine invoiceLine)
+    {
+        List<ProductItem> productItems = invoiceLine.getProductItems();
+        for (ProductItem productItem : productItems) {
+            if (productItem instanceof Voucher)
+                return true;
+        }
+        return false;
     }
 }

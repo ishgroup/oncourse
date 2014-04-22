@@ -37,11 +37,13 @@ public class PurchaseModel {
 
     private PaymentIn payment;
     private Money totalDiscountAmountIncTax = Money.ZERO;
-    private List<PaymentIn> voucherPayments = new ArrayList<>();
+
+
+    private Map<Voucher, VoucherNode> vouchers = new HashMap<>();
 
     private boolean applyPrevOwing = false;
 
-	private Boolean allowToUsePrevOwing  = false;
+    private Boolean allowToUsePrevOwing = false;
     private CorporatePass corporatePass;
 
     public void addDiscount(Discount discount) {
@@ -109,34 +111,33 @@ public class PurchaseModel {
 
 
     public PaymentIn getPayment() {
-		if (payment == null)
-			payment = createPayment();
+        if (payment == null)
+            payment = createPayment();
         return payment;
     }
 
-	void deletePayment()
-	{
-		List<PaymentInLine> paymentInLines = payment.getPaymentInLines();
-		objectContext.deleteObjects(paymentInLines);
-		objectContext.deleteObjects(payment);
-	}
+    void deletePayment() {
+        List<PaymentInLine> paymentInLines = payment.getPaymentInLines();
+        objectContext.deleteObjects(paymentInLines);
+        objectContext.deleteObjects(payment);
+    }
 
-	private PaymentIn createPayment() {
-		PaymentIn payment = objectContext.newObject(PaymentIn.class);
-		payment.setStatus(PaymentStatus.NEW);
-		payment.setSource(PaymentSource.SOURCE_WEB);
-		payment.setType(PaymentType.CREDIT_CARD);
-		payment.setCollege(college);
-		payment.setContact(getPayer());
+    private PaymentIn createPayment() {
+        PaymentIn payment = objectContext.newObject(PaymentIn.class);
+        payment.setStatus(PaymentStatus.NEW);
+        payment.setSource(PaymentSource.SOURCE_WEB);
+        payment.setType(PaymentType.CREDIT_CARD);
+        payment.setCollege(college);
+        payment.setContact(getPayer());
 
-		PaymentInLine paymentInLine = getObjectContext().newObject(PaymentInLine.class);
-		paymentInLine.setInvoice(getInvoice());
-		paymentInLine.setPaymentIn(payment);
-		paymentInLine.setCollege(college);
-		return payment;
-	}
+        PaymentInLine paymentInLine = getObjectContext().newObject(PaymentInLine.class);
+        paymentInLine.setInvoice(getInvoice());
+        paymentInLine.setPaymentIn(payment);
+        paymentInLine.setCollege(college);
+        return payment;
+    }
 
-	public Money getTotalDiscountAmountIncTax() {
+    public Money getTotalDiscountAmountIncTax() {
         return totalDiscountAmountIncTax;
     }
 
@@ -153,7 +154,7 @@ public class PurchaseModel {
         getContactNode(e.getStudent().getContact()).removeEnrolment(e);
         List<InvoiceLine> invoiceLines = new ArrayList<>(e.getInvoiceLines());
         for (InvoiceLine invoiceLine : invoiceLines) {
-        	objectContext.deleteObjects(invoiceLine);
+            objectContext.deleteObjects(invoiceLine);
         }
         objectContext.deleteObjects(e);
     }
@@ -187,37 +188,25 @@ public class PurchaseModel {
         }
     }
 
-	public void removeVoucherProductItems(Contact contact) {
-		List<ProductItem> productItems = getAllProductItems(contact);
-		for (ProductItem productItem : productItems) {
-			if (productItem.getProduct() instanceof VoucherProduct) {
-				this.removeProductItem(contact, productItem);
-			}
-		}
-	}
-
-
-    public void addVoucherPayments(Collection<PaymentIn> vps) {
-        this.voucherPayments.addAll(vps);
+    public void removeVoucherProductItems(Contact contact) {
+        List<ProductItem> productItems = getAllProductItems(contact);
+        for (ProductItem productItem : productItems) {
+            if (productItem.getProduct() instanceof VoucherProduct) {
+                this.removeProductItem(contact, productItem);
+            }
+        }
     }
 
-    public void clearVoucherPayments() {
-        this.voucherPayments.clear();
-    }
-
-    public List<PaymentIn> getVoucherPayments() {
-        return Collections.unmodifiableList(voucherPayments);
-    }
 
     public void enableEnrolment(Enrolment e) {
         getContactNode(e.getStudent().getContact()).enableEnrolment(e);
     }
 
     public void disableEnrolment(Enrolment e) {
-    	List<InvoiceLine> invoiceLines = new ArrayList<>(e.getInvoiceLines());
-    	for (InvoiceLine invoiceLine : invoiceLines) {
-    		invoiceLine.setEnrolment(null);
-    	}
+        List<InvoiceLine> invoiceLines = new ArrayList<>(e.getInvoiceLines());
+        for (InvoiceLine invoiceLine : invoiceLines) {
+            invoiceLine.setEnrolment(null);
+        }
         objectContext.deleteObjects(invoiceLines);
         getContactNode(e.getStudent().getContact()).disableEnrolment(e);
     }
@@ -448,20 +437,17 @@ public class PurchaseModel {
     }
 
     public Money getPreviousOwing() {
-		if (allowToUsePrevOwing)
-		{
+        if (allowToUsePrevOwing) {
             if (getPayer().getObjectId().isTemporary())
                 return Money.ZERO;
-            else
-            {
-                Money amountOwing  = InvoiceUtils.amountOwingForPayer(getPayer());
+            else {
+                Money amountOwing = InvoiceUtils.amountOwingForPayer(getPayer());
                 /**
                  * we should not subtract current invoice value when the invoice is not committed.
                  * Because InvoiceUtils.amountOwingForPayer loads invoices from database and this loadded list
                  * does not contain this invoice
                  */
-                if (!getInvoice().getObjectId().isTemporary())
-                {
+                if (!getInvoice().getObjectId().isTemporary()) {
                     Money amountInvoice = getInvoice().getAmountOwing();
                     amountOwing = amountOwing.subtract(amountInvoice);
                 }
@@ -516,13 +502,101 @@ public class PurchaseModel {
 	public List<Enrolment> getAllEnableEnrolmentBy(CourseClass courseClass) {
 
 		Expression expression = ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass);
-		List<Enrolment> result = new ArrayList<Enrolment>();
+		List<Enrolment> result = new ArrayList<>();
 
 		for (ContactNode node : contacts.values()) {
 			result.addAll(expression.filterObjects(node.enabledEnrolments));
 		}
 		return result;
 	}
+
+    public List<Voucher> getVouchers() {
+
+        return Collections.unmodifiableList(new ArrayList<>(vouchers.keySet()));
+    }
+
+
+    public List<Voucher> getSelectedVouchers() {
+        ArrayList<Voucher> result = new ArrayList<>();
+        for (Map.Entry<Voucher, VoucherNode> entry : vouchers.entrySet()){
+            if (entry.getValue().selected) {
+                result.add(entry.getKey());
+            }
+        }
+        return Collections.unmodifiableList(result);
+    }
+
+    public void addVoucher(Voucher voucher) {
+        vouchers.put(voucher, new VoucherNode());
+    }
+
+
+    public void setVoucherPayments(Map<Voucher, PaymentIn> voucherPayments) {
+        for (Map.Entry<Voucher, VoucherNode> entry : vouchers.entrySet()) {
+            PaymentIn paymentIn = voucherPayments.get(entry.getKey());
+            if (paymentIn != null) {
+                entry.getValue().paymentIn = paymentIn;
+            } else {
+                entry.getValue().paymentIn = null;
+            }
+        }
+    }
+
+    public void selectVoucher(Voucher voucher)
+    {
+        VoucherNode voucherNode = vouchers.get(voucher);
+        voucherNode.selected = true;
+    }
+
+    public void deselectVoucher(Voucher voucher)
+    {
+        VoucherNode voucherNode = vouchers.get(voucher);
+        voucherNode.selected = false;
+    }
+
+    public PaymentIn getVoucherPaymentBy(Voucher voucher) {
+        return vouchers.get(voucher).paymentIn;
+    }
+
+    public boolean isSelectedVoucher(Voucher voucher) {
+        return vouchers.get(voucher).selected;
+    }
+
+
+    public List<PaymentIn> getVoucherPayments() {
+        ArrayList<PaymentIn> result = new ArrayList<>();
+        for (Map.Entry<Voucher, VoucherNode> entry : vouchers.entrySet()) {
+            PaymentIn paymentIn = entry.getValue().paymentIn;
+            if (paymentIn != null) {
+                result.add(paymentIn);
+            }
+        }
+        return result;
+    }
+
+
+
+    public class VoucherNode {
+        private boolean selected = false;
+        private PaymentIn paymentIn = null;
+
+        public boolean isSelected() {
+            return selected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.selected = selected;
+        }
+
+        public PaymentIn getPaymentIn() {
+            return paymentIn;
+        }
+
+        public void setPaymentIn(PaymentIn paymentIn) {
+            this.paymentIn = paymentIn;
+        }
+    }
+
 
     private class ContactNode {
 
@@ -639,5 +713,4 @@ public class PurchaseModel {
             return courseClassErrors.put(enrolment.getCourseClass().getId(), error);
         }
     }
-
 }

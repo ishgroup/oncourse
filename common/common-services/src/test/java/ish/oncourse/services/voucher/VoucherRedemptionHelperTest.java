@@ -98,8 +98,6 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		service.addVoucher(courseVoucher, courseVoucher.getValueRemaining());
 		service.addInvoiceLines(Arrays.asList(il));
 
-		service.setCourseVoucherRedemptionList(courseVoucher, Arrays.asList(il));
-
 		service.processAgainstInvoices();
 
 		assertFalse(service.getPayments().isEmpty());
@@ -134,8 +132,6 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		service.setInvoice(il.getInvoice());
 		service.addVoucher(courseVoucher, courseVoucher.getValueRemaining());
 		service.addInvoiceLines(Arrays.asList(il));
-
-		service.setCourseVoucherRedemptionList(courseVoucher, Arrays.asList(il));
 
 		service.processAgainstInvoices();
 
@@ -205,7 +201,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertEquals(2, service.getPayments().size());
 
 		Money paymentsSum = Money.ZERO;
-		for (PaymentIn p : service.getPayments()) {
+		for (PaymentIn p : service.getPayments().values()) {
 			paymentsSum = paymentsSum.add(p.getAmount());
 
 			assertEquals(PaymentType.VOUCHER, p.getType());
@@ -255,7 +251,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertEquals(3, service.getPayments().size());
 
 		Money paymentsSum = Money.ZERO;
-		for (PaymentIn p : service.getPayments()) {
+		for (PaymentIn p : service.getPayments().values()) {
 			paymentsSum = paymentsSum.add(p.getAmount());
 
 			assertEquals(PaymentType.VOUCHER, p.getType());
@@ -297,9 +293,6 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		service.addVoucher(voucher2, voucher2.getValueRemaining());
 		service.addInvoiceLines(Arrays.asList(il1, il2));
 
-		service.setCourseVoucherRedemptionList(voucher1, Arrays.asList(il1, il2));
-		service.setCourseVoucherRedemptionList(voucher2, Arrays.asList(il1, il2));
-
 		service.processAgainstInvoices();
 
 		assertFalse(service.getPayments().isEmpty());
@@ -331,8 +324,6 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		service.setInvoice(il1.getInvoice());
 		service.addVoucher(voucher, voucher.getValueRemaining());
 		service.addInvoiceLines(Arrays.asList(il1, il2));
-
-		service.setCourseVoucherRedemptionList(voucher, Arrays.asList(il1, il2));
 
 		service.processAgainstInvoices();
 
@@ -370,15 +361,13 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		service.addVoucher(voucher3, voucher3.getValueRemaining());
 		service.addInvoiceLines(Arrays.asList(il1, il2));
 
-		service.setCourseVoucherRedemptionList(voucher1, Arrays.asList(il1, il2));
-
 		service.processAgainstInvoices();
 
 		assertFalse(service.getPayments().isEmpty());
 		assertEquals(3, service.getPayments().size());
 
 		Money paymentsSum = Money.ZERO;
-		for (PaymentIn p : service.getPayments()) {
+		for (PaymentIn p : service.getPayments().values()) {
 			paymentsSum = paymentsSum.add(p.getAmount());
 
 			assertEquals(PaymentType.VOUCHER, p.getType());
@@ -420,15 +409,13 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		service.addVoucher(voucher3, voucher3.getValueRemaining());
 		service.addInvoiceLines(Arrays.asList(il1, il2));
 
-		service.setCourseVoucherRedemptionList(voucher1, Arrays.asList(il1, il2));
-
 		service.processAgainstInvoices();
 
 		assertFalse(service.getPayments().isEmpty());
 		assertEquals(3, service.getPayments().size());
 
 		Money paymentsSum = Money.ZERO;
-		for (PaymentIn p : service.getPayments()) {
+		for (PaymentIn p : service.getPayments().values()) {
 			paymentsSum = paymentsSum.add(p.getAmount());
 
 			assertEquals(PaymentType.VOUCHER, p.getType());
@@ -482,7 +469,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertEquals(2, service.getPayments().size());
 
 		Money paymentsSum = Money.ZERO;
-		for (PaymentIn p : service.getPayments()) {
+		for (PaymentIn p : service.getPayments().values()) {
 			paymentsSum = paymentsSum.add(p.getAmount());
 
 			assertEquals(PaymentType.VOUCHER, p.getType());
@@ -563,7 +550,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertEquals(2, service.getPayments().size());
 
 		Money paymentsSum = Money.ZERO;
-		for (PaymentIn p : service.getPayments()) {
+		for (PaymentIn p : service.getPayments().values()) {
 			paymentsSum = paymentsSum.add(p.getAmount());
 
 			assertEquals(PaymentType.VOUCHER, p.getType());
@@ -612,8 +599,6 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		service.addVoucher(voucher5, voucher5.getValueRemaining());
 
 		service.addInvoiceLines(Arrays.asList(il1, il2));
-
-		service.setCourseVoucherRedemptionList(voucher1, Arrays.asList(il1, il2));
 
 		service.addPreviousOwingInvoices(Arrays.asList(previousOwing1, previousOwing2));
 

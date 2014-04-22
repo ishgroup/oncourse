@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Action.addDiscount;
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.addCode;
 import static ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import static org.junit.Assert.*;
 
@@ -24,7 +24,7 @@ public class ActionAddDiscountTest extends ACheckoutTest {
 		createPurchaseController(1001);
 		addFirstContact(1001);
 
-		ActionParameter parameter = new ActionParameter(addDiscount);
+		ActionParameter parameter = new ActionParameter(addCode);
 		//discount code does not exists
 		parameter.setValue("1002");
 		purchaseController.performAction(parameter);
@@ -34,7 +34,7 @@ public class ActionAddDiscountTest extends ACheckoutTest {
 		assertTrue(purchaseController.getModel().getDiscounts().isEmpty());
 
 
-		parameter = new ActionParameter(addDiscount);
+		parameter = new ActionParameter(addCode);
 		//discount code  exists
 		parameter.setValue("1001");
 		purchaseController.performAction(parameter);
@@ -50,7 +50,7 @@ public class ActionAddDiscountTest extends ACheckoutTest {
         assertNotNull(invoiceLineDiscount.getDiscount());
         assertNotNull(invoiceLineDiscount.getInvoiceLine());
 
-		parameter = new ActionParameter(addDiscount);
+		parameter = new ActionParameter(addCode);
 		//try add the same discount code does not exists
 		parameter.setValue("1001");
 		purchaseController.performAction(parameter);

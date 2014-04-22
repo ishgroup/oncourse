@@ -106,11 +106,9 @@ public class Voucher extends _Voucher implements Queueable {
 	 * @return if voucher is applicable to enrolment
 	 */
 	public boolean isApplicableTo(Enrolment enrolment) {
-		if (getVoucherProduct().getRedemptionCourses().isEmpty()) {
-			return true;
-		}
-		return getVoucherProduct().getRedemptionCourses().contains(enrolment.getCourseClass().getCourse());
-	}
+        return getVoucherProduct().getRedemptionCourses().isEmpty() ||
+                getVoucherProduct().getRedemptionCourses().contains(enrolment.getCourseClass().getCourse());
+    }
 	
 	/**
 	 * Determines whether voucher can be used by specific contact.

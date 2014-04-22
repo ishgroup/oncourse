@@ -1,0 +1,19 @@
+<t:container
+        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <p>
+        <label title="${voucher.voucherProduct.name}">
+            <t:if test="selected">
+                <input class='redeemedVoucherCheckbox' name="selected" type="checkbox" data-voucherId="voucher.id" checked="checked"/>
+            </t:if>
+            <t:unless test="selected">
+                <input class='redeemedVoucherCheckbox' name="selected" type="checkbox"/>
+            </t:unless>
+            <t:eventlink t:id="selectVoucherEvent" context="voucher.id" style="{display:none;}"/>
+            ${voucher.voucherProduct.name}
+        </label>
+        <span>
+            <t:output value="amount" format="moneyFormat(amount)"/>
+        </span>
+    </p>
+
+</t:container>

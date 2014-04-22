@@ -12,6 +12,6 @@ public class VoucherPaymentIn extends _VoucherPaymentIn implements Queueable {
 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
-		return true;
+		return getPayment().isAsyncReplicationAllowed();
 	}
 }

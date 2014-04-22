@@ -21,6 +21,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
+import ish.oncourse.util.InvoiceUtils;
 import ish.util.InvoiceUtil;
 import ish.util.ProductUtil;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -47,7 +48,7 @@ public class PurchaseController {
 	public static final List<Action> COMMON_ACTIONS = Collections.unmodifiableList(Arrays.asList(
 			enableEnrolment, enableProductItem,
 			disableEnrolment, disableProductItem,
-			setVoucherPrice, addVoucher,
+			setVoucherPrice, addCode, selectVoucher, deselectVoucher,
 			startConcessionEditor, Action.addContact));
 
 	private PurchaseModel model;
@@ -118,11 +119,6 @@ public class PurchaseController {
 
 	public synchronized Money getTotalPayment() {
 		return getModel().getInvoice().getTotalGst();
-	}
-
-	public synchronized Money getTotalVoucherPayments() {
-		//TODO need functionality to recalculate the value
-		return Money.ZERO;
 	}
 
 	public synchronized Money getPreviousOwing() {
@@ -564,7 +560,25 @@ public class PurchaseController {
 		return this.getModel().getDiscounts();
 	}
 
+    private void updateVoucherPayments() {
+        voucherRedemptionHelper.clear();
+        for (Voucher voucher : getModel().getSelectedVouchers()) {
+            voucherRedemptionHelper.addVoucher(voucher, voucher.getValueRemaining());
+        }
+
+        voucherRedemptionHelper.addInvoiceLines(getModel().getInvoice().getInvoiceLines());
+
+        if (isApplyPrevOwing())
+            voucherRedemptionHelper.addPreviousOwingInvoices(InvoiceUtils.getOwingInvoices(getModel().getPayer()));
+
+        voucherRedemptionHelper.processAgainstInvoices();
+
+        getModel().setVoucherPayments(voucherRedemptionHelper.getPayments());
+    }
+
 	public Money updateTotalIncGst() {
+        updateVoucherPayments();
+
 		Money result = Money.ZERO;
 		for (Contact contact : getModel().getContacts()) {
 			for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
@@ -589,6 +603,12 @@ public class PurchaseController {
 		else
 			result = (result.isLessThan(Money.ZERO) ? Money.ZERO : result);
 
+        List<PaymentIn> paymentIns = getModel().getVoucherPayments();
+        for (PaymentIn paymentIn : paymentIns) {
+            result = result.subtract(paymentIn.getAmount());
+            result = (result.isLessThan(Money.ZERO) ? Money.ZERO : result);
+        }
+
 		/**
 		 * we need to set payment type to internal when amount is zero because admin application
 		 * billing logic uses this type to define which payments were sent to DPS and which were not sent.
@@ -597,6 +617,8 @@ public class PurchaseController {
 			getModel().getPayment().setType(PaymentType.INTERNAL);
 		else
 			getModel().getPayment().setType(PaymentType.CREDIT_CARD);
+
+
 
 		getModel().getPayment().setAmount(result);
 		getModel().getPayment().getPaymentInLines().get(0).setAmount(result);
@@ -749,11 +771,11 @@ public class PurchaseController {
 
     public static enum State {
 		init(Action.init, Action.addContact),
-		editCheckout(COMMON_ACTIONS, addDiscount, removeDiscount, proceedToPayment, addCourseClass, addProduct),
+		editCheckout(COMMON_ACTIONS, addCode, removeDiscount, proceedToPayment, addCourseClass, addProduct),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
 		editContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
-		editPayment(makePayment, backToEditCheckout, addDiscount, creditAccess, owingApply, changePayer, addPayer, selectCorporatePassEditor),
+		editPayment(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPayer, selectCorporatePassEditor),
 		editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
 		paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment, showPaymentResult);
@@ -792,9 +814,8 @@ public class PurchaseController {
 		addContact(ActionAddContact.class, ContactCredentials.class),
 		addConcession(ActionAddConcession.class, StudentConcession.class),
 		removeConcession(ActionRemoveConcession.class, ConcessionType.class, Contact.class),
-		addDiscount(ActionAddDiscount.class, String.class, Discount.class),
+        addCode(ActionAddCode.class, String.class),
 		removeDiscount(ActionRemoveDiscount.class, String.class, Discount.class),
-		addVoucher(ActionAddVoucher.class, String.class, Voucher.class),
 		startConcessionEditor(ActionStartConcessionEditor.class, Contact.class),
 		cancelConcessionEditor(ActionCancelConcessionEditor.class, Contact.class),
 		cancelAddContact(ActionCancelAddContact.class),
@@ -810,7 +831,9 @@ public class PurchaseController {
 		addPayer(ActionAddPayer.class, Contact.class),
 		addCorporatePass(ActionAddCorporatePass.class, String.class),
 		selectCardEditor(ActionSelectCardEditor.class),
-		selectCorporatePassEditor(ActionSelectCorporatePassEditor.class);
+		selectCorporatePassEditor(ActionSelectCorporatePassEditor.class),
+        selectVoucher(ActionSelectVoucher.class, Long.class),
+        deselectVoucher(ActionDeselectVoucher.class, Long.class);
 
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
@@ -926,7 +949,12 @@ public class PurchaseController {
 		creditCardPaymentNotEnabled,
 		duplicatedMembership,
 		enterVoucherPrice,
-		noPlacesLeft;
+		noPlacesLeft,
+        incorrectCode,
+        voucherAlreadyAdded,
+        voucherWrongPayer,
+        voucherAlreadyBeingUsed
+        ;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);

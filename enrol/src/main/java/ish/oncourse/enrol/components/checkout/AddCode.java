@@ -41,7 +41,7 @@ public class AddCode {
 			return null;
 
 		String code = StringUtils.trimToEmpty(request.getParameter(FIELD_ADD_CODE));
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addDiscount);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addCode);
 		actionParameter.setValue(code);
 		purchaseController.performAction(actionParameter);
 		return blockToRefresh;

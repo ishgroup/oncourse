@@ -33,4 +33,20 @@ public class InvoiceUtils {
         }
         return result;
     }
+
+    /**
+     * @return list of owing Invoices for the contact
+     */
+    public static List<Invoice> getOwingInvoices(Contact contact) {
+        Expression exp = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, contact);
+        ExpressionFactory.greaterExp(Invoice.AMOUNT_OWING_PROPERTY, Money.ZERO);
+        /**
+         * we use query with Strategy.LOCAL_CACHE_REFRESH to be sure that
+         * these invoices will be loaded from database and amountOwing will have actual value.
+         */
+        SelectQuery q = new SelectQuery(Invoice.class, exp);
+        q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH);
+        return contact.getObjectContext().performQuery(q);
+    }
+
 }

@@ -9,7 +9,7 @@
 		<p class="total-amount"><label>Total</label>  <span>
 			<t:output value="purchaseController.totalPayment" format="moneyFormat(purchaseController.totalPayment)"/>
 		</span></p>
-		<t:delegate to="block:voucher"/>
+		<t:delegate to="block:vouchers"/>
 		<t:delegate to="block:discount"/>
 		<p><label>Minimum Payable Now</label> <span>
 			<t:output value="purchaseController.minimumPayableNow" format="moneyFormat(purchaseController.minimumPayableNow)"/>
@@ -56,11 +56,13 @@
 		</t:if>
 	</t:block>
 
-    <t:block t:id = "voucher">
-        <t:if test="purchaseController.totalVoucherPayments.isZero()" negate="true">
-            <p><label>Voucher</label> <span>
-                (<t:output value="purchaseController.totalVoucherPayments" format="moneyFormat(purchaseController.totalVoucherPayments)"/>)
-            </span></p>
+    <t:block t:id = "vouchers">
+        <t:if test="hasVoucers()">
+            <div id="vouchers">
+                <t:loop source="purchaseController.model.vouchers" value="voucher">
+                    <t:checkout.redeemedvoucher voucher="voucher" purchaseController="purchaseController" blockToRefresh="blockToRefresh"/>
+                </t:loop>
+            </div>
         </t:if>
     </t:block>
 	<t:block t:id = "discount">

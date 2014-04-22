@@ -126,7 +126,8 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 
         //add new discounts
         for (Discount discount : discounts) {
-            ActionAddDiscount actionAddDiscount = PurchaseController.Action.addDiscount.createAction(purchaseController);
+            ActionAddDiscount actionAddDiscount = new ActionAddDiscount();
+            actionAddDiscount.setController(purchaseController);
             actionAddDiscount.setDiscount(discount);
 			actionAddDiscount.setPublishErrors(false);
             actionAddDiscount.action();
