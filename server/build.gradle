@@ -87,7 +87,7 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 }
 
 test {
-	dbTests = project.hasProperty('database') ? project.database : "derby-test"
+	ext.dbTests = project.hasProperty('database') ? project.database : "derby-test"
 
 	logger.lifecycle("will run tests in '"+dbTests+"' mode")
 
