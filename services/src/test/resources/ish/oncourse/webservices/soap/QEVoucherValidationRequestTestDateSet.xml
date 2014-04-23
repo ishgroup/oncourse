@@ -140,5 +140,5 @@
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="4" TYPE="3" angelId="4" code="qwerty_4" redeemedCoursesCount="2" source="O"
 				 status="0" INVOICELINEID="4"/>
 
-	<VoucherPaymentIn id="1" angelId="1" collegeId="1" paymentInId="1" voucherId="1" status="0"/>
+	<VoucherPaymentIn id="1" angelId="1" collegeId="1" paymentInId="1" voucherId="1" status="0" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 </dataset>

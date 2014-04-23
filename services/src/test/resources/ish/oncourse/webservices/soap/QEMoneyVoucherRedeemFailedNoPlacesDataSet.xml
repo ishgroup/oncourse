@@ -70,5 +70,5 @@
 
     <InvoiceLine id="5" collegeId="1" enrolmentId="10" angelId="5"
                  invoiceId="5" quantity="1.0" discountEachExTax="0.00"
-                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" created="2011-09-12 00:47:26.0"/>
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:56:01.0"/>
 </dataset>

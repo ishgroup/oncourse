@@ -825,6 +825,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
 		pLineStub.setAngelId(1l);
 		pLineStub.setCreated(today);
+		pLineStub.setModified(today);
 		pLineStub.setEntityIdentifier("PaymentInLine");
 		pLineStub.setInvoiceId(1l);
 		pLineStub.setPaymentInId(1l);
@@ -933,6 +934,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub = new ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub();
 		pLineStub.setAngelId(1l);
 		pLineStub.setCreated(today);
+		pLineStub.setModified(today);
 		pLineStub.setEntityIdentifier("PaymentInLine");
 		pLineStub.setInvoiceId(1l);
 		pLineStub.setPaymentInId(1l);
