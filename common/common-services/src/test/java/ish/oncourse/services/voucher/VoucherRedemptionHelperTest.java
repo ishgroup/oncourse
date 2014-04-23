@@ -103,7 +103,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertFalse(service.getPayments().isEmpty());
 		assertEquals(1, service.getPayments().size());
 
-		PaymentIn payment = service.getPayments().get(0);
+		PaymentIn payment = service.getPayments().get(courseVoucher);
 
 		assertEquals(cc.getFeeIncGst(), payment.getAmount());
 		assertEquals(PaymentType.VOUCHER, payment.getType());
@@ -138,7 +138,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertFalse(service.getPayments().isEmpty());
 		assertEquals(1, service.getPayments().size());
 
-		PaymentIn payment = service.getPayments().get(0);
+		PaymentIn payment = service.getPayments().get(courseVoucher);
 
 		assertEquals(il.getDiscountedPriceTotalIncTax(), payment.getAmount());
 		assertEquals(PaymentType.VOUCHER, payment.getType());
@@ -169,7 +169,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertFalse(service.getPayments().isEmpty());
 		assertEquals(1, service.getPayments().size());
 
-		PaymentIn payment = service.getPayments().get(0);
+		PaymentIn payment = service.getPayments().get(moneyVoucher);
 
 		assertEquals(cc.getFeeIncGst(), payment.getAmount());
 		assertEquals(PaymentType.VOUCHER, payment.getType());
@@ -181,7 +181,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 	public void testApplyMultipleMoneyVouchers() {
 		ObjectContext context = getContext();
 
-		Invoice invoice = Cayenne.objectForPK(context, Invoice.class, 1);
+		Invoice invoice = Cayenne.objectForPK(context, Invoice.class, 10);
 
 		Voucher voucher1 = Cayenne.objectForPK(context, Voucher.class, 2);
 		Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 4);
@@ -207,7 +207,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 			assertEquals(PaymentType.VOUCHER, p.getType());
 		}
 
-		assertEquals(new Money("220.0"), paymentsSum);
+		assertEquals(new Money("198.0"), paymentsSum);
 
 		context.commitChanges();
 
@@ -217,10 +217,55 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertEquals(ProductStatus.ACTIVE, voucher2.getStatus());
 		assertEquals(ProductStatus.REDEEMED, voucher1.getStatus());
 
-		assertEquals(new Money("90.00"), voucher2.getValueRemaining());
+		assertEquals(new Money("112.00"), voucher2.getValueRemaining());
 
 		assertEquals(Money.ZERO, voucher1.getRedemptionValue());
 	}
+
+    @Test
+    public void testTryApplyMoneyVouchersForVoucher() {
+        ObjectContext context = getContext();
+
+        Invoice invoice = Cayenne.objectForPK(context, Invoice.class, 1);
+
+        Voucher voucher1 = Cayenne.objectForPK(context, Voucher.class, 2);
+        Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 4);
+
+        College college = Cayenne.objectForPK(context, College.class, 1);
+
+        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+
+        service.setInvoice(invoice);
+        service.addVoucher(voucher1, voucher1.getValueRemaining());
+        service.addVoucher(voucher2, voucher2.getValueRemaining());
+        service.addInvoiceLines(invoice.getInvoiceLines());
+
+        service.processAgainstInvoices();
+
+        assertFalse(service.getPayments().isEmpty());
+        assertEquals(1, service.getPayments().size());
+
+        Money paymentsSum = Money.ZERO;
+        for (PaymentIn p : service.getPayments().values()) {
+            paymentsSum = paymentsSum.add(p.getAmount());
+
+            assertEquals(PaymentType.VOUCHER, p.getType());
+        }
+
+        assertEquals(new Money("110.0"), paymentsSum);
+
+        context.commitChanges();
+
+        voucher1.setPersistenceState(PersistenceState.HOLLOW);
+        voucher2.setPersistenceState(PersistenceState.HOLLOW);
+
+        assertEquals(ProductStatus.ACTIVE, voucher2.getStatus());
+        assertEquals(ProductStatus.REDEEMED, voucher1.getStatus());
+
+        assertEquals(new Money("200.00"), voucher2.getValueRemaining());
+
+        assertEquals(Money.ZERO, voucher1.getRedemptionValue());
+    }
 
 	// @Test
 	public void testApplyMultipleVouchersToSingleInvoiceLine() {
@@ -298,10 +343,12 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertFalse(service.getPayments().isEmpty());
 		assertEquals(1, service.getPayments().size());
 
-		PaymentIn payment1 = service.getPayments().get(0);
+		PaymentIn payment = service.getPayments().get(voucher1);
+        if (payment == null)
+            payment = service.getPayments().get(voucher2);
 
-		assertEquals(cc.getFeeIncGst().multiply(2.0), payment1.getAmount());
-		assertEquals(PaymentType.VOUCHER, payment1.getType());
+		assertEquals(cc.getFeeIncGst().multiply(2.0), payment.getAmount());
+		assertEquals(PaymentType.VOUCHER, payment.getType());
 
 		context.commitChanges();
 	}
@@ -330,7 +377,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertFalse(service.getPayments().isEmpty());
 		assertEquals(1, service.getPayments().size());
 
-		PaymentIn payment1 = service.getPayments().get(0);
+		PaymentIn payment1 = service.getPayments().get(voucher);
 
 		assertEquals(cc.getFeeIncGst(), payment1.getAmount());
 		assertEquals(PaymentType.VOUCHER, payment1.getType());
