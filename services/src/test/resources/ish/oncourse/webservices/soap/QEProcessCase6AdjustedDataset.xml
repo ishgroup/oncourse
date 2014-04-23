@@ -43,11 +43,11 @@
     <Invoice id="10" source="O" amountOwing="100.00" contactId="1" angelId="10"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="100" totalExGst="320.00"
-             totalGst="10.91" />
+             totalGst="10.91" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"/>
 
     <InvoiceLine id="10" collegeId="1" angelId="10"
                  invoiceId="10" quantity="1.0" discountEachExTax="0.00"
-                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"/>
 
 
     <PaymentIn id="10" amount="100" angelId="10" collegeId="1"

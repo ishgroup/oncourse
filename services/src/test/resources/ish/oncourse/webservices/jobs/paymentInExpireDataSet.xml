@@ -113,7 +113,8 @@
 	
 	<InvoiceLine id="2000" collegeId="1" enrolmentId="2000"
 		invoiceId="2000" quantity="1.0" discountEachExTax="0.00"
-		priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
+		priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+        created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 		
 	<InvoiceLine id="2001" collegeId="1" enrolmentId="2001"
 		invoiceId="2000" quantity="1.0" discountEachExTax="0.00"

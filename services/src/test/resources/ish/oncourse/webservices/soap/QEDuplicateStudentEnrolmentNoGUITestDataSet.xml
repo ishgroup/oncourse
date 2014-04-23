@@ -56,10 +56,11 @@
     <Invoice id="5" source="O" amountOwing="100.00" contactId="1" angelId="5"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="100" totalExGst="320.00"
-             totalGst="10.91" />
+             totalGst="10.91" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"/>
 
     <InvoiceLine id="5" collegeId="1" enrolmentId="10" angelId="5"
                  invoiceId="5" quantity="1.0" discountEachExTax="0.00"
-                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" created="2011-09-12 00:47:26.0"/>
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"/>
 
 </dataset>
