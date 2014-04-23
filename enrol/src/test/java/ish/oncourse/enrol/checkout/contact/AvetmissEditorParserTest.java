@@ -7,6 +7,7 @@ import ish.oncourse.model.Language;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
+import org.apache.cayenne.DataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
 import org.apache.tapestry5.ioc.Messages;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.*;
 public class AvetmissEditorParserTest {
 
     private Contact contact;
+    private Student student;
     private Country country;
     private Language language;
     private ICountryService countryService;
@@ -37,17 +39,18 @@ public class AvetmissEditorParserTest {
         country = mock(Country.class);
         ObjectId objectId = mock(ObjectId.class);
         doReturn(objectId).when(country).getObjectId();
-        doReturn(country).when(objectContext).localObject(objectId, country);
+        doReturn(country).when(objectContext).localObject(country);
 
         contact = mock(Contact.class);
-        Student student = mock(Student.class);
+        student = spy(new Student());
+        doNothing().when(student).setToOneTarget(anyString(), any(DataObject.class), anyBoolean());
         doReturn(student).when(contact).getStudent();
         doReturn(objectContext).when(contact).getObjectContext();
 
         language = mock(Language.class);
         objectId = mock(ObjectId.class);
         doReturn(objectId).when(language).getObjectId();
-        doReturn(language).when(objectContext).localObject(objectId,language);
+        doReturn(language).when(objectContext).localObject(language);
 
 
         countryService = mock(ICountryService.class);
@@ -134,23 +137,48 @@ public class AvetmissEditorParserTest {
     }
 
     @Test
-    public void testYearSchoolCompleted()
+    public void testWrongYearSchoolCompleted()
+    {
+        when(request.getParameter(yearSchoolCompleted.name())).thenReturn("YEAR");
+        String key = String.format(MESSAGE_KEY_TEMPLATE, AvetmissEditorParser.Field.yearSchoolCompleted);
+        when(messages.get(key)).thenReturn(key);
+        AvetmissEditorParser parser = getAvetmissEditorParser();
+        parser.parse();
+        verify(contact.getStudent(), times(1)).setYearSchoolCompleted(null);
+        assertFalse(parser.getErrors().isEmpty());
+        assertEquals(1, parser.getErrors().size());
+        assertEquals(key, parser.getErrors().get(AvetmissEditorParser.Field.yearSchoolCompleted.name()));
+        assertNull(contact.getStudent().getYearSchoolCompleted());
+
+
+    }
+
+    @Test
+    public void testValidYearSchoolCompleted()
     {
         when(request.getParameter(yearSchoolCompleted.name())).thenReturn("2000");
         AvetmissEditorParser parser = getAvetmissEditorParser();
         parser.parse();
         assertTrue(parser.getErrors().isEmpty());
         verify(contact.getStudent(), times(1)).setYearSchoolCompleted(2000);
+    }
 
-        when(request.getParameter(yearSchoolCompleted.name())).thenReturn("YEAR");
+    @Test
+    public void testInvalidYearSchoolCompleted()
+    {
+        when(request.getParameter(yearSchoolCompleted.name())).thenReturn("12");
         String key = String.format(MESSAGE_KEY_TEMPLATE, AvetmissEditorParser.Field.yearSchoolCompleted);
         when(messages.get(key)).thenReturn(key);
 
-        parser = getAvetmissEditorParser();
+
+        AvetmissEditorParser parser = getAvetmissEditorParser();
         parser.parse();
+        verify(contact.getStudent(), times(1)).setYearSchoolCompleted(12);
         assertFalse(parser.getErrors().isEmpty());
         assertEquals(1, parser.getErrors().size());
-        assertEquals(key, parser.getErrors().get(AvetmissEditorParser.Field.yearSchoolCompleted.name()));
+        assertEquals("Year school completed if supplied should be within not earlier than 1940.", parser.getErrors().get(AvetmissEditorParser.Field.yearSchoolCompleted.name()));
+        verify(contact.getStudent(), times(1)).setYearSchoolCompleted(null);
+        assertNull(contact.getStudent().getYearSchoolCompleted());
     }
 
     private AvetmissEditorParser getAvetmissEditorParser() {

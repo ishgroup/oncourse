@@ -55,8 +55,8 @@ public class AvetmissEditorParser implements IFieldsParser{
 					errors.put(field.propertyName, messages.get(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
 				} else {
 					contact.getStudent().setCountryOfBirth(
-							(Country) contact.getObjectContext()
-									.localObject(country.getObjectId(), country));
+							contact.getObjectContext()
+									.localObject(country));
 				}
 				break;
 			case languageHome:
@@ -65,8 +65,7 @@ public class AvetmissEditorParser implements IFieldsParser{
 					errors.put(field.propertyName, messages.get(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
 				} else {
 					contact.getStudent().setLanguageHome(
-							(Language) contact.getObjectContext().localObject(language.getObjectId(),
-									language));
+							contact.getObjectContext().localObject(language));
 				}
 				break;
 			case englishProficiency:
@@ -80,13 +79,16 @@ public class AvetmissEditorParser implements IFieldsParser{
 				break;
 			case yearSchoolCompleted:
 				String error;
+                Integer old = contact.getStudent().getYearSchoolCompleted();
 				if (StringUtils.isNumeric(value)) {
-					contact.getStudent().setYearSchoolCompleted(Integer.parseInt(value));
-					error = contact.getStudent().validateSchoolYear();
+                    contact.getStudent().setYearSchoolCompleted(Integer.parseInt(value));
+                    error = contact.getStudent().validateSchoolYear();
 				} else
 					error = messages.get(String.format(MESSAGE_KEY_TEMPLATE, field.name()));
-				if (error != null)
-					errors.put(field.propertyName, error);
+				if (error != null) {
+                    errors.put(field.propertyName, error);
+                    contact.getStudent().setYearSchoolCompleted(old);
+                }
 				break;
 			case priorEducationCode:
 				contact.getStudent().setPriorEducationCode(AvetmissStudentPriorEducation.valueOf(value));
