@@ -126,6 +126,7 @@ public class CourseClassTest {
 		DiscountCourseClass dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(currentPromotion);
 		dcc.setCourseClass(firstClass);
+		dcc.setCollege(college);
 
 		currentConcession = context.newObject(Discount.class);
 		currentConcession.setCollege(college);
@@ -139,6 +140,7 @@ public class CourseClassTest {
 		ConcessionType ct = context.newObject(ConcessionType.class);
 		ct.setName("name");
 		ct.setIsEnabled(true);
+		ct.setCollege(college);		
 		DiscountConcessionType dct = context.newObject(DiscountConcessionType.class);
 		dct.setCollege(college);
 		dct.setConcessionType(ct);
@@ -146,6 +148,7 @@ public class CourseClassTest {
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(currentConcession);
 		dcc.setCourseClass(firstClass);
+		dcc.setCollege(college);
 
 		concessionEmpty = context.newObject(Discount.class);
 		concessionEmpty.setCollege(college);
@@ -154,6 +157,7 @@ public class CourseClassTest {
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(concessionEmpty);
 		dcc.setCourseClass(firstClass);
+		dcc.setCollege(college);
 
 		futureDicount = context.newObject(Discount.class);
 		futureDicount.setCollege(college);
@@ -163,6 +167,7 @@ public class CourseClassTest {
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(futureDicount);
 		dcc.setCourseClass(firstClass);
+		dcc.setCollege(college);
 
 		secondClass = context.newObject(CourseClass.class);
 		secondClass.setCourse(course);
@@ -181,6 +186,7 @@ public class CourseClassTest {
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(pastSecondClassDiscount);
 		dcc.setCourseClass(secondClass);
+		dcc.setCollege(college);
 		
 		
 		thirdClass = context.newObject(CourseClass.class);
@@ -197,6 +203,7 @@ public class CourseClassTest {
 		ConcessionType ctype = context.newObject(ConcessionType.class);
 		ctype.setName("name");
 		ctype.setIsEnabled(true);
+		ctype.setCollege(college);
 		DiscountConcessionType dctype = context.newObject(DiscountConcessionType.class);
 		dctype.setCollege(college);
 		dctype.setConcessionType(ctype);
@@ -205,6 +212,7 @@ public class CourseClassTest {
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(concessionEmptyCode);
 		dcc.setCourseClass(thirdClass);
+		dcc.setCollege(college);
 		
 		fourthClass = context.newObject(CourseClass.class);
 		fourthClass.setCourse(course);
@@ -221,6 +229,7 @@ public class CourseClassTest {
 		ConcessionType cctype = context.newObject(ConcessionType.class);
 		cctype.setName("name");
 		cctype.setIsEnabled(false);
+		cctype.setCollege(college);
 		
 		DiscountConcessionType dcctype = context.newObject(DiscountConcessionType.class);
 		dcctype.setCollege(college);
@@ -230,6 +239,7 @@ public class CourseClassTest {
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(disabledDiscount);
 		dcc.setCourseClass(fourthClass);
+		dcc.setCollege(college);
 		context.commitChanges();
 		
 	}

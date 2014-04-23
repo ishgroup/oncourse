@@ -116,6 +116,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		student.setContact(contact);
 		concessionType1 = context.newObject(ConcessionType.class);
 		concessionType1.setName("ct1");
+		concessionType1.setCollege(college);
 		studentConcession = context.newObject(StudentConcession.class);
 		studentConcession.setCollege(college);
 		studentConcession.setConcessionType(concessionType1);
@@ -124,6 +125,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		concessionTypeForExpiredDateTest = context.newObject(ConcessionType.class);
 		concessionTypeForExpiredDateTest.setName("ctExpired");
 		concessionTypeForExpiredDateTest.setHasExpiryDate(true);
+		concessionTypeForExpiredDateTest.setCollege(college);
 
 		studentConcessionExpired = context.newObject(StudentConcession.class);
 		studentConcessionExpired.setCollege(college);
@@ -137,6 +139,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		concessionType2 = context.newObject(ConcessionType.class);
 		concessionType2.setName("ct2");
 		concessionType2.setHasExpiryDate(true);
+		concessionType2.setCollege(college);
 
 		studentConcession2 = context.newObject(StudentConcession.class);
 		studentConcession2.setCollege(college);
