@@ -104,27 +104,31 @@
     <Invoice id="1000" source="O" amountOwing="0" contactId="1189158"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
-             totalGst="10.91" />
+             totalGst="10.91" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
 
     <InvoiceLine id="11111" collegeId="1" invoiceId="1000" quantity="1.0" discountEachExTax="0.00"
-                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+                 created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
 
 
     <Invoice id="1002" source="O" amountOwing="-100" contactId="1189160"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
-             totalGst="10.91" />
+             totalGst="10.91" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
 
     <InvoiceLine id="11112" collegeId="1" invoiceId="1002" quantity="1.0" discountEachExTax="0.00"
-                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+                 created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
 
     <Invoice id="1003" source="O" amountOwing="-100" contactId="1189160"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
-             totalGst="10.91" />
+             totalGst="10.91"
+             created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
 
     <InvoiceLine id="11113" collegeId="1" invoiceId="1003" quantity="1.0" discountEachExTax="0.00"
-                 priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
+                 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+                 created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
 
 
     <Product collegeId="1" SKU="23456" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="7" ISONSALE="1"

@@ -36,15 +36,18 @@
 	<Invoice id="1000" source="O" amountOwing="-100" contactId="1001"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1000" totalExGst="100.00"
-			 totalGst="10.00" />
+			 totalGst="10.00" created="2011-09-12 00:47:26.0"
+             modified="2011-09-12 01:02:00.0"/>
 
 	<Invoice id="1001" source="O" amountOwing="-100" contactId="1001"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1001" totalExGst="100.00"
-			 totalGst="10.00" />
+			 totalGst="10.00" created="2011-09-12 00:47:26.0"
+             modified="2011-09-12 01:02:00.0"/>
 
 	<Invoice id="1002" source="O" amountOwing="-100" contactId="1001"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1002" totalExGst="100.00"
-			 totalGst="10.00" />
+			 totalGst="10.00" created="2011-09-12 00:47:26.0"
+             modified="2011-09-12 01:02:00.0"/>
 </dataset>
