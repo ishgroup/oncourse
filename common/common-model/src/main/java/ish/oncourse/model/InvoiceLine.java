@@ -2,6 +2,7 @@ package ish.oncourse.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ish.common.payable.TaxInterface;
@@ -53,6 +54,11 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 
     @Override
     protected void onPostAdd() {
-
+		if (getCreated() == null) {
+			setCreated(new Date());
+		}
+		if (getModified() == null) {
+			setModified(getCreated());
+		}
     }
 }

@@ -28,16 +28,16 @@
 		emailAddress="4@kremlin.ru" familyName="1" givenName="1"  faxNumber="1234-567" suburb="Moscow"/>
 		
 	<Invoice id="10" angelId="10" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54" 
-		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91" />
+		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 		
     <InvoiceLine id="11" angelId="1" collegeId="1" invoiceId="10" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
-    	taxEach="10.91" title="Test Invoice Line"/>
+    	taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <InvoiceLine id="12" angelId="2" collegeId="1" invoiceId="10" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
-    	taxEach="10.91" title="Test Invoice Line"/>
+    	taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <InvoiceLine id="13" angelId="3" collegeId="1" invoiceId="10" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
-    	taxEach="10.91" title="Test Invoice Line"/>
+    	taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <InvoiceLine id="14" angelId="4" collegeId="1" invoiceId="10" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
-    	taxEach="10.91" title="Test Invoice Line"/>
+    	taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     	
     <PaymentIn
             amount="1.11"
@@ -73,10 +73,10 @@
             paymentInId="10"/>
             
 	<Invoice id="2" angelId="2" source="O" amountOwing="0.00" contactId="4" collegeId="1" dateDue="2011-09-20 11:14:54" 
-		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="123" totalExGst="109.09" totalGst="10.91" />
+		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="123" totalExGst="109.09" totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 	
 	<InvoiceLine id="5" angelId="5" collegeId="1" invoiceId="2" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
-    	taxEach="10.91" title="Test Invoice Line"/>
+    	taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     	
     <PaymentIn amount="120.00"
 		angelId="2" collegeId="1" contactId="4" created="2011-09-20 11:14:54" creditCardCVV="QWER" creditCardExpiry="creditCardExpiry"
@@ -99,19 +99,19 @@
                     paymentInId="20"/>
 
     <Invoice id="20" angelId="20" source="O" amountOwing="0.00" contactId="4" collegeId="1" dateDue="2011-09-20 11:14:54"
-             description="invoice for testing multiple enrollments reverse" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="91.00" totalGst="9.00"/>
+             description="invoice for testing multiple enrollments reverse" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="91.00" totalGst="9.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
     <InvoiceLine id="20" angelId="20" collegeId="1" invoiceId="20" quantity="1.0" discountEachExTax="0.00" priceEachExTax="45.50"
-                 taxEach="4.50" title="Test Invoice Line"/>
+                 taxEach="4.50" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
     <InvoiceLine id="21" angelId="21" collegeId="1" invoiceId="20" quantity="1.0" discountEachExTax="0.00" priceEachExTax="45.50"
-                 taxEach="4.50" title="Test Invoice Line"/>
+                 taxEach="4.50" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 	
 	<Invoice id="3" angelId="3" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54" 
-		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="10.91" />
+		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 	
 	<InvoiceLine id="6" angelId="6" collegeId="1" invoiceId="3" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
-    	taxEach="10.91" title="Test Invoice Line"/>
+    	taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     	
     <PaymentIn amount="120.00" angelId="3" collegeId="1" contactId="1" created="2011-09-20 11:14:54" creditCardCVV="QWER" 
     	creditCardExpiry="creditCardExpiry" creditCardName="creditCardName" creditCardNumber="creditCardNumberX" creditCardType="VISA" 
@@ -123,10 +123,10 @@
 		paymentInId="300"/>
 
 	<Invoice id="4" angelId="4" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54"
-			 description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="10.91" />
+			 description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
 	<InvoiceLine id="7" angelId="7" collegeId="1" invoiceId="4" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
-				 taxEach="10.91" title="Test Invoice Line"/>
+				 taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
 	<PaymentIn amount="50.00" angelId="4" collegeId="1" contactId="1" created="2011-09-20 11:14:54" creditCardCVV="QWER"
 			   creditCardExpiry="creditCardExpiry" creditCardName="creditCardName" creditCardNumber="creditCardNumberX" creditCardType="VISA"
@@ -137,9 +137,9 @@
 	<PaymentInLine  amount="50.00" angelId="4" collegeId="1" created="2011-09-20 11:14:54" id="400" invoiceId="4" modified="2011-09-20 11:14:54"
 					paymentInId="400"/>
 
-	<PaymentIn amount="70.0" angelId="5" id="500" collegeId="1" contactId="1" type="8" status="2" source="O"/>
+	<PaymentIn amount="70.0" angelId="5" id="500" collegeId="1" contactId="1" type="8" status="2" source="O" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54"/>
 
-	<PaymentInLine amount="70.0" angelId="5" collegeId="1" id="500" invoiceId="4" paymentInId="500"/>
+	<PaymentInLine amount="70.0" angelId="5" collegeId="1" id="500" invoiceId="4" paymentInId="500" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54"/>
 
             	
 	<Product collegeId="1" SKU="123" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product" EXPIRYTYPE="4" ID="1" ISONSALE="1"
@@ -253,5 +253,6 @@
 				 valueOnPurchase="70.00" value="0.0" redeemedCoursesCount="0" source="O"
 				 status="3" INVOICELINEID="14"/>
 
-	<VoucherPaymentIn id="5" angelId="5" invoiceLineId="7" paymentInId="500" voucherId="5" collegeId="1" status="0"/>
+	<VoucherPaymentIn id="5" angelId="5" invoiceLineId="7" paymentInId="500" voucherId="5" collegeId="1" status="0" created="2011-09-12 00:47:01.0"
+					  modified="2011-09-12 01:02:00.0"/>
 </dataset>

@@ -32,12 +32,15 @@ public class PaymentInLine extends _PaymentInLine implements Queueable {
 		pl.setModified(getModified());
 		return pl;
 	}
-
+	
+	@Override
 	protected void onPostAdd() {
-        if (getCreated() == null) {
-            setCreated(new Date());
-            setModified(getCreated());
-        }
+		if (getCreated() == null) {
+			setCreated(new Date());
+		}
+		if (getModified() == null) {
+			setModified(getCreated());
+		}
 	}
 
 	protected void onPrePersist() {

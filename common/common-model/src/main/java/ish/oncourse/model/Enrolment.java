@@ -55,8 +55,10 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 		}
         if (getCreated() == null) {
             setCreated(new Date());
-            setModified(getCreated());
         }
+		if (getModified() == null) {
+			setModified(getCreated());
+		}
 
 	}
 

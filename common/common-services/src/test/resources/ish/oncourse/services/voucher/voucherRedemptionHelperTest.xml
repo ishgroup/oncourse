@@ -211,66 +211,66 @@
     <Invoice id="1" source="O" amountOwing="0" contactId="3"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" />
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="2" source="O" amountOwing="0" contactId="3"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" />
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="3" source="O" amountOwing="0" contactId="4"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" />
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="4" source="O" amountOwing="0" contactId="4"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" />
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="5" source="O" amountOwing="0" contactId="5"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" />
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="6" source="O" amountOwing="0" contactId="6"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" />
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="7" source="O" amountOwing="0" contactId="7"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" />
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="8" source="O" amountOwing="0" contactId="8"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="8.00" />
+             totalGst="8.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="9" source="O" amountOwing="0" contactId="9"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" />
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="10" source="O" amountOwing="0" contactId="10"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="8.00" />
+             totalGst="8.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="11" source="O" amountOwing="110.00" contactId="10"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" />
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <Invoice id="12" source="O" amountOwing="220.00" contactId="3"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="200.00"
-             totalGst="20.00" />
+             totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
 
-    <InvoiceLine id="1" collegeId="1" invoiceId="1" quantity="1.0" enrolmentId="[null]" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
-    <InvoiceLine id="2" collegeId="1" invoiceId="1" quantity="1.0" enrolmentId="1" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
-    <InvoiceLine id="3" collegeId="1" invoiceId="2" quantity="1.0" enrolmentId="2" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
-    <InvoiceLine id="4" collegeId="1" invoiceId="3" quantity="1.0" enrolmentId="3" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
-    <InvoiceLine id="5" collegeId="1" invoiceId="4" quantity="1.0" enrolmentId="4" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
-    <InvoiceLine id="6" collegeId="1" invoiceId="5" quantity="1.0" enrolmentId="5" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
-    <InvoiceLine id="7" collegeId="1" invoiceId="6" quantity="1.0" enrolmentId="6" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
-    <InvoiceLine id="8" collegeId="1" invoiceId="7" quantity="1.0" enrolmentId="7" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
-    <InvoiceLine id="9" collegeId="1" invoiceId="8" quantity="1.0" enrolmentId="8" discountEachExTax="20.00" priceEachExTax="100.00" taxEach="8.00" title="Test Invoice Line" />
-    <InvoiceLine id="10" collegeId="1" invoiceId="10" quantity="1.0" enrolmentId="9" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
-    <InvoiceLine id="11" collegeId="1" invoiceId="10" quantity="1.0" enrolmentId="10" discountEachExTax="20.00" priceEachExTax="100.00" taxEach="8.00" title="Test Invoice Line" />
-    <InvoiceLine id="12" collegeId="1" invoiceId="11" quantity="1.0" enrolmentId="11" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" title="Test Invoice Line" />
-    <InvoiceLine id="13" collegeId="1" invoiceId="12" quantity="1.0" enrolmentId="12" discountEachExTax="0.00" priceEachExTax="200.00" taxEach="20.00" title="Test Invoice Line" />
+    <InvoiceLine id="1" collegeId="1" invoiceId="1" quantity="1.0" enrolmentId="[null]" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="2" collegeId="1" invoiceId="1" quantity="1.0" enrolmentId="1" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="3" collegeId="1" invoiceId="2" quantity="1.0" enrolmentId="2" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="4" collegeId="1" invoiceId="3" quantity="1.0" enrolmentId="3" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="5" collegeId="1" invoiceId="4" quantity="1.0" enrolmentId="4" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="6" collegeId="1" invoiceId="5" quantity="1.0" enrolmentId="5" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="7" collegeId="1" invoiceId="6" quantity="1.0" enrolmentId="6" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="8" collegeId="1" invoiceId="7" quantity="1.0" enrolmentId="7" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="9" collegeId="1" invoiceId="8" quantity="1.0" enrolmentId="8" discountEachExTax="20.00" priceEachExTax="100.00" taxEach="8.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="10" collegeId="1" invoiceId="10" quantity="1.0" enrolmentId="9" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="11" collegeId="1" invoiceId="10" quantity="1.0" enrolmentId="10" discountEachExTax="20.00" priceEachExTax="100.00" taxEach="8.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="12" collegeId="1" invoiceId="11" quantity="1.0" enrolmentId="11" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+    <InvoiceLine id="13" collegeId="1" invoiceId="12" quantity="1.0" enrolmentId="12" discountEachExTax="0.00" priceEachExTax="200.00" taxEach="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
 
 
     <Product id="1" collegeId="1" angelId="1" SKU="234" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ISONSALE="1"

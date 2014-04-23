@@ -97,10 +97,12 @@ public class Invoice extends _Invoice implements Queueable {
 		if (getSource() == null) {
 			setSource(PaymentSource.SOURCE_WEB);
 		}
-        if (getCreated() == null) {
-            setCreated(new Date());
-            setModified(getCreated());
-        }
+		if (getCreated() == null) {
+			setCreated(new Date());
+		}
+		if (getModified() == null) {
+			setModified(getCreated());
+		}
 	}
 
 	@Override

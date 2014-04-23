@@ -19,9 +19,11 @@ public class VoucherPaymentIn extends _VoucherPaymentIn implements Queueable {
 
     @Override
     protected void onPostAdd() {
-        if (getCreated() == null) {
-            setCreated(new Date());
-            setModified(getCreated());
-        }
+		if (getCreated() == null) {
+			setCreated(new Date());
+		}
+		if (getModified() == null) {
+			setModified(getCreated());
+		}
     }
 }

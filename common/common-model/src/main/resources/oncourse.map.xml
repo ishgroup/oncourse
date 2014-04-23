@@ -1460,6 +1460,7 @@
 		<obj-attribute name="taxEach" type="ish.math.Money" db-attribute-path="taxEach"/>
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="unit" type="java.lang.String" db-attribute-path="unit"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="InvoiceLineDiscount" className="ish.oncourse.model.InvoiceLineDiscount" dbEntityName="InvoiceLine_Discount">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1683,6 +1684,7 @@
 		<obj-attribute name="taxAdjustment" type="ish.math.Money" db-attribute-path="taxAdjustment"/>
 		<obj-attribute name="taxAmount" type="ish.math.Money" db-attribute-path="feeGST"/>
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="ProductItem" className="ish.oncourse.model.ProductItem" dbEntityName="ProductItem">
 		<qualifier><![CDATA[type = 1]]></qualifier>
@@ -1692,6 +1694,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="status" type="ish.common.types.ProductStatus" db-attribute-path="status"/>
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="Qualification" className="ish.oncourse.model.Qualification" dbEntityName="Qualification">
 		<obj-attribute name="anzsco" type="java.lang.String" db-attribute-path="anzsco"/>
@@ -1932,6 +1935,7 @@
 		<obj-attribute name="enrolmentsCount" type="java.lang.Integer" db-attribute-path="enrolmentsCount"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="status" type="ish.common.types.VoucherPaymentStatus" db-attribute-path="status"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="VoucherProduct" superEntityName="Product" className="ish.oncourse.model.VoucherProduct">
 		<qualifier><![CDATA[type = 3]]></qualifier>
