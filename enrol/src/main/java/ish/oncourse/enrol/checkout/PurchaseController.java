@@ -45,10 +45,15 @@ import static java.util.Arrays.asList;
 public class PurchaseController {
 	protected static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
 
+    /**
+     * If performing action is one from the list and current state is editPayment
+     * we need perform backToEditCheckout action before the action.
+     * see method PurchaseController.adjustState()
+     */
 	public static final List<Action> COMMON_ACTIONS = Collections.unmodifiableList(Arrays.asList(
 			enableEnrolment, enableProductItem,
 			disableEnrolment, disableProductItem,
-			setVoucherPrice, addCode, selectVoucher, deselectVoucher,
+			setVoucherPrice,
 			startConcessionEditor, Action.addContact));
 
 	private PurchaseModel model;
@@ -705,7 +710,7 @@ public class PurchaseController {
 
     public static enum State {
 		init(Action.init, Action.addContact),
-		editCheckout(COMMON_ACTIONS, addCode, removeDiscount, proceedToPayment, addCourseClass, addProduct),
+		editCheckout(COMMON_ACTIONS, addCode, selectVoucher, deselectVoucher, removeDiscount, proceedToPayment, addCourseClass, addProduct),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
 		editContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),

@@ -44,7 +44,7 @@ public class ActionAddCode extends APurchaseAction {
     @Override
     protected boolean validate() {
         if (action == null) {
-            getController().addError(PurchaseController.Message.incorrectCode);
+            getController().addWarning(PurchaseController.Message.incorrectCode);
             return false;
         }
         return true;

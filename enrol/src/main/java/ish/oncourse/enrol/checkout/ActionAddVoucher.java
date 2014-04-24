@@ -33,12 +33,12 @@ public class ActionAddVoucher extends APurchaseAction {
 	protected boolean validate() {
         if (getController().getModel().getVouchers().contains(voucher))
         {
-            getController().addError(voucherAlreadyAdded);
+            getController().addWarning(voucherAlreadyAdded);
             return false;
         }
 
 		if (voucher == null) {
-			getController().addError(voucherNotMatch, voucherCode);
+			getController().addWarning(voucherNotMatch, voucherCode);
 			return false;
 		}
         return true;

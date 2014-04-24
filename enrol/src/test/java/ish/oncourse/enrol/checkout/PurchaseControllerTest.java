@@ -51,12 +51,14 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(Arrays.asList(
                 enableEnrolment, enableProductItem,
                 disableEnrolment, disableProductItem,
-                setVoucherPrice, addCode, selectVoucher, deselectVoucher,
+                setVoucherPrice,
                 startConcessionEditor, addContact),
                 COMMON_ACTIONS);
         assertEquals(State.init.getAllowedActions(), Arrays.asList(init, addContact));
         ArrayList<Action> actions = new ArrayList<>(COMMON_ACTIONS);
         actions.add(addCode);
+        actions.add(selectVoucher);
+        actions.add(deselectVoucher);
         actions.add(removeDiscount);
         actions.add(proceedToPayment);
         actions.add(addCourseClass);
