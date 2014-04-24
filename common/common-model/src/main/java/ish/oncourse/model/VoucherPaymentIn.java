@@ -2,6 +2,7 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._VoucherPaymentIn;
 import ish.oncourse.utils.QueueableObjectUtils;
+import org.apache.cayenne.PersistenceState;
 
 import java.util.Date;
 
@@ -14,7 +15,7 @@ public class VoucherPaymentIn extends _VoucherPaymentIn implements Queueable {
 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
-		return getPayment().isAsyncReplicationAllowed();
+		return getPersistenceState() ==  PersistenceState.DELETED || getPayment().isAsyncReplicationAllowed();
 	}
 
     @Override
