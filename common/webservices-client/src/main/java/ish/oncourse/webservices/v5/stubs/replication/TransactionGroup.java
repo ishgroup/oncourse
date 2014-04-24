@@ -1,6 +1,7 @@
 
 package ish.oncourse.webservices.v5.stubs.replication;
 
+import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 
 import javax.xml.bind.annotation.*;
@@ -282,4 +283,8 @@ public class TransactionGroup extends GenericTransactionGroup {
         return this.attendanceOrBinaryDataOrBinaryInfo;
     }
 
+	@Override
+	public List<? extends GenericReplicationStub> getReplicationStub() {
+		return getAttendanceOrBinaryDataOrBinaryInfo();
+	}
 }
