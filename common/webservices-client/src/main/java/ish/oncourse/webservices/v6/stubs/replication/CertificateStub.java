@@ -8,10 +8,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToBooleanAdapter;
-import ish.oncourse.webservices.util.adapters.StringToDateAdapter;
-import ish.oncourse.webservices.util.adapters.StringToIntegerAdapter;
-import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -64,23 +60,23 @@ public class CertificateStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long certificateNumber;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToDateAdapter.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date endDate;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer fundingSource;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean qualification;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToDateAdapter.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date printedWhen;
     @XmlElement(required = true)
@@ -88,11 +84,11 @@ public class CertificateStub
     @XmlElement(required = true)
     protected String publicNotes;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long qualificationId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToDateAdapter.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date revokedWhen;
     @XmlElement(required = true)
@@ -100,7 +96,7 @@ public class CertificateStub
     @XmlElement(required = true)
     protected String studentLastName;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long studentId;
 

@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -38,7 +37,7 @@ import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 public class ConfirmExecution {
 
     @XmlElement(type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long id;
     protected String message;

@@ -8,9 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToBooleanAdapter;
-import ish.oncourse.webservices.util.adapters.StringToDateAdapter;
-import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
+import ish.oncourse.webservices.util.GenericQueuedStatisticStub;
 
 
 /**
@@ -46,24 +44,25 @@ import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 })
 public class QueuedStatisticStub
     extends ReplicationStub
+    implements GenericQueuedStatisticStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long stackedTransactionsCount;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long stackedCount;
     @XmlElement(required = true)
     protected String stackedEntityIdentifier;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToDateAdapter.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date receivedTimestamp;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean cleanupStub;
 

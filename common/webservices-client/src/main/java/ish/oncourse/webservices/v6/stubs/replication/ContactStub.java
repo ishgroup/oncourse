@@ -8,9 +8,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToBooleanAdapter;
-import ish.oncourse.webservices.util.adapters.StringToDateAdapter;
-import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -93,11 +90,11 @@ public class ContactStub
     @XmlElement(required = true)
     protected String cookieHash;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long countryId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToDateAdapter.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date dateOfBirth;
     @XmlElement(required = true)
@@ -111,23 +108,23 @@ public class ContactStub
     @XmlElement(required = true)
     protected String homePhoneNumber;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean company;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean male;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean marketingViaEmailAllowed;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean marketingViaPostAllowed;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean marketingViaSMSAllowed;
     @XmlElement(required = true)
@@ -149,11 +146,11 @@ public class ContactStub
     @XmlElement(required = true)
     protected String uniqueCode;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long studentId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long tutorId;
 

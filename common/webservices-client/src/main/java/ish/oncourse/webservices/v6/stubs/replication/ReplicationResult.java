@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import ish.oncourse.webservices.util.GenericReplicationResult;
 
 
 /**
@@ -32,7 +33,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "replicationResult", propOrder = {
     "replicatedRecord"
 })
-public class ReplicationResult {
+public class ReplicationResult
+    extends GenericReplicationResult
+{
 
     @XmlElement(required = true)
     protected List<ReplicatedRecord> replicatedRecord;

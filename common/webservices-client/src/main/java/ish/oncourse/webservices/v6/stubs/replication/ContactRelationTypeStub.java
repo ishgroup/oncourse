@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToIntegerAdapter;
 
 
 /**
@@ -46,7 +45,7 @@ public class ContactRelationTypeStub
     @XmlElement(required = true)
     protected String toContactName;
     @XmlElement(required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer delegatedAccessToContact;
 

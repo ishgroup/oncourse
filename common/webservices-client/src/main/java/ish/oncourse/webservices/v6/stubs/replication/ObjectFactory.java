@@ -104,35 +104,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PaymentInStub }
-     * 
-     */
-    public PaymentInStub createPaymentInStub() {
-        return new PaymentInStub();
-    }
-
-    /**
-     * Create an instance of {@link VoucherStub }
-     * 
-     */
-    public VoucherStub createVoucherStub() {
-        return new VoucherStub();
-    }
-
-    /**
      * Create an instance of {@link DiscountStub }
      * 
      */
     public DiscountStub createDiscountStub() {
         return new DiscountStub();
-    }
-
-    /**
-     * Create an instance of {@link VoucherProductStub }
-     * 
-     */
-    public VoucherProductStub createVoucherProductStub() {
-        return new VoucherProductStub();
     }
 
     /**
@@ -144,347 +120,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link BinaryInfoRelationStub }
+     * Create an instance of {@link CorporatePassProductStub }
      * 
      */
-    public BinaryInfoRelationStub createBinaryInfoRelationStub() {
-        return new BinaryInfoRelationStub();
-    }
-
-    /**
-     * Create an instance of {@link MessagePersonStub }
-     * 
-     */
-    public MessagePersonStub createMessagePersonStub() {
-        return new MessagePersonStub();
-    }
-
-    /**
-     * Create an instance of {@link StudentStub }
-     * 
-     */
-    public StudentStub createStudentStub() {
-        return new StudentStub();
-    }
-
-    /**
-     * Create an instance of {@link TagRequirementStub }
-     * 
-     */
-    public TagRequirementStub createTagRequirementStub() {
-        return new TagRequirementStub();
-    }
-
-    /**
-     * Create an instance of {@link SessionModuleStub }
-     * 
-     */
-    public SessionModuleStub createSessionModuleStub() {
-        return new SessionModuleStub();
-    }
-
-    /**
-     * Create an instance of {@link MessageTemplateStub }
-     * 
-     */
-    public MessageTemplateStub createMessageTemplateStub() {
-        return new MessageTemplateStub();
-    }
-
-    /**
-     * Create an instance of {@link PreferenceStub }
-     * 
-     */
-    public PreferenceStub createPreferenceStub() {
-        return new PreferenceStub();
-    }
-
-    /**
-     * Create an instance of {@link StudentConcessionStub }
-     * 
-     */
-    public StudentConcessionStub createStudentConcessionStub() {
-        return new StudentConcessionStub();
-    }
-
-    /**
-     * Create an instance of {@link PaymentOutStub }
-     * 
-     */
-    public PaymentOutStub createPaymentOutStub() {
-        return new PaymentOutStub();
-    }
-
-    /**
-     * Create an instance of {@link InvoiceLineStub }
-     * 
-     */
-    public InvoiceLineStub createInvoiceLineStub() {
-        return new InvoiceLineStub();
-    }
-
-    /**
-     * Create an instance of {@link DeletedStub }
-     * 
-     */
-    public DeletedStub createDeletedStub() {
-        return new DeletedStub();
-    }
-
-    /**
-     * Create an instance of {@link ArticleStub }
-     * 
-     */
-    public ArticleStub createArticleStub() {
-        return new ArticleStub();
-    }
-
-    /**
-     * Create an instance of {@link SurveyStub }
-     * 
-     */
-    public SurveyStub createSurveyStub() {
-        return new SurveyStub();
-    }
-
-    /**
-     * Create an instance of {@link ProductStub }
-     * 
-     */
-    public ProductStub createProductStub() {
-        return new ProductStub();
-    }
-
-    /**
-     * Create an instance of {@link GetInstructions }
-     * 
-     */
-    public GetInstructions createGetInstructions() {
-        return new GetInstructions();
-    }
-
-    /**
-     * Create an instance of {@link CorporatePassCourseClassStub }
-     * 
-     */
-    public CorporatePassCourseClassStub createCorporatePassCourseClassStub() {
-        return new CorporatePassCourseClassStub();
-    }
-
-    /**
-     * Create an instance of {@link GetUnreplicatedEntitiesResponse }
-     * 
-     */
-    public GetUnreplicatedEntitiesResponse createGetUnreplicatedEntitiesResponse() {
-        return new GetUnreplicatedEntitiesResponse();
-    }
-
-    /**
-     * Create an instance of {@link SessionStub }
-     * 
-     */
-    public SessionStub createSessionStub() {
-        return new SessionStub();
-    }
-
-    /**
-     * Create an instance of {@link ReplicationResult }
-     * 
-     */
-    public ReplicationResult createReplicationResult() {
-        return new ReplicationResult();
-    }
-
-    /**
-     * Create an instance of {@link HollowStub }
-     * 
-     */
-    public HollowStub createHollowStub() {
-        return new HollowStub();
-    }
-
-    /**
-     * Create an instance of {@link WaitingListSiteStub }
-     * 
-     */
-    public WaitingListSiteStub createWaitingListSiteStub() {
-        return new WaitingListSiteStub();
-    }
-
-    /**
-     * Create an instance of {@link PaymentInLineStub }
-     * 
-     */
-    public PaymentInLineStub createPaymentInLineStub() {
-        return new PaymentInLineStub();
-    }
-
-    /**
-     * Create an instance of {@link ReplicationRecords }
-     * 
-     */
-    public ReplicationRecords createReplicationRecords() {
-        return new ReplicationRecords();
-    }
-
-    /**
-     * Create an instance of {@link SiteStub }
-     * 
-     */
-    public SiteStub createSiteStub() {
-        return new SiteStub();
-    }
-
-    /**
-     * Create an instance of {@link DiscountMembershipStub }
-     * 
-     */
-    public DiscountMembershipStub createDiscountMembershipStub() {
-        return new DiscountMembershipStub();
-    }
-
-    /**
-     * Create an instance of {@link QueuedStatisticStub }
-     * 
-     */
-    public QueuedStatisticStub createQueuedStatisticStub() {
-        return new QueuedStatisticStub();
-    }
-
-    /**
-     * Create an instance of {@link ContactRelationTypeStub }
-     * 
-     */
-    public ContactRelationTypeStub createContactRelationTypeStub() {
-        return new ContactRelationTypeStub();
-    }
-
-    /**
-     * Create an instance of {@link AttendanceStub }
-     * 
-     */
-    public AttendanceStub createAttendanceStub() {
-        return new AttendanceStub();
-    }
-
-    /**
-     * Create an instance of {@link InstructionStub }
-     * 
-     */
-    public InstructionStub createInstructionStub() {
-        return new InstructionStub();
-    }
-
-    /**
-     * Create an instance of {@link UnreplicatedEntitiesStub }
-     * 
-     */
-    public UnreplicatedEntitiesStub createUnreplicatedEntitiesStub() {
-        return new UnreplicatedEntitiesStub();
-    }
-
-    /**
-     * Create an instance of {@link DiscountMembershipRelationTypeStub }
-     * 
-     */
-    public DiscountMembershipRelationTypeStub createDiscountMembershipRelationTypeStub() {
-        return new DiscountMembershipRelationTypeStub();
-    }
-
-    /**
-     * Create an instance of {@link GetInstructionsResponse }
-     * 
-     */
-    public GetInstructionsResponse createGetInstructionsResponse() {
-        return new GetInstructionsResponse();
-    }
-
-    /**
-     * Create an instance of {@link TutorAttendanceStub }
-     * 
-     */
-    public TutorAttendanceStub createTutorAttendanceStub() {
-        return new TutorAttendanceStub();
-    }
-
-    /**
-     * Create an instance of {@link OutcomeStub }
-     * 
-     */
-    public OutcomeStub createOutcomeStub() {
-        return new OutcomeStub();
-    }
-
-    /**
-     * Create an instance of {@link FaultReason }
-     * 
-     */
-    public FaultReason createFaultReason() {
-        return new FaultReason();
-    }
-
-    /**
-     * Create an instance of {@link TagRelationStub }
-     * 
-     */
-    public TagRelationStub createTagRelationStub() {
-        return new TagRelationStub();
-    }
-
-    /**
-     * Create an instance of {@link ProductItemStub }
-     * 
-     */
-    public ProductItemStub createProductItemStub() {
-        return new ProductItemStub();
-    }
-
-    /**
-     * Create an instance of {@link ParameterEntry }
-     * 
-     */
-    public ParameterEntry createParameterEntry() {
-        return new ParameterEntry();
-    }
-
-    /**
-     * Create an instance of {@link VoucherProductCourseStub }
-     * 
-     */
-    public VoucherProductCourseStub createVoucherProductCourseStub() {
-        return new VoucherProductCourseStub();
-    }
-
-    /**
-     * Create an instance of {@link SystemUserStub }
-     * 
-     */
-    public SystemUserStub createSystemUserStub() {
-        return new SystemUserStub();
-    }
-
-    /**
-     * Create an instance of {@link RoomStub }
-     * 
-     */
-    public RoomStub createRoomStub() {
-        return new RoomStub();
-    }
-
-    /**
-     * Create an instance of {@link CertificateOutcomeStub }
-     * 
-     */
-    public CertificateOutcomeStub createCertificateOutcomeStub() {
-        return new CertificateOutcomeStub();
-    }
-
-    /**
-     * Create an instance of {@link TransactionGroup }
-     * 
-     */
-    public TransactionGroup createTransactionGroup() {
-        return new TransactionGroup();
+    public CorporatePassProductStub createCorporatePassProductStub() {
+        return new CorporatePassProductStub();
     }
 
     /**
@@ -496,59 +136,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ReplicatedRecord }
+     * Create an instance of {@link PaymentOutStub }
      * 
      */
-    public ReplicatedRecord createReplicatedRecord() {
-        return new ReplicatedRecord();
+    public PaymentOutStub createPaymentOutStub() {
+        return new PaymentOutStub();
     }
 
     /**
-     * Create an instance of {@link MembershipStub }
+     * Create an instance of {@link SurveyStub }
      * 
      */
-    public MembershipStub createMembershipStub() {
-        return new MembershipStub();
-    }
-
-    /**
-     * Create an instance of {@link ArticleProductStub }
-     * 
-     */
-    public ArticleProductStub createArticleProductStub() {
-        return new ArticleProductStub();
-    }
-
-    /**
-     * Create an instance of {@link MembershipProductStub }
-     * 
-     */
-    public MembershipProductStub createMembershipProductStub() {
-        return new MembershipProductStub();
-    }
-
-    /**
-     * Create an instance of {@link CorporatePassStub }
-     * 
-     */
-    public CorporatePassStub createCorporatePassStub() {
-        return new CorporatePassStub();
-    }
-
-    /**
-     * Create an instance of {@link TagStub }
-     * 
-     */
-    public TagStub createTagStub() {
-        return new TagStub();
-    }
-
-    /**
-     * Create an instance of {@link MessageStub }
-     * 
-     */
-    public MessageStub createMessageStub() {
-        return new MessageStub();
+    public SurveyStub createSurveyStub() {
+        return new SurveyStub();
     }
 
     /**
@@ -560,147 +160,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetUnreplicatedEntities }
+     * Create an instance of {@link DeletedStub }
      * 
      */
-    public GetUnreplicatedEntities createGetUnreplicatedEntities() {
-        return new GetUnreplicatedEntities();
+    public DeletedStub createDeletedStub() {
+        return new DeletedStub();
     }
 
     /**
-     * Create an instance of {@link ConfirmExecution }
+     * Create an instance of {@link ProductItemStub }
      * 
      */
-    public ConfirmExecution createConfirmExecution() {
-        return new ConfirmExecution();
+    public ProductItemStub createProductItemStub() {
+        return new ProductItemStub();
     }
 
     /**
-     * Create an instance of {@link BinaryInfoStub }
+     * Create an instance of {@link GetInstructionsResponse }
      * 
      */
-    public BinaryInfoStub createBinaryInfoStub() {
-        return new BinaryInfoStub();
-    }
-
-    /**
-     * Create an instance of {@link CourseStub }
-     * 
-     */
-    public CourseStub createCourseStub() {
-        return new CourseStub();
-    }
-
-    /**
-     * Create an instance of {@link CourseModuleStub }
-     * 
-     */
-    public CourseModuleStub createCourseModuleStub() {
-        return new CourseModuleStub();
-    }
-
-    /**
-     * Create an instance of {@link DiscountCourseClassStub }
-     * 
-     */
-    public DiscountCourseClassStub createDiscountCourseClassStub() {
-        return new DiscountCourseClassStub();
-    }
-
-    /**
-     * Create an instance of {@link ContactStub }
-     * 
-     */
-    public ContactStub createContactStub() {
-        return new ContactStub();
-    }
-
-    /**
-     * Create an instance of {@link TutorStub }
-     * 
-     */
-    public TutorStub createTutorStub() {
-        return new TutorStub();
-    }
-
-    /**
-     * Create an instance of {@link DiscountConcessionTypeStub }
-     * 
-     */
-    public DiscountConcessionTypeStub createDiscountConcessionTypeStub() {
-        return new DiscountConcessionTypeStub();
-    }
-
-    /**
-     * Create an instance of {@link WaitingListStub }
-     * 
-     */
-    public WaitingListStub createWaitingListStub() {
-        return new WaitingListStub();
-    }
-
-    /**
-     * Create an instance of {@link BinaryDataStub }
-     * 
-     */
-    public BinaryDataStub createBinaryDataStub() {
-        return new BinaryDataStub();
-    }
-
-    /**
-     * Create an instance of {@link CourseClassTutorStub }
-     * 
-     */
-    public CourseClassTutorStub createCourseClassTutorStub() {
-        return new CourseClassTutorStub();
-    }
-
-    /**
-     * Create an instance of {@link InvoiceLineDiscountStub }
-     * 
-     */
-    public InvoiceLineDiscountStub createInvoiceLineDiscountStub() {
-        return new InvoiceLineDiscountStub();
-    }
-
-    /**
-     * Create an instance of {@link VoucherPaymentInStub }
-     * 
-     */
-    public VoucherPaymentInStub createVoucherPaymentInStub() {
-        return new VoucherPaymentInStub();
-    }
-
-    /**
-     * Create an instance of {@link ParametersMap }
-     * 
-     */
-    public ParametersMap createParametersMap() {
-        return new ParametersMap();
-    }
-
-    /**
-     * Create an instance of {@link InvoiceStub }
-     * 
-     */
-    public InvoiceStub createInvoiceStub() {
-        return new InvoiceStub();
-    }
-
-    /**
-     * Create an instance of {@link EntityRelationStub }
-     * 
-     */
-    public EntityRelationStub createEntityRelationStub() {
-        return new EntityRelationStub();
-    }
-
-    /**
-     * Create an instance of {@link AclRoleStub }
-     * 
-     */
-    public AclRoleStub createAclRoleStub() {
-        return new AclRoleStub();
+    public GetInstructionsResponse createGetInstructionsResponse() {
+        return new GetInstructionsResponse();
     }
 
     /**
@@ -712,19 +192,435 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link EnrolmentStub }
+     * Create an instance of {@link CourseModuleStub }
      * 
      */
-    public EnrolmentStub createEnrolmentStub() {
-        return new EnrolmentStub();
+    public CourseModuleStub createCourseModuleStub() {
+        return new CourseModuleStub();
     }
 
     /**
-     * Create an instance of {@link CorporatePassProductStub }
+     * Create an instance of {@link ArticleStub }
      * 
      */
-    public CorporatePassProductStub createCorporatePassProductStub() {
-        return new CorporatePassProductStub();
+    public ArticleStub createArticleStub() {
+        return new ArticleStub();
+    }
+
+    /**
+     * Create an instance of {@link CorporatePassCourseClassStub }
+     * 
+     */
+    public CorporatePassCourseClassStub createCorporatePassCourseClassStub() {
+        return new CorporatePassCourseClassStub();
+    }
+
+    /**
+     * Create an instance of {@link PaymentInStub }
+     * 
+     */
+    public PaymentInStub createPaymentInStub() {
+        return new PaymentInStub();
+    }
+
+    /**
+     * Create an instance of {@link SessionStub }
+     * 
+     */
+    public SessionStub createSessionStub() {
+        return new SessionStub();
+    }
+
+    /**
+     * Create an instance of {@link QueuedStatisticStub }
+     * 
+     */
+    public QueuedStatisticStub createQueuedStatisticStub() {
+        return new QueuedStatisticStub();
+    }
+
+    /**
+     * Create an instance of {@link TutorAttendanceStub }
+     * 
+     */
+    public TutorAttendanceStub createTutorAttendanceStub() {
+        return new TutorAttendanceStub();
+    }
+
+    /**
+     * Create an instance of {@link ContactRelationTypeStub }
+     * 
+     */
+    public ContactRelationTypeStub createContactRelationTypeStub() {
+        return new ContactRelationTypeStub();
+    }
+
+    /**
+     * Create an instance of {@link RoomStub }
+     * 
+     */
+    public RoomStub createRoomStub() {
+        return new RoomStub();
+    }
+
+    /**
+     * Create an instance of {@link BinaryInfoRelationStub }
+     * 
+     */
+    public BinaryInfoRelationStub createBinaryInfoRelationStub() {
+        return new BinaryInfoRelationStub();
+    }
+
+    /**
+     * Create an instance of {@link DiscountConcessionTypeStub }
+     * 
+     */
+    public DiscountConcessionTypeStub createDiscountConcessionTypeStub() {
+        return new DiscountConcessionTypeStub();
+    }
+
+    /**
+     * Create an instance of {@link UnreplicatedEntitiesStub }
+     * 
+     */
+    public UnreplicatedEntitiesStub createUnreplicatedEntitiesStub() {
+        return new UnreplicatedEntitiesStub();
+    }
+
+    /**
+     * Create an instance of {@link BinaryDataStub }
+     * 
+     */
+    public BinaryDataStub createBinaryDataStub() {
+        return new BinaryDataStub();
+    }
+
+    /**
+     * Create an instance of {@link VoucherProductStub }
+     * 
+     */
+    public VoucherProductStub createVoucherProductStub() {
+        return new VoucherProductStub();
+    }
+
+    /**
+     * Create an instance of {@link ReplicationRecords }
+     * 
+     */
+    public ReplicationRecords createReplicationRecords() {
+        return new ReplicationRecords();
+    }
+
+    /**
+     * Create an instance of {@link CorporatePassStub }
+     * 
+     */
+    public CorporatePassStub createCorporatePassStub() {
+        return new CorporatePassStub();
+    }
+
+    /**
+     * Create an instance of {@link TagRequirementStub }
+     * 
+     */
+    public TagRequirementStub createTagRequirementStub() {
+        return new TagRequirementStub();
+    }
+
+    /**
+     * Create an instance of {@link ReplicatedRecord }
+     * 
+     */
+    public ReplicatedRecord createReplicatedRecord() {
+        return new ReplicatedRecord();
+    }
+
+    /**
+     * Create an instance of {@link ConfirmExecution }
+     * 
+     */
+    public ConfirmExecution createConfirmExecution() {
+        return new ConfirmExecution();
+    }
+
+    /**
+     * Create an instance of {@link AttendanceStub }
+     * 
+     */
+    public AttendanceStub createAttendanceStub() {
+        return new AttendanceStub();
+    }
+
+    /**
+     * Create an instance of {@link ReplicationResult }
+     * 
+     */
+    public ReplicationResult createReplicationResult() {
+        return new ReplicationResult();
+    }
+
+    /**
+     * Create an instance of {@link SiteStub }
+     * 
+     */
+    public SiteStub createSiteStub() {
+        return new SiteStub();
+    }
+
+    /**
+     * Create an instance of {@link TagRelationStub }
+     * 
+     */
+    public TagRelationStub createTagRelationStub() {
+        return new TagRelationStub();
+    }
+
+    /**
+     * Create an instance of {@link VoucherProductCourseStub }
+     * 
+     */
+    public VoucherProductCourseStub createVoucherProductCourseStub() {
+        return new VoucherProductCourseStub();
+    }
+
+    /**
+     * Create an instance of {@link GetUnreplicatedEntitiesResponse }
+     * 
+     */
+    public GetUnreplicatedEntitiesResponse createGetUnreplicatedEntitiesResponse() {
+        return new GetUnreplicatedEntitiesResponse();
+    }
+
+    /**
+     * Create an instance of {@link FaultReason }
+     * 
+     */
+    public FaultReason createFaultReason() {
+        return new FaultReason();
+    }
+
+    /**
+     * Create an instance of {@link WaitingListSiteStub }
+     * 
+     */
+    public WaitingListSiteStub createWaitingListSiteStub() {
+        return new WaitingListSiteStub();
+    }
+
+    /**
+     * Create an instance of {@link CertificateOutcomeStub }
+     * 
+     */
+    public CertificateOutcomeStub createCertificateOutcomeStub() {
+        return new CertificateOutcomeStub();
+    }
+
+    /**
+     * Create an instance of {@link ParameterEntry }
+     * 
+     */
+    public ParameterEntry createParameterEntry() {
+        return new ParameterEntry();
+    }
+
+    /**
+     * Create an instance of {@link HollowStub }
+     * 
+     */
+    public HollowStub createHollowStub() {
+        return new HollowStub();
+    }
+
+    /**
+     * Create an instance of {@link CourseClassTutorStub }
+     * 
+     */
+    public CourseClassTutorStub createCourseClassTutorStub() {
+        return new CourseClassTutorStub();
+    }
+
+    /**
+     * Create an instance of {@link BinaryInfoStub }
+     * 
+     */
+    public BinaryInfoStub createBinaryInfoStub() {
+        return new BinaryInfoStub();
+    }
+
+    /**
+     * Create an instance of {@link ProductStub }
+     * 
+     */
+    public ProductStub createProductStub() {
+        return new ProductStub();
+    }
+
+    /**
+     * Create an instance of {@link StudentStub }
+     * 
+     */
+    public StudentStub createStudentStub() {
+        return new StudentStub();
+    }
+
+    /**
+     * Create an instance of {@link ParametersMap }
+     * 
+     */
+    public ParametersMap createParametersMap() {
+        return new ParametersMap();
+    }
+
+    /**
+     * Create an instance of {@link AclRoleStub }
+     * 
+     */
+    public AclRoleStub createAclRoleStub() {
+        return new AclRoleStub();
+    }
+
+    /**
+     * Create an instance of {@link OutcomeStub }
+     * 
+     */
+    public OutcomeStub createOutcomeStub() {
+        return new OutcomeStub();
+    }
+
+    /**
+     * Create an instance of {@link MembershipProductStub }
+     * 
+     */
+    public MembershipProductStub createMembershipProductStub() {
+        return new MembershipProductStub();
+    }
+
+    /**
+     * Create an instance of {@link SystemUserStub }
+     * 
+     */
+    public SystemUserStub createSystemUserStub() {
+        return new SystemUserStub();
+    }
+
+    /**
+     * Create an instance of {@link GetUnreplicatedEntities }
+     * 
+     */
+    public GetUnreplicatedEntities createGetUnreplicatedEntities() {
+        return new GetUnreplicatedEntities();
+    }
+
+    /**
+     * Create an instance of {@link ContactStub }
+     * 
+     */
+    public ContactStub createContactStub() {
+        return new ContactStub();
+    }
+
+    /**
+     * Create an instance of {@link MessageTemplateStub }
+     * 
+     */
+    public MessageTemplateStub createMessageTemplateStub() {
+        return new MessageTemplateStub();
+    }
+
+    /**
+     * Create an instance of {@link InstructionStub }
+     * 
+     */
+    public InstructionStub createInstructionStub() {
+        return new InstructionStub();
+    }
+
+    /**
+     * Create an instance of {@link StudentConcessionStub }
+     * 
+     */
+    public StudentConcessionStub createStudentConcessionStub() {
+        return new StudentConcessionStub();
+    }
+
+    /**
+     * Create an instance of {@link WaitingListStub }
+     * 
+     */
+    public WaitingListStub createWaitingListStub() {
+        return new WaitingListStub();
+    }
+
+    /**
+     * Create an instance of {@link PaymentInLineStub }
+     * 
+     */
+    public PaymentInLineStub createPaymentInLineStub() {
+        return new PaymentInLineStub();
+    }
+
+    /**
+     * Create an instance of {@link InvoiceLineDiscountStub }
+     * 
+     */
+    public InvoiceLineDiscountStub createInvoiceLineDiscountStub() {
+        return new InvoiceLineDiscountStub();
+    }
+
+    /**
+     * Create an instance of {@link EntityRelationStub }
+     * 
+     */
+    public EntityRelationStub createEntityRelationStub() {
+        return new EntityRelationStub();
+    }
+
+    /**
+     * Create an instance of {@link ArticleProductStub }
+     * 
+     */
+    public ArticleProductStub createArticleProductStub() {
+        return new ArticleProductStub();
+    }
+
+    /**
+     * Create an instance of {@link InvoiceStub }
+     * 
+     */
+    public InvoiceStub createInvoiceStub() {
+        return new InvoiceStub();
+    }
+
+    /**
+     * Create an instance of {@link MessagePersonStub }
+     * 
+     */
+    public MessagePersonStub createMessagePersonStub() {
+        return new MessagePersonStub();
+    }
+
+    /**
+     * Create an instance of {@link MessageStub }
+     * 
+     */
+    public MessageStub createMessageStub() {
+        return new MessageStub();
+    }
+
+    /**
+     * Create an instance of {@link DiscountMembershipStub }
+     * 
+     */
+    public DiscountMembershipStub createDiscountMembershipStub() {
+        return new DiscountMembershipStub();
+    }
+
+    /**
+     * Create an instance of {@link PreferenceStub }
+     * 
+     */
+    public PreferenceStub createPreferenceStub() {
+        return new PreferenceStub();
     }
 
     /**
@@ -733,6 +629,110 @@ public class ObjectFactory {
      */
     public ConcessionTypeStub createConcessionTypeStub() {
         return new ConcessionTypeStub();
+    }
+
+    /**
+     * Create an instance of {@link EnrolmentStub }
+     * 
+     */
+    public EnrolmentStub createEnrolmentStub() {
+        return new EnrolmentStub();
+    }
+
+    /**
+     * Create an instance of {@link SessionModuleStub }
+     * 
+     */
+    public SessionModuleStub createSessionModuleStub() {
+        return new SessionModuleStub();
+    }
+
+    /**
+     * Create an instance of {@link MembershipStub }
+     * 
+     */
+    public MembershipStub createMembershipStub() {
+        return new MembershipStub();
+    }
+
+    /**
+     * Create an instance of {@link CourseStub }
+     * 
+     */
+    public CourseStub createCourseStub() {
+        return new CourseStub();
+    }
+
+    /**
+     * Create an instance of {@link TransactionGroup }
+     * 
+     */
+    public TransactionGroup createTransactionGroup() {
+        return new TransactionGroup();
+    }
+
+    /**
+     * Create an instance of {@link VoucherStub }
+     * 
+     */
+    public VoucherStub createVoucherStub() {
+        return new VoucherStub();
+    }
+
+    /**
+     * Create an instance of {@link InvoiceLineStub }
+     * 
+     */
+    public InvoiceLineStub createInvoiceLineStub() {
+        return new InvoiceLineStub();
+    }
+
+    /**
+     * Create an instance of {@link DiscountCourseClassStub }
+     * 
+     */
+    public DiscountCourseClassStub createDiscountCourseClassStub() {
+        return new DiscountCourseClassStub();
+    }
+
+    /**
+     * Create an instance of {@link DiscountMembershipRelationTypeStub }
+     * 
+     */
+    public DiscountMembershipRelationTypeStub createDiscountMembershipRelationTypeStub() {
+        return new DiscountMembershipRelationTypeStub();
+    }
+
+    /**
+     * Create an instance of {@link GetInstructions }
+     * 
+     */
+    public GetInstructions createGetInstructions() {
+        return new GetInstructions();
+    }
+
+    /**
+     * Create an instance of {@link TagStub }
+     * 
+     */
+    public TagStub createTagStub() {
+        return new TagStub();
+    }
+
+    /**
+     * Create an instance of {@link TutorStub }
+     * 
+     */
+    public TutorStub createTutorStub() {
+        return new TutorStub();
+    }
+
+    /**
+     * Create an instance of {@link VoucherPaymentInStub }
+     * 
+     */
+    public VoucherPaymentInStub createVoucherPaymentInStub() {
+        return new VoucherPaymentInStub();
     }
 
     /**

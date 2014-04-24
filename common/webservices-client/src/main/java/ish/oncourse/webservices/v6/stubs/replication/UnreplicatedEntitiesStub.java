@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
+import ish.oncourse.webservices.util.GenericUnreplicatedEntitiesStub;
 
 
 /**
@@ -37,10 +37,12 @@ import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
     "message",
     "parameters"
 })
-public class UnreplicatedEntitiesStub {
+public class UnreplicatedEntitiesStub
+    extends GenericUnreplicatedEntitiesStub
+{
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long id;
     @XmlElement(required = true)

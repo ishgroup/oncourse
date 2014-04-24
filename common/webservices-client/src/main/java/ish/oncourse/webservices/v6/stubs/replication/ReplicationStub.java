@@ -9,8 +9,7 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToDateAdapter;
-import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
+import ish.oncourse.webservices.util.GenericReplicationStub;
 
 
 /**
@@ -105,24 +104,26 @@ import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
     AttendanceStub.class,
     MessageTemplateStub.class
 })
-public abstract class ReplicationStub {
+public abstract class ReplicationStub
+    extends GenericReplicationStub
+{
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long angelId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long willowId;
     @XmlElement(required = true)
     protected String entityIdentifier;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToDateAdapter.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date created;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToDateAdapter.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date modified;
 

@@ -9,9 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToBooleanAdapter;
-import ish.oncourse.webservices.util.adapters.StringToDateAdapter;
-import ish.oncourse.webservices.util.adapters.StringToIntegerAdapter;
 
 
 /**
@@ -78,7 +75,7 @@ public class DiscountStub
     @XmlElement(required = true)
     protected String code;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean combinationType;
     @XmlElement(required = true)
@@ -94,39 +91,39 @@ public class DiscountStub
     @XmlElement(required = true)
     protected String name;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer roundingMode;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer studentAge;
     @XmlElement(required = true)
     protected String studentAgeOperator;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer studentEnrolledWithinDays;
     @XmlElement(required = true)
     protected String studentPostcodes;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToDateAdapter.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date validFrom;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToDateAdapter.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date validTo;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer discountType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean hideOnWeb;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean availableOnWeb;
 

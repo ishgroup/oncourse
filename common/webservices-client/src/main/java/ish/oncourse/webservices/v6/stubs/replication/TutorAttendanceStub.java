@@ -7,8 +7,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToIntegerAdapter;
-import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -47,19 +45,19 @@ public class TutorAttendanceStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer attendanceType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long sessionId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long tutorId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer durationMinutes;
     @XmlElement(required = true)

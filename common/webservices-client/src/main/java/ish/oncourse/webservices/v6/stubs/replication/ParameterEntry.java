@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import ish.oncourse.webservices.util.GenericParameterEntry;
 
 
 /**
@@ -32,7 +33,9 @@ import javax.xml.bind.annotation.XmlType;
     "name",
     "value"
 })
-public class ParameterEntry {
+public class ParameterEntry
+    extends GenericParameterEntry
+{
 
     @XmlElement(required = true)
     protected String name;

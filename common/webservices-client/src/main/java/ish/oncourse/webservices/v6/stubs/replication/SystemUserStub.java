@@ -8,9 +8,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToBooleanAdapter;
-import ish.oncourse.webservices.util.adapters.StringToDateAdapter;
-import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -63,11 +60,11 @@ public class SystemUserStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean editCMS;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean editTara;
     @XmlElement(required = true)
@@ -83,19 +80,19 @@ public class SystemUserStub
     @XmlElement(required = true)
     protected String lastLoginIP;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToDateAdapter.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date lastLoginOn;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean isActive;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean isAdmin;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(StringToLongAdapter.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long defaultAdministrationCentreId;
 

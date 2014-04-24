@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.adapters.StringToIntegerAdapter;
 
 
 /**
@@ -45,17 +44,17 @@ public class VoucherProductStub
 {
 
     @XmlElement(required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer expiryDays;
     @XmlElement(required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer expiryType;
     @XmlElement(required = true, nillable = true)
     protected BigDecimal value;
     @XmlElement(required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer maxCoursesRedemption;
 

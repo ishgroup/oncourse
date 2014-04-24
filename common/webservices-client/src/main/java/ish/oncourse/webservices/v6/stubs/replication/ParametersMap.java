@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+import ish.oncourse.webservices.util.GenericParametersMap;
 
 
 /**
@@ -31,7 +32,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "ParametersMap", propOrder = {
     "entry"
 })
-public class ParametersMap {
+public class ParametersMap
+    extends GenericParametersMap
+{
 
     protected List<ParameterEntry> entry;
 
