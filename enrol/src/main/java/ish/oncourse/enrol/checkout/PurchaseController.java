@@ -70,6 +70,8 @@ public class PurchaseController {
 
 
 	private VoucherRedemptionHelper voucherRedemptionHelper;
+    private PurchaseModelValidator modelValidator;
+
 
 
 	private State state = State.init;
@@ -632,46 +634,8 @@ public class PurchaseController {
 	}
 
 
-	boolean validateEnrolments(boolean showErrors) {
-		ActionEnableEnrolment actionEnableEnrolment = enableEnrolment.createAction(this);
-		List<Enrolment> enrolments = this.getModel().getAllEnabledEnrolments();
-		boolean result = true;
-		for (Enrolment enrolment : enrolments) {
-			actionEnableEnrolment.setEnrolment(enrolment);
-			boolean valid = actionEnableEnrolment.validateEnrolment(showErrors);
-			if (!valid) {
-				ActionDisableEnrolment actionDisableEnrolment = disableEnrolment.createAction(this);
-				actionDisableEnrolment.setEnrolment(enrolment);
-				actionDisableEnrolment.action();
-				getModel().removeEnrolment(enrolment);
-			}
-			result = result && valid;
-		}
-		return result;
-	}
 
-	boolean validateProductItems() {
-		ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(this);
-		List<ProductItem> items = this.getModel().getEnabledProductItems(getModel().getPayer());
-		boolean result = true;
-		for (ProductItem item : items) {
-			actionEnableProductItem.setProductItem(item);
-			//this step needed, because possible exist voucher product without price
-			actionEnableProductItem.setPrice(item.getInvoiceLine().getPriceEachExTax());
-			boolean valid = actionEnableProductItem.validateProductItem();
-			if (!valid) {
-				ActionDisableProductItem actionDisableProductItem = disableProductItem.createAction(this);
-				actionDisableProductItem.setProductItem(item);
-				actionDisableProductItem.action();
-				getModel().removeProductItem(getModel().getPayer(), item);
-			}
-			result = result && valid;
-		}
-		return result;
-	}
-
-
-	public void updateTotalDiscountAmountIncTax() {
+    public void updateTotalDiscountAmountIncTax() {
 		Money totalDiscountAmountIncTax = Money.ZERO;
 		for (Contact contact : getModel().getContacts()) {
 			for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
@@ -730,6 +694,14 @@ public class PurchaseController {
 
 
 	}
+
+    public PurchaseModelValidator getModelValidator() {
+        return modelValidator;
+    }
+
+    public void setModelValidator(PurchaseModelValidator modelValidator) {
+        this.modelValidator = modelValidator;
+    }
 
     public static enum State {
 		init(Action.init, Action.addContact),

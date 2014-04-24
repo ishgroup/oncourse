@@ -2,7 +2,9 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.ProductStatus;
-import ish.oncourse.model.*;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.ProductItem;
 
 import java.util.List;
 
@@ -75,9 +77,9 @@ public class ActionMakePayment extends APurchaseAction {
 				getController().addError(corporatePassShouldBeEntered);
 				return false;
 			} else
-				return getController().validateEnrolments(true);
+				return getController().getModelValidator().validate();
 		} else if (getController().isEditPayment()) {
-			return getController().validateEnrolments(true) && getController().validateProductItems();
+			return getController().getModelValidator().validate();
 		} else
 			throw new IllegalArgumentException();
 	}

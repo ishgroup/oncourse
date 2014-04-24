@@ -3,6 +3,7 @@ package ish.oncourse.enrol.services.payment;
 import ish.oncourse.enrol.checkout.ActionAddDiscount;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseModel;
+import ish.oncourse.enrol.checkout.PurchaseModelValidator;
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
@@ -91,6 +92,11 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
         purchaseController.setParallelExecutor(parallelExecutor);
 		purchaseController.setPaymentService(paymentService);
         purchaseController.setVoucherRedemptionHelper(new VoucherRedemptionHelper(model.getObjectContext(), model.getCollege()));
+
+        PurchaseModelValidator purchaseModelValidator = new PurchaseModelValidator();
+        purchaseModelValidator.setPurchaseController(purchaseController);
+        purchaseController.setModelValidator(purchaseModelValidator);
+
 		return purchaseController;
 	}
 
