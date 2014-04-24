@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter3;
-import org.w3._2001.xmlschema.Adapter4;
+import ish.oncourse.webservices.util.adapters.StringToBooleanAdapter;
+import ish.oncourse.webservices.util.adapters.StringToIntegerAdapter;
+import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -74,71 +74,71 @@ public class StudentStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer concessionType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer disabilityType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer englishProficiency;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer highestSchoolLevel;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer indigenousStatus;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
     @XmlSchemaType(name = "boolean")
     protected Boolean overseasClient;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
     @XmlSchemaType(name = "boolean")
     protected Boolean stillAtSchool;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer labourForceType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer priorEducationCode;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer yearSchoolCompleted;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long contactId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long languageId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long countryOfBirthId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long languageHomeId;
     @XmlElement(required = true)
     protected String chessn;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
     @XmlSchemaType(name = "boolean")
     protected Boolean feeHelpEligible;
     @XmlElement(required = true)
     protected String specialNeedsAssistance;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer citizenship;
 

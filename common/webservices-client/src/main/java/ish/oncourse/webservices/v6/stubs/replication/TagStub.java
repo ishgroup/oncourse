@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter3;
-import org.w3._2001.xmlschema.Adapter4;
+import ish.oncourse.webservices.util.adapters.StringToBooleanAdapter;
+import ish.oncourse.webservices.util.adapters.StringToIntegerAdapter;
+import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -62,31 +62,31 @@ public class TagStub
     @XmlElement(required = true)
     protected String detailTextile;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
     @XmlSchemaType(name = "boolean")
     protected Boolean tagGroup;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
     @XmlSchemaType(name = "boolean")
     protected Boolean webVisible;
     @XmlElement(required = true)
     protected String name;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer nodeType;
     @XmlElement(required = true)
     protected String shortName;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer weighting;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long parentId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer specialType;
 

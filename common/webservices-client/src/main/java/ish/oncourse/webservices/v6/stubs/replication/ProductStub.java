@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter3;
-import org.w3._2001.xmlschema.Adapter4;
+import ish.oncourse.webservices.util.adapters.StringToBooleanAdapter;
+import ish.oncourse.webservices.util.adapters.StringToIntegerAdapter;
+import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -73,15 +73,15 @@ public class ProductStub
     @XmlElement(required = true)
     protected String description;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long incomeAccountId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
     @XmlSchemaType(name = "boolean")
     protected Boolean isOnSale;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(StringToBooleanAdapter.class)
     @XmlSchemaType(name = "boolean")
     protected Boolean isWebVisible;
     @XmlElement(required = true)
@@ -95,11 +95,11 @@ public class ProductStub
     @XmlElement(required = true)
     protected BigDecimal taxAdjustment;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long taxId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer type;
 

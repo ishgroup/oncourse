@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import ish.oncourse.webservices.util.GenericReplicatedRecord;
 
 
 /**
@@ -35,9 +34,7 @@ import ish.oncourse.webservices.util.GenericReplicatedRecord;
     "message",
     "stub"
 })
-public class ReplicatedRecord
-    extends GenericReplicatedRecord
-{
+public class ReplicatedRecord {
 
     @XmlElement(required = true)
     protected Status status;

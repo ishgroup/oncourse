@@ -9,9 +9,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.GenericInvoiceStub;
-import org.w3._2001.xmlschema.Adapter1;
-import org.w3._2001.xmlschema.Adapter2;
+import ish.oncourse.webservices.util.adapters.StringToDateAdapter;
+import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -69,7 +68,6 @@ import org.w3._2001.xmlschema.Adapter2;
 })
 public class InvoiceStub
     extends ReplicationStub
-    implements GenericInvoiceStub
 {
 
     @XmlElement(required = true)
@@ -81,17 +79,17 @@ public class InvoiceStub
     @XmlElement(required = true)
     protected String customerReference;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(StringToDateAdapter.class)
     @XmlSchemaType(name = "dateTime")
     protected Date dateDue;
     @XmlElement(required = true)
     protected String description;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(StringToDateAdapter.class)
     @XmlSchemaType(name = "dateTime")
     protected Date invoiceDate;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long invoiceNumber;
     @XmlElement(required = true)
@@ -107,11 +105,11 @@ public class InvoiceStub
     @XmlElement(required = true)
     protected BigDecimal totalGst;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long contactId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long corporatePassId;
 

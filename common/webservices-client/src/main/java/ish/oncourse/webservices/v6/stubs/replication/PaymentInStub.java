@@ -9,10 +9,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import org.w3._2001.xmlschema.Adapter1;
-import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter3;
+import ish.oncourse.webservices.util.adapters.StringToDateAdapter;
+import ish.oncourse.webservices.util.adapters.StringToIntegerAdapter;
+import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -66,23 +65,22 @@ import org.w3._2001.xmlschema.Adapter3;
 })
 public class PaymentInStub
     extends ReplicationStub
-    implements GenericPaymentInStub
 {
 
     @XmlElement(required = true)
     protected BigDecimal amount;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long contactId;
     @XmlElement(required = true)
     protected String source;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer status;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(StringToIntegerAdapter.class)
     @XmlSchemaType(name = "int")
     protected Integer type;
     @XmlElement(required = true)
@@ -102,7 +100,7 @@ public class PaymentInStub
     @XmlElement(required = true)
     protected String creditCardType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(StringToDateAdapter.class)
     @XmlSchemaType(name = "dateTime")
     protected Date dateBanked;
 

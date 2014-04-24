@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
 
 
 /**
@@ -35,9 +34,7 @@ import ish.oncourse.webservices.util.GenericTransactionGroup;
     "transactionKeys",
     "replicationStub"
 })
-public class TransactionGroup
-    extends GenericTransactionGroup
-{
+public class TransactionGroup {
 
     @XmlElement(required = true)
     protected List<String> transactionKeys;

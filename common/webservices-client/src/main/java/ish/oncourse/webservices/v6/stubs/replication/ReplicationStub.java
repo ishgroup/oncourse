@@ -9,9 +9,8 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import org.w3._2001.xmlschema.Adapter1;
-import org.w3._2001.xmlschema.Adapter2;
+import ish.oncourse.webservices.util.adapters.StringToDateAdapter;
+import ish.oncourse.webservices.util.adapters.StringToLongAdapter;
 
 
 /**
@@ -106,26 +105,24 @@ import org.w3._2001.xmlschema.Adapter2;
     AttendanceStub.class,
     MessageTemplateStub.class
 })
-public abstract class ReplicationStub
-    extends GenericReplicationStub
-{
+public abstract class ReplicationStub {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long angelId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(StringToLongAdapter.class)
     @XmlSchemaType(name = "long")
     protected Long willowId;
     @XmlElement(required = true)
     protected String entityIdentifier;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(StringToDateAdapter.class)
     @XmlSchemaType(name = "dateTime")
     protected Date created;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(StringToDateAdapter.class)
     @XmlSchemaType(name = "dateTime")
     protected Date modified;
 

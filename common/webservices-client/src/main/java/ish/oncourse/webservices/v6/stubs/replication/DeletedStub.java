@@ -4,7 +4,6 @@ package ish.oncourse.webservices.v6.stubs.replication;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
-import ish.oncourse.webservices.util.GenericDeletedStub;
 
 
 /**
@@ -29,7 +28,6 @@ import ish.oncourse.webservices.util.GenericDeletedStub;
 @XmlType(name = "deletedStub")
 public class DeletedStub
     extends ReplicationStub
-    implements GenericDeletedStub
 {
 
 
