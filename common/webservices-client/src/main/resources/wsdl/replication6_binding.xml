@@ -7,7 +7,7 @@
 		<jaxb:schemaBindings>
 			<jaxb:package name="ish.oncourse.webservices.v6.stubs.replication"/>
 		</jaxb:schemaBindings>
-		<jaxb:globalBindings >
+		<jaxb:globalBindings>
 			<jaxb:javaType name="java.lang.Boolean" xmlType="xs:boolean"/>
 			<jaxb:javaType name="java.lang.Long" xmlType="xs:long"/>
 			<jaxb:javaType name="java.lang.Integer" xmlType="xs:int"/>
