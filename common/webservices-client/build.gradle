@@ -20,6 +20,7 @@ dependencies{
     ws "org.apache.cxf:cxf-tools:2.6.1",
         "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.1",
         "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.1",
+        "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
         "log4j:log4j:1.2.17"
 }
 
@@ -27,7 +28,10 @@ project.ext {
     wsdlDir = file("${projectDir}/src/main/resources/wsdl")
     generatedWsdlDir = file("${projectDir}/src/main/java")
     wsdlsToGenerate = [
-        ['-xjc', '-b', "$wsdlDir/replication6_binding.xml", "$wsdlDir/v6_replication.wsdl"],
+        ['-xjc', '-xjc-Xinheritance',
+                 '-wsdlLocation', "/wsdl/v6_replication.wsdl",
+                 '-b', "$wsdlDir/replication6_binding.xml", 
+                 "$wsdlDir/v6_replication.wsdl"],
     ]
 }
 

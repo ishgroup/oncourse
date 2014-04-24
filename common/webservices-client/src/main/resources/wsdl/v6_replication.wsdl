@@ -2,7 +2,11 @@
 <wsdl:definitions name="ReplicationService" targetNamespace="http://repl.v6.soap.webservices.oncourse.ish/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
                   xmlns:tns="http://repl.v6.soap.webservices.oncourse.ish/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
     <wsdl:types>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://repl.v6.soap.webservices.oncourse.ish/" elementFormDefault="unqualified"
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://repl.v6.soap.webservices.oncourse.ish/"
+				   xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+				   xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+				   jaxb:extensionBindingPrefixes="inheritance"
+				   elementFormDefault="unqualified"
                    targetNamespace="http://repl.v6.soap.webservices.oncourse.ish/" version="1.0">
             <xs:element name="replicationStub" type="tns:replicationStub"/>
             <xs:element name="aclAccessKey" type="tns:aclAccessKeyStub"/>
@@ -98,6 +102,11 @@
             </xs:complexType>
 
             <xs:complexType name="replicationRecords">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:extends>ish.oncourse.webservices.util.GenericReplicationRecords</inheritance:extends>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:sequence>
                     <xs:element name="groups" type="tns:transactionGroup"
                                 maxOccurs="unbounded" />
@@ -105,16 +114,23 @@
             </xs:complexType>
 
             <xs:complexType name="transactionGroup">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:extends>ish.oncourse.webservices.util.GenericTransactionGroup</inheritance:extends>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:sequence>
-                    <xs:element name="transactionKeys" type="xs:string"
-                                maxOccurs="unbounded" minOccurs="1" />
-                    <xs:choice maxOccurs="unbounded" minOccurs="0">
-                        <xs:element ref="tns:replicationStub" />
-                    </xs:choice>
+                    <xs:element name="transactionKeys" type="xs:string" maxOccurs="unbounded" minOccurs="1"/>
+					<xs:element ref="tns:replicationStub" minOccurs="0" maxOccurs="unbounded"/>
                 </xs:sequence>
             </xs:complexType>
 
             <xs:complexType name="replicationResult">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:extends>ish.oncourse.webservices.util.GenericReplicationResult</inheritance:extends>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:sequence>
                     <xs:element name="replicatedRecord" type="tns:replicatedRecord"
                                 maxOccurs="unbounded" />
@@ -130,6 +146,11 @@
             </xs:complexType>
 
             <xs:complexType name="deletedStub">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:implements>ish.oncourse.webservices.util.GenericDeletedStub</inheritance:implements>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence />
@@ -138,6 +159,11 @@
             </xs:complexType>
 
             <xs:complexType name="replicatedRecord">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:extends>ish.oncourse.webservices.util.GenericReplicatedRecord</inheritance:extends>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:sequence>
                     <xs:element name="status" type="tns:status" />
                     <xs:element name="message" type="xs:string" />
@@ -231,6 +257,11 @@
             </xs:complexType>
 
             <xs:complexType name="binaryDataStub">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:implements>ish.oncourse.webservices.util.GenericBinaryDataStub</inheritance:implements>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
@@ -638,6 +669,11 @@
             </xs:complexType>
 
             <xs:complexType name="enrolmentStub">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:implements>ish.oncourse.webservices.util.GenericEnrolmentStub</inheritance:implements>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
@@ -781,6 +817,11 @@
             </xs:complexType>
 
             <xs:complexType name="invoiceStub">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:implements>ish.oncourse.webservices.util.GenericInvoiceStub</inheritance:implements>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
@@ -876,6 +917,11 @@
             </xs:complexType>
 
             <xs:complexType name="replicationStub" abstract="true">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:extends>ish.oncourse.webservices.util.GenericReplicationStub</inheritance:extends>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:sequence>
                     <xs:element minOccurs="1" maxOccurs="1" name="angelId"
                                 type="xs:long" />
@@ -909,6 +955,11 @@
             </xs:complexType>
 
             <xs:complexType name="paymentInStub">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:implements>ish.oncourse.webservices.util.GenericPaymentInStub</inheritance:implements>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
@@ -932,6 +983,11 @@
             </xs:complexType>
 
             <xs:complexType name="paymentOutStub">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:implements>ish.oncourse.webservices.util.GenericPaymentOutStub</inheritance:implements>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
@@ -1081,6 +1137,11 @@
             </xs:complexType>
 
             <xs:complexType name="queuedStatisticStub">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:implements>ish.oncourse.webservices.util.GenericQueuedStatisticStub</inheritance:implements>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
@@ -1200,6 +1261,11 @@
             </xs:complexType>
 
             <xs:complexType name="UnreplicatedEntitiesStub">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:extends>ish.oncourse.webservices.util.GenericUnreplicatedEntitiesStub</inheritance:extends>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:sequence>
                     <xs:element name="id" type="xs:long" />
                     <xs:element name="message" type="xs:string" />
@@ -1215,6 +1281,11 @@
             </xs:complexType>
 
             <xs:complexType name="InstructionStub">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:extends>ish.oncourse.webservices.util.GenericInstructionStub</inheritance:extends>
+					</xs:appinfo>
+				</xs:annotation>				
                 <xs:sequence>
                     <xs:element name="id" type="xs:long" />
                     <xs:element name="message" type="xs:string" />
@@ -1223,6 +1294,11 @@
             </xs:complexType>
 
             <xs:complexType name="ParametersMap">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:extends>ish.oncourse.webservices.util.GenericParametersMap</inheritance:extends>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0" name="entry"
                                 type="tns:ParameterEntry" />
@@ -1230,6 +1306,11 @@
             </xs:complexType>
 
             <xs:complexType name="ParameterEntry">
+				<xs:annotation>
+					<xs:appinfo>
+						<inheritance:extends>ish.oncourse.webservices.util.GenericParameterEntry</inheritance:extends>
+					</xs:appinfo>
+				</xs:annotation>
                 <xs:sequence>
                     <xs:element name="name" type="xs:string" />
                     <xs:element name="value" type="xs:string" />
