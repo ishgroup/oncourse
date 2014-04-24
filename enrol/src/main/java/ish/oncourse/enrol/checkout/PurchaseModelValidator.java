@@ -32,7 +32,7 @@ public class PurchaseModelValidator {
 
     private boolean validateProductItems() {
         ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(purchaseController);
-        List<ProductItem> items = this.getModel().getEnabledProductItems(getModel().getPayer());
+        List<ProductItem> items = this.getModel().getAllEnabledProductItems();
         boolean result = true;
         for (ProductItem item : items) {
             actionEnableProductItem.setProductItem(item);
