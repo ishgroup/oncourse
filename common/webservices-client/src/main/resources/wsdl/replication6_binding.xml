@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jaxws:bindings xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" wsdlLocation="v6_replication.wsdl"
-                xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-				xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <jaxws:package name="ish.oncourse.webservices.soap.v6"/>
-    <jaxws:bindings node="wsdl:definitions/wsdl:types/xsd:schema">
-        <jaxb:schemaBindings>
-            <jaxb:package name="ish.oncourse.webservices.v6.stubs.replication"/>
-        </jaxb:schemaBindings>
-        <jaxb:globalBindings>
-            <jaxb:javaType name="java.lang.Boolean" xmlType="xs:boolean"/>
-            <jaxb:javaType name="java.lang.Long" xmlType="xs:long"/>
-            <jaxb:javaType name="java.lang.Integer" xmlType="xs:int"/>
-            <jaxb:javaType name="java.lang.Short" xmlType="xs:short"/>
-            <jaxb:javaType name="java.util.Date" xmlType="xs:dateTime" parseMethod="org.apache.cxf.tools.common.DataTypeAdapter.parseDateTime"
-                          printMethod="org.apache.cxf.tools.common.DataTypeAdapter.printDateTime"/>
-        </jaxb:globalBindings>
-    </jaxws:bindings>
+				xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+				xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+	<jaxws:package name="ish.oncourse.webservices.soap.v6"/>
+	<jaxws:bindings node="wsdl:definitions/wsdl:types/xsd:schema">
+		<jaxb:schemaBindings>
+			<jaxb:package name="ish.oncourse.webservices.v6.stubs.replication"/>
+		</jaxb:schemaBindings>
+		<jaxb:globalBindings jaxb:extensionBindingPrefixes="xjc">
+			<xjc:javaType name="java.lang.Boolean" xmlType="xs:boolean" adapter="ish.oncourse.webservices.util.adapters.StringToBooleanAdapter"/>
+			<xjc:javaType name="java.lang.Long" xmlType="xs:long" adapter="ish.oncourse.webservices.util.adapters.StringToLongAdapter"/>
+			<xjc:javaType name="java.lang.Integer" xmlType="xs:int" adapter="ish.oncourse.webservices.util.adapters.StringToIntegerAdapter"/>
+			<xjc:javaType name="java.lang.Short" xmlType="xs:short" adapter="ish.oncourse.webservices.util.adapters.StringToShortAdapter"/>
+			<xjc:javaType name="java.util.Date" xmlType="xs:dateTime" adapter="ish.oncourse.webservices.util.adapters.StringToDateAdapter"/>
+		</jaxb:globalBindings>
+	</jaxws:bindings>
 </jaxws:bindings>
