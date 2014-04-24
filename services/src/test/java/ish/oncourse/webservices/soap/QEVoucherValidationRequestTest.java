@@ -6,7 +6,7 @@ package ish.oncourse.webservices.soap;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.replication.services.PortHelper;
+import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.v6.stubs.replication.VoucherStub;

@@ -186,7 +186,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 */
 	private static void updateReplicationStatusToFailed(List<GenericReplicatedRecord> records, String message) {
 		for (GenericReplicatedRecord record : records) {
-			record.setFailedStatus();
+			StubUtils.setFailedStatus(record);
 			if (record.getMessage() == null) {
 				record.setMessage(message);
 			}
@@ -235,7 +235,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
         if (currentStub.getAngelId() == null) {
             String message = String.format("Empty angelId for object object: %s willowId: %s", willowIdentifier, currentStub.getWillowId());
-            replRecord.setFailedStatus();
+			StubUtils.setFailedStatus(replRecord);
             replRecord.setMessage(message);
             throw new IllegalArgumentException(message);
 		}
@@ -262,7 +262,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
                 String message = String.format("WillowId doesn't match for object: %s. Expected: %s, but got %s.", willowIdentifier,
 						objectToUpdate.getId(), currentStub.getWillowId());
-                replRecord.setFailedStatus();
+				StubUtils.setFailedStatus(replRecord);
                 replRecord.setMessage(message);
                 throw new IllegalArgumentException(message);
 			}
@@ -280,7 +280,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		default:
 			// FAILURE angelId unique
             String message = String.format("%s objects found for angelId:%s with entity %s", objects.size(), currentStub.getAngelId(), currentStub.getEntityIdentifier());
-            replRecord.setFailedStatus();
+			StubUtils.setFailedStatus(replRecord);
             replRecord.setMessage(message);
             throw new IllegalArgumentException(message);
 		}

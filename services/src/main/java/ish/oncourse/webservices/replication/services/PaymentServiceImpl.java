@@ -19,9 +19,7 @@ import ish.oncourse.webservices.replication.services.IReplicationService.Interna
 import ish.oncourse.webservices.replication.v4.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.FaultCode;
-import ish.oncourse.webservices.util.GenericReplicatedRecord;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
@@ -102,7 +100,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
 			GenericReplicatedRecord record = replicatedRecords.get(0);
 			// check if records were saved successfully
-			if (!replicatedRecords.get(0).isSuccessStatus()) {
+			if (!StubUtils.hasSuccessStatus(replicatedRecords.get(0))) {
 				// records wasn't saved, immediately return to angel.
 				throw new Exception(String.format("Willow was unable to save paymentIn transaction group. ReplicationRecord error: %s",record.getMessage()));
 			}
@@ -222,7 +220,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			// save payment out to database
 			List<GenericReplicatedRecord> replicatedRecords = groupProcessor.processGroup(refundGroup);
 
-			if (!replicatedRecords.get(0).isSuccessStatus()) {
+			if (!StubUtils.hasSuccessStatus(replicatedRecords.get(0))) {
 				throw new Exception("Willow was unable to save paymentOut transaction group.");
 			}
 			
@@ -305,7 +303,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	public GenericTransactionGroup getVouchers(GenericTransactionGroup transactionGroup, SupportedVersions version) throws InternalReplicationFault {
 		try {
 			List<Long> voucherIds = new ArrayList<>();
-			for (GenericReplicationStub stub : transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+			for (GenericReplicationStub stub : transactionGroup.getReplicationStub()) {
 				if (ReplicationUtils.getEntityName(Voucher.class).equalsIgnoreCase(stub.getEntityIdentifier())) {
 					voucherIds.add(stub.getWillowId());
 				}

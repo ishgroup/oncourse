@@ -10,11 +10,8 @@ import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.StackTraceUtils;
 import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.FaultCode;
-import ish.oncourse.webservices.util.GenericReplicatedRecord;
-import ish.oncourse.webservices.util.GenericReplicationRecords;
-import ish.oncourse.webservices.util.GenericReplicationResult;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.util.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -245,7 +242,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 				for (QueuedRecord queuedRecord : list) {
 					try {
 
-						if (record.isSuccessStatus()) {
+						if (StubUtils.hasSuccessStatus(record)) {
 							if (queuedRecord.getAction() != QueuedRecordAction.DELETE) {
 								Long collegeid = null;
 								try {

@@ -7,8 +7,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ish.oncourse.webservices.replication.services.InternalPaymentService;
-import ish.oncourse.webservices.replication.services.PortHelper;
-import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.PortHelper;
+import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
 import ish.oncourse.webservices.v5.stubs.replication.TransactionGroup;
 

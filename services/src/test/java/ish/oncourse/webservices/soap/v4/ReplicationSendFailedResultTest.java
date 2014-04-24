@@ -2,9 +2,9 @@ package ish.oncourse.webservices.soap.v4;
 
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
-import ish.oncourse.webservices.replication.services.PortHelper;
+import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.util.*;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
@@ -43,7 +43,7 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 				GenericReplicatedRecord confirmedRecord = ReplicationUtils.toReplicatedRecord(stub, true);
 				confirmedRecord.setMessage("Record replicated.");
-				confirmedRecord.setFailedStatus();
+				StubUtils.setFailedStatus(confirmedRecord);
 				result.getGenericReplicatedRecord().add(confirmedRecord);
 			}
 		}
@@ -67,7 +67,7 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 				GenericReplicatedRecord confirmedRecord = ReplicationUtils.toReplicatedRecord(stub, true);
 				confirmedRecord.setMessage("Record replicated.");
-				confirmedRecord.setFailedStatus();
+				StubUtils.setFailedStatus(confirmedRecord);
 				result.getGenericReplicatedRecord().add(confirmedRecord);
 			}
 		}

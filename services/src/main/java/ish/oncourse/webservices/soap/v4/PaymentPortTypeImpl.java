@@ -2,8 +2,8 @@ package ish.oncourse.webservices.soap.v4;
 
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
 import ish.oncourse.webservices.replication.services.InternalPaymentService;
-import ish.oncourse.webservices.replication.services.PortHelper;
-import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.PortHelper;
+import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
 import javax.jws.WebMethod;

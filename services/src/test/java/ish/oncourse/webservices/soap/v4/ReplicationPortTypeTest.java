@@ -6,9 +6,9 @@ import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
-import ish.oncourse.webservices.replication.services.PortHelper;
+import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -103,7 +103,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		assertEquals("Expecting to get two replication records.", 2, replResult.getReplicatedRecord().size());
 		
 		for (GenericReplicatedRecord r : replResult.getGenericReplicatedRecord()) {
-			assertEquals("Expecting FAILED status.", true, r.isFailedStatus());
+			assertEquals("Expecting FAILED status.", true, StubUtils.hasFailedStatus(r));
 			String message = r.getMessage();
 			assertNotNull("Error message should be set.", message);
 		}
@@ -166,7 +166,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		assertEquals("Expecting to get three replication records.", 3, replResult.getReplicatedRecord().size());
 
 		for (GenericReplicatedRecord r : replResult.getReplicatedRecord()) {
-			assertEquals("Expecting SUCCESS status.", true, r.isSuccessStatus());
+			assertEquals("Expecting SUCCESS status.", true, StubUtils.hasSuccessStatus(r));
 			if ("CourseClass".equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
 				assertNotNull("Expecting not null willowId", r.getStub().getWillowId());
 			}
@@ -283,7 +283,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		assertEquals("Expecting to get two replication records.", 2, replResult.getReplicatedRecord().size());
 		
 		for (GenericReplicatedRecord r : replResult.getGenericReplicatedRecord()) {
-			assertEquals("Expecting FAILED status.", true, r.isFailedStatus());
+			assertEquals("Expecting FAILED status.", true, StubUtils.hasFailedStatus(r));
 			String message = r.getMessage();
 			assertNotNull("Error message should be set.", message);
 		}
@@ -347,7 +347,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		assertEquals("Expecting to get three replication records.", 3, replResult.getReplicatedRecord().size());
 
 		for (GenericReplicatedRecord r : replResult.getReplicatedRecord()) {
-			assertEquals("Expecting SUCCESS status.", true, r.isSuccessStatus());
+			assertEquals("Expecting SUCCESS status.", true, StubUtils.hasSuccessStatus(r));
 			if ("CourseClass".equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
 				assertNotNull("Expecting not null willowId", r.getStub().getWillowId());
 			}

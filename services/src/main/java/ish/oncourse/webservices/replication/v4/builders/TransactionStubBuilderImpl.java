@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.replication.v4.builders;
 
 import ish.oncourse.model.*;
-import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import java.util.LinkedHashSet;
 import java.util.List;

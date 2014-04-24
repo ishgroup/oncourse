@@ -7,7 +7,7 @@ import ish.common.types.TypesUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
-import ish.oncourse.webservices.replication.services.PortHelper;
+import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;

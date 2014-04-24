@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.oncourse.webservices.util.GenericInstructionStub;
+import ish.oncourse.webservices.util.SupportedVersions;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.v4.builders;
 
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
-import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import java.util.List;
 import java.util.Set;

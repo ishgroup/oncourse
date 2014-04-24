@@ -3,7 +3,7 @@ package ish.oncourse.webservices.replication.builders;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;

@@ -1,15 +1,7 @@
-package ish.oncourse.webservices.replication.services;
+package ish.oncourse.webservices.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import ish.oncourse.webservices.util.GenericInstructionStub;
-import ish.oncourse.webservices.util.GenericParameterEntry;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.GenericReplicationRecords;
-import ish.oncourse.webservices.util.GenericReplicationResult;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
 
 public class PortHelper {
 	
@@ -93,6 +85,30 @@ public class PortHelper {
 			return SupportedVersions.V6;
 		}
 		return null;
+	}
+	
+	public static SupportedVersions getVersionByInstructionStub(final GenericInstructionStub stub) {
+		if (stub instanceof ish.oncourse.webservices.v4.stubs.replication.InstructionStub) {
+			return SupportedVersions.V4;
+		} else if (stub instanceof ish.oncourse.webservices.v5.stubs.replication.InstructionStub) {
+			return SupportedVersions.V5;
+		} else if (stub instanceof ish.oncourse.webservices.v6.stubs.replication.InstructionStub) {
+			return SupportedVersions.V6;
+		}
+		
+		throw new IllegalArgumentException("This version of InstructionStub is not supported.");
+	}
+	
+	public static SupportedVersions getVersionByReplicatedRecord(final GenericReplicatedRecord record) {
+		if (record instanceof ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord) {
+			return SupportedVersions.V4;
+		} else if (record instanceof ish.oncourse.webservices.v5.stubs.replication.ReplicatedRecord) {
+			return SupportedVersions.V5;
+		} else if (record instanceof ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord) {
+			return SupportedVersions.V6;
+		}
+		
+		throw new IllegalArgumentException("This version of ReplicatedRecord is not supported.");
 	}
 
 	public static GenericTransactionGroup createTransactionGroup(final GenericTransactionGroup group) {

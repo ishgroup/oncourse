@@ -2,6 +2,7 @@ package ish.oncourse.webservices.replication.services;
 
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.util.SupportedVersions;
 
 public interface InternalPaymentService {
 	public GenericTransactionGroup processPayment(GenericTransactionGroup transaction) throws InternalReplicationFault;

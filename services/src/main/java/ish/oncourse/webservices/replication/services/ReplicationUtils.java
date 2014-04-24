@@ -54,17 +54,17 @@ public class ReplicationUtils {
 		switch (version) {
 		case V4:
 			ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord replV4Record = new ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord();
-			replV4Record.setSuccessStatus();
+			StubUtils.setSuccessStatus(replV4Record);
 			replV4Record.setStub(toV4Hollow(stub, setWillowId));
 			return replV4Record;
 		case V5:
 			ish.oncourse.webservices.v5.stubs.replication.ReplicatedRecord replV5Record = new ish.oncourse.webservices.v5.stubs.replication.ReplicatedRecord();
-			replV5Record.setSuccessStatus();
+			StubUtils.setSuccessStatus(replV5Record);
 			replV5Record.setStub(toV5Hollow(stub, setWillowId));
 			return replV5Record;
 		case V6:
 			ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord replV6Record = new ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord();
-			replV6Record.setSuccessStatus();
+			StubUtils.setSuccessStatus(replV6Record);
 			replV6Record.setStub(toV6Hollow(stub, setWillowId));
 			return replV6Record;
 		default:

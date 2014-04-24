@@ -4,12 +4,12 @@ import ish.oncourse.model.Instruction;
 import ish.oncourse.model.InstructionParameter;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.webservices.util.GenericInstructionStub;
-import ish.oncourse.webservices.util.GenericParameterEntry;
-import ish.oncourse.webservices.util.GenericParametersMap;
+import ish.oncourse.webservices.util.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -79,7 +79,7 @@ public class InstructionServiceImpl implements IInstructionService {
 					entry.setValue(param.getValue());
 					paramMap.getGenericEntry().add(entry);
 				}
-				stub.changeParameters(paramMap);
+				StubUtils.setInstructionParameters(stub, paramMap);
 			}
 			result.add(stub);			
 			//set executed to prevent execution during next replication run, 

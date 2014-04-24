@@ -62,7 +62,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
     	GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V4);
         List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
-        assertEquals("Expecting one failed replicatedRecord, status test", true, replicatedRecords.get(0).isFailedStatus());
+        assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
         assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Contact",1,"Invoice") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
         /**
          * Transaction with one Student delete.
@@ -70,7 +70,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         transactionGroup = getTransactionGroup(1, SupportedVersions.V4);
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
-        assertEquals("Expecting one failed replicatedRecord, status test", true, replicatedRecords.get(0).isFailedStatus());
+        assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
         assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Student",1,"Enrolment") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
         /**
          * Transaction with Merge Student 1 to 2  delete.
@@ -94,7 +94,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting success records, size test", 5, replicatedRecords.size());
         for (GenericReplicatedRecord replicatedRecord : replicatedRecords) {
-            assertEquals("Expecting success record, status test", true, replicatedRecord.isSuccessStatus());
+            assertEquals("Expecting success record, status test", true, StubUtils.hasSuccessStatus(replicatedRecord));
         }
     }
     
@@ -107,7 +107,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
     	GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V5);
         List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
-        assertEquals("Expecting one failed replicatedRecord, status test", true, replicatedRecords.get(0).isFailedStatus());
+        assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
         assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Contact",1,"Invoice") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
         /**
          * Transaction with one Student delete.
@@ -115,7 +115,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         transactionGroup = getTransactionGroup(1, SupportedVersions.V5);
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
-        assertEquals("Expecting one failed replicatedRecord, status test", true, replicatedRecords.get(0).isFailedStatus());
+        assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
         assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Student",1,"Enrolment") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
         /**
          * Transaction with Merge Student 1 to 2  delete.
@@ -139,7 +139,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting success records, size test", 5, replicatedRecords.size());
         for (GenericReplicatedRecord replicatedRecord : replicatedRecords) {
-            assertEquals("Expecting success record, status test", true, replicatedRecord.isSuccessStatus());
+            assertEquals("Expecting success record, status test", true, StubUtils.hasSuccessStatus(replicatedRecord));
         }
     }
 
@@ -168,7 +168,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
         Long willowId = null;
         for (GenericReplicatedRecord record : records) {
-            assertTrue("GenericReplicatedRecord success", record.isSuccessStatus());
+            assertTrue("GenericReplicatedRecord success", StubUtils.hasSuccessStatus(record));
             if (record.getStub().getEntityIdentifier().equals("AttachmentInfo")) {
                 willowId = record.getStub().getWillowId();
                 assertNotNull("Willow id for AttachmentInfo", willowId);
@@ -196,7 +196,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         records = transactionGroupProcessor.processGroup(transactionGroup);
 		assertEquals("records size 2", 2, records.size());
         for (GenericReplicatedRecord record : records) {
-            assertTrue("GenericReplicatedRecord success", record.isSuccessStatus());
+            assertTrue("GenericReplicatedRecord success", StubUtils.hasSuccessStatus(record));
         }
         BinaryInfo binaryInfo = Cayenne.objectForPK(cayenneService.newContext(), BinaryInfo.class, willowId);
         assertNull("BinaryInfo is null", binaryInfo);

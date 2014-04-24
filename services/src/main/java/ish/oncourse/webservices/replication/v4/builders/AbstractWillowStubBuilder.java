@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.webservices.replication.services.PortHelper;
-import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.PortHelper;
+import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 
 public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends GenericReplicationStub> implements IWillowStubBuilder {
