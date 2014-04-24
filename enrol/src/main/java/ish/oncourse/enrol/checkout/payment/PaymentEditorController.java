@@ -123,7 +123,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
         paymentProcessController.processAction(ABANDON_PAYMENT);
 		purchaseController.setPaymentEditorController(null);
 		purchaseController.cloneModel();
-		initPaymentProcessController();
+        initPaymentProcessController();
         PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
         actionParameter.setValue(paymentProcessController.getPaymentIn());
         purchaseController.performAction(actionParameter);

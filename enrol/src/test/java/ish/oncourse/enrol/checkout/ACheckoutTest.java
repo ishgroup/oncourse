@@ -160,6 +160,13 @@ public abstract class ACheckoutTest extends ServiceTest {
 		performAction(param);
 	}
 
+
+    void addContact(long contactId) {
+
+        Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(),Contact.class, contactId);
+        addContact(contact);
+    }
+
 	void proceedToPayment() {
         assertNull(purchaseController.getPaymentEditorDelegate());
 		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
@@ -306,6 +313,15 @@ public abstract class ACheckoutTest extends ServiceTest {
             assertNotNull(purchaseController.getModel().getPayer());
         }
 
+        return purchaseController;
+    }
+
+
+    public PurchaseController addCode(String code)
+    {
+        PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.addCode);
+        param.setValue(code);
+        performAction(param);
         return purchaseController;
     }
 
