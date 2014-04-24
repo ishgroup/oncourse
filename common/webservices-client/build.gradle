@@ -30,6 +30,7 @@ project.ext {
     wsdlsToGenerate = [
         ['-xjc', '-xjc-Xinheritance',
                  '-wsdlLocation', "/wsdl/v6_replication.wsdl",
+                 '-p', 'ish.oncourse.webservices.v6.stubs.replication',
                  '-b', "$wsdlDir/replication6_binding.xml", 
                  "$wsdlDir/v6_replication.wsdl"],
     ]
