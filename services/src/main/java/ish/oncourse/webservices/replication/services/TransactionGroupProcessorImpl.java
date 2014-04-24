@@ -96,6 +96,10 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	public List<GenericReplicatedRecord> processGroup(GenericTransactionGroup group) {
 		this.transactionGroup = group;
 		this.result = new ArrayList<>();
+		
+		// fill QueuedStatistic stubs with default values, this normally should be done by angel 
+		// before it sends the stubs but it was not the case for angel versions up to 5.0
+		queuedStatisticProcessor.fillQueuedStatisticStubs(group);
 
 		for (GenericReplicationStub currentStub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub, false);
