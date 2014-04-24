@@ -1,15 +1,18 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
-import org.w3._2001.xmlschema.Adapter1;
-import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter4;
-import org.w3._2001.xmlschema.Adapter5;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.w3._2001.xmlschema.Adapter1;
+import org.w3._2001.xmlschema.Adapter2;
+import org.w3._2001.xmlschema.Adapter3;
+import org.w3._2001.xmlschema.Adapter4;
 
 
 /**
@@ -104,11 +107,11 @@ public class CourseClassStub
     @XmlElement(required = true)
     protected String code;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer countOfSessions;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer deliveryMode;
     @XmlElement(required = true)
@@ -132,15 +135,15 @@ public class CourseClassStub
     @XmlElement(required = true)
     protected String materialsTextile;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer maximumPlaces;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer minimumPlaces;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer minutesPerSession;
     @XmlElement(required = true)
@@ -152,7 +155,7 @@ public class CourseClassStub
     @XmlSchemaType(name = "dateTime")
     protected Date startDate;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer startingMinutePerSession;
     @XmlElement(required = true)
@@ -166,7 +169,7 @@ public class CourseClassStub
     @XmlSchemaType(name = "long")
     protected Long roomId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer maximumDays;
     @XmlElement(required = true)
@@ -180,11 +183,11 @@ public class CourseClassStub
     @XmlSchemaType(name = "boolean")
     protected Boolean feeHelpClass;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer attendanceType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer reportingPeriod;
     @XmlElement(required = true, type = String.class)

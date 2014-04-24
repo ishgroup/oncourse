@@ -1,14 +1,13 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
-import ish.oncourse.webservices.util.GenericReplicationResult;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
+import ish.oncourse.webservices.util.GenericReplicationResult;
 
 
 /**
@@ -34,7 +33,9 @@ import java.util.List;
 @XmlType(name = "replicationResult", propOrder = {
     "replicatedRecord"
 })
-public class ReplicationResult extends GenericReplicationResult {
+public class ReplicationResult
+    extends GenericReplicationResult
+{
 
     @XmlElement(required = true)
     protected List<ReplicatedRecord> replicatedRecord;
@@ -63,7 +64,7 @@ public class ReplicationResult extends GenericReplicationResult {
      */
     public List<ReplicatedRecord> getReplicatedRecord() {
         if (replicatedRecord == null) {
-            replicatedRecord = new ArrayList<>();
+            replicatedRecord = new ArrayList<ReplicatedRecord>();
         }
         return this.replicatedRecord;
     }

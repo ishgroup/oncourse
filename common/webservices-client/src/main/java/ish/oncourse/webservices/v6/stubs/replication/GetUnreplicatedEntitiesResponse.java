@@ -61,7 +61,7 @@ public class GetUnreplicatedEntitiesResponse {
      */
     public List<UnreplicatedEntitiesStub> getReturn() {
         if (_return == null) {
-            _return = new ArrayList<>();
+            _return = new ArrayList<UnreplicatedEntitiesStub>();
         }
         return this._return;
     }

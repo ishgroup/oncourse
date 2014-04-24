@@ -1,13 +1,12 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
-import ish.oncourse.webservices.util.GenericParametersMap;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
+import ish.oncourse.webservices.util.GenericParametersMap;
 
 
 /**
@@ -33,7 +32,9 @@ import java.util.List;
 @XmlType(name = "ParametersMap", propOrder = {
     "entry"
 })
-public class ParametersMap extends GenericParametersMap {
+public class ParametersMap
+    extends GenericParametersMap
+{
 
     protected List<ParameterEntry> entry;
 
@@ -61,7 +62,7 @@ public class ParametersMap extends GenericParametersMap {
      */
     public List<ParameterEntry> getEntry() {
         if (entry == null) {
-            entry = new ArrayList<>();
+            entry = new ArrayList<ParameterEntry>();
         }
         return this.entry;
     }

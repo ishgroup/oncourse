@@ -1,14 +1,13 @@
+
 package ish.oncourse.webservices.v6.stubs.replication;
 
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
 
 
 /**
@@ -22,9 +21,7 @@ import java.util.List;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="transactionKeys" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
- *         &lt;choice maxOccurs="unbounded" minOccurs="0">
- *           &lt;element ref="{http://repl.v6.soap.webservices.oncourse.ish/}replicationStub"/>
- *         &lt;/choice>
+ *         &lt;element ref="{http://repl.v6.soap.webservices.oncourse.ish/}replicationStub" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,7 +35,9 @@ import java.util.List;
     "transactionKeys",
     "replicationStub"
 })
-public class TransactionGroup extends GenericTransactionGroup {
+public class TransactionGroup
+    extends GenericTransactionGroup
+{
 
     @XmlElement(required = true)
     protected List<String> transactionKeys;
@@ -69,7 +68,7 @@ public class TransactionGroup extends GenericTransactionGroup {
      */
     public List<String> getTransactionKeys() {
         if (transactionKeys == null) {
-            transactionKeys = new ArrayList<>();
+            transactionKeys = new ArrayList<String>();
         }
         return this.transactionKeys;
     }
@@ -98,13 +97,9 @@ public class TransactionGroup extends GenericTransactionGroup {
      */
     public List<ReplicationStub> getReplicationStub() {
         if (replicationStub == null) {
-            replicationStub = new ArrayList<>();
+            replicationStub = new ArrayList<ReplicationStub>();
         }
         return this.replicationStub;
     }
 
-	@Override
-	public List<? extends GenericReplicationStub> getAttendanceOrBinaryDataOrBinaryInfo() {
-		return getReplicationStub();
-	}
 }

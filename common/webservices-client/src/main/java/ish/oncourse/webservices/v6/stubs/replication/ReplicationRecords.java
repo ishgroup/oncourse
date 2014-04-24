@@ -1,14 +1,13 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
-import ish.oncourse.webservices.util.GenericReplicationRecords;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import ish.oncourse.webservices.util.GenericReplicationRecords;
 
 
 /**
@@ -34,7 +33,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "replicationRecords", propOrder = {
     "groups"
 })
-public class ReplicationRecords extends GenericReplicationRecords {
+public class ReplicationRecords
+    extends GenericReplicationRecords
+{
 
     @XmlElement(required = true)
     protected List<TransactionGroup> groups;
@@ -63,7 +64,7 @@ public class ReplicationRecords extends GenericReplicationRecords {
      */
     public List<TransactionGroup> getGroups() {
         if (groups == null) {
-            groups = new ArrayList<>();
+            groups = new ArrayList<TransactionGroup>();
         }
         return this.groups;
     }

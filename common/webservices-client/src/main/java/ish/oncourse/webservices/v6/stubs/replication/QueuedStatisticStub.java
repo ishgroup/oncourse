@@ -1,14 +1,17 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
+import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import ish.oncourse.webservices.util.GenericQueuedStatisticStub;
 import org.w3._2001.xmlschema.Adapter1;
 import org.w3._2001.xmlschema.Adapter2;
 import org.w3._2001.xmlschema.Adapter4;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.Date;
 
 
 /**
@@ -42,7 +45,10 @@ import java.util.Date;
     "receivedTimestamp",
     "cleanupStub"
 })
-public class QueuedStatisticStub extends ReplicationStub implements GenericQueuedStatisticStub {
+public class QueuedStatisticStub
+    extends ReplicationStub
+    implements GenericQueuedStatisticStub
+{
 
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
@@ -182,21 +188,5 @@ public class QueuedStatisticStub extends ReplicationStub implements GenericQueue
     public void setCleanupStub(Boolean value) {
         this.cleanupStub = value;
     }
-
-	/**
-	 * @see ish.oncourse.webservices.v6.stubs.replication.ReplicationStub#getAngelId()
-	 */
-	@Override
-	public Long getAngelId() {
-		return 1L;
-	}
-
-	/**
-	 * @see ish.oncourse.webservices.v6.stubs.replication.ReplicationStub#getEntityIdentifier()
-	 */
-	@Override
-	public String getEntityIdentifier() {
-		return QUEUED_STATISTIC_ENTITY;
-	}
 
 }

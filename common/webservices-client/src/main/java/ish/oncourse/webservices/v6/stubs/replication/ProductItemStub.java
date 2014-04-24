@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter5;
+import org.w3._2001.xmlschema.Adapter3;
 
 
 /**
@@ -42,16 +42,16 @@ import org.w3._2001.xmlschema.Adapter5;
     "status"
 })
 @XmlSeeAlso({
-    MembershipStub.class,
+    VoucherStub.class,
     ArticleStub.class,
-    VoucherStub.class
+    MembershipStub.class
 })
 public class ProductItemStub
     extends ReplicationStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer type;
     @XmlElement(required = true, type = String.class)
@@ -63,7 +63,7 @@ public class ProductItemStub
     @XmlSchemaType(name = "long")
     protected Long productId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer status;
 

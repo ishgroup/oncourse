@@ -7,9 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import ish.oncourse.webservices.util.GenericInstructionStub;
-import ish.oncourse.webservices.util.GenericParametersMap;
 import org.w3._2001.xmlschema.Adapter2;
 
 
@@ -40,7 +38,9 @@ import org.w3._2001.xmlschema.Adapter2;
     "message",
     "parameters"
 })
-public class InstructionStub extends GenericInstructionStub {
+public class InstructionStub
+    extends GenericInstructionStub
+{
 
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
@@ -121,9 +121,5 @@ public class InstructionStub extends GenericInstructionStub {
     public void setParameters(ParametersMap value) {
         this.parameters = value;
     }
-
-	public void changeParameters(GenericParametersMap value) {
-		setParameters((ParametersMap) value);
-	}
 
 }

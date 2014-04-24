@@ -1,15 +1,18 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import ish.oncourse.webservices.util.GenericPaymentOutStub;
 import org.w3._2001.xmlschema.Adapter1;
 import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter5;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.math.BigDecimal;
-import java.util.Date;
+import org.w3._2001.xmlschema.Adapter3;
 
 
 /**
@@ -49,7 +52,10 @@ import java.util.Date;
     "dateBanked",
     "datePaid"
 })
-public class PaymentOutStub extends ReplicationStub implements GenericPaymentOutStub {
+public class PaymentOutStub
+    extends ReplicationStub
+    implements GenericPaymentOutStub
+{
 
     @XmlElement(required = true)
     protected BigDecimal amount;
@@ -60,13 +66,13 @@ public class PaymentOutStub extends ReplicationStub implements GenericPaymentOut
     @XmlElement(required = true)
     protected String paymentInTxnReference;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer type;
     @XmlElement(required = true)
     protected String source;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer status;
     @XmlElement(required = true, type = String.class)

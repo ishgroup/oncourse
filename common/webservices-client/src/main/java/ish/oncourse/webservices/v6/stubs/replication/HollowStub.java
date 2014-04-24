@@ -26,5 +26,9 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "hollowStub")
-public class HollowStub extends ReplicationStub {
+public class HollowStub
+    extends ReplicationStub
+{
+
+
 }

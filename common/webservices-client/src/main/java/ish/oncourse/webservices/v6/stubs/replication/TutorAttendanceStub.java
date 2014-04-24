@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter5;
+import org.w3._2001.xmlschema.Adapter3;
 
 
 /**
@@ -47,7 +47,7 @@ public class TutorAttendanceStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer attendanceType;
     @XmlElement(required = true, type = String.class)
@@ -59,7 +59,7 @@ public class TutorAttendanceStub
     @XmlSchemaType(name = "long")
     protected Long tutorId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer durationMinutes;
     @XmlElement(required = true)

@@ -1,12 +1,11 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
-import ish.oncourse.webservices.util.GenericReplicatedRecord;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import ish.oncourse.webservices.util.GenericReplicatedRecord;
 
 
 /**
@@ -36,7 +35,9 @@ import javax.xml.bind.annotation.XmlType;
     "message",
     "stub"
 })
-public class ReplicatedRecord extends GenericReplicatedRecord {
+public class ReplicatedRecord
+    extends GenericReplicatedRecord
+{
 
     @XmlElement(required = true)
     protected Status status;
@@ -44,22 +45,6 @@ public class ReplicatedRecord extends GenericReplicatedRecord {
     protected String message;
     @XmlElement(required = true)
     protected HollowStub stub;
-
-	public boolean isSuccessStatus() {
-		return Status.SUCCESS.equals(status);
-	}
-
-	public boolean isFailedStatus() {
-		return Status.FAILED.equals(status);
-	}
-
-	public void setSuccessStatus() {
-		setStatus(Status.SUCCESS);
-	}
-
-	public void setFailedStatus() {
-		setStatus(Status.FAILED);
-	}
 
     /**
      * Gets the value of the status property.

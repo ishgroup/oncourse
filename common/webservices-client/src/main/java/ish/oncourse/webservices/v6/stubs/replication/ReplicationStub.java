@@ -1,13 +1,17 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
+import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.w3._2001.xmlschema.Adapter1;
 import org.w3._2001.xmlschema.Adapter2;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.Date;
 
 
 /**
@@ -42,66 +46,69 @@ import java.util.Date;
     "modified"
 })
 @XmlSeeAlso({
-    EnrolmentStub.class,
-    TagStub.class,
-    InvoiceStub.class,
-    DiscountConcessionTypeStub.class,
-    SystemUserStub.class,
-    MessageTemplateStub.class,
-    PaymentOutStub.class,
-    CourseStub.class,
-    CertificateStub.class,
-    CourseClassStub.class,
-    InvoiceLineDiscountStub.class,
-    StudentStub.class,
-    TagRelationStub.class,
-    SurveyStub.class,
-    VoucherPaymentInStub.class,
-    MessagePersonStub.class,
-    AttendanceStub.class,
-    CorporatePassCourseClassStub.class,
-    DeletedStub.class,
-    DiscountCourseClassStub.class,
-    BinaryDataStub.class,
-    DiscountStub.class,
-    DiscountMembershipStub.class,
-    SessionStub.class,
-    DiscountMembershipRelationTypeStub.class,
-    PaymentInLineStub.class,
-    RoomStub.class,
-    VoucherProductCourseStub.class,
-    ContactRelationTypeStub.class,
-    CourseClassTutorStub.class,
-    AclRoleStub.class,
-    CorporatePassStub.class,
-    CourseModuleStub.class,
-    SessionModuleStub.class,
-    PaymentInStub.class,
-    ContactStub.class,
-    WaitingListStub.class,
-    ContactRelationStub.class,
-    TutorStub.class,
-    QueuedStatisticStub.class,
-    BinaryInfoRelationStub.class,
-    TagRequirementStub.class,
-    SiteStub.class,
-    AclAccessKeyStub.class,
     CertificateOutcomeStub.class,
-    ConcessionTypeStub.class,
-    TutorAttendanceStub.class,
-    BinaryInfoStub.class,
-    OutcomeStub.class,
-    EntityRelationStub.class,
-    MessageStub.class,
-    ProductStub.class,
-    StudentConcessionStub.class,
-    HollowStub.class,
+    MessagePersonStub.class,
+    PaymentInLineStub.class,
+    DiscountStub.class,
+    DiscountMembershipRelationTypeStub.class,
+    DiscountMembershipStub.class,
+    ContactRelationStub.class,
+    ContactStub.class,
+    CorporatePassStub.class,
+    TagStub.class,
+    PaymentInStub.class,
+    DiscountConcessionTypeStub.class,
+    WaitingListStub.class,
     PreferenceStub.class,
+    HollowStub.class,
+    CourseClassTutorStub.class,
+    TutorStub.class,
+    CorporatePassCourseClassStub.class,
+    EnrolmentStub.class,
+    BinaryDataStub.class,
+    ContactRelationTypeStub.class,
+    SurveyStub.class,
+    StudentStub.class,
     WaitingListSiteStub.class,
+    SessionStub.class,
+    CertificateStub.class,
+    SystemUserStub.class,
+    PaymentOutStub.class,
+    ProductItemStub.class,
+    BinaryInfoStub.class,
+    TutorAttendanceStub.class,
+    CorporatePassProductStub.class,
+    DiscountCourseClassStub.class,
+    StudentConcessionStub.class,
+    ConcessionTypeStub.class,
+    CourseStub.class,
+    BinaryInfoRelationStub.class,
     InvoiceLineStub.class,
-    ProductItemStub.class
+    SessionModuleStub.class,
+    OutcomeStub.class,
+    CourseClassStub.class,
+    AclRoleStub.class,
+    AclAccessKeyStub.class,
+    MessageStub.class,
+    RoomStub.class,
+    ProductStub.class,
+    InvoiceLineDiscountStub.class,
+    VoucherPaymentInStub.class,
+    SiteStub.class,
+    DeletedStub.class,
+    CourseModuleStub.class,
+    QueuedStatisticStub.class,
+    VoucherProductCourseStub.class,
+    EntityRelationStub.class,
+    TagRequirementStub.class,
+    InvoiceStub.class,
+    TagRelationStub.class,
+    AttendanceStub.class,
+    MessageTemplateStub.class
 })
-public abstract class ReplicationStub extends GenericReplicationStub {
+public abstract class ReplicationStub
+    extends GenericReplicationStub
+{
 
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)

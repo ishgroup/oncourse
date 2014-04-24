@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.w3._2001.xmlschema.Adapter1;
 import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter5;
+import org.w3._2001.xmlschema.Adapter3;
 
 
 /**
@@ -68,7 +68,7 @@ public class VoucherStub
     @XmlElement(required = true)
     protected String code;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer redeemedCoursesCount;
     @XmlElement(required = true)

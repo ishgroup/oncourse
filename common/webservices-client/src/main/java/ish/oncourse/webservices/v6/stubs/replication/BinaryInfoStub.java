@@ -1,11 +1,14 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
-import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter5;
-
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.w3._2001.xmlschema.Adapter2;
+import org.w3._2001.xmlschema.Adapter3;
 
 
 /**
@@ -56,7 +59,7 @@ public class BinaryInfoStub
     @XmlSchemaType(name = "long")
     protected Long byteSize;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer webVisible;
     @XmlElement(required = true)
@@ -64,15 +67,15 @@ public class BinaryInfoStub
     @XmlElement(required = true)
     protected String name;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer pixelHeight;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer pixelWidth;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer referenceNumber;
     @XmlElement(required = true)
@@ -291,7 +294,7 @@ public class BinaryInfoStub
      *     byte[]
      */
     public void setThumbnail(byte[] value) {
-        this.thumbnail = value;
+        this.thumbnail = ((byte[]) value);
     }
 
 }

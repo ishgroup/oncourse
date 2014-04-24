@@ -1,14 +1,17 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import ish.oncourse.webservices.util.GenericInvoiceStub;
 import org.w3._2001.xmlschema.Adapter1;
 import org.w3._2001.xmlschema.Adapter2;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.math.BigDecimal;
-import java.util.Date;
 
 
 /**
@@ -64,7 +67,10 @@ import java.util.Date;
     "contactId",
     "corporatePassId"
 })
-public class InvoiceStub extends ReplicationStub implements GenericInvoiceStub {
+public class InvoiceStub
+    extends ReplicationStub
+    implements GenericInvoiceStub
+{
 
     @XmlElement(required = true)
     protected BigDecimal amountOwing;

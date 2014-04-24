@@ -1,12 +1,15 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import org.w3._2001.xmlschema.Adapter2;
-import org.w3._2001.xmlschema.Adapter5;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.w3._2001.xmlschema.Adapter3;
 
 
 /**
@@ -62,10 +65,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "feeStatus",
     "creditTotal"
 })
-public class EnrolmentStub extends ReplicationStub implements GenericEnrolmentStub {
+public class EnrolmentStub
+    extends ReplicationStub
+    implements GenericEnrolmentStub
+{
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer reasonForStudy;
     @XmlElement(required = true)
@@ -85,7 +91,7 @@ public class EnrolmentStub extends ReplicationStub implements GenericEnrolmentSt
     @XmlSchemaType(name = "long")
     protected Long invoiceLineId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer feeHelpStatus;
     @XmlElement(required = true)
@@ -95,25 +101,25 @@ public class EnrolmentStub extends ReplicationStub implements GenericEnrolmentSt
     @XmlElement(required = true)
     protected String creditUsedValue;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer creditType;
     @XmlElement(required = true)
     protected String creditFoeId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer creditLevel;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer creditProviderType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer feeStatus;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer creditTotal;
 

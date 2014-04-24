@@ -1,12 +1,14 @@
 
 package ish.oncourse.webservices.v6.stubs.replication;
 
-import ish.oncourse.webservices.util.GenericParametersMap;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import ish.oncourse.webservices.util.GenericUnreplicatedEntitiesStub;
 import org.w3._2001.xmlschema.Adapter2;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -36,7 +38,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "message",
     "parameters"
 })
-public class UnreplicatedEntitiesStub extends GenericUnreplicatedEntitiesStub {
+public class UnreplicatedEntitiesStub
+    extends GenericUnreplicatedEntitiesStub
+{
 
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
@@ -117,9 +121,5 @@ public class UnreplicatedEntitiesStub extends GenericUnreplicatedEntitiesStub {
     public void setParameters(ParametersMap value) {
         this.parameters = value;
     }
-
-	public void changeParameters(GenericParametersMap value) {
-		setParameters((ParametersMap) value);
-	}
 
 }

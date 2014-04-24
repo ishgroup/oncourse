@@ -10,8 +10,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.w3._2001.xmlschema.Adapter1;
 import org.w3._2001.xmlschema.Adapter2;
+import org.w3._2001.xmlschema.Adapter3;
 import org.w3._2001.xmlschema.Adapter4;
-import org.w3._2001.xmlschema.Adapter5;
 
 
 /**
@@ -72,7 +72,7 @@ public class CertificateStub
     @XmlSchemaType(name = "dateTime")
     protected Date endDate;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter5 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer fundingSource;
     @XmlElement(required = true, type = String.class)

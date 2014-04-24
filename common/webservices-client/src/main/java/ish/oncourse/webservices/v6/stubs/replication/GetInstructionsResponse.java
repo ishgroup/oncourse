@@ -61,7 +61,7 @@ public class GetInstructionsResponse {
      */
     public List<InstructionStub> getReturn() {
         if (_return == null) {
-            _return = new ArrayList<>();
+            _return = new ArrayList<InstructionStub>();
         }
         return this._return;
     }
