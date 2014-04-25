@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <t:errors banner="literal:"  class="literal:validation"/>
+        <t:errors banner="literal:"  class="literal:validation alert alert-danger"/>
         <div class="form-group">
             <label for="countryOfBirth" class="control-label">In which country were you born?</label>
             <div class="${validateHandler.validateClass('countryOfBirth')}">
