@@ -3,6 +3,8 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.Voucher;
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
 
 import java.util.List;
 
@@ -51,12 +53,18 @@ public class PurchaseModelValidator {
     }
 
     private boolean validateRedeemingVouchers() {
+
+        ObjectContext testOC = purchaseController.getCayenneService().newNonReplicatingContext();
+
         ActionSelectVoucher actionSV = PurchaseController.Action.selectVoucher.createAction(purchaseController);
 
         List<Voucher> vouchers = this.getModel().getVouchers();
         boolean result = true;
         for (Voucher voucher : vouchers) {
-            actionSV.setVoucher(voucher);
+
+            //we need to load the v form the data base to be sure that other process does not use the voucher.
+            Voucher dbVoucher = Cayenne.objectForPK(testOC, Voucher.class, voucher.getId());
+            actionSV.setVoucher(dbVoucher);
             boolean valid = actionSV.validate();
             if (!valid) {
                 ActionDeselectVoucher actionDV = deselectVoucher.createAction(purchaseController);
