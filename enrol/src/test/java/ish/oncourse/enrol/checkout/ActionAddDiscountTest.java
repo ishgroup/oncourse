@@ -29,7 +29,8 @@ public class ActionAddDiscountTest extends ACheckoutTest {
 		parameter.setValue("1002");
 		purchaseController.performAction(parameter);
 		assertTrue(purchaseController.isEditCheckout());
-		assertFalse(purchaseController.getErrors().isEmpty());
+        assertTrue(purchaseController.getErrors().isEmpty());
+		assertFalse(purchaseController.getWarnings().isEmpty());
 		purchaseController.getErrors().containsKey(PurchaseController.Message.discountNotFound.name());
 		assertTrue(purchaseController.getModel().getDiscounts().isEmpty());
 
@@ -40,6 +41,7 @@ public class ActionAddDiscountTest extends ACheckoutTest {
 		purchaseController.performAction(parameter);
 		assertTrue(purchaseController.isEditCheckout());
 		assertTrue(purchaseController.getErrors().isEmpty());
+        assertTrue(purchaseController.getWarnings().isEmpty());
         List<Discount> discounts =  purchaseController.getModel().getDiscounts();
 		assertFalse(discounts.isEmpty());
 		assertEquals(1, discounts.size());
