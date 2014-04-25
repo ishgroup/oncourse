@@ -39,7 +39,9 @@
 		<h6> The following mailing lists are available at ${collegeName}: </h6>
 
 		<t:if test="isSaved">
-			<h4>Mailing lists subscription was updated</h4>
+      <div class="alert alert-success">
+        <p>Mailing lists subscription was updated</p>
+      </div>
 		</t:if>
 
 

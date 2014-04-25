@@ -2,8 +2,8 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
     <div class="page-header clearfix">
-        <h1><a href="#">${courseClass.course.name} </a> <small> (${courseClass.uniqueIdentifier})</small></h1>
-        <span class="label label-primary pull-right">Approval required</span>
+        <h1><a href="#">${courseClass.course.name} </a> <small> (${courseClass.uniqueIdentifier})</small> <span class="label label-primary pull-right">Approval required</span> </h1>
+        
     </div>
 
 
@@ -24,7 +24,7 @@
 	 	</t:if>
 		<t:errors banner="literal:" class="literal:validation alert alert-block alert-danger"/>
         <t:if test="messageSent">
-            <div>${message:message-emailWasSent}</div>
+            <div class="alert alert-success">${message:message-emailWasSent}</div>
         </t:if>
 
 		<!-- textarea -->
