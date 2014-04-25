@@ -102,7 +102,9 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     InvoiceStub.class,
     TagRelationStub.class,
     AttendanceStub.class,
-    MessageTemplateStub.class
+    MessageTemplateStub.class,
+    DocumentVersionStub.class,
+    DocumentStub.class
 })
 public abstract class ReplicationStub
     extends GenericReplicationStub

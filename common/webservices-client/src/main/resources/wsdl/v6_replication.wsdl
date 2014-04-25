@@ -299,11 +299,45 @@
                             <xs:element name="entityWillowId" type="xs:long" />
                             <xs:element name="entityName" type="xs:string" />
                             <xs:element name="binaryInfoId" type="xs:long" />
+							<xs:element name="specialType" type="xs:int" minOccurs="0" maxOccurs="1"/>
+							<xs:element name="documentVersionId" type="xs:long" minOccurs="0" maxOccurs="1"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
             </xs:complexType>
 
+			<xs:complexType name="documentStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="webVisible" type="xs:int"/>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="fileUUID" type="xs:string"/>
+							<xs:element name="description" type="xs:string"/>
+							<xs:element name="removed" type="xs:boolean"/>
+							<xs:element name="shared" type="xs:boolean"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="documentVersionStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="byteSize" type="xs:long"/>
+							<xs:element name="mimeType" type="xs:string"/>
+							<xs:element name="fileName" type="xs:string"/>
+							<xs:element name="pixelHeight" type="xs:int"/>
+							<xs:element name="pixelWidth" type="xs:int"/>
+							<xs:element name="thumbnail" type="xs:base64Binary"/>
+							<xs:element name="versionId" type="xs:string"/>
+							<xs:element name="timestamp" type="xs:dateTime"/>
+							<xs:element name="documentId" type="xs:long"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
 
             <xs:complexType name="concessionTypeStub">
                 <xs:complexContent>

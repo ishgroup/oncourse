@@ -23,6 +23,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="entityWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="entityName" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="binaryInfoId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="specialType" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="documentVersionId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -36,7 +38,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "entityAngelId",
     "entityWillowId",
     "entityName",
-    "binaryInfoId"
+    "binaryInfoId",
+    "specialType",
+    "documentVersionId"
 })
 public class BinaryInfoRelationStub
     extends ReplicationStub
@@ -56,6 +60,14 @@ public class BinaryInfoRelationStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long binaryInfoId;
+    @XmlElement(type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer specialType;
+    @XmlElement(type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long documentVersionId;
 
     /**
      * Gets the value of the entityAngelId property.
@@ -151,6 +163,54 @@ public class BinaryInfoRelationStub
      */
     public void setBinaryInfoId(Long value) {
         this.binaryInfoId = value;
+    }
+
+    /**
+     * Gets the value of the specialType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getSpecialType() {
+        return specialType;
+    }
+
+    /**
+     * Sets the value of the specialType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setSpecialType(Integer value) {
+        this.specialType = value;
+    }
+
+    /**
+     * Gets the value of the documentVersionId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getDocumentVersionId() {
+        return documentVersionId;
+    }
+
+    /**
+     * Sets the value of the documentVersionId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDocumentVersionId(Long value) {
+        this.documentVersionId = value;
     }
 
 }
