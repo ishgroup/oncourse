@@ -569,6 +569,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 			"genericAttendanceOrBinaryDataOrBinaryInfo", "attendanceOrBinaryDataOrBinaryInfo", List.class, false, null);
 		genericAttendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
 		transactionGroupParamethers.add(genericAttendanceOrBinaryDataOrBinaryInfo);
+
+		ReplicationStubFieldParamether replicationsStubs = new ReplicationStubFieldParamether(
+				"replicationStub", "attendanceOrBinaryDataOrBinaryInfo",  List.class, false, null);
+		replicationsStubs.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
+		transactionGroupParamethers.add(replicationsStubs);
+		
 		stubsPropertyMap.put(getName(TransactionGroup.class), transactionGroupParamethers);
 	}
 	
@@ -749,7 +755,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testTransactionGroup() {
 		final GenericTransactionGroup group = new TransactionGroup();
-		testCollectorDefinition(group, stubsPropertyMap.get(getName(group.getClass())));
+
+		Map<String, String> methodReplacementMap = new HashMap<>();
+		methodReplacementMap.put("replicationStub", "attendanceOrBinaryDataOrBinaryInfo");
+		methodReplacementMap.put("genericAttendanceOrBinaryDataOrBinaryInfo", "attendanceOrBinaryDataOrBinaryInfo");
+
+		testCollectorDefinition(group, stubsPropertyMap.get(getName(group.getClass())), methodReplacementMap);
 	}
 	
 	@Test
@@ -774,7 +785,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testGetInstructionsResponse() {
 		final GetInstructionsResponse response = new GetInstructionsResponse();
-		testCollectorDefinition(response, stubsPropertyMap.get(getName(response.getClass())));
+		testCollectorDefinition(response, stubsPropertyMap.get(getName(response.getClass())), Collections.EMPTY_MAP);
 	}
 	
 	@Test
@@ -792,7 +803,11 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testParametersMap() {
 		final GenericParametersMap result = new ParametersMap();
-		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+
+		Map<String, String> methodReplacementMap = new HashMap<>();
+		methodReplacementMap.put("genericEntry", "entry");
+
+		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())), methodReplacementMap);
 	}
 	
 	@Test
@@ -804,19 +819,27 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testReplicatedRecord() {
 		final GenericReplicatedRecord result = new ReplicatedRecord();
-		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())), Collections.EMPTY_MAP);
 	}
 	
 	@Test
 	public void testReplicationRecords() {
 		final GenericReplicationRecords result = new ReplicationRecords();
-		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+
+		Map<String, String> methodReplacementMap = new HashMap<>();
+		methodReplacementMap.put("genericGroups", "groups");
+
+		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())), methodReplacementMap);
 	}
 	
 	@Test
 	public void testReplicationResult() {
 		final GenericReplicationResult result = new ReplicationResult();
-		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+
+		Map<String, String> methodReplacementMap = new HashMap<>();
+		methodReplacementMap.put("genericReplicatedRecord", "replicatedRecord");
+
+		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())), methodReplacementMap);
 	}
 	
 	@Test
@@ -853,7 +876,11 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testReferenceResult() {
 		final GenericReferenceResult result = new ReferenceResult();
-		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+		
+		Map<String, String> methodReplacementMap = new HashMap<>();
+		methodReplacementMap.put("genericCountryOrLanguageOrModule", "countryOrLanguageOrModule");
+		
+		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())), methodReplacementMap);
 	}
 	
 	@Test
@@ -939,7 +966,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	 * @param stub - container for test.
 	 * @param paramethers defined for this stub.
 	 */
-	private void testCollectorDefinition(final Object stub, final List<ReplicationStubFieldParamether> paramethers) {
+	private void testCollectorDefinition(final Object stub, final List<ReplicationStubFieldParamether> paramethers, Map<String, String> methodReplacements) {
 		assertNotNull(String.format("No paramether defined for stub %s", stub.getClass().getSimpleName()), paramethers);
 		final PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(stub);
 		fillFieldDependency(paramethers, stub);
@@ -956,8 +983,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 					field = ReflectionUtils.findField(stub.getClass(), paramether.getName());
 					assertNotNull(String.format("No field could be loaded for descriptor with name %s for stub %s with alias %s", descriptor.getName(), 
 						stub.getClass().getName(), paramether.getName()), field);
-				} else if (descriptor.getName().startsWith("generic")) {
-					paramether = getReplicationParametherForReplacement(paramethers, descriptor.getName().replaceFirst("generic", StringUtils.EMPTY));
+				} else if (methodReplacements.keySet().contains(descriptor.getName())) {
+					paramether = getReplicationParametherForReplacement(paramethers, methodReplacements.get(descriptor.getName()));
 					if (paramether != null) {
 						field = ReflectionUtils.findField(stub.getClass(), paramether.getReplacementName());
 						assertNotNull(String.format("No field could be loaded for generic descriptor with name %s for stub %s with alias %s", 
@@ -986,7 +1013,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 			for (final ReplicationStubFieldParamether paramether : paramethers) {
 				if (descriptor.getName().equals(useReplacement? paramether.getReplacementName() : paramether.getName())) {
 					founded = true;
-					if (descriptor.getName().startsWith("generic")) {
+					if (methodReplacements.keySet().contains(descriptor.getName())) {
 						useReplacement = true;
 					}
 					assertFalse(String.format("Not used alias defined for paramether with name %s and alias %s", paramether.getName(), 
