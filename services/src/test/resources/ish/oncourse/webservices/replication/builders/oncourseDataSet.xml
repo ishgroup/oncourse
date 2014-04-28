@@ -500,5 +500,12 @@
             toRecordId="1"
 
             />
+	
+	<Document id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" 
+			name="test" description="test" fileUUID="test" isShared="1" isRemoved="0" webVisibility="1"/>
+	
+	<DocumentVersion id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+			documentId="1" versionId="version" fileName="test.text" mimeType="text/plain" byteSize="1024" timestamp="2011-01-01 00:00:00"
+			pixelWidth="20" pixelHeight="10"/>
 
 </dataset>

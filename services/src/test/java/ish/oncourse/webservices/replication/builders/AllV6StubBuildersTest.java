@@ -237,6 +237,14 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 		this.testStubBuilder(WaitingList.class, new WaitingListStubBuilder());
 	}
 
-
+	@Test
+	public void testDocumentStubBuilder() {
+		this.testStubBuilder(Document.class, new DocumentStubBuilder(), 1L, "webVisible");
+	}
+	
+	@Test
+	public void testDocumentVersionStubBuilder() {
+		this.testStubBuilder(DocumentVersion.class, new DocumentVersionStubBuilder(), 1L, "thumbnail");
+	}
 
 }

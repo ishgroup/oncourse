@@ -489,6 +489,27 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		corporatePassCourseClassParameters.add(new ReplicationStubFieldParameter("corporatePassId", Long.class));
 		corporatePassCourseClassParameters.add(new ReplicationStubFieldParameter("courseClassId", Long.class));
 		stubsPropertyMap.put(getStubName(CorporatePassCourseClassStub.class), corporatePassCourseClassParameters);
+		
+		List<ReplicationStubFieldParameter> documentParameters = fillDefaultReplicationStubFields();
+		documentParameters.add(new ReplicationStubFieldParameter("webVisible", Integer.class));
+		documentParameters.add(new ReplicationStubFieldParameter("name", String.class));
+		documentParameters.add(new ReplicationStubFieldParameter("fileUUID", String.class));
+		documentParameters.add(new ReplicationStubFieldParameter("description", String.class));
+		documentParameters.add(new ReplicationStubFieldParameter("removed", Boolean.class));
+		documentParameters.add(new ReplicationStubFieldParameter("shared", Boolean.class));
+		stubsPropertyMap.put(getStubName(DocumentStub.class), documentParameters);
+		
+		List<ReplicationStubFieldParameter> documentVersionParameters = fillDefaultReplicationStubFields();
+		documentVersionParameters.add(new ReplicationStubFieldParameter("byteSize", Long.class));
+		documentVersionParameters.add(new ReplicationStubFieldParameter("mimeType", String.class));
+		documentVersionParameters.add(new ReplicationStubFieldParameter("fileName", String.class));
+		documentVersionParameters.add(new ReplicationStubFieldParameter("pixelHeight", Integer.class));
+		documentVersionParameters.add(new ReplicationStubFieldParameter("pixelWidth", Integer.class));
+		documentVersionParameters.add(new ReplicationStubFieldParameter("thumbnail", byte[].class));
+		documentVersionParameters.add(new ReplicationStubFieldParameter("versionId", String.class));
+		documentVersionParameters.add(new ReplicationStubFieldParameter("timestamp", Date.class));
+		documentVersionParameters.add(new ReplicationStubFieldParameter("documentId", Long.class));
+		stubsPropertyMap.put(getStubName(DocumentVersionStub.class), documentVersionParameters);
 
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParamethers = fillDefaultReplicationStubFields();
@@ -796,6 +817,18 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testCertificateOutcomeStub() {
 		final GenericReplicationStub stub = new CertificateOutcomeStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testDocumentStub() {
+		GenericReplicationStub stub = new DocumentStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testDocumentVersionStub() {
+		GenericReplicationStub stub = new DocumentVersionStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 
