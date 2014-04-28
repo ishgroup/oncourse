@@ -38,6 +38,7 @@
 		<db-attribute name="binaryInfoId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="documentVersionId" type="BIGINT"/>
 		<db-attribute name="entityAngelId" type="BIGINT" length="19"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="entityWillowId" type="BIGINT" length="19"/>
@@ -343,6 +344,35 @@
 		<db-attribute name="discussionId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
 		<db-attribute name="topic" type="VARCHAR" isMandatory="true" length="100"/>
+	</db-entity>
+	<db-entity name="Document">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="description" type="CLOB" length="32000"/>
+		<db-attribute name="fileUUID" type="VARCHAR" length="160"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="isRemoved" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="isShared" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="512"/>
+		<db-attribute name="webVisibility" type="SMALLINT" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="DocumentVersion">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="byteSize" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="documentId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="fileName" type="VARCHAR" length="512"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="mimeType" type="VARCHAR" length="64"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="pixelHeight" type="INTEGER"/>
+		<db-attribute name="pixelWidth" type="INTEGER"/>
+		<db-attribute name="thumbnail" type="BLOB"/>
+		<db-attribute name="timestamp" type="TIMESTAMP"/>
+		<db-attribute name="versionId" type="VARCHAR" length="256"/>
 	</db-entity>
 	<db-entity name="Enrolment" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -1388,6 +1418,30 @@
 	<obj-entity name="DiscussionThread" className="ish.oncourse.model.DiscussionThread" dbEntityName="DiscussionThread">
 		<obj-attribute name="topic" type="java.lang.String" db-attribute-path="topic"/>
 	</obj-entity>
+	<obj-entity name="Document" className="ish.oncourse.model.Document" dbEntityName="Document">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="fileUUID" type="java.lang.String" db-attribute-path="fileUUID"/>
+		<obj-attribute name="isRemoved" type="java.lang.Boolean" db-attribute-path="isRemoved"/>
+		<obj-attribute name="isShared" type="java.lang.Boolean" db-attribute-path="isShared"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="webVisibility" type="ish.common.types.AttachmentInfoVisibility" db-attribute-path="webVisibility"/>
+	</obj-entity>
+	<obj-entity name="DocumentVersion" className="ish.oncourse.model.DocumentVersion" dbEntityName="DocumentVersion">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="byteSize" type="java.lang.Long" db-attribute-path="byteSize"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="fileName"/>
+		<obj-attribute name="mimeType" type="java.lang.String" db-attribute-path="mimeType"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="pixelHeight" type="java.lang.Integer" db-attribute-path="pixelHeight"/>
+		<obj-attribute name="pixelWidth" type="java.lang.Integer" db-attribute-path="pixelWidth"/>
+		<obj-attribute name="thumbnail" type="byte[]" db-attribute-path="thumbnail"/>
+		<obj-attribute name="timestamp" type="java.util.Date" db-attribute-path="timestamp"/>
+		<obj-attribute name="versionId" type="java.lang.String" db-attribute-path="versionId"/>
+	</obj-entity>
 	<obj-entity name="Enrolment" className="ish.oncourse.model.Enrolment" dbEntityName="Enrolment">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2054,6 +2108,9 @@
 	<db-relationship name="college" source="BinaryInfoRelation" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="documentVersion" source="BinaryInfoRelation" target="DocumentVersion" toMany="false">
+		<db-attribute-pair source="documentVersionId" target="id"/>
+	</db-relationship>
 	<db-relationship name="certificateOutcomes" source="Certificate" target="CertificateOutcome" toMany="true">
 		<db-attribute-pair source="id" target="certificateId"/>
 	</db-relationship>
@@ -2133,6 +2190,12 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="discounts" source="College" target="Discount" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="documentVersions" source="College" target="DocumentVersion" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="documents" source="College" target="Document" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="enrolments" source="College" target="Enrolment" toMany="true">
@@ -2494,6 +2557,21 @@
 	</db-relationship>
 	<db-relationship name="discussion" source="DiscussionThread" target="Discussion" toMany="false">
 		<db-attribute-pair source="discussionId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="Document" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="versions" source="Document" target="DocumentVersion" toMany="true">
+		<db-attribute-pair source="id" target="documentId"/>
+	</db-relationship>
+	<db-relationship name="binaryInfoRelations" source="DocumentVersion" target="BinaryInfoRelation" toMany="true">
+		<db-attribute-pair source="id" target="documentVersionId"/>
+	</db-relationship>
+	<db-relationship name="college" source="DocumentVersion" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="document" source="DocumentVersion" target="Document" toMany="false">
+		<db-attribute-pair source="documentId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="Enrolment" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3085,6 +3163,7 @@
 	<obj-relationship name="college" source="BinaryInfo" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="binaryInfo" source="BinaryInfoRelation" target="BinaryInfo" deleteRule="Nullify" db-relationship-path="binaryInfo"/>
 	<obj-relationship name="college" source="BinaryInfoRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="documentVersion" source="BinaryInfoRelation" target="DocumentVersion" deleteRule="Nullify" db-relationship-path="documentVersion"/>
 	<obj-relationship name="certificateOutcomes" source="Certificate" target="CertificateOutcome" deleteRule="Deny" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="college" source="Certificate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="qualification" source="Certificate" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
@@ -3221,6 +3300,11 @@
 	<obj-relationship name="discussionThread" source="Discussion" target="DiscussionThread" deleteRule="Deny" db-relationship-path="discussionThread"/>
 	<obj-relationship name="comment" source="DiscussionCommentContact" target="DiscussionComment" deleteRule="Nullify" db-relationship-path="comment"/>
 	<obj-relationship name="contact" source="DiscussionCommentContact" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="college" source="Document" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="versions" source="Document" target="DocumentVersion" deleteRule="Cascade" db-relationship-path="versions"/>
+	<obj-relationship name="binaryInfoRelations" source="DocumentVersion" target="BinaryInfoRelation" deleteRule="Cascade" db-relationship-path="binaryInfoRelations"/>
+	<obj-relationship name="college" source="DocumentVersion" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="document" source="DocumentVersion" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
 	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="invoiceLines" source="Enrolment" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLines"/>

@@ -2205,5 +2205,110 @@
         </sql>
     </changeSet>
 
+	<changeSet id="151" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="Document"/>
+			</not>
+		</preConditions>
+		
+		<createTable tableName="Document">
+			<column name="id" type="BIGINT">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="fileUUID" type="VARCHAR(160)"/>
+			<column name="name" type="VARCHAR(512)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="isShared" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="isRemoved" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+ 			<column name="webVisibility" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="description" type="TEXT"/>
+			<column name="collegeId" type="BIGINT"/>
+			<column name="angelId" type="BIGINT"/>
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+		</createTable>
+		
+		<addForeignKeyConstraint baseTableName="Document" baseColumnNames="collegeId"
+								 constraintName="fk_Document_College"
+								 referencedTableName="College" referencedColumnNames="id"/>
+
+		<createIndex tableName="Document" indexName="Document_name">
+			<column name="name"/>
+		</createIndex>
+		<createIndex tableName="Document" indexName="Document_fileUUID">
+			<column name="fileUUID"/>
+		</createIndex>
+		<createIndex tableName="Document" indexName="Document_angelId">
+			<column name="angelId"/>
+		</createIndex>
+	</changeSet>
+	
+	<changeSet id="152" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="DocumentVersion"/>
+			</not>
+		</preConditions>
+		
+		<createTable tableName="DocumentVersion">
+			<column name="id" type="BIGINT">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="documentId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="versionId" type="VARCHAR(256)"/>
+			<column name="fileName" type="VARCHAR(512)"/>
+			<column name="byteSize" type="BIGINT"/>
+			<column name="mimeType" type="VARCHAR(64)"/>
+			<column name="timestamp" type="DATETIME"/>
+			<column name="thumbnail" type="BLOB"/>
+			<column name="pixelWidth" type="INT"/>
+			<column name="pixelHeight" type="INT"/>
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="angelId" type="BIGINT"/>
+			<column name="collegeId" type="BIGINT"/>
+		</createTable>
+
+		<addForeignKeyConstraint baseTableName="DocumentVersion" baseColumnNames="documentId"
+								 constraintName="fk_DocumentVersion_Document"
+								 referencedTableName="Document" referencedColumnNames="id"/>
+		<addForeignKeyConstraint baseTableName="DocumentVersion" baseColumnNames="collegeId"
+								 constraintName="fk_DocumentVersion_College"
+								 referencedTableName="College" referencedColumnNames="id"/>
+
+		<createIndex indexName="DocumentVersion_mimeType" tableName="DocumentVersion">
+			<column name="mimeType"/>
+		</createIndex>
+		<createIndex indexName="DocumentVersion_angelId" tableName="DocumentVersion">
+			<column name="angelId"/>
+		</createIndex>
+	</changeSet>
+	
+	<changeSet id="153" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="BinaryInfoRelation" columnName="documentVersionId"/>
+			</not>
+		</preConditions>
+		
+		<addColumn tableName="BinaryInfoRelation">
+			<column name="documentVersionId" type="BIGINT"/>
+		</addColumn>
+		
+		<addForeignKeyConstraint baseTableName="BinaryInfoRelation" baseColumnNames="documentVersionId"
+								 constraintName="fk_BinaryInfoRelation_DocumentVersion"
+								 referencedTableName="DocumentVersion" referencedColumnNames="id"/>
+	</changeSet>
+
 </databaseChangeLog>
 
