@@ -75,6 +75,8 @@ private Map<String, IWillowUpdater> updaterMap;
         updaterMap.put(getEntityName(CorporatePassCourseClass.class), new CorporatePassCourseClassUpdater());
 		updaterMap.put(getEntityName(ArticleProduct.class), new ArticleProductUpdater());
 		updaterMap.put(getEntityName(Article.class), new ArticleUpdater());
+		updaterMap.put(getEntityName(Document.class), new DocumentUpdater());
+		updaterMap.put(getEntityName(DocumentVersion.class), new DocumentVersionUpdater());
     }
 
 	/**

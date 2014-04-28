@@ -12,7 +12,7 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 	protected static final Logger logger = Logger.getLogger(AbstractWillowStubBuilder.class);
 
 	/**
-	 * @see IWillowStubBuilder#convert(QueuedRecord)
+	 * @see IWillowStubBuilder#convert(ish.oncourse.model.QueuedRecord, ish.oncourse.webservices.util.SupportedVersions) 
 	 */
 	public GenericReplicationStub convert(final QueuedRecord queuedRecord, final SupportedVersions version) {
 		GenericReplicationStub soapStub;
@@ -49,7 +49,7 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 	}
 
 	/**
-	 * @see IWillowStubBuilder#convert(Queueable)
+	 * @see IWillowStubBuilder#convert(ish.oncourse.model.Queueable, ish.oncourse.webservices.util.SupportedVersions) 
 	 */
 	@Override
 	public GenericReplicationStub convert(final Queueable entity, final SupportedVersions version) {

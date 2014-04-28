@@ -10,11 +10,15 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 
 	@Override
 	public void updateEntity(BinaryInfoRelationStub stub, BinaryInfoRelation entity, RelationShipCallback callback) {
-		entity.setBinaryInfo(callback.updateRelationShip(stub.getBinaryInfoId(), BinaryInfo.class));
 		entity.setCreated(stub.getCreated());
+		entity.setModified(stub.getModified());
+		
+		entity.setBinaryInfo(callback.updateRelationShip(stub.getBinaryInfoId(), BinaryInfo.class));
+		entity.setDocumentVersion(callback.updateRelationShip(stub.getDocumentVersionId(), DocumentVersion.class));
+		
 		entity.setEntityAngelId(stub.getEntityAngelId());
 		entity.setEntityIdentifier(stub.getEntityName());
-		entity.setModified(stub.getModified());
+		
 		//after set the data, try to update relation related entity willowid
 		Queueable entityObject;
 		if (CONTACT_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
