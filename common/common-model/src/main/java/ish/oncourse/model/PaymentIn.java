@@ -230,7 +230,15 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		for (PaymentIn voucherPayment : PaymentInUtil.getRelatedVoucherPayments(this)) {
 			if (!PaymentStatus.STATUSES_FINAL.contains(voucherPayment.getStatus())) {
 				voucherPayment.setStatus(PaymentStatus.SUCCESS);
-			}
+
+                //we need the code to be sure that all entities which a related to
+                // the voucher payment are added to the replication.
+                List<VoucherPaymentIn> voucherPaymentIns = voucherPayment.getVoucherPaymentIns();
+                for (VoucherPaymentIn voucherPaymentIn : voucherPaymentIns) {
+                    voucherPaymentIn.setModified(new Date());
+                }
+                voucherPayment.getVoucher().setModified(new Date());
+            }
 		}
 
 		Invoice activeInvoice = findActiveInvoice();

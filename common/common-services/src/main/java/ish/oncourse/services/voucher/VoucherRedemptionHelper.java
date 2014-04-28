@@ -369,6 +369,7 @@ public class VoucherRedemptionHelper {
                 payment.setContact(invoice.getContact());
                 payment.setAmount(Money.ZERO);
                 payment.setSource(PaymentSource.SOURCE_WEB);
+                payment.setStatus(PaymentStatus.IN_TRANSACTION);
 
                 paymentMap.put(voucher, payment);
             }
