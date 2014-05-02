@@ -150,4 +150,9 @@ public class ProductItem {
     {
         return FormatUtils.chooseMoneyFormat(money);
     }
+
+    public boolean hasTax()
+    {
+        return product.getTaxAmount() != null && product.getTaxAmount().isGreaterThan(Money.ZERO);
+    }
 }

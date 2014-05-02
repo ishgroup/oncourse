@@ -23,12 +23,12 @@
 
     <t:block t:id="nonlist">
         <h1 class="summary page-title">${product.name}</h1>
+        <t:delegate to="block:main"/>
         <div class="clearboth"></div>
 
         <div class="courseDescription">
             <t:outputraw value="${product.description}" />
         </div>
-        <t:delegate to="block:main"/>
     </t:block>
 
     <t:block t:id="main">
@@ -41,7 +41,13 @@
                             <div itemprop="price">This voucher have no specified price</div>
                         </t:if>
                         <t:unless test="voucherProductWithoutPrice" >
-                            <div class="fee"><t:output value="price" format="moneyFormat(price)" /></div>
+                            <div class="fee"><t:output value="price" format="moneyFormat(price)" />
+                                <t:if test="hasTax()">
+                                    <span class="gst">
+                                         inc <acronym title="Goods and Services Tax">GST</acronym>
+                                    </span>
+                                </t:if>
+                            </div>
                         </t:unless>
 
                         <t:if t:test="courseVoucherProduct">
