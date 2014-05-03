@@ -90,6 +90,58 @@
 				 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
 				 MODIFIEDON="2012-05-14 14:35:01.618" />
 	
+	<Invoice id="1005" source="O" amountOwing="0" contactId="1001"
+			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
+			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
+			 totalGst="20.00" created="2000-00-00 00:18:09" modified="2000-00-00 00:00:09"/>
+	<InvoiceLine id="1005" collegeId="1" invoiceId="1005" quantity="1.0" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00"
+				 created="2000-00-00 00:00:09" modified="2000-00-00 00:00:09" title="Test Invoice Line" />
+	<Product id="1005" collegeId="1" angelId="5" SKU="1005" createdOn="2000-00-00 00:00:02" DESCRIPTION="1005" EXPIRYTYPE="4" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2000-00-00 00:00:23" NAME="1005" TYPE="3"
+			 TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00" expiryDays="5"/>
+	<ProductItem ID="1005" angelId="1005" collegeId="1" INVOICELINEID="1005" PRODUCTID="1005"  TYPE="3"
+				 code="v1005" value="100.00" source="W" status="0" valueOnPurchase="1.00"
+				 CREATEDON="2000-00-00 00:00:16" EXPIRYDATE="2001-00-00 00:00:01"
+				 MODIFIEDON="2000-00-00 00:00:01.618" />
+
+	<Invoice id="1006" source="O" amountOwing="0" contactId="1001"
+			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
+			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
+			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	<InvoiceLine id="1006" collegeId="1" invoiceId="1006" quantity="1.0" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+	<Product id="1006" collegeId="1" angelId="6" SKU="1006" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="1006" EXPIRYTYPE="4" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="1006" TYPE="3"
+			 TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00" expiryDays="100000" maxCoursesRedemption="1"/>
+	<ProductItem ID="1006" angelId="1006" collegeId="1" INVOICELINEID="1006" PRODUCTID="1006"  TYPE="3"
+				 code="v1006"  source="O" status="0" redeemedCoursesCount="0"
+				 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
+				 MODIFIEDON="2012-05-14 14:35:01.618"  />
+	<VoucherProductCourse ID="1" ANGELID="1" COLLEGEID="1" CREATED="2012-05-14 14:33:16.537" MODIFIED="2012-05-14 14:35:01.618" COURSEID="1001" VOUCHERPRODUCTID="1006"/>
+	
+	<Discount
+			id="1001"
+			collegeId="1"
+			angelId="1001"
+			code="d1001"
+			combinationType="1"
+			created="2011-09-12 00:56:00"
+			modified="2011-09-12 00:56:00"
+			discountAmount="0"
+			discountRate="0.5"
+			maximumDiscount="100"
+			minimumDiscount="5"
+			name="discountName"
+			roundingMode="2"
+			discountType="1"
+			hideOnWeb="0"
+			isAvailableOnWeb="1"/>
+
+	<DiscountCourseClass id="1001" angelId="1001" collegeId="1" courseClassId="1001"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="1001"/>
+	
 	<Preference id="2" collegeId="1" name="payment.gateway.type"
 				value_string="TEST" />
 </dataset>

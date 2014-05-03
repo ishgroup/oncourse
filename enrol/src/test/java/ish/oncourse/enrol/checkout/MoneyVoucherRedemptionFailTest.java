@@ -183,4 +183,16 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest{
 		assertEquals(100,model.getVouchers().get(0).getRedemptionValue().intValue());
 		assertEquals("Active",model.getVouchers().get(0).getStatus().toString());
 	}
+
+	@Test(expected = AssertionError.class)
+	public void testExpiredMoneyVoucherFail() throws InterruptedException {
+		PurchaseController purchaseController = init(Arrays.asList(1002L), Collections.EMPTY_LIST, Collections.EMPTY_LIST, false);
+		assertTrue("purchaseController is not in state 'AddContact'", purchaseController.isAddContact());
+		addFirstContact(1001L);
+		assertTrue("purchaseController is not in state 'EditCheckout'", purchaseController.isEditCheckout());
+		PurchaseModel model = purchaseController.getModel();
+		assertTrue(model.getSelectedVouchers().isEmpty());
+		addCode("v1005");
+	}
+	
 }
