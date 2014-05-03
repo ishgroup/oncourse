@@ -173,6 +173,8 @@ public abstract class ACheckoutTest extends ServiceTest {
 		param.setValue(purchaseController.getModel().getPayment());
 		performAction(param);
 	}
+	
+	
 
 	void makeInvalidPayment() throws InterruptedException {
 		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
@@ -214,8 +216,8 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 	void performAction(PurchaseController.ActionParameter param) {
 		purchaseController.performAction(param);
-		assertFalse("State is valid", purchaseController.isIllegalState());
-		assertFalse("Model is valid", purchaseController.isIllegalModel());
+		assertFalse("State is illegal", purchaseController.isIllegalState());
+		assertFalse("Model is invalid", purchaseController.isIllegalModel());
 	}
 
 

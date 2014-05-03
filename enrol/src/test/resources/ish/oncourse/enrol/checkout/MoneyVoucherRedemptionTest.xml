@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<College id="1" name="Sydney Community College"
+			 webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+			 communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+			 timezone="Australia/Sydney"
+			 requiresAvetmiss="0"/>
+
+	<Site id="1181610" collegeId="1" angelId="200" isWebVisible="0"
+		  created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
+
+	<WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<Room id="1181746" collegeId="1" siteId="1181610" angelId="200"
+		  capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+		  name="TestRoom" />
+
+	<Student id="1001" collegeId="1" angelId="200"
+			 created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+			 disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+			 indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+			 priorEducationCode="0" labourForceType="0" />
+
+	<Contact id="1001" collegeId="1" angelId="2"   studentId="1001"
+			 countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+			 isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir"
+			 emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1" />
+
+	<Course id="1001" collegeId="1" angelId="200" code="AAV"
+			isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+			created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+			allowWaitingList="1" name="Managerial Accounting" />
+	<CourseClass id="1001" collegeId="1" code="1" courseId="1001"
+				 roomId="1181746" angelId="200" startDate="2011-10-12 00:55:59.0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
+				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="2" minimumPlaces="2" countOfSessions="3"
+				 deliveryMode="1" feeExGst="400.00" feeGst="50.00" isDistantLearningCourse="0"/>
+
+	<Course id="1002" collegeId="1" angelId="201" code="MSC"
+			isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+			created="2011-09-12 00:57:38.0" modified="2011-09-12 00:59:00.0"
+			allowWaitingList="1" name="Microsoft Word" />
+	<CourseClass id="1002" collegeId="1" code="1" courseId="1002"
+				 roomId="1181746" angelId="201" startDate="2011-09-13 00:58:59.0"
+				 endDate="2111-10-07 01:58:59.0" isWebVisible="1" isCancelled="0"
+				 created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:01.0"
+				 maximumPlaces="2" minimumPlaces="2" countOfSessions="5" deliveryMode="1"
+				 feeExGst="500.00" feeGst="50.00" isDistantLearningCourse="0"/>
+
+	<Course id="1003" collegeId="1" angelId="202" code="MSC"
+			isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+			created="2011-09-12 00:57:38.0" modified="2011-09-12 00:59:00.0"
+			allowWaitingList="1" name="Budabu" />
+	<CourseClass id="1003" collegeId="1" code="1" courseId="1002"
+				 roomId="1181746" angelId="202" startDate="2011-09-13 00:58:59.0"
+				 endDate="2111-10-07 01:58:59.0" isWebVisible="1" isCancelled="0"
+				 created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:01.0"
+				 maximumPlaces="2" minimumPlaces="2" countOfSessions="5" deliveryMode="1"
+				 feeExGst="100.00" feeGst="10.00" isDistantLearningCourse="0"/>
+
+	<Invoice id="1003" source="O" amountOwing="0" contactId="1001"
+			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
+			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
+			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	<InvoiceLine id="1003" collegeId="1" invoiceId="1003" quantity="1.0" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+	<Product id="1003" collegeId="1" angelId="3" SKU="1003" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="1004" EXPIRYTYPE="4" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="1003" TYPE="3"
+			 TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00" expiryDays="365"/>
+	<ProductItem ID="1003" angelId="1004" collegeId="1" INVOICELINEID="1003" PRODUCTID="1003"  TYPE="3"
+				 code="v1003" value="450.00" source="O" status="0" valueOnPurchase="200.00"
+				 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
+				 MODIFIEDON="2012-05-14 14:35:01.618"  />
+
+	<Invoice id="1004" source="O" amountOwing="0" contactId="1001"
+			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
+			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
+			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	<InvoiceLine id="1004" collegeId="1" invoiceId="1004" quantity="1.0" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
+	<Product id="1004" collegeId="1" angelId="4" SKU="1004" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="1004" EXPIRYTYPE="4" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="1004" TYPE="3"
+			 TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00" expiryDays="365"/>
+	<ProductItem ID="1004" angelId="1004" collegeId="1" INVOICELINEID="1004" PRODUCTID="1004"  TYPE="3"
+				 code="v1004" value="100.00" source="W" status="0" valueOnPurchase="1.00"
+				 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
+				 MODIFIEDON="2012-05-14 14:35:01.618" />
+	
+	<Preference id="2" collegeId="1" name="payment.gateway.type"
+				value_string="TEST" />
+</dataset>
