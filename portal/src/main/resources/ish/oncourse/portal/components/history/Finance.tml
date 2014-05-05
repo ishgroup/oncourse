@@ -38,7 +38,7 @@
           <t:pagelink page="paymentdetails" context="id">${date}</t:pagelink>
         </td>
         <td>
-          <t:pagelink page="paymentdetails" context="id">Payment(${paymentType})</t:pagelink>
+          <t:pagelink page="paymentdetails" context="id">Payment (${paymentType})</t:pagelink>
         </td>
         <td>
           <t:pagelink page="paymentdetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
