@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-    xmlns:p="tapestry:parameter">
+        >
     <div id="class-location" class="tab-pane">
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -7,12 +7,12 @@
                 <t:if test="hasCoordinates">
                        <script type="text/javascript">
 
-                           var map
+                           var map;
                            function initialize() {
                                vLat = "${mapPositionLatitude}";
                                vLong = "${mapPositionLongitude}";
                                var mapOptions = {
-                                   zoom: 8,
+                                   zoom: 14,
                                    center:  new google.maps.LatLng(vLat,vLong),
                                    mapTypeId: google.maps.MapTypeId.ROADMAP
                                };
