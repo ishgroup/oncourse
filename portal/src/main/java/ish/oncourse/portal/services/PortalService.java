@@ -500,19 +500,33 @@ public class PortalService implements IPortalService {
     private List<BinaryInfo> getAttachedFilesForStudent(CourseClass courseClass) {
 
         ObjectContext sharedContext = cayenneService.sharedContext();
+        ArrayList<BinaryInfo> result = new ArrayList<>();
 
         Expression exp = ExpressionFactory.inExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
+                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId()))
+                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
+        result.addAll(sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp)));
+
+        exp = ExpressionFactory.inExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
                 .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
                 .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
-        return sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp));
+        result.addAll(sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp)));
+        return result;
     }
 
     private List<BinaryInfo> getAttachedFilesForTutor(CourseClass courseClass) {
         ObjectContext sharedContext = cayenneService.sharedContext();
+        ArrayList<BinaryInfo> result = new ArrayList<>();
 
-        Expression exp = ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId())
+        Expression exp = ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId())
+                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
+        result.addAll(sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp)));
+
+        exp = ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId())
                 .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
-        return sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp));
+        result.addAll(sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp)));
+
+        return result;
     }
 
     public List<BinaryInfo> getResources() {
