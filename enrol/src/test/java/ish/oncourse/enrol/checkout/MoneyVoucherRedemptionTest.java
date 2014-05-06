@@ -5,6 +5,7 @@
 package ish.oncourse.enrol.checkout;
 
 
+import ish.common.types.*;
 import ish.oncourse.model.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -25,11 +26,11 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 	private static final String VoucherCode_1 = "v1003";
 	private static final String VoucherCode_2 = "v1004";
 	private static final String VoucherCode_3 = "v1006";
-	private static final String Status_SUCCES = "SUCCESS";
-	private static final String PaymentTypeVoucher = "Voucher";
-	private static final String PaymentTypeZero = "ZERO";
-	private static final String VoucherPaymentStatus_APPROVED = "Approved";
-	private static final String VoucherStatus_REDEEMED = "REDEEMED";
+	private static final String DiscountCode = "d1001";
+	private static final String ErrorMessage_AddContact = "purchaseController is not in state 'AddContact'";
+	private static final String ErrorMessage_EditCheckout = "purchaseController is not in state 'EditCheckout'";
+	private static final String ErrorMessage_EditPayment = "purchaseController is not in state 'EditPayment'";
+
 
 	@Before
 	public void setup() throws Exception {
@@ -71,10 +72,11 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 		//check Enrolment
 		assertNotSame(enrolment, enrolmentDB);
 		assertEquals(enrolment.getId(), enrolmentDB.getId());
-		assertEquals(Status_SUCCES, enrolmentDB.getStatus().name().toString());
+		assertEquals(EnrolmentStatus.SUCCESS, enrolmentDB.getStatus());
 
 		List<PaymentInLine> paymentInLines = invoice.getPaymentInLines();
 		List<PaymentInLine> paymentInLinesDB = invoiceDB.getPaymentInLines();
+		//paymentInLinesCount = VoucherPaymentCount + MoneyPayment;
 		assertEquals(voucherCount + 1, paymentInLinesDB.size());
 		assertEquals(paymentInLines.size(), paymentInLinesDB.size());
 
@@ -94,7 +96,7 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 						VoucherPaymentIn voucherPaymentInDB = paymentInDB.getVoucherPaymentIns().get(0);
 						//check VoucherPaymentIn
 						assertEquals(voucherPaymentIn.getId(), voucherPaymentInDB.getId());
-						assertEquals(VoucherPaymentStatus_APPROVED, voucherPaymentInDB.getStatus().toString());
+						assertEquals(VoucherPaymentStatus.APPROVED, voucherPaymentInDB.getStatus());
 						//check PaymentInLine and PaymentIn that has relation with Voucher						
 						if (voucherCount < 2) {
 							assertEquals(VoucherCode_1, voucherPaymentInDB.getVoucher().getCode());
@@ -108,20 +110,16 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 							}
 
 						}
-						assertEquals(Status_SUCCES, paymentInDB.getStatus().name().toString());
-						assertEquals(PaymentTypeVoucher, paymentInDB.getType().toString());
+						assertEquals(PaymentStatus.SUCCESS, paymentInDB.getStatus());
+						assertEquals(PaymentType.VOUCHER, paymentInDB.getType());
 						if (voucherPaymentInDB.getVoucher().isMoneyVoucher()) {
 							assertNull(voucherPaymentInDB.getInvoiceLine());
-						} else {
-							//check another PaymentInLine and PaymentIn
-							assertEquals(money, paymentInLineDB.getAmount().intValue());
-							assertEquals(Status_SUCCES, paymentInDB.getStatus().name().toString());
-							assertEquals(PaymentTypeZero, paymentInDB.getType().toString());
 						}
 					}
 				}
 			}
 		}
+		//VoucherPaymentCount + MoneyPayment
 		assertEquals(voucherCount + 1, paymentInEqualsCount);
 		assertEquals(voucherCount, payIn_VoucherPayIn_Links);
 	}
@@ -146,6 +144,7 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 		Expression matchExp5 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Discount");
 		assertEquals(discountCount, matchExp5.filterObjects(qRecords).size());
 
+		//4 = (PaymentIn + PaymentInLine + VoucherPaymentIn + Voucher) 
 		assertEquals(5 + voucherCount * 4 + discountCount, listQT.get(1).getQueuedRecords().size());
 		//check second QueuedTransaction contains right QueuedRecords
 		List<QueuedRecord> queuedRecords = listQT.get(1).getQueuedRecords();
@@ -155,8 +154,10 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 		assertEquals(1, exp2.filterObjects(queuedRecords).size());
 		Expression exp3 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Invoice");
 		assertEquals(1, exp3.filterObjects(queuedRecords).size());
+		//VoucherPaymentInLineCount + MoneyVoucherPaymentInLine
 		Expression exp4 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentInLine");
 		assertEquals(voucherCount + 1, exp4.filterObjects(queuedRecords).size());
+		//VoucherPaymentInCount + MoneyVoucherPaymentIn
 		Expression exp5 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentIn");
 		assertEquals(voucherCount + 1, exp5.filterObjects(queuedRecords).size());
 		Expression exp6 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "VoucherPaymentIn");
@@ -170,22 +171,22 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 	@Test
 	public void testMoneyVoucherRedemptionWithoutMoney() throws InterruptedException {
 		PurchaseController purchaseController = init(Arrays.asList(1001L), Collections.EMPTY_LIST, Collections.EMPTY_LIST, false);
-		assertTrue("purchaseController is not in state 'AddContact'", purchaseController.isAddContact());
+		assertTrue(ErrorMessage_AddContact, purchaseController.isAddContact());
 		addFirstContact(1001L);
-		assertTrue("purchaseController is not in state 'EditCheckout'", purchaseController.isEditCheckout());
+		assertTrue(ErrorMessage_EditCheckout, purchaseController.isEditCheckout());
 		PurchaseModel model = purchaseController.getModel();
 		assertTrue(model.getSelectedVouchers().isEmpty());
 		addCode(VoucherCode_1);
 		assertEquals(1, model.getSelectedVouchers().size());
 		proceedToPayment();
-		assertTrue("purchaseController is not in state 'EditPayment'", purchaseController.isEditPayment());
+		assertTrue(ErrorMessage_EditPayment, purchaseController.isEditPayment());
 		makeInvalidPayment();
 		assertTrue(purchaseController.isPaymentResult());
 		assertTrue(purchaseController.isFinished());
 		assertModel(400, 50, 0, 1);
 		//check Voucher
 		assertEquals(0, model.getVouchers().get(0).getValueRemaining().intValue());
-		assertEquals(VoucherStatus_REDEEMED, model.getVouchers().get(0).getStatus().name().toString());
+		assertEquals(ProductStatus.REDEEMED, model.getVouchers().get(0).getStatus());
 
 		assertQueuedTransaction(1, 0);
 	}
@@ -193,22 +194,22 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 	@Test
 	public void testMoneyVoucherRedemptionWithBalance() throws InterruptedException {
 		PurchaseController purchaseController = init(Arrays.asList(1003L), Collections.EMPTY_LIST, Collections.EMPTY_LIST, false);
-		assertTrue("purchaseController is not in state 'AddContact'", purchaseController.isAddContact());
+		assertTrue(ErrorMessage_AddContact, purchaseController.isAddContact());
 		addFirstContact(1001L);
-		assertTrue("purchaseController is not in state 'EditCheckout'", purchaseController.isEditCheckout());
+		assertTrue(ErrorMessage_EditCheckout, purchaseController.isEditCheckout());
 		PurchaseModel model = purchaseController.getModel();
 		assertTrue(model.getSelectedVouchers().isEmpty());
 		addCode(VoucherCode_1);
 		assertEquals(1, model.getSelectedVouchers().size());
 		proceedToPayment();
-		assertTrue("purchaseController is not in state 'EditPayment'", purchaseController.isEditPayment());
+		assertTrue(ErrorMessage_EditPayment, purchaseController.isEditPayment());
 		makeInvalidPayment();
 		assertTrue(purchaseController.isPaymentResult());
 		assertTrue(purchaseController.isFinished());
 		assertModel(100, 10, 0, 1);
 		//check Voucher
 		assertEquals(340, model.getVouchers().get(0).getValueRemaining().intValue());
-		assertEquals("ACTIVE", model.getVouchers().get(0).getStatus().name().toString());
+		assertEquals(ProductStatus.ACTIVE, model.getVouchers().get(0).getStatus());
 
 		assertQueuedTransaction(1, 0);
 	}
@@ -216,22 +217,22 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 	@Test
 	public void testMoneyVoucherRedemptionWithMoney() throws InterruptedException {
 		PurchaseController purchaseController = init(Arrays.asList(1002L), Collections.EMPTY_LIST, Collections.EMPTY_LIST, false);
-		assertTrue("purchaseController is not in state 'AddContact'", purchaseController.isAddContact());
+		assertTrue(ErrorMessage_AddContact, purchaseController.isAddContact());
 		addFirstContact(1001L);
-		assertTrue("purchaseController is not in state 'EditCheckout'", purchaseController.isEditCheckout());
+		assertTrue(ErrorMessage_EditCheckout, purchaseController.isEditCheckout());
 		PurchaseModel model = purchaseController.getModel();
 		assertTrue(model.getSelectedVouchers().isEmpty());
 		addCode(VoucherCode_1);
 		assertEquals(1, model.getSelectedVouchers().size());
 		proceedToPayment();
-		assertTrue("purchaseController is not in state 'EditPayment'", purchaseController.isEditPayment());
+		assertTrue(ErrorMessage_EditPayment, purchaseController.isEditPayment());
 		makeValidPayment();
 		assertTrue(purchaseController.isPaymentResult());
 		assertTrue(purchaseController.isFinished());
 		assertModel(500, 50, 100, 1);
 		//check Voucher
 		assertEquals(0, model.getVouchers().get(0).getValueRemaining().intValue());
-		assertEquals(VoucherStatus_REDEEMED, model.getVouchers().get(0).getStatus().name().toString());
+		assertEquals(ProductStatus.REDEEMED, model.getVouchers().get(0).getStatus());
 		assertQueuedTransaction(1, 0);
 	}
 
@@ -239,41 +240,41 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 	@Test
 	public void testMoneyVoucherRedemptionWithTwoVouchers() throws InterruptedException {
 		PurchaseController purchaseController = init(Arrays.asList(1002L), Collections.EMPTY_LIST, Collections.EMPTY_LIST, false);
-		assertTrue("purchaseController is not in state 'AddContact'", purchaseController.isAddContact());
+		assertTrue(ErrorMessage_AddContact, purchaseController.isAddContact());
 		addFirstContact(1001L);
-		assertTrue("purchaseController is not in state 'EditCheckout'", purchaseController.isEditCheckout());
+		assertTrue(ErrorMessage_AddContact, purchaseController.isEditCheckout());
 		PurchaseModel model = purchaseController.getModel();
 		assertTrue(model.getSelectedVouchers().isEmpty());
 		addCode(VoucherCode_1);
 		addCode(VoucherCode_2);
 		assertEquals(2, model.getSelectedVouchers().size());
 		proceedToPayment();
-		assertTrue("purchaseController is not in state 'EditPayment'", purchaseController.isEditPayment());
+		assertTrue(ErrorMessage_EditPayment, purchaseController.isEditPayment());
 		makeInvalidPayment();
 		assertTrue(purchaseController.isPaymentResult());
 		assertTrue(purchaseController.isFinished());
 		assertModel(500, 50, 100, 2);
 		//check Voucher
 		assertEquals(0, model.getVouchers().get(0).getValueRemaining().intValue());
-		assertEquals(VoucherStatus_REDEEMED, model.getVouchers().get(0).getStatus().name().toString());
+		assertEquals(ProductStatus.REDEEMED, model.getVouchers().get(0).getStatus());
 		assertEquals(0, model.getVouchers().get(1).getValueRemaining().intValue());
-		assertEquals(VoucherStatus_REDEEMED, model.getVouchers().get(1).getStatus().name().toString());
+		assertEquals(ProductStatus.REDEEMED, model.getVouchers().get(1).getStatus());
 		assertQueuedTransaction(2, 0);
 	}
 
 	@Test
 	public void testVoucherRedemptionWithTwoDifferentVouchers() throws InterruptedException {
 		PurchaseController purchaseController = init(Arrays.asList(1001L), Collections.EMPTY_LIST, Collections.EMPTY_LIST, false);
-		assertTrue("purchaseController is not in state 'AddContact'", purchaseController.isAddContact());
+		assertTrue(ErrorMessage_AddContact, purchaseController.isAddContact());
 		addFirstContact(1001L);
-		assertTrue("purchaseController is not in state 'EditCheckout'", purchaseController.isEditCheckout());
+		assertTrue(ErrorMessage_EditCheckout, purchaseController.isEditCheckout());
 		PurchaseModel model = purchaseController.getModel();
 		assertTrue(model.getSelectedVouchers().isEmpty());
 		addCode(VoucherCode_1);
 		addCode(VoucherCode_3);
 		assertEquals(2, model.getSelectedVouchers().size());
 		proceedToPayment();
-		assertTrue("purchaseController is not in state 'EditPayment'", purchaseController.isEditPayment());
+		assertTrue(ErrorMessage_EditPayment, purchaseController.isEditPayment());
 		makeInvalidPayment();
 		assertTrue(purchaseController.isPaymentResult());
 		assertTrue(purchaseController.isFinished());
@@ -288,32 +289,32 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 			courseClassVoucher = model.getVouchers().get(0);
 		}
 		assertEquals(450, moneyVoucher.getValueRemaining().intValue());
-		assertEquals("ACTIVE", moneyVoucher.getStatus().name().toString());
-		assertEquals(VoucherStatus_REDEEMED, courseClassVoucher.getStatus().name().toString());
+		assertEquals(ProductStatus.ACTIVE, moneyVoucher.getStatus());
+		assertEquals(ProductStatus.REDEEMED, courseClassVoucher.getStatus());
 	}
 
 	@Test
 	public void testMoneyVoucherRedemptionWithDiscount() throws InterruptedException {
 		PurchaseController purchaseController = init(Arrays.asList(1001L), Collections.EMPTY_LIST, Arrays.asList(1001L), false);
-		assertTrue("purchaseController is not in state 'AddContact'", purchaseController.isAddContact());
+		assertTrue(ErrorMessage_AddContact, purchaseController.isAddContact());
 		addFirstContact(1001L);
-		assertTrue("purchaseController is not in state 'EditCheckout'", purchaseController.isEditCheckout());
+		assertTrue(ErrorMessage_EditCheckout, purchaseController.isEditCheckout());
 		PurchaseModel model = purchaseController.getModel();
 		assertTrue(model.getSelectedVouchers().isEmpty());
 		addCode(VoucherCode_1);
 		assertEquals(1, model.getSelectedVouchers().size());
-		addCode("d1001");
+		addCode(DiscountCode);
 		assertEquals(1, model.getDiscounts().size());
 
 		proceedToPayment();
-		assertTrue("purchaseController is not in state 'EditPayment'", purchaseController.isEditPayment());
+		assertTrue(ErrorMessage_EditPayment, purchaseController.isEditPayment());
 		makeValidPayment();
 		assertTrue(purchaseController.isPaymentResult());
 		assertTrue(purchaseController.isFinished());
 		//check Voucher
 
 		assertEquals(113, model.getVouchers().get(0).getValueRemaining().intValue());
-		assertEquals("ACTIVE", model.getVouchers().get(0).getStatus().name().toString());
+		assertEquals(ProductStatus.ACTIVE, model.getVouchers().get(0).getStatus());
 
 		assertQueuedTransaction(1, 1);
 	}
@@ -321,9 +322,9 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 	@Test
 	public void testMoneyVoucherRedemptionOnDifferentStages() throws InterruptedException {
 		PurchaseController purchaseController = init(Arrays.asList(1001L), Collections.EMPTY_LIST, Collections.EMPTY_LIST, false);
-		assertTrue("purchaseController is not in state 'AddContact'", purchaseController.isAddContact());
+		assertTrue(ErrorMessage_AddContact, purchaseController.isAddContact());
 		addFirstContact(1001L);
-		assertTrue("purchaseController is not in state 'EditCheckout'", purchaseController.isEditCheckout());
+		assertTrue(ErrorMessage_EditCheckout, purchaseController.isEditCheckout());
 		PurchaseModel model = purchaseController.getModel();
 		assertTrue(model.getSelectedVouchers().isEmpty());
 		addCode(VoucherCode_2);
@@ -331,7 +332,7 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 		proceedToPayment();
 		addCode(VoucherCode_1);
 		assertEquals(2, model.getSelectedVouchers().size());
-		assertTrue("purchaseController is not in state 'EditPayment'", purchaseController.isEditPayment());
+		assertTrue(ErrorMessage_EditPayment, purchaseController.isEditPayment());
 		makeInvalidPayment();
 		assertTrue(purchaseController.isPaymentResult());
 		assertTrue(purchaseController.isFinished());
@@ -339,7 +340,7 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 		//check Vouchers
 		Voucher moneyVoucher1;
 		Voucher moneyVoucher2;
-		if (model.getVouchers().get(0).getStatus().name().toString().equals("ACTIVE")) {
+		if (model.getVouchers().get(0).getStatus().equals(ProductStatus.ACTIVE)) {
 			moneyVoucher1 = model.getVouchers().get(0);
 			moneyVoucher2 = model.getVouchers().get(1);
 		} else {
@@ -348,7 +349,7 @@ public class MoneyVoucherRedemptionTest extends ACheckoutTest {
 		}
 		assertEquals(100, moneyVoucher1.getValueRemaining().intValue());
 		assertEquals(0, moneyVoucher2.getValueRemaining().intValue());
-		assertEquals(VoucherStatus_REDEEMED, moneyVoucher2.getStatus().name().toString());
+		assertEquals(ProductStatus.REDEEMED, moneyVoucher2.getStatus());
 		assertQueuedTransaction(2, 0);
 	}
 }

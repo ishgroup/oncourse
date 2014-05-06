@@ -4,6 +4,7 @@
 
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.ProductStatus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +37,7 @@ public class PesonalVoucherRedemptionTest extends ACheckoutTest {
 		assertTrue(purchaseController.isPaymentResult());
 		assertTrue(purchaseController.isFinished());
 		assertEquals(0, model.getVouchers().get(0).getValueRemaining().intValue());
-		assertEquals("Redeemed", model.getVouchers().get(0).getStatus().toString());
+		assertEquals(ProductStatus.REDEEMED, model.getVouchers().get(0).getStatus());
 	}
 
 }
