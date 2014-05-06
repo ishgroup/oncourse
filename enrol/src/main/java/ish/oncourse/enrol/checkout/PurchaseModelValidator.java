@@ -65,6 +65,7 @@ public class PurchaseModelValidator {
             //we need to load the v form the data base to be sure that other process does not use the voucher.
             Voucher dbVoucher = Cayenne.objectForPK(testOC, Voucher.class, voucher.getId());
             actionSV.setVoucher(dbVoucher);
+            actionSV.setContact(testOC.localObject(getModel().getPayer()));
             boolean valid = actionSV.validate();
             if (!valid) {
                 ActionDeselectVoucher actionDV = deselectVoucher.createAction(purchaseController);

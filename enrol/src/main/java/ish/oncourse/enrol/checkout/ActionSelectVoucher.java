@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Voucher;
 import org.apache.cayenne.Cayenne;
 
@@ -7,11 +8,16 @@ import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
 
 public class ActionSelectVoucher extends APurchaseAction {
 
+    /**
+     * the property was introduce to allow to use the action as validator.
+     * we use the property in PurchaseModelValidator to be sure that contact is in the same context as voucher
+     */
+    private Contact contact;
     private Voucher voucher;
 
     @Override
     protected void makeAction() {
-         getModel().selectVoucher(voucher);
+        getModel().selectVoucher(voucher);
     }
 
     @Override
@@ -23,11 +29,15 @@ public class ActionSelectVoucher extends APurchaseAction {
                 this.voucher = Cayenne.objectForPK(getModel().getObjectContext(), Voucher.class, voucherId);
             }
         }
+
+        if (contact == null) {
+            contact = getModel().getPayer();
+        }
     }
 
     @Override
     protected boolean validate() {
-        if (!voucher.canBeUsedBy(getModel().getPayer())) {
+        if (!voucher.canBeUsedBy(contact)) {
             getController().addError(voucherWrongPayer, voucher.getContact().getFullName());
             return false;
         }
@@ -46,5 +56,13 @@ public class ActionSelectVoucher extends APurchaseAction {
 
     public void setVoucher(Voucher voucher) {
         this.voucher = voucher;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 }
