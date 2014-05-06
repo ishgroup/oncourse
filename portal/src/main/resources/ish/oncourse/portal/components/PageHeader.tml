@@ -15,6 +15,9 @@
 
 
     <link rel="stylesheet" type="text/css" href="/s/portal/css/site.css"/>
+    <!--[if IE]>
+      <link rel="stylesheet" type="text/css" href="/s/portal/css/ie.css" />
+    <![endif]-->
  
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;"></script>
