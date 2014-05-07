@@ -612,7 +612,7 @@ private ICayenneService cayenneService;
 		assertEquals(ProductStatus.ACTIVE, voucher.getStatus());
 		assertEquals(new Money("70.0"), voucher.getValueRemaining());
 
-		assertEquals(4, invoice.getPaymentInLines().size());
+		assertEquals(3, invoice.getPaymentInLines().size());
 		assertEquals(1, invoice.getInvoiceLines().size());
 		assertEquals(new Money("120.0"), invoice.getInvoiceLines().get(0).getPriceTotalIncTax());
 
@@ -634,24 +634,19 @@ private ICayenneService cayenneService;
 		assertEquals(1, refundInvoice.getInvoiceLines().size());
 		assertEquals(new Money("-120.0"), refundInvoice.getInvoiceLines().get(0).getPriceTotalIncTax());
 
-		assertEquals(2, refundInvoice.getPaymentInLines().size());
+		assertEquals(1, refundInvoice.getPaymentInLines().size());
 
 		List<PaymentInLine> refundPaymentLines = refundInvoice.getPaymentInLines();
 
 		Ordering.orderList(refundPaymentLines, Arrays.asList(new Ordering(PaymentInLine.AMOUNT_PROPERTY, SortOrder.ASCENDING)));
 
-		assertEquals(new Money("-70.0"), refundInvoice.getPaymentInLines().get(0).getAmount());
-		assertEquals(new Money("-50.0"), refundInvoice.getPaymentInLines().get(1).getAmount());
+		assertEquals(new Money("-120.0"), refundInvoice.getPaymentInLines().get(0).getAmount());
 
-		PaymentIn voucherReversePayment = refundInvoice.getPaymentInLines().get(0).getPaymentIn();
-		PaymentIn moneyReversePayment = refundInvoice.getPaymentInLines().get(1).getPaymentIn();
+		PaymentIn reversePayment = refundInvoice.getPaymentInLines().get(0).getPaymentIn();
 
-		assertNotEquals(voucherReversePayment, moneyReversePayment);
-		assertEquals(PaymentType.REVERSE, voucherReversePayment.getType());
-		assertEquals(PaymentType.REVERSE, moneyReversePayment.getType());
+		assertEquals(PaymentType.REVERSE, reversePayment.getType());
 
-		assertEquals(PaymentStatus.SUCCESS, voucherReversePayment.getStatus());
-		assertEquals(PaymentStatus.SUCCESS, moneyReversePayment.getStatus());
+		assertEquals(PaymentStatus.SUCCESS, reversePayment.getStatus());
 	}
 
 	@Test

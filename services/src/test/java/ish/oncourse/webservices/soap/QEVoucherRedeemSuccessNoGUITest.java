@@ -65,8 +65,9 @@ public abstract class QEVoucherRedeemSuccessNoGUITest extends QEVoucherRedeemNoG
 	protected final void checkAsyncReplicationForVoucherNoGUI(ObjectContext context) {
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 7 records.", 7, queuedRecords.size());
-		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0;
+		assertEquals("Queue should contain 9 records.", 9, queuedRecords.size());
+		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0,
+                voucherPaymentInsFound = 0, vouchersFound=0;
 
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
@@ -79,7 +80,11 @@ public abstract class QEVoucherRedeemSuccessNoGUITest extends QEVoucherRedeemNoG
 				invoiceLinesFound++;
 			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				enrolmentsFound++;
-			} else {
+			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())) {
+                vouchersFound++;
+            }  else if (VOUCHER_PAYMENT_IN_IDENTIFIER.equals(record.getEntityIdentifier())) {
+                voucherPaymentInsFound++;
+            } else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
 			}
 		}
@@ -89,5 +94,7 @@ public abstract class QEVoucherRedeemSuccessNoGUITest extends QEVoucherRedeemNoG
 		assertEquals("Not all Invoices found in a queue", 1, invoicesFound);
 		assertEquals("Not all InvoiceLines found in a  queue", 1, invoiceLinesFound);
 		assertEquals("Not all Enrolments found in a  queue", 1, enrolmentsFound);
+        assertEquals("Not all Vouchers found in a  queue", 1, vouchersFound);
+        assertEquals("Not all VoucherPaymentIn found in a queue", 1, voucherPaymentInsFound);
 	}
 }

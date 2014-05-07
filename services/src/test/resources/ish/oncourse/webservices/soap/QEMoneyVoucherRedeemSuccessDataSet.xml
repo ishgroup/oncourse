@@ -57,5 +57,5 @@
 
     <ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="4"
                  MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="3" angelId="4" code="qwerty" value="100.00" redeemedCoursesCount="0" source="O"
-                 status="0" INVOICELINEID="4"/>
+                 status="0" INVOICELINEID="4" valueOnPurchase="100.00"/>
 </dataset>

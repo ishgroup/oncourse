@@ -43,7 +43,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 	/**
 	 * Returns the primary key property - id of {@link PaymentIn}.
-	 * 
+	 *
 	 * @return
 	 */
 	public Long getId() {
@@ -93,7 +93,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	/**
 	 * Validates the payment details: amount, credit card type, name credit card
 	 * of owner, credit card number, credit card expiry date.
-	 * 
+	 *
 	 * @return true if no errors exist.
 	 */
 	public boolean validateBeforeSend() {
@@ -108,7 +108,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 	/**
 	 * Checks if the payment amount is not null and not negative.
-	 * 
+	 *
 	 * @return true if the payment amount is greater or equal to zero.
 	 */
 	public boolean validatePaymentAmount() {
@@ -122,7 +122,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 	/**
 	 * Checks if the credit card type is filled.
-	 * 
+	 *
 	 * @return true if the credit card type is not null.
 	 */
 	public boolean validateCCType() {
@@ -136,7 +136,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 	/**
 	 * Checks if the credit card owner's name is filled.
-	 * 
+	 *
 	 * @return true if the credit card owner's name is not empty.
 	 */
 	public boolean validateCCName() {
@@ -150,7 +150,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 	/**
 	 * Validates credit card cvv, expecting maximum 4 digits.
-	 * 
+	 *
 	 * @return true if valid
 	 */
 	public boolean validateCVV() {
@@ -166,7 +166,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	/**
 	 * Validates the syntax of the credit card number,
 	 * {@link PaymentIn#getCreditCardNumber()}.
-	 * 
+	 *
 	 * @return The error message.
 	 */
 	public String validateCCNumber() {
@@ -188,7 +188,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	/**
 	 * Validates the credit card expiry date - it should be filed and not in the
 	 * past.
-	 * 
+	 *
 	 * @return true if the expiry date is valid.
 	 */
 	public boolean validateCCExpiry() {
@@ -219,9 +219,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	/**
 	 * Sets the status of payment to {@link PaymentStatus#SUCCESS}, and sets the
 	 * success statuses to the related invoice and enrolment ( {@link EnrolmentStatus#SUCCESS} ).
-	 * 
+	 *
 	 * Invoked when the payment gateway processing is succeed.
-	 * 
+	 *
 	 */
 	public void succeed() {
 		setStatus(PaymentStatus.SUCCESS);
@@ -249,10 +249,10 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			PaymentInUtil.makeSuccess(activeInvoice.getInvoiceLines());
 		}
 	}
-		
+
 	/**
 	 * Finds invoice which is current and is performed operation on.
-	 * 
+	 *
 	 * @return active invoice
 	 */
 	private Invoice findActiveInvoice() {
@@ -272,51 +272,56 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		Invoice activeInvoice = invoices.first();
 		return activeInvoice;
 	}
-	
-	public Collection<PaymentIn> createRefundInvoice(Invoice invoiceToRefund, Collection<PaymentInLine> paymentInLinesToRefund) {
+
+    /**
+     * The method creates one REVERSE payment and two payment lines
+     * to relate direct and reverse invoice and to balance amount owing.
+     * One of payment lines is linked to direct invoice and has the same amount as direct invoice,
+     * other one is linked to reverse invoice and has negative amount.
+     */
+    private Collection<PaymentIn> createRefundInvoice(Invoice invoiceToRefund) {
 		invoiceToRefund.updateAmountOwing();
 
 		Set<PaymentIn> refundPayments = new HashSet<>();
+        List<PaymentInLine> paymentInLinesToRefund = new ArrayList<>(invoiceToRefund.getPaymentInLines());
 
 		//if the owing already balanced, no reason to create any refund invoice
-		if (!Money.isZeroOrEmpty(invoiceToRefund.getAmountOwing())) {
-
+		if (!Money.isZeroOrEmpty(invoiceToRefund.getAmountOwing()) &&
+                paymentInLinesToRefund.size() > 0) {
 			// Creating refund invoice
 			Invoice refundInvoice = invoiceToRefund.createRefundInvoice();
 			LOG.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
 					invoiceToRefund.getId()));
 
-			for (PaymentInLine paymentInLineToRefund : paymentInLinesToRefund) {
+            PaymentIn internalPayment = this.makeShallowCopy();
+            internalPayment.setAmount(Money.ZERO);
+            internalPayment.setType(PaymentType.REVERSE);
+            internalPayment.setStatus(PaymentStatus.SUCCESS);
 
-				PaymentIn internalPayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
-				internalPayment.setAmount(Money.ZERO);
-				internalPayment.setType(PaymentType.REVERSE);
-				internalPayment.setStatus(PaymentStatus.SUCCESS);
-				String sessionId = paymentInLineToRefund.getPaymentIn().getSessionId();
-				if (StringUtils.trimToNull(sessionId) != null) {
-					internalPayment.setSessionId(sessionId);
-				}
+            String sessionId = this.getSessionId();
+            if (StringUtils.trimToNull(sessionId) != null) {
+                internalPayment.setSessionId(sessionId);
+            }
 
-				PaymentInLine refundPL = paymentInLineToRefund.getObjectContext().newObject(PaymentInLine.class);
-				refundPL.setAmount(Money.ZERO.subtract(paymentInLineToRefund.getAmount()));
-				refundPL.setCollege(paymentInLineToRefund.getCollege());
-				refundPL.setInvoice(refundInvoice);
-				refundPL.setPaymentIn(internalPayment);
+            PaymentInLine refundPL = internalPayment.getObjectContext().newObject(PaymentInLine.class);
+            refundPL.setAmount(Money.ZERO.subtract(invoiceToRefund.getTotalGst()));
+            refundPL.setCollege(this.getCollege());
+            refundPL.setInvoice(refundInvoice);
+            refundPL.setPaymentIn(internalPayment);
 
-				PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
-				paymentInLineToRefundCopy.setPaymentIn(internalPayment);
+            PaymentInLine paymentInLineToRefundCopy = internalPayment.getObjectContext().newObject(PaymentInLine.class);
+            paymentInLineToRefundCopy.setAmount(invoiceToRefund.getTotalGst());
+            paymentInLineToRefundCopy.setCollege(this.getCollege());
+            paymentInLineToRefundCopy.setInvoice(invoiceToRefund);
+            paymentInLineToRefundCopy.setPaymentIn(internalPayment);
 
-				invoiceToRefund.setModified(getModified());
-				paymentInLineToRefund.setModified(getModified());
-
-				refundPayments.add(internalPayment);
-			}
-
-		} else {
-			for (PaymentInLine paymentInLine : paymentInLinesToRefund) {
-				refundPayments.add(paymentInLine.getPaymentIn());
-			}
+            invoiceToRefund.setModified(getModified());
+            refundPayments.add(internalPayment);
 		}
+
+        for (PaymentInLine paymentInLine : paymentInLinesToRefund) {
+            refundPayments.add(paymentInLine.getPaymentIn());
+        }
 
 		// Fail enrollments on invoiceToRefund
 		PaymentInUtil.makeFail(invoiceToRefund.getInvoiceLines());
@@ -379,7 +384,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				}
 			}
 			if (invoiceToRefund != null) {
-				return createRefundInvoice(invoiceToRefund, new ArrayList<>(invoiceToRefund.getPaymentInLines()));
+				return createRefundInvoice(invoiceToRefund);
 			} else {
 				LOG.error(String.format("Can not find invoice to refund on paymentIn:%s.", getId()));
 			}

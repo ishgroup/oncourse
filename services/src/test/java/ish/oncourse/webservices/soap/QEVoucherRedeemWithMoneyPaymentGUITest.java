@@ -95,8 +95,9 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 	protected final void checkAsyncReplicationForVoucherAndCreditCardPayment(ObjectContext context) {
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 9 records.", 9, queuedRecords.size());
-		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0;
+		assertEquals("Queue should contain 11 records.", 11, queuedRecords.size());
+		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0,
+        vouchersFound = 0, voucherPaymentInsFound = 0;
 
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
@@ -109,7 +110,11 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 				invoiceLinesFound++;
 			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				enrolmentsFound++;
-			} else {
+            } else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())) {
+                vouchersFound++;
+            } else if (VOUCHER_PAYMENT_IN_IDENTIFIER.equals(record.getEntityIdentifier())) {
+                voucherPaymentInsFound++;
+			}  else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
 			}
 		}
@@ -119,12 +124,14 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 		assertEquals("Not all Invoices found in a queue", 1, invoicesFound);
 		assertEquals("Not all InvoiceLines found in a  queue", 2, invoiceLinesFound);
 		assertEquals("Not all Enrolments found in a  queue", 2, enrolmentsFound);
+        assertEquals("Not all Vouchers found in a  queue", 1, vouchersFound);
+        assertEquals("Not all VoucherPaymentIns found in a  queue", 1, voucherPaymentInsFound);
 	}
 
 	protected final void checkAsyncReplicationForVoucherAndCreditCardReverseInvoicePayment(ObjectContext context) {
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 21 records.", 21, queuedRecords.size());
+		assertEquals("Queue should contain 18 records.", 18, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0,
 				vouchersFound = 0, contactsFound = 0, studentsFound = 0;
 
@@ -150,8 +157,8 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 			}
 		}
 
-		assertEquals("Not all PaymentIns found in a queue", 4, paymentsFound);
-		assertEquals("Not all PaymentInLines found in a queue", 6, paymentLinesFound);
+		assertEquals("Not all PaymentIns found in a queue", 3, paymentsFound);
+		assertEquals("Not all PaymentInLines found in a queue", 4, paymentLinesFound);
 		assertEquals("Not all Invoices found in a queue", 2, invoicesFound);
 		assertEquals("Not all InvoiceLines found in a  queue", 4, invoiceLinesFound);
 		assertEquals("Not all Enrolments found in a  queue", 2, enrolmentsFound);

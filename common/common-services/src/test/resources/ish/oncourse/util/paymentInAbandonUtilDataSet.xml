@@ -73,7 +73,7 @@
             paymentInId="10"/>
             
 	<Invoice id="2" angelId="2" source="O" amountOwing="0.00" contactId="4" collegeId="1" dateDue="2011-09-20 11:14:54" 
-		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="123" totalExGst="109.09" totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="123" totalExGst="109.09" totalGst="120" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 	
 	<InvoiceLine id="5" angelId="5" collegeId="1" invoiceId="2" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
     	taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
@@ -99,7 +99,7 @@
                     paymentInId="20"/>
 
     <Invoice id="20" angelId="20" source="O" amountOwing="0.00" contactId="4" collegeId="1" dateDue="2011-09-20 11:14:54"
-             description="invoice for testing multiple enrollments reverse" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="91.00" totalGst="9.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             description="invoice for testing multiple enrollments reverse" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="91.00" totalGst="100" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
     <InvoiceLine id="20" angelId="20" collegeId="1" invoiceId="20" quantity="1.0" discountEachExTax="0.00" priceEachExTax="45.50"
                  taxEach="4.50" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
@@ -123,7 +123,7 @@
 		paymentInId="300"/>
 
 	<Invoice id="4" angelId="4" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54"
-			 description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+			 description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="120" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
 	<InvoiceLine id="7" angelId="7" collegeId="1" invoiceId="4" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
 				 taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>

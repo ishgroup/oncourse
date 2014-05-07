@@ -58,7 +58,7 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 		List<PaymentInLine> paymentInLines = invoice.getPaymentInLines();
 		List<PaymentInLine> paymentInLinesDB = invoiceDB.getPaymentInLines();
 		//VoucherPaymentIn + MoneyPaymentIn + ReversePaymentIn*2
-		assertEquals(4, paymentInLinesDB.size());
+		assertEquals(3, paymentInLinesDB.size());
 		assertEquals(paymentInLines.size(), paymentInLinesDB.size());
 
 		int paymentInEqualsCount = 0;
@@ -94,9 +94,7 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 					} else {
 						//check reverse PaymentInLine and PaymentIn
 						assertEquals(PaymentType.REVERSE, paymentInDB.getType());
-						if ((paymentInLineDB.getAmount().intValue() != 100) && (paymentInLineDB.getAmount().intValue() != 450)) {
-							assertTrue("Failed amount in reverse PaymentInLines", false);
-						}
+                        assertEquals("Failed amount in reverse PaymentInLines", 550, paymentInLineDB.getAmount().intValue());
 						assertEquals(PaymentStatus.SUCCESS, paymentInDB.getStatus());
 						assertEquals(2, paymentInDB.getPaymentInLines().size());
 						PaymentInLine paymentInLineDB1;
@@ -117,7 +115,7 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 			}
 		}
 		//VoucherPaymentIn + MoneyPaymentIn + ReversePaymentIn*2
-		assertEquals(4, paymentInEqualsCount);
+		assertEquals(3, paymentInEqualsCount);
 		assertEquals(1, payIn_VoucherPayIn_Links);
 	}
 
@@ -141,7 +139,7 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 
 
 		//check second QueuedTransaction contains right QueuedRecords
-		assertEquals(18, listQT.get(1).getQueuedRecords().size());
+		assertEquals(15, listQT.get(1).getQueuedRecords().size());
 		List<QueuedRecord> queuedRecords = listQT.get(1).getQueuedRecords();
 		Expression exp1 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Enrolment");
 		assertEquals(1, exp1.filterObjects(queuedRecords).size());
@@ -153,10 +151,10 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 		assertEquals(2, exp3.filterObjects(queuedRecords).size());
 		//VoucherPaymentInLine + MoneyVoucherPaymentInLine + ReversePaymentInLine*4
 		Expression exp4 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentInLine");
-		assertEquals(6, exp4.filterObjects(queuedRecords).size());
+		assertEquals(4, exp4.filterObjects(queuedRecords).size());
 		//VoucherPaymentIn + MoneyVoucherPaymentIn + ReversePaymentIn*2
 		Expression exp5 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentIn");
-		assertEquals(4, exp5.filterObjects(queuedRecords).size());
+		assertEquals(3, exp5.filterObjects(queuedRecords).size());
 		Expression exp6 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Voucher");
 		assertEquals(1, exp6.filterObjects(queuedRecords).size());
 		Expression exp7 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Student");
