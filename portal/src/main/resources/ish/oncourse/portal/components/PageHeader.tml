@@ -32,7 +32,7 @@
     <![endif]-->
     <!--  SELECTIVZR  -->
     <!--[if (lt IE 9)]>
-        <script src="/assets/js/lib/selectivizr-min.js"></script>        
+        <script src="/s/portal/js/selectivizr-min.js"></script>        
     <![endif]-->
 
   
