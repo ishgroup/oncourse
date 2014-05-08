@@ -11,6 +11,11 @@ public class ActionDisableProductItem extends APurchaseAction{
 
 	@Override
 	protected void makeAction() {
+		/*
+		 we need to clear voucher redemption data because during the action structure of invoiceLines was changed
+		 (invoiceLine for the productItem is removed)
+		*/
+		getController().getVoucherRedemptionHelper().clear();
 		if (productItem instanceof Voucher) {
             if(getController().getVoucherService().isVoucherWithoutPrice(((Voucher) productItem).getVoucherProduct())) {
                 ((Voucher) productItem).setRedemptionValue(Money.ZERO);
