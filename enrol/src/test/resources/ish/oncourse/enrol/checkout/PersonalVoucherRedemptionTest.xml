@@ -35,6 +35,19 @@
 			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
 			 isMarketingViaSMSAllowed="1"/>
 
+	<Student id="1002" collegeId="1" angelId="201"
+			 created="2011-09-12 01:02:30.0" modified="2011-09-12 01:02:30.0"
+			 disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+			 indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+			 priorEducationCode="0" labourForceType="0"/>
+
+	<Contact id="1002" collegeId="1" studentId="1002"
+			 angelId="3" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+			 isMale="1" familyName="Ledger" givenName="Alex" emailAddress="av@noname.by"
+			 dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1"/>
+
 	<Course id="1001" collegeId="1" angelId="200" code="AAV"
 			isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
 			created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
@@ -64,6 +77,36 @@
 				 code="v1003" value="450.00"
 				 source="O" status="0" valueOnPurchase="200.00"
 				 EXPIRYDATE="2113-07-01 00:00:00.001"/>
+
+	<Invoice id="1004" source="O" amountOwing="0" contactId="1001"
+			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
+			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
+			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	<InvoiceLine id="1004" collegeId="1" invoiceId="1004" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="100.00" taxEach="10.00"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line"/>
+	<Product id="1004" collegeId="1" angelId="4" SKU="1004" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="1004"
+			 EXPIRYTYPE="4" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="1004" TYPE="3"
+			 TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00" expiryDays="365"/>
+	<ProductItem ID="1004" angelId="1004" collegeId="1"
+				 CREATEDON="2012-05-14 14:33:16.537" MODIFIEDON="2012-05-14 14:35:01.618"
+				 INVOICELINEID="1003" PRODUCTID="1003" TYPE="3"
+				 code="v1004" value="400.00"
+				 source="O" status="0" valueOnPurchase="200.00"
+				 EXPIRYDATE="2113-07-01 00:00:00.001"/>
+
+	<Contact id="2001" collegeId="1"
+			 countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+			 isCompany="1" isMale="1" familyName="Company1" givenName="Company1"
+			 emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1"/>
+	<CorporatePass id="2001" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
+				   contactId="2001" password="password1"/>
+	<CorporatePass_CourseClass id="1" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
+							   corporatePassId="2001" courseClassId="1001"/>
+
 
 	<Preference id="2" collegeId="1" name="payment.gateway.type"
 				value_string="TEST"/>
