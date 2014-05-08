@@ -569,18 +569,22 @@ public class PurchaseController {
 
     private void updateVoucherPayments() {
         voucherRedemptionHelper.clear();
-        for (Voucher voucher : getModel().getSelectedVouchers()) {
-            voucherRedemptionHelper.addVoucher(voucher, voucher.getValueRemaining());
+
+        if (getState() != State.editCorporatePass) {
+
+            for (Voucher voucher : getModel().getSelectedVouchers()) {
+                voucherRedemptionHelper.addVoucher(voucher, voucher.getValueRemaining());
+            }
+
+            voucherRedemptionHelper.addInvoiceLines(getModel().getInvoice().getInvoiceLines());
+
+            if (isApplyPrevOwing())
+                voucherRedemptionHelper.addPreviousOwingInvoices(InvoiceUtils.getOwingInvoices(getModel().getPayer()));
+
+            voucherRedemptionHelper.processAgainstInvoices();
+
+            getModel().setVoucherPayments(voucherRedemptionHelper.getPayments());
         }
-
-        voucherRedemptionHelper.addInvoiceLines(getModel().getInvoice().getInvoiceLines());
-
-        if (isApplyPrevOwing())
-            voucherRedemptionHelper.addPreviousOwingInvoices(InvoiceUtils.getOwingInvoices(getModel().getPayer()));
-
-        voucherRedemptionHelper.processAgainstInvoices();
-
-        getModel().setVoucherPayments(voucherRedemptionHelper.getPayments());
     }
 
 	public Money updateTotalIncGst() {
@@ -892,7 +896,8 @@ public class PurchaseController {
         incorrectCode,
         voucherAlreadyAdded,
         voucherWrongPayer,
-        voucherAlreadyBeingUsed
+        voucherAlreadyBeingUsed,
+        voucherRedeemNotAllow
         ;
 
 		public String getMessage(Messages messages, Object... params) {

@@ -34,6 +34,11 @@ public class ActionEnableVoucher extends APurchaseAction {
             getController().addError(voucherAlreadyBeingUsed);
             return false;
         }
+        if (PurchaseController.State.editCorporatePass == getController().getState())
+        {
+            getController().addWarning(voucherRedeemNotAllow);
+            return false;
+        }
         return true;
     }
 
