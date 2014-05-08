@@ -14,7 +14,9 @@
 				  eventName="${eventName}" cart="${cart}"/>
 		</head>
 		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
-			<div  t:type="ui/BodyStructure" webNodeType="webNodeType">
+            <span t:type="ui/googletagmanager" eventName="${eventName}" cart="${cart}"/>
+
+            <div  t:type="ui/BodyStructure" webNodeType="webNodeType">
 				<t:body/>
 			</div>
 		</body>
