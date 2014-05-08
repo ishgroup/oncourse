@@ -38,7 +38,7 @@
                     <div class="info">
                         <div class="label">Price</div>
                         <t:if t:test="voucherProductWithoutPrice">
-                            <div itemprop="price">This voucher have no specified price</div>
+                            <div itemprop="price">This voucher has no specified price</div>
                         </t:if>
                         <t:unless test="voucherProductWithoutPrice" >
                             <div class="fee"><t:output value="price" format="moneyFormat(price)" />
