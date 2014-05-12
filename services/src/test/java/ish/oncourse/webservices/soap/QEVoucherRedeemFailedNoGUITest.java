@@ -6,6 +6,8 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.v6.stubs.replication.InvoiceStub;
 import ish.oncourse.webservices.v6.stubs.replication.VoucherPaymentInStub;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 
 import java.math.BigDecimal;
@@ -31,39 +33,25 @@ public abstract class QEVoucherRedeemFailedNoGUITest extends QEVoucherRedeemNoGU
 	protected void checkAsyncReplicationForVoucherNoGUIFailed(ObjectContext context) {
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 15 records.", 15, queuedRecords.size());
-		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0,
-				vouchersFound = 0, contactsFound = 0, studentsFound = 0;
+		assertEquals("Queue should contain 16 records.", 16, queuedRecords.size());
 
-		for (QueuedRecord record : queuedRecords) {
-			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				paymentsFound++;
-			} else if (PAYMENT_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				paymentLinesFound++;
-			} else if (INVOICE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				invoicesFound++;
-			} else if (INVOICE_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				invoiceLinesFound++;
-			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
-				enrolmentsFound++;
-			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())){
-				vouchersFound++;
-			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())){
-				contactsFound++;
-			} else if (STUDENT_IDENTIFIER.equals(record.getEntityIdentifier())){
-				studentsFound++;
-			} else {
-				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
-			}
-		}
-
-		assertEquals("Not all PaymentIns found in a queue", 3, paymentsFound);
-		assertEquals("Not all PaymentInLines found in a queue", 4, paymentLinesFound);
-		assertEquals("Not all Invoices found in a queue", 2, invoicesFound);
-		assertEquals("Not all InvoiceLines found in a  queue", 2, invoiceLinesFound);
-		assertEquals("Not all Enrolments found in a  queue", 1, enrolmentsFound);
-		assertEquals("Not all Vouchers found in a  queue", 1, vouchersFound);
-		assertEquals("Not all Contacts found in a  queue", 1, contactsFound);
-		assertEquals("Not all Students found in a  queue", 1, studentsFound);
+		Expression exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, PAYMENT_IDENTIFIER);
+		assertEquals("Not all PaymentIns found in a queue", 3, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, PAYMENT_LINE_IDENTIFIER);
+		assertEquals("Not all PaymentInLines found in a queue", 4, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, INVOICE_IDENTIFIER);
+		assertEquals("Not all Invoices found in a queue", 2, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, INVOICE_LINE_IDENTIFIER);
+		assertEquals("Not all InvoiceLines found in a  queue", 2, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, ENROLMENT_IDENTIFIER);
+		assertEquals("Not all Enrolments found in a  queue", 1, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, VOUCHER_PAYMENT_IN_IDENTIFIER);
+		assertEquals("Not all VoucherPaymentIns found in a  queue", 1, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, VOUCHER_IDENTIFIER);
+		assertEquals("Not all Vouchers found in a  queue", 1, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, CONTACT_IDENTIFIER);
+		assertEquals("Not all Contacts found in a  queue", 1, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, STUDENT_IDENTIFIER);
+		assertEquals("Not all Students found in a  queue", 1, exp.filterObjects(queuedRecords).size());
 	}
 }

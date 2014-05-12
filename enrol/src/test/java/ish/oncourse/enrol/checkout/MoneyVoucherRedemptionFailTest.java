@@ -94,7 +94,7 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 					} else {
 						//check reverse PaymentInLine and PaymentIn
 						assertEquals(PaymentType.REVERSE, paymentInDB.getType());
-                        assertEquals("Failed amount in reverse PaymentInLines", 550, paymentInLineDB.getAmount().intValue());
+						assertEquals("Failed amount in reverse PaymentInLines", 550, paymentInLineDB.getAmount().intValue());
 						assertEquals(PaymentStatus.SUCCESS, paymentInDB.getStatus());
 						assertEquals(2, paymentInDB.getPaymentInLines().size());
 						PaymentInLine paymentInLineDB1;
@@ -149,10 +149,10 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 		//Invoice + ReverseInvoice
 		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Invoice");
 		assertEquals(2, exp.filterObjects(queuedRecords).size());
-		//VoucherPaymentInLine + MoneyVoucherPaymentInLine + ReversePaymentInLine*4
+		//VoucherPaymentInLine + MoneyVoucherPaymentInLine + ReversePaymentInLine*2
 		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentInLine");
 		assertEquals(4, exp.filterObjects(queuedRecords).size());
-		//VoucherPaymentIn + MoneyVoucherPaymentIn + ReversePaymentIn*2
+		//VoucherPaymentIn + MoneyVoucherPaymentIn + ReversePaymentIn*1
 		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentIn");
 		assertEquals(3, exp.filterObjects(queuedRecords).size());
 		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Voucher");
@@ -161,8 +161,8 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 		assertEquals(1, exp.filterObjects(queuedRecords).size());
 		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Contact");
 		assertEquals(1, exp.filterObjects(queuedRecords).size());
-        exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "VoucherPaymentIn");
-        assertEquals(1, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "VoucherPaymentIn");
+		assertEquals(1, exp.filterObjects(queuedRecords).size());
 	}
 
 	@Test

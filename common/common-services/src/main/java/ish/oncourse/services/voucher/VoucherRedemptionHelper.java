@@ -228,7 +228,7 @@ public class VoucherRedemptionHelper {
         Money leftToPayForCurrentInvoice = Money.ZERO;
 
         for (InvoiceLine il : invoiceLinesList) {
-            // we suppress to redem a money voucher for vouchers purchase
+            // we suppress to redeem a money voucher for vouchers purchase
             if (isVoucherInvoiceLine(il))
                 continue;
             leftToPayForCurrentInvoice = leftToPayForCurrentInvoice
