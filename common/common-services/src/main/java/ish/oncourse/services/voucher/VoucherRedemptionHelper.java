@@ -347,7 +347,7 @@ public class VoucherRedemptionHelper {
 
     private VoucherPaymentIn getPaymentForVoucher(Voucher voucher, InvoiceLine il, boolean create) {
         for (VoucherPaymentIn vp : voucher.getVoucherPaymentIns()) {
-            if (vp.getPayment().getStatus() == PaymentStatus.NEW &&
+            if (vp.getPayment().getStatus() == PaymentStatus.IN_TRANSACTION &&
                     (il == null || il.equals(vp.getInvoiceLine()))) {
                 return vp;
             }
