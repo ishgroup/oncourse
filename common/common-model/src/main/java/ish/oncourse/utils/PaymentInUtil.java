@@ -133,5 +133,14 @@ public class PaymentInUtil {
 		voucher.setStatus(ProductStatus.ACTIVE);
 
 		voucherPayment.setStatus(PaymentStatus.FAILED);
-	}
+
+        /*
+        we need to update modification date for VoucherPaymentIn to be sure these VoucherPaymentIn objects
+        will be sent to angel in the same transaction as and the voucher payment.
+         */
+        List<VoucherPaymentIn> voucherPaymentIns = voucherPayment.getVoucherPaymentIns();
+        for (VoucherPaymentIn voucherPaymentIn : voucherPaymentIns) {
+            voucherPaymentIn.setModified(new Date());
+        }
+    }
 }

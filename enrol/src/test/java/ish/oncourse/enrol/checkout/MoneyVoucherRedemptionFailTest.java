@@ -139,28 +139,30 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 
 
 		//check second QueuedTransaction contains right QueuedRecords
-		assertEquals(15, listQT.get(1).getQueuedRecords().size());
+		assertEquals(16, listQT.get(1).getQueuedRecords().size());
 		List<QueuedRecord> queuedRecords = listQT.get(1).getQueuedRecords();
-		Expression exp1 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Enrolment");
-		assertEquals(1, exp1.filterObjects(queuedRecords).size());
+		Expression exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Enrolment");
+		assertEquals(1, exp.filterObjects(queuedRecords).size());
 		//InvoiceLine + ReverseInvoiceLine
-		Expression exp2 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "InvoiceLine");
-		assertEquals(2, exp2.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "InvoiceLine");
+		assertEquals(2, exp.filterObjects(queuedRecords).size());
 		//Invoice + ReverseInvoice
-		Expression exp3 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Invoice");
-		assertEquals(2, exp3.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Invoice");
+		assertEquals(2, exp.filterObjects(queuedRecords).size());
 		//VoucherPaymentInLine + MoneyVoucherPaymentInLine + ReversePaymentInLine*4
-		Expression exp4 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentInLine");
-		assertEquals(4, exp4.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentInLine");
+		assertEquals(4, exp.filterObjects(queuedRecords).size());
 		//VoucherPaymentIn + MoneyVoucherPaymentIn + ReversePaymentIn*2
-		Expression exp5 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentIn");
-		assertEquals(3, exp5.filterObjects(queuedRecords).size());
-		Expression exp6 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Voucher");
-		assertEquals(1, exp6.filterObjects(queuedRecords).size());
-		Expression exp7 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Student");
-		assertEquals(1, exp7.filterObjects(queuedRecords).size());
-		Expression exp8 = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Contact");
-		assertEquals(1, exp8.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentIn");
+		assertEquals(3, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Voucher");
+		assertEquals(1, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Student");
+		assertEquals(1, exp.filterObjects(queuedRecords).size());
+		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Contact");
+		assertEquals(1, exp.filterObjects(queuedRecords).size());
+        exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "VoucherPaymentIn");
+        assertEquals(1, exp.filterObjects(queuedRecords).size());
 	}
 
 	@Test
