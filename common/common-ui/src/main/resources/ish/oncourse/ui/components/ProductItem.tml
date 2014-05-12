@@ -68,6 +68,9 @@
                             </t:if>
                         </t:unless>
                     </div>
+                    <t:remove>We need the code only to show product name in confirmation order dialog.
+                        We use the implmentation in the template because we have the same for courseClass item.  </t:remove>
+                    <div class="summary" itemprop="name">${product.name}</div>
                 </div>
             </div>
             <div class="classAction">
