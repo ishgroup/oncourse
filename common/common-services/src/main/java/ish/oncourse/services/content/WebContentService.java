@@ -45,10 +45,15 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
 					searchProperty, value));
 		}
+		
+		SelectQuery query = new SelectQuery(WebContent.class, qualifier);
+		List<WebContent> results = cayenneService.sharedContext().performQuery(query);
+		
+		if (!results.isEmpty()) {
+			return results.get(0);
+		}
 
-		WebContent result = findRandomWebContentByQualifier(qualifier);
-
-		return result;
+		return null;
 	}
 
 	@Override
@@ -190,32 +195,4 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		return result;
 	}
 
-	public WebContent findRandomWebContentByQualifier(Expression qualifier) {
-
-		ObjectContext sharedContext = cayenneService.sharedContext();
-
-		EJBQLQuery q = new EJBQLQuery(
-				"select count(i) from WebContent i where "
-						+ qualifier.toEJBQL("i"));
-
-		Long count = (Long) sharedContext.performQuery(q).get(0);
-
-		WebContent randomResult = null;
-
-		int attempt = 0;
-
-		if (count != null && count > 0) {
-			while (randomResult == null && attempt++ < 5) {
-				int random = new Random().nextInt(count.intValue());
-
-				SelectQuery query = new SelectQuery(WebContent.class, qualifier);
-				query.setFetchOffset(random);
-				query.setFetchLimit(1);
-				randomResult = (WebContent) Cayenne.objectForQuery(
-						sharedContext, query);
-			}
-		}
-
-		return randomResult;
-	}
 }
