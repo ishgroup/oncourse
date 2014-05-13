@@ -5,6 +5,8 @@
 
     <Environment name="asset.fileStorageRoot" override="false" type="java.lang.String" value="/var/tomonCourse/assets" />
     <Environment name="asset.syncScript" override="false" type="java.lang.String" value="/var/tomonCourse/scripts/assetSync.sh" />
+	
+	<Environment name="s.root" override="false" type="java.lang.String" value="/var/onCourse/s"/>
     
     <Environment name="cache.enabled" override="false" type="java.lang.Boolean" value="false"/>
 </Context>

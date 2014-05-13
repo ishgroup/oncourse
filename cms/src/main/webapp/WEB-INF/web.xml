@@ -24,7 +24,22 @@
 		<filter-name>app</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
+	<filter>
+		<filter-name>MiltonFilter</filter-name>
+		<filter-class>io.milton.servlet.MiltonFilter</filter-class>
+
+		<init-param>
+			<param-name>milton.configurator</param-name>
+			<param-value>ish.oncourse.cms.webdav.Configurator</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>MiltonFilter</filter-name>
+		<url-pattern>/webdav/*</url-pattern>
+	</filter-mapping>
+
 	<welcome-file-list>
 		<welcome-file>/</welcome-file>
 	</welcome-file-list>

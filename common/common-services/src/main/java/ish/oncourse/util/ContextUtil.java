@@ -21,6 +21,8 @@ public class ContextUtil {
 	public static final String STORAGE_ACCESS_ID_PROPERTY_KEY = "storage.access.id";
 	public static final String STORAGE_ACCESS_KEY_PROPERTY_KEY = "storage.access.key";
 	
+	public static final String S_ROOT = "s.root";
+	
 	/**
 	 * Look up specified path in the apps context
 	 * 
@@ -86,6 +88,15 @@ public class ContextUtil {
 			return (String) lookup(STORAGE_ACCESS_KEY_PROPERTY_KEY);
 		} catch (Exception e) {
 			LOGGER.warn("storage.access.key is not configured in context.xml, S3 operations won't be available.");
+			return null;
+		}
+	}
+	
+	public static String getSRoot() {
+		try {
+			return (String) lookup(S_ROOT);
+		} catch (Exception e) {
+			LOGGER.warn("s.root is not configured in context.xml, webdav functionality will not be available.");
 			return null;
 		}
 	}
