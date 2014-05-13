@@ -132,8 +132,8 @@
 					where s.courseClassId='${courseClass.id}'"
                 	deltaImportQuery="select distinct lower(dayname(IFNULL(IFNULL(CONVERT_TZ(s.startDate,'GMT',s.timeZone), IFNULL(CONVERT_TZ(s.startDate,'GMT', si.timeZone), CONVERT_TZ(s.startDate,'GMT', co.timeZone))),s.startDate))) as dayName, 
                 	IF(DAYOFWEEK(IFNULL(IFNULL(CONVERT_TZ(s.startDate,'GMT',s.timeZone), IFNULL(CONVERT_TZ(s.startDate,'GMT', si.timeZone), CONVERT_TZ(s.startDate,'GMT', co.timeZone))),s.startDate)) in (1,7), 'weekend', 'weekday') as dayType,
-					IF(HOUR(IFNULL(IFNULL(CONVERT_TZ(s.startDate,'GMT',s.timeZone), IFNULL(CONVERT_TZ(s.startDate,'GMT', si.timeZone), CONVERT_TZ(s.startDate,'GMT', co.timeZone))),s.startDate)) &gt; 6 
-					and HOUR(IFNULL(IFNULL(CONVERT_TZ(s.startDate,'GMT',s.timeZone), IFNULL(CONVERT_TZ(s.startDate,'GMT', si.timeZone), CONVERT_TZ(s.startDate,'GMT', co.timeZone))),s.startDate)) &lt; 17, 'daytime', 'evening') as time 
+					IF(HOUR(IFNULL(IFNULL(CONVERT_TZ(s.startDate,'GMT',s.timeZone), IFNULL(CONVERT_TZ(s.startDate,'GMT', si.timeZone), CONVERT_TZ(s.startDate,'GMT', co.timeZone))),s.startDate)) &gt; 6
+					and HOUR(IFNULL(IFNULL(CONVERT_TZ(s.endDate,'GMT',s.timeZone), IFNULL(CONVERT_TZ(s.endDate,'GMT', si.timeZone), CONVERT_TZ(s.endDate,'GMT', co.timeZone))),s.endDate)) &lt; 17, 'daytime', 'evening') as time
 					from Session s left join CourseClass cc on s.courseClassId=cc.id left join Room ro on cc.roomId=ro.id left join Site si on ro.siteId=si.id left join College co on cc.collegeId=co.id 
 					where s.id='${dataimporter.delta.id}'"
 					deltaQuery="select id from Session where modified &gt; '${dataimporter.last_index_time}'" 
