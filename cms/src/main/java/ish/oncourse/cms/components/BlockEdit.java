@@ -7,6 +7,7 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.ui.pages.internal.Page;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
@@ -58,15 +59,15 @@ public class BlockEdit {
 		editBlock = block.getPersistenceState() == PersistenceState.NEW ? block : (WebContent) cayenneService
 				.newContext().localObject(block.getObjectId(), block);
 	}
-
-	private boolean isSessionAndEntityValid() {
+	//#14616
+	//if the session expired or the context for edit block were detached, we need to leave the page without process of required action.
+	private boolean isSessionValid() {
 		return (request.getSession(false) != null && editBlock != null && editBlock.getObjectContext() != null);
 	}
 	
 	Object onSubmitFromBlockEditForm() {
-		//#14616
-		//if the session expired or the context for edit block were detached, we need to leave the page without process of required action.
-		if (!isSessionAndEntityValid()) {
+		
+		if (!isSessionValid()) {
 			return page.getReloadPageBlock();
 		}
 		ObjectContext ctx = editBlock.getObjectContext();
@@ -104,7 +105,7 @@ public class BlockEdit {
 	}
 	
 	Object onFailureFromBlockEditForm() {
-		if (!isSessionAndEntityValid()){
+		if (!isSessionValid()){
 			return page.getReloadPageBlock();
 		}
 		return this;
@@ -115,22 +116,16 @@ public class BlockEdit {
 			return;
 		}
 
-		String editBlockName = editBlock.getName();
+		String blockName = StringUtils.trimToEmpty(editBlock.getName());
 		
-		if (editBlock.getName() == null || "".equals(editBlock.getName())) {
-			blockEditForm.recordError(messages.get("message-emptyBlockName"));
+		if (blockName.length() < 3) {
+			blockEditForm.recordError(messages.get("message-shortBlockName"));
 			return;
 		}
-		if (editBlock.getName().length() < 3) {
-			blockEditForm.recordError(messages.get("message-smallBlockName"));
-			return;
-		}
-		
-		WebContent blockByName = webContentService.getBlockByName(editBlockName);
-		if (webContentService.getBlockByName(editBlockName)!=null){
-			if (blockByName.getObjectId()!=editBlock.getObjectId()){
-				blockEditForm.recordError(messages.get("message-DuplicateBlockName"));
-			}
+		//check blockName to unique exclude his blockName
+		WebContent block = webContentService.getBlockByName(blockName);
+		if (block != null && !block.getObjectId().equals(editBlock.getObjectId())){
+				blockEditForm.recordError(messages.get("message-duplicateBlockName"));
 		}
 	}	
 }

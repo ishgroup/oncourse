@@ -13,6 +13,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
@@ -197,20 +198,18 @@ public class PageOptions {
 		if (cancelEditing) {
 			return;
 		}
-		if (editNode.getName() == null || "".equals(editNode.getName())) {
-			optionsForm.recordError(messages.get("message-emptyPageName"));
-			return;
-		}
-		if (editNode.getName().length() < 3) {
-			optionsForm.recordError(messages.get("message-smallPageName"));
-			return;
-		}
 
-		WebNode webNodeByName = webContentService.getWebNodeByName(editNode.getName());
-		if (webNodeByName!=null) {
-			if (webNodeByName.getObjectId()!=editNode.getObjectId()){
-				optionsForm.recordError(messages.get("message-DuplicatePageName"));
-			}	
+		String pageName = StringUtils.trimToEmpty(editNode.getName());
+		
+		if (pageName.length() < 3) {
+			optionsForm.recordError(messages.get("message-shortPageName"));
+			return;
+		}
+		
+		//check blockName to unique exclude his blockName
+		WebNode webNode = webContentService.getWebNodeByName(editNode.getName());
+		if (webNode!=null && !webNode.getObjectId().equals(editNode.getObjectId()) ) {
+			optionsForm.recordError(messages.get("message-duplicatePageName"));		
 		}
 	}
 
