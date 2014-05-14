@@ -191,8 +191,8 @@ public class WebNodeService implements IWebNodeService {
 
 		WebSite webSite = (WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null);
 		WebNodeType webNodeType = (WebNodeType) ctx.localObject(webNodeTypeService.getDefaultWebNodeType().getObjectId(), null);
-
-        return createNewNodeBy(webSite, webNodeType, NEW_PAGE_WEB_NODE_NAME, SAMPLE_WEB_CONTENT, getNextNodeNumber());
+		Integer nextNodeNumber = getNextNodeNumber();
+		return createNewNodeBy(webSite, webNodeType, NEW_PAGE_WEB_NODE_NAME + " (" + nextNodeNumber + ")" , SAMPLE_WEB_CONTENT, nextNodeNumber);
 	}
 
     public synchronized WebNode createNewNodeBy(WebSite webSite,

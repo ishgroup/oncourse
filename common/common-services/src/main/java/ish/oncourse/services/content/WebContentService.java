@@ -1,30 +1,18 @@
 package ish.oncourse.services.content;
 
-import ish.oncourse.model.RegionKey;
-import ish.oncourse.model.WebContent;
-import ish.oncourse.model.WebContentComparator;
-import ish.oncourse.model.WebContentVisibility;
-import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
+import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.*;
 
 public class WebContentService extends BaseService<WebContent> implements IWebContentService {
 
@@ -195,4 +183,39 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		return result;
 	}
 
+
+	@Override
+		 public WebContent getBlockByName(String webContentName) {
+		WebContent webContent = null;
+		SelectQuery selectQuery = new SelectQuery(WebContent.class);
+		selectQuery.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_PROPERTY,
+				webSiteService.getCurrentWebSite()));
+		Expression expression = ExpressionFactory.matchExp(
+				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
+						+ WebContentVisibility.WEB_NODE_PROPERTY, null);
+		expression = expression.orExp(ExpressionFactory.matchDbExp(
+				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
+						+ WebContentVisibility.ID_PK_COLUMN, null));
+		selectQuery.andQualifier(expression);
+		selectQuery.andQualifier(ExpressionFactory.matchExp(WebContent.NAME_PROPERTY, webContentName));
+		List<WebContent> list = cayenneService.sharedContext().performQuery(selectQuery);
+		if(!list.isEmpty()){
+			webContent=list.get(0);
+		}
+		return webContent;
+	}
+
+	@Override
+	public WebNode getWebNodeByName(String webNodeName) {
+		WebNode webNode = null;
+		SelectQuery selectQuery = new SelectQuery(WebNode.class);
+		selectQuery.andQualifier(ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY,
+				webSiteService.getCurrentWebSite()));
+		selectQuery.andQualifier(ExpressionFactory.matchExp(WebNode.NAME_PROPERTY, webNodeName));
+		List<WebNode> list = cayenneService.sharedContext().performQuery(selectQuery);
+		if(!list.isEmpty()){
+			webNode=list.get(0);
+		}
+		return webNode;
+	}
 }

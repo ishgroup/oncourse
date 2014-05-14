@@ -1,9 +1,6 @@
 package ish.oncourse.services.content;
 
-import ish.oncourse.model.RegionKey;
-import ish.oncourse.model.WebContent;
-import ish.oncourse.model.WebContentVisibility;
-import ish.oncourse.model.WebNodeType;
+import ish.oncourse.model.*;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -54,4 +51,19 @@ public interface IWebContentService {
 	void putWebContentVisibilityToPosition(WebNodeType webNodeType, RegionKey regionKey, WebContentVisibility webContentVisibility, int position);
 	
 	List<WebContent> getBlocks();
+
+	/**
+	 * Gets block by his name.
+	 * @param webContentName
+	 * @return WebContent
+	 */
+	WebContent getBlockByName(String webContentName);
+
+	/**
+	 * Gets block by his name.
+	 * @param webNodeName
+	 * @return WebNode
+	 */
+	WebNode getWebNodeByName(String webNodeName);
+	
 }

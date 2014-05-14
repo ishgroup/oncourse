@@ -1,6 +1,7 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebContent;
+import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.ui.pages.internal.Page;
@@ -9,6 +10,7 @@ import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -35,6 +37,9 @@ public class BlockEdit {
 
 	@Inject
 	private ITextileConverter textileConverter;
+	
+	@Inject
+	private Messages messages; 
 
 	private Action action;
 
@@ -43,6 +48,10 @@ public class BlockEdit {
 
 	@Inject
 	private Request request;
+	
+	@Inject
+	private IWebContentService webContentService;
+
 
 	@SetupRender
 	public void beforeRender() {
@@ -50,10 +59,14 @@ public class BlockEdit {
 				.newContext().localObject(block.getObjectId(), block);
 	}
 
+	private boolean isSessionAndEntityValid() {
+		return (request.getSession(false) != null && editBlock != null && editBlock.getObjectContext() != null);
+	}
+	
 	Object onSubmitFromBlockEditForm() {
 		//#14616
 		//if the session expired or the context for edit block were detached, we need to leave the page without process of required action.
-		if (request.getSession(false) == null || editBlock == null || editBlock.getObjectContext() == null) {
+		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
 		ObjectContext ctx = editBlock.getObjectContext();
@@ -89,4 +102,35 @@ public class BlockEdit {
 	enum Action {
 		save, cancel, delete
 	}
+	
+	Object onFailureFromBlockEditForm() {
+		if (!isSessionAndEntityValid()){
+			return page.getReloadPageBlock();
+		}
+		return this;
+	}
+
+	void onValidateFromBlockEditForm(){
+		if (action != Action.save) {
+			return;
+		}
+
+		String editBlockName = editBlock.getName();
+		
+		if (editBlock.getName() == null || "".equals(editBlock.getName())) {
+			blockEditForm.recordError(messages.get("message-emptyBlockName"));
+			return;
+		}
+		if (editBlock.getName().length() < 3) {
+			blockEditForm.recordError(messages.get("message-smallBlockName"));
+			return;
+		}
+		
+		WebContent blockByName = webContentService.getBlockByName(editBlockName);
+		if (webContentService.getBlockByName(editBlockName)!=null){
+			if (blockByName.getObjectId()!=editBlock.getObjectId()){
+				blockEditForm.recordError(messages.get("message-DuplicateBlockName"));
+			}
+		}
+	}	
 }

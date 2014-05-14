@@ -7,6 +7,7 @@ import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.alias.IWebUrlAliasService;
+import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
@@ -19,6 +20,7 @@ import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Hidden;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
@@ -118,6 +120,12 @@ public class PageOptions {
 	@Inject
 	private ComponentResources componentResources;
 
+	@Inject
+	private Messages messages;
+	
+	@Inject
+	private IWebContentService webContentService;
+
 	@SetupRender
 	public boolean beforeRender() {
 		return initPageWithNode(node);
@@ -190,11 +198,19 @@ public class PageOptions {
 			return;
 		}
 		if (editNode.getName() == null || "".equals(editNode.getName())) {
-			optionsForm.recordError(pageName, "The page name cannot be empty");
+			optionsForm.recordError(messages.get("message-emptyPageName"));
 			return;
 		}
 		if (editNode.getName().length() < 3) {
-			optionsForm.recordError(pageName, "There should be at least 3 characters in page name");
+			optionsForm.recordError(messages.get("message-smallPageName"));
+			return;
+		}
+
+		WebNode webNodeByName = webContentService.getWebNodeByName(editNode.getName());
+		if (webNodeByName!=null) {
+			if (webNodeByName.getObjectId()!=editNode.getObjectId()){
+				optionsForm.recordError(messages.get("message-DuplicatePageName"));
+			}	
 		}
 	}
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<t:form t:id="blockEditForm" zone="blockZone">
+		<t:errors class="literal:cms-error-txt"/>
 		<div class="cms-main-head">
 			<div class="cms-main-title">
 				<h1 class="cms-page-title">Edit Block</h1>
