@@ -49,7 +49,7 @@ public class Pages {
 	}
 
 	public List<WebNode> getNodes() {
-		Ordering ordering = new Ordering(WebNode.NAME_PROPERTY, SortOrder.ASCENDING);
+		Ordering ordering = new Ordering(WebNode.MODIFIED_PROPERTY, SortOrder.DESCENDING);
 		List<WebNode> result = webNodeService.getNodes();
 		ordering.orderList(result);
 		return result;
