@@ -24,11 +24,9 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 		Date today = new Date();
 		setCreated(today);
 		setModified(today);
-		setName("New menu item");
 	}
 
 	/**
-	 * 
 	 * @return all child menus including not navigable.
 	 */
 	public List<WebMenu> getWebMenus() {
@@ -52,7 +50,7 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 			q.addPrefetch(WebMenu.CHILDREN_MENUS_PROPERTY);
 			return getObjectContext().performQuery(q);
 		}
-		
+
 		return super.getChildrenMenus();
 	}
 
@@ -64,7 +62,8 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 		Expression expr = ExpressionFactory
 				.matchExp(WebMenu.WEB_NODE_PROPERTY + "." + WebNode.PUBLISHED_PROPERTY, true).orExp(
 						ExpressionFactory.matchExp(WebMenu.WEB_NODE_PROPERTY, null).andExp(
-								ExpressionFactory.noMatchExp(WebMenu.URL_PROPERTY, null)));
+								ExpressionFactory.noMatchExp(WebMenu.URL_PROPERTY, null))
+				);
 
 		List<WebMenu> list = expr.filterObjects(getWebMenus());
 
@@ -91,6 +90,10 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 		return stringBuffer.toString();
 	}
 
+	public String getNonUniqueNameWarning() {
+		return "The name is already used   ";
+	}
+
 	public int compareTo(WebMenu o) {
 		return this.getWeight() - o.getWeight();
 	}
@@ -112,7 +115,7 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 			}
 			oldWeight = siblings.size();
 		}
-		
+
 		for (int i = 0; i < siblings.size(); i++) {
 			WebMenu m = siblings.get(i);
 			if (m.getPersistenceState() != PersistenceState.NEW && !m.getId().equals(getId())) {

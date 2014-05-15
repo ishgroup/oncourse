@@ -23,7 +23,6 @@ import java.util.List;
  * persisting
  * 
  * @author anton
- * 
  */
 public class MA {
 
@@ -66,14 +65,12 @@ public class MA {
 		}
 
 		ObjectContext ctx = cayenneService.newContext();
-		WebMenu menu = ctx.newObject(WebMenu.class);
-		menu.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
-		menu.setParentWebMenu((WebMenu) ctx.localObject(webMenuService.getRootMenu().getObjectId(), null));
-		menu.updateWeight(0, null);
-
+		WebSite webSite = ctx.localObject(webSiteService.getCurrentWebSite());
+		WebMenu menu = webMenuService.createMenu(webSite);
 		ctx.commitChanges();
 
 		obj.put(MENU_ELEMENT_ID_PARAMETER, menu.getId());
+		obj.put(MENU_ELEMENT_VALUE_PARAMETER, menu.getName());
 		obj.put("warning", menu.getWarning());
 
 		return new TextStreamResponse("text/json", obj.toString());
@@ -85,6 +82,7 @@ public class MA {
 	 * @return
 	 */
 	StreamResponse onActionFromSave() {
+		StringBuilder warning = new StringBuilder();
 
 		if (request.getSession(false) == null) {
 			return new TextStreamResponse("text/html",
@@ -109,32 +107,37 @@ public class MA {
 				webMenuService.findById(Long.parseLong(id[1])).getObjectId(), null);
 
 		switch (OPER.valueOf(id[0])) {
-		case n:
-			menu.setName(value);
-			break;
-		case u:
-			if (!value.startsWith("http://") && !value.startsWith("https://") && !value.startsWith("www.")
-					&& !value.startsWith("/")) {
-				value = "/" + value;
-			}
-			WebNode node = null;
-			if (value.matches("/page/\\d+")) {
-				String nodeId = value.substring(6);
+			case n:
+				if (webMenuService.getMenuByName(value) == null) {
+					menu.setName(value);
+				} else {
+					warning.append(menu.getNonUniqueNameWarning());
+					value = menu.getName();
+				}
+				break;
+			case u:
+				if (!value.startsWith("http://") && !value.startsWith("https://") && !value.startsWith("www.")
+						&& !value.startsWith("/")) {
+					value = "/" + value;
+				}
+				WebNode node = null;
+				if (value.matches("/page/\\d+")) {
+					String nodeId = value.substring(6);
 
-				node = webNodeService.getNodeForNodeNumber(Integer.parseInt(nodeId));
+					node = webNodeService.getNodeForNodeNumber(Integer.parseInt(nodeId));
 
-			} else {
-				node = webNodeService.getNodeForNodePath(value);
-			}
-			if (node != null) {
-				node = (WebNode) menu.getObjectContext().localObject(node.getObjectId(), null);
-			}
+				} else {
+					node = webNodeService.getNodeForNodePath(value);
+				}
+				if (node != null) {
+					node = (WebNode) menu.getObjectContext().localObject(node.getObjectId(), null);
+				}
 
-			menu.setWebNode(node);
+				menu.setWebNode(node);
 
-			menu.setUrl(node == null ? value : null);
+				menu.setUrl(node == null ? value : null);
 
-			break;
+				break;
 		}
 
 		menu.getObjectContext().commitChanges();
@@ -142,7 +145,9 @@ public class MA {
 		JSONObject obj = new JSONObject();
 		obj.put(MENU_ELEMENT_ID_PARAMETER, menu.getId());
 		obj.put(MENU_ELEMENT_VALUE_PARAMETER, value);
-		obj.put("warning", menu.getWarning());
+		warning.append(menu.getWarning());
+		obj.put("warning", warning.toString());
+
 		return new TextStreamResponse("text/json", obj.toString());
 	}
 
