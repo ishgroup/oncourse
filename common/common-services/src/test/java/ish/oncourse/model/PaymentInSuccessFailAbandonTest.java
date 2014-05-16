@@ -24,9 +24,9 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
+import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	
@@ -259,12 +259,24 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	@Test
 	public void testPaymentAbandon() throws Exception {
 		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2000);
-		PaymentIn inversePayment = paymentIn.abandonPayment().iterator().next();
+        PaymentIn reversePayment = null;
+        PaymentIn directPayment = null;
+        Collection<PaymentIn> paymentIns = paymentIn.abandonPayment();
+        assertEquals("we should get only 2 payments: one direct and one reverse", 2, paymentIns.size());
+        for (PaymentIn next : paymentIns) {
+            if (next.getType() == PaymentType.REVERSE) {
+                assertNull("REVERSE payment should be only one", reversePayment);
+                reversePayment = next;
+            }
+            else
+                directPayment = next;
+        }
+
 		paymentIn.getObjectContext().commitChanges();
-		assertEquals("Reverse payment sessionid should be equal to payment sessionid", inversePayment.getSessionId(), paymentIn.getSessionId());
+		assertEquals("Reverse payment sessionid should be equal to payment sessionid", reversePayment.getSessionId(), paymentIn.getSessionId());
 		
-		assertEquals("Check type internal.", PaymentType.REVERSE, inversePayment.getType());
-		assertEquals("Zero amount.", 0, inversePayment.getAmount().intValue());
+		assertEquals("Check type internal.", PaymentType.REVERSE, reversePayment.getType());
+		assertEquals("Zero amount.", 0, reversePayment.getAmount().intValue());
 		
 		//check replication queue
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
@@ -279,7 +291,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=%s", inversePayment.getId()));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=%s", reversePayment.getId()));
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 inverse PaymentIn in the queue.", 1, actualData.getRowCount());
 		
