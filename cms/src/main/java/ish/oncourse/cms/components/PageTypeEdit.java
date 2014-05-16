@@ -256,7 +256,7 @@ public class PageTypeEdit {
 		String name= StringUtils.trimToEmpty(editPageType.getName());
 
 		if (name.length() < 3) {
-			pageTypeEditForm.recordError(messages.get("message-shortPageName"));
+			pageTypeEditForm.recordError(messages.get("message-shortPageTypeName"));
 			return;
 		}
 		
