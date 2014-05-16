@@ -91,7 +91,7 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 	}
 
 	public String getNonUniqueNameWarning() {
-		return "The name is already used   ";
+		return "The name is already used.  ";
 	}
 
 	public int compareTo(WebMenu o) {

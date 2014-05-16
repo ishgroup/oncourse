@@ -11,11 +11,11 @@
 
 			<div class="cms-theme-title">
 				
-				<t:errors/>	
+				<t:errors class="literal:cms-error-txt"/>	
                 <div class="cms-theme-title-n clearfix">
                 	<label for="themeName">Name</label>
                 	<t:if test="isSpecialType" negate="true">
-                		<t:textfield t:id="name" clientId="themeName" t:value="editPageType.name" t:validate="required,minlength=3" maxlength="500" class="cms-span3"/>
+                		<t:textfield t:id="name" clientId="themeName" t:value="editPageType.name" t:validate="required" maxlength="500" class="cms-span3"/>
                 		<p:else>
                 			<input class="cms-span3 cms-disabled" disabled="disabled" value="${editPageType.name}"/>
                 		</p:else>

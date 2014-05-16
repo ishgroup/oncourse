@@ -218,4 +218,18 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		}
 		return webNode;
 	}
+
+	@Override
+	public WebNodeType getWebNodeTypeByName(String webNodeTypeName) {
+		WebNodeType webNodeType = null;
+		Expression expression = ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY, webNodeTypeName);
+		expression.andExp(ExpressionFactory.matchExp(WebNodeType.WEB_SITE_PROPERTY,webSiteService.getCurrentWebSite()));
+
+		SelectQuery selectQuery = new SelectQuery(WebNodeType.class, expression);
+		List<WebNodeType> list = cayenneService.sharedContext().performQuery(selectQuery);
+		if (!list.isEmpty()){
+			webNodeType=list.get(0);
+		}
+		return webNodeType;
+	}
 }

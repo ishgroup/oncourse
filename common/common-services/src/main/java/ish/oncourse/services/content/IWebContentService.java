@@ -65,5 +65,11 @@ public interface IWebContentService {
 	 * @return WebNode
 	 */
 	WebNode getWebNodeByName(String webNodeName);
+
+	/**
+	 * @param webNodeTypeName
+	 * @return null or WebNodeType if exists
+	 */
+	WebNodeType getWebNodeTypeByName(String webNodeTypeName);
 	
 }

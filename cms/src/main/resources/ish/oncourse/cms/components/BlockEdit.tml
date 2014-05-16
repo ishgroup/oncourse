@@ -14,7 +14,7 @@
 				<h5 class="cms-block-sub-title">
 					Name <span class="cms-ico-help" title="The name of this block"/>
 				</h5>
-				<t:textfield t:id="name" value="editBlock.name" t:validate="required" class="cms-span4"/>
+				<t:textfield t:id="name" value="editBlock.name" class="cms-span4"/>
 
 			</div>
 			

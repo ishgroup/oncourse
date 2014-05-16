@@ -14,12 +14,14 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
@@ -69,6 +71,9 @@ public class PageTypeEdit {
 
 	@Inject
 	private ICayenneService cayenneService;
+
+	@Inject
+	private Messages messages;
 
 	@SuppressWarnings("all")
 	@Property
@@ -242,5 +247,28 @@ public class PageTypeEdit {
 	enum Action {
 		save, cancel, delete
 	}
+	
+	void onValidateFromPageTypeEditForm() {
+		if (action!=Action.save){
+			return;
+		}
+		
+		String name= StringUtils.trimToEmpty(editPageType.getName());
 
+		if (name.length() < 3) {
+			pageTypeEditForm.recordError(messages.get("message-shortPageName"));
+			return;
+		}
+		
+		if (webContentService.getWebNodeTypeByName(name)!=null){
+			pageTypeEditForm.recordError(messages.get("message-duplicatePageTypeName"));
+		}
+	}
+
+	Object onFailureFromPageTypeEditForm() {
+		if (!isSessionAndEntityValid()) {
+			return page.getReloadPageBlock();
+		}
+		return this;
+	}
 }
