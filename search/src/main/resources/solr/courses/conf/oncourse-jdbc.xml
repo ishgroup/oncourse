@@ -59,7 +59,7 @@
 		/* check is course modified */
 		c.modified &gt;='${dataimporter.last_index_time}'
 		/* check is course class modified or finished */
-		or cc.modified &gt;='${dataimporter.last_index_time}' or cc.endDate &lt;= '${dataimporter.last_index_time}'
+		or cc.modified &gt;='${dataimporter.last_index_time}' or (cc.endDate &gt;= '${dataimporter.last_index_time}' and cc.endDate &lt; NOW())
 		/* check is enrolments linked to course class  modified */
 		or e.modified &gt;='${dataimporter.last_index_time}'
 		/* check is sessions linked to course class  modified */
@@ -170,142 +170,185 @@
 					<field name="fmName" column="fmName"/>
 					<field name="tutor" column="TUTOR" regex="^(.*)$" replaceWith="$1 ${contact.fmName}" sourceColName="gvName" /> 
 				</entity>
-			
+
+                <!--if course class isDistantLearningCourse we should mark it as (Monday Tuesday Wednesday Thursday Friday Saturday Sunday, weekend weekday, daytime evening)-->
 				<entity name="course_session" dataSource="onCourseDS" pk="id" transformer="TemplateTransformer"
 					query="select distinct
-					    lower(
-					        dayname(
-                                IFNULL(
+                        IF (cc.isDistantLearningCourse = 0,
+                            lower(
+                                dayname(
                                     IFNULL(
-                                        CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
                                         IFNULL(
-                                            CONVERT_TZ(s.startDate,'Australia/Sydney', si.timeZone),
-                                            CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
-                                        )
-                                    ),
-                                    s.startDate
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
                                 )
-    					    )
-					    ) as dayName,
-					    IF(
-					        DAYOFWEEK(
-					            IFNULL(
-					                IFNULL(
-					                    CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
-					                    IFNULL(
-					                        CONVERT_TZ(s.startDate,'Australia/Sydney', si.timeZone),
-					                        CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
-					                    )
-					                ),
-					                s.startDate
-					            )
-					        ) in (1,7),
-					        'weekend',
-					        'weekday'
-					    ) as dayType,
-					    IF(
-					        HOUR(
-					            IFNULL(
-					                IFNULL(
-					                    CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
-					                    IFNULL(
-					                        CONVERT_TZ(s.startDate,'Australia/Sydney', si.timeZone),
-					                        CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
-					                    )
-					                ),
-					                s.startDate
-					            )
-					        ) &gt; 6
-					        and
-					        HOUR(
-					            IFNULL(
-					                IFNULL(
-					                    CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
-					                    IFNULL(
-					                        CONVERT_TZ(s.startDate,'Australia/Sydney', si.timeZone),
-					                        CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
-					                    )
-					                ),
-					                s.startDate
-					            )
-					        ) &lt; 17,
-					        'daytime',
-					        'evening'
-					    ) as time
-					    from Session s
-					        left join CourseClass cc on s.courseClassId=cc.id
+                            ),
+                            'Monday Tuesday Wednesday Thursday Friday Saturday Sunday'
+                        ) as dayName,
+                        IF (cc.isDistantLearningCourse = 0,
+                            IF(
+                                DAYOFWEEK(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) in (1,7),
+                                'weekend',
+                                'weekday'
+                            ),
+                            'weekend weekday'
+                        ) as dayType,
+                        IF (cc.isDistantLearningCourse = 0,
+                            IF(
+                                HOUR(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) &gt; 6
+                                and
+                                HOUR(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) &lt; 17,
+                                'daytime',
+                                'evening'
+                            ),
+                            'daytime evening'
+                        ) as time
+					    from CourseClass cc
+					        left join Session s on s.courseClassId=cc.id
 					        left join Room ro on cc.roomId=ro.id
 					        left join Site si on ro.siteId=si.id
 					        left join College co on cc.collegeId=co.id
-					    where s.courseClassId='${courseClass.id}'"
+					    where cc.id='${courseClass.id}'"
                 	deltaImportQuery="select distinct
-                	    lower(
-                	        dayname(
-                	            IFNULL(
-                	                IFNULL(
-                	                    CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
-                	                    IFNULL(
-                	                        CONVERT_TZ(s.startDate,'Australia/Sydney', si.timeZone),
-                	                        CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
-                	                    )
-                	                ),
-                	                s.startDate
-                	            )
-                	        )
-                	    ) as dayName,
-                	    IF(
-                	        DAYOFWEEK(
-                	            IFNULL(
-                	                IFNULL(
-                	                    CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
-                	                    IFNULL(
-                	                        CONVERT_TZ(s.startDate,'Australia/Sydney', si.timeZone),
-                	                        CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
-                	                    )
-                	                ),
-                	                s.startDate
-                	            )
-                	        ) in (1,7),
-                	        'weekend',
-                	        'weekday'
-                	    ) as dayType,
-					    IF(
-					        HOUR(
-					            IFNULL(
-					                IFNULL(
-					                    CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
-					                    IFNULL(
-					                        CONVERT_TZ(s.startDate,'Australia/Sydney', si.timeZone),
-					                        CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
-					                    )
-					                ),
-					                s.startDate
-					            )
-					        ) &gt; 6
-					        and
-					        HOUR(
-					            IFNULL(
-					                IFNULL(
-					                    CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
-					                    IFNULL(
-					                        CONVERT_TZ(s.startDate,'Australia/Sydney', si.timeZone),
-					                        CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
-					                    )
-					                ),
-					                s.startDate
-					            )
-					        ) &lt; 17,
-					        'daytime',
-					        'evening'
-					    ) as time
-					    from Session s
-					        left join CourseClass cc on s.courseClassId=cc.id
+                        IF (cc.isDistantLearningCourse = 0,
+                            lower(
+                                dayname(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                )
+                            ),
+                            'Monday Tuesday Wednesday Thursday Friday Saturday Sunday',
+                        ) as dayName,
+                        IF (cc.isDistantLearningCourse = 0,
+                            IF(
+                                DAYOFWEEK(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) in (1,7),
+                                'weekend',
+                                'weekday'
+                            ),
+                            'weekend weekday'
+                        ) as dayType,
+                        IF (cc.isDistantLearningCourse = 0,
+                            IF(
+                                HOUR(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) &gt; 6
+                                and
+                                HOUR(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) &lt; 17,
+                                'daytime',
+                                'evening'
+                            ),
+                            'daytime evening'
+                        ) as time
+					    from CourseClass cc
+					        left join Session s on s.courseClassId=cc.id
 					        left join Room ro on cc.roomId=ro.id
 					        left join Site si on ro.siteId=si.id
 					        left join College co on cc.collegeId=co.id
-					    where s.id='${dataimporter.delta.id}'"
-					deltaQuery="select id from Session where modified &gt; '${dataimporter.last_index_time}'" 
-					parentDeltaQuery="select cc.id as id from Session s inner join CourseClass cc on s.courseClassId = cc.id where s.id='${course_session.id}'">
+					    where cc.id='${dataimporter.delta.id}'"
+					deltaQuery="select distinct courseClassId as id from Session where modified &gt; '${dataimporter.last_index_time}'"
+					parentDeltaQuery="select distinct cc.id as id from Session s inner join CourseClass cc on s.courseClassId = cc.id where s.id='${course_session.id}'">
 					<field name="id" column="id"/>
 					<field name="dayName" column="dayName" />
 					<field name="dayType" column="dayType" />

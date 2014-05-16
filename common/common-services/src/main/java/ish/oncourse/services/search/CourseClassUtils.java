@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static ish.oncourse.services.search.SearchParamsParser.*;
 
 /**
@@ -113,8 +114,10 @@ public class CourseClassUtils {
 
 		boolean isEvening = courseClass.isEvening();
 		boolean isDaytime = courseClass.isDaytime();
-		if (isEvening && isDaytime || isDaytime && PARAM_VALUE_daytime.equalsIgnoreCase(time) || isEvening
-				&& PARAM_VALUE_evening.equalsIgnoreCase(time)) {
+		if (isEvening && isDaytime ||
+                isDaytime && PARAM_VALUE_daytime.equalsIgnoreCase(time) ||
+                isEvening && PARAM_VALUE_evening.equalsIgnoreCase(time) ||
+                courseClass.getIsDistantLearningCourse()) {
 			result = 1.0f;
 		}
 		return result;
@@ -123,6 +126,9 @@ public class CourseClassUtils {
 	
 	private static float focusMatchForDays(final CourseClass courseClass, final String searchDay) {
 		float result = 0.0f;
+
+        if (courseClass.getIsDistantLearningCourse())
+            return 1.0f;
 		if (courseClass.getDaysOfWeek() != null) {
 			List<String> uniqueDays = new ArrayList<>();
 			uniqueDays.addAll(courseClass.getDaysOfWeek());
