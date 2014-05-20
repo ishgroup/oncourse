@@ -15,7 +15,6 @@
 			<a onclick="showDeleteMenuConfirmation(${menu.id});">Delete</a>
 			<div id="deleteMenuModal${menu.id}" style="display:none;">
 				<p>Are you sure you wish to delete this item?</p>
-				<a id="r_${menu.id}" clientId="deleteMenu${menu.id}" onclick="fireDeleteMenu(this.id);"></a>
 			</div>
 		</span>
 	</span>

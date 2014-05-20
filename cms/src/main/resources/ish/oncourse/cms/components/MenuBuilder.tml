@@ -52,10 +52,9 @@
 		
 			<span class="cms-menu-pages-dl cms-last">
 				<span class="cms-ico-del"></span>
-				<a onclick="showDeleteMenuConfirmation(XXX);">Delete</a>
-				<div title="Are you sure you wish to delete this item?" style="display:none;">
+				<a>Delete</a>
+				<div style="display:none;" title="Are you sure you wish to delete this item?">
 					<p>Are you sure you wish to delete this item?</p>
-					<a id="r_XXX" clientId="" onclick="fireDeleteMenu(this.id);"></a>
 				</div>
 			</span>
 		</span>
@@ -100,7 +99,7 @@
 				buttons: {
 					"Delete": function() {
 						jQuery(this).dialog("close");
-						jQuery("a[clientId='deleteMenu"+id+"']").trigger('click');
+						fireDeleteMenu(id);
 					},
 					Cancel: function() {
 						jQuery(this).dialog("close");
@@ -108,16 +107,15 @@
 				}
 			});
 		};
-		
+
 		function fireDeleteMenu(elemID) {
 			jQuery.ajax({
 				type: "POST",
-				data: "id="+elemID.substring(2),
+				data: "id="+elemID,
 				url: '/ma.remove',
 				complete: function(data){
 					if(data.responseText=="{status: 'OK'}"){
-						var id = elemID.replace('r_', 'm_');
-						jQuery(".cms_navmenu_list #" + id).remove();
+						jQuery(".cms_navmenu_list #m_" + elemID).remove();
 					}else if(data.responseText=="{status: 'session timeout'}"){
 						window.location.reload();
 					} else{
