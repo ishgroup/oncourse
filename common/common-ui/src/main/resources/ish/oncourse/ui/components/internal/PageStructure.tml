@@ -7,14 +7,13 @@
 	</t:remove>
 	<t:if test="wrapped">
 		<head>
-			<meta http-equiv="Cache-control" content="${cacheMeta}"/>
-			<span t:type="ui/pagehead" title="${title}"
-				  canonicalLinkPath="${canonicalLinkPath}"
-				  metaDescription="${metaDescription}"
-				  eventName="${eventName}" cart="${cart}"/>
+			<meta http-equiv="Cache-control" content="cacheMeta"/>
+			<span t:type="ui/pagehead" pageName="pageName" webNode="webNode"
+				  canonicalLinkPath="canonicalLinkPath"
+				  metaDescription="metaDescription"/>
 		</head>
 		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
-            <span t:type="ui/googletagmanager" eventName="${eventName}" cart="${cart}"/>
+            <span t:type="ui/googletagmanager" eventName="eventName" cart="cart"/>
 
             <div  t:type="ui/BodyStructure" webNodeType="webNodeType">
 				<t:body/>

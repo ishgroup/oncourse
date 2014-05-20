@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
 
@@ -7,21 +7,39 @@
 	</t:if>
 
 	<t:if test="metaDescription">
-		<meta content="${metaDescription}" name="description"/>
+		<meta content="metaDescription" name="description"/>
 	</t:if>
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="shortcut icon" type="image/ico" href="/s/img/favicon.ico" />
-	<t:if test="tag">
-		<title>${tag.name} - ${title}</title>
-		<p:else>
-			<title>${title}</title>
-		</p:else>
-	</t:if>
+
+    <span t:type="ui/title" pageName="pageName" webNode="webNode"/>
+
 	<meta name="author" content="" />
 	<!--[if lt IE 9]><script src="/s/js/html5.js"></script><![endif]-->
 	<link href="/s/stylesheets/css/site.css" media="screen, print" rel="stylesheet" />
-	<script type="text/javascript" src="/s/js/all.js"></script>
+
+    <script type="text/javascript" src="/s/js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="/s/js/jquery-ui-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/s/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/s/js/jquery.nyroModal-2.0.0.min.js"></script>
+    <script type="text/javascript" src="/s/js/jquery.cycle.all.min.js"></script>
+    <script type="text/javascript" src="/s/js/jquery.utils.js"></script>
+    <script type="text/javascript" src="/s/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/s/js/additional-methods.min.js"></script>
+    <script type="text/javascript" src="/s/js/shadow.js"></script>
+    <script type="text/javascript" src="/s/js/jquery.juitter.js"></script>
+    <script type="text/javascript" src="/s/js/application.js"></script>
+    <script type="text/javascript" src="/s/js/gmap.js"></script>
+    <script type="text/javascript" src="/s/js/search.js"></script>
+    <script type="text/javascript" src="/s/js/shortlist.js"></script>
+    <script type="text/javascript" src="/s/js/forms.js"></script>
+    <script type="text/javascript" src="/s/js/enrol.js"></script>
+    <script type="text/javascript" src="/s/js/socialMedia.js"></script>
+    <script type="text/javascript" src="/s/js/jstz-1.0.4.min.js"></script>
+    <script type="text/javascript" src="/s/js/timezone.js"></script>
+
+
 	<span t:type="ui/googleAnalytics"/>
 </t:container>

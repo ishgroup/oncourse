@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components.internal;
 
+import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.datalayer.DataLayerFactory;
 import ish.oncourse.services.html.ICacheMetaProvider;
@@ -42,9 +43,19 @@ public class PageStructure {
 
 	@Property
 	@Parameter
+    @Deprecated//we need to use pageName property
 	private String title;
-	
-	@Property
+
+    @Property
+    @Parameter
+    private String pageName;
+
+    @Property
+    @Parameter
+    private WebNode webNode;
+
+
+    @Property
 	@Parameter
 	private String canonicalLinkPath;
 
@@ -68,6 +79,12 @@ public class PageStructure {
 		if (!resources.isBound("webNodeType")) {
 			this.webNodeType = webNodeTypeService.getDefaultWebNodeType();
 		}
+
+        //TODO: the code can be removed after all custom templates will be adjusted to use Title component
+        if (pageName != null && title == null)
+            title = pageName;
+        if (title != null && pageName == null)
+            pageName = title;
 	}
 
 	public String getAgentAwareBodyClass() {

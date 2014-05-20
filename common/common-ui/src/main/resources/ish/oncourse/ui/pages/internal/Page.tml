@@ -1,5 +1,5 @@
 <html t:type="ui/internal/pagestructure" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-      bodyId="bodyId" bodyClass="bodyClass" webNodeType="webNodeType" metaDescription="metaDescription"
+      bodyId="bodyId" bodyClass="bodyClass" webNodeType="webNodeType" metaDescription="metaDescription" webNode="node"
         >
     <t:if test="node">
 	    <div t:type="ui/internal/contentStructure" node="node"></div>

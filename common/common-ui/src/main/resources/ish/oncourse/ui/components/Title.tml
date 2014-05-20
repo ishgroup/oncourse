@@ -1,0 +1,32 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+    <t:remove>Title for cms pages</t:remove>
+    <t:if test="webNode">
+        <title>${webNode.name} ${college.name}</title>
+    </t:if>
+    <t:unless test="webNode">
+           <t:delegate to="block:pageName"/>
+    </t:unless>
+
+    <t:block t:id="pageName">
+        <t:remove>Title for pages where pageName is defiened in correspondent tapestry template (like /course, /class, /site, /room)</t:remove>
+        <t:if test="pageName">
+            <t:remove>Title for pages with browser tag (like /courses/tag1)</t:remove>
+            <t:if test="tag">
+                <title>${tag.name} - ${pageName} ${college.name}</title>
+            </t:if>
+            <t:unless test="tag">
+                <title>${pageName} ${college.name}</title>
+            </t:unless>
+        </t:if>
+        <t:remove>Title for pages where pageName is not defiened in tapestry template</t:remove>
+        <t:unless test="pageName">
+            <t:if test="tag">
+                <title>${tag.name} - ${college.name}</title>
+            </t:if>
+            <t:unless test="tag">
+                <title>${college.name}</title>
+            </t:unless>
+        </t:unless>
+    </t:block>
+</t:container>
