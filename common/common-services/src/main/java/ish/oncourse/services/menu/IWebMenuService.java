@@ -28,5 +28,5 @@ public interface IWebMenuService {
 	 * @param name
 	 * @return null or WebMenu if it exists with this name
 	 */
-	WebMenu getMenuByName(String name);
+	WebMenu getMenuByNameAndParentMenu(String name, WebMenu parentMenu);
 }

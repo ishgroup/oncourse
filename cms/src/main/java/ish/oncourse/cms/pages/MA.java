@@ -108,7 +108,7 @@ public class MA {
 
 		switch (OPER.valueOf(id[0])) {
 			case n:
-				if (webMenuService.getMenuByName(value) == null) {
+				if (webMenuService.getMenuByNameAndParentMenu(value, menu.getParentWebMenu()) == null) {
 					menu.setName(value);
 				} else {
 					warning.append(menu.getNonUniqueNameWarning());
@@ -145,7 +145,7 @@ public class MA {
 		JSONObject obj = new JSONObject();
 		obj.put(MENU_ELEMENT_ID_PARAMETER, menu.getId());
 		obj.put(MENU_ELEMENT_VALUE_PARAMETER, value);
-		warning.append(menu.getWarning());
+		warning.append(" "+menu.getWarning());
 		obj.put("warning", warning.toString());
 
 		return new TextStreamResponse("text/json", obj.toString());
@@ -206,12 +206,17 @@ public class MA {
 		WebMenu item = (WebMenu) ctx.localObject(webMenuService.findById(Long.parseLong(id)).getObjectId(), null);
 		WebMenu pItem = (WebMenu) ctx.localObject((("root".equalsIgnoreCase(pid)) ? webMenuService.getRootMenu()
 				: webMenuService.findById(Long.parseLong(pid))).getObjectId(), null);
-		WebMenu oldParent = item.getParentWebMenu();
-		item.setParentWebMenu(pItem);
-		item.updateWeight(weight, oldParent);
+		
+		if (webMenuService.getMenuByNameAndParentMenu(item.getName(), pItem) == null) {
+			WebMenu oldParent = item.getParentWebMenu();
+			item.setParentWebMenu(pItem);
+			item.updateWeight(weight, oldParent);
 
-		ctx.commitChanges();
-
-		return new TextStreamResponse("text/json", "{status: 'OK'}");
+			ctx.commitChanges();
+			return new TextStreamResponse("text/json", "{status: 'OK'}");
+		} else {
+			ctx.rollbackChanges();
+			return new TextStreamResponse("text/json", "{status: 'FAILED'}");
+		}	
 	}
 }

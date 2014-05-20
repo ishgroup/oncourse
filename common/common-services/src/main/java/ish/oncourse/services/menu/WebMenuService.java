@@ -36,11 +36,15 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 	}
 
 	@Override
-	public WebMenu getMenuByName(String name) {
+	public WebMenu getMenuByNameAndParentMenu(String name, WebMenu parentMenu) {
 		WebMenu webMenu = null;
 		ObjectContext ctx = cayenneService.sharedContext();
-		Expression expression = ExpressionFactory.matchExp(WebMenu.NAME_PROPERTY, name);
-		SelectQuery selectQuery = new SelectQuery(WebMenu.class, expression);
+
+		SelectQuery selectQuery = new SelectQuery(WebMenu.class);
+		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.NAME_PROPERTY, name));
+		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.WEB_SITE_PROPERTY, webSiteService.getCurrentWebSite()));
+		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.PARENT_WEB_MENU_PROPERTY, parentMenu));
+		
 		List<WebMenu> menuList = ctx.performQuery(selectQuery);
 		if (!menuList.isEmpty()) {
 			webMenu = menuList.get(0);
@@ -77,7 +81,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 	}
 
 	private void setUniqueWebMenuName(WebMenu menu) {
-		String defaultName = "New menu item ";
+		String defaultName = "New menu item";
 
 		ObjectContext ctx = menu.getObjectContext();
 
