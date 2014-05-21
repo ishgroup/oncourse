@@ -111,12 +111,12 @@ public class MA {
 			value = agregatedValue.toString();
 		}
 
-		WebMenu menu = (WebMenu) cayenneService.newContext().localObject(
-				webMenuService.findById(Long.parseLong(id[1])).getObjectId(), null);
+		WebMenu menu = cayenneService.newContext().localObject(webMenuService.findById(Long.parseLong(id[1])));
 
 		switch (OPER.valueOf(id[0])) {
 			case n:
-				if (webMenuService.getMenuByNameAndParentMenu(value, menu.getParentWebMenu()) == null) {
+				WebMenu webMenu = webMenuService.getMenuByNameAndParentMenu(value, menu.getParentWebMenu());
+				if (webMenu == null || webMenu.getObjectId().equals(menu.getObjectId())) {
 					menu.setName(value);
 				} else {
 					warning.append(menu.getNonUniqueNameWarning());
@@ -218,10 +218,10 @@ public class MA {
 		ObjectContext ctx = cayenneService.newContext();
 
 		WebMenu item = ctx.localObject(webMenuService.findById(Long.parseLong(id)));
-		WebMenu pItem = ctx.localObject((("root".equalsIgnoreCase(pid)) ? webMenuService.getRootMenu()
-				: webMenuService.findById(Long.parseLong(pid))));
-		
-		if (webMenuService.getMenuByNameAndParentMenu(item.getName(), pItem) == null) {
+		WebMenu pItem = ctx.localObject(pid.equals("null") ? webMenuService.getRootMenu()
+				: webMenuService.findById(Long.parseLong(pid)));
+		WebMenu menu = webMenuService.getMenuByNameAndParentMenu(item.getName(), pItem);
+		if (menu == null || menu.getObjectId().equals(item.getObjectId())) {
 			WebMenu oldParent = item.getParentWebMenu();
 			item.setParentWebMenu(pItem);
 			item.updateWeight(weight, oldParent);

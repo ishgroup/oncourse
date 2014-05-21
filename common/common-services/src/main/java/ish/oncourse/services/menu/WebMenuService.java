@@ -26,11 +26,20 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 	@Override
 	public WebMenu createMenu(WebSite site) {
 		ObjectContext ctx = site.getObjectContext();
-
-		WebMenu menu = ctx.newObject(WebMenu.class);
+		
+		WebMenu menu = ctx.newObject(WebMenu.class);		
 		menu.setWebSite(site);
-		menu.setParentWebMenu(ctx.localObject(getRootMenu()));
-		menu.updateWeight(0, null);
+
+		WebMenu rootMenu = getRootMenu();
+		menu.setParentWebMenu(ctx.localObject(rootMenu));
+		
+		Integer size = 0;
+		List<WebMenu> childrenMenus = rootMenu.getChildrenMenus();
+		if (!childrenMenus.isEmpty()) {
+			size = childrenMenus.size();
+		}
+		menu.updateWeight(size, null);
+		
 		setUniqueWebMenuName(menu);
 		return menu;
 	}
