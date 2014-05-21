@@ -8,6 +8,7 @@ import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.content.IWebContentService;
+import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
@@ -79,6 +80,9 @@ public class PageOptions {
 
 	@Inject
 	private IWebUrlAliasService aliasService;
+
+    @Inject
+    private IWebNodeService webNodeService;
 
 	@SuppressWarnings("all")
 	@Persist
@@ -153,23 +157,13 @@ public class PageOptions {
 		return true;
 	}
 
-	public boolean isNotDefault() {
-
-		if (editNode.getDefaultWebURLAlias() != null) {
-			return !editNode.getDefaultWebURLAlias().equals(webUrlAlias);
-		}
-		return true;
-	}
-
-	public boolean isHasDefault() {
-		return editNode.getDefaultWebURLAlias() != null;
-	}
-	
 	Object onActionFromRemoveDefault() {
 		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
-		editNode.setDefaultWebURLAlias(null);
+        WebUrlAlias defaultAlias = webNodeService.getDefaultWebURLAlias(editNode);
+        if (defaultAlias != null)
+            defaultAlias.setDefault(false);
 		return urlZone;
 	}
 
@@ -187,7 +181,10 @@ public class PageOptions {
 			return page.getReloadPageBlock();
 		}
 		WebUrlAlias alias = editNode.getWebUrlAliasByPath(urlPath);
-		editNode.setDefaultWebURLAlias(alias);
+        WebUrlAlias defaultAlias = webNodeService.getDefaultWebURLAlias(editNode);
+        if (defaultAlias != null)
+               defaultAlias.setDefault(false);
+        alias.setDefault(true);
 		return urlZone;
 	}
 
@@ -336,4 +333,9 @@ public class PageOptions {
 		return new MultiZoneUpdate("optionsZone", optionsZone).add("buttonsZone", buttonsZone).add("urlZone", urlZone)
 			.add("currentPageZone", ((PageInfo)componentResources.getContainer()).getCurrentPageZone());
 	}
+
+    public WebUrlAlias getDefaultWebUrlAlias()
+    {
+        return webNodeService.getDefaultWebURLAlias(editNode);
+    }
 }

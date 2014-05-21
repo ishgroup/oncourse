@@ -25,6 +25,8 @@ public class WebNodeService implements IWebNodeService {
 	private static final String LEFT_SLASH_CHARACTER = "/";
 	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
 
+    private static final String PAGE_PATH_TEMPLATE = "/page/%s";
+
 	@Inject
 	private IWebSiteService webSiteService;
 
@@ -244,4 +246,18 @@ public class WebNodeService implements IWebNodeService {
 		}
 		return layoutKey;
 	}
+
+
+    public String getPath(WebNode webNode) {
+        WebUrlAlias defaultAlias = getDefaultWebURLAlias(webNode);
+
+        return defaultAlias == null ? String.format(PAGE_PATH_TEMPLATE,webNode.getNodeNumber()) :
+                defaultAlias.getUrlPath();
+    }
+
+    public WebUrlAlias getDefaultWebURLAlias(WebNode webNode) {
+        Expression  expression =  ExpressionFactory.matchExp(WebUrlAlias.DEFAULT_PROPERTY, true);
+        List<WebUrlAlias> result = expression.filterObjects(webNode.getWebUrlAliases());
+        return result.isEmpty() ? null : result.get(0);
+    }
 }

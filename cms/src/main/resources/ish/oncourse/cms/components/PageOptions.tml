@@ -92,8 +92,8 @@
 
            <p>
                 <b>
-                    <t:if t:test="hasDefault">
-                        ${siteUrl}${editNode.defaultWebURLAlias.urlPath}
+                    <t:if t:test="defaultWebUrlAlias">
+                        ${siteUrl}${defaultWebUrlAlias.urlPath}
                         <p:else>${siteUrl}/page/${editNode.nodeNumber}</p:else>
                     </t:if>
                 </b>
@@ -102,7 +102,7 @@
            </p>
 
 
-            <t:if t:test="hasDefault">
+            <t:if t:test="defaultWebUrlAlias">
 
                 <p>
                     <span>${siteUrl}/page/${editNode.nodeNumber}</span>
@@ -114,7 +114,7 @@
             </t:if>
 
             <t:loop source="editNode.webUrlAliases" value="webUrlAlias">
-                <t:if t:test="notDefault">
+                <t:if t:test="webUrlAlias.default" negate="true">
 
                     <p>
                         <span>${siteUrl}${webUrlAlias.urlPath}</span>

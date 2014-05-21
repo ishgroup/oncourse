@@ -1101,6 +1101,7 @@
 	<db-entity name="WebURLAlias" catalog="willow_college">
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="isDefault" type="BIT" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="urlPath" type="VARCHAR" length="512"/>
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
@@ -2068,6 +2069,7 @@
 	</obj-entity>
 	<obj-entity name="WebUrlAlias" className="ish.oncourse.model.WebUrlAlias" dbEntityName="WebURLAlias">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="default" type="boolean" db-attribute-path="isDefault"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="urlPath" type="java.lang.String" db-attribute-path="urlPath"/>
 		<post-add method-name="onPostAdd"/>
@@ -3086,9 +3088,6 @@
 	<db-relationship name="webSite" source="WebMenu" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
-	<db-relationship name="defaultWebURLAlias" source="WebNode" target="WebURLAlias" toMany="false">
-		<db-attribute-pair source="defaultURLAlias" target="id"/>
-	</db-relationship>
 	<db-relationship name="webContentVisibility" source="WebNode" target="WebContentVisibility" toMany="true">
 		<db-attribute-pair source="id" target="WebNodeId"/>
 	</db-relationship>
@@ -3471,7 +3470,6 @@
 	<obj-relationship name="parentWebMenu" source="WebMenu" target="WebMenu" deleteRule="Nullify" db-relationship-path="parentWebMenu"/>
 	<obj-relationship name="webNode" source="WebMenu" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
 	<obj-relationship name="webSite" source="WebMenu" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="defaultWebURLAlias" source="WebNode" target="WebUrlAlias" deleteRule="Cascade" db-relationship-path="defaultWebURLAlias"/>
 	<obj-relationship name="webContentVisibility" source="WebNode" target="WebContentVisibility" deleteRule="Cascade" db-relationship-path="webContentVisibility"/>
 	<obj-relationship name="webMenus" source="WebNode" target="WebMenu" deleteRule="Nullify" db-relationship-path="webMenus"/>
 	<obj-relationship name="webNodeType" source="WebNode" target="WebNodeType" deleteRule="Nullify" db-relationship-path="webNodeType"/>

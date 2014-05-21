@@ -3,6 +3,7 @@ package ish.oncourse.services.node;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
+import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.services.IBaseService;
 
 import java.util.Date;
@@ -92,4 +93,14 @@ public interface IWebNodeService {
                            String nodeName,
                            String content,
                            Integer nodeNumber);
+
+    /**
+     * Returns default alias for the webNode
+     */
+    public WebUrlAlias getDefaultWebURLAlias(WebNode webNode);
+
+    /**
+     * Build url path for the webNode.
+     */
+    public String getPath(WebNode webNode);
 }

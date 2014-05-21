@@ -2310,5 +2310,17 @@
 								 referencedTableName="DocumentVersion" referencedColumnNames="id"/>
 	</changeSet>
 
+    <changeSet id="154" author="andrey" runOnChange="false" context="production">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="WebUrlAlias" columnName="isDefault"/>
+            </not>
+        </preConditions>
+
+        <sql>alter table WebURLAlias add column isDefault BIT NOT NULL DEFAULT 0 </sql>
+        <sql>update WebURLAlias set isDefault = 1 where id in (select defaultURLalias from WebNode where  defaultURLalias is not null)</sql>
+    </changeSet>
+
+
 </databaseChangeLog>
 

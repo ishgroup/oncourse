@@ -58,6 +58,11 @@ public class MA {
 	 * @return
 	 */
 	StreamResponse onActionFromNewPage() {
+        if (!request.isXHR())
+        {
+            return null;
+        }
+
 		JSONObject obj = new JSONObject();
 		if (request.getSession(false) == null) {
 			obj.put("status", "session timeout");
@@ -78,10 +83,13 @@ public class MA {
 
 	/**
 	 * Ajax call to handle in-place edit of menu item.
-	 * 
-	 * @return
 	 */
 	StreamResponse onActionFromSave() {
+        if (!request.isXHR())
+        {
+            return null;
+        }
+
 		StringBuilder warning = new StringBuilder();
 
 		if (request.getSession(false) == null) {
@@ -157,6 +165,10 @@ public class MA {
 	 * @return json-status
 	 */
 	StreamResponse onActionFromRemove() {
+        if (!request.isXHR())
+        {
+           return null;
+        }
 
 		if (request.getSession(false) == null) {
 			return new TextStreamResponse("text/json", "{status: 'session timeout'}");
@@ -166,7 +178,7 @@ public class MA {
 
 		ObjectContext ctx = cayenneService.newContext();
 
-		WebMenu menu = (WebMenu) ctx.localObject(webMenuService.findById(Long.parseLong(id)).getObjectId(), null);
+		WebMenu menu = ctx.localObject(webMenuService.findById(Long.parseLong(id)));
 		if (!menu.getChildrenMenus().isEmpty()) {
 			return new TextStreamResponse("text/json", "{status: 'FAILED'}");
 		}
@@ -177,7 +189,7 @@ public class MA {
 		if (!webMenus.isEmpty()) {
 			webMenus.get(0).updateWeight(0, parentWebMenu);
 		}
-		ctx.deleteObject(menu);
+		ctx.deleteObjects(menu);
 
 		ctx.commitChanges();
 
@@ -187,10 +199,12 @@ public class MA {
 	/**
 	 * Handles ajax call to sort menu items. Done when user sorts items with
 	 * drag&drop.
-	 * 
-	 * @return
 	 */
 	StreamResponse onActionFromSort() {
+        if (!request.isXHR())
+        {
+            return null;
+        }
 
 		if (request.getSession(false) == null) {
 			return new TextStreamResponse("text/json", "{status: 'session timeout'}");
@@ -203,9 +217,9 @@ public class MA {
 
 		ObjectContext ctx = cayenneService.newContext();
 
-		WebMenu item = (WebMenu) ctx.localObject(webMenuService.findById(Long.parseLong(id)).getObjectId(), null);
-		WebMenu pItem = (WebMenu) ctx.localObject((("root".equalsIgnoreCase(pid)) ? webMenuService.getRootMenu()
-				: webMenuService.findById(Long.parseLong(pid))).getObjectId(), null);
+		WebMenu item = ctx.localObject(webMenuService.findById(Long.parseLong(id)));
+		WebMenu pItem = ctx.localObject((("root".equalsIgnoreCase(pid)) ? webMenuService.getRootMenu()
+				: webMenuService.findById(Long.parseLong(pid))));
 		
 		if (webMenuService.getMenuByNameAndParentMenu(item.getName(), pItem) == null) {
 			WebMenu oldParent = item.getParentWebMenu();

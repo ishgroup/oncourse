@@ -38,7 +38,7 @@ public class Page {
 		node = webNodeService.getCurrentNode();
 		if (node == null || !node.isPublished()) {
 			logger.warn(String.format("CurrentNode \"%s\" is %s in %s/%s",
-                    node == null ? "undefined": node.getPath(),
+                    node == null ? "undefined": webNodeService.getPath(node),
                     node == null ? "null" : "unpublished",
                     request.getServerName(),
                     request.getPath()));

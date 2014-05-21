@@ -1,9 +1,9 @@
 package ish.oncourse.model;
 
-import java.util.Date;
-
 import ish.oncourse.model.auto._WebUrlAlias;
 import ish.oncourse.utils.QueueableObjectUtils;
+
+import java.util.Date;
 
 public class WebUrlAlias extends _WebUrlAlias {
 	private static final long serialVersionUID = 8310897606553438218L;
@@ -17,5 +17,6 @@ public class WebUrlAlias extends _WebUrlAlias {
 		Date today = new Date();
 		setCreated(today);
 		setModified(today);
+        setDefault(false);
 	}
 }

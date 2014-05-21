@@ -160,4 +160,9 @@ public class PageInfo {
 		return currentPageZone;
 	}
 
+    public String getPath()
+    {
+        return webNodeService.getPath(webNode);
+    }
+
 }

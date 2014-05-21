@@ -20,7 +20,7 @@
 		<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
 		<td>
 			<span class="cms-ico-edit"></span> 
-			<a href="${webNode.path}">Edit</a>
+			<a href="${path}">Edit</a>
 		</td>
 		<td class="cms-last">
 			<span class="cms-ico-del"></span>

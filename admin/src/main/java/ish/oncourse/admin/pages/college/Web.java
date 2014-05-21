@@ -272,8 +272,8 @@ public class Web {
 		urlAlias.setWebSite(site);
 		urlAlias.setUrlPath("/");
 		urlAlias.setWebNode(node);
-		node.setDefaultWebURLAlias(urlAlias);
-		
+        urlAlias.setDefault(true);
+
 		context.commitChanges();
 	}
 

@@ -24,14 +24,6 @@ public class WebNode extends _WebNode {
 		return visitor.visitWebNode(this);
 	}
 
-	public String getPath() {
-		WebUrlAlias defaultAlias = getDefaultWebURLAlias();
-
-		String alias = defaultAlias == null ? ("/page/" + getNodeNumber()) : defaultAlias
-				.getUrlPath();
-		return alias;
-	}
-
 	public String getUrlShortName() {
 		String s = getName();
 		if (s == null) {

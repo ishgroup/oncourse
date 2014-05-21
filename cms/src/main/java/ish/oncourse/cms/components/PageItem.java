@@ -49,6 +49,12 @@ public class PageItem {
 		}
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
+
+
+    public String getPath()
+    {
+        return webNodeService.getPath(webNode);
+    }
 	
 
 }

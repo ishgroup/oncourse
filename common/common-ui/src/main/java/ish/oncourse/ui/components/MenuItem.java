@@ -2,17 +2,13 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
-
-import java.util.List;
-
-import org.apache.tapestry5.annotations.AfterRender;
-import org.apache.tapestry5.annotations.AfterRenderBody;
-import org.apache.tapestry5.annotations.BeforeRenderBody;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.SetupRender;
+import ish.oncourse.services.node.IWebNodeService;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.List;
 
 public class MenuItem {
 
@@ -27,6 +23,9 @@ public class MenuItem {
 
 	@Inject
 	private Messages messages;
+
+    @Inject
+    private IWebNodeService webNodeService;
 
 	@SetupRender
 	boolean setup() {
@@ -80,7 +79,7 @@ public class MenuItem {
 		WebNode node = menu.getWebNode();
 
 		if (node != null) {
-			return "http://" + request.getServerName() + node.getPath();
+			return "http://" + request.getServerName() + webNodeService.getPath(node);
 		}
 
 		return menu.getUrl();
@@ -90,7 +89,7 @@ public class MenuItem {
 		String requestPath = request.getPath();
 		WebNode node = menu.getWebNode();
 
-		if (node != null && requestPath.endsWith(node.getPath())) {
+		if (node != null && requestPath.endsWith(webNodeService.getPath(node))) {
 			return messages.get("cssclass.activePage");
 		}
 
