@@ -32,8 +32,8 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 */
 	public static final String SHORTLIST_COOKIE_KEY = "shortlist";
 
-	public static final int EARLIEST_END_FOR_EVENING = 18;
-	public static final int LATEST_START_FOR_DAYTIME = 18;
+	public static final int MORNING_START = 6;
+	public static final int EVENING_START = 18;
 	private Set<String> daysOfWeek;
 
 	public Long getId() {
@@ -224,30 +224,6 @@ public class CourseClass extends _CourseClass implements Queueable {
 		return daysOfWeek;
 	}
 
-	public boolean isDaytime() {
-		Integer earliest = getEarliestSessionStartHour();
-		// current definition is that any session that starts before 6 pm is
-		// daytime
-		if (earliest == null) {
-			Calendar t = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
-			// no sessions, so guess from start and end dates
-			if (getStartDate() != null) {
-				t.setTime(getStartDate());
-				if (t.get(Calendar.HOUR_OF_DAY) < EARLIEST_END_FOR_EVENING) {
-					return true;
-				}
-			}
-			if (getEndDate() != null) {
-				t.setTime(getEndDate());
-				if (t.get(Calendar.HOUR_OF_DAY) < EARLIEST_END_FOR_EVENING) {
-					return true;
-				}
-			}
-			return false;
-		}
-		return earliest != null && earliest < LATEST_START_FOR_DAYTIME;
-	}
-
 	public Integer getEarliestSessionStartHour() {
 		Integer earliest = null;
 		for (Session session : getSessions()) {
@@ -261,29 +237,21 @@ public class CourseClass extends _CourseClass implements Queueable {
 		return earliest;
 	}
 
+    /**
+     * Returns true if the course class does not have sessions or if 6:00 < start time < 17:00
+     */
+    public boolean isDaytime() {
+        Integer earliest = getEarliestSessionStartHour();
+        return earliest == null || earliest < EVENING_START && earliest > MORNING_START;
+    }
+
+    /**
+     * Returns true if the course class does not have sessions or if 17:00 < start time < 6:00
+     */
 	public boolean isEvening() {
-		Integer latest = getLatestSessionEndHour();
-		// current definition is that any session that ends on or after 6 pm is
-		// evening
-		if (latest == null) {
-			Calendar t = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
-			// no sessions, so guess from start and end dates
-			if (getStartDate() != null) {
-				t.setTime(getStartDate());
-				if (t.get(Calendar.HOUR_OF_DAY) >= EARLIEST_END_FOR_EVENING) {
-					return true;
-				}
-			}
-			if (getEndDate() != null) {
-				t.setTime(getEndDate());
-				if (t.get(Calendar.HOUR_OF_DAY) >= EARLIEST_END_FOR_EVENING) {
-					return true;
-				}
-			}
-			return false;
-		}
-		return latest >= EARLIEST_END_FOR_EVENING;
-	}
+		Integer latest = getEarliestSessionStartHour();
+        return latest == null || latest > EVENING_START && latest < MORNING_START;
+    }
 
 	public Integer getLatestSessionEndHour() {
 		Integer latest = null;
