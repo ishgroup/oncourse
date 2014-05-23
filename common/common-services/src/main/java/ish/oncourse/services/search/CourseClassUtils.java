@@ -108,8 +108,13 @@ public class CourseClassUtils {
 		}
 		return result;
 	}
-	
-	private static float focusMatchForTime(final CourseClass courseClass, final String time) {
+
+    /**
+     * Returns 1 if the class is self paced or time of the class matchs to the <source>time</source> param.
+     * @param time - accepts 'evening' or 'daytime' value. 'evening' means time between 18:00 and 6:00,
+     *             daytime means time between 6:00 and 18:00
+     */
+	public static float focusMatchForTime(final CourseClass courseClass, final String time) {
 		float result = 0.0f;
 
 		boolean isEvening = courseClass.isEvening();

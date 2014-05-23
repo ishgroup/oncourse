@@ -237,22 +237,6 @@ public class CourseClass extends _CourseClass implements Queueable {
 		return earliest;
 	}
 
-    /**
-     * Returns true if the course class does not have sessions or if 6:00 < start time < 17:00
-     */
-    public boolean isDaytime() {
-        Integer earliest = getEarliestSessionStartHour();
-        return earliest == null || earliest < EVENING_START && earliest > MORNING_START;
-    }
-
-    /**
-     * Returns true if the course class does not have sessions or if 17:00 < start time < 6:00
-     */
-	public boolean isEvening() {
-		Integer latest = getEarliestSessionStartHour();
-        return latest == null || !(latest < EVENING_START && latest > MORNING_START);
-    }
-
 	public Integer getLatestSessionEndHour() {
 		Integer latest = null;
 		for (Session session : getSessions()) {
@@ -266,7 +250,23 @@ public class CourseClass extends _CourseClass implements Queueable {
 		return latest;
 	}
 
-	/**
+    /**
+     * Returns true if the course class does not have sessions or if 6:00 < start time < 17:00
+     */
+    public boolean isDaytime() {
+        Integer earliest = getEarliestSessionStartHour();
+        return earliest == null || earliest < EVENING_START && earliest > MORNING_START;
+    }
+
+    /**
+     * Returns true if the course class does not have sessions or if 17:00 < start time < 6:00
+     */
+    public boolean isEvening() {
+        Integer latest = getEarliestSessionStartHour();
+        return latest == null || !(latest < EVENING_START && latest > MORNING_START);
+    }
+
+    /**
 	 * @return all sessions that satisfy hasStartAndEndTimestamps
 	 */
 	@SuppressWarnings("unchecked")

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+    <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+    <Room id="1" collegeId="1"/>
+
+    <Course id="1" collegeId="1" code="1" detail="Course1" name="Course1"/>
+
+
+    <!--daytime-->
+    <CourseClass id="1" code="1" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-1" feeExGst="20.00" feeGst="1.25" roomId="1" maximumPlaces="3"
+                 startDate="2011-01-01 00:00:00" endDate="1980-01-01 01:00:00" isCancelled="0" isDistantLearningCourse="0"/>
+    <Session id="1" collegeId="1" courseClassId="1" roomId="1" angelId="201" startDate="2014-01-01 07:00:00" endDate="2014-01-01 12:00:00" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+    <!--evening-->
+    <CourseClass id="2" code="2" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-2" feeExGst="20.00" feeGst="1.25" roomId="1" maximumPlaces="3"
+                 startDate="2011-01-01 00:00:00" endDate="1980-01-01 01:00:00" isCancelled="0" isDistantLearningCourse="0"/>
+    <Session id="2" collegeId="1" courseClassId="2" roomId="1" angelId="201" startDate="2014-01-01 19:00:00" endDate="2014-01-01 20:00:00" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+    <!--self paced-->
+    <CourseClass id="3" code="3" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-3" feeExGst="20.00" feeGst="1.25" roomId="1" maximumPlaces="3"
+                 startDate="2011-01-01 00:00:00" endDate="1980-01-01 01:00:00" isCancelled="0" isDistantLearningCourse="1"/>
+</dataset>
