@@ -250,7 +250,7 @@ public class CourseClass extends _CourseClass implements Queueable {
      */
 	public boolean isEvening() {
 		Integer latest = getEarliestSessionStartHour();
-        return latest == null || latest > EVENING_START && latest < MORNING_START;
+        return latest == null || !(latest < EVENING_START && latest > MORNING_START);
     }
 
 	public Integer getLatestSessionEndHour() {
