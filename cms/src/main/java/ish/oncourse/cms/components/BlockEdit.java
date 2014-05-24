@@ -117,7 +117,9 @@ public class BlockEdit {
 		}
 
 		String blockName = StringUtils.trimToEmpty(editBlock.getName());
-		
+        //we need the code to set trimmed name to for the block
+        editBlock.setName(blockName);
+
 		if (blockName.length() < 3) {
 			blockEditForm.recordError(messages.get("message-shortBlockName"));
 			return;
@@ -127,5 +129,5 @@ public class BlockEdit {
 		if (block != null && !block.getObjectId().equals(editBlock.getObjectId())){
 				blockEditForm.recordError(messages.get("message-duplicateBlockName"));
 		}
-	}	
+	}
 }

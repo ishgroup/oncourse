@@ -8,7 +8,7 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -117,7 +117,7 @@ public class MA {
 			case n:
 				WebMenu webMenu = webMenuService.getMenuByNameAndParentMenu(value, menu.getParentWebMenu());
 				if (webMenu == null || webMenu.getObjectId().equals(menu.getObjectId())) {
-					menu.setName(value);
+					menu.setName(StringUtils.trimToEmpty(value));
 				} else {
 					warning.append(menu.getNonUniqueNameWarning());
 					value = menu.getName();
@@ -138,7 +138,7 @@ public class MA {
 					node = webNodeService.getNodeForNodePath(value);
 				}
 				if (node != null) {
-					node = (WebNode) menu.getObjectContext().localObject(node.getObjectId(), null);
+					node = menu.getObjectContext().localObject(node);
 				}
 
 				menu.setWebNode(node);

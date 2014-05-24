@@ -136,7 +136,7 @@ public class PageTypeEdit {
 
 		ObjectContext ctx = editPageType.getObjectContext();
 		WebContent block = webContentService.findById(Long.valueOf(id));
-		block = (WebContent) ctx.localObject(block.getObjectId(), null);
+		block = ctx.localObject(block);
 		sort(editPageType, block, regionKey, regionPosition);
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
@@ -196,8 +196,8 @@ public class PageTypeEdit {
 
 	@SetupRender
 	public void beforeRender() {
-		editPageType = pageType.getPersistenceState() == PersistenceState.NEW ? pageType : (WebNodeType) cayenneService
-				.newContext().localObject(pageType.getObjectId(), pageType);
+		editPageType = pageType.getPersistenceState() == PersistenceState.NEW ? pageType : cayenneService
+				.newContext().localObject(pageType);
 		String[] availableLayouts = readAvailableLayouts();
 		if (availableLayouts == null || availableLayouts.length == 0) {
 			logger.error("The layout directory is empty!");
@@ -223,7 +223,7 @@ public class PageTypeEdit {
 				request.setAttribute("problemMessage", "This theme " + editPageType.getName()
 						+ " cannot be deleted since it is has been used by a page.");
 			} else {
-				ctx.deleteObject(editPageType);
+				ctx.deleteObjects(editPageType);
 			}
 		case save:
 			ctx.commitChanges();
@@ -254,6 +254,8 @@ public class PageTypeEdit {
 		}
 		
 		String name= StringUtils.trimToEmpty(editPageType.getName());
+        //we need the code to set trimmed name to for the page
+        editPageType.setName(name);
 
 		if (name.length() < 3) {
 			pageTypeEditForm.recordError(messages.get("message-shortPageTypeName"));

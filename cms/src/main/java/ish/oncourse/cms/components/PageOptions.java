@@ -142,13 +142,11 @@ public class PageOptions {
 		} else {
 			node = nodeForInit;
 		}
-		ObjectContext ctx = null;
 		if (node.getPersistenceState() == PersistenceState.NEW) {
-			ctx = node.getObjectContext();
 			this.editNode = node;
 		} else {
-			ctx = node.getObjectContext().createChildContext();
-			this.editNode = (WebNode) ctx.localObject(node.getObjectId(), null);
+            ObjectContext ctx = node.getObjectContext().createChildContext();
+			this.editNode = ctx.localObject(node);
 		}
 		refreshThemes();
 		optionsForm.clearErrors();
@@ -197,6 +195,8 @@ public class PageOptions {
 		}
 
 		String pageName = StringUtils.trimToEmpty(editNode.getName());
+        //we need the code to set trimmed name to for the page
+        editNode.setName(pageName);
 		
 		if (pageName.length() < 3) {
 			optionsForm.recordError(messages.get("message-shortPageName"));
