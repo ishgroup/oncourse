@@ -61,6 +61,7 @@
                                 </ul>
                             </div>
                         </t:if>
+                        <div class="clearboth"></div>
                         <t:unless test="courseVoucherProduct" >
                             <t:if t:test="voucherProductWithValue">
                                 <div class="label">Value</div>
