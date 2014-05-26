@@ -40,6 +40,8 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 			
 			copyVersion(oldVersion);
 			
+			context.commitChanges();
+			
 			currentVersion = getStagedVersion(webSite);
 		}
 		
@@ -110,12 +112,6 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 
 			webNodeMap.put(node, newNode);
 		}
-		
-		// TODO: this commit is necessary since we can't commit WebNode and WebUrlAlias records in the same commit
-		// due to cyclic db relationship between them
-		context.commitChanges();
-
-		Map<WebUrlAlias, WebUrlAlias> webUrlAliasMap = new HashMap<>();
 
 		for (WebUrlAlias webUrlAlias : oldVersion.getWebURLAliases()) {
 			WebUrlAlias newWebUrlAlias = context.newObject(WebUrlAlias.class);
@@ -123,17 +119,9 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 			newWebUrlAlias.setCreated(webUrlAlias.getCreated());
 			newWebUrlAlias.setModified(webUrlAlias.getModified());
 			newWebUrlAlias.setUrlPath(webUrlAlias.getUrlPath());
+			newWebUrlAlias.setDefault(webUrlAlias.isDefault());
 			newWebUrlAlias.setWebNode(webNodeMap.get(webUrlAlias.getWebNode()));
 			newWebUrlAlias.setWebSiteVersion(newVersion);
-			
-			webUrlAliasMap.put(webUrlAlias, newWebUrlAlias);
-		}
-		
-		// once WebUrlAlias records are created we can set up default urls for new WebNodes
-		for (WebNode webNode : webNodeMap.keySet()) {
-			WebNode newWebNode = webNodeMap.get(webNode);
-			
-			newWebNode.setDefaultWebURLAlias(webUrlAliasMap.get(webNode.getDefaultWebURLAlias()));
 		}
 
 		for (WebContent content : oldVersion.getContents()) {
@@ -182,8 +170,6 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 			newMenu.setParentWebMenu(webMenuMap.get(menu.getParentWebMenu()));
 		}
 
-		context.commitChanges();
-		
 		return newVersion;
 	}
 
