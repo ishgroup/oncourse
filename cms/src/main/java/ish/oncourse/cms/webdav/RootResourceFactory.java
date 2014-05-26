@@ -28,8 +28,9 @@ public class RootResourceFactory implements ResourceFactory {
 	private static final String BLOCKS = "blocks";
 	private static final String PAGES = "pages";
 	private static final String S = "s";
+	private static final String TEMPLATES = "templates";
 	
-	private static final String[] WEBDAV_DIRS = new String[] { BLOCKS, PAGES, S };
+	private static final String[] WEBDAV_DIRS = new String[] { BLOCKS, PAGES, S, TEMPLATES };
 	
 	private IWebSiteService webSiteService;
 	
@@ -37,6 +38,7 @@ public class RootResourceFactory implements ResourceFactory {
 	
 	private BlockResourceFactory blockResourceFactory;
 	private PageResourceFactory pageResourceFactory;
+	private TemplateResourceFactory templateResourceFactory;
 	
 	private FileContentService fileContentService;
 	private SecurityManager securityManager;
@@ -51,9 +53,11 @@ public class RootResourceFactory implements ResourceFactory {
 		
 		this.blockResourceFactory = registry.autobuild(BlockResourceFactory.class);
 		this.pageResourceFactory = registry.autobuild(PageResourceFactory.class);
+		this.templateResourceFactory = registry.autobuild(TemplateResourceFactory.class);
 		
 		this.blockResourceFactory.setSecurityManager(securityManager);
 		this.pageResourceFactory.setSecurityManager(securityManager);
+		this.templateResourceFactory.setSecurityManager(securityManager);
 		
 		this.fileContentService = fileContentService;
 		
@@ -105,6 +109,8 @@ public class RootResourceFactory implements ResourceFactory {
 				return pageResourceFactory.getResource(host, url);
 			case BLOCKS:
 				return blockResourceFactory.getResource(host, url);
+			case TEMPLATES:
+				return templateResourceFactory.getResource(host, url);
 			default:
 				if (sRoot == null) {
 					return null;
