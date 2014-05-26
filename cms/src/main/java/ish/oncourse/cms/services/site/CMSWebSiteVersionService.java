@@ -3,6 +3,7 @@
  */
 package ish.oncourse.cms.services.site;
 
+import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.AbstractWebSiteVersionService;
@@ -28,6 +29,9 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	private IAuthenticationService authenticationService;
 
 	@Override
 	public WebSiteVersion getCurrentVersion(WebSite webSite) {
@@ -181,6 +185,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 		
 		WebSiteVersion oldVersion = webSiteVersionService.getCurrentVersion(webSite);
 		oldVersion.setDeployedOn(new Date());
+		oldVersion.setDeployedBy(authenticationService.getSystemUser());
 
 		copyVersion(oldVersion);
 
