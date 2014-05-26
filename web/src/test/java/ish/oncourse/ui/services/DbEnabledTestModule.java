@@ -8,17 +8,16 @@ import ish.oncourse.model.Product;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.ServiceModule;
-import ish.oncourse.services.cookies.CookiesService;
-import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.CommonUtils;
-import org.apache.tapestry5.SymbolConstants;
+import ish.oncourse.website.services.site.WebSiteVersionService;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -44,6 +43,7 @@ public class DbEnabledTestModule {
 
 	public static void bind(ServiceBinder binder) {
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("testWebSiteService");
+		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 	}
 
 	public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {

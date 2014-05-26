@@ -2,13 +2,17 @@ package ish.oncourse.website.pages;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import ish.oncourse.model.WebSite;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.test.ServiceTest;
 
 import java.io.IOException;
@@ -95,6 +99,17 @@ public class Error500Test extends ServiceTest {
 		public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 				@Local IEnvironmentService environmentServiceOverride) {
 			configuration.add(IEnvironmentService.class, environmentServiceOverride);
+		}
+		
+		public IWebSiteVersionService buildWebSiteVersionServiceOverride() {
+			IWebSiteVersionService mockService = mock(IWebSiteVersionService.class);	
+			when(mockService.getCurrentVersion(any(WebSite.class))).thenReturn(null);
+			return mockService;
+		}
+		
+		public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
+											  @Local IWebSiteVersionService webSiteVersionServiceOverride) {
+			configuration.add(IWebSiteVersionService.class, webSiteVersionServiceOverride);
 		}
 	}
 }

@@ -25,7 +25,11 @@ public class LinkPageForContentStructure {
 
 		node = context.newObject(WebNode.class);
 		node.setName("New Page");
+		
 		WebSite webSite = context.newObject(WebSite.class); //(WebSite) context.localObject(webSiteService.getCurrentWebSite().getObjectId(), null);
+		WebSiteVersion version = context.newObject(WebSiteVersion.class);
+		version.setWebSite(webSite);
+		
 		node.setWebSiteVersion(webSite.getVersions().get(0));
 		node.setNodeNumber(9999);
 

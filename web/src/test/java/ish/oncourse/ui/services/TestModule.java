@@ -1,21 +1,12 @@
 package ish.oncourse.ui.services;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Product;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.WebHostName;
-import ish.oncourse.model.WebMenu;
-import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
+
+import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.environment.IEnvironmentService;
@@ -27,6 +18,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
@@ -152,10 +144,41 @@ public class TestModule {
 
 		return mockService;
 	}
+	
+	public static IWebSiteVersionService buildWebSiteVersionServiceOverride() {
+		
+		WebSite webSite = mock(WebSite.class);
+
+		when(webSite.getName()).thenReturn("Sydney Community College Test Site");
+		when(webSite.getSiteKey()).thenReturn("scc");
+		when(webSite.getResourceFolderName()).thenReturn("default");
+
+		College college = mock(College.class);
+
+		when(college.getWebSites()).thenReturn(Arrays.asList(webSite));
+		
+		when(webSite.getCollege()).thenReturn(college);
+		when(webSite.getCollege().getAngelVersion()).thenReturn(System.getProperty(TEST_COLLEGE_ANGEL_VERSION_PROPERTY));
+		
+		WebSiteVersion webSiteVersion = mock(WebSiteVersion.class);
+		
+		when(webSiteVersion.getWebSite()).thenReturn(webSite);
+		
+		IWebSiteVersionService mockVersionService = mock(IWebSiteVersionService.class);
+		
+		when(mockVersionService.getCurrentVersion(any(WebSite.class))).thenReturn(webSiteVersion);
+
+		return mockVersionService;
+	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 			@Local IWebSiteService webSiteServiceOverride) {
 		configuration.add(IWebSiteService.class, webSiteServiceOverride);
+	}
+	
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, 
+										  @Local IWebSiteVersionService webSiteVersionServiceOverride) {
+		configuration.add(IWebSiteVersionService.class, webSiteVersionServiceOverride);
 	}
 
 	@SuppressWarnings("unchecked")
