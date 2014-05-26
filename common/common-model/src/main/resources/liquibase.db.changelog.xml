@@ -2494,6 +2494,12 @@
 			<column name="layoutId" type="BIGINT">
 				<constraints nullable="false"/>
 			</column>
+			<column name="created" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modified" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
 		</createTable>
 		
 		<addForeignKeyConstraint baseTableName="WebTemplate" baseColumnNames="layoutId"

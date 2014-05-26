@@ -1111,8 +1111,10 @@
 	</db-entity>
 	<db-entity name="WebTemplate">
 		<db-attribute name="content" type="LONGVARCHAR" isMandatory="true" length="16777215"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="layoutId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 	</db-entity>
 	<db-entity name="WebURLAlias" catalog="willow_college">
@@ -2092,7 +2094,11 @@
 	</obj-entity>
 	<obj-entity name="WebTemplate" className="ish.oncourse.model.WebTemplate" dbEntityName="WebTemplate">
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<post-add method-name="onPostAdd"/>
+		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
 	<obj-entity name="WebUrlAlias" className="ish.oncourse.model.WebUrlAlias" dbEntityName="WebURLAlias">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>

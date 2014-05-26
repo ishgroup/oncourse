@@ -1,5 +1,7 @@
 package ish.oncourse.model.auto;
 
+import java.util.Date;
+
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.WebSiteLayout;
@@ -13,6 +15,8 @@ import ish.oncourse.model.WebSiteLayout;
 public abstract class _WebTemplate extends CayenneDataObject {
 
     public static final String CONTENT_PROPERTY = "content";
+    public static final String CREATED_PROPERTY = "created";
+    public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String LAYOUT_PROPERTY = "layout";
 
@@ -23,6 +27,20 @@ public abstract class _WebTemplate extends CayenneDataObject {
     }
     public String getContent() {
         return (String)readProperty(CONTENT_PROPERTY);
+    }
+
+    public void setCreated(Date created) {
+        writeProperty(CREATED_PROPERTY, created);
+    }
+    public Date getCreated() {
+        return (Date)readProperty(CREATED_PROPERTY);
+    }
+
+    public void setModified(Date modified) {
+        writeProperty(MODIFIED_PROPERTY, modified);
+    }
+    public Date getModified() {
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
@@ -40,5 +58,9 @@ public abstract class _WebTemplate extends CayenneDataObject {
         return (WebSiteLayout)readProperty(LAYOUT_PROPERTY);
     }
 
+
+    protected abstract void onPostAdd();
+
+    protected abstract void onPreUpdate();
 
 }
