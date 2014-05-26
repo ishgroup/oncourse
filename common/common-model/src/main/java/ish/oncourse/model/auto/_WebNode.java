@@ -8,7 +8,6 @@ import org.apache.cayenne.CayenneDataObject;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.model.WebUrlAlias;
 
@@ -28,7 +27,6 @@ public abstract class _WebNode extends CayenneDataObject {
     public static final String WEB_CONTENT_VISIBILITY_PROPERTY = "webContentVisibility";
     public static final String WEB_MENUS_PROPERTY = "webMenus";
     public static final String WEB_NODE_TYPE_PROPERTY = "webNodeType";
-    public static final String WEB_SITE_PROPERTY = "webSite";
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
     public static final String WEB_URL_ALIASES_PROPERTY = "webUrlAliases";
 
@@ -100,15 +98,6 @@ public abstract class _WebNode extends CayenneDataObject {
 
     public WebNodeType getWebNodeType() {
         return (WebNodeType)readProperty(WEB_NODE_TYPE_PROPERTY);
-    }
-
-
-    public void setWebSite(WebSite webSite) {
-        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
-    }
-
-    public WebSite getWebSite() {
-        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 

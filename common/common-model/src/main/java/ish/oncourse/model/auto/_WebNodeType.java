@@ -7,7 +7,6 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 
 /**
@@ -24,7 +23,6 @@ public abstract class _WebNodeType extends CayenneDataObject {
     public static final String NAME_PROPERTY = "name";
     public static final String WEB_CONTENT_VISIBILITIES_PROPERTY = "webContentVisibilities";
     public static final String WEB_NODES_PROPERTY = "webNodes";
-    public static final String WEB_SITE_PROPERTY = "webSite";
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
 
     public static final String ID_PK_COLUMN = "id";
@@ -78,15 +76,6 @@ public abstract class _WebNodeType extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<WebNode> getWebNodes() {
         return (List<WebNode>)readProperty(WEB_NODES_PROPERTY);
-    }
-
-
-    public void setWebSite(WebSite webSite) {
-        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
-    }
-
-    public WebSite getWebSite() {
-        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 

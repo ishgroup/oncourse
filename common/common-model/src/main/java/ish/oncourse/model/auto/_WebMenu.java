@@ -7,7 +7,6 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 
 /**
@@ -26,7 +25,6 @@ public abstract class _WebMenu extends CayenneDataObject {
     public static final String CHILDREN_MENUS_PROPERTY = "childrenMenus";
     public static final String PARENT_WEB_MENU_PROPERTY = "parentWebMenu";
     public static final String WEB_NODE_PROPERTY = "webNode";
-    public static final String WEB_SITE_PROPERTY = "webSite";
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
 
     public static final String ID_PK_COLUMN = "id";
@@ -93,15 +91,6 @@ public abstract class _WebMenu extends CayenneDataObject {
 
     public WebNode getWebNode() {
         return (WebNode)readProperty(WEB_NODE_PROPERTY);
-    }
-
-
-    public void setWebSite(WebSite webSite) {
-        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
-    }
-
-    public WebSite getWebSite() {
-        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 

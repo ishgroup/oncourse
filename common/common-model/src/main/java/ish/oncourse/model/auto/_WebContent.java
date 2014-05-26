@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.WebContentVisibility;
-import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 
 /**
@@ -23,7 +22,6 @@ public abstract class _WebContent extends CayenneDataObject {
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String WEB_CONTENT_VISIBILITIES_PROPERTY = "webContentVisibilities";
-    public static final String WEB_SITE_PROPERTY = "webSite";
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
 
     public static final String ID_PK_COLUMN = "id";
@@ -72,15 +70,6 @@ public abstract class _WebContent extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<WebContentVisibility> getWebContentVisibilities() {
         return (List<WebContentVisibility>)readProperty(WEB_CONTENT_VISIBILITIES_PROPERTY);
-    }
-
-
-    public void setWebSite(WebSite webSite) {
-        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
-    }
-
-    public WebSite getWebSite() {
-        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 
