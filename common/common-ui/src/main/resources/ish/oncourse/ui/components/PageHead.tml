@@ -19,27 +19,7 @@
 	<meta name="author" content="" />
 	<!--[if lt IE 9]><script src="/s/js/html5.js"></script><![endif]-->
 	<link href="/s/stylesheets/css/site.css" media="screen, print" rel="stylesheet" />
-
-    <script type="text/javascript" src="/s/js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="/s/js/jquery-ui-1.9.1.min.js"></script>
-    <script type="text/javascript" src="/s/js/jquery.cookie.js"></script>
-    <script type="text/javascript" src="/s/js/jquery.nyroModal-2.0.0.min.js"></script>
-    <script type="text/javascript" src="/s/js/jquery.cycle.all.min.js"></script>
-    <script type="text/javascript" src="/s/js/jquery.utils.js"></script>
-    <script type="text/javascript" src="/s/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="/s/js/additional-methods.min.js"></script>
-    <script type="text/javascript" src="/s/js/shadow.js"></script>
-    <script type="text/javascript" src="/s/js/jquery.juitter.js"></script>
-    <script type="text/javascript" src="/s/js/application.js"></script>
-    <script type="text/javascript" src="/s/js/gmap.js"></script>
-    <script type="text/javascript" src="/s/js/search.js"></script>
-    <script type="text/javascript" src="/s/js/shortlist.js"></script>
-    <script type="text/javascript" src="/s/js/forms.js"></script>
-    <script type="text/javascript" src="/s/js/enrol.js"></script>
-    <script type="text/javascript" src="/s/js/socialMedia.js"></script>
-    <script type="text/javascript" src="/s/js/jstz-1.0.4.min.js"></script>
-    <script type="text/javascript" src="/s/js/timezone.js"></script>
-
+    <script type="text/javascript" src="/s/js/all.js"></script>
 
 	<span t:type="ui/googleAnalytics"/>
 </t:container>
