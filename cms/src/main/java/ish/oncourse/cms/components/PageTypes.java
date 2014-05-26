@@ -1,10 +1,10 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.pages.internal.Page;
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.Block;
@@ -26,6 +26,9 @@ public class PageTypes {
 	@Inject
 	private IWebSiteService webSiteService;
 
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
+	
 	@Property
 	private WebNodeType webNodeType;
 
@@ -57,7 +60,8 @@ public class PageTypes {
 		}
 		ObjectContext ctx = cayenneService.newContext();
 		WebNodeType newTheme = ctx.newObject(WebNodeType.class);
-		newTheme.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
+		newTheme.setWebSiteVersion(
+				webSiteVersionService.getCurrentVersion(ctx.localObject(webSiteService.getCurrentWebSite())));
 		changeSelectedPageType(newTheme);
 		return getEditPageTypeBlock();
 	}

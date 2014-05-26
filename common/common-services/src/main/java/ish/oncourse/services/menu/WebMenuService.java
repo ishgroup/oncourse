@@ -2,9 +2,11 @@ package ish.oncourse.services.menu;
 
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebSite;
+import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -22,13 +24,16 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
 
 	@Override
 	public WebMenu createMenu(WebSite site) {
 		ObjectContext ctx = site.getObjectContext();
 		
 		WebMenu menu = ctx.newObject(WebMenu.class);		
-		menu.setWebSite(site);
+		menu.setWebSiteVersion(webSiteVersionService.getCurrentVersion(site));
 
 		WebMenu rootMenu = getRootMenu();
 		menu.setParentWebMenu(ctx.localObject(rootMenu));
@@ -51,7 +56,8 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 
 		SelectQuery selectQuery = new SelectQuery(WebMenu.class);
 		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.NAME_PROPERTY, name));
-		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.WEB_SITE_PROPERTY, webSiteService.getCurrentWebSite()));
+		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.WEB_SITE_VERSION_PROPERTY, 
+				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite())));
 		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.PARENT_WEB_MENU_PROPERTY, parentMenu));
 		
 		List<WebMenu> menuList = ctx.performQuery(selectQuery);
@@ -82,9 +88,9 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 	private Expression siteQualifier() {
 		WebSite site = webSiteService.getCurrentWebSite();
 		Expression expression = (site == null) ? ExpressionFactory.matchExp(
-				WebMenu.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
+				WebMenu.WEB_SITE_VERSION_PROPERTY + "." + WebSiteVersion.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
 				webSiteService.getCurrentCollege()) : ExpressionFactory
-				.matchExp(WebMenu.WEB_SITE_PROPERTY, site);
+				.matchExp(WebMenu.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion(site));
 
 		return expression;
 	}

@@ -1,6 +1,7 @@
 package ish.oncourse.services.alias;
 
 import ish.oncourse.model.WebSite;
+import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -8,6 +9,7 @@ import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;
 
+import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -24,6 +26,9 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
 
 	public WebUrlAlias getAliasByPath(String path) {
 		Expression pathExp = ExpressionFactory.matchExp(
@@ -50,9 +55,9 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 	private Expression siteQualifier() {
 		WebSite site = webSiteService.getCurrentWebSite();
 		Expression expression = (site == null) ? ExpressionFactory.matchExp(
-				WebUrlAlias.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
+				WebUrlAlias.WEB_SITE_VERSION_PROPERTY + "." + WebSiteVersion.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
 				webSiteService.getCurrentCollege()) : ExpressionFactory
-				.matchExp(WebUrlAlias.WEB_SITE_PROPERTY, site);
+					.matchExp(WebUrlAlias.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion(site));
 		return expression;
 	}
 }

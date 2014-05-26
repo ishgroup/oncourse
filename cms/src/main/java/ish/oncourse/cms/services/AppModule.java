@@ -3,6 +3,7 @@ package ish.oncourse.cms.services;
 import ish.oncourse.cms.services.access.AuthenticationService;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.cms.services.access.PageAccessDispatcher;
+import ish.oncourse.cms.services.site.CMSWebSiteVersionService;
 import ish.oncourse.linktransform.PageLinkTransformer;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
@@ -12,6 +13,7 @@ import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.resource.Resource;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.components.internal.ContentStructure;
 import ish.oncourse.ui.components.internal.PageStructure;
 import ish.oncourse.ui.pages.internal.Page;
@@ -42,6 +44,7 @@ public class AppModule {
 	public static void bind(ServiceBinder binder) {
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 		binder.bind(PageAccessDispatcher.class).withId("PageAccessDispatcher");
+		binder.bind(IWebSiteVersionService.class, CMSWebSiteVersionService.class);
 	}
 
 	public static void contributeApplicationDefaults(

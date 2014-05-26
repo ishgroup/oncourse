@@ -3,6 +3,7 @@ package ish.oncourse.services.node;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
+import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -57,9 +58,12 @@ public class WebNodeServiceTest  extends ServiceTest  {
 
         WebSite site = context.newObject(WebSite.class);
 
+		WebSiteVersion siteVersion = context.newObject(WebSiteVersion.class);
+		siteVersion.setWebSite(site);
+
         WebNodeType page = context.newObject(WebNodeType.class);
         page.setName("page");
-        page.setWebSite(site);
+        page.setWebSiteVersion(siteVersion);
 
         WebNode webNode = webNodeService.createNewNodeBy(site, page, "Test", "Test", 1);
         assertWebNode(webNode);
@@ -67,7 +71,7 @@ public class WebNodeServiceTest  extends ServiceTest  {
 
 
     private void assertWebNode(WebNode webNode) {
-        assertNotNull(webNode.getWebSite());
+        assertNotNull(webNode.getWebSiteVersion());
         assertNotNull(webNode.getWebNodeType());
         assertNotNull(webNode.getWebContentVisibility());
         assertEquals(1,webNode.getWebContentVisibility().size());

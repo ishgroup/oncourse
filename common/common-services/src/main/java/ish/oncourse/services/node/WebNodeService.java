@@ -3,6 +3,7 @@ package ish.oncourse.services.node;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -38,6 +39,9 @@ public class WebNodeService implements IWebNodeService {
 
 	@Inject
 	private IWebNodeTypeService webNodeTypeService;
+	
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
 
 	@Override
 	public WebNode findById(Long willowId) {
@@ -140,8 +144,10 @@ public class WebNodeService implements IWebNodeService {
 
 	private Expression siteQualifier() {
 		WebSite site = webSiteService.getCurrentWebSite();
-		Expression expression = (site == null) ? ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY + DOT_CHARACTER + WebSite.COLLEGE_PROPERTY,
-				webSiteService.getCurrentCollege()) : ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY, site);
+		Expression expression = (site == null) ? ExpressionFactory.matchExp(
+				WebNode.WEB_SITE_VERSION_PROPERTY + DOT_CHARACTER + WebSiteVersion.WEB_SITE_PROPERTY + DOT_CHARACTER + WebSite.COLLEGE_PROPERTY,
+				webSiteService.getCurrentCollege()) : ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY, 
+				webSiteVersionService.getCurrentVersion(site));
 		return expression;
 	}
 
@@ -178,7 +184,8 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public synchronized Integer getNextNodeNumber() {
-		Expression siteExpr = ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY, webSiteService.getCurrentWebSite());
+		Expression siteExpr = ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY, 
+				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
 
 		Integer number = (Integer) cayenneService.sharedContext()
 				.performQuery(new EJBQLQuery("select max(wn.nodeNumber) from WebNode wn where " + siteExpr.toEJBQL("wn"))).get(0);
@@ -206,13 +213,13 @@ public class WebNodeService implements IWebNodeService {
         ObjectContext ctx = webSite.getObjectContext();
         WebNode newPageNode = ctx.newObject(WebNode.class);
         newPageNode.setName(nodeName);
-        newPageNode.setWebSite(webSite);
+        newPageNode.setWebSiteVersion(webSiteVersionService.getCurrentVersion(webSite));
         newPageNode.setNodeNumber(nodeNumber);
 
         newPageNode.setWebNodeType(webNodeType);
 
         WebContent webContent = ctx.newObject(WebContent.class);
-        webContent.setWebSite(webSite);
+        webContent.setWebSiteVersion(webSiteVersionService.getCurrentVersion(webSite));
         webContent.setContent(content);
 
         WebContentVisibility webContentVisibility = ctx.newObject(WebContentVisibility.class);

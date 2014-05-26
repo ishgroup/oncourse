@@ -2,7 +2,6 @@ package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
@@ -11,6 +10,7 @@ import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.pages.internal.Page;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -77,6 +77,9 @@ public class PageOptions {
 
 	@Inject
 	private IWebSiteService webSiteService;
+	
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
 
 	@Inject
 	private IWebUrlAliasService aliasService;
@@ -250,7 +253,8 @@ public class PageOptions {
 		ObjectContext ctx = editNode.getObjectContext();
 
 		WebUrlAlias alias = ctx.newObject(WebUrlAlias.class);
-		alias.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
+		alias.setWebSiteVersion(
+				webSiteVersionService.getCurrentVersion(ctx.localObject(webSiteService.getCurrentWebSite())));
 		alias.setUrlPath(urlPath);
 
 		//both sides relationship set required to prevent#14485 persist issue.

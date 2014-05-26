@@ -13,9 +13,11 @@ import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import ish.oncourse.website.services.html.CacheMetaProvider;
+import ish.oncourse.website.services.site.WebSiteVersionService;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -40,6 +42,7 @@ public class AppModule {
 
 	public static void bind(ServiceBinder binder) {
 		binder.bind(ICacheMetaProvider.class,CacheMetaProvider.class).withId("WebCacheMetaProvider");
+		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local ICacheMetaProvider cacheMetaProvider) {

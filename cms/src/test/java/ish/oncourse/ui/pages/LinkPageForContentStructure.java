@@ -26,13 +26,13 @@ public class LinkPageForContentStructure {
 		node = context.newObject(WebNode.class);
 		node.setName("New Page");
 		WebSite webSite = context.newObject(WebSite.class); //(WebSite) context.localObject(webSiteService.getCurrentWebSite().getObjectId(), null);
-		node.setWebSite(webSite);
+		node.setWebSiteVersion(webSite.getVersions().get(0));
 		node.setNodeNumber(9999);
 
 		WebContent webContent=context.newObject(WebContent.class);
 		webContent.setContentTextile("{image name:\"TEST\"}");
 		webContent.setContent("{image name:\"TEST\"}");
-		webContent.setWebSite(webSite);
+		webContent.setWebSiteVersion(webSite.getVersions().get(0));
 		
 		WebContentVisibility webContentVisibility = context.newObject(WebContentVisibility.class);
 		webContentVisibility.setWebNode(node);

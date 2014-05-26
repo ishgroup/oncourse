@@ -227,12 +227,16 @@ public class Web {
 		site.setCreated(now);
 		site.setModified(now);
 		
+		WebSiteVersion initialVersion = context.newObject(WebSiteVersion.class);
+		initialVersion.setWebSite(site);
+		initialVersion.setDeployedOn(now);
+		
 		WebNodeType page = context.newObject(WebNodeType.class);
 		page.setName("page");
 		page.setCreated(now);
 		page.setModified(now);
 		page.setLayoutKey("default");
-		page.setWebSite(site);
+		page.setWebSiteVersion(initialVersion);
 
         WebNode node = webNodeService.createNewNodeBy(site, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1);
 		node.setPublished(true);
@@ -241,7 +245,7 @@ public class Web {
 		menu.setName("Home");
 		menu.setCreated(now);
 		menu.setModified(now);
-		menu.setWebSite(site);
+		menu.setWebSiteVersion(initialVersion);
 		menu.setWeight(1);
 		menu.setWebNode(node);
 
@@ -269,7 +273,7 @@ public class Web {
 		context.commitChanges();
 		
 		WebUrlAlias urlAlias = context.newObject(WebUrlAlias.class);
-		urlAlias.setWebSite(site);
+		urlAlias.setWebSiteVersion(initialVersion);
 		urlAlias.setUrlPath("/");
 		urlAlias.setWebNode(node);
         urlAlias.setDefault(true);
@@ -331,40 +335,45 @@ public class Web {
 		Expression exp = ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, siteKey);
 		SelectQuery query = new SelectQuery(WebSite.class, exp);
 		WebSite site = (WebSite) Cayenne.objectForQuery(context, query);
-			
-		List<WebNode> nodes = new ArrayList<>(site.getWebNodes());
-		List<WebNodeType> nodeTypes = new ArrayList<>(site.getWebNodeTypes());
-		List<WebMenu> menus = new ArrayList<>(site.getWebMenus());
-		
-		if (nodes.size() > 1 && menus.size() > 1) {
-			siteDeleteFailed = true;
-			return null;
-		}
-		
-		if (nodes.size() == 1 && !"Home page".equals(nodes.get(0).getName())) {
-			siteDeleteFailed = true;
-			return null;
-		}
-		
-		if (menus.size() == 1 && !"Home".equals(menus.get(0).getName())) {
-			siteDeleteFailed = true;
-			return null;
-		}
-		
+
 		try {
-			for (WebNode node : nodes) {
-				context.deleteObjects(node);
-			}
-			
-			for (WebNodeType nodeType : nodeTypes) {
-				context.deleteObjects(nodeType);
-			}
-				
-			for (WebMenu menu : menus) {
-				context.deleteObjects(menu);
+
+			for (WebSiteVersion version : site.getVersions()) {
+
+				List<WebNode> nodes = new ArrayList<>(version.getWebNodes());
+				List<WebNodeType> nodeTypes = new ArrayList<>(version.getWebNodeTypes());
+				List<WebMenu> menus = new ArrayList<>(version.getMenus());
+
+				if (nodes.size() > 1 && menus.size() > 1) {
+					siteDeleteFailed = true;
+					return null;
+				}
+
+				if (nodes.size() == 1 && !"Home page".equals(nodes.get(0).getName())) {
+					siteDeleteFailed = true;
+					return null;
+				}
+
+				if (menus.size() == 1 && !"Home".equals(menus.get(0).getName())) {
+					siteDeleteFailed = true;
+					return null;
+				}
+
+				for (WebNode node : nodes) {
+					context.deleteObjects(node);
+				}
+
+				for (WebNodeType nodeType : nodeTypes) {
+					context.deleteObjects(nodeType);
+				}
+
+				for (WebMenu menu : menus) {
+					context.deleteObjects(menu);
+				}
+				context.deleteObjects(version);
 			}
 			context.deleteObjects(site);
-				
+			
 			context.commitChanges();
 		} catch (DeleteDenyException e) {
 			this.siteDeleteFailed = true;

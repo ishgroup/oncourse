@@ -71,8 +71,9 @@ public class ContentStructure {
 	public void beforeRender() {
 		for(WebContentVisibility visibility: node.getWebContentVisibility()){
 			if(visibility == null){
-				LOGGER.error(String.format("The visibility is null in node %s in site %s in college %s", node.getName(), node.getWebSite().getName(), 
-					node.getWebSite().getCollege().getName()));
+				LOGGER.error(String.format("The visibility is null in node %s in site %s in college %s", node.getName(), 
+						node.getWebSiteVersion().getWebSite().getName(), 
+						node.getWebSiteVersion().getWebSite().getCollege().getName()));
 			}
 		}
 	}

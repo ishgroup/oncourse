@@ -3,10 +3,10 @@ package ish.oncourse.cms.components;
 import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
-import ish.oncourse.model.WebSite;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.pages.internal.Page;
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.Block;
@@ -35,6 +35,9 @@ public class Blocks {
 
 	@Inject
 	private IWebSiteService webSiteService;
+	
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
 
 	@Property
 	private WebContent block;
@@ -60,7 +63,8 @@ public class Blocks {
 		visibility.setRegionKey(RegionKey.unassigned);
 		visibility.setWebContent(selectedBlock);
 
-		selectedBlock.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
+		selectedBlock.setWebSiteVersion(
+				webSiteVersionService.getCurrentVersion(ctx.localObject(webSiteService.getCurrentWebSite())));
 
 		return getEditBlock();
 	}

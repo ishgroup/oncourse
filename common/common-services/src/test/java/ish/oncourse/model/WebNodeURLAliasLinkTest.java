@@ -112,10 +112,10 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 	
 	private WebUrlAlias createWebUrlAlias(WebNode webNode) {
 		ObjectContext context = webNode.getObjectContext();
-		WebSite webSite = webNode.getWebNodeType().getWebSite();
-		assertNotNull("WebSite should not be null", webSite);
+		WebSiteVersion webSiteVersion = webNode.getWebNodeType().getWebSiteVersion();
+		assertNotNull("WebSite should not be null", webSiteVersion);
 		WebUrlAlias alias = context.newObject(WebUrlAlias.class);
-		alias.setWebSite(webSite);
+		alias.setWebSiteVersion(webSiteVersion);
 		alias.setUrlPath(webNodeService.getPath(webNode));
 		return alias;
 	}
@@ -126,15 +126,17 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 		WebSite webSite = (WebSite) context.performQuery(new SelectQuery(WebSite.class, ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, 1l))).get(0);
 		assertNotNull("WebSite should not be null", webSite);
 		
+		WebSiteVersion siteVersion = webSite.getVersions().get(0);
+		
 		WebNodeType webNodeType = context.newObject(WebNodeType.class);
 		webNodeType.setName(WebNodeType.PAGE);
 		webNodeType.setLayoutKey(WebNodeType.DEFAULT_LAYOUT_KEY);
-		webNodeType.setWebSite(webSite);
+		webNodeType.setWebSiteVersion(siteVersion);
 		
 		WebNode webNode = context.newObject(WebNode.class);
 		webNode.setName("test Name");
 		webNode.setWebNodeType(webNodeType);
-		webNode.setWebSite(webSite);
+		webNode.setWebSiteVersion(siteVersion);
 		webNode.setNodeNumber(0);
 		return webNode;
 	}

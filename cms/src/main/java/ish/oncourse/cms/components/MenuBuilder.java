@@ -5,6 +5,7 @@ import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -28,12 +29,15 @@ public class MenuBuilder extends ish.oncourse.ui.components.Menu {
 	
 	@Inject
 	private IWebSiteService webSiteService;
+	
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
 
 	public String getSuggestResults() {
 
 		JSONArray array = new JSONArray();
 
-		for (WebUrlAlias alias : webSiteService.getCurrentWebSite().getWebUrlAliases()) {
+		for (WebUrlAlias alias : webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()).getWebURLAliases()) {
 			JSONObject obj = new JSONObject();
 
 			obj.append("value", alias.getUrlPath());

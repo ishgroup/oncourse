@@ -16,6 +16,7 @@ import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -38,6 +39,9 @@ public class BlockResourceFactory implements ResourceFactory {
 	
 	@Inject
 	private IWebSiteService webSiteService;
+	
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
 	
 	private SecurityManager securityManager;
 	
@@ -136,7 +140,8 @@ public class BlockResourceFactory implements ResourceFactory {
 		visibility.setRegionKey(RegionKey.unassigned);
 		visibility.setWebContent(block);
 
-		block.setWebSite(ctx.localObject(webSiteService.getCurrentWebSite()));
+		block.setWebSiteVersion(
+				webSiteVersionService.getCurrentVersion(ctx.localObject(webSiteService.getCurrentWebSite())));
 		
 		ctx.commitChanges();
 		

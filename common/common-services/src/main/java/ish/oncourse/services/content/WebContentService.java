@@ -4,6 +4,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
@@ -23,12 +24,15 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
 
 	@Override
 	public WebContent getWebContent(String searchProperty, Object value) {
 		WebSite currentSite = webSiteService.getCurrentWebSite();
 		Expression qualifier = ExpressionFactory.matchExp(
-				WebContent.WEB_SITE_PROPERTY, currentSite);
+				WebContent.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion(currentSite));
 		if (searchProperty != null) {
 			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
 					searchProperty, value));
@@ -54,8 +58,8 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		SelectQuery q = new SelectQuery(WebContent.class);
 
 		Expression siteQualifier = ExpressionFactory.matchExp(
-				WebContent.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite());
+				WebContent.WEB_SITE_VERSION_PROPERTY,
+				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
 		q.andQualifier(siteQualifier);
 		q.andQualifier(ExpressionFactory.matchExp(
 				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
@@ -99,8 +103,8 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	public List<WebContent> getBlocks() {
 
 		SelectQuery q = new SelectQuery(WebContent.class);
-		q.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite()));
+		q.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_VERSION_PROPERTY,
+				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite())));
 
 		Expression expr = ExpressionFactory.matchExp(
 				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
@@ -173,9 +177,11 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		}
 		List<WebContentVisibility> result = new ArrayList<>();
 		WebSite currentWebSite = webSiteService.getCurrentWebSite();
+		WebSiteVersion currentSiteVersion = webSiteVersionService.getCurrentVersion(currentWebSite);
 		//fill the list of corresponding results
 		for (WebContentVisibility visibility : webNodeType.getWebContentVisibilities()) {
-			if (currentWebSite.getId().equals(visibility.getWebContent().getWebSite().getId()) && regionKey.equals(visibility.getRegionKey())) {
+			if (currentSiteVersion.getId().equals(visibility.getWebContent().getWebSiteVersion().getId()) 
+					&& regionKey.equals(visibility.getRegionKey())) {
 				result.add(visibility);
 			}
 		}
@@ -188,8 +194,8 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		 public WebContent getBlockByName(String webContentName) {
 		WebContent webContent = null;
 		SelectQuery selectQuery = new SelectQuery(WebContent.class);
-		selectQuery.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite()));
+		selectQuery.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_VERSION_PROPERTY,
+				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite())));
 		Expression expression = ExpressionFactory.matchExp(
 				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
 						+ WebContentVisibility.WEB_NODE_PROPERTY, null);
@@ -209,8 +215,8 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	public WebNode getWebNodeByName(String webNodeName) {
 		WebNode webNode = null;
 		SelectQuery selectQuery = new SelectQuery(WebNode.class);
-		selectQuery.andQualifier(ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite()));
+		selectQuery.andQualifier(ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY,
+				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite())));
 		selectQuery.andQualifier(ExpressionFactory.matchExp(WebNode.NAME_PROPERTY, webNodeName));
 		List<WebNode> list = cayenneService.sharedContext().performQuery(selectQuery);
 		if(!list.isEmpty()){
@@ -223,7 +229,8 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	public WebNodeType getWebNodeTypeByName(String webNodeTypeName) {
 		WebNodeType webNodeType = null;
 		Expression expression = ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY, webNodeTypeName);
-		expression.andExp(ExpressionFactory.matchExp(WebNodeType.WEB_SITE_PROPERTY,webSiteService.getCurrentWebSite()));
+		expression.andExp(ExpressionFactory.matchExp(WebNodeType.WEB_SITE_VERSION_PROPERTY, 
+				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite())));
 
 		SelectQuery selectQuery = new SelectQuery(WebNodeType.class, expression);
 		List<WebNodeType> list = cayenneService.sharedContext().performQuery(selectQuery);

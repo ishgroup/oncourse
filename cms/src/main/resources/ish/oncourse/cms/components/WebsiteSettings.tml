@@ -69,6 +69,8 @@
 			</div>
 		</t:form>
 	</t:zone>
+
+	<t:actionlink t:id="deploySite" class="cms-btn cms-settings-button">Deploy</t:actionlink>
 	
 	<script type="text/javascript">
 		Event.observe('${websiteSettingsZone.clientId}', Tapestry.ZONE_UPDATED_EVENT, customForms);

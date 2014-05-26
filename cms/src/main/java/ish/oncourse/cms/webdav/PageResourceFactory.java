@@ -15,6 +15,7 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -40,6 +41,9 @@ public class PageResourceFactory implements ResourceFactory {
 	
 	@Inject
 	private IWebSiteService webSiteService;
+	
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
 	
 	@Inject
 	private IWebNodeTypeService webNodeTypeService;
@@ -97,8 +101,8 @@ public class PageResourceFactory implements ResourceFactory {
 
 	private Expression siteQualifier() {
 		WebSite site = webSiteService.getCurrentWebSite();
-		return  (site == null) ? ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
-				webSiteService.getCurrentCollege()) : ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY, site);
+		return  (site == null) ? ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY + "." + WebSiteVersion.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
+				webSiteService.getCurrentCollege()) : ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion(site));
 	}
 
 	public List<WebContentResource> listPages() {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.dbunit.database.DatabaseConnection;
@@ -14,11 +15,6 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.oncourse.model.RegionKey;
-import ish.oncourse.model.WebContent;
-import ish.oncourse.model.WebContentVisibility;
-import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -56,6 +52,8 @@ public class WebContentServiceTest extends ServiceTest {
 		ObjectContext context = cayenneService.newContext();
 		WebSite website = webSiteService.getCurrentWebSite();
 		website = (WebSite) context.localObject(website.getObjectId(), null);
+
+		WebSiteVersion webSiteVersion = website.getVersions().get(0);
 		
 		@SuppressWarnings("unchecked")
 		List<WebNodeType> webnodes = context.performQuery(new SelectQuery(WebNodeType.class));
@@ -65,13 +63,13 @@ public class WebContentServiceTest extends ServiceTest {
 		WebNodeType webNodeType = context.newObject(WebNodeType.class);
 		webNodeType.setName("test name");
 		webNodeType.setLayoutKey("test key");
-		webNodeType.setWebSite(website);
+		webNodeType.setWebSiteVersion(webSiteVersion);
 		context.commitChanges();
 		assertTrue("Empty list should be returned if no data linked with region", 
 			service.getBlockVisibilityForRegionKey(webNodeType, RegionKey.content).isEmpty());
 		
 		WebContent webContent = context.newObject(WebContent.class);
-		webContent.setWebSite(website);
+		webContent.setWebSiteVersion(webSiteVersion);
 		WebContentVisibility visibility = context.newObject(WebContentVisibility.class);
 		visibility.setWebNodeType(webNodeType);
 		visibility.setRegionKey(RegionKey.content);
@@ -98,6 +96,8 @@ public class WebContentServiceTest extends ServiceTest {
 		ObjectContext context = cayenneService.newContext();
 		WebSite website = webSiteService.getCurrentWebSite();
 		website = (WebSite) context.localObject(website.getObjectId(), null);
+
+		WebSiteVersion webSiteVersion = website.getVersions().get(0);
 		
 		@SuppressWarnings("unchecked")
 		List<WebNodeType> webnodes = context.performQuery(new SelectQuery(WebNodeType.class));
@@ -107,9 +107,9 @@ public class WebContentServiceTest extends ServiceTest {
 		WebNodeType webNodeType = context.newObject(WebNodeType.class);
 		webNodeType.setName("test name");
 		webNodeType.setLayoutKey("test key");
-		webNodeType.setWebSite(website);
+		webNodeType.setWebSiteVersion(webSiteVersion);
 		WebContent webContent = context.newObject(WebContent.class);
-		webContent.setWebSite(website);
+		webContent.setWebSiteVersion(webSiteVersion);
 		WebContentVisibility visibility = context.newObject(WebContentVisibility.class);
 		visibility.setWebNodeType(webNodeType);
 		visibility.setRegionKey(RegionKey.content);

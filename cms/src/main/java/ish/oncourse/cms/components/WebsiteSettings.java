@@ -1,12 +1,18 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.pages.internal.Page;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class WebsiteSettings {
 	
@@ -38,6 +44,12 @@ public class WebsiteSettings {
 	
 	@Inject
 	private PreferenceController preferenceController;
+	
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
+	
+	@Inject
+	private IWebSiteService webSiteService;
 	
 	@InjectPage
 	private Page page;
@@ -71,7 +83,7 @@ public class WebsiteSettings {
 		preferenceController.setEnableSocialMediaLinksCourse(enableForCourse);
 		preferenceController.setEnableSocialMediaLinksWebPage(enableForWebPage);
 		
-		if (addthisProfileId != null && addthisProfileId != "") {
+		if (StringUtils.trimToNull(addthisProfileId) != null) {
 			preferenceController.setAddThisProfileId(addthisProfileId);
 		}
 		
@@ -82,5 +94,11 @@ public class WebsiteSettings {
 	
 	public Zone getWebsiteSettingsZone() {
 		return websiteSettingsZone;
+	}
+	
+	public Object onActionFromDeploySite() throws MalformedURLException {
+		webSiteVersionService.deploy(webSiteService.getCurrentWebSite());
+
+		return new URL(String.format("http://%s/", request.getServerName()));
 	}
 }
