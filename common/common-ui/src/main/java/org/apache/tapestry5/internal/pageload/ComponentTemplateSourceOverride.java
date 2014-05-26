@@ -3,7 +3,6 @@ package org.apache.tapestry5.internal.pageload;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.resource.IResourceService;
-import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.ui.template.T5FileResource;
@@ -224,24 +223,21 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 			
 			if (layoutKey != null) {
 
-                PrivateResource resource = null;
+                Resource resource = null;
                 if (ctd != null && model.getComponentClassName().endsWith(ctd.getTemplateClassName()))
                 {
                     LOGGER.debug(String.format("Try to load user defined template %s override for %s.",ctd.getTemplateFileName(),
                             templateFile));
-                    resource = resourceService.getTemplateResource(layoutKey, ctd.getTemplateFileName());
+                    resource = resourceService.getDbTemplateResource(layoutKey, ctd.getTemplateFileName());
                 }
 
-                if (resource == null || !resource.exists())
-                {
+                if (resource == null || !resource.exists()) {
                     LOGGER.debug("Try to load template override for: " + templateFile);
-                    resource = resourceService.getTemplateResource(layoutKey, templateFile);
+                    resource = resourceService.getDbTemplateResource(layoutKey, templateFile);
                 }
 
-
-				if ((resource != null) && resource.exists()) {
-					LOGGER.debug("Template override: " + resource.getFile().getName() + " found.");
-					return new T5FileResource(resource.getFile());
+				if (resource != null) {
+					return resource;
 				}
 
 				LOGGER.debug("Template override: " + templateFile + " doesn't exist.");

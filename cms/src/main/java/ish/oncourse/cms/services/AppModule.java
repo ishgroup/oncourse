@@ -41,6 +41,10 @@ import java.util.List;
 		
 public class AppModule {
 
+	private static final String PAGE_TEMPLATE = Page.class.getSimpleName() + ".tml";
+	private static final String PAGE_STRUCTURE_TEMPLATE = PageStructure.class.getSimpleName() + ".tml";
+	private static final String CONTENT_STRUCTURE_TEMPLATE = ContentStructure.class.getSimpleName() + ".tml";
+
 	public static void bind(ServiceBinder binder) {
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 		binder.bind(PageAccessDispatcher.class).withId("PageAccessDispatcher");
@@ -99,13 +103,19 @@ public class AppModule {
 			}
 
 			public PrivateResource getTemplateResource(String layoutKey, String fileName) {
-				if (fileName.equalsIgnoreCase(Page.class.getSimpleName() + ".tml")
-						|| fileName.equalsIgnoreCase(PageStructure.class.getSimpleName() + ".tml")
-						|| fileName.equalsIgnoreCase(ContentStructure.class.getSimpleName()
-								+ ".tml")) {
+				if (PAGE_TEMPLATE.equalsIgnoreCase(fileName) || PAGE_STRUCTURE_TEMPLATE.equalsIgnoreCase(fileName)
+						|| CONTENT_STRUCTURE_TEMPLATE.equalsIgnoreCase(fileName)) {
 					return null;
 				}
 				return original.getTemplateResource(layoutKey, fileName);
+			}
+
+			public org.apache.tapestry5.ioc.Resource getDbTemplateResource(String layoutKey, String fileName) {
+				if (PAGE_TEMPLATE.equalsIgnoreCase(fileName) || PAGE_STRUCTURE_TEMPLATE.equalsIgnoreCase(fileName)
+						|| CONTENT_STRUCTURE_TEMPLATE.equalsIgnoreCase(fileName)) {
+					return null;
+				}
+				return original.getDbTemplateResource(layoutKey, fileName);
 			}
 
 			public List<PrivateResource> getConfigResources(String fileName) {

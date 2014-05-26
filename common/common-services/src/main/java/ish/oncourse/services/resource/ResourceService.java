@@ -1,6 +1,9 @@
 package ish.oncourse.services.resource;
 
+import ish.oncourse.model.WebSiteLayout;
+import ish.oncourse.model.WebTemplate;
 import ish.oncourse.services.jndi.ILookupService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
@@ -9,6 +12,11 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import ish.oncourse.services.site.IWebSiteVersionService;
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -23,14 +31,18 @@ public class ResourceService implements IResourceService {
 	private final File customComponentsRoot;
 	private final File customComponentsDefaultsRoot;
 	private final File[] noCustomFolderDefaultsRoot;
+	
 	private IWebSiteService siteService;
+	private IWebSiteVersionService siteVersionService;
+	private ICayenneService cayenneService;
 
 	private static final Logger LOGGER = Logger
 			.getLogger(ResourceService.class);
 
 
 	public ResourceService(@Inject IPropertyService propertyService,
-			@Inject IWebSiteService siteService, @Inject ILookupService lookupService) {
+			@Inject IWebSiteService siteService, @Inject ILookupService lookupService, 
+			@Inject ICayenneService cayenneService, @Inject IWebSiteVersionService siteVersionService) {
 
 		String customComponentsPath = (String) lookupService.lookup(Property.CustomComponentsPath.value());
 
@@ -69,6 +81,8 @@ public class ResourceService implements IResourceService {
 		noCustomFolderDefaultsRoot = new File[] { customComponentsDefaultsRoot };
 
 		this.siteService = siteService;
+		this.cayenneService = cayenneService;
+		this.siteVersionService = siteVersionService;
 	}
 
 	/**
@@ -115,6 +129,22 @@ public class ResourceService implements IResourceService {
 		}
 
 		return res;
+	}
+	
+	@Override
+	public org.apache.tapestry5.ioc.Resource getDbTemplateResource(String layoutKey, String fileName) {
+		ObjectContext context = cayenneService.sharedContext();
+
+		SelectQuery query = new SelectQuery(WebTemplate.class);
+		query.andQualifier(ExpressionFactory.matchExp(
+				WebTemplate.LAYOUT_PROPERTY + "." + WebSiteLayout.WEB_SITE_VERSION_PROPERTY, 
+				siteVersionService.getCurrentVersion(siteService.getCurrentWebSite())));
+		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.LAYOUT_PROPERTY + "." + WebSiteLayout.LAYOUT_KEY_PROPERTY, layoutKey));
+		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.NAME_PROPERTY, fileName));
+
+		WebTemplate template = (WebTemplate) Cayenne.objectForQuery(context, query);
+		
+		return template != null ? new DatabaseTemplateResource(template) : null;
 	}
 	
 	/**

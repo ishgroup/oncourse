@@ -66,6 +66,11 @@ public class AssetGroupServiceTest extends Assert {
 			public PrivateResource getTemplateResource(String layoutKey, String fileName) {
 				throw new UnsupportedOperationException();
 			}
+
+			@Override
+			public org.apache.tapestry5.ioc.Resource getDbTemplateResource(String layoutKey, String fileName) {
+				throw new UnsupportedOperationException();
+			}
 		};
 
 		AssetGroupService service = new AssetGroupService(resourceService);

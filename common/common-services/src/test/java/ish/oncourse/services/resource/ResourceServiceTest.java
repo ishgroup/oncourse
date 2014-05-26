@@ -46,7 +46,7 @@ public class ResourceServiceTest extends Assert {
 		ILookupService lookupService = mock(ILookupService.class);
 		
 		ResourceService resourceService = new ResourceService(propertyService,
-				webSiteService1, lookupService);
+				webSiteService1, lookupService, null, null);
 
 		Resource r1 = resourceService.getWebResource("x/some.css");
 		assertNotNull(r1);
@@ -80,7 +80,7 @@ public class ResourceServiceTest extends Assert {
 		ILookupService lookupService = mock(ILookupService.class);
 		
 		ResourceService resourceService = new ResourceService(propertyService,
-				webSiteService1, lookupService);
+				webSiteService1, lookupService, null, null);
 
 		List<PrivateResource> dummyConf = resourceService
 				.getConfigResources("dummy.conf");
@@ -92,7 +92,7 @@ public class ResourceServiceTest extends Assert {
 
 		IWebSiteService webSiteService2 = mockWebSiteService("testcollege");
 
-		resourceService = new ResourceService(propertyService, webSiteService2, lookupService);
+		resourceService = new ResourceService(propertyService, webSiteService2, lookupService, null, null);
 
 		List<PrivateResource> dummyConf2 = resourceService
 				.getConfigResources("dummy.conf");
