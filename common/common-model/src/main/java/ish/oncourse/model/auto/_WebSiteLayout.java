@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
-import ish.oncourse.model.WebSite;
+import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.model.WebTemplate;
 
 /**
@@ -17,7 +17,7 @@ public abstract class _WebSiteLayout extends CayenneDataObject {
 
     public static final String LAYOUT_KEY_PROPERTY = "layoutKey";
     public static final String TEMPLATES_PROPERTY = "templates";
-    public static final String WEB_SITE_PROPERTY = "webSite";
+    public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -40,12 +40,12 @@ public abstract class _WebSiteLayout extends CayenneDataObject {
     }
 
 
-    public void setWebSite(WebSite webSite) {
-        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
+    public void setWebSiteVersion(WebSiteVersion webSiteVersion) {
+        setToOneTarget(WEB_SITE_VERSION_PROPERTY, webSiteVersion, true);
     }
 
-    public WebSite getWebSite() {
-        return (WebSite)readProperty(WEB_SITE_PROPERTY);
+    public WebSiteVersion getWebSiteVersion() {
+        return (WebSiteVersion)readProperty(WEB_SITE_VERSION_PROPERTY);
     }
 
 

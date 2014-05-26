@@ -2324,6 +2324,129 @@
 	<changeSet id="154" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
+				<tableExists tableName="WebSiteVersion"/>
+			</not>
+		</preConditions>
+
+		<createTable tableName="WebSiteVersion">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="webSiteId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="deployedOn" type="DATETIME"/>
+			<column name="deployedById" type="BIGINT"/>
+		</createTable>
+
+		<sql>INSERT INTO WebSiteVersion (id, webSiteId, deployedOn) SELECT id, id, modified FROM WebSite</sql>
+
+		<addForeignKeyConstraint baseTableName="WebSiteVersion" baseColumnNames="webSiteId" constraintName="fk_WebSiteVersion_WebSite"
+								 referencedTableName="WebSite" referencedColumnNames="id"/>
+
+		<addForeignKeyConstraint baseTableName="WebSiteVersion" baseColumnNames="deployedById"
+								 constraintName="fk_WebSiteVersion_SystemUser"
+								 referencedTableName="SystemUser" referencedColumnNames="id"/>
+
+		<createIndex tableName="WebSiteVersion" indexName="WebSiteVersion_webSiteId_deployedOn">
+			<column name="webSiteId"/>
+			<column name="deployedOn"/>
+		</createIndex>		
+	</changeSet>
+	
+	<changeSet id="155" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebContent" columnName="webSiteVersionId"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="WebContent">
+			<column name="webSiteVersionId" type="BIGINT"/>
+		</addColumn>
+		
+		<sql>UPDATE WebContent SET webSiteVersionId = webSiteId;</sql>
+
+		<addNotNullConstraint tableName="WebContent" columnName="webSiteVersionId" columnDataType="BIGINT"/>
+		
+		<sql>ALTER TABLE WebContent MODIFY COLUMN webSiteId BIGINT;</sql>
+	</changeSet>
+
+	<changeSet id="156" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebNode" columnName="webSiteVersionId"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="WebNode">
+			<column name="webSiteVersionId" type="BIGINT"/>
+		</addColumn>
+
+		<sql>UPDATE WebNode SET webSiteVersionId = webSiteId;</sql>
+
+		<addNotNullConstraint tableName="WebNode" columnName="webSiteVersionId" columnDataType="BIGINT"/>
+		
+		<sql>ALTER TABLE WebNode MODIFY COLUMN webSiteId BIGINT</sql>
+	</changeSet>
+
+	<changeSet id="157" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebNodeType" columnName="webSiteVersionId"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="WebNodeType">
+			<column name="webSiteVersionId" type="BIGINT"/>
+		</addColumn>
+
+		<sql>UPDATE WebNodeType SET webSiteVersionId = webSiteId;</sql>
+
+		<addNotNullConstraint tableName="WebNodeType" columnName="webSiteVersionId" columnDataType="BIGINT"/>
+		
+		<sql>ALTER TABLE WebNodeType MODIFY COLUMN webSiteId BIGINT</sql>
+	</changeSet>
+
+	<changeSet id="158" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebMenu" columnName="webSiteVersionId"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="WebMenu">
+			<column name="webSiteVersionId" type="BIGINT"/>
+		</addColumn>
+
+		<sql>UPDATE WebMenu SET webSiteVersionId = webSiteId;</sql>
+
+		<addNotNullConstraint tableName="WebMenu" columnName="webSiteVersionId" columnDataType="BIGINT"/>
+		
+		<sql>ALTER TABLE WebMenu MODIFY COLUMN webSiteId BIGINT</sql>
+	</changeSet>
+
+	<changeSet id="159" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebURLAlias" columnName="webSiteVersionId"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="WebURLAlias">
+			<column name="webSiteVersionId" type="BIGINT"/>
+		</addColumn>
+
+		<sql>UPDATE WebURLAlias SET webSiteVersionId = webSiteId;</sql>
+
+		<addNotNullConstraint tableName="WebURLAlias" columnName="webSiteVersionId" columnDataType="BIGINT"/>
+		
+		<sql>ALTER TABLE WebURLAlias MODIFY COLUMN webSiteId BIGINT</sql>
+	</changeSet>
+	
+	<changeSet id="160" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
 				<tableExists tableName="WebSiteLayout"/>
 			</not>
 		</preConditions>
@@ -2335,22 +2458,23 @@
 			<column name="layoutKey" type="VARCHAR(128)">
 				<constraints nullable="false"/>
 			</column>
-			<column name="webSiteId" type="BIGINT">
+			<column name="webSiteVersionId" type="BIGINT">
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
 		
-		<addForeignKeyConstraint baseTableName="WebSiteLayout" baseColumnNames="webSiteId" constraintName="fk_WebSiteLayout_WebSite"
-								 referencedTableName="WebSite" referencedColumnNames="id"/>
+		<addForeignKeyConstraint baseTableName="WebSiteLayout" baseColumnNames="webSiteVersionId" 
+								 constraintName="fk_WebSiteLayout_WebSiteVersion"
+								 referencedTableName="WebSiteVersion" referencedColumnNames="id"/>
 		
-		<addUniqueConstraint tableName="WebSiteLayout" columnNames="layoutKey,webSiteId" constraintName="layoutKey_webSiteId_unique"/>
+		<addUniqueConstraint tableName="WebSiteLayout" columnNames="layoutKey,webSiteVersionId" constraintName="layoutKey_webSiteId_unique"/>
 		
 		<createIndex tableName="WebSiteLayout" indexName="WebSiteLayout_layoutKey">
 			<column name="layoutKey"/>
 		</createIndex>
 	</changeSet>
 
-	<changeSet id="155" author="dzmitry" runOnChange="false" context="production">
+	<changeSet id="161" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="WebTemplate"/>
