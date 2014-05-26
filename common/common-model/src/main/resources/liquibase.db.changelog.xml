@@ -2310,17 +2310,78 @@
 								 referencedTableName="DocumentVersion" referencedColumnNames="id"/>
 	</changeSet>
 
-    <changeSet id="154" author="andrey" runOnChange="false" context="production">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="WebUrlAlias" columnName="isDefault"/>
-            </not>
-        </preConditions>
+	<changeSet id="154" author="andrey" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebUrlAlias" columnName="isDefault"/>
+			</not>
+		</preConditions>
 
-        <sql>alter table WebURLAlias add column isDefault BIT NOT NULL DEFAULT 0 </sql>
-        <sql>update WebURLAlias set isDefault = 1 where id in (select defaultURLalias from WebNode where  defaultURLalias is not null)</sql>
-    </changeSet>
+		<sql>alter table WebURLAlias add column isDefault BIT NOT NULL DEFAULT 0 </sql>
+		<sql>update WebURLAlias set isDefault = 1 where id in (select defaultURLalias from WebNode where  defaultURLalias is not null)</sql>
+	</changeSet>
+	
+	<changeSet id="154" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="WebSiteLayout"/>
+			</not>
+		</preConditions>
+		
+		<createTable tableName="WebSiteLayout">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="layoutKey" type="VARCHAR(128)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="webSiteId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		
+		<addForeignKeyConstraint baseTableName="WebSiteLayout" baseColumnNames="webSiteId" constraintName="fk_WebSiteLayout_WebSite"
+								 referencedTableName="WebSite" referencedColumnNames="id"/>
+		
+		<addUniqueConstraint tableName="WebSiteLayout" columnNames="layoutKey,webSiteId" constraintName="layoutKey_webSiteId_unique"/>
+		
+		<createIndex tableName="WebSiteLayout" indexName="WebSiteLayout_layoutKey">
+			<column name="layoutKey"/>
+		</createIndex>
+	</changeSet>
 
+	<changeSet id="155" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="WebTemplate"/>
+			</not>
+		</preConditions>
+		
+		<createTable tableName="WebTemplate">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="name" type="VARCHAR(128)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="content" type="CLOB">
+				<constraints nullable="false"/>
+			</column>
+			<column name="layoutId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		
+		<addForeignKeyConstraint baseTableName="WebTemplate" baseColumnNames="layoutId"
+								 constraintName="fk_WebTemplate_WebSiteLayout"
+								 referencedTableName="WebSiteLayout" referencedColumnNames="id"/>
+		
+		<addUniqueConstraint tableName="WebTemplate" columnNames="name,layoutId" constraintName="name_layoutId_unique"/>
+		
+		<createIndex tableName="WebTemplate" indexName="WebTemplate_name">
+			<column name="name"/>
+		</createIndex>
+	</changeSet>
 
 </databaseChangeLog>
 

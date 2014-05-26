@@ -1098,6 +1098,17 @@
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="siteKey" type="VARCHAR" length="25"/>
 	</db-entity>
+	<db-entity name="WebSiteLayout">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="layoutKey" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="WebTemplate">
+		<db-attribute name="content" type="LONGVARCHAR" isMandatory="true" length="16777215"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="layoutId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
+	</db-entity>
 	<db-entity name="WebURLAlias" catalog="willow_college">
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -2066,6 +2077,13 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="siteKey" type="java.lang.String" db-attribute-path="siteKey"/>
+	</obj-entity>
+	<obj-entity name="WebSiteLayout" className="ish.oncourse.model.WebSiteLayout" dbEntityName="WebSiteLayout">
+		<obj-attribute name="layoutKey" type="java.lang.String" db-attribute-path="layoutKey"/>
+	</obj-entity>
+	<obj-entity name="WebTemplate" className="ish.oncourse.model.WebTemplate" dbEntityName="WebTemplate">
+		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
 	<obj-entity name="WebUrlAlias" className="ish.oncourse.model.WebUrlAlias" dbEntityName="WebURLAlias">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -3124,6 +3142,9 @@
 	<db-relationship name="invoices" source="WebSite" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
+	<db-relationship name="layouts" source="WebSite" target="WebSiteLayout" toMany="true">
+		<db-attribute-pair source="id" target="webSiteId"/>
+	</db-relationship>
 	<db-relationship name="licenseFees" source="WebSite" target="LicenseFee" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
@@ -3141,6 +3162,15 @@
 	</db-relationship>
 	<db-relationship name="webUrlAliases" source="WebSite" target="WebURLAlias" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
+	</db-relationship>
+	<db-relationship name="templates" source="WebSiteLayout" target="WebTemplate" toMany="true">
+		<db-attribute-pair source="id" target="layoutId"/>
+	</db-relationship>
+	<db-relationship name="webSite" source="WebSiteLayout" target="WebSite" toMany="false">
+		<db-attribute-pair source="webSiteId" target="id"/>
+	</db-relationship>
+	<db-relationship name="layout" source="WebTemplate" target="WebSiteLayout" toMany="false">
+		<db-attribute-pair source="layoutId" target="id"/>
 	</db-relationship>
 	<db-relationship name="webNode" source="WebURLAlias" target="WebNode" toMany="false">
 		<db-attribute-pair source="webNodeId" target="id"/>
@@ -3488,6 +3518,9 @@
 	<obj-relationship name="webNodeTypes" source="WebSite" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>
 	<obj-relationship name="webNodes" source="WebSite" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
 	<obj-relationship name="webUrlAliases" source="WebSite" target="WebUrlAlias" deleteRule="Deny" db-relationship-path="webUrlAliases"/>
+	<obj-relationship name="templates" source="WebSiteLayout" target="WebTemplate" deleteRule="Deny" db-relationship-path="templates"/>
+	<obj-relationship name="webSite" source="WebSiteLayout" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
+	<obj-relationship name="layout" source="WebTemplate" target="WebSiteLayout" deleteRule="Nullify" db-relationship-path="layout"/>
 	<obj-relationship name="webNode" source="WebUrlAlias" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
 	<obj-relationship name="webSite" source="WebUrlAlias" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="WillowUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>

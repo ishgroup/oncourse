@@ -45,172 +45,172 @@ public abstract class _WebSite extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setCoursesRootTagName(String coursesRootTagName) {
-        writeProperty("coursesRootTagName", coursesRootTagName);
+        writeProperty(COURSES_ROOT_TAG_NAME_PROPERTY, coursesRootTagName);
     }
     public String getCoursesRootTagName() {
-        return (String)readProperty("coursesRootTagName");
+        return (String)readProperty(COURSES_ROOT_TAG_NAME_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setGoogleAnalyticsAccount(String googleAnalyticsAccount) {
-        writeProperty("googleAnalyticsAccount", googleAnalyticsAccount);
+        writeProperty(GOOGLE_ANALYTICS_ACCOUNT_PROPERTY, googleAnalyticsAccount);
     }
     public String getGoogleAnalyticsAccount() {
-        return (String)readProperty("googleAnalyticsAccount");
+        return (String)readProperty(GOOGLE_ANALYTICS_ACCOUNT_PROPERTY);
     }
 
     public void setGoogleDirectionsFrom(String googleDirectionsFrom) {
-        writeProperty("googleDirectionsFrom", googleDirectionsFrom);
+        writeProperty(GOOGLE_DIRECTIONS_FROM_PROPERTY, googleDirectionsFrom);
     }
     public String getGoogleDirectionsFrom() {
-        return (String)readProperty("googleDirectionsFrom");
+        return (String)readProperty(GOOGLE_DIRECTIONS_FROM_PROPERTY);
     }
 
     public void setGoogleTagmanagerAccount(String googleTagmanagerAccount) {
-        writeProperty("googleTagmanagerAccount", googleTagmanagerAccount);
+        writeProperty(GOOGLE_TAGMANAGER_ACCOUNT_PROPERTY, googleTagmanagerAccount);
     }
     public String getGoogleTagmanagerAccount() {
-        return (String)readProperty("googleTagmanagerAccount");
+        return (String)readProperty(GOOGLE_TAGMANAGER_ACCOUNT_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setSiteKey(String siteKey) {
-        writeProperty("siteKey", siteKey);
+        writeProperty(SITE_KEY_PROPERTY, siteKey);
     }
     public String getSiteKey() {
-        return (String)readProperty("siteKey");
+        return (String)readProperty(SITE_KEY_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void addToCollegeDomains(WebHostName obj) {
-        addToManyTarget("collegeDomains", obj, true);
+        addToManyTarget(COLLEGE_DOMAINS_PROPERTY, obj, true);
     }
     public void removeFromCollegeDomains(WebHostName obj) {
-        removeToManyTarget("collegeDomains", obj, true);
+        removeToManyTarget(COLLEGE_DOMAINS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebHostName> getCollegeDomains() {
-        return (List<WebHostName>)readProperty("collegeDomains");
+        return (List<WebHostName>)readProperty(COLLEGE_DOMAINS_PROPERTY);
     }
 
 
     public void addToContents(WebContent obj) {
-        addToManyTarget("contents", obj, true);
+        addToManyTarget(CONTENTS_PROPERTY, obj, true);
     }
     public void removeFromContents(WebContent obj) {
-        removeToManyTarget("contents", obj, true);
+        removeToManyTarget(CONTENTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebContent> getContents() {
-        return (List<WebContent>)readProperty("contents");
+        return (List<WebContent>)readProperty(CONTENTS_PROPERTY);
     }
 
 
     public void addToInvoices(Invoice obj) {
-        addToManyTarget("invoices", obj, true);
+        addToManyTarget(INVOICES_PROPERTY, obj, true);
     }
     public void removeFromInvoices(Invoice obj) {
-        removeToManyTarget("invoices", obj, true);
+        removeToManyTarget(INVOICES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Invoice> getInvoices() {
-        return (List<Invoice>)readProperty("invoices");
+        return (List<Invoice>)readProperty(INVOICES_PROPERTY);
     }
 
 
     public void addToLicenseFees(LicenseFee obj) {
-        addToManyTarget("licenseFees", obj, true);
+        addToManyTarget(LICENSE_FEES_PROPERTY, obj, true);
     }
     public void removeFromLicenseFees(LicenseFee obj) {
-        removeToManyTarget("licenseFees", obj, true);
+        removeToManyTarget(LICENSE_FEES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<LicenseFee> getLicenseFees() {
-        return (List<LicenseFee>)readProperty("licenseFees");
+        return (List<LicenseFee>)readProperty(LICENSE_FEES_PROPERTY);
     }
 
 
     public void setToWebHostName(WebHostName toWebHostName) {
-        setToOneTarget("toWebHostName", toWebHostName, true);
+        setToOneTarget(TO_WEB_HOST_NAME_PROPERTY, toWebHostName, true);
     }
 
     public WebHostName getToWebHostName() {
-        return (WebHostName)readProperty("toWebHostName");
+        return (WebHostName)readProperty(TO_WEB_HOST_NAME_PROPERTY);
     }
 
 
     public void addToWebMenus(WebMenu obj) {
-        addToManyTarget("webMenus", obj, true);
+        addToManyTarget(WEB_MENUS_PROPERTY, obj, true);
     }
     public void removeFromWebMenus(WebMenu obj) {
-        removeToManyTarget("webMenus", obj, true);
+        removeToManyTarget(WEB_MENUS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebMenu> getWebMenus() {
-        return (List<WebMenu>)readProperty("webMenus");
+        return (List<WebMenu>)readProperty(WEB_MENUS_PROPERTY);
     }
 
 
     public void addToWebNodeTypes(WebNodeType obj) {
-        addToManyTarget("webNodeTypes", obj, true);
+        addToManyTarget(WEB_NODE_TYPES_PROPERTY, obj, true);
     }
     public void removeFromWebNodeTypes(WebNodeType obj) {
-        removeToManyTarget("webNodeTypes", obj, true);
+        removeToManyTarget(WEB_NODE_TYPES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebNodeType> getWebNodeTypes() {
-        return (List<WebNodeType>)readProperty("webNodeTypes");
+        return (List<WebNodeType>)readProperty(WEB_NODE_TYPES_PROPERTY);
     }
 
 
     public void addToWebNodes(WebNode obj) {
-        addToManyTarget("webNodes", obj, true);
+        addToManyTarget(WEB_NODES_PROPERTY, obj, true);
     }
     public void removeFromWebNodes(WebNode obj) {
-        removeToManyTarget("webNodes", obj, true);
+        removeToManyTarget(WEB_NODES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebNode> getWebNodes() {
-        return (List<WebNode>)readProperty("webNodes");
+        return (List<WebNode>)readProperty(WEB_NODES_PROPERTY);
     }
 
 
     public void addToWebUrlAliases(WebUrlAlias obj) {
-        addToManyTarget("webUrlAliases", obj, true);
+        addToManyTarget(WEB_URL_ALIASES_PROPERTY, obj, true);
     }
     public void removeFromWebUrlAliases(WebUrlAlias obj) {
-        removeToManyTarget("webUrlAliases", obj, true);
+        removeToManyTarget(WEB_URL_ALIASES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebUrlAlias> getWebUrlAliases() {
-        return (List<WebUrlAlias>)readProperty("webUrlAliases");
+        return (List<WebUrlAlias>)readProperty(WEB_URL_ALIASES_PROPERTY);
     }
 
 
