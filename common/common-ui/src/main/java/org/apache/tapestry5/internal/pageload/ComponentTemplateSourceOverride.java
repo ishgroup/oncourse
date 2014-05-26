@@ -2,10 +2,13 @@ package org.apache.tapestry5.internal.pageload;
 
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.resource.IResourceService;
+import ish.oncourse.services.resource.WebTemplateChangeTracker;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
-import ish.oncourse.ui.template.T5FileResource;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.TapestryConstants;
 import org.apache.tapestry5.internal.event.InvalidationEventHubImpl;
@@ -18,7 +21,6 @@ import org.apache.tapestry5.ioc.Location;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-import org.apache.tapestry5.ioc.internal.util.URLChangeTracker;
 import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
 import org.apache.tapestry5.model.ComponentModel;
 import org.apache.tapestry5.services.ExceptionReporter;
@@ -27,7 +29,6 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.UpdateListener;
 import org.apache.tapestry5.services.templates.ComponentTemplateLocator;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -49,7 +50,9 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 
 	private final TemplateParser parser;
 	private final ComponentTemplateLocator locator;
-	private final URLChangeTracker tracker;
+	
+	private final WebTemplateChangeTracker entityChangeTracker;
+	
 	/**
 	 * Caches from a key (combining component name and locale) to a resource.
 	 * Often, many different keys will point to the same resource (i.e.,
@@ -91,26 +94,18 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 
 	public ComponentTemplateSourceOverride(TemplateParser parser, @Primary ComponentTemplateLocator locator,
 			ClasspathURLConverter classpathURLConverter, Request request, IResourceService resourceService, IWebNodeService webNodeService,
-			IWebNodeTypeService webNodeTypeService) {
+			IWebNodeTypeService webNodeTypeService, ICayenneService cayenneService, IWebSiteService webSiteService, 
+			IWebSiteVersionService webSiteVersionService) {
 
 		this.parser = parser;
 		this.locator = locator;
-		this.tracker = new URLChangeTracker(classpathURLConverter);
+		this.entityChangeTracker = new WebTemplateChangeTracker(cayenneService, webSiteService, webSiteVersionService);
 
 		this.request = request;
 		this.resourceService = resourceService;
 		this.webNodeService = webNodeService;
 		this.webNodeTypeService = webNodeTypeService;
-
-		trackComponentResourceFolder();
 	}
-
-	private void trackComponentResourceFolder() {
-		File componentResourceFolder = resourceService.getCustomComponentRoot();
-		Resource folder = new T5FileResource(componentResourceFolder);
-		tracker.add(folder.toURL());
-	}
-
 
     /**
      * Resolves the component name to a localized {@link Resource} (using the
@@ -166,7 +161,6 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 		ComponentTemplate result = missingTemplate;
 
 		if (r.exists()) {
-			tracker.add(r.toURL());
 			result = parser.parseTemplate(r);
 		}
 
@@ -254,15 +248,13 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 	 * later.
 	 */
 	public void checkForUpdates() {
-		if (tracker.containsChanges()) {
-
-			tracker.clear();
+		if (entityChangeTracker.containsChanges()) {
+			entityChangeTracker.resetTimestamp();
+			
 			templateResources.clear();
 			templates.clear();
 
 			fireInvalidationEvent();
-
-			trackComponentResourceFolder();
 		}
 	}
 
