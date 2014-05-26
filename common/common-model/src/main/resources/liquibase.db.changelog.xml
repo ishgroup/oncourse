@@ -2321,7 +2321,7 @@
 		<sql>update WebURLAlias set isDefault = 1 where id in (select defaultURLalias from WebNode where  defaultURLalias is not null)</sql>
 	</changeSet>
 	
-	<changeSet id="154" author="dzmitry" runOnChange="false" context="production">
+	<changeSet id="155" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="WebSiteVersion"/>
@@ -2354,7 +2354,7 @@
 		</createIndex>		
 	</changeSet>
 	
-	<changeSet id="155" author="dzmitry" runOnChange="false" context="production">
+	<changeSet id="156" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="WebContent" columnName="webSiteVersionId"/>
@@ -2372,7 +2372,7 @@
 		<sql>ALTER TABLE WebContent MODIFY COLUMN webSiteId BIGINT;</sql>
 	</changeSet>
 
-	<changeSet id="156" author="dzmitry" runOnChange="false" context="production">
+	<changeSet id="157" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="WebNode" columnName="webSiteVersionId"/>
@@ -2390,7 +2390,7 @@
 		<sql>ALTER TABLE WebNode MODIFY COLUMN webSiteId BIGINT</sql>
 	</changeSet>
 
-	<changeSet id="157" author="dzmitry" runOnChange="false" context="production">
+	<changeSet id="158" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="WebNodeType" columnName="webSiteVersionId"/>
@@ -2408,7 +2408,7 @@
 		<sql>ALTER TABLE WebNodeType MODIFY COLUMN webSiteId BIGINT</sql>
 	</changeSet>
 
-	<changeSet id="158" author="dzmitry" runOnChange="false" context="production">
+	<changeSet id="159" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="WebMenu" columnName="webSiteVersionId"/>
@@ -2426,7 +2426,7 @@
 		<sql>ALTER TABLE WebMenu MODIFY COLUMN webSiteId BIGINT</sql>
 	</changeSet>
 
-	<changeSet id="159" author="dzmitry" runOnChange="false" context="production">
+	<changeSet id="160" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="WebURLAlias" columnName="webSiteVersionId"/>
@@ -2444,7 +2444,7 @@
 		<sql>ALTER TABLE WebURLAlias MODIFY COLUMN webSiteId BIGINT</sql>
 	</changeSet>
 	
-	<changeSet id="160" author="dzmitry" runOnChange="false" context="production">
+	<changeSet id="161" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="WebSiteLayout"/>
@@ -2474,7 +2474,7 @@
 		</createIndex>
 	</changeSet>
 
-	<changeSet id="161" author="dzmitry" runOnChange="false" context="production">
+	<changeSet id="162" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="WebTemplate"/>
