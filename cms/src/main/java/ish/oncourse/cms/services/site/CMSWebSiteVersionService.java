@@ -74,6 +74,10 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 				newTemplate.setLayout(newLayout);
 				newTemplate.setName(template.getName());
 				newTemplate.setContent(template.getContent());
+				
+				// need to change modified date of every template to make
+				// tapestry rendering logic to reload them
+				template.setModified(new Date());
 			}
 		}
 
