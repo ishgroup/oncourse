@@ -9,6 +9,7 @@ import io.milton.http.SecurityManager;
 import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
 import io.milton.http.exceptions.NotAuthorizedException;
+import io.milton.resource.CollectionResource;
 import io.milton.resource.Resource;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -18,18 +19,24 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class TemplateResourceFactory implements ResourceFactory {
 	
+	private static final Logger logger = Logger.getLogger(TemplateResourceFactory.class);
+	
 	private static final String TEMPLATE_DIR_NAME = "templates";
+	private static final String DEFAULT_TEMPLATES_PACKAGE = "ish.oncourse.ui";
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -41,9 +48,25 @@ public class TemplateResourceFactory implements ResourceFactory {
 	private IWebSiteVersionService webSiteVersionService;
 
 	private io.milton.http.SecurityManager securityManager;
+	
+	private Map<String, String> defaultTemplatesMap;
 
 	public void setSecurityManager(SecurityManager securityManager) {
 		this.securityManager = securityManager;
+	}
+	
+	public void initDefaultResources() {
+		Reflections reflections = new Reflections(new ConfigurationBuilder()
+				.setUrls(ClasspathHelper.forPackage(DEFAULT_TEMPLATES_PACKAGE))
+				.setScanners(new ResourcesScanner()));
+
+		Set<String> templates = reflections.getResources(Pattern.compile(".*\\.tml"));
+
+		this.defaultTemplatesMap = new HashMap<>();
+
+		for (String templatePath : templates) {
+			defaultTemplatesMap.put(Path.path(templatePath).getName(), templatePath);
+		}
 	}
 
 	@Override
@@ -68,6 +91,13 @@ public class TemplateResourceFactory implements ResourceFactory {
 						throws IOException, ConflictException, NotAuthorizedException, BadRequestException {
 					return null;
 				}
+
+				@Override
+				public CollectionResource createCollection(String newName) throws NotAuthorizedException, ConflictException, BadRequestException {
+					WebSiteLayout layout = createLayout(newName);
+					
+					return new LayoutDirectoryResource(layout.getLayoutKey(), layout, securityManager);
+				}
 			};
 		} else if (path.getLength() == 1) {
 			String name = path.getName();
@@ -81,7 +111,7 @@ public class TemplateResourceFactory implements ResourceFactory {
 		}
 	}
 	
-	public List<DirectoryResource> listLayouts() {
+	private List<DirectoryResource> listLayouts() {
 		ObjectContext context = cayenneService.newContext();
 
 		SelectQuery query = new SelectQuery(WebSiteLayout.class);
@@ -100,23 +130,23 @@ public class TemplateResourceFactory implements ResourceFactory {
 		return directoryResources;
 	}
 	
-	public List<WebTemplateResource> listTemplates(WebSiteLayout layout) {
+	private List<WebTemplateResource> listTemplates(WebSiteLayout layout) {
 		List<WebTemplateResource> templates = new ArrayList<>();
 		
-		for (WebTemplate template : layout.getTemplates()) {
-			templates.add(new WebTemplateResource(template, cayenneService, securityManager));
+		for (String templateFileName : defaultTemplatesMap.values()) {
+			templates.add(new WebTemplateResource(templateFileName, layout, cayenneService, securityManager));
 		}
 		
 		return templates;
 	}
-	
-	public DirectoryResource getLayoutResourceByName(String name) {
+
+	private DirectoryResource getLayoutResourceByName(String name) {
 		WebSiteLayout layout = getLayoutByName(name);
 		
 		return layout != null ? new LayoutDirectoryResource(layout.getLayoutKey(), layout, securityManager) : null;
 	}
 	
-	public WebSiteLayout getLayoutByName(String name) {
+	private WebSiteLayout getLayoutByName(String name) {
 		ObjectContext context = cayenneService.newContext();
 
 		SelectQuery query = new SelectQuery(WebSiteLayout.class);
@@ -128,50 +158,31 @@ public class TemplateResourceFactory implements ResourceFactory {
 		return  (WebSiteLayout) Cayenne.objectForQuery(context, query);
 	}
 	
-	public WebTemplateResource getTemplateResourceByName(String name, WebSiteLayout layout) {
-		WebTemplate template = getTemplateByName(name, layout);
+	private WebSiteLayout createLayout(String name) {
+		ObjectContext context = cayenneService.newContext();
 		
-		return template != null ? new WebTemplateResource(template, cayenneService, securityManager) : null;
-	}
-	
-	public WebTemplate getTemplateByName(String name, WebSiteLayout layout) {
-		ObjectContext context = cayenneService.newContext();
-
-		SelectQuery query = new SelectQuery(WebTemplate.class);
-
-		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.LAYOUT_PROPERTY, layout));
-		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.NAME_PROPERTY, name));
-
-		return (WebTemplate) Cayenne.objectForQuery(context, query);
-	}
-	
-	public WebTemplateResource changeTemplate(WebTemplate templateToChange, String name, String content) {
-
-		ObjectContext context = cayenneService.newContext();
-
-		WebTemplate template = context.localObject(templateToChange);
-
-		template.setName(name);
-		template.setContent(content);
-
+		WebSiteVersion siteVersion = context.localObject(
+				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
+		
+		WebSiteLayout layout = context.newObject(WebSiteLayout.class);
+		
+		layout.setLayoutKey(name);
+		layout.setWebSiteVersion(siteVersion);
+		
 		context.commitChanges();
-
-		return new WebTemplateResource(template, cayenneService, securityManager);
-	}
-
-	public WebTemplateResource createNewTemplate(WebSiteLayout layout, String name, String content) {
-		ObjectContext ctx = cayenneService.newContext();
-
-		WebSiteLayout localLayout = ctx.localObject(layout);
 		
-		WebTemplate template = ctx.newObject(WebTemplate.class);
-		template.setName(name);
-		template.setContent(content);
-		template.setLayout(localLayout);
-
-		ctx.commitChanges();
-
-		return new WebTemplateResource(template, cayenneService, securityManager);
+		return layout;
+	}
+	
+	private WebTemplateResource getTemplateResourceByName(String name, WebSiteLayout layout) {
+		
+		String templatePath = defaultTemplatesMap.get(name);
+		
+		if (templatePath != null) {
+			return new WebTemplateResource(templatePath, layout, cayenneService, securityManager);
+		}
+		
+		return null;
 	}
 	
 	private class LayoutDirectoryResource extends DirectoryResource {
@@ -186,20 +197,7 @@ public class TemplateResourceFactory implements ResourceFactory {
 
 		@Override
 		public Resource createNew(String newName, InputStream inputStream, Long length, String contentType) throws IOException, ConflictException, NotAuthorizedException, BadRequestException {
-
-			StringWriter writer = new StringWriter();
-			IOUtils.copy(inputStream, writer);
-
-			String content = writer.toString();
-
-			// check if there is an existing block with similar name
-			WebTemplate template = getTemplateByName(newName, layout);
-
-			if (template != null) {
-				return changeTemplate(template, newName, content);
-			}
-
-			return createNewTemplate(layout, newName, content);
+			return null;
 		}
 
 		@Override
@@ -210,6 +208,26 @@ public class TemplateResourceFactory implements ResourceFactory {
 		@Override
 		public List<? extends Resource> getChildren() throws NotAuthorizedException, BadRequestException {
 			return listTemplates(layout);
+		}
+
+		@Override
+		public void moveTo(CollectionResource rDest, String name) throws ConflictException, NotAuthorizedException, BadRequestException {
+			ObjectContext context = cayenneService.newContext();
+			
+			WebSiteLayout layoutToChange = context.localObject(layout);
+			layoutToChange.setLayoutKey(name);
+			
+			context.commitChanges();
+		}
+
+		@Override
+		public void delete() throws NotAuthorizedException, ConflictException, BadRequestException {
+			ObjectContext context = cayenneService.newContext();
+
+			WebSiteLayout layoutToChange = context.localObject(layout);
+			context.deleteObjects(layoutToChange);
+
+			context.commitChanges();
 		}
 	}
 }

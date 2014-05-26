@@ -59,6 +59,8 @@ public class RootResourceFactory implements ResourceFactory {
 		this.pageResourceFactory.setSecurityManager(securityManager);
 		this.templateResourceFactory.setSecurityManager(securityManager);
 		
+		this.templateResourceFactory.initDefaultResources();
+		
 		this.fileContentService = fileContentService;
 		
 		this.sRoot = ContextUtil.getSRoot();
