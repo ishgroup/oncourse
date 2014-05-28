@@ -261,10 +261,10 @@ public class PageTypeEdit {
 			pageTypeEditForm.recordError(messages.get("message-shortPageTypeName"));
 			return;
 		}
-		
-		if (webContentService.getWebNodeTypeByName(name)!=null){
+		WebNodeType webNodeType = webContentService.getWebNodeTypeByName(name);
+		if (webNodeType != null && !webNodeType.getObjectId().equals(editPageType.getObjectId())){
 			pageTypeEditForm.recordError(messages.get("message-duplicatePageTypeName"));
-		}
+		}			
 	}
 
 	Object onFailureFromPageTypeEditForm() {
