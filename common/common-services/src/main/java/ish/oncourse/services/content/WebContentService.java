@@ -229,7 +229,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	public WebNodeType getWebNodeTypeByName(String webNodeTypeName) {
 		WebNodeType webNodeType = null;
 		Expression expression = ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY, webNodeTypeName);
-		expression.andExp(ExpressionFactory.matchExp(WebNodeType.WEB_SITE_VERSION_PROPERTY, 
+		expression = expression.andExp(ExpressionFactory.matchExp(WebNodeType.WEB_SITE_VERSION_PROPERTY, 
 				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite())));
 
 		SelectQuery selectQuery = new SelectQuery(WebNodeType.class, expression);
