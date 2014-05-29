@@ -13,8 +13,6 @@ import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.site.IWebSiteVersionService;
-import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import org.apache.tapestry5.SymbolConstants;
@@ -39,7 +37,6 @@ public class AppModule {
 		binder.bind(IStudentService.class, StudentService.class);
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
 		binder.bind(IPurchaseControllerBuilder.class, PurchaseControllerBuilder.class);
-		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 	}
 
 	@EagerLoad
