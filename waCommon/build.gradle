@@ -1,21 +1,11 @@
 dependencies {
 	compile 'org.apache.cayenne:cayenne-server:3.2M1.2'
-    compile 'org.apache.commons:commons-lang3:3.3'
 }
 
 jar {
-    manifest {
-        attributes 'SCM-Revision': project.release.scmVersion,
-        'Release-Version': version,
-        'Built-Date': System.getProperty('build_number') ? new Date(): new Date().format("yy-MMM-dd"),
-        'Built-JDK': System.getProperty('java.version'),
-        'Built-Gradle': gradle.gradleVersion,
-        'Implementation-Version': System.getProperty('build_number') ?: 'local',
-        'Permissions': 'all-permissions',
-        'Codebase': '*',
-        'Application-Name': 'onCourse',
-        'Trusted-Library': 'true'
-    }
+	manifest {
+		from sharedManifest
+	}
 }
 
 artifacts {

@@ -5,7 +5,7 @@ dependencies {
 	def jettyVersion = '8.1.14.v20131031'
 
 	compile project(':common')
-	compile 'ish.oncourse.willow:webservices-client:5.1.1'
+	compile 'ish.oncourse.willow:webservices-client:5.1.4'
 
 	compile 'org.apache.cayenne:cayenne-lifecycle:3.2M1.2'
 
@@ -17,7 +17,7 @@ dependencies {
 	compile 'org.apache.derby:derbyclient:10.10.2.0'
 	compile 'org.apache.derby:derbynet:10.10.2.0'
 	compile 'org.liquibase:liquibase-core:2.0.5-fix'
-	
+
 	compile 'net.sourceforge.jtds:jtds:1.3.1'
 	compile 'mysql:mysql-connector-java:5.1.30'
 	compile 'net.sf.saxon:Saxon-HE:9.4.0-9'
@@ -64,7 +64,7 @@ sourceSets {
 task createResourceManifests {
 	doLast {
 		def sources = ["resources/schema/referenceData/exportTemplates", "resources/schema/referenceData/reports"]
-		sources.each { s -> 
+		sources.each { s ->
 			def exportManifest = new File("$buildDir/generated-resources/main/$s", "manifest")
 			exportManifest.getParentFile().mkdirs()
 			exportManifest.write("")
@@ -135,18 +135,18 @@ macAppBundle {
 	bundleAllowMixedLocalizations = false
 	icon = "${projectDir}/src/packaging/macosx/onCourseServer.icns"
 	jvmVersion = "${sourceCompatibility}+"
-	
+
 	if (project.hasProperty('osxKeychainPassword')) {
 		certIdentity = project.osxKeychainIdentity
     	keyChain = project.osxKeychain
     }
-	
+
 	//java properties
 	javaProperties.put("apple.awt.textantialiasing", "true")
 	javaProperties.put("JFileChooser.appBundleIsTraversable", "true")
-	javaProperties.put("JFileChooser.packageIsTraversable", "true")    
-	javaProperties.put("apple.awt.antialiasing", "true")    
-	javaProperties.put("apple.awt.showGrowBox", "true") 
+	javaProperties.put("JFileChooser.packageIsTraversable", "true")
+	javaProperties.put("apple.awt.antialiasing", "true")
+	javaProperties.put("apple.awt.showGrowBox", "true")
 
 	javaExtras.put("VMOptions", "-Xmx"+"${project.maxmemoryServer}" + " -XX:MaxPermSize=" + "${project.maxpermgenServer}")
 

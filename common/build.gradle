@@ -1,5 +1,5 @@
 dependencies {
-	compile 'ish.oncourse.willow:waCommon:5.1.1'
+	compile 'ish.oncourse.willow:waCommon:5.1.4'
 
 	compile 'javax.jmdns:jmdns:3.4.1'
 	compile 'javax.mail:mail:1.4.6'
@@ -9,6 +9,7 @@ dependencies {
 	compile 'net.java.dev.textile-j:textile-j:2.2.864'
 	compile 'commons-io:commons-io:2.4'
 	compile 'com.google.inject:guice:3.0'
+    compile 'com.amazonaws:aws-java-sdk:1.6.11'
 }
 
 jar {
@@ -21,7 +22,7 @@ task testSecureRandom(dependsOn: testClasses) << {
 	if (new File("build/randomPasswordTest.txt").exists()) {
 		new File("build/randomPasswordTest.txt").delete();
 	}
-	
+
 	for (int i=0;i<100;i++) {
 		//its important to fork
 		ant.java(
@@ -44,7 +45,7 @@ task testSecureRandom(dependsOn: testClasses) << {
 		lines.remove(lines.size()-1);
 
 		assert !lines.contains(lastAdded)
-		
+
 		if (i%10 == 0) {
 			println "Generated ${i} random hashes..."
 		}
