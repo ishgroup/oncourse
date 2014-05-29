@@ -198,28 +198,29 @@ public class WebNodeService implements IWebNodeService {
 	public synchronized WebNode createNewNode() {
 		ObjectContext ctx = cayenneService.newContext();
 
-		WebSite webSite = (WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null);
+		WebSiteVersion webSiteVersion = ctx.localObject(webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
 		WebNodeType webNodeType = (WebNodeType) ctx.localObject(webNodeTypeService.getDefaultWebNodeType().getObjectId(), null);
 		Integer nextNodeNumber = getNextNodeNumber();
-		return createNewNodeBy(webSite, webNodeType, NEW_PAGE_WEB_NODE_NAME + " (" + nextNodeNumber + ")" , SAMPLE_WEB_CONTENT, nextNodeNumber);
+		return createNewNodeBy(webSiteVersion, webNodeType, NEW_PAGE_WEB_NODE_NAME + " (" + nextNodeNumber + ")" , SAMPLE_WEB_CONTENT, nextNodeNumber);
 	}
 
-    public synchronized WebNode createNewNodeBy(WebSite webSite,
+	@Override
+    public synchronized WebNode createNewNodeBy(WebSiteVersion webSiteVersion,
                                                 WebNodeType webNodeType,
                                                 String nodeName,
                                                 String content,
                                                 Integer nodeNumber)
     {
-        ObjectContext ctx = webSite.getObjectContext();
+        ObjectContext ctx = webSiteVersion.getObjectContext();
         WebNode newPageNode = ctx.newObject(WebNode.class);
         newPageNode.setName(nodeName);
-        newPageNode.setWebSiteVersion(webSiteVersionService.getCurrentVersion(webSite));
+        newPageNode.setWebSiteVersion(webSiteVersion);
         newPageNode.setNodeNumber(nodeNumber);
 
         newPageNode.setWebNodeType(webNodeType);
 
         WebContent webContent = ctx.newObject(WebContent.class);
-        webContent.setWebSiteVersion(webSiteVersionService.getCurrentVersion(webSite));
+        webContent.setWebSiteVersion(webSiteVersion);
         webContent.setContent(content);
 
         WebContentVisibility webContentVisibility = ctx.newObject(WebContentVisibility.class);

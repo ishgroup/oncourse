@@ -238,7 +238,7 @@ public class Web {
 		page.setLayoutKey("default");
 		page.setWebSiteVersion(initialVersion);
 
-        WebNode node = webNodeService.createNewNodeBy(site, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1);
+        WebNode node = webNodeService.createNewNodeBy(initialVersion, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1);
 		node.setPublished(true);
 		
 		WebMenu menu = context.newObject(WebMenu.class);

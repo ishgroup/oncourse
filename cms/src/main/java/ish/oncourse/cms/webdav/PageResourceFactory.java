@@ -162,10 +162,10 @@ public class PageResourceFactory implements ResourceFactory {
 
 		ObjectContext ctx = cayenneService.newContext();
 
-		WebSite webSite = ctx.localObject(webSiteService.getCurrentWebSite());
+		WebSiteVersion webSiteVersion = ctx.localObject(webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
 		WebNodeType webNodeType = ctx.localObject(webNodeTypeService.getDefaultWebNodeType());
 		
-		WebNode webNode = webNodeService.createNewNodeBy(webSite, webNodeType, name, content, webNodeService.getNextNodeNumber());
+		WebNode webNode = webNodeService.createNewNodeBy(webSiteVersion, webNodeType, name, content, webNodeService.getNextNodeNumber());
 		
 		ctx.commitChanges();
 

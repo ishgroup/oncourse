@@ -15,6 +15,7 @@ import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.site.IWebSiteService;
 
+import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -40,6 +41,7 @@ public class AppModule {
 		binder.bind(IOrganisationService.class, new OrganisationServiceBuilder());
 		binder.bind(INTISUpdater.class, NTISUpdaterImpl.class);
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("WebSiteServiceAdmin");
+		binder.bind(IWebSiteVersionService.class, WebSiteVersionServiceOverride.class).withId("WebSiteVersionServiceAdmin");
 		binder.bind(IS3Service.class, new S3ServiceBuilder()).withId("s3ServiceAdmin");
 	}
 	

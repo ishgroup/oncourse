@@ -65,7 +65,7 @@ public class WebNodeServiceTest  extends ServiceTest  {
         page.setName("page");
         page.setWebSiteVersion(siteVersion);
 
-        WebNode webNode = webNodeService.createNewNodeBy(site, page, "Test", "Test", 1);
+        WebNode webNode = webNodeService.createNewNodeBy(siteVersion, page, "Test", "Test", 1);
         assertWebNode(webNode);
     }
 
