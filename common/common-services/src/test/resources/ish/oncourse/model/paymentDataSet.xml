@@ -3,7 +3,8 @@
 
 	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
 	<WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
-
+	<WebSiteVersion id="1" webSiteId="1"/>
+	
 	<Site id="1181610" collegeId="1" angelId="200" isWebVisible="0" created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
   <Room id="1181746" collegeId="1" siteId="1181610" angelId="200" capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0" name="TestRoom"/>
   
