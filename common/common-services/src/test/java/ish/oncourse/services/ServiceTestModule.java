@@ -59,6 +59,8 @@ import ish.oncourse.services.room.RoomService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.sites.SitesService;
 import ish.oncourse.services.system.CollegeService;
@@ -121,6 +123,7 @@ public class ServiceTestModule {
 		binder.bind(IWebMenuService.class, WebMenuService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		
+		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 		binder.bind(IWebSiteService.class, new ServiceBuilder<IWebSiteService>() {
 
 			@Override

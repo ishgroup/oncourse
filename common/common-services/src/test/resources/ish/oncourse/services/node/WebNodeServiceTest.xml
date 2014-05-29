@@ -10,9 +10,14 @@
 	<WebHostName name="tasm.education.com.au" webSiteId="1" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <WebHostName name="scc.education.com.au" webSiteId="2" collegeId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
-    <WebNodeType id="1" created="2010-02-03 09:18:09" name="page" layoutKey="default" modified="2010-02-03 09:18:09" webSiteId="1"/>
-    <WebNodeType id="2" created="2010-02-03 09:18:09" name="page" layoutKey="default" modified="2010-02-03 09:18:09" webSiteId="2"/>
+	<WebSiteVersion id="1" webSiteId="1"/>
+	<WebSiteVersion id="2" webSiteId="2"/>
+	
+    <WebNodeType id="1" created="2010-02-03 09:18:09" name="page" layoutKey="default" modified="2010-02-03 09:18:09" webSiteVersionId="1"/>
+    <WebNodeType id="2" created="2010-02-03 09:18:09" name="page" layoutKey="default" modified="2010-02-03 09:18:09" webSiteVersionId="2"/>
 
+
+	
     <!--<WebNode id="1" created="2010-02-03 09:18:09" isPublished="1" name="page" layoutKey="default" modified="2010-02-03 09:18:09" webSiteId="1"/>-->
     <!--<WebNode id="2" created="2010-02-03 09:18:09" isPublished="1" name="page" layoutKey="default" modified="2010-02-03 09:18:09" webSiteId="2"/>-->
 
