@@ -7,6 +7,7 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
@@ -18,6 +19,8 @@ public abstract class AbstractWebSiteVersionService implements IWebSiteVersionSe
 		query.andQualifier(ExpressionFactory.matchExp(WebSiteVersion.WEB_SITE_PROPERTY, webSite));
 		query.addOrdering(WebSiteVersion.DEPLOYED_ON_PROPERTY, SortOrder.DESCENDING);
 		query.setFetchLimit(1);
+		
+		query.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
 
 		return (WebSiteVersion) Cayenne.objectForQuery(webSite.getObjectContext(), query);	
 	}
