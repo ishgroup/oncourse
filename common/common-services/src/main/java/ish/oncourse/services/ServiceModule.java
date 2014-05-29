@@ -80,6 +80,8 @@ import ish.oncourse.services.system.CollegeService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tag.TagService;
+import ish.oncourse.services.templates.IWebTemplateService;
+import ish.oncourse.services.templates.WebTemplateService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.threading.ThreadSource;
@@ -166,6 +168,7 @@ public class ServiceModule {
 		binder.bind(IWebSiteService.class, WebSiteService.class);
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
+		binder.bind(IWebTemplateService.class, WebTemplateService.class);
 		binder.bind(IDiscountService.class, DiscountService.class);
 		binder.bind(ILookupService.class, LookupService.class);
 		binder.bind(IPaymentService.class, PaymentService.class);

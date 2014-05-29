@@ -15,10 +15,8 @@ import io.milton.resource.*;
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebTemplate;
 import ish.oncourse.services.persistence.ICayenneService;
-import org.apache.cayenne.Cayenne;
+import ish.oncourse.services.templates.IWebTemplateService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -31,30 +29,25 @@ import java.util.Map;
 public class WebTemplateResource extends AbstractResource implements CopyableResource, DeletableResource, GetableResource, MoveableResource, PropFindableResource, ReplaceableResource {
 
 	private WebTemplate webTemplate;
+	
 	private ICayenneService cayenneService;
+	private IWebTemplateService webTemplateService;
 	
 	private WebSiteLayout layout;
 	private String templateName;
 	
-	public WebTemplateResource(String templateName, WebSiteLayout layout, ICayenneService cayenneService, SecurityManager securityManager) {
+	public WebTemplateResource(String templateName, WebSiteLayout layout, 
+							   ICayenneService cayenneService, IWebTemplateService webTemplateService, 
+							   SecurityManager securityManager) {
 		super(securityManager);
+
+		this.cayenneService = cayenneService;
+		this.webTemplateService = webTemplateService;
 		
 		this.templateName = templateName;
 		this.layout = layout;
-		this.cayenneService = cayenneService;
 		
-		this.webTemplate = getTemplateByName(getName(), layout);
-	}
-
-	private WebTemplate getTemplateByName(String name, WebSiteLayout layout) {
-		ObjectContext context = cayenneService.newContext();
-
-		SelectQuery query = new SelectQuery(WebTemplate.class);
-
-		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.LAYOUT_PROPERTY, layout));
-		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.NAME_PROPERTY, name));
-
-		return (WebTemplate) Cayenne.objectForQuery(context, query);
+		this.webTemplate = webTemplateService.getTemplateByName(getName(), layout);
 	}
 	
 	@Override
@@ -103,6 +96,14 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 
 	@Override
 	public void moveTo(CollectionResource rDest, String name) throws ConflictException, NotAuthorizedException, BadRequestException {
+		if (webTemplate != null) {
+			ObjectContext context = cayenneService.newContext();
+			
+			WebTemplate localTemplate = context.localObject(webTemplate);
+			localTemplate.setName(name);
+			
+			context.commitChanges();
+		}
 	}
 
 	@Override
@@ -131,37 +132,30 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 	@Override
 	public void replaceContent(InputStream in, Long length) throws BadRequestException, ConflictException, NotAuthorizedException {
 
-		
 			try {
 				ObjectContext context = cayenneService.newContext();
 
 				WebTemplate template;
-				
-				if (webTemplate != null) {
-					template = context.localObject(webTemplate);
-				} else {
-					template = createNewTemplate(context, layout, getName());
-				}
 
 				StringWriter writer = new StringWriter();
 				IOUtils.copy(in, writer);
 
-				template.setContent(writer.toString());
+				String content = writer.toString();
+				
+				if (webTemplate != null) {
+					template = context.localObject(webTemplate);
+				} else {
+					WebSiteLayout localLayout = context.localObject(layout);
+					
+					template = webTemplateService.createWebTemplate(getName(), content, localLayout);
+				}
+
+				template.setContent(content);
 
 				context.commitChanges();
 			} catch (Exception e) {
 				throw new BadRequestException("Can't replace template's content.", e);
 			}
-	}
-
-	private WebTemplate createNewTemplate(ObjectContext context, WebSiteLayout layout, String name) {
-		WebSiteLayout localLayout = context.localObject(layout);
-
-		WebTemplate template = context.newObject(WebTemplate.class);
-		template.setName(name);
-		template.setLayout(localLayout);
-		
-		return template;
 	}
 
 	@Override

@@ -15,10 +15,12 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.templates.IWebTemplateService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.reflections.Reflections;
@@ -28,6 +30,7 @@ import org.reflections.util.ConfigurationBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -46,6 +49,9 @@ public class TemplateResourceFactory implements ResourceFactory {
 
 	@Inject
 	private IWebSiteVersionService webSiteVersionService;
+	
+	@Inject
+	private IWebTemplateService webTemplateService;
 
 	private io.milton.http.SecurityManager securityManager;
 	
@@ -134,7 +140,14 @@ public class TemplateResourceFactory implements ResourceFactory {
 		List<WebTemplateResource> templates = new ArrayList<>();
 		
 		for (String templateFileName : defaultTemplatesMap.values()) {
-			templates.add(new WebTemplateResource(templateFileName, layout, cayenneService, securityManager));
+			templates.add(new WebTemplateResource(templateFileName, layout, cayenneService, webTemplateService, securityManager));
+		}
+		
+		// add db templates which don't have corresponding classpath entries
+		for (WebTemplate template : webTemplateService.getTemplatesForLayout(layout)) {
+			if (!defaultTemplatesMap.containsKey(template.getName())) {
+				templates.add(new WebTemplateResource(template.getName(), layout, cayenneService, webTemplateService, securityManager));
+			}
 		}
 		
 		return templates;
@@ -175,14 +188,13 @@ public class TemplateResourceFactory implements ResourceFactory {
 	}
 	
 	private WebTemplateResource getTemplateResourceByName(String name, WebSiteLayout layout) {
+		String templateName = defaultTemplatesMap.get(name);
 		
-		String templatePath = defaultTemplatesMap.get(name);
-		
-		if (templatePath != null) {
-			return new WebTemplateResource(templatePath, layout, cayenneService, securityManager);
+		if (templateName == null) {
+			templateName = name;
 		}
 		
-		return null;
+		return new WebTemplateResource(templateName, layout, cayenneService, webTemplateService, securityManager);
 	}
 	
 	private class LayoutDirectoryResource extends DirectoryResource {
@@ -197,7 +209,17 @@ public class TemplateResourceFactory implements ResourceFactory {
 
 		@Override
 		public Resource createNew(String newName, InputStream inputStream, Long length, String contentType) throws IOException, ConflictException, NotAuthorizedException, BadRequestException {
-			return null;
+			ObjectContext context = cayenneService.newContext();
+			WebSiteLayout localLayout = context.localObject(layout);
+
+			StringWriter writer = new StringWriter();
+			IOUtils.copy(inputStream, writer);
+			
+			WebTemplate template = webTemplateService.createWebTemplate(newName, writer.toString(), localLayout);
+			
+			context.commitChanges();
+			
+			return new WebTemplateResource(template.getName(), localLayout, cayenneService, webTemplateService, securityManager);
 		}
 
 		@Override
