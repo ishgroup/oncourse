@@ -13,6 +13,12 @@ public class ContactRelationTypeUpdater extends AbstractWillowUpdater<ContactRel
 		entity.setFromContactName(stub.getFromContactName());
 		entity.setModified(stub.getModified());
 		entity.setToContactName(stub.getToContactName());
+        /**
+         * delegatedAccessToContact property for the stub was declared as Integer so we need the odd code.
+         * We can not change the implementation because we need to support old colleges.
+         * We can adjust it only in V7 replication
+         */
+        entity.setDelegatedAccessToContact(stub.getDelegatedAccessToContact() != null && stub.getDelegatedAccessToContact() != 0);
 	}
 
 }

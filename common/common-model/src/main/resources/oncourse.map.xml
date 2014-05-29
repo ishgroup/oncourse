@@ -158,6 +158,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="delegatedAccessToContact" type="BIT" isMandatory="true"/>
 		<db-attribute name="fromContactName" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
@@ -1291,9 +1292,11 @@
 	<obj-entity name="ContactRelationType" className="ish.oncourse.model.ContactRelationType" dbEntityName="ContactRelationType">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="delegatedAccessToContact" type="java.lang.Boolean" db-attribute-path="delegatedAccessToContact"/>
 		<obj-attribute name="fromContactName" type="java.lang.String" db-attribute-path="fromContactName"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="toContactName" type="java.lang.String" db-attribute-path="toContactName"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="CorporatePass" className="ish.oncourse.model.CorporatePass" dbEntityName="CorporatePass">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

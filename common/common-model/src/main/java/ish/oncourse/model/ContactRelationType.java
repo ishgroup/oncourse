@@ -14,4 +14,11 @@ public class ContactRelationType extends _ContactRelationType implements Queueab
 	public boolean isAsyncReplicationAllowed() {
 		return false;
 	}
+
+    @Override
+    protected void onPostAdd() {
+        if (getDelegatedAccessToContact() == null) {
+            setDelegatedAccessToContact(false);
+        }
+    }
 }

@@ -2513,5 +2513,14 @@
 		</createIndex>
 	</changeSet>
 
+    <changeSet id="163" author="andrey" runOnChange="false" context="production">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="ContactRelationType" columnName="delegatedAccessToContact"/>
+            </not>
+        </preConditions>
+
+        <sql>alter table ContactRelationType add column delegatedAccessToContact BIT NOT NULL DEFAULT 0 </sql>
+    </changeSet>
 </databaseChangeLog>
 
