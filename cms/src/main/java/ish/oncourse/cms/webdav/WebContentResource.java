@@ -43,12 +43,6 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 
 	@Override
 	public void delete() throws NotAuthorizedException, ConflictException, BadRequestException {
-		ObjectContext context = cayenneService.newContext();
-		
-		WebContent block = context.localObject(webContent);
-		context.deleteObjects(block);
-
-		context.commitChanges();
 	}
 
 	@Override
