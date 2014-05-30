@@ -9,13 +9,11 @@ import io.milton.http.SecurityManager;
 import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
 import io.milton.http.exceptions.NotAuthorizedException;
-import io.milton.http.fs.*;
 import io.milton.resource.Resource;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.ContextUtil;
 import org.apache.tapestry5.ioc.Registry;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -39,31 +37,30 @@ public class RootResourceFactory implements ResourceFactory {
 	private BlockResourceFactory blockResourceFactory;
 	private PageResourceFactory pageResourceFactory;
 	private TemplateResourceFactory templateResourceFactory;
+	private StaticResourceFactory staticResourceFactory;
 	
-	private FileContentService fileContentService;
 	private SecurityManager securityManager;
 	
 	private String sRoot;
 	
-	public RootResourceFactory(Registry registry, io.milton.http.SecurityManager securityManager, FileContentService fileContentService) {
+	public RootResourceFactory(Registry registry, io.milton.http.SecurityManager securityManager) {
 		this.registry = registry;
 		this.securityManager = securityManager;
 		
 		this.webSiteService = registry.getService(IWebSiteService.class);
+
+		this.sRoot = ContextUtil.getSRoot();
 		
 		this.blockResourceFactory = registry.autobuild(BlockResourceFactory.class);
 		this.pageResourceFactory = registry.autobuild(PageResourceFactory.class);
 		this.templateResourceFactory = registry.autobuild(TemplateResourceFactory.class);
+		this.staticResourceFactory = new StaticResourceFactory(sRoot, webSiteService, securityManager);
 		
 		this.blockResourceFactory.setSecurityManager(securityManager);
 		this.pageResourceFactory.setSecurityManager(securityManager);
 		this.templateResourceFactory.setSecurityManager(securityManager);
 		
 		this.templateResourceFactory.initDefaultResources();
-		
-		this.fileContentService = fileContentService;
-		
-		this.sRoot = ContextUtil.getSRoot();
 	}
 
 	@Override
@@ -118,13 +115,7 @@ public class RootResourceFactory implements ResourceFactory {
 					return null;
 				}
 				
-				String siteKey = webSiteService.getCurrentWebSite().getSiteKey();
-				String rootDirName = String.format("%s/%s", sRoot, siteKey);
-
-				FileSystemResourceFactory fsResourceFactory = new FileSystemResourceFactory(new File(rootDirName), this.securityManager, sRoot);
-				fsResourceFactory.setContentService(fileContentService);
-				
-				return fsResourceFactory.getResource(host,  url);
+				return staticResourceFactory.getResource(host,  url);
 		}
 	}
 	

@@ -25,8 +25,7 @@ public class Configurator extends DefaultMiltonConfigurator {
 
 		Registry registry = (Registry) servletContext.getAttribute(TapestryFilter.REGISTRY_CONTEXT_NAME);
 		builder.setMainResourceFactory(new RootResourceFactory(registry, 
-						new CmsSecurityManager(registry.getService(IAuthenticationService.class)), 
-						builder.getFileContentService()));
+						new CmsSecurityManager(registry.getService(IAuthenticationService.class))));
 		
 		builder.setEnabledJson(false);
 		
