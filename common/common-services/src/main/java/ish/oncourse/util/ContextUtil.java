@@ -22,6 +22,8 @@ public class ContextUtil {
 	public static final String STORAGE_ACCESS_KEY_PROPERTY_KEY = "storage.access.key";
 	
 	public static final String S_ROOT = "s.root";
+	public static final String CMS_EDIT_SCRIPT_PATH = "cms.script.edit";
+	public static final String CMS_DEPLOY_SCRIPT_PATH = "cms.script.deploy";
 	
 	/**
 	 * Look up specified path in the apps context
@@ -101,4 +103,21 @@ public class ContextUtil {
 		}
 	}
 
+	public static String getCmsEditScriptPath() {
+		try {
+			return (String) lookup(CMS_EDIT_SCRIPT_PATH);
+		} catch (Exception e) {
+			LOGGER.warn("cms.script.edit is not configured in context.xml, webdav resource editing will not function properly.");
+			return null;
+		}
+	}
+
+	public static String getCmsDeployScriptPath() {
+		try {
+			return (String) lookup(CMS_DEPLOY_SCRIPT_PATH);
+		} catch (Exception e) {
+			LOGGER.warn("cms.script.deploy is not configured in context.xml, cms won't be able to deploy resources.");
+			return null;
+		}
+	}
 }
