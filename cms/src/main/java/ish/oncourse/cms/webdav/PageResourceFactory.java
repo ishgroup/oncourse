@@ -16,6 +16,7 @@ import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.textile.ITextileConverter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -44,6 +45,9 @@ public class PageResourceFactory implements ResourceFactory {
 	
 	@Inject
 	private IWebNodeTypeService webNodeTypeService;
+	
+	@Inject
+	private ITextileConverter textileConverter;
 	
 	private SecurityManager securityManager;
 	
@@ -100,7 +104,7 @@ public class PageResourceFactory implements ResourceFactory {
 		List<WebNodeResource> pages = new ArrayList<>();
 
 		for (WebNode page : webNodeService.getNodes()) {
-			pages.add(new WebNodeResource(page, cayenneService, webNodeService, securityManager));
+			pages.add(new WebNodeResource(page, cayenneService, webNodeService, textileConverter, securityManager));
 		}
 
 		return pages;
@@ -114,7 +118,7 @@ public class PageResourceFactory implements ResourceFactory {
 			return null;
 		}
 		
-		return new WebNodeResource(page, cayenneService, webNodeService, securityManager);
+		return new WebNodeResource(page, cayenneService, webNodeService, textileConverter, securityManager);
 	}
 
 	public WebNodeResource changePage(WebNode pageToChange, String name, String content) {
@@ -125,11 +129,12 @@ public class PageResourceFactory implements ResourceFactory {
 		page.setName(name);
 		
 		WebContent block = page.getWebContentVisibility().get(0).getWebContent();
-		block.setContent(content);
+		block.setContentTextile(content);
+		block.setContent(textileConverter.convertCoreTextile(content));
 
 		context.commitChanges();
 
-		return new WebNodeResource(page, cayenneService, webNodeService, securityManager);
+		return new WebNodeResource(page, cayenneService, webNodeService, textileConverter, securityManager);
 	}
 
 	public WebNodeResource createNewPage(String name, String content) {
@@ -143,6 +148,6 @@ public class PageResourceFactory implements ResourceFactory {
 		
 		ctx.commitChanges();
 
-		return new WebNodeResource(webNode, cayenneService, webNodeService, securityManager);
+		return new WebNodeResource(webNode, cayenneService, webNodeService, textileConverter, securityManager);
 	}
 }

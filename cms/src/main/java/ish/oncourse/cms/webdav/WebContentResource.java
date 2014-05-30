@@ -11,6 +11,7 @@ import io.milton.resource.*;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.textile.ITextileConverter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
 
@@ -24,13 +25,16 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 	
 	private ICayenneService cayenneService;
 	private IWebContentService webContentService;
+	private ITextileConverter textileConverter;
 	
-	public WebContentResource(WebContent webContent, ICayenneService cayenneService, IWebContentService webContentService, SecurityManager securityManager) {
+	public WebContentResource(WebContent webContent, ICayenneService cayenneService, IWebContentService webContentService, 
+							  ITextileConverter textileConverter, SecurityManager securityManager) {
 		super(securityManager);
 		
 		this.webContent = webContent;
 		this.cayenneService = cayenneService;
 		this.webContentService = webContentService;
+		this.textileConverter = textileConverter;
 	}
 
 	@Override
@@ -44,7 +48,7 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 
 	@Override
 	public void sendContent(OutputStream out, Range range, Map<String, String> params, String contentType) throws IOException, NotAuthorizedException, BadRequestException, NotFoundException {
-		out.write(webContent.getContent().getBytes());
+		out.write(webContent.getContentTextile().getBytes());
 		out.flush();
 	}
 
@@ -60,11 +64,11 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 
 	@Override
 	public Long getContentLength() {
-		if (webContent.getContent() == null) {
+		if (webContent.getContentTextile() == null) {
 			return 0l;
 		}
 		
-		return (long) webContent.getContent().length();
+		return (long) webContent.getContentTextile().length();
 	}
 
 	@Override
@@ -97,6 +101,7 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 			localBlock.setName(newName);
 		} else {
 			WebContent localBlock = context.localObject(existingBlock);
+			localBlock.setContentTextile(webContent.getContentTextile());
 			localBlock.setContent(webContent.getContent());
 
 			context.deleteObjects(context.localObject(webContent));
@@ -130,7 +135,8 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(in, writer);
 			
-			block.setContent(writer.toString());
+			block.setContentTextile(writer.toString());
+			block.setContent(textileConverter.convertCoreTextile(block.getContentTextile()));
 
 			context.commitChanges();
 		} catch (Exception e) {

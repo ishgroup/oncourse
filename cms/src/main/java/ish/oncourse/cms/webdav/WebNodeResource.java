@@ -15,6 +15,7 @@ import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.textile.ITextileConverter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
 
@@ -31,14 +32,16 @@ public class WebNodeResource extends AbstractResource implements CopyableResourc
 	
 	private ICayenneService cayenneService;
 	private IWebNodeService webNodeService;
+	private ITextileConverter textileConverter;
 
-	public WebNodeResource(WebNode webNode, ICayenneService cayenneService, IWebNodeService webNodeService, SecurityManager securityManager) {
+	public WebNodeResource(WebNode webNode, ICayenneService cayenneService, IWebNodeService webNodeService, ITextileConverter textileConverter, SecurityManager securityManager) {
 		super(securityManager);
 
 		this.webNode = webNode;
 		
 		this.cayenneService = cayenneService;
 		this.webNodeService = webNodeService;
+		this.textileConverter = textileConverter;
 	}
 	
 	private WebContent getWebContent() {
@@ -56,7 +59,7 @@ public class WebNodeResource extends AbstractResource implements CopyableResourc
 
 	@Override
 	public void sendContent(OutputStream out, Range range, Map<String, String> params, String contentType) throws IOException, NotAuthorizedException, BadRequestException, NotFoundException {
-		String content = getWebContent().getContent();
+		String content = getWebContent().getContentTextile();
 		
 		if (content != null) {
 			out.write(content.getBytes());
@@ -76,7 +79,7 @@ public class WebNodeResource extends AbstractResource implements CopyableResourc
 
 	@Override
 	public Long getContentLength() {
-		String content = getWebContent().getContent();
+		String content = getWebContent().getContentTextile();
 		
 		if (content == null) {
 			return 0l;
@@ -115,7 +118,10 @@ public class WebNodeResource extends AbstractResource implements CopyableResourc
 			localNode.setName(newName);
 		} else {
 			WebNode localNode = context.localObject(existingNode);
-			localNode.getWebContentVisibility().get(0).getWebContent().setContent(getWebContent().getContent());
+			WebContent webContent = localNode.getWebContentVisibility().get(0).getWebContent();
+			
+			webContent.setContentTextile(getWebContent().getContentTextile());
+			webContent.setContent(getWebContent().getContent());
 			
 			context.deleteObjects(context.localObject(webNode));
 		}
@@ -148,7 +154,8 @@ public class WebNodeResource extends AbstractResource implements CopyableResourc
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(in, writer);
 
-			block.setContent(writer.toString());
+			block.setContentTextile(writer.toString());
+			block.setContent(textileConverter.convertCoreTextile(block.getContent()));
 
 			context.commitChanges();
 		} catch (Exception e) {

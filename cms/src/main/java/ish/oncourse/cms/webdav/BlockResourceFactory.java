@@ -17,6 +17,7 @@ import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.textile.ITextileConverter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -42,6 +43,9 @@ public class BlockResourceFactory implements ResourceFactory {
 	
 	@Inject
 	private IWebSiteVersionService webSiteVersionService;
+	
+	@Inject
+	private ITextileConverter textileConverter;
 	
 	private SecurityManager securityManager;
 	
@@ -98,7 +102,7 @@ public class BlockResourceFactory implements ResourceFactory {
 		List<WebContentResource> blocks = new ArrayList<>();
 		
 		for (WebContent block : webContentService.getBlocks()) {
-			blocks.add(new WebContentResource(block, cayenneService, webContentService, securityManager));
+			blocks.add(new WebContentResource(block, cayenneService, webContentService, textileConverter, securityManager));
 		}
 		
 		return blocks;
@@ -108,7 +112,7 @@ public class BlockResourceFactory implements ResourceFactory {
 		WebContent block = webContentService.getWebContent(WebContent.NAME_PROPERTY, name);
 		
 		if (block != null) {
-			return new WebContentResource(block, cayenneService, webContentService, securityManager);
+			return new WebContentResource(block, cayenneService, webContentService, textileConverter, securityManager);
 		}
 		
 		return null;
@@ -121,11 +125,12 @@ public class BlockResourceFactory implements ResourceFactory {
 		WebContent block = context.localObject(blockToChange);
 		
 		block.setName(name);
-		block.setContent(content);
+		block.setContentTextile(content);
+		block.setContent(textileConverter.convertCoreTextile(content));
 		
 		context.commitChanges();
 		
-		return new WebContentResource(block, cayenneService, webContentService, securityManager);
+		return new WebContentResource(block, cayenneService, webContentService, textileConverter, securityManager);
 	}
 	
 	public WebContentResource createNewBlock(String name, String content) {
@@ -133,7 +138,8 @@ public class BlockResourceFactory implements ResourceFactory {
 		
 		WebContent block = ctx.newObject(WebContent.class);
 		block.setName(name);
-		block.setContent(content);
+		block.setContentTextile(content);
+		block.setContent(textileConverter.convertCoreTextile(content));
 
 		WebContentVisibility visibility = ctx.newObject(WebContentVisibility.class);
 		visibility.setRegionKey(RegionKey.unassigned);
@@ -144,6 +150,6 @@ public class BlockResourceFactory implements ResourceFactory {
 		
 		ctx.commitChanges();
 		
-		return new WebContentResource(block, cayenneService, webContentService, securityManager);
+		return new WebContentResource(block, cayenneService, webContentService, textileConverter, securityManager);
 	}
 }
