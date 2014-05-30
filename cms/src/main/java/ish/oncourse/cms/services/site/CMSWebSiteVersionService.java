@@ -8,10 +8,13 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.AbstractWebSiteVersionService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
@@ -23,6 +26,8 @@ import java.util.Map;
  * Current version is determined as staged version (WebSiteVersion.deployedOn == null).
  */
 public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
+	
+	private static final Logger logger = Logger.getLogger(CMSWebSiteVersionService.class);
 	
 	@Inject
 	private IWebSiteVersionService webSiteVersionService;
@@ -190,6 +195,32 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 		copyVersion(oldVersion);
 
 		context.commitChanges();
+		
+		executeDeployScript(oldVersion);
+	}
+
+	/**
+	 * Executes deploySite.sh script passing specified file as a parameter.
+	 * E.g.:
+	 * 		/var/onCourse/scripts/deploySite.sh -s {siteVersion.getId()} -c {site.getSiteKey()}
+	 */
+	private void executeDeployScript(WebSiteVersion siteVersion) {
+		String scriptPath = ContextUtil.getCmsDeployScriptPath();
+		
+		if (StringUtils.trimToNull(scriptPath) == null) {
+			logger.error("Deploy site script is not defined! Resources have not been deployed!");
+			return;
+		}
+		
+		ProcessBuilder processBuilder = new ProcessBuilder(scriptPath, 
+				"-s", String.valueOf(siteVersion.getId()), 
+				"-c", siteVersion.getWebSite().getSiteKey());
+		
+		try {
+			processBuilder.start();
+		} catch (Exception e) {
+			logger.error(String.format("Error executing script '%s'", scriptPath), e);
+		}
 	}
 	
 }
