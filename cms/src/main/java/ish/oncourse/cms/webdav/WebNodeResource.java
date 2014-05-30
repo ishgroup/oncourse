@@ -3,34 +3,46 @@
  */
 package ish.oncourse.cms.webdav;
 
-import io.milton.common.*;
+import io.milton.common.ContentTypeUtils;
 import io.milton.http.*;
+import io.milton.http.exceptions.BadRequestException;
+import io.milton.http.exceptions.ConflictException;
+import io.milton.http.exceptions.NotAuthorizedException;
+import io.milton.http.exceptions.NotFoundException;
 import io.milton.http.SecurityManager;
-import io.milton.http.exceptions.*;
 import io.milton.resource.*;
 import ish.oncourse.model.WebContent;
-import ish.oncourse.services.content.IWebContentService;
+import ish.oncourse.model.WebNode;
+import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.Map;
 
-public class WebContentResource extends AbstractResource implements CopyableResource, DeletableResource, GetableResource, MoveableResource, PropFindableResource, ReplaceableResource {
-	
-	private WebContent webContent;
+public class WebNodeResource extends AbstractResource implements CopyableResource, DeletableResource, GetableResource, MoveableResource, PropFindableResource, ReplaceableResource {
+
+	private WebNode webNode;
 	
 	private ICayenneService cayenneService;
-	private IWebContentService webContentService;
-	
-	public WebContentResource(WebContent webContent, ICayenneService cayenneService, IWebContentService webContentService, SecurityManager securityManager) {
+	private IWebNodeService webNodeService;
+
+	public WebNodeResource(WebNode webNode, ICayenneService cayenneService, IWebNodeService webNodeService, SecurityManager securityManager) {
 		super(securityManager);
+
+		this.webNode = webNode;
 		
-		this.webContent = webContent;
 		this.cayenneService = cayenneService;
-		this.webContentService = webContentService;
+		this.webNodeService = webNodeService;
+	}
+	
+	private WebContent getWebContent() {
+		return webNode.getWebContentVisibility().get(0).getWebContent();
 	}
 
 	@Override
@@ -44,8 +56,12 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 
 	@Override
 	public void sendContent(OutputStream out, Range range, Map<String, String> params, String contentType) throws IOException, NotAuthorizedException, BadRequestException, NotFoundException {
-		out.write(webContent.getContent().getBytes());
-		out.flush();
+		String content = getWebContent().getContent();
+		
+		if (content != null) {
+			out.write(content.getBytes());
+			out.flush();
+		}
 	}
 
 	@Override
@@ -60,16 +76,18 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 
 	@Override
 	public Long getContentLength() {
-		if (webContent.getContent() == null) {
+		String content = getWebContent().getContent();
+		
+		if (content == null) {
 			return 0l;
 		}
-		
-		return (long) webContent.getContent().length();
+
+		return (long) content.length();
 	}
 
 	@Override
 	public void moveTo(CollectionResource rDest, String newName) throws ConflictException, NotAuthorizedException, BadRequestException {
-		
+
 		// this logic is a bit tricky and is there for the purpose of working around odd Cyberduck behavior when
 		// editing records. When editing record Cyberduck's actions are:
 		//
@@ -86,38 +104,38 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 		
 		ObjectContext context = cayenneService.newContext();
 
-		WebContent existingBlock = webContentService.getBlockByName(newName);
+		WebNode existingNode = webNodeService.getNodeForName(newName);
 
 		// if there is no existing record with such name and we are not renaming current record to the same name
-		// then just change name of the block
+		// then just change name of the page
 		// otherwise - replace content of existing record with the new one and delete the new record
 		
-		if (existingBlock == null || existingBlock.getObjectId().equals(webContent.getObjectId())) {
-			WebContent localBlock = context.localObject(webContent);
-			localBlock.setName(newName);
+		if (existingNode == null || existingNode.getObjectId().equals(webNode.getObjectId())) {
+			WebNode localNode = context.localObject(webNode);
+			localNode.setName(newName);
 		} else {
-			WebContent localBlock = context.localObject(existingBlock);
-			localBlock.setContent(webContent.getContent());
-
-			context.deleteObjects(context.localObject(webContent));
+			WebNode localNode = context.localObject(existingNode);
+			localNode.getWebContentVisibility().get(0).getWebContent().setContent(getWebContent().getContent());
+			
+			context.deleteObjects(context.localObject(webNode));
 		}
-
+		
 		context.commitChanges();
 	}
 
 	@Override
 	public Date getCreateDate() {
-		return webContent.getCreated();
+		return webNode.getCreated();
 	}
 
 	@Override
 	public String getName() {
-		return webContent.getName();
+		return webNode.getName();
 	}
 
 	@Override
 	public Date getModifiedDate() {
-		return webContent.getModified();
+		return webNode.getModified();
 	}
 
 	@Override
@@ -125,11 +143,11 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 		try {
 			ObjectContext context = cayenneService.newContext();
 
-			WebContent block = context.localObject(webContent);
+			WebContent block = context.localObject(getWebContent());
 
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(in, writer);
-			
+
 			block.setContent(writer.toString());
 
 			context.commitChanges();

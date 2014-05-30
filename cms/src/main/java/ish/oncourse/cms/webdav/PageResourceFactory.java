@@ -17,9 +17,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.io.IOUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -63,7 +60,7 @@ public class PageResourceFactory implements ResourceFactory {
 			return new DirectoryResource(PAGE_DIR_NAME, securityManager) {
 				@Override
 				public Resource child(String childName) throws NotAuthorizedException, BadRequestException {
-					return getWebContentByPageName(childName);
+					return getWebNodeResource(childName);
 				}
 
 				@Override
@@ -81,7 +78,7 @@ public class PageResourceFactory implements ResourceFactory {
 					String content = writer.toString();
 
 					// check if there is an existing page with similar name
-					WebNode page = getPageByName(newName);
+					WebNode page = webNodeService.getNodeForName(newName);
 
 					if (page != null) {
 						return changePage(page, newName, content);
@@ -93,57 +90,34 @@ public class PageResourceFactory implements ResourceFactory {
 		} else if (path.getLength() == 1) {
 			String name = path.getName();
 
-			return getWebContentByPageName(name);
+			return getWebNodeResource(name);
 		}
 		
 		return null;
 	}
 
-	private Expression siteQualifier() {
-		WebSite site = webSiteService.getCurrentWebSite();
-		return  (site == null) ? ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY + "." + WebSiteVersion.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
-				webSiteService.getCurrentCollege()) : ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion(site));
-	}
-
-	public List<WebContentResource> listPages() {
-		List<WebContentResource> pages = new ArrayList<>();
+	public List<WebNodeResource> listPages() {
+		List<WebNodeResource> pages = new ArrayList<>();
 
 		for (WebNode page : webNodeService.getNodes()) {
-			pages.add(new WebContentResource(page.getWebContentVisibility().get(0).getWebContent(), page.getName(), cayenneService, securityManager));
+			pages.add(new WebNodeResource(page, cayenneService, webNodeService, securityManager));
 		}
 
 		return pages;
 	}
 
-	public WebContentResource getWebContentByPageName(String name) {
+	public WebNodeResource getWebNodeResource(String name) {
 		
-		SelectQuery q = new SelectQuery(WebNode.class, siteQualifier()
-				.andExp(ExpressionFactory.matchExp(WebNode.NAME_PROPERTY, name)));
-
-		List<WebNode> pages = cayenneService.sharedContext().performQuery(q);
-
-		if (!pages.isEmpty()) {
-			return new WebContentResource(pages.get(0).getWebContentVisibility().get(0).getWebContent(), pages.get(0).getName(), cayenneService, securityManager);
+		WebNode page = webNodeService.getNodeForName(name);
+		
+		if (page == null) {
+			return null;
 		}
 		
-		return null;
+		return new WebNodeResource(page, cayenneService, webNodeService, securityManager);
 	}
 
-	public WebNode getPageByName(String name) {
-
-		SelectQuery q = new SelectQuery(WebNode.class, siteQualifier()
-				.andExp(ExpressionFactory.matchExp(WebNode.NAME_PROPERTY, name)));
-
-		List<WebNode> pages = cayenneService.sharedContext().performQuery(q);
-
-		if (!pages.isEmpty()) {
-			return pages.get(0);
-		}
-
-		return null;
-	}
-
-	public WebContentResource changePage(WebNode pageToChange, String name, String content) {
+	public WebNodeResource changePage(WebNode pageToChange, String name, String content) {
 
 		ObjectContext context = cayenneService.newContext();
 
@@ -155,10 +129,10 @@ public class PageResourceFactory implements ResourceFactory {
 
 		context.commitChanges();
 
-		return new WebContentResource(block, page.getName(), cayenneService, securityManager);
+		return new WebNodeResource(page, cayenneService, webNodeService, securityManager);
 	}
 
-	public WebContentResource createNewPage(String name, String content) {
+	public WebNodeResource createNewPage(String name, String content) {
 
 		ObjectContext ctx = cayenneService.newContext();
 
@@ -169,6 +143,6 @@ public class PageResourceFactory implements ResourceFactory {
 		
 		ctx.commitChanges();
 
-		return new WebContentResource(webNode.getWebContentVisibility().get(0).getWebContent(), webNode.getName(), cayenneService, securityManager);
+		return new WebNodeResource(webNode, cayenneService, webNodeService, securityManager);
 	}
 }

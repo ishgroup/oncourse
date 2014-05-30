@@ -100,4 +100,9 @@ public interface IWebNodeService {
      * Build url path for the webNode.
      */
     public String getPath(WebNode webNode);
+
+	/**
+	 * Returns {@link WebNode} with specified name, null if there is no node with such name.
+	 */
+	WebNode getNodeForName(String nodeName);
 }

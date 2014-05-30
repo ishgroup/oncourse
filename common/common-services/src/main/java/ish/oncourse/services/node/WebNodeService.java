@@ -268,4 +268,18 @@ public class WebNodeService implements IWebNodeService {
         List<WebUrlAlias> result = expression.filterObjects(webNode.getWebUrlAliases());
         return result.isEmpty() ? null : result.get(0);
     }
+
+	@Override
+	public WebNode getNodeForName(String nodeName) {
+		SelectQuery q = new SelectQuery(WebNode.class, siteQualifier()
+				.andExp(ExpressionFactory.matchExp(WebNode.NAME_PROPERTY, nodeName)));
+
+		List<WebNode> pages = cayenneService.sharedContext().performQuery(q);
+
+		if (!pages.isEmpty()) {
+			return pages.get(0);
+		}
+
+		return null;
+	}
 }

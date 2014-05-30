@@ -98,7 +98,7 @@ public class BlockResourceFactory implements ResourceFactory {
 		List<WebContentResource> blocks = new ArrayList<>();
 		
 		for (WebContent block : webContentService.getBlocks()) {
-			blocks.add(new WebContentResource(block, cayenneService, securityManager));
+			blocks.add(new WebContentResource(block, cayenneService, webContentService, securityManager));
 		}
 		
 		return blocks;
@@ -108,7 +108,7 @@ public class BlockResourceFactory implements ResourceFactory {
 		WebContent block = webContentService.getWebContent(WebContent.NAME_PROPERTY, name);
 		
 		if (block != null) {
-			return new WebContentResource(block, cayenneService, securityManager);
+			return new WebContentResource(block, cayenneService, webContentService, securityManager);
 		}
 		
 		return null;
@@ -125,11 +125,10 @@ public class BlockResourceFactory implements ResourceFactory {
 		
 		context.commitChanges();
 		
-		return new WebContentResource(block, cayenneService, securityManager);
+		return new WebContentResource(block, cayenneService, webContentService, securityManager);
 	}
 	
 	public WebContentResource createNewBlock(String name, String content) {
-		
 		ObjectContext ctx = cayenneService.newContext();
 		
 		WebContent block = ctx.newObject(WebContent.class);
@@ -145,6 +144,6 @@ public class BlockResourceFactory implements ResourceFactory {
 		
 		ctx.commitChanges();
 		
-		return new WebContentResource(block, cayenneService, securityManager);
+		return new WebContentResource(block, cayenneService, webContentService, securityManager);
 	}
 }
