@@ -18,6 +18,8 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.ui.services.UIModule;
 import org.apache.tapestry5.SymbolConstants;
@@ -45,6 +47,7 @@ public class EnrolTestModule {
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
 		
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("testWebSiteService");
+		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 		binder.bind(ICookiesService.class, CookiesServiceOverride.class).withId("testCookiesService");
 		binder.bind(IPurchaseControllerBuilder.class, PurchaseControllerBuilder.class);
 	}

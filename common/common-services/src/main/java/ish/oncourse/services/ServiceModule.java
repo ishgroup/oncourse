@@ -70,9 +70,7 @@ import ish.oncourse.services.s3.S3Service;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteService;
-import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.sites.SitesService;
 import ish.oncourse.services.sms.DefaultSMSService;
@@ -168,7 +166,6 @@ public class ServiceModule {
 		binder.bind(IWebMenuService.class, WebMenuService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		binder.bind(IWebSiteService.class, WebSiteService.class);
-		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IWebTemplateService.class, WebTemplateService.class);
