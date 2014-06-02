@@ -1,0 +1,19 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <t:if test="needToShow()">
+        <div class="btn-group change-user">
+            <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
+                Switch user <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu pull-right">
+                <t:loop source="contacts" value="contact">
+                    <t:if test="isActive(contact)">
+                        <li class="active"><t:eventlink event="selectContact" context="contact.id">${contact.fullName}</t:eventlink></li>
+                    </t:if>
+                    <t:unless test="isActive(contact)">
+                        <li ><t:eventlink event="selectContact" context="contact.id">${contact.fullName}</t:eventlink></li>
+                    </t:unless>
+                </t:loop>
+            </ul>
+        </div>
+    </t:if>
+</t:container>

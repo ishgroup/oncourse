@@ -13,6 +13,11 @@ public interface IPortalService {
     /**
      * @return logged in user
      */
+    public Contact getAuthenticatedUser();
+
+    /**
+     * @return selected user
+     */
     public Contact getContact();
 
     /**
@@ -88,4 +93,22 @@ public interface IPortalService {
      * The method returns true if the <source>object</source> was created after <source>lastLoginTime</source>
      */
     public boolean isNew(CayenneDataObject object);
+
+    /**
+     * Returns ContactRelation for authenticated contact where ContactRelationType.delegatedAccessToContact is true.
+     * The method is used for "Switch user" functionality.
+     */
+    public List<Contact> getChildContacts();
+
+    /**
+     * Returns true if <source>contact</source> is selected user.
+     */
+    public boolean isSelectedContact(Contact contact);
+
+    /**
+     * Changes selected contact
+     */
+    public void selectContact(Contact contact);
+
+    public void logout();
 }

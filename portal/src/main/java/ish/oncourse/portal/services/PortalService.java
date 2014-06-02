@@ -27,6 +27,7 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.ApplicationStateManager;
@@ -69,11 +70,22 @@ public class PortalService implements IPortalService {
     @Inject
     private ApplicationStateManager applicationStateManager;
 
+    @Persist(value = "session")
+    private Contact selectedContact;
+
     @Override
     public Contact getContact() {
-        return authenticationService.getUser();
+        if (selectedContact == null)
+        {
+            selectedContact = authenticationService.getUser();
+        }
+        return selectedContact;
     }
 
+    @Override
+    public Contact getAuthenticatedUser() {
+        return authenticationService.getUser();
+    }
 
     public Notification getNotification() {
         if (!applicationStateManager.exists(Notification.class)) {
@@ -137,7 +149,7 @@ public class PortalService implements IPortalService {
      * we use it to show sessions callender for contact in Tempalte page
      */
     public JSONObject getCalendarEvents() {
-        List<Session> sessions = courseClassService.getContactSessions(authenticationService.getUser());
+        List<Session> sessions = courseClassService.getContactSessions(getContact());
 
         JSONObject result = new JSONObject();
 
@@ -184,7 +196,7 @@ public class PortalService implements IPortalService {
     public boolean isApproved(CourseClass courseClass) {
 
         Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY,
-                authenticationService.getUser().getTutor()).andExp(ExpressionFactory.matchExp(TutorRole.COURSE_CLASS_PROPERTY, courseClass));
+                getContact().getTutor()).andExp(ExpressionFactory.matchExp(TutorRole.COURSE_CLASS_PROPERTY, courseClass));
         SelectQuery q = new SelectQuery(TutorRole.class, exp);
 
         List<TutorRole> tutorRoles = cayenneService.sharedContext().performQuery(q);
@@ -201,7 +213,7 @@ public class PortalService implements IPortalService {
     public List<CourseClass> getContactCourseClasses(CourseClassFilter filter) {
         List<CourseClass> courseClasses = new ArrayList<>();
 
-        Contact contact = authenticationService.getUser();
+        Contact contact = getContact();
         if (contact.getTutor() != null)
             courseClasses.addAll(getTutorCourseClasses(contact, filter));
 
@@ -481,7 +493,7 @@ public class PortalService implements IPortalService {
     @Override
     public List<BinaryInfo> getResourcesBy(CourseClass courseClass) {
 
-        Contact contact = authenticationService.getUser();
+        Contact contact = getContact();
         ObjectContext sharedContext = cayenneService.sharedContext();
         contact = sharedContext.localObject(contact);
 
@@ -711,5 +723,33 @@ public class PortalService implements IPortalService {
         }
     }
 
+    public List<Contact> getChildContacts()
+    {
+        List<ContactRelation> contactRelations = getAuthenticatedUser().getToContacts();
+        Expression exp = ExpressionFactory.matchExp(ContactRelation.RELATION_TYPE_PROPERTY + "." + ContactRelationType.DELEGATED_ACCESS_TO_CONTACT_PROPERTY, true);
+        contactRelations = exp.filterObjects(contactRelations);
+        ArrayList<Contact> result = new ArrayList<>();
+        result.add(getAuthenticatedUser());
+        for (ContactRelation contactRelation : contactRelations) {
+            result.add(contactRelation.getToContact());
+        }
+        return  Collections.unmodifiableList(result);
+    }
 
+    public boolean isSelectedContact(Contact contact)
+    {
+        return getContact().getId().equals(contact.getId());
+    }
+
+    public void selectContact(Contact contact)
+    {
+        this.selectedContact = contact;
+    }
+
+
+    @Override
+    public void logout() {
+        selectedContact = null;
+        authenticationService.logout();
+    }
 }

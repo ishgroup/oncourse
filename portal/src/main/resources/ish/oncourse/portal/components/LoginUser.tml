@@ -2,6 +2,7 @@
 
 	<div class="collapse nav-links logged navbar-collapse">
 		<strong>${contact.givenName} ${contact.familyName}</strong><span class="caret"></span>
+        <span t:type="switchcontact"/>
 		<ul class="clearfix">
             <li>
               <a href="#" t:type="ActionLink" t:id="logout">Logout</a>
