@@ -36,6 +36,10 @@
 
     <bean id="v6_replicationPortType" class="ish.oncourse.webservices.soap.v6.ReplicationPortTypeImpl" />
 
+	<bean id="v7_paymentPortType" class="ish.oncourse.webservices.soap.v7.PaymentPortTypeImpl" />
+
+	<bean id="v7_replicationPortType" class="ish.oncourse.webservices.soap.v7.ReplicationPortTypeImpl" />
+
 	<cxf:bus>
 		<cxf:features>
 			<ref bean="gzipFeature" />
@@ -98,4 +102,19 @@
         </jaxws:inInterceptors>
     </jaxws:endpoint>
 
+	<jaxws:endpoint id="v7_replication" implementor="#v7_replicationPortType"
+					address="/v7/replication">
+		<jaxws:inInterceptors>
+			<ref bean="v4_communicationKeyInterceptor" />
+			<ref bean="v4_collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v7_payment" implementor="#v7_paymentPortType"
+					address="/v7/payment">
+		<jaxws:inInterceptors>
+			<ref bean="v4_securityCodeInterceptor" />
+			<ref bean="v4_collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
 </beans>
