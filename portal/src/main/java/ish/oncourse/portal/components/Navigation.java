@@ -85,7 +85,7 @@ public class Navigation {
         if (nearestCourseClass == null)
             nearestCourseClass = !pastCourseClasses.isEmpty() ? pastCourseClasses.get(0) : null;
 
-        contact = authenticationService.getUser();
+        contact = portalService.getContact();
         if (contact.getTutor() != null) {
             List<CourseClass> unconfirmedClasses = courseClassService.getContactCourseClasses(contact, CourseClassFilter.UNCONFIRMED);
             approvals = unconfirmedClasses.size();

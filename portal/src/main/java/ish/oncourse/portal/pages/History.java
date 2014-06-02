@@ -21,7 +21,7 @@ public class History {
 
 
     public boolean isStudent(){
-        return authenticationService.getUser().getStudent() != null;
+        return portalService.getContact().getStudent() != null;
     }
 
 }

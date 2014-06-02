@@ -7,6 +7,7 @@ import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -49,6 +50,9 @@ public class Surveys {
 
 	@Inject
 	private IAuthenticationService authService;
+
+    @Inject
+    private IPortalService portalService;
 	
 	private double courseAverage;
 	
@@ -61,7 +65,7 @@ public class Surveys {
 	Object onActivate() {
 		if (courseClass == null)
 		{
-			tutorContact = authService.getUser();
+			tutorContact = portalService.getContact();
 			this.surveys = courseClassService.getSurveysFor(tutorContact.getTutor());
 		}
 		return null;

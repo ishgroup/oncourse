@@ -3,6 +3,7 @@ package ish.oncourse.portal.components.subscriptions;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -20,6 +21,9 @@ public class WaitingLists {
     @Inject
     private IAuthenticationService authenticationService;
 
+    @Inject
+    private IPortalService portalService;
+
     @Property
     private WaitingList waitingList;
 
@@ -32,7 +36,7 @@ public class WaitingLists {
     @SetupRender
     void setupRender() {
         ObjectContext objectContext = cayenneService.sharedContext();
-        Contact contact = authenticationService.getUser();
+        Contact contact = portalService.getContact();
         if (contact != null && contact.getStudent() != null)
         {
             Expression expression = ExpressionFactory.matchExp(WaitingList.STUDENT_PROPERTY, contact.getStudent());
@@ -45,7 +49,7 @@ public class WaitingLists {
     {
         ObjectContext objectContext = cayenneService.newContext();
         WaitingList waitingList = Cayenne.objectForPK(objectContext, WaitingList.class, id);
-        objectContext.deleteObject(waitingList);
+        objectContext.deleteObjects(waitingList);
         objectContext.commitChanges();
     }
 

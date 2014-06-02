@@ -2,18 +2,18 @@ package ish.oncourse.portal.components.courseclass;
 
 
 import ish.oncourse.model.Attendance;
-import ish.oncourse.model.TutorRole;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
+import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
-import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.*;
@@ -21,7 +21,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
-import org.apache.cayenne.exp.Expression;
 import java.io.IOException;
 import java.util.List;
 
@@ -73,7 +72,7 @@ public class ClassDetails {
 
 		if (authenticationService.isTutor()) {
 			CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
-			Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY, authenticationService.getUser().getTutor());
+			Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY, portalService.getContact().getTutor());
 			isTutor = !exp.filterObjects(courseClass.getTutorRoles()).isEmpty();
 		} else {
 			isTutor = false;

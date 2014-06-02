@@ -3,19 +3,14 @@ package ish.oncourse.portal.access;
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.services.cookies.ICookiesService;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.runtime.Component;
+import org.apache.tapestry5.services.*;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.runtime.Component;
-import org.apache.tapestry5.services.ComponentClassResolver;
-import org.apache.tapestry5.services.ComponentSource;
-import org.apache.tapestry5.services.Dispatcher;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Response;
 
 public class AccessController implements Dispatcher {
 
@@ -46,7 +41,7 @@ public class AccessController implements Dispatcher {
 
 		int nextslashx = path.length();
 
-		String pageName = null;
+		String pageName;
 
 		while (true) {
 			pageName = path.substring(1, nextslashx);
@@ -83,7 +78,7 @@ public class AccessController implements Dispatcher {
 
 					boolean canAccess = true;
 
-					if (pageWithUserRole != null && pageWithUserRole.value() != null) {
+					if (pageWithUserRole.value() != null) {
 						Set<String> pageRoles = new HashSet<>(Arrays.asList(pageWithUserRole.value()));
 						if (pageRoles.size() > 0) {
 							canAccess = (pageRoles.contains("tutor") && user.getTutor() != null) || (pageRoles.contains("student") && user.getStudent() != null);

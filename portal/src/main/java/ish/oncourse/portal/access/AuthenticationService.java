@@ -2,19 +2,11 @@ package ish.oncourse.portal.access;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.SupportPassword;
-import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
@@ -22,6 +14,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import static ish.oncourse.portal.services.PortalUtils.COOKIE_NAME_lastLoginTime;
 
@@ -201,6 +197,7 @@ public class AuthenticationService implements IAuthenticationService {
 	 * @see IAuthenticationService#logout()
 	 */
 	public void logout() {
+        applicationStateManager.set(Contact.class, null);
 
 		Session session = request.getSession(false);
 

@@ -1,10 +1,8 @@
 package ish.oncourse.portal.components;
 
 import ish.oncourse.model.Contact;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.pages.Login;
-import ish.oncourse.services.courseclass.CourseClassFilter;
-import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.portal.services.IPortalService;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -13,7 +11,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 public class LoginUser {
 	
 	@Inject
-	private IAuthenticationService authService;
+	private IPortalService portalService;
 
 	@Property
 	private Contact contact;
@@ -25,11 +23,11 @@ public class LoginUser {
 
 	@SetupRender
 	void setupRender() {
-		this.contact = authService.getUser();
+		this.contact = portalService.getAuthenticatedUser();
 	}
 
 	public Object onActionFromLogout() throws Exception {
-		authService.logout();
+        portalService.logout();
 		return login;
 	}
 }

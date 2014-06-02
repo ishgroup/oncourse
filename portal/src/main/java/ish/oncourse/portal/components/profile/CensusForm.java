@@ -7,6 +7,7 @@ import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.Student;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.selectutils.BooleanSelection;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -14,7 +15,6 @@ import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
-import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
@@ -67,6 +67,10 @@ public class CensusForm {
 
     @Inject
     private ICayenneService cayenneService;
+
+    @Inject
+    private IPortalService portalService;
+
     /**
      * template properties
      */
@@ -262,7 +266,7 @@ public class CensusForm {
     }
 
     public boolean getIsStudent() {
-        return authService.getUser().getStudent() != null;
+        return portalService.getContact().getStudent() != null;
     }
 
     public boolean getIsRequiresAvetmiss() {

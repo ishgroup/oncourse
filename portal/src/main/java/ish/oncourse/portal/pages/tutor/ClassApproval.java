@@ -135,7 +135,7 @@ public class ClassApproval {
     }
 
     void accept() {
-        Contact c = authService.getUser();
+        Contact c = portalService.getContact();
 
         if (approved) {
             for (TutorRole t : courseClass.getTutorRoles()) {

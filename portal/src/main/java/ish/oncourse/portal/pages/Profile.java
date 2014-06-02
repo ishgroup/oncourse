@@ -3,6 +3,7 @@ package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
@@ -12,9 +13,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-
-import java.util.Date;
 
 /**
  * User: artem
@@ -32,6 +30,9 @@ public class Profile {
     @Inject
     private IAuthenticationService authenticationService;
 
+    @Inject
+    private IPortalService portalService;
+
     @Persist
     @Property
     private Contact contact;
@@ -45,7 +46,7 @@ public class Profile {
     {
         ObjectContext context = cayenneService.newContext();
 
-        contact = context.localObject(authenticationService.getUser());
+        contact = context.localObject(portalService.getContact());
 
         if (activeTabId == null)
             activeTabId = "tab_profile";

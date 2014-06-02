@@ -3,6 +3,7 @@ package ish.oncourse.portal.components.subscriptions;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.pages.Login;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
@@ -60,7 +61,10 @@ public class MailingLists {
 	@Inject
 	private IAuthenticationService authService;
 
-	@Inject
+    @Inject
+    private IPortalService portalService;
+
+    @Inject
 	private ITagService tagService;
 
 	@Property
@@ -73,12 +77,10 @@ public class MailingLists {
 	@InjectPage
 	private Login loginPage;
 
-
-
 	@SetupRender
 	void beforeRender() {
         ObjectContext objectContext = cayenneService.newContext();
-		this.currentUser = objectContext.localObject(authService.getUser());
+		this.currentUser = objectContext.localObject(portalService.getContact());
 
 		this.mailingLists = tagService.getMailingLists();
 		this.selectedMailingLists = new ArrayList<>();

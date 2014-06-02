@@ -5,6 +5,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.portal.services.ValueChangeDelegate;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -57,6 +58,9 @@ public class Surveys {
 	@Inject
 	private Request request;
 
+    @Inject
+    private IPortalService portalService;
+
 	Object onActivate()
 	{
 		 if (courseClass == null)
@@ -78,7 +82,7 @@ public class Surveys {
 			}
 			
 			if (survey == null) {
-				Student student = (Student) context.localObject(authenticationService.getUser().getStudent().getObjectId(), null);
+				Student student = context.localObject(portalService.getContact().getStudent());
 				this.survey = getSurveyForStudentAndClass(student, courseClass);
 				Enrolment studentEnrolment = getEnrolmentForStudentAndClass(student, courseClass);
 				if (survey == null && studentEnrolment != null) {

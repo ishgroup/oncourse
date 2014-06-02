@@ -3,6 +3,7 @@ package ish.oncourse.portal.pages;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
@@ -68,6 +69,9 @@ public class Login {
 	@Inject
 	private IAuthenticationService authenticationService;
 
+    @Inject
+    private IPortalService portalService;
+
 	@Inject
 	private ICookiesService cookieService;
 
@@ -132,8 +136,8 @@ public class Login {
 			}
 		}
 			
-		if (authenticationService.getUser() != null)
-			authenticationService.logout();
+		if (portalService.getAuthenticatedUser() != null)
+			portalService.logout();
 		if (errors == null)
 			errors = new HashMap<>();
 		fillStudentFields();
