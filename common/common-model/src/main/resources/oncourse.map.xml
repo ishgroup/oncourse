@@ -239,8 +239,10 @@
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="materials" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="materials_textile" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="maxStudentAge" type="INTEGER"/>
 		<db-attribute name="maximumDays" type="INTEGER" length="10"/>
 		<db-attribute name="maximumPlaces" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="minStudentAge" type="INTEGER"/>
 		<db-attribute name="minimumPlaces" type="INTEGER" length="10"/>
 		<db-attribute name="minutesPerSession" type="INTEGER" length="10"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
@@ -1359,8 +1361,10 @@
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
 		<obj-attribute name="materialsTextile" type="java.lang.String" db-attribute-path="materials_textile"/>
+		<obj-attribute name="maxStudentAge" type="java.lang.Integer" db-attribute-path="maxStudentAge"/>
 		<obj-attribute name="maximumDays" type="java.lang.Integer" db-attribute-path="maximumDays"/>
 		<obj-attribute name="maximumPlaces" type="java.lang.Integer" db-attribute-path="maximumPlaces"/>
+		<obj-attribute name="minStudentAge" type="java.lang.Integer" db-attribute-path="minStudentAge"/>
 		<obj-attribute name="minimumPlaces" type="java.lang.Integer" db-attribute-path="minimumPlaces"/>
 		<obj-attribute name="minutesPerSession" type="java.lang.Integer" db-attribute-path="minutesPerSession"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
