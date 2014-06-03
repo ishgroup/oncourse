@@ -44,6 +44,9 @@ public class CourseClassStubBuilder extends AbstractWillowStubBuilder<CourseClas
 		stub.setReportingPeriod(entity.getReportingPeriod());
 		stub.setCensusDate(entity.getCensusDate());
 		stub.setFullTimeLoad(entity.getFullTimeLoad());
+		stub.setMinStudentAge(entity.getMinStudentAge());
+		stub.setMaxStudentAge(entity.getMaxStudentAge());
+		
 		return stub;
 	}
 }
