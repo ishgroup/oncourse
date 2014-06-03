@@ -2522,5 +2522,25 @@
 
         <sql>alter table ContactRelationType add column delegatedAccessToContact BIT NOT NULL DEFAULT 0 </sql>
     </changeSet>
+	
+	<changeSet id="164" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CourseClass" columnName="minStudentAge"/>
+			</not>
+		</preConditions>
+		
+		<sql>ALTER TABLE CourseClass ADD COLUMN minStudentAge INTEGER</sql>
+	</changeSet>
+
+	<changeSet id="165" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CourseClass" columnName="maxStudentAge"/>
+			</not>
+		</preConditions>
+
+		<sql>ALTER TABLE CourseClass ADD COLUMN maxStudentAge INTEGER</sql>
+	</changeSet>
 </databaseChangeLog>
 
