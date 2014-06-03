@@ -51,6 +51,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="reportingPeriod" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="censusDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="fullTimeLoad" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="minStudentAge" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="maxStudentAge" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -90,7 +92,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "attendanceType",
     "reportingPeriod",
     "censusDate",
-    "fullTimeLoad"
+    "fullTimeLoad",
+    "minStudentAge",
+    "maxStudentAge"
 })
 public class CourseClassStub
     extends ReplicationStub
@@ -192,6 +196,14 @@ public class CourseClassStub
     protected Date censusDate;
     @XmlElement(required = true)
     protected String fullTimeLoad;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer minStudentAge;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer maxStudentAge;
 
     /**
      * Gets the value of the cancelled property.
@@ -911,6 +923,54 @@ public class CourseClassStub
      */
     public void setFullTimeLoad(String value) {
         this.fullTimeLoad = value;
+    }
+
+    /**
+     * Gets the value of the minStudentAge property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getMinStudentAge() {
+        return minStudentAge;
+    }
+
+    /**
+     * Sets the value of the minStudentAge property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMinStudentAge(Integer value) {
+        this.minStudentAge = value;
+    }
+
+    /**
+     * Gets the value of the maxStudentAge property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getMaxStudentAge() {
+        return maxStudentAge;
+    }
+
+    /**
+     * Sets the value of the maxStudentAge property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMaxStudentAge(Integer value) {
+        this.maxStudentAge = value;
     }
 
 }
