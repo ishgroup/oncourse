@@ -61,6 +61,7 @@ public class StudentStubBuilder extends AbstractWillowStubBuilder<Student, Stude
 		} else {
 			stub.setCitizenship(StudentCitizenship.NO_INFORMATION.getDatabaseValue());
 		}
+		stub.setSpecialNeeds(entity.getSpecialNeeds());
 		return stub;
 	}
 }

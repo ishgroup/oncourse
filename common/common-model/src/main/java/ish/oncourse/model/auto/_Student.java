@@ -46,6 +46,7 @@ public abstract class _Student extends CayenneDataObject {
     public static final String LABOUR_FORCE_TYPE_PROPERTY = "labourForceType";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String PRIOR_EDUCATION_CODE_PROPERTY = "priorEducationCode";
+    public static final String SPECIAL_NEEDS_PROPERTY = "specialNeeds";
     public static final String SPECIAL_NEEDS_ASSISTANCE_PROPERTY = "specialNeedsAssistance";
     public static final String YEAR_SCHOOL_COMPLETED_PROPERTY = "yearSchoolCompleted";
     public static final String ATTENDANCES_PROPERTY = "attendances";
@@ -166,6 +167,13 @@ public abstract class _Student extends CayenneDataObject {
     }
     public AvetmissStudentPriorEducation getPriorEducationCode() {
         return (AvetmissStudentPriorEducation)readProperty("priorEducationCode");
+    }
+
+    public void setSpecialNeeds(String specialNeeds) {
+        writeProperty(SPECIAL_NEEDS_PROPERTY, specialNeeds);
+    }
+    public String getSpecialNeeds() {
+        return (String)readProperty(SPECIAL_NEEDS_PROPERTY);
     }
 
     public void setSpecialNeedsAssistance(String specialNeedsAssistance) {

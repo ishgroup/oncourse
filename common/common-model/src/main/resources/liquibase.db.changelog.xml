@@ -2542,5 +2542,16 @@
 
 		<sql>ALTER TABLE CourseClass ADD COLUMN maxStudentAge INTEGER</sql>
 	</changeSet>
+
+	<changeSet id="166" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Student" columnName="specialNeeds"/>
+			</not>
+		</preConditions>
+
+		<sql>ALTER TABLE Student ADD COLUMN specialNeeds TEXT</sql>
+	</changeSet>
+	
 </databaseChangeLog>
 
