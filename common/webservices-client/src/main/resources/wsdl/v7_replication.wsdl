@@ -1131,6 +1131,7 @@
                             <xs:element name="feeHelpEligible" type="xs:boolean"/>
                             <xs:element name="specialNeedsAssistance" type="xs:string"/>
                             <xs:element name="citizenship" type="xs:int"/>
+							<xs:element name="specialNeeds" type="xs:string"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

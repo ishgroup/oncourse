@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="feeHelpEligible" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="specialNeedsAssistance" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="citizenship" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="specialNeeds" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -64,7 +65,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "chessn",
     "feeHelpEligible",
     "specialNeedsAssistance",
-    "citizenship"
+    "citizenship",
+    "specialNeeds"
 })
 public class StudentStub
     extends ReplicationStub
@@ -138,6 +140,8 @@ public class StudentStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer citizenship;
+    @XmlElement(required = true)
+    protected String specialNeeds;
 
     /**
      * Gets the value of the concessionType property.
@@ -569,6 +573,30 @@ public class StudentStub
      */
     public void setCitizenship(Integer value) {
         this.citizenship = value;
+    }
+
+    /**
+     * Gets the value of the specialNeeds property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getSpecialNeeds() {
+        return specialNeeds;
+    }
+
+    /**
+     * Sets the value of the specialNeeds property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setSpecialNeeds(String value) {
+        this.specialNeeds = value;
     }
 
 }
