@@ -513,6 +513,18 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		documentVersionParameters.add(new ReplicationStubFieldParameter("timestamp", Date.class));
 		documentVersionParameters.add(new ReplicationStubFieldParameter("documentId", Long.class));
 		stubsPropertyMap.put(getStubName(DocumentVersionStub.class), documentVersionParameters);
+		
+		List<ReplicationStubFieldParameter> customFieldTypeParameters = fillDefaultReplicationStubFields();
+		customFieldTypeParameters.add(new ReplicationStubFieldParameter("name", String.class));
+		customFieldTypeParameters.add(new ReplicationStubFieldParameter("defaultValue", String.class));
+		customFieldTypeParameters.add(new ReplicationStubFieldParameter("mandatory", Boolean.class));
+		stubsPropertyMap.put(getStubName(CustomFieldTypeStub.class), customFieldTypeParameters);
+		
+		List<ReplicationStubFieldParameter> customFieldParameters = fillDefaultReplicationStubFields();
+		customFieldParameters.add(new ReplicationStubFieldParameter("customFieldTypeId", Long.class));
+		customFieldParameters.add(new ReplicationStubFieldParameter("foreignId", Long.class));
+		customFieldParameters.add(new ReplicationStubFieldParameter("value", String.class));
+		stubsPropertyMap.put(getStubName(CustomFieldStub.class), customFieldParameters);
 
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParameters = fillDefaultReplicationStubFields();
@@ -832,6 +844,18 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testDocumentVersionStub() {
 		GenericReplicationStub stub = new DocumentVersionStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testCustomFieldTypeStub() {
+		GenericReplicationStub stub = new CustomFieldTypeStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testCustomFieldStub() {
+		GenericReplicationStub stub = new CustomFieldStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 

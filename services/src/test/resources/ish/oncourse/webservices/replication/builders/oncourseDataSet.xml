@@ -507,5 +507,11 @@
 	<DocumentVersion id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
 			documentId="1" versionId="version" fileName="test.text" mimeType="text/plain" byteSize="1024" timestamp="2011-01-01 00:00:00"
 			pixelWidth="20" pixelHeight="10"/>
+	
+	<CustomFieldType id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 name="test" defaultValue="test" isMandatory="0"/>
+	
+	<CustomField id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+				 customFieldTypeId="1" foreignId="1" value="test"/>
 
 </dataset>

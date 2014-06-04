@@ -246,5 +246,15 @@ public class AllV7StubBuildersTest extends AbstractAllStubBuildersTest {
 	public void testDocumentVersionStubBuilder() {
 		this.testStubBuilder(DocumentVersion.class, new DocumentVersionStubBuilder(), 1L, "thumbnail");
 	}
+	
+	@Test
+	public void testCustomFieldTypeStubBuilder() {
+		this.testStubBuilder(CustomFieldType.class, new CustomFieldTypeStubBuilder());
+	}
+	
+	@Test
+	public void testCustomFieldStubBuilder() {
+		this.testStubBuilder(CustomField.class, new CustomFieldStubBuilder(), "foreignId");
+	}
 
 }
