@@ -2606,6 +2606,10 @@
 		<addForeignKeyConstraint baseTableName="CustomFieldType" baseColumnNames="collegeId"
 								 constraintName="fk_CustomFieldType_College"
 								 referencedTableName="College" referencedColumnNames="id"/>
+		
+		<createIndex tableName="CustomFieldType" indexName="CustomFieldType_angelId">
+			<column name="angelId"/>
+		</createIndex>
 	</changeSet>
 	
 	<changeSet id="168" author="dzmitry" runOnChange="false" context="production">
@@ -2649,6 +2653,10 @@
 		<addForeignKeyConstraint baseTableName="CustomField" baseColumnNames="collegeId"
 								 constraintName="fk_CustomField_College"
 								 referencedTableName="College" referencedColumnNames="id"/>
+		
+		<createIndex tableName="CustomField" indexName="CustomField_angelId">
+			<column name="angelId"/>
+		</createIndex>
 	</changeSet>
 	
 </databaseChangeLog>
