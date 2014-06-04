@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="roomId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="oldTutorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="payAdjustment" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="privateNotes" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="publicNotes" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -45,7 +47,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "markerId",
     "roomId",
     "oldTutorId",
-    "payAdjustment"
+    "payAdjustment",
+    "privateNotes",
+    "publicNotes"
 })
 public class SessionStub
     extends ReplicationStub
@@ -81,6 +85,10 @@ public class SessionStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer payAdjustment;
+    @XmlElement(required = true)
+    protected String privateNotes;
+    @XmlElement(required = true)
+    protected String publicNotes;
 
     /**
      * Gets the value of the endDate property.
@@ -272,6 +280,54 @@ public class SessionStub
      */
     public void setPayAdjustment(Integer value) {
         this.payAdjustment = value;
+    }
+
+    /**
+     * Gets the value of the privateNotes property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPrivateNotes() {
+        return privateNotes;
+    }
+
+    /**
+     * Sets the value of the privateNotes property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPrivateNotes(String value) {
+        this.privateNotes = value;
+    }
+
+    /**
+     * Gets the value of the publicNotes property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPublicNotes() {
+        return publicNotes;
+    }
+
+    /**
+     * Sets the value of the publicNotes property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPublicNotes(String value) {
+        this.publicNotes = value;
     }
 
 }

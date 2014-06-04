@@ -1078,6 +1078,8 @@
                             <xs:element name="roomId" type="xs:long" />
                             <xs:element name="oldTutorId" type="xs:long" />
                             <xs:element name="payAdjustment" type="xs:int" />
+							<xs:element name="privateNotes" type="xs:string" />
+							<xs:element name="publicNotes" type="xs:string" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
