@@ -2600,6 +2600,7 @@
 			<column name="modified" type="DATETIME">
 				<constraints nullable="false"/>
 			</column>
+			<column name="angelId" type="BIGINT"/>
 		</createTable>
 		
 		<addForeignKeyConstraint baseTableName="CustomFieldType" baseColumnNames="collegeId"
@@ -2634,6 +2635,7 @@
 			<column name="modified" type="DATETIME">
 				<constraints nullable="false"/>
 			</column>
+			<column name="angelId" type="BIGINT"/>
 		</createTable>
 		
 		<addForeignKeyConstraint baseTableName="CustomField" baseColumnNames="customFieldTypeId"

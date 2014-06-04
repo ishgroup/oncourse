@@ -16,6 +16,7 @@ import ish.oncourse.model.CustomField;
  */
 public abstract class _CustomFieldType extends CayenneDataObject {
 
+    public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String DEFAULT_VALUE_PROPERTY = "defaultValue";
     public static final String IS_MANDATORY_PROPERTY = "isMandatory";
@@ -25,6 +26,13 @@ public abstract class _CustomFieldType extends CayenneDataObject {
     public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
 
     public static final String ID_PK_COLUMN = "id";
+
+    public void setAngelId(Long angelId) {
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
+    }
+    public Long getAngelId() {
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
+    }
 
     public void setCreated(Date created) {
         writeProperty(CREATED_PROPERTY, created);
@@ -40,11 +48,11 @@ public abstract class _CustomFieldType extends CayenneDataObject {
         return (String)readProperty(DEFAULT_VALUE_PROPERTY);
     }
 
-    public void setIsMandatory(Short isMandatory) {
+    public void setIsMandatory(Boolean isMandatory) {
         writeProperty(IS_MANDATORY_PROPERTY, isMandatory);
     }
-    public Short getIsMandatory() {
-        return (Short)readProperty(IS_MANDATORY_PROPERTY);
+    public Boolean getIsMandatory() {
+        return (Boolean)readProperty(IS_MANDATORY_PROPERTY);
     }
 
     public void setModified(Date modified) {
