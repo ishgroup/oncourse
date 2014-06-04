@@ -785,6 +785,8 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="markerId" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="privateNotes" type="CLOB" length="32000"/>
+		<db-attribute name="publicNotes" type="CLOB" length="32000"/>
 		<db-attribute name="roomId" type="BIGINT" length="19"/>
 		<db-attribute name="startDate" type="TIMESTAMP" length="19"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="64"/>
@@ -1835,6 +1837,8 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="privateNotes" type="java.lang.String" db-attribute-path="privateNotes"/>
+		<obj-attribute name="publicNotes" type="java.lang.String" db-attribute-path="publicNotes"/>
 		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="startDate"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 	</obj-entity>

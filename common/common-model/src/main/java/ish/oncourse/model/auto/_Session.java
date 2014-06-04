@@ -25,6 +25,8 @@ public abstract class _Session extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String END_DATE_PROPERTY = "endDate";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String PRIVATE_NOTES_PROPERTY = "privateNotes";
+    public static final String PUBLIC_NOTES_PROPERTY = "publicNotes";
     public static final String START_DATE_PROPERTY = "startDate";
     public static final String TIME_ZONE_PROPERTY = "timeZone";
     public static final String ATTENDANCES_PROPERTY = "attendances";
@@ -63,6 +65,20 @@ public abstract class _Session extends CayenneDataObject {
     }
     public Date getModified() {
         return (Date)readProperty(MODIFIED_PROPERTY);
+    }
+
+    public void setPrivateNotes(String privateNotes) {
+        writeProperty(PRIVATE_NOTES_PROPERTY, privateNotes);
+    }
+    public String getPrivateNotes() {
+        return (String)readProperty(PRIVATE_NOTES_PROPERTY);
+    }
+
+    public void setPublicNotes(String publicNotes) {
+        writeProperty(PUBLIC_NOTES_PROPERTY, publicNotes);
+    }
+    public String getPublicNotes() {
+        return (String)readProperty(PUBLIC_NOTES_PROPERTY);
     }
 
     public void setStartDate(Date startDate) {
