@@ -90,4 +90,6 @@ public abstract class _CustomFieldType extends CayenneDataObject {
     }
 
 
+    protected abstract void onPostAdd();
+
 }

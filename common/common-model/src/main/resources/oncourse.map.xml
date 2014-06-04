@@ -1414,6 +1414,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="CustomFieldType" className="ish.oncourse.model.CustomFieldType" dbEntityName="CustomFieldType">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1422,6 +1423,7 @@
 		<obj-attribute name="isMandatory" type="java.lang.Boolean" db-attribute-path="isMandatory"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="Discount" className="ish.oncourse.model.Discount" dbEntityName="Discount">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
