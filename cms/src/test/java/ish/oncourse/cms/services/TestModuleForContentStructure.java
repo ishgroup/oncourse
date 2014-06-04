@@ -13,6 +13,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.ui.services.UIModule;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -46,6 +47,11 @@ public class TestModuleForContentStructure {
 		public void contributeRequestHandler(OrderedConfiguration<RequestFilter> configuration, @Local RequestFilter logFilter) {
 			configuration.override("LogFilter", logFilter);
 		}
+
+        public IWebSiteVersionService buildWebSiteVersionService() {
+            IWebSiteVersionService mockService = mock(IWebSiteVersionService.class);
+            return mockService;
+        }
 
 		public ILookupService buildLookupServiceOverride() {
 			ILookupService mockService = mock(ILookupService.class);
@@ -120,7 +126,7 @@ public class TestModuleForContentStructure {
 				@Local IEnvironmentService envServiceOverride) {
 			configuration.add(IEnvironmentService.class, envServiceOverride);
 		}
-		
+
 		public static IWebNodeTypeService buildWebNodeTypeServiceOverride() {
 			IWebNodeTypeService mockService = mock(IWebNodeTypeService.class);
 
@@ -161,7 +167,7 @@ public class TestModuleForContentStructure {
 			when(mockService.getCurrentCollege()).thenReturn(college);
 			when(mockService.getCurrentDomain()).thenReturn(host);
 			when(mockService.getCurrentWebSite()).thenReturn(webSite);
-			
+
 			return mockService;
 		}
 
@@ -170,7 +176,7 @@ public class TestModuleForContentStructure {
 			configuration.add(IWebSiteService.class, webSiteServiceOverride);
 		}
 
-	
+
 
 		public ICayenneService buildCayenneServiceOverride() {
 			ICayenneService mock = mock(ICayenneService.class);
@@ -181,7 +187,7 @@ public class TestModuleForContentStructure {
 				@Local ICayenneService cayenneServiceOverride) {
 			configuration.add(ICayenneService.class, cayenneServiceOverride);
 		}
-		
+
 		public IBinaryDataService buildBinaryDataServiceOverride() {
 			IBinaryDataService mock = mock(IBinaryDataService.class);
 			BinaryInfo binaryInfo = mock(BinaryInfo.class);
@@ -197,7 +203,7 @@ public class TestModuleForContentStructure {
 				@Local IBinaryDataService binaryDataServiceOverride) {
 			configuration.add(IBinaryDataService.class, binaryDataServiceOverride);
 		}
-		
+
 		public IWebNodeService buildWebNodeOverride() {
 			IWebNodeService mock = mock(IWebNodeService.class);
 			return mock;
