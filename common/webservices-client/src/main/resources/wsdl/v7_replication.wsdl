@@ -75,6 +75,8 @@
             <xs:element name="waitingListSite" type="tns:waitingListSiteStub" />
 			<xs:element name="document" type="tns:documentStub"/>
 			<xs:element name="documentVersion" type="tns:documentVersionStub"/>
+			<xs:element name="customFieldType" type="tns:customFieldTypeStub"/>
+			<xs:element name="customField" type="tns:customFieldStub"/>
             <xs:element name="hollow" type="tns:hollowStub" />
             <xs:element name="deleted" type="tns:deletedStub" />
             <xs:element name="confirmExecution" type="tns:confirmExecution" />
@@ -1278,6 +1280,30 @@
                     </xs:extension>
                 </xs:complexContent>
             </xs:complexType>
+			
+			<xs:complexType name="customFieldTypeStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="defaultValue" type="xs:string"/>
+							<xs:element name="mandatory" type="xs:boolean"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			
+			<xs:complexType name="customFieldStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="customFieldTypeId" type="xs:long"/>
+							<xs:element name="foreignId" type="xs:long"/>
+							<xs:element name="value" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
 
             <xs:complexType name="confirmExecution">
                 <xs:sequence>
