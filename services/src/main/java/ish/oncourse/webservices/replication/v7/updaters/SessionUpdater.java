@@ -19,6 +19,8 @@ public class SessionUpdater extends AbstractWillowUpdater<SessionStub, Session> 
 		entity.setMarker((stub.getMarkerId() != null) ? callback.updateRelationShip(stub.getMarkerId(), Tutor.class) : null);
 		entity.setRoom((stub.getRoomId() != null) ? callback.updateRelationShip(stub.getRoomId(), Room.class) : null);
 		entity.setStartDate(stub.getStartDate());
+		entity.setPrivateNotes(stub.getPrivateNotes());
+		entity.setPublicNotes(stub.getPublicNotes());
 
 	}
 
