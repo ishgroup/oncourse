@@ -2573,5 +2573,80 @@
 		<sql>ALTER TABLE Session ADD COLUMN publicNotes TEXT</sql>
 	</changeSet>
 	
+	<changeSet id="167" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="CustomFieldType"/>
+			</not>
+		</preConditions>
+		
+		<createTable tableName="CustomFieldType">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="defaultValue" type="TEXT"/>
+			<column name="isMandatory" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modified" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		
+		<addForeignKeyConstraint baseTableName="CustomFieldType" baseColumnNames="collegeId"
+								 constraintName="fk_CustomFieldType_College"
+								 referencedTableName="College" referencedColumnNames="id"/>
+	</changeSet>
+	
+	<changeSet id="168" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="CustomField"/>
+			</not>
+		</preConditions>
+		
+		<createTable tableName="CustomField">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="foreignId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="customFieldTypeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="value" type="TEXT"/>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modified" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		
+		<addForeignKeyConstraint baseTableName="CustomField" baseColumnNames="customFieldTypeId"
+								 constraintName="fk_CustomField_CustomFieldType"
+								 referencedTableName="CustomFieldType" referencedColumnNames="id"/>
+		
+		<addForeignKeyConstraint baseTableName="CustomField" baseColumnNames="foreignId"
+								 constraintName="fk_CustomField_Contact"
+								 referencedTableName="Contact" referencedColumnNames="id"/>
+		
+		<addForeignKeyConstraint baseTableName="CustomField" baseColumnNames="collegeId"
+								 constraintName="fk_CustomField_College"
+								 referencedTableName="College" referencedColumnNames="id"/>
+	</changeSet>
+	
 </databaseChangeLog>
-
