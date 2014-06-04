@@ -2552,26 +2552,6 @@
 
 		<sql>ALTER TABLE Student ADD COLUMN specialNeeds TEXT</sql>
 	</changeSet>
-
-	<changeSet id="169" author="artyom" runOnChange="false" context="production">
-		<preConditions onFail="MARK_RAN">
-			<not>
-				<columnExists tableName="Session" columnName="privateNotes"/>
-			</not>
-		</preConditions>
-
-		<sql>ALTER TABLE Session ADD COLUMN privateNotes TEXT</sql>
-	</changeSet>
-
-	<changeSet id="170" author="artyom" runOnChange="false" context="production">
-		<preConditions onFail="MARK_RAN">
-			<not>
-				<columnExists tableName="Session" columnName="publicNotes"/>
-			</not>
-		</preConditions>
-
-		<sql>ALTER TABLE Session ADD COLUMN publicNotes TEXT</sql>
-	</changeSet>
 	
 	<changeSet id="167" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
@@ -2658,5 +2638,24 @@
 			<column name="angelId"/>
 		</createIndex>
 	</changeSet>
-	
+
+	<changeSet id="169" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Session" columnName="privateNotes"/>
+			</not>
+		</preConditions>
+
+		<sql>ALTER TABLE Session ADD COLUMN privateNotes TEXT</sql>
+	</changeSet>
+
+	<changeSet id="170" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Session" columnName="publicNotes"/>
+			</not>
+		</preConditions>
+
+		<sql>ALTER TABLE Session ADD COLUMN publicNotes TEXT</sql>
+	</changeSet>
 </databaseChangeLog>
