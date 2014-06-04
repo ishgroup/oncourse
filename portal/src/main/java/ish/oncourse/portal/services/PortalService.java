@@ -75,11 +75,7 @@ public class PortalService implements IPortalService {
 
     @Override
     public Contact getContact() {
-        if (selectedContact == null)
-        {
-            selectedContact = authenticationService.getUser();
-        }
-        return selectedContact;
+        return selectedContact == null ? getAuthenticatedUser() : selectedContact;
     }
 
     @Override
