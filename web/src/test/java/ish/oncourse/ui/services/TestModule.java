@@ -17,6 +17,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
+import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.tag.ITagService;
@@ -33,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
@@ -42,6 +44,7 @@ import org.apache.tapestry5.services.RequestFilter;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.RequestHandler;
 import org.apache.tapestry5.services.Response;
+import org.mockito.Matchers;
 
 @SubModule({ ServiceModule.class, UIModule.class })
 public class TestModule {
@@ -244,6 +247,10 @@ public class TestModule {
 
 	public ICayenneService buildCayenneServiceOverride() {
 		ICayenneService mock = mock(ICayenneService.class);
+        ObjectContext mockContext = mock(ObjectContext.class);
+
+        when(mockContext.performQuery(any(SelectQuery.class))).thenReturn(Collections.EMPTY_LIST);
+        when(mock.sharedContext()).thenReturn(mockContext);
 		return mock;
 	}
 
@@ -285,8 +292,20 @@ public class TestModule {
 		when(mock.getRootMenu()).thenReturn(webMenu);
 		return mock;
 	}
-	
-	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
+
+    public IResourceService buildResourceServiceOverride()
+    {
+        IResourceService mock = mock(IResourceService.class);
+        when(mock.getDbTemplateResource(Matchers.anyString(), Matchers.anyString())).thenReturn(null);
+        return mock;
+    }
+
+    public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
+                                          @Local IResourceService resourceServiceOverride) {
+        configuration.add(IResourceService.class, resourceServiceOverride);
+    }
+
+    public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 		@Local IWebMenuService webMenuServiceOverride) {
 		configuration.add(IWebMenuService.class, webMenuServiceOverride);
 	}
