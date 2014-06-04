@@ -16,7 +16,7 @@ import ish.oncourse.model.CustomFieldType;
  */
 public abstract class _CustomField extends CayenneDataObject {
 
-    public static final String ANDEL_ID_PROPERTY = "andelId";
+    public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String VALUE_PROPERTY = "value";
@@ -26,11 +26,11 @@ public abstract class _CustomField extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public void setAndelId(Long andelId) {
-        writeProperty(ANDEL_ID_PROPERTY, andelId);
+    public void setAngelId(Long angelId) {
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
-    public Long getAndelId() {
-        return (Long)readProperty(ANDEL_ID_PROPERTY);
+    public Long getAngelId() {
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {

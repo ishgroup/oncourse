@@ -264,7 +264,7 @@
 		<db-attribute name="moduleId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="CustomField">
-		<db-attribute name="andelId" type="BIGINT"/>
+		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="customFieldTypeId" type="BIGINT" isMandatory="true"/>
@@ -1410,7 +1410,7 @@
 		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 2)]]></qualifier>
 	</obj-entity>
 	<obj-entity name="CustomField" className="ish.oncourse.model.CustomField" dbEntityName="CustomField">
-		<obj-attribute name="andelId" type="java.lang.Long" db-attribute-path="andelId"/>
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
