@@ -9,6 +9,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.ContactRelation;
 import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.Country;
+import ish.oncourse.model.CustomField;
 import ish.oncourse.model.DiscussionCommentContact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.MessagePerson;
@@ -59,6 +60,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String CONTACT_COMMENTS_PROPERTY = "contactComments";
     public static final String CORPORATE_PASSES_PROPERTY = "corporatePasses";
     public static final String COUNTRY_PROPERTY = "country";
+    public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
     public static final String FROM_CONTACTS_PROPERTY = "fromContacts";
     public static final String INVOICES_PROPERTY = "invoices";
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
@@ -304,6 +306,18 @@ public abstract class _Contact extends CayenneDataObject {
 
     public Country getCountry() {
         return (Country)readProperty(COUNTRY_PROPERTY);
+    }
+
+
+    public void addToCustomFields(CustomField obj) {
+        addToManyTarget(CUSTOM_FIELDS_PROPERTY, obj, true);
+    }
+    public void removeFromCustomFields(CustomField obj) {
+        removeToManyTarget(CUSTOM_FIELDS_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CustomField> getCustomFields() {
+        return (List<CustomField>)readProperty(CUSTOM_FIELDS_PROPERTY);
     }
 
 

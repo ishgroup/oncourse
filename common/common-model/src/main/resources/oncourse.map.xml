@@ -263,6 +263,24 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="moduleId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
+	<db-entity name="CustomField">
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="customFieldTypeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="foreignId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="value" type="VARCHAR" length="32000"/>
+	</db-entity>
+	<db-entity name="CustomFieldType">
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="defaultValue" type="VARCHAR" length="32000"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="isMandatory" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
+	</db-entity>
 	<db-entity name="Discount" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="code" type="VARCHAR" length="32"/>
@@ -1389,6 +1407,18 @@
 	<obj-entity name="CourseProductRelation" superEntityName="EntityRelation" className="ish.oncourse.model.CourseProductRelation">
 		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 2)]]></qualifier>
 	</obj-entity>
+	<obj-entity name="CustomField" className="ish.oncourse.model.CustomField" dbEntityName="CustomField">
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
+	</obj-entity>
+	<obj-entity name="CustomFieldType" className="ish.oncourse.model.CustomFieldType" dbEntityName="CustomFieldType">
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="defaultValue" type="java.lang.String" db-attribute-path="defaultValue"/>
+		<obj-attribute name="isMandatory" type="java.lang.Short" db-attribute-path="isMandatory"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+	</obj-entity>
 	<obj-entity name="Discount" className="ish.oncourse.model.Discount" dbEntityName="Discount">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
@@ -2225,6 +2255,12 @@
 	<db-relationship name="courses" source="College" target="Course" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="customFieldTypes" source="College" target="CustomFieldType" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="College" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="discountConcessionTypes" source="College" target="DiscountConcessionType" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -2396,6 +2432,9 @@
 	<db-relationship name="country" source="Contact" target="Country" toMany="false">
 		<db-attribute-pair source="countryId" target="id"/>
 	</db-relationship>
+	<db-relationship name="customFields" source="Contact" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
 	<db-relationship name="fromContacts" source="Contact" target="ContactRelation" toMany="true">
 		<db-attribute-pair source="id" target="toContactId"/>
 	</db-relationship>
@@ -2533,6 +2572,21 @@
 	</db-relationship>
 	<db-relationship name="module" source="CourseModule" target="Module" toMany="false">
 		<db-attribute-pair source="moduleId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="CustomField" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFieldType" source="CustomField" target="CustomFieldType" toMany="false">
+		<db-attribute-pair source="customFieldTypeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedObject" source="CustomField" target="Contact" toMany="false">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="CustomFieldType" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="CustomFieldType" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="customFieldTypeId"/>
 	</db-relationship>
 	<db-relationship name="college" source="Discount" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3301,6 +3355,7 @@
 	<obj-relationship name="contactComments" source="Contact" target="DiscussionCommentContact" deleteRule="Deny" db-relationship-path="contactComments"/>
 	<obj-relationship name="corporatePasses" source="Contact" target="CorporatePass" deleteRule="Deny" db-relationship-path="corporatePasses"/>
 	<obj-relationship name="country" source="Contact" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
+	<obj-relationship name="customFields" source="Contact" target="CustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
 	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePeople"/>
@@ -3347,6 +3402,11 @@
 	<obj-relationship name="module" source="CourseModule" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
 	<obj-relationship name="course" source="CourseProductRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
 	<obj-relationship name="product" source="CourseProductRelation" target="Product" deleteRule="Nullify" db-relationship-path="relationToProduct"/>
+	<obj-relationship name="college" source="CustomField" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="customFieldType" source="CustomField" target="CustomFieldType" deleteRule="Nullify" db-relationship-path="customFieldType"/>
+	<obj-relationship name="relatedObject" source="CustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedObject"/>
+	<obj-relationship name="college" source="CustomFieldType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="customFields" source="CustomFieldType" target="CustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="college" source="Discount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
