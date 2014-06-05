@@ -3,7 +3,7 @@
  */
 package ish.oncourse.cms.webdav;
 
-import io.milton.http.*;
+import io.milton.http.ResourceFactory;
 import io.milton.http.SecurityManager;
 import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
@@ -24,21 +24,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StaticResourceFactory implements ResourceFactory {
-	
+
 	private static final Logger logger = Logger.getLogger(StaticResourceFactory.class);
-	
+
+    private static final String STATIC_DIR_NAME = "s";
+
 	private IWebSiteService webSiteService;
 	private IAuthenticationService authenticationService;
-	
+
 	private FileSystemResourceFactory fsResourceFactory;
 	private String sRoot;
-	
-	public StaticResourceFactory(String sRoot, IWebSiteService webSiteService, 
+
+	public StaticResourceFactory(String sRoot, IWebSiteService webSiteService,
 								 IAuthenticationService authenticationService, SecurityManager securityManager) {
 		this.webSiteService = webSiteService;
 		this.authenticationService = authenticationService;
 		this.sRoot = sRoot;
-		
+
 		this.fsResourceFactory = new FileSystemResourceFactory(new File(sRoot), securityManager, sRoot);
 	}
 
@@ -46,16 +48,16 @@ public class StaticResourceFactory implements ResourceFactory {
 	public Resource getResource(String host, String path) throws NotAuthorizedException, BadRequestException {
 		String siteKey = webSiteService.getCurrentWebSite().getSiteKey();
 		String rootDirName = String.format("%s/%s", sRoot, siteKey);
-		
+
 		fsResourceFactory.setRoot(new File(rootDirName));
-		
+
 		return getFsResource(host, path);
 	}
 
 	/**
 	 * Executes editFile.sh script passing specified file as a parameter.
 	 * E.g.:
-	 * 		/var/onCourse/scripts/editFile.sh -p {file.getAbsolutePath()}	
+	 * 		/var/onCourse/scripts/editFile.sh -p {file.getAbsolutePath()}
 	 */
 	private void executeEditFileScript(File file) {
 		String scriptPath = ContextUtil.getCmsEditScriptPath();
@@ -66,13 +68,13 @@ public class StaticResourceFactory implements ResourceFactory {
 		}
 
 		List<String> scriptCommand = new ArrayList<>();
-		
+
 		scriptCommand.add(scriptPath);
 		scriptCommand.add("-p");
 		scriptCommand.add(String.format("\"%s\"", file.getAbsolutePath()));
-		
+
 		String userEmail = authenticationService.getUserEmail();
-		
+
 		if (userEmail != null) {
 			scriptCommand.add("-e");
 			scriptCommand.add(userEmail);
@@ -86,7 +88,7 @@ public class StaticResourceFactory implements ResourceFactory {
 			logger.error(String.format("Error executing script '%s'", scriptPath), e);
 		}
 	}
-	
+
 	private Resource getFsResource(String host, String url) {
 		url = stripContext(url);
 		File requested = fsResourceFactory.resolvePath(fsResourceFactory.getRoot(), url);
@@ -99,10 +101,13 @@ public class StaticResourceFactory implements ResourceFactory {
 			return null;
 		} else if (file.isDirectory()) {
 			r = new CmsFsDirectoryResource(host, fsResourceFactory, file, fsResourceFactory.getContentService());
+            //the code needs to show "s" root dir name instead of real filesystem file name.
+            if (fsResourceFactory.getRoot().equals(file))
+                ((CmsFsDirectoryResource)r).setCustomName(STATIC_DIR_NAME);
 		} else {
 			r = new CmsFsFileResource(host, fsResourceFactory, file, fsResourceFactory.getContentService());
 		}
-		
+
 		return r;
 	}
 
@@ -117,7 +122,7 @@ public class StaticResourceFactory implements ResourceFactory {
 	}
 	
 	private class CmsFsFileResource extends FsFileResource {
-		
+
 		public CmsFsFileResource(String host, FileSystemResourceFactory factory, File file, FileContentService contentService) {
 			super(host, factory, file, contentService);
 		}
@@ -145,7 +150,8 @@ public class StaticResourceFactory implements ResourceFactory {
 	}
 	
 	private class CmsFsDirectoryResource extends FsDirectoryResource {
-		
+        private String customName;
+
 		public CmsFsDirectoryResource(String host, FileSystemResourceFactory factory, File dir, FileContentService contentService) {
 			super(host, factory, dir, contentService);
 		}
@@ -157,6 +163,19 @@ public class StaticResourceFactory implements ResourceFactory {
 			executeEditFileScript(resource.getFile());
 			
 			return resource;
+		}
+
+        public String getName()
+        {
+            return this.customName != null ? customName : super.getName();
+        }
+
+        public String getCustomName() {
+            return customName;
+        }
+
+        public void setCustomName(String customName) {
+            this.customName = customName;
 		}
 	}
 }
