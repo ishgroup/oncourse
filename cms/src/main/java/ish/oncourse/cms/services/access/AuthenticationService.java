@@ -188,4 +188,10 @@ public class AuthenticationService implements IAuthenticationService {
 
 		cookiesService.removeCookieValue("cms");
 	}
+
+	@Override
+	public String getUserEmail() {
+		return getSystemUser() != null ? getSystemUser().getEmail() : 
+				getUser() != null ? getUser().getEmail() : null;
+	}
 }

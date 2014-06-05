@@ -37,4 +37,9 @@ public interface IAuthenticationService {
 	 * Performs logout, cleanups cookies, invalidates http session.
 	 */
 	void logout();
+
+	/**
+	 * Returns email of {@link SystemUser} or {@link WillowUser} currently logged in.
+	 */
+	String getUserEmail();
 }
