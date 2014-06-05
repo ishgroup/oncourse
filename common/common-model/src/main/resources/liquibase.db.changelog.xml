@@ -2658,4 +2658,16 @@
 
 		<sql>ALTER TABLE Session ADD COLUMN publicNotes TEXT</sql>
 	</changeSet>
+
+	<changeSet id="171" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CourseClass" columnName="isActive"/>
+			</not>
+		</preConditions>
+
+		<sql>ALTER TABLE CourseClass ADD COLUMN isActive TINYINT(1) NOT NULL DEFAULT 0</sql>
+	</changeSet>
+	
+	
 </databaseChangeLog>

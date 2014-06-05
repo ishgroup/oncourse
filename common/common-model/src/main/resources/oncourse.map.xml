@@ -234,6 +234,7 @@
 		<db-attribute name="feeHelpClass" type="SMALLINT"/>
 		<db-attribute name="fullTimeLoad" type="VARCHAR" length="10"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="isActive" type="BIT"/>
 		<db-attribute name="isCancelled" type="BIT"/>
 		<db-attribute name="isDistantLearningCourse" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
@@ -1380,6 +1381,7 @@
 		<obj-attribute name="feeGst" type="ish.math.Money" db-attribute-path="feeGst"/>
 		<obj-attribute name="feeHelpClass" type="java.lang.Boolean" db-attribute-path="feeHelpClass"/>
 		<obj-attribute name="fullTimeLoad" type="java.lang.String" db-attribute-path="fullTimeLoad"/>
+		<obj-attribute name="isActive" type="java.lang.Boolean" db-attribute-path="isActive"/>
 		<obj-attribute name="isDistantLearningCourse" type="java.lang.Boolean" db-attribute-path="isDistantLearningCourse"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
