@@ -4,6 +4,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.textile.ITextileConverter;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -42,6 +43,9 @@ public class WebNodeService implements IWebNodeService {
 	
 	@Inject
 	private IWebSiteVersionService webSiteVersionService;
+
+	@Inject
+	private ITextileConverter textileConverter;
 
 	@Override
 	public WebNode findById(Long willowId) {
@@ -221,7 +225,8 @@ public class WebNodeService implements IWebNodeService {
 
         WebContent webContent = ctx.newObject(WebContent.class);
         webContent.setWebSiteVersion(webSiteVersion);
-        webContent.setContent(content);
+		webContent.setContentTextile(content);
+        webContent.setContent(textileConverter.convertCoreTextile(content));
 
         WebContentVisibility webContentVisibility = ctx.newObject(WebContentVisibility.class);
         webContentVisibility.setWebNode(newPageNode);
