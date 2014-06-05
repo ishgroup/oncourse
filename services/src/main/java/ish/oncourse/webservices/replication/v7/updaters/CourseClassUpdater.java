@@ -59,5 +59,6 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setFullTimeLoad(stub.getFullTimeLoad());
 		entity.setMinStudentAge(stub.getMinStudentAge());
 		entity.setMaxStudentAge(stub.getMaxStudentAge());
+		entity.setIsActive(stub.isActive());
 	}
 }
