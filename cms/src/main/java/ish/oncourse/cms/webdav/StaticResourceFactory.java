@@ -11,6 +11,7 @@ import io.milton.http.exceptions.NotAuthorizedException;
 import io.milton.http.fs.*;
 import io.milton.resource.CollectionResource;
 import io.milton.resource.Resource;
+import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.ContextUtil;
 import org.apache.commons.lang.StringUtils;
@@ -19,18 +20,23 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StaticResourceFactory implements ResourceFactory {
 	
 	private static final Logger logger = Logger.getLogger(StaticResourceFactory.class);
 	
 	private IWebSiteService webSiteService;
+	private IAuthenticationService authenticationService;
 	
 	private FileSystemResourceFactory fsResourceFactory;
 	private String sRoot;
 	
-	public StaticResourceFactory(String sRoot, IWebSiteService webSiteService, SecurityManager securityManager) {
+	public StaticResourceFactory(String sRoot, IWebSiteService webSiteService, 
+								 IAuthenticationService authenticationService, SecurityManager securityManager) {
 		this.webSiteService = webSiteService;
+		this.authenticationService = authenticationService;
 		this.sRoot = sRoot;
 		
 		this.fsResourceFactory = new FileSystemResourceFactory(new File(sRoot), securityManager, sRoot);
@@ -59,7 +65,20 @@ public class StaticResourceFactory implements ResourceFactory {
 			return;
 		}
 
-		ProcessBuilder processBuilder = new ProcessBuilder(scriptPath, "-p", file.getAbsolutePath());
+		List<String> scriptCommand = new ArrayList<>();
+		
+		scriptCommand.add(scriptPath);
+		scriptCommand.add("-p");
+		scriptCommand.add(file.getAbsolutePath());
+		
+		String userEmail = authenticationService.getUserEmail();
+		
+		if (userEmail != null) {
+			scriptCommand.add("-e");
+			scriptCommand.add(userEmail);
+		}
+
+		ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand);
 
 		try {
 			processBuilder.start();

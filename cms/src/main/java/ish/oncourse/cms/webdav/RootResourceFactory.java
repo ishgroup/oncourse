@@ -10,6 +10,7 @@ import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
 import io.milton.http.exceptions.NotAuthorizedException;
 import io.milton.resource.Resource;
+import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.ContextUtil;
 import org.apache.tapestry5.ioc.Registry;
@@ -54,7 +55,8 @@ public class RootResourceFactory implements ResourceFactory {
 		this.blockResourceFactory = registry.autobuild(BlockResourceFactory.class);
 		this.pageResourceFactory = registry.autobuild(PageResourceFactory.class);
 		this.templateResourceFactory = registry.autobuild(TemplateResourceFactory.class);
-		this.staticResourceFactory = new StaticResourceFactory(sRoot, webSiteService, securityManager);
+		this.staticResourceFactory = new StaticResourceFactory(sRoot, webSiteService, 
+				registry.getService(IAuthenticationService.class), securityManager);
 		
 		this.blockResourceFactory.setSecurityManager(securityManager);
 		this.pageResourceFactory.setSecurityManager(securityManager);

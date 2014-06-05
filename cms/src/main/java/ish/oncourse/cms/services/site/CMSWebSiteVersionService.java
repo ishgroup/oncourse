@@ -17,9 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * CMS implementation of {@link IWebSiteVersionService}.
@@ -211,10 +209,23 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 			logger.error("Deploy site script is not defined! Resources have not been deployed!");
 			return;
 		}
+
+		List<String> scriptCommand = new ArrayList<>();
 		
-		ProcessBuilder processBuilder = new ProcessBuilder(scriptPath, 
-				"-s", String.valueOf(siteVersion.getId()), 
-				"-c", siteVersion.getWebSite().getSiteKey());
+		scriptCommand.add(scriptPath);
+		scriptCommand.add("-s");
+		scriptCommand.add(String.valueOf(siteVersion.getId()));
+		scriptCommand.add("-c");
+		scriptCommand.add(siteVersion.getWebSite().getSiteKey());
+		
+		String userEmail = authenticationService.getUserEmail();
+		
+		if (userEmail != null) {
+			scriptCommand.add("-e");
+			scriptCommand.add(userEmail);
+		}
+		
+		ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand);
 		
 		try {
 			processBuilder.start();
