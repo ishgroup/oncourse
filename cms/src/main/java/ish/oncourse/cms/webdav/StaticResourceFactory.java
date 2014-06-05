@@ -69,7 +69,7 @@ public class StaticResourceFactory implements ResourceFactory {
 		
 		scriptCommand.add(scriptPath);
 		scriptCommand.add("-p");
-		scriptCommand.add(file.getAbsolutePath());
+		scriptCommand.add(String.format("\"%s\"", file.getAbsolutePath()));
 		
 		String userEmail = authenticationService.getUserEmail();
 		
