@@ -143,6 +143,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		courseClassParameters.add(new ReplicationStubFieldParameter("fullTimeLoad", String.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("minStudentAge", Integer.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("maxStudentAge", Integer.class));
+		courseClassParameters.add(new ReplicationStubFieldParameter("active", Boolean.class));
 		stubsPropertyMap.put(getStubName(CourseClassStub.class), courseClassParameters);
 
 		final List<ReplicationStubFieldParameter> courseParameters = fillDefaultReplicationStubFields();
