@@ -450,6 +450,7 @@
                             <xs:element name="fullTimeLoad" type="xs:string" />
 							<xs:element name="minStudentAge" type="xs:int"/>
 							<xs:element name="maxStudentAge" type="xs:int"/>
+							<xs:element name="active" type="xs:boolean"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

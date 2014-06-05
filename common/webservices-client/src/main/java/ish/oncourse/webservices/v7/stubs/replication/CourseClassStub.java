@@ -53,6 +53,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="fullTimeLoad" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="minStudentAge" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="maxStudentAge" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="active" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -94,7 +95,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "censusDate",
     "fullTimeLoad",
     "minStudentAge",
-    "maxStudentAge"
+    "maxStudentAge",
+    "active"
 })
 public class CourseClassStub
     extends ReplicationStub
@@ -204,6 +206,10 @@ public class CourseClassStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer maxStudentAge;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlSchemaType(name = "boolean")
+    protected Boolean active;
 
     /**
      * Gets the value of the cancelled property.
@@ -971,6 +977,30 @@ public class CourseClassStub
      */
     public void setMaxStudentAge(Integer value) {
         this.maxStudentAge = value;
+    }
+
+    /**
+     * Gets the value of the active property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Boolean isActive() {
+        return active;
+    }
+
+    /**
+     * Sets the value of the active property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setActive(Boolean value) {
+        this.active = value;
     }
 
 }
