@@ -1,9 +1,6 @@
 package ish.oncourse.cms.components;
 
-import ish.oncourse.model.RegionKey;
-import ish.oncourse.model.WebContent;
-import ish.oncourse.model.WebContentVisibility;
-import ish.oncourse.model.WebNodeType;
+import ish.oncourse.model.*;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -14,6 +11,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SelectModel;
@@ -28,6 +26,7 @@ import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -170,28 +169,17 @@ public class PageTypeEdit {
 	}
 
 	private String[] readAvailableLayouts() {
-		PrivateResource res = resourceService.getTemplateResource("", "");
 
-		File dir = res.getFile();
-
-		if (logger.isInfoEnabled()) {
-			logger.info(String.format("Reading layouts from: %s", dir.getAbsolutePath()));
+		Expression expression = ExpressionFactory.matchExp(WebSiteLayout.WEB_SITE_VERSION_PROPERTY, editPageType.getWebSiteVersion());
+		SelectQuery query = new SelectQuery(WebSiteLayout.class, expression);
+		List<WebSiteLayout> layouts = cayenneService.sharedContext().performQuery(query);
+		
+		String[] availableLayouts = new String[layouts.size()];
+		for (int i = 0; i < layouts.size(); i++) {
+			availableLayouts[i] = layouts.get(i).getLayoutKey();
 		}
-		if (!dir.exists()) {
-			logger.error("The layout directory \"" + dir.getAbsolutePath() + "\" doesn't exist.");
-		}
-
-		return dir.list(new FilenameFilter() {
-			public boolean accept(File arg, String arg1) {
-				File f = new File(arg.getAbsolutePath() + "/" + arg1);
-
-				if (logger.isInfoEnabled()) {
-					logger.info(String.format("Found layout: %s", f.getAbsolutePath()));
-				}
-
-				return f.isDirectory() && !(arg1.charAt(0) == '.');
-			}
-		});
+		return availableLayouts;
+		
 	}
 
 	@SetupRender
