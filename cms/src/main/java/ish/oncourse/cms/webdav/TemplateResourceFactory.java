@@ -27,6 +27,7 @@ import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,6 +65,8 @@ public class TemplateResourceFactory implements ResourceFactory {
 	public void initDefaultResources() {
 		Reflections reflections = new Reflections(new ConfigurationBuilder()
 				.setUrls(ClasspathHelper.forPackage(DEFAULT_TEMPLATES_PACKAGE))
+				// exclude resources with *.internal.* in package name
+				.filterInputsBy(new FilterBuilder().exclude(".*(.internal.).*"))
 				.setScanners(new ResourcesScanner()));
 
 		Set<String> templates = reflections.getResources(Pattern.compile(".*\\.tml"));
