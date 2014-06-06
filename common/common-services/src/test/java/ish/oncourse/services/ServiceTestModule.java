@@ -26,6 +26,8 @@ import ish.oncourse.services.discount.DiscountService;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
+import ish.oncourse.services.filestorage.FileStorageAssetService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.html.IPlainTextExtractor;
@@ -168,6 +170,8 @@ public class ServiceTestModule {
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		binder.bind(IPaymentGatewayService.class, PaymentExpressGatewayService.class).withId("PaymentGatewayService");
+
+        binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
 	}
 	
 	@EagerLoad
