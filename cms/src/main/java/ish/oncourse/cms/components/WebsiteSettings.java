@@ -97,8 +97,10 @@ public class WebsiteSettings {
 	}
 	
 	public Object onActionFromDeploySite() throws MalformedURLException {
+        URL url = new URL(String.format("http://%s/", request.getServerName()));
+        if (!request.isXHR())
+            return url;
 		webSiteVersionService.deploy(webSiteService.getCurrentWebSite());
-
-		return new URL(String.format("http://%s/", request.getServerName()));
+		return url;
 	}
 }

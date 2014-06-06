@@ -70,8 +70,24 @@
 		</t:form>
 	</t:zone>
 
-	<t:actionlink t:id="deploySite" class="cms-btn cms-settings-button">Deploy</t:actionlink>
-	
+    <div id="cms-deploy">
+        <h5 class="cms-block-sub-title">Publish Website</h5>
+        <div class="cms-deploy-control">
+            <a id="cms-deploy-action" class="cms-btn" href="#">Publish</a>
+        </div>
+        <div class="cms-deploy-description">
+            All changes made to the CMS and WebDAV are only visible in the draft site. To publish all changes made to the Blocks, Pages, Menus, Themes within the CMS along with the changes made to the style sheets, Java scripts, images and fonts within WebDAV click the Publish button below.
+        </div>
+        <div id="cms-deploy-dialog" class="hidden">
+            Please wait up to 10 minutes before the changes have been updated
+        </div>
+        <div id="cms-deploy-error" class="hidden cms-error-txt">
+            <h1>Something unexpected has happened.</h1>
+            <p>We're sorry you're seeing this error message. To make sure this doesn't happen again, we'd appreciate if you could let us know how you got to this page.</p>
+        </div>
+
+    </div>
+
 	<script type="text/javascript">
 		Event.observe('${websiteSettingsZone.clientId}', Tapestry.ZONE_UPDATED_EVENT, customForms);
 	</script>
