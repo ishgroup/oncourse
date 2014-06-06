@@ -1095,7 +1095,6 @@
 	</db-entity>
 	<db-entity name="WebNode" catalog="willow_college">
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="defaultURLAlias" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isPublished" type="BIT" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>

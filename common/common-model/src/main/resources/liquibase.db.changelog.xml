@@ -2668,6 +2668,15 @@
 
 		<sql>ALTER TABLE CourseClass ADD COLUMN isActive TINYINT(1) NOT NULL DEFAULT 0</sql>
 	</changeSet>
+
+	<changeSet id="172" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">	
+				<columnExists tableName="WebNode" columnName="defaultURLalias"/>
+		</preConditions>
+
+		<sql>ALTER TABLE WebNode DROP COLUMN defaultURLalias</sql>
+	</changeSet>
+	
 	
 	
 </databaseChangeLog>
