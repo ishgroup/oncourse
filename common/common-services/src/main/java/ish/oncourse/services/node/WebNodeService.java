@@ -248,6 +248,11 @@ public class WebNodeService implements IWebNodeService {
 
 	@Override
 	public String getLayoutKey() {
+		
+		//if the requested site is not exist - return null
+		if (webSiteService.getCurrentWebSite() == null) {
+			return null;
+		}
 		String layoutKey = null;
 
 		WebNode webNode = getCurrentNode();

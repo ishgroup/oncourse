@@ -36,6 +36,10 @@ public class WebTemplateChangeTracker {
 	}
 
 	public boolean containsChanges() {
+		//if the requested site is not exist - return false
+		if (webSiteService.getCurrentWebSite() == null) {
+			return false;
+		}
 		WebSiteVersion webSiteVersion = webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite());
 		
 		SelectQuery query = new SelectQuery(WebTemplate.class);
