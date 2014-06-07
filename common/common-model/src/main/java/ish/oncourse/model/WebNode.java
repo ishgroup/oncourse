@@ -2,7 +2,8 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebNode;
 import ish.oncourse.model.visitor.IVisitor;
-import org.apache.commons.lang.StringUtils;
+import ish.oncourse.utils.ResourceNameValidator;
+import org.apache.cayenne.validation.ValidationResult;
 
 import java.util.Date;
 
@@ -49,7 +50,7 @@ public class WebNode extends _WebNode {
 	@Override
 	public void removeFromWebUrlAliases(WebUrlAlias obj) {
 		super.removeFromWebUrlAliases(obj);
-		getObjectContext().deleteObject(obj);
+		getObjectContext().deleteObjects(obj);
 	}
 
 	public WebUrlAlias getWebUrlAliasByPath(String urlPath) {
@@ -64,9 +65,12 @@ public class WebNode extends _WebNode {
 		return null;
 	}
 
-    public String getNameWithoutSpaces()
-    {
-        String name  = getName();
-        return StringUtils.remove(name, " ");
+    @Override
+    protected void validateForSave(ValidationResult validationResult) {
+        super.validateForSave(validationResult);
+        String error = new ResourceNameValidator().validate(getName());
+        if (error != null)
+            validationResult.addFailure(ValidationFailure.validationFailure(this, WebNode.NAME_PROPERTY, error));
     }
 }
+

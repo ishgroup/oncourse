@@ -41,10 +41,10 @@ public class PageItem {
 		WebNode node = webNodeService.getNodeForNodeNumber(nodeNumber);
 		if (node != null) {
 			for (WebContentVisibility v : node.getWebContentVisibility()) {
-				ctx.deleteObject(ctx.localObject(v.getWebContent().getObjectId(), null));
+				ctx.deleteObjects(ctx.localObject(v.getWebContent()));
 			}
-			WebNode localNode = (WebNode) ctx.localObject(node.getObjectId(), null);
-			ctx.deleteObject(localNode);
+			WebNode localNode = ctx.localObject(node);
+			ctx.deleteObjects(localNode);
 			ctx.commitChanges();
 		}
 		return new TextStreamResponse("text/json", "{status: 'OK'}");

@@ -5,6 +5,7 @@ import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.ui.pages.internal.Page;
+import ish.oncourse.utils.ResourceNameValidator;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.commons.lang3.StringUtils;
@@ -120,8 +121,9 @@ public class BlockEdit {
         //we need the code to set trimmed name to for the block
         editBlock.setName(blockName);
 
-		if (blockName.length() < 3) {
-			blockEditForm.recordError(messages.get("message-shortBlockName"));
+        String error = new ResourceNameValidator().validate(blockName);
+		if (error != null) {
+			blockEditForm.recordError(error);
 			return;
 		}
 		//check blockName to unique exclude his blockName

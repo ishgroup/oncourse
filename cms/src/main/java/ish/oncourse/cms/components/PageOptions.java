@@ -12,6 +12,7 @@ import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.pages.internal.Page;
+import ish.oncourse.utils.ResourceNameValidator;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.commons.lang3.StringUtils;
@@ -200,9 +201,11 @@ public class PageOptions {
 		String pageName = StringUtils.trimToEmpty(editNode.getName());
         //we need the code to set trimmed name to for the page
         editNode.setName(pageName);
-		
-		if (pageName.length() < 3) {
-			optionsForm.recordError(messages.get("message-shortPageName"));
+
+        String error = new ResourceNameValidator().validate(pageName);
+
+        if (error != null) {
+			optionsForm.recordError(error);
 			return;
 		}
 		
