@@ -18,7 +18,7 @@ public class ResourceNameValidator {
     public String validate(String name) {
         name = StringUtils.trimToEmpty(name);
         if (name.length() < 3) {
-            return "There should be at least 3 characters in block name";
+            return "Name length cannot be less than 3 characters.";
         }
 
         for (char invalidChar : INVALID_CHARS) {
