@@ -4,6 +4,7 @@ import ish.oncourse.model.auto._WebNode;
 import ish.oncourse.model.visitor.IVisitor;
 import ish.oncourse.utils.ResourceNameValidator;
 import org.apache.cayenne.validation.ValidationResult;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
 
@@ -63,6 +64,15 @@ public class WebNode extends _WebNode {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * This method is used by CCE to define 'class' attribute for div in which content is rendered basing on a node name.
+	 * It shouldn't be removed unless CCE no longer needs it.
+	 */
+	public String getNameWithoutSpaces() {
+		String name = getName();
+		return StringUtils.remove(name, " ");
 	}
 
     @Override
