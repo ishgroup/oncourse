@@ -3,10 +3,8 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._WebContent;
 import ish.oncourse.model.visitor.IVisitor;
 import ish.oncourse.utils.QueueableObjectUtils;
-import ish.oncourse.utils.ResourceNameValidator;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.validation.ValidationResult;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -120,13 +118,4 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 		}
 		return hashCode() - arg.hashCode();
 	}
-
-    @Override
-    protected void validateForSave(ValidationResult validationResult) {
-        super.validateForSave(validationResult);
-        String error = new ResourceNameValidator().validate(getName());
-        if (error != null)
-            validationResult.addFailure(ValidationFailure.validationFailure(this, WebNode.NAME_PROPERTY, error));
-    }
-
 }
