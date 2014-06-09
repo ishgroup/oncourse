@@ -11,9 +11,6 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 public class WebsiteSettings {
 	
 	@Property
@@ -95,12 +92,11 @@ public class WebsiteSettings {
 	public Zone getWebsiteSettingsZone() {
 		return websiteSettingsZone;
 	}
-	
-	public Object onActionFromDeploySite() throws MalformedURLException {
-        URL url = new URL(String.format("http://%s/", request.getServerName()));
+
+    @OnEvent(value = "deploySite")
+	public void deploySite(){
         if (!request.isXHR())
-            return url;
+            return;
 		webSiteVersionService.deploy(webSiteService.getCurrentWebSite());
-		return url;
 	}
 }

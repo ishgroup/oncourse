@@ -73,7 +73,7 @@
     <div id="cms-deploy">
         <h5 class="cms-block-sub-title">Publish Website</h5>
         <div class="cms-deploy-control">
-            <a id="cms-deploy-action" class="cms-btn" href="#">Publish</a>
+            <div id="cms-deploy-action" class="cms-btn">Publish</div>
         </div>
         <div class="cms-deploy-description">
             All changes made to the CMS and WebDAV are only visible in the draft site. To publish all changes made to the Blocks, Pages, Menus, Themes within the CMS along with the changes made to the style sheets, Java scripts, images and fonts within WebDAV click the Publish button below.
