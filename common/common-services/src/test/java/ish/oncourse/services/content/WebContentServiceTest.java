@@ -1,11 +1,10 @@
 package ish.oncourse.services.content;
 
-import java.io.InputStream;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import ish.oncourse.model.*;
+import ish.oncourse.services.ServiceTestModule;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.dbunit.database.DatabaseConnection;
@@ -15,10 +14,10 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.oncourse.services.ServiceTestModule;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.test.ServiceTest;
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class WebContentServiceTest extends ServiceTest {
@@ -51,7 +50,7 @@ public class WebContentServiceTest extends ServiceTest {
 		
 		ObjectContext context = cayenneService.newContext();
 		WebSite website = webSiteService.getCurrentWebSite();
-		website = (WebSite) context.localObject(website.getObjectId(), null);
+		website = context.localObject(website);
 
 		WebSiteVersion webSiteVersion = website.getVersions().get(0);
 		
@@ -70,6 +69,7 @@ public class WebContentServiceTest extends ServiceTest {
 		
 		WebContent webContent = context.newObject(WebContent.class);
 		webContent.setWebSiteVersion(webSiteVersion);
+        webContent.setName("Default");
 		WebContentVisibility visibility = context.newObject(WebContentVisibility.class);
 		visibility.setWebNodeType(webNodeType);
 		visibility.setRegionKey(RegionKey.content);
@@ -95,7 +95,7 @@ public class WebContentServiceTest extends ServiceTest {
 		
 		ObjectContext context = cayenneService.newContext();
 		WebSite website = webSiteService.getCurrentWebSite();
-		website = (WebSite) context.localObject(website.getObjectId(), null);
+		website = context.localObject(website);
 
 		WebSiteVersion webSiteVersion = website.getVersions().get(0);
 		
@@ -109,7 +109,8 @@ public class WebContentServiceTest extends ServiceTest {
 		webNodeType.setLayoutKey("test key");
 		webNodeType.setWebSiteVersion(webSiteVersion);
 		WebContent webContent = context.newObject(WebContent.class);
-		webContent.setWebSiteVersion(webSiteVersion);
+        webContent.setName("Default");
+        webContent.setWebSiteVersion(webSiteVersion);
 		WebContentVisibility visibility = context.newObject(WebContentVisibility.class);
 		visibility.setWebNodeType(webNodeType);
 		visibility.setRegionKey(RegionKey.content);
