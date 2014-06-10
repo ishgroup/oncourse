@@ -51,6 +51,13 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		
 		// not used in v4 stubs, setting default value
 		entity.setIsDistantLearningCourse(Boolean.FALSE);
+
+		/** 
+		 * "isActive" field is not nullable on willow db started by v7 replication.	
+		 * v4 stubs is not contains this field.	
+		 * We set on false it manually here that not violate db constraint.
+		 */
+		
 		entity.setIsActive(false);
 	}
 }
