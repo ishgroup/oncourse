@@ -57,5 +57,6 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setReportingPeriod(stub.getReportingPeriod());
 		entity.setCensusDate(stub.getCensusDate());
 		entity.setFullTimeLoad(stub.getFullTimeLoad());
+		entity.setIsActive(false);
 	}
 }

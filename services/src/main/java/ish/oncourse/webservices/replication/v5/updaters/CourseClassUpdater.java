@@ -53,5 +53,6 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setIsDistantLearningCourse(stub.isDistantLearningCourse());
 		entity.setMaximumDays(stub.getMaximumDays());
 		entity.setExpectedHours(stub.getExpectedHours());
+		entity.setIsActive(false);
 	}
 }

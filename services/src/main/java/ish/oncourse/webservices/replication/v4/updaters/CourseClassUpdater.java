@@ -51,5 +51,6 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		
 		// not used in v4 stubs, setting default value
 		entity.setIsDistantLearningCourse(Boolean.FALSE);
+		entity.setIsActive(false);
 	}
 }
