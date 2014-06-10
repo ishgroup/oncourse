@@ -66,7 +66,7 @@ public class TemplateResourceFactory implements ResourceFactory {
 		Reflections reflections = new Reflections(new ConfigurationBuilder()
 				.setUrls(ClasspathHelper.forPackage(DEFAULT_TEMPLATES_PACKAGE))
 				// exclude resources with *.internal.* in package name
-				.filterInputsBy(new FilterBuilder().exclude(".*(.internal.).*"))
+				.filterInputsBy(new FilterBuilder().include(String.format("^%s.*", DEFAULT_TEMPLATES_PACKAGE)).exclude(".*(.internal.).*"))
 				.setScanners(new ResourcesScanner()));
 
 		Set<String> templates = reflections.getResources(Pattern.compile(".*\\.tml"));
