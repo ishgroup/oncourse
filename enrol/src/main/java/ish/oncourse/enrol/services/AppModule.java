@@ -4,6 +4,7 @@ import ish.oncourse.enrol.services.concessions.ConcessionsService;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.invoice.InvoiceProcessingService;
+import ish.oncourse.enrol.services.linktransform.EnrolPageLinkTransformer;
 import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.enrol.services.payment.PurchaseControllerBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
@@ -19,13 +20,13 @@ import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.annotations.EagerLoad;
-import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.ApplicationGlobals;
+import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 /**
  * The module that is automatically included as part of the Tapestry IoC
@@ -60,4 +61,11 @@ public class AppModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local ThreadLocale locale) {
 		configuration.add(ThreadLocale.class, locale);
 	}
+
+	@Contribute(PageRenderLinkTransformer.class)
+	@Primary
+	public static void provideURLRewriting(OrderedConfiguration<PageRenderLinkTransformer> configuration) {
+		configuration.addInstance("PageLinkRule", EnrolPageLinkTransformer.class);
+	}
+
 }
