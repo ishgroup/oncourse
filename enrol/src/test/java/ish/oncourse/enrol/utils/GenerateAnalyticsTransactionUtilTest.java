@@ -3,6 +3,7 @@ package ish.oncourse.enrol.utils;
 import ish.math.Money;
 import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 public class GenerateAnalyticsTransactionUtilTest {
-	
+
 	@Test
 	public void generateTransactionTest() {
 		Long paymentId = 1l;
@@ -32,7 +33,7 @@ public class GenerateAnalyticsTransactionUtilTest {
 		assertEquals("Tax amount should match the passed data", tax, result.getTax());
 		assertEquals("Total amount should match the passed data", amount, result.getTotal());
 	}
-	
+
 	@Test
 	public void generateTransactionItemTest() {
 		String tagPath = "/tagFirstPath/tagSecondPath+tagAddition+path", courseCode = "courseCode", courseName = "courseName", classCode = "classCode";
@@ -41,13 +42,23 @@ public class GenerateAnalyticsTransactionUtilTest {
 		assertNotNull("Generated item should not be empty", result);
 		assertEquals("Quantity for item should be 1", 1, result.getQuantity());
 		assertEquals("unit price should not be updated", unitPrice, result.getUnitPrice());
-		assertEquals("Sky code should match the pattern", 
+		assertEquals("Sky code should match the pattern",
 			String.format("%s%s%s", courseCode, GenerateAnalyticsTransactionUtil.SKY_CODE_DELIMITER, classCode), result.getSkuCode());
-		assertEquals("Product name should match the pattern", 
+		assertEquals("Product name should match the pattern",
 			String.format("%s%s%s", courseCode, GenerateAnalyticsTransactionUtil.PRODUCT_CODE_DELIMITER, courseName), result.getProductName());
 		String expectedCategoryName = tagPath.replace(GenerateAnalyticsTransactionUtil.LEFT_SLASH_CHAR, GenerateAnalyticsTransactionUtil.DOT_CHAR).substring(1)
 			.replaceAll(GenerateAnalyticsTransactionUtil.PLUS_CHARACTER_MATCH_PATTERN, GenerateAnalyticsTransactionUtil.SPACE_CHARACTER);
 		assertEquals("Category name should match the pattern", expectedCategoryName, result.getCategoryName());
 	}
 
+    @Test
+    public void testGetCategoryNameBy() {
+
+        String result = GenerateAnalyticsTransactionUtil.getCategoryNameBy("   ");
+        assertEquals("Result should be empty string", StringUtils.EMPTY, result);
+        result = GenerateAnalyticsTransactionUtil.getCategoryNameBy(null);
+        assertEquals("Result should be empty string", StringUtils.EMPTY, result);
+        result = GenerateAnalyticsTransactionUtil.getCategoryNameBy(StringUtils.SPACE);
+        assertEquals("Result should be empty string", StringUtils.EMPTY, result);
+    }
 }
