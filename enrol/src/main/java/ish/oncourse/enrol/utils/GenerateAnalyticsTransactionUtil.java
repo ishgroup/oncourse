@@ -2,6 +2,7 @@ package ish.oncourse.enrol.utils;
 
 import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -50,7 +51,15 @@ public class GenerateAnalyticsTransactionUtil {
 	 */
 	public static String getCategoryNameBy(String tagPath)
 	{
-		return tagPath.replace(LEFT_SLASH_CHAR, DOT_CHAR).substring(1).replaceAll(PLUS_CHARACTER_MATCH_PATTERN, SPACE_CHARACTER);
+        tagPath = StringUtils.trimToNull(tagPath);
+        if (tagPath != null)
+        {
+            return tagPath.replace(LEFT_SLASH_CHAR, DOT_CHAR).substring(1).replaceAll(PLUS_CHARACTER_MATCH_PATTERN, SPACE_CHARACTER);
+        }
+        else
+        {
+            return StringUtils.EMPTY;
+        }
 
 	}
 
