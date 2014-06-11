@@ -48,8 +48,10 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 
 	@Override
 	public void sendContent(OutputStream out, Range range, Map<String, String> params, String contentType) throws IOException, NotAuthorizedException, BadRequestException, NotFoundException {
-		out.write(webContent.getContentTextile().getBytes());
-		out.flush();
+		if (webContent.getContentTextile() != null) {
+			out.write(webContent.getContentTextile().getBytes());
+			out.flush();
+		}
 	}
 
 	@Override
