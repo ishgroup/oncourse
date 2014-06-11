@@ -188,7 +188,11 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 		
 		WebSiteVersion oldVersion = webSiteVersionService.getCurrentVersion(webSite);
 		oldVersion.setDeployedOn(new Date());
-		oldVersion.setDeployedBy(context.localObject(authenticationService.getSystemUser()));
+		
+		SystemUser systemUser = authenticationService.getSystemUser();
+		if (systemUser != null) {
+			oldVersion.setDeployedBy(context.localObject(systemUser));
+		}
 
 		copyVersion(oldVersion);
 
