@@ -2677,6 +2677,16 @@
 		<sql>ALTER TABLE WebNode DROP COLUMN defaultURLalias</sql>
 	</changeSet>
 	
-	
+	<changeSet id="173" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="InvoiceLine" columnName="courseClassId"/>
+			</not>
+		</preConditions>
+		
+		<sql>ALTER TABLE InvoiceLine ADD COLUMN courseClassId BIGINT</sql>
+		<sql>ALTER TABLE InvoiceLine ADD CONSTRAINT fk_InvoiceLine_CourseClass 
+			FOREIGN KEY (courseClassId) REFERENCES CourseClass (id)</sql>
+	</changeSet>
 	
 </databaseChangeLog>
