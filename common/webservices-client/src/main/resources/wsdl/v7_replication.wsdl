@@ -902,6 +902,7 @@
                             <xs:element name="enrolmentId" type="xs:long" />
                             <xs:element name="invoiceId" type="xs:long" />
                             <xs:element name="sortOrder" type="xs:int" nillable="false" minOccurs="0"/>
+							<xs:element name="courseClassId" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

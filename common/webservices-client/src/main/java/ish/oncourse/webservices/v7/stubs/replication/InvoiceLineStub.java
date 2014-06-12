@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="invoiceId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="sortOrder" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -49,7 +50,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "unit",
     "enrolmentId",
     "invoiceId",
-    "sortOrder"
+    "sortOrder",
+    "courseClassId"
 })
 public class InvoiceLineStub
     extends ReplicationStub
@@ -81,6 +83,10 @@ public class InvoiceLineStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer sortOrder;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long courseClassId;
 
     /**
      * Gets the value of the description property.
@@ -320,6 +326,30 @@ public class InvoiceLineStub
      */
     public void setSortOrder(Integer value) {
         this.sortOrder = value;
+    }
+
+    /**
+     * Gets the value of the courseClassId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getCourseClassId() {
+        return courseClassId;
+    }
+
+    /**
+     * Sets the value of the courseClassId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCourseClassId(Long value) {
+        this.courseClassId = value;
     }
 
 }
