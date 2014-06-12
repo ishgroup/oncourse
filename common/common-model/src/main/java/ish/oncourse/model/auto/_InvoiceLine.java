@@ -6,6 +6,7 @@ import java.util.List;
 
 import ish.math.Money;
 import ish.oncourse.model.College;
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLineDiscount;
@@ -33,6 +34,7 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
     public static final String TITLE_PROPERTY = "title";
     public static final String UNIT_PROPERTY = "unit";
     public static final String COLLEGE_PROPERTY = "college";
+    public static final String COURSE_CLASS_PROPERTY = "courseClass";
     public static final String ENROLMENT_PROPERTY = "enrolment";
     public static final String INVOICE_PROPERTY = "invoice";
     public static final String INVOICE_LINE_DISCOUNTS_PROPERTY = "invoiceLineDiscounts";
@@ -127,6 +129,15 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
     }
 
 
+    public void setCourseClass(CourseClass courseClass) {
+        setToOneTarget(COURSE_CLASS_PROPERTY, courseClass, true);
+    }
+
+    public CourseClass getCourseClass() {
+        return (CourseClass)readProperty(COURSE_CLASS_PROPERTY);
+    }
+
+
     public void setEnrolment(Enrolment enrolment) {
         setToOneTarget(ENROLMENT_PROPERTY, enrolment, true);
     }
@@ -179,6 +190,7 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
     public List<VoucherPaymentIn> getVoucherPaymentsIn() {
         return (List<VoucherPaymentIn>)readProperty(VOUCHER_PAYMENTS_IN_PROPERTY);
     }
+
 
     protected abstract void onPostAdd();
 
