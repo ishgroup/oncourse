@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v7.builders;
 
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
@@ -25,6 +26,12 @@ public class InvoiceLineStubBuilder extends AbstractWillowStubBuilder<InvoiceLin
 		stub.setTitle(entity.getTitle());
 		stub.setUnit(entity.getUnit());
 		stub.setSortOrder(entity.getSortOrder());
+
+		CourseClass courseClass = entity.getCourseClass();
+		if (courseClass != null) {
+			stub.setCourseClassId(courseClass.getId());
+		}
+		
 		return stub;
 	}
 }

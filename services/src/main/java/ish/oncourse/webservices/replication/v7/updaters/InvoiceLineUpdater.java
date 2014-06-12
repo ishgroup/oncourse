@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.v7.updaters;
 
 import ish.math.Money;
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
@@ -22,5 +23,6 @@ public class InvoiceLineUpdater extends AbstractWillowUpdater<InvoiceLineStub, I
 		entity.setTitle(stub.getTitle());
 		entity.setUnit(stub.getUnit());
 		entity.setSortOrder(stub.getSortOrder());
+		entity.setCourseClass(callback.updateRelationShip(stub.getCourseClassId(), CourseClass.class));
 	}
 }
