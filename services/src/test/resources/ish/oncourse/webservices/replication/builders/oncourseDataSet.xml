@@ -175,7 +175,7 @@
                  invoiceId="1" discountEachExTax="0.00"
                  priceEachExTax="99" title="Test Invoice Line" quantity="1.11" modified="2011-09-10 11:14:54"
                  created="2011-09-10 11:14:54" description="description"
-                 sortOrder="1" taxEach="1.11" unit="unit"/>
+                 sortOrder="1" taxEach="1.11" unit="unit" courseClassId="1"/>
 
     <InvoiceLine_Discount
             id="1" collegeId="3" angelId="2" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" discountId="1" invoiceLineId="1"/>

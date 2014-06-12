@@ -204,6 +204,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		invoiceLineDiscountParameters.add(new ReplicationStubFieldParameter("discountId", Long.class));
 		invoiceLineDiscountParameters.add(new ReplicationStubFieldParameter("invoiceLineId", Long.class));
 		stubsPropertyMap.put(getStubName(InvoiceLineDiscountStub.class), invoiceLineDiscountParameters);
+		
 		final List<ReplicationStubFieldParameter> invoiceLineParameters = fillDefaultReplicationStubFields();
 		invoiceLineParameters.add(new ReplicationStubFieldParameter("description", String.class));
 		invoiceLineParameters.add(new ReplicationStubFieldParameter("discountEachExTax", BigDecimal.class));
@@ -215,7 +216,9 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		invoiceLineParameters.add(new ReplicationStubFieldParameter("enrolmentId", Long.class));
 		invoiceLineParameters.add(new ReplicationStubFieldParameter("invoiceId", Long.class));
 		invoiceLineParameters.add(new ReplicationStubFieldParameter("sortOrder", Integer.class, false));
+		invoiceLineParameters.add(new ReplicationStubFieldParameter("courseClassId", Long.class));
 		stubsPropertyMap.put(getStubName(InvoiceLineStub.class), invoiceLineParameters);
+		
 		final List<ReplicationStubFieldParameter> invoiceParameters = fillDefaultReplicationStubFields();
 		invoiceParameters.add(new ReplicationStubFieldParameter("amountOwing", BigDecimal.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("billToAddress", String.class));
