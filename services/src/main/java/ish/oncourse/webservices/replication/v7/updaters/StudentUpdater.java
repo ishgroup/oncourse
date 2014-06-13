@@ -49,6 +49,11 @@ public class StudentUpdater extends AbstractWillowUpdater<StudentStub, Student> 
 			entity.setCitizenship(TypesUtil.getEnumForDatabaseValue(stub.getCitizenship(), StudentCitizenship.class));
 		}
 		entity.setSpecialNeeds(stub.getSpecialNeeds());
+		entity.setTownOfBirth(stub.getTownOfBirth());
+		entity.setUsi(stub.getUsi());
+		if (stub.getUsiStatus() != null) {
+			entity.setUsiStatus(TypesUtil.getEnumForDatabaseValue(stub.getUsiStatus(),UsiStatus.class ));
+		}
 	}
 
 }
