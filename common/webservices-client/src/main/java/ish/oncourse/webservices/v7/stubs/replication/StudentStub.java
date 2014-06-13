@@ -38,6 +38,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="specialNeedsAssistance" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="citizenship" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="specialNeeds" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="townOfBirth" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="usi" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="usiStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -66,7 +69,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "feeHelpEligible",
     "specialNeedsAssistance",
     "citizenship",
-    "specialNeeds"
+    "specialNeeds",
+    "townOfBirth",
+    "usi",
+    "usiStatus"
 })
 public class StudentStub
     extends ReplicationStub
@@ -142,6 +148,14 @@ public class StudentStub
     protected Integer citizenship;
     @XmlElement(required = true)
     protected String specialNeeds;
+    @XmlElement(required = true)
+    protected String townOfBirth;
+    @XmlElement(required = true)
+    protected String usi;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer usiStatus;
 
     /**
      * Gets the value of the concessionType property.
@@ -597,6 +611,78 @@ public class StudentStub
      */
     public void setSpecialNeeds(String value) {
         this.specialNeeds = value;
+    }
+
+    /**
+     * Gets the value of the townOfBirth property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getTownOfBirth() {
+        return townOfBirth;
+    }
+
+    /**
+     * Sets the value of the townOfBirth property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTownOfBirth(String value) {
+        this.townOfBirth = value;
+    }
+
+    /**
+     * Gets the value of the usi property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getUsi() {
+        return usi;
+    }
+
+    /**
+     * Sets the value of the usi property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setUsi(String value) {
+        this.usi = value;
+    }
+
+    /**
+     * Gets the value of the suiStatus property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getUsiStatus() {
+        return usiStatus;
+    }
+
+    /**
+     * Sets the value of the suiStatus property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setUsiStatus(Integer value) {
+        this.usiStatus = value;
     }
 
 }
