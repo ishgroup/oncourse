@@ -2688,5 +2688,36 @@
 		<sql>ALTER TABLE InvoiceLine ADD CONSTRAINT fk_InvoiceLine_CourseClass 
 			FOREIGN KEY (courseClassId) REFERENCES CourseClass (id)</sql>
 	</changeSet>
+
+	<changeSet id="174" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Student" columnName="townOfBirth"/>
+			</not>
+		</preConditions>
+
+		<sql>ALTER TABLE Student ADD COLUMN townOfBirth VARCHAR(256)</sql>
+	</changeSet>
+
+	<changeSet id="175" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Student" columnName="usi"/>
+			</not>
+		</preConditions>
+
+		<sql>ALTER TABLE Student ADD COLUMN usi VARCHAR(64)</sql>
+	</changeSet>
+
+	<changeSet id="176" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Student" columnName="usiStatus"/>
+			</not>
+		</preConditions>
+
+		<sql>ALTER TABLE Student ADD COLUMN usiStatus INTEGER NOT NULL DEFAULT 0</sql>
+	</changeSet>
+	
 	
 </databaseChangeLog>

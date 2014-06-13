@@ -94,6 +94,9 @@ public class Student extends _Student implements Queueable {
 		if (getCitizenship() == null) {
 			setCitizenship(StudentCitizenship.NO_INFORMATION);
 		}
+		if (getUsiStatus() == null) {
+			setUsiStatus(UsiStatus.DEFAULT_NOT_SUPPLIED);
+		}
 	}
 
 	@Override

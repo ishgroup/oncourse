@@ -878,6 +878,9 @@
 		<db-attribute name="priorEducationCode" type="INTEGER" length="10"/>
 		<db-attribute name="specialNeeds" type="CLOB" length="32000"/>
 		<db-attribute name="specialNeedsAssistance" type="VARCHAR" length="8"/>
+		<db-attribute name="townOfBirth" type="VARCHAR" length="256"/>
+		<db-attribute name="usi" type="VARCHAR" length="64"/>
+		<db-attribute name="usiStatus" type="INTEGER"/>
 		<db-attribute name="yearSchoolCompleted" type="INTEGER" length="10"/>
 	</db-entity>
 	<db-entity name="StudentConcession" catalog="willow_college">
@@ -1931,6 +1934,9 @@
 		<obj-attribute name="priorEducationCode" type="ish.common.types.AvetmissStudentPriorEducation" db-attribute-path="priorEducationCode"/>
 		<obj-attribute name="specialNeeds" type="java.lang.String" db-attribute-path="specialNeeds"/>
 		<obj-attribute name="specialNeedsAssistance" type="java.lang.String" db-attribute-path="specialNeedsAssistance"/>
+		<obj-attribute name="townOfBirth" type="java.lang.String" db-attribute-path="townOfBirth"/>
+		<obj-attribute name="usi" type="java.lang.String" db-attribute-path="usi"/>
+		<obj-attribute name="usiStatus" type="ish.common.types.UsiStatus" db-attribute-path="usiStatus"/>
 		<obj-attribute name="yearSchoolCompleted" type="java.lang.Integer" db-attribute-path="yearSchoolCompleted"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>

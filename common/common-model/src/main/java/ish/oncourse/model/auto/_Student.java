@@ -11,6 +11,7 @@ import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.common.types.StudentCitizenship;
+import ish.common.types.UsiStatus;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.College;
@@ -48,6 +49,9 @@ public abstract class _Student extends CayenneDataObject {
     public static final String PRIOR_EDUCATION_CODE_PROPERTY = "priorEducationCode";
     public static final String SPECIAL_NEEDS_PROPERTY = "specialNeeds";
     public static final String SPECIAL_NEEDS_ASSISTANCE_PROPERTY = "specialNeedsAssistance";
+    public static final String TOWN_OF_BIRTH_PROPERTY = "townOfBirth";
+    public static final String USI_PROPERTY = "usi";
+    public static final String USI_STATUS_PROPERTY = "usiStatus";
     public static final String YEAR_SCHOOL_COMPLETED_PROPERTY = "yearSchoolCompleted";
     public static final String ATTENDANCES_PROPERTY = "attendances";
     public static final String CERTIFICATES_PROPERTY = "certificates";
@@ -181,6 +185,27 @@ public abstract class _Student extends CayenneDataObject {
     }
     public String getSpecialNeedsAssistance() {
         return (String)readProperty("specialNeedsAssistance");
+    }
+
+    public void setTownOfBirth(String townOfBirth) {
+        writeProperty(TOWN_OF_BIRTH_PROPERTY, townOfBirth);
+    }
+    public String getTownOfBirth() {
+        return (String)readProperty(TOWN_OF_BIRTH_PROPERTY);
+    }
+
+    public void setUsi(String usi) {
+        writeProperty(USI_PROPERTY, usi);
+    }
+    public String getUsi() {
+        return (String)readProperty(USI_PROPERTY);
+    }
+
+    public void setUsiStatus(UsiStatus usiStatus) {
+        writeProperty(USI_STATUS_PROPERTY, usiStatus);
+    }
+    public UsiStatus getUsiStatus() {
+        return (UsiStatus)readProperty(USI_STATUS_PROPERTY);
     }
 
     public void setYearSchoolCompleted(Integer yearSchoolCompleted) {
