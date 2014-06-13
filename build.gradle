@@ -43,6 +43,7 @@ allprojects {
 	apply plugin: 'maven'
 	apply plugin: 'versions' // adds the task 'dependencyUpdates'
 	apply plugin: 'jacoco' // adds the task 'jacocoTestReport'
+    apply plugin: 'idea' //adds tasks cleanIdeaModule and ideaModule
 
 	sourceCompatibility = 1.7
 	targetCompatibility = 1.7
