@@ -351,6 +351,9 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		studentParameters.add(new ReplicationStubFieldParameter("specialNeedsAssistance", String.class));
 		studentParameters.add(new ReplicationStubFieldParameter("citizenship", Integer.class));
 		studentParameters.add(new ReplicationStubFieldParameter("specialNeeds", String.class));
+		studentParameters.add(new ReplicationStubFieldParameter("townOfBirth", String.class ));
+		studentParameters.add(new ReplicationStubFieldParameter("usi", String.class ));
+		studentParameters.add(new ReplicationStubFieldParameter("usiStatus", Integer.class ));
 		stubsPropertyMap.put(getStubName(StudentStub.class), studentParameters);
 
 		final List<ReplicationStubFieldParameter> systemUserParameters = fillDefaultReplicationStubFields();
