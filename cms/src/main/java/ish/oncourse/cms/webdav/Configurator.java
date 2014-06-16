@@ -27,6 +27,7 @@ public class Configurator extends DefaultMiltonConfigurator {
 		builder.setMainResourceFactory(new RootResourceFactory(registry, 
 						new CmsSecurityManager(registry.getService(IAuthenticationService.class))));
 		
+		builder.setEnableCookieAuth(false);
 		builder.setEnabledJson(false);
 		
 		return super.configure(config);
