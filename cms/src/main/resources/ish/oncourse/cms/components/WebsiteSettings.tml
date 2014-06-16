@@ -76,10 +76,10 @@
             <div id="cms-deploy-action" class="cms-btn">Publish</div>
         </div>
         <div class="cms-deploy-description">
-            All changes made to the CMS and WebDAV are only visible in the draft site. To publish all changes made to the Blocks, Pages, Menus, Themes within the CMS along with the changes made to the style sheets, Java scripts, images and fonts within WebDAV click the Publish button below.
+            All changes made to the CMS and WebDAV are only visible in the draft site. To publish all changes made to the Blocks, Pages, Menus, Themes within the CMS along with the changes made to the css style sheets, javascript, images and fonts within WebDAV click the Publish button below.
         </div>
         <div id="cms-deploy-dialog" class="cms-deploy-hidden">
-            Please wait up to 10 minutes before the changes have been updated
+            Please wait up to 10 minutes for the changes to be visible on the live site.
         </div>
         <div id="cms-deploy-error" class="cms-deploy-hidden cms-error-txt">
             <h1>Something unexpected has happened.</h1>
