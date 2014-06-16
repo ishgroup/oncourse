@@ -22,15 +22,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class StaticResourceFactory implements ResourceFactory {
 
 	private static final Logger logger = Logger.getLogger(StaticResourceFactory.class);
+	
+	private static final int EDIT_FILE_SCRIPT_WAIT_TIMEOUT = 10;
 
     private static final String STATIC_DIR_NAME = "s";
 
 	private IWebSiteService webSiteService;
 	private IAuthenticationService authenticationService;
+	private ExecutorService executorService;
 
 	private FileSystemResourceFactory fsResourceFactory;
 	private String sRoot;
@@ -41,6 +45,7 @@ public class StaticResourceFactory implements ResourceFactory {
 		this.authenticationService = authenticationService;
 		this.sRoot = sRoot;
 
+		this.executorService = Executors.newCachedThreadPool();
 		this.fsResourceFactory = new FileSystemResourceFactory(new File(sRoot), securityManager, sRoot);
 	}
 
@@ -83,7 +88,16 @@ public class StaticResourceFactory implements ResourceFactory {
 		ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand);
 
 		try {
-			processBuilder.start();
+			final Process process = processBuilder.start();
+
+			Future<Integer> scriptCallFuture = executorService.submit(new Callable<Integer>() {
+				@Override
+				public Integer call() throws Exception {
+					return process.waitFor();
+				}
+			});
+			
+			scriptCallFuture.get(EDIT_FILE_SCRIPT_WAIT_TIMEOUT, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			logger.error(String.format("Error executing script '%s'", scriptPath), e);
 		}
@@ -165,7 +179,7 @@ public class StaticResourceFactory implements ResourceFactory {
 			return resource;
 		}
 
-        public String getName()
+		public String getName()
         {
             return this.customName != null ? customName : super.getName();
         }
