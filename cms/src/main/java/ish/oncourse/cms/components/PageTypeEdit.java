@@ -5,8 +5,8 @@ import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.resource.IResourceService;
-import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.ui.pages.internal.Page;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
@@ -24,9 +24,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -110,7 +107,7 @@ public class PageTypeEdit {
 			//we exclude unassigned block because only this block may already have elements for manipulation
 			return new TreeSet<>(); 
 		} else {
-			return webContentService.getBlocksForRegionKey(pageType, regionKey);
+			return webContentService.getBlocksForRegionKey(editPageType, regionKey);
 		}
 	}
 	
@@ -184,8 +181,8 @@ public class PageTypeEdit {
 
 	@SetupRender
 	public void beforeRender() {
-		editPageType = pageType.getPersistenceState() == PersistenceState.NEW ? pageType : cayenneService
-				.newContext().localObject(pageType);
+		editPageType = pageType.getPersistenceState() == PersistenceState.NEW ? pageType :
+                Cayenne.objectForPK(cayenneService.newContext(), WebNodeType.class, pageType.getId());
 		String[] availableLayouts = readAvailableLayouts();
 		if (availableLayouts == null || availableLayouts.length == 0) {
 			logger.error("The layout directory is empty!");
