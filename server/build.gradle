@@ -148,7 +148,8 @@ macAppBundle {
 	javaProperties.put("apple.awt.antialiasing", "true")
 	javaProperties.put("apple.awt.showGrowBox", "true")
 
-	javaExtras.put("VMOptions", "-Xmx"+"${project.maxmemoryServer}" + " -XX:MaxPermSize=" + "${project.maxpermgenServer}")
+	arguments.add("-Xmx" + "${project.maxmemoryServer}")
+	arguments.add("-XX:MaxPermSize=" + "${project.maxpermgenServer}")
 
 	def Map dict = new HashMap();
 	dict.put ("CFBundleTypeName", "onCourse server data file")
