@@ -1,20 +1,22 @@
 package ish.oncourse.cms.components;
 
+import ish.oncourse.cms.services.Constants;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.ui.pages.internal.Page;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 public class Pages {
@@ -25,6 +27,9 @@ public class Pages {
 
 	@Inject
 	private Request request;
+
+    @Inject
+    private PageRenderLinkSource pageRenderLinkSource;
 
 	@InjectPage
 	private Page page;
@@ -45,7 +50,9 @@ public class Pages {
 		WebNode newPageNode = webNodeService.createNewNode();
 		newPageNode.getObjectContext().commitChanges();
 
-		return new URL("http://" + request.getServerName() + "/page/" + newPageNode.getNodeNumber() + "?newpage=y");
+        Link link = pageRenderLinkSource.createPageRenderLinkWithContext(Page.class, newPageNode.getNodeNumber());
+        link.addParameter("newpage", "y");
+        return link.copyWithBasePath(String.format(Constants.PAGE_URL_TEMPLATE, newPageNode.getNodeNumber()));
 	}
 
 	public List<WebNode> getNodes() {

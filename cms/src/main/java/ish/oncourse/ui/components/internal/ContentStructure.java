@@ -20,8 +20,6 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.net.URL;
-
 public class ContentStructure {
 	private static final String UPDATED_ZONE_NAME = "updatedZone";
 	private static final String EDITOR_ZONE_NAME = "editorZone";
@@ -96,8 +94,9 @@ public class ContentStructure {
 			return page.getReloadPageBlock();
 		}
 		if(!request.isXHR()){
-			return new URL(request.getServerName());
+            return page.getReloadPageBlock();
 		}
+
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug(String.format("Edit region with id: %s", id));
 		}
@@ -107,7 +106,7 @@ public class ContentStructure {
 		if (regionForEdit == null) {
 			return page.getReloadPageBlock();
 		}
-		WebContent region = (WebContent) ctx.localObject(regionForEdit.getObjectId(), null);
+		WebContent region = ctx.localObject(regionForEdit);
 
 		this.visibility = region.getWebContentVisibility(node);
 

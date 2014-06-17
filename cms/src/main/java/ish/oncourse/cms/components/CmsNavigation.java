@@ -1,5 +1,6 @@
 package ish.oncourse.cms.components;
 
+import ish.oncourse.cms.services.Constants;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.SystemUser;
 import ish.oncourse.model.WebNode;
@@ -9,8 +10,7 @@ import ish.oncourse.ui.pages.internal.Page;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-
-import java.net.URL;
+import org.apache.tapestry5.services.Response;
 
 public class CmsNavigation {
 
@@ -20,6 +20,9 @@ public class CmsNavigation {
 
     @Inject
     private Request request;
+
+    @Inject
+    private Response response;
 
     @Inject
     @Property
@@ -48,10 +51,9 @@ public class CmsNavigation {
 
     }
 
-    public URL onActionFromLogout() throws Exception {
+    public void onActionFromLogout() throws Exception {
         authenticationService.logout();
-        Request request = this.request;
-        return new URL("http://" + request.getServerName());
+        response.sendRedirect(Constants.HOME_PAGE);
     }
 
     public Object onActionFromPages() {

@@ -12,6 +12,7 @@ import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.pages.internal.Page;
+import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.utils.ResourceNameValidator;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -316,8 +317,13 @@ public class PageOptions {
 		return multiZoneUpdate.add("urlZone", urlZone).add("buttonsZone", buttonsZone);
 	}
 
+    /**
+     * The method returns real side (no cms ) url to display it for an user. We should not use it in
+     * anchor tags or for redirect
+     *
+     */
 	public String getSiteUrl() {
-		return "http://" + request.getServerName();
+		return HTMLUtils.HTTP_PROTOCOL + request.getServerName();
 	}
 
 	public Zone getOptionsZone() {

@@ -69,10 +69,6 @@ public class Blocks {
 		return getEditBlock();
 	}
 
-	public String getEditBlockUrl() {
-		return "http://" + request.getServerName() + "/cms/site.blocks.editblock/";
-	}
-
 	public Block getEditBlock() {
 		return editBlock;
 	}

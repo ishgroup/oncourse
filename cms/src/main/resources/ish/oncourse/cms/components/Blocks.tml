@@ -17,8 +17,6 @@
 			</div>
             <div class="cms-search-block">
 				<input id="blockFilter" type="text" maxlength="300" class="cms-span2 cms-search-query"/>
-                <!-- button type="button" class="cms-btn-select"></button>
-                <button class="cms-btn-search" type="button"></button-->
             </div>
         </div>
 
@@ -50,15 +48,6 @@
 		              results.show();
 		            });
 		          });
-				
-				/*jQuery('#blocks tbody tr').mouseover(function() {
-					jQuery(this).addClass('selectedRow');
-				}).mouseout(function() {
-				    jQuery(this).removeClass('selectedRow');
-				}).click(function() {
-					var zoneManager = Tapestry.findZoneManagerForZone('blockZone');
-					zoneManager.updateFromURL('${editBlockUrl}' + jQuery(this).attr('id'));
-				});*/
 			});
 			
 			function showDeleteBlockConfirmation(id) {

@@ -3,7 +3,6 @@ package ish.oncourse.cms.pages;
 
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.services.access.AuthenticationStatus;
-import ish.oncourse.util.HTMLUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -14,10 +13,12 @@ import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Response;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+
+import static ish.oncourse.cms.services.Constants.HOME_PAGE;
+import static ish.oncourse.cms.services.Constants.LOGIN_PAGE;
 
 
 /**
@@ -38,6 +39,9 @@ public class Login {
 	@Inject
 	private Request request;
 
+    @Inject
+    private Response response;
+
 	@InjectComponent("logEmail")
 	private TextField emailField;
 
@@ -46,13 +50,13 @@ public class Login {
 
 	@Inject
 	private IAuthenticationService authenticationService;
-	
+
 	void setupRender(){
 		//perform logout to cleanup the session before the new login
 		authenticationService.logout();
 	}
 
-	public Object onSuccess() throws IOException {
+	public void onSuccess() throws IOException {
 
 		if (StringUtils.isBlank(logEmail)) {
 			loginForm.recordError(emailField, "Please enter your login name");
@@ -81,15 +85,12 @@ public class Login {
          * return (loginForm.getHasErrors()) ? this : new URL("http://" + request.getServerName());
          * was replaced to current as workaround for task
          */
-        return (loginForm.getHasErrors()) ? getLoginUrl(): getSiteUrl();
+         if (loginForm.getHasErrors()) {
+            response.sendRedirect(LOGIN_PAGE);
+         }
+         else {
+             response.sendRedirect(HOME_PAGE);
+         }
 
-    }
-
-    private URL getLoginUrl() throws MalformedURLException {
-        return new URL(HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + "/");
-    }
-
-    private URL getSiteUrl() throws MalformedURLException {
-        return new URL(HTMLUtils.HTTP_PROTOCOL + request.getServerName());
     }
 }

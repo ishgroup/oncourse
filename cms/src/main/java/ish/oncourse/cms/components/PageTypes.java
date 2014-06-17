@@ -66,10 +66,6 @@ public class PageTypes {
 		return getEditPageTypeBlock();
 	}
 
-	public String getEditPageTypeUrl() {
-		return "http://" + request.getServerName() + "/cms/site.pagetypes.editpagetype/";
-	}
-	
 	public String getProblemMessage() {
 		Object pm = request.getAttribute("problemMessage");
 		if(pm != null){

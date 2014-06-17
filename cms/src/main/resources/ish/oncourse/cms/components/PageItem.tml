@@ -4,6 +4,7 @@
 	
 	<tr id="page_row_${webNode.nodeNumber}">
 		<td class="cms-first">${webNode.name}</td>
+
 		<td class="cms-block-last-upd">page/${webNode.nodeNumber}</td>
 		<td>
 			<t:if t:test="webNode.published">
@@ -18,6 +19,7 @@
 			</t:if>
 		</td>
 		<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
+        <td class="cms-block-last-upd">${webNode.webNodeType.name}</td>
 		<td>
 			<span class="cms-ico-edit"></span> 
 			<a href="${path}">Edit</a>

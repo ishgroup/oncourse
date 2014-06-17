@@ -19,6 +19,7 @@ import ish.oncourse.ui.components.internal.PageStructure;
 import ish.oncourse.ui.pages.internal.Page;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
+import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
@@ -57,6 +58,12 @@ public class AppModule {
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
 		configuration.add(SymbolConstants.COMPACT_JSON, "false");
+        configuration.add(SymbolConstants.SECURE_ENABLED, "true");
+	}
+
+    public void contributeMetaDataLocator(MappedConfiguration<String,String> configuration)
+    {
+        configuration.add(MetaDataConstants.SECURE_PAGE, "true");
 	}
 	
 	@EagerLoad
