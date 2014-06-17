@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class LoginTest {
 
 	private static final String appPackage = "ish.oncourse.cms";
-	private static final String appName = "App";
+	private static final String appName = "cms_test";
 
 	@Before
 	public void setup() {

@@ -1,6 +1,7 @@
 package ish.oncourse.admin.services;
 
 import au.gov.training.services.organisation.IOrganisationService;
+import au.gov.training.services.trainingcomponent.ITrainingComponentService;
 import ish.oncourse.admin.services.billing.BillingDataServiceImpl;
 import ish.oncourse.admin.services.billing.IBillingDataService;
 import ish.oncourse.admin.services.ntis.INTISUpdater;
@@ -14,7 +15,6 @@ import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.site.IWebSiteService;
-
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -24,8 +24,6 @@ import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.ApplicationGlobals;
-
-import au.gov.training.services.trainingcomponent.ITrainingComponentService;
 
 
 /**
@@ -59,8 +57,13 @@ public class AppModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
 		configuration.add(IWebSiteService.class, webSiteService);
 	}
-	
-	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IS3Service s3Service) {
+
+    public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteVersionService webSiteVersionService) {
+        configuration.add(IWebSiteVersionService.class, webSiteVersionService);
+    }
+
+
+    public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IS3Service s3Service) {
 		configuration.add(IS3Service.class, s3Service);
 	}
 }

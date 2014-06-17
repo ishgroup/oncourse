@@ -2,6 +2,8 @@ package ish.oncourse.cms.services;
 
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.*;
+import ish.oncourse.model.services.ModelModule;
+import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.access.AuthenticationStatus;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.environment.IEnvironmentService;
@@ -15,11 +17,14 @@ import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.ui.services.UIModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
+import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.services.*;
 import org.mockito.Matchers;
 
@@ -31,7 +36,15 @@ import java.util.Date;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
+@SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
 public class TestModule {
+
+    public static void contributeApplicationDefaults(
+            MappedConfiguration<String, String> configuration) {
+        //we need to use SECURE_ENABLED=false because  PageTester does not support secure handling
+        configuration.add(SymbolConstants.SECURE_ENABLED, "false");
+    }
+
 
     public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {
         return new RequestFilter() {

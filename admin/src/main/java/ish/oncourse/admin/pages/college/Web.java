@@ -232,10 +232,10 @@ public class Web {
 		initialVersion.setDeployedOn(now);
 		
 		WebNodeType page = context.newObject(WebNodeType.class);
-		page.setName("page");
+		page.setName(WebNodeType.PAGE);
 		page.setCreated(now);
 		page.setModified(now);
-		page.setLayoutKey("default");
+		page.setLayoutKey(WebNodeType.DEFAULT_LAYOUT_KEY);
 		page.setWebSiteVersion(initialVersion);
 
         WebNode node = webNodeService.createNewNodeBy(initialVersion, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1);
