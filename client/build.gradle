@@ -1,4 +1,3 @@
-apply plugin: 'macAppBundle'
 apply plugin: 'cayenne'
 
 dependencies {
@@ -32,45 +31,6 @@ cayenne {
 	destDir = file ("${projectDir}/src/main/java")
 }
 
-macAppBundle {
-	appOutputDir = 'distributions/macosx'
-	creatorCode = "ishS"
-	// backgroundImage = "${projectDir}/src/packaging/macosx/dmg.background.png"
-    mainClassName = "ish.oncourse.AngelApp"
-    appName = "onCourse"
-    volumeName = "onCourse"
-    dmgName = "onCourse"
-    bundleExecutable = 'onCourse'
-    bundleAllowMixedLocalizations = false
-    icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
-    jvmVersion = "${sourceCompatibility}+"
-    
-    if (project.hasProperty('osxKeychainPassword')) {
-		certIdentity = project.osxKeychainIdentity
-    	keyChain = project.osxKeychain
-    }
-
-    //java properties
-    javaProperties.put("apple.awt.textantialiasing", "true")
-    javaProperties.put("JFileChooser.appBundleIsTraversable", "true")
-    javaProperties.put("JFileChooser.packageIsTraversable", "true")    
-    javaProperties.put("apple.awt.antialiasing", "true")    
-    javaProperties.put("apple.awt.showGrowBox", "true") 
-
-    arguments.add("-Xmx" + "${project.maxmemoryClient}")
-
-    def Map dict = new HashMap();
-    dict.put ("CFBundleTypeName", "onCourse server data file")
-    dict.put ("CFBundleTypeRole", "Editor")
-    dict.put ("CFBundleTypeIconFile", "onCourseDocument.icns")
-    dict.put ("CFBundleTypeExtensions", ["iocdata"])
-    dict.put ("CFBundleTypeOSTypes", ["ishS"])
-    dict.put ("LSTypeIsPackage", "true")
-
-    bundleExtras.put("CFBundleDocumentTypes", [dict])
-   
-}
-
 task run(dependsOn: [classes, processResources], type: JavaExec) {
 	main = 'ish.oncourse.AngelApp'
 	classpath = sourceSets.main.runtimeClasspath
@@ -78,24 +38,13 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 	//systemProperty 'simple.message', 'Hello '
 }
 
-task bundle_osx(dependsOn: createApp) {
-	description "Create the OSX application executable."
-	doFirst {
-		logger.lifecycle("Creating the OSX application executable for $project.name")
-	}
-}
-
-codeSign.dependsOn(prepareKeychains)
-
-task installer_osx(dependsOn: [codeSign, createDmg]) {
-	description "Create the OSX installer (which is just a dmg file)."
-	doFirst {
-		logger.lifecycle("Creating the OSX installer (which is just a dmg file) for $project.name")
-	}
-}
-
-task installer_osx_java7(dependsOn: [fatJar, prepareKeychains], type: au.com.ish.AppBundlerTask) {
-    distributionPath = "${distsDir}/macosx_java7"
+task installer_osx(dependsOn: [fatJar, prepareKeychains], type: au.com.ish.AppBundlerTask) {
+    description "Create the OSX application executable and installer (which is just a dmg file)."
+    doFirst {
+        logger.lifecycle("Creating the OSX application executable and installer (which is just a dmg file) for $project.name")
+    }
+    
+    distributionPath = "${distsDir}/macosx"
     appName = "onCourse"
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.AngelApp"
