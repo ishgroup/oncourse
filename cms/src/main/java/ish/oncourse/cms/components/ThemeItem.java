@@ -41,8 +41,8 @@ public class ThemeItem {
 		return webNodeType.accept(new LastEditedVisitor());
 	}
 	
-	public boolean getIsSpecialType() {
-		return webNodeType.isDefaultPageTheme() || webNodeType.isThemeUsedInPages();
+	public boolean canRemove() {
+		return !webNodeType.isDefaultPageTheme() && !webNodeType.isThemeUsedInPages();
 	}
 		
 	Object onActionFromEditPageType(String id) {

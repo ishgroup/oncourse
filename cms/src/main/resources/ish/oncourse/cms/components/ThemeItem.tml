@@ -4,17 +4,20 @@
 	
 	<tr id="theme_row_${webNodeType.id}">
 		<td class="cms-first">${webNodeType.name}
-			<t:if test="isSpecialType">
+			<t:if test="webNodeType.isDefaultPageTheme()">
 				<small>(used for all special pages)</small>
 			</t:if>
-		</td>
+            <t:if test="webNodeType.isThemeUsedInPages()">
+                <small>(used for pages)</small>
+            </t:if>
+        </td>
 		<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
 		<td>
 			<span class="cms-ico-edit"></span> 
 			<a href="#" t:type="actionLink" t:id="editPageType" t:zone="pageTypeZone" t:context="${webNodeType.id}">Edit</a>
 		</td>
 		<td class="cms-last">
-			<t:if test="isSpecialType" negate="true">
+			<t:if test="canRemove()" negate="true">
 				<span class="cms-ico-del"></span>
 				<a onclick="showDeleteThemeConfirmation(${webNodeType.id});">Delete</a>
 				<div id="deleteThemeModal${webNodeType.id}" style="display:none;">
