@@ -149,6 +149,13 @@ public class StaticResourceFactory implements ResourceFactory {
 		}
 
 		@Override
+		public void delete() {
+			super.delete();
+
+			executeEditFileScript(getFile());
+		}
+
+		@Override
 		public void replaceContent(InputStream in, Long length) throws BadRequestException, ConflictException, NotAuthorizedException {
 			super.replaceContent(in, length);
 			
@@ -177,6 +184,13 @@ public class StaticResourceFactory implements ResourceFactory {
 			executeEditFileScript(resource.getFile());
 			
 			return resource;
+		}
+
+		@Override
+		public void delete() {
+			super.delete();
+
+			executeEditFileScript(getFile());
 		}
 
 		public String getName()
