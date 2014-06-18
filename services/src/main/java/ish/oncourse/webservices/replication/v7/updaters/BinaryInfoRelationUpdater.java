@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.replication.v7.updaters;
 
+import ish.common.types.AttachmentSpecialType;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
@@ -18,6 +20,8 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 		
 		entity.setEntityAngelId(stub.getEntityAngelId());
 		entity.setEntityIdentifier(stub.getEntityName());
+		
+		entity.setSpecialType(TypesUtil.getEnumForDatabaseValue(stub.getSpecialType(), AttachmentSpecialType.class));
 		
 		//after set the data, try to update relation related entity willowid
 		Queueable entityObject;
