@@ -44,6 +44,7 @@
 		<db-attribute name="entityWillowId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="specialType" type="INTEGER"/>
 	</db-entity>
 	<db-entity name="Certificate" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -1227,6 +1228,7 @@
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
 		<obj-attribute name="entityWillowId" type="java.lang.Long" db-attribute-path="entityWillowId"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="specialType" type="ish.common.types.AttachmentSpecialType" db-attribute-path="specialType"/>
 	</obj-entity>
 	<obj-entity name="Certificate" className="ish.oncourse.model.Certificate" dbEntityName="Certificate">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.AttachmentSpecialType;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.College;
 import ish.oncourse.model.DocumentVersion;
@@ -22,6 +23,7 @@ public abstract class _BinaryInfoRelation extends CayenneDataObject {
     public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
     public static final String ENTITY_WILLOW_ID_PROPERTY = "entityWillowId";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String SPECIAL_TYPE_PROPERTY = "specialType";
     public static final String BINARY_INFO_PROPERTY = "binaryInfo";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String DOCUMENT_VERSION_PROPERTY = "documentVersion";
@@ -68,6 +70,13 @@ public abstract class _BinaryInfoRelation extends CayenneDataObject {
     }
     public Date getModified() {
         return (Date)readProperty(MODIFIED_PROPERTY);
+    }
+
+    public void setSpecialType(AttachmentSpecialType specialType) {
+        writeProperty(SPECIAL_TYPE_PROPERTY, specialType);
+    }
+    public AttachmentSpecialType getSpecialType() {
+        return (AttachmentSpecialType)readProperty(SPECIAL_TYPE_PROPERTY);
     }
 
     public void setBinaryInfo(BinaryInfo binaryInfo) {
