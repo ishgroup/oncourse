@@ -2719,5 +2719,14 @@
 		<sql>ALTER TABLE Student ADD COLUMN usiStatus INTEGER NOT NULL DEFAULT 0</sql>
 	</changeSet>
 	
+	<changeSet id="177" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="BinaryInfoRelation" columnName="specialType"/>
+			</not>
+		</preConditions>
+		
+		<sql>ALTER TABLE BinaryInfoRelation ADD COLUMN specialType INTEGER</sql>
+	</changeSet>
 	
 </databaseChangeLog>
