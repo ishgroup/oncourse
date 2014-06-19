@@ -662,7 +662,7 @@ public class StudentStub
     }
 
     /**
-     * Gets the value of the suiStatus property.
+     * Gets the value of the usiStatus property.
      * 
      * @return
      *     possible object is
@@ -674,7 +674,7 @@ public class StudentStub
     }
 
     /**
-     * Sets the value of the suiStatus property.
+     * Sets the value of the usiStatus property.
      * 
      * @param value
      *     allowed object is

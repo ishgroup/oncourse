@@ -305,6 +305,7 @@
                             <xs:element name="binaryInfoId" type="xs:long" />
 							<xs:element name="specialType" type="xs:int" minOccurs="0" maxOccurs="1"/>
 							<xs:element name="documentVersionId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+							<xs:element name="documentId" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

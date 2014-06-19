@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="binaryInfoId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="specialType" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
  *         &lt;element name="documentVersionId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
+ *         &lt;element name="documentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -40,7 +41,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "entityName",
     "binaryInfoId",
     "specialType",
-    "documentVersionId"
+    "documentVersionId",
+    "documentId"
 })
 public class BinaryInfoRelationStub
     extends ReplicationStub
@@ -68,6 +70,10 @@ public class BinaryInfoRelationStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long documentVersionId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long documentId;
 
     /**
      * Gets the value of the entityAngelId property.
@@ -211,6 +217,30 @@ public class BinaryInfoRelationStub
      */
     public void setDocumentVersionId(Long value) {
         this.documentVersionId = value;
+    }
+
+    /**
+     * Gets the value of the documentId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getDocumentId() {
+        return documentId;
+    }
+
+    /**
+     * Sets the value of the documentId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDocumentId(Long value) {
+        this.documentId = value;
     }
 
 }
