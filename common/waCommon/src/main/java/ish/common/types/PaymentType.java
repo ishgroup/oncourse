@@ -54,7 +54,11 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * special payment type used to link original and reverse invoices during payment cancellation
 	 */
-	REVERSE(10, "Reverse");
+	REVERSE(10, "Reverse"),
+	/**
+	 * EFTPOS payments
+	 */
+	EFTPOS(11, "EFTPOS");
 
 	private String displayName;
 	private int value;
