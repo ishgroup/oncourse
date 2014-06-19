@@ -7,6 +7,7 @@ import org.apache.cayenne.CayenneDataObject;
 import ish.common.types.AttachmentSpecialType;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Document;
 import ish.oncourse.model.DocumentVersion;
 
 /**
@@ -26,6 +27,7 @@ public abstract class _BinaryInfoRelation extends CayenneDataObject {
     public static final String SPECIAL_TYPE_PROPERTY = "specialType";
     public static final String BINARY_INFO_PROPERTY = "binaryInfo";
     public static final String COLLEGE_PROPERTY = "college";
+    public static final String DOCUMENT_PROPERTY = "document";
     public static final String DOCUMENT_VERSION_PROPERTY = "documentVersion";
 
     public static final String ID_PK_COLUMN = "id";
@@ -94,6 +96,15 @@ public abstract class _BinaryInfoRelation extends CayenneDataObject {
 
     public College getCollege() {
         return (College)readProperty(COLLEGE_PROPERTY);
+    }
+
+
+    public void setDocument(Document document) {
+        setToOneTarget(DOCUMENT_PROPERTY, document, true);
+    }
+
+    public Document getDocument() {
+        return (Document)readProperty(DOCUMENT_PROPERTY);
     }
 
 

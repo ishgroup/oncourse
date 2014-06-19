@@ -38,6 +38,7 @@
 		<db-attribute name="binaryInfoId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="documentId" type="BIGINT"/>
 		<db-attribute name="documentVersionId" type="BIGINT"/>
 		<db-attribute name="entityAngelId" type="BIGINT" length="19"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="64"/>
@@ -2202,6 +2203,9 @@
 	<db-relationship name="college" source="BinaryInfoRelation" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="document" source="BinaryInfoRelation" target="Document" toMany="false">
+		<db-attribute-pair source="documentId" target="id"/>
+	</db-relationship>
 	<db-relationship name="documentVersion" source="BinaryInfoRelation" target="DocumentVersion" toMany="false">
 		<db-attribute-pair source="documentVersionId" target="id"/>
 	</db-relationship>
@@ -2678,6 +2682,9 @@
 	</db-relationship>
 	<db-relationship name="discussion" source="DiscussionThread" target="Discussion" toMany="false">
 		<db-attribute-pair source="discussionId" target="id"/>
+	</db-relationship>
+	<db-relationship name="binaryInfoRelations" source="Document" target="BinaryInfoRelation" toMany="true">
+		<db-attribute-pair source="id" target="documentId"/>
 	</db-relationship>
 	<db-relationship name="college" source="Document" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3308,6 +3315,7 @@
 	<obj-relationship name="college" source="BinaryInfo" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="binaryInfo" source="BinaryInfoRelation" target="BinaryInfo" deleteRule="Nullify" db-relationship-path="binaryInfo"/>
 	<obj-relationship name="college" source="BinaryInfoRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="document" source="BinaryInfoRelation" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
 	<obj-relationship name="documentVersion" source="BinaryInfoRelation" target="DocumentVersion" deleteRule="Nullify" db-relationship-path="documentVersion"/>
 	<obj-relationship name="certificateOutcomes" source="Certificate" target="CertificateOutcome" deleteRule="Deny" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="college" source="Certificate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -3452,6 +3460,7 @@
 	<obj-relationship name="discussionThread" source="Discussion" target="DiscussionThread" deleteRule="Deny" db-relationship-path="discussionThread"/>
 	<obj-relationship name="comment" source="DiscussionCommentContact" target="DiscussionComment" deleteRule="Nullify" db-relationship-path="comment"/>
 	<obj-relationship name="contact" source="DiscussionCommentContact" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="binaryInfoRelations" source="Document" target="BinaryInfoRelation" deleteRule="Cascade" db-relationship-path="binaryInfoRelations"/>
 	<obj-relationship name="college" source="Document" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="versions" source="Document" target="DocumentVersion" deleteRule="Cascade" db-relationship-path="versions"/>
 	<obj-relationship name="binaryInfoRelations" source="DocumentVersion" target="BinaryInfoRelation" deleteRule="Cascade" db-relationship-path="binaryInfoRelations"/>

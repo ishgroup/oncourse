@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.common.types.AttachmentInfoVisibility;
+import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.College;
 import ish.oncourse.model.DocumentVersion;
 
@@ -26,6 +27,7 @@ public abstract class _Document extends CayenneDataObject {
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String WEB_VISIBILITY_PROPERTY = "webVisibility";
+    public static final String BINARY_INFO_RELATIONS_PROPERTY = "binaryInfoRelations";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String VERSIONS_PROPERTY = "versions";
 
@@ -93,6 +95,18 @@ public abstract class _Document extends CayenneDataObject {
     public AttachmentInfoVisibility getWebVisibility() {
         return (AttachmentInfoVisibility)readProperty(WEB_VISIBILITY_PROPERTY);
     }
+
+    public void addToBinaryInfoRelations(BinaryInfoRelation obj) {
+        addToManyTarget(BINARY_INFO_RELATIONS_PROPERTY, obj, true);
+    }
+    public void removeFromBinaryInfoRelations(BinaryInfoRelation obj) {
+        removeToManyTarget(BINARY_INFO_RELATIONS_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<BinaryInfoRelation> getBinaryInfoRelations() {
+        return (List<BinaryInfoRelation>)readProperty(BINARY_INFO_RELATIONS_PROPERTY);
+    }
+
 
     public void setCollege(College college) {
         setToOneTarget(COLLEGE_PROPERTY, college, true);
