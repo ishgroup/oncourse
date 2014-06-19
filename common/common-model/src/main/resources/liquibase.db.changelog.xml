@@ -2729,4 +2729,16 @@
 		<sql>ALTER TABLE BinaryInfoRelation ADD COLUMN specialType INTEGER</sql>
 	</changeSet>
 	
+	<changeSet id="178" author="dzmitry" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="BinaryInfoRelation" columnName="documentId"/>
+			</not>
+		</preConditions>
+		
+		<sql>ALTER TABLE BinaryInfoRelation ADD COLUMN documentId BIGINT</sql>
+		<sql>ALTER TABLE BinaryInfoRelation ADD CONSTRAINT fk_BinaryInfoRelation_Document
+			FOREIGN KEY (documentId) REFERENCES Document (id)</sql>
+	</changeSet>
+	
 </databaseChangeLog>
