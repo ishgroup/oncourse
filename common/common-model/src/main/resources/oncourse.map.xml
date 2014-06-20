@@ -392,7 +392,7 @@
 		<db-attribute name="documentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="fileName" type="VARCHAR" length="512"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="mimeType" type="VARCHAR" length="64"/>
+		<db-attribute name="mimeType" type="VARCHAR" length="255"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="pixelHeight" type="INTEGER"/>
 		<db-attribute name="pixelWidth" type="INTEGER"/>

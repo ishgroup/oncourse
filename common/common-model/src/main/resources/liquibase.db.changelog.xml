@@ -2293,6 +2293,19 @@
 			<column name="angelId"/>
 		</createIndex>
 	</changeSet>
+
+	<!-- Increase size of DocumentVersion.mimeType column since 64 is not always enough -->
+	<changeSet id="152a" author="dzmitry" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<tableExists tableName="DocumentVersion"/>
+		</preConditions>
+
+		<dropIndex tableName="DocumentVersion" indexName="DocumentVersion_mimeType"/>
+		<modifyDataType tableName="DocumentVersion" columnName="mimeType" newDataType="VARCHAR(255)"/>
+		<createIndex tableName="DocumentVersion" indexName="DocumentVersion_mimeType">
+			<column name="mimeType"/>
+		</createIndex>
+	</changeSet>
 	
 	<changeSet id="153" author="dzmitry" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
