@@ -15,7 +15,6 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
 		
-		entity.setBinaryInfo(callback.updateRelationShip(stub.getBinaryInfoId(), BinaryInfo.class));
 		entity.setDocumentVersion(callback.updateRelationShip(stub.getDocumentVersionId(), DocumentVersion.class));
 		entity.setDocument(callback.updateRelationShip(stub.getDocumentId(), Document.class));
 		
