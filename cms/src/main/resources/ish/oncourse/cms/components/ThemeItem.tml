@@ -19,7 +19,7 @@
 			<a href="#" t:type="actionLink" t:id="editPageType" t:zone="pageTypeZone" t:context="${webNodeType.id}">Edit</a>
 		</td>
 		<td class="cms-last">
-			<t:if test="canRemove()" negate="true">
+			<t:if test="canRemove()">
 				<span class="cms-ico-del"></span>
 				<a onclick="showDeleteThemeConfirmation(${webNodeType.id});">Delete</a>
 				<div id="deleteThemeModal${webNodeType.id}" style="display:none;">
