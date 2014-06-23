@@ -43,6 +43,7 @@ allprojects {
 	apply plugin: 'versions' // adds the task 'dependencyUpdates'
 	apply plugin: 'jacoco' // adds the task 'jacocoTestReport'
     apply plugin: 'idea' //adds tasks cleanIdeaModule and ideaModule
+    apply plugin: 'appBundler'
 
 	sourceCompatibility = 1.7
 	targetCompatibility = 1.7

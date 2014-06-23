@@ -122,34 +122,37 @@ cayenne {
 	destDir = file ("${projectDir}/src/main/java")
 }
 
-task installer_osx(dependsOn: [fatJar, prepareKeychains], type: au.com.ish.AppBundlerTask) {
-    description "Create the OSX application executable and installer (which is just a dmg file)."
-    doFirst {
-        logger.lifecycle("Creating the OSX application executable and installer (which is just a dmg file) for $project.name")
-    }
-    
-    distributionPath = "${distsDir}/macosx"
+appBundler {
+    distributionPath = distsDir
     appName = "onCourseServer"
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.server.AngelServer"
-    iconFile = file("${projectDir}/src/packaging/macosx/onCourseServer.icns")
-    jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
+    iconFile = new File(projectDir, "src/packaging/macosx/onCourseServer.icns")
+    jarFile = new File(libsDir, "${project.name}-${project.version}-all.jar")
     keychain = project.osxKeychain
     certIdentity = project.osxKeychainIdentity
-    
-    documentTypes = [extensions: "iocdata",
-            icon: "onCourseDocument.icns",
-            name: "onCourse server data file",
-            role: "Editor",
-            isPackage: "true"]
 
-    jvmOptions = ["-Dapple.awt.textantialiasing=true",
+    documentTypes = [[
+             extensions: "iocdata",
+             icon      : "onCourseDocument.icns",
+             name      : "onCourse server data file",
+             role      : "Editor",
+             isPackage : "true"
+    ]]
+
+    jvmOptions = [
+            "-Dapple.awt.textantialiasing=true",
             "-DJFileChooser.appBundleIsTraversable=true",
             "-DJFileChooser.packageIsTraversable=true",
             "-Dapple.awt.antialiasing=true",
             "-Dapple.awt.showGrowBox=true",
             "-Xmx${project.maxmemoryServer}",
-            "-XX:MaxPermSize=${project.maxpermgenServer}"]
+            "-XX:MaxPermSize=${project.maxpermgenServer}"
+    ]
+}
+
+task installer_osx(dependsOn: [fatJar, prepareKeychains, appBundle]) {
+    description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
 project.ext.unixAppFiles = copySpec {

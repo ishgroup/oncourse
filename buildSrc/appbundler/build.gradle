@@ -2,4 +2,14 @@ apply plugin: "groovy"
 
 dependencies {
     compile gradleApi()
+    compile localGroovy()
+    testCompile 'junit:junit:4.11'
 }
+
+repositories {
+    mavenCentral()
+}
+
+version = 1.0
+group = "au.com.ish"
+artifactid = "appBundler"

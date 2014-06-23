@@ -38,27 +38,26 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 	//systemProperty 'simple.message', 'Hello '
 }
 
-task installer_osx(dependsOn: [fatJar, prepareKeychains], type: au.com.ish.AppBundlerTask) {
-    description "Create the OSX application executable and installer (which is just a dmg file)."
-    doFirst {
-        logger.lifecycle("Creating the OSX application executable and installer (which is just a dmg file) for $project.name")
-    }
-    
-    distributionPath = "${distsDir}/macosx"
+appBundler {
+    distributionPath = distsDir
     appName = "onCourse"
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.AngelApp"
-    iconFile = file("${projectDir}/src/packaging/macosx/onCourse.icns")
-    jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
+    iconFile = new File(projectDir, "src/packaging/macosx/onCourse.icns")
+    jarFile = new File(libsDir, "${project.name}-${project.version}-all.jar")
     keychain = project.osxKeychain
     certIdentity = project.osxKeychainIdentity
 
     jvmOptions = ["-Dapple.awt.textantialiasing=true",
-            "-DJFileChooser.appBundleIsTraversable=true",
-            "-DJFileChooser.packageIsTraversable=true",
-            "-Dapple.awt.antialiasing=true",
-            "-Dapple.awt.showGrowBox=true",
-            "-Xmx${project.maxmemoryClient}"]
+                  "-DJFileChooser.appBundleIsTraversable=true",
+                  "-DJFileChooser.packageIsTraversable=true",
+                  "-Dapple.awt.antialiasing=true",
+                  "-Dapple.awt.showGrowBox=true",
+                  "-Xmx${project.maxmemoryClient}"]
+}
+
+task installer_osx(dependsOn: [fatJar, prepareKeychains, appBundle]) {
+    description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
 project.ext.webstartFiles = copySpec {
