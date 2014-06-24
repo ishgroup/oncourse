@@ -56,7 +56,7 @@ appBundler {
                   "-Xmx${project.maxmemoryClient}"]
 }
 
-task installer_osx(dependsOn: [fatJar, prepareKeychains], type: au.com.ish.AppBundlerTask) {
+task installer_osx(dependsOn: [fatJar, prepareKeychains, codeSign], type: au.com.ish.DmgTask) {
     description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
