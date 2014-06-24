@@ -59,7 +59,7 @@
              highestSchoolLevel="1" concessionType="1" indigenousStatus="1" isOverseasClient="1"
              isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1"
              yearSchoolCompleted="1" created="2011-09-12 00:56:00.0" feeHelpEligible="0" citizenship="9" chessn="A123456789" 
-			 specialNeedsAssistance="01234567" specialNeeds="specialNeeds" townOfBirth="Baranavichy" usi="some-code" usiStatus="0"/>
+			 specialNeedsAssistance="0" specialNeeds="specialNeeds" townOfBirth="Baranavichy" usi="some-code" usiStatus="0"/>
 
     <SessionModule
             id="1" collegeId="3" angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 01:02:00.0"

@@ -348,7 +348,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		studentParameters.add(new ReplicationStubFieldParameter("languageHomeId", Long.class));
 		studentParameters.add(new ReplicationStubFieldParameter("chessn", String.class));
 		studentParameters.add(new ReplicationStubFieldParameter("feeHelpEligible", Boolean.class));
-		studentParameters.add(new ReplicationStubFieldParameter("specialNeedsAssistance", String.class));
+		studentParameters.add(new ReplicationStubFieldParameter("specialNeedsAssistance", Boolean.class));
 		studentParameters.add(new ReplicationStubFieldParameter("citizenship", Integer.class));
 		studentParameters.add(new ReplicationStubFieldParameter("specialNeeds", String.class));
 		studentParameters.add(new ReplicationStubFieldParameter("townOfBirth", String.class ));
