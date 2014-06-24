@@ -2753,5 +2753,17 @@
 		<sql>ALTER TABLE BinaryInfoRelation ADD CONSTRAINT fk_BinaryInfoRelation_Document
 			FOREIGN KEY (documentId) REFERENCES Document (id)</sql>
 	</changeSet>
+
+
+	<changeSet id="178" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Student" columnName="specialNeedsAssistance"/>
+		</preConditions>
+
+		<sql>
+			ALTER TABLE Student DROP COLUMN specialNeedsAssistance;
+			ALTER TABLE Student ADD COLUMN specialNeedsAssistance TINYINT DEFAULT 0;
+		</sql>
+	</changeSet>
 	
 </databaseChangeLog>
