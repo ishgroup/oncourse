@@ -39,7 +39,7 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 }
 
 appBundler {
-    distributionPath = distsDir
+    distributionPath = project.file("${distsDir}/macosx/")
     appName = "onCourse"
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.AngelApp"
