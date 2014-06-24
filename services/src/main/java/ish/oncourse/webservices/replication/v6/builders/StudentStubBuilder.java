@@ -55,7 +55,8 @@ public class StudentStubBuilder extends AbstractWillowStubBuilder<Student, Stude
 		stub.setYearSchoolCompleted(entity.getYearSchoolCompleted());
 		stub.setChessn(entity.getChessn());
 		stub.setFeeHelpEligible(Boolean.TRUE.equals(entity.getFeeHelpEligible()));
-		stub.setSpecialNeedsAssistance(entity.getSpecialNeedsAssistance());
+		//SpecialNeedsAssistance field is not uses in versions before angel 5.1
+		//stub.setSpecialNeedsAssistance(entity.getSpecialNeedsAssistance());
 		if (entity.getCitizenship() != null) {
 			stub.setCitizenship(entity.getCitizenship().getDatabaseValue());
 		} else {

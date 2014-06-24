@@ -44,7 +44,8 @@ public class StudentUpdater extends AbstractWillowUpdater<StudentStub, Student> 
 		entity.setYearSchoolCompleted(stub.getYearSchoolCompleted());
 		entity.setChessn(stub.getChessn());
 		entity.setFeeHelpEligible(Boolean.TRUE.equals(stub.isFeeHelpEligible()));
-		entity.setSpecialNeedsAssistance(stub.getSpecialNeedsAssistance());
+		//SpecialNeedsAssistance field is not uses in versions before angel 5.1
+		//entity.setSpecialNeedsAssistance(stub.getSpecialNeedsAssistance());
 		if (stub.getCitizenship() != null) {
 			entity.setCitizenship(TypesUtil.getEnumForDatabaseValue(stub.getCitizenship(), StudentCitizenship.class));
 		}
