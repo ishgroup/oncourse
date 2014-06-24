@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="languageHomeId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="chessn" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="feeHelpEligible" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="specialNeedsAssistance" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="specialNeedsAssistance" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="citizenship" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="specialNeeds" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="townOfBirth" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -140,8 +140,10 @@ public class StudentStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean feeHelpEligible;
-    @XmlElement(required = true)
-    protected String specialNeedsAssistance;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlSchemaType(name = "boolean")
+    protected Boolean specialNeedsAssistance;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
@@ -549,7 +551,7 @@ public class StudentStub
      *     {@link String }
      *     
      */
-    public String getSpecialNeedsAssistance() {
+    public Boolean isSpecialNeedsAssistance() {
         return specialNeedsAssistance;
     }
 
@@ -561,7 +563,7 @@ public class StudentStub
      *     {@link String }
      *     
      */
-    public void setSpecialNeedsAssistance(String value) {
+    public void setSpecialNeedsAssistance(Boolean value) {
         this.specialNeedsAssistance = value;
     }
 

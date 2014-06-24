@@ -1136,7 +1136,7 @@
                             <xs:element name="languageHomeId" type="xs:long"/>
                             <xs:element name="chessn" type="xs:string"/>
                             <xs:element name="feeHelpEligible" type="xs:boolean"/>
-                            <xs:element name="specialNeedsAssistance" type="xs:string"/>
+                            <xs:element name="specialNeedsAssistance" type="xs:boolean"/>
                             <xs:element name="citizenship" type="xs:int"/>
 							<xs:element name="specialNeeds" type="xs:string"/>
 							<xs:element name="townOfBirth" type="xs:string"/>
