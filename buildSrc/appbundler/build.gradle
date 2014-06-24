@@ -12,4 +12,3 @@ repositories {
 
 version = 1.0
 group = "au.com.ish"
-artifactid = "appBundler"
