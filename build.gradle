@@ -179,6 +179,9 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
     appBundle.dependsOn {
         project.fatJar
     }
+    codeSign.dependsOn {
+        project.prepareKeychains
+    }
 }
 
 task testReport(type: TestReport) {
