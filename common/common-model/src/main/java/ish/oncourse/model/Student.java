@@ -97,6 +97,9 @@ public class Student extends _Student implements Queueable {
 		if (getUsiStatus() == null) {
 			setUsiStatus(UsiStatus.DEFAULT_NOT_SUPPLIED);
 		}
+		if (getSpecialNeedsAssistance() == null) {
+			setSpecialNeedsAssistance(false);
+		}
 	}
 
 	@Override

@@ -180,11 +180,11 @@ public abstract class _Student extends CayenneDataObject {
         return (String)readProperty(SPECIAL_NEEDS_PROPERTY);
     }
 
-    public void setSpecialNeedsAssistance(String specialNeedsAssistance) {
-        writeProperty("specialNeedsAssistance", specialNeedsAssistance);
+    public void setSpecialNeedsAssistance(Boolean specialNeedsAssistance) {
+        writeProperty(SPECIAL_NEEDS_ASSISTANCE_PROPERTY, specialNeedsAssistance);
     }
-    public String getSpecialNeedsAssistance() {
-        return (String)readProperty("specialNeedsAssistance");
+    public Boolean getSpecialNeedsAssistance() {
+        return (Boolean)readProperty(SPECIAL_NEEDS_ASSISTANCE_PROPERTY);
     }
 
     public void setTownOfBirth(String townOfBirth) {
