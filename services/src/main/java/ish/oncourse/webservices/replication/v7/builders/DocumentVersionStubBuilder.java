@@ -26,6 +26,8 @@ public class DocumentVersionStubBuilder extends AbstractWillowStubBuilder<Docume
 		stub.setThumbnail(entity.getThumbnail());
 		
 		stub.setDocumentId(entity.getDocument().getId());
+		stub.setDescription(entity.getDescription());
+		stub.setCreatedByUserId(entity.getCreatedByUser().getId());
 		
 		return stub;
 	}

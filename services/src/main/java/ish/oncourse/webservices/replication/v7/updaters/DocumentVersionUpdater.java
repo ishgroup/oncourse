@@ -5,6 +5,7 @@ package ish.oncourse.webservices.replication.v7.updaters;
 
 import ish.oncourse.model.Document;
 import ish.oncourse.model.DocumentVersion;
+import ish.oncourse.model.SystemUser;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v7.stubs.replication.DocumentVersionStub;
@@ -26,5 +27,7 @@ public class DocumentVersionUpdater extends AbstractWillowUpdater<DocumentVersio
 		entity.setThumbnail(stub.getThumbnail());
 		
 		entity.setDocument(callback.updateRelationShip(stub.getDocumentId(), Document.class));
+		entity.setDescription(stub.getDescription());
+		entity.setCreatedByUser(callback.updateRelationShip(stub.getCreatedByUserId(), SystemUser.class));
 	}
 }
