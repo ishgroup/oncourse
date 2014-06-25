@@ -2742,7 +2742,7 @@
 		<sql>ALTER TABLE BinaryInfoRelation ADD COLUMN specialType INTEGER</sql>
 	</changeSet>
 	
-	<changeSet id="178" author="dzmitry" runOnChange="false" runAlways="false">
+	<changeSet id="178" author="dzmitry" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="BinaryInfoRelation" columnName="documentId"/>
@@ -2755,7 +2755,7 @@
 	</changeSet>
 
 
-	<changeSet id="178" author="artyom" runOnChange="false" context="production">
+	<changeSet id="179" author="artyom" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<columnExists tableName="Student" columnName="specialNeedsAssistance"/>
 		</preConditions>
@@ -2766,7 +2766,7 @@
 		</sql>
 	</changeSet>
 
-	<changeSet id="179" author="artyom" runOnChange="false" context="production">
+	<changeSet id="180" author="artyom" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="DocumentVersion" columnName="description"/>
