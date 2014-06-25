@@ -389,6 +389,8 @@
 		<db-attribute name="byteSize" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="createdByUserId" type="BIGINT"/>
+		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="documentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="fileName" type="VARCHAR" length="512"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -1507,6 +1509,7 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="byteSize" type="java.lang.Long" db-attribute-path="byteSize"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="fileName"/>
 		<obj-attribute name="mimeType" type="java.lang.String" db-attribute-path="mimeType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -2698,6 +2701,9 @@
 	<db-relationship name="college" source="DocumentVersion" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="createdByUser" source="DocumentVersion" target="SystemUser" toMany="false">
+		<db-attribute-pair source="createdByUserId" target="id"/>
+	</db-relationship>
 	<db-relationship name="document" source="DocumentVersion" target="Document" toMany="false">
 		<db-attribute-pair source="documentId" target="id"/>
 	</db-relationship>
@@ -3072,6 +3078,9 @@
 	</db-relationship>
 	<db-relationship name="college" source="SystemUser" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="documentVersions" source="SystemUser" target="DocumentVersion" toMany="true">
+		<db-attribute-pair source="id" target="createdByUserId"/>
 	</db-relationship>
 	<db-relationship name="sitesDeployed" source="SystemUser" target="WebSiteVersion" toMany="true">
 		<db-attribute-pair source="id" target="deployedById"/>
@@ -3465,6 +3474,7 @@
 	<obj-relationship name="versions" source="Document" target="DocumentVersion" deleteRule="Cascade" db-relationship-path="versions"/>
 	<obj-relationship name="binaryInfoRelations" source="DocumentVersion" target="BinaryInfoRelation" deleteRule="Cascade" db-relationship-path="binaryInfoRelations"/>
 	<obj-relationship name="college" source="DocumentVersion" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="createdByUser" source="DocumentVersion" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
 	<obj-relationship name="document" source="DocumentVersion" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
 	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
@@ -3582,6 +3592,7 @@
 	<obj-relationship name="college" source="Survey" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="Survey" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="college" source="SystemUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="documentVersions" source="SystemUser" target="DocumentVersion" deleteRule="Deny" db-relationship-path="documentVersions"/>
 	<obj-relationship name="sitesDeployed" source="SystemUser" target="WebSiteVersion" deleteRule="Deny" db-relationship-path="sitesDeployed"/>
 	<obj-relationship name="college" source="Tag" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="parent" source="Tag" target="Tag" deleteRule="Nullify" db-relationship-path="parent"/>

@@ -2765,5 +2765,19 @@
 			ALTER TABLE Student ADD COLUMN specialNeedsAssistance TINYINT DEFAULT 0;
 		</sql>
 	</changeSet>
+
+	<changeSet id="179" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Student" columnName="specialNeedsAssistance"/>
+		</preConditions>
+
+		<sql>
+			ALTER TABLE DocumentVersion ADD COLUMN description TEXT;
+			ALTER TABLE DocumentVersion ADD COLUMN createdByUserId BIGINT;
+			ALTER TABLE DocumentVersion ADD CONSTRAINT fk_DocumentVersion_SystemUser
+			FOREIGN KEY (createdByUserId) REFERENCES SystemUser (id);
+		</sql>
+		
+	</changeSet>
 	
 </databaseChangeLog>

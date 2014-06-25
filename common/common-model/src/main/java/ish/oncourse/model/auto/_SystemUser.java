@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.model.WebSiteVersion;
 
 /**
@@ -32,6 +33,7 @@ public abstract class _SystemUser extends CayenneDataObject {
     public static final String PASSWORD_PROPERTY = "password";
     public static final String SURNAME_PROPERTY = "surname";
     public static final String COLLEGE_PROPERTY = "college";
+    public static final String DOCUMENT_VERSIONS_PROPERTY = "documentVersions";
     public static final String SITES_DEPLOYED_PROPERTY = "sitesDeployed";
 
     public static final String ID_PK_COLUMN = "id";
@@ -147,6 +149,18 @@ public abstract class _SystemUser extends CayenneDataObject {
 
     public College getCollege() {
         return (College)readProperty(COLLEGE_PROPERTY);
+    }
+
+
+    public void addToDocumentVersions(DocumentVersion obj) {
+        addToManyTarget(DOCUMENT_VERSIONS_PROPERTY, obj, true);
+    }
+    public void removeFromDocumentVersions(DocumentVersion obj) {
+        removeToManyTarget(DOCUMENT_VERSIONS_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<DocumentVersion> getDocumentVersions() {
+        return (List<DocumentVersion>)readProperty(DOCUMENT_VERSIONS_PROPERTY);
     }
 
 
