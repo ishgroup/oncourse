@@ -28,7 +28,7 @@ public class StaticResourceFactory implements ResourceFactory {
 
 	private static final Logger logger = Logger.getLogger(StaticResourceFactory.class);
 	
-	private static final int EDIT_FILE_SCRIPT_WAIT_TIMEOUT = 10;
+	private static final int EDIT_FILE_SCRIPT_WAIT_TIMEOUT = 15;
 
     private static final String STATIC_DIR_NAME = "s";
 
@@ -74,9 +74,11 @@ public class StaticResourceFactory implements ResourceFactory {
 
 		List<String> scriptCommand = new ArrayList<>();
 
+        String filePath = file.getAbsolutePath();
+
 		scriptCommand.add(scriptPath);
 		scriptCommand.add("-p");
-		scriptCommand.add(String.format("\"%s\"", file.getAbsolutePath()));
+		scriptCommand.add(String.format("\"%s\"", filePath));
 
 		String userEmail = authenticationService.getUserEmail();
 
@@ -88,6 +90,8 @@ public class StaticResourceFactory implements ResourceFactory {
 		ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand);
 
 		try {
+            logger.debug(String.format("Starting script '%s' for file '%s'", scriptPath, filePath));
+            long time = System.currentTimeMillis();
 			final Process process = processBuilder.start();
 
 			Future<Integer> scriptCallFuture = executorService.submit(new Callable<Integer>() {
@@ -96,10 +100,12 @@ public class StaticResourceFactory implements ResourceFactory {
 					return process.waitFor();
 				}
 			});
-			
+
 			scriptCallFuture.get(EDIT_FILE_SCRIPT_WAIT_TIMEOUT, TimeUnit.SECONDS);
+            time = Math.round( (System.currentTimeMillis() - time) / 1000.0);
+            logger.debug(String.format("script '%s' for file '%s' is finished. Time: '%d' sec", scriptPath, filePath, time));
 		} catch (Exception e) {
-			logger.error(String.format("Error executing script '%s'", scriptPath), e);
+			logger.error(String.format("Error executing script '%s' for file '%s'", scriptPath, filePath), e);
 		}
 	}
 
