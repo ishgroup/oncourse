@@ -29,6 +29,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="versionId" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="timestamp" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="documentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="createdByUserId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -47,7 +49,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "thumbnail",
     "versionId",
     "timestamp",
-    "documentId"
+    "documentId",
+    "description",
+    "createdByUserId"
 })
 public class DocumentVersionStub
     extends ReplicationStub
@@ -81,6 +85,12 @@ public class DocumentVersionStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long documentId;
+    @XmlElement(required = true)
+    protected String description;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long createdByUserId;
 
     /**
      * Gets the value of the byteSize property.
@@ -294,6 +304,54 @@ public class DocumentVersionStub
      */
     public void setDocumentId(Long value) {
         this.documentId = value;
+    }
+
+    /**
+     * Gets the value of the description property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the value of the description property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDescription(String value) {
+        this.description = value;
+    }
+
+    /**
+     * Gets the value of the createdByUserId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getCreatedByUserId() {
+        return createdByUserId;
+    }
+
+    /**
+     * Sets the value of the createdByUserId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCreatedByUserId(Long value) {
+        this.createdByUserId = value;
     }
 
 }

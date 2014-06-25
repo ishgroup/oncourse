@@ -339,6 +339,8 @@
 							<xs:element name="versionId" type="xs:string"/>
 							<xs:element name="timestamp" type="xs:dateTime"/>
 							<xs:element name="documentId" type="xs:long"/>
+							<xs:element name="description" type="xs:string"/>
+							<xs:element name="createdByUserId" type="xs:long"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
