@@ -519,6 +519,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		documentVersionParameters.add(new ReplicationStubFieldParameter("versionId", String.class));
 		documentVersionParameters.add(new ReplicationStubFieldParameter("timestamp", Date.class));
 		documentVersionParameters.add(new ReplicationStubFieldParameter("documentId", Long.class));
+		documentVersionParameters.add(new ReplicationStubFieldParameter("description", String.class));
+		documentVersionParameters.add(new ReplicationStubFieldParameter("createdByUserId", Long.class));
 		stubsPropertyMap.put(getStubName(DocumentVersionStub.class), documentVersionParameters);
 		
 		List<ReplicationStubFieldParameter> customFieldTypeParameters = fillDefaultReplicationStubFields();
