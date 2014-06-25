@@ -2768,7 +2768,9 @@
 
 	<changeSet id="179" author="artyom" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
-			<columnExists tableName="DocumentVersion" columnName="description"/>
+			<not>
+				<columnExists tableName="DocumentVersion" columnName="description"/>
+			</not>
 		</preConditions>
 
 		<sql>
