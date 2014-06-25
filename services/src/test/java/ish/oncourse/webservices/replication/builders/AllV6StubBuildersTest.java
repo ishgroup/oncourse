@@ -176,7 +176,7 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testStudentStubBuilder() {
-		this.testStubBuilder(Student.class, new StudentStubBuilder());
+		this.testStubBuilder(Student.class, new StudentStubBuilder(), "specialNeedsAssistance");
 	}
 
 	@Test
