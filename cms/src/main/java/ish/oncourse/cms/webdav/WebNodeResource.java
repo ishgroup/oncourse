@@ -4,12 +4,13 @@
 package ish.oncourse.cms.webdav;
 
 import io.milton.common.ContentTypeUtils;
-import io.milton.http.*;
+import io.milton.http.Auth;
+import io.milton.http.Range;
+import io.milton.http.SecurityManager;
 import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
 import io.milton.http.exceptions.NotAuthorizedException;
 import io.milton.http.exceptions.NotFoundException;
-import io.milton.http.SecurityManager;
 import io.milton.resource.*;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNode;
@@ -154,8 +155,9 @@ public class WebNodeResource extends AbstractResource implements CopyableResourc
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(in, writer);
 
-			block.setContentTextile(writer.toString());
-			block.setContent(textileConverter.convertCoreTextile(block.getContent()));
+            String contentTextile = writer.toString();
+			block.setContentTextile(contentTextile);
+			block.setContent(textileConverter.convertCoreTextile(contentTextile));
 
 			context.commitChanges();
 		} catch (Exception e) {
