@@ -24,6 +24,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
+import java.util.Date;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -211,6 +212,7 @@ public class PageTypeEdit {
 				ctx.deleteObjects(editPageType);
 			}
 		case save:
+            editPageType.setModified(new Date());
 			ctx.commitChanges();
 		}
 		pageTypeEditForm.clearErrors();
