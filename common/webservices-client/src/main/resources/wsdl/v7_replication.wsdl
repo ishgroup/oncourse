@@ -1708,7 +1708,7 @@
     <wsdl:service name="ReplicationService">
 
         <wsdl:port name="ReplicationPort" binding="tns:ReplicationServiceSoapBinding">
-            <soap:address location="https://oncourse-replicate.ish.com.au/services/v7/replication" />
+            <soap:address location="https://secure-payment.oncourse.net.au/services/v7/replication" />
         </wsdl:port>
 
         <wsdl:port name="PaymentPortType" binding="tns:PaymentServiceSoapBinding">
