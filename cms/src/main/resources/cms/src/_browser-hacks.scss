@@ -1,0 +1,347 @@
+@charset "UTF-8";
+
+/*
+Projects css styles.
+CSS Browser hacks.
+-------------------------------------------------------------*/
+
+
+
+/* IE9 hacks */
+#cms {
+.ie9 {
+
+    .cms-login {
+        background:url(""+$i+"/login-back.png") left top;
+    }
+    .cms-btn-next:after {
+        display:none !important;
+    }
+
+    .cms-btn-next {
+        padding-right:15px;
+        border:0;
+        background:url(""+$i+"/btn-next.png") repeat-x;
+        background-size:100% 100%;
+
+        &:hover {
+            background:url(""+$i+"/btn-next-over.png") repeat-x;
+            background-size:100% 100%;
+        }
+
+    }
+
+    .cms-btn-prev {
+        padding-left:15px;
+        border:0;
+        background:url(""+$i+"/btn-prev.png") repeat-x;
+        background-size:100% 100%;
+
+        &:hover {
+            background:url(""+$i+"/btn-prev-over.png") repeat-x;
+            background-size:100% 100%;
+        }
+
+    }
+
+    .cms-btn-prev:after {
+        display:none !important;
+    }
+
+
+
+
+
+}
+
+
+
+/* IE8 */
+
+
+
+.ie {
+    .cms-menu-shadow {
+        display:block;
+        position:absolute;
+        z-index:9;
+        width:100%;
+        top:$head-height + $menu-height;
+        height:20px;
+        background:url(""+$i+"/m-wr-shadow.png") repeat-x left bottom;
+    }
+    .cms-menu {
+        li:hover, .active {
+            background:url(""+$i+"/sprite-menu.png") repeat-x left top;
+        }
+        li:hover span, .active span {
+            background:url(""+$i+"/sprite-menu.png") no-repeat left -70px;
+            display:block;
+        }
+        li:hover a, .active a {
+            padding:10px 11px;
+            border:0;
+            background:url(""+$i+"/sprite-menu.png") no-repeat right -35px;
+        }
+    }
+
+    .cms-btn-next:after {
+        display:none !important;
+    }
+
+    .cms-btn-next {
+        padding-right:15px;
+        border:0;
+        background:url(""+$i+"/btn-next.png") repeat-x;
+
+
+        &:hover {
+            background:url(""+$i+"/btn-next-over.png") repeat-x;
+        }
+
+    }
+
+    .cms-btn-prev {
+        padding-left:15px;
+        border:0;
+        background:url(""+$i+"/btn-prev.png") repeat-x;
+
+        &:hover {
+            background:url(""+$i+"/btn-prev-over.png") repeat-x;
+        }
+
+    }
+
+    .cms-btn-prev:after {
+        display:none !important;
+    }
+
+    .cms-btn-control {
+        border-top:3px solid #000;
+    }
+
+    .cms-btn-control:hover {
+        background:#fff url(""+$i+"/pages-contr-left-o.png") no-repeat left top;
+    }
+
+    .cms-btn-control:hover .cms-btn-control-in {
+        background:url(""+$i+"/pages-contr-right-o.png") no-repeat right top;
+    }
+
+    .cms-btn-control.active {
+        border-top:3px solid #fff;
+        background:#fff url(""+$i+"/pages-contr-left.png") no-repeat left top;
+    }
+
+    .cms-btn-control.active .cms-btn-control-in {
+        background:url(""+$i+"/pages-contr-right.png") no-repeat right top;
+    }
+
+    .cms-btn-control.active:hover {
+        border-top:3px solid #fff;
+        background:#fff url(""+$i+"/pages-contr-left.png") no-repeat left top;
+    }
+
+    .cms-btn-control.active:hover .cms-btn-control-in {
+        background:url(""+$i+"/pages-contr-right.png") no-repeat right top;
+    }
+
+    .cms-log-btn td .cms-but {
+        background:url(""+$i+"/btn-login.png") no-repeat left top;
+    }
+
+    .cms-field-wide {
+        background:url(""+$i+"/field-wide.png") no-repeat left top;
+        width:473px;
+        border:0;
+    }
+
+    .cms-field {
+        background:url(""+$i+"/field.png") no-repeat left top;
+        width:292px;
+        border:0;
+    }
+    .cms-login-form .cms-field {
+        width:185px;
+    }
+
+    .cms-field-txt {
+        background:url(""+$i+"/field-txt.png") no-repeat left top;
+        height:231px;
+        border:0;
+    }
+
+    .cms-field-search {
+        background:url(""+$i+"/field-wide-ie.png") no-repeat left top;
+    }
+
+    .cms-login-form .cms-field {
+        background:url(""+$i+"/field-ie.png") no-repeat;
+    }
+
+    *[data-status="error"] {
+        border:0;
+        background:url(""+$i+"/field-over.png") no-repeat left top;
+    }
+
+    .cms-cont-table tr:hover .cms-first {
+        background-image:url(""+$i+"/line-left.png");
+        background-repeat:no-repeat;
+        background-position:left top;
+    }
+
+    .cms-cont-table tr:hover .cms-last {
+        background-image:url(""+$i+"/line-right.png");
+        background-repeat:no-repeat;
+        background-position:right top;
+    }
+
+    .cms-menu-pages {
+        .cms-line-drag {
+            &:hover td, td {
+                background:url(""+$i+"/line-middle-drag.png") repeat-x left top;
+            }
+            &:hover .cms-first, .cms-first {
+                background:url(""+$i+"/line-left-drag.png") no-repeat left top;
+            }
+            &:hover .cms-last, .cms-last {
+                background:url(""+$i+"/line-right-drag.png") no-repeat right top;
+            }
+
+            .cms-ico-edit {
+                background:url(""+$i+"/icons/ico-edit-dis.png") no-repeat left top;
+            }
+            .cms-ico-del {
+                background:url(""+$i+"/icons/ico-del-dis.png") no-repeat left top;
+            }
+            .cms-ico-drag {
+                background:url(""+$i+"/icons/ico-drag-dis.png") no-repeat left top;
+            }
+        }
+    }
+
+    .cms-login {
+        background:url(""+$i+"/login-back.png") left top;
+
+    }
+}
+
+
+.ie8 {
+	.cms-edit-area {
+		background:url(""+$i+"/edit-area.png") left top !important;
+		&.hover {
+			background:none !important;
+		}
+	}
+
+	.cms-edit-area-in {
+		background:url(""+$i+"/edit-label.png") no-repeat center center !important;
+	}
+}
+
+
+.cms-dialog {
+    .cms-field-wide {
+        background:url(""+$i+"/field-wide.png") no-repeat left top\9;
+        width:473px\9;
+        border:0\9;
+    }
+
+    .cms-field-txt {
+        background:#eee\9;
+        border:1px solid gray\9;
+    }
+
+    .cms-btn-next:after {
+        display:none\9;
+    }
+
+    .cms-btn-next {
+        padding-right:15px\9;
+        border:0\9;
+        background:url(""+$i+"/btn-next.png") repeat-x\9;
+
+
+        &:hover {
+            background:url(""+$i+"/btn-next-over.png") repeat-x\9;
+        }
+
+    }
+
+    .cms-btn-prev {
+        padding-left:15px\9;
+        border:0\9;
+        background:url(""+$i+"/btn-prev.png") repeat-x\9;
+
+        &:hover {
+            background:url(""+$i+"/btn-prev-over.png") repeat-x\9;
+        }
+
+    }
+
+    .cms-btn-prev:after {
+        display:none\9;
+    }
+}
+
+
+}
+
+
+
+
+
+/* Chrome & Safari  Hacks */
+
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    #cms {
+    /*.cms-btn-next {
+        padding-right:15px;
+    }
+    .cms-btn-prev {
+        padding-left:15px;
+    }
+    .cms-btn-next:after {
+        right:-10px !important;
+        bottom:-1px !important;
+        top:-1px !important;
+    }
+    .cms-btn-prev:after {
+        left:-20px !important;
+        bottom:-1px !important;
+        top:-1px !important;
+    }*/
+
+    #scrollbar1 .scrollbar {
+        display:none;
+    }
+
+    #scrollbar1 .viewport {
+        overflow:auto !important;
+        width: 355px !important;
+    }
+
+    .viewport::-webkit-scrollbar {
+        width: 15px;
+        height: 15px;
+        border:1px solid #afafaf;
+        background:url(""+$i+"/scrollbar-line.png") repeat-y left top;
+    }
+
+    .viewport::-webkit-scrollbar-button {
+        display:none;
+    }
+
+    .viewport::-webkit-scrollbar-thumb {
+        background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#b5b5b5));
+        -webkit-border-radius:3px;
+        border-radius:3px;
+        border:1px solid #afafaf;
+        -webkit-box-shadow:inset 0 1px 2px #fff, 0 0 2px #ccc;
+    }
+
+}
+}
+

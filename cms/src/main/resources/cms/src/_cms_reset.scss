@@ -1,0 +1,86 @@
+$heading-color: #242424;
+$label-color: #484848;
+
+@mixin dialog-label-reset {
+	color: #000;
+	font-size: 13px;
+	display: block;
+	font-weight: bold;
+}
+
+@mixin heading1 {
+	color: $heading-color;
+	font-size: 30px;
+	line-height: 1;
+	padding: 0;
+	margin: 0;
+}
+
+@mixin heading5 {
+	line-height: 1;
+	padding: 0;
+	margin:0 0 6px 0;
+	font-size:13px;
+}
+
+@mixin font-reset {
+	text-shadow: none;
+	text-transform: none;
+	letter-spacing: 0;
+}
+
+@mixin text-field-reset {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background: white;
+	cursor: text;
+	line-height: 18px;
+	color: #555;
+	border: 1px solid #CCC;
+	text-align: left;
+}
+
+
+#cms .cms-popup-edit h1, #cms .cms-page-title {
+	@include font-reset;
+	@include heading1;
+	
+}
+
+#cms .cms-popup-edit h5 {
+	@include font-reset;
+	@include heading5;
+	float: none;
+	position: static;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#cms .cms-block-sub-title {
+	@include dialog-label-reset;
+	margin: 0 0 6px 0;
+	@include font-reset;
+}
+
+#cms .cms-pane-wide label {
+	@include font-reset;
+	color: $label-color;
+}
+
+#cmsWrapper input, #cmsWrapper textarea, #cmsWrapper select, #cmsWrapper .cms-uneditable-input {
+	@include text-field-reset;
+}
+
+.cms-set-right {
+    vertical-align:top;
+    display:table-cell;
+	h1, h2, h3, h4, h5, h6 {
+		font: 12px/1 Arial,Helvetica,sans-serif;
+		@include font-reset;
+		color: #000;
+	}
+}
+
+#cmsWrapper label {
+	@include font-reset;
+}

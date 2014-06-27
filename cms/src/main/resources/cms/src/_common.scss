@@ -1,0 +1,114 @@
+@charset "UTF-8";
+
+/*
+Project css styles.
+Common css rules.
+-------------------------------------------------------------*/
+
+/* CSS Reset */
+
+html {padding:0; margin:0;}
+body {
+    padding:0;
+    margin:0;
+}
+
+/* ClearFix */
+.clearFix:after {visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
+* html .clearFix {zoom: 1;}
+*+html .clearFix {zoom: 1;}
+
+#cmsWrapper {
+
+background:#fff;
+font:12px/1 Arial, Helvetica, sans-serif !important;
+color:#000;
+
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0; float:none; position:static; width:auto; height:auto; border-bottom:0;
+    border-left:0;
+    border-right:0;
+    border-top:0; line-height:1;}
+table{border-collapse:collapse;border-spacing:0; border:0; margin:0;float:none; position:static; width:auto; height:auto;}
+table td{vertical-align:top;padding:0; border:0;float:none; position:static;}
+img,fieldset{border:0;float:none; position:static;}
+address,caption,cite,code,dfn,th,var{font-style:normal;font-weight:normal;float:none; position:static;border-bottom:0;
+    border-left:0;
+    border-right:0;
+    border-top:0;}
+caption,th{text-align:left;float:none; position:static;}
+q:before,q:after{content:'';}
+abbr,acronym{border:0;font-variant:normal;}
+sup{vertical-align:text-top;}
+sub{vertical-align:text-bottom;}
+input,textarea,select,button{font-family:inherit;font-size:inherit;font-weight:inherit;float:none; position:static;border-bottom:0;
+    border-left:0;
+    border-right:0;
+    border-top:0;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block; padding:0; margin:0;float:none; position:static;border-bottom:0;
+    border-left:0;
+    border-right:0;
+    border-top:0;}
+
+a, em, strong, i, b, u, label, button {
+    display:inline;
+    font-weight:normal;
+    font-style:normal;
+    font-variant:normal;
+    font-size:inherit;
+    float:none;
+    position:static;
+    width:auto;
+    height:auto;
+    padding:0;
+    margin:0;
+    border-bottom:0;
+    border-left:0;
+    border-right:0;
+    border-top:0;
+}
+
+a, button {
+    cursor:pointer;
+}
+
+
+
+/* Common styles. Framework.
+
+--------------------------- */
+
+
+p {margin:0;}
+a {
+    $link-act-c:#000;
+    $link-act-d:none;
+
+
+    color:#000;
+    text-decoration:underline;
+    &:hover {
+        text-decoration:$link-act-d;
+        color:$link-act-c;
+        }
+    &:active {
+        text-decoration:$link-act-d;
+        color:$link-act-c;
+        }
+    &:focus {
+        text-decoration:$link-act-d;
+        color:$link-act-c;
+        }
+}
+.clear {clear:both;float:none;}
+.clearLeft {clear:left;}
+.clearRight {clear:right;}
+.block {display:block;}
+.alignRight {text-align:right;}
+.alignCenter {text-align:center;}
+.centerImg {display:block;margin:0 auto;}
+.floatRight {float:right;}
+.floatLeft {float:left;}
+:focus {outline:0;}
+fieldset legend {display:none;}
+
+}

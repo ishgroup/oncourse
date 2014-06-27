@@ -1,4 +1,5 @@
 apply plugin: 'war'
+apply plugin: 'compass'
 
 dependencies {
 	providedCompile 'javax.servlet:servlet-api:2.5'
@@ -30,3 +31,25 @@ war {
 		from sharedManifest
 	}
 }
+
+sourceSets {
+    main {
+        resources {
+            exclude 'cms/src'
+            srcDir 'build/css-assemble'
+        }
+    }
+}
+
+compass {
+    cssDir = file('build/css-assemble/cms/css')
+    sassDir = file('src/main/resources/cms/src')
+    fontsDir = file('src/main/resources/cms/fonts')
+    noLineComments = true
+    relativeAssets = true
+    debugInfo = false
+    environment = 'production'
+}
+
+processResources.inputs.files compileSass
+clean.dependsOn cleanCompileSass
