@@ -79,7 +79,7 @@ public class MenuItem {
 		WebNode node = menu.getWebNode();
 
 		if (node != null) {
-			return "http://" + request.getServerName() + webNodeService.getPath(node);
+			return webNodeService.getPath(node);
 		}
 
 		return menu.getUrl();
