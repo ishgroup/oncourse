@@ -13,7 +13,9 @@ import org.apache.tapestry5.services.Request;
 public class HTMLUtils {
 	private static final Logger LOGGER = Logger.getLogger(HTMLUtils.class);
 
-	public static final String VALUE_on = "on";
+    public static final String USER_AGENT_HEADER = "User-Agent";
+
+    public static final String VALUE_on = "on";
 	public static final String HTTP_PROTOCOL = "http://";
 
 	public static String getUrlBy(String serverName, Class pageClass)

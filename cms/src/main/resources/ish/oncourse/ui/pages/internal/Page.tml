@@ -1,7 +1,7 @@
 <html t:type="ui/internal/pagestructure" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-      bodyId="${bodyId}" bodyClass="${bodyClass}" webNodeType="webNodeType" node="node">
-    <t:if test="node">
-        <div t:type="ui/internal/contentStructure" node="node" updateZone="pageStructure.cmsNavigation.pageInfo.updatedZone"/>
+      bodyId="${bodyId}" bodyClass="${bodyClass}" webNodeType="webNodeType" webNode="editNode">
+    <t:if test="editNode">
+        <div t:type="ui/internal/contentStructure" node="editNode" updateZone="pageStructure.cmsNavigation.pageInfo.updatedZone"/>
         <t:block id="reloadPageBlock"><script type="text/javascript">window.location.reload();</script></t:block>
     </t:if>
 </html>

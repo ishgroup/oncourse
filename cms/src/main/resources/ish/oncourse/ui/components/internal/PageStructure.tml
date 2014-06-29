@@ -8,34 +8,47 @@
 	</t:remove>
 	<head>
 		<meta http-equiv="Cache-control" content="no-cache"/>
-		<head t:type="ui/pagehead" title="${title}"/>
-		<t:if t:test="loggedIn">
-			<link href="/s/cms/css/modalJQuery.css" media="screen" rel="stylesheet"/>
-			<link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
-			<link href="/s/cms/js/plugins/plugins.css" rel="stylesheet" type="text/css"/>
-			<script src="/s/cms/js/all.js" />
-  		</t:if>
+        <span t:type="ui/pagehead" pageName="pageName" webNode="webNode"
+              canonicalLinkPath="canonicalLinkPath"
+              metaDescription="metaDescription"/>
+        <t:delegate to="block:cmsHead"/>
 	</head>
 	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
-		<div  t:type="ui/BodyStructure" webNodeType="webNodeType">
+        <div  t:type="ui/BodyStructure" webNodeType="webNodeType">
             <t:body/>
         </div>
-		<t:if t:test="loggedIn">
-			<!--[if lt IE 9]> <div class="ie" id="cmsWrapper"> <![endif]-->
-			<!--[if IE 9 ]> <div class="ie9" id="cmsWrapper"> <![endif]-->
-			<!--[if (gt IE 9)|!(IE)]><!--> <div id="cmsWrapper"> <!--<![endif]-->
-				<div id="cmsInner">
-					<div class="cms-header" id="edHeader">
-    					<div class="cms-header-title">
-        					<a href="/">${webSiteService.currentCollege.name}</a>
-    					</div>
-    					<div class="cms-header-logo">
-        					<a href="/" class="cms-logo"></a>
-    					</div>
-					</div>
-					<div t:type="CmsNavigation" node="node"/>
-				</div>
-			</div>
-		</t:if>
+        <t:delegate to="block:cmsNavigation"/>
 	</body>
+
+    <t:block t:id="cmsHead">
+        <t:if t:test="loggedIn">
+            <link href="/s/cms/css/modalJQuery.css" media="screen" rel="stylesheet"/>
+            <link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
+            <link href="/s/cms/js/plugins/plugins.css" rel="stylesheet" type="text/css"/>
+            <script src="/s/cms/js/all.js" />
+        </t:if>
+    </t:block>
+
+
+    <t:block t:id="cmsNavigation">
+        <t:if t:test="loggedIn">
+            <!--[if lt IE 9]> <div class="ie" id="cmsWrapper"> <![endif]-->
+            <!--[if IE 9 ]> <div class="ie9" id="cmsWrapper"> <![endif]-->
+            <!--[if (gt IE 9)|!(IE)]><!--> <div id="cmsWrapper"> <!--<![endif]-->
+            <div id="cmsInner">
+                <div class="cms-header" id="edHeader">
+                    <div class="cms-header-title">
+                        <a href="/">${webSiteService.currentCollege.name}</a>
+                    </div>
+                    <div class="cms-header-logo">
+                        <a href="/" class="cms-logo"></a>
+                    </div>
+                </div>
+                <div t:type="CmsNavigation" node="webNode"/>
+            </div>
+        </div>
+        </t:if>
+    </t:block>
+
+
 </html>

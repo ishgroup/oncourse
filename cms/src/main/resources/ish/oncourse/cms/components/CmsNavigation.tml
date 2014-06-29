@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<t:if test="node">
-	<div t:type="pageinfo" node="node" t:id="pageInfo"/>
+	    <div t:type="pageinfo" node="node" t:id="pageInfo"/>
 	</t:if>
 	<div id="cmsTabs">
 	<div class="cms-menu-wrap" id="edMenuWr">
