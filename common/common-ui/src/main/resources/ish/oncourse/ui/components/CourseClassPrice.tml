@@ -15,7 +15,7 @@
 
 		<t:if test="showTax">
 			<span class="gst">
-				<t:if test="taxExempt" negate="true"> inc </t:if><acronym title="Goods and Services Tax">GST</acronym><t:if test="taxExempt"> exempt</t:if>
+				<t:if test="taxExempt" negate="true"> inc </t:if><acronym title="Goods and Services Tax">GST</acronym><t:if test="taxExempt"> free</t:if>
 			</span>
 		</t:if>
 		
