@@ -35,7 +35,7 @@
 	</db-entity>
 	<db-entity name="BinaryInfoRelation" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="binaryInfoId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="binaryInfoId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="documentId" type="BIGINT"/>

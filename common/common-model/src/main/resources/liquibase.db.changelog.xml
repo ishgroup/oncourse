@@ -2781,5 +2781,9 @@
 		</sql>
 		
 	</changeSet>
+
+	<changeSet id="181" author="anarut" runOnChange="false" context="production">
+		<dropNotNullConstraint tableName="BinaryInfoRelation" columnName="binaryInfoId" columnDataType="bigint"/>
+	</changeSet>
 	
 </databaseChangeLog>
