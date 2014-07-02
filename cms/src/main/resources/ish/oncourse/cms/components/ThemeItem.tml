@@ -7,11 +7,6 @@
 			<t:if test="webNodeType.isDefaultPageTheme()">
 				<small>(used for all special pages)</small>
 			</t:if>
-            <t:unless test="webNodeType.isDefaultPageTheme()">
-                <t:if test="webNodeType.isThemeUsedInPages()">
-                    <small>(used for pages)</small>
-                </t:if>
-            </t:unless>
         </td>
 		<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
 		<td>
