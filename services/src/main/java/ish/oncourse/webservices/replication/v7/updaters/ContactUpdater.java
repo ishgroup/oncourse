@@ -34,5 +34,6 @@ public class ContactUpdater extends AbstractWillowUpdater<ContactStub, Contact> 
 		entity.setIsMarketingViaEmailAllowed(stub.isMarketingViaEmailAllowed());
 		entity.setIsMarketingViaPostAllowed(stub.isMarketingViaPostAllowed());
 		entity.setIsMarketingViaSMSAllowed(stub.isMarketingViaSMSAllowed());
+		entity.setTaxFileNumber(stub.getTaxFileNumber());
 	}
 }

@@ -43,6 +43,7 @@ public class ContactStubBuilder extends
 		if (entity.getTutor() != null) {
 			stub.setTutorId(entity.getTutor().getId());
 		}
+		stub.setTaxFileNumber(entity.getTaxFileNumber());
 		return stub;
 	}
 }
