@@ -123,7 +123,7 @@ cayenne {
 }
 
 appBundler {
-    distributionPath = distsDir
+    distributionPath = project.file("${distsDir}/macosx/")
     appName = "onCourseServer"
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.server.AngelServer"
