@@ -65,13 +65,7 @@ public class PaymentInExpireJob implements Job {
 			logger.debug(String.format("The number of payments to expire:%s.", expiredPayments.size()));
 
 			for (PaymentIn p : expiredPayments) {
-				// do not fail payments for which we haven't got final transaction response from gateway
-				if (paymentService.isProcessedByGateway(p)) {
-					//web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.
-					boolean shouldReverseInvoice = PaymentSource.SOURCE_WEB.equals(p.getSource());
-					p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
-					PaymentInUtil.abandonPayment(p, shouldReverseInvoice);
-				}
+                processPayment(p);
             }
 			logger.debug("PaymentInExpireJob finished.");
 
@@ -80,7 +74,23 @@ public class PaymentInExpireJob implements Job {
 		}
 	}
 
-	/**
+    private void processPayment(PaymentIn p) {
+        //we need the try-catch block to continue processing other payments even if we get an excption
+        //in the method.
+        try {
+            // do not fail payments for which we haven't got final transaction response from gateway
+            if (paymentService.isProcessedByGateway(p)) {
+                //web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.
+                boolean shouldReverseInvoice = PaymentSource.SOURCE_WEB.equals(p.getSource());
+                p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
+                PaymentInUtil.abandonPayment(p, shouldReverseInvoice);
+            }
+        } catch (Exception e) {
+            logger.error("Error in PaymentInExpireJob.", e);
+        }
+    }
+
+    /**
 	 * Fetch payments which were not completed (not success nor failed, expired
 	 * they were in not completed state for more than PaymentIn.EXPIRE_INTERVAL)
 	 * 
