@@ -393,6 +393,7 @@
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="documentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="fileName" type="VARCHAR" length="512"/>
+		<db-attribute name="filePath" type="VARCHAR" length="512"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="mimeType" type="VARCHAR" length="255"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
@@ -1511,6 +1512,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="fileName"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="filePath"/>
 		<obj-attribute name="mimeType" type="java.lang.String" db-attribute-path="mimeType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="pixelHeight" type="java.lang.Integer" db-attribute-path="pixelHeight"/>

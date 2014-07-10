@@ -23,6 +23,7 @@ public abstract class _DocumentVersion extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String DESCRIPTION_PROPERTY = "description";
     public static final String FILE_NAME_PROPERTY = "fileName";
+    public static final String FILE_PATH_PROPERTY = "filePath";
     public static final String MIME_TYPE_PROPERTY = "mimeType";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String PIXEL_HEIGHT_PROPERTY = "pixelHeight";
@@ -70,6 +71,13 @@ public abstract class _DocumentVersion extends CayenneDataObject {
     }
     public String getFileName() {
         return (String)readProperty(FILE_NAME_PROPERTY);
+    }
+
+    public void setFilePath(String filePath) {
+        writeProperty(FILE_PATH_PROPERTY, filePath);
+    }
+    public String getFilePath() {
+        return (String)readProperty(FILE_PATH_PROPERTY);
     }
 
     public void setMimeType(String mimeType) {
