@@ -3,12 +3,16 @@ package ish.oncourse.webservices.replication.v6.updaters;
 import ish.common.types.AttachmentInfoVisibility;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.College;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v6.stubs.replication.BinaryInfoStub;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 
 public class BinaryInfoUpdater extends AbstractWillowUpdater<BinaryInfoStub, BinaryInfo> {
 
@@ -24,10 +28,19 @@ public class BinaryInfoUpdater extends AbstractWillowUpdater<BinaryInfoStub, Bin
 		entity.setPixelWidth(stub.getPixelWidth());
 		entity.setFileUUID(stub.getFileUUID());
 
-		// next create Document and DocumentVersion records pair corresponding to received BinaryInfo record
+		// next step is to create/update Document and DocumentVersion record pair corresponding to the received BinaryInfo record
 		ObjectContext context = entity.getObjectContext();
 		
-		Document document = context.newObject(Document.class);
+		Document document;
+		
+		DocumentVersion documentVersion = getExistingDocumentVersion(stub.getAngelId(), entity.getCollege(), context);
+		
+		if (documentVersion != null) {
+			document = documentVersion.getDocument();
+		} else {
+			document = context.newObject(Document.class);
+			documentVersion = context.newObject(DocumentVersion.class);
+		}
 		
 		document.setCreated(entity.getCreated());
 		document.setModified(entity.getModified());
@@ -38,8 +51,6 @@ public class BinaryInfoUpdater extends AbstractWillowUpdater<BinaryInfoStub, Bin
 		document.setIsShared(true);
 		document.setName(entity.getName());
 		document.setAngelId(entity.getAngelId());
-
-		DocumentVersion documentVersion = context.newObject(DocumentVersion.class);
 		
 		documentVersion.setCreated(entity.getCreated());
 		documentVersion.setModified(entity.getModified());
@@ -52,5 +63,13 @@ public class BinaryInfoUpdater extends AbstractWillowUpdater<BinaryInfoStub, Bin
 		documentVersion.setAngelId(entity.getAngelId());
 		
 		documentVersion.setDocument(document);
+	}
+
+	private DocumentVersion getExistingDocumentVersion(Long angelId, College college, ObjectContext context) {
+		SelectQuery query = new SelectQuery(DocumentVersion.class,
+				ExpressionFactory.matchExp(DocumentVersion.ANGEL_ID_PROPERTY, angelId)
+						.andExp(ExpressionFactory.matchExp(DocumentVersion.COLLEGE_PROPERTY, college)));
+
+		return (DocumentVersion) Cayenne.objectForQuery(context, query);
 	}
 }
