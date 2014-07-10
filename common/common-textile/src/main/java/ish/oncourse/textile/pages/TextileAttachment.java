@@ -1,6 +1,7 @@
 package ish.oncourse.textile.pages;
 
 import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.Document;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.AttachmentTextileAttributes;
@@ -20,7 +21,7 @@ public class TextileAttachment {
 	private IBinaryDataService binaryDataService;
 	
     @Property
-    private BinaryInfo attachment;
+    private Document attachment;
 	
 	@SetupRender
 	void beforeRender() {

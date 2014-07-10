@@ -50,11 +50,11 @@ public interface IPortalService {
 
     public List<Outcome> getResultsBy(CourseClass courseClass);
 
-    public List<BinaryInfo> getTutorCommonResources();
+    public List<Document> getTutorCommonResources();
 
-	public List<BinaryInfo> getResourcesBy(CourseClass courseClass);
+	public List<Document> getResourcesBy(CourseClass courseClass);
 
-    public List<BinaryInfo> getResources();
+    public List<Document> getResources();
 
     public List<CourseClass> getContactCourseClasses(CourseClassFilter filter);
 

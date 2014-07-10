@@ -1,7 +1,7 @@
 package ish.oncourse.portal.components.courseclass;
 
-import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Document;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.binary.IBinaryDataService;
@@ -27,10 +27,10 @@ public class ClassResources {
     private CourseClass courseClass;
 
     @Property
-    private List<BinaryInfo> materials;
+    private List<Document> materials;
 
     @Property
-    private BinaryInfo material;
+    private Document material;
 
     @Inject
     private ICookiesService cookieService;
@@ -74,6 +74,6 @@ public class ClassResources {
 	}
 
 	public String getSize() {
-		return FileUtils.byteCountToDisplaySize(material.getByteSize());
+		return FileUtils.byteCountToDisplaySize(material.getCurrentVersion().getByteSize());
 	}
 }

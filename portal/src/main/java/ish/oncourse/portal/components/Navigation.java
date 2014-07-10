@@ -1,9 +1,9 @@
 package ish.oncourse.portal.components;
 
 
-import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Document;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.Notification;
@@ -56,7 +56,7 @@ public class Navigation {
     private List<PCourseClass> pCourseClasses;
 
     @Property
-    private List<BinaryInfo> resources;
+    private List<Document> resources;
 
     @Property
     private PCourseClass pCourseClass;

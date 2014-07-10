@@ -1,7 +1,7 @@
 package ish.oncourse.portal.pages;
 
-import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Document;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
@@ -55,10 +55,10 @@ public class Resources {
     private Messages messages;
 
     @Property
-    private List<BinaryInfo> tutorsMaterials;
+    private List<Document> tutorsMaterials;
 
     @Property
-    private BinaryInfo tutorsMaterial;
+    private Document tutorsMaterial;
 
     @Inject
     private Request request;
@@ -101,7 +101,7 @@ public class Resources {
 
     public boolean hasResources(CourseClass courseClass) {
 
-        List<BinaryInfo> materials = portalService.getResourcesBy(courseClass);
+        List<Document> materials = portalService.getResourcesBy(courseClass);
         return !materials.isEmpty();
     }
 
@@ -128,6 +128,6 @@ public class Resources {
     }
 
     public String getSize() {
-        return FileUtils.byteCountToDisplaySize(tutorsMaterial.getByteSize());
+        return FileUtils.byteCountToDisplaySize(tutorsMaterial.getCurrentVersion().getByteSize());
     }
 }

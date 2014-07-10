@@ -1,6 +1,7 @@
 package ish.oncourse.textile.pages;
 
 import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.Document;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.TextileUtil;
@@ -66,21 +67,21 @@ public class TextileImage {
 		String cssClass = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_CLASS.getValue());
 		String attachment = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ATTACHMENT.getValue());
 
-		BinaryInfo imageBinaryInfo = getBinaryInfoBy(name);
+		Document imageBinaryInfo = getBinaryInfoBy(name);
 
 		imagePath = imageBinaryInfo != null ? binaryDataService.getUrl(imageBinaryInfo) : StringUtils.EMPTY;
 		imageAlign = align != null ? align : StringUtils.EMPTY;
 		imageAlt = alt != null ? alt : StringUtils.EMPTY;
 		imageTitle = title != null ? title : StringUtils.EMPTY;
-		imageWidth = width != null ? width : (imageBinaryInfo.getPixelWidth() + "px");
-		imageHeight = height != null ? height : (imageBinaryInfo.getPixelHeight() + "px");
+		imageWidth = width != null ? width : (imageBinaryInfo.getCurrentVersion().getPixelWidth() + "px");
+		imageHeight = height != null ? height : (imageBinaryInfo.getCurrentVersion().getPixelHeight() + "px");
 		imageClass = cssClass != null ? cssClass : StringUtils.EMPTY;
 		imageCaption = caption;
 		if (link != null)
 			imageLink = link;
 		else if (attachment != null)
 		{
-			BinaryInfo attachmentBinaryInfo = getBinaryInfoBy(attachment);
+			Document attachmentBinaryInfo = getBinaryInfoBy(attachment);
 			imageLink = attachmentBinaryInfo != null ? 
 					binaryDataService.getUrl(attachmentBinaryInfo) : StringUtils.EMPTY;
 		}
@@ -95,13 +96,12 @@ public class TextileImage {
 		request.setAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS, ids);
 	}
 
-	private BinaryInfo getBinaryInfoBy(String name) {
-		BinaryInfo imageBinaryInfo = null;
+	private Document getBinaryInfoBy(String name) {
+		Document imageBinaryInfo = null;
 		if (name != null) {
 			imageBinaryInfo = binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, name);
-		} else {
-			imageBinaryInfo = binaryDataService.getRandomImage();
 		}
+		
 		return imageBinaryInfo;
 	}
 }

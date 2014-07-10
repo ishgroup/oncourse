@@ -1,9 +1,8 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.Document;
 import ish.oncourse.services.binary.IBinaryDataService;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -35,35 +34,65 @@ public class Attachments {
     private String entityIdNum;
 
     @Property
-    private List<BinaryInfo> attachedImages;
+    private List<Document> attachedImages;
 
     @Property
-    private BinaryInfo image;
+    private Document image;
 
     @Property
-    private List<BinaryInfo> attachments;
+    private List<Document> attachments;
 
     @Property
-    private BinaryInfo attachment;
+    private Document attachment;
 
     @Inject
     private Request request;
 
     @SetupRender
     boolean beforeRender() {
-        List<BinaryInfo> allAttachedFiles = findAllBinaryInfos();
-        Expression imageQualifier = BinaryInfo.getImageQualifier();
-        attachments = imageQualifier.notExp().filterObjects(allAttachedFiles);
-        ArrayList<Long> ids = (ArrayList<Long>) request.getAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS);
-        if (ids != null && !ids.isEmpty()) {
-            imageQualifier = imageQualifier.andExp(ExpressionFactory.notInDbExp(BinaryInfo.ID_PK_COLUMN, ids));
-        }
-        attachedImages = imageQualifier.filterObjects(allAttachedFiles);
+        List<Document> allAttachedFiles = findAllBinaryInfos();
+		
+		List<Document> nonImages = new ArrayList<>();
+		
+		for (Document document : allAttachedFiles) {
+			if (!document.getCurrentVersion().isImage()) {
+				nonImages.add(document);
+			}
+		}
+		
+        attachments = nonImages;
+
+		// The following sequence of weird logic is meant to copy the behavior of
+		// the old code pasted here:
+		//
+		//		ArrayList<Long> ids = (ArrayList<Long>) request.getAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS);
+		//		if (ids != null && !ids.isEmpty()) {
+		//			imageQualifier = imageQualifier.andExp(ExpressionFactory.notInDbExp(BinaryInfo.ID_PK_COLUMN, ids));
+		//		}
+		//		attachedImages = imageQualifier.filterObjects(allAttachedFiles);
+		//
+		// this logic is scheduled to be reviewed later per task #22069
+
+		//=== START OF WEIRD LOGIC ===
+        List<Long> ids = (List<Long>) request.getAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS);
+
+		List<Document> images = new ArrayList<>();
+		
+		for (Document document : allAttachedFiles) {
+			if (document.getCurrentVersion().isImage()) {
+				if (ids == null || !ids.contains(document.getId())) {
+					images.add(document);
+				}
+			}
+		}
+		
+        attachedImages = images;
+		//=== END OF WEIRD LOGIC =====
 
         return !allAttachedFiles.isEmpty();
     }
 
-    private List<BinaryInfo> findAllBinaryInfos() {
+    private List<Document> findAllBinaryInfos() {
 
         if (entityIdentifiers == null)
         {
@@ -71,7 +100,7 @@ public class Attachments {
             entityIdNums = new String[]{entityIdNum};
         }
 
-        ArrayList<BinaryInfo> result = new ArrayList<>();
+        List<Document> result = new ArrayList<>();
         for (int i = 0; i < entityIdentifiers.length; i++) {
             String identifier = entityIdentifiers[i];
             Long id = Long.valueOf(entityIdNums[i]);

@@ -24,7 +24,7 @@ public class ClassRollItem {
     @Property
     private Student student;
 
-    private BinaryInfo avatar;
+    private Document avatar;
 
     @Inject
     private PreferenceController preferenceController;

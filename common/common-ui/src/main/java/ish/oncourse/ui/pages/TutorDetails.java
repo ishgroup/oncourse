@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.Document;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.binary.IBinaryDataService;
@@ -72,7 +72,7 @@ public class TutorDetails {
 		return textileConverter.convertCustomTextile(tutor.getResume(), new ValidationErrors());
 	}
 
-	public BinaryInfo getProfilePicture()
+	public Document getProfilePicture()
 	{
 		return binaryDataService.getProfilePicture(tutor.getContact());
 	}

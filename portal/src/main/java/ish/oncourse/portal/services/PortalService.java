@@ -454,19 +454,19 @@ public class PortalService implements IPortalService {
     }
 
     @Override
-    public List<BinaryInfo> getTutorCommonResources() {
+    public List<Document> getTutorCommonResources() {
 
         if (authenticationService.isTutor()) {
             ObjectContext sharedContext = cayenneService.sharedContext();
 
-            SelectQuery query = new SelectQuery(BinaryInfo.class, ExpressionFactory.matchExp(
-                    BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.TUTORS).andExp(
-                    ExpressionFactory.matchExp(BinaryInfo.COLLEGE_PROPERTY, webSiteService.getCurrentCollege())).andExp(
-                    ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "+." + BinaryInfoRelation.CREATED_PROPERTY, null)));
+            SelectQuery query = new SelectQuery(Document.class, ExpressionFactory.matchExp(
+                    Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.TUTORS).andExp(
+                    ExpressionFactory.matchExp(Document.COLLEGE_PROPERTY, webSiteService.getCurrentCollege())).andExp(
+                    ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "+." + BinaryInfoRelation.CREATED_PROPERTY, null)));
 
-            return (List<BinaryInfo>) sharedContext.performQuery(query);
+            return (List<Document>) sharedContext.performQuery(query);
         } else {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
     }
@@ -487,7 +487,7 @@ public class PortalService implements IPortalService {
     }
 
     @Override
-    public List<BinaryInfo> getResourcesBy(CourseClass courseClass) {
+    public List<Document> getResourcesBy(CourseClass courseClass) {
 
         Contact contact = getContact();
         ObjectContext sharedContext = cayenneService.sharedContext();
@@ -505,40 +505,40 @@ public class PortalService implements IPortalService {
         return getAttachedFilesForStudent(courseClass);
     }
 
-    private List<BinaryInfo> getAttachedFilesForStudent(CourseClass courseClass) {
+    private List<Document> getAttachedFilesForStudent(CourseClass courseClass) {
 
         ObjectContext sharedContext = cayenneService.sharedContext();
-        ArrayList<BinaryInfo> result = new ArrayList<>();
+        ArrayList<Document> result = new ArrayList<>();
 
-        Expression exp = ExpressionFactory.inExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
-                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId()))
-                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
-        result.addAll(sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp)));
+        Expression exp = ExpressionFactory.inExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
+                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId()))
+                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
+        result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
 
-        exp = ExpressionFactory.inExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
-                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
-                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
-        result.addAll(sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp)));
+        exp = ExpressionFactory.inExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
+                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
+                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
+        result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
         return result;
     }
 
-    private List<BinaryInfo> getAttachedFilesForTutor(CourseClass courseClass) {
+    private List<Document> getAttachedFilesForTutor(CourseClass courseClass) {
         ObjectContext sharedContext = cayenneService.sharedContext();
-        ArrayList<BinaryInfo> result = new ArrayList<>();
+        ArrayList<Document> result = new ArrayList<>();
 
-        Expression exp = ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId())
-                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
-        result.addAll(sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp)));
+        Expression exp = ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId())
+                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
+        result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
 
-        exp = ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId())
-                .andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
-        result.addAll(sharedContext.performQuery(new SelectQuery(BinaryInfo.class, exp)));
+        exp = ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId())
+                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
+        result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
 
         return result;
     }
 
-    public List<BinaryInfo> getResources() {
-        ArrayList<BinaryInfo> resources = new ArrayList<>();
+    public List<Document> getResources() {
+        List<Document> resources = new ArrayList<>();
         resources.addAll(getTutorCommonResources());
 
         List<PCourseClass> courseClasses = fillCourseClassSessions(CourseClassFilter.CURRENT);
@@ -592,12 +592,12 @@ public class PortalService implements IPortalService {
         Date lastLoginTime = getLastLoginTime();
         int newResourcesCount = 0;
 
-        for (BinaryInfo binaryInfo : getResources()) {
+        for (Document document : getResources()) {
             /**
              * we added binaryInfo.getModified() != null condition to exlude NPE when some old binaryInfo has null value in create Modified.
              * TODO The condition should be deleted after 21309 will be closed
              */
-            if (binaryInfo.getModified() != null && binaryInfo.getModified().after(lastLoginTime)) {
+            if (document.getModified() != null && document.getModified().after(lastLoginTime)) {
                 newResourcesCount++;
             }
         }
