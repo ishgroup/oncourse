@@ -1,10 +1,10 @@
 package ish.oncourse.services.binary;
 
 import ish.common.types.AttachmentInfoVisibility;
-import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Document;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -51,20 +51,8 @@ public class BinaryDataService implements IBinaryDataService {
 	@Inject
 	private IS3Service s3Service;
 
-	@Override
-	public BinaryInfo getBinaryInfoById(Object id) {
-		Expression qualifier = getCollegeQualifier().andExp(ExpressionFactory.matchDbExp(BinaryInfo.ID_PK_COLUMN, id));
-		return (BinaryInfo) Cayenne.objectForQuery(cayenneService.sharedContext(), new SelectQuery(BinaryInfo.class,
-				qualifier));
-	}
-
-	public BinaryInfo getBinaryInfo(final String searchProperty, Object value) {
+	public Document getBinaryInfo(final String searchProperty, Object value) {
 		final Expression qualifier = getCollegeQualifier().andExp(ExpressionFactory.matchExp(searchProperty, value));
-		return getRandomBinaryInfo(qualifier);
-	}
-
-	public BinaryInfo getRandomImage() {
-		Expression qualifier = getCollegeQualifier().andExp(BinaryInfo.getImageQualifier());
 		return getRandomBinaryInfo(qualifier);
 	}
 
@@ -74,34 +62,34 @@ public class BinaryDataService implements IBinaryDataService {
 
 	private Expression getCollegeQualifier(boolean hidePrivateAttachments) {
 		College currentCollege = webSiteService.getCurrentCollege();
-		Expression qualifier = ExpressionFactory.matchExp(BinaryInfo.COLLEGE_PROPERTY, cayenneService.sharedContext()
+		Expression qualifier = ExpressionFactory.matchExp(Document.COLLEGE_PROPERTY, cayenneService.sharedContext()
 				.localObject(currentCollege.getObjectId(), null));
 		if (hidePrivateAttachments) {
 			if (isStudentLoggedIn()) {
-				qualifier = qualifier.andExp(ExpressionFactory.noMatchExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.PRIVATE));
+				qualifier = qualifier.andExp(ExpressionFactory.noMatchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PRIVATE));
 			} else {
-				qualifier = qualifier.andExp(ExpressionFactory.matchExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.PUBLIC));
+				qualifier = qualifier.andExp(ExpressionFactory.matchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PUBLIC));
 			}
 		}
 		return qualifier;
 	}
 
-	private BinaryInfo getRandomBinaryInfo(final Expression qualifier) {
+	private Document getRandomBinaryInfo(final Expression qualifier) {
 		ObjectContext sharedContext = cayenneService.sharedContext();
-		final SelectQuery binaryCount = new SelectQuery(BinaryInfo.class, qualifier);
-		@SuppressWarnings("unchecked")
-		List<BinaryInfo> binaries = (List<BinaryInfo>)sharedContext.performQuery(binaryCount);
+		final SelectQuery binaryCount = new SelectQuery(Document.class, qualifier);
+		
+		List<Document> binaries = (List<Document>) sharedContext.performQuery(binaryCount);
 		Long count = (long) binaries.size();
-		BinaryInfo randomResult = null;
+		Document randomResult = null;
 		int attempt = 0;
 		if (count > 0) {
 			while (randomResult == null && attempt++ < 5) {
 				int random = new Random().nextInt(count.intValue());
 
-				SelectQuery query = new SelectQuery(BinaryInfo.class, qualifier);
+				SelectQuery query = new SelectQuery(Document.class, qualifier);
 				query.setFetchOffset(random);
 				query.setFetchLimit(1);
-				randomResult = (BinaryInfo) Cayenne.objectForQuery(sharedContext, query);
+				randomResult = (Document) Cayenne.objectForQuery(sharedContext, query);
 
 				if (LOGGER.isInfoEnabled()) {
 					LOGGER.info(String.format("Fetched random image: %s", randomResult));
@@ -113,53 +101,52 @@ public class BinaryDataService implements IBinaryDataService {
 	}
 
 	@Override
-	public List<BinaryInfo> getAttachedFiles(Long entityIdNum, String entityIdentifier, boolean hidePrivateAttachments) {
+	public List<Document> getAttachedFiles(Long entityIdNum, String entityIdentifier, boolean hidePrivateAttachments) {
 		ObjectContext sharedContext = cayenneService.sharedContext();
 		SelectQuery query = new SelectQuery(BinaryInfoRelation.class, ExpressionFactory.matchExp(
 				BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, entityIdNum).andExp(
 				ExpressionFactory.matchExp(BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, entityIdentifier)));
 		List<BinaryInfoRelation> relations = sharedContext.performQuery(query);
 		if (!relations.isEmpty()) {
-			List<BinaryInfo> attachedFiles = new ArrayList<>(relations.size());
+			List<Document> attachedFiles = new ArrayList<>(relations.size());
 			for (BinaryInfoRelation relation : relations) {
 				//we need the check to exclude Profile Picture from common attachment list
 				if (!isProfilePicture(relation))
-					attachedFiles.add(relation.getBinaryInfo());
+					attachedFiles.add(relation.getDocument());
 			}
 			return getCollegeQualifier(hidePrivateAttachments).filterObjects(attachedFiles);
 		}
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	boolean isProfilePicture(BinaryInfoRelation relation)
 	{
-		return relation.getEntityIdentifier().equals(Contact.class.getSimpleName()) && relation.getBinaryInfo().getName().equals(NAME_PROFILE_PICTURE);
+		return relation.getEntityIdentifier().equals(Contact.class.getSimpleName()) && relation.getDocument().getName().equals(NAME_PROFILE_PICTURE);
 	}
 	
 	private boolean isStudentLoggedIn() {
 		return applicationStateManager.getIfExists(Contact.class) != null;
 	}
 
-
 	@Override
-	public BinaryInfo getProfilePicture(Contact contact) {
+	public Document getProfilePicture(Contact contact) {
 		ObjectContext sharedContext = cayenneService.sharedContext();
-		SelectQuery query = new SelectQuery(BinaryInfo.class, ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + '.' + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, contact.getId())
-				.andExp(ExpressionFactory.matchExp(BinaryInfo.BINARY_INFO_RELATIONS_PROPERTY + '.' + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, contact.getObjectId().getEntityName()))
-				.andExp(ExpressionFactory.matchExp(BinaryInfo.NAME_PROPERTY, NAME_PROFILE_PICTURE)));
-		List<BinaryInfo> binaryInfos = sharedContext.performQuery(query);
+		SelectQuery query = new SelectQuery(Document.class, ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + '.' + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, contact.getId())
+				.andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + '.' + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, contact.getObjectId().getEntityName()))
+				.andExp(ExpressionFactory.matchExp(Document.NAME_PROPERTY, NAME_PROFILE_PICTURE)));
+		List<Document> binaryInfos = sharedContext.performQuery(query);
 		return binaryInfos.size() > 0 ? binaryInfos.get(0): null;
 	}
 
 	@Override
-	public String getUrl(BinaryInfo binaryInfo) {
+	public String getUrl(Document binaryInfo) {
 		if (binaryInfo.getFileUUID() != null) {
-			if (AttachmentInfoVisibility.PUBLIC.equals(binaryInfo.getWebVisible())) {
+			if (AttachmentInfoVisibility.PUBLIC.equals(binaryInfo.getWebVisibility())) {
 				return s3Service.getPermanentUrl(preferenceController.getStorageBucketName(), binaryInfo.getFileUUID());
 			} else {
 				return s3Service.getTemporaryUrl(preferenceController.getStorageBucketName(), binaryInfo.getFileUUID(), URL_EXPIRE_TIMEOUT);
 			}
 		}
-		return String.format(CONTEXT_PATH_TEMPLATE, binaryInfo.getFilePath(), binaryInfo.getName(), binaryInfo.getType());
+		return String.format(CONTEXT_PATH_TEMPLATE, binaryInfo.getCurrentVersion().getFilePath(), binaryInfo.getName(), binaryInfo.getCurrentVersion().getMimeType());
 	}
 }

@@ -1,6 +1,6 @@
 package ish.oncourse.services.filestorage;
 
-import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.DocumentVersion;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -13,7 +13,7 @@ import javax.naming.NamingException;
 import java.io.File;
 import java.util.List;
 
-public class FileStorageAssetService implements IFileStorageAssetService{
+public class FileStorageAssetService implements IFileStorageAssetService {
 
     private static final Logger LOGGER = Logger.getLogger(FileStorageAssetService.class);
 
@@ -26,71 +26,72 @@ public class FileStorageAssetService implements IFileStorageAssetService{
     /**
      * The method puts the binary data to the file storage
      * @param data - binary data, not null
-     * @param binaryInfo - binary info, not null
+     * @param documentVersion - binary info, not null
      */
-    public void put(byte[] data, BinaryInfo binaryInfo) {
-        LOGGER.debug(String.format("Start FileStorageAssetService.put with parameters: data.length: %s, binaryInfo: %s",
-                data != null ?data.length:0, binaryInfo));
-        String relatedPath = getPathBy(data, binaryInfo);
+    public void put(byte[] data, DocumentVersion documentVersion) {
+        LOGGER.debug(String.format("Start FileStorageAssetService.put with parameters: data.length: %s, documentVersion: %s",
+                data != null ?data.length:0, documentVersion));
+		
+        String relatedPath = getPathBy(data, documentVersion);
         /**
          * delete old file if new path is not the same as old
          */
-        if (binaryInfo.getFilePath() != null && !relatedPath.equals(binaryInfo.getFilePath()))
+        if (documentVersion.getFilePath() != null && !relatedPath.equals(documentVersion.getFilePath()))
         {
-            delete(binaryInfo);
+            delete(documentVersion);
         }
         if (!getFileStorageService().contains(relatedPath)) {
             getFileStorageService().put(data, relatedPath);
         }
-        binaryInfo.setFilePath(relatedPath);
-        LOGGER.debug(String.format("Finish FileStorageAssetService.put with parameters: data.length: %s, binaryInfo: %s",
-                data != null ?data.length:0, binaryInfo));
+        documentVersion.setFilePath(relatedPath);
+        LOGGER.debug(String.format("Finish FileStorageAssetService.put with parameters: data.length: %s, documentVersion: %s",
+                data != null ?data.length:0, documentVersion));
     }
 
     /**
      * The method gets binary data by the BinaryInfo, if there is not data for the BinaryInfo, IllegalArgumentException will be throw.
-     * @param binaryInfo - BinaryInfo not null and property filePath should be not null
+     * @param documentVersion - BinaryInfo not null and property filePath should be not null
      * @return - binary data for the BinaryInfo.
      */
-    public byte[] get(BinaryInfo binaryInfo) {
-        return getFileStorageService().get(binaryInfo.getFilePath());
+    public byte[] get(DocumentVersion documentVersion) {
+        return getFileStorageService().get(documentVersion.getFilePath());
     }
 
     /**
      * The method deletes binary data for this BinaryInfo only when this BinaryData is not used anymore.
-     * @param binaryInfo
+     * @param documentVersion
      */
-    public void delete(BinaryInfo binaryInfo) {
+    public void delete(DocumentVersion documentVersion) {
 
-        Expression exp = ExpressionFactory.matchDbExp(BinaryInfo.FILE_PATH_PROPERTY, binaryInfo.getFilePath());
-        SelectQuery selectQuery = new SelectQuery(BinaryInfo.class, exp);
+        Expression exp = ExpressionFactory.matchDbExp(DocumentVersion.FILE_PATH_PROPERTY, documentVersion.getFilePath());
+        SelectQuery selectQuery = new SelectQuery(DocumentVersion.class, exp);
         selectQuery.setPageSize(1);
 
         @SuppressWarnings("unchecked")
-		List<BinaryInfo> list = binaryInfo.getObjectContext().performQuery(selectQuery);
+		List<DocumentVersion> list = documentVersion.getObjectContext().performQuery(selectQuery);
         if (list.size() == 1) {
-            getFileStorageService().delete(binaryInfo.getFilePath());
+            getFileStorageService().delete(documentVersion.getFilePath());
         }
     }
 
     /**
      * The method builds path string from this data (md5) and BinaryInfo (collegeId)
      * @param data - binary data for the BinaryInfo
-     * @param binaryInfo
+     * @param documentVersion
      * @return
      */
-    String getPathBy(byte[] data, BinaryInfo binaryInfo) {
+    String getPathBy(byte[] data, DocumentVersion documentVersion) {
         String md5 = DigestUtils.md5Hex(data);
-        return String.format("%d/%s", binaryInfo.getCollege().getId(), md5);
+        return String.format("%d/%s", documentVersion.getCollege().getId(), md5);
     }
 
     public FileStorageService getFileStorageService() {
         return fileStorageService;
     }
 
-    public boolean contains(BinaryInfo binaryInfo)
+    public boolean contains(DocumentVersion documentVersion)
     {
-        return getFileStorageService().contains(binaryInfo.getFilePath());
+        return getFileStorageService().contains(documentVersion.getFilePath());
     }
 
     public void init() {

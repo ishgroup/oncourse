@@ -1,6 +1,6 @@
 package ish.oncourse.services.textile.validator;
 
-import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.Document;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.TextileType;
@@ -28,13 +28,13 @@ public class AttachmentTextileValidator extends AbstractTextileValidator {
 	
 	@Override
 	protected void specificTextileValidate(String tag, ValidationErrors errors) {
-		BinaryInfo result = null;
+		Document result = null;
 		
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
 		String name = tagParams.get(AttachmentTextileAttributes.ATTACHMENT_PARAM_NAME.getValue());
 		
 		if (name != null) {
-			result = binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, name);
+			result = binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, name);
 			if (result == null) {
 				errors.addFailure(getNotFoundMessage(name), ValidationFailureType.CONTENT_NOT_FOUND);
 			}

@@ -1,10 +1,10 @@
 package ish.oncourse.services.filestorage;
 
-import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.DocumentVersion;
 
 public interface IFileStorageAssetService {
-    public void put(byte[] data, BinaryInfo binaryInfo);
-    public byte[] get(BinaryInfo binaryInfo);
-    public void delete(BinaryInfo binaryInfo);
-    public boolean contains(BinaryInfo binaryInfo);
+    public void put(byte[] data, DocumentVersion documentVersion);
+    public byte[] get(DocumentVersion documentVersion);
+    public void delete(DocumentVersion documentVersion);
+    public boolean contains(DocumentVersion documentVersion);
 }

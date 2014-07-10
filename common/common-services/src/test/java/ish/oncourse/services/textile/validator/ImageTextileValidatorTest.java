@@ -1,6 +1,7 @@
 package ish.oncourse.services.textile.validator;
 
-import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.Document;
+import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
@@ -30,10 +31,15 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 
     @Mock
     private IFileStorageAssetService fileStorageAssetService;
+	
 	@Mock
-	private BinaryInfo binaryInfo;
+	private Document document;
+	
 	@Mock
-	private BinaryInfo emptyBinaryInfo;
+	private DocumentVersion documentVersion;
+	
+	@Mock
+	private Document emptyDocument;
 
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
@@ -90,9 +96,9 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 	public void init() {
 		validator = new ImageTextileValidator(binaryDataService, fileStorageAssetService);
 		errors = new ValidationErrors();
-		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_BINARYINFO_NAME)).thenReturn(binaryInfo);
-		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, NOT_EXISTING_NAME)).thenReturn(null);
-        when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
+		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, TEST_BINARYINFO_NAME)).thenReturn(document);
+		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, NOT_EXISTING_NAME)).thenReturn(null);
+        when(fileStorageAssetService.contains(documentVersion)).thenReturn(Boolean.TRUE);
     }
 
 	/**

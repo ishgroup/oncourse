@@ -1,6 +1,8 @@
 package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.Document;
+import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.TextileUtil;
@@ -34,7 +36,10 @@ public class AttachmentTextileRendererTest {
 	private IPageRenderer pageRenderer;
 	
 	@Mock
-	private BinaryInfo binaryInfo;
+	private Document document;
+	
+	@Mock
+	private DocumentVersion documentVersion;
 	
 	private AttachmentTextileRenderer renderer;
 	
@@ -46,8 +51,8 @@ public class AttachmentTextileRendererTest {
 	@Test
 	public void testAttachmentRendering() {
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_ATTACHMENT_NAME))
-				.thenReturn(binaryInfo);
-        when(fileStorageAssetService.contains(binaryInfo))
+				.thenReturn(document);
+        when(fileStorageAssetService.contains(documentVersion))
                 .thenReturn(Boolean.TRUE);
 
         Map<String, Object> params = new HashMap<>();

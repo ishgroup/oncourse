@@ -1,6 +1,7 @@
 package ish.oncourse.services.textile.validator;
 
-import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.Document;
+import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.attrs.AttachmentTextileAttributes;
@@ -31,10 +32,14 @@ public class AttachmentTextileValidatorTest extends CommonValidatorTest {
     private IFileStorageAssetService fileStorageAssetService;
 
 	@Mock
-	private BinaryInfo binaryInfo;
+	private Document document;
 	
 	@Mock
-	private BinaryInfo emptyBinaryInfo;
+	private DocumentVersion documentVersion;
+	
+	@Mock
+	private Document emptyDocument
+			;
 	
 
 	@Override
@@ -42,11 +47,11 @@ public class AttachmentTextileValidatorTest extends CommonValidatorTest {
 		validator = new AttachmentTextileValidator(binaryDataService,fileStorageAssetService);
 		errors = new ValidationErrors();
 
-		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_ATTACHMENT_NAME)).thenReturn(binaryInfo);
-        when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
+		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, TEST_ATTACHMENT_NAME)).thenReturn(document);
+        when(fileStorageAssetService.contains(documentVersion)).thenReturn(Boolean.TRUE);
 
-        when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, NOT_EXISTING_ATTACHMENT_NAME)).thenReturn(null);
-		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, EMPTY_BINARY_INFO_ATTACHMENT_NAME)).thenReturn(emptyBinaryInfo);
+        when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, NOT_EXISTING_ATTACHMENT_NAME)).thenReturn(null);
+		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, EMPTY_BINARY_INFO_ATTACHMENT_NAME)).thenReturn(emptyDocument);
 	}
 
 	@Override

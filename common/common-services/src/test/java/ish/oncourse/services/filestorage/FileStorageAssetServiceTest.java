@@ -1,8 +1,9 @@
 package ish.oncourse.services.filestorage;
 
 import ish.common.types.AttachmentInfoVisibility;
-import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Document;
+import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.DataSetInitializer;
@@ -67,7 +68,7 @@ public class FileStorageAssetServiceTest extends ServiceTest {
 
         College college = Cayenne.objectForPK(context,College.class, 1);
 
-        BinaryInfo binaryInfo = createBinaryInfo(context,"file1");
+        DocumentVersion binaryInfo = createBinaryInfo(context, "file1", college);
 
         binaryInfo.setByteSize((long) data.length);
         binaryInfo.setCollege(college);
@@ -87,7 +88,7 @@ public class FileStorageAssetServiceTest extends ServiceTest {
 
 
         //test put the same file but  binaryInfo2
-        BinaryInfo binaryInfo2 = createBinaryInfo(context,"file2");
+        DocumentVersion binaryInfo2 = createBinaryInfo(context, "file2", college);
         binaryInfo2.setByteSize((long) data.length);
         binaryInfo2.setCollege(college);
         fileStorageAssetService.put(data,binaryInfo2);
@@ -107,7 +108,7 @@ public class FileStorageAssetServiceTest extends ServiceTest {
         assertFalse("file does not exist for the binaryInfo", fileStorageAssetService.contains(binaryInfo));
 
         //test put again the same final but new binaryInfo
-        binaryInfo = createBinaryInfo(context,"file2");
+        binaryInfo = createBinaryInfo(context, "file2", college);
         binaryInfo.setByteSize((long) data.length);
         binaryInfo.setCollege(college);
         fileStorageAssetService.put(data, binaryInfo);
@@ -116,14 +117,23 @@ public class FileStorageAssetServiceTest extends ServiceTest {
 
     }
 
-    private BinaryInfo createBinaryInfo(ObjectContext context, String fileName) {
-        BinaryInfo binaryInfo = context.newObject(BinaryInfo.class);
-        binaryInfo.setMimeType("");
-        binaryInfo.setName(fileName);
-        binaryInfo.setPixelHeight(0);
-        binaryInfo.setPixelWidth(0);
-        binaryInfo.setWebVisible(AttachmentInfoVisibility.PUBLIC);
-        return binaryInfo;
+    private DocumentVersion createBinaryInfo(ObjectContext context, String fileName, College college) {
+        Document document = context.newObject(Document.class);
+		DocumentVersion documentVersion = context.newObject(DocumentVersion.class);
+
+		document.setCollege(college);
+		document.setName(fileName);
+		document.setWebVisibility(AttachmentInfoVisibility.PUBLIC);
+		document.setIsRemoved(false);
+		document.setIsShared(true);
+		
+		documentVersion.setCollege(college);
+        documentVersion.setMimeType("");
+        documentVersion.setPixelHeight(0);
+        documentVersion.setPixelWidth(0);
+		documentVersion.setDocument(document);
+        
+        return documentVersion;
     }
 
     @After

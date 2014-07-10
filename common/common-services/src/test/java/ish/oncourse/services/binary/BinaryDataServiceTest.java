@@ -5,10 +5,7 @@
 package ish.oncourse.services.binary;
 
 import ish.common.types.AttachmentInfoVisibility;
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.BinaryInfoRelation;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
+import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.DataSetInitializer;
@@ -50,7 +47,7 @@ public class BinaryDataServiceTest extends ServiceTest{
 		request.setAttribute("currentCollege", college);
 		Contact contact1 = Cayenne.objectForPK(context, Contact.class, 1l);
 
-		BinaryInfo binaryInfo = createBinaryInfo(context, "binaryInfo1");
+		Document binaryInfo = createBinaryInfo(context, "binaryInfo1");
 		createBinaryInfoRelation(context, contact1, binaryInfo);
 
 		binaryInfo = createBinaryInfo(context, "binaryInfo2");
@@ -63,7 +60,7 @@ public class BinaryDataServiceTest extends ServiceTest{
 		createBinaryInfoRelation(context, contact1, binaryInfo);
 		context.commitChanges();
 
-		List<BinaryInfo> list = binaryDataService.getAttachedFiles(1l, Contact.class.getSimpleName(), false);
+		List<Document> list = binaryDataService.getAttachedFiles(1l, Contact.class.getSimpleName(), false);
 		assertEquals(3, list.size());
 
 		binaryInfo = binaryDataService.getProfilePicture(contact1);
@@ -71,20 +68,29 @@ public class BinaryDataServiceTest extends ServiceTest{
 	}
 
 
-	private BinaryInfo createBinaryInfo(ObjectContext context, String fileName) {
-		BinaryInfo binaryInfo = context.newObject(BinaryInfo.class);
-		binaryInfo.setCollege(college);
-		binaryInfo.setMimeType("");
-		binaryInfo.setName(fileName);
-		binaryInfo.setPixelHeight(0);
-		binaryInfo.setPixelWidth(0);
-		binaryInfo.setWebVisible(AttachmentInfoVisibility.PUBLIC);
-		return binaryInfo;
+	private Document createBinaryInfo(ObjectContext context, String fileName) {
+		Document document = context.newObject(Document.class);
+		DocumentVersion version = context.newObject(DocumentVersion.class);
+		
+		document.setCollege(college);
+		document.setName(fileName);
+		document.setWebVisibility(AttachmentInfoVisibility.PUBLIC);
+		document.setIsRemoved(false);
+		document.setIsShared(true);
+
+		version.setCollege(college);
+		version.setPixelHeight(0);
+		version.setPixelWidth(0);
+		version.setMimeType("");
+		
+		version.setDocument(document);
+		
+		return document;
 	}
 
-	private BinaryInfoRelation createBinaryInfoRelation(ObjectContext context, Contact contact, BinaryInfo binaryInfo) {
+	private BinaryInfoRelation createBinaryInfoRelation(ObjectContext context, Contact contact, Document binaryInfo) {
 		BinaryInfoRelation relation = context.newObject(BinaryInfoRelation.class);
-		relation.setBinaryInfo(binaryInfo);
+		relation.setDocument(binaryInfo);
 		relation.setCollege(binaryInfo.getCollege());
 		relation.setEntityAngelId(contact.getAngelId());
 		relation.setEntityWillowId(contact.getId());
