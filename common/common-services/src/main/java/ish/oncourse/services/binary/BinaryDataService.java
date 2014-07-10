@@ -1,6 +1,7 @@
 package ish.oncourse.services.binary;
 
 import ish.common.types.AttachmentInfoVisibility;
+import ish.common.types.AttachmentSpecialType;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -121,7 +122,9 @@ public class BinaryDataService implements IBinaryDataService {
 
 	boolean isProfilePicture(BinaryInfoRelation relation)
 	{
-		return relation.getEntityIdentifier().equals(Contact.class.getSimpleName()) && relation.getDocument().getName().equals(NAME_PROFILE_PICTURE);
+		// old style attachment name check is still remaining, it should be removed once all colleges switch to angel 5.1+
+		return AttachmentSpecialType.PROFILE_PICTURE.equals(relation.getSpecialType()) || 
+				relation.getEntityIdentifier().equals(Contact.class.getSimpleName()) && relation.getDocument().getName().equals(NAME_PROFILE_PICTURE);
 	}
 	
 	private boolean isStudentLoggedIn() {
@@ -131,6 +134,20 @@ public class BinaryDataService implements IBinaryDataService {
 	@Override
 	public Document getProfilePicture(Contact contact) {
 		ObjectContext sharedContext = cayenneService.sharedContext();
+
+		SelectQuery profilePictureRelationsQuery = new SelectQuery(BinaryInfoRelation.class, ExpressionFactory.matchExp(BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, contact.getId())
+				.andExp(ExpressionFactory.matchExp(BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, contact.getObjectId().getEntityName()))
+				.andExp(ExpressionFactory.matchExp(BinaryInfoRelation.SPECIAL_TYPE_PROPERTY, AttachmentSpecialType.PROFILE_PICTURE)));
+		
+		List<BinaryInfoRelation> profilePictureRelations = sharedContext.performQuery(profilePictureRelationsQuery);
+		
+		if (!profilePictureRelations.isEmpty()) {
+			return profilePictureRelations.get(0).getDocument();
+		}
+		
+		// if couldn't find profile picture using BinaryInfoRelation.specialType field then default to the old style name search
+		// this logic should be removed once all colleges switch to angel 5.1+
+		
 		SelectQuery query = new SelectQuery(Document.class, ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + '.' + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, contact.getId())
 				.andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + '.' + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, contact.getObjectId().getEntityName()))
 				.andExp(ExpressionFactory.matchExp(Document.NAME_PROPERTY, NAME_PROFILE_PICTURE)));
@@ -147,6 +164,6 @@ public class BinaryDataService implements IBinaryDataService {
 				return s3Service.getTemporaryUrl(preferenceController.getStorageBucketName(), binaryInfo.getFileUUID(), URL_EXPIRE_TIMEOUT);
 			}
 		}
-		return String.format(CONTEXT_PATH_TEMPLATE, binaryInfo.getCurrentVersion().getFilePath(), binaryInfo.getName(), binaryInfo.getCurrentVersion().getMimeType());
+		return String.format(CONTEXT_PATH_TEMPLATE, binaryInfo.getCurrentVersion().getFilePath(), binaryInfo.getName(), binaryInfo.getType());
 	}
 }

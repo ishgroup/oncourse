@@ -30,7 +30,15 @@ public class Document extends _Document implements Queueable {
 
 	@Deprecated
 	public String getType() {
-		return getCurrentVersion().getMimeType();
+		// Logic is copied from {@link BinaryInfo#getType} and is only here 
+		// for the purpose of compatibility with angel versions before 5.1
+		
+		DocumentVersion currentVersion = getCurrentVersion();
+		
+		if (currentVersion.getMimeType() == null) {
+			return "";
+		}
+		return AttachmentType.getExtentionByMimeType(currentVersion.getMimeType());
 	}
 
 	@Deprecated
