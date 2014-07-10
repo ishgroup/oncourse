@@ -2786,4 +2786,27 @@
 		<dropNotNullConstraint tableName="BinaryInfoRelation" columnName="binaryInfoId" columnDataType="bigint"/>
 	</changeSet>
 	
+	<changeSet id="182" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="DocumentVersion" columnName="filePath"/>
+			</not>
+		</preConditions>
+
+		<sql>ALTER TABLE DocumentVersion ADD COLUMN filePath VARCHAR(512)</sql>
+	</changeSet>
+	
+	<changeSet id="183" author="dzmitry" runOnChange="false" context="production">
+		<sql>
+			INSERT INTO Document
+			(id, fileUUID, name, isShared, isRemoved, webVisibility, description, collegeId, angelId, created, modified)
+			select bi.id, bi.fileUUID, bi.name, 1, 0, bi.isWebVisible, NULL, bi.collegeId, bi.angelId, bi.created, bi.modified from BinaryInfo bi;
+
+			INSERT INTO DocumentVersion
+			(id, documentId, versionId, fileName, byteSize, mimeType, timestamp, thumbnail, pixelWidth, pixelHeight, created, modified, angelId, collegeId, description, createdByUserId)
+			select bi.id, bi.id, NULL, bi.name, bi.byteSize, bi.mimeType, bi.created, NULL, bi.pixelWidth, bi.pixelHeight, bi.created, bi.modified, bi.angelId, bi.collegeId, NULL, NULL from BinaryInfo bi;
+
+			UPDATE BinaryInfoRelation SET documentId = binaryInfoId;
+		</sql>
+	</changeSet>
 </databaseChangeLog>
