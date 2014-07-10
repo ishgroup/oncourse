@@ -190,8 +190,12 @@ public class TestModuleForContentStructure {
 
 		public IBinaryDataService buildBinaryDataServiceOverride() {
 			IBinaryDataService mock = mock(IBinaryDataService.class);
+			
 			Document document = mock(Document.class);
+			DocumentVersion documentVersion = mock(DocumentVersion.class);
+			
 			when(document.getName()).thenReturn(TestModuleForContentStructure.NAME_FOR_BINARY_INFO);
+			when(document.getCurrentVersion()).thenReturn(documentVersion);
 
 			when(mock.getBinaryInfo(Document.NAME_PROPERTY,TestModuleForContentStructure.NAME_FOR_BINARY_INFO)).thenReturn(
 					document);
