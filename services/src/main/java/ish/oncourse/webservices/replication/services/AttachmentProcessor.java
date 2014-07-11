@@ -5,6 +5,7 @@ import ish.oncourse.model.Document;
 import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
 import ish.oncourse.webservices.util.GenericBinaryDataStub;
 import org.apache.cayenne.Cayenne;
@@ -18,9 +19,11 @@ public class AttachmentProcessor {
     private static Logger logger = Logger.getLogger(AttachmentProcessor.class);
 
     private IFileStorageAssetService fileStorageAssetService;
+	private IWebSiteService webSiteService;
 
-    public AttachmentProcessor(IFileStorageAssetService fileStorageAssetService) {
+    public AttachmentProcessor(IFileStorageAssetService fileStorageAssetService, IWebSiteService webSiteService) {
         this.fileStorageAssetService = fileStorageAssetService;
+		this.webSiteService = webSiteService;
     }
 
     public Long getBinaryInfoId(GenericBinaryDataStub currentStub)
@@ -61,8 +64,8 @@ public class AttachmentProcessor {
 
 	public DocumentVersion getDocumentVersionByBinaryInfo(BinaryInfo binaryInfo) {
 		SelectQuery query = new SelectQuery(DocumentVersion.class,
-				ExpressionFactory.matchExp(DocumentVersion.ANGEL_ID_PROPERTY, binaryInfo.getId())
-						.andExp(ExpressionFactory.matchExp(DocumentVersion.COLLEGE_PROPERTY, binaryInfo.getCollege())));
+				ExpressionFactory.matchExp(DocumentVersion.ANGEL_ID_PROPERTY, binaryInfo.getAngelId())
+						.andExp(ExpressionFactory.matchExp(DocumentVersion.COLLEGE_PROPERTY, webSiteService.getCurrentCollege())));
 
 		return (DocumentVersion) Cayenne.objectForQuery(binaryInfo.getObjectContext(), query);
 	}

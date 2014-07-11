@@ -86,7 +86,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		this.willowUpdater = willowUpdater;
         this.atomicContext = cayenneService.newNonReplicatingContext();
         this.queuedStatisticProcessor = new QueuedStatisticProcessor(this.atomicContext,webSiteService,willowUpdater,this);
-        this.attachmentProcessor = new AttachmentProcessor(fileStorageAssetService);
+        this.attachmentProcessor = new AttachmentProcessor(fileStorageAssetService, webSiteService);
 	}
 
 	/**

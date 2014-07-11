@@ -1,8 +1,6 @@
 package ish.oncourse.webservices.replication.services;
 
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.model.QueuedTransaction;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.ServiceTest;
@@ -11,10 +9,13 @@ import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v4.stubs.replication.BinaryDataStub;
-import ish.oncourse.webservices.v4.stubs.replication.BinaryInfoStub;
-import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
+import ish.oncourse.webservices.v6.stubs.replication.BinaryDataStub;
+import ish.oncourse.webservices.v6.stubs.replication.BinaryInfoStub;
+import ish.oncourse.webservices.v6.stubs.replication.DeletedStub;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -146,12 +147,12 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
     @Test
     public void testBinaryDataProcessing() {
-        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V4);
+        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V6);
         transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
         BinaryInfoStub binaryInfoStub = new BinaryInfoStub();
         binaryInfoStub.setEntityIdentifier("AttachmentInfo");
         binaryInfoStub.setAngelId(422l);
-        binaryInfoStub.setWebVisible(true);
+        binaryInfoStub.setWebVisible(0);
         binaryInfoStub.setByteSize(464609L);
         binaryInfoStub.setMimeType("application/pdf");
         binaryInfoStub.setName("Presenter's Guide");
@@ -173,9 +174,12 @@ public class TransactionGroupProcessorTest extends ServiceTest {
                 willowId = record.getStub().getWillowId();
                 assertNotNull("Willow id for AttachmentInfo", willowId);
             }
-            BinaryInfo binaryInfo = Cayenne.objectForPK(cayenneService.sharedContext(), BinaryInfo.class, 1L);
-            assertNotNull("BinaryInfo form db", binaryInfo);
-            assertNotNull("BinaryInfo filePath", binaryInfo.getFilePath());
+            DocumentVersion documentVersion = Cayenne.objectForPK(cayenneService.sharedContext(), DocumentVersion.class, 1L);
+			BinaryInfo binaryInfo = Cayenne.objectForPK(cayenneService.sharedContext(), BinaryInfo.class, 1L);
+
+			assertNotNull("BinaryInfo form db", binaryInfo);
+			assertNotNull(documentVersion);
+            assertNotNull("BinaryInfo filePath", documentVersion.getFilePath());
         }
 
         transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
@@ -189,7 +193,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         deletedStubBD.setEntityIdentifier("AttachmentData");
 
 
-        transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V4);
+        transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V6);
         transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStubBI);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStubBD);
@@ -198,8 +202,19 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         for (GenericReplicatedRecord record : records) {
             assertTrue("GenericReplicatedRecord success", StubUtils.hasSuccessStatus(record));
         }
-        BinaryInfo binaryInfo = Cayenne.objectForPK(cayenneService.newContext(), BinaryInfo.class, willowId);
+
+		ObjectContext context = cayenneService.newContext();
+		
+		BinaryInfo binaryInfo = (BinaryInfo) Cayenne.objectForQuery(context, 
+				new SelectQuery(BinaryInfo.class, ExpressionFactory.matchExp(BinaryInfo.ANGEL_ID_PROPERTY, 422l)));
+		Document document = (Document) Cayenne.objectForQuery(context,
+				new SelectQuery(DocumentVersion.class, ExpressionFactory.matchExp(Document.ANGEL_ID_PROPERTY, 422l)));
+        DocumentVersion documentVersion = (DocumentVersion) Cayenne.objectForQuery(context,
+				new SelectQuery(DocumentVersion.class, ExpressionFactory.matchExp(DocumentVersion.ANGEL_ID_PROPERTY, 422l)));
+		
         assertNull("BinaryInfo is null", binaryInfo);
+		assertNull(document);
+		assertNull(documentVersion);
     }
 
 
