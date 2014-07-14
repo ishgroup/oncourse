@@ -31,8 +31,7 @@ public class BinaryDataService implements IBinaryDataService {
 	
 	public static final String NAME_PROFILE_PICTURE = "Profile picture";
 	public static final String CONTEXT_PATH_TEMPLATE = "/a/%s/%s.%s";
-
-	public static final Long URL_EXPIRE_TIMEOUT = 3600000L;
+	public static final String PRIVATE_RESOURCE_PATTERN = "/portal/resource/%s";
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -161,7 +160,9 @@ public class BinaryDataService implements IBinaryDataService {
 			if (AttachmentInfoVisibility.PUBLIC.equals(binaryInfo.getWebVisibility())) {
 				return s3Service.getPermanentUrl(preferenceController.getStorageBucketName(), binaryInfo.getFileUUID());
 			} else {
-				return s3Service.getTemporaryUrl(preferenceController.getStorageBucketName(), binaryInfo.getFileUUID(), URL_EXPIRE_TIMEOUT);
+				// for now hardcoding "/portal" path into url since portal is the only place where
+				// private resources are displayed
+				return String.format(PRIVATE_RESOURCE_PATTERN, binaryInfo.getFileUUID());
 			}
 		}
 		return String.format(CONTEXT_PATH_TEMPLATE, binaryInfo.getCurrentVersion().getFilePath(), binaryInfo.getName(), binaryInfo.getType());
