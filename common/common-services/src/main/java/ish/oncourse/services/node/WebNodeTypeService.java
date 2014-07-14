@@ -11,31 +11,43 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
 public class WebNodeTypeService extends BaseService<WebNodeType> implements
 		IWebNodeTypeService {
-	
+
+    private static final String KEY_defaultWebNodeType = "defaultWebNodeType";
+
 	@Inject
 	private IWebSiteVersionService webSiteVersionService;
 
+    @Inject
+    private Request request;
+
 	public WebNodeType getDefaultWebNodeType() {
-		IWebSiteService webSiteService = getWebSiteService();
-		
-		Expression expr = ExpressionFactory.matchExp(
-				WebNodeType.WEB_SITE_VERSION_PROPERTY, 
-				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
+        WebNodeType result = getFromRequest(WebNodeType.class, KEY_defaultWebNodeType);
+        if (result == null) {
+            IWebSiteService webSiteService = getWebSiteService();
 
-		expr = expr.andExp(ExpressionFactory
-				.matchExp(WebNodeType.LAYOUT_KEY_PROPERTY,
-						WebNodeType.DEFAULT_LAYOUT_KEY));
+            Expression expr = ExpressionFactory.matchExp(
+                    WebNodeType.WEB_SITE_VERSION_PROPERTY,
+                    webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
 
-        expr = expr.andExp(ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY, WebNodeType.PAGE));
-		
-		List<WebNodeType> webNodeTypes = findByQualifier(expr);
+            expr = expr.andExp(ExpressionFactory
+                    .matchExp(WebNodeType.LAYOUT_KEY_PROPERTY,
+                            WebNodeType.DEFAULT_LAYOUT_KEY));
 
-		return (!webNodeTypes.isEmpty()) ? webNodeTypes.get(0) : null;
+            expr = expr.andExp(ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY, WebNodeType.PAGE));
+
+            List<WebNodeType> webNodeTypes = findByQualifier(expr);
+
+            result = (!webNodeTypes.isEmpty()) ? webNodeTypes.get(0) : null;
+            //we put the result to the request to prevent redundant sql requests to db when the application renders a page
+            putToRequest(KEY_defaultWebNodeType, result);
+        }
+        return result;
 	}
 
 	public List<WebNodeType> getWebNodeTypes() {
@@ -53,4 +65,18 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
 
         return context.performQuery(selectQuery);
 	}
+
+    private <V> V getFromRequest(Class<V> vClass, String key)
+    {
+        Object value = request.getAttribute(key);
+        if (value != null && vClass.isAssignableFrom(value.getClass()))
+            return (V) value;
+        else
+            return null;
+    }
+
+    private <V> void putToRequest(String key, V value)
+    {
+        request.setAttribute(key, value);
+    }
 }
