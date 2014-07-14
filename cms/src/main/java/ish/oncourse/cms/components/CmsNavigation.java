@@ -1,12 +1,12 @@
 package ish.oncourse.cms.components;
 
-import ish.oncourse.cms.services.Constants;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.SystemUser;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WillowUser;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.ui.pages.internal.Page;
+import ish.oncourse.util.HTMLUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -50,7 +50,7 @@ public class CmsNavigation {
 
     public void onActionFromLogout() throws Exception {
         authenticationService.logout();
-        response.sendRedirect(Constants.HOME_PAGE);
+        response.sendRedirect(HTMLUtils.HTTP_PROTOCOL + request.getServerName());
     }
 
     public Object onActionFromPages() {
