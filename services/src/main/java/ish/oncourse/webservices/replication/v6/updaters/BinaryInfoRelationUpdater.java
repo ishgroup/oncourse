@@ -15,7 +15,7 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 		
 		entity.setBinaryInfo(callback.updateRelationShip(stub.getBinaryInfoId(), BinaryInfo.class));
 		
-		// Document records in v6 replication should always have the same id as BinaryInfo records
+		// Document records in v6 replication should always have the same angel id as BinaryInfo records
 		// so it is safe to fetch document using binaryInfoId field of the stub 
 		entity.setDocument(callback.updateRelationShip(stub.getBinaryInfoId(), Document.class));
 		

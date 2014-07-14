@@ -10,11 +10,18 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 
 	@Override
 	public void updateEntity(BinaryInfoRelationStub stub, BinaryInfoRelation entity, RelationShipCallback callback) {
-		entity.setBinaryInfo(callback.updateRelationShip(stub.getBinaryInfoId(), BinaryInfo.class));
 		entity.setCreated(stub.getCreated());
+		entity.setModified(stub.getModified());
+		
+		entity.setBinaryInfo(callback.updateRelationShip(stub.getBinaryInfoId(), BinaryInfo.class));
+
+		// Document records in v5 replication should always have the same angel id as BinaryInfo records
+		// so it is safe to fetch document using binaryInfoId field of the stub 
+		entity.setDocument(callback.updateRelationShip(stub.getBinaryInfoId(), Document.class));
+		
 		entity.setEntityAngelId(stub.getEntityAngelId());
 		entity.setEntityIdentifier(stub.getEntityName());
-		entity.setModified(stub.getModified());
+		
 		//after set the data, try to update relation related entity willowid
 		Queueable entityObject;
 		if (CONTACT_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
