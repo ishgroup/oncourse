@@ -4,7 +4,9 @@
 package ish.oncourse.cms.webdav;
 
 import io.milton.common.Path;
-import io.milton.http.*;
+import io.milton.http.Auth;
+import io.milton.http.Request;
+import io.milton.http.ResourceFactory;
 import io.milton.http.SecurityManager;
 import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
@@ -22,13 +24,13 @@ import java.util.List;
 
 public class RootResourceFactory implements ResourceFactory {
 	
-	private static final String WEBDAV_PATH_PREFIX = "/cms/webdav";
-	
+	public static final String WEBDAV_PATH_PREFIX = "/cms/webdav";
+
 	private static final String BLOCKS = "blocks";
 	private static final String PAGES = "pages";
 	private static final String S = "s";
 	private static final String TEMPLATES = "templates";
-	
+
 	private static final String[] WEBDAV_DIRS = new String[] { BLOCKS, PAGES, S, TEMPLATES };
 	
 	private IWebSiteService webSiteService;
@@ -95,6 +97,19 @@ public class RootResourceFactory implements ResourceFactory {
 						
 						return resources;
 					}
+
+                    @Override
+                    public boolean authorise(Request request, Request.Method method, Auth auth) {
+                        switch(method) {
+                            case GET:
+                            case HEAD:
+                            case OPTIONS:
+                            case PROPFIND:
+                                return auth != null;
+                            default:
+                                return false;
+                        }
+                    }
 				};
 			}
 			
