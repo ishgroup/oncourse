@@ -4,20 +4,15 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WillowQueueService implements IWillowQueueService {
 
@@ -39,8 +34,8 @@ public class WillowQueueService implements IWillowQueueService {
 	@Override
 	public int getNumberOfTransactions() {
 		cleanEmptyTransactions();
-		
-		String sql = String.format("select count(*) as SIZE from QueuedTransaction t where t.id in (select r.transactionId from QueuedRecord r where r.numberOfAttempts < %s)", QueuedRecord.MAX_NUMBER_OF_RETRY);
+
+		String sql = String.format("select count(distinct t.id) as SIZE from QueuedTransaction t inner join QueuedRecord q on t.id = q.transactionId where q.numberOfAttempts < %s", QueuedRecord.MAX_NUMBER_OF_RETRY);
 		SQLTemplate q = new SQLTemplate(QueuedRecord.class, sql);
 		q.setFetchingDataRows(true);
 		
