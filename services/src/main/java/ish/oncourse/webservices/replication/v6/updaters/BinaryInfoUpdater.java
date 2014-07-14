@@ -54,6 +54,7 @@ public class BinaryInfoUpdater extends AbstractWillowUpdater<BinaryInfoStub, Bin
 		
 		documentVersion.setCreated(entity.getCreated());
 		documentVersion.setModified(entity.getModified());
+		documentVersion.setFileName(entity.getName());
 		documentVersion.setCollege(entity.getCollege());
 		documentVersion.setByteSize(entity.getByteSize());
 		documentVersion.setPixelHeight(entity.getPixelHeight());
