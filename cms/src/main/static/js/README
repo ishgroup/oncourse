@@ -1,0 +1,3 @@
+Note that this js set does not make use of sprockets to combine the files as the main website build does.
+
+Instead, the files are assembled in alphabetical order.

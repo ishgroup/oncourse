@@ -31,21 +31,17 @@ war {
 	manifest {
 		from sharedManifest
 	}
-}
-
-sourceSets {
-    main {
-        resources {
-            exclude 'cms/src'
-            srcDir 'build/resource-assemble'
-        }
+    from 'build/resource-assemble'
+    from ('src/main/static') {
+        exclude 'js'
+        exclude 'src'
     }
 }
 
 compass {
     cssDir = file("${buildDir}/resource-assemble/cms/css")
-    sassDir = file('src/main/resources/cms/src')
-    fontsDir = file('src/main/resources/cms/fonts')
+    sassDir = file('src/main/static/src')
+    fontsDir = file('src/main/static/fonts')
     noLineComments = true
     relativeAssets = true
     debugInfo = false
@@ -55,7 +51,7 @@ compass {
 javascript.source {
     production {
         js {
-            srcDir 'src/main/resources/cms/js'
+            srcDir 'src/main/static/js'
             include "*.js"
         }
     }
