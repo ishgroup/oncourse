@@ -1,4 +1,6 @@
 apply plugin: 'war'
+apply plugin: 'compass'
+apply plugin: 'js'
 
 dependencies {
 	providedCompile 'javax.servlet:servlet-api:2.5'
@@ -31,4 +33,56 @@ war {
 	manifest {
 		from sharedManifest
 	}
+	from 'build/resource-assemble'
+	from ('src/main/static') {
+		exclude 'js'
+		exclude 'src'
+	}
 }
+
+compass {
+    cssDir = file("${buildDir}/resource-assemble/css")
+    sassDir = file('src/main/static/src')
+    fontsDir = file('src/main/static/fonts')
+    noLineComments = true
+    relativeAssets = true
+    debugInfo = false
+    environment = 'production'
+}
+
+javascript.source {
+    production {
+        js {
+            srcDir 'src/main/static/js'
+            include "*.js"
+        }
+    }
+}
+combineJs {
+    source = javascript.source.production.js.files
+    dest = file("${buildDir}/resource-assemble/js/admin.js")
+}
+minifyJs {
+    source = combineJs
+    dest = file("${buildDir}/resource-assemble/js/admin-min.js")
+}
+gzipJs {
+    source = minifyJs
+    dest = file("${buildDir}/resource-assemble/js/admin-min.js.gz")
+}
+
+task zipCss(dependsOn:compileSass) { 
+    String srcPath = "${buildDir}/resource-assemble/css/admin.css"
+    inputs.file srcPath
+    outputs.file "${srcPath}.gz"
+    println "*** ${srcPath}"
+    doLast {
+        ant.gzip(src: srcPath, destfile: "${srcPath}.gz")
+    }
+}
+
+processResources.inputs.files zipCss
+processResources.inputs.files gzipJs
+
+clean.dependsOn cleanCompileSass
+clean.dependsOn cleanMinifyJs
