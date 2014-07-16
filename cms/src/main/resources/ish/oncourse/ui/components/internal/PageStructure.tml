@@ -25,7 +25,7 @@
         <t:if t:test="loggedIn">
             <link href="css/cms/cms.css" media="screen" rel="stylesheet" />
             <link href="/plugins/plugins.css" type="text/css" rel="stylesheet"  />
-            <script src="js/cms/cms.js" />
+            <script src="js/cms/cms-min.js" />
         </t:if>
     </t:block>
 
