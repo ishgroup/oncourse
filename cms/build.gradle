@@ -36,6 +36,9 @@ war {
         exclude 'js'
         exclude 'src'
     }
+    into('/plugins') {
+        from 'src/main/static/js/plugins'
+    }
 }
 
 compass {
