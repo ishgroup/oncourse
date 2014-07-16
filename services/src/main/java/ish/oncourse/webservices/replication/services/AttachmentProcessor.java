@@ -35,6 +35,10 @@ public class AttachmentProcessor {
 
         logger.info(String.format("AttachmentProcessor.processBinaryDataStub with parameters: stub = %s", currentStub));
 		
+		// before trying to get uncommitted DocumentVersion record instance we need to force BinaryInfoUpdater execution
+		// so that correspondent DocumentVersion record will be created by the moment we will need to get hold of it
+		callback.updateRelationShip(getBinaryInfoId(currentStub), BinaryInfo.class);
+		
 		DocumentVersion documentVersion = callback.updateRelationShip(getBinaryInfoId(currentStub), DocumentVersion.class);
 		logger.info(String.format("AttachmentProcessor.processBinaryDataStub fileStorageAssetService.put for binaryDataStub %s and binaryInfo %s", currentStub, documentVersion));
 		
