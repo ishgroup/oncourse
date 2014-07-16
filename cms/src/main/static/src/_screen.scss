@@ -11,7 +11,8 @@ Media screen. Layout, fonts, colors.
 
 $head-height: 60px;
 $menu-height: 41px;
-$i: /s/cms/img;
+//path where these images are located. cms application keeps images in folder /img of the root of application war
+$i: /img;
 
 
 /* Linear gradient. Sample: gradient-linear(#000000, #808080, image_gradient); */

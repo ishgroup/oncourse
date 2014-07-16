@@ -20,10 +20,11 @@
         <t:delegate to="block:cmsNavigation"/>
 	</body>
 
+
     <t:block t:id="cmsHead">
         <t:if t:test="loggedIn">
-            <link href="/cms/css/cms.css" media="screen" rel="stylesheet" />
-            <script src="/cms/js/cms-min.js" />
+            <link href="css/cms/cms.css" media="screen" rel="stylesheet" />
+            <script src="js/cms/cms.js" />
         </t:if>
     </t:block>
 

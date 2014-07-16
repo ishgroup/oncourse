@@ -39,7 +39,7 @@ war {
 }
 
 compass {
-    cssDir = file("${buildDir}/resource-assemble/cms/css")
+    cssDir = file("${buildDir}/resource-assemble/css/cms")
     sassDir = file('src/main/static/src')
     fontsDir = file('src/main/static/fonts')
     noLineComments = true
@@ -52,25 +52,25 @@ javascript.source {
     production {
         js {
             srcDir 'src/main/static/js'
-            include "*.js"
+            include "**/*.js"
         }
     }
 }
 combineJs {
     source = javascript.source.production.js.files
-    dest = file("${buildDir}/resource-assemble/cms/js/cms.js")
+    dest = file("${buildDir}/resource-assemble/js/cms/cms.js")
 }
 minifyJs {
     source = combineJs
-    dest = file("${buildDir}/resource-assemble/cms/js/cms-min.js")
+    dest = file("${buildDir}/resource-assemble/js/cms/cms-min.js")
 }
 gzipJs {
     source = minifyJs
-    dest = file("${buildDir}/resource-assemble/cms/js/cms-min.js.gz")
+    dest = file("${buildDir}/resource-assemble/js/cms/cms-min.js.gz")
 }
 
-task zipCss(dependsOn:compileSass) { 
-    String srcPath = "${buildDir}/resource-assemble/cms/css/cms.css"
+task zipCss(dependsOn:compileSass) {
+    String srcPath = "${buildDir}/resource-assemble/css/cms/cms.css"
     inputs.file srcPath
     outputs.file "${srcPath}.gz"
     println "*** ${srcPath}"
