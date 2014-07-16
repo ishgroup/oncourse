@@ -50,16 +50,13 @@ compass {
     environment = 'production'
 }
 
-javascript.source {
-    production {
-        js {
-            srcDir 'src/main/static/js'
-            include "*.js"
-        }
-    }
-}
 combineJs {
-    source = javascript.source.production.js.files
+    source = ["src/main/static/js/jquery-1.8.3.min.js",
+              "src/main/static/js/jquery.ui.datepicker.js",
+              "src/main/static/js/jquery.ui.datepicker.js",
+              "src/main/static/js/jquery.ui.core.js",
+              "src/main/static/js/bootstrap.js"
+    ]
     dest = file("${buildDir}/resource-assemble/js/admin.js")
 }
 minifyJs {

@@ -1,0 +1,54 @@
+body, table {
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+body {
+  margin-top: 20px;
+}
+
+small {
+  font-size: 10px;
+  color: gray;
+}
+label {
+  color: gray;
+}
+
+label+input {
+  margin-left: 20px;
+}
+
+.menu {
+  width: 15%;
+  float: left;
+  list-style: none;
+}
+
+.menu ul {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.content {
+  width: 80%;
+  padding-left: 10%;
+}
+
+.alert {
+  color: red;
+}
+
+.tabs {
+  margin-bottom: 10px;
+}
+
+.tabs a span {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+HTML>BODY DIV.t-error LI {
+  margin-left: 20px;
+}
