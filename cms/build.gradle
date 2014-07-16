@@ -38,6 +38,7 @@ war {
     }
     into('/plugins') {
         from 'src/main/static/js/plugins'
+        exclude '*.js'
     }
 }
 
@@ -51,16 +52,17 @@ compass {
     environment = 'production'
 }
 
-javascript.source {
-    production {
-        js {
-            srcDir 'src/main/static/js'
-            include "**/*.js"
-        }
-    }
-}
 combineJs {
-    source = javascript.source.production.js.files
+    source = [
+            "src/main/static/js/plugins/plugins.js",
+            "src/main/static/js/cms.js",
+            "src/main/static/js/main.js",
+            "src/main/static/js/jquery.jeditable.js",
+            "src/main/static/js/jquery.livequery.js",
+            "src/main/static/js/jquery.livesearch.js",
+            "src/main/static/js/jquery.mjs.nestedSortable.js",
+            "src/main/static/js/menubuilder.js"
+    ]
     dest = file("${buildDir}/resource-assemble/js/cms/cms.js")
 }
 minifyJs {
