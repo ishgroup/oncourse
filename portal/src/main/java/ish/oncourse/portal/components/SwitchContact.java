@@ -36,6 +36,11 @@ public class SwitchContact {
         return true;
     }
 
+    public Contact getSelectedContact()
+    {
+        return portalService.getContact();
+    }
+
     public boolean isActive(Contact contact) {
         return portalService.isSelectedContact(contact);
     }
@@ -51,7 +56,7 @@ public class SwitchContact {
         for (Contact contact : contacts) {
             if (contact.getId().equals(contactId)) {
                 portalService.selectContact(contact);
-                return componentResources.getPage();
+                return timetable;
             }
         }
         return pageNotFound;

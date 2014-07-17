@@ -2,7 +2,7 @@
     <t:if test="needToShow()">
         <div class="btn-group change-user">
             <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
-                Switch user <span class="caret"></span>
+                ${selectedContact.fullName} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu pull-right">
                 <t:loop source="contacts" value="contact">
