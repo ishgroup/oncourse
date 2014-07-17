@@ -35,9 +35,6 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
                     WebNodeType.WEB_SITE_VERSION_PROPERTY,
                     webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
 
-            expr = expr.andExp(ExpressionFactory
-                    .matchExp(WebNodeType.LAYOUT_KEY_PROPERTY,
-                            WebNodeType.DEFAULT_LAYOUT_KEY));
 
             expr = expr.andExp(ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY, WebNodeType.PAGE));
 
