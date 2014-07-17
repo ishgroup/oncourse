@@ -15,6 +15,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.FormatUtils;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -721,7 +722,9 @@ public class PortalService implements IPortalService {
 
     public List<Contact> getChildContacts()
     {
-        List<ContactRelation> contactRelations = getAuthenticatedUser().getToContacts();
+        ObjectContext context = cayenneService.newContext();
+        Contact parent = Cayenne.objectForPK(context, Contact.class, getAuthenticatedUser().getId());
+        List<ContactRelation> contactRelations = parent.getToContacts();
         Expression exp = ExpressionFactory.matchExp(ContactRelation.RELATION_TYPE_PROPERTY + "." + ContactRelationType.DELEGATED_ACCESS_TO_CONTACT_PROPERTY, true);
         contactRelations = exp.filterObjects(contactRelations);
         ArrayList<Contact> result = new ArrayList<>();
