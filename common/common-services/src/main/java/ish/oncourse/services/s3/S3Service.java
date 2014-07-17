@@ -19,20 +19,37 @@ import java.util.Date;
 public class S3Service implements IS3Service {
 
 	private static final String BUCKET_ACCESS_POLICY_DOCUMENT_TEMPLATE =
-			"{\n" +
-			"    \"Statement\": [\n" +
-			"        {\n" +
-			"            \"Effect\": \"Allow\",\n" +
-			"            \"Action\": [\"s3:ListBucket\" ],\n" +
-			"            \"Resource\": [ \"arn:aws:s3:::%s\"]\n" +
-			"        },\n" +
-			"        {\n" +
-			"            \"Effect\": \"Allow\",\n" +
-			"            \"Action\": [ \"s3:PutObject\", \"s3:GetObject\", \"s3:DeleteObject\"],\n" +
-			"            \"Resource\": [ \"arn:aws:s3:::%s/*\"]\n" +
-			"        }\n" +
-			"    ]\n" +
-			"}";
+					"{\n" +
+					"    \"Statement\": [\n" +
+					"		{\n" +
+					"      		\"Effect\": \"Allow\",\n" +
+					"      		\"Action\": [\n" +
+					"        		\"s3:ListBucket\",\n" +
+					"        		\"s3:GetBucketLocation\",\n" +
+					"        		\"s3:ListBucketMultipartUploads\"\n" +
+					"      		],\n" +
+					"      		\"Resource\": \"arn:aws:s3:::%s\",\n" +
+					"      		\"Condition\": {}\n" +
+					"    	},\n" +
+					"    	{\n" +
+					"      		\"Effect\": \"Allow\",\n" +
+					"      		\"Action\": [\n" +
+					"        		\"s3:AbortMultipartUpload\",\n" +
+					"        		\"s3:DeleteObject\",\n" +
+					"        		\"s3:DeleteObjectVersion\",\n" +
+					"        		\"s3:GetObject\",\n" +
+					"        		\"s3:GetObjectAcl\",\n" +
+					"        		\"s3:GetObjectVersion\",\n" +
+					"        		\"s3:GetObjectVersionAcl\",\n" +
+					"        		\"s3:PutObject\",\n" +
+					"        		\"s3:PutObjectAcl\",\n" +
+					"        		\"s3:PutObjectVersionAcl\"\n" +
+					"      		],\n" +
+					"      		\"Resource\": \"arn:aws:s3:::%s/*\",\n" +
+					"      		\"Condition\": {}\n" +
+					"    	}\n" +
+					"    ]\n" +
+					"}";
 
 	private AWSCredentials credentials;
 	
