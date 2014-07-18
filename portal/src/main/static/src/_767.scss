@@ -1,0 +1,352 @@
+@media screen and (max-width: 767px) {
+
+	.navbar-fixed-top {
+		position: static;
+	}
+	
+	#wrap > 	.container {
+		padding: 0;
+	}
+
+	.main-menu {
+		clear: both;
+	}
+	
+	.navbar {
+		.header-nav {
+			
+			.btn-approval {
+				float: left;
+				margin: 0;
+			}
+			
+			> .container {
+				padding-bottom: 8px;
+			}
+		}
+		
+		.container {
+			width: auto;
+		}
+	}
+	
+	.main-nav {
+		padding: 10px 0;
+		display: block;
+		padding-bottom: 10px;
+		
+		li {
+			padding: 10px 0;
+			display: block;
+			
+			&.active {
+				a {
+					color: $red-color;
+					
+					i {	
+						background-position-y: -74px;
+					}
+				}
+			  &:after {
+					display: none;
+				}
+			}
+			
+			a {
+				display: block;
+			}
+		}
+	}
+	
+	.main-container {
+		float: none;
+	}
+	
+	.navbar-collapse.in {
+		overflow-y: initial;
+	}
+	
+	.navbar .logged > ul {
+		
+		> li {
+			float: none;
+			
+			&:first-child {
+					margin-bottom: 12px;
+			}
+			
+			.change-user {
+				z-index: 99;
+			}
+			
+			> span {
+				float: none;
+				border-right: 0;
+				padding-left: 18px;
+			}
+		}
+	}
+	
+	.page-header {
+		margin-top: 18px;
+		
+		span.info {
+			display: inline-block;
+		}
+	}
+
+	.student-list > li:nth-child(odd) .avatar {
+		text-align: right;
+	}
+
+	.logged > p {
+		float: right;
+	}
+	
+	.info-text.fixed {
+		position: static;
+	}
+	
+	.next-session-info > div + div {
+		padding: 22px 10px 22px 10px;
+	}
+	
+	.sidenav {
+		margin-top: 0;
+	}
+	
+	.session-list-content {
+		margin: 0 30px;
+	}
+	
+	.student-detail .list-inline li:nth-child(2){
+		display: inline-block;
+	}
+	
+	.profile-options {
+		
+		.navbar-collapse {
+			border-color: $black;
+			padding: 0;
+		}
+		
+		.nav-tabs li {
+			float: none;
+		}
+	}
+	
+	.tooltip-info {
+		float: right;
+	}
+
+	.resources-content,
+	.result-content {
+		
+		.result-list li {		
+			span {
+				width: 65%;
+			}
+		}		
+	}
+	
+	.navbar {
+		.logged {
+			float: none;
+		}
+	}
+
+	.navbar {
+		margin-bottom: 0;
+		@include border-radius(0);
+	}
+
+	/*.page-header {
+		border-bottom: 1px solid $link-color;
+		margin-top: 0;
+		background: rgb(152,167,187);
+		background: -moz-linear-gradient(top,  rgba(152,167,187,1) 0%, rgba(189,199,212,1) 89%, rgba(192,201,213,1) 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(152,167,187,1)), color-stop(89%,rgba(189,199,212,1)), color-stop(100%,rgba(192,201,213,1)));
+		background: -webkit-linear-gradient(top,  rgba(152,167,187,1) 0%,rgba(189,199,212,1) 89%,rgba(192,201,213,1) 100%);
+		background: -o-linear-gradient(top,  rgba(152,167,187,1) 0%,rgba(189,199,212,1) 89%,rgba(192,201,213,1) 100%);
+		background: -ms-linear-gradient(top,  rgba(152,167,187,1) 0%,rgba(189,199,212,1) 89%,rgba(192,201,213,1) 100%);
+		background: linear-gradient(to bottom,  rgba(152,167,187,1) 0%,rgba(189,199,212,1) 89%,rgba(192,201,213,1) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#98a7bb', endColorstr='#c0c9d5',GradientType=0 );
+
+		
+		h3 {
+			margin: 0px;
+			padding-top: 10px;
+			color: $white;
+			@include text-shadow(0px -2px 0px #B2B2B2);
+			font: {
+				weight: bold;
+				size: 13px;
+			}
+		}
+	}*/
+	
+	.list-item {
+		li {
+			border: 1px solid #d8d8d8;
+			padding: 7px 0;
+			position: relative;
+			@include border-radius(5px);
+			margin-top: -1px;
+			
+			.col-8 {
+				padding-left: 10px;
+			}
+			
+			.glyphicon {
+				position: absolute;
+			}
+			
+			.glyphicon-chevron-right {
+				top: 50%;
+				right: 7px;
+				color: #7c7c7c;
+				margin-top: -8px;
+				display: inline-block;
+			}
+			
+			.glyphicon-ok {
+				top: 50%;
+				left: 0;
+				color: #3854b6;
+				margin-top: -8px;
+			}
+			
+			span + span {
+				text-align: center;
+			}
+		}
+	}
+	
+	.collapsible {
+		margin-top: 15px;
+		
+		.discription {
+			border-top: 1px solid #d8d8d8;
+			margin-top: 7px;
+			padding-top: 10px;
+		}
+		
+		li {
+			border: 1px solid #d8d8d8;
+			padding: 7px 0;
+			position: relative;
+			@include border-radius(5px);
+			margin-top: -1px;
+		}
+	}
+	
+	.usi-button {
+		min-width: 160px;
+		color: #757ba0;
+	}
+	
+	.form-horizontal .control-label {
+		text-align: right;
+	}
+	
+	.sidebar-contnet {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		background: $dark-brown;
+		
+		ul.sidenav {
+			margin-bottom: 0;
+			
+			li {
+				display: inline-block;
+				width: 13.4%;
+				text-indent: -9999px;
+				
+				a {
+					border-bottom: 0;
+					
+					&:hover {
+						background-color: transparent;
+					}
+				}
+				
+				&.classes-icon {
+					background: url(../img/classes-icon.png) center no-repeat;
+					background-size: contain;
+				}
+				
+				&.timetable-icon {
+					background: url(../img/timetable-icon1.png) center no-repeat;
+					background-size: contain;
+				}
+				
+				&.resources-icon {
+					background: url(../img/resources-icon1.png) center no-repeat;
+					background-size: contain;
+				}
+				
+				&.results-icon {
+					background: url(../img/results-icon1.png) center no-repeat;
+					background-size: contain;
+				}
+				
+				&.profile-icon {
+					background: url(../img/profile-icon1.png) center no-repeat;
+					background-size: contain;
+				}
+				
+				&.history-icon {
+					background: url(../img/history-icon1.png) center no-repeat;
+					background-size: contain;
+				}
+				
+				&.subscriptions-icon {
+					background: url(../img/subscriptions-icon1.png) center no-repeat;
+					background-size: contain;
+				}
+			}
+			
+			> li.expanded {
+				border-bottom: 0;
+				padding-bottom: 0;
+				
+				ul {
+					display: none;
+				}
+			}
+		}
+	}
+	
+	#footer {
+    padding-left: 20px;
+    padding-right: 20px;
+		.container .credit {
+			margin: 14px 0 0;
+			
+			small {
+				margin: 3px -1px 0 0;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 480px) {
+  .result-content .result-list li{
+    
+    &:after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+    
+    span {
+      width: 100%;
+    }
+  }
+  
+  .tooltip-info {
+    margin-top: 12px;
+  }
+}

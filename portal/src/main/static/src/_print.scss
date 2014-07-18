@@ -1,0 +1,5 @@
+@media print {
+  .main-container + div, .sidebar, .container > .col-lg-3.col-sm-4 {
+    display: none;
+  }
+}

@@ -1,0 +1,37 @@
+/* Welcome to Compass. Use this file to write IE specific override styles.
+ * Import this file using the following HTML or equivalent:
+ * <!--[if IE]>
+ *   <link href="/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+ * <![endif]--> */
+
+.fc-calendar .fc-row>div, .fc-calendar .fc-head>div {
+  width: 14.28%;
+}
+
+.fc-calendar .fc-row>div {
+  border-left: 1px solid #B0AE99;
+}
+
+.fc-calendar .fc-row>div:first-child {
+  border-left: 0;
+}
+
+.fc-calendar .fc-row {
+  border-top: 1px solid #B0AE99;
+}
+
+.fc-calendar .fc-row:first-child {
+  border-top: 0;
+}
+
+.fc-calendar .fc-body {
+  background: #FEFBE8;
+}
+
+input[type="radio"] {
+  margin-top: 8px;
+}
+
+input[type="checkbox"] {
+  margin-top: 5px;
+}

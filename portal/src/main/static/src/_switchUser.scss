@@ -1,0 +1,17 @@
+div.change-user
+{
+  .btn {
+    font-weight: 700;
+    text-transform: none;
+    background-color: $primary-btn;
+    border-color: $primary-btn;
+  }
+
+  .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color:$primary-btn;
+    outline: 0;
+  }
+
+}

@@ -1,0 +1,545 @@
+@font-face {
+  font-family: 'fontawesome-selected';
+  src: url("../font/fontawesome-selected.eot");
+  src: url("../font/fontawesome-selected.eot?#iefix") format('embedded-opentype'), url("../font/fontawesome-selected.woff") format('woff'), url("../font/fontawesome-selected.ttf") format('truetype'), url("../font/fontawesome-selected.svg#fontawesome-selected") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.calendar-container {
+	position: relative;
+	margin-top: 10px;
+}
+
+.fc-calendar-container {
+	position: relative;
+	height: 400px;
+	width: 400px;
+}
+
+.fc-calendar {
+	width: 100%;
+	height: 100%;
+	
+	.fc-head {
+		height: 30px;
+		line-height: 30px;
+		background: #ccc;
+		color: #fff;
+		
+		> div {
+			text-align: center;
+		}
+	}
+	
+	.fc-body {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		height: -moz-calc(100% - 30px);
+		height: -webkit-calc(100% - 30px);
+		height: calc(100% - 30px);
+		border: 1px solid #ddd;
+	}
+	
+	.fc-row {
+		width: 100%;
+		border-bottom: 1px solid #ddd;
+		
+		> div {
+			border-right: 1px solid #ddd;
+			padding: 4px;
+			overflow: hidden;
+			position: relative;
+			
+			> span.fc-date {
+				position: absolute;
+				width: 30px;
+				height: 20px;
+				font-size: 20px;
+				line-height: 20px;
+				font-weight: 700;
+				color: #ddd;
+				text-shadow: 0 -1px 0 rgba(255,255,255,0.8);
+				bottom: 5px;
+				right: 5px;
+				text-align: right;
+			}
+			
+			> span.fc-weekday {
+				padding-left: 5px;
+				display: none;
+			}
+		}
+		
+		> div.fc-today {
+			background: #fff4c3;
+		}
+		
+		> div.fc-out {
+			opacity: 0.6;
+		}
+		
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+}
+
+
+.fc-four-rows .fc-row  {
+	height: 25%;
+}
+
+.fc-five-rows .fc-row  {
+	height: 20%;
+}
+
+.fc-six-rows .fc-row {
+	height: 16.66%;
+	height: -moz-calc(100%/6);
+	height: -webkit-calc(100%/6);
+	height: calc(100%/6);
+}
+
+.fc-calendar .fc-row > div,
+.fc-calendar .fc-head > div {
+	float: left;
+	height: 100%;
+	width:  14.28%; /* 100% / 7 */
+	width: -moz-calc(100%/7);
+	width: -webkit-calc(100%/7);
+	width: calc(100%/7);
+	position: relative;
+}
+
+/* IE 9 is rounding up the calc it seems */
+.ie9 .fc-calendar .fc-row > div,
+.ie9 .fc-calendar .fc-head > div {
+	width:  14.2%;
+}
+
+
+.fc-calendar .fc-row > div:last-child,
+.fc-calendar .fc-head > div:last-child {
+	border-right: none;
+}
+
+/* Overriding */
+.custom-calendar-full {
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	height: auto;
+}
+
+.fc-calendar-container {
+	bottom: 0px;
+	width: 100%;
+	top: 50px;
+	position: absolute;
+	height: 650px;
+}
+
+.custom-header {
+	padding: 20px 0px 10px 0px;
+	height: 55px;
+	position: relative;
+	
+	h2, h3 {
+		float: left;
+		font-weight: 300;
+	}
+	
+	h2 {
+		color: #fff;
+		width: 60%;
+		
+		a, span {
+			color: rgba(255,255,255,0.3);
+			font-size: 18px;
+			letter-spacing: 3px;
+			white-space: nowrap;
+		}
+		
+		a {
+			color: rgba(255,255,255,0.5);
+		}
+	}
+	
+	h3 {
+		width: 30%;
+		color: #666;
+		float: left;
+		color: #991111;
+		font-weight: 300;
+		line-height: 30px;
+		font-size: 18px;
+		padding-right: 0;
+		margin:0;
+	}
+	
+	nav {
+		position: absolute;
+		left: 0px;
+		top: 20px;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		
+		span {
+			float: left;
+			margin: 7px 7px 0 7px;
+			
+			&.custom-month {
+				min-width: 100px
+			}
+			
+			&#custom-prev, &#custom-next {
+				font-size: 12px;
+				margin-top: 6px;
+				color: #333;
+				cursor: pointer;
+				border: 1px solid $session-nav-bg;
+				padding: 4px 5px 6px 5px;
+				line-height: 17px;
+				font-size: 15px;
+			}
+		}
+	}
+}
+
+.no-touch .custom-header h2 a:hover {
+	color: rgba(255,255,255,0.9);
+}
+
+.fc-calendar {
+	background: #fefbe8;
+	width: auto;
+	top: 15px;
+	bottom: 20px;
+	left: 0px;
+	right: 0px;
+	height: auto;
+	position: absolute;
+	
+	.fc-head { 
+		background: #69524A;
+		color: #fff;
+		height: 40px;
+		line-height: 40px;
+		padding: 0 20px;
+		
+		> div {
+			font-weight: 300;
+			text-transform: uppercase;
+			font-size: 14px;
+			letter-spacing: 3px;
+		}
+	}
+	
+	.fc-row {
+		box-shadow: inset 0 -1px 0 #b0ae99;
+		border: none;
+		
+		> div > span.fc-date {
+			color: #333;
+			text-shadow: none;
+			font-size: 16px;
+			font-weight: 300;
+			bottom: auto;
+			right: auto;
+			top: 10px;
+			left: 10px;
+			text-align: left;
+		}
+		
+		&:last-child {
+			box-shadow: none;
+		}
+		
+		&:first-child {
+		
+			> div:first-child {
+				border-radius: 10px 0 0 0;
+			}
+			
+			> div:last-child {
+				border-radius: 0 10px 0 0;
+			}
+		}
+		
+		&:last-child {
+			
+			> div:first-child {
+				border-radius: 0 0 0 10px;
+			}
+			
+			> div:last-child {
+				border-radius: 0 0 10px 0;
+			}
+		}
+		
+		> div {
+			box-shadow: -1px 0 0 #b0ae99;
+			border: none;
+			padding: 10px;
+			cursor: pointer;
+			
+			&:first-child{
+				box-shadow: none;
+			}
+			
+			&.fc-today {
+				background: #fff0b2;
+				
+				&:after { 
+					content: ''; 
+					display: block;
+					position: absolute;
+					top: 0; 
+					left: 0;
+					width: 100%;
+					height: 100%;
+					opacity: 0.2;
+					background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255, 255, 255, 0.15)), to(rgba(0, 0, 0, 0.25))), -webkit-gradient(linear, left top, right bottom, color-stop(0, rgba(255, 255, 255, 0)), color-stop(0.5, rgba(255, 255, 255, .15)), color-stop(0.501, rgba(255, 255, 255, 0)), color-stop(1, rgba(255, 255, 255, 0)));
+					background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.25)), -moz-linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+					background: -o-linear-gradient(top, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.25)), -o-llinear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+					background: -ms-linear-gradient(top, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.25)), -ms-linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+					background: linear-gradient(top, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.25)), linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+				}
+			}
+			
+			> div {
+				margin-top: 0;
+				margin-left: 25px;
+				
+				li {
+					line-height: 0;
+				}
+				
+				a, span {
+					color: #fff;
+					font-size: 10px;
+					border: 1px solid #FFB202;
+					text-transform: uppercase;
+					display: inline-block;
+					padding: 0 2px;
+					border-radius: 3px;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					max-width: 100%;
+					margin-bottom: 1px;
+					background: #FBB619;
+					line-height: 14px;
+					
+					&.current {
+						background: #fff0b2;
+					}
+				}
+			}
+		}
+	}
+	
+	.fc-body {
+		border: none;
+		padding: 20px;
+	}
+}
+
+/* In CSS formate */
+
+.single-session div.row > div.current {
+	background: #fff0b2;
+}
+
+.no-touch .fc-calendar .fc-row > div > div a:hover {
+	background: rgba(0,0,0,0.3);
+}
+
+@media screen and (max-width: 1200px) and (min-width: 990px) {
+
+	.calendar-container {
+		min-height: 520px;
+		height: auto !important;
+	}
+	
+	.fc-calendar {
+		.fc-head {
+			padding: 0 10px;
+		
+			> div {
+				font-size: 12px;
+				letter-spacing: 2px;
+			}
+		}
+		
+		.fc-row > div {
+			padding: 5px;
+			
+			> span.fc-date {
+				top: 5px;
+			}
+		}
+	}
+	
+	.fc-calendar-container {
+		height: 430px;
+	}
+}
+
+@media screen and (max-width: 990px) and (min-width: 900px) {
+  .fc-calendar-container {
+      height: 430px !important;
+  }
+  
+  .calendar-container {
+    height: 545px !important;
+  }
+}
+
+@media screen and (max-width: 450px) , screen and (max-width: 990px) {
+	.fc-calendar {
+		.fc-head > div {
+			font-size: 10px;
+			letter-spacing: 0px;
+		}
+		
+		.fc-row > div {
+			padding: 3px;
+			
+			> span.fc-date {
+				top: 4px;
+			}
+			
+			> div {
+				margin-left: 0;
+				margin-top: 34%;
+			}
+		}
+	}
+	
+	.fc-calendar-container {
+		height: 780px;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	html, body, .container {
+		height: auto;
+	}
+	
+	.calender-container {
+		height: auto !important;
+	}
+
+	.custom-header,
+	.custom-header nav,
+	.custom-calendar-full,
+	.fc-calendar-container, 
+	.fc-calendar,
+	.fc-calendar .fc-head,
+	.fc-calendar .fc-row > div > span.fc-date {
+		position: relative;
+		top: auto;
+		left: auto;
+		bottom: auto;
+		right: auto;
+		height: auto;
+		width: auto;
+	}
+
+	.fc-calendar {
+		margin: 0 0 20px;
+	}
+
+	.custom-header h2,
+	.custom-header h3 {
+		float: none;
+		width: auto;
+		text-align: left;
+		margin-bottom: 10px;
+		
+		&:after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+	}
+	
+	.custom-month-year + .btn-group {
+		float: left !important;
+		margin-left: 8px;
+	}
+
+	.fc-calendar .fc-row,
+	.ie9 .fc-calendar .fc-row > div,
+	.fc-calendar .fc-row > div {
+		height: auto;
+		width: 100%;
+		border: none;
+	}
+
+	.fc-calendar .fc-row > div {
+		float: none;
+		min-height: 50px;
+		box-shadow: inset 0 -1px rgba(0,0,0,0.2) !important;
+		border-radius: 0px !important;
+	}
+
+	.fc-calendar {
+		.fc-row {
+			box-shadow: none;
+			
+			> div {
+			
+				&:empty{
+					min-height: 0;
+					height: 0;
+					box-shadow: none !important;
+					padding: 0;
+				}
+				
+				&.fc-today {
+					background: rgba(0, 0, 0, 0.2);
+				}
+				
+				&.fc-today:after { 
+					display: none;
+				}
+				
+				> div {
+					margin-top: 0px;
+					padding-left: 10px;
+					max-width: 70%;
+					display: inline-block;
+				}
+				
+				> span.fc-date {
+					width: 30px;
+					display: inline-block;
+					text-align: right;
+				}
+				
+				> span.fc-weekday {
+					display: inline-block;
+					width: 40px;
+					color: #fff;
+					color: rgba(0,0,0,0.7);
+					font-size: 10px;
+					text-transform: uppercase;
+				}
+			}
+		}
+		
+		.fc-head {
+			display: none;
+		}
+	}
+}

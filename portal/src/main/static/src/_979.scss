@@ -1,0 +1,75 @@
+@media (min-width: 992px) {
+  .container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+	.calendar-container {
+		height: auto !important;
+	}
+}
+
+@media (max-width: 992px) {
+	.main-nav {
+    padding: 0;
+    
+    li {
+      padding: 20px 7px;
+    }
+	}
+  
+	.main-nav li.active:after {
+		border-width: 7px;
+	}
+	
+	.page-header {
+		
+		h1 {
+			small {
+				display: inline-block;
+			}
+			
+			> a {
+				width: auto;
+				white-space: normal;
+			}
+		}
+	
+		.label {
+			float: none !important;
+			margin-top: 0;
+			margin-bottom: 10px;
+			margin-left: 0;
+			display: inline-block;
+      margin-left: 5px;
+		}
+	}
+}
+
+
+@media screen and (max-width: 979px) {
+	.main-nav li {		
+		a i {
+			margin-right: 10px;
+		}
+	}
+	
+	.sidebar {
+		margin-top: 0px;
+	}
+
+	.student-list > li .student-detail > div.attendance-content {
+		padding: 0;
+	}
+	
+	.attendance-button-field {
+		margin: 0;
+	}
+	
+	.resources-content, .result-content {
+		.result-list li span {
+			width: 70%;
+		}
+	}
+}

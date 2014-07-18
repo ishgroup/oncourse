@@ -20,6 +20,8 @@ public class AccessController implements Dispatcher {
 	private final static String SELECT_COLLEGE_PAGE = "/selectcollege"; 
 	private final static String CALENDAR_FILE = "/calendar";
 	private final static String UNSUBSCRIBE_PAGE = "/unsubscribe";
+
+    private final static String[] RESOURCES = {"/css","/js","/img","/fonts"};
 	
 
 	@Inject
@@ -38,6 +40,11 @@ public class AccessController implements Dispatcher {
 			throws IOException {
 
 		String path = request.getPath();
+
+        for (String resource : RESOURCES) {
+            if (path.toLowerCase().startsWith(resource))
+                return true;
+        }
 
 		int nextslashx = path.length();
 
