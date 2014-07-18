@@ -1,3 +1,7 @@
+goog.provide('bootstrap');
+
+goog.require('jquery');
+
 /* ===================================================
  * bootstrap-transition.js v2.2.1
  * http://twitter.github.com/bootstrap/javascript.html#transitions

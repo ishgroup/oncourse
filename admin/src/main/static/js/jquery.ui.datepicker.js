@@ -1,3 +1,7 @@
+goog.provide('jquery.ui.datepicker');
+
+goog.require('jquery.ui.core');
+
 /*
  * jQuery UI Datepicker 1.8.16
  *

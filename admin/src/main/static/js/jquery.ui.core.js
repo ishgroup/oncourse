@@ -1,3 +1,7 @@
+goog.provide('jquery.ui.core');
+
+goog.require('jquery');
+
 /*!
  * jQuery UI 1.8.16
  *
