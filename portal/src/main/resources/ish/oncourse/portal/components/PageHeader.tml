@@ -10,20 +10,18 @@
 
 	<title>${title}</title>
 
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
-    <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700' rel='stylesheet' type='text/css' />
+    <link href='https://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700' rel='stylesheet' type='text/css' />
 
 
-    <link rel="stylesheet" type="text/css" href="/s/portal/css/site.css"/>
+    <link rel="stylesheet" type="text/css" href="/portal/css/portal.css"/>
     <!--[if IE]>
-      <link rel="stylesheet" type="text/css" href="/s/portal/css/ie.css" />
+      <link rel="stylesheet" type="text/css" href="/portal/css/ie.css" />
     <![endif]-->
  
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;"></script>
 
+    <script type="text/javascript" src="/portal/js/portal-min.js"></script>
 
-
-    <script type="text/javascript" src="/s/portal/js/all.js"></script>
-    
 </t:container>
