@@ -1,3 +1,4 @@
+goog.provide('jquery.mjs.nestedSortable');
 /*
  * jQuery UI Nested Sortable
  * v 1.3.5 / 21 jun 2012

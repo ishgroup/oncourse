@@ -1,3 +1,11 @@
+goog.provide('menubuilder');
+
+goog.require("main");
+goog.require("jquery.jeditable");
+goog.require("jquery.livequery");
+goog.require("jquery.livesearch");
+goog.require("jquery.mjs.nestedSortable");
+
 (function($){
     $.menubuilder = function(results) {
         $.editable.addInputType('autocomplete', {

@@ -1,3 +1,4 @@
+goog.provide('plugin');
 
 /*!
 // iPhone-style Checkboxes jQuery plugin

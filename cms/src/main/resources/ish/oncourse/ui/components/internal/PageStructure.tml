@@ -23,9 +23,9 @@
 
     <t:block t:id="cmsHead">
         <t:if t:test="loggedIn">
-            <link href="css/cms/cms.css" media="screen" rel="stylesheet" />
-            <link href="/plugins/plugins.css" type="text/css" rel="stylesheet"  />
-            <script src="js/cms/cms-min.js" />
+            <link href="/cms/css/cms.css" media="screen" rel="stylesheet" />
+            <link href="/cms/plugins/plugins.css" type="text/css" rel="stylesheet"  />
+            <script src="/cms/js/cms-min.js" />
         </t:if>
     </t:block>
 

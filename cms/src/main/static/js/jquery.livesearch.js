@@ -1,3 +1,4 @@
+goog.provide('jquery.livesearch');
 (function($) {
   
   $.extend($.expr[':'], {'containsi': function(elem, i, match, array) {

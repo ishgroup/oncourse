@@ -1,3 +1,4 @@
+goog.provide('jquery.livequery');
 /*! Copyright (c) 2010 Brandon Aaron (http://brandonaaron.net)
  * Dual licensed under the MIT (MIT_LICENSE.txt)
  * and GPL Version 2 (GPL_LICENSE.txt) licenses.

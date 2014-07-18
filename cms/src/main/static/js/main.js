@@ -1,3 +1,7 @@
+goog.provide('main');
+
+goog.require('cms');
+
 jQuery.noConflict();
 
 

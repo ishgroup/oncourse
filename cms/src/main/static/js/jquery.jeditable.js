@@ -1,3 +1,4 @@
+goog.provide('jquery.jeditable');
 /*
  * Jeditable - jQuery in place edit plugin
  *
