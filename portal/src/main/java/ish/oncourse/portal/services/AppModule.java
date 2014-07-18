@@ -1,6 +1,5 @@
 package ish.oncourse.portal.services;
 
-import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.portal.access.AccessController;
 import ish.oncourse.portal.access.AuthenticationService;
@@ -13,19 +12,14 @@ import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
-import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.UIRequestExceptionHandler;
-import org.apache.cayenne.*;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.graph.GraphDiff;
-import org.apache.cayenne.query.Query;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.TapestryConstants;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
@@ -52,6 +46,7 @@ public class AppModule {
         binder.bind(IWebSiteService.class, PortalSiteService.class).withId("WebSiteServiceOverride");
         binder.bind(IPageRenderer.class, PortalPageRenderer.class).withId("PortalPageRenderer");
         binder.bind(IPortalService.class, PortalService.class);
+        binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
     }
 
     @EagerLoad
