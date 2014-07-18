@@ -1,0 +1,46 @@
+//The file contains common tasks for combining java script and css
+
+javascript.source {
+    production {
+        js {
+            srcDir 'src/main/static/js'
+            include "**/*.js"
+        }
+    }
+}
+
+minifyJs {
+    source = javascript.source.production.js.files
+    dest = file("${buildDir}/resource-assemble/js/${project.name}-min.js")
+}
+
+gzipJs {
+    source = minifyJs
+    dest = file("${buildDir}/resource-assemble/js/${project.name}-min.js.gz")
+}
+
+//css combining
+compass {
+    cssDir = file("${buildDir}/resource-assemble/css")
+    sassDir = file('src/main/static/src')
+    fontsDir = file('src/main/static/fonts')
+    noLineComments = true
+    relativeAssets = true
+    debugInfo = false
+    environment = 'production'
+}
+
+task gzipCss(dependsOn:compileSass) {
+    String srcPath = "${buildDir}/resource-assemble/css/${project.name}.css"
+    inputs.file srcPath
+    outputs.file "${srcPath}.gz"
+    doLast {
+        ant.gzip(src: srcPath, destfile: "${srcPath}.gz")
+    }
+}
+
+processResources.inputs.files gzipJs
+processResources.inputs.files gzipCss
+
+clean.dependsOn cleanMinifyJs
+clean.dependsOn cleanCompileSass
