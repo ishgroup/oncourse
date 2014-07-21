@@ -3,6 +3,8 @@ package ish.oncourse.enrol.checkout.contact;
 import ish.oncourse.enrol.checkout.ACheckoutTest;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
+import ish.oncourse.model.CustomField;
+import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
@@ -30,6 +32,8 @@ public class ContactEditorParserTest extends ACheckoutTest{
 	private ObjectContext context;
 	private Contact contact;
 	private Country country;
+	private CustomFieldType customFieldType;
+	private CustomField customField;
 	private ICountryService countryService;
 	private ContactFieldHelper contactFieldHelper;
 	private Request request;
@@ -147,6 +151,22 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 		countryService = mock(ICountryService.class);
 		when(countryService.getCountryByName(ICountryService.DEFAULT_COUNTRY_NAME)).thenReturn(country);
+		
+		customFieldType = mock(CustomFieldType.class);
+		when(customFieldType.getObjectContext()).thenReturn(context);
+		when(customFieldType.getIsMandatory()).thenReturn(false);
+		when(customFieldType.getName()).thenReturn("Test custom field");
+		when(customFieldType.getRequireForEnrolment()).thenReturn("Show");
+		when(customFieldType.getRequireForMailingList()).thenReturn("Show");
+		when(customFieldType.getRequireForWaitingList()).thenReturn("Show");
+		
+		customField = mock(CustomField.class);
+		when(customField.getObjectContext()).thenReturn(context);
+		when(customField.getCustomFieldType()).thenReturn(customFieldType);
+		when(customField.getValue()).thenReturn("test value");
+		when(customField.getRelatedObject()).thenReturn(contact);
+		
+		when(contact.getCustomFields()).thenReturn(Arrays.asList(customField));
 
 		PreferenceController preferenceController = mock(PreferenceController.class);
 		contactFieldHelper = mock(ContactFieldHelper.class);
