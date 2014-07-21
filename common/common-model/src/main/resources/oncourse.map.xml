@@ -285,6 +285,9 @@
 		<db-attribute name="isMandatory" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="requireForEnrolment" type="VARCHAR" length="20"/>
+		<db-attribute name="requireForMailingList" type="VARCHAR" length="20"/>
+		<db-attribute name="requireForWaitingList" type="VARCHAR" length="20"/>
 	</db-entity>
 	<db-entity name="Discount" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -1434,6 +1437,9 @@
 		<obj-attribute name="isMandatory" type="java.lang.Boolean" db-attribute-path="isMandatory"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="requireForEnrolment" type="java.lang.String" db-attribute-path="requireForEnrolment"/>
+		<obj-attribute name="requireForMailingList" type="java.lang.String" db-attribute-path="requireForMailingList"/>
+		<obj-attribute name="requireForWaitingList" type="java.lang.String" db-attribute-path="requireForWaitingList"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="Discount" className="ish.oncourse.model.Discount" dbEntityName="Discount">
@@ -3348,6 +3354,7 @@
 	<obj-relationship name="courseClasses" source="College" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="courseModules" source="College" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
 	<obj-relationship name="courses" source="College" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
+	<obj-relationship name="customFieldTypes" source="College" target="CustomFieldType" deleteRule="Deny" db-relationship-path="customFieldTypes"/>
 	<obj-relationship name="discountConcessionTypes" source="College" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="College" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
 	<obj-relationship name="discountMembershipRelationTypes" source="College" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="discountMembershipRelationTypes"/>

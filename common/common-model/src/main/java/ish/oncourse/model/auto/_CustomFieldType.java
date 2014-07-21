@@ -22,6 +22,9 @@ public abstract class _CustomFieldType extends CayenneDataObject {
     public static final String IS_MANDATORY_PROPERTY = "isMandatory";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
+    public static final String REQUIRE_FOR_ENROLMENT_PROPERTY = "requireForEnrolment";
+    public static final String REQUIRE_FOR_MAILING_LIST_PROPERTY = "requireForMailingList";
+    public static final String REQUIRE_FOR_WAITING_LIST_PROPERTY = "requireForWaitingList";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
 
@@ -67,6 +70,27 @@ public abstract class _CustomFieldType extends CayenneDataObject {
     }
     public String getName() {
         return (String)readProperty(NAME_PROPERTY);
+    }
+
+    public void setRequireForEnrolment(String requireForEnrolment) {
+        writeProperty(REQUIRE_FOR_ENROLMENT_PROPERTY, requireForEnrolment);
+    }
+    public String getRequireForEnrolment() {
+        return (String)readProperty(REQUIRE_FOR_ENROLMENT_PROPERTY);
+    }
+
+    public void setRequireForMailingList(String requireForMailingList) {
+        writeProperty(REQUIRE_FOR_MAILING_LIST_PROPERTY, requireForMailingList);
+    }
+    public String getRequireForMailingList() {
+        return (String)readProperty(REQUIRE_FOR_MAILING_LIST_PROPERTY);
+    }
+
+    public void setRequireForWaitingList(String requireForWaitingList) {
+        writeProperty(REQUIRE_FOR_WAITING_LIST_PROPERTY, requireForWaitingList);
+    }
+    public String getRequireForWaitingList() {
+        return (String)readProperty(REQUIRE_FOR_WAITING_LIST_PROPERTY);
     }
 
     public void setCollege(College college) {

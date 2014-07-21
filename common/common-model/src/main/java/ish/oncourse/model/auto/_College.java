@@ -17,6 +17,7 @@ import ish.oncourse.model.ContactRelationType;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseModule;
+import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.DiscountCourseClass;
@@ -101,6 +102,7 @@ public abstract class _College extends CayenneDataObject {
     public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
     public static final String COURSE_MODULES_PROPERTY = "courseModules";
     public static final String COURSES_PROPERTY = "courses";
+    public static final String CUSTOM_FIELD_TYPES_PROPERTY = "customFieldTypes";
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
     public static final String DISCOUNT_COURSE_CLASSES_PROPERTY = "discountCourseClasses";
     public static final String DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY = "discountMembershipRelationTypes";
@@ -146,783 +148,795 @@ public abstract class _College extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelVersion(String angelVersion) {
-        writeProperty("angelVersion", angelVersion);
+        writeProperty(ANGEL_VERSION_PROPERTY, angelVersion);
     }
     public String getAngelVersion() {
-        return (String)readProperty("angelVersion");
+        return (String)readProperty(ANGEL_VERSION_PROPERTY);
     }
 
     public void setBillingCode(String billingCode) {
-        writeProperty("billingCode", billingCode);
+        writeProperty(BILLING_CODE_PROPERTY, billingCode);
     }
     public String getBillingCode() {
-        return (String)readProperty("billingCode");
+        return (String)readProperty(BILLING_CODE_PROPERTY);
     }
 
     public void setCommunicationKey(Long communicationKey) {
-        writeProperty("communicationKey", communicationKey);
+        writeProperty(COMMUNICATION_KEY_PROPERTY, communicationKey);
     }
     public Long getCommunicationKey() {
-        return (Long)readProperty("communicationKey");
+        return (Long)readProperty(COMMUNICATION_KEY_PROPERTY);
     }
 
     public void setCommunicationKeyStatus(KeyStatus communicationKeyStatus) {
-        writeProperty("communicationKeyStatus", communicationKeyStatus);
+        writeProperty(COMMUNICATION_KEY_STATUS_PROPERTY, communicationKeyStatus);
     }
     public KeyStatus getCommunicationKeyStatus() {
-        return (KeyStatus)readProperty("communicationKeyStatus");
+        return (KeyStatus)readProperty(COMMUNICATION_KEY_STATUS_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setFirstRemoteAuthentication(Date firstRemoteAuthentication) {
-        writeProperty("firstRemoteAuthentication", firstRemoteAuthentication);
+        writeProperty(FIRST_REMOTE_AUTHENTICATION_PROPERTY, firstRemoteAuthentication);
     }
     public Date getFirstRemoteAuthentication() {
-        return (Date)readProperty("firstRemoteAuthentication");
+        return (Date)readProperty(FIRST_REMOTE_AUTHENTICATION_PROPERTY);
     }
 
     public void setIpAddress(String ipAddress) {
-        writeProperty("ipAddress", ipAddress);
+        writeProperty(IP_ADDRESS_PROPERTY, ipAddress);
     }
     public String getIpAddress() {
-        return (String)readProperty("ipAddress");
+        return (String)readProperty(IP_ADDRESS_PROPERTY);
     }
 
     public void setIsTestingWebServicePayments(Boolean isTestingWebServicePayments) {
-        writeProperty("isTestingWebServicePayments", isTestingWebServicePayments);
+        writeProperty(IS_TESTING_WEB_SERVICE_PAYMENTS_PROPERTY, isTestingWebServicePayments);
     }
     public Boolean getIsTestingWebServicePayments() {
-        return (Boolean)readProperty("isTestingWebServicePayments");
+        return (Boolean)readProperty(IS_TESTING_WEB_SERVICE_PAYMENTS_PROPERTY);
     }
 
     public void setIsTestingWebSitePayments(Boolean isTestingWebSitePayments) {
-        writeProperty("isTestingWebSitePayments", isTestingWebSitePayments);
+        writeProperty(IS_TESTING_WEB_SITE_PAYMENTS_PROPERTY, isTestingWebSitePayments);
     }
     public Boolean getIsTestingWebSitePayments() {
-        return (Boolean)readProperty("isTestingWebSitePayments");
+        return (Boolean)readProperty(IS_TESTING_WEB_SITE_PAYMENTS_PROPERTY);
     }
 
     public void setIsWebServicePaymentsEnabled(Boolean isWebServicePaymentsEnabled) {
-        writeProperty("isWebServicePaymentsEnabled", isWebServicePaymentsEnabled);
+        writeProperty(IS_WEB_SERVICE_PAYMENTS_ENABLED_PROPERTY, isWebServicePaymentsEnabled);
     }
     public Boolean getIsWebServicePaymentsEnabled() {
-        return (Boolean)readProperty("isWebServicePaymentsEnabled");
+        return (Boolean)readProperty(IS_WEB_SERVICE_PAYMENTS_ENABLED_PROPERTY);
     }
 
     public void setIsWebSitePaymentsEnabled(Boolean isWebSitePaymentsEnabled) {
-        writeProperty("isWebSitePaymentsEnabled", isWebSitePaymentsEnabled);
+        writeProperty(IS_WEB_SITE_PAYMENTS_ENABLED_PROPERTY, isWebSitePaymentsEnabled);
     }
     public Boolean getIsWebSitePaymentsEnabled() {
-        return (Boolean)readProperty("isWebSitePaymentsEnabled");
+        return (Boolean)readProperty(IS_WEB_SITE_PAYMENTS_ENABLED_PROPERTY);
     }
 
     public void setLastRemoteAuthentication(Date lastRemoteAuthentication) {
-        writeProperty("lastRemoteAuthentication", lastRemoteAuthentication);
+        writeProperty(LAST_REMOTE_AUTHENTICATION_PROPERTY, lastRemoteAuthentication);
     }
     public Date getLastRemoteAuthentication() {
-        return (Date)readProperty("lastRemoteAuthentication");
+        return (Date)readProperty(LAST_REMOTE_AUTHENTICATION_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setPaymentGatewayAccount(String paymentGatewayAccount) {
-        writeProperty("paymentGatewayAccount", paymentGatewayAccount);
+        writeProperty(PAYMENT_GATEWAY_ACCOUNT_PROPERTY, paymentGatewayAccount);
     }
     public String getPaymentGatewayAccount() {
-        return (String)readProperty("paymentGatewayAccount");
+        return (String)readProperty(PAYMENT_GATEWAY_ACCOUNT_PROPERTY);
     }
 
     public void setPaymentGatewayPass(String paymentGatewayPass) {
-        writeProperty("paymentGatewayPass", paymentGatewayPass);
+        writeProperty(PAYMENT_GATEWAY_PASS_PROPERTY, paymentGatewayPass);
     }
     public String getPaymentGatewayPass() {
-        return (String)readProperty("paymentGatewayPass");
+        return (String)readProperty(PAYMENT_GATEWAY_PASS_PROPERTY);
     }
 
     public void setRequiresAvetmiss(Boolean requiresAvetmiss) {
-        writeProperty("requiresAvetmiss", requiresAvetmiss);
+        writeProperty(REQUIRES_AVETMISS_PROPERTY, requiresAvetmiss);
     }
     public Boolean getRequiresAvetmiss() {
-        return (Boolean)readProperty("requiresAvetmiss");
+        return (Boolean)readProperty(REQUIRES_AVETMISS_PROPERTY);
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        writeProperty(TIME_ZONE_PROPERTY, timeZone);
     }
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        return (String)readProperty(TIME_ZONE_PROPERTY);
     }
 
     public void setWebServicesSecurityCode(String webServicesSecurityCode) {
-        writeProperty("webServicesSecurityCode", webServicesSecurityCode);
+        writeProperty(WEB_SERVICES_SECURITY_CODE_PROPERTY, webServicesSecurityCode);
     }
     public String getWebServicesSecurityCode() {
-        return (String)readProperty("webServicesSecurityCode");
+        return (String)readProperty(WEB_SERVICES_SECURITY_CODE_PROPERTY);
     }
 
     public void addToAttendances(Attendance obj) {
-        addToManyTarget("attendances", obj, true);
+        addToManyTarget(ATTENDANCES_PROPERTY, obj, true);
     }
     public void removeFromAttendances(Attendance obj) {
-        removeToManyTarget("attendances", obj, true);
+        removeToManyTarget(ATTENDANCES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Attendance> getAttendances() {
-        return (List<Attendance>)readProperty("attendances");
+        return (List<Attendance>)readProperty(ATTENDANCES_PROPERTY);
     }
 
 
     public void addToBinaryInfoRelations(BinaryInfoRelation obj) {
-        addToManyTarget("binaryInfoRelations", obj, true);
+        addToManyTarget(BINARY_INFO_RELATIONS_PROPERTY, obj, true);
     }
     public void removeFromBinaryInfoRelations(BinaryInfoRelation obj) {
-        removeToManyTarget("binaryInfoRelations", obj, true);
+        removeToManyTarget(BINARY_INFO_RELATIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<BinaryInfoRelation> getBinaryInfoRelations() {
-        return (List<BinaryInfoRelation>)readProperty("binaryInfoRelations");
+        return (List<BinaryInfoRelation>)readProperty(BINARY_INFO_RELATIONS_PROPERTY);
     }
 
 
     public void addToBinaryInfos(BinaryInfo obj) {
-        addToManyTarget("binaryInfos", obj, true);
+        addToManyTarget(BINARY_INFOS_PROPERTY, obj, true);
     }
     public void removeFromBinaryInfos(BinaryInfo obj) {
-        removeToManyTarget("binaryInfos", obj, true);
+        removeToManyTarget(BINARY_INFOS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<BinaryInfo> getBinaryInfos() {
-        return (List<BinaryInfo>)readProperty("binaryInfos");
+        return (List<BinaryInfo>)readProperty(BINARY_INFOS_PROPERTY);
     }
 
 
     public void addToCertificateOutcomes(CertificateOutcome obj) {
-        addToManyTarget("certificateOutcomes", obj, true);
+        addToManyTarget(CERTIFICATE_OUTCOMES_PROPERTY, obj, true);
     }
     public void removeFromCertificateOutcomes(CertificateOutcome obj) {
-        removeToManyTarget("certificateOutcomes", obj, true);
+        removeToManyTarget(CERTIFICATE_OUTCOMES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<CertificateOutcome> getCertificateOutcomes() {
-        return (List<CertificateOutcome>)readProperty("certificateOutcomes");
+        return (List<CertificateOutcome>)readProperty(CERTIFICATE_OUTCOMES_PROPERTY);
     }
 
 
     public void addToCertificates(Certificate obj) {
-        addToManyTarget("certificates", obj, true);
+        addToManyTarget(CERTIFICATES_PROPERTY, obj, true);
     }
     public void removeFromCertificates(Certificate obj) {
-        removeToManyTarget("certificates", obj, true);
+        removeToManyTarget(CERTIFICATES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Certificate> getCertificates() {
-        return (List<Certificate>)readProperty("certificates");
+        return (List<Certificate>)readProperty(CERTIFICATES_PROPERTY);
     }
 
 
     public void addToCollegeDomains(WebHostName obj) {
-        addToManyTarget("collegeDomains", obj, true);
+        addToManyTarget(COLLEGE_DOMAINS_PROPERTY, obj, true);
     }
     public void removeFromCollegeDomains(WebHostName obj) {
-        removeToManyTarget("collegeDomains", obj, true);
+        removeToManyTarget(COLLEGE_DOMAINS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebHostName> getCollegeDomains() {
-        return (List<WebHostName>)readProperty("collegeDomains");
+        return (List<WebHostName>)readProperty(COLLEGE_DOMAINS_PROPERTY);
     }
 
 
     public void addToConcessionTypes(ConcessionType obj) {
-        addToManyTarget("concessionTypes", obj, true);
+        addToManyTarget(CONCESSION_TYPES_PROPERTY, obj, true);
     }
     public void removeFromConcessionTypes(ConcessionType obj) {
-        removeToManyTarget("concessionTypes", obj, true);
+        removeToManyTarget(CONCESSION_TYPES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ConcessionType> getConcessionTypes() {
-        return (List<ConcessionType>)readProperty("concessionTypes");
+        return (List<ConcessionType>)readProperty(CONCESSION_TYPES_PROPERTY);
     }
 
 
     public void addToContactRelationTypes(ContactRelationType obj) {
-        addToManyTarget("contactRelationTypes", obj, true);
+        addToManyTarget(CONTACT_RELATION_TYPES_PROPERTY, obj, true);
     }
     public void removeFromContactRelationTypes(ContactRelationType obj) {
-        removeToManyTarget("contactRelationTypes", obj, true);
+        removeToManyTarget(CONTACT_RELATION_TYPES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ContactRelationType> getContactRelationTypes() {
-        return (List<ContactRelationType>)readProperty("contactRelationTypes");
+        return (List<ContactRelationType>)readProperty(CONTACT_RELATION_TYPES_PROPERTY);
     }
 
 
     public void addToContactRelations(ContactRelation obj) {
-        addToManyTarget("contactRelations", obj, true);
+        addToManyTarget(CONTACT_RELATIONS_PROPERTY, obj, true);
     }
     public void removeFromContactRelations(ContactRelation obj) {
-        removeToManyTarget("contactRelations", obj, true);
+        removeToManyTarget(CONTACT_RELATIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ContactRelation> getContactRelations() {
-        return (List<ContactRelation>)readProperty("contactRelations");
+        return (List<ContactRelation>)readProperty(CONTACT_RELATIONS_PROPERTY);
     }
 
 
     public void addToContacts(Contact obj) {
-        addToManyTarget("contacts", obj, true);
+        addToManyTarget(CONTACTS_PROPERTY, obj, true);
     }
     public void removeFromContacts(Contact obj) {
-        removeToManyTarget("contacts", obj, true);
+        removeToManyTarget(CONTACTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Contact> getContacts() {
-        return (List<Contact>)readProperty("contacts");
+        return (List<Contact>)readProperty(CONTACTS_PROPERTY);
     }
 
 
     public void addToCourseClasses(CourseClass obj) {
-        addToManyTarget("courseClasses", obj, true);
+        addToManyTarget(COURSE_CLASSES_PROPERTY, obj, true);
     }
     public void removeFromCourseClasses(CourseClass obj) {
-        removeToManyTarget("courseClasses", obj, true);
+        removeToManyTarget(COURSE_CLASSES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<CourseClass> getCourseClasses() {
-        return (List<CourseClass>)readProperty("courseClasses");
+        return (List<CourseClass>)readProperty(COURSE_CLASSES_PROPERTY);
     }
 
 
     public void addToCourseModules(CourseModule obj) {
-        addToManyTarget("courseModules", obj, true);
+        addToManyTarget(COURSE_MODULES_PROPERTY, obj, true);
     }
     public void removeFromCourseModules(CourseModule obj) {
-        removeToManyTarget("courseModules", obj, true);
+        removeToManyTarget(COURSE_MODULES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<CourseModule> getCourseModules() {
-        return (List<CourseModule>)readProperty("courseModules");
+        return (List<CourseModule>)readProperty(COURSE_MODULES_PROPERTY);
     }
 
 
     public void addToCourses(Course obj) {
-        addToManyTarget("courses", obj, true);
+        addToManyTarget(COURSES_PROPERTY, obj, true);
     }
     public void removeFromCourses(Course obj) {
-        removeToManyTarget("courses", obj, true);
+        removeToManyTarget(COURSES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Course> getCourses() {
-        return (List<Course>)readProperty("courses");
+        return (List<Course>)readProperty(COURSES_PROPERTY);
+    }
+
+
+    public void addToCustomFieldTypes(CustomFieldType obj) {
+        addToManyTarget(CUSTOM_FIELD_TYPES_PROPERTY, obj, true);
+    }
+    public void removeFromCustomFieldTypes(CustomFieldType obj) {
+        removeToManyTarget(CUSTOM_FIELD_TYPES_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CustomFieldType> getCustomFieldTypes() {
+        return (List<CustomFieldType>)readProperty(CUSTOM_FIELD_TYPES_PROPERTY);
     }
 
 
     public void addToDiscountConcessionTypes(DiscountConcessionType obj) {
-        addToManyTarget("discountConcessionTypes", obj, true);
+        addToManyTarget(DISCOUNT_CONCESSION_TYPES_PROPERTY, obj, true);
     }
     public void removeFromDiscountConcessionTypes(DiscountConcessionType obj) {
-        removeToManyTarget("discountConcessionTypes", obj, true);
+        removeToManyTarget(DISCOUNT_CONCESSION_TYPES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountConcessionType> getDiscountConcessionTypes() {
-        return (List<DiscountConcessionType>)readProperty("discountConcessionTypes");
+        return (List<DiscountConcessionType>)readProperty(DISCOUNT_CONCESSION_TYPES_PROPERTY);
     }
 
 
     public void addToDiscountCourseClasses(DiscountCourseClass obj) {
-        addToManyTarget("discountCourseClasses", obj, true);
+        addToManyTarget(DISCOUNT_COURSE_CLASSES_PROPERTY, obj, true);
     }
     public void removeFromDiscountCourseClasses(DiscountCourseClass obj) {
-        removeToManyTarget("discountCourseClasses", obj, true);
+        removeToManyTarget(DISCOUNT_COURSE_CLASSES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountCourseClass> getDiscountCourseClasses() {
-        return (List<DiscountCourseClass>)readProperty("discountCourseClasses");
+        return (List<DiscountCourseClass>)readProperty(DISCOUNT_COURSE_CLASSES_PROPERTY);
     }
 
 
     public void addToDiscountMembershipRelationTypes(DiscountMembershipRelationType obj) {
-        addToManyTarget("discountMembershipRelationTypes", obj, true);
+        addToManyTarget(DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY, obj, true);
     }
     public void removeFromDiscountMembershipRelationTypes(DiscountMembershipRelationType obj) {
-        removeToManyTarget("discountMembershipRelationTypes", obj, true);
+        removeToManyTarget(DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountMembershipRelationType> getDiscountMembershipRelationTypes() {
-        return (List<DiscountMembershipRelationType>)readProperty("discountMembershipRelationTypes");
+        return (List<DiscountMembershipRelationType>)readProperty(DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY);
     }
 
 
     public void addToDiscountMemberships(DiscountMembership obj) {
-        addToManyTarget("discountMemberships", obj, true);
+        addToManyTarget(DISCOUNT_MEMBERSHIPS_PROPERTY, obj, true);
     }
     public void removeFromDiscountMemberships(DiscountMembership obj) {
-        removeToManyTarget("discountMemberships", obj, true);
+        removeToManyTarget(DISCOUNT_MEMBERSHIPS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<DiscountMembership> getDiscountMemberships() {
-        return (List<DiscountMembership>)readProperty("discountMemberships");
+        return (List<DiscountMembership>)readProperty(DISCOUNT_MEMBERSHIPS_PROPERTY);
     }
 
 
     public void addToDiscounts(Discount obj) {
-        addToManyTarget("discounts", obj, true);
+        addToManyTarget(DISCOUNTS_PROPERTY, obj, true);
     }
     public void removeFromDiscounts(Discount obj) {
-        removeToManyTarget("discounts", obj, true);
+        removeToManyTarget(DISCOUNTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Discount> getDiscounts() {
-        return (List<Discount>)readProperty("discounts");
+        return (List<Discount>)readProperty(DISCOUNTS_PROPERTY);
     }
 
 
     public void addToEnrolments(Enrolment obj) {
-        addToManyTarget("enrolments", obj, true);
+        addToManyTarget(ENROLMENTS_PROPERTY, obj, true);
     }
     public void removeFromEnrolments(Enrolment obj) {
-        removeToManyTarget("enrolments", obj, true);
+        removeToManyTarget(ENROLMENTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Enrolment> getEnrolments() {
-        return (List<Enrolment>)readProperty("enrolments");
+        return (List<Enrolment>)readProperty(ENROLMENTS_PROPERTY);
     }
 
 
     public void addToInstructions(Instruction obj) {
-        addToManyTarget("instructions", obj, true);
+        addToManyTarget(INSTRUCTIONS_PROPERTY, obj, true);
     }
     public void removeFromInstructions(Instruction obj) {
-        removeToManyTarget("instructions", obj, true);
+        removeToManyTarget(INSTRUCTIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Instruction> getInstructions() {
-        return (List<Instruction>)readProperty("instructions");
+        return (List<Instruction>)readProperty(INSTRUCTIONS_PROPERTY);
     }
 
 
     public void addToInvoiceLineDiscounts(InvoiceLineDiscount obj) {
-        addToManyTarget("invoiceLineDiscounts", obj, true);
+        addToManyTarget(INVOICE_LINE_DISCOUNTS_PROPERTY, obj, true);
     }
     public void removeFromInvoiceLineDiscounts(InvoiceLineDiscount obj) {
-        removeToManyTarget("invoiceLineDiscounts", obj, true);
+        removeToManyTarget(INVOICE_LINE_DISCOUNTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<InvoiceLineDiscount> getInvoiceLineDiscounts() {
-        return (List<InvoiceLineDiscount>)readProperty("invoiceLineDiscounts");
+        return (List<InvoiceLineDiscount>)readProperty(INVOICE_LINE_DISCOUNTS_PROPERTY);
     }
 
 
     public void addToInvoiceLines(InvoiceLine obj) {
-        addToManyTarget("invoiceLines", obj, true);
+        addToManyTarget(INVOICE_LINES_PROPERTY, obj, true);
     }
     public void removeFromInvoiceLines(InvoiceLine obj) {
-        removeToManyTarget("invoiceLines", obj, true);
+        removeToManyTarget(INVOICE_LINES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<InvoiceLine> getInvoiceLines() {
-        return (List<InvoiceLine>)readProperty("invoiceLines");
+        return (List<InvoiceLine>)readProperty(INVOICE_LINES_PROPERTY);
     }
 
 
     public void addToInvoices(Invoice obj) {
-        addToManyTarget("invoices", obj, true);
+        addToManyTarget(INVOICES_PROPERTY, obj, true);
     }
     public void removeFromInvoices(Invoice obj) {
-        removeToManyTarget("invoices", obj, true);
+        removeToManyTarget(INVOICES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Invoice> getInvoices() {
-        return (List<Invoice>)readProperty("invoices");
+        return (List<Invoice>)readProperty(INVOICES_PROPERTY);
     }
 
 
     public void addToLicenseFees(LicenseFee obj) {
-        addToManyTarget("licenseFees", obj, true);
+        addToManyTarget(LICENSE_FEES_PROPERTY, obj, true);
     }
     public void removeFromLicenseFees(LicenseFee obj) {
-        removeToManyTarget("licenseFees", obj, true);
+        removeToManyTarget(LICENSE_FEES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<LicenseFee> getLicenseFees() {
-        return (List<LicenseFee>)readProperty("licenseFees");
+        return (List<LicenseFee>)readProperty(LICENSE_FEES_PROPERTY);
     }
 
 
     public void addToLogs(Log obj) {
-        addToManyTarget("logs", obj, true);
+        addToManyTarget(LOGS_PROPERTY, obj, true);
     }
     public void removeFromLogs(Log obj) {
-        removeToManyTarget("logs", obj, true);
+        removeToManyTarget(LOGS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Log> getLogs() {
-        return (List<Log>)readProperty("logs");
+        return (List<Log>)readProperty(LOGS_PROPERTY);
     }
 
 
     public void addToMessagePeople(MessagePerson obj) {
-        addToManyTarget("messagePeople", obj, true);
+        addToManyTarget(MESSAGE_PEOPLE_PROPERTY, obj, true);
     }
     public void removeFromMessagePeople(MessagePerson obj) {
-        removeToManyTarget("messagePeople", obj, true);
+        removeToManyTarget(MESSAGE_PEOPLE_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<MessagePerson> getMessagePeople() {
-        return (List<MessagePerson>)readProperty("messagePeople");
+        return (List<MessagePerson>)readProperty(MESSAGE_PEOPLE_PROPERTY);
     }
 
 
     public void addToMessageTemplates(MessageTemplate obj) {
-        addToManyTarget("messageTemplates", obj, true);
+        addToManyTarget(MESSAGE_TEMPLATES_PROPERTY, obj, true);
     }
     public void removeFromMessageTemplates(MessageTemplate obj) {
-        removeToManyTarget("messageTemplates", obj, true);
+        removeToManyTarget(MESSAGE_TEMPLATES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<MessageTemplate> getMessageTemplates() {
-        return (List<MessageTemplate>)readProperty("messageTemplates");
+        return (List<MessageTemplate>)readProperty(MESSAGE_TEMPLATES_PROPERTY);
     }
 
 
     public void addToMessages(Message obj) {
-        addToManyTarget("messages", obj, true);
+        addToManyTarget(MESSAGES_PROPERTY, obj, true);
     }
     public void removeFromMessages(Message obj) {
-        removeToManyTarget("messages", obj, true);
+        removeToManyTarget(MESSAGES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Message> getMessages() {
-        return (List<Message>)readProperty("messages");
+        return (List<Message>)readProperty(MESSAGES_PROPERTY);
     }
 
 
     public void addToNotificationTemplates(NotificationTemplate obj) {
-        addToManyTarget("notificationTemplates", obj, true);
+        addToManyTarget(NOTIFICATION_TEMPLATES_PROPERTY, obj, true);
     }
     public void removeFromNotificationTemplates(NotificationTemplate obj) {
-        removeToManyTarget("notificationTemplates", obj, true);
+        removeToManyTarget(NOTIFICATION_TEMPLATES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<NotificationTemplate> getNotificationTemplates() {
-        return (List<NotificationTemplate>)readProperty("notificationTemplates");
+        return (List<NotificationTemplate>)readProperty(NOTIFICATION_TEMPLATES_PROPERTY);
     }
 
 
     public void addToOutcomes(Outcome obj) {
-        addToManyTarget("outcomes", obj, true);
+        addToManyTarget(OUTCOMES_PROPERTY, obj, true);
     }
     public void removeFromOutcomes(Outcome obj) {
-        removeToManyTarget("outcomes", obj, true);
+        removeToManyTarget(OUTCOMES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Outcome> getOutcomes() {
-        return (List<Outcome>)readProperty("outcomes");
+        return (List<Outcome>)readProperty(OUTCOMES_PROPERTY);
     }
 
 
     public void addToPaymentInLines(PaymentInLine obj) {
-        addToManyTarget("paymentInLines", obj, true);
+        addToManyTarget(PAYMENT_IN_LINES_PROPERTY, obj, true);
     }
     public void removeFromPaymentInLines(PaymentInLine obj) {
-        removeToManyTarget("paymentInLines", obj, true);
+        removeToManyTarget(PAYMENT_IN_LINES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentInLine> getPaymentInLines() {
-        return (List<PaymentInLine>)readProperty("paymentInLines");
+        return (List<PaymentInLine>)readProperty(PAYMENT_IN_LINES_PROPERTY);
     }
 
 
     public void addToPaymentsIn(PaymentIn obj) {
-        addToManyTarget("paymentsIn", obj, true);
+        addToManyTarget(PAYMENTS_IN_PROPERTY, obj, true);
     }
     public void removeFromPaymentsIn(PaymentIn obj) {
-        removeToManyTarget("paymentsIn", obj, true);
+        removeToManyTarget(PAYMENTS_IN_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentIn> getPaymentsIn() {
-        return (List<PaymentIn>)readProperty("paymentsIn");
+        return (List<PaymentIn>)readProperty(PAYMENTS_IN_PROPERTY);
     }
 
 
     public void addToPaymentsOut(PaymentOut obj) {
-        addToManyTarget("paymentsOut", obj, true);
+        addToManyTarget(PAYMENTS_OUT_PROPERTY, obj, true);
     }
     public void removeFromPaymentsOut(PaymentOut obj) {
-        removeToManyTarget("paymentsOut", obj, true);
+        removeToManyTarget(PAYMENTS_OUT_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentOut> getPaymentsOut() {
-        return (List<PaymentOut>)readProperty("paymentsOut");
+        return (List<PaymentOut>)readProperty(PAYMENTS_OUT_PROPERTY);
     }
 
 
     public void addToPreferences(Preference obj) {
-        addToManyTarget("preferences", obj, true);
+        addToManyTarget(PREFERENCES_PROPERTY, obj, true);
     }
     public void removeFromPreferences(Preference obj) {
-        removeToManyTarget("preferences", obj, true);
+        removeToManyTarget(PREFERENCES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Preference> getPreferences() {
-        return (List<Preference>)readProperty("preferences");
+        return (List<Preference>)readProperty(PREFERENCES_PROPERTY);
     }
 
 
     public void addToProductItems(ProductItem obj) {
-        addToManyTarget("productItems", obj, true);
+        addToManyTarget(PRODUCT_ITEMS_PROPERTY, obj, true);
     }
     public void removeFromProductItems(ProductItem obj) {
-        removeToManyTarget("productItems", obj, true);
+        removeToManyTarget(PRODUCT_ITEMS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<ProductItem> getProductItems() {
-        return (List<ProductItem>)readProperty("productItems");
+        return (List<ProductItem>)readProperty(PRODUCT_ITEMS_PROPERTY);
     }
 
 
     public void addToProducts(Product obj) {
-        addToManyTarget("products", obj, true);
+        addToManyTarget(PRODUCTS_PROPERTY, obj, true);
     }
     public void removeFromProducts(Product obj) {
-        removeToManyTarget("products", obj, true);
+        removeToManyTarget(PRODUCTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Product> getProducts() {
-        return (List<Product>)readProperty("products");
+        return (List<Product>)readProperty(PRODUCTS_PROPERTY);
     }
 
 
     public void addToQueuedRecords(QueuedRecord obj) {
-        addToManyTarget("queuedRecords", obj, true);
+        addToManyTarget(QUEUED_RECORDS_PROPERTY, obj, true);
     }
     public void removeFromQueuedRecords(QueuedRecord obj) {
-        removeToManyTarget("queuedRecords", obj, true);
+        removeToManyTarget(QUEUED_RECORDS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<QueuedRecord> getQueuedRecords() {
-        return (List<QueuedRecord>)readProperty("queuedRecords");
+        return (List<QueuedRecord>)readProperty(QUEUED_RECORDS_PROPERTY);
     }
 
 
     public void addToQueuedTransactions(QueuedTransaction obj) {
-        addToManyTarget("queuedTransactions", obj, true);
+        addToManyTarget(QUEUED_TRANSACTIONS_PROPERTY, obj, true);
     }
     public void removeFromQueuedTransactions(QueuedTransaction obj) {
-        removeToManyTarget("queuedTransactions", obj, true);
+        removeToManyTarget(QUEUED_TRANSACTIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<QueuedTransaction> getQueuedTransactions() {
-        return (List<QueuedTransaction>)readProperty("queuedTransactions");
+        return (List<QueuedTransaction>)readProperty(QUEUED_TRANSACTIONS_PROPERTY);
     }
 
 
     public void addToRooms(Room obj) {
-        addToManyTarget("rooms", obj, true);
+        addToManyTarget(ROOMS_PROPERTY, obj, true);
     }
     public void removeFromRooms(Room obj) {
-        removeToManyTarget("rooms", obj, true);
+        removeToManyTarget(ROOMS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Room> getRooms() {
-        return (List<Room>)readProperty("rooms");
+        return (List<Room>)readProperty(ROOMS_PROPERTY);
     }
 
 
     public void addToSessionTutors(SessionTutor obj) {
-        addToManyTarget("sessionTutors", obj, true);
+        addToManyTarget(SESSION_TUTORS_PROPERTY, obj, true);
     }
     public void removeFromSessionTutors(SessionTutor obj) {
-        removeToManyTarget("sessionTutors", obj, true);
+        removeToManyTarget(SESSION_TUTORS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<SessionTutor> getSessionTutors() {
-        return (List<SessionTutor>)readProperty("sessionTutors");
+        return (List<SessionTutor>)readProperty(SESSION_TUTORS_PROPERTY);
     }
 
 
     public void addToSessions(Session obj) {
-        addToManyTarget("sessions", obj, true);
+        addToManyTarget(SESSIONS_PROPERTY, obj, true);
     }
     public void removeFromSessions(Session obj) {
-        removeToManyTarget("sessions", obj, true);
+        removeToManyTarget(SESSIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Session> getSessions() {
-        return (List<Session>)readProperty("sessions");
+        return (List<Session>)readProperty(SESSIONS_PROPERTY);
     }
 
 
     public void addToSites(Site obj) {
-        addToManyTarget("sites", obj, true);
+        addToManyTarget(SITES_PROPERTY, obj, true);
     }
     public void removeFromSites(Site obj) {
-        removeToManyTarget("sites", obj, true);
+        removeToManyTarget(SITES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Site> getSites() {
-        return (List<Site>)readProperty("sites");
+        return (List<Site>)readProperty(SITES_PROPERTY);
     }
 
 
     public void addToStudentConcessions(StudentConcession obj) {
-        addToManyTarget("studentConcessions", obj, true);
+        addToManyTarget(STUDENT_CONCESSIONS_PROPERTY, obj, true);
     }
     public void removeFromStudentConcessions(StudentConcession obj) {
-        removeToManyTarget("studentConcessions", obj, true);
+        removeToManyTarget(STUDENT_CONCESSIONS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<StudentConcession> getStudentConcessions() {
-        return (List<StudentConcession>)readProperty("studentConcessions");
+        return (List<StudentConcession>)readProperty(STUDENT_CONCESSIONS_PROPERTY);
     }
 
 
     public void addToStudents(Student obj) {
-        addToManyTarget("students", obj, true);
+        addToManyTarget(STUDENTS_PROPERTY, obj, true);
     }
     public void removeFromStudents(Student obj) {
-        removeToManyTarget("students", obj, true);
+        removeToManyTarget(STUDENTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Student> getStudents() {
-        return (List<Student>)readProperty("students");
+        return (List<Student>)readProperty(STUDENTS_PROPERTY);
     }
 
 
     public void addToTagGroupRequirements(TagGroupRequirement obj) {
-        addToManyTarget("tagGroupRequirements", obj, true);
+        addToManyTarget(TAG_GROUP_REQUIREMENTS_PROPERTY, obj, true);
     }
     public void removeFromTagGroupRequirements(TagGroupRequirement obj) {
-        removeToManyTarget("tagGroupRequirements", obj, true);
+        removeToManyTarget(TAG_GROUP_REQUIREMENTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<TagGroupRequirement> getTagGroupRequirements() {
-        return (List<TagGroupRequirement>)readProperty("tagGroupRequirements");
+        return (List<TagGroupRequirement>)readProperty(TAG_GROUP_REQUIREMENTS_PROPERTY);
     }
 
 
     public void addToTaggableTags(TaggableTag obj) {
-        addToManyTarget("taggableTags", obj, true);
+        addToManyTarget(TAGGABLE_TAGS_PROPERTY, obj, true);
     }
     public void removeFromTaggableTags(TaggableTag obj) {
-        removeToManyTarget("taggableTags", obj, true);
+        removeToManyTarget(TAGGABLE_TAGS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<TaggableTag> getTaggableTags() {
-        return (List<TaggableTag>)readProperty("taggableTags");
+        return (List<TaggableTag>)readProperty(TAGGABLE_TAGS_PROPERTY);
     }
 
 
     public void addToTaggables(Taggable obj) {
-        addToManyTarget("taggables", obj, true);
+        addToManyTarget(TAGGABLES_PROPERTY, obj, true);
     }
     public void removeFromTaggables(Taggable obj) {
-        removeToManyTarget("taggables", obj, true);
+        removeToManyTarget(TAGGABLES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Taggable> getTaggables() {
-        return (List<Taggable>)readProperty("taggables");
+        return (List<Taggable>)readProperty(TAGGABLES_PROPERTY);
     }
 
 
     public void addToTags(Tag obj) {
-        addToManyTarget("tags", obj, true);
+        addToManyTarget(TAGS_PROPERTY, obj, true);
     }
     public void removeFromTags(Tag obj) {
-        removeToManyTarget("tags", obj, true);
+        removeToManyTarget(TAGS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Tag> getTags() {
-        return (List<Tag>)readProperty("tags");
+        return (List<Tag>)readProperty(TAGS_PROPERTY);
     }
 
 
     public void addToTutorRoles(TutorRole obj) {
-        addToManyTarget("tutorRoles", obj, true);
+        addToManyTarget(TUTOR_ROLES_PROPERTY, obj, true);
     }
     public void removeFromTutorRoles(TutorRole obj) {
-        removeToManyTarget("tutorRoles", obj, true);
+        removeToManyTarget(TUTOR_ROLES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<TutorRole> getTutorRoles() {
-        return (List<TutorRole>)readProperty("tutorRoles");
+        return (List<TutorRole>)readProperty(TUTOR_ROLES_PROPERTY);
     }
 
 
     public void addToTutors(Tutor obj) {
-        addToManyTarget("tutors", obj, true);
+        addToManyTarget(TUTORS_PROPERTY, obj, true);
     }
     public void removeFromTutors(Tutor obj) {
-        removeToManyTarget("tutors", obj, true);
+        removeToManyTarget(TUTORS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Tutor> getTutors() {
-        return (List<Tutor>)readProperty("tutors");
+        return (List<Tutor>)readProperty(TUTORS_PROPERTY);
     }
 
 
     public void addToWaitingListSites(WaitingListSite obj) {
-        addToManyTarget("waitingListSites", obj, true);
+        addToManyTarget(WAITING_LIST_SITES_PROPERTY, obj, true);
     }
     public void removeFromWaitingListSites(WaitingListSite obj) {
-        removeToManyTarget("waitingListSites", obj, true);
+        removeToManyTarget(WAITING_LIST_SITES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WaitingListSite> getWaitingListSites() {
-        return (List<WaitingListSite>)readProperty("waitingListSites");
+        return (List<WaitingListSite>)readProperty(WAITING_LIST_SITES_PROPERTY);
     }
 
 
     public void addToWaitingLists(WaitingList obj) {
-        addToManyTarget("waitingLists", obj, true);
+        addToManyTarget(WAITING_LISTS_PROPERTY, obj, true);
     }
     public void removeFromWaitingLists(WaitingList obj) {
-        removeToManyTarget("waitingLists", obj, true);
+        removeToManyTarget(WAITING_LISTS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WaitingList> getWaitingLists() {
-        return (List<WaitingList>)readProperty("waitingLists");
+        return (List<WaitingList>)readProperty(WAITING_LISTS_PROPERTY);
     }
 
 
     public void addToWebSites(WebSite obj) {
-        addToManyTarget("webSites", obj, true);
+        addToManyTarget(WEB_SITES_PROPERTY, obj, true);
     }
     public void removeFromWebSites(WebSite obj) {
-        removeToManyTarget("webSites", obj, true);
+        removeToManyTarget(WEB_SITES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WebSite> getWebSites() {
-        return (List<WebSite>)readProperty("webSites");
+        return (List<WebSite>)readProperty(WEB_SITES_PROPERTY);
     }
 
 
     public void addToWillowUsers(WillowUser obj) {
-        addToManyTarget("willowUsers", obj, true);
+        addToManyTarget(WILLOW_USERS_PROPERTY, obj, true);
     }
     public void removeFromWillowUsers(WillowUser obj) {
-        removeToManyTarget("willowUsers", obj, true);
+        removeToManyTarget(WILLOW_USERS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WillowUser> getWillowUsers() {
-        return (List<WillowUser>)readProperty("willowUsers");
+        return (List<WillowUser>)readProperty(WILLOW_USERS_PROPERTY);
     }
 
 

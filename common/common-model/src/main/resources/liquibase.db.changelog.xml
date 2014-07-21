@@ -2809,4 +2809,35 @@
 			UPDATE BinaryInfoRelation SET documentId = binaryInfoId;
 		</sql>
 	</changeSet>
+	
+	<changeSet id="184" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CustomFieldType" columnName="requireForEnrolment"/>
+			</not>
+		</preConditions>
+		
+		<sql>ALTER TABLE CustomFieldType ADD COLUMN requireForEnrolment VARCHAR(20)</sql>
+	</changeSet>
+	
+	<changeSet id="185" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CustomFieldType" columnName="requireForWaitingList"/>
+			</not>
+		</preConditions>
+		
+		<sql>ALTER TABLE CustomFieldType ADD COLUMN requireForWaitingList VARCHAR(20)</sql>
+	</changeSet>
+	
+	<changeSet id="186" author="dzmitry" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="ColumnFieldType" columnName="requireForMailingList"/>
+			</not>
+		</preConditions>
+		
+		<sql>ALTER TABLE CustomFieldType ADD COLUMN requireForMailingList VARCHAR(20)</sql>
+	</changeSet>
+	
 </databaseChangeLog>
