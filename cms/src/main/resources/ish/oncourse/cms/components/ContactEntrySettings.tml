@@ -283,7 +283,28 @@
 						blankOption="never" value="mailingListDateOfBirthState" class="cms-span2" />
 				</div>
 			</div>
-
+			
+			<t:loop source="customFieldTypes" index="fieldIndex">
+				<div class="cms-set-container">
+					<div class="cms-set-name">${currentField.name}</div>
+					
+					<div class="cms-set-col">
+						<t:select model="stateSelectModel"
+							blankOption="never" value="currentField.requireForEnrolment" class="cms-span2"/>
+					</div>
+					
+					<div class="cms-set-col">
+						<t:select model="stateSelectModel"
+							blankOption="never" value="currentField.requireForWaitingList" class="cms-span2"/>
+					</div>
+					
+					<div class="cms-set-col">
+						<t:select model="stateSelectModel"
+							blankOption="never" value="currentField.requireForMailingList" class="cms-span2"/>
+					</div>
+				</div>
+			</t:loop>
+			
 			<div class="cms-set-container">
 				<div class="cms-set-name">Enrolment min age</div>
 

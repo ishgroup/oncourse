@@ -1,6 +1,7 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
@@ -14,6 +15,8 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.List;
 
 import static ish.oncourse.services.preference.ContactFieldHelper.*;
 import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.*;
@@ -117,7 +120,13 @@ public class ContactEntrySettings {
 
 	@Property
 	private String mailingListCountryState;
-
+	
+	@Property
+	@Persist
+	private List<CustomFieldType> customFieldTypes;
+	
+	@Property
+	private Integer fieldIndex;
 
 	@Property
 	private String enrolmentMinAge;
@@ -191,6 +200,13 @@ public class ContactEntrySettings {
 		this.mailingListMobileState = preferenceController.getRequireContactField(mailinglist, mobilePhoneNumber);
 		this.mailingListDateOfBirthState = preferenceController.getRequireContactField(mailinglist, dateOfBirth);
 		this.mailingListCountryState = preferenceController.getRequireContactField(mailinglist, country);
+		
+		// TODO: these probably need to be sorted... alphabetically?
+		this.customFieldTypes = webSiteService.getCurrentCollege().getCustomFieldTypes();
+	}
+	
+	public CustomFieldType getCurrentField() {
+		return customFieldTypes.get(fieldIndex);
 	}
 
 	@AfterRender
@@ -219,6 +235,14 @@ public class ContactEntrySettings {
 
 		if (college != null) {
 			college.setRequiresAvetmiss(this.avetmissQuestionsEnabled);
+		}
+		
+		for (CustomFieldType customFieldType : customFieldTypes) {
+			CustomFieldType localCustomFieldType = context.localObject(customFieldType);
+			
+			localCustomFieldType.setRequireForEnrolment(customFieldType.getRequireForEnrolment());
+			localCustomFieldType.setRequireForWaitingList(customFieldType.getRequireForWaitingList());
+			localCustomFieldType.setRequireForMailingList(customFieldType.getRequireForMailingList());
 		}
 
 		context.commitChanges();
