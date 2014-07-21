@@ -4,6 +4,7 @@ import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.enrol.services.Constants;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.CustomField;
+import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
@@ -11,6 +12,8 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
@@ -18,6 +21,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -118,7 +122,13 @@ public class ContactEditorFieldSet {
 	public List<String> getCustomFieldNames() {
 		List<String> customFieldNames = new ArrayList<>();
 		
-		for (CustomField customField : delegate.getCustomFields()) {
+		List<CustomField> customFields = delegate.getCustomFields();
+
+		// sort custom fields by name
+		Ordering.orderList(customFields, Arrays.asList(
+				new Ordering(CustomField.CUSTOM_FIELD_TYPE_PROPERTY + "." + CustomFieldType.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE)));
+		
+		for (CustomField customField : customFields) {
 			customFieldNames.add(customField.getCustomFieldType().getName());
 		}
 		
@@ -135,7 +145,7 @@ public class ContactEditorFieldSet {
 	
 	public CustomField getCustomFieldByName(String name) {
 		for (CustomField customField : delegate.getCustomFields()) {
-			if (customField.getCustomFieldType().getName().equals(customFieldName)) {
+			if (customField.getCustomFieldType().getName().equals(name)) {
 				return customField;
 			}
 		}

@@ -9,6 +9,8 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
@@ -16,6 +18,7 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static ish.oncourse.services.preference.ContactFieldHelper.*;
@@ -201,8 +204,11 @@ public class ContactEntrySettings {
 		this.mailingListDateOfBirthState = preferenceController.getRequireContactField(mailinglist, dateOfBirth);
 		this.mailingListCountryState = preferenceController.getRequireContactField(mailinglist, country);
 		
-		// TODO: these probably need to be sorted... alphabetically?
 		this.customFieldTypes = webSiteService.getCurrentCollege().getCustomFieldTypes();
+
+		// order custom field types alphabetically by name
+		Ordering.orderList(customFieldTypes, 
+				Arrays.asList(new Ordering(CustomFieldType.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE)));
 	}
 	
 	public CustomFieldType getCurrentField() {
