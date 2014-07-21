@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.waitinglist;
 
+import ish.oncourse.model.CustomField;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 
@@ -99,4 +100,9 @@ public class MailingListController extends AContactController {
     public void setTagService(ITagService tagService) {
         this.tagService = tagService;
     }
+
+	@Override
+	public List<CustomField> getCustomFields() {
+		return getContact().getCustomFields();
+	}
 }

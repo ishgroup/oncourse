@@ -3,9 +3,11 @@ package ish.oncourse.enrol.components.checkout.contact;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.enrol.services.Constants;
 import ish.oncourse.model.Country;
+import ish.oncourse.model.CustomField;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
@@ -15,7 +17,9 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
@@ -34,9 +38,15 @@ public class ContactEditorFieldSet {
 
 	@Property
 	private String fieldName;
+	
+	@Property
+	private String customFieldName;
 
 	@Inject
 	private Messages messages;
+	
+	@Inject
+	private IWebSiteService webSiteService;
 
 
 	public Messages getMessages() {
@@ -51,6 +61,9 @@ public class ContactEditorFieldSet {
 		return getContactFieldHelper().isRequiredField(FieldDescriptor.valueOf(fieldName));
 	}
 
+	public boolean customFieldRequired(CustomField field) {
+		return getContactFieldHelper().isCustomFieldRequired(field);
+	}
 
 	public String getValue() {
 		FieldDescriptor fieldDescriptor = FieldDescriptor.valueOf(fieldName);
@@ -100,5 +113,33 @@ public class ContactEditorFieldSet {
 
 	public DateFormat getDateFormat() {
 		return FormatUtils.getDateFormat(Constants.DATE_FIELD_SHOW_FORMAT, delegate.getContact().getCollege().getTimeZone());
+	}
+	
+	public List<String> getCustomFieldNames() {
+		List<String> customFieldNames = new ArrayList<>();
+		
+		for (CustomField customField : delegate.getCustomFields()) {
+			customFieldNames.add(customField.getCustomFieldType().getName());
+		}
+		
+		return customFieldNames;
+	}
+	
+	public String getCurrentCustomFieldValue() {
+		return getCustomFieldByName(customFieldName).getValue();
+	}
+	
+	public void setCurrentCustomFieldValue(String value) {
+		getCustomFieldByName(customFieldName).setValue(value);
+	}
+	
+	public CustomField getCustomFieldByName(String name) {
+		for (CustomField customField : delegate.getCustomFields()) {
+			if (customField.getCustomFieldType().getName().equals(customFieldName)) {
+				return customField;
+			}
+		}
+		
+		return null;
 	}
 }

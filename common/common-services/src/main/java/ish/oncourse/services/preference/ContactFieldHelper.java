@@ -1,6 +1,7 @@
 package ish.oncourse.services.preference;
 
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.CustomField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -186,5 +187,32 @@ public class ContactFieldHelper {
 
 	public PreferenceController getPreferenceController() {
 		return preferenceController;
+	}
+
+
+	public boolean isCustomFieldVisible(CustomField customField) {
+		switch (contactFiledsSet) {
+			case enrolment:
+				return isShow(customField.getCustomFieldType().getRequireForEnrolment());
+			case waitinglist:
+				return isShow(customField.getCustomFieldType().getRequireForWaitingList());
+			case mailinglist:
+				return isShow(customField.getCustomFieldType().getRequireForMailingList());
+			default:
+				throw new IllegalArgumentException("Unknown field set type.");
+		}
+	}
+	
+	public boolean isCustomFieldRequired(CustomField customField) {
+		switch (contactFiledsSet) {
+			case enrolment:
+				return VALUE_Required.equals(customField.getCustomFieldType().getRequireForEnrolment());
+			case waitinglist:
+				return VALUE_Required.equals(customField.getCustomFieldType().getRequireForWaitingList());
+			case mailinglist:
+				return VALUE_Required.equals(customField.getCustomFieldType().getRequireForMailingList());
+			default:
+				throw new IllegalArgumentException("Unknown field set type.");
+		}
 	}
 }

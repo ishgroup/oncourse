@@ -2,11 +2,13 @@ package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
+import ish.oncourse.model.CustomField;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.utils.StringUtilities;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
@@ -120,6 +122,16 @@ public class ContactEditorParser {
 			}
 
 			contact.writeProperty(fieldDescriptor.propertyName, value);
+		}
+		
+		// validate custom fields
+		for (CustomField customField : contact.getCustomFields()) {
+			String value = StringUtils.trimToNull(customField.getValue());
+			
+			if (value == null && contactFieldHelper.isCustomFieldRequired(customField)) {
+				errors.put(customField.getCustomFieldType().getName(), 
+						messages.format(KEY_ERROR_MESSAGE_fieldRequired, customField.getCustomFieldType().getName()));
+			}
 		}
 
 		/**

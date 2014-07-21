@@ -4,6 +4,8 @@ import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.CustomField;
+import ish.oncourse.model.CustomFieldType;
 import org.apache.cayenne.ObjectContext;
 
 public class ContactCredentialsEncoder {
@@ -30,9 +32,11 @@ public class ContactCredentialsEncoder {
 				contact.createNewStudent();
 			}
 		} else {
+			College localCollege = objectContext.localObject(college);
+			
 			contact = objectContext.newObject(Contact.class);
 
-			contact.setCollege(objectContext.localObject(college));
+			contact.setCollege(localCollege);
 
 			contact.setGivenName(contactCredentials.getFirstName());
 			contact.setFamilyName(contactCredentials.getLastName());
@@ -41,9 +45,17 @@ public class ContactCredentialsEncoder {
 			contact.setIsMarketingViaEmailAllowed(true);
 			contact.setIsMarketingViaPostAllowed(true);
 			contact.setIsMarketingViaSMSAllowed(true);
+			
+			for (CustomFieldType customFieldType : localCollege.getCustomFieldTypes()) {
+				CustomField customField = objectContext.newObject(CustomField.class);
+
+				customField.setCollege(localCollege);
+				customField.setCustomFieldType(customFieldType);
+				
+				customField.setRelatedObject(contact);
+				customField.setValue(customFieldType.getDefaultValue());
+			}
 		}
-
-
 	}
 
 	public void setContactCredentials(ContactCredentials contactCredentials) {

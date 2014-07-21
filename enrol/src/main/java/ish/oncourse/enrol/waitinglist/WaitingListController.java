@@ -3,6 +3,7 @@ package ish.oncourse.enrol.waitinglist;
 import ish.oncourse.enrol.checkout.ContactCredentialsEncoder;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
+import ish.oncourse.model.CustomField;
 import ish.oncourse.model.WaitingList;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -104,4 +105,8 @@ public class WaitingListController extends AContactController {
 		return course;
 	}
 
+	@Override
+	public List<CustomField> getCustomFields() {
+		return getContact().getCustomFields();
+	}
 }

@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.enrol.checkout.*;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.CustomField;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import org.apache.cayenne.ObjectContext;
 
@@ -126,4 +127,9 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
     public void setCancelAction(PurchaseController.Action cancelAction) {
         this.cancelAction = cancelAction;
     }
+
+	@Override
+	public List<CustomField> getCustomFields() {
+		return contact.getCustomFields();
+	}
 }
