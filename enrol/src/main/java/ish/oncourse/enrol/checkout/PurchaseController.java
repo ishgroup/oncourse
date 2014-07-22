@@ -897,7 +897,8 @@ public class PurchaseController {
         voucherAlreadyAdded,
         voucherWrongPayer,
         voucherAlreadyBeingUsed,
-        voucherRedeemNotAllow
+        voucherRedeemNotAllow,
+		ageRequirementsNotMet
         ;
 
 		public String getMessage(Messages messages, Object... params) {

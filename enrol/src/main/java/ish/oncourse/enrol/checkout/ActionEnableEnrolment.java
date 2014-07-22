@@ -3,6 +3,10 @@ package ish.oncourse.enrol.checkout;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
+
+import java.util.Date;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
 
@@ -64,6 +68,29 @@ public class ActionEnableEnrolment extends APurchaseAction {
 				getController().getErrors().put(courseClassEnded.name(), message);
             return false;
         }
+		
+		// validate age restrictions for the class
+		Integer minEnrolmentAge = enrolment.getCourseClass().getMinStudentAge();
+		Integer maxEnrolmentAge = enrolment.getCourseClass().getMaxStudentAge();
+		
+		if (minEnrolmentAge != null || maxEnrolmentAge != null) {
+			Date dateOfBirth = enrolment.getStudent().getContact().getDateOfBirth();
+			
+			if (dateOfBirth != null) {
+				Integer age = Years.yearsBetween(new DateTime(dateOfBirth.getTime()),
+						new DateTime(new Date().getTime())).getYears();
+				
+				if ((minEnrolmentAge != null && age < minEnrolmentAge) ||
+						(maxEnrolmentAge != null && age > maxEnrolmentAge)) {
+					String message = ageRequirementsNotMet.getMessage(getController().getMessages(), enrolment.getStudent().getFullName());
+					getController().getModel().setErrorFor(enrolment, message);
+					if (showErrors)
+						getController().getErrors().put(ageRequirementsNotMet.name(), message);
+					return false;
+				}
+			}
+		}
+		
         return true;
     }
 
