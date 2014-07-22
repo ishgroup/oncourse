@@ -1,17 +1,30 @@
-div.change-user
-{
-  .btn {
-    font-weight: 700;
-    text-transform: none;
-    background-color: $primary-btn;
-    border-color: $primary-btn;
-  }
-
-  .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
-    color: #fff;
-    text-decoration: none;
-    background-color:$primary-btn;
-    outline: 0;
-  }
-
+div.change-user {
+  display: inherit;
 }
+
+div.change-user button.btn, div.change-user.open .dropdown-toggle.btn-default {
+  background: transparent;
+  border: 0;
+  color: #D4952E;
+  font-size: 11px;
+  text-transform: none;
+}
+
+
+div.change-user .dropdown-menu
+{
+  background: #FEFBE8;
+  right: 0;
+  left: auto;
+  top: 20px;
+}
+
+div.change-user > button.btn > span.caret {
+  border-top-color: #D4952E;
+  margin-left: 1px;
+}
+
+
+
+
+
