@@ -154,6 +154,39 @@
 			border-top-color: $white;
 			margin-left: 10px;
 		}
+
+		.change-user {
+			display: inherit;
+			
+			&.open .dropdown-toggle {
+				-webkit-box-shadow: none;
+				box-shadow: none;
+			}
+			
+			ul.dropdown-menu {
+				background: #FEFBE8;
+				display: none;
+			}
+			
+			button.btn {
+				background: transparent;
+				border: 0;
+				color: #D4952E;
+				text-transform: none;
+				font-size: 11px;
+				font-weight: 400;
+				padding-right: 0;
+			    position: absolute;
+			    right: 0;
+				display: none;
+				// float: right;
+
+				.caret {
+					border-top-color: #D4952E;
+					margin-left: 7px;
+				}
+			}
+		}
 		
 		> ul {
 			position: absolute;
@@ -198,41 +231,59 @@
 					border: 0;
 					background: $body-bg;
 					color: $dark-brown;
-				}
-				
-				.change-user {
-					position: absolute;
-					top: 24px;
-					right: 12px;
-					
-					&.open .dropdown-toggle {
-						-webkit-box-shadow: none;
-						box-shadow: none;
-					}
-					
-					ul.dropdown-menu {
-						background: #FEFBE8;
-					}
-					
-					button.btn {
-						background: transparent;
-						border: 0;
-						color: #D4952E;
-						font-size: 11px;
-						
-						.caret {
-							border-top-color: #D4952E;
-						}
-					}
 				}*/
 			}
 		}
 		
-		&:hover {
+		&:hover,
+		&.navbar-collapse.in {
 			background: $header-dropdown-bg;
-			
+
+			.change-user {
+
+				button.btn {
+					display: block;
+				}
+
+				&.open {
+					> ul {
+						display: block;
+						top: 20px;
+					}	
+				}
+			}
+
 			> ul {
 				display: block;
+			}
+		}
+
+		&:hover{
+
+			> .caret {
+				opacity: .1;
+			}
+		}
+
+		&.navbar-collapse.in{
+			> strong {
+				float: left;
+			}
+			> .caret {
+				float: left; // only for iPhone
+				visibility: hidden;
+			}
+
+			.change-user {
+				float: right;
+			}
+		}
+
+		&.collapsing {
+			background: $header-dropdown-bg;
+			> strong,
+			> .caret {
+				display: none;
 			}
 		}
 		
@@ -240,6 +291,8 @@
 			margin: 2px 5px 0 0;
 			float: left;
 		}
+
+
 		
 		.btn.logout {
 			margin-left: 5px;
