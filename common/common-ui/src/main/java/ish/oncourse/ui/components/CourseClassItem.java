@@ -97,8 +97,9 @@ public class CourseClassItem {
 		timetableLabels.add("When");
 		timetableLabels.add("Time");
 		timetableLabels.add("Where");
+        timetableLabels.add("Session Notes");
 
-		TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
+        TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
 
 		dateFormat = FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
 		timeFormat = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);

@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<table class="${cssTableClass}">
 		<thead>
 			<tr>
@@ -22,6 +22,11 @@
 						<span t:type="ui/RoomLocation" room="event.room" withRoomName="true" />
 					</t:if>
 				</td>
+                <td>
+                    <t:if t:test="event.publicNotes">
+                        ${event.publicNotes}
+                    </t:if>
+                </td>
 			</tr>
 		</t:loop>
 	</table>

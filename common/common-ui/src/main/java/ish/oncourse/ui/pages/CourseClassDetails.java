@@ -40,6 +40,7 @@ public class CourseClassDetails {
 		timetableLabels.add("When");
 		timetableLabels.add("Time");
 		timetableLabels.add("Where");
+        timetableLabels.add("Session Notes");
 	}
 
 	public String getCourseDetail() {
