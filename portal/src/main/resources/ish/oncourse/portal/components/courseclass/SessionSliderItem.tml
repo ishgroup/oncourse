@@ -26,7 +26,27 @@
             <t:if test="isTutor">
                 <a href="#" class="mark-roll" id="${session.id}">Mark Roll</a>
             </t:if>
+
+            <t:delegate to="block:sessionPublicNotes"/>
+            <t:delegate to="block:sessionPrivateNotes"/>
         </div>
     </div>
 </li>
+
+<t:block t:id="sessionPublicNotes">
+    <t:if test="session.publicNotes">
+        <div class="session-notes">
+            <span>Public notes:</span> ${session.publicNotes}
+        </div>
+    </t:if>
+</t:block>
+
+<t:block t:id="sessionPrivateNotes">
+    <t:if test="showPrivateNodes()">
+        <div class="session-notes">
+            <span>Private notes:</span> ${session.privateNotes}
+        </div>
+    </t:if>
+</t:block>
+
 </t:container>

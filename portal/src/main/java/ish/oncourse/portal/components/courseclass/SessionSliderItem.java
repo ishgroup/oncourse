@@ -95,4 +95,10 @@ public class SessionSliderItem {
     }
 
 
+    public boolean showPrivateNodes()
+    {
+        return session.getPrivateNotes() != null && isTutor;
+    }
+
+
 }
