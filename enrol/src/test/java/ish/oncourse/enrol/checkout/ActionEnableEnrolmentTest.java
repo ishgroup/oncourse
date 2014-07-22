@@ -161,4 +161,65 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         proceedToPayment();
         assertDisabledEnrolments(contact1, 0);
     }
+	
+	@Test
+	public void testMinAgeRestriction() {
+		CourseClass courseClass = createPurchaseController(1004);
+
+		Contact contact = addFirstContact(1005);
+
+		assertNotNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
+		assertEquals(0, purchaseController.getModel().getEnabledEnrolments(contact).size());
+		assertEquals(1, purchaseController.getModel().getDisabledEnrolments(contact).size());
+		List<Enrolment> enrolments = purchaseController.getModel().getAllEnrolments(contact);
+		for (Enrolment enrolment : enrolments) {
+			assertDisabledEnrolment(enrolment);
+		}
+	}
+	
+	@Test
+	public void testMaxAgeRestriction() {
+		CourseClass courseClass = createPurchaseController(1004);
+
+		Contact contact = addFirstContact(1006);
+
+		assertNotNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
+		assertEquals(0, purchaseController.getModel().getEnabledEnrolments(contact).size());
+		assertEquals(1, purchaseController.getModel().getDisabledEnrolments(contact).size());
+		List<Enrolment> enrolments = purchaseController.getModel().getAllEnrolments(contact);
+		for (Enrolment enrolment : enrolments) {
+			assertDisabledEnrolment(enrolment);
+		}
+	}
+	
+	@Test
+	public void testAgeRestrictionMatch() {
+		CourseClass courseClass = createPurchaseController(1004);
+
+		Contact contact = addFirstContact(1007);
+
+		assertNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
+		assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact).size());
+		assertEquals(0, purchaseController.getModel().getDisabledEnrolments(contact).size());
+		List<Enrolment> enrolments = purchaseController.getModel().getAllEnrolments(contact);
+		for (Enrolment enrolment : enrolments) {
+			assertEnabledEnrolment(enrolment);
+		}
+	}
+	
+	@Test
+	public void testAgeRestrictionNoBirthDateSpecified() {
+		CourseClass courseClass = createPurchaseController(1004);
+
+		// age matches the specified interval
+		Contact contact = addFirstContact(1004);
+
+		assertNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
+		assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact).size());
+		assertEquals(0, purchaseController.getModel().getDisabledEnrolments(contact).size());
+		List<Enrolment> enrolments = purchaseController.getModel().getAllEnrolments(contact);
+		for (Enrolment enrolment : enrolments) {
+			assertEnabledEnrolment(enrolment);
+		}
+	}
 }

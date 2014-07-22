@@ -36,6 +36,21 @@
 		disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
 		indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
 		priorEducationCode="0" labourForceType="0" />
+	<Student id="1005" collegeId="1" angelId="1005"
+		created="2011-09-12 01:03:00.0" modified="2011-09-12 01:03:00.0"
+		disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+		indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+		priorEducationCode="0" labourForceType="0" />
+	<Student id="1006" collegeId="1" angelId="1006"
+		created="2011-09-12 01:03:00.0" modified="2011-09-12 01:03:00.0"
+		disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+		indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+		priorEducationCode="0" labourForceType="0" />
+	<Student id="1007" collegeId="1" angelId="1006"
+		created="2011-09-12 01:03:00.0" modified="2011-09-12 01:03:00.0"
+		disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+		indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+		priorEducationCode="0" labourForceType="0" />
 
 	<Tutor id="1000" collegeId="1" angelId="1000" created="2011-09-12 00:47:26.0"
 		modified="2011-09-12 01:02:00.0" resume="&lt;p&gt;This is mister Putin resume.&lt;/p&gt;"
@@ -68,6 +83,21 @@
 		isMale="1" familyName="TestStudent3" givenName="TestStudent3" street="test address2"
 		suburb="test suburb" state="wa" isMarketingViaEmailAllowed="1"
 		isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" />
+	<Contact id="1005" collegeId="1" studentId="1005"
+		angelId="1005" countryId="1" created="2011-09-12 01:03:00.0" isCompany="0"
+		isMale="1" familyName="TestStudent4" givenName="TestStudent4" street="test address2"
+		suburb="test suburb" state="wa" isMarketingViaEmailAllowed="1"
+		isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" dateOfBirth="2001-01-01 00:00:00"/>
+	<Contact id="1006" collegeId="1" studentId="1006"
+		angelId="1006" countryId="1" created="2011-09-12 01:03:00.0" isCompany="0"
+		isMale="1" familyName="TestStudent5" givenName="TestStudent5" street="test address2"
+		suburb="test suburb" state="wa" isMarketingViaEmailAllowed="1"
+		isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" dateOfBirth="1981-01-01 00:00:00"/>
+	<Contact id="1007" collegeId="1" studentId="1007"
+		angelId="1007" countryId="1" created="2011-09-12 01:03:00.0" isCompany="0"
+		isMale="1" familyName="TestStudent6" givenName="TestStudent6" street="test address2"
+		suburb="test suburb" state="wa" isMarketingViaEmailAllowed="1"
+		isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" dateOfBirth="1991-01-01 00:00:00"/>
 
 	<Course id="1001" collegeId="1" angelId="1001" code="AAV"
 		isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
@@ -100,6 +130,13 @@
 		created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
 		maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
 		feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"/>
+	<CourseClass id="1004" collegeId="1" code="4" courseId="1003"
+		roomId="1" angelId="1003" startDate="2011-11-03 01:01:59.0"
+		endDate="2111-11-03 02:01:59.0" isWebVisible="0" isCancelled="0"
+		created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+		maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
+		feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"
+		minStudentAge="18" maxStudentAge="25"/>
 
     <Enrolment id="1001" source="O" collegeId="1" courseClassId="1001"
                studentId="1001" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
