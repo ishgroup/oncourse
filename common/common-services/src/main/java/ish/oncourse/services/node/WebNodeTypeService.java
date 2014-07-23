@@ -62,18 +62,4 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
 
         return context.performQuery(selectQuery);
 	}
-
-    private <V> V getFromRequest(Class<V> vClass, String key)
-    {
-        Object value = request.getAttribute(key);
-        if (value != null && vClass.isAssignableFrom(value.getClass()))
-            return (V) value;
-        else
-            return null;
-    }
-
-    private <V> void putToRequest(String key, V value)
-    {
-        request.setAttribute(key, value);
-    }
 }

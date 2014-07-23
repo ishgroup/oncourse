@@ -1,6 +1,7 @@
 package ish.oncourse.services.node;
 
 import ish.oncourse.model.*;
+import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -19,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class WebNodeService implements IWebNodeService {
+public class WebNodeService extends BaseService<WebNode> implements IWebNodeService {
 	
 	private static final String SAMPLE_WEB_CONTENT = "Sample content";
 	private static final String NEW_PAGE_WEB_NODE_NAME = "New Page";
@@ -203,7 +204,7 @@ public class WebNodeService implements IWebNodeService {
 		ObjectContext ctx = cayenneService.newContext();
 
 		WebSiteVersion webSiteVersion = ctx.localObject(webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
-		WebNodeType webNodeType = (WebNodeType) ctx.localObject(webNodeTypeService.getDefaultWebNodeType().getObjectId(), null);
+		WebNodeType webNodeType = ctx.localObject(webNodeTypeService.getDefaultWebNodeType());
 		Integer nextNodeNumber = getNextNodeNumber();
 		return createNewNodeBy(webSiteVersion, webNodeType, NEW_PAGE_WEB_NODE_NAME + " (" + nextNodeNumber + ")" , SAMPLE_WEB_CONTENT, nextNodeNumber);
 	}
@@ -274,9 +275,19 @@ public class WebNodeService implements IWebNodeService {
     }
 
     public WebUrlAlias getDefaultWebURLAlias(WebNode webNode) {
-        Expression  expression =  ExpressionFactory.matchExp(WebUrlAlias.DEFAULT_PROPERTY, true);
-        List<WebUrlAlias> result = expression.filterObjects(webNode.getWebUrlAliases());
-        return result.isEmpty() ? null : result.get(0);
+        if (webNode.getObjectId().isTemporary())
+            return null;
+
+        WebUrlAlias alias = getFromRequest(WebUrlAlias.class, "defaultWebURLAlias_" + webNode.getId());
+        if (alias == null) {
+            ObjectContext context = cayenneService.newContext();
+            Expression expression = ExpressionFactory.matchExp(WebUrlAlias.WEB_NODE_PROPERTY, context.localObject(webNode));
+            expression = expression.andExp(ExpressionFactory.matchExp(WebUrlAlias.DEFAULT_PROPERTY, true));
+            SelectQuery query = new SelectQuery(WebUrlAlias.class, expression);
+            alias = (WebUrlAlias) Cayenne.objectForQuery(context,query);
+            putToRequest("defaultWebURLAlias_" + webNode.getId(), alias);
+        }
+        return alias;
     }
 
 	@Override

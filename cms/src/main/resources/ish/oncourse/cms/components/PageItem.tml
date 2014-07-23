@@ -5,7 +5,7 @@
 	<tr id="page_row_${webNode.nodeNumber}">
 		<td class="cms-first">${webNode.name}</td>
 
-		<td class="cms-block-last-upd">page/${webNode.nodeNumber}</td>
+		<td class="cms-block-last-upd">${path}</td>
 		<td>
 			<t:if t:test="webNode.published">
 				<span data-pub="publish">

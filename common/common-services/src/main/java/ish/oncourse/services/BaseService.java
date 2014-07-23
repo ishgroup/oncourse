@@ -2,17 +2,17 @@ package ish.oncourse.services;
 
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,6 +28,9 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 	@Inject
 	private IWebSiteService webSiteService;
 	private Class<T> entityClass;
+
+    @Inject
+    private Request request;
 	
 	private static final Logger LOGGER = Logger.getLogger(BaseService.class);
 
@@ -121,5 +124,20 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 	protected IWebSiteService getWebSiteService() {
 		return webSiteService;
 	}
+
+    public <V> V getFromRequest(Class<V> vClass, String key)
+    {
+        Object value = request.getAttribute(key);
+        if (value != null && vClass.isAssignableFrom(value.getClass()))
+            return (V) value;
+        else
+            return null;
+    }
+
+    public <V> void putToRequest(String key, V value)
+    {
+        request.setAttribute(key, value);
+    }
+
 
 }

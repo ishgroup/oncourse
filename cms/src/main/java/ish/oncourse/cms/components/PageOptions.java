@@ -16,6 +16,8 @@ import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.utils.ResourceNameValidator;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Field;
@@ -160,11 +162,24 @@ public class PageOptions {
 		return true;
 	}
 
+    /**
+     * for this component we use the method instead of WebNodeService.getDefaultWebURLAlias(node)
+     * to be sure that we work with editing context, not with data which is in the database.
+     */
+
+    public WebUrlAlias getDefaultWebUrlAlias()
+    {
+        Expression expression =  ExpressionFactory.matchExp(WebUrlAlias.DEFAULT_PROPERTY, true);
+        List<WebUrlAlias> result = expression.filterObjects(editNode.getWebUrlAliases());
+        return result.isEmpty() ? null : result.get(0);
+    }
+
 	Object onActionFromRemoveDefault() {
 		if (!isSessionAndEntityValid()) {
 			return page.getReloadPageBlock();
 		}
-        WebUrlAlias defaultAlias = webNodeService.getDefaultWebURLAlias(editNode);
+
+        WebUrlAlias defaultAlias = getDefaultWebUrlAlias();
         if (defaultAlias != null)
             defaultAlias.setDefault(false);
 		return urlZone;
@@ -184,7 +199,7 @@ public class PageOptions {
 			return page.getReloadPageBlock();
 		}
 		WebUrlAlias alias = editNode.getWebUrlAliasByPath(urlPath);
-        WebUrlAlias defaultAlias = webNodeService.getDefaultWebURLAlias(editNode);
+        WebUrlAlias defaultAlias = getDefaultWebUrlAlias();
         if (defaultAlias != null)
                defaultAlias.setDefault(false);
         alias.setDefault(true);
@@ -346,9 +361,4 @@ public class PageOptions {
 		return new MultiZoneUpdate("optionsZone", optionsZone).add("buttonsZone", buttonsZone).add("urlZone", urlZone)
 			.add("currentPageZone", ((PageInfo)componentResources.getContainer()).getCurrentPageZone());
 	}
-
-    public WebUrlAlias getDefaultWebUrlAlias()
-    {
-        return webNodeService.getDefaultWebURLAlias(editNode);
-    }
 }
