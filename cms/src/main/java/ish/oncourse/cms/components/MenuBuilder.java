@@ -50,7 +50,7 @@ public class MenuBuilder extends ish.oncourse.ui.components.Menu {
 		for (WebNode node : webNodeService.getNodes()) {
 			JSONObject obj = new JSONObject();
 
-			obj.append("value", node.getNodeNumber());
+			obj.append("value", "/page/" + node.getNodeNumber());
 			obj.append("label", "/page/" + node.getNodeNumber());
 			obj.append("title", node.getName());
 
