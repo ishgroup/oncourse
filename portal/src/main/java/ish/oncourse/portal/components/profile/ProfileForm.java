@@ -1,27 +1,21 @@
 package ish.oncourse.portal.components.profile;
 
-import ish.common.types.*;
+import static ish.oncourse.services.preference.PreferenceController.*;
+
 import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
-import ish.oncourse.model.Student;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.pages.Timetable;
-import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
-import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.Field;
-import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.PasswordField;
-import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
@@ -30,6 +24,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * User: artem
@@ -38,6 +34,7 @@ import java.util.Date;
  */
 public class ProfileForm {
 
+	private static final String KEY_ERROR_MESSAGE_fieldRequired = "message-fieldRequired";
 
     @Inject
     private IAuthenticationService authService;
@@ -55,7 +52,6 @@ public class ProfileForm {
     @Persist
     private ContactFieldHelper contactFieldHelper;
 
-
     @Property
     @Parameter
     private boolean requireAdditionalInfo;
@@ -68,73 +64,6 @@ public class ProfileForm {
     private Messages messages;
 
     private Messages avetmissMessages;
-    /**
-     * error message template properties
-     */
-
-    @Property
-    private String emailErrorMessage;
-
-    @Property
-    private String suburbErrorMessage;
-
-    @Property
-    private String postcodeErrorMessage;
-
-    @Property
-    private String stateErrorMessage;
-
-    @Property
-    private String countryErrorMessage;
-
-    @Property
-    private String homePhoneErrorMessage;
-
-    @Property
-    private String mobilePhoneErrorMessage;
-
-    @Property
-    private String businessPhoneErrorMessage;
-
-    @Property
-    private String faxErrorMessage;
-
-    @Property
-    private String birthDateErrorMessage;
-
-    /**
-     *page property
-     *
-     */
-    @InjectComponent
-    private TextField email;
-
-    @InjectComponent
-    private TextField suburb;
-
-    @InjectComponent
-    private TextField postcode;
-
-    @InjectComponent
-    private TextField state;
-
-    @InjectComponent
-    private TextField country;
-
-    @InjectComponent
-    private TextField homePhone;
-
-    @InjectComponent
-    private TextField mobilePhone;
-
-    @InjectComponent
-    private TextField businessPhone;
-
-    @InjectComponent
-    private TextField fax;
-
-    @InjectComponent
-    private TextField birthDate;
 
     @Parameter
     @Property
@@ -183,6 +112,11 @@ public class ProfileForm {
         return contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.valueOf(fieldName));
     }
 
+	private String getRequiredMessage(PreferenceController.FieldDescriptor fieldDescriptor) {
+		return messages.format(KEY_ERROR_MESSAGE_fieldRequired,
+				messages.get(String.format(MessagesNamingConvention.LABEL_KEY_TEMPLATE, fieldDescriptor.name())));
+	}
+
     public Messages getAvetmissMessages()
     {
         if (avetmissMessages == null)
@@ -209,9 +143,11 @@ public class ProfileForm {
             if (StringUtils.trimToNull(birthDateProperty) != null) {
                 Date parsedDate = FORMAT.parse(birthDateProperty);
                 contact.setDateOfBirth(parsedDate);
-            }
+            } else {
+				contact.setDateOfBirth(null);
+			}
         } catch (ParseException e) {
-            birthDateErrorMessage = messages.get("message-birthDateWrongFormat");
+            validateHandler.getErrors().put(FieldDescriptor.dateOfBirth.name(), messages.get("message-birthDateWrongFormat"));
         }
     }
 
@@ -225,19 +161,9 @@ public class ProfileForm {
     }
 
     public void setContactCountry(String value) {
-        //cleanup error if exist
-        if (validateHandler.error(Contact.COUNTRY_PROPERTY) != null) {
-            validateHandler.getErrors().remove(Contact.COUNTRY_PROPERTY);
-        }
-        if (StringUtils.trimToNull(value) == null) {
-            if (required(Contact.COUNTRY_PROPERTY)) {
-                validateHandler.getErrors().put(Contact.COUNTRY_PROPERTY, messageBy(Contact.COUNTRY_PROPERTY));
-            }
-            return;
-        }
         Country country = countryService.getCountryByName(value);
         if (country == null) {
-            validateHandler.getErrors().put(Contact.COUNTRY_PROPERTY, messageBy(Contact.COUNTRY_PROPERTY));
+            validateHandler.getErrors().put(FieldDescriptor.country.name(), messageBy(Contact.COUNTRY_PROPERTY));
         } else {
             contact.setCountry((Country) contact.getObjectContext().localObject(country.getObjectId(), country));
         }
@@ -245,70 +171,127 @@ public class ProfileForm {
 
 
     boolean validate() {
+		ConcurrentHashMap<String, String> errors = new ConcurrentHashMap<>(validateHandler.getErrors());
 
+		String emailErrorMessage = contact.validateEmail();
+		if (emailErrorMessage != null) {
+			errors.putIfAbsent("email", emailErrorMessage);
+		}
 
+		if (StringUtils.trimToNull(contact.getSuburb()) == null) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.suburb)) {
+				errors.putIfAbsent(FieldDescriptor.suburb.name(), getRequiredMessage(FieldDescriptor.suburb));
+			}
+		} else {
+			String suburbErrorMessage = contact.validateSuburb();
+			
+			if (suburbErrorMessage != null) {
+				errors.putIfAbsent(FieldDescriptor.suburb.name(), suburbErrorMessage);
+			}
+		}
 
-            emailErrorMessage = contact.validateEmail();
-            if (emailErrorMessage != null) {
-                validateHandler.getErrors().put("email",emailErrorMessage);
-                profileForm.recordError(emailErrorMessage);
-            }
+		if (StringUtils.trimToNull(contact.getPostcode()) == null) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.postcode)) {
+				errors.putIfAbsent(FieldDescriptor.postcode.name(), getRequiredMessage(FieldDescriptor.postcode));
+			}
+		} else {
+			String postcodeErrorMessage = contact.validatePostcode();
+			if (postcodeErrorMessage != null) {
+				errors.putIfAbsent(FieldDescriptor.postcode.name(), postcodeErrorMessage);
+			}
+		}
+		
+		if (StringUtils.trimToNull(contact.getState()) == null) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.state)) {
+				errors.putIfAbsent(FieldDescriptor.state.name(), getRequiredMessage(FieldDescriptor.state));
+			}
+		} else {
+			String stateErrorMessage = contact.validateState();
+			
+			if (stateErrorMessage != null) {
+				errors.putIfAbsent(FieldDescriptor.state.name(), stateErrorMessage);
+			}
+		}
 
-            suburbErrorMessage = contact.validateSuburb();
-            if (suburbErrorMessage != null) {
-                validateHandler.getErrors().put("suburb",suburbErrorMessage);
-                profileForm.recordError(suburbErrorMessage);
-            }
+		if (StringUtils.trimToNull(contact.getHomePhoneNumber()) == null) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.homePhoneNumber)) {
+				errors.putIfAbsent(FieldDescriptor.homePhoneNumber.name(), getRequiredMessage(FieldDescriptor.homePhoneNumber));
+			}
+		} else {
+			String homePhoneErrorMessage = contact.validateHomePhone();
+			
+			if (homePhoneErrorMessage != null) {
+				errors.putIfAbsent(FieldDescriptor.homePhoneNumber.name(), homePhoneErrorMessage);
+			}
+		}
 
-            postcodeErrorMessage = contact.validatePostcode();
-            if (postcodeErrorMessage != null) {
-                validateHandler.getErrors().put("postcode",postcodeErrorMessage);
-                profileForm.recordError(postcodeErrorMessage);
-            }
-            stateErrorMessage = contact.validateState();
-            if (stateErrorMessage != null) {
-                validateHandler.getErrors().put("state",stateErrorMessage);
-                profileForm.recordError(stateErrorMessage);
-            }
+		if (StringUtils.trimToNull(contact.getMobilePhoneNumber()) == null) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.mobilePhoneNumber)) {
+				errors.putIfAbsent(FieldDescriptor.mobilePhoneNumber.name(), getRequiredMessage(FieldDescriptor.mobilePhoneNumber));
+			}
+		} else {
+			String mobilePhoneErrorMessage = contact.validateMobilePhone();
 
-            homePhoneErrorMessage = contact.validateHomePhone();
-            if (homePhoneErrorMessage != null) {
-                validateHandler.getErrors().put("homePhone",homePhoneErrorMessage);
-                profileForm.recordError(homePhoneErrorMessage);
-            }
-            mobilePhoneErrorMessage = contact.validateMobilePhone();
-            if (mobilePhoneErrorMessage != null) {
-                validateHandler.getErrors().put("mobilePhone",mobilePhoneErrorMessage);
-                profileForm.recordError(mobilePhoneErrorMessage);
-            }
+			if (mobilePhoneErrorMessage != null) {
+				errors.putIfAbsent(FieldDescriptor.mobilePhoneNumber.name(), mobilePhoneErrorMessage);
+			}
+		}
 
-            businessPhoneErrorMessage = contact.validateBusinessPhone();
-            if (businessPhoneErrorMessage != null) {
-                validateHandler.getErrors().put("businessPhone",businessPhoneErrorMessage);
-                profileForm.recordError(businessPhoneErrorMessage);
-            }
+		if (StringUtils.trimToNull(contact.getBusinessPhoneNumber()) == null) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.businessPhoneNumber)) {
+				errors.putIfAbsent(FieldDescriptor.businessPhoneNumber.name(), getRequiredMessage(FieldDescriptor.businessPhoneNumber));
+			}
+		} else {
+			String businessPhoneErrorMessage = contact.validateBusinessPhone();
 
-            faxErrorMessage = contact.validateFax();
-            if (faxErrorMessage != null) {
-                validateHandler.getErrors().put("fax",faxErrorMessage);
-                profileForm.recordError(faxErrorMessage);
-            }
+			if (businessPhoneErrorMessage != null) {
+				errors.putIfAbsent(FieldDescriptor.businessPhoneNumber.name(), businessPhoneErrorMessage);
+			}
+		}
 
-            if (birthDateErrorMessage == null)
-                birthDateErrorMessage = contact.validateBirthDate();
-            if (birthDateErrorMessage != null) {
-                validateHandler.getErrors().put("birthDate",birthDateErrorMessage);
-                profileForm.recordError(birthDateErrorMessage);
-            }
+		if (StringUtils.trimToNull(contact.getFaxNumber()) == null) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.faxNumber)) {
+				errors.putIfAbsent(FieldDescriptor.faxNumber.name(), getRequiredMessage(FieldDescriptor.faxNumber));
+			}
+		} else {
+			String faxErrorMessage = contact.validateFax();
 
-            countryErrorMessage = validateHandler.error(Contact.COUNTRY_PROPERTY);
-            if (countryErrorMessage != null) {
-                validateHandler.getErrors().put("country",countryErrorMessage);
-                profileForm.recordError(countryErrorMessage);
-            }
+			if (faxErrorMessage != null) {
+				errors.putIfAbsent(FieldDescriptor.faxNumber.name(), faxErrorMessage);
+			}
+		}
 
+		if (contact.getDateOfBirth() == null) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.dateOfBirth)) {
+				errors.putIfAbsent(FieldDescriptor.dateOfBirth.name(), getRequiredMessage(FieldDescriptor.dateOfBirth));
+			}
+		} else {
+			String birthDateErrorMessage = contact.validateBirthDate();
+			
+			if (birthDateErrorMessage != null) {
+				errors.putIfAbsent(FieldDescriptor.dateOfBirth.name(), birthDateErrorMessage);
+			}
+		}
+
+		if (contact.getCountry() == null) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.country)) {
+				errors.putIfAbsent(FieldDescriptor.country.name(), getRequiredMessage(FieldDescriptor.country));
+			}
+		}
+		
+		if (StringUtils.trimToNull(contact.getStudent().getSpecialNeeds()) == null) {
+			if (contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.specialNeeds)) {
+				errors.putIfAbsent(FieldDescriptor.specialNeeds.name(), getRequiredMessage(FieldDescriptor.specialNeeds));
+			}
+		}
+
+		validateHandler.setErrors(errors);
+		
+		for (Map.Entry<String, String> entry : validateHandler.getErrors().entrySet()) {
+			profileForm.recordError(entry.getValue());
+		}
+		
         return !profileForm.getHasErrors();
-
     }
 
     @OnEvent(component = "profileForm")
@@ -319,6 +302,4 @@ public class ProfileForm {
         }
         return this;
     }
-
-
 }

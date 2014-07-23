@@ -17,14 +17,16 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="street" class="control-label">Address</label>
-                            <t:textfield value="contact.street" class="form-control"
-                                         clientId="street" t:id="street" placeholder="Address"/>
+                            <label for="street" class="control-label">Address<t:if test="required('street')"><em title="${message:required}">*</em></t:if></label>
+							<div class="${validateHandler.validateClass('street')}">
+								<t:textfield value="contact.street" t:id="street" class="form-control ${validateHandler.errorClass('street')}"/>
+								<span t:type="HintComponent" validationMessage="${validateHandler.error('street')}"/>
+							</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="suburb" class="control-label">Suburb</label>
+                            <label for="suburb" class="control-label">Suburb<t:if test="required('suburb')"><em title="${message:required}">*</em></t:if></label>
                             <div class="${validateHandler.validateClass('suburb')}">
                                 <t:textfield value="contact.suburb" t:id="suburb" class="form-control ${validateHandler.errorClass('suburb')}"/>
                                 <span t:type="HintComponent" validationMessage="${validateHandler.error('suburb')}"/>
@@ -37,7 +39,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="postcode" class="control-label">Postcode*</label>
+                                    <label for="postcode" class="control-label">Postcode<t:if test="required('postcode')"><em title="${message:required}">*</em></t:if></label>
                                     <div class="${validateHandler.validateClass('postcode')}">
                                         <t:textfield value="contact.postcode" t:id="postcode" class="form-control ${validateHandler.errorClass('postcode')}"/>
                                         <span t:type="HintComponent" validationMessage="${validateHandler.error('postcode')}"/>
@@ -46,7 +48,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="state" class="control-label">State</label>
+                                    <label for="state" class="control-label">State<t:if test="required('state')"><em title="${message:required}">*</em></t:if></label>
                                     <div class="${validateHandler.validateClass('state')}">
                                         <t:textfield value="contact.state" t:id="state" class="form-control ${validateHandler.errorClass('state')}"/>
                                         <span t:type="HintComponent" validationMessage="${validateHandler.error('state')}"/>
@@ -58,7 +60,7 @@
                     <div class="col-sm-6">
                         <t:if test="${visible('country')}">
                             <div class="form-group">
-                                <label for="country" class="control-label">Country</label>
+                                <label for="country" class="control-label">Country<t:if test="required('country')"><em title="${message:required}">*</em></t:if></label>
                                 <div class="${validateHandler.validateClass('country')}">
                                     <t:textfield value="contactCountry" t:id="country" class="form-control ${validateHandler.errorClass('country')}"/>
                                     <span t:type="HintComponent" validationMessage="${validateHandler.error('country')}"/>
@@ -70,19 +72,19 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="homePhone" class="control-label">Home Phone<t:if test="contactFieldHelper.requireHomePhone"><em title="${message:required}">*</em></t:if></label>
-                            <div class="${validateHandler.validateClass('homePhone')}">
-                                <t:textfield value="contact.homePhoneNumber" t:id="homePhone" class="form-control ${validateHandler.errorClass('homePhone')}"/>
-                                <span t:type="HintComponent" validationMessage="${validateHandler.error('homePhone')}"/>
+                            <label for="homePhoneNumber" class="control-label">Home Phone<t:if test="required('homePhoneNumber')"><em title="${message:required}">*</em></t:if></label>
+                            <div class="${validateHandler.validateClass('homePhoneNumber')}">
+                                <t:textfield value="contact.homePhoneNumber" t:id="homePhoneNumber" class="form-control ${validateHandler.errorClass('homePhoneNumber')}"/>
+                                <span t:type="HintComponent" validationMessage="${validateHandler.error('homePhoneNumber')}"/>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="mobilePhone" class="control-label">Mobile Phone<t:if test="contactFieldHelper.requireMobile"><em title="${message:required}">*</em></t:if></label>
+                            <label for="mobilePhoneNumber" class="control-label">Mobile Phone<t:if test="required('mobilePhoneNumber')"><em title="${message:required}">*</em></t:if></label>
                             <div class="${validateHandler.validateClass('mobilePhone')}">
-                                <t:textfield value="contact.mobilePhoneNumber" t:id="mobilePhone" class="form-control ${validateHandler.errorClass('mobilePhone')}"/>
-                                <span t:type="HintComponent" validationMessage="${validateHandler.error('mobilePhone')}"/>
+                                <t:textfield value="contact.mobilePhoneNumber" t:id="mobilePhoneNumber" class="form-control ${validateHandler.errorClass('mobilePhoneNumber')}"/>
+                                <span t:type="HintComponent" validationMessage="${validateHandler.error('mobilePhoneNumber')}"/>
                             </div>
                         </div>
                     </div>
@@ -90,19 +92,19 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="businessPhone" class="control-label">Work Phone<t:if test="contactFieldHelper.requireBusinessPhone"><em title="${message:required}">*</em></t:if></label>
-                            <div class="${validateHandler.validateClass('businessPhone')}">
-                                <t:textfield value="contact.businessPhoneNumber" t:id="businessPhone" class="form-control ${validateHandler.errorClass('businessPhone')}"/>
-                                <span t:type="HintComponent" validationMessage="${validateHandler.error('businessPhone')}"/>
+                            <label for="businessPhoneNumber" class="control-label">Work Phone<t:if test="required('businessPhoneNumber')"><em title="${message:required}">*</em></t:if></label>
+                            <div class="${validateHandler.validateClass('businessPhoneNumber')}">
+                                <t:textfield value="contact.businessPhoneNumber" t:id="businessPhoneNumber" class="form-control ${validateHandler.errorClass('businessPhoneNumber')}"/>
+                                <span t:type="HintComponent" validationMessage="${validateHandler.error('businessPhoneNumber')}"/>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="fax" class="control-label">Fax<t:if test="contactFieldHelper.requireFax"><em title="${message:required}">*</em></t:if></label>
+                            <label for="faxNumber" class="control-label">Fax<t:if test="required('faxNumber')"><em title="${message:required}">*</em></t:if></label>
                             <div class="${validateHandler.validateClass('fax')}">
-                                <t:textfield value="contact.faxNumber" t:id="fax" class="form-control ${validateHandler.errorClass('fax')}"/>
-                                <span t:type="HintComponent" validationMessage="${validateHandler.error('fax')}"/>
+                                <t:textfield value="contact.faxNumber" t:id="faxNumber" class="form-control ${validateHandler.errorClass('faxNumber')}"/>
+                                <span t:type="HintComponent" validationMessage="${validateHandler.error('faxNumber')}"/>
                             </div>
                         </div>
                     </div>
@@ -110,10 +112,10 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="birthDate" class="control-label">Date of birth<t:if test="contactFieldHelper.requireDateOfBirth"><em title="${message:required}">*</em></t:if></label>
-                            <div class="${validateHandler.validateClass('birthDate')}">
-                              <t:textfield value="birthDateProperty" t:id="birthDate" class="form-control ${validateHandler.errorClass('birthDate')}"/>
-                              <span t:type="HintComponent" validationMessage="${validateHandler.error('birthDate')}"/>
+                            <label for="dateOfBirth" class="control-label">Date of birth<t:if test="required('dateOfBirth')"><em title="${message:required}">*</em></t:if></label>
+                            <div class="${validateHandler.validateClass('dateOfBirth')}">
+                              <t:textfield value="birthDateProperty" t:id="dateOfBirth" class="form-control ${validateHandler.errorClass('dateOfBirth')}"/>
+                              <span t:type="HintComponent" validationMessage="${validateHandler.error('dateOfBirth')}"/>
                             </div>
                         </div>
                     </div>
@@ -137,6 +139,19 @@
                         </div>
                     </div>
                 </div>
+				<t:if test="contact.getStudent()">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="specialNeeds" class="control-label">Special dietary requirements, allergies, accessibility or medical considerations<t:if test="required('specialNeeds')"><em title="${message:required}">*</em></t:if></label>
+								<div class="${validateHandler.validateClass('specialNeeds')}">
+									<t:textfield value="contact.student.specialNeeds" t:id="specialNeeds" class="form-control ${validateHandler.errorClass('specialNeeds')}"/>
+									<span t:type="HintComponent" validationMessage="${validateHandler.error('specialNeeds')}"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</t:if>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-lg-12">
