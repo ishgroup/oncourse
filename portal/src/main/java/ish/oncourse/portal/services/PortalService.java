@@ -472,7 +472,6 @@ public class PortalService implements IPortalService {
 
     }
 
-
     public List<Enrolment> getEnrolments() {
         Student student = getContact().getStudent();
         if (student != null) {
@@ -503,20 +502,32 @@ public class PortalService implements IPortalService {
                 return getAttachedFilesForTutor(courseClass);
             }
         }
-        return getAttachedFilesForStudent(courseClass);
+		
+		if (contact.getStudent() != null) {
+			return getAttachedFilesForStudent(contact.getStudent(), courseClass);
+		}
+		
+        return Collections.emptyList();
     }
 
-    private List<Document> getAttachedFilesForStudent(CourseClass courseClass) {
+    private List<Document> getAttachedFilesForStudent(Student student, CourseClass courseClass) {
+
+		// only students with active enrolments can view class attachments
+		Expression filter = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student);
+
+		if (filter.filterObjects(courseClass.getValidEnrolments()).isEmpty()) {
+			return Collections.emptyList();
+		}
 
         ObjectContext sharedContext = cayenneService.sharedContext();
         ArrayList<Document> result = new ArrayList<>();
 
-        Expression exp = ExpressionFactory.inExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
+        Expression exp = ExpressionFactory.inExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PUBLIC)
                 .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId()))
                 .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
         result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
 
-        exp = ExpressionFactory.inExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PRIVATE, AttachmentInfoVisibility.PUBLIC)
+        exp = ExpressionFactory.inExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PUBLIC)
                 .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
                 .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
         result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
@@ -527,11 +538,13 @@ public class PortalService implements IPortalService {
         ObjectContext sharedContext = cayenneService.sharedContext();
         ArrayList<Document> result = new ArrayList<>();
 
-        Expression exp = ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId())
+        Expression exp = ExpressionFactory.noMatchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PRIVATE) 
+				.andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId()))
                 .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
         result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
 
-        exp = ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId())
+        exp = ExpressionFactory.noMatchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PRIVATE)
+				.andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
                 .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
         result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
 
@@ -744,7 +757,6 @@ public class PortalService implements IPortalService {
     {
         this.selectedContact = contact;
     }
-
 
     @Override
     public void logout() {
