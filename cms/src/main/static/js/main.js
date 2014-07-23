@@ -342,14 +342,25 @@ function editThemes() {
 
 }
 
+/**
+ * The function initializes mouse listeners for a menu item which show/hide
+ * additonal contrals (like delete and drag&drop) for the menu item
+ */
 function highlightMenuItem(menuItem) {
     menuItem.mouseover(
             function(e) {
                 jQuery(this).addClass("over").parents().removeClass("over");
+                /*the code finds 'ul' child and if it exists and content of the ul element is not empty
+                the code hides delete button for the menu item*/
+                if (jQuery(this).children('ul').children().size())
+                {
+                    jQuery(this).find("span.cms-menu-pages-dl").css("visibility", "hidden");
+                }
                 e.stopPropagation();
             }).mouseout(function(e) {
-        jQuery(this).removeClass("over");
-    });
+                jQuery(this).removeClass("over");
+                jQuery(this).find("span.cms-menu-pages-dl").removeAttr("style");
+            });
 }
 
 function sortThemes() {
