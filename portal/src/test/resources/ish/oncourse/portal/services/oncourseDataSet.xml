@@ -23,7 +23,6 @@
     <Room id="5" collegeId="1"/>
     <Room id="6" collegeId="1"/>
 
-
     <CourseClass id="1" code="1-1" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-1" feeExGst="20.00" feeGst="1.25" roomId="1" maximumPlaces="3"
                  startDate="2011-01-01 00:00:00" endDate="1980-01-01 01:00:00" isCancelled="0" isDistantLearningCourse="0"/>
     <CourseClass id="2" code="2-1" collegeId="1" countOfSessions="2" courseId="2" deliveryMode="1" detail="Test Course Class 2-1" feeExGst="20.00" feeGst="1.25" roomId="2" maximumPlaces="3"
@@ -41,10 +40,8 @@
     <CourseClass id="8" code="8-1" collegeId="1" countOfSessions="0" courseId="5" deliveryMode="1" detail="Test Course Class 6-1" feeExGst="20.00" feeGst="1.25" roomId="6" maximumPlaces="3"
                  startDate="[null]" endDate="[null]" isCancelled="0" isDistantLearningCourse="1" maximumDays="100000"/>
 
-
     <Tutor id="1" angelId="1" collegeId="1" created="2010-02-03 09:18:09" finishDate="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" resume="Test resume" startDate="2010-02-03 09:18:09" />
     <Tutor id="2" angelId="1" collegeId="1" created="2010-02-03 09:18:09" finishDate="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" resume="Test resume" startDate="2010-02-03 09:18:09" />
-
 
     <Student id="1" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1"
              highestSchoolLevel="1" concessionType="1" indigenousStatus="1" isOverseasClient="1"
@@ -53,16 +50,10 @@
              highestSchoolLevel="1" concessionType="1" indigenousStatus="1" isOverseasClient="1"
              isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1" yearSchoolCompleted="1" created="2011-09-12 00:56:00.0"/>
 
-
-
-
     <Contact id="1" collegeId="1" tutorId="1"/>
     <Contact id="2" collegeId="1"/>
     <Contact id="3" collegeId="1" studentId="1"/>
     <Contact id="4" collegeId="1" studentId="2" tutorId="2"/>
-
-
-
 
     <TutorRole id="1" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="1" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
     <TutorRole id="2" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="2" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
@@ -73,7 +64,6 @@
     <TutorRole id="7" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="7" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
     <TutorRole id="8" angelId="1" collegeId="1" courseClassId="8" created="2010-02-03 09:18:09" isConfirmed="0" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
     <TutorRole id="9" angelId="1" collegeId="1" courseClassId="8" created="2010-02-03 09:18:09" isConfirmed="0" modified="2010-02-03 09:18:09" tutorId="2" inPublicity="1"/>
-
 
     <Session id="1"  collegeId="1" courseClassId="1" roomId="1" angelId="201" startDate="1980-01-01 01:00:00" endDate="1980-01-01 01:00:00" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
     <Session id="2" collegeId="1" courseClassId="2" roomId="2" angelId="202" startDate="1980-01-02 01:00:00" endDate="1980-01-02 00:00:00" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
@@ -89,7 +79,6 @@
     <SessionTutor id="5" collegeId="1" sessionId="5" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
     <SessionTutor id="6" collegeId="1" sessionId="6" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
 
-
     <Enrolment id="1" collegeId="1" courseClassId="1" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
     <Enrolment id="2" collegeId="1" courseClassId="2" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
     <Enrolment id="3" collegeId="1" courseClassId="3" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
@@ -101,16 +90,43 @@
     <Enrolment id="9" collegeId="1" courseClassId="1" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
     <Enrolment id="10" collegeId="1" courseClassId="3" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
 
-
-
-
-
-
     <survey id="1" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="1" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="1"/>
     <survey id="2" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="2" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="2"/>
     <survey id="3" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="3" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="3"/>
     <survey id="4" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="4" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="4"/>
     <survey id="5" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="5" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="5"/>
     <survey id="6" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="6" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="6"/>
+
+	<Document id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+			  name="test" description="test" fileUUID="test" isShared="1" isRemoved="0" webVisibility="0"/>
+	<Document id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+			  name="test1" description="test1" fileUUID="test1" isShared="1" isRemoved="0" webVisibility="1"/>
+	<Document id="3" angelId="3" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+			  name="test2" description="test2" fileUUID="test1" isShared="1" isRemoved="0" webVisibility="2"/>
+	<Document id="4" angelId="4" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+			  name="test3" description="test3" fileUUID="test1" isShared="1" isRemoved="0" webVisibility="3"/>
+	<Document id="5" angelId="5" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+			  name="test3" description="test4" fileUUID="test1" isShared="1" isRemoved="0" webVisibility="3"/>
+
+	<DocumentVersion id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 documentId="1" versionId="version" fileName="test.text" mimeType="text/plain" byteSize="1024" timestamp="2011-01-01 00:00:00"
+					 pixelWidth="20" pixelHeight="10" description="description"/>
+	<DocumentVersion id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 documentId="2" versionId="version" fileName="test.text" mimeType="text/plain" byteSize="1024" timestamp="2011-01-01 00:00:00"
+					 pixelWidth="20" pixelHeight="10" description="description"/>
+	<DocumentVersion id="3" angelId="3" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 documentId="3" versionId="version" fileName="test.text" mimeType="text/plain" byteSize="1024" timestamp="2011-01-01 00:00:00"
+					 pixelWidth="20" pixelHeight="10" description="description"/>
+	<DocumentVersion id="4" angelId="4" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 documentId="4" versionId="version" fileName="test.text" mimeType="text/plain" byteSize="1024" timestamp="2011-01-01 00:00:00"
+					 pixelWidth="20" pixelHeight="10" description="description"/>
+	<DocumentVersion id="5" angelId="5" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 documentId="5" versionId="version" fileName="test.text" mimeType="text/plain" byteSize="1024" timestamp="2011-01-01 00:00:00"
+					 pixelWidth="20" pixelHeight="10" description="description"/>
+	
+	<BinaryInfoRelation id="1" collegeId="1" entityIdentifier="CourseClass" entityWillowId="1" documentId="5" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
+	<BinaryInfoRelation id="2" collegeId="1" entityIdentifier="CourseClass" entityWillowId="1" documentId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
+	<BinaryInfoRelation id="3" collegeId="1" entityIdentifier="CourseClass" entityWillowId="1" documentId="2" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
+	<BinaryInfoRelation id="4" collegeId="1" entityIdentifier="CourseClass" entityWillowId="1" documentId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
 
 </dataset>

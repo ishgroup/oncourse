@@ -2,6 +2,7 @@ package ish.oncourse.portal.services;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Document;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -29,12 +30,8 @@ import static org.junit.Assert.*;
  */
 public class PortalServiceTest extends ServiceTest {
 
-
-
     @Before
     public void setup() throws Exception {
-
-
         initTest("ish.oncourse.portal", "portal","src/main/resources/desktop/ish/oncourse/portal/pages", AppModule.class);
         InputStream st = PortalServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/portal/services/oncourseDataSet.xml");
         FlatXmlDataSetBuilder builder =  new FlatXmlDataSetBuilder();
@@ -49,7 +46,6 @@ public class PortalServiceTest extends ServiceTest {
         DataSource onDataSource = getDataSource("jdbc/oncourse");
         DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), rDataSet);
     }
-
 
     @Test
     public void testGetContactCourseClasses()
@@ -163,8 +159,64 @@ public class PortalServiceTest extends ServiceTest {
         assertEquals("Current courses count",1, courseClasses.size());
         assertEquals("Test order Past course 8",8L, courseClasses.get(0).getId().longValue());
     }
+	
+	@Test
+	public void testTutorCommonResources() {
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		IPortalService service = getService(IPortalService.class);
+		IAuthenticationService authenticationService = getService(IAuthenticationService.class);
+		ObjectContext objectContext = cayenneService.sharedContext();
 
+		Document tutorResource = Cayenne.objectForPK(objectContext, Document.class, 4);
 
+		Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 1);
+		authenticationService.storeCurrentUser(contact);
+		
+		List<Document> tutorResources = service.getTutorCommonResources();
+		
+		assertEquals(1, tutorResources.size());
+		assertEquals(tutorResource, tutorResources.get(0));
+	}
+	
+	@Test
+	public void testTutorClassResources() {
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		IPortalService service = getService(IPortalService.class);
+		IAuthenticationService authenticationService = getService(IAuthenticationService.class);
+		ObjectContext objectContext = cayenneService.sharedContext();
 
+		Document privateResource = Cayenne.objectForPK(objectContext, Document.class, 1);
+		CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1);
 
+		Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 1);
+		authenticationService.storeCurrentUser(contact);
+
+		List<Document> tutorClassResources = service.getResourcesBy(courseClass);
+
+		assertEquals(3, tutorClassResources.size());
+		assertFalse(tutorClassResources.contains(privateResource));
+	}
+	
+	@Test
+	public void testStudentClassResources() {
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		IPortalService service = getService(IPortalService.class);
+		IAuthenticationService authenticationService = getService(IAuthenticationService.class);
+		ObjectContext objectContext = cayenneService.sharedContext();
+
+		Document privateResource = Cayenne.objectForPK(objectContext, Document.class, 1);
+		CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1);
+
+		Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 3);
+		authenticationService.storeCurrentUser(contact);
+
+		List<Document> tutorClassResources = service.getResourcesBy(courseClass);
+
+		assertEquals(2, tutorClassResources.size());
+		assertFalse(tutorClassResources.contains(privateResource));
+		
+		CourseClass notEnrolledIntoClass = Cayenne.objectForPK(objectContext, CourseClass.class, 5);
+		
+		assertTrue(service.getResourcesBy(notEnrolledIntoClass).isEmpty());
+	}
 }
