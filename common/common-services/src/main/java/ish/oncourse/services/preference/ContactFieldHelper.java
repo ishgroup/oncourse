@@ -171,7 +171,7 @@ public class ContactFieldHelper {
 		FieldDescriptor[] fieldDescriptors = FieldDescriptor.values();
 		for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
 			if (isVisible(fieldDescriptor, contact, isFillRequiredProperties))
-				visibleFields.add(fieldDescriptor.propertyName);
+				visibleFields.add(fieldDescriptor.name());
 		}
 		if (visibleFields.size() < 1)
 			throw new IllegalArgumentException();

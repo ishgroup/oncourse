@@ -60,7 +60,7 @@ public class ContactEditorParser {
 			FieldDescriptor fieldDescriptor = FieldDescriptor.valueOf(visibleField);
 			String error = validate(fieldDescriptor);
 			if (error != null) {
-				errors.put(fieldDescriptor.propertyName, error);
+				errors.put(fieldDescriptor.name(), error);
 			}
 		}
 	}
@@ -96,13 +96,13 @@ public class ContactEditorParser {
 
 			if (stringValue == null) {
 				if (contactFieldHelper.isRequiredField(fieldDescriptor))
-					errors.put(fieldDescriptor.propertyName, getRequiredMessage(fieldDescriptor));
+					errors.put(fieldDescriptor.name(), getRequiredMessage(fieldDescriptor));
 			} else if (fieldDescriptor.propertyClass == Date.class) {
 				try {
 					value = DateUtils.truncate(dateFormat.parse(stringValue), Calendar.DAY_OF_MONTH);
 				} catch (ParseException e) {
                     value = null;
-					errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
+					errors.put(fieldDescriptor.name(), messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
 				}
 			}
 
@@ -114,7 +114,7 @@ public class ContactEditorParser {
 				{
 					value = getCountryBy(stringValue);
 					if (value == null) {
-						errors.put(fieldDescriptor.propertyName,
+						errors.put(fieldDescriptor.name(),
 							messages.format(KEY_ERROR_error_countryOfBirth,stringValue));
 						value = getCountryBy(ICountryService.DEFAULT_COUNTRY_NAME);
 					}
@@ -159,7 +159,7 @@ public class ContactEditorParser {
 
 	private String getRequiredMessage(FieldDescriptor fieldDescriptor) {
 		return messages.format(KEY_ERROR_MESSAGE_fieldRequired,
-                messages.get(String.format(MessagesNamingConvention.LABEL_KEY_TEMPLATE, fieldDescriptor.propertyName)));
+                messages.get(String.format(MessagesNamingConvention.LABEL_KEY_TEMPLATE, fieldDescriptor.name())));
 	}
 
 
@@ -242,6 +242,8 @@ public class ContactEditorParser {
 				}
 				return error;
 			case country:
+				return null;
+			case specialNeeds:
 				return null;
 			default:
 				throw new IllegalArgumentException();
