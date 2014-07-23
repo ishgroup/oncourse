@@ -1,22 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter" lang="en" >
+             lang="en">
 	
 	<tr id="page_row_${webNode.nodeNumber}">
 		<td class="cms-first">${webNode.name}</td>
 
 		<td class="cms-block-last-upd">${path}</td>
 		<td>
-			<t:if t:test="webNode.published">
-				<span data-pub="publish">
-					Published
-				</span>
-				<p:else>
-					<span data-pub="hidden">
-						Unpublished
-					</span>
-				</p:else>
-			</t:if>
+            <t:if test="webNode.published">
+                <input type="checkbox" name="cms-page-publish" checked="on" onclick="return false"/>
+            </t:if>
+            <t:unless test="webNode.published">
+                <input type="checkbox" name="cms-page-publish" onclick="return false"/>
+            </t:unless>
+            <span>visible</span>
 		</td>
 		<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
         <td class="cms-block-last-upd">${webNode.webNodeType.name}</td>
