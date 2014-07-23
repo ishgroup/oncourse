@@ -15,7 +15,7 @@
                 <div class="cms-theme-title-n clearfix">
                 	<label for="themeName">Name</label>
                 	<t:if test="isSpecialType" negate="true">
-                		<t:textfield t:id="name" clientId="themeName" t:value="editPageType.name" t:validate="required" maxlength="500" class="cms-span3"/>
+                		<t:textfield t:id="name" clientId="themeName" t:value="editPageType.name" maxlength="500" class="cms-span3"/>
                 		<p:else>
                 			<input class="cms-span3 cms-disabled" disabled="disabled" value="${editPageType.name}"/>
                 		</p:else>
@@ -27,8 +27,7 @@
                     <label>Layout key</label>
 
                     <div class="cms-theme-key-wr">
-                        <!--  div class="cms-theme-key" id="cmsThemeKey"></div-->
-                        <t:select t:id="layoutKey" name="layoutKey" model="layoutSelectModel" encoder="layoutSelectModel" t:validate="required" value="editPageType.layoutKey"/>
+                        <t:select t:id="layoutKey" name="layoutKey" model="layoutSelectModel" encoder="layoutSelectModel" value="editPageType.layoutKey"/>
                     </div>
                 </div>
 				

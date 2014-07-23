@@ -246,12 +246,16 @@ public class PageTypeEdit {
 
 		if (name.length() < 3) {
 			pageTypeEditForm.recordError(messages.get("message-shortPageTypeName"));
-			return;
 		}
 		WebNodeType webNodeType = webContentService.getWebNodeTypeByName(name);
 		if (webNodeType != null && !webNodeType.getObjectId().equals(editPageType.getObjectId())){
 			pageTypeEditForm.recordError(messages.get("message-duplicatePageTypeName"));
-		}			
+		}
+
+        if (StringUtils.trimToNull(editPageType.getLayoutKey()) == null)
+        {
+            pageTypeEditForm.recordError(messages.get("message-layoutKeyNotDefined"));
+        }
 	}
 
 	Object onFailureFromPageTypeEditForm() {
