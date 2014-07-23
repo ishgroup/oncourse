@@ -284,6 +284,25 @@
 				</div>
 			</div>
 			
+			<div class="cms-set-container">
+				<div class="cms-set-name">Special needs</div>
+				
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="enrolmentSpecialNeedsState" class="cms-span2"/>
+				</div>
+				
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="waitingListSpecialNeedsState" class="cms-span2"/>
+				</div>
+				
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="mailingListSpecialNeedsState" class="cms-span2"/>
+				</div>
+			</div>
+			
 			<t:loop source="customFieldTypes" index="fieldIndex">
 				<div class="cms-set-container">
 					<div class="cms-set-name">${currentField.name}</div>

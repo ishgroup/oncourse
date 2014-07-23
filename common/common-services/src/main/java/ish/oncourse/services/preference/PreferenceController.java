@@ -721,7 +721,8 @@ public class PreferenceController extends CommonPreferenceController {
 		businessPhoneNumber("businessphone", Contact.BUSINESS_PHONE_NUMBER_PROPERTY, String.class),
 		faxNumber("fax", Contact.FAX_NUMBER_PROPERTY, String.class),
 		mobilePhoneNumber("mobile", Contact.MOBILE_PHONE_NUMBER_PROPERTY, String.class),
-		dateOfBirth("birth", Contact.DATE_OF_BIRTH_PROPERTY, Date.class);
+		dateOfBirth("birth", Contact.DATE_OF_BIRTH_PROPERTY, Date.class),
+		specialNeeds("specialneeds", Contact.STUDENT_PROPERTY + "." + Student.SPECIAL_NEEDS_PROPERTY, String.class);
 
 		private final String preferenceName;
 		public final String propertyName;
