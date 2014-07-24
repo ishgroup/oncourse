@@ -18,7 +18,7 @@ dependencies {
 	compile 'org.liquibase:liquibase-core:2.0.5-fix'
 
 	compile 'net.sourceforge.jtds:jtds:1.3.1'
-	compile 'mysql:mysql-connector-java:5.1.30'
+	compile 'mysql:mysql-connector-java:5.1.31'
 	compile 'net.sf.saxon:Saxon-HE:9.5.1-6'
 	compile 'org.quartz-scheduler:quartz:2.1.7'
 	compile 'org.slf4j:slf4j-log4j12:1.7.2'
