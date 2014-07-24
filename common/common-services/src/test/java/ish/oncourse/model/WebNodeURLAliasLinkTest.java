@@ -76,7 +76,7 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 		assertTrue("Only 1 alias should be linked", webNode.getWebUrlAliases().size() == 1);
 		assertEquals("Just linked alias should be equal", alias, webNode.getWebUrlAliases().get(0));
 		assertNotNull("Default URL alias should not be empty", webNodeService.getDefaultWebURLAlias(webNode));
-		assertEquals("Default alias should be equal", alias, webNodeService.getDefaultWebURLAlias(webNode));
+		assertEquals("Default alias should be equal", alias, context.localObject(webNodeService.getDefaultWebURLAlias(webNode)));
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 		assertTrue("Only 1 alias should be linked", webNode.getWebUrlAliases().size() == 1);
 		assertEquals("Just linked alias should be equal", alias, webNode.getWebUrlAliases().get(0));
 		assertNotNull("Default URL alias should not be empty",  webNodeService.getDefaultWebURLAlias(webNode));
-		assertEquals("Default alias should be equal", alias,  webNodeService.getDefaultWebURLAlias(webNode));
+		assertEquals("Default alias should be equal", alias,  context.localObject(webNodeService.getDefaultWebURLAlias(webNode)));
 	}
 	
 	private WebUrlAlias createWebUrlAlias(WebNode webNode) {
