@@ -9,9 +9,7 @@ dependencies {
 	compile 'net.java.dev.textile-j:textile-j:2.2.864'
 	compile 'commons-io:commons-io:2.4'
 	compile 'com.google.inject:guice:3.0'
-    compile ('net.java.dev.jets3t:jets3t:0.9.1') {
-        exclude group: 'com.centerkey.utils', module: 'barebonesbrowserlaunch'
-    }
+    compile ('net.java.dev.jets3t:jets3t:0.9.2')
 }
 
 jar {
