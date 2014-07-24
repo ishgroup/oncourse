@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+             lang="en">
+    <div class="cms-set-container">
+        <div class="cms-set-name">
+            <t:checkbox t:id="cmsCollectParentdetails" value="collectParentDetails" class="cms-checkbox"/>
+            <span>collect Parent or Guardian contact details for students under</span>
+        </div>
+        <div class="cms-set-col">
+            <t:textfield t:id="cmsStudentsAge" value="studentAgeWhenNeedParent" class="cms-span2"/>
+        </div>
+        <div class="cms-set-col"/>
+        <div class="cms-set-col"/>
+    </div>
+</t:container>

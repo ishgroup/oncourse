@@ -8,7 +8,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -36,6 +36,11 @@ public class PreferenceController extends CommonPreferenceController {
 
 	private static final String ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED = "enrolment.corporatePass.payment.enabled";
 	private static final String ENROLMENT_CREDITCARD_PAYMENT_ENABLED = "enrolment.creditCard..payment.enabled";
+
+    private static final String ENROLMENT_collectParentDetails = "enrolment.collectParentDetails";
+    private static final String ENROLMENT_studentAgeWhenNeedParent = "enrolment.studentAgeWhenNeedParent";
+    public static final int DEFAULT_studentAgeWhenNeedParent = 18;
+
 
 
 	//deprecated part
@@ -704,7 +709,28 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(ENROLMENT_CREDITCARD_PAYMENT_ENABLED, false, Boolean.toString(value));
 	}
 
-	public static enum ContactFiledsSet {
+    public Integer getStudentAgeWhenNeedParent()
+    {
+        String value = StringUtils.trimToNull(getValue(ENROLMENT_studentAgeWhenNeedParent, false));
+        return (value != null && StringUtils.isNumeric(value)) ? Integer.valueOf(value): DEFAULT_studentAgeWhenNeedParent;
+    }
+
+    public void setStudentAgeWhenNeedParent(Integer value)
+    {
+        setValue(ENROLMENT_studentAgeWhenNeedParent, false, value.toString());
+    }
+
+    public boolean isCollectParentDetails()
+    {
+        return Boolean.valueOf(StringUtils.trimToNull(getValue(ENROLMENT_collectParentDetails, false)));
+    }
+
+    public void setCollectParentDetails(boolean value)
+    {
+        setValue(ENROLMENT_collectParentDetails, false, Boolean.toString(value));
+    }
+
+    public static enum ContactFiledsSet {
 		enrolment,
 		waitinglist,
 		mailinglist,

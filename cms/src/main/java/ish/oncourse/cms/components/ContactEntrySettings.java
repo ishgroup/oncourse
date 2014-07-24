@@ -159,6 +159,9 @@ public class ContactEntrySettings {
 	@InjectPage
 	private Page page;
 
+    @InjectComponent
+    private CollectParentContactField collectParentContactField;
+
 	@Inject
 	private PreferenceController preferenceController;
 
@@ -306,6 +309,8 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(mailinglist, dateOfBirth, this.mailingListDateOfBirthState);
 		preferenceController.setRequireContactField(mailinglist, country, this.mailingListCountryState);
 		preferenceController.setRequireContactField(mailinglist, specialNeeds, this.mailingListSpecialNeedsState);
+
+        collectParentContactField.save();
 	}
 
 	public Zone getSettingsZone() {

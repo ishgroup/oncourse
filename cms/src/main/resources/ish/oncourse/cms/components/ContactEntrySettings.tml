@@ -323,8 +323,10 @@
 					</div>
 				</div>
 			</t:loop>
-			
-			<div class="cms-set-container">
+
+            <span t:type="collectparentcontactfield" settingsZone="settingsZone"/>
+
+            <div class="cms-set-container">
 				<div class="cms-set-name">Enrolment min age</div>
 
 				<div class="cms-set-col">
