@@ -103,7 +103,7 @@ task bundle_win(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
 	}
 }
 
-task bundle_webstart(dependsOn: [fatJar, prepareKeychains], type: Copy) {
+task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 	description "Create the webstart application executable."
 	doFirst {
 		logger.lifecycle("Creating the webstart application executable for $project.name")
@@ -112,24 +112,33 @@ task bundle_webstart(dependsOn: [fatJar, prepareKeychains], type: Copy) {
 	into file("${distsDir}/webstart")
 	doLast {
 
-				if (project.hasProperty('osxKeychainPassword')) {
-					logger.lifecycle("Signing fat jar for webstart bundle")
-					ant.signjar(
-						keystore:				project.codeSigningTemporaryKeystore, 
-						storetype:				'pkcs12',
-						storepass:				project.codeSigningTemporaryPassword,
-						alias:					"oncourse", 
-						keypass:				project.codeSigningTemporaryPassword,
-						sigalg:					"MD5withRSA",
-						digestalg:				"SHA1",
-						tsaurl:					'http://timestamp.comodoca.com/rfc3161',
-						lazy: 					"true",
-						preservelastmodified:	"true") {
-							fileset(dir: "${distsDir}/webstart/Libraries-${project.version}/") {
-								include(name: '*.jar')
-							}
-						}
+		configurations.compile.files.each { file ->
+			ant.jar(destFile: "${distsDir}/webstart/Libraries-${project.version}/${file.name}", update: 'true') {
+				zipfileset(src: file) {
+                   exclude(name: '**/*SF')
+                   exclude(name: '**/*RSA')
 				}
+			}
+		}
+
+		if (project.hasProperty('osxKeychainPassword')) {
+			logger.lifecycle("Signing fat jar for webstart bundle")
+			ant.signjar(
+				keystore:				project.codeSigningTemporaryKeystore, 
+				storetype:				'pkcs12',
+				storepass:				project.codeSigningTemporaryPassword,
+				alias:					"oncourse", 
+				keypass:				project.codeSigningTemporaryPassword,
+				sigalg:					"MD5withRSA",
+				digestalg:				"SHA1",
+				tsaurl:					'http://timestamp.comodoca.com/rfc3161',
+				lazy: 					"true",
+				preservelastmodified:	"true") {
+					fileset(dir: "${distsDir}/webstart/Libraries-${project.version}/") {
+						include(name: '*.jar')
+					}
+				}
+		}
 	}
 }
 
