@@ -32,17 +32,15 @@ public class UIRequestExceptionHandler implements RequestExceptionHandler {
 
     public void handleRequestException(Throwable exception) throws IOException {
     	if (TAPESTRY_2563_POST_VALIDATION_MESSAGE.equals(exception.getMessage())) {
-    		//this is Tapestry 5 validation to prevent hack attempts https://issues.apache.org/jira/browse/TAPESTRY-2563
-			//we may ignore it
-    		LOGGER.warn("Unexpected runtime exception: " + exception.getMessage(), exception);
-    		if (response != null && redirectOnInvalidPostRequest) {
-    			response.sendRedirect(redirectPage);
-    		}
-    	} else {
-    		LOGGER.error(String.format("Unexpected runtime exception on \"%s%s\". Request is \"%s\"",
-    			request != null ? request.getServerName(): "undefined host",
-    			request != null ? request.getPath(): "undefined path",
-    			(request != null && request.isXHR())? "XmlHttpRequest":"HttpRequest") , exception);
+            //this is Tapestry 5 validation to prevent hack attempts https://issues.apache.org/jira/browse/TAPESTRY-2563
+            //we may ignore it
+            LOGGER.warn("Unexpected runtime exception: " + exception.getMessage(), exception);
+            if (response != null && redirectOnInvalidPostRequest) {
+                response.sendRedirect(redirectPage);
+            }
+        } else {
+    		LOGGER.error(String.format("Unexpected runtime exception. Request: %s",
+                        toString(request)) , exception);
     	}
     	final String errorPage = getErrorPageName(exception);
     	ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(errorPage);
@@ -52,5 +50,14 @@ public class UIRequestExceptionHandler implements RequestExceptionHandler {
     
     public String getErrorPageName(Throwable exception) {
     	return errorPageName;
+    }
+
+    public String toString(Request request) {
+        return String.format("Url: %s%s%s; Method: %s; Type: %s",
+                request != null ? request.getServerName() : "undefined host",
+                request != null ? request.getContextPath() : "undefined host",
+                request != null ? request.getPath() : "undefined path",
+                request != null ? request.getMethod() : "undefined method",
+                (request != null && request.isXHR()) ? "XmlHttpRequest" : "HttpRequest");
     }
 }
