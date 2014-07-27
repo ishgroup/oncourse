@@ -65,7 +65,7 @@ project.ext.webstartFiles = copySpec {
 		from file("${projectDir}/src/main/resources/resources/images/onCourse.png")
 	}
 
-	into("Libraries-${project.version}") {
+	into("Libraries") {
 		from file("${libsDir}/${project.name}-${project.version}.jar")
 	}
 
@@ -80,8 +80,8 @@ project.ext.webstartFiles = copySpec {
 			webstartOncourseServerUseSSL: 	project.webstartOncourseServerUseSSL,
 			sourceCompatibility: 			project.sourceCompatibility,
 			mainJarClasspath : 				"Libraries-${project.version}/${project.name}-${project.version}.jar",
-            dependenciesJars:               configurations.compile.files.collect {
-                                                file -> "<jar href=\"Libraries-${project.version}/${file.name}\"/>"
+            dependenciesJars:               configurations.runtime.files.collect {
+                                                file -> "<jar href=\"Libraries/${file.name}\"/>"
                                             }.join("\n\t"),
 			version: 						version,
 			maxmemoryClient:				maxmemoryClient	
@@ -115,8 +115,8 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 	into file("${distsDir}/webstart")
 	doLast {
 
-		configurations.compile.files.each { file ->
-			ant.jar(destFile: "${distsDir}/webstart/Libraries-${project.version}/${file.name}", filesetmanifest: "merge") {
+		configurations.runtime.files.each { file ->
+			ant.jar(destFile: "${distsDir}/webstart/Libraries/${file.name}", filesetmanifest: "merge") {
 				zipfileset(src: file) {
                    exclude(name: '**/*SF')
                    exclude(name: '**/*RSA')
