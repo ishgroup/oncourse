@@ -62,7 +62,8 @@ task installer_osx(dependsOn: [fatJar, prepareKeychains, codeSign], type: au.com
 
 project.ext.webstartFiles = copySpec {
 	into('images') {
-		from file("${projectDir}/src/main/resources/resources/images/onCourse.png")
+		from "${projectDir}/src/main/resources/resources/images/onCourse.png"
+		rename '(.+).png', '$1' + "-${project.version}.png"
 	}
 
 	into("Libraries") {
@@ -71,18 +72,13 @@ project.ext.webstartFiles = copySpec {
 
 	into('.') {
 		from("${projectDir}/src/packaging/webstart/onCourse.jnlp")
-		from("${projectDir}/src/packaging/webstart/onCourseDemo.jnlp")
 
 		expand([
-			webstartCodebase: 				project.webstartCodebase,
-			webstartOncourseServerUri: 		project.webstartOncourseServerUri,
-			webstartOncourseServerPort: 	project.webstartOncourseServerPort,
-			webstartOncourseServerUseSSL: 	project.webstartOncourseServerUseSSL,
 			sourceCompatibility: 			project.sourceCompatibility,
 			mainJarClasspath : 				"Libraries-${project.version}/${project.name}-${project.version}.jar",
             dependenciesJars:               configurations.runtime.files.collect {
-                                                file -> "<jar href=\"Libraries/${file.name}\"/>"
-                                            }.join("\n\t"),
+                                                file -> "      <jar href=\"../clients/Libraries/${file.name}\"/>"
+                                            }.join("\n"),
 			version: 						version,
 			maxmemoryClient:				maxmemoryClient	
 		])
@@ -152,13 +148,8 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 }
 
 task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
-	
-	from file("${distsDir}/webstart/") 
-	include 'onCourse.jnlp'
-	include 'onCourseDemo.jnlp'
-	include "Libraries-${project.version}/*"
-	include 'images/*'
-	
+	from "${distsDir}/webstart/"
+	exclude "*.zip"
 	destinationDir = file("${distsDir}/webstart/")
 	archiveName='onCourse-webstart.zip'
 }
