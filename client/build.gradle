@@ -127,7 +127,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 		}
 
 		if (project.hasProperty('osxKeychainPassword')) {
-			logger.lifecycle("Signing fat jar for webstart bundle")
+			logger.lifecycle("Signing jars in webstart bundle")
 			ant.signjar(
 				keystore:				project.codeSigningTemporaryKeystore, 
 				storetype:				'pkcs12',
@@ -139,7 +139,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 				tsaurl:					'http://timestamp.comodoca.com/rfc3161',
 				lazy: 					"true",
 				preservelastmodified:	"true") {
-					fileset(dir: "${distsDir}/webstart/Libraries-${project.version}/") {
+					fileset(dir: "${distsDir}/webstart/Libraries/") {
 						include(name: '*.jar')
 					}
 				}
