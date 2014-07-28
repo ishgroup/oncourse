@@ -54,7 +54,7 @@
 				 roomId="1" angelId="1001" startDate="2011-10-12 00:55:59.0"
 				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0"
 				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
-				 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+				 maximumPlaces="4" minimumPlaces="30" countOfSessions="3" isActive="1"
 				 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
 
 
