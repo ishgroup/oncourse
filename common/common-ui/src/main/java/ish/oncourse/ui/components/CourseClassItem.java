@@ -231,7 +231,8 @@ public class CourseClassItem {
 	}
 
 	public boolean isCurrentClass() {
-		return !courseClass.isCancelled() && (!courseClass.hasEnded() || courseClass.getIsDistantLearningCourse());
+		return courseClass.getIsWebVisible() && courseClass.getIsActive() && !courseClass.isCancelled() && 
+				(!courseClass.hasEnded() || courseClass.getIsDistantLearningCourse());
 	}
 	
 	public boolean isFinishedClass() {

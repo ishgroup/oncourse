@@ -62,7 +62,7 @@ public class CourseClassService implements ICourseClassService {
      */
     private Expression getSiteQualifier() {
         return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
-                ExpressionFactory.matchExp(CourseClass.IS_WEB_VISIBLE_PROPERTY, true));
+                ExpressionFactory.matchExp(CourseClass.IS_ACTIVE_PROPERTY, true));
     }
 
     public Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
