@@ -168,12 +168,11 @@ public class SearchService implements ISearchService {
 		if (StringUtils.trimToNull(coursesRootTagName) != null) {
 			Tag tag = tagService.getTagByFullPath(coursesRootTagName);
 			if (tag != null) {
-				query.addFilterQuery(String.format(SolrQueryBuilder.QUERY_brackets, String.format(SolrQueryBuilder.FILTER_TEMPLATE_tagId, tag.getId())));
+              SolrQueryBuilder.appendFilterTag(query, tag);
 			}
 		}
 		return query;
 	}
-    
     private String solrQueryToString(SolrQuery q) {
         try {
             return URLDecoder.decode(q.toString(), "UTF-8");
