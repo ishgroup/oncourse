@@ -2840,4 +2840,10 @@
 		<sql>ALTER TABLE CustomFieldType ADD COLUMN requireForMailingList VARCHAR(20)</sql>
 	</changeSet>
 	
+	<changeSet id="187" author="dzmitry" runOnChange="false" context="production">
+		<sql>
+			UPDATE CustomFieldType SET requireForEnrolment = 'Hide', requireForWaitingList = 'Hide', requireForMailingList = 'Hide'
+		</sql>
+	</changeSet>
+	
 </databaseChangeLog>
