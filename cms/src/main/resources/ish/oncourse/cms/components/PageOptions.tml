@@ -53,11 +53,11 @@
 </p>
                 <p>
 
-                        <label rel="tooltip" title="Publish this page on website or not">
+                        <label rel="tooltip" title="Visible this page on website or not">
                             Page visibility
                         </label>
 
-                        <span class="cms-page-pub">Published</span>
+                        <span class="cms-page-pub">Visible</span>
 					<span class="cms-slide-control">
 						<t:checkbox t:id="published" value="editNode.published" class="cms-onoff"/>
 					</span>

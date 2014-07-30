@@ -29,5 +29,9 @@ public class PageStructure extends APageStructure {
         return authenticationService.getUser() != null || authenticationService.getSystemUser() != null;
     }
 
+    public String getFace()
+    {
+        return "xmlns:fb=\"http://www.facebook.com/2008/fbml\"";
+    }
 
 }

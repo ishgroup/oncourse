@@ -57,13 +57,15 @@
 											<li>
 												<div data-status="${statusForNode}">
 											 		<a href="${path}">${webNode.name}</a>
-											 		<t:if t:test="webNode.published"> 
-											 			<span data-pub="published">published</span>
-												 		<p:else> 
-												 			<span data-pub="hidden">unpublished</span>
-												 		</p:else>
-												 	</t:if>
-												 </div>	
+                                                    <t:if t:test="webNode.published">
+                                                        <input type="checkbox" checked="on" onclick="return false"/>
+                                                        <span data-pub="published">visible</span>
+                                                        <p:else>
+                                                            <input type="checkbox" onclick="return false"/>
+                                                            <span data-pub="hidden">visible</span>
+                                                        </p:else>
+                                                    </t:if>
+												 </div>
 											</li>
 										</t:loop>
                                		</ul>
@@ -76,12 +78,14 @@
 
 	   		<div class="cms-pages-status" data-pub="published">
        			<t:zone t:id="publishedZone" update="show" show="show">
-            		<t:if t:test="node.published"> 
-						<span data-pub="published">published</span>
-						<p:else> 
-							<span data-pub="hidden">unpublished</span>
-						</p:else>
-					</t:if>
+                    <t:if t:test="node.published">
+                        <input type="checkbox" checked="on" onclick="return false"/>
+                        <span data-pub="published">visible</span>
+                        <p:else>
+                            <input type="checkbox" onclick="return false"/>
+                            <span data-pub="hidden">visible</span>
+                        </p:else>
+                    </t:if>
             	</t:zone>
         	</div>
 

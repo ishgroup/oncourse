@@ -38,6 +38,8 @@
 	</t:zone>
 	
 	<script type="text/javascript">
+        Event.observe('${pagesListZone.clientId}', Tapestry.ZONE_UPDATED_EVENT, initChangeVisibility);
+
 		jQuery(function() {
 			jQuery('#pageFilter').search('#pagestable tr', function(on) {
 	            on.all(function(results) {

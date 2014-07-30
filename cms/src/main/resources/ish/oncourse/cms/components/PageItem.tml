@@ -8,10 +8,10 @@
 		<td class="cms-block-last-upd">${path}</td>
 		<td>
             <t:if test="webNode.published">
-                <input type="checkbox" name="cms-page-publish" checked="on" onclick="return false"/>
+                <input type="checkbox" name="cms-page-published" checked="on" data-nodeid="${webNode.id}"/>
             </t:if>
             <t:unless test="webNode.published">
-                <input type="checkbox" name="cms-page-publish" onclick="return false"/>
+                <input type="checkbox" name="cms-page-published" data-nodeid="${webNode.id}"/>
             </t:unless>
             <span>visible</span>
 		</td>
