@@ -218,8 +218,12 @@ public class ContactEntrySettings {
 		this.mailingListDateOfBirthState = preferenceController.getRequireContactField(mailinglist, dateOfBirth);
 		this.mailingListCountryState = preferenceController.getRequireContactField(mailinglist, country);
 		this.mailingListSpecialNeedsState = preferenceController.getRequireContactField(mailinglist, specialNeeds);
-		
-		this.customFieldTypes = webSiteService.getCurrentCollege().getCustomFieldTypes();
+
+        //we need to use new context to be sure that we always get actual data from db.
+        ObjectContext objectContext = cayenneService.newContext();
+        College college = objectContext.localObject(webSiteService.getCurrentCollege());
+
+		this.customFieldTypes = college.getCustomFieldTypes();
 
 		// order custom field types alphabetically by name
 		Ordering.orderList(customFieldTypes, 
