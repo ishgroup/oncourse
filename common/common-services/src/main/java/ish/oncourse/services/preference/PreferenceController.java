@@ -38,8 +38,8 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String ENROLMENT_CREDITCARD_PAYMENT_ENABLED = "enrolment.creditCard..payment.enabled";
 
     private static final String ENROLMENT_collectParentDetails = "enrolment.collectParentDetails";
-    private static final String ENROLMENT_studentAgeWhenNeedParent = "enrolment.studentAgeWhenNeedParent";
-    public static final int DEFAULT_studentAgeWhenNeedParent = 18;
+    private static final String ENROLMENT_contactAgeWhenNeedParent = "enrolment.contactAgeWhenNeedParent";
+    public static final int DEFAULT_contactAgeWhenNeedParent = 18;
 
 
 
@@ -659,7 +659,7 @@ public class PreferenceController extends CommonPreferenceController {
 		if (value != null && StringUtils.isNumeric(value)) {
 			return Integer.valueOf(value);
 		} else {
-			LOGGER.warn(String.format("Cannot get property %s", ENROLMENT_MIN_AGE));
+			LOGGER.debug(String.format("Cannot get property %s", ENROLMENT_MIN_AGE));
 			return 0;
 		}
 	}
@@ -709,15 +709,15 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(ENROLMENT_CREDITCARD_PAYMENT_ENABLED, false, Boolean.toString(value));
 	}
 
-    public Integer getStudentAgeWhenNeedParent()
+    public Integer getContactAgeWhenNeedParent()
     {
-        String value = StringUtils.trimToNull(getValue(ENROLMENT_studentAgeWhenNeedParent, false));
-        return (value != null && StringUtils.isNumeric(value)) ? Integer.valueOf(value): DEFAULT_studentAgeWhenNeedParent;
+        String value = StringUtils.trimToNull(getValue(ENROLMENT_contactAgeWhenNeedParent, false));
+        return (value != null && StringUtils.isNumeric(value)) ? Integer.valueOf(value): DEFAULT_contactAgeWhenNeedParent;
     }
 
-    public void setStudentAgeWhenNeedParent(Integer value)
+    public void setContactAgeWhenNeedParent(Integer value)
     {
-        setValue(ENROLMENT_studentAgeWhenNeedParent, false, value.toString());
+        setValue(ENROLMENT_contactAgeWhenNeedParent, false, value.toString());
     }
 
     public boolean isCollectParentDetails()

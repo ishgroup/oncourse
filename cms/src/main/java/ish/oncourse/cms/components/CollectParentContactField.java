@@ -19,12 +19,12 @@ public class CollectParentContactField {
 
     @SetupRender
     void setupRender() {
-        studentAgeWhenNeedParent = preferenceController.getStudentAgeWhenNeedParent();
+        studentAgeWhenNeedParent = preferenceController.getContactAgeWhenNeedParent();
         collectParentDetails = preferenceController.isCollectParentDetails();
     }
 
     public void save() {
-        preferenceController.setStudentAgeWhenNeedParent(studentAgeWhenNeedParent != null ? studentAgeWhenNeedParent: PreferenceController.DEFAULT_studentAgeWhenNeedParent);
+        preferenceController.setContactAgeWhenNeedParent(studentAgeWhenNeedParent != null ? studentAgeWhenNeedParent : PreferenceController.DEFAULT_contactAgeWhenNeedParent);
         preferenceController.setCollectParentDetails(collectParentDetails != null? collectParentDetails: false);
     }
 }
