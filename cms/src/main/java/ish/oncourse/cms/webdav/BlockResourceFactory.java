@@ -4,7 +4,9 @@
 package ish.oncourse.cms.webdav;
 
 import io.milton.common.Path;
-import io.milton.http.*;
+import io.milton.http.Auth;
+import io.milton.http.Request;
+import io.milton.http.ResourceFactory;
 import io.milton.http.SecurityManager;
 import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
@@ -20,6 +22,7 @@ import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.textile.ITextileConverter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.io.IOException;
@@ -29,8 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockResourceFactory implements ResourceFactory {
-	
-	private static final String BLOCK_DIR_NAME = "blocks";
 	
 	@Inject
 	private IWebContentService webContentService;
@@ -59,7 +60,7 @@ public class BlockResourceFactory implements ResourceFactory {
 		Path path = Path.path(url);
 
 		if (path.isRoot()) {
-			return new DirectoryResource(BLOCK_DIR_NAME, securityManager) {
+			return new DirectoryResource(TopLevelDir.blocks.name(), securityManager) {
 				@Override
 				public Resource child(String childName) throws NotAuthorizedException, BadRequestException {
 					return getBlockByName(childName);
@@ -88,6 +89,11 @@ public class BlockResourceFactory implements ResourceFactory {
 					
 					return createNewBlock(newName, content);
 				}
+
+                @Override
+                public boolean authorise(Request request, Request.Method method, Auth auth) {
+                    return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.blocks.getAllowedMethods(), method);
+                }
 			};
 		} else if (path.getLength() == 1) {
 			String name = path.getName();

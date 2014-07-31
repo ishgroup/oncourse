@@ -23,47 +23,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RootResourceFactory implements ResourceFactory {
-	
+
 	public static final String WEBDAV_PATH_PREFIX = "/cms/webdav";
 
-	private static final String BLOCKS = "blocks";
-	private static final String PAGES = "pages";
-	private static final String S = "s";
-	private static final String TEMPLATES = "templates";
-
-	private static final String[] WEBDAV_DIRS = new String[] { BLOCKS, PAGES, S, TEMPLATES };
-	
 	private IWebSiteService webSiteService;
-	
+
 	private Registry registry;
-	
+
 	private BlockResourceFactory blockResourceFactory;
 	private PageResourceFactory pageResourceFactory;
 	private TemplateResourceFactory templateResourceFactory;
 	private StaticResourceFactory staticResourceFactory;
-	
+
 	private SecurityManager securityManager;
-	
+
 	private String sRoot;
-	
+
 	public RootResourceFactory(Registry registry, io.milton.http.SecurityManager securityManager) {
 		this.registry = registry;
 		this.securityManager = securityManager;
-		
+
 		this.webSiteService = registry.getService(IWebSiteService.class);
 
 		this.sRoot = ContextUtil.getSRoot();
-		
+
 		this.blockResourceFactory = registry.autobuild(BlockResourceFactory.class);
 		this.pageResourceFactory = registry.autobuild(PageResourceFactory.class);
 		this.templateResourceFactory = registry.autobuild(TemplateResourceFactory.class);
-		this.staticResourceFactory = new StaticResourceFactory(sRoot, webSiteService, 
+		this.staticResourceFactory = new StaticResourceFactory(sRoot, webSiteService,
 				registry.getService(IAuthenticationService.class), securityManager);
-		
+
 		this.blockResourceFactory.setSecurityManager(securityManager);
 		this.pageResourceFactory.setSecurityManager(securityManager);
 		this.templateResourceFactory.setSecurityManager(securityManager);
-		
+
 		this.templateResourceFactory.initDefaultResources();
 	}
 
@@ -71,10 +64,10 @@ public class RootResourceFactory implements ResourceFactory {
 	public Resource getResource(final String host, String url) throws NotAuthorizedException, BadRequestException {
 
 		Path rawPath = Path.path(url);
-		
+
 		if (rawPath.toPath().startsWith(WEBDAV_PATH_PREFIX)) {
 			final Path path = rawPath.getStripFirst().getStripFirst();
-			
+
 			if (path.isRoot()) {
 				return new DirectoryResource("webdav", securityManager) {
 					@Override
@@ -84,17 +77,17 @@ public class RootResourceFactory implements ResourceFactory {
 
 					@Override
 					public Resource child(String childName) throws NotAuthorizedException, BadRequestException {
-						return getDirectoryByName(childName, host, path.getStripFirst().toPath());
+						return getDirectoryByName(TopLevelDir.valueOf(childName), host, path.getStripFirst().toPath());
 					}
 
 					@Override
 					public List<? extends Resource> getChildren() throws NotAuthorizedException, BadRequestException {
 						List<Resource> resources = new ArrayList<>();
-						
-						for (String resName : WEBDAV_DIRS) {
-							resources.add(getDirectoryByName(resName, host, path.getStripFirst().toPath()));
+
+						for (TopLevelDir dir : TopLevelDir.values()) {
+							resources.add(getDirectoryByName(dir, host, path.getStripFirst().toPath()));
 						}
-						
+
 						return resources;
 					}
 
@@ -112,28 +105,32 @@ public class RootResourceFactory implements ResourceFactory {
                     }
 				};
 			}
-			
-			return getDirectoryByName(path.getFirst(), host, path.getStripFirst().toPath());
+            if (TopLevelDir.has(path.getFirst()))
+            {
+                return getDirectoryByName(TopLevelDir.valueOf(path.getFirst()), host, path.getStripFirst().toPath());
+            }
+            else
+            {
+                return null;
+            }
 		}
-		
+
 		return null;
 	}
-	
-	private Resource getDirectoryByName(String name, String host, String url) throws NotAuthorizedException, BadRequestException {
-		switch (name) {
-			case PAGES:
+
+	private Resource getDirectoryByName(TopLevelDir dir, String host, String url) throws NotAuthorizedException, BadRequestException {
+		switch (dir) {
+			case pages:
 				return pageResourceFactory.getResource(host, url);
-			case BLOCKS:
+			case blocks:
 				return blockResourceFactory.getResource(host, url);
-			case TEMPLATES:
+			case templates:
 				return templateResourceFactory.getResource(host, url);
-			default:
-				if (sRoot == null) {
-					return null;
-				}
-				
-				return staticResourceFactory.getResource(host,  url);
+            case s:
+				return (sRoot == null ? null:staticResourceFactory.getResource(host,  url));
+            default:
+                throw new IllegalArgumentException(String.format("unknown static dir: %s",dir));
 		}
 	}
-	
+
 }

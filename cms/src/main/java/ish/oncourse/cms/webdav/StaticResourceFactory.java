@@ -3,6 +3,8 @@
  */
 package ish.oncourse.cms.webdav;
 
+import io.milton.http.Auth;
+import io.milton.http.Request;
 import io.milton.http.ResourceFactory;
 import io.milton.http.SecurityManager;
 import io.milton.http.exceptions.BadRequestException;
@@ -15,6 +17,7 @@ import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.ContextUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -30,9 +33,15 @@ public class StaticResourceFactory implements ResourceFactory {
 	
 	private static final int EDIT_FILE_SCRIPT_WAIT_TIMEOUT = 15;
 
-    private static final String STATIC_DIR_NAME = "s";
+    private static final String[] readOnlyFolders = new String[]
+            {
+                "/s/stylesheets/",
+                "/s/stylesheets/css/",
+                "/s/stylesheets/src/",
+                "/s/js/",
+            };
 
-	private IWebSiteService webSiteService;
+    private IWebSiteService webSiteService;
 	private IAuthenticationService authenticationService;
 	private ExecutorService executorService;
 
@@ -123,7 +132,7 @@ public class StaticResourceFactory implements ResourceFactory {
 			r = new CmsFsDirectoryResource(host, fsResourceFactory, file, fsResourceFactory.getContentService());
             //the code needs to show "s" root dir name instead of real filesystem file name.
             if (fsResourceFactory.getRoot().equals(file))
-                ((CmsFsDirectoryResource)r).setCustomName(STATIC_DIR_NAME);
+                ((CmsFsDirectoryResource)r).setCustomName(TopLevelDir.s.name());
 		} else {
 			r = new CmsFsFileResource(host, fsResourceFactory, file, fsResourceFactory.getContentService());
 		}
@@ -175,7 +184,7 @@ public class StaticResourceFactory implements ResourceFactory {
 			executeEditFileScript(dest);
 		}
 	}
-	
+
 	private class CmsFsDirectoryResource extends FsDirectoryResource {
         private String customName;
 
@@ -211,5 +220,19 @@ public class StaticResourceFactory implements ResourceFactory {
         public void setCustomName(String customName) {
             this.customName = customName;
 		}
-	}
+
+        @Override
+        public boolean authorise(Request request, Request.Method method, Auth auth) {
+            if (fsResourceFactory.getRoot().equals(getFile())) {
+                return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.s.getAllowedMethods(), method);
+            }
+            else if (ArrayUtils.contains(readOnlyFolders,
+                    request.getAbsolutePath().replace(RootResourceFactory.WEBDAV_PATH_PREFIX, org.apache.commons.lang3.StringUtils.EMPTY)))
+            {
+                return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.s.getAllowedMethods(), method);
+            } else {
+                return super.authorise(request, method, auth);
+            }
+        }
+    }
 }

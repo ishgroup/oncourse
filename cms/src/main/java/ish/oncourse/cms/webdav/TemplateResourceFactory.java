@@ -4,14 +4,18 @@
 package ish.oncourse.cms.webdav;
 
 import io.milton.common.Path;
-import io.milton.http.*;
+import io.milton.http.Auth;
+import io.milton.http.Request;
+import io.milton.http.ResourceFactory;
 import io.milton.http.SecurityManager;
 import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
 import io.milton.http.exceptions.NotAuthorizedException;
 import io.milton.resource.CollectionResource;
 import io.milton.resource.Resource;
-import ish.oncourse.model.*;
+import ish.oncourse.model.WebSiteLayout;
+import ish.oncourse.model.WebSiteVersion;
+import ish.oncourse.model.WebTemplate;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -21,6 +25,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.reflections.Reflections;
@@ -107,6 +112,11 @@ public class TemplateResourceFactory implements ResourceFactory {
 					
 					return new LayoutDirectoryResource(layout.getLayoutKey(), layout, securityManager);
 				}
+
+                @Override
+                public boolean authorise(Request request, Request.Method method, Auth auth) {
+                    return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.blocks.getAllowedMethods(), method);
+                }
 			};
 		} else if (path.getLength() == 1) {
 			String name = path.getName();
@@ -254,5 +264,27 @@ public class TemplateResourceFactory implements ResourceFactory {
 
 			context.commitChanges();
 		}
+
+        @Override
+        public boolean authorise(Request request, Request.Method method, Auth auth) {
+            if (layout.getLayoutKey().equals("default"))
+            {
+                switch(method) {
+                    case GET:
+                    case HEAD:
+                    case OPTIONS:
+                    case PROPFIND:
+                    case PUT:
+                    case POST:
+                        return super.authorise(request, method, auth);
+                    default:
+                        return false;
+                }
+            }
+            else
+            {
+                return super.authorise(request,method,auth);
+            }
+        }
 	}
 }

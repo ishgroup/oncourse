@@ -4,13 +4,18 @@
 package ish.oncourse.cms.webdav;
 
 import io.milton.common.Path;
-import io.milton.http.*;
+import io.milton.http.Auth;
+import io.milton.http.Request;
+import io.milton.http.ResourceFactory;
 import io.milton.http.SecurityManager;
 import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
 import io.milton.http.exceptions.NotAuthorizedException;
 import io.milton.resource.Resource;
-import ish.oncourse.model.*;
+import ish.oncourse.model.WebContent;
+import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebNodeType;
+import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -19,6 +24,7 @@ import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.textile.ITextileConverter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.io.IOException;
@@ -29,8 +35,6 @@ import java.util.List;
 
 public class PageResourceFactory implements ResourceFactory {
 
-	private static final String PAGE_DIR_NAME = "pages";
-	
 	@Inject
 	private IWebNodeService webNodeService;
 	
@@ -61,7 +65,7 @@ public class PageResourceFactory implements ResourceFactory {
 		Path path = Path.path(url);
 		
 		if (path.isRoot()) {
-			return new DirectoryResource(PAGE_DIR_NAME, securityManager) {
+			return new DirectoryResource(TopLevelDir.pages.name(), securityManager) {
 				@Override
 				public Resource child(String childName) throws NotAuthorizedException, BadRequestException {
 					return getWebNodeResource(childName);
@@ -90,6 +94,11 @@ public class PageResourceFactory implements ResourceFactory {
 
 					return createNewPage(newName, content);
 				}
+
+                @Override
+                public boolean authorise(Request request, Request.Method method, Auth auth) {
+                    return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.blocks.getAllowedMethods(), method);
+                }
 			};
 		} else if (path.getLength() == 1) {
 			String name = path.getName();
