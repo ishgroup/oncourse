@@ -8,6 +8,7 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -46,6 +47,9 @@ public class CourseClassItem {
 
 	@Inject
 	private ICourseClassService courseClassService;
+
+    @Inject
+    private ITutorService tutorService;
 
 	@Parameter
 	@Property
@@ -132,7 +136,7 @@ public class CourseClassItem {
 	public List<TutorRole> getVisibleTutorRoles() {
 		final List<TutorRole> visibleRoles = new ArrayList<>();
 		for (TutorRole role : courseClass.getTutorRoles()) {
-			if (role.getInPublicity()) {
+			if (role.getInPublicity() && tutorService.isActiveTutor(role.getTutor())) {
 				visibleRoles.add(role);
 			}
 		}

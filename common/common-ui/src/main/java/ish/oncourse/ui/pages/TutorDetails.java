@@ -42,6 +42,10 @@ public class TutorDetails {
 		String id = (String) request.getAttribute("tutorId");
 		if (id != null && id.length() > 0 && id.matches("\\d+")) {
 			tutor = tutorService.findByAngelId(Long.valueOf(id));
+            if (!tutorService.isActiveTutor(tutor))
+            {
+                tutor = null;
+            }
 		}
 	}
 

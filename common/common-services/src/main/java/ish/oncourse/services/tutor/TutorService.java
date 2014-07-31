@@ -3,15 +3,14 @@ package ish.oncourse.services.tutor;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.services.BaseService;
-
-import java.util.Date;
-import java.util.List;
-
 import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
+
+import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class TutorService extends BaseService<Tutor> implements ITutorService {
@@ -68,4 +67,10 @@ public class TutorService extends BaseService<Tutor> implements ITutorService {
 				new SelectQuery(Tutor.class, ExpressionFactory.matchExp(Tutor.ANGEL_ID_PROPERTY,
 						angelId).andExp(getSiteQualifier())));
 	}
+
+    public boolean isActiveTutor(Tutor tutor)
+    {
+        return tutor.getFinishDate() == null || tutor.getFinishDate().after(new Date());
+    }
+
 }

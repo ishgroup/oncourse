@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<url>
 		<loc>http://${hostName}/</loc>
 		<lastmod>
@@ -39,14 +40,16 @@
 		</url>
 	</t:loop>
 	<t:loop source="tutors" value="tutor">
-		<url>
-			<loc>http://${hostName}/tutor/${tutor.angelId}</loc>
-			<lastmod>
-				<t:output value="tutor.modified" format="dateFormat" />
-			</lastmod>
-			<changefreq>daily</changefreq>
-			<priority>0.4</priority>
-		</url>
+        <t:if test="isActiveTutor()">
+            <url>
+                <loc>http://${hostName}/tutor/${tutor.angelId}</loc>
+                <lastmod>
+                    <t:output value="tutor.modified" format="dateFormat" />
+                </lastmod>
+                <changefreq>daily</changefreq>
+                <priority>0.4</priority>
+            </url>
+        </t:if>
 	</t:loop>
 	<t:loop source="pages" value="page">
 		<url>

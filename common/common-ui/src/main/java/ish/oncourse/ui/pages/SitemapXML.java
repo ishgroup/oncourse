@@ -117,4 +117,9 @@ public class SitemapXML {
 	public Format getDateFormat() {
 		return DATE_FORMAT;
 	}
+
+    public boolean isActiveTutor()
+    {
+        return tutorService.isActiveTutor(tutor);
+    }
 }

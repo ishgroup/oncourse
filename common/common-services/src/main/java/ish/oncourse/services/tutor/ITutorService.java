@@ -20,4 +20,7 @@ public interface ITutorService {
 	 * @return
 	 */
 	Tutor findByAngelId(Long angelId);
+
+    public boolean isActiveTutor(Tutor tutor);
+
 }
