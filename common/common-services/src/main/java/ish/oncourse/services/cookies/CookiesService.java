@@ -99,7 +99,7 @@ public class CookiesService implements ICookiesService {
 					}
 				}
 			} catch (Exception e) {
-				LOGGER.error("Exception while converting IDs", e);
+				LOGGER.debug("Exception while converting IDs", e);
 			}
 		}
 		return listResult;
