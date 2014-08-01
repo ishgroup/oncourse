@@ -231,7 +231,7 @@ public class Web {
 		initialVersion.setWebSite(site);
 		initialVersion.setDeployedOn(now);
 
-        WebSiteLayout webSiteLayout = new WebSiteLayout();
+        WebSiteLayout webSiteLayout = context.newObject(WebSiteLayout.class);
         webSiteLayout.setLayoutKey(WebNodeType.DEFAULT_LAYOUT_KEY);
         webSiteLayout.setWebSiteVersion(initialVersion);
 
