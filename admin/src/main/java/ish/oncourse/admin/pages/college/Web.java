@@ -230,7 +230,11 @@ public class Web {
 		WebSiteVersion initialVersion = context.newObject(WebSiteVersion.class);
 		initialVersion.setWebSite(site);
 		initialVersion.setDeployedOn(now);
-		
+
+        WebSiteLayout webSiteLayout = new WebSiteLayout();
+        webSiteLayout.setLayoutKey(WebNodeType.DEFAULT_LAYOUT_KEY);
+        webSiteLayout.setWebSiteVersion(initialVersion);
+
 		WebNodeType page = context.newObject(WebNodeType.class);
 		page.setName(WebNodeType.PAGE);
 		page.setCreated(now);
