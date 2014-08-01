@@ -13,6 +13,7 @@ import io.milton.http.exceptions.ConflictException;
 import io.milton.http.exceptions.NotAuthorizedException;
 import io.milton.resource.CollectionResource;
 import io.milton.resource.Resource;
+import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.model.WebTemplate;
@@ -267,19 +268,9 @@ public class TemplateResourceFactory implements ResourceFactory {
 
         @Override
         public boolean authorise(Request request, Request.Method method, Auth auth) {
-            if (layout.getLayoutKey().equals("default"))
+            if (layout.getLayoutKey().equals(WebNodeType.DEFAULT_LAYOUT_KEY))
             {
-                switch(method) {
-                    case GET:
-                    case HEAD:
-                    case OPTIONS:
-                    case PROPFIND:
-                    case PUT:
-                    case POST:
-                        return super.authorise(request, method, auth);
-                    default:
-                        return false;
-                }
+                return super.authorise(request,method,auth) && ArrayUtils.contains(AccessRights.DIR_READ_ONLY, method);
             }
             else
             {

@@ -2,13 +2,11 @@ package ish.oncourse.cms.webdav;
 
 import io.milton.http.Request;
 
-import static io.milton.http.Request.Method.*;
-
 public enum TopLevelDir {
-    blocks(new Request.Method[]{GET, HEAD, OPTIONS, PROPFIND, MKCOL}),
-    pages(new Request.Method[]{GET, HEAD, OPTIONS, PROPFIND, MKCOL}),
-    s(new Request.Method[]{GET, HEAD, OPTIONS, PROPFIND, MKCOL}),
-    templates(new Request.Method[]{GET, HEAD, OPTIONS, PROPFIND, MKCOL});
+    blocks(AccessRights.DIR_READ_ONLY_AND_ADD_CHILD),
+    pages(AccessRights.DIR_READ_ONLY_AND_ADD_CHILD),
+    s(AccessRights.DIR_READ_ONLY_AND_ADD_CHILD),
+    templates(AccessRights.DIR_READ_ONLY_AND_ADD_CHILD);
 
     private Request.Method[] allowedMethods;
 

@@ -97,7 +97,7 @@ public class PageResourceFactory implements ResourceFactory {
 
                 @Override
                 public boolean authorise(Request request, Request.Method method, Auth auth) {
-                    return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.blocks.getAllowedMethods(), method);
+                    return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.pages.getAllowedMethods(), method);
                 }
 			};
 		} else if (path.getLength() == 1) {

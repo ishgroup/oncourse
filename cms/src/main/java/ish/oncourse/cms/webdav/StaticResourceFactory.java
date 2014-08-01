@@ -229,7 +229,7 @@ public class StaticResourceFactory implements ResourceFactory {
             else if (ArrayUtils.contains(readOnlyFolders,
                     request.getAbsolutePath().replace(RootResourceFactory.WEBDAV_PATH_PREFIX, org.apache.commons.lang3.StringUtils.EMPTY)))
             {
-                return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.s.getAllowedMethods(), method);
+                return super.authorise(request,method,auth) && ArrayUtils.contains(AccessRights.DIR_READ_ONLY_AND_ADD_CHILD, method);
             } else {
                 return super.authorise(request, method, auth);
             }

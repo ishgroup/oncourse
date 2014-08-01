@@ -15,6 +15,7 @@ import io.milton.resource.Resource;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.ContextUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.tapestry5.ioc.Registry;
 
 import java.io.IOException;
@@ -93,15 +94,8 @@ public class RootResourceFactory implements ResourceFactory {
 
                     @Override
                     public boolean authorise(Request request, Request.Method method, Auth auth) {
-                        switch(method) {
-                            case GET:
-                            case HEAD:
-                            case OPTIONS:
-                            case PROPFIND:
-                                return auth != null;
-                            default:
-                                return false;
-                        }
+                        return super.authorise(request,method,auth) && ArrayUtils.contains(AccessRights.DIR_READ_ONLY, method);
+
                     }
 				};
 			}
