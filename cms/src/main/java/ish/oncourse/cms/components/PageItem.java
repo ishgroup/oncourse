@@ -14,6 +14,7 @@ import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
@@ -54,7 +55,7 @@ public class PageItem {
 		
 	StreamResponse onActionFromDeletePage(Integer nodeNumber) {
 		if (request.getSession(false) == null) {
-			return new TextStreamResponse("text/json", String.format(JSON_template, JSONStatus.ERROR, ERROR_sessionTimeout));
+            return getStreamResponse(JSONStatus.ERROR, ERROR_sessionTimeout);
 		}
 		ObjectContext ctx = cayenneService.newContext();
 		WebNode node = webNodeService.getNodeForNodeNumber(nodeNumber);
@@ -66,8 +67,16 @@ public class PageItem {
 			ctx.deleteObjects(localNode);
 			ctx.commitChanges();
 		}
-		return new TextStreamResponse("text/json", String.format(JSON_template, JSONStatus.OK, JSONStatus.OK));
+
+        return getStreamResponse(JSONStatus.OK, JSONStatus.OK.name());
 	}
+
+    private TextStreamResponse getStreamResponse(JSONStatus status, String message) {
+        JSONObject result = new JSONObject();
+        result.put("status", status.name());
+        result.put("message", message);
+        return new TextStreamResponse("text/json", result.toString());
+    }
 
 
     public String getPath()
@@ -80,10 +89,10 @@ public class PageItem {
     public StreamResponse changeVisibility()
     {
         if (!request.isXHR()) {
-            return new TextStreamResponse("text/json", String.format(JSON_template, JSONStatus.WARNING, WARNING_invalidRequest));
+            return getStreamResponse(JSONStatus.WARNING, WARNING_invalidRequest);
         }
         if (request.getSession(false) == null) {
-            return new TextStreamResponse("text/json", String.format(JSON_template, JSONStatus.ERROR, ERROR_sessionTimeout));
+            return getStreamResponse(JSONStatus.ERROR, ERROR_sessionTimeout);
         }
 
         String value = request.getParameter(WebNode.PUBLISHED_PROPERTY);
@@ -100,7 +109,7 @@ public class PageItem {
                 ctx.commitChanges();
             }
         }
-        return new TextStreamResponse("text/json", String.format(JSON_template, JSONStatus.OK, published));
+        return getStreamResponse(JSONStatus.OK, String.valueOf(published));
     }
 	
 

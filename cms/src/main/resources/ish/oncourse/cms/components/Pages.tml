@@ -86,10 +86,12 @@
 			var actionHref = actionLink.attr("href");
 			jQuery.ajax({
 				type: "POST",
+                dataType: "json",
 				data: "id="+actionId,
 				url: actionHref,
 				complete: function(data){
-					if(data.responseText=="{status: 'OK'}"){
+                    var json = jQuery.parseJSON(data.responseText);
+					if(json.status == 'OK'){
 						var id = this.data.substring(3);
 						jQuery("tr[id='page_row_"+id+"']").remove();
 						if (window.location.pathname == ("/page/"+id)) {
@@ -98,10 +100,8 @@
 							window.location = newHref;
 							return false;
 						}
-					} else if(data.responseText=="{status: 'session timeout'}"){
-						window.location.reload();
-					} else{
-						alert("The page cannot be removed due some exception.");
+					} else if(json.status == 'ERROR' || json.status == 'WARNING'){
+                        window.location.reload();
 					}
 				}, 
 				async:true

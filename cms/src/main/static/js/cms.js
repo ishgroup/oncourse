@@ -110,8 +110,13 @@ function initChangeVisibility() {
             //if the parameter is not set internet explorer loads content from cache
             cache: false,
             success: function (data) {
+                var json = jQuery.parseJSON(data.responseText);
+                if(json.status != 'OK'){
+                    window.location.reload();
+                }
             },
             error: function (data) {
+                window.location.reload();
             }
         });
     });
