@@ -122,7 +122,15 @@ public class S3Service implements IS3Service {
 
 		URL url = client.generatePresignedUrl(request);
 
-		return url.toString();
+        //return url.toString();
+
+        /**
+         * the workaround converts
+         * https://testobucket2.s3.amazonaws.com/beed847c-605d-4fca-87d8-ddbebff7b7c3?Expires=1407168186&AWSAccessKeyId=AKIAJ2ILE45RTD7HTILA&Signature=nZSdnr%2BpDy8Eu5NP3BsGS3INc8k%3D
+         * to
+         * https://s3-ap-southeast-2.amazonaws.com/testobucket2/beed847c-605d-4fca-87d8-ddbebff7b7c3?Expires=1407168186&AWSAccessKeyId=AKIAJ2ILE45RTD7HTILA&Signature=nZSdnr%2BpDy8Eu5NP3BsGS3INc8k%3D
+         */
+         return String.format("https://s3-ap-southeast-2.amazonaws.com/%s/%s", bucketName, url.getPath());
 	}
 
 	
