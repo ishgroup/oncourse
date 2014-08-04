@@ -13,7 +13,12 @@ dependencies {
 	compile 'net.java.dev.textile-j:textile-j:2.2.864'
 	compile 'axis:axis:1.4'
 	compile 'net.htmlparser.jericho:jericho-html:3.2'
+
+    //the jackson verson does not have problem with initializing in hot deployed wars
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
 	compile 'com.amazonaws:aws-java-sdk:1.6.11'
+
+
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	compile 'org.apache.maven:maven-artifact:3.0.4'
 

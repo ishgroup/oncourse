@@ -128,8 +128,16 @@ public class S3Service implements IS3Service {
 	
 	@Override
 	public String getPermanentUrl(String bucketName, String fileKey) {
-		AmazonS3Client client = new AmazonS3Client(credentials);
+//		AmazonS3Client client = new AmazonS3Client(credentials);
+//
+//		return client.getUrl(bucketName, fileKey).toString();
 
-		return client.getUrl(bucketName, fileKey).toString();
+        /**
+         * workaround to exclude 'wrong certificate' warning
+         * when url like https://s3.amazonaws.com/nida.assets.oncourse.net.au/78b710e2-a32d-420c-933e-93fe8fa3447b
+         */
+
+        return String.format("https://s3-ap-southeast-2.amazonaws.com/%s/%s", bucketName, fileKey);
+
 	}
 }
