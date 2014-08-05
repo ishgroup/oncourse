@@ -1,6 +1,5 @@
 package ish.oncourse.webservices.replication.v6.updaters;
 
-import ish.common.types.AttendanceType;
 import ish.common.types.CourseClassAttendanceType;
 import ish.common.types.TypesUtil;
 import ish.math.Money;
@@ -63,6 +62,6 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		 * v6 stubs is not contains this field.	
 		 * We set on false it manually here that not violate db constraint.
 		 */
-		entity.setIsActive(false);
+		entity.setIsActive(true);
 	}
 }
