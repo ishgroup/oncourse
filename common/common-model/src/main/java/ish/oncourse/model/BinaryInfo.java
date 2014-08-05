@@ -7,7 +7,6 @@ import org.apache.cayenne.exp.ExpressionFactory;
 
 public class BinaryInfo extends _BinaryInfo implements Queueable {
 	private static final long serialVersionUID = 7381721704078503112L;
-	public static final String DISPLAYED_IMAGES_IDS = "displayedImagesIds";
     public static final String CONTEXT_PATH_TEMPLATE = "/a/%s/%s.%s";
 
 	public Long getId() {

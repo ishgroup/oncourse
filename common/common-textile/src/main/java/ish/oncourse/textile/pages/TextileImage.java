@@ -12,7 +12,6 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class TextileImage {
@@ -87,13 +86,6 @@ public class TextileImage {
 		}
 		else
 			imageLink = StringUtils.EMPTY;
-
-		ArrayList<Long> ids = (ArrayList<Long>) request.getAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS);
-		if (ids == null) {
-			ids = new ArrayList<>();
-		}
-		ids.add(imageBinaryInfo.getId());
-		request.setAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS, ids);
 	}
 
 	private Document getBinaryInfoBy(String name) {

@@ -1,6 +1,5 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.Document;
 import ish.oncourse.services.binary.IBinaryDataService;
 import org.apache.tapestry5.annotations.Parameter;
@@ -61,33 +60,6 @@ public class Attachments {
 		}
 		
         attachments = nonImages;
-
-		// The following sequence of weird logic is meant to copy the behavior of
-		// the old code pasted here:
-		//
-		//		ArrayList<Long> ids = (ArrayList<Long>) request.getAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS);
-		//		if (ids != null && !ids.isEmpty()) {
-		//			imageQualifier = imageQualifier.andExp(ExpressionFactory.notInDbExp(BinaryInfo.ID_PK_COLUMN, ids));
-		//		}
-		//		attachedImages = imageQualifier.filterObjects(allAttachedFiles);
-		//
-		// this logic is scheduled to be reviewed later per task #22069
-
-		//=== START OF WEIRD LOGIC ===
-        List<Long> ids = (List<Long>) request.getAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS);
-
-		List<Document> images = new ArrayList<>();
-		
-		for (Document document : allAttachedFiles) {
-			if (document.getCurrentVersion().isImage()) {
-				if (ids == null || !ids.contains(document.getId())) {
-					images.add(document);
-				}
-			}
-		}
-		
-        attachedImages = images;
-		//=== END OF WEIRD LOGIC =====
 
         return !allAttachedFiles.isEmpty();
     }
