@@ -46,7 +46,7 @@ public final class EntityMapping {
 		ANGEL_TO_WILLOW.put("TagTagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("TagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("TutorTagRelation", "Taggable");
-		ANGEL_TO_WILLOW.put("AttachmentInfoTagRelation", "Taggable");
+		ANGEL_TO_WILLOW.put("DocumentTagRelation", "Taggable");
 
 		WILLOW_TO_ANGEL.put("BinaryData", "AttachmentData");
 		WILLOW_TO_ANGEL.put("BinaryInfo", "AttachmentInfo");
