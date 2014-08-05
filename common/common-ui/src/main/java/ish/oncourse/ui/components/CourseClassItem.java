@@ -9,6 +9,7 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
+import ish.oncourse.util.CommonUtils;
 import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -235,9 +236,16 @@ public class CourseClassItem {
 	}
 
 	public boolean isCurrentClass() {
-		return courseClass.getIsWebVisible() && courseClass.getIsActive() && !courseClass.isCancelled() && 
+		return courseClass.getIsWebVisible() && isActiveCourseClass() && !courseClass.isCancelled() &&
 				(!courseClass.hasEnded() || courseClass.getIsDistantLearningCourse());
 	}
+
+    private boolean isActiveCourseClass()
+    {
+        // code CommonUtils.compare.... should be deleted when all colleges are moved to angel 5.1 or higher
+        return CommonUtils.compare(courseClass.getCollege().getAngelVersion(), "5.1A0") < 0 ||
+                courseClass.getIsActive();
+    }
 	
 	public boolean isFinishedClass() {
 		return !courseClass.isCancelled() && courseClass.hasEnded();

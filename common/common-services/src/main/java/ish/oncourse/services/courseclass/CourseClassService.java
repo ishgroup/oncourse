@@ -6,6 +6,7 @@ import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.util.CommonUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -61,8 +62,14 @@ public class CourseClassService implements ICourseClassService {
      * @return
      */
     private Expression getSiteQualifier() {
-        return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
-                ExpressionFactory.matchExp(CourseClass.IS_ACTIVE_PROPERTY, true));
+        if (CommonUtils.compare(webSiteService.getCurrentCollege().getAngelVersion(), "5.1A0") < 0)
+            //code CommonUtils.compare.... should be deleted when all colleges are moved to angel 5.1 or higher
+            return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
+                    ExpressionFactory.matchExp(CourseClass.IS_WEB_VISIBLE_PROPERTY, true));
+        else
+            return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
+                    ExpressionFactory.matchExp(CourseClass.IS_ACTIVE_PROPERTY, true));
+
     }
 
     public Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
