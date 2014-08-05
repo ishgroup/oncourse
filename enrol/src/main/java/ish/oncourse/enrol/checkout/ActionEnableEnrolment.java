@@ -41,57 +41,62 @@ public class ActionEnableEnrolment extends APurchaseAction {
          */
         if (enrolment.getObjectId().isTemporary()) {
             if (enrolment.isDuplicated()) {
-				String message = duplicatedEnrolment.getMessage(getController().getMessages(), enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getCode());
-                getController().getModel().setErrorFor(enrolment,message);
-				if (showErrors)
-					getController().getErrors().put(duplicatedEnrolment.name(), message);
+                publishError(duplicatedEnrolment, showErrors, enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getCode());
                 return false;
             }
         }
 
         boolean hasPlaces = getController().hasAvailableEnrolmentPlaces(enrolment);
         if (!hasPlaces) {
-			String message = noCourseClassPlaces.getMessage(getController().getMessages(),
-					getController().getClassName(enrolment.getCourseClass()),
-					enrolment.getCourseClass().getCourse().getCode());
-            getController().getModel().setErrorFor(enrolment,message);
-			if (showErrors)
-				getController().getErrors().put(noCourseClassPlaces.name(), message);
+
+            publishError(noCourseClassPlaces, showErrors, getController().getClassName(enrolment.getCourseClass()),
+                    enrolment.getCourseClass().getCourse().getCode());
             return false;
         }
         if (enrolment.getCourseClass().hasEnded()) {
-			String message = courseClassEnded.getMessage(getController().getMessages(),
-					getController().getClassName(enrolment.getCourseClass()),
-					enrolment.getCourseClass().getCourse().getCode());
-            getController().getModel().setErrorFor(enrolment, message);
-			if (showErrors)
-				getController().getErrors().put(courseClassEnded.name(), message);
+            publishError(courseClassEnded, showErrors, getController().getClassName(enrolment.getCourseClass()),
+                    enrolment.getCourseClass().getCourse().getCode());
             return false;
         }
-		
-		// validate age restrictions for the class
-		Integer minEnrolmentAge = enrolment.getCourseClass().getMinStudentAge();
-		Integer maxEnrolmentAge = enrolment.getCourseClass().getMaxStudentAge();
-		
-		if (minEnrolmentAge != null || maxEnrolmentAge != null) {
-			Date dateOfBirth = enrolment.getStudent().getContact().getDateOfBirth();
-			
-			if (dateOfBirth != null) {
-				Integer age = Years.yearsBetween(new DateTime(dateOfBirth.getTime()),
-						new DateTime(new Date().getTime())).getYears();
-				
-				if ((minEnrolmentAge != null && age < minEnrolmentAge) ||
-						(maxEnrolmentAge != null && age > maxEnrolmentAge)) {
-					String message = ageRequirementsNotMet.getMessage(getController().getMessages(), enrolment.getStudent().getFullName());
-					getController().getModel().setErrorFor(enrolment, message);
-					if (showErrors)
-						getController().getErrors().put(ageRequirementsNotMet.name(), message);
-					return false;
-				}
-			}
-		}
-		
+
+        return validateDateOfBirth(showErrors);
+
+    }
+
+    private boolean validateDateOfBirth(boolean showErrors) {
+        Date dateOfBirth = enrolment.getStudent().getContact().getDateOfBirth();
+        if (dateOfBirth != null)
+        {
+            Integer minEnrolmentAge = enrolment.getCourseClass().getMinStudentAge();
+            Integer maxEnrolmentAge = enrolment.getCourseClass().getMaxStudentAge();
+
+            Integer globalMinEnrolmentAge = getController().getPreferenceController().getEnrolmentMinAge();
+
+            Integer age = Years.yearsBetween(new DateTime(dateOfBirth.getTime()),
+                    new DateTime(new Date().getTime())).getYears();
+
+            // validate age restrictions for the class
+            if (minEnrolmentAge != null || maxEnrolmentAge != null) {
+
+                if ((minEnrolmentAge != null && age < minEnrolmentAge) ||
+                        (maxEnrolmentAge != null && age > maxEnrolmentAge)) {
+                    publishError(ageRequirementsNotMet, showErrors, enrolment.getStudent().getFullName());
+                    return false;
+                }
+            //validate age restrictions for global enrolment age restriction
+            } else if (globalMinEnrolmentAge != null && age < globalMinEnrolmentAge) {
+                publishError(ageRequirementsNotMet, showErrors, enrolment.getStudent().getFullName());
+                return false;
+            }
+        }
         return true;
+    }
+
+    private void publishError(PurchaseController.Message messageKey,boolean showErrors, Object... params) {
+        String message = messageKey.getMessage(getController().getMessages(), params);
+        getController().getModel().setErrorFor(enrolment, message);
+        if (showErrors)
+            getController().getErrors().put(messageKey.name(), message);
     }
 
     public Enrolment getEnrolment() {

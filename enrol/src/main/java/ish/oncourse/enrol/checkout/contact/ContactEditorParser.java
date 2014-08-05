@@ -12,8 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
-import org.joda.time.DateTime;
-import org.joda.time.Years;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -228,12 +226,6 @@ public class ContactEditorParser {
 					Date date  = contact.getDateOfBirth();
                     if (date != null)
                     {
-                        Integer minAge = contactFieldHelper.getPreferenceController().getEnrolmentMinAge();
-
-                        Integer age = Years.yearsBetween(new DateTime(date.getTime()),
-		                    new DateTime(new Date().getTime())).getYears();
-                        if (minAge > age)
-                            return messages.format(KEY_ERROR_dateOfBirth_youngAge, minAge);
                         if (date.compareTo(new Date()) > -1)
                             return messages.format(KEY_ERROR_dateOfBirth_shouldBeInPast);
 						if (MIN_DATE_OF_BIRTH.compareTo(date) > 0)
