@@ -55,9 +55,9 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		/** 
 		 * "isActive" field is not nullable on willow db started by v7 replication.	
 		 * v4 stubs is not contains this field.	
-		 * We set on false it manually here that not violate db constraint.
+		 * We set on true it manually here that not violate db constraint.
 		 */
 		
-		entity.setIsActive(false);
+		entity.setIsActive(true);
 	}
 }
