@@ -390,13 +390,18 @@
 				</entity>
 			</entity>
 
+            <!-- we don't need to check modification date for TagTaggable because the entity is not edited separately from Tag and Taggable -->
 			<entity name="coursetag" dataSource="onCourseDS" pk="id"
 				query="select distinct t.id as id, t.id as tagId from Tag t
 				    inner join TaggableTag tgt on tgt.tagId=t.id
 				    inner join Taggable tg on tgt.taggableId = tg.id
 				    where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and tg.entityWillowId = '${course.id}'"
 				deltaImportQuery="select distinct t.id as id, t.id as tagId from Tag t where t.id='${dataimporter.delta.id}'"
-				deltaQuery="select distinct t.id as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and (t.modified &gt; '${dataimporter.last_index_time}' or tgt.modified &gt; '${dataimporter.last_index_time}' or tg.modified &gt; '${dataimporter.last_index_time}')" 
+				deltaQuery="select distinct t.id as id from Tag t
+				    inner join TaggableTag tgt on tgt.tagId=t.id
+				    inner join Taggable tg on tgt.taggableId = tg.id
+				    where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and
+				        (t.modified &gt; '${dataimporter.last_index_time}' or tg.modified &gt; '${dataimporter.last_index_time}')"
 				parentDeltaQuery="select distinct tg.id as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.id=${coursetag.id}" processor="SqlEntityProcessor">
 				<field name="id" column="id"/>
 				<field name="tagId" column="tagId"/>
