@@ -3,7 +3,12 @@
 	<tr class="student-name">
 		<td colspan="3">
 			<div class="student-info">${contact.fullName} <span>
-				${contact.emailAddress}</span></div>
+				${contact.emailAddress}</span>
+                <t:if test="needGuardian()">
+                    <a href="#" class="add-concession">Add Parent or Guardian</a>
+                    <t:eventlink t:id="addGuardian" context="index" style="{display:none}"/>
+                </t:if>
+            </div>
             <span t:type='checkout/namelist' className="literal:concession" names="concessionNames"/>
             <span t:type='checkout/namelist' className="literal:membership" names="membershipNames"/>
             <div>

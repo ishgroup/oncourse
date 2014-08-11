@@ -20,6 +20,7 @@ public interface PaymentEditorDelegate {
 	public void tryAgain();
 	public void abandon();
 	public List<Contact> getContacts();
+    public List<Contact> getPayers();
 
 	public PaymentIn getPaymentIn();
 

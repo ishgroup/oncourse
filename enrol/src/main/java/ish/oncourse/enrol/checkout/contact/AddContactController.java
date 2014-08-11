@@ -10,6 +10,10 @@ public class AddContactController extends ADelegate implements AddContactDelegat
     private PurchaseController.Action cancelAction;
     private PurchaseController.Action addAction;
 
+    private String headerTitle;
+    private String headerMessage;
+
+
 
 	@Override
 	public void resetContact() {
@@ -34,5 +38,23 @@ public class AddContactController extends ADelegate implements AddContactDelegat
 
     public void setAddAction(PurchaseController.Action addAction) {
         this.addAction = addAction;
+    }
+
+    @Override
+    public String getHeaderTitle() {
+        return headerTitle;
+    }
+
+    public void setHeaderTitle(String headerTitle) {
+        this.headerTitle = headerTitle;
+    }
+
+    @Override
+    public String getHeaderMessage() {
+        return headerMessage;
+    }
+
+    public void setHeaderMessage(String headerMessage) {
+        this.headerMessage = headerMessage;
     }
 }

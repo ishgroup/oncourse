@@ -19,15 +19,16 @@ public class ActionAddCourseClass extends APurchaseAction {
 
         List<Contact> contacts = getModel().getContacts();
         for (Contact contact : contacts) {
-            Enrolment enrolment = getModel().getEnrolmentBy(contact, courseClass);
-            if (enrolment == null)
-            {
-                enrolment = getController().createEnrolment(courseClass, contact.getStudent());
-                getModel().addEnrolment(enrolment);
+            if (!getModel().addedAsGuardian(contact)) {
+                Enrolment enrolment = getModel().getEnrolmentBy(contact, courseClass);
+                if (enrolment == null) {
+                    enrolment = getController().createEnrolment(courseClass, contact.getStudent());
+                    getModel().addEnrolment(enrolment);
 
-                ActionEnableEnrolment action = PurchaseController.Action.enableEnrolment.createAction(getController());
-                action.setEnrolment(enrolment);
-                action.action();
+                    ActionEnableEnrolment action = PurchaseController.Action.enableEnrolment.createAction(getController());
+                    action.setEnrolment(enrolment);
+                    action.action();
+                }
             }
         }
     }

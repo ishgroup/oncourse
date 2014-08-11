@@ -7,4 +7,7 @@ public interface AddContactDelegate extends IDelegate
 	void resetContact();
 	void addContact();
 	ContactCredentials getContactCredentials();
+
+    String getHeaderTitle();
+    String getHeaderMessage();
 }

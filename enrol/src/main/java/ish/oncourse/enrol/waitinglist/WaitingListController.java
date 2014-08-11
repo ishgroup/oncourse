@@ -109,4 +109,14 @@ public class WaitingListController extends AContactController {
 	public List<CustomField> getCustomFields() {
 		return getContact().getCustomFields();
 	}
+
+    @Override
+    public String getHeaderTitle() {
+        return null;
+    }
+
+    @Override
+    public String getHeaderMessage() {
+        return null;
+    }
 }

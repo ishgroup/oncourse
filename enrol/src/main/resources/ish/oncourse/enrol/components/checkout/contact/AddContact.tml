@@ -1,7 +1,6 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <div id="addstudent-block">
-        <t:delegate to="block:header"/>
-        <t:delegate to="block:message"/>
+        <t:checkout.contact.addcontactheader delegate="delegate"/>
 		<t:remove>
 			parameter secure=true is used to be sure that the form action action will be secure.
 			parameter clientValidation=NONE is used to exclude injection tapestry java script handling for this form
@@ -25,25 +24,4 @@
             </div>
         </t:form>
     </div>
-
-    <t:block t:id="header">
-        <t:if test="payer">
-            <h2>${message:message-addPayer}</h2>
-            <p:else>
-                <h2>${message:message-addStudent}</h2>
-            </p:else>
-        </t:if>
-    </t:block>
-    <t:block t:id="message">
-        <t:if test="${delegate.errors.isEmpty()}">
-            <div class="message">
-                <t:if test="payer">
-                    <p>${message:message-enterDetailsForPayer}</p>
-                    <p:else>
-                        <p>${message:message-enterDetailsForStudent}</p>
-                    </p:else>
-                </t:if>
-            </div>
-        </t:if>
-    </t:block>
 </t:container>

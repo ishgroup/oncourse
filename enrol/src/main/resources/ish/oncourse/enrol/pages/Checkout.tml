@@ -2,7 +2,7 @@
 	  bodyClass="literal:internal-page"
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-<div id="checkout">
+<div id="checkout" class="payments">
 	<t:delegate to="block:checkout"/>
 </div>
 

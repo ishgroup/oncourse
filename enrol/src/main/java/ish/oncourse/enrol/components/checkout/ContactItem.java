@@ -1,11 +1,13 @@
 package ish.oncourse.enrol.components.checkout;
 
 import ish.common.types.ProductStatus;
+import ish.oncourse.enrol.checkout.ActionAddGuardian;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Membership;
 import ish.oncourse.model.StudentConcession;
 import org.apache.tapestry5.Block;
+import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -75,4 +77,25 @@ public class ContactItem {
 			return blockToRefresh;
 		return null;
 	}
+
+
+    @OnEvent(value = "addGuardian")
+    public Object addGuardian(Integer contactIndex)
+    {
+        if (!request.isXHR())
+            return null;
+        Contact contact = purchaseController.getModel().getContacts().get(contactIndex);
+        ActionAddGuardian actionAddGuardian = new ActionAddGuardian();
+        actionAddGuardian.setChildContact(contact);
+        purchaseController.performAction(actionAddGuardian, PurchaseController.Action.addGuardian);
+        if (blockToRefresh != null)
+            return blockToRefresh;
+        return null;
+    }
+
+    public boolean needGuardian()
+    {
+        return purchaseController.needGuardianFor(contact) && purchaseController.getGuardianFor(contact) == null;
+    }
+
 }

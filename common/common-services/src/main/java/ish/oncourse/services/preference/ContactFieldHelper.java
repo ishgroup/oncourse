@@ -162,7 +162,15 @@ public class ContactFieldHelper {
 
 	public boolean isRequiredField(FieldDescriptor fieldDescriptor) {
 		String preferenceValue = preferenceController.getValue(fieldDescriptor.getPreferenceNameBy(contactFiledsSet), false);
-		return VALUE_Required.equals(preferenceValue);
+		boolean result = VALUE_Required.equals(preferenceValue);
+        if (fieldDescriptor == FieldDescriptor.dateOfBirth)
+        {
+            return result || preferenceController.isCollectParentDetails();
+        }
+        else
+        {
+           return result;
+        }
 	}
 
 	public List<String> getVisibleFields(Contact contact, boolean isFillRequiredProperties) {

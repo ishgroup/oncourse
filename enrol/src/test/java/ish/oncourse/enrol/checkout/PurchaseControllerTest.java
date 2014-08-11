@@ -713,4 +713,16 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
     }
 
+    @Test
+    public void testGetGuardianRelationType()
+    {
+        PurchaseController purchaseController = init(true);
+        assertNotNull(purchaseController.getGuardianRelationType());
+    }
+
+    @Test
+    public void testNeedGuardianFor()
+    {
+    }
+
 }

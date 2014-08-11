@@ -31,4 +31,14 @@ public class ActionAddContact extends AAddContactAction {
     protected PurchaseController.Action getCancelAction() {
         return PurchaseController.Action.cancelAddContact;
     }
+
+    @Override
+    protected String getHeaderMessage() {
+        return getController().getMessages().format("message-enterDetailsForStudent");
+    }
+
+    @Override
+    protected String getHeaderTitle() {
+        return getController().getMessages().format("message-addStudent");
+    }
 }

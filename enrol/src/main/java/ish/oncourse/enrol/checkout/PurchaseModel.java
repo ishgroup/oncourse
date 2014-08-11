@@ -71,8 +71,19 @@ public class PurchaseModel {
     }
 
 
+    public void addContact(Contact contact, boolean isGuardian) {
+        ContactNode contactNode = new ContactNode();
+        contactNode.setGuardian(isGuardian);
+        this.contacts.put(contact, contactNode);
+    }
+
+    public boolean addedAsGuardian(Contact contact)
+    {
+         return getContactNode(contact).isGuardian();
+    }
+
     public void addContact(Contact contact) {
-        this.contacts.put(contact, new ContactNode());
+        this.addContact(contact, false);
     }
 
     public List<Contact> getContacts() {
@@ -574,6 +585,15 @@ public class PurchaseModel {
         return result;
     }
 
+    public Contact getGuardianFor(Contact contact) {
+        List<ContactRelation> contactRelation =  contact.getFromContacts();
+        for (ContactRelation relation : contactRelation) {
+            ContactRelationType type = relation.getRelationType();
+            if (type.getAngelId() == -1)
+                return relation.getFromContact();
+        }
+        return null;
+    }
 
 
     public class VoucherNode {
@@ -618,6 +638,8 @@ public class PurchaseModel {
 
 		private List<ProductItem> enabledProductItems;
         private List<ProductItem> disabledProductItems;
+
+        private boolean isGuardian = false;
 
         public ContactNode() {
             this.concessions = new ArrayList<>();
@@ -711,6 +733,14 @@ public class PurchaseModel {
 
         public String setErrorFor(Enrolment enrolment, String error) {
             return courseClassErrors.put(enrolment.getCourseClass().getId(), error);
+        }
+
+        public boolean isGuardian() {
+            return isGuardian;
+        }
+
+        public void setGuardian(boolean isGuardian) {
+            this.isGuardian = isGuardian;
         }
     }
 }

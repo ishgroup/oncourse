@@ -1,0 +1,15 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <t:delegate to="block:header"/>
+    <t:delegate to="block:message"/>
+
+    <t:block t:id="header">
+        <h2>${delegate.getHeaderTitle()}</h2>
+    </t:block>
+    <t:block t:id="message">
+        <t:if test="${delegate.errors.isEmpty()}">
+            <div class="message">
+                <p>${delegate.getHeaderMessage()}</p>
+            </div>
+        </t:if>
+    </t:block>
+</t:container>

@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.Voucher;
@@ -92,6 +93,20 @@ public class PurchaseModelValidator {
     }
 
     public boolean validate() {
-        return validateEnrolments(true) && validateProductItems() && validateRedeemingVouchers();
+        return validateContacts() && validateEnrolments(true) && validateProductItems() && validateRedeemingVouchers();
+    }
+
+    public boolean validateContacts() {
+        boolean result = true;
+        List<Contact> contacts = getModel().getContacts();
+        for (Contact contact : contacts) {
+            if (purchaseController.needGuardianFor(contact) && purchaseController.getGuardianFor(contact) == null)
+            {
+                getPurchaseController().addError(PurchaseController.Message.contactNeedsGuardian, contact.getFullName());
+                result = false;
+            }
+        }
+
+        return result;
     }
 }

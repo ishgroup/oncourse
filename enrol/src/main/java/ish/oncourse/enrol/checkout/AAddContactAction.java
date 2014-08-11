@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.AddContactController;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
+import ish.oncourse.enrol.checkout.contact.ContactEditorController;
 import ish.oncourse.model.*;
 import ish.oncourse.services.preference.ContactFieldHelper;
 
@@ -30,6 +31,10 @@ public abstract class AAddContactAction extends APurchaseAction {
 
     protected abstract PurchaseController.Action getCancelAction();
 
+    protected abstract String getHeaderMessage();
+    protected abstract String getHeaderTitle();
+
+
     @Override
     protected void makeAction() {
 
@@ -38,56 +43,94 @@ public abstract class AAddContactAction extends APurchaseAction {
         else if (getController().getState().equals(addContact))
             initEditContact();
         else if (getController().getState().equals(editContact))
-            addContact();
+            commitContact();
         else
             throw new IllegalStateException();
 
     }
 
-    private void initAddContact() {
+    protected void initAddContact() {
         AddContactController addContactController = new AddContactController();
         addContactController.setPurchaseController(getController());
         addContactController.setAddAction(getAddAction());
         addContactController.setCancelAction(getCancelAction());
+        addContactController.setHeaderMessage(getHeaderMessage());
+        addContactController.setHeaderTitle(getHeaderTitle());
         getController().setAddContactController(addContactController);
         getController().setState(addContact);
+
     }
 
     private void initEditContact() {
         boolean isAllRequiredFieldFilled = new ContactFieldHelper(getController().getPreferenceController(), enrolment).isAllRequiredFieldFilled(contact);
         if (contact.getObjectId().isTemporary() || !isAllRequiredFieldFilled) {
-            getController().prepareContactEditor(contact, !isAllRequiredFieldFilled,
-                    getAddAction(), getCancelAction());
+            prepareContactEditor(!isAllRequiredFieldFilled);
             getController().setState(editContact);
         } else {
-            addContact();
+            commitContact();
         }
         getController().setAddContactController(null);
     }
 
-    protected void addContact() {
+    /**
+     * @param fillRequiredProperties if true we show only required properties where value is null
+     */
+    protected void prepareContactEditor(boolean fillRequiredProperties) {
+        ContactEditorController contactEditorController = new ContactEditorController();
+        contactEditorController.setPurchaseController(getController());
+        contactEditorController.setContact(contact);
+        contactEditorController.setObjectContext(contact.getObjectContext());
+        contactEditorController.setContactFiledsSet(enrolment);
+        contactEditorController.setAddAction(getAddAction());
+        contactEditorController.setCancelAction(getCancelAction());
+        if (!contact.getObjectId().isTemporary() && fillRequiredProperties)
+            contactEditorController.setFillRequiredProperties(fillRequiredProperties);
+        getController().setContactEditorDelegate(contactEditorController);
+    }
+
+
+    protected void commitContact() {
         contact.getObjectContext().commitChanges();
         contact = getModel().localizeObject(contact);
         getModel().addContact(contact);
+
+        Contact guardian = getGuardian();
+        if (guardian != null) {
+            getModel().addContact(guardian, true);
+        }
+
         //add the first contact
-        if (shouldChangePayer())
-            changePayer();
-        if (shouldAddEnrolments()){
+        if (shouldChangePayer()) {
+            if (guardian != null)
+                getController().addWarning(PurchaseController.Message.payerWasChangedToGuardian, contact.getFullName(), guardian.getFullName());
+            changePayer(guardian != null ? guardian : contact);
+        }
+        if (shouldAddEnrolments()) {
             initEnrolments();
-			initProductItems();
-		}
+            initProductItems();
+        }
 
         getController().setState(getFinalState());
-        getController().resetContactEditorController();
+        getController().setContactEditorDelegate(null);
     }
 
-	protected void changePayer() {
+    protected void changePayer(Contact payer) {
         ActionChangePayer actionChangePayer = changePayer.createAction(getController());
-        actionChangePayer.setContact(contact);
+        actionChangePayer.setContact(payer);
         actionChangePayer.action();
         //we don't need to apply owing/credit to total on checkout page
         if (!isApplyOwing())
             getModel().setApplyPrevOwing(false);
+    }
+
+
+    protected Contact getGuardian() {
+        if (getController().needGuardianFor(contact)) {
+            Contact guardian = getController().getGuardianFor(contact);
+            return guardian;
+        } else {
+            return null;
+        }
     }
 
 
@@ -99,18 +142,18 @@ public abstract class AAddContactAction extends APurchaseAction {
         }
     }
 
-	private void initProductItems() {
-		for (Product product : getController().getModel().getProducts()) {
-			if(!(product instanceof VoucherProduct)) {
-				ProductItem productItem = getController().createProductItem(contact, product);
-				getController().getModel().addProductItem(productItem);
-				ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
-				actionEnableProductItem.setProductItem(productItem);
-				actionEnableProductItem.setPrice(Money.ZERO);
-				actionEnableProductItem.action();
-			}
-		}
-	}
+    private void initProductItems() {
+        for (Product product : getController().getModel().getProducts()) {
+            if (!(product instanceof VoucherProduct)) {
+                ProductItem productItem = getController().createProductItem(contact, product);
+                getController().getModel().addProductItem(productItem);
+                ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
+                actionEnableProductItem.setProductItem(productItem);
+                actionEnableProductItem.setPrice(Money.ZERO);
+                actionEnableProductItem.action();
+            }
+        }
+    }
 
     @Override
     protected void parse() {
@@ -153,7 +196,16 @@ public abstract class AAddContactAction extends APurchaseAction {
         return contact;
     }
 
+
+    protected void setContact(Contact contact) {
+        this.contact = contact;
+    }
+
     ContactCredentials getContactCredentials() {
         return contactCredentials;
+    }
+
+    protected void setContactCredentials(ContactCredentials contactCredentials) {
+        this.contactCredentials = contactCredentials;
     }
 }

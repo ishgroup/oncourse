@@ -32,4 +32,14 @@ public class ActionAddPayer extends AAddContactAction
     protected PurchaseController.Action getCancelAction() {
         return PurchaseController.Action.cancelAddPayer;
     }
+
+    @Override
+    protected String getHeaderMessage() {
+        return getController().getMessages().format("message-enterDetailsForPayer");
+    }
+
+    @Override
+    protected String getHeaderTitle() {
+        return getController().getMessages().format("message-addPayer");
+    }
 }

@@ -5,7 +5,10 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentType;
 import ish.common.types.ProductStatus;
 import ish.math.Money;
-import ish.oncourse.enrol.checkout.contact.*;
+import ish.oncourse.enrol.checkout.contact.AddContactController;
+import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
+import ish.oncourse.enrol.checkout.contact.ContactCredentials;
+import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorController;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
@@ -24,17 +27,19 @@ import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.InvoiceUtils;
 import ish.util.InvoiceUtil;
 import ish.util.ProductUtil;
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
 
 import java.util.*;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.*;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.*;
-import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
 import static java.util.Arrays.asList;
 
 /**
@@ -43,6 +48,8 @@ import static java.util.Arrays.asList;
  * @author dzmitry
  */
 public class PurchaseController {
+    public static final int ANGEL_ID_ContactRelationType_ParentOrGuardian = -1;
+
 	protected static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
 
     /**
@@ -54,7 +61,7 @@ public class PurchaseController {
 			enableEnrolment, enableProductItem,
 			disableEnrolment, disableProductItem,
 			setVoucherPrice,
-			startConcessionEditor, Action.addContact));
+			startConcessionEditor, Action.addContact, addGuardian));
 
 	private PurchaseModel model;
 
@@ -87,7 +94,7 @@ public class PurchaseController {
 
 	private ConcessionEditorController concessionEditorController;
 	private AddContactController addContactController;
-	private ContactEditorController contactEditorController;
+	private ContactEditorDelegate contactEditorDelegate;
 	private PaymentEditorController paymentEditorController;
 
 	private Map<String, String> errors = new HashMap<>();
@@ -140,27 +147,32 @@ public class PurchaseController {
 	/**
 	 * Single entry point to perform all actions. {@link Action} and {@link ActionParameter} values should be specified.
 	 */
+    @Deprecated //we need to use performAction(APurchaseAction purchaseAction, Action action)
 	public synchronized void performAction(ActionParameter param) {
-
-		illegalState = false;
-		illegalModel = false;
-		errors.clear();
-		warnings.clear();
-
-
-		adjustState(param.action);
-		if (!state.allowedActions.contains(param.action)) {
-			addError(Message.illegalState);
-			illegalState = true;
-			return;
-		}
-
-		APurchaseAction action = param.action.createAction(this, param);
-		if (action.action())
-			actionSuccess();
-		else
-			illegalModel = true;
+       performAction(param.action.createAction(this, param), param.action);
 	}
+
+    public synchronized void performAction(APurchaseAction purchaseAction, Action action)
+    {
+        illegalState = false;
+        illegalModel = false;
+        errors.clear();
+        warnings.clear();
+
+
+        adjustState(action);
+        if (!state.allowedActions.contains(action)) {
+            addError(Message.illegalState);
+            illegalState = true;
+            return;
+        }
+
+        purchaseAction.setController(this);
+        if (purchaseAction.action())
+            actionSuccess();
+        else
+            illegalModel = true;
+    }
 
 	private void actionSuccess() {
 		if (isEditCheckout() || isEditPayment() || isEditCorporatePass()) {
@@ -202,23 +214,6 @@ public class PurchaseController {
 		return model;
 	}
 
-
-	/**
-	 * @param fillRequiredProperties if true we show only required properties where value is null
-	 */
-	synchronized void prepareContactEditor(Contact contact, boolean fillRequiredProperties,
-										   Action addAction,
-										   Action cancelAction) {
-		contactEditorController = new ContactEditorController();
-		contactEditorController.setPurchaseController(this);
-		contactEditorController.setContact(contact);
-		contactEditorController.setObjectContext(contact.getObjectContext());
-		contactEditorController.setContactFiledsSet(enrolment);
-		contactEditorController.setAddAction(addAction);
-		contactEditorController.setCancelAction(cancelAction);
-		if (!contact.getObjectId().isTemporary() && fillRequiredProperties)
-			contactEditorController.setFillRequiredProperties(fillRequiredProperties);
-	}
 
 	synchronized void recalculateEnrolmentInvoiceLines() {
 
@@ -424,12 +419,12 @@ public class PurchaseController {
 	}
 
 	public synchronized ContactEditorDelegate getContactEditorDelegate() {
-		return contactEditorController;
+		return contactEditorDelegate;
 	}
 
-	synchronized void resetContactEditorController() {
-		this.contactEditorController = null;
-	}
+    public synchronized void setContactEditorDelegate(ContactEditorDelegate contactEditorDelegate) {
+        this.contactEditorDelegate = contactEditorDelegate;
+    }
 
 
 	public Messages getMessages() {
@@ -712,12 +707,42 @@ public class PurchaseController {
         this.modelValidator = modelValidator;
     }
 
+    public boolean needGuardianFor(Contact contact) {
+
+        if (contact.getDateOfBirth() != null) {
+            Integer age = Years.yearsBetween(new DateTime(contact.getDateOfBirth().getTime()),
+                    new DateTime(new Date().getTime())).getYears();
+            if (preferenceController.isCollectParentDetails() &&
+                    preferenceController.getContactAgeWhenNeedParent() > age) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return can be null
+     */
+    public Contact getGuardianFor(Contact contact)
+    {
+        return getModel().getGuardianFor(contact);
+    }
+
+    public ContactRelationType getGuardianRelationType()
+    {
+        Expression expression = ExpressionFactory.matchExp(ContactRelationType.COLLEGE_PROPERTY, model.getCollege());
+        expression = expression.andExp(ExpressionFactory.matchExp(ContactRelationType.ANGEL_ID_PROPERTY, ANGEL_ID_ContactRelationType_ParentOrGuardian));
+        SelectQuery selectQuery = new SelectQuery(ContactRelationType.class, expression);
+        List<ContactRelationType> types = (List<ContactRelationType>) getModel().getObjectContext().performQuery(selectQuery);
+        return types.isEmpty() ? null: types.get(0);
+    }
+
     public static enum State {
 		init(Action.init, Action.addContact),
 		editCheckout(COMMON_ACTIONS, addCode, selectVoucher, deselectVoucher, removeDiscount, proceedToPayment, addCourseClass, addProduct),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
-		addContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
-		editContact(Action.addContact, addPayer, cancelAddContact, cancelAddPayer),
+		addContact(Action.addContact, cancelAddContact, addPayer, cancelAddPayer, addGuardian, cancelAddGuardian),
+		editContact(Action.addContact, cancelAddContact, addPayer, cancelAddPayer, addGuardian, cancelAddGuardian),
 		editPayment(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPayer, selectCorporatePassEditor),
 		editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
 		paymentProgress(showPaymentResult),
@@ -776,7 +801,9 @@ public class PurchaseController {
 		selectCardEditor(ActionSelectCardEditor.class),
 		selectCorporatePassEditor(ActionSelectCorporatePassEditor.class),
         selectVoucher(ActionSelectVoucher.class, Long.class),
-        deselectVoucher(ActionDeselectVoucher.class, Long.class);
+        deselectVoucher(ActionDeselectVoucher.class, Long.class),
+        addGuardian(ActionAddGuardian.class, Contact.class),
+        cancelAddGuardian(ActionCancelAddGuardian.class);
 
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
@@ -898,8 +925,9 @@ public class PurchaseController {
         voucherWrongPayer,
         voucherAlreadyBeingUsed,
         voucherRedeemNotAllow,
-		ageRequirementsNotMet
-        ;
+		ageRequirementsNotMet,
+        payerWasChangedToGuardian,
+        contactNeedsGuardian, guardianAgeIsWrong;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);

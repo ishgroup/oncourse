@@ -147,6 +147,26 @@ public class PaymentEditorController implements PaymentEditorDelegate {
         return purchaseController.getModel().getContacts();
     }
 
+    public List<Contact> getPayers()
+    {
+        List<Contact> contacts = purchaseController.getModel().getContacts();
+        if (purchaseController.getPreferenceController().isCollectParentDetails())
+        {
+            List<Contact> payers = new ArrayList<>();
+            for (Contact contact : contacts) {
+                if (!purchaseController.needGuardianFor(contact)) {
+                    payers.add(contact);
+                }
+            }
+            return payers;
+        }
+        else
+        {
+            return contacts;
+        }
+
+    }
+
     public PaymentIn getPaymentIn() {
         return paymentProcessController.getPaymentIn();
     }

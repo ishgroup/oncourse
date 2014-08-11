@@ -7,7 +7,13 @@
 		timezone="Australia/Sydney" 
 		requiresAvetmiss="0"/>
 
-	<Site id="1181610" collegeId="1" angelId="200" isWebVisible="0"
+    <College id="2" name="College2"
+             webServicesSecurityCode="345ttn44$%1" communication_key="7059522699886202881"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0"/>
+
+    <Site id="1181610" collegeId="1" angelId="200" isWebVisible="0"
 		created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
 
 	<WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
@@ -343,5 +349,12 @@
 		value_string="true" />
 	<Preference id="2" collegeId="1" name="payment.gateway.type"
 				value_string="TEST" />
-		
+
+
+    <ContactRelationType id="1" collegeId="1" angelId="-1" createdOn="2011-09-12 00:59:00.0" modifiedOn="2011-09-12 00:58:51.0"
+                         fromContactName="Parent or Guardian" toContactName="Child" delegatedAccessToContact="1"/>
+
+    <ContactRelationType id="2" collegeId="2" angelId="-1" createdOn="2011-09-12 00:59:00.0" modifiedOn="2011-09-12 00:58:51.0"
+                         fromContactName="Parent or Guardian" toContactName="Child" delegatedAccessToContact="1"/>
+
 </dataset>
