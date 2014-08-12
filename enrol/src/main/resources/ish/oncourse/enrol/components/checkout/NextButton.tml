@@ -1,0 +1,14 @@
+<t:container
+        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+    <t:block t:id="proceedToPayment">
+        <t:eventlink t:id="proceedToPaymentEvent" id="proceedToPaymentEvent" class="btn btn-primary">Proceed to Payment</t:eventlink>
+    </t:block>
+
+    <t:block t:id="addGuardian">
+        <t:eventlink t:id="addGuardianEvent" id="addGuardianEvent" class="btn btn-primary">Add parent or guardian</t:eventlink>
+        <span t:type="checkout/errors" validationResult="validationResult"/>
+    </t:block>
+
+    <t:delegate to="currentBlock"/>
+</t:container>

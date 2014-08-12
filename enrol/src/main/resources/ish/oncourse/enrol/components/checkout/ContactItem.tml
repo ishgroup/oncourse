@@ -1,14 +1,14 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+             xmlns:p="tapestry:parameter">
 	<tbody>
 	<tr class="student-name">
 		<td colspan="3">
-			<div class="student-info">${contact.fullName} <span>
-				${contact.emailAddress}</span>
-                <t:if test="needGuardian()">
-                    <a href="#" class="add-concession">Add Parent or Guardian</a>
-                    <t:eventlink t:id="addGuardian" context="index" style="{display:none}"/>
-                </t:if>
-            </div>
+            <t:if test="guardian">
+                <div class="student-info">${contact.fullName} <span>(${contact.emailAddress}) child of ${guardian.fullName} <a href="#" class="add-Guardian">change...</a></span></div>
+                <p:else>
+                    <div class="student-info">${contact.fullName} <span>(${contact.emailAddress})</span></div>
+                </p:else>
+            </t:if>
             <span t:type='checkout/namelist' className="literal:concession" names="concessionNames"/>
             <span t:type='checkout/namelist' className="literal:membership" names="membershipNames"/>
             <div>

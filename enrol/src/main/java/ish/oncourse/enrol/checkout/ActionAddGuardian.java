@@ -5,6 +5,9 @@ import ish.oncourse.enrol.checkout.contact.GuardianEditorController;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.ContactRelation;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
+
+import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.guardianAgeIsWrong;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.addContact;
@@ -52,7 +55,7 @@ public class ActionAddGuardian extends AAddContactAction {
 
     @Override
     protected boolean shouldAddEnrolments() {
-        return false;
+        return true;
     }
 
     @Override
@@ -88,29 +91,57 @@ public class ActionAddGuardian extends AAddContactAction {
         //we need to use new adding contact to be sure these changes are commited in one transaction
         ObjectContext objectContext = getContact().getObjectContext();
 
-        ContactRelation contactRelation = objectContext.newObject(ContactRelation.class);
-        contactRelation.setFromContact(getContact());
-        contactRelation.setToContact(objectContext.localObject(childContact));
-        contactRelation.setCollege(objectContext.localObject(getModel().getCollege()));
-        contactRelation.setRelationType(objectContext.localObject(getController().getGuardianRelationType()));
-
+       updateGuardian(objectContext);
 
         objectContext.commitChanges();
         setContact(getModel().localizeObject(getContact()));
         //if the contact was added to the process early we just create the relation.
         if (!getModel().getContacts().contains(getContact()))
-            getModel().addContact(getContact());
+            getModel().addContact(getContact(), true);
 
         //add the first contact
         if (shouldChangePayer()) {
             changePayer(getContact());
         }
+        if (shouldAddEnrolments()) {
+            initEnrolments();
+            initProductItems();
+        }
 
         getController().setState(getFinalState());
         getController().setContactEditorDelegate(null);
+    }
 
-        //we need the code to load the relation to our context.
-        getModel().getObjectContext().localObject(contactRelation.getToContact());
+    private void updateGuardian(ObjectContext objectContext) {
+
+        if (childContact != null)
+        {
+            ContactRelation oldGuardianRelation = getModel().getGuardianRelationFor(childContact);
+            if (oldGuardianRelation.getFromContact().getId().equals(getContact().getId())) {
+                oldGuardianRelation = objectContext.localObject(oldGuardianRelation);
+                objectContext.deleteObjects(oldGuardianRelation);
+            }
+            createGuardianRelation(childContact, objectContext).getToContact();
+        }
+        else
+        {
+            List<Contact> contacts =  getModel().getContacts();
+            for (Contact contact : contacts) {
+                if (getController().needGuardianFor(contact) && getModel().getGuardianRelationFor(contact) == null) {
+                        createGuardianRelation(contact, objectContext).getToContact();
+                }
+            }
+        }
+    }
+
+    private ContactRelation createGuardianRelation(Contact childContact, ObjectContext objectContext) {
+        childContact.setPersistenceState(PersistenceState.HOLLOW);
+        ContactRelation contactRelation = objectContext.newObject(ContactRelation.class);
+        contactRelation.setFromContact(getContact());
+        contactRelation.setToContact(objectContext.localObject(childContact));
+        contactRelation.setCollege(objectContext.localObject(getModel().getCollege()));
+        contactRelation.setRelationType(objectContext.localObject(getController().getGuardianRelationType()));
+        return contactRelation;
     }
 
     @Override
@@ -122,8 +153,6 @@ public class ActionAddGuardian extends AAddContactAction {
                 childContact = ((AddGuardianController) getController().getAddContactDelegate()).getChildContact();
             } else if (getController().getContactEditorDelegate() != null) {
                 childContact = ((GuardianEditorController) getController().getContactEditorDelegate()).getChildContact();
-            } else {
-                throw new IllegalStateException();
             }
         }
     }
@@ -148,7 +177,7 @@ public class ActionAddGuardian extends AAddContactAction {
 
     @Override
     protected String getHeaderTitle() {
-        return getController().getMessages().format("message-addGuardian", childContact.getFullName());
+        return getController().getMessages().format("message-addGuardian");
     }
 }
 

@@ -20,6 +20,8 @@ import java.util.*;
  * @author dzmitry
  */
 public class PurchaseModel {
+    public static final int ANGEL_ID_ContactRelationType_ParentOrGuardian = -1;
+
 
     //input data for model
     private College college;
@@ -585,12 +587,12 @@ public class PurchaseModel {
         return result;
     }
 
-    public Contact getGuardianFor(Contact contact) {
+    public ContactRelation getGuardianRelationFor(Contact contact) {
         List<ContactRelation> contactRelation =  contact.getFromContacts();
         for (ContactRelation relation : contactRelation) {
             ContactRelationType type = relation.getRelationType();
-            if (type.getAngelId() == -1)
-                return relation.getFromContact();
+            if (type.getAngelId() == ANGEL_ID_ContactRelationType_ParentOrGuardian)
+                return relation;
         }
         return null;
     }

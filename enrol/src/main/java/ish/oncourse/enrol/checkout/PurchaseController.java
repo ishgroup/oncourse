@@ -48,7 +48,6 @@ import static java.util.Arrays.asList;
  * @author dzmitry
  */
 public class PurchaseController {
-    public static final int ANGEL_ID_ContactRelationType_ParentOrGuardian = -1;
 
 	protected static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
 
@@ -78,9 +77,6 @@ public class PurchaseController {
 	private ITagService tagService;
 	private IPaymentService paymentService;
 
-	private Messages messages;
-
-
 	private VoucherRedemptionHelper voucherRedemptionHelper;
     private PurchaseModelValidator modelValidator;
 
@@ -97,8 +93,7 @@ public class PurchaseController {
 	private ContactEditorDelegate contactEditorDelegate;
 	private PaymentEditorController paymentEditorController;
 
-	private Map<String, String> errors = new HashMap<>();
-	private Map<String, String> warnings = new HashMap<>();
+    private ValidationResult validationResult;
 
 	private ParallelExecutor parallelExecutor;
 
@@ -156,9 +151,7 @@ public class PurchaseController {
     {
         illegalState = false;
         illegalModel = false;
-        errors.clear();
-        warnings.clear();
-
+        validationResult.clear();
 
         adjustState(action);
         if (!state.allowedActions.contains(action)) {
@@ -428,7 +421,7 @@ public class PurchaseController {
 
 
 	public Messages getMessages() {
-		return messages;
+		return validationResult.getMessages();
 	}
 
 	public synchronized boolean isNeedConcessionReminder() {
@@ -444,10 +437,6 @@ public class PurchaseController {
 				}
 		}
 		return true;
-	}
-
-	public void setMessages(Messages messages) {
-		this.messages = messages;
 	}
 
 	public void setCayenneService(ICayenneService cayenneService) {
@@ -514,24 +503,23 @@ public class PurchaseController {
 
 
 	public synchronized void addError(Message message, Object... params) {
-		errors.put(message.name(), message.getMessage(messages, params));
+		validationResult.addError(message, params);
 	}
 
 	public synchronized Map<String, String> getErrors() {
-		return errors;
+		return validationResult.getErrors();
 	}
 
 	public synchronized Map<String, String> getWarnings() {
-		return warnings;
+		return validationResult.getWarnings();
 	}
 
 	public synchronized void addWarning(Message message, Object... params) {
-		warnings.put(message.name(), message.getMessage(messages, params));
+        validationResult.addWarning(message, params);
 	}
 
 	public synchronized void setErrors(Map<String, String> errors) {
-		this.errors.clear();
-		this.errors.putAll(errors);
+        validationResult.setErrors(errors);
 	}
 
 	public synchronized boolean isPaymentState() {
@@ -725,16 +713,25 @@ public class PurchaseController {
      */
     public Contact getGuardianFor(Contact contact)
     {
-        return getModel().getGuardianFor(contact);
+        ContactRelation contactRelation = getModel().getGuardianRelationFor(contact);
+        return (contactRelation != null ? getModel().getGuardianRelationFor(contact).getFromContact(): null);
     }
 
     public ContactRelationType getGuardianRelationType()
     {
         Expression expression = ExpressionFactory.matchExp(ContactRelationType.COLLEGE_PROPERTY, model.getCollege());
-        expression = expression.andExp(ExpressionFactory.matchExp(ContactRelationType.ANGEL_ID_PROPERTY, ANGEL_ID_ContactRelationType_ParentOrGuardian));
+        expression = expression.andExp(ExpressionFactory.matchExp(ContactRelationType.ANGEL_ID_PROPERTY, PurchaseModel.ANGEL_ID_ContactRelationType_ParentOrGuardian));
         SelectQuery selectQuery = new SelectQuery(ContactRelationType.class, expression);
         List<ContactRelationType> types = (List<ContactRelationType>) getModel().getObjectContext().performQuery(selectQuery);
         return types.isEmpty() ? null: types.get(0);
+    }
+
+    public ValidationResult getValidationResult() {
+        return validationResult;
+    }
+
+    public void setValidationResult(ValidationResult validationResult) {
+        this.validationResult = validationResult;
     }
 
     public static enum State {
@@ -927,7 +924,7 @@ public class PurchaseController {
         voucherRedeemNotAllow,
 		ageRequirementsNotMet,
         payerWasChangedToGuardian,
-        contactNeedsGuardian, guardianAgeIsWrong;
+        contactNeedsGuardian, guardianAgeIsWrong, payerSetAsGuardian;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);

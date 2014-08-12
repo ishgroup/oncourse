@@ -6,6 +6,7 @@ import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.contact.ContactEditorController;
 import ish.oncourse.model.*;
 import ish.oncourse.services.preference.ContactFieldHelper;
+import org.apache.cayenne.ObjectContext;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addCourseClass;
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.changePayer;
@@ -32,6 +33,7 @@ public abstract class AAddContactAction extends APurchaseAction {
     protected abstract PurchaseController.Action getCancelAction();
 
     protected abstract String getHeaderMessage();
+
     protected abstract String getHeaderTitle();
 
 
@@ -90,6 +92,9 @@ public abstract class AAddContactAction extends APurchaseAction {
 
 
     protected void commitContact() {
+
+        tryToRelateToGuardian();
+
         contact.getObjectContext().commitChanges();
         contact = getModel().localizeObject(contact);
         getModel().addContact(contact);
@@ -112,6 +117,31 @@ public abstract class AAddContactAction extends APurchaseAction {
 
         getController().setState(getFinalState());
         getController().setContactEditorDelegate(null);
+    }
+
+    /**
+     * the code relates already add guardian to the contact if it needs
+     */
+    private void tryToRelateToGuardian() {
+        ObjectContext objectContext = contact.getObjectContext();
+        /*
+            we need to check:
+             the payer is not null (add first contact),
+             payer does not need guardian (the first added contact needs guardian),
+         */
+        if (getModel().getPayer() != null &&
+                !getController().needGuardianFor(getModel().getPayer()) &&
+                getController().needGuardianFor(contact) &&
+                getController().getGuardianFor(contact) == null) {
+            {
+                ContactRelation contactRelation = objectContext.newObject(ContactRelation.class);
+                contactRelation.setFromContact(objectContext.localObject(getModel().getPayer()));
+                contactRelation.setToContact(contact);
+                contactRelation.setCollege(objectContext.localObject(getModel().getCollege()));
+                contactRelation.setRelationType(objectContext.localObject(getController().getGuardianRelationType()));
+                getController().addWarning(PurchaseController.Message.payerSetAsGuardian, contact.getFullName(), getModel().getPayer().getFullName());
+            }
+        }
     }
 
     protected void changePayer(Contact payer) {
@@ -142,7 +172,7 @@ public abstract class AAddContactAction extends APurchaseAction {
         }
     }
 
-    private void initProductItems() {
+    protected void initProductItems() {
         for (Product product : getController().getModel().getProducts()) {
             if (!(product instanceof VoucherProduct)) {
                 ProductItem productItem = getController().createProductItem(contact, product);

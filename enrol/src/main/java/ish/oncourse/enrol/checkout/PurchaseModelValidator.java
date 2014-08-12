@@ -93,20 +93,19 @@ public class PurchaseModelValidator {
     }
 
     public boolean validate() {
-        return validateContacts() && validateEnrolments(true) && validateProductItems() && validateRedeemingVouchers();
+        return validateEnrolments(true) && validateProductItems() && validateRedeemingVouchers();
     }
 
-    public boolean validateContacts() {
+    public boolean validateContacts(ValidationResult validationResult) {
         boolean result = true;
         List<Contact> contacts = getModel().getContacts();
         for (Contact contact : contacts) {
             if (purchaseController.needGuardianFor(contact) && purchaseController.getGuardianFor(contact) == null)
             {
-                getPurchaseController().addError(PurchaseController.Message.contactNeedsGuardian, contact.getFullName());
+                validationResult.addWarning(PurchaseController.Message.contactNeedsGuardian, contact.getFullName(), purchaseController.getPreferenceController().getContactAgeWhenNeedParent());
                 result = false;
             }
         }
-
         return result;
     }
 }

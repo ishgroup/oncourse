@@ -1,9 +1,6 @@
 package ish.oncourse.enrol.services.payment;
 
-import ish.oncourse.enrol.checkout.ActionAddDiscount;
-import ish.oncourse.enrol.checkout.PurchaseController;
-import ish.oncourse.enrol.checkout.PurchaseModel;
-import ish.oncourse.enrol.checkout.PurchaseModelValidator;
+import ish.oncourse.enrol.checkout.*;
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
@@ -84,7 +81,11 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		purchaseController.setConcessionsService(concessionsService);
 		purchaseController.setStudentService(studentService);
 		purchaseController.setPreferenceController(preferenceController);
-		purchaseController.setMessages(MessagesImpl.forClass(Checkout.class));
+
+        ValidationResult validationResult = new ValidationResult();
+        validationResult.setMessages(MessagesImpl.forClass(Checkout.class));
+		purchaseController.setValidationResult(validationResult);
+
 		purchaseController.setCayenneService(cayenneService);
 		purchaseController.setPaymentGatewayServiceBuilder(paymentGatewayServiceBuilder);
 		purchaseController.setWebSiteService(webSiteService);

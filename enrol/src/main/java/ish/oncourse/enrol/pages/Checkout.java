@@ -212,6 +212,7 @@ public class Checkout {
 
 		if (handler.isUnexpected()) {
 			purchaseController = null;
+            LOGGER.error(cause.getMessage(), cause);
 			throw new IllegalArgumentException(cause);
 		}
 

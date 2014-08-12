@@ -227,7 +227,7 @@ public class PaymentEditor implements IPaymentControlDelegate {
     {
         if (payers == null)
         {
-            payers = new ArrayList<>(delegate.getPayers());
+            payers = new ArrayList<>(delegate.getContacts());
             payers.add(getDummyPayer());
         }
         return payers;

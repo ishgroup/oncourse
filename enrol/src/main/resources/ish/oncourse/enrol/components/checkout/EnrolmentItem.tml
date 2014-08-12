@@ -24,14 +24,21 @@
 	  		<em>
 	  			<t:if test="enrolment.courseClass.hasRoom">
 	  				<span t:type="ui/RoomLocation" room="enrolment.courseClass.room" withRoomName="false" disabledLink="true" />
-				</t:if>&#187; 
-		  			<span class="started">
-	  					<t:output value="enrolment.courseClass.startDate" format="dateFormat"/>
-	  				</span>
-					-
-					<span class="ended">
-						<t:output value="enrolment.courseClass.endDate" format="dateFormat"/>
-					</span>
+				</t:if>&#187;
+                    <t:if test="enrolment.courseClass.isDistantLearningCourse">
+                        <span class="started">
+                            Self paced
+                        </span>
+                        <p:else>
+                            <span class="started">
+                                <t:output value="enrolment.courseClass.startDate" format="dateFormat"/>
+                            </span>
+                            -
+                            <span class="ended">
+                                <t:output value="enrolment.courseClass.endDate" format="dateFormat"/>
+                            </span>
+                        </p:else>
+                    </t:if>
 	 	  	</em>
         </td>
 		<td class="alignright">

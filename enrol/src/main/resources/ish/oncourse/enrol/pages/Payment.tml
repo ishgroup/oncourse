@@ -110,7 +110,7 @@
     </t:if>
 
     <t:if test="purchaseController">
-        <span t:type="checkout/errors" errors="purchaseController.errors" warnings="purchaseController.warnings"/>
+        <span t:type="checkout/errors" validationResult="purchaseController.validationResult"/>
     </t:if>
 </t:block>
 
