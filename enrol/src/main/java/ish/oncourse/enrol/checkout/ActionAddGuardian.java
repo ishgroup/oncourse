@@ -91,7 +91,7 @@ public class ActionAddGuardian extends AAddContactAction {
         //we need to use new adding contact to be sure these changes are commited in one transaction
         ObjectContext objectContext = getContact().getObjectContext();
 
-       updateGuardian(objectContext);
+        updateGuardian(objectContext);
 
         objectContext.commitChanges();
         setContact(getModel().localizeObject(getContact()));
@@ -114,21 +114,18 @@ public class ActionAddGuardian extends AAddContactAction {
 
     private void updateGuardian(ObjectContext objectContext) {
 
-        if (childContact != null)
-        {
+        if (childContact != null) {
             ContactRelation oldGuardianRelation = getModel().getGuardianRelationFor(childContact);
             if (!oldGuardianRelation.getFromContact().getId().equals(getContact().getId())) {
                 oldGuardianRelation = objectContext.localObject(oldGuardianRelation);
                 objectContext.deleteObjects(oldGuardianRelation);
                 createGuardianRelation(childContact, objectContext).getToContact();
             }
-        }
-        else
-        {
-            List<Contact> contacts =  getModel().getContacts();
+        } else {
+            List<Contact> contacts = getModel().getContacts();
             for (Contact contact : contacts) {
                 if (getController().needGuardianFor(contact) && getModel().getGuardianRelationFor(contact) == null) {
-                        createGuardianRelation(contact, objectContext).getToContact();
+                    createGuardianRelation(contact, objectContext).getToContact();
                 }
             }
         }
@@ -177,12 +174,9 @@ public class ActionAddGuardian extends AAddContactAction {
 
     @Override
     protected String getHeaderTitle() {
-        if (childContact != null)
-        {
+        if (childContact != null) {
             return getController().getMessages().format("message-changeGuardian", childContact.getFullName());
-        }
-        else
-        {
+        } else {
             return getController().getMessages().format("message-addGuardian");
         }
     }
