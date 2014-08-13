@@ -101,16 +101,6 @@
 		</p>
 	</t:if>
 	
-	<t:if test="${delegate.visibleFields.contains('specialNeeds')}">
-		<p>
-			<label for="specialNeeds">${label('specialNeeds')}<t:if test="required('specialNeeds')"><em title="${message:message-required}">*</em> </t:if></label>
-			<span class="${validateHandler.validateClass('specialNeeds')}">
-				<t:textfield t:id="specialNeeds" value="delegate.contact.student.specialNeeds" class="specialNeeds input-fixed ${validateHandler.errorClass('specialNeeds')}"/>
-				<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('specialNeeds')}" hint="${hint('specialNeeds')}"/>
-			</span>
-		</p>
-	</t:if>
-
 	<t:if test="delegate.fillRequiredProperties" negate="true">
 		<p>
 			<label>Gender</label>
@@ -134,5 +124,14 @@
 			</p>
 		</t:if>
 	</t:loop>
-	
+
+    <t:if test="${delegate.visibleFields.contains('specialNeeds')}">
+        <p>
+            <label for="specialNeeds">${label('specialNeeds')}<t:if test="required('specialNeeds')"><em title="${message:message-required}">*</em> </t:if></label>
+			<span class="${validateHandler.validateClass('specialNeeds')}">
+				<t:textarea t:id="specialNeeds" value="delegate.contact.student.specialNeeds" class="specialNeeds input-fixed ${validateHandler.errorClass('specialNeeds')}" rows="4"/>
+				<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('specialNeeds')}" hint="${hint('specialNeeds')}"/>
+			</span>
+        </p>
+    </t:if>
 </t:container>
