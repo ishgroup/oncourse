@@ -4,7 +4,10 @@
 	<tr class="student-name">
 		<td colspan="3">
             <t:if test="guardian">
-                <div class="student-info">${contact.fullName} <span>(${contact.emailAddress}) child of ${guardian.fullName} <a href="#" class="add-Guardian">change...</a></span></div>
+                <div class="student-info">${contact.fullName} <span>(${contact.emailAddress}) child of ${guardian.fullName}
+                    <a href="#" class="add-Guardian">change...</a>
+                    <t:eventlink t:id="addGuardian" context="index" style="{display:none}"/>
+                </span></div>
                 <p:else>
                     <div class="student-info">${contact.fullName} <span>(${contact.emailAddress})</span></div>
                 </p:else>

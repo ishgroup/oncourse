@@ -117,11 +117,11 @@ public class ActionAddGuardian extends AAddContactAction {
         if (childContact != null)
         {
             ContactRelation oldGuardianRelation = getModel().getGuardianRelationFor(childContact);
-            if (oldGuardianRelation.getFromContact().getId().equals(getContact().getId())) {
+            if (!oldGuardianRelation.getFromContact().getId().equals(getContact().getId())) {
                 oldGuardianRelation = objectContext.localObject(oldGuardianRelation);
                 objectContext.deleteObjects(oldGuardianRelation);
+                createGuardianRelation(childContact, objectContext).getToContact();
             }
-            createGuardianRelation(childContact, objectContext).getToContact();
         }
         else
         {
@@ -177,7 +177,14 @@ public class ActionAddGuardian extends AAddContactAction {
 
     @Override
     protected String getHeaderTitle() {
-        return getController().getMessages().format("message-addGuardian");
+        if (childContact != null)
+        {
+            return getController().getMessages().format("message-changeGuardian", childContact.getFullName());
+        }
+        else
+        {
+            return getController().getMessages().format("message-addGuardian");
+        }
     }
 }
 
