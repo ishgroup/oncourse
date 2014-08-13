@@ -107,6 +107,6 @@
 </t:block>
 
 
-<link href="/s/enrol/css/checkout.css" media="screen, print" rel="stylesheet" />
-<script type="text/javascript" src="/s/enrol/js/common.js"></script>
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/css/enrol.css"/>
+<script type="text/javascript" src="${request.contextPath}/js/enrol-min.js"></script>
 </html>

@@ -2,9 +2,7 @@ package ish.oncourse.enrol.pages;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.components.checkout.payment.CorporatePassEditor;
-import ish.oncourse.enrol.components.checkout.payment.IPaymentControlDelegate;
 import ish.oncourse.enrol.components.checkout.payment.PaymentEditor;
-import ish.oncourse.model.Product;
 import ish.oncourse.services.datalayer.DataLayerFactory;
 import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.util.FormatUtils;
@@ -27,7 +25,9 @@ public class Payment {
 	@Inject
 	@Id("payment")
 	private Block paymentBlock;
+
 	@Inject
+    @Property
 	private Request request;
 
 	@Inject

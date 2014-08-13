@@ -65,6 +65,7 @@ public class Checkout {
     private IPurchaseControllerBuilder purchaseControllerBuilder;
 
     @Inject
+    @Property
     private Request request;
 
     @Inject

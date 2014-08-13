@@ -51,6 +51,7 @@ public class WaitingListForm {
 	private ValidateHandler validateHandler;
 
 	@Inject
+    @Property
 	private Request request;
 
 	@Inject

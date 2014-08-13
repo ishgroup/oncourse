@@ -1,0 +1,622 @@
+@mixin general-gradient {
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
+	background-image: -webkit-linear-gradient(top, #08C, #04C);
+	background-image: -o-linear-gradient(top, #08C, #04C);
+	background-image: linear-gradient(to bottom, #08C, #04C);
+	background-image: -moz-linear-gradient(top, #08C, #04C);
+}
+
+@import "progress-steps.scss";
+@import "payment-tab.scss";
+@import "amount-block.scss";
+
+
+div.clearboth {
+	clear: both;
+}
+
+[id*=discountedPrice]
+{
+	cursor: help;
+}
+
+#checkout {
+
+	.enrolmentsSelected {
+		.form-controls {
+			margin-bottom: 10px;
+			margin-left: 260px;
+		}
+		fieldset {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+	}
+	
+	.header-content {
+		color: #333;
+		font-size: 23px;
+		border-radius: 0 5px 0px 0px;
+		position: relative;
+		margin-bottom: 25px;
+		
+		.header {
+			padding: 10px 0 0 11px;
+			background: url("/s/img/Padlock.png") 7px 5px no-repeat;
+			
+			h1 {
+				text-transform: none;
+				font-size: 23px;
+				margin-bottom: 0;
+				color: #333;
+				line-height: 26px;
+				padding-left: 45px;
+			}
+			
+			span {
+				color: #666;
+				font-size: 14px; 
+				line-height: 18px;
+				padding-left: 45px
+			}
+		}
+	}
+	
+	#addCorporatePass{
+		margin-top: 0;
+		display: inline-block;
+		float: none;
+		margin-bottom: 0;
+		font-size: 11px;
+		line-height: 17px;
+		color: #333;
+		text-align: center;
+		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+		vertical-align: middle;
+		cursor: pointer;
+	}
+	
+	.small-textbox {
+		width: 80px;
+		padding: 4px 3px;
+	}
+	
+	#creditCardCVV {
+		width: 80px;
+	}
+	
+	#cvvLink {
+		margin: 5px 0 0 50px;
+	}
+
+	label {
+		display: inline-block;
+		text-align: right;
+		max-width: 180px;
+		width: 26%;
+		padding-right: 20px;
+		vertical-align: middle;
+		line-height: 16px;
+	}
+	
+	input[type="checkbox"], input[type="radio"] {
+		margin-top: 2px;
+	}
+	
+	.conditions label {
+		display: block;
+		width: auto;
+		max-width: 100%;
+		text-align: left;
+		margin-left: 26%;
+		padding-left: 20px;
+		font-weight: normal;
+	}
+	
+	th {
+		text-align: left;
+		border: 0 !important;
+		font-weight: normal !important;
+	}
+	
+	tbody td {
+		border: none;
+		vertical-align: middle;
+		
+		&#total {
+			width: 124px;
+		}
+	}
+	
+	.button {
+		float: left;
+		margin: 0 0 0 10px;
+		border: 1px solid #D1D1D1;
+		padding: 3px 10px;
+		color: black;
+		cursor: pointer;
+		background: #EEE url("/s/img/blank.png") repeat-x;
+		background: -moz-linear-gradient(top, white 0%, #EEE 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #EEE));
+		background: -webkit-linear-gradient(top, white 0%, #EEE 100%);
+		background: -o-linear-gradient(top, white 0%, #EEE 100%);
+		background: -ms-linear-gradient(top, white 0%, #EEE 100%);
+		background: linear-gradient(top, white 0%,#EEE 100%);
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+	}
+	
+	#addContact {
+		background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
+		margin: 0;
+		padding: 5px 0 5px 24px;
+		cursor: pointer;
+	}
+	
+	/**ConcessionEditor component*/
+
+	div.concessionEditor {
+		width: 100%;
+		font-weight: bold;
+		
+		.cancelConcession, .deleteConcession, .saveConcession {
+			cursor:pointer;
+		}
+		
+		.conditions label {
+			padding-left: 0;
+			margin: 30px 0 0 0;
+		}
+	}
+}
+
+#checkout > form > div > [id*=paymentSubmit] {
+	color: white;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #0044CC;
+	@include general-gradient;
+	background-repeat: repeat-x;
+	border-color: #04C #04C #002A80;
+	display: inline-block;
+	padding: 3px 10px;
+	margin-bottom: 0;
+	line-height: 20px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	text-decoration: none;
+	border-width: 1px;
+	border-color: #04C #04C #002A80;
+	border-style: solid;
+	cursor: pointer;
+	font-size: 100%;
+}
+
+.payments tr 
+
+.content {
+	.payments {
+		tr {
+			> td .student-info span {
+				color: #AAA;
+				font-size: 11px;
+				vertical-align: baseline;
+			}
+
+
+		div.drop-down
+		{
+			float: left;
+		}
+		
+		td .student-info {
+			color: #345;
+			font-size: 20px;
+			
+			.left i {
+				font-size: 12px;
+				margin-left: 10px;
+			}
+		}
+		
+		> span {
+			cursor: pointer;
+			color: white;
+			text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+			background-color: #006DCC;
+			@include general-gradient;
+			background-repeat: repeat-x;
+			border-color: #04C #04C #002A80;
+			display: inline-block;
+			padding: 2px 10px;
+			margin-bottom: 0;
+			margin-left: 5px;
+			line-height: 20px;
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+			font-size: 12px;
+			text-decoration: none;
+			border-width: 1px;
+			border-color: #04C #04C #002A80;
+			border-style: solid;
+			
+			b.caret {
+				margin-top: 8px;
+				border-top-color: white;
+				border-bottom-color: white;
+				display: inline-block;
+				width: 0;
+				height: 0;
+				vertical-align: top;
+				border-top: 4px solid white;
+				border-right: 4px solid transparent;
+				border-left: 4px solid transparent;
+				content: "";
+			}
+			
+			.drop-down-content {
+				z-index: 999;
+				position: absolute;
+				top: 5px;
+				list-style: none;
+				width: 255px;
+				margin: 0;
+				display: none;
+				background-color: white;
+				border: 1px solid #CCC;
+				-moz-border-radius: 6px;
+				-webkit-border-radius: 6px;
+				border-radius: 6px;
+				-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 5px 10px;
+				box-shadow: rgba(0, 0, 0, 0.199219) 0px 5px 10px;
+				-webkit-background-clip: padding-box;
+				background-clip: padding-box;
+				padding: 5px 0;
+				display: none;
+				
+				li {
+					font-size: 12px;
+					
+					div.payer {
+						text-decoration: none;
+						color: white;
+						background: black;
+						cursor: default;
+						padding: 5px;
+					}
+					a{
+						display:block;
+						padding:5px;
+						text-decoration: none;
+						color:#333;
+					}
+					
+					&:hover{
+						background-color: #006DCC;
+						@include general-gradient;
+						background-repeat: repeat-x;
+						border-color: #04C #04C #002A80;
+						
+						div.contact, div.payer {
+							color:#fff;
+						}
+						
+					}
+					
+					div.contact {
+						font-size: 12px;
+						color: #333;
+						cursor:pointer;
+						padding: 5px;
+					}
+				}
+				
+				&.visible {
+					display: block;
+				}
+				
+				&::before {
+					position: absolute;
+					top: -7px;
+					left: 9px;
+					display: inline-block;
+					border-right: 7px solid transparent;
+					border-bottom: 7px solid #CCC;
+					border-left: 7px solid transparent;
+					border-bottom-color: rgba(0, 0, 0, 0.2);
+					content: '';
+				}
+				
+				&::after {
+					position: absolute;
+					top: -6px;
+					left: 10px;
+					display: inline-block;
+					border-right: 6px solid transparent;
+					border-bottom: 6px solid white;
+					border-left: 6px solid transparent;
+					content: '';
+				}
+				
+			}
+		}
+		
+		.validation {
+			color: #B94A48;
+			background-color: #F2DEDE;
+			border:1px solid #EED3D7;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+			text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+			padding: 8px 35px 8px 14px;
+			margin: 0 10px 25px 10px;
+		}
+
+		}
+		label {
+			margin-bottom: 0;
+		}
+		input[id*=creditCardName], input[id*=creditCardNumber] {
+			width: 180px;
+		}
+	}
+	a.add-concession {
+		text-decoration: none;
+		background: white;
+		border: none;
+		margin: 0;
+		padding: 0;
+		color: #125687;
+		
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+
+#EnrolmentEntry {
+	.content table{
+		td {
+			padding: 4px 21px 4px 8px;
+		}
+		
+		.student-name td {
+			padding-top: 20px;
+		}
+	}
+	
+	tbody#totals td {
+		padding-top: 10px;
+	}
+}
+
+
+
+tbody.checkoutList
+{
+    border-bottom: 1px solid #D6D6D6;
+	
+	> tr.enrolmentItem > td.enrolmentInfo
+	{
+		width: 500px;
+	}
+}
+
+.payments {
+	tbody {
+		.student-name td {
+			border-top: 1px solid #ccc;
+		}
+
+		td em {
+			margin-left: 20px;
+		}
+		
+		td.alignright {
+			span.fullPrice, span.totalPrice {
+				float: right;
+			width: 62px;
+			margin-right: 65px;
+			}
+		}
+	}
+	
+	> thead > tr:first-child > th {
+		color: #345;
+		font-size: 18px;
+		padding: 0;
+		width: 100%;
+		border: none;
+		border-bottom: 3px solid #CCC;
+	}
+	
+	tbody td.alignright{
+		width: auto;
+		padding: 4px 43px 4px 8px;
+		
+		span.fullPrice {
+			width: auto;
+			margin-right: 0;
+			float: none;
+		}
+		
+		span + span {
+			margin-left: 10px;
+			width: 55px;
+			float: right;
+		}
+	}
+}
+
+
+/*EnrolmentItem component*/
+tr.enrolmentItem {
+	label
+	{
+		display: block !important;
+		width: auto !important;
+		max-width: 100% !important;
+		text-align: left !important;
+	}
+	
+	> td > em  {
+		> span.ended, > span.started {
+			vertical-align:baseline;
+		}
+	}
+}
+
+
+/**css from bootstrap lib**/
+.typeahead {
+	margin-top: 2px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+	display: none;
+	float: left;
+	min-width: 160px;
+	padding: 5px 0;
+	margin: 2px 0 0;
+	list-style: none;
+	background-color: white;
+	border: 1px solid #CCC;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding;
+	background-clip: padding-box;
+	
+	.active > a, .active > a:hover {
+		color: #333;
+		text-decoration: none;
+		background-color: #0081C2;
+		background-image: -moz-linear-gradient(top, #08C, #0077B3);
+		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#0077B3));
+		background-image: -webkit-linear-gradient(top, #08C, #0077B3);
+		background-image: -o-linear-gradient(top, #08C, #0077B3);
+		background-image: linear-gradient(to bottom, #08C, #0077B3);
+		background-repeat: repeat-x;
+		outline: 0;
+	}
+	
+	li > a {
+		display: block;
+		padding: 3px 20px;
+		clear: both;
+		font-weight: normal;
+		line-height: 20px;
+		color: #333;
+		white-space: nowrap;
+	}
+}
+
+
+.student {
+	color: #345;
+	font-size: 18px;
+	padding: 0;
+	width: 100%;
+	border: none;
+	
+	span {
+		  color: #AAA;
+		  font-size: 13px;
+		  vertical-align: middle;
+	}
+}
+
+.disabled {
+    color: #888;
+}
+
+div.conditions-text {
+	display: inline;
+}
+
+div.t-error {
+	color: red;
+}
+
+a.cancel {
+	padding-right: 20px;
+}
+
+
+#expiryMonth, #expiryYear {
+	width: 70px;
+}
+
+.conditions {
+        position: relative;
+        top: -20px;
+        left: 26%;
+        padding-left:20px;
+        width: 60%;
+ }
+
+.membership, .concession {
+    color: #aaa;
+    font-size: 11px;
+}
+
+.discountAddedMessage
+{
+    color: #0066AA;
+    font-weight: bold;
+    font-size: medium;
+}
+
+body .ui-tooltip {
+	border-width: 1px;
+	padding: 5px;
+	font-size: 11px;
+	font-family: Arial, Helvetica, sans-serif;
+	-webkit-box-shadow: 0 0 0 #aaa;
+	box-shadow: 0 0 0 #aaa;
+}
+
+/**css for productItem price input**/
+input.priceValue
+{
+	text-align:right;
+}
+
+#checkout tbody td.priceValue
+{
+	vertical-align:bottom;
+	padding-bottom:8px
+}
+
+/*with this style voucher name in paragraphs will never wrap:*/
+#vouchers
+{
+  white-space: nowrap;
+}
+
+/*the style needs to cut long voucher name*/
+#checkout div.amount-container .amount-content #vouchers p label
+{
+  display:inline-block;
+  text-overflow:ellipsis;
+  overflow:hidden;
+  text-align: left;
+}

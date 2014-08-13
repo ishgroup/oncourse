@@ -1,0 +1,129 @@
+#checkout {
+	#tabable-container {
+		margin: 0 0 18px 0;
+		padding: 0;
+		border: 1px solid silver;
+		-moz-border-radius: 8px;
+		-webkit-border-radius: 8px;
+		border-radius: 8px;
+		background: #fcfcfc;
+		
+		&::after {
+			display: block;
+			visibility: hidden;
+			clear: both;
+			content: "";
+		}
+		
+		ul.nav {
+			margin-right: -1px;
+			position: relative;
+			margin: 0;
+			float: left;
+			list-style: none;
+			width: 19.8%;
+			background: #fcfcfc;
+			border-top-left-radius: 9px;
+			
+			li {
+				margin: 0;
+			}
+			
+			li.first.active a {
+				border-top-color: transparent;
+				border-top-left-radius: 6px;
+			}
+			
+			li.first a:hover {
+				border-top-left-radius: 6px;
+			}
+			
+			li a {
+				padding: 8px 12px;
+				line-height: 20px; margin-right: -1px;
+				display: block;
+				border: 1px solid transparent;
+				color: #555;
+				text-decoration: none;
+				
+				&:hover {
+					background: #eee;
+					border-color: #EEE #DDD #EEE #EEE;
+					color:#333;
+				}
+			}
+			
+			li.active a {
+				background:#fff;
+				border-color: #DDD transparent #DDD transparent;
+				font-weight: bold;
+				color:#555;
+			}
+		}
+		
+		.tab-content {
+			width: 80%;
+			float: left;
+			border-left: 1px solid #ddd;
+			background:#fff;
+			border-bottom-right-radius: 9px;
+			border-top-right-radius: 9px;
+			
+			.form-details select {
+				width: 188px;
+				
+				&[id*="expiryMonth"], &[id*="expiryYear"] {
+					width: 55px;
+				}
+			}
+			
+			.single-tab {
+				display: none;
+				
+				.info-content {
+					padding: 0 10px;
+				}
+			}
+			
+			#paypal {
+				min-height: 150px;
+			}
+			
+			#corporate-pass {
+				margin-top: 10px;
+				
+				> fieldset {
+					border: 0;
+					padding-right: 0;
+				}
+			}
+			
+			.single-tab.active {
+				display: block;
+			}
+			
+			.form-details p label {
+				font-weight: normal;
+				text-align: left;
+				padding-left: 20px;
+				padding-right: 0;
+				width: 20%;
+			}
+		}
+		
+		.vcc-card-image {
+			vertical-align: bottom;
+			margin-left: 5px;
+			margin-bottom: 2px;
+		}
+		
+		#cardtotalstring {
+			margin-top: -7px;
+			vertical-align: middle;
+			
+			& img {
+				vertical-align: middle;
+			}
+		}
+	}
+}

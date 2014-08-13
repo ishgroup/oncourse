@@ -57,6 +57,7 @@ public class Mail {
 	private ICountryService countryService;
 
     @Inject
+    @Property
     private Request request;
 
     @InjectComponent
