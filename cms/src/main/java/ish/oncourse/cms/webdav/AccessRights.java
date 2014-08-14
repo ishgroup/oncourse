@@ -8,7 +8,7 @@ public interface AccessRights {
     /**
      * Allowed request methods for read only dir and which can add child dir (like /cms/webdav/templates)
      */
-    public static final Request.Method[] DIR_READ_ONLY_AND_ADD_CHILD = new Request.Method[]{GET, HEAD, OPTIONS, PROPFIND, MKCOL};
+    public static final Request.Method[] DIR_READ_ONLY_AND_ADD_CHILD = new Request.Method[]{GET, HEAD, OPTIONS, PROPFIND, MKCOL, PUT, POST};
 
     /**
      * Allowed request methods for read only dir (like /cms/webdav)
