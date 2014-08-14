@@ -2846,4 +2846,11 @@
 		</sql>
 	</changeSet>
 	
+	<changeSet id="188" author="artyom" runOnChange="false" context="production">
+		<sql>
+			ALTER TABLE Discount MODIFY discountRate DECIMAL(6,3)
+		</sql>
+	</changeSet>
+	
+	
 </databaseChangeLog>
