@@ -105,10 +105,10 @@ public class PortalService implements IPortalService {
                 return format.parse(sd);
             } catch (Exception ex) {
                 logger.error(ex.getMessage(), ex);
-                return new Date(0);
+                return new Date();
             }
         } else {
-            return new Date(0);
+            return new Date();
         }
     }
 
