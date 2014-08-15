@@ -8,6 +8,7 @@ package ish.oncourse.services.lifecycle;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.persistence.ISHObjectContext;
+import ish.oncourse.util.CommonUtils;
 import org.apache.cayenne.*;
 import org.apache.cayenne.annotation.PostRemove;
 import org.apache.cayenne.graph.GraphDiff;
@@ -203,6 +204,14 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 				if (!replicatedContext) {
 					return;
 				}
+                /*
+                we need the test to avoid ContactRelation entity for colleges with angel version less the 6.0.1
+                because only angel 6.0.1 has  ContactRelationUpdater
+                TODO: we need delete the test when all colleges will be migrated to 6.0.1
+                 */
+                if (entity instanceof ContactRelation && CommonUtils.compare(((ContactRelation) entity).getCollege().getAngelVersion(), "6.0.1") < 0) {
+                    return;
+                }
 				if (isAsyncReplicationAllowed) {
 					LOGGER.debug(String.format("Post %s event on : Entity: %s  with ID : %s",
 							action,

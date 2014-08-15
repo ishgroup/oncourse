@@ -1,23 +1,12 @@
 package ish.oncourse.webservices.replication.services;
 
-import ish.oncourse.model.QueueKey;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.model.QueuedRecordAction;
-import ish.oncourse.model.QueuedTransaction;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.StackTraceUtils;
 import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.FaultCode;
 import ish.oncourse.webservices.util.*;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -26,6 +15,8 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.*;
 
 /**
  * Main version 4 synchronous replication implementation.

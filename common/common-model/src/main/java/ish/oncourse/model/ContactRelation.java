@@ -12,6 +12,6 @@ public class ContactRelation extends _ContactRelation implements Queueable {
 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
-		return false;
+		return true;
 	}
 }

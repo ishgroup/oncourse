@@ -70,5 +70,6 @@ private Map<String, IWillowStubBuilder> builderMap;
 		builderMap.put(getEntityName(DocumentVersion.class), new DocumentVersionStubBuilder());
 		builderMap.put(getEntityName(CustomFieldType.class), new CustomFieldTypeStubBuilder());
 		builderMap.put(getEntityName(CustomField.class), new CustomFieldStubBuilder());
+        builderMap.put(getEntityName(ContactRelation.class), new ContactRelationStubBuilder());
     }
 }
