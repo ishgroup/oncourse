@@ -250,8 +250,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
         when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
         parser.setContact(contact);
         error = parser.validate(dateOfBirth);
-        assertNotNull(error);
-        assertEquals(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, error);
+        assertNull(error);
 
 		when(contact.getDateOfBirth()).thenReturn(null);
         error = parser.validate(dateOfBirth);

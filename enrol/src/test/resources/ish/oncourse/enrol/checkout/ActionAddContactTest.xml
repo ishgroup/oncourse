@@ -5,7 +5,7 @@
 		webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
 		communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
 		timezone="Australia/Sydney" 
-		requiresAvetmiss="0" angelVersion="6.0.1"/>
+		requiresAvetmiss="0" angelVersion="development"/>
 
 	<Site id="1" collegeId="1" angelId="1000" isWebVisible="0"
 		created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
