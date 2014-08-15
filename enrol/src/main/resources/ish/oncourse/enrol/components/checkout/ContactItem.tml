@@ -4,7 +4,7 @@
 	<tr class="student-name">
 		<td colspan="3">
             <t:if test="guardian">
-                <div class="student-info">${contact.fullName} <span>(${contact.emailAddress}) child of ${guardian.fullName}
+                <div class="student-info">${contact.fullName} <span class="student-email">(${contact.emailAddress})</span><span class="student-affilation">&nbsp;child of&nbsp;<strong>${guardian.fullName}</strong>
                     <a href="#" class="add-Guardian">change...</a>
                     <t:eventlink t:id="addGuardian" context="index" style="{display:none}"/>
                 </span></div>
