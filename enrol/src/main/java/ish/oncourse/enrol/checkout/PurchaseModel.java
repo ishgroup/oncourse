@@ -74,6 +74,8 @@ public class PurchaseModel {
 
 
     public void addContact(Contact contact, boolean isGuardian) {
+        if (this.contacts.get(contact) != null)
+            throw new IllegalArgumentException(String.format("Contact %s is alread added", contact));
         ContactNode contactNode = new ContactNode();
         contactNode.setGuardian(isGuardian);
         this.contacts.put(contact, contactNode);

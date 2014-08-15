@@ -100,7 +100,7 @@ public abstract class AAddContactAction extends APurchaseAction {
         getModel().addContact(contact);
 
         Contact guardian = getGuardian();
-        if (guardian != null) {
+        if (guardian != null && !getModel().getContacts().contains(guardian)) {
             getModel().addContact(guardian, true);
         }
 

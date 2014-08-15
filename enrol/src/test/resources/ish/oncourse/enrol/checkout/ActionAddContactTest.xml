@@ -5,7 +5,7 @@
 		webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
 		communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
 		timezone="Australia/Sydney" 
-		requiresAvetmiss="0"/>
+		requiresAvetmiss="0" angelVersion="6.0.1"/>
 
 	<Site id="1" collegeId="1" angelId="1000" isWebVisible="0"
 		created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
@@ -15,6 +15,14 @@
 	<Room id="1" collegeId="1" siteId="1" angelId="1000"
 		capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
 		name="TestRoom" />
+    <ContactRelationType id="1000"
+                         angelId="-1"
+                         collegeId="1"
+                         createdOn="2011-09-12 00:47:01.0"
+                         fromContactName="Parent"
+                         toContactName="Child"
+                         modifiedOn="2011-09-12 00:47:01.0"
+                         delegatedAccessToContact="1"/>
 
 	<Student id="1001" collegeId="1" angelId="1000"
 		created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
@@ -40,7 +48,21 @@
 		isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
 		isMarketingViaSMSAllowed="1" />
 
-	<Course id="1001" collegeId="1" angelId="1001" code="AAV"
+    <Contact id="1002" collegeId="1"
+             angelId="1002" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Parent1" givenName="Parent1" emailAddress="Parent1@Parent1.net"
+             dateOfBirth="[parentDateOfBirth]" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <Contact id="1003" collegeId="1"
+             angelId="1003" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Parent1" givenName="Child1" emailAddress="Child1@Parent1.net"
+             dateOfBirth="[childDateOfBirth]" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <Course id="1001" collegeId="1" angelId="1001" code="AAV"
 		isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
 		created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
 		allowWaitingList="1" name="Managerial Accounting" />
@@ -53,9 +75,17 @@
 		maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
 		deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
 
-    <Preference id="1" collegeId="1" name="license.ccprocessing"
+    <CourseClass id="1002" collegeId="1" code="2" courseId="1001"
+                 roomId="1" angelId="1001" startDate="2011-10-12 00:55:59.0"
+                 endDate="2111-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0" maxStudentAge="14"/>
+
+
+    <Preference id="1000" collegeId="1" name="license.ccprocessing"
 		value_string="true" />
-	<Preference id="2" collegeId="1" name="payment.gateway.type"
+	<Preference id="1001" collegeId="1" name="payment.gateway.type"
 				value_string="TEST" />
-		
+
 </dataset>

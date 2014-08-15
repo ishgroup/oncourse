@@ -57,7 +57,7 @@ public abstract class ACheckoutTest extends ServiceTest {
             ReplacementDataSet rDataSet;
             rDataSet = new ReplacementDataSet(dataSet);
 
-            rDataSet.addReplacementObject("[null]", null);
+            configDataSet(rDataSet);
 
             DataSource refDataSource = getDataSource("jdbc/oncourse");
 			DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), rDataSet);
@@ -68,6 +68,12 @@ public abstract class ACheckoutTest extends ServiceTest {
 		this.purchaseControllerBuilder = getService(IPurchaseControllerBuilder.class);
 
 	}
+
+    protected void configDataSet(ReplacementDataSet dataSet)
+    {
+        dataSet.addReplacementObject("[null]", null);
+    }
+
 
 	private void assertPurchaseController() {
 
