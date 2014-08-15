@@ -4,12 +4,12 @@
 	<tr class="student-name">
 		<td colspan="3">
             <t:if test="guardian">
-                <div class="student-info">${contact.fullName} <span class="student-email">(${contact.emailAddress})</span><span class="student-affilation">&nbsp;child of&nbsp;<strong>${guardian.fullName}</strong>
+                <div class="student-info">${contact.fullName} <span class="student-email">(${contact.emailAddress})</span><span class="student-affilation">child of <strong>${guardian.fullName}</strong>
                     <a href="#" class="add-Guardian">change...</a>
                     <t:eventlink t:id="addGuardian" context="index" style="{display:none}"/>
                 </span></div>
                 <p:else>
-                    <div class="student-info">${contact.fullName} <span>(${contact.emailAddress})</span></div>
+                    <div class="student-info">${contact.fullName} <span class="student-email">(${contact.emailAddress})</span></div>
                 </p:else>
             </t:if>
             <span t:type='checkout/namelist' className="literal:concession" names="concessionNames"/>

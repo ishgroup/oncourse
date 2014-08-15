@@ -194,7 +194,7 @@ div.clearboth {
 	font-size: 100%;
 }
 
-.payments tr 
+//.payments tr 
 
 .content {
 	.payments {
@@ -206,7 +206,7 @@ div.clearboth {
 		}
 
 		tr {
-			td .student-info {
+			.student-info {
 				font-weight: bold;
 			    padding-bottom: 5px;					// 25px for alt. scheme
 			    position: relative;
@@ -218,7 +218,8 @@ div.clearboth {
 				    left: 0;
 				    // position: absolute !important; 	// for alt. scheme 
 				    text-transform: lowercase;
-				    top: 2px; 							// 18px for alt. scheme 
+				    top: 1px; 							// 18px for alt. scheme 
+				    margin-right: 5px;
 
 				    // &:before {						// for alt. scheme
 			    	//     content: "\2709";			// e-mail icon
@@ -234,6 +235,10 @@ div.clearboth {
 				.student-affilation {
 				    color: #888888;
 				    font-weight: normal;
+
+				    strong {
+				    	margin-right: 6px;
+				    }
 				}
 			}
 
@@ -243,8 +248,8 @@ div.clearboth {
 		}
 		
 		td .student-info {
-			color: #345;
-			font-size: 20px;
+			// color: #345;
+			// font-size: 20px;
 			
 			.left i {
 				font-size: 12px;
@@ -432,9 +437,16 @@ tbody.checkoutList
 {
     border-bottom: 1px solid #D6D6D6;
 	
-	> tr.enrolmentItem > td.enrolmentInfo
-	{
-		width: 500px;
+	> tr.enrolmentItem {
+
+		> td.enrolmentInfo {
+			width: 500px;
+			border-width: 0 0 0 1px !important;
+		}
+
+		> td.alignright {
+			border-width: 0 1px 0 0 !important;
+		}
 	}
 }
 
