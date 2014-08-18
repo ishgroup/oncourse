@@ -194,7 +194,7 @@ div.clearboth {
 	font-size: 100%;
 }
 
-//.payments tr 
+.payments tr 
 
 .content {
 	.payments {
@@ -206,41 +206,7 @@ div.clearboth {
 		}
 
 		tr {
-			.student-info {
-				font-weight: bold;
-			    padding-bottom: 5px;					// 25px for alt. scheme
-			    position: relative;
-
-				.student-email {
-				    color: #888888;
-				    font-size: 11px;
-				    font-weight: normal;
-				    left: 0;
-				    // position: absolute !important; 	// for alt. scheme 
-				    text-transform: lowercase;
-				    top: 1px; 							// 18px for alt. scheme 
-				    margin-right: 5px;
-
-				    // &:before {						// for alt. scheme
-			    	//     content: "\2709";			// e-mail icon
-					   //  font-size: 21px;				// instead of brakets
-					   //  line-height: 10px;
-					   //  margin-right: 4px;
-					   //  position: relative;
-					   //  text-transform: none;
-					   //  top: 2px;
-				    // }
-				}
-
-				.student-affilation {
-				    color: #888888;
-				    font-weight: normal;
-
-				    strong {
-				    	margin-right: 6px;
-				    }
-				}
-			}
+			
 
 		div.drop-down
 		{
@@ -414,6 +380,55 @@ div.clearboth {
 	}
 }
 
+
+.content {
+	.payments {
+
+		textarea {
+			min-width: 120px;
+			min-height: 78px;
+			height: 78px !important;
+		}
+
+		tr {
+			.student-info {
+				font-weight: bold;
+			    padding-bottom: 5px;					// 25px for alt. scheme
+			    position: relative;
+
+				.student-email {
+				    color: #888888;
+				    font-size: 11px;
+				    font-weight: normal;
+				    left: 0;
+				    // position: absolute !important; 	// for alt. scheme 
+				    text-transform: lowercase;
+				    top: 1px; 							// 18px for alt. scheme 
+				    margin-right: 5px;
+
+				    // &:before {						// for alt. scheme
+			    	//     content: "\2709";			// e-mail icon
+					   //  font-size: 21px;				// instead of brakets
+					   //  line-height: 10px;
+					   //  margin-right: 4px;
+					   //  position: relative;
+					   //  text-transform: none;
+					   //  top: 2px;
+				    // }
+				}
+
+				.student-affilation {
+				    color: #888888;
+				    font-weight: normal;
+
+				    strong {
+				    	margin-right: 6px;
+				    }
+				}
+			}
+		}
+	}
+}
 
 #EnrolmentEntry {
 	.content table{
