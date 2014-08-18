@@ -4,15 +4,10 @@
             <li class="${detailsClass}">
                 <a href="${detailsUrl}">Your details</a>
             </li>
-            <t:if test="showParentBeforCheckout">
-                <li class="${parentClass}">
-                    <a href="${parentUrl}">Parent</a>
-                </li>
-            </t:if>
             <li class="${checkoutClass}">
                 <a href="${checkoutUrl}">Summary</a>
             </li>
-            <t:if test="showParentAfterCheckout">
+            <t:if test="showParent">
                 <li class="${parentClass}">
                     <a href="${parentUrl}">Parent</a>
                 </li>

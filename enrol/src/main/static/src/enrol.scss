@@ -194,8 +194,6 @@ div.clearboth {
 	font-size: 100%;
 }
 
-.payments tr 
-
 .content {
 	.payments {
 
@@ -364,18 +362,6 @@ div.clearboth {
 		}
 		input[id*=creditCardName], input[id*=creditCardNumber] {
 			width: 180px;
-		}
-	}
-	a.add-concession {
-		text-decoration: none;
-		background: white;
-		border: none;
-		margin: 0;
-		padding: 0;
-		color: #125687;
-		
-		&:hover {
-			text-decoration: underline;
 		}
 	}
 }
