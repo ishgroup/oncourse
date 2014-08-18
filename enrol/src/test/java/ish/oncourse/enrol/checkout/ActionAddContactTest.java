@@ -4,15 +4,17 @@ import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.contact.ContactEditorController;
 import ish.oncourse.model.*;
 import ish.oncourse.services.preference.PreferenceController;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang3.time.DateUtils;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action;
 import static ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -111,32 +113,47 @@ public class ActionAddContactTest extends ACheckoutTest {
         parameter.setValue(contactCredentials);
         performAction(parameter);
 
-        SelectQuery selectQuery = new SelectQuery(QueuedRecord.class);
+        SelectQuery selectQuery = new SelectQuery(QueuedTransaction.class);
+        selectQuery.addOrdering(new Ordering(QueuedTransaction.CREATED_PROPERTY, SortOrder.ASCENDING));
         ObjectContext objectContext = cayenneService.newContext();
+        List<QueuedTransaction> queuedTransactions = objectContext.performQuery(selectQuery);
+        //five transaction: preference, preference, Student-Contact, Student-Contact, Contact-ContactRelation-Contact
+        assertEquals(5, queuedTransactions.size());
 
-        List<QueuedRecord> queuedRecords = objectContext.performQuery(selectQuery);
-        for (QueuedRecord queuedRecord : queuedRecords) {
-            Queueable queueable = queuedRecord.getLinkedRecord();
-            if (queueable instanceof Preference)
-                continue;
-            if (queueable instanceof Contact) {
-                assertTrue(queueable.getId() == 1002 || queueable.getId() == 1003);
-                continue;
-            }
-            if (queueable instanceof ContactRelation) {
-                assertTrue(((ContactRelation) queueable).getFromContact().getId() == 1002);
-                assertTrue(((ContactRelation) queueable).getToContact().getId() == 1003);
-                continue;
-            }
+        assertEquals(1, queuedTransactions.get(0).getQueuedRecords().size());
+        assertEquals(Preference.class.getSimpleName(), queuedTransactions.get(0).getQueuedRecords().get(0).getEntityIdentifier());
 
-            if (queueable instanceof Student) {
-                assertTrue((((Student) queueable).getContact().getId() == 1002 || ((Student) queueable).getContact().getId() == 1003));
-                continue;
-            }
-            assertFalse(String.format("Unexpexted queued record: %s", queueable), true);
+        assertEquals(1, queuedTransactions.get(1).getQueuedRecords().size());
+        assertEquals(Preference.class.getSimpleName(), queuedTransactions.get(0).getQueuedRecords().get(0).getEntityIdentifier());
 
+        //Student-Contact.id=1002
+        Contact contact1002 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1002);
+        assertQueuedTransactions(queuedTransactions.get(2), 2, contact1002, contact1002.getStudent());
+
+        //Student-Contact.id=1003
+        Contact contact1003 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1003);
+        assertQueuedTransactions(queuedTransactions.get(3), 2, contact1003, contact1003.getStudent());
+
+        //Contact.1002-ContactRelation-Contact.1003
+        assertQueuedTransactions(queuedTransactions.get(4), 3, contact1003, contact1003.getFromContacts().get(0), contact1003.getFromContacts().get(0).getFromContact());
+    }
+
+    public void assertQueuedTransactions(QueuedTransaction transaction, int countRecords, Queueable... queueables) {
+        Comparator<QueuedRecord> comparator = new Comparator<QueuedRecord>() {
+            @Override
+            public int compare(QueuedRecord o1, QueuedRecord o2) {
+                int result = o1.getEntityIdentifier().compareTo(o2.getEntityIdentifier());
+                return (result != 0 ? result :  o1.getEntityWillowId().compareTo(o2.getEntityWillowId()));
+            }
+        };
+        ArrayList<QueuedRecord> records = new ArrayList<>(transaction.getQueuedRecords());
+        Collections.sort(records, comparator);
+
+        assertEquals(String.format("Count queued records for %s should be %s", transaction, countRecords), countRecords, transaction.getQueuedRecords().size());
+        for (final Queueable queueable : queueables) {
+            int result = Collections.binarySearch(records,
+                    new QueuedRecord(QueuedRecordAction.CREATE, queueable.getObjectId().getEntityName(), queueable.getId()), comparator);
+            assertTrue(String.format("Queueable: %s found in records: %s", queueable, transaction.getQueuedRecords()), result >= 0);
         }
-
-
     }
 }

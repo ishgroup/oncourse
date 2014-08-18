@@ -49,8 +49,8 @@ public class ActionAddGuardian extends AAddContactAction {
 
     @Override
     protected boolean shouldChangePayer() {
-        //we need to change payer only when the payer is the child contact or is not set
-        return getModel().getPayer() == childContact || getModel().getPayer() == null;
+        //we need to change payer only when the payer is a child contact or is not set
+        return getController().needGuardianFor(getModel().getPayer()) || getModel().getPayer() == null;
     }
 
     @Override
@@ -88,16 +88,17 @@ public class ActionAddGuardian extends AAddContactAction {
 
     @Override
     protected void commitContact() {
-        //we need to use new adding contact to be sure these changes are commited in one transaction
+
         ObjectContext objectContext = getContact().getObjectContext();
-
-        updateGuardian(objectContext);
-
         objectContext.commitChanges();
         setContact(getModel().localizeObject(getContact()));
+
+        updateGuardian();
+
         //if the contact was added to the process early we just create the relation.
-        if (!getModel().getContacts().contains(getContact()))
+        if (!getModel().getContacts().contains(getContact())) {
             getModel().addContact(getContact(), true);
+        }
 
         //add the first contact
         if (shouldChangePayer()) {
@@ -112,32 +113,37 @@ public class ActionAddGuardian extends AAddContactAction {
         getController().setContactEditorDelegate(null);
     }
 
-    private void updateGuardian(ObjectContext objectContext) {
+    private void updateGuardian() {
+
+        ObjectContext objectContext = getController().getCayenneService().newContext();
 
         if (childContact != null) {
             ContactRelation oldGuardianRelation = getModel().getGuardianRelationFor(childContact);
             if (!oldGuardianRelation.getFromContact().getId().equals(getContact().getId())) {
                 oldGuardianRelation = objectContext.localObject(oldGuardianRelation);
                 objectContext.deleteObjects(oldGuardianRelation);
-                createGuardianRelation(childContact, objectContext).getToContact();
+                createGuardianRelation(childContact, objectContext);
             }
         } else {
             List<Contact> contacts = getModel().getContacts();
             for (Contact contact : contacts) {
                 if (getController().needGuardianFor(contact) && getModel().getGuardianRelationFor(contact) == null) {
-                    createGuardianRelation(contact, objectContext).getToContact();
+                    createGuardianRelation(contact, objectContext);
                 }
             }
         }
+        objectContext.commitChanges();
     }
 
     private ContactRelation createGuardianRelation(Contact childContact, ObjectContext objectContext) {
-        childContact.setPersistenceState(PersistenceState.HOLLOW);
         ContactRelation contactRelation = objectContext.newObject(ContactRelation.class);
-        contactRelation.setFromContact(getContact());
+        contactRelation.setFromContact(objectContext.localObject(getContact()));
         contactRelation.setToContact(objectContext.localObject(childContact));
         contactRelation.setCollege(objectContext.localObject(getModel().getCollege()));
         contactRelation.setRelationType(objectContext.localObject(getController().getGuardianRelationType()));
+
+        //we need set PersistenceState to HOLLOW to enforce reloading all relations for the contact.
+        childContact.setPersistenceState(PersistenceState.HOLLOW);
         return contactRelation;
     }
 

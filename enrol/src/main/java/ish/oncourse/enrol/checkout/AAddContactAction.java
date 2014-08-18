@@ -93,9 +93,9 @@ public abstract class AAddContactAction extends APurchaseAction {
 
     protected void commitContact() {
 
+        contact.getObjectContext().commitChanges();
         tryToRelateToGuardian();
 
-        contact.getObjectContext().commitChanges();
         contact = getModel().localizeObject(contact);
         getModel().addContact(contact);
 
@@ -123,7 +123,6 @@ public abstract class AAddContactAction extends APurchaseAction {
      * the code relates already add guardian to the contact if it needs
      */
     private void tryToRelateToGuardian() {
-        ObjectContext objectContext = contact.getObjectContext();
         /*
             we need to check:
              the payer is not null (add first contact),
@@ -134,11 +133,13 @@ public abstract class AAddContactAction extends APurchaseAction {
                 getController().needGuardianFor(contact) &&
                 getController().getGuardianFor(contact) == null) {
             {
-                ContactRelation contactRelation = objectContext.newObject(ContactRelation.class);
-                contactRelation.setFromContact(objectContext.localObject(getModel().getPayer()));
-                contactRelation.setToContact(contact);
-                contactRelation.setCollege(objectContext.localObject(getModel().getCollege()));
-                contactRelation.setRelationType(objectContext.localObject(getController().getGuardianRelationType()));
+                ObjectContext context = getController().getCayenneService().newContext();
+                ContactRelation contactRelation = context.newObject(ContactRelation.class);
+                contactRelation.setFromContact(context.localObject(getModel().getPayer()));
+                contactRelation.setToContact(context.localObject(contact));
+                contactRelation.setCollege(context.localObject(getModel().getCollege()));
+                contactRelation.setRelationType(context.localObject(getController().getGuardianRelationType()));
+                context.commitChanges();
                 getController().addWarning(PurchaseController.Message.payerSetAsGuardian, contact.getFullName(), getModel().getPayer().getFullName());
             }
         }

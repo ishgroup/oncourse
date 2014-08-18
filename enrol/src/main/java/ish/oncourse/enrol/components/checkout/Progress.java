@@ -43,15 +43,11 @@ public class Progress {
     private String parentUrl;
 
     @Property
-    private boolean showParentBeforCheckout;
-
-    @Property
-    private boolean showParentAfterCheckout;
+    private boolean showParent;
 
     @SetupRender
     void beforeRender() {
-        showParentBeforCheckout = false;
-        showParentAfterCheckout = false;
+        showParent = false;
 
         if (purchaseController == null)
         {
@@ -92,22 +88,13 @@ public class Progress {
                 checkoutUrl = URL_current;
                 paymentUrl = URL_current;
                 parentClass = URL_current;
-                showParentAfterCheckout = showParent();
+                showParent = showParent();
                 break;
             case addContact:
             case editContact:
             case editConcession:
-                showParentBeforCheckout = showParent();
-                if (showParentBeforCheckout)
-                {
-                    detailsClass = CLASS_disable;
-                    parentClass = CLASS_active;
-                }
-                else
-                {
-                    detailsClass = CLASS_active;
-                    parentClass = CLASS_disable;
-                }
+                detailsClass = CLASS_active;
+                parentClass = CLASS_disable;
                 checkoutClass = CLASS_disable;
                 paymentClass = CLASS_disable;
 
