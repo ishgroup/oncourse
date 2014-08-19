@@ -7,16 +7,15 @@ package ish.oncourse.services.system;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
+import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.CommonUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.*;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -156,7 +155,9 @@ public class CollegeService implements ICollegeService {
 	@Override
 	public void recordWSAccess(College college, String ipAddress, String angelVersion, Date accessTime) {
 
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+        boolean angelVersionChanged = (CommonUtils.compare(angelVersion, college.getAngelVersion()) > 0);
+
+        ObjectContext context = cayenneService.newNonReplicatingContext();
 		college = (College) context.localObject(college.getObjectId(), null);
 		if (college.getFirstRemoteAuthentication() == null) {
 			college.setFirstRemoteAuthentication(accessTime);
@@ -167,7 +168,31 @@ public class CollegeService implements ICollegeService {
 		college.setIpAddress(ipAddress);
 
 		context.commitChanges();
+
+        if (angelVersionChanged)
+        {
+            resetReplication(college);
+        }
+
 	}
+
+    /**
+     * The methods reset numberOfAttempts for all QueuedRecords  for the college.
+     * We call the method when the college is updated to new version.
+     * We do it to try to replicate  data hich had not been replicated
+     * because angel had some bug and the bug was fixed in the new version
+     */
+    private void resetReplication(College college)
+    {
+        try {
+            SQLTemplate template = new SQLTemplate(QueuedRecord.class, String.format("UPDATE QueuedRecord set numberOfAttempts = 0 where collegeId = %d", college.getId()));
+            ObjectContext context = cayenneService.newNonReplicatingContext();
+            context.performGenericQuery(template);
+            context.commitChanges();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
 
 	/**
 	 * @see ICollegeService#allColleges()

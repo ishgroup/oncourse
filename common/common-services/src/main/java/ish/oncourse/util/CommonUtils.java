@@ -25,6 +25,14 @@ public class CommonUtils {
 	 */
 	public static int compare(String version1 , String version2)
 	{
+        //these tests need to exclude NPE
+        if (version1 == null)
+            return -1;
+        if (version2 == null)
+            return 1;
+        if (version1.equals(version2))
+            return 0;
+
         // The code extracts version number from 'release-<version>-SNAPSHOT'
         if (version1 != null && version1.startsWith(VERSION_PREFIX_RELEASE))
         {
