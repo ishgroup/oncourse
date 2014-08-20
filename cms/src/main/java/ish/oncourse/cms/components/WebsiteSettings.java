@@ -97,6 +97,6 @@ public class WebsiteSettings {
 	public void deploySite(){
         if (!request.isXHR())
             return;
-		webSiteVersionService.deploy(webSiteService.getCurrentWebSite());
+		webSiteVersionService.deploy();
 	}
 }

@@ -136,8 +136,8 @@ public class TemplateResourceFactory implements ResourceFactory {
 
 		SelectQuery query = new SelectQuery(WebSiteLayout.class);
 		
-		query.andQualifier(ExpressionFactory.matchExp(WebSiteLayout.WEB_SITE_VERSION_PROPERTY, 
-				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite())));
+		query.andQualifier(ExpressionFactory.matchExp(WebSiteLayout.WEB_SITE_VERSION_PROPERTY,
+                context.localObject(webSiteVersionService.getCurrentVersion())));
 		
 		List<DirectoryResource> directoryResources = new ArrayList<>();
 		
@@ -179,7 +179,7 @@ public class TemplateResourceFactory implements ResourceFactory {
 		SelectQuery query = new SelectQuery(WebSiteLayout.class);
 
 		query.andQualifier(ExpressionFactory.matchExp(WebSiteLayout.WEB_SITE_VERSION_PROPERTY,
-				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite())));
+                context.localObject(webSiteVersionService.getCurrentVersion())));
 		query.andQualifier(ExpressionFactory.matchExp(WebSiteLayout.LAYOUT_KEY_PROPERTY, name));
 
 		return  (WebSiteLayout) Cayenne.objectForQuery(context, query);
@@ -189,7 +189,7 @@ public class TemplateResourceFactory implements ResourceFactory {
 		ObjectContext context = cayenneService.newContext();
 		
 		WebSiteVersion siteVersion = context.localObject(
-				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
+				webSiteVersionService.getCurrentVersion());
 		
 		WebSiteLayout layout = context.newObject(WebSiteLayout.class);
 		

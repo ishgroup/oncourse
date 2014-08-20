@@ -273,7 +273,7 @@ public class PageOptions {
 
 		WebUrlAlias alias = ctx.newObject(WebUrlAlias.class);
 		alias.setWebSiteVersion(
-				webSiteVersionService.getCurrentVersion(ctx.localObject(webSiteService.getCurrentWebSite())));
+                ctx.localObject(webSiteVersionService.getCurrentVersion()));
 		alias.setUrlPath(urlPath);
 
 		//both sides relationship set required to prevent#14485 persist issue.

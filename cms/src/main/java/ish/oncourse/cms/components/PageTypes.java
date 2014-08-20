@@ -61,7 +61,7 @@ public class PageTypes {
 		ObjectContext ctx = cayenneService.newContext();
 		WebNodeType newTheme = ctx.newObject(WebNodeType.class);
 		newTheme.setWebSiteVersion(
-				webSiteVersionService.getCurrentVersion(ctx.localObject(webSiteService.getCurrentWebSite())));
+                ctx.localObject(webSiteVersionService.getCurrentVersion()));
 		changeSelectedPageType(newTheme);
 		return getEditPageTypeBlock();
 	}

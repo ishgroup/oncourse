@@ -37,7 +37,7 @@ public class MenuBuilder extends ish.oncourse.ui.components.Menu {
 
 		JSONArray array = new JSONArray();
 
-		for (WebUrlAlias alias : webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()).getWebURLAliases()) {
+		for (WebUrlAlias alias : webSiteVersionService.getCurrentVersion().getWebURLAliases()) {
 			JSONObject obj = new JSONObject();
 
 			obj.append("value", alias.getUrlPath());

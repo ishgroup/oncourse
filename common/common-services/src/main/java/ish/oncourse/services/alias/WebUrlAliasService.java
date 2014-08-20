@@ -6,15 +6,14 @@ import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.util.List;
-
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.List;
 
 public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 		IWebUrlAliasService {
@@ -57,7 +56,7 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 		Expression expression = (site == null) ? ExpressionFactory.matchExp(
 				WebUrlAlias.WEB_SITE_VERSION_PROPERTY + "." + WebSiteVersion.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
 				webSiteService.getCurrentCollege()) : ExpressionFactory
-					.matchExp(WebUrlAlias.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion(site));
+					.matchExp(WebUrlAlias.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion());
 		return expression;
 	}
 }

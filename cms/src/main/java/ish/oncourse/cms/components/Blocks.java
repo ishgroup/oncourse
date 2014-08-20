@@ -64,7 +64,7 @@ public class Blocks {
 		visibility.setWebContent(selectedBlock);
 
 		selectedBlock.setWebSiteVersion(
-				webSiteVersionService.getCurrentVersion(ctx.localObject(webSiteService.getCurrentWebSite())));
+                ctx.localObject(webSiteVersionService.getCurrentVersion()));
 
 		return getEditBlock();
 	}

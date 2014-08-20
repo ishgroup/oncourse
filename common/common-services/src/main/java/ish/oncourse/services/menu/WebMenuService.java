@@ -33,7 +33,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		ObjectContext ctx = site.getObjectContext();
 		
 		WebMenu menu = ctx.newObject(WebMenu.class);		
-		menu.setWebSiteVersion(webSiteVersionService.getCurrentVersion(site));
+		menu.setWebSiteVersion(ctx.localObject(webSiteVersionService.getCurrentVersion()));
 
 		WebMenu rootMenu = getRootMenu();
 		menu.setParentWebMenu(ctx.localObject(rootMenu));
@@ -57,7 +57,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		SelectQuery selectQuery = new SelectQuery(WebMenu.class);
 		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.NAME_PROPERTY, name));
 		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.WEB_SITE_VERSION_PROPERTY, 
-				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite())));
+				webSiteVersionService.getCurrentVersion()));
 		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.PARENT_WEB_MENU_PROPERTY, parentMenu));
 		
 		List<WebMenu> menuList = ctx.performQuery(selectQuery);
@@ -90,7 +90,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		Expression expression = (site == null) ? ExpressionFactory.matchExp(
 				WebMenu.WEB_SITE_VERSION_PROPERTY + "." + WebSiteVersion.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
 				webSiteService.getCurrentCollege()) : ExpressionFactory
-				.matchExp(WebMenu.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion(site));
+				.matchExp(WebMenu.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion());
 
 		return expression;
 	}

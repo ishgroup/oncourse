@@ -1,35 +1,28 @@
 package ish.oncourse.website.pages;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import ish.oncourse.model.WebSite;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.test.ServiceTest;
-
-import java.io.IOException;
-
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestFilter;
-import org.apache.tapestry5.services.RequestGlobals;
-import org.apache.tapestry5.services.RequestHandler;
-import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.test.PageTester;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class Error500Test extends ServiceTest {
 
@@ -103,7 +96,7 @@ public class Error500Test extends ServiceTest {
 		
 		public IWebSiteVersionService buildWebSiteVersionServiceOverride() {
 			IWebSiteVersionService mockService = mock(IWebSiteVersionService.class);	
-			when(mockService.getCurrentVersion(any(WebSite.class))).thenReturn(null);
+			when(mockService.getCurrentVersion()).thenReturn(null);
 			return mockService;
 		}
 		

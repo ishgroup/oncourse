@@ -3,22 +3,25 @@
  */
 package ish.oncourse.services.site;
 
-import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 /**
  * Generic web implemetation of {@link ish.oncourse.services.site.IWebSiteVersionService}. 
  * Current version is determined as the latest deployed website version.
  */
 public class WebSiteVersionService extends AbstractWebSiteVersionService {
+    @Inject
+    private IWebSiteService webSiteService;
+
 
 	@Override
-	public WebSiteVersion getCurrentVersion(WebSite webSite) {
-		return getDeployedVersion(webSite);
+	public WebSiteVersion getCurrentVersion() {
+		return getDeployedVersion(webSiteService.getCurrentWebSite());
 	}
 
 	@Override
-	public void deploy(WebSite webSite) {
+	public void deploy() {
 		throw new UnsupportedOperationException("Websites can only be deployed from CMS.");
 	}
 }

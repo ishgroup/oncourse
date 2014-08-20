@@ -1,12 +1,7 @@
 package ish.oncourse.ui.services;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import ish.oncourse.model.*;
+import ish.oncourse.model.Session;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.environment.IEnvironmentService;
@@ -25,26 +20,21 @@ import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.test.ContextUtils;
 import ish.oncourse.ui.pages.TimelineDataTest;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestFilter;
-import org.apache.tapestry5.services.RequestGlobals;
-import org.apache.tapestry5.services.RequestHandler;
-import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.services.*;
 import org.mockito.Matchers;
+
+import java.io.IOException;
+import java.util.*;
+
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SubModule({ ServiceModule.class, UIModule.class })
 public class TestModule {
@@ -169,7 +159,7 @@ public class TestModule {
 		
 		IWebSiteVersionService mockVersionService = mock(IWebSiteVersionService.class);
 		
-		when(mockVersionService.getCurrentVersion(any(WebSite.class))).thenReturn(webSiteVersion);
+		when(mockVersionService.getCurrentVersion()).thenReturn(webSiteVersion);
 
 		return mockVersionService;
 	}

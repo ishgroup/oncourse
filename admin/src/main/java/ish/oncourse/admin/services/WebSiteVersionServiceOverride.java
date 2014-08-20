@@ -3,19 +3,18 @@
  */
 package ish.oncourse.admin.services;
 
-import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.site.IWebSiteVersionService;
 
 public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
 
 	@Override
-	public WebSiteVersion getCurrentVersion(WebSite webSite) {
+	public WebSiteVersion getCurrentVersion() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void deploy(WebSite webSite) {
+	public void deploy() {
 		throw new UnsupportedOperationException();
 	}
 }

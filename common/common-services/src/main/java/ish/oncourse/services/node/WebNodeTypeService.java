@@ -3,7 +3,6 @@ package ish.oncourse.services.node;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.BaseService;
-import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -29,11 +28,10 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
 	public WebNodeType getDefaultWebNodeType() {
         WebNodeType result = getFromRequest(WebNodeType.class, KEY_defaultWebNodeType);
         if (result == null) {
-            IWebSiteService webSiteService = getWebSiteService();
 
             Expression expr = ExpressionFactory.matchExp(
                     WebNodeType.WEB_SITE_VERSION_PROPERTY,
-                    webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
+                    webSiteVersionService.getCurrentVersion());
 
 
             expr = expr.andExp(ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY, WebNodeType.PAGE));
@@ -49,12 +47,12 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
 
 	public List<WebNodeType> getWebNodeTypes() {
 
-        WebSiteVersion version = webSiteVersionService.getCurrentVersion(getWebSiteService().getCurrentWebSite());
+        WebSiteVersion version = webSiteVersionService.getCurrentVersion();
 
         ObjectContext context = getCayenneService().newNonReplicatingContext();
 
         Expression expression = ExpressionFactory.matchExp(
-                WebNodeType.WEB_SITE_VERSION_PROPERTY,context.localObject(version)
+                WebNodeType.WEB_SITE_VERSION_PROPERTY, context.localObject(version)
         );
 
         SelectQuery selectQuery = new SelectQuery(WebNodeType.class, expression);

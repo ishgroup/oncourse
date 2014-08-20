@@ -7,6 +7,7 @@ import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.AbstractWebSiteVersionService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.Cayenne;
@@ -36,8 +37,12 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	@Inject
 	private IAuthenticationService authenticationService;
 
+    @Inject
+    private IWebSiteService webSiteService;
+
 	@Override
-	public WebSiteVersion getCurrentVersion(WebSite webSite) {
+	public WebSiteVersion getCurrentVersion() {
+        WebSite webSite = webSiteService.getCurrentWebSite();
 		WebSiteVersion currentVersion = getStagedVersion(webSite);
 		
 		// if there is no staged version for specified website then try to create one
@@ -181,12 +186,10 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	}
 
 	@Override
-	public void deploy(WebSite siteToDeploy) {
+	public void deploy() {
 		ObjectContext context = cayenneService.newContext();
 		
-		WebSite webSite = context.localObject(siteToDeploy);
-		
-		WebSiteVersion oldVersion = webSiteVersionService.getCurrentVersion(webSite);
+		WebSiteVersion oldVersion = context.localObject(webSiteVersionService.getCurrentVersion());
 		oldVersion.setDeployedOn(new Date());
 		
 		SystemUser systemUser = authenticationService.getSystemUser();

@@ -40,7 +40,7 @@ public class WebTemplateChangeTracker {
 		if (webSiteService.getCurrentWebSite() == null) {
 			return false;
 		}
-		WebSiteVersion webSiteVersion = webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite());
+		WebSiteVersion webSiteVersion = webSiteVersionService.getCurrentVersion();
 		
 		SelectQuery query = new SelectQuery(WebTemplate.class);
 		

@@ -152,7 +152,7 @@ public class BlockResourceFactory implements ResourceFactory {
 		visibility.setWebContent(block);
 
 		block.setWebSiteVersion(
-				webSiteVersionService.getCurrentVersion(ctx.localObject(webSiteService.getCurrentWebSite())));
+                ctx.localObject(ctx.localObject(webSiteVersionService.getCurrentVersion())));
 		
 		ctx.commitChanges();
 		
