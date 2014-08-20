@@ -28,6 +28,8 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	private static final String LEFT_SLASH_CHARACTER = "/";
 	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
 
+    private static final String KEY_currentLayoutKey = "currentLayoutKey";
+
     private static final String PAGE_PATH_TEMPLATE = "/page/%s";
 
 	@Inject
@@ -143,7 +145,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 			String pagePath = (String) request.getAttribute(PAGE_PATH_PARAMETER);
 			node = getNodeForNodePath(pagePath);
 		}
-		
+        request.setAttribute(NODE, node);
 		return node;
 	}
 
@@ -249,12 +251,15 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	@Override
 	public String getLayoutKey() {
-		
+        String layoutKey = getFromRequest(String.class, KEY_currentLayoutKey);
+
+        if (layoutKey != null)
+            return layoutKey;
+
 		//if the requested site is not exist - return null
 		if (webSiteService.getCurrentWebSite() == null) {
 			return null;
 		}
-		String layoutKey = null;
 
 		WebNode webNode = getCurrentNode();
 		if (webNode != null) {
@@ -263,6 +268,9 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		else if (webNodeTypeService.getDefaultWebNodeType() != null) {
 			layoutKey = webNodeTypeService.getDefaultWebNodeType().getLayoutKey();
 		}
+
+        putToRequest(KEY_currentLayoutKey, layoutKey);
+
 		return layoutKey;
 	}
 
