@@ -154,7 +154,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		Expression expression = (site == null) ? ExpressionFactory.matchExp(
 				WebNode.WEB_SITE_VERSION_PROPERTY + DOT_CHARACTER + WebSiteVersion.WEB_SITE_PROPERTY + DOT_CHARACTER + WebSite.COLLEGE_PROPERTY,
 				webSiteService.getCurrentCollege()) : ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY, 
-				webSiteVersionService.getCurrentVersion(site));
+				webSiteVersionService.getCurrentVersion());
 		return expression;
 	}
 
@@ -192,7 +192,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	public synchronized Integer getNextNodeNumber() {
 		Expression siteExpr = ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY, 
-				webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
+				webSiteVersionService.getCurrentVersion());
 
 		Integer number = (Integer) cayenneService.sharedContext()
 				.performQuery(new EJBQLQuery("select max(wn.nodeNumber) from WebNode wn where " + siteExpr.toEJBQL("wn"))).get(0);
@@ -205,7 +205,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	public synchronized WebNode createNewNode() {
 		ObjectContext ctx = cayenneService.newContext();
 
-		WebSiteVersion webSiteVersion = ctx.localObject(webSiteVersionService.getCurrentVersion(webSiteService.getCurrentWebSite()));
+		WebSiteVersion webSiteVersion = ctx.localObject(webSiteVersionService.getCurrentVersion());
 		WebNodeType webNodeType = ctx.localObject(webNodeTypeService.getDefaultWebNodeType());
 		Integer nextNodeNumber = getNextNodeNumber();
 		return createNewNodeBy(webSiteVersion, webNodeType, NEW_PAGE_WEB_NODE_NAME + " (" + nextNodeNumber + ")" , SAMPLE_WEB_CONTENT, nextNodeNumber);
