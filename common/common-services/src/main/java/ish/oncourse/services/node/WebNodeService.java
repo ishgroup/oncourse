@@ -2,6 +2,7 @@ package ish.oncourse.services.node;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
+import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -28,8 +29,6 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	private static final String LEFT_SLASH_CHARACTER = "/";
 	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
 
-    private static final String KEY_currentLayoutKey = "currentLayoutKey";
-
     private static final String PAGE_PATH_TEMPLATE = "/page/%s";
 
 	@Inject
@@ -49,6 +48,9 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	@Inject
 	private ITextileConverter textileConverter;
+
+    @Inject
+    private IRequestCacheService requestCacheService;
 
 	@Override
 	public WebNode findById(Long willowId) {
@@ -251,10 +253,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	@Override
 	public String getLayoutKey() {
-        String layoutKey = getFromRequest(String.class, KEY_currentLayoutKey);
-
-        if (layoutKey != null)
-            return layoutKey;
+        String layoutKey = null;
 
 		//if the requested site is not exist - return null
 		if (webSiteService.getCurrentWebSite() == null) {
@@ -268,8 +267,6 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		else if (webNodeTypeService.getDefaultWebNodeType() != null) {
 			layoutKey = webNodeTypeService.getDefaultWebNodeType().getLayoutKey();
 		}
-
-        putToRequest(KEY_currentLayoutKey, layoutKey);
 
 		return layoutKey;
 	}
@@ -286,14 +283,14 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
         if (webNode.getObjectId().isTemporary())
             return null;
 
-        WebUrlAlias alias = getFromRequest(WebUrlAlias.class, "defaultWebURLAlias_" + webNode.getId());
+        WebUrlAlias alias = requestCacheService.getFromRequest(WebUrlAlias.class, "defaultWebURLAlias_" + webNode.getId());
         if (alias == null) {
             ObjectContext context = cayenneService.newContext();
             Expression expression = ExpressionFactory.matchExp(WebUrlAlias.WEB_NODE_PROPERTY, context.localObject(webNode));
             expression = expression.andExp(ExpressionFactory.matchExp(WebUrlAlias.DEFAULT_PROPERTY, true));
             SelectQuery query = new SelectQuery(WebUrlAlias.class, expression);
             alias = (WebUrlAlias) Cayenne.objectForQuery(context,query);
-            putToRequest("defaultWebURLAlias_" + webNode.getId(), alias);
+            requestCacheService.putToRequest("defaultWebURLAlias_" + webNode.getId(), alias);
         }
         return alias;
     }

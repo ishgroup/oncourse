@@ -124,20 +124,4 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 	protected IWebSiteService getWebSiteService() {
 		return webSiteService;
 	}
-
-    public <V> V getFromRequest(Class<V> vClass, String key)
-    {
-        Object value = request.getAttribute(key);
-        if (value != null && vClass.isAssignableFrom(value.getClass()))
-            return (V) value;
-        else
-            return null;
-    }
-
-    public <V> void putToRequest(String key, V value)
-    {
-        request.setAttribute(key, value);
-    }
-
-
 }

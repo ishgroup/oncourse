@@ -26,22 +26,16 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
     private Request request;
 
 	public WebNodeType getDefaultWebNodeType() {
-        WebNodeType result = getFromRequest(WebNodeType.class, KEY_defaultWebNodeType);
-        if (result == null) {
-
-            Expression expr = ExpressionFactory.matchExp(
-                    WebNodeType.WEB_SITE_VERSION_PROPERTY,
-                    webSiteVersionService.getCurrentVersion());
+        Expression expr = ExpressionFactory.matchExp(
+                WebNodeType.WEB_SITE_VERSION_PROPERTY,
+                webSiteVersionService.getCurrentVersion());
 
 
-            expr = expr.andExp(ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY, WebNodeType.PAGE));
+        expr = expr.andExp(ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY, WebNodeType.PAGE));
 
-            List<WebNodeType> webNodeTypes = findByQualifier(expr);
+        List<WebNodeType> webNodeTypes = findByQualifier(expr);
 
-            result = (!webNodeTypes.isEmpty()) ? webNodeTypes.get(0) : null;
-            //we put the result to the request to prevent redundant sql requests to db when the application renders a page
-            putToRequest(KEY_defaultWebNodeType, result);
-        }
+        WebNodeType result = (!webNodeTypes.isEmpty()) ? webNodeTypes.get(0) : null;
         return result;
 	}
 
