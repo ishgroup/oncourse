@@ -1,7 +1,11 @@
 package ish.oncourse.services.node;
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebNodeType;
+import ish.oncourse.model.WebSiteVersion;
+import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.services.IBaseService;
+import ish.oncourse.services.cache.RequestCached;
 
 import java.util.Date;
 import java.util.List;
@@ -28,6 +32,7 @@ public interface IWebNodeService {
 	/**
 	 * Returns all web nodes for the current site or current college.
 	 */
+    @RequestCached
 	List<WebNode> getNodes();
 
 	/**
@@ -35,6 +40,7 @@ public interface IWebNodeService {
 	 * 
 	 * @return
 	 */
+    @RequestCached
 	WebNode getHomePage();
 
 	/**
@@ -61,8 +67,10 @@ public interface IWebNodeService {
 	 * 
 	 * @return the current page
 	 */
+    @RequestCached
 	WebNode getCurrentNode();
 
+    @RequestCached
 	String getLayoutKey();
 	
 	/**
@@ -74,6 +82,7 @@ public interface IWebNodeService {
 	/**
 	 * The latest date when site page was modified.
 	 */
+    @RequestCached
 	Date getLatestModifiedDate();
 	
 	/**

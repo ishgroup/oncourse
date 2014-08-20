@@ -1,6 +1,7 @@
 package ish.oncourse.services.node;
 
 import ish.oncourse.model.WebNodeType;
+import ish.oncourse.services.cache.RequestCached;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ public interface IWebNodeTypeService {
 	 * 
 	 * @return default webNodeType
 	 */
+    @RequestCached
 	WebNodeType getDefaultWebNodeType();
 	
 	/**
@@ -17,6 +19,7 @@ public interface IWebNodeTypeService {
 	 * 
 	 * @return available web node types.
 	 */
+    @RequestCached
 	List<WebNodeType> getWebNodeTypes();
 	
 	/**

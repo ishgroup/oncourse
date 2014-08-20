@@ -3,18 +3,19 @@
  */
 package ish.oncourse.services.site;
 
-import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
+import ish.oncourse.services.cache.RequestCached;
 
 public interface IWebSiteVersionService {
 
 	/**
 	 * Returns currently active version of a website.
 	 */
-	WebSiteVersion getCurrentVersion(WebSite webSite);
+    @RequestCached
+	WebSiteVersion getCurrentVersion();
 
 	/**
 	 * Makes currently staged website version active by setting its deployedOn field to current time.
 	 */
-	void deploy(WebSite webSite);
+	void deploy();
 }
