@@ -197,12 +197,6 @@ div.clearboth {
 .content {
 	.payments {
 
-		textarea {
-			min-width: 120px;
-			min-height: 78px;
-			height: 78px !important;
-		}
-
 		tr {
 			
 
@@ -368,12 +362,31 @@ div.clearboth {
 
 
 .content {
+	
+	fieldset.opt-in {
+
+		.fieldset-intro {
+		    margin-left: 0;
+		    max-width: none;
+		    width: 100%;
+		}
+	}
+
 	.payments {
+		
+		fieldset {
+			.radio-list {
+			    margin-left: 0;
+			    padding-left: 0;
+			    top: auto;
+			}
+		}
 
 		textarea {
 			min-width: 120px;
+			width: 120px;
 			min-height: 78px;
-			height: 78px !important;
+			height: 78px;
 		}
 
 		tr {

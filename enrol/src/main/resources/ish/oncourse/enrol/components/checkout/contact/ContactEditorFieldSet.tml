@@ -104,12 +104,12 @@
 	<t:if test="delegate.fillRequiredProperties" negate="true">
 		<p>
 			<label>Gender</label>
-			<div class="radio-list">
+			<span class="radio-list">
 				<t:radiogroup t:id="isMale" t:value="delegate.contact.isMale">
 					<input type="radio" t:type="radio" t:value="true"/> Male
 					<input type="radio" t:type="radio" t:value="false"/> Female
 				</t:radiogroup>
-			</div>
+			</span>
 		</p>
 	</t:if>
 	
