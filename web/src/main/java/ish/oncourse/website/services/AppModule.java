@@ -10,7 +10,6 @@ import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
-import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.cache.RequestCached;
 import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.services.jmx.IJMXInitService;
@@ -48,7 +47,6 @@ public class AppModule {
 	public static void bind(ServiceBinder binder) {
 		binder.bind(ICacheMetaProvider.class,CacheMetaProvider.class).withId("WebCacheMetaProvider");
 		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
-        binder.bind(IRequestCacheService.class, RequestCacheService.class);
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local ICacheMetaProvider cacheMetaProvider) {

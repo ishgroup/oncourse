@@ -6,9 +6,7 @@ import ish.oncourse.services.assetgroup.AssetGroupService;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.cache.ICacheService;
-import ish.oncourse.services.cache.NoopCacheService;
-import ish.oncourse.services.cache.OSCacheService;
+import ish.oncourse.services.cache.*;
 import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.content.IWebContentService;
@@ -196,7 +194,9 @@ public class ServiceModule {
 		binder.bind(ICacheMetaProvider.class, NoCacheMetaProvider.class).eagerLoad();
 
 		binder.bind(IDataLayerFactory.class, DataLayerFactory.class).scope(ScopeConstants.PERTHREAD);
-	}
+
+        binder.bind(IRequestCacheService.class, RequestCacheService.class);
+    }
 
 	@Scope("perthread")
 	public static IPaymentGatewayService buildPaymentGatewayService(IPaymentGatewayServiceBuilder builder) {
