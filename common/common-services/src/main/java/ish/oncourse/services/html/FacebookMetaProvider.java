@@ -45,6 +45,8 @@ public class FacebookMetaProvider implements IFacebookMetaProvider {
 				String plainText = plainTextExtractor.extractFromHtml(detail);
                 if (plainText.length() > size)
 				    return StringUtils.abbreviate(plainText, size);
+                else
+                    return plainText;
 			}
 		} catch (Exception e) {
 			LOGGER.warn(e.getMessage(), e);
