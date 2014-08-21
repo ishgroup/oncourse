@@ -30,7 +30,8 @@ public class TextilePage {
 
 	@SetupRender
 	void beforeRender() {
-		this.node = (WebNode) request.getAttribute(PageTextileRenderer.NODE);
+        //PageTextileRenderer should set the attribute for {page code:'...'} rich tag
+		this.node = (WebNode) request.getAttribute(PageTextileRenderer.ATTRIBUTE_KEY_NODE);
 		List<WebContentVisibility> list = ExpressionFactory.matchExp(
 				WebContentVisibility.REGION_KEY_PROPERTY, RegionKey.content)
 				.filterObjects(node.getWebContentVisibility());

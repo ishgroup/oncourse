@@ -27,7 +27,8 @@ import java.util.Map;
  * </pre>
  */
 public class PageTextileRenderer extends AbstractRenderer {
-    public static final String NODE = "node";
+    //Tapesrtry request attribute to pass displayed WebNode
+    public static final String ATTRIBUTE_KEY_NODE = "PageTextileRenderer.node";
 
     private IWebNodeService webNodeService;
 	private IPageRenderer pageRenderer;
@@ -53,7 +54,8 @@ public class PageTextileRenderer extends AbstractRenderer {
 		}
 		if (node != null) {
 			Map<String, Object> parameters = new HashMap<>();
-			parameters.put(NODE, node);
+            //pass WebNode for ish.oncourse.textile.pages.TextilePage
+			parameters.put(ATTRIBUTE_KEY_NODE, node);
 			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_PAGE_PAGE, parameters);
 		} else {
 			tag = null;
