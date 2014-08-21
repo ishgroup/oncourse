@@ -60,7 +60,7 @@
             </div>
         </t:if>
         <t:if test="controller">
-            <span t:type="checkout/errors" errors="controller.errors" warnings="controller.warnings"/>
+            <span t:type="checkout/errors" validationResult="validationResult"/>
         </t:if>
     </t:block>
 

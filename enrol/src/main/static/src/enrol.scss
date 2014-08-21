@@ -677,3 +677,16 @@ input.priceValue
   overflow:hidden;
   text-align: left;
 }
+
+
+#waitingListBlock .validation {
+  color: #B94A48;
+  background-color: #F2DEDE;
+  border:1px solid #EED3D7;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  padding: 8px 35px 8px 14px;
+  margin: 0 10px 25px 10px;
+}

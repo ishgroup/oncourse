@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.pages;
 
+import ish.oncourse.enrol.checkout.ValidationResult;
 import ish.oncourse.enrol.checkout.contact.AddContactParser;
 import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.enrol.components.checkout.contact.ContactEditorFieldSet;
@@ -94,6 +95,8 @@ public class WaitingListForm {
 	@Property
 	private boolean unknownCourse;
 
+    private ValidationResult validationResult;
+
 	private Long  courseId;
 
 	void onActivate(Long id)
@@ -141,6 +144,18 @@ public class WaitingListForm {
 		validateHandler = new ValidateHandler();
 		validateHandler.setErrors(controller.getErrors());
 	}
+
+    public ValidationResult getValidationResult()
+    {
+        if (validationResult == null)
+        {
+            validationResult = new ValidationResult();
+            validationResult.setWarnings(controller.getWarnings());
+            validationResult.setErrors(controller.getErrors());
+        }
+        return validationResult;
+    }
+
 
 	@OnEvent(component = "addWaitingList", value = "selected")
 	public Object addWaitingList() {

@@ -34,6 +34,11 @@ public class ValidationResult {
         this.errors.putAll(errors);
     }
 
+    public void setWarnings(Map<String, String> warnings) {
+        this.warnings.clear();
+        this.errors.putAll(warnings);
+    }
+
     public void setMessages(Messages messages) {
         this.messages = messages;
     }
