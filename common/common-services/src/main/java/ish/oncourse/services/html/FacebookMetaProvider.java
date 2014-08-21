@@ -5,7 +5,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -43,10 +43,11 @@ public class FacebookMetaProvider implements IFacebookMetaProvider {
 					new ValidationErrors());
 			if (detail != null) {
 				String plainText = plainTextExtractor.extractFromHtml(detail);
-				return StringUtils.abbreviate(plainText, size);
+                if (plainText.length() > size)
+				    return StringUtils.abbreviate(plainText, size);
 			}
 		} catch (Exception e) {
-			LOGGER.warn(e.getMessage());
+			LOGGER.warn(e.getMessage(), e);
 		}
 		return StringUtils.EMPTY;
 	}
