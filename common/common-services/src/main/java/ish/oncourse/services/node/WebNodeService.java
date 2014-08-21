@@ -123,10 +123,8 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	}
 
 	public WebNode getCurrentNode() {
-		WebNode node = null;		
-		if (request.getAttribute(NODE) != null) {
-			node = (WebNode) request.getAttribute(NODE);
-		} else if (request.getParameter(NODE_NUMBER_PARAMETER) != null
+		WebNode node = null;
+        if (request.getParameter(NODE_NUMBER_PARAMETER) != null
 				|| request.getAttribute(NODE_NUMBER_PARAMETER) != null) {
 			String nodeNumberString = request.getParameter(NODE_NUMBER_PARAMETER) != null ? request
 					.getParameter(NODE_NUMBER_PARAMETER) : (String) request
@@ -147,7 +145,6 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 			String pagePath = (String) request.getAttribute(PAGE_PATH_PARAMETER);
 			node = getNodeForNodePath(pagePath);
 		}
-        request.setAttribute(NODE, node);
 		return node;
 	}
 

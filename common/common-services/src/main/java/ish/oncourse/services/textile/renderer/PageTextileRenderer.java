@@ -27,8 +27,9 @@ import java.util.Map;
  * </pre>
  */
 public class PageTextileRenderer extends AbstractRenderer {
+    public static final String NODE = "node";
 
-	private IWebNodeService webNodeService;
+    private IWebNodeService webNodeService;
 	private IPageRenderer pageRenderer;
 
 	public PageTextileRenderer(IWebNodeService webNodeService, IPageRenderer pageRenderer) {
@@ -52,7 +53,7 @@ public class PageTextileRenderer extends AbstractRenderer {
 		}
 		if (node != null) {
 			Map<String, Object> parameters = new HashMap<>();
-			parameters.put(IWebNodeService.NODE, node);
+			parameters.put(NODE, node);
 			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_PAGE_PAGE, parameters);
 		} else {
 			tag = null;

@@ -14,7 +14,6 @@ public interface IWebNodeService {
 
 	public static final String CURRENT_WEB_NODE_LAYOUT = "CURRENT_WEB_NODE_LAYOUT";
 
-	static final String NODE = "node";
 	static final String NODE_NUMBER_PARAMETER = "n";
 	static final String PAGE_PATH_PARAMETER = "p";
 	 
