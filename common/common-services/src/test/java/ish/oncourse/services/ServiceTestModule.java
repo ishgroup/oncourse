@@ -9,9 +9,7 @@ import ish.oncourse.services.assetgroup.AssetGroupService;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.cache.ICacheService;
-import ish.oncourse.services.cache.NoopCacheService;
-import ish.oncourse.services.cache.OSCacheService;
+import ish.oncourse.services.cache.*;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.content.WebContentService;
 import ish.oncourse.services.cookies.CookiesImplOverride;
@@ -172,6 +170,7 @@ public class ServiceTestModule {
 		binder.bind(IPaymentGatewayService.class, PaymentExpressGatewayService.class).withId("PaymentGatewayService");
 
         binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
+        binder.bind(IRequestCacheService.class, RequestCacheService.class);
 	}
 	
 	@EagerLoad

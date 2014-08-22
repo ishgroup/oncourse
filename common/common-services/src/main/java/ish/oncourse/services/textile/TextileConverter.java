@@ -88,7 +88,8 @@ public class TextileConverter implements ITextileConverter {
 		// spoil the life
 		// content = extractor.compactHtmlTags(content);
 
-		StringWriter writer = new StringWriter();
+        content = TextileUtil.unicodeQuotesEncoding(content);
+        StringWriter writer = new StringWriter();
 
 		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
 		// avoid the <html> and <body> tags

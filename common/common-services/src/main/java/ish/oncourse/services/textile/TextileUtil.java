@@ -61,6 +61,24 @@ public class TextileUtil {
 
 	private static final int ERROR_TAG_MAX_LENGHT = 50;
 
+    // « (\u00AB) in UTF-8
+    // » (\u00BB) in UTF-8
+    // “ (\u201C) in UTF-8
+    // ” (\u201D) in UTF-8
+    // „ (\u201E) in UTF-8
+    // ‟ (\u201F) in UTF-8
+    // ‟ (\u0093) in UTF-8
+    // ‟ (\u0094) in UTF-8
+    public static final String REGEXP_UNICODE_DOUBLE_QUOTES = "[\\u0093\\u0094\\u201F\\u201E\\u201D\\u201C\\u00BB\\u00AB]";
+
+    // ‘ (\u2018) in UTF-8
+    // ’ (\u2019) in UTF-8
+    // ‚ (\u201A) in UTF-8
+    // ‛ (\u201B) in UTF-8
+    // ‹ (\u2039) in UTF-8
+    // › (\u203A) in UTF-8
+    public static final String REGEXP_UNICODE_SINGLE_QUOTES = "[\\u2018\\u2019\\u201A\\u201B\\u2039\\u203A]";
+
 
 	public static String inQuots(String param, boolean quotsRequired) {
 		StringBuilder buffer = new StringBuilder();
@@ -176,5 +194,11 @@ public class TextileUtil {
 				"%s", tag.length() > ERROR_TAG_MAX_LENGHT ? tag.substring(0, ERROR_TAG_MAX_LENGHT) + "...": tag, tempErrors.toString());
 		//return "<!-- ERROR in " + tag + ". Syntax error --!> ";
 	}
+
+
+    public static String unicodeQuotesEncoding(String content)
+    {
+        return content.replaceAll(REGEXP_UNICODE_DOUBLE_QUOTES, "\"").replaceAll(REGEXP_UNICODE_SINGLE_QUOTES, "\'");
+    }
 
 }
