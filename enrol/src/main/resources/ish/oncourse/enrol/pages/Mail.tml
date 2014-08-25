@@ -83,7 +83,7 @@
             </script>
         </div>
         <p:else>
-           <span t:type="checkout/errors" errors="controller.errors" warnings="controller.warnings"/>
+            <span t:type="checkout/errors" validationResult="validationResult"/>
         </p:else>
     </t:if>
 </t:block>
