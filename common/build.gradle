@@ -3,7 +3,10 @@ dependencies {
 
 	compile 'javax.jmdns:jmdns:3.4.1'
 	compile 'javax.mail:mail:1.4.6'
+	
 	compile 'org.apache.cayenne:cayenne-client:3.2M1.2'
+	compile 'com.caucho:resin-hessian:4.0.38'
+
 	compile 'commons-httpclient:commons-httpclient:3.1'
 	compile 'org.apache.commons:commons-lang3:3.3.2'
 	compile 'net.java.dev.textile-j:textile-j:2.2.864'
