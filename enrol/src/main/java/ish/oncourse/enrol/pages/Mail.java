@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.pages;
 
+import ish.oncourse.enrol.checkout.ValidationResult;
 import ish.oncourse.enrol.checkout.contact.AddContactParser;
 import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.enrol.components.MailingListBox;
@@ -81,6 +82,8 @@ public class Mail {
     @Property
     @Persist
     private String refererUrl;
+
+    private ValidationResult validationResult;
 
     @SetupRender
     Object setupRender() {
@@ -177,6 +180,17 @@ public class Mail {
 
     public String getRedirectLink() {
         return (refererUrl != null) ? refererUrl : String.format("%s%s", HTMLUtils.HTTP_PROTOCOL, request.getServerName());
+    }
+
+    public ValidationResult getValidationResult()
+    {
+        if (validationResult == null)
+        {
+            validationResult = new ValidationResult();
+            validationResult.setWarnings(controller.getWarnings());
+            validationResult.setErrors(controller.getErrors());
+        }
+        return validationResult;
     }
 
 }
