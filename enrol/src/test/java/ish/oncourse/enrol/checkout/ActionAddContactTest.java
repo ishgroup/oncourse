@@ -156,4 +156,18 @@ public class ActionAddContactTest extends ACheckoutTest {
             assertTrue(String.format("Queueable: %s found in records: %s", queueable, transaction.getQueuedRecords()), result >= 0);
         }
     }
+
+
+    @Test
+    public void test_parentContactWithoutStudentRelation()
+    {
+        createPurchaseController(1001);
+        purchaseController.getPreferenceController().setCollectParentDetails(true);
+        purchaseController.getPreferenceController().setContactAgeWhenNeedParent(18);
+
+        ActionParameter parameter = new ActionParameter(Action.addContact);
+        ContactCredentials contactCredentials = createContactCredentialsBy("Child2", "Parent2WithoutStudent", "Child2@Parent2WithoutStudent.net");
+        parameter.setValue(contactCredentials);
+        performAction(parameter);
+    }
 }

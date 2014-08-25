@@ -30,7 +30,7 @@
 		indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
 		priorEducationCode="0" labourForceType="0" />
 
-	<Tutor id="1000" collegeId="1" angelId="1000" created="2011-09-12 00:47:26.0"
+    <Tutor id="1000" collegeId="1" angelId="1000" created="2011-09-12 00:47:26.0"
 		modified="2011-09-12 01:02:00.0" resume="&lt;p&gt;This is mister Putin resume.&lt;/p&gt;"
 		resume_textile="This is mister Putin resume." />
 
@@ -61,6 +61,23 @@
              dateOfBirth="[childDateOfBirth]" street="Independence av. 13" suburb="Minsk"
              isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
              isMarketingViaSMSAllowed="1" />
+
+    <Contact id="1004" collegeId="1"
+             angelId="1004" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Parent2WithoutStudent" givenName="Parent2WithoutStudent"
+             dateOfBirth="[parentDateOfBirth]" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <Contact id="1005" collegeId="1"
+             angelId="1005" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Parent2WithoutStudent" givenName="Child2" emailAddress="Child2@Parent2WithoutStudent.net"
+             dateOfBirth="[childDateOfBirth]" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <ContactRelation id="1000" angelId="1000" collegeId="1" createdOn ="2011-09-12 00:51:00.0" modifiedOn="2011-09-12 00:51:00.0"
+                     fromContactId="1004"  toContactId="1005" typeId="1000"/>
 
     <Course id="1001" collegeId="1" angelId="1001" code="AAV"
 		isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"

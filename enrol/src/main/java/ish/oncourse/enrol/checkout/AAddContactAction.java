@@ -101,6 +101,11 @@ public abstract class AAddContactAction extends APurchaseAction {
 
         Contact guardian = getGuardian();
         if (guardian != null && !getModel().getContacts().contains(guardian)) {
+            if (guardian.getStudent() == null)
+            {
+                //we need to create student for any contact which we add to web enroll process.
+                guardian.createNewStudent();
+            }
             getModel().addContact(guardian, true);
         }
 
