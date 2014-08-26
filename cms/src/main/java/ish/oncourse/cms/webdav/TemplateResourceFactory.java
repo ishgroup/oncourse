@@ -116,7 +116,7 @@ public class TemplateResourceFactory implements ResourceFactory {
 
                 @Override
                 public boolean authorise(Request request, Request.Method method, Auth auth) {
-                    return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.blocks.getAllowedMethods(), method);
+                    return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.templates.getAllowedMethods(), method);
                 }
 			};
 		} else if (path.getLength() == 1) {
@@ -270,7 +270,7 @@ public class TemplateResourceFactory implements ResourceFactory {
         public boolean authorise(Request request, Request.Method method, Auth auth) {
             if (layout.getLayoutKey().equals(WebNodeType.DEFAULT_LAYOUT_KEY))
             {
-                return super.authorise(request,method,auth) && ArrayUtils.contains(AccessRights.DIR_READ_ONLY, method);
+                return super.authorise(request,method,auth) && ArrayUtils.contains(AccessRights.DIR_READ_ONLY_AND_ADD_CHILD, method);
             }
             else
             {
