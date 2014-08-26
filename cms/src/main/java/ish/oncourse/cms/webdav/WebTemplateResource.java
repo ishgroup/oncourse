@@ -108,6 +108,7 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 		}
         else
         {
+            //copies content from class path to new db WebTemplate
             InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(templateName);
             try {
                 ((DirectoryResource)rDest).createNew(name, is, 0L, StringUtils.EMPTY);
