@@ -33,6 +33,7 @@ public class WebTemplateService implements IWebTemplateService {
 		WebTemplate template = context.newObject(WebTemplate.class);
 		template.setName(name);
 		template.setLayout(layout);
+        template.setContent(content);
 
 		return template;
 	}

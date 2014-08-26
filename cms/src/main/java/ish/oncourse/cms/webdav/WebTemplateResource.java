@@ -5,7 +5,8 @@ package ish.oncourse.cms.webdav;
 
 import io.milton.common.ContentTypeUtils;
 import io.milton.common.Path;
-import io.milton.http.*;
+import io.milton.http.Auth;
+import io.milton.http.Range;
 import io.milton.http.SecurityManager;
 import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
@@ -18,6 +19,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.templates.IWebTemplateService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -104,6 +106,18 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 			
 			context.commitChanges();
 		}
+        else
+        {
+            InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(templateName);
+            try {
+                ((DirectoryResource)rDest).createNew(name, is, 0L, StringUtils.EMPTY);
+            } catch (IOException e) {
+                throw new BadRequestException(e.getMessage(), e);
+            }
+            finally {
+                IOUtils.closeQuietly(is);
+            }
+        }
 	}
 
 	@Override
