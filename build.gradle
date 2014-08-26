@@ -32,6 +32,10 @@ allprojects {
         options.encoding = 'UTF-8'
     }
 
+    compileTestJava {
+        options.encoding = 'UTF-8'
+    }
+
     release {
 		//use subversion scm, unless otherwise specified in with -PscmFlavour= or in users gradle properties
 		scm = project.hasProperty('scmFlavour') ? project.scmFlavour:'svn'
