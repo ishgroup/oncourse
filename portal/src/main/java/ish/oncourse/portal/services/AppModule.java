@@ -23,6 +23,7 @@ import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
@@ -45,7 +46,8 @@ public class AppModule {
         binder.bind(AccessController.class).withId("AccessController");
         binder.bind(IWebSiteService.class, PortalSiteService.class).withId("WebSiteServiceOverride");
         binder.bind(IPageRenderer.class, PortalPageRenderer.class).withId("PortalPageRenderer");
-        binder.bind(IPortalService.class, PortalService.class);
+        //we set PERTHREAD scope for the service to be sure that we don't sure any data between requests
+        binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
         binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
     }
 

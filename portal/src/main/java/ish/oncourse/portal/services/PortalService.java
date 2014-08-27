@@ -28,10 +28,10 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.ApplicationStateManager;
+import org.apache.tapestry5.services.Request;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -71,11 +71,12 @@ public class PortalService implements IPortalService {
     @Inject
     private ApplicationStateManager applicationStateManager;
 
-    @Persist(value = "session")
-    private Contact selectedContact;
+    @Inject
+    private Request request;
 
     @Override
     public Contact getContact() {
+        Contact selectedContact = getSelectedContact();
         return selectedContact == null ? getAuthenticatedUser() : selectedContact;
     }
 
@@ -502,22 +503,22 @@ public class PortalService implements IPortalService {
                 return getAttachedFilesForTutor(courseClass);
             }
         }
-		
-		if (contact.getStudent() != null) {
-			return getAttachedFilesForStudent(contact.getStudent(), courseClass);
-		}
-		
+
+        if (contact.getStudent() != null) {
+            return getAttachedFilesForStudent(contact.getStudent(), courseClass);
+        }
+
         return Collections.emptyList();
     }
 
     private List<Document> getAttachedFilesForStudent(Student student, CourseClass courseClass) {
 
-		// only students with active enrolments can view class attachments
-		Expression filter = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student);
+        // only students with active enrolments can view class attachments
+        Expression filter = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student);
 
-		if (filter.filterObjects(courseClass.getValidEnrolments()).isEmpty()) {
-			return Collections.emptyList();
-		}
+        if (filter.filterObjects(courseClass.getValidEnrolments()).isEmpty()) {
+            return Collections.emptyList();
+        }
 
         ObjectContext sharedContext = cayenneService.sharedContext();
         ArrayList<Document> result = new ArrayList<>();
@@ -538,13 +539,13 @@ public class PortalService implements IPortalService {
         ObjectContext sharedContext = cayenneService.sharedContext();
         ArrayList<Document> result = new ArrayList<>();
 
-        Expression exp = ExpressionFactory.noMatchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PRIVATE) 
-				.andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId()))
+        Expression exp = ExpressionFactory.noMatchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PRIVATE)
+                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId()))
                 .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
         result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
 
         exp = ExpressionFactory.noMatchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PRIVATE)
-				.andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
+                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
                 .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
         result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
 
@@ -594,7 +595,7 @@ public class PortalService implements IPortalService {
 
     public List<Outcome> getResultsBy(CourseClass courseClass) {
         Expression expression = getOutcomeExpression();
-        expression = expression.andExp( ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass));
+        expression = expression.andExp(ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass));
 
         ObjectContext sharedContext = cayenneService.sharedContext();
         SelectQuery selectQuery = new SelectQuery(Outcome.class, expression);
@@ -733,8 +734,7 @@ public class PortalService implements IPortalService {
         }
     }
 
-    public List<Contact> getChildContacts()
-    {
+    public List<Contact> getChildContacts() {
         ObjectContext context = cayenneService.newContext();
         Contact parent = Cayenne.objectForPK(context, Contact.class, getAuthenticatedUser().getId());
         List<ContactRelation> contactRelations = parent.getToContacts();
@@ -745,22 +745,26 @@ public class PortalService implements IPortalService {
         for (ContactRelation contactRelation : contactRelations) {
             result.add(contactRelation.getToContact());
         }
-        return  Collections.unmodifiableList(result);
+        return Collections.unmodifiableList(result);
     }
 
-    public boolean isSelectedContact(Contact contact)
-    {
+    public Contact getSelectedContact() {
+        org.apache.tapestry5.services.Session session = request.getSession(false);
+        return session != null ? (Contact) session.getAttribute("portal.selectedContact") : null;
+    }
+
+    public boolean isSelectedContact(Contact contact) {
         return getContact().getId().equals(contact.getId());
     }
 
-    public void selectContact(Contact contact)
-    {
-        this.selectedContact = contact;
+    public void selectContact(Contact contact) {
+        org.apache.tapestry5.services.Session session = request.getSession(false);
+        if (session != null)
+            session.setAttribute("portal.selectedContact", contact);
     }
 
     @Override
     public void logout() {
-        selectedContact = null;
         authenticationService.logout();
     }
 }
