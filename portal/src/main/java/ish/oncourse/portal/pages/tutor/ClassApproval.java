@@ -104,7 +104,7 @@ public class ClassApproval {
 
 
     private void declined() {
-        Contact c = authService.getUser();
+        Contact c = portalService.getContact();
 
         if (whyDeclined == null || whyDeclined.length() == 0) {
             approvalForm.recordError(whyDeclinedField, messages.get("message-feedbackEmpty"));

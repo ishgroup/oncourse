@@ -266,7 +266,7 @@ public class CourseClassService implements ICourseClassService {
 
         switch (filter) {
         	case UNCONFIRMED:
-        		return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today))
+        		return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today).orExp(ExpressionFactory.matchExp(CourseClass.IS_DISTANT_LEARNING_COURSE_PROPERTY, true)))
         				.andExp(ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.IS_CONFIRMED_PROPERTY, false));
             case CURRENT:
             	if (forTutor) {
