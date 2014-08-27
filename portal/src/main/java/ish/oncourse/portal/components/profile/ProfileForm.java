@@ -1,7 +1,5 @@
 package ish.oncourse.portal.components.profile;
 
-import static ish.oncourse.services.preference.PreferenceController.*;
-
 import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
@@ -26,6 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
 /**
  * User: artem
@@ -279,7 +279,7 @@ public class ProfileForm {
 			}
 		}
 		
-		if (StringUtils.trimToNull(contact.getStudent().getSpecialNeeds()) == null) {
+		if (contact.getStudent() != null && StringUtils.trimToNull(contact.getStudent().getSpecialNeeds()) == null) {
 			if (contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.specialNeeds)) {
 				errors.putIfAbsent(FieldDescriptor.specialNeeds.name(), getRequiredMessage(FieldDescriptor.specialNeeds));
 			}
