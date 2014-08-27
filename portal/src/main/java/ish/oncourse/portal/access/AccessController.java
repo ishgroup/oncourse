@@ -2,6 +2,7 @@ package ish.oncourse.portal.access;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.annotations.UserRole;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.runtime.Component;
@@ -36,6 +37,9 @@ public class AccessController implements Dispatcher {
 	@Inject
 	private ICookiesService cookieService;
 
+    @Inject
+    private IPortalService portalService;
+
 	public boolean dispatch(Request request, Response response)
 			throws IOException {
 
@@ -66,10 +70,12 @@ public class AccessController implements Dispatcher {
 
 		Component page = componentSource.getPage(pageName);
 
+        Contact contact = portalService.getContact();
+
 		if (page != null) {
 			String loginPath = request.getContextPath() + LOGIN_PAGE;
 
-			if (authenticationService.getUser() == null) {
+			if (contact == null) {
 				if (!path.equals(LOGIN_PAGE) && !path.equals(FORGOT_PASSWORD_PAGE) && !path.startsWith(PASSWORD_RECOVERY_PAGE) && !path.equals(SELECT_COLLEGE_PAGE) &&
 						!path.startsWith(CALENDAR_FILE) && !path.startsWith(UNSUBSCRIBE_PAGE)) {
 					cookieService.pushPreviousPagePath(path);
@@ -81,16 +87,14 @@ public class AccessController implements Dispatcher {
 				UserRole pageWithUserRole = page.getClass().getAnnotation(UserRole.class);
 
 				if (pageWithUserRole != null) {
-					Contact user = authenticationService.getUser();
-
 					boolean canAccess = true;
 
 					if (pageWithUserRole.value() != null) {
 						Set<String> pageRoles = new HashSet<>(Arrays.asList(pageWithUserRole.value()));
 						if (pageRoles.size() > 0) {
-							canAccess = (pageRoles.contains("tutor") && user.getTutor() != null) || (pageRoles.contains("student") && user.getStudent() != null);
+							canAccess = (pageRoles.contains("tutor") && contact.getTutor() != null) || (pageRoles.contains("student") && contact.getStudent() != null);
 						} else {
-							canAccess = user.getStudent() != null;
+							canAccess = contact.getStudent() != null;
 						}
 					}
 
