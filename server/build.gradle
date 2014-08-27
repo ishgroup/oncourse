@@ -23,8 +23,6 @@ dependencies {
 	compile 'org.quartz-scheduler:quartz:2.1.7'
     //log4j2 to slf4j1.7 bridge
     compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.0.2'
-    //log4j2 to commons-logging bridge
-    compile 'org.apache.logging.log4j:log4j-jcl:2.0.2'
 
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
     compile ('net.sf.jasperreports:jasperreports:5.1.2') {
