@@ -3,6 +3,7 @@ package ish.oncourse.portal.components.profile;
 import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
+import ish.oncourse.portal.pages.Profile;
 import ish.oncourse.portal.pages.Timetable;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
@@ -55,6 +56,9 @@ public class ProfileForm {
     @InjectComponent
     @Property
     private Form profileForm;
+
+    @InjectPage
+    private Profile profile;
 
     @Inject
     private Messages messages;
@@ -296,6 +300,6 @@ public class ProfileForm {
         {
             contact.getObjectContext().commitChanges();
         }
-        return this;
+        return profile;
     }
 }
