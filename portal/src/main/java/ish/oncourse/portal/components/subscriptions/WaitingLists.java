@@ -2,7 +2,6 @@ package ish.oncourse.portal.components.subscriptions;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.WaitingList;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
@@ -17,9 +16,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.util.List;
 
 public class WaitingLists {
-
-    @Inject
-    private IAuthenticationService authenticationService;
 
     @Inject
     private IPortalService portalService;

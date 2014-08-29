@@ -2,7 +2,6 @@ package ish.oncourse.portal.components.courseclass;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Document;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -37,9 +36,6 @@ public class ClassResources {
 
     @Inject
     private Request request;
-
-	@Inject
-	private IAuthenticationService authenticationService;
 
 	@Inject
 	private IPortalService portalService;

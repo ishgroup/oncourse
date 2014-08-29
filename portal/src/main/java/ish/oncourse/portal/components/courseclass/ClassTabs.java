@@ -1,7 +1,6 @@
 package ish.oncourse.portal.components.courseclass;
 
-import ish.oncourse.model.*;
-import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.tapestry5.annotations.Parameter;
@@ -21,10 +20,6 @@ public class ClassTabs {
 	@Parameter
 	@Property
 	private CourseClass courseClass;
-
-	@Inject
-	@Property
-	private IAuthenticationService authService;
 
 	@Inject
 	private Request request;

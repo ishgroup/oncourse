@@ -4,7 +4,6 @@ import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -36,9 +35,6 @@ public class InvoiceDetails {
 
     @Inject
     private ICayenneService cayenneService;
-
-    @Inject
-    private IAuthenticationService authenticationService;
 
     @Property
     @Inject

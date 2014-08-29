@@ -4,7 +4,6 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.TutorRole;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.IPortalService;
@@ -44,9 +43,6 @@ public class ClassApproval {
 
     @Inject
     private IPortalService portalService;
-
-    @Inject
-    private IAuthenticationService authService;
 
     @Inject
     private ICayenneService cayenneService;

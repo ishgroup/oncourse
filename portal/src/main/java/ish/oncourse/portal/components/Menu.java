@@ -2,10 +2,8 @@ package ish.oncourse.portal.components;
 
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PCourseClass;
-import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.FormatUtils;
@@ -26,9 +24,6 @@ public class Menu {
 
     @Parameter
     private String activeMenu;
-
-	@Inject
-	private IAuthenticationService authenticationService;
 
 	@Inject
 	@Property
@@ -86,6 +81,6 @@ public class Menu {
 	}
 
     public boolean needApprove() {
-        return authenticationService.isTutor() && !portalService.isApproved(pCourseClass.getCourseClass());
+        return portalService.getContact().getTutor() != null && !portalService.isApproved(pCourseClass.getCourseClass());
     }
 }

@@ -2,7 +2,6 @@ package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Document;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.binary.IBinaryDataService;
@@ -29,9 +28,6 @@ public class Resources {
 
     private static final String KEY_selfPacedMessage = "selfPacedMessage";
     private static final String KEY_classNotHaveSessionsMessage = "classNotHaveSessionsMessage";
-
-    @Inject
-    private IAuthenticationService authenticationService;
 
     @Inject
     private IPortalService portalService;
@@ -76,7 +72,7 @@ public class Resources {
     void setupRender() {
 
         lastLoginDate = portalService.getLastLoginTime();
-        if (authenticationService.isTutor()) {
+        if (portalService.getContact().getTutor() != null) {
             tutorsMaterials = portalService.getTutorCommonResources();
         }
 

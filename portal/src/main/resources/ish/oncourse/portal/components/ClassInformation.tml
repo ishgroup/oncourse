@@ -4,7 +4,7 @@
 
 		<h2>Information</h2>
 
-		<t:if test="isTutor">
+		<t:if test="getIsTutor()">
 			<div class="class-info1">
 	
 				<div>

@@ -2,7 +2,6 @@ package ish.oncourse.portal.pages;
 
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.CourseClassFilter;
@@ -20,9 +19,6 @@ import java.util.TimeZone;
 public class Results {
 	private static final String KEY_selfPacedMessage = "selfPacedMessage";
 	private static final String KEY_classNotHaveSessionsMessage = "classNotHaveSessionsMessage";
-
-    @Inject
-    private IAuthenticationService authenticationService;
 
     @Inject
     private IPortalService portalService;

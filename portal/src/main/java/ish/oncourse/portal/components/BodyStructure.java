@@ -1,10 +1,8 @@
 package ish.oncourse.portal.components;
 
-import ish.oncourse.portal.access.IAuthenticationService;
-
+import ish.oncourse.portal.services.IPortalService;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class BodyStructure {
@@ -14,10 +12,10 @@ public class BodyStructure {
     private String activeMenu;
 
 	@Inject
-	private IAuthenticationService authenticationService;
+	private IPortalService portalService;
 
 	public boolean isUserInSession() {
-		return authenticationService.getUser() != null;
+		return portalService.getAuthenticatedUser() != null;
 	}
 
 

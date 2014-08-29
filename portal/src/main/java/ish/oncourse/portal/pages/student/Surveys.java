@@ -2,7 +2,6 @@ package ish.oncourse.portal.pages.student;
 
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.IPortalService;
@@ -39,9 +38,6 @@ public class Surveys {
 	@Inject
 	private ICayenneService cayenneService;
 	
-	@Inject
-	private IAuthenticationService authenticationService;
-
 	@InjectPage
 	private PageNotFound pageNotFound;
 	

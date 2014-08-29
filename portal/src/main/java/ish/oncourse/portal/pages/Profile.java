@@ -2,7 +2,6 @@ package ish.oncourse.portal.pages;
 
 
 import ish.oncourse.model.Contact;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
@@ -26,9 +25,6 @@ public class Profile {
 
     @Inject
     private ICayenneService cayenneService;
-
-    @Inject
-    private IAuthenticationService authenticationService;
 
     @Inject
     private IPortalService portalService;

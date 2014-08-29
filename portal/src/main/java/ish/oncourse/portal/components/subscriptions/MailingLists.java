@@ -1,7 +1,6 @@
 package ish.oncourse.portal.components.subscriptions;
 
 import ish.oncourse.model.*;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.pages.Login;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -57,9 +56,6 @@ public class MailingLists {
 
 	@Inject
 	private IWebSiteService webSiteService;
-
-	@Inject
-	private IAuthenticationService authService;
 
     @Inject
     private IPortalService portalService;

@@ -1,7 +1,6 @@
 package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -32,9 +31,6 @@ public class Class {
 
 	@InjectPage
 	private PageNotFound pageNotFound;
-
-    @Inject
-    private IAuthenticationService authenticationService;
 
     @Inject
     private IPortalService portalService;
@@ -71,12 +67,12 @@ public class Class {
 
 
     public boolean isTutor(){
-        return authenticationService.isTutor();
+        return portalService.getContact().getTutor() != null;
     }
 
     public boolean needApprove()
     {
-        return authenticationService.isTutor() && !portalService.isApproved(courseClass);
+        return portalService.getContact().getTutor() != null && !portalService.isApproved(courseClass);
     }
 
 	public boolean hasResults() {

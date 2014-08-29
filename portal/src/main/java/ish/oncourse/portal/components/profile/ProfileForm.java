@@ -3,7 +3,6 @@ package ish.oncourse.portal.components.profile;
 import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.pages.Timetable;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
@@ -35,9 +34,6 @@ import static ish.oncourse.services.preference.PreferenceController.FieldDescrip
 public class ProfileForm {
 
 	private static final String KEY_ERROR_MESSAGE_fieldRequired = "message-fieldRequired";
-
-    @Inject
-    private IAuthenticationService authService;
 
     @Inject
     private ICayenneService cayenneService;

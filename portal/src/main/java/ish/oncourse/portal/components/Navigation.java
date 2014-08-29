@@ -4,7 +4,6 @@ package ish.oncourse.portal.components;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Document;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.Notification;
 import ish.oncourse.portal.services.PCourseClass;
@@ -26,9 +25,6 @@ public class Navigation {
 
     @Parameter
     private String activeMenu;
-
-    @Inject
-    private IAuthenticationService authenticationService;
 
     @Inject
     @Property

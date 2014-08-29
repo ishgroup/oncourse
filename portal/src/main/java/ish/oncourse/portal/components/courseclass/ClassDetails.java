@@ -5,7 +5,6 @@ import ish.oncourse.model.Attendance;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.TutorRole;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.html.IPlainTextExtractor;
@@ -34,9 +33,6 @@ public class ClassDetails {
 	@Property
 	@Parameter
 	private boolean isTutor;
-
-    @Inject
-    private IAuthenticationService authenticationService;
 
     @Persist
     @Property
@@ -70,7 +66,7 @@ public class ClassDetails {
     @SetupRender
 	void setupRender() {
 
-		if (authenticationService.isTutor()) {
+		if (portalService.getContact().getTutor() != null) {
 			CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
 			Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY, portalService.getContact().getTutor());
 			isTutor = !exp.filterObjects(courseClass.getTutorRoles()).isEmpty();

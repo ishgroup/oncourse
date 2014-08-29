@@ -4,7 +4,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Survey;
 import ish.oncourse.model.TutorRole;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.IPortalService;
@@ -47,9 +46,6 @@ public class Surveys {
 
 	@Inject
 	private Request request;
-
-	@Inject
-	private IAuthenticationService authService;
 
     @Inject
     private IPortalService portalService;

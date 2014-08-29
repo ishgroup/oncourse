@@ -2,7 +2,7 @@ package ish.oncourse.portal.components;
 
 import com.ocpsoft.pretty.time.PrettyTime;
 import ish.oncourse.model.*;
-import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.IPortalService;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -48,10 +48,10 @@ public class ClassInformation {
 	
 	@Property
 	private int sessionsCount;
+
+    @Inject
+    private IPortalService portalService;
 	
-	@Inject
-	@Property
-	private IAuthenticationService authService;
 
 	@SetupRender
 	boolean setupRender() {
@@ -111,7 +111,7 @@ public class ClassInformation {
 	}
 	
 	public boolean getIsTutor() {
-		return authService.isTutor();
+		return portalService.getContact().getTutor() != null;
 	}
 
 	public String getMarkerTitle() {

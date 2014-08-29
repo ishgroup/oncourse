@@ -3,7 +3,6 @@ package ish.oncourse.portal.components.courseclass;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -42,9 +41,6 @@ public class SessionSliderItem {
 
     @Property
     private Tutor tutor;
-
-    @Inject
-    private IAuthenticationService authenticationService;
 
     @Inject
     private Messages messages;

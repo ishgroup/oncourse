@@ -6,7 +6,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.Student;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.selectutils.BooleanSelection;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
@@ -60,10 +59,6 @@ public class CensusForm {
 
     @Inject
     private ICountryService countryService;
-
-
-    @Inject
-    private IAuthenticationService authService;
 
     @Inject
     private ICayenneService cayenneService;
