@@ -16,6 +16,7 @@ import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.EmptyEventContext;
@@ -39,6 +40,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	private static final String CMS_PATH = "/cms";
 	private static final String COURSES_PATH = "/courses";
 	private static final String LEFT_SLASH_CHARACTER = "/";
+
+    private static final String[] COOKIE_KEYS = {CourseClass.SHORTLIST_COOKIE_KEY, Product.SHORTLIST_COOKIE_KEY, Product.SHORTLIST_COOKIE_KEY};
 	
 	/**
 	 * Logger.
@@ -252,7 +255,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			boolean isAddAction = ADD_TO_COOKIES_PATH.equalsIgnoreCase(path);
 			String key = request.getParameter(KEY_PARAMETER);
 			String value = isAddAction ? request.getParameter(ADD_ITEM_ID_PARAMETER) : request.getParameter(REMOVE_ITEM_ID_PARAMETER);
-			if (key != null && value != null) {
+			if (key != null && ArrayUtils.contains(COOKIE_KEYS, key) && value != null) {
 				if (value.matches("(\\d+)")) {
 
 					if (isAddAction) {
