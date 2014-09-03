@@ -26,16 +26,20 @@ public interface IPortalService {
     public Date getLastLoginTime();
 
     /**
-     * @return courseclass session deatils as json object. Contains startDate, endDate fields in EEEE dd MMMMM h:mma fromat.
+     * @return courseclass session deatils as json object:
+     *  id,
+     *  startDate : EEEE dd MMMMM h:mma,
+     *  endDate : EEEE dd MMMMM h:mma,
+     *  attendances:
+     *  {
+     *      id:
+     *      studentId:
+     *      type:
+     *  }
+     *
      * It is used to show session in session roll component
      */
-    public JSONObject getSession(Session session);
-
-    /**
-     * @return attendencses for the user and the <source>session</source> as json objects.
-     * It is used to show attendences information.
-     */
-    public JSONObject getAttendences(Session session);
+    public JSONObject getJSONSession(Session session);
 
     public JSONObject getCalendarEvents();
 

@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.ApplicationStateManager;
 import org.apache.tapestry5.services.Request;
@@ -114,24 +115,25 @@ public class PortalService implements IPortalService {
     }
 
     @Override
-    public JSONObject getSession(Session session) {
-        JSONObject result = new JSONObject();
-        result.put("startDate", FormatUtils.getDateFormat(DATE_FORMAT_EEEE_dd_MMMMM_h_mma, session.getTimeZone()).format(session.getStartDate()));
-        result.put("endDate", FormatUtils.getDateFormat(DATE_FORMAT_EEEE_dd_MMMMM_h_mma, session.getTimeZone()).format(session.getEndDate()));
-        return result;
-    }
+    public JSONObject getJSONSession(Session session) {
+        JSONObject jSession = new JSONObject();
+        jSession.put("id", session.getId());
+        jSession.put("startDate", FormatUtils.getDateFormat(DATE_FORMAT_EEEE_dd_MMMMM_h_mma, session.getTimeZone()).format(session.getStartDate()));
+        jSession.put("endDate", FormatUtils.getDateFormat(DATE_FORMAT_EEEE_dd_MMMMM_h_mma, session.getTimeZone()).format(session.getEndDate()));
 
-    public JSONObject getAttendences(Session session) {
+        JSONArray array = new JSONArray();
         List<Attendance> attendances = session.getAttendances();
-
-        JSONObject result = new JSONObject();
-        result.append("session", getSession(session));
-
-        for (Attendance attendance : attendances) {
-            result.put(String.format("%s", attendance.getStudent().getId()), String.format("%s", attendance.getAttendanceType()));
+        for (int i = 0; i < attendances.size(); i++) {
+            Attendance attendance = attendances.get(i);
+            JSONObject jAttendance = new JSONObject();
+            jAttendance.put("id", attendance.getId());
+            jAttendance.put("studentId", attendance.getStudent().getId());
+            jAttendance.put("type", attendance.getAttendanceType());
+            array.put(i, jAttendance);
         }
+        jSession.put("attendances", array);
 
-        return result;
+        return jSession;
     }
 
     public JSONObject getNearesSessionIndex(Integer i) {

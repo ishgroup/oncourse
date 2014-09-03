@@ -89,7 +89,7 @@ public class ClassDetails {
 
     @OnEvent(value = "getAttendences")
     public StreamResponse getAttendences() throws IOException {
-        return new TextStreamResponse("text/json", portalService.getAttendences(session).toString());
+        return new TextStreamResponse("text/json", portalService.getJSONSession(session).toString());
     }
 
     @OnEvent(value = "setAttendences")
