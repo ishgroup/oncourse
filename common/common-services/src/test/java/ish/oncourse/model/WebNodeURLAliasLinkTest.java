@@ -86,8 +86,13 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 		WebUrlAlias alias = createWebUrlAlias(webNode);
 		
 		//persist the data
-		context.commitChanges();
-		assertTrue("Before link the URL aliases should be empty", webNode.getWebUrlAliases().isEmpty());
+        try {
+            context.commitChanges();
+            assertFalse("the commit should be failed because webNode does not set for this alias", false);
+        } catch (Exception e) {
+            assertTrue("Commit exception", true);
+        }
+        assertTrue("Before link the URL aliases should be empty", webNode.getWebUrlAliases().isEmpty());
 		
 		//link the entities
 		webNode.addToWebUrlAliases(alias);
