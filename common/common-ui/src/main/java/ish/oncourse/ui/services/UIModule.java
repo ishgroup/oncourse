@@ -11,6 +11,7 @@ import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.ui.services.filter.LogFilter;
 import ish.oncourse.ui.template.T5FileResource;
 import ish.oncourse.util.UIRequestExceptionHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.internal.pageload.ComponentTemplateSourceOverride;
 import org.apache.tapestry5.internal.pageload.PageLoaderOverride;
 import org.apache.tapestry5.internal.pageload.PageSourceOverride;
@@ -31,6 +32,8 @@ import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.templates.ComponentTemplateLocator;
+
+import java.io.IOException;
 
 /**
  * A Tapestry IoC module definition of the common components library.
@@ -123,5 +126,21 @@ public class UIModule {
 
     public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
         configuration.add(RequestExceptionHandler.class, handler);
+    }
+
+    /**
+     * The method was introduced to implement '301 redirect' for our application.
+     */
+    public void contributeComponentEventResultProcessor(MappedConfiguration<Class, ComponentEventResultProcessor> configuration,
+                                                               final Response response) {
+        configuration.add(HttpStatusCode.class, new
+                ComponentEventResultProcessor<HttpStatusCode>() {
+                    public void processResultValue(HttpStatusCode value) throws
+                            IOException {
+                        if (!value.getLocation().isEmpty())
+                            response.setHeader("Location", value.getLocation());
+                        response.sendError(value.getStatusCode(), StringUtils.EMPTY);
+                    }
+                });
     }
 }

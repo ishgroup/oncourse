@@ -129,7 +129,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 
         if (needRedirect(request)) {
-            return new PageRenderRequestParameters("ui/internal/redirect", new EmptyEventContext(), false);
+            return new PageRenderRequestParameters("ui/internal/redirect301", new EmptyEventContext(), false);
         }
 
 		switch (pageIdentifier) {
