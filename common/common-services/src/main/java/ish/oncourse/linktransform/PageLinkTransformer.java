@@ -6,6 +6,7 @@
 package ish.oncourse.linktransform;
 
 import ish.oncourse.model.*;
+import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -31,11 +32,16 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 import javax.servlet.http.HttpServletResponse;
 
 public class PageLinkTransformer implements PageRenderLinkTransformer {
-	
+
 	private static final String REMOVE_ITEM_ID_PARAMETER = "removeItemId";
 	private static final String ADD_ITEM_ID_PARAMETER = "addItemId";
 	private static final String KEY_PARAMETER = "key";
-	private static final String TUTOR_ID_ATTRIBUTE = "tutorId";
+
+
+    public static final String REQUEST_ATTR_redirectTo = "redirectTo";
+
+
+    private static final String TUTOR_ID_ATTRIBUTE = "tutorId";
 	private static final String DIGIT_PATTERN = "\\d+";
 	private static final String CMS_PATH = "/cms";
 	private static final String COURSES_PATH = "/courses";
@@ -54,7 +60,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 */
 	public static String[] IMMUTABLE_PATHS = new String[] { "/assets", "/login", "/editpage", "/newpage", "/menubuilder", "/pageoptions",
 			"/ma.", "/site", "/sitesettings", "/pagetypes", "/menus", "/pages", "/blocks", "/blockedit", "/site.blocks.",
-			"/site.pagetypes.", "ish/internal/autocomplete.sub", "/pt.sort", "ui/textileform.send", "/ui/timezoneholder.", "/webdav"};
+			"/site.pagetypes.", "ish/internal/autocomplete.sub", "/pt.sort", "ui/textileform.send", "/ui/timezoneholder.", "/webdav", "/test"};
 
 	/**
 	 * Path of the removing from cookies request
@@ -101,6 +107,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	@Inject
 	private IWebSiteService webSiteService;
+
+    @Inject
+    private IWebUrlAliasService webUrlAliasService;
 
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
 
@@ -284,6 +293,14 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, path);
 			return new PageRenderRequestParameters(PageIdentifier.Page.getPageName(), new EmptyEventContext(), false);
 		}
+
+
+        final WebUrlAlias redirect = webUrlAliasService.getAliasByPath(path);
+        if (redirect != null && redirect.getRedirectTo() != null)
+        {
+            request.setAttribute(REQUEST_ATTR_redirectTo, redirect.getRedirectTo());
+            return new PageRenderRequestParameters("ui/internal/redirect", new EmptyEventContext(), false);
+        }
 
 		for (String p : IMMUTABLE_PATHS) {
 			if (path.startsWith(p)) {

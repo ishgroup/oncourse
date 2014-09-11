@@ -1160,7 +1160,8 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isDefault" type="BIT" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
-		<db-attribute name="urlPath" type="VARCHAR" length="512"/>
+		<db-attribute name="redirectTo" type="VARCHAR" length="512"/>
+		<db-attribute name="urlPath" type="VARCHAR" isMandatory="true" length="512"/>
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
@@ -2175,6 +2176,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="default" type="boolean" db-attribute-path="isDefault"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="redirectTo" type="java.lang.String" db-attribute-path="redirectTo"/>
 		<obj-attribute name="urlPath" type="java.lang.String" db-attribute-path="urlPath"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>

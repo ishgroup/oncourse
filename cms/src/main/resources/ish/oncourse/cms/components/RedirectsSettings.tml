@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container
+        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+        lang="en">
+
+    <div id="cms-redirects-settings">
+        <h2>
+            Add 301 redirects to your website by entering the local path on the left (starting with '/') and the destination on the right (either starting with '/' for another local page or starting with http/https for redirecting to another website).
+        </h2>
+        <div id="cms-redirect-items">
+        </div>
+    </div>
+
+    <t:block t:id="redirectItem">
+        <div class="cms-redirect">
+            <input type="hidden" name="id"/>
+            <label>Redirect</label>
+            <input type="text" name="urlPath"/>
+            <label>to</label>
+            <input type="text" name="redirectTo"/>
+            <span class="cms-ico-save"></span>
+            <a class='cms-redirect-save' shape="rect" href="#">Save</a>
+            <span class="cms-ico-del"></span>
+            <a class='cms-redirect-delete' shape="rect" href="#">Delete</a>
+        </div>
+    </t:block>
+
+</t:container>

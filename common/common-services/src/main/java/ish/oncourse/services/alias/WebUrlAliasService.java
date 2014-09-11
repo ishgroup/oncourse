@@ -48,7 +48,7 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 					+ " for query : " + query);
 		}
 
-		return (size == 1) ? aliases.get(0) : null;
+		return (aliases.isEmpty()) ? null : aliases.get(0);
 	}
 
 	private Expression siteQualifier() {

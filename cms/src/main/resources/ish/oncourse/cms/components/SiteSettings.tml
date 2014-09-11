@@ -20,17 +20,17 @@
 						<li><a href="#portal-settings">skillsOnCourse</a></li>
 						<li><a href="#website-settings">Website</a></li>
 						<li><a href="#payment-settings">Payment</a></li>
+                        <li><a href="#cms-redirects-settings">Redirects</a></li>
 					</ul>
 				</div>
 				<div class="cms-set-right">
 
 					<div id="welcome">
 						<h2>Welcome to the onCourse CMS. For detailed instructions on how to use this CMS please refer to our <a href="http://www.ish.com.au/s/onCourse/doc/latest/web-manual/">manual</a>.</h2>
-						<p>These settings pages are still in beta and therefore not all the features here are fully operational or documented.</p>
 					</div>
 					
 					<div id="contact-settings">
-						<span t:type="contactentrysettings" />
+                        <t:contactentrysettings/>
 					</div>
 
 					<div id="portal-settings">
@@ -45,6 +45,7 @@
 						<span t:type="paymentsettings" />
 					</div>
 
+                    <t:redirectssettings/>
 				</div>
 
 			</div>

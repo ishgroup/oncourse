@@ -2851,6 +2851,23 @@
 			ALTER TABLE Discount MODIFY discountRate DECIMAL(6,3)
 		</sql>
 	</changeSet>
-	
-	
+
+
+    <changeSet id="189" author="andrey" runOnChange="false" context="production">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="WebURLAlias" columnName="targetUrl"/>
+            </not>
+        </preConditions>
+        <comment>update db for "redirect url" functionality</comment>
+
+        <sql>
+            ALTER TABLE WebURLAlias ADD COLUMN redirectTo VARCHAR(512);
+            ALTER TABLE WebURLAlias DROP FOREIGN KEY WebURLAlias_webNode;
+            ALTER TABLE WebURLAlias MODIFY webNodeId bigint(20);
+            ALTER TABLE WebURLAlias ADD CONSTRAINT WebURLAlias_webNode FOREIGN KEY (webNodeId) REFERENCES WebNode (id) ON DELETE CASCADE;
+        </sql>
+    </changeSet>
+
+
 </databaseChangeLog>

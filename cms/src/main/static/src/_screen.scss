@@ -2083,5 +2083,39 @@ div.t-error {
   border-radius: 5px;
 }
 
-
-
+//styling for redirect-setting functionality
+#cms-redirects-settings
+{
+    #cms-redirect-items
+    {
+      display: table-caption;
+      margin-top: 10px;
+      .cms-redirect
+      {
+        display: inline-flex;
+        a.cms-redirect-save
+        {
+          margin-right: 40px;
+        }
+        label
+        {
+          margin-right: 5px;
+        }
+        input
+        {
+          margin-right: 5px;
+        }
+        input.cms-error
+        {
+          color: #b94a48;
+          border-color: #b94a48;
+        }
+      }
+    }
+}
+//styling for redirect-setting errors functionality
+.cms-redirect-tooltip-error
+{
+  background-color: #b94a48;
+  border-color: #b94a48;
+}

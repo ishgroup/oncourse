@@ -17,6 +17,7 @@ public abstract class _WebUrlAlias extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String DEFAULT_PROPERTY = "default";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String REDIRECT_TO_PROPERTY = "redirectTo";
     public static final String URL_PATH_PROPERTY = "urlPath";
     public static final String WEB_NODE_PROPERTY = "webNode";
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
@@ -43,6 +44,13 @@ public abstract class _WebUrlAlias extends CayenneDataObject {
     }
     public Date getModified() {
         return (Date)readProperty(MODIFIED_PROPERTY);
+    }
+
+    public void setRedirectTo(String redirectTo) {
+        writeProperty(REDIRECT_TO_PROPERTY, redirectTo);
+    }
+    public String getRedirectTo() {
+        return (String)readProperty(REDIRECT_TO_PROPERTY);
     }
 
     public void setUrlPath(String urlPath) {
