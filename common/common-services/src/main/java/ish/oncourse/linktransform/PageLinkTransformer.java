@@ -113,8 +113,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
 
-		final String path = request.getPath().toLowerCase();
-		LOGGER.info("Rewrite InBound: path is: " + path);
+        final String path = request.getPath().toLowerCase();
+
+
+        LOGGER.info("Rewrite InBound: path is: " + path);
 
 		PageIdentifier pageIdentifier = PageIdentifier.getPageIdentifierByPath(path);
 
@@ -125,6 +127,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			requestGlobals.getResponse().setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return new PageRenderRequestParameters(PageIdentifier.SiteNotFound.getPageName(), new EmptyEventContext(), false);
 		}
+
+        if (needRedirect(request)) {
+            return new PageRenderRequestParameters("ui/internal/redirect", new EmptyEventContext(), false);
+        }
 
 		switch (pageIdentifier) {
 		case Home:
@@ -295,13 +301,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 
 
-        final WebUrlAlias redirect = webUrlAliasService.getAliasByPath(path);
-        if (redirect != null && redirect.getRedirectTo() != null)
-        {
-            request.setAttribute(REQUEST_ATTR_redirectTo, redirect.getRedirectTo());
-            return new PageRenderRequestParameters("ui/internal/redirect", new EmptyEventContext(), false);
-        }
-
 		for (String p : IMMUTABLE_PATHS) {
 			if (path.startsWith(p)) {
 				return null;
@@ -322,7 +321,17 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(), new EmptyEventContext(), false);
 	}
 
-	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
+    private boolean needRedirect(Request request) {
+        final WebUrlAlias redirect = webUrlAliasService.getAliasByPath(request.getPath());
+        if (redirect != null && redirect.getRedirectTo() != null)
+        {
+            request.setAttribute(REQUEST_ATTR_redirectTo, redirect.getRedirectTo());
+            return true;
+        }
+        return false;
+    }
+
+    public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
 		LOGGER.info("Rewrite OutBound: path is: " + defaultLink.getBasePath());
 
 		return defaultLink;
