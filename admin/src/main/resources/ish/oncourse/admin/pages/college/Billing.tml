@@ -42,21 +42,21 @@
 	</t:if>
 
 	<label class="checkbox">
-		<t:checkbox t:id="webPaymentCheckbox" value="webPaymentEnabled"/>web payment gateway enabled
+		<t:checkbox t:id="webPaymentCheckbox" value="webPaymentEnabled"/>Enable online enrolments
 	</label>
 	<label class="checkbox">
-		<t:checkbox t:id="qePaymentCheckbox" value="qePaymentEnabled"/>onCourse QuickEnrol payments enabled
+		<t:checkbox t:id="qePaymentCheckbox" value="qePaymentEnabled"/>Enable credit card gateway for Angel 
 	</label>
 	<label class="checkbox">
-		<t:checkbox t:id="amexCheckbox" value="amexEnabled"/>Amex card type enabled
-	</label>
-
-	<label class="checkbox">
-		<t:checkbox t:id="creditCardPaymentEnabledCheckbox" value="creditCardPaymentEnabled"/>credit card payment enabled
+		<t:checkbox t:id="amexCheckbox" value="amexEnabled"/>Enable Amex cards (Mastercard/Visa are always enabled)
 	</label>
 
 	<label class="checkbox">
-		<t:checkbox t:id="corporatePassPaymentEnabledCheckbox" value="corporatePassPaymentEnabled"/>corporatePass payment enabled
+		<t:checkbox t:id="creditCardPaymentEnabledCheckbox" value="creditCardPaymentEnabled"/>Enable online payment via credit card
+	</label>
+
+	<label class="checkbox">
+		<t:checkbox t:id="corporatePassPaymentEnabledCheckbox" value="corporatePassPaymentEnabled"/>Enable online payment via corporatePass
 	</label>
 
 
