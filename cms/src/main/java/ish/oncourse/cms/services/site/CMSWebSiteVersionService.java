@@ -134,6 +134,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 			newWebUrlAlias.setDefault(webUrlAlias.isDefault());
 			newWebUrlAlias.setWebNode(webNodeMap.get(webUrlAlias.getWebNode()));
 			newWebUrlAlias.setWebSiteVersion(newVersion);
+            newWebUrlAlias.setRedirectTo(webUrlAlias.getRedirectTo());
 		}
 
 		for (WebContent content : oldVersion.getContents()) {
