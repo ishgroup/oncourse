@@ -13,8 +13,7 @@ RedirectsSettings = function () {
 RedirectsSettings.prototype = {
 
     //load html source for redirect item
-    loadItemHtml: function(callBack)
-    {
+    loadItemHtml: function (callBack, isNew) {
         $j.ajax({
             type: 'POST',
             url: '/ui/internal/page.pagestructure.cmsnavigation.sitesettings.redirectssettings:newitem',
@@ -23,6 +22,9 @@ RedirectsSettings.prototype = {
             dataType: 'json',
             success: function (data, status, jqXHR) {
                 var item = $j(data.content);
+                if (isNew) {
+                    RedirectsSettings.prototype.hideDeleteControl(item);
+                }
                 callBack(item);
             }
         });
@@ -31,6 +33,12 @@ RedirectsSettings.prototype = {
     //init even handling for delete action
     initDelete: function (item) {
         item.children('.cms-redirect-delete').click(function () {
+
+            //we don't need to delete new item.
+            if (RedirectsSettings.prototype.isNew(item)) {
+                return;
+            }
+
             var data = item.children('input').serialize();
 
             $j.ajax({
@@ -45,6 +53,22 @@ RedirectsSettings.prototype = {
                 }
             });
         });
+    },
+
+    isNew: function (item) {
+        return (item.children('input[name=id]').attr('value') ? false : true);
+    },
+
+    showDeleteControl: function (item) {
+        item.children('.cms-ico-del').removeClass('cms-hidden');
+        item.children('.cms-redirect-delete').removeClass('cms-hidden');
+
+    },
+
+    hideDeleteControl: function (item) {
+        item.children('.cms-ico-del').addClass('cms-hidden');
+        item.children('.cms-redirect-delete').addClass('cms-hidden');
+
     },
 
     //init event handling for save action
@@ -70,9 +94,14 @@ RedirectsSettings.prototype = {
                             children.focus();
                         }
                     } else {
+                        var isNew = RedirectsSettings.prototype.isNew(item);
                         RedirectsSettings.prototype.fillItem(item, data.value);
+                        RedirectsSettings.prototype.showDeleteControl(item);
                         item.effect('highlight');
-                        RedirectsSettings.prototype.loadItemHtml(RedirectsSettings.prototype.addItem);
+                        //only if new item we saved we need controls for new item
+                        if (isNew) {
+                            RedirectsSettings.prototype.loadItemHtml(RedirectsSettings.prototype.addItem, isNew);
+                        }
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -84,8 +113,7 @@ RedirectsSettings.prototype = {
     },
 
     //fill data for redirect item
-    fillItem: function(item, data)
-    {
+    fillItem: function (item, data) {
         item.children('input[name=id]').attr('value', data.id);
         item.children('input[name=urlPath]').attr('value', data.urlPath);
         item.children('input[name=redirectTo]').attr('value', data.redirectTo);
@@ -98,8 +126,7 @@ RedirectsSettings.prototype = {
     },
 
     //add html element for redirect
-    addItem: function(item)
-    {
+    addItem: function (item) {
         $j('#cms-redirect-items').prepend(item);
         RedirectsSettings.prototype.initDelete(item);
         RedirectsSettings.prototype.initSave(item);
@@ -107,7 +134,7 @@ RedirectsSettings.prototype = {
         item.effect('highlight');
     },
 
-    loadItems: function() {
+    loadItems: function () {
         $j.ajax({
             type: 'POST',
             url: '/ui/internal/page.pagestructure.cmsnavigation.sitesettings.redirectssettings:loadItems',
@@ -117,20 +144,18 @@ RedirectsSettings.prototype = {
             success: function (data, status, jqXHR) {
                 var rItem;
                 //load html source code for redirect item
-                RedirectsSettings.prototype.loadItemHtml(function(value)
-                {
+                RedirectsSettings.prototype.loadItemHtml(function (value) {
                     rItem = value;
                 });
 
-                //add all existing redirect items
-                $j(data).each(function (index, value)
-                {
+                //appends all existing redirect items
+                $j(data).each(function (index, value) {
                     var item = rItem.clone();
                     RedirectsSettings.prototype.fillItem(item, value);
                     RedirectsSettings.prototype.addItem(item);
                 });
-                //add all existing redirect items
-                RedirectsSettings.prototype.addItem(rItem);
+                //appends new item
+                RedirectsSettings.prototype.loadItemHtml(RedirectsSettings.prototype.addItem, true);
             }
         });
 
