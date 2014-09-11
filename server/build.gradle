@@ -38,6 +38,9 @@ dependencies {
     	exclude group: 'org.bouncycastle', module: 'bcmail-jdk14'
     }
 
+    compile 'org.codehaus.groovy:groovy-templates:2.3.6'
+    compile 'org.codehaus.groovy:groovy-jsr223:2.3.6'
+
 	testCompile 'org.mockito:mockito-core:1.9.5'
 	testCompile 'org.apache.derby:derbytools:10.10.2.0'
 	testCompile "org.eclipse.jetty:test-jetty-servlet:$jettyVersion"
