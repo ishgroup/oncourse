@@ -219,8 +219,8 @@ task installer_unix(dependsOn: fatJar, type: Copy) {
 		ant.tar(basedir: "${distsDir}/unix/", destfile: "${distsDir}/unix/onCourseServer.tar")
 		ant.gzip(zipfile: "${distsDir}/unix/onCourseServer.tar.gz", src:"${distsDir}/unix/onCourseServer.tar")
 
-		delete unixAppFiles
-		delete "${distsDir}/unix/onCourseServer.tar"
+        //delete temporary files from this distribution dir
+        delete fileTree(dir: "${distsDir}/unix", exclude: "onCourseServer.tar.gz")
 	}
 }
 
