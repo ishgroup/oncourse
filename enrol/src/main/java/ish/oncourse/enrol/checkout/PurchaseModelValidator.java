@@ -15,13 +15,11 @@ public class PurchaseModelValidator {
 
     private PurchaseController purchaseController;
 
-    private boolean validateEnrolments(boolean showErrors) {
-        ActionEnableEnrolment actionEnableEnrolment = enableEnrolment.createAction(purchaseController);
+    private boolean validateEnrolments() {
         List<Enrolment> enrolments = this.getModel().getAllEnabledEnrolments();
         boolean result = true;
         for (Enrolment enrolment : enrolments) {
-            actionEnableEnrolment.setEnrolment(enrolment);
-            boolean valid = actionEnableEnrolment.validateEnrolment(showErrors);
+            boolean valid = EnrolmentValidator.valueOf(enrolment, true, purchaseController).validate();
             if (!valid) {
                 ActionDisableEnrolment actionDisableEnrolment = disableEnrolment.createAction(purchaseController);
                 actionDisableEnrolment.setEnrolment(enrolment);
@@ -93,7 +91,7 @@ public class PurchaseModelValidator {
     }
 
     public boolean validate() {
-        return validateEnrolments(true) && validateProductItems() && validateRedeemingVouchers();
+        return validateEnrolments() && validateProductItems() && validateRedeemingVouchers();
     }
 
     public boolean validateContacts(ValidationResult validationResult) {

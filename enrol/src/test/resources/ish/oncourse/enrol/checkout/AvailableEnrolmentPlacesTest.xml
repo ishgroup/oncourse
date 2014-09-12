@@ -90,7 +90,7 @@
                  deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
     <CourseClass id="1002" collegeId="1" code="2" courseId="1002"
                  roomId="1" angelId="1002" startDate="2010-09-13 00:58:59.0"
-                 endDate="2011-01-01 01:58:59.0" isWebVisible="1" isCancelled="0"
+                 endDate="2111-01-01 01:58:59.0" isWebVisible="1" isCancelled="0"
                  created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:01.0"
                  maximumPlaces="4" minimumPlaces="1" countOfSessions="5" deliveryMode="1"
                  feeExGst="300.00" feeGst="30.00" isDistantLearningCourse="0"/>

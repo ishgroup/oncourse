@@ -3,19 +3,22 @@
  */
 package ish.oncourse.enrol.checkout;
 
-import ish.common.types.CourseClassAttendanceType;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
+import ish.oncourse.model.*;
 import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.Collections;
-import ish.oncourse.model.*;
+
+import static org.junit.Assert.*;
 
 public class AvailableEnrolmentPlacesTest extends ACheckoutTest {
 
@@ -68,4 +71,50 @@ public class AvailableEnrolmentPlacesTest extends ACheckoutTest {
 		delegate.getPaymentIn().setCreditCardType(TestPaymentGatewayService.VISA.getType());
 		delegate.makePayment();
 	}
+
+
+
+    /**
+     * The test verifies we stop processing the payment if MaximumPlaces for the class was changed during the process.
+     * It can happen if college changes the property on angel side and the changes is replicated to willow
+     * while enrol process is not finished
+     */
+    @Test
+    public void maximumPlacesDecreasedTest() throws Exception {
+        //class has only three places and one is already used
+        CourseClass courseClass = createPurchaseController(1002);
+
+        //add first contact
+        Contact contact = addFirstContact(1001);
+        assertEnabledEnrolments(contact, 1, true);
+        assertEquals(1, purchaseController.getModel().getAllEnabledEnrolments().size());
+
+        //add second contact
+        contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1002);
+        addContact(contact);
+        assertEnabledEnrolments(contact, 1, true);
+        assertEquals(2, purchaseController.getModel().getAllEnabledEnrolments().size());
+
+        proceedToPayment();
+
+        //the code updates amountOwing by JDBC request, to exclude Cayenne functionality
+        DataSource refDataSource = getDataSource("jdbc/oncourse");
+        Connection connection = refDataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("update CourseClass set maximumPlaces = ? where id = ?");
+        statement.setLong(1, 1);
+        statement.setLong(2, 1002);
+        statement.execute();
+        connection.commit();
+        statement.close();
+        connection.close();
+
+
+
+        makePayment();
+
+        assertEquals(PurchaseController.State.editPayment, purchaseController.getState());
+        assertEquals(1, purchaseController.getErrors().size());
+        assertEquals(1, purchaseController.getModel().getAllEnableEnrolmentBy(courseClass).size());
+        assertTrue(purchaseController.getErrors().containsKey(PurchaseController.Message.noCourseClassPlaces.name()));
+    }
 }

@@ -27,8 +27,11 @@ import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.InvoiceUtils;
 import ish.util.InvoiceUtil;
 import ish.util.ProductUtil;
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
@@ -724,6 +727,14 @@ public class PurchaseController {
         SelectQuery selectQuery = new SelectQuery(ContactRelationType.class, expression);
         List<ContactRelationType> types = (List<ContactRelationType>) getModel().getObjectContext().performQuery(selectQuery);
         return types.isEmpty() ? null: types.get(0);
+    }
+
+    public <T extends Persistent> T reloadObject(T object)
+    {
+        SelectQuery selectQuery = new SelectQuery(Cayenne.getObjEntity(object),
+                ExpressionFactory.matchExp(object));
+        selectQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
+        return (T) Cayenne.objectForQuery(getModel().getObjectContext(), selectQuery);
     }
 
     public ValidationResult getValidationResult() {

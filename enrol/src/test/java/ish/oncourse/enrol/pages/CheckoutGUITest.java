@@ -64,7 +64,7 @@ public class CheckoutGUITest extends ACheckoutTest {
 		response = getPageTester().clickSubmitAndReturnResponse(element, parameters);
 		assertResponse(response);
 
-		assertTrue("DPS wating page", response.getRenderedDocument().toString().contains("Please Wait!"));
+		assertTrue("DPS waitng page", response.getRenderedDocument().toString().contains("Please Wait!"));
 		//test dps gateway uses 10 sec interval to process payment
 		Thread.sleep(15000);
 		getPageTester().renderPageAndReturnResponse("Payment");
