@@ -2088,23 +2088,33 @@ div.t-error {
 {
     #cms-redirect-items
     {
-      display: table-caption;
       margin-top: 10px;
       .cms-redirect
       {
-        display: inline-flex;
-        a.cms-redirect-save
+        a
         {
-          margin-right: 40px;
-        }
-        label
-        {
-          margin-right: 5px;
+          display: inline;
+          .cms-redirect-save
+          {
+            margin-right: 40px;
+          }
         }
         input
         {
+          display: inline;
+          margin-right: 5px;
+          .cms-error
+          {
+            color: #b94a48;
+            border-color: #b94a48;
+          }
+        }
+        label
+        {
+          display: inline;
           margin-right: 5px;
         }
+
         input.cms-error
         {
           color: #b94a48;
@@ -2113,6 +2123,7 @@ div.t-error {
       }
     }
 }
+
 //styling for redirect-setting errors functionality
 .cms-redirect-tooltip-error
 {
