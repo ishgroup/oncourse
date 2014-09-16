@@ -2094,22 +2094,14 @@ div.t-error {
         a
         {
           display: inline;
-          .cms-redirect-save
-          {
-            margin-right: 40px;
-          }
         }
-        input
+
+        a.cms-redirect-save
         {
-          display: inline;
-          margin-right: 5px;
-          .cms-error
-          {
-            color: #b94a48;
-            border-color: #b94a48;
-          }
+          margin-right: 40px;
         }
-        label
+
+        input
         {
           display: inline;
           margin-right: 5px;
@@ -2119,6 +2111,12 @@ div.t-error {
         {
           color: #b94a48;
           border-color: #b94a48;
+        }
+
+        label
+        {
+          display: inline;
+          margin-right: 5px;
         }
       }
     }
