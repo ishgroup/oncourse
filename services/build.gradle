@@ -12,7 +12,7 @@ dependencies {
 		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
 	}
     //we cannot use version greater the 2.6.1 because task #15873
-	compile ('org.apache.cxf:cxf-bundle:2.6.1') {
+	compile ('org.apache.cxf:cxf-bundle:2.6.15') {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
