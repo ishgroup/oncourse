@@ -27,14 +27,15 @@ dependencies {
 	compile 'com.google.inject:guice:3.0'
 
     //we should use these dependences for test because TestServer is not started properly otherwise.
-    testCompile 'org.eclipse.jetty:jetty-util:7.4.2.v20110526'
-    testCompile 'org.eclipse.jetty:jetty-server:7.4.2.v20110526'
-    testCompile 'org.eclipse.jetty:jetty-webapp:7.4.2.v20110526'
-    testCompile 'org.eclipse.jetty:jetty-plus:7.4.2.v20110526'
-    testCompile 'org.eclipse.jetty:jetty-jndi:7.4.2.v20110526'
-    testCompile 'org.eclipse.jetty:jetty-io:7.4.2.v20110526'
-    testCompile 'org.eclipse.jetty:jetty-security:7.4.2.v20110526'
-    testCompile 'wsdl4j:wsdl4j:1.6.2'
+    def jettyVersion = '7.6.15.v20140411'
+    testCompile 'org.eclipse.jetty:jetty-util:$jettyVersion'
+    testCompile 'org.eclipse.jetty:jetty-server:$jettyVersion'
+    testCompile 'org.eclipse.jetty:jetty-webapp:$jettyVersion'
+    testCompile 'org.eclipse.jetty:jetty-plus:$jettyVersion'
+    testCompile 'org.eclipse.jetty:jetty-jndi:$jettyVersion'
+    testCompile 'org.eclipse.jetty:jetty-io:$jettyVersion'
+    testCompile 'org.eclipse.jetty:jetty-security:$jettyVersion'
+    testCompile 'wsdl4j:wsdl4j:1.6.3'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
