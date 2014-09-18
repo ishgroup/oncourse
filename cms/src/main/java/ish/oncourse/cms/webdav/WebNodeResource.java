@@ -86,7 +86,8 @@ public class WebNodeResource extends AbstractResource implements CopyableResourc
 			return 0l;
 		}
 
-		return (long) content.length();
+        //we should retrun amount of bytes (not chars)
+        return (long) content.getBytes().length;
 	}
 
 	@Override

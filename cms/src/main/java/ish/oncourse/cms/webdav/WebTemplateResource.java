@@ -20,6 +20,8 @@ import ish.oncourse.services.templates.IWebTemplateService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +31,8 @@ import java.util.Date;
 import java.util.Map;
 
 public class WebTemplateResource extends AbstractResource implements CopyableResource, DeletableResource, GetableResource, MoveableResource, PropFindableResource, ReplaceableResource {
+
+    private static final Logger LOGGER = LogManager.getLogger(WebTemplateResource.class);
 
 	private WebTemplate webTemplate;
 	
@@ -72,7 +76,11 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 			out.write(webTemplate.getContent().getBytes());
 		} else {
 			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(templateName);
-			IOUtils.copy(is, out);
+            try {
+                IOUtils.copy(is, out);
+            } finally {
+                IOUtils.closeQuietly(is);
+            }
 		}
 		out.flush();
 	}
@@ -90,10 +98,21 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 	@Override
 	public Long getContentLength() {
 		if (webTemplate != null) {
-			return (long) webTemplate.getContent().length();
+            //we should retrun amount of bytes (not chars)
+			return (long) webTemplate.getContent().getBytes().length;
 		}
-		
-		return null;
+        else
+        {
+            InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(templateName);
+            try {
+                return (long) is.available();
+            } catch (IOException e) {
+                LOGGER.debug(e.getMessage(), e);
+                return null;
+            } finally {
+                IOUtils.closeQuietly(is);
+            }
+        }
 	}
 
 	@Override

@@ -3,10 +3,14 @@
  */
 package ish.oncourse.cms.webdav;
 
-import io.milton.common.*;
-import io.milton.http.*;
+import io.milton.common.ContentTypeUtils;
+import io.milton.http.Auth;
+import io.milton.http.Range;
 import io.milton.http.SecurityManager;
-import io.milton.http.exceptions.*;
+import io.milton.http.exceptions.BadRequestException;
+import io.milton.http.exceptions.ConflictException;
+import io.milton.http.exceptions.NotAuthorizedException;
+import io.milton.http.exceptions.NotFoundException;
 import io.milton.resource.*;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.services.content.IWebContentService;
@@ -15,7 +19,10 @@ import ish.oncourse.services.textile.ITextileConverter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.Map;
 
@@ -69,8 +76,9 @@ public class WebContentResource extends AbstractResource implements CopyableReso
 		if (webContent.getContentTextile() == null) {
 			return 0l;
 		}
-		
-		return (long) webContent.getContentTextile().length();
+
+        //we should retrun amount of bytes (not chars)
+        return (long) webContent.getContentTextile().getBytes().length;
 	}
 
 	@Override
