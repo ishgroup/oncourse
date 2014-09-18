@@ -128,7 +128,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			return new PageRenderRequestParameters(PageIdentifier.SiteNotFound.getPageName(), new EmptyEventContext(), false);
 		}
 
-        if (needRedirect(request)) {
+        /**
+         * ISHHealthCheck can be used without college keyCode.
+         */
+        if (pageIdentifier != PageIdentifier.ISHHealthCheck && needRedirect(request)) {
             return new PageRenderRequestParameters("ui/internal/redirect301", new EmptyEventContext(), false);
         }
 
