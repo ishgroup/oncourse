@@ -361,6 +361,7 @@ public abstract class CommonPreferenceController {
 	public static final String LICENSE_VOUCHER = "license.voucher";
 	public static final String LICENSE_MEMBERSHIP = "license.membership";
 	public static final String LICENSE_ATTENDANCE = "license.attendance";
+	public static final String LICENSE_SCRIPTING = "license.scripting";
 	public static boolean LICENSE_BYPASS_MODE = false;
 
 	public synchronized boolean getLicenseAccessControl() {
@@ -473,6 +474,14 @@ public abstract class CommonPreferenceController {
 	}
 
 	public synchronized void setLicenseAttendance(boolean value) {
+		throw new IllegalStateException("Licences must replicate from ish");
+	}
+	
+	public synchronized boolean getLicenseScripting() {
+		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_SCRIPTING, false));
+	}
+	
+	public synchronized void setLicenseScripting(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
 
