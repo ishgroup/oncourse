@@ -5,8 +5,9 @@
 	<head>
 		<!-- CSS -->
 		<meta http-equiv="Cache-control" content="no-cache"/>
-		<link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
-		<head t:type="ui/pagehead" title="literal:CMS Login Page"/>
+        <link href="/cms/css/cms.css" media="screen" rel="stylesheet" />
+        <link href="/cms/plugins/plugins.css" type="text/css" rel="stylesheet"  />
+        <head t:type="ui/pagehead" title="literal:CMS Login Page"/>
 	</head>
 	<body class="main-page" id="Main">
 	
