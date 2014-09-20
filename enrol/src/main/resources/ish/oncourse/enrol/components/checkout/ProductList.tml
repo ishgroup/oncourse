@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<t:loop source="productItems" value="productItem" index="index">
-				<span t:type="checkout/productitem"
+				<span t:type="checkout/productlistitem"
 					  purchaseController="purchaseController"
 					  productItem="productItem"
 					  productItemIndex="index"

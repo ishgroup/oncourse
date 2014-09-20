@@ -2,9 +2,12 @@ package ish.oncourse.enrol.components.checkout;
 
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController;
-import ish.oncourse.model.*;
+import ish.oncourse.model.Course;
+import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.Voucher;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.MoneyFormatter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
@@ -14,18 +17,13 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import ish.oncourse.util.MoneyFormatter;
-
 
 import java.text.Format;
-
 import java.text.ParseException;
 import java.util.List;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
-
-public class ProductItem {
-	private static final Logger LOGGER = Logger.getLogger(ProductItem.class);
+public class ProductListItem {
+	private static final Logger LOGGER = Logger.getLogger(ProductListItem.class);
 	@Parameter(required = true)
 	private PurchaseController purchaseController;
 

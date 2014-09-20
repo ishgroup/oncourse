@@ -5,8 +5,6 @@ import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.Voucher;
-import ish.oncourse.model.VoucherProduct;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -44,8 +42,8 @@ public class ProductList {
 		return  purchaseController.getModel().isProductItemEnabled(productItem);
 	}
 
-	public ProductItem.ProductItemDelegate getProductItemDelegate() {
-		return new ProductItem.ProductItemDelegate() {
+	public ProductListItem.ProductItemDelegate getProductItemDelegate() {
+		return new ProductListItem.ProductItemDelegate() {
 			@Override
 			public void onChange(Integer contactIndex, Integer productItemIndex, Money price) {
 
