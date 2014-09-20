@@ -16,6 +16,7 @@ import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
@@ -25,8 +26,9 @@ import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.util.List;
 
-public class RedirectsSettings {
+import static ish.oncourse.cms.components.RedirectsSettings.JSONProperty.*;
 
+public class RedirectsSettings {
 
     @Inject
     private ICayenneService cayenneService;
@@ -45,6 +47,9 @@ public class RedirectsSettings {
 
     @Inject
     private Block redirectItem;
+
+    @Inject
+    private Messages messages;
 
 
     @OnEvent(value = "newItem")
@@ -75,10 +80,10 @@ public class RedirectsSettings {
         JSONObject validation = validate(webUrl);
         if (validation != null) {
 
-            result.put("error", validation);
+            result.put(error.name(), validation);
         } else {
             context.commitChanges();
-            result.put("value", getJSONWebUrl(webUrl));
+            result.put(value.name(), getJSONWebUrl(webUrl));
         }
         return new TextStreamResponse("text/json", result.toString());
     }
@@ -123,22 +128,29 @@ public class RedirectsSettings {
 
         ISHUrlValidator validator = URLUtils.HTTP_URL_VALIDATOR;
         if (!validator.isValidOnlyPath(webUrl.getUrlPath())) {
-            result.put("key", WebUrlAlias.URL_PATH_PROPERTY);
-            result.put("message", "The from address must be a valid path within the site starting with /");
+            result.put(key.name(), WebUrlAlias.URL_PATH_PROPERTY);
+            result.put(message.name(), messages.format(MessageKey.invalidPath.getKey()));
             return result;
         }
 
         WebUrlAlias fWebUrl = webUrlAliasService.getAliasByPath(webUrl.getUrlPath());
         if (fWebUrl != null && !fWebUrl.getObjectId().equals(webUrl.getObjectId())) {
-            result.put("key", WebUrlAlias.URL_PATH_PROPERTY);
-            result.put("message", "To create redirects to pages within this CMS, go to that page and add an additional URL in the page options.");
+            result.put(key.name(), WebUrlAlias.URL_PATH_PROPERTY);
+            if (fWebUrl.getWebNode() != null) {
+                result.put(message.name(), "To create redirects to pages within this CMS, go to that page and add an additional URL in the page options.");
+            }
+            else
+            {
+               result.put(message.name(), String.format("This URL is already being redirected to '%s'", fWebUrl.getRedirectTo()));
+               result.put(redirectId.name(), fWebUrl.getId());
+            }
             return result;
         }
 
 
         if (!validator.isValid(webUrl.getRedirectTo()) && !validator.isValidOnlyPath(webUrl.getRedirectTo())) {
-            result.put("key", WebUrlAlias.REDIRECT_TO_PROPERTY);
-            result.put("message", "The to address must be a valid URL or partial URL starting with /");
+            result.put(key.name(), WebUrlAlias.REDIRECT_TO_PROPERTY);
+            result.put(message.name(), "The to address must be a valid URL or partial URL starting with /");
             return result;
         }
         return null;
@@ -150,5 +162,36 @@ public class RedirectsSettings {
         jWebUrl.put(WebUrlAlias.URL_PATH_PROPERTY, webUrlAlias.getUrlPath());
         jWebUrl.put(WebUrlAlias.REDIRECT_TO_PROPERTY, webUrlAlias.getRedirectTo());
         return jWebUrl;
+    }
+
+
+    public static enum MessageKey
+    {
+        pageAliasExist,
+        redirectExist,
+        invalidPath,
+        invalidTargetURL;
+
+        private String key;
+
+        private MessageKey()
+        {
+            key = String.format("message-%s", this.name());
+        }
+
+        public String getKey()
+        {
+            return key;
+        }
+    }
+
+
+    public static enum JSONProperty
+    {
+        error,
+        value,
+        key,
+        message,
+        redirectId
     }
 }
