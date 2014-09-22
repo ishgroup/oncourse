@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -54,7 +55,7 @@ public class DataLayerFactoryTest {
 	public void testCourseClass() {
 
 		List<CourseClass> classes = getClasses();
-		DataLayerFactory.Cart cart = dataLayerFactory.build(classes);
+		Cart cart = dataLayerFactory.build(classes);
 		assertNotNull(cart);
 
 		for (CourseClass courseClass : classes) {
@@ -71,7 +72,7 @@ public class DataLayerFactoryTest {
 	public void testProducts() {
 
 		List<Product> products = getProducts();
-		DataLayerFactory.Cart cart = dataLayerFactory.build(products);
+		Cart cart = dataLayerFactory.build(products);
 		assertNotNull(cart);
 
 		for (Product product : products) {
@@ -88,7 +89,7 @@ public class DataLayerFactoryTest {
 	public void testEnrolments() {
 
 		List<Enrolment> enrolments = getEnrolments();
-		DataLayerFactory.Cart cart = dataLayerFactory.build(enrolments);
+		Cart cart = dataLayerFactory.build(enrolments);
 		assertNotNull(cart);
 
 		for (Enrolment enrolment : enrolments) {
@@ -106,7 +107,7 @@ public class DataLayerFactoryTest {
 	public void testProductItems() {
 
 		List<ProductItem> productItems = getProductItems();
-		DataLayerFactory.Cart cart = dataLayerFactory.build(productItems);
+		Cart cart = dataLayerFactory.build(productItems);
 		assertNotNull(cart);
 
 		for (ProductItem productItem : productItems) {
@@ -219,7 +220,13 @@ public class DataLayerFactoryTest {
 		Enrolment createEnrolment(Long id) {
 			CourseClass courseClass = createCourseClass(id);
 
+            Contact contact = mock(Contact.class);
+            when(contact.getId()).thenReturn(1L);
+            Student student = mock(Student.class);
+            when(student.getContact()).thenReturn(contact);
+
 			Enrolment enrolment = Mockito.mock(Enrolment.class);
+            when(enrolment.getStudent()).thenReturn(student);
 			InvoiceLine invoiceLine = Mockito.mock(InvoiceLine.class);
 			Money money = Money.valueOf(new BigDecimal(RandomUtils.nextInt(100)));
 			Mockito.when(invoiceLine.getFinalPriceToPayExTax()).thenReturn(money);
@@ -242,7 +249,14 @@ public class DataLayerFactoryTest {
 		ProductItem createProductItem(Long id) {
 			Product product = createProduct(id);
 
-			ProductItem productItem = Mockito.mock(ProductItem.class);
+            Contact contact = mock(Contact.class);
+            when(contact.getId()).thenReturn(1L);
+            Student student = mock(Student.class);
+            when(student.getContact()).thenReturn(contact);
+
+
+            ProductItem productItem = Mockito.mock(ProductItem.class);
+            when(productItem.getContact()).thenReturn(contact);
 			InvoiceLine invoiceLine = Mockito.mock(InvoiceLine.class);
 			Money money = Money.valueOf(new BigDecimal(RandomUtils.nextInt(100)));
 			Mockito.when(invoiceLine.getFinalPriceToPayExTax()).thenReturn(money);

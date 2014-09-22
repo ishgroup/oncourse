@@ -2,17 +2,19 @@ package ish.oncourse.ui.components.internal;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
-import ish.oncourse.services.datalayer.DataLayerFactory;
 import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.services.node.IWebNodeTypeService;
+import ish.oncourse.ui.components.GoogleTagmanager;
 import ish.oncourse.util.RequestUtil;
 import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
 import static ish.oncourse.util.HTMLUtils.USER_AGENT_HEADER;
 
 
@@ -33,6 +35,9 @@ public abstract class APageStructure {
 
     @Inject
     private ICacheMetaProvider cacheMetaProvider;
+
+    @InjectComponent
+    private GoogleTagmanager googleTagmanager;
 
     @Property
     @Parameter
@@ -74,9 +79,9 @@ public abstract class APageStructure {
     @Parameter
     private String eventName;
 
-    @Property
-    @Parameter
-    private DataLayerFactory.Cart cart;
+    //we should use for the property set and get method instead of @Property and @Parameter
+    //annotations to allow tapestry passes the parameter through a few componnets
+    private Cart cart;
 
     @SetupRender
     public void beforeRender() {
@@ -89,6 +94,8 @@ public abstract class APageStructure {
             title = pageName;
         if (title != null && pageName == null)
             pageName = title;
+
+        googleTagmanager.setCart(cart);
     }
 
     public String getAgentAwareBodyClass() {
@@ -113,5 +120,13 @@ public abstract class APageStructure {
 
     public Request getRequest() {
         return request;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

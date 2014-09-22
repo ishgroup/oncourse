@@ -13,6 +13,7 @@ public class Enrolment2ProductConverter extends AbstractProductConverter<Enrolme
 	public void convert() {
 		courseClassConverter = getProductFactory().getConverterBy(getValue().getCourseClass());
 		super.convert();
+        getProduct().userId = getValue().getStudent().getContact().getId().toString();
 	}
 
 	@Override

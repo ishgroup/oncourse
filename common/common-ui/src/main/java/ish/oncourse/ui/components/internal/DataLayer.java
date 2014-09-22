@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
+
 /**
  * The class is tapestry component class for DataLayer.tml template which creates dataLayer javascript object
  * for Google TagManager functionality
@@ -44,10 +46,6 @@ public class DataLayer {
 	private IDataLayerFactory dataLayerFactory;
 
 	@Property
-	@Parameter
-	private DataLayerFactory.Cart cart;
-
-	@Property
 	private DataLayerFactory.Product product;
 
 	private List<CourseClass> classes;
@@ -63,7 +61,11 @@ public class DataLayer {
 	@Property
 	private String eventName;
 
-	@SetupRender
+    //we should use for the property set and get method instead of @Property and @Parameter
+    //annotations to allow tapestry passes the parameter through a few componnets
+    private Cart cart;
+
+    @SetupRender
 	void beforeRender() {
 
 		moneyFormat = NumberFormat.getInstance();
@@ -103,4 +105,12 @@ public class DataLayer {
 			products = Collections.emptyList();
 		}
 	}
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 }

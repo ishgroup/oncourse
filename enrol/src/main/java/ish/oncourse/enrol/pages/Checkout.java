@@ -18,6 +18,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.ui.components.internal.PageStructure;
 import ish.oncourse.ui.pages.Courses;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.HTMLUtils;
@@ -91,6 +92,9 @@ public class Checkout {
     @InjectPage
     private Payment paymentPage;
 
+    @InjectComponent
+    private PageStructure pageStructure;
+
     /**
      * The property is true when session for the payment was expired.
      */
@@ -124,6 +128,7 @@ public class Checkout {
                 //add new items from shopping basket
                 updatePurchaseItems();
         }
+        pageStructure.setCart(purchaseController.getCart());
         return null;
 
     }

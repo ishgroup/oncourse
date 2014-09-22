@@ -13,6 +13,7 @@ public class ProductItem2ProductConverter extends AbstractProductConverter<Produ
 
 		productConverter = getProductFactory().getConverterBy(getValue().getProduct());
 		super.convert();
+        getProduct().userId = getValue().getContact().getId().toString();
 	}
 
 	@Override

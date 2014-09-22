@@ -15,6 +15,7 @@ import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.*;
+import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
@@ -43,6 +44,7 @@ import java.util.*;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.*;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.*;
+import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
 import static java.util.Arrays.asList;
 
 /**
@@ -79,6 +81,7 @@ public class PurchaseController {
 	private IWebSiteService webSiteService;
 	private ITagService tagService;
 	private IPaymentService paymentService;
+    private IDataLayerFactory dataLayerFactory;
 
 	private VoucherRedemptionHelper voucherRedemptionHelper;
     private PurchaseModelValidator modelValidator;
@@ -406,7 +409,16 @@ public class PurchaseController {
 		return studentService;
 	}
 
-	public PreferenceController getPreferenceController() {
+    public IDataLayerFactory getDataLayerFactory() {
+        return dataLayerFactory;
+    }
+
+    public void setDataLayerFactory(IDataLayerFactory dataLayerFactory) {
+        this.dataLayerFactory = dataLayerFactory;
+    }
+
+
+    public PreferenceController getPreferenceController() {
 		return preferenceController;
 	}
 
@@ -743,6 +755,25 @@ public class PurchaseController {
 
     public void setValidationResult(ValidationResult validationResult) {
         this.validationResult = validationResult;
+    }
+
+    public Cart getCart()
+    {
+        LinkedList list = new LinkedList();
+        list.addAll(getModel().getAllEnabledEnrolments());
+        list.addAll(getModel().getAllEnabledProductItems());
+
+        if (list.isEmpty())
+            return null;
+
+        Cart cart = dataLayerFactory.build(list);
+        if (isFinished() &&
+                getPaymentEditorDelegate() != null &&
+                getPaymentEditorDelegate().isPaymentSuccess())
+        {
+            cart.id = getModel().getInvoice().getId().toString();
+        }
+        return cart;
     }
 
     public static enum State {

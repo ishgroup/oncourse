@@ -3,7 +3,9 @@
 			dataLayer = [
 				<t:if test="cart">
 				{
-					'transactionId': '${cart.id}',
+                    <t:if test="cart.id">
+					    'transactionId': '${cart.id}',
+                    </t:if>
 					'transactionDate': '${cart.date}',
 					'transactionType': '',
 					'transactionAffiliation': '${cart.storeName}',
@@ -18,6 +20,9 @@
 							<t:loop source="cart.products" value="product">
 								{
 									'id': '${product.id.id}',
+                                    <t:if test="product.userId">
+                                        'userId': '${product.userId}',
+                                    </t:if>
 									'sku': '${product.id.sku}',
 									'name': '${product.id.name}',
 									'category': '${product.category.primary}',

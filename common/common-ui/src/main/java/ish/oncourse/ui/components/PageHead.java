@@ -2,7 +2,6 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.services.datalayer.DataLayerFactory;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
@@ -12,6 +11,8 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
 
 public class PageHead {
 
@@ -60,7 +61,7 @@ public class PageHead {
 	@Parameter
     @Deprecated //TODO: we don't use GoogleTagManager component in PageHead. We use the componnent in PageStructure.
     // This property can be deleted after all custom template will be updated
-	private DataLayerFactory.Cart cart;
+	private Cart cart;
 
     @SetupRender
     public void  setupRender()

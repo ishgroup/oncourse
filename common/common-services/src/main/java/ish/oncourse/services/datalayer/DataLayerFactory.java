@@ -128,6 +128,7 @@ public class DataLayerFactory implements IDataLayerFactory {
 	 */
 	public static class Product {
 		public ProductId id = new ProductId();
+        public String userId = StringUtils.EMPTY;
 		public ProductCategory category = new ProductCategory();
 		public Integer quantity = 0;
 		public Price price = new Price();

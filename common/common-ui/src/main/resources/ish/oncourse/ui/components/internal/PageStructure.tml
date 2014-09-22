@@ -13,7 +13,7 @@
 				  metaDescription="metaDescription"/>
 		</head>
 		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
-            <span t:type="ui/googletagmanager" eventName="eventName" cart="cart"/>
+            <span t:type="ui/googletagmanager" eventName="eventName"/>
 
             <div  t:type="ui/BodyStructure" webNodeType="webNodeType">
 				<t:body/>

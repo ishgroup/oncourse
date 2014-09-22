@@ -2,6 +2,8 @@ package ish.oncourse.services.datalayer;
 
 import java.util.List;
 
+import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
+
 public interface IDataLayerFactory {
-	public DataLayerFactory.Cart build(List values);
+	public Cart build(List values);
 }
