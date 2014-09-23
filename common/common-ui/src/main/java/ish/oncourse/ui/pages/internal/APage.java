@@ -4,6 +4,7 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.util.URLUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -56,7 +57,7 @@ public abstract class APage {
 
             HttpServletResponse httpServletResponse = requestGlobals.getHTTPServletResponse();
             httpServletResponse.setContentType("text/html;charset=UTF-8");
-            httpServletResponse.sendRedirect("http://" + request.getServerName() + "/PageNotFound");
+            httpServletResponse.sendRedirect(URLUtils.buildURL(request,"/PageNotFound", false).toString());
         }
         return true;
     }

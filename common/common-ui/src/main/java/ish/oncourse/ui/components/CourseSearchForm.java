@@ -4,6 +4,8 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.util.URLUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -17,6 +19,13 @@ import java.util.Comparator;
 import java.util.List;
 
 public class CourseSearchForm {
+
+    private static final String URL_PATH_SEARCH_PATTERN = "/courses?s=%s" +
+            "&subject=%s" +
+            "&near=%s" +
+            "&price=%s" +
+            "&time=%s" +
+            "&day=%s";
 
 	@Inject
 	private ITagService tagService;
@@ -73,12 +82,15 @@ public class CourseSearchForm {
 
 	URL onActionFromSearch() {
 		try {
-			String url = "http://" + request.getServerName() + "/courses?s=" + (s == null ? "" : s)
-					+ "&subject=" + (subject == null ? "" : subject.getDefaultPath()) + "&near="
-					+ (searchNear == null ? "" : searchNear) + "&price="
-					+ (searchPrice == null ? "" : searchPrice) + "&time="
-					+ (time == null ? "" : time) + "&day=" + (day == null ? "" : day);
-			return new URL(url);
+			String urlPath = String.format(URL_PATH_SEARCH_PATTERN,
+                    (s == null ? StringUtils.EMPTY : s),
+                    (subject == null ? StringUtils.EMPTY : subject.getDefaultPath()),
+                    (searchNear == null ? StringUtils.EMPTY : searchNear),
+                    (searchPrice == null ? StringUtils.EMPTY : searchPrice),
+                    (time == null ? StringUtils.EMPTY : time),
+                    (day == null ? StringUtils.EMPTY : day)
+            );
+			return URLUtils.buildURL(request, urlPath, false);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

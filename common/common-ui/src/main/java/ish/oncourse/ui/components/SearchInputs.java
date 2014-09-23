@@ -2,6 +2,7 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.util.URLUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -13,6 +14,13 @@ import java.net.URL;
 import java.util.*;
 
 public class SearchInputs {
+
+    private static final String URL_PATH_SEARCH_PATTERN = "/courses?s=%s" +
+            "%s" +
+            "&near=%s" +
+            "&price=%s" +
+            "&time=%s" +
+            "&day=%s";
 	private static final String SEARCH_TAG_NAMES_SEPARATOR = ";";
 	@Inject
 	private ITagService tagService;
@@ -186,14 +194,14 @@ public class SearchInputs {
 			}
 		}
 		try {
-			String url = "http://" + request.getServerName()
-					+ "/courses?s=" + (advKeyword == null ? StringUtils.EMPTY : advKeyword)
-					+ (tags.length() > 0 ? tags.toString() : StringUtils.EMPTY)
-					+ "&near=" + (searchNear == null ? StringUtils.EMPTY : searchNear)
-					+ "&price=" + (searchPrice == null ? StringUtils.EMPTY : searchPrice)
-					+ "&time=" + (daytime ? "daytime" : (evening ? "evening" : StringUtils.EMPTY))
-					+ "&day=" + (weekday ? "weekday" : (weekend ? "weekend" : StringUtils.EMPTY));
-			return new URL(url);
+            String path = String.format(URL_PATH_SEARCH_PATTERN,
+                    (advKeyword == null ? StringUtils.EMPTY : advKeyword),
+                    (tags.length() > 0 ? tags.toString() : StringUtils.EMPTY),
+                    (searchNear == null ? StringUtils.EMPTY : searchNear),
+                    (searchPrice == null ? StringUtils.EMPTY : searchPrice),
+                    (daytime ? "daytime" : (evening ? "evening" : StringUtils.EMPTY)),
+                    (weekday ? "weekday" : (weekend ? "weekend" : StringUtils.EMPTY)));
+			return URLUtils.buildURL(request, path, false);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
