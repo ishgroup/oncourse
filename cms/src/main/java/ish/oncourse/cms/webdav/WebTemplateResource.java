@@ -35,27 +35,29 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
     private static final Logger LOGGER = LogManager.getLogger(WebTemplateResource.class);
 
 	private WebTemplate webTemplate;
-	
+
 	private ICayenneService cayenneService;
 	private IWebTemplateService webTemplateService;
-	
+    private Map<String, String> defaultTemplatesMap;
+
 	private WebSiteLayout layout;
-	private String templateName;
-	
-	public WebTemplateResource(String templateName, WebSiteLayout layout, 
-							   ICayenneService cayenneService, IWebTemplateService webTemplateService, 
-							   SecurityManager securityManager) {
+    private String templateName;
+
+	public WebTemplateResource(String templateName, WebSiteLayout layout,
+							   ICayenneService cayenneService, IWebTemplateService webTemplateService,
+							   SecurityManager securityManager, Map<String, String> defaultTemplatesMap) {
 		super(securityManager);
 
 		this.cayenneService = cayenneService;
 		this.webTemplateService = webTemplateService;
-		
+
 		this.templateName = templateName;
 		this.layout = layout;
-		
-		this.webTemplate = webTemplateService.getTemplateByName(getName(), layout);
+        this.defaultTemplatesMap = defaultTemplatesMap;
+
+        this.webTemplate = webTemplateService.getTemplateByName(getName(), layout);
 	}
-	
+
 	@Override
 	public void copyTo(CollectionResource toCollection, String name) throws NotAuthorizedException, BadRequestException, ConflictException {
 	}
@@ -117,12 +119,27 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 
 	@Override
 	public void moveTo(CollectionResource rDest, String name) throws ConflictException, NotAuthorizedException, BadRequestException {
+
+
 		if (webTemplate != null) {
-			ObjectContext context = cayenneService.newContext();
-			
-			WebTemplate localTemplate = context.localObject(webTemplate);
-			localTemplate.setName(name);
-			
+            String classPathContent  = null;
+            try {
+                classPathContent = getClassPathContent(name);
+            } catch (IOException e) {
+                LOGGER.error(e);
+            }
+
+            ObjectContext context = cayenneService.newContext();
+            WebTemplate localTemplate = context.localObject(webTemplate);
+
+            if (classPathContent != null && classPathContent.equals(webTemplate.getContent()))
+            {
+                context.deleteObjects(localTemplate);
+                webTemplate = null;
+            } else
+            {
+                localTemplate.setName(name);
+            }
 			context.commitChanges();
 		}
         else
@@ -145,7 +162,7 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 		if (webTemplate != null) {
 			return webTemplate.getCreated();
 		}
-		
+
 		return null;
 	}
 
@@ -159,7 +176,7 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 		if (webTemplate != null) {
 			return webTemplate.getModified();
 		}
-		
+
 		return null;
 	}
 
@@ -167,7 +184,6 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 	public void replaceContent(InputStream in, Long length) throws BadRequestException, ConflictException, NotAuthorizedException {
 
 			try {
-				ObjectContext context = cayenneService.newContext();
 
 				WebTemplate template;
 
@@ -175,25 +191,47 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 				IOUtils.copy(in, writer);
 
 				String content = writer.toString();
-				
-				if (webTemplate != null) {
-					template = context.localObject(webTemplate);
-				} else {
-					WebSiteLayout localLayout = context.localObject(layout);
-					
-					template = webTemplateService.createWebTemplate(getName(), content, localLayout);
-				}
 
-				template.setContent(content);
+                IOUtils.closeQuietly(writer);
 
-				context.commitChanges();
+                ObjectContext context = cayenneService.newContext();
+                if (webTemplate != null) {
+                    template = context.localObject(webTemplate);
+                } else {
+                    WebSiteLayout localLayout = context.localObject(layout);
+
+                    template = webTemplateService.createWebTemplate(getName(), content, localLayout);
+                }
+                template.setContent(content);
+                context.commitChanges();
 			} catch (Exception e) {
 				throw new BadRequestException("Can't replace template's content.", e);
 			}
 	}
 
-	@Override
-	public String getUniqueId() {
-		return null;
-	}
+    @Override
+    public String getUniqueId() {
+        return null;
+    }
+
+    private String getClassPathContent(String templateName) throws IOException {
+        String templatePath = defaultTemplatesMap.get(templateName);
+        if (templatePath == null)
+            return null;
+
+        InputStream classPathIn = Thread.currentThread().getContextClassLoader().getResourceAsStream(templatePath);
+        if (classPathIn == null)
+            return null;
+
+        String classPathContent;
+        StringWriter writer = new StringWriter();
+        try {
+            IOUtils.copy(classPathIn, writer);
+            classPathContent = writer.toString();
+        } finally {
+            IOUtils.closeQuietly(writer);
+            IOUtils.closeQuietly(classPathIn);
+        }
+        return classPathContent;
+    }
 }

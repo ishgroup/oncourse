@@ -29,7 +29,7 @@ public class WebTemplateResourceTest {
                 null,
                 null,
                 webTemplateService,
-                null);
+                null, null);
 
         Assert.assertEquals("getContentLength() should return amount of bytes, not chars", (long) utf8Content.getBytes().length, (long) webTemplateResource.getContentLength());
     }

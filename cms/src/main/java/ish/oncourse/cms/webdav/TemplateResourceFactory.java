@@ -154,13 +154,13 @@ public class TemplateResourceFactory implements ResourceFactory {
 		List<WebTemplateResource> templates = new ArrayList<>();
 		
 		for (String templateFileName : defaultTemplatesMap.values()) {
-			templates.add(new WebTemplateResource(templateFileName, layout, cayenneService, webTemplateService, securityManager));
+			templates.add(new WebTemplateResource(templateFileName, layout, cayenneService, webTemplateService, securityManager, defaultTemplatesMap));
 		}
 		
 		// add db templates which don't have corresponding classpath entries
 		for (WebTemplate template : webTemplateService.getTemplatesForLayout(layout)) {
 			if (!defaultTemplatesMap.containsKey(template.getName())) {
-				templates.add(new WebTemplateResource(template.getName(), layout, cayenneService, webTemplateService, securityManager));
+				templates.add(new WebTemplateResource(template.getName(), layout, cayenneService, webTemplateService, securityManager, defaultTemplatesMap));
 			}
 		}
 		
@@ -208,7 +208,7 @@ public class TemplateResourceFactory implements ResourceFactory {
 			templateName = name;
 		}
 		
-		return new WebTemplateResource(templateName, layout, cayenneService, webTemplateService, securityManager);
+		return new WebTemplateResource(templateName, layout, cayenneService, webTemplateService, securityManager,defaultTemplatesMap);
 	}
 	
 	private class LayoutDirectoryResource extends DirectoryResource {
@@ -233,7 +233,7 @@ public class TemplateResourceFactory implements ResourceFactory {
 			
 			context.commitChanges();
 			
-			return new WebTemplateResource(template.getName(), localLayout, cayenneService, webTemplateService, securityManager);
+			return new WebTemplateResource(template.getName(), localLayout, cayenneService, webTemplateService, securityManager, defaultTemplatesMap);
 		}
 
 		@Override
