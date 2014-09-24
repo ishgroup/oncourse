@@ -18,4 +18,9 @@ public interface IWebSiteVersionService {
 	 * Makes currently staged website version active by setting its deployedOn field to current time.
 	 */
 	void deploy();
+
+	/**
+	 * deletes the specified WebSiteVersion with all objects related to it.
+	 */
+	void deleteWebSiteVersion(WebSiteVersion versionToDelete);
 }

@@ -205,6 +205,11 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 		executeDeployScript(oldVersion);
 	}
 
+	@Override
+	public void deleteWebSiteVersion(WebSiteVersion versionToDelete) {
+		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from Admin.");
+	}
+
 	/**
 	 * Executes deploySite.sh script passing specified file as a parameter.
 	 * E.g.:
