@@ -191,13 +191,29 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 				IOUtils.copy(in, writer);
 
 				String content = writer.toString();
-
                 IOUtils.closeQuietly(writer);
+
+                String classPathContent  = null;
+                try {
+                    classPathContent = getClassPathContent(templateName);
+                } catch (IOException e) {
+                    LOGGER.error(e);
+                }
 
                 ObjectContext context = cayenneService.newContext();
                 if (webTemplate != null) {
                     template = context.localObject(webTemplate);
+                    if (classPathContent != null && classPathContent.equals(content)) {
+                        context.deleteObjects(template);
+                        context.commitChanges();
+                        webTemplate = null;
+                        return;
+                    }
                 } else {
+                    if (classPathContent != null && classPathContent.equals(content)) {
+                        return;
+                    }
+
                     WebSiteLayout localLayout = context.localObject(layout);
 
                     template = webTemplateService.createWebTemplate(getName(), content, localLayout);
@@ -215,11 +231,15 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
     }
 
     private String getClassPathContent(String templateName) throws IOException {
-        String templatePath = defaultTemplatesMap.get(templateName);
-        if (templatePath == null)
-            return null;
+        InputStream classPathIn = Thread.currentThread().getContextClassLoader().getResourceAsStream(templateName);
+        if (classPathIn == null)
+        {
+            String templatePath = defaultTemplatesMap.get(templateName);
+            if (templatePath == null)
+                return null;
+            classPathIn = Thread.currentThread().getContextClassLoader().getResourceAsStream(templatePath);
+        }
 
-        InputStream classPathIn = Thread.currentThread().getContextClassLoader().getResourceAsStream(templatePath);
         if (classPathIn == null)
             return null;
 
