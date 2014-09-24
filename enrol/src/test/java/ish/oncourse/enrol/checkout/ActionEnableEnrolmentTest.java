@@ -222,4 +222,44 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 			assertEnabledEnrolment(enrolment);
 		}
 	}
+
+    @Test
+    public void testCanceledClass() {
+        CourseClass courseClass = createPurchaseController(1005);
+
+        // age matches the specified interval
+        Contact contact = addFirstContact(1005);
+
+        assertEquals(0, purchaseController.getModel().getEnabledEnrolments(contact).size());
+        assertEquals(1, purchaseController.getModel().getDisabledEnrolments(contact).size());
+        assertEquals("Unfortunately class \"Adobe Photoshop essentials (PPO-5)\" was canceled. Please return to website and select another class or add yourself to the waiting list.",
+                purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
+    }
+
+    @Test
+    public void testIsNotActiveClass() {
+        CourseClass courseClass = createPurchaseController(1006);
+
+        // age matches the specified interval
+        Contact contact = addFirstContact(1006);
+
+        assertEquals(0, purchaseController.getModel().getEnabledEnrolments(contact).size());
+        assertEquals(1, purchaseController.getModel().getDisabledEnrolments(contact).size());
+        assertEquals("Unfortunately class \"Adobe Photoshop essentials (PPO-6)\" is not available for enrolling. Please return to website and select another class or add yourself to the waiting list.",
+                purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
+    }
+
+    @Test
+    public void testIsNotWebVisible() {
+        CourseClass courseClass = createPurchaseController(1007);
+
+        // age matches the specified interval
+        Contact contact = addFirstContact(1007);
+
+        assertEquals(0, purchaseController.getModel().getEnabledEnrolments(contact).size());
+        assertEquals(1, purchaseController.getModel().getDisabledEnrolments(contact).size());
+        assertEquals("Unfortunately class \"Adobe Photoshop essentials (PPO-7)\" is not available for enrolling. Please return to website and select another class or add yourself to the waiting list.",
+                purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
+    }
+
 }

@@ -19,6 +19,16 @@ public class EnrolmentValidator {
     public boolean validate() {
         courseClass = purchaseController.reloadObject(enrolment.getCourseClass());
 
+        if (courseClass.isCancelled()) {
+            publishError(courseClassCancelled, showErrors, purchaseController.getClassName(enrolment.getCourseClass()));
+            return false;
+        }
+
+        if (!courseClass.getIsWebVisible() || !courseClass.getIsActive()) {
+            publishError(courseClassIsNotVisible, showErrors, purchaseController.getClassName(enrolment.getCourseClass()));
+            return false;
+        }
+
         /**
          * If enrolment was committed so we should not check these conditions
          */

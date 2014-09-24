@@ -114,29 +114,53 @@
 
 	<CourseClass id="1001" collegeId="1" code="1" courseId="1001"
 		roomId="1" angelId="1001" startDate="2011-10-12 00:55:59.0"
-		endDate="2111-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
+		endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
 		created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
 		maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
 		deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
 	<CourseClass id="1002" collegeId="1" code="2" courseId="1002"
 		roomId="1" angelId="1002" startDate="2010-09-13 00:58:59.0"
-		endDate="2011-01-01 01:58:59.0" isWebVisible="1" isCancelled="0"
+		endDate="2011-01-01 01:58:59.0" isWebVisible="1" isCancelled="0" isActive="1"
 		created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:01.0"
 		maximumPlaces="4" minimumPlaces="1" countOfSessions="5" deliveryMode="1"
 		feeExGst="300.00" feeGst="30.00" isDistantLearningCourse="0"/>
 	<CourseClass id="1003" collegeId="1" code="3" courseId="1003"
 		roomId="1" angelId="1003" startDate="2011-11-03 01:01:59.0"
-		endDate="2111-11-03 02:01:59.0" isWebVisible="0" isCancelled="0"
+		endDate="2111-11-03 02:01:59.0" isWebVisible="1" isCancelled="0" isActive="1"
 		created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
 		maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
 		feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"/>
 	<CourseClass id="1004" collegeId="1" code="4" courseId="1003"
 		roomId="1" angelId="1003" startDate="2011-11-03 01:01:59.0"
-		endDate="2111-11-03 02:01:59.0" isWebVisible="0" isCancelled="0"
+		endDate="2111-11-03 02:01:59.0" isWebVisible="1" isCancelled="0"  isActive="1"
 		created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
 		maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
 		feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"
 		minStudentAge="18" maxStudentAge="25"/>
+    <!-- canceled class-->
+    <CourseClass id="1005" collegeId="1" code="5" courseId="1003"
+                 roomId="1" angelId="1005" startDate="2011-11-03 01:01:59.0"
+                 endDate="2111-11-03 02:01:59.0" isWebVisible="1" isCancelled="1" isActive="1"
+                 created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                 maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
+                 feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"
+                 minStudentAge="18" maxStudentAge="25"/>
+    <!-- not active class-->
+    <CourseClass id="1006" collegeId="1" code="6" courseId="1003"
+                 roomId="1" angelId="1006" startDate="2011-11-03 01:01:59.0"
+                 endDate="2111-11-03 02:01:59.0" isWebVisible="1" isCancelled="0" isActive="0"
+                 created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                 maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
+                 feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"
+                 minStudentAge="18" maxStudentAge="25"/>
+    <!-- not web visible class-->
+    <CourseClass id="1007" collegeId="1" code="7" courseId="1003"
+                 roomId="1" angelId="1007" startDate="2011-11-03 01:01:59.0"
+                 endDate="2111-11-03 02:01:59.0" isWebVisible="0" isCancelled="0" isActive="1"
+                 created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                 maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
+                 feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"
+                 minStudentAge="18" maxStudentAge="25"/>
 
     <Enrolment id="1001" source="O" collegeId="1" courseClassId="1001"
                studentId="1001" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"

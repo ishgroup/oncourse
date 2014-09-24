@@ -966,7 +966,11 @@ public class PurchaseController {
         voucherRedeemNotAllow,
 		ageRequirementsNotMet,
         payerWasChangedToGuardian,
-        contactNeedsGuardian, guardianAgeIsWrong, payerSetAsGuardian;
+        contactNeedsGuardian,
+        guardianAgeIsWrong,
+        payerSetAsGuardian,
+        courseClassCancelled,
+        courseClassIsNotVisible;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);
