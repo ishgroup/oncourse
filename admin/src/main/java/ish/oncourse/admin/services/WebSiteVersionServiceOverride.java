@@ -6,10 +6,15 @@ package ish.oncourse.admin.services;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebSiteVersion;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.ObjectContext;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
+
+	@Inject
+	private ICayenneService cayenneService;
 
 	@Override
 	public WebSiteVersion getCurrentVersion() {
@@ -23,7 +28,8 @@ public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
 
 	@Override
 	public void deleteWebSiteVersion(WebSiteVersion versionToDelete) {
-		ObjectContext context = versionToDelete.getObjectContext();
+
+		ObjectContext context = cayenneService.newContext();
 
 		for (WebSiteLayout layoutToDelete : versionToDelete.getLayouts()) {
 			context.deleteObjects(layoutToDelete.getTemplates());
