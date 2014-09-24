@@ -91,7 +91,7 @@
 
 	<CourseClass id="1001" collegeId="1" code="1" courseId="1001"
 				 roomId="1181746" angelId="200" startDate="2011-10-12 00:55:59.0"
-				 endDate="2111-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
 				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
 				 maximumPlaces="2" minimumPlaces="2" countOfSessions="3"
 				 deliveryMode="1" feeExGst="400.00" feeGst="50.00" isDistantLearningCourse="0"/>
@@ -102,7 +102,7 @@
 			allowWaitingList="1" name="Microsoft Word"/>
 	<CourseClass id="1002" collegeId="1" code="1" courseId="1002"
 				 roomId="1181746" angelId="201" startDate="2011-09-13 00:58:59.0"
-				 endDate="2111-10-07 01:58:59.0" isWebVisible="1" isCancelled="0"
+				 endDate="2111-10-07 01:58:59.0" isWebVisible="1" isCancelled="0" isActive="1"
 				 created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:01.0"
 				 maximumPlaces="2" minimumPlaces="2" countOfSessions="5" deliveryMode="1"
 				 feeExGst="500.00" feeGst="50.00" isDistantLearningCourse="0"/>
