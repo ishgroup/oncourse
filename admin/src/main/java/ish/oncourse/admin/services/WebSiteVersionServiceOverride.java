@@ -27,9 +27,10 @@ public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
 	}
 
 	@Override
-	public void deleteWebSiteVersion(WebSiteVersion versionToDelete) {
+	public void deleteWebSiteVersion(WebSiteVersion webSiteVersionToDelte) {
 
 		ObjectContext context = cayenneService.newContext();
+		WebSiteVersion versionToDelete = context.localObject(webSiteVersionToDelte);
 
 		for (WebSiteLayout layoutToDelete : versionToDelete.getLayouts()) {
 			context.deleteObjects(layoutToDelete.getTemplates());
