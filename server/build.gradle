@@ -4,7 +4,7 @@ dependencies {
 	def jettyVersion = '8.1.15.v20140411'
 
 	compile project(':common')
-	compile 'ish.oncourse.willow:webservices-client:5.1.19'
+	compile 'ish.oncourse.willow:webservices-client:5.1.21'
 
 	compile 'org.apache.cayenne:cayenne-lifecycle:3.2M1.2'
 
