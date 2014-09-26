@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MoneyTest {
 	Money[][] list = new Money[][] {
@@ -246,5 +247,33 @@ public class MoneyTest {
 
 		assertTrue("Checking equals", new Money("20.44").hashCode() == new Money("20.44").hashCode());
 		assertFalse("Checking equals", new Money("20.44").hashCode() == new Money("20.45").hashCode());
+	}
+
+	@Test
+	public void testRoundingUpDivide() {
+		Money money = new Money("5.00");
+		
+		//division without rounding, 5/13 == 0.38
+		Money money1 = money.divide(new BigDecimal(13));
+		assertEquals("division failed for value " + money1, new Money("0.38"), money1);
+		
+		//Rounded up to the nearest dollar, 5/13 == 0.38 (less then 0.50) should be rounded to the 1.00
+		Money money2 = money.divide(new BigDecimal(13), true);
+		assertEquals("1d rounding failed for value " + money2, Money.ONE, money2);
+
+		//should be rounded to the 2.00
+		Money money3 = money.divide(new BigDecimal(4), true);
+		assertEquals("2d rounding failed for value " + money3, new Money("2.00"), money3);
+
+		// do nothing if value is already integer, 5/5 == 1
+		Money money4 = money.divide(new BigDecimal(5), true);
+		assertEquals("1d rounding failed for value " + money4, Money.ONE, money4);
+		
+		money = new Money("-5.00");
+
+		//the same test for negative value 
+		Money money5 = money.divide(new BigDecimal(13), true);
+		assertEquals("1d rounding failed for value " + money3, new Money("-1.00"), money5);
+		
 	}
 }

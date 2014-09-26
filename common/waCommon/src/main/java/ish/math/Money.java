@@ -122,6 +122,42 @@ public class Money extends Number implements Comparable<Money> {
 	}
 
 	/**
+	 * returns quotient, where object is dividend and the param is divisor
+	 * Used for rounding any value with cents to a greater integer value
+	 *
+	 * @param val divisor
+	 * @param roundingUp rounded up to the nearest dollar
+	 * @return new money object
+	 */
+	public Money divide(BigDecimal val, boolean roundingUp) {
+		if (val == null) {
+			logger.info("Money.divide() called with null argument, assuming value of 1");
+			return new Money(this.decimalValue);
+		}
+		if (roundingUp) {
+			return new Money(this.decimalValue.setScale(EXPANDED_SCALE).divide(val, 0, RoundingMode.UP));
+		} else {
+			return divide(val);
+		}
+	}
+	
+	/**
+	 * returns quotient, where object is dividend and the param is divisor
+	 * Used for rounding any value with cents to a greater integer value
+	 * 
+	 * @param val divisor
+	 * @param roundingUp rounded up to the nearest dollar
+	 * @return new money object
+	 */
+	public Money divide(Money val, boolean roundingUp) {
+		if (val == null) {
+			logger.info("Money.divide() called with null argument, assuming value of 1");
+			return new Money(this.decimalValue);
+		}
+		return divide(val.toBigDecimal(), roundingUp);
+	}
+
+	/**
 	 * returns difference, where object is minuend and param is subtrahend
 	 * 
 	 * @param val subtrahend
