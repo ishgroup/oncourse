@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 		<p>
 			<label for="firstName">
-				First Name<em title="${message:message-required}">*</em>
+				First name<em title="${message:message-required}">*</em>
 			</label>
 			<span class="${validateHandler.validateClass('firstName')}">
 				<t:textfield value="delegate.contactCredentials.firstName" t:id="firstName" class="input-fixed contact-field ${validateHandler.errorClass('firstName')}"/>
@@ -10,7 +10,7 @@
 		</p>
 		<p>
 			<label for="lastName">
-				Last Name<em title="${message:message-required}">*</em>
+				Last name<em title="${message:message-required}">*</em>
 			</label>
 			<span class="${validateHandler.validateClass('lastName')}">
 				<t:textfield value="delegate.contactCredentials.lastName" t:id="lastName" class="input-fixed contact-field ${validateHandler.errorClass('lastName')}"/>

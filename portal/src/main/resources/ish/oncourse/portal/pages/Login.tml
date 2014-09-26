@@ -18,12 +18,12 @@
 
 				<div class="user-login"  style="${companyCheckStyle.studentDisplay}">
 					<div class="form-group  ${getErrorClass('firstName')}">
-						<t:textField t:id="firstName" class="form-control" placeholder="First Name"/>
+						<t:textField t:id="firstName" class="form-control" placeholder="First name"/>
 						<span t:type="HintComponent" validationMessage="${getValidationMessage('firstName')}"/>
 					</div>
 
 					<div class="form-group ${getErrorClass('lastName')}">
-            <t:textField t:id="lastName" class="form-control " placeholder="Last Name"/>
+            <t:textField t:id="lastName" class="form-control " placeholder="Last name"/>
             <span t:type="HintComponent" validationMessage="${getValidationMessage('lastName')}"/>
           </div>
 				</div>
