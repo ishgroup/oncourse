@@ -26,7 +26,7 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
 	STATUS_ASSESSABLE_CONTINUING_ENROLMENT(70, "Continuing enrolment (70)", null),
 	STATUS_NON_ASSESSABLE_COMPLETED(81, "Satisfactorily completed (81)", "Satisfactorily completed (81)"),
 	STATUS_NON_ASSESSABLE_NOT_COMPLETED(82, "Withdrawn or not satisfactorily completed (82)", "Withdrawn or not satisfactorily completed (82)"),
-	STATUS_NO_RESULT_QLD(90, "Result Not Available (QLD: 90)", "Result Not Available (QLD: 90)"),
+	STATUS_NO_RESULT_QLD(90, "Result not available (90)", "Result not available (90)"),
 
 	// WA only statuses
 	STATUS_WA_PARTICIPATING_WITH_EVIDENCE(5, "Participating, but studies not finished (with evidence of Training) (WA:5)", null),
