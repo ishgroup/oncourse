@@ -32,7 +32,7 @@
 
 	<t:if test="${delegate.visibleFields.contains('postcode')}">
 		<p>
-		<label for="street">${label('postcode')}<t:if test="required('postcode')"><em title="${message:message-required}">*</em></t:if></label>
+		<label for="postcode">${label('postcode')}<t:if test="required('postcode')"><em title="${message:message-required}">*</em></t:if></label>
 		<span class="${validateHandler.validateClass('postcode')}">
 			<t:textfield t:id="postcode" value="delegate.contact.postcode" class="postcode input-fixed ${validateHandler.errorClass('postcode')}"/>
 			<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('postcode')}" hint="${hint('postcode')}"/>
