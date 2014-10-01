@@ -90,8 +90,8 @@ allprojects {
 		maxHeapSize = '1024m'
 		jvmArgs "-XX:MaxPermSize=256m"
 
-        // max number of parallel test executors, default to 4
-        maxParallelForks = project.hasProperty('maxParallelForks') ? project.maxParallelForks.toInteger() : 4
+        // max number of parallel test executors, default to 1, because mysql and mssql use 1 db for tests
+        maxParallelForks = project.hasProperty('maxParallelForks') ? project.maxParallelForks.toInteger() : 1
 
 		jacoco {
 			enabled = project.hasProperty('jacoco-enabled') ? true : false;
