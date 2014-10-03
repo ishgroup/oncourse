@@ -209,5 +209,5 @@ sonarRunner {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "2.2-20141002220015"
+    gradleVersion = "2.2-20141002220015+0000"
 }
