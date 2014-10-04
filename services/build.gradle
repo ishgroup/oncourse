@@ -28,13 +28,13 @@ dependencies {
 
     //we should use these dependences for test because TestServer is not started properly otherwise.
     def jettyVersion = '7.6.15.v20140411'
-    testCompile 'org.eclipse.jetty:jetty-util:$jettyVersion'
-    testCompile 'org.eclipse.jetty:jetty-server:$jettyVersion'
-    testCompile 'org.eclipse.jetty:jetty-webapp:$jettyVersion'
-    testCompile 'org.eclipse.jetty:jetty-plus:$jettyVersion'
-    testCompile 'org.eclipse.jetty:jetty-jndi:$jettyVersion'
-    testCompile 'org.eclipse.jetty:jetty-io:$jettyVersion'
-    testCompile 'org.eclipse.jetty:jetty-security:$jettyVersion'
+    testCompile "org.eclipse.jetty:jetty-util:${jettyVersion}"
+    testCompile "org.eclipse.jetty:jetty-server:${jettyVersion}"
+    testCompile "org.eclipse.jetty:jetty-webapp:${jettyVersion}"
+    testCompile "org.eclipse.jetty:jetty-plus:${jettyVersion}"
+    testCompile "org.eclipse.jetty:jetty-jndi:${jettyVersion}"
+    testCompile "org.eclipse.jetty:jetty-io:${jettyVersion}"
+    testCompile "org.eclipse.jetty:jetty-security:${jettyVersion}"
     testCompile 'wsdl4j:wsdl4j:1.6.3'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
