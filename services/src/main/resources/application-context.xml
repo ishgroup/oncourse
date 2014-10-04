@@ -12,6 +12,7 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    <import resource="namespace-fix.xml" />
 
 	<bean id="gzipFeature" class="org.apache.cxf.transport.common.gzip.GZIPFeature" />
 	<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
@@ -23,14 +24,6 @@
 	<bean id="v4_communicationKeyInterceptor" class="ish.oncourse.webservices.soap.v4.interceptors.CommunicationKeyInterceptor" />
 	
 	<bean id="v4_collegeRequestInterceptor" class="ish.oncourse.webservices.soap.v4.interceptors.CollegeRequestInterceptor" />
-
-	<bean id="v4_replicationPortType" class="ish.oncourse.webservices.soap.v4.ReplicationPortTypeImpl" />
-
-	<bean id="v4_paymentPortType" class="ish.oncourse.webservices.soap.v4.PaymentPortTypeImpl" />
-	
-	<bean id="v5_paymentPortType" class="ish.oncourse.webservices.soap.v5.PaymentPortTypeImpl" />
-	
-	<bean id="v5_replicationPortType" class="ish.oncourse.webservices.soap.v5.ReplicationPortTypeImpl" />
 
     <bean id="v6_paymentPortType" class="ish.oncourse.webservices.soap.v6.PaymentPortTypeImpl" />
 
@@ -47,44 +40,15 @@
 		</cxf:features>
 	</cxf:bus>
 
-	<jaxws:endpoint id="v4_replication" implementor="#v4_replicationPortType"
-		address="/v4/replication">
-		<jaxws:inInterceptors>
-			<ref bean="v4_communicationKeyInterceptor" />
-			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v4_payment" implementor="#v4_paymentPortType"
-		address="/v4/payment">
-		<jaxws:inInterceptors>
-			<ref bean="v4_securityCodeInterceptor" />
-			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
 	<jaxws:endpoint id="v4_reference" implementor="#v4_referencePortTypeBean"
 		address="/v4/reference">
 		<jaxws:inInterceptors>
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-	
-	<jaxws:endpoint id="v5_replication" implementor="#v5_replicationPortType"
-		address="/v5/replication">
-		<jaxws:inInterceptors>
-			<ref bean="v4_communicationKeyInterceptor" />
-			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v5_payment" implementor="#v5_paymentPortType"
-		address="/v5/payment">
-		<jaxws:inInterceptors>
-			<ref bean="v4_securityCodeInterceptor" />
-			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
+        <jaxws:features>
+            <ref bean="namespaceFixV4"/>
+        </jaxws:features>
+    </jaxws:endpoint>
 
     <jaxws:endpoint id="v6_replication" implementor="#v6_replicationPortType"
                     address="/v6/replication">
@@ -92,6 +56,9 @@
             <ref bean="v4_communicationKeyInterceptor" />
             <ref bean="v4_collegeRequestInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:features>
+            <ref bean="namespaceFixV6"/>
+        </jaxws:features>
     </jaxws:endpoint>
 
     <jaxws:endpoint id="v6_payment" implementor="#v6_paymentPortType"
@@ -100,6 +67,9 @@
             <ref bean="v4_securityCodeInterceptor" />
             <ref bean="v4_collegeRequestInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:features>
+            <ref bean="namespaceFixV6"/>
+        </jaxws:features>
     </jaxws:endpoint>
 
 	<jaxws:endpoint id="v7_replication" implementor="#v7_replicationPortType"
@@ -108,6 +78,9 @@
 			<ref bean="v4_communicationKeyInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
+        <jaxws:features>
+            <ref bean="namespaceFixV7"/>
+        </jaxws:features>
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v7_payment" implementor="#v7_paymentPortType"
@@ -116,5 +89,8 @@
 			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
+        <jaxws:features>
+            <ref bean="namespaceFixV7"/>
+        </jaxws:features>
 	</jaxws:endpoint>
 </beans>

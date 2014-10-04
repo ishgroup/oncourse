@@ -28,6 +28,7 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 
 	@BeforeClass
 	public static void before() throws Exception {
+        System.getProperties().put("org.apache.cxf.stax.allowInsecureParser","true");
 		server = startServer();
 	}
 

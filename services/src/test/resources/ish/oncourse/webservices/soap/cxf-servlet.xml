@@ -12,6 +12,7 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    <import resource="classpath:namespace-fix.xml" />
 
 	<bean id="gzipFeature" class="org.apache.cxf.transport.common.gzip.GZIPFeature" />
 	<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
@@ -47,6 +48,9 @@
 			<ref bean="v4_communicationKeyInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
+        <jaxws:features>
+            <ref bean="namespaceFixV6"/>
+        </jaxws:features>
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v6_payment" implementor="#v6_paymentPortType"
@@ -55,6 +59,9 @@
 			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
+        <jaxws:features>
+            <ref bean="namespaceFixV6"/>
+        </jaxws:features>
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v7_replication" implementor="#v7_replicationPortType"
@@ -63,6 +70,9 @@
 			<ref bean="v4_communicationKeyInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
+        <jaxws:features>
+            <ref bean="namespaceFixV7"/>
+        </jaxws:features>
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v7_payment" implementor="#v7_paymentPortType"
@@ -71,6 +81,9 @@
 			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
+        <jaxws:features>
+            <ref bean="namespaceFixV7"/>
+        </jaxws:features>
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v4_reference" implementor="#v4_referencePortTypeBean"
@@ -78,5 +91,8 @@
 		<jaxws:inInterceptors>
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
+        <jaxws:features>
+            <ref bean="namespaceFixV4"/>
+        </jaxws:features>
 	</jaxws:endpoint>
 </beans>

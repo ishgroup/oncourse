@@ -1,7 +1,6 @@
 package ish.oncourse.webservices.soap;
 
 import ish.oncourse.test.InitialContextFactoryMock;
-import ish.oncourse.test.TestContextUtil;
 import ish.oncourse.util.ContextUtil;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Connector;
