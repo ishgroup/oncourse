@@ -35,8 +35,12 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractTransportTest {
+    static
+    {
+        System.getProperties().put("org.apache.cxf.stax.allowInsecureParser","true");
+    }
 
-	public static final GZIPInInterceptor IN = new GZIPInInterceptor();
+    public static final GZIPInInterceptor IN = new GZIPInInterceptor();
 	public static final GZIPOutInterceptor OUT = new GZIPOutInterceptor();
 
 	public static final long DEFAULT_TIMEOUT = 1000l * 60 * 5;
