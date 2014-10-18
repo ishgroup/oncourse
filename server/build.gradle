@@ -1,7 +1,7 @@
 apply plugin: 'cayenne'
 
 dependencies {
-	def jettyVersion = '8.1.15.v20140411'
+	def jettyVersion = '8.1.16.v20140903'
 
 	compile project(':common')
 	compile 'ish.oncourse.willow:webservices-client:5.1.23'
