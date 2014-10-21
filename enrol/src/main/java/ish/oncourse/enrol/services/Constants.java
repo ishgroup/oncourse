@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.services;
 
+import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 import java.text.ParseException;
@@ -13,9 +14,9 @@ public class Constants {
 	 * It uses "yy" format for year because the the format parses years like 11, 73, 85 correctly. For example:
 	 * if an user enters 1/1/73 it means 01/01/1973 but not 01/01/0073 which it would be got when it uses format yyyy
 	 */
-	public static final String DATE_FIELD_PARSE_FORMAT = "dd/MM/yy";
+	public static final String DATE_FIELD_PARSE_FORMAT = FormatUtils.DATE_FIELD_PARSE_FORMAT;
 
-	public static final String DATE_FIELD_SHOW_FORMAT = "dd/MM/yyyy";
+	public static final String DATE_FIELD_SHOW_FORMAT = FormatUtils.DATE_FIELD_SHOW_FORMAT;
 
 	public static final Date MIN_DATE_OF_BIRTH;
 

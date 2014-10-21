@@ -51,6 +51,15 @@ public class FormatUtils {
 
     private static NumberFormat feeFormatWithoutCents;
 
+    /**
+     * the format is used to parse string value which an user puts in date field.
+     * It uses "yy" format for year because the the format parses years like 11, 73, 85 correctly. For example:
+     * if an user enters 1/1/73 it means 01/01/1973 but not 01/01/0073 which it would be got when it uses format yyyy
+     */
+    public static final String DATE_FIELD_PARSE_FORMAT = "dd/MM/yy";
+
+    public static final String DATE_FIELD_SHOW_FORMAT = "dd/MM/yyyy";
+
 
     public static DateFormat getDateFormat_dd_MMM_E_yyyy(String timeZone) {
         return FormatUtils.getDateFormat(DATE_FORMAT_dd_MMM_E_yyyy, timeZone);

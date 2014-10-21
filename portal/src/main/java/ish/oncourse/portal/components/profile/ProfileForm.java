@@ -9,6 +9,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
+import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.commons.lang.StringUtils;
@@ -80,7 +81,12 @@ public class ProfileForm {
     @Persist
     private ValidateHandler validateHandler;
 
-    private static final DateFormat FORMAT = new SimpleDateFormat("d/M/y");
+    private static final DateFormat DATE_FIELD_PARSE_FORMAT = new SimpleDateFormat(FormatUtils.DATE_FIELD_PARSE_FORMAT);
+    private static final DateFormat DATE_FIELD_SHOW_FORMAT = new SimpleDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT);
+
+    static {
+        DATE_FIELD_PARSE_FORMAT.setLenient(false);
+    }
 
 
     @SetupRender
@@ -135,13 +141,13 @@ public class ProfileForm {
         if (dateOfBirth == null) {
             return null;
         }
-        return FORMAT.format(dateOfBirth);
+        return DATE_FIELD_SHOW_FORMAT.format(dateOfBirth);
     }
 
     public void setBirthDateProperty(String birthDateProperty) {
         try {
             if (StringUtils.trimToNull(birthDateProperty) != null) {
-                Date parsedDate = FORMAT.parse(birthDateProperty);
+                Date parsedDate = DATE_FIELD_PARSE_FORMAT.parse(birthDateProperty);
                 contact.setDateOfBirth(parsedDate);
             } else {
 				contact.setDateOfBirth(null);
