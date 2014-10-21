@@ -17,7 +17,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.List;
 import java.util.TimeZone;
 
-import static ish.oncourse.portal.services.PortalUtils.DATE_FORMAT_d_MMMM_h_mma_UTC_Z;
+import static ish.oncourse.portal.services.PortalUtils.DATE_FORMAT_d_MMMM_yyyy_h_mma;
 
 public class Menu {
 
@@ -69,12 +69,12 @@ public class Menu {
 
 		if (courseClass instanceof PCourseClass) {
 			timeZone = courseClassService.getClientTimeZone(pCourseClass.getCourseClass());
-			return 	FormatUtils.getDateFormat(DATE_FORMAT_d_MMMM_h_mma_UTC_Z, timeZone).format(pCourseClass.getStartDate());
+			return 	FormatUtils.getDateFormat(DATE_FORMAT_d_MMMM_yyyy_h_mma, timeZone).format(pCourseClass.getStartDate());
 		}
 
 		if (courseClass instanceof CourseClass) {
 			timeZone = courseClassService.getClientTimeZone(pastCourseClass);
-			return 	FormatUtils.getDateFormat(DATE_FORMAT_d_MMMM_h_mma_UTC_Z, timeZone).format(pastCourseClass.getStartDate());
+			return 	FormatUtils.getDateFormat(DATE_FORMAT_d_MMMM_yyyy_h_mma, timeZone).format(pastCourseClass.getStartDate());
 		}
 		return StringUtils.EMPTY;
 
