@@ -36,7 +36,7 @@
 <t:block t:id="sessionPublicNotes">
     <t:if test="session.publicNotes">
         <div class="session-notes">
-            <span>Public notes:</span> ${session.publicNotes}
+			<t:outputraw value="convertTextile(session.publicNotes)"/>
         </div>
     </t:if>
 </t:block>
@@ -44,7 +44,8 @@
 <t:block t:id="sessionPrivateNotes">
     <t:if test="showPrivateNodes()">
         <div class="session-notes">
-            <span>Private notes:</span> ${session.privateNotes}
+            <span>Private notes:</span>
+			<t:outputraw value="convertTextile(session.privateNotes)"/>
         </div>
     </t:if>
 </t:block>

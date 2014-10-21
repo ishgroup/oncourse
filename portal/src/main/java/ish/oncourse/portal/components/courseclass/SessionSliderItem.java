@@ -3,7 +3,9 @@ package ish.oncourse.portal.components.courseclass;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
+import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -23,6 +25,9 @@ import java.util.TimeZone;
 public class SessionSliderItem {
 
     private TimeZone timeZone;
+
+	@Inject
+	private ITextileConverter textileConverter;
 
 	@Property
 	@Parameter
@@ -96,5 +101,9 @@ public class SessionSliderItem {
         return session.getPrivateNotes() != null && isTutor;
     }
 
+	public String convertTextile(String note) {
+		String detail = textileConverter.convertCustomTextile(note, new ValidationErrors());
+		return detail == null ? StringUtils.EMPTY : detail;
+	}
 
 }

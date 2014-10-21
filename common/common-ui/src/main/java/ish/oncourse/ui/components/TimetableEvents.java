@@ -2,8 +2,10 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Session;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -17,6 +19,9 @@ public class TimetableEvents {
 
 	@Inject
 	private ICookiesService cookiesService;
+
+	@Inject
+	private ITextileConverter textileConverter;
 	
 	@Property
 	@Parameter
@@ -99,4 +104,10 @@ public class TimetableEvents {
 		}
 		return timezone;
 	}
+
+	public String getDetail() {
+		String detail = textileConverter.convertCustomTextile(event.getPublicNotes(), new ValidationErrors());
+		return detail == null ? StringUtils.EMPTY : detail;
+	}
+	
 }

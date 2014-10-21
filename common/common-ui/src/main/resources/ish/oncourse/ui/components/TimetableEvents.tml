@@ -24,7 +24,7 @@
 				</td>
                 <td>
                     <t:if t:test="event.publicNotes">
-                        ${event.publicNotes}
+						<t:outputraw value="${detail}" />
                     </t:if>
                 </td>
 			</tr>
