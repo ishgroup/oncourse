@@ -2,4 +2,11 @@
   .main-container + div, .sidebar, .container > .col-lg-3.col-sm-4 {
     display: none;
   }
+  #wrap > .container {
+    padding: 0 0 0 0;
+  }
+
+  a[href]:after {
+    content: none !important;
+  }
 }
