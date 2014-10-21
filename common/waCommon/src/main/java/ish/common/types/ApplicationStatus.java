@@ -6,7 +6,7 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration of available enrolment statuses
+ * enumeration of available application statuses
  */
 public enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer> {
 
