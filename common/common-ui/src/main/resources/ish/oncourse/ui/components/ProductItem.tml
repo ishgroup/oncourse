@@ -27,7 +27,7 @@
         <div class="clearboth"></div>
 
         <div class="courseDescription">
-            <t:outputraw value="${product.description}" />
+            <t:outputraw value="${detailText}" />
         </div>
     </t:block>
 
