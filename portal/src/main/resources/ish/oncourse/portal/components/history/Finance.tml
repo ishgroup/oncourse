@@ -21,7 +21,12 @@
       <t:pagelink page="invoicedetails" context="id">${date}</t:pagelink>
     </td>
     <td>
-      <t:pagelink page="invoicedetails" context="id">Invoice ${invoiceNumber}</t:pagelink>
+      <t:if test="isCreditNote()">
+          <t:pagelink page="invoicedetails" context="id">Credit node ${invoiceNumber}</t:pagelink>
+      </t:if>
+      <t:unless test="isCreditNote()">
+          <t:pagelink page="invoicedetails" context="id">Invoice ${invoiceNumber}</t:pagelink>
+      </t:unless>
     </td>
     <td>
       <t:pagelink page="invoicedetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
