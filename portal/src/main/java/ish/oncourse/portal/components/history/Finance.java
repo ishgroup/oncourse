@@ -99,6 +99,12 @@ public class Finance {
         return item instanceof Invoice;
     }
 
+    public boolean isCreditNote() {
+
+        return (item instanceof Invoice && getAmount().isLessThan(Money.ZERO));
+    }
+
+
     public long getId()
     {
         return ((Queueable) item).getId();
