@@ -129,7 +129,7 @@
         <p>
             <label for="specialNeeds">${label('specialNeeds')}<t:if test="required('specialNeeds')"><em title="${message:message-required}">*</em> </t:if></label>
 			<span class="${validateHandler.validateClass('specialNeeds')}">
-				<t:textarea t:id="specialNeeds" value="delegate.contact.student.specialNeeds" class="specialNeeds input-fixed ${validateHandler.errorClass('specialNeeds')}" rows="4"/>
+				<t:textarea t:id="specialNeeds" value="delegate.contact.student.specialNeeds" class="specialNeeds input-fixed ${validateHandler.errorClass('specialNeeds')}" rows="4" placeholder="None" />
 				<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('specialNeeds')}" hint="${hint('specialNeeds')}"/>
 			</span>
         </p>
