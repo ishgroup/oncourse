@@ -1,12 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div id="shortlist" class="short-list">
 		<div class="shortlistInfo" id="info">
-			<span>${itemCount}</span>
-			<p>courses selected</p>
-			<t:if test="hasProductItems">
-				<span>${productItemCount}</span>
-				<p>products selected</p>
-			</t:if>
+			<span>${totatItemsCount}</span>
+			<p>courses and products selected</p>
 		</div>
 		<t:if test="hasAnyItems">
 			<h3 class="title-block">

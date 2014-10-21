@@ -209,4 +209,7 @@ public class ShortList {
 		return FormatUtils.getShortDateFormat(product.getCollege().getTimeZone());
 	}
 
+	public Integer getTotatItemsCount(){
+		return getItemCount() + getProductItemCount();
+	}
 }
