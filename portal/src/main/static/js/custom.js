@@ -303,7 +303,11 @@ $j(document).ready(function () {
 	
 	$j('.header-tabs li').not('.active').click(function(){
 		setTimeout(function () {
-      initialize();
+      //google map  initialize function is being added for specific page.
+      if (typeof initialize == 'function')
+      {
+          initialize();
+      }
       //google.maps.event.trigger(map, 'resize');
     }, 500);
 	});
