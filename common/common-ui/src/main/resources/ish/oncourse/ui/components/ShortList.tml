@@ -2,7 +2,7 @@
 	<div id="shortlist" class="short-list">
 		<div class="shortlistInfo" id="info">
 			<span>${totatItemsCount}</span>
-			<p>courses and products selected</p>
+			<p>items</p>
 		</div>
 		<t:if test="hasAnyItems">
 			<h3 class="title-block">
