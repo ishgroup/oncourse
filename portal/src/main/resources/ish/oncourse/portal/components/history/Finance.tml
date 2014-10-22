@@ -29,12 +29,7 @@
       </t:if>
     </td>
     <td>
-        <t:if test="isCreditNote()">
-              <t:pagelink page="invoicedetails" context="id"><t:output value="amount.negate()" format="moneyFormat(amount)"/></t:pagelink>
-            <p:else>
-                <t:pagelink page="invoicedetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
-            </p:else>
-        </t:if>
+        <t:pagelink page="invoicedetails" context="id"><t:output value="amount.abs()" format="moneyFormat(amount)"/></t:pagelink>
         <t:if test="isNew()">
             <span class="label label-primary">NEW</span>
         </t:if>
