@@ -5,19 +5,19 @@
     <ul class="nav nav-tabs header-tabs">
         <li id="tab_profile" class="${getActiveClass('tab_profile')}"><a data-toggle="tab" href="#profile-form">Profile details</a></li>
         <li id="tab_password" class="${getActiveClass('tab_password')}"><a data-toggle="tab" href="#password-form">Change password</a></li>
-        <t:if test="contact.student">
+        <t:if test="showCensusTab()">
             <li id="tab_census" class="${getActiveClass('tab_census')}"><a data-toggle="tab" href="#census-questions">Census Questions</a></li>
         </t:if>
     </ul>
     <h1><a href="#">${contact.fullName}'s Profile</a></h1>
 </div>
 <div class="tab-content">
-<div class="tab-pane ${getActiveClass('tab_profile')}" id="profile-form">
-    <span t:type="profile/profileform" contact="contact"/>
-</div>
-<div class="tab-pane ${getActiveClass('tab_password')}" id="password-form">
-    <span t:type="profile/passwordform" contact="contact"/>
-</div>
+    <div class="tab-pane ${getActiveClass('tab_profile')}" id="profile-form">
+        <span t:type="profile/profileform" contact="contact"/>
+    </div>
+    <div class="tab-pane ${getActiveClass('tab_password')}" id="password-form">
+        <span t:type="profile/passwordform" contact="contact"/>
+    </div>
     <t:if test="showCensusTab()">
         <div class="tab-pane ${getActiveClass('tab_census')}" id="census-questions">
             <span t:type="profile/censusform" contact="contact"/>
