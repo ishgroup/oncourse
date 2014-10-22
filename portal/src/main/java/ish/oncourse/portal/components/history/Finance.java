@@ -101,7 +101,7 @@ public class Finance {
 
     public boolean isCreditNote() {
 
-        return (item instanceof Invoice && getAmount().isLessThan(Money.ZERO));
+        return (item instanceof Invoice && Money.ZERO.isGreaterThan(getAmount()));
     }
 
 

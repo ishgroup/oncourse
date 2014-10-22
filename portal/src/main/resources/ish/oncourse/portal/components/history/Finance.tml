@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
     <t:if test="items" negate="true">
          <div>We do not yet have any financial history to show you.</div>
@@ -23,13 +23,18 @@
     <td>
       <t:if test="isCreditNote()">
           <t:pagelink page="invoicedetails" context="id">Credit node ${invoiceNumber}</t:pagelink>
+          <p:else>
+              <t:pagelink page="invoicedetails" context="id">Invoice ${invoiceNumber}</t:pagelink>
+          </p:else>
       </t:if>
-      <t:unless test="isCreditNote()">
-          <t:pagelink page="invoicedetails" context="id">Invoice ${invoiceNumber}</t:pagelink>
-      </t:unless>
     </td>
     <td>
-      <t:pagelink page="invoicedetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
+        <t:if test="isCreditNote()">
+              <t:pagelink page="invoicedetails" context="id"><t:output value="amount.negate()" format="moneyFormat(amount)"/></t:pagelink>
+            <p:else>
+                <t:pagelink page="invoicedetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
+            </p:else>
+        </t:if>
         <t:if test="isNew()">
             <span class="label label-primary">NEW</span>
         </t:if>
