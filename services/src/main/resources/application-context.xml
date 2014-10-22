@@ -12,7 +12,6 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-    <import resource="namespace-fix.xml" />
 
 	<bean id="gzipFeature" class="org.apache.cxf.transport.common.gzip.GZIPFeature" />
 	<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
@@ -46,7 +45,6 @@
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
         <jaxws:features>
-            <ref bean="namespaceFixV4"/>
         </jaxws:features>
     </jaxws:endpoint>
 
@@ -57,7 +55,6 @@
             <ref bean="v4_collegeRequestInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:features>
-            <ref bean="namespaceFixV6"/>
         </jaxws:features>
     </jaxws:endpoint>
 
@@ -68,7 +65,6 @@
             <ref bean="v4_collegeRequestInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:features>
-            <ref bean="namespaceFixV6"/>
         </jaxws:features>
     </jaxws:endpoint>
 
@@ -79,7 +75,6 @@
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
         <jaxws:features>
-            <ref bean="namespaceFixV7"/>
         </jaxws:features>
 	</jaxws:endpoint>
 
@@ -90,7 +85,6 @@
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
         <jaxws:features>
-            <ref bean="namespaceFixV7"/>
         </jaxws:features>
 	</jaxws:endpoint>
 </beans>
