@@ -25,8 +25,8 @@ import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
@@ -229,7 +229,7 @@ public class PortalService implements IPortalService {
 
     private List<CourseClass> getStudentCourseClasses(Contact contact, CourseClassFilter filter) {
         if (contact.getStudent() != null) {
-            Expression expr = getStudentClassesExpression(contact);
+            Expression expr = getStudentClassesExpression();
 
             SelectQuery q = new SelectQuery(CourseClass.class, expr);
             q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
@@ -278,10 +278,12 @@ public class PortalService implements IPortalService {
         return null;
     }
 
-    private Expression getStudentClassesExpression(Contact contact) {
+    private Expression getStudentClassesExpression() {
         Expression expr = ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, getContact().getStudent());
         expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
         expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
+        expr = expr.andExp(ExpressionFactory.greaterExp(CourseClass.END_DATE_PROPERTY, DateUtils.addMonths(DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH), -1))
+                .orExp(ExpressionFactory.matchExp(CourseClass.IS_DISTANT_LEARNING_COURSE_PROPERTY, true)));
         return expr;
     }
 
@@ -289,6 +291,8 @@ public class PortalService implements IPortalService {
     private Expression getTutorClassesExpression() {
         Expression expr = ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.TUTOR_PROPERTY, getContact().getTutor());
         expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
+        expr = expr.andExp(ExpressionFactory.greaterExp(CourseClass.END_DATE_PROPERTY, DateUtils.addMonths(DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH), -1))
+                .orExp(ExpressionFactory.matchExp(CourseClass.IS_DISTANT_LEARNING_COURSE_PROPERTY, true)));
         return expr;
     }
 
@@ -406,7 +410,7 @@ public class PortalService implements IPortalService {
         }
 
         if (getContact().getStudent() != null) {
-            Expression expression = getStudentClassesExpression(getContact());
+            Expression expression = getStudentClassesExpression();
             expression = expression.andExp(ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, id));
 
             SelectQuery q = new SelectQuery(CourseClass.class, expression);

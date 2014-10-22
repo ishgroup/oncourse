@@ -9,6 +9,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang3.time.DateUtils;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -19,6 +20,7 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -41,6 +43,9 @@ public class PortalServiceTest extends ServiceTest {
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet);
 
         rDataSet.addReplacementObject("[null]", null);
+        rDataSet.addReplacementObject("[currentDate]", DateUtils.addYears(new Date(), 1));
+        rDataSet.addReplacementObject("[oldThenMonth]", DateUtils.addMonths(new Date(), -2));
+        rDataSet.addReplacementObject("[oldThen15Days]", DateUtils.addDays(new Date(), -15));
 
 
         DataSource onDataSource = getDataSource("jdbc/oncourse");
