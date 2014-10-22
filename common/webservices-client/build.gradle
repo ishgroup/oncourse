@@ -29,10 +29,10 @@ project.ext {
     generatedWsdlDir = file("${projectDir}/src/main/java")
     wsdlsToGenerate = [
         ['-xjc', '-xjc-Xinheritance',
-                 '-wsdlLocation', "/wsdl/v7_replication.wsdl",
-                 '-p', 'ish.oncourse.webservices.v7.stubs.replication',
-                 '-b', "$wsdlDir/replication7_binding.xml", 
-                 "$wsdlDir/v7_replication.wsdl"],
+                 '-wsdlLocation', "/wsdl/v8_replication.wsdl",
+                 '-p', 'ish.oncourse.webservices.v8.stubs.replication',
+                 '-b', "$wsdlDir/replication8_binding.xml", 
+                 "$wsdlDir/v8_replication.wsdl"],
     ]
 }
 
