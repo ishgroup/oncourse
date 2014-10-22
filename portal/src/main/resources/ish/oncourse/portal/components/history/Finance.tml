@@ -22,7 +22,7 @@
     </td>
     <td>
       <t:if test="isCreditNote()">
-          <t:pagelink page="invoicedetails" context="id">Credit node ${invoiceNumber}</t:pagelink>
+          <t:pagelink page="invoicedetails" context="id">Credit note ${invoiceNumber}</t:pagelink>
           <p:else>
               <t:pagelink page="invoicedetails" context="id">Invoice ${invoiceNumber}</t:pagelink>
           </p:else>
