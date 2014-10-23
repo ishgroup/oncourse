@@ -15,6 +15,9 @@ function init() {
             cache: false,
             success: function (data) {
                 show()
+            },
+            error: function (jqXHR, textStatus,errorThrown) {
+                window.location.reload();
             }
         });
     });
@@ -102,7 +105,10 @@ function hide() {
         data: data,
         dataType: "json",
         async: false,
-        cache: false
+        cache: false,
+        error: function (jqXHR, textStatus,errorThrown) {
+            window.location.reload();
+        }
     });
 
     return false;
@@ -127,6 +133,9 @@ function show() {
         type: 'GET',
         success: function (data) {
             fillAttendences(data);
+        },
+        error: function (jqXHR, textStatus,errorThrown) {
+            window.location.reload();
         }
 
     });

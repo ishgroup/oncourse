@@ -49,6 +49,7 @@ public class AppModule {
         //we set PERTHREAD scope for the service to be sure that we don't sure any data between requests
         binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
         binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
+        binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
     }
 
     @EagerLoad
@@ -68,9 +69,12 @@ public class AppModule {
         configuration.add(IPageRenderer.class, pageRenderer);
     }
 
+
     public void contributeMasterDispatcher(OrderedConfiguration<Dispatcher> configuration,
-                                           @InjectService("AccessController") Dispatcher accessController) {
+                                           @InjectService("AccessController") Dispatcher accessController,
+                                           @InjectService("ExpiredSessionController") Dispatcher expiredSessionController) {
         configuration.add("AccessController", accessController, "before:PageRender");
+        configuration.add("ExpiredSessionController", expiredSessionController, "before:ComponentEvent");
     }
 
     public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {

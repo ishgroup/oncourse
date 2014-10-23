@@ -16,7 +16,10 @@ function initProfile()
 				async: false,
 				cache: false,
 				success:function(data){
-				}
+				},
+                error: function (jqXHR, textStatus,errorThrown) {
+                    window.location.reload();
+                }
 			});
 		});
 }

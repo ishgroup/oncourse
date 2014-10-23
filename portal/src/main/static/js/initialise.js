@@ -28,6 +28,7 @@ function sendAjaxWithData(actionLink, formData, jdata, callback)
 			}
 		},
 		error:  function(data) {
+            window.location.reload();
 		}
 	});
 }

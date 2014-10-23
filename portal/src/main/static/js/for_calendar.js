@@ -16,9 +16,12 @@ $j.ajax({
   url: '/portal/timetable.calendar:getcalendarevents',
   type: 'GET',
   success: function(data)
-{
- codropsEvents = data;
-}
+    {
+     codropsEvents = data;
+    },
+    error: function (jqXHR, textStatus,errorThrown) {
+        window.location.reload();
+    }
 });
 }
 
