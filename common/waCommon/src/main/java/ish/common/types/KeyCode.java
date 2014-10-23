@@ -73,7 +73,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 
 	TUTOR_ROLE(39, "Tutor roles"), // view always permitted
 
-	APPLICATION(40, "Applications", Mask.VIEW),
+	APPLICATION(40, "Applications"),
 	
 	FINANCIAL_PREFERENCES(60, "Financial preferences", Mask.NONE, Mask.CREATE | Mask.PRINT | Mask.DELETE),
 	GENERAL_PREFERENCES(61, "General preferences", Mask.NONE, Mask.CREATE | Mask.PRINT | Mask.DELETE),
