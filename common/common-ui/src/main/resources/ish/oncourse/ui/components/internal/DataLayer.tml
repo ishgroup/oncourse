@@ -4,30 +4,30 @@
 				<t:if test="cart">
 				{
                     <t:if test="cart.id">
-					    "transactionId": "${cart.id}",
+					    'transactionId': '${cart.id}',
                     </t:if>
-					"transactionDate": "${cart.date}",
-					"transactionType": "",
-					"transactionAffiliation": "${cart.storeName}",
-					"transactionTotal": "<t:output value="cart.price.total" format="moneyFormat"/>",
-					"transactionTax": "<t:output value="cart.price.tax" format="moneyFormat"/>",
-					"transactionShipping": "0",
-					"transactionCurrency": "${cart.price.currency}",
-					"transactionPaymentType": "Credit Card",
-					"transactionPromoCode": "",
+					'transactionDate': '${cart.date}',
+					'transactionType': '',
+					'transactionAffiliation': '${cart.storeName}',
+					'transactionTotal': '<t:output value="cart.price.total" format="moneyFormat"/>',
+					'transactionTax': '<t:output value="cart.price.tax" format="moneyFormat"/>',
+					'transactionShipping': '0',
+					'transactionCurrency': '${cart.price.currency}',
+					'transactionPaymentType': 'Credit Card',
+					'transactionPromoCode': '',
 
-					"transactionProducts":[
+					'transactionProducts':[
 							<t:loop source="cart.products" value="product">
 								{
-									"id": "${product.id.id}",
-                                    <t:if test="product.userId">
-                                        "userId": "${product.userId}",
+									'id': '${product.id.id}',
+                                    <t:if test='product.userId'>
+                                        'userId': '${product.userId}',
                                     </t:if>
-									"sku": "${product.id.sku}",
-									"name": "${product.id.name}",
-									"category": "${product.category.primary}",
-									"price": "<t:output value="product.price.withTax" format="moneyFormat"/>",
-									"quantity": "${product.quantity}"
+									'sku': '${product.id.sku}',
+									'name': '<t:output value="product.id.name" format="escapeQuotes" filter="true"/>',
+									'category': '<t:output value="product.category.primary" format="escapeQuotes" filter="true"/>',
+									'price': '<t:output value="product.price.withTax" format="moneyFormat"/>',
+									'quantity': '${product.quantity}'
 								},
 							</t:loop>
 					]
@@ -37,7 +37,7 @@
 		</script>
 		<t:if test="eventName">
 			<script type="text/javascript">
-				dataLayer.push({"event": "${eventName}"});
+				dataLayer.push({'event': '${eventName}'});
 			</script>
 		</t:if>
 </t:container>

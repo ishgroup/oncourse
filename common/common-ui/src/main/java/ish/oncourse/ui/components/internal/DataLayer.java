@@ -14,7 +14,10 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.text.FieldPosition;
+import java.text.Format;
 import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,6 +57,9 @@ public class DataLayer {
 	@Property
 	private NumberFormat moneyFormat;
 
+	@Property
+	private Format escapeQuotes;
+
 	/**
 	 * Google tag mananger event name.
 	 */
@@ -73,6 +79,21 @@ public class DataLayer {
 		moneyFormat.setMinimumFractionDigits(2);
 		moneyFormat.setMaximumFractionDigits(2);
 		moneyFormat.setGroupingUsed(false);
+
+		escapeQuotes = new Format() {
+			@Override
+			public StringBuffer format(Object object,
+									   StringBuffer toAppendTo, FieldPosition pos) {
+				String s = String.valueOf(object);
+				//escape single quote for json value
+				return toAppendTo.append(s.replaceAll("'", "\\\\'"));
+			}
+
+			@Override
+			public Object parseObject(String source, ParsePosition pos) {
+				throw new UnsupportedOperationException();
+			}
+		};
 
 		initItems();
 
