@@ -4,6 +4,20 @@
 	 xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
 	 project-version="6">
 	<property name="defaultPackage" value="ish.oncourse.model"/>
+	<db-entity name="Application" catalog="willow_college">
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="enrolBy" type="TIMESTAMP" length="19"/>
+		<db-attribute name="feeOverride" type="DECIMAL" length="10" scale="2"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="reason" type="CLOB" length="32000"/>
+		<db-attribute name="source" type="CHAR" isMandatory="true" length="1"/>
+		<db-attribute name="status" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
+	</db-entity>
 	<db-entity name="Attendance" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="attendanceType" type="INTEGER" length="10"/>
@@ -1201,6 +1215,16 @@
 		<db-attribute name="suburb" type="VARCHAR" isPrimaryKey="true" isMandatory="true" length="45"/>
 		<db-attribute name="type" type="VARCHAR" isMandatory="true" length="45"/>
 	</db-entity>
+	<obj-entity name="Application" className="ish.oncourse.model.Application" dbEntityName="Application">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="enrolBy" type="java.util.Date" db-attribute-path="enrolBy"/>
+		<obj-attribute name="feeOverride" type="ish.math.Money" db-attribute-path="feeOverride"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="reason" type="java.lang.String" db-attribute-path="reason"/>
+		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
+		<obj-attribute name="status" type="ish.common.types.ApplicationStatus" db-attribute-path="status"/>
+	</obj-entity>
 	<obj-entity name="Article" superEntityName="ProductItem" className="ish.oncourse.model.Article">
 		<qualifier><![CDATA[type = 1]]></qualifier>
 	</obj-entity>
@@ -2192,6 +2216,15 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
 	</obj-entity>
+	<db-relationship name="college" source="Application" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="course" source="Application" target="Course" toMany="false">
+		<db-attribute-pair source="courseId" target="id"/>
+	</db-relationship>
+	<db-relationship name="student" source="Application" target="Student" toMany="false">
+		<db-attribute-pair source="studentId" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="Attendance" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -2242,6 +2275,9 @@
 	</db-relationship>
 	<db-relationship name="outcome" source="CertificateOutcome" target="Outcome" toMany="false">
 		<db-attribute-pair source="outcomeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="applications" source="College" target="Application" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="attendances" source="College" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
@@ -2545,6 +2581,9 @@
 	</db-relationship>
 	<db-relationship name="students" source="Country" target="Student" toMany="true">
 		<db-attribute-pair source="id" target="countryOfBirthId"/>
+	</db-relationship>
+	<db-relationship name="applications" source="Course" target="Application" toMany="true">
+		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
 	<db-relationship name="college" source="Course" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3032,6 +3071,9 @@
 	<db-relationship name="waitingListSites" source="Site" target="WaitingListSite" toMany="true">
 		<db-attribute-pair source="id" target="siteId"/>
 	</db-relationship>
+	<db-relationship name="applications" source="Student" target="Application" toMany="true">
+		<db-attribute-pair source="id" target="studentId"/>
+	</db-relationship>
 	<db-relationship name="attendances" source="Student" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
@@ -3326,6 +3368,9 @@
 	<db-relationship name="logs" source="WillowUser" target="Log" toMany="true">
 		<db-attribute-pair source="id" target="userId"/>
 	</db-relationship>
+	<obj-relationship name="college" source="Application" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="course" source="Application" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
+	<obj-relationship name="student" source="Application" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="college" source="Attendance" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="marker" source="Attendance" target="Tutor" deleteRule="Nullify" db-relationship-path="marker"/>
 	<obj-relationship name="session" source="Attendance" target="Session" deleteRule="Nullify" db-relationship-path="session"/>
@@ -3343,6 +3388,7 @@
 	<obj-relationship name="certificate" source="CertificateOutcome" target="Certificate" deleteRule="Nullify" db-relationship-path="certificate"/>
 	<obj-relationship name="college" source="CertificateOutcome" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="outcome" source="CertificateOutcome" target="Outcome" deleteRule="Nullify" db-relationship-path="outcome"/>
+	<obj-relationship name="applications" source="College" target="Application" deleteRule="Deny" db-relationship-path="applications"/>
 	<obj-relationship name="attendances" source="College" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
 	<obj-relationship name="binaryInfoRelations" source="College" target="BinaryInfoRelation" deleteRule="Deny" db-relationship-path="binaryInfoRelations"/>
 	<obj-relationship name="binaryInfos" source="College" target="BinaryInfo" deleteRule="Deny" db-relationship-path="binaryInfos"/>
@@ -3430,6 +3476,7 @@
 	<obj-relationship name="college" source="CorporatePassCourseClass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="corporatePass" source="CorporatePassCourseClass" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePass"/>
 	<obj-relationship name="courseClass" source="CorporatePassCourseClass" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
+	<obj-relationship name="applications" source="Course" target="Application" deleteRule="Deny" db-relationship-path="applications"/>
 	<obj-relationship name="college" source="Course" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Course" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="courseModules" source="Course" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
@@ -3584,6 +3631,7 @@
 	<obj-relationship name="country" source="Site" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
 	<obj-relationship name="rooms" source="Site" target="Room" deleteRule="Deny" db-relationship-path="rooms"/>
 	<obj-relationship name="waitingListSites" source="Site" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
+	<obj-relationship name="applications" source="Student" target="Application" deleteRule="Deny" db-relationship-path="applications"/>
 	<obj-relationship name="attendances" source="Student" target="Attendance" deleteRule="Cascade" db-relationship-path="attendances"/>
 	<obj-relationship name="certificates" source="Student" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="college" source="Student" target="College" deleteRule="Nullify" db-relationship-path="college"/>
