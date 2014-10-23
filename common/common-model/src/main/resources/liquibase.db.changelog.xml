@@ -2868,6 +2868,60 @@
             ALTER TABLE WebURLAlias ADD CONSTRAINT WebURLAlias_webNode FOREIGN KEY (webNodeId) REFERENCES WebNode (id) ON DELETE CASCADE;
         </sql>
     </changeSet>
-
-
+	
+	<changeSet id="190" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<not>
+				<tableExists tableName="Application"/>
+			</not>
+		</preConditions>
+		<createTable tableName="Application">
+			<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="angelId" type="BIGINT"/>
+			<column name="created" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modified" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
+			<column name="studentId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="courseId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="source" type="CHAR(1)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="status" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+			<column name="enrolBy" type="DATETIME"/>
+			<column name="feeOverride" type="DECIMAL(10,2)"/>
+			<column name="reason" type="TEXT"/>
+		</createTable>
+		<addForeignKeyConstraint baseTableName="Application" baseColumnNames="studentId"
+								 constraintName="fk_Application_Student"
+								 referencedTableName="Student" referencedColumnNames="id"/>
+		<addForeignKeyConstraint baseTableName="Application" baseColumnNames="courseId"
+								 constraintName="fk_Application_Course"
+								 referencedTableName="Course" referencedColumnNames="id"/>
+		<addForeignKeyConstraint baseTableName="Application" baseColumnNames="collegeId"
+								 constraintName="fk_Application_College"
+								 referencedTableName="College" referencedColumnNames="id"/>
+		<createIndex tableName="Application" indexName="Application_angelId">
+			<column name="angelId"/>
+		</createIndex>
+		<createIndex tableName="Application" indexName="Application_status">
+			<column name="status"/>
+		</createIndex>
+		<createIndex tableName="Application" indexName="Application_enrolBy">
+			<column name="enrolBy"/>
+		</createIndex>
+	</changeSet>
 </databaseChangeLog>
