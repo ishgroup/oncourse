@@ -28,7 +28,7 @@
             <div class="col-lg-2 col-sm-3 col-xs-3 avatar">
                 <div class="row">
                     <t:if test="avatarContextPath"><img src="${avatarContextPath}" height="50" width="50"/></t:if>
-                    <t:unless test="avatarContextPath"><img src="/s/portal/img/ico-student-default.png" height="50" width="50"/></t:unless>
+                    <t:unless test="avatarContextPath"><img src="/portal/img/ico-student-default.png" height="50" width="50"/></t:unless>
                 </div>
             </div>
         </div>
