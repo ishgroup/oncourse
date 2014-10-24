@@ -249,4 +249,8 @@ public class AllV8StubBuildersTest extends AbstractAllStubBuildersTest {
 		this.testStubBuilder(CustomField.class, new CustomFieldStubBuilder(), "foreignId");
 	}
 
+	@Test
+	public void testApplicationStubBuilder() {
+		this.testStubBuilder(Application.class, new ApplicationStubBuilder(), 1L);
+	}
 }

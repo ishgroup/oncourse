@@ -515,4 +515,6 @@
 	<CustomField id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
 				 customFieldTypeId="1" foreignId="1" value="test"/>
 
+	<Application id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+			studentId="1" courseId="1" source="W" status="1" enrolBy="2014-10-24 13:17:54" feeOverride="666" reason="test"/>
 </dataset>

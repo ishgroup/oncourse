@@ -535,6 +535,16 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		customFieldParameters.add(new ReplicationStubFieldParameter("value", String.class));
 		stubsPropertyMap.put(getStubName(CustomFieldStub.class), customFieldParameters);
 
+		List<ReplicationStubFieldParameter> applicationParameters = fillDefaultReplicationStubFields();
+		applicationParameters.add(new ReplicationStubFieldParameter("studentId", Long.class));
+		applicationParameters.add(new ReplicationStubFieldParameter("courseId", Long.class));
+		applicationParameters.add(new ReplicationStubFieldParameter("source", String.class));
+		applicationParameters.add(new ReplicationStubFieldParameter("status", Integer.class));
+		applicationParameters.add(new ReplicationStubFieldParameter("enrolBy", Date.class));
+		applicationParameters.add(new ReplicationStubFieldParameter("feeOverride", BigDecimal.class));
+		applicationParameters.add(new ReplicationStubFieldParameter("reason", String.class));
+		stubsPropertyMap.put(getStubName(ApplicationStub.class), applicationParameters);
+
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParameters = fillDefaultReplicationStubFields();
 		stubsPropertyMap.put(getStubName(ReplicationStub.class), replicationStubParameters);
@@ -865,6 +875,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testCustomFieldStub() {
 		GenericReplicationStub stub = new CustomFieldStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testApplicationStub() {
+		GenericReplicationStub stub = new ApplicationStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 

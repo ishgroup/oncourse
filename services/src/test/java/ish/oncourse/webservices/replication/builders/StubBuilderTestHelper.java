@@ -323,6 +323,8 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
             return ((AvetmissStudentPriorEducation)expectedValue).getDatabaseValue();
 		else if (expectedClass == UsiStatus.class && actualClass == Integer.class)
 			return ((UsiStatus) expectedValue).getDatabaseValue();
+		else if (expectedClass == ApplicationStatus.class && actualClass == Integer.class)
+			return ((ApplicationStatus) expectedValue).getDatabaseValue();
         return expectedValue;
 
 
