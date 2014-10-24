@@ -79,6 +79,7 @@ private Map<String, IWillowUpdater> updaterMap;
 		updaterMap.put(getEntityName(DocumentVersion.class), new DocumentVersionUpdater());
 		updaterMap.put(getEntityName(CustomFieldType.class), new CustomFieldTypeUpdater());
 		updaterMap.put(getEntityName(CustomField.class), new CustomFieldUpdater());
+		updaterMap.put(getEntityName(Application.class), new ApplicationUpdater());
     }
 
 	/**

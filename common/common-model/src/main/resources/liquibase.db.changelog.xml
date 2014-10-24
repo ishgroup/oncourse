@@ -2876,7 +2876,7 @@
 			</not>
 		</preConditions>
 		<createTable tableName="Application">
-			<column name="id" type="BIGINT">
+			<column name="id" type="BIGINT" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"/>
 			</column>
 			<column name="angelId" type="BIGINT"/>
