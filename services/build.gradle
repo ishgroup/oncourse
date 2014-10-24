@@ -6,7 +6,7 @@ dependencies {
 	compile project(':common:common-model')
 	compile project(':common:common-services')
 
-	compile ('ish.oncourse.willow:webservices-client:5.1.26')
+	compile ('ish.oncourse.willow:webservices-client:5.1.28')
 	{
 		//we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
 		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
