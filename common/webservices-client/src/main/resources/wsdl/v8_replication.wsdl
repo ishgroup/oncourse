@@ -12,6 +12,7 @@
             <xs:element name="aclAccessKey" type="tns:aclAccessKeyStub"/>
             <xs:element name="aclRole" type="tns:aclRoleStub"/>
             <!--xs:element name="aclRoleSystemUser" type="tns:aclRoleSystemUserStub"/-->
+			<xs:element name="application" type="tns:applicationStub" />
             <xs:element name="attendance" type="tns:attendanceStub" />
             <xs:element name="binaryData" type="tns:binaryDataStub" />
             <xs:element name="binaryInfo" type="tns:binaryInfoStub" />
@@ -212,6 +213,22 @@
                 </xs:complexContent>
             </xs:complexType>
 
+			<xs:complexType name="applicationStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="courseId" type="xs:long" nillable="false" />
+							<xs:element name="studentId" type="xs:long" nillable="false" />
+							<xs:element name="source" type="xs:string" nillable="false" />
+							<xs:element name="status" type="xs:int" nillable="false" />
+							<xs:element name="enrolBy" type="xs:dateTime" />
+							<xs:element name="feeOverride" type="xs:decimal" />
+							<xs:element name="reason" type="xs:string" />
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			
             <xs:complexType name="attendanceStub">
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
