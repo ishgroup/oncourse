@@ -10,7 +10,7 @@ buildscript {
 
 	dependencies {
 		classpath 'eu.appsatori:gradle-fatjar-plugin:0.2'
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.5-beta-1'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.5'
         classpath 'au.com.ish.gradle:release:2.1.3'
 		classpath 'org.apache.cayenne:cayenne-tools:3.2M1.2'
 	}
@@ -34,13 +34,13 @@ release {
 
 }
 
+apply plugin: 'com.github.ben-manes.versions' // adds the task 'dependencyUpdates'
 
 allprojects {
 	version = release.projectVersion
 	
 	apply plugin: 'java'
 	apply plugin: 'maven'
-	apply plugin: 'versions' // adds the task 'dependencyUpdates'
 	apply plugin: 'jacoco' // adds the task 'jacocoTestReport'
     apply plugin: 'idea' //adds tasks cleanIdeaModule and ideaModule
     apply plugin: 'appBundler'
