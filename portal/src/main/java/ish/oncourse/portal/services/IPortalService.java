@@ -115,4 +115,13 @@ public interface IPortalService {
     public void selectContact(Contact contact);
 
     public void logout();
+
+	/**
+	 * Return URL to profile picture for contact
+	 * check profile pictype in onCourse system at first
+	 * else finde avatar on gravatar servise
+	 * 
+	 * retunr ico-student-default.png (see portal resourses) by default
+	 */
+	public String getProfilePicturePath(Contact contact);
 }

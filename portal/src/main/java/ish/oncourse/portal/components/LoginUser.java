@@ -19,8 +19,6 @@ public class LoginUser {
 	@InjectPage
 	private Login login;
 
-
-
 	@SetupRender
 	void setupRender() {
 		this.contact = portalService.getAuthenticatedUser();
@@ -30,4 +28,9 @@ public class LoginUser {
         portalService.logout();
 		return login;
 	}
+	
+	public String getProfilePicturePath() {
+		return portalService.getProfilePicturePath(contact);
+	}
+
 }

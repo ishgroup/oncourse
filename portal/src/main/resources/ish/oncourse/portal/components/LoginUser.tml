@@ -8,5 +8,6 @@
               <a href="#" t:type="ActionLink" t:id="logout">Logout</a>
             </li>
 		</ul>
+		<img src="${profilePicturePath}" height="50" width="50"/>
 	</div>
 </t:container>

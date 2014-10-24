@@ -3,6 +3,7 @@ package ish.oncourse.portal.components.courseclass;
 
 import ish.common.types.AttendanceType;
 import ish.oncourse.model.*;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.tapestry5.annotations.Parameter;
@@ -24,21 +25,17 @@ public class ClassRollItem {
     @Property
     private Student student;
 
-    private Document avatar;
-
     @Inject
     private PreferenceController preferenceController;
 
-    @Inject
-    private IBinaryDataService binaryDataService;
+	@Inject
+	private IPortalService portalService;
 
     @SetupRender
     boolean setupRender() {
         if (student == null) {
             return false;
         }
-        avatar = binaryDataService.getProfilePicture(student.getContact());
-
         return true;
     }
 
@@ -48,14 +45,10 @@ public class ClassRollItem {
 
     public String getAvatarContextPath()
     {
-        if (avatar != null && isEnableDetails())
-        {
-           return binaryDataService.getUrl(avatar);
-        }
-        else
-        {
-            return null;
-        }
+		if (isEnableDetails()){
+			return portalService.getProfilePicturePath(student.getContact());
+		}
+		return null;
     }
 
     public String getPhoneNumber(){

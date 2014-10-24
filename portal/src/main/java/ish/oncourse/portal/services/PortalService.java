@@ -6,6 +6,7 @@ import ish.common.types.OutcomeStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
@@ -25,6 +26,7 @@ import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
@@ -57,6 +59,9 @@ public class PortalService implements IPortalService {
     @Inject
     private ICayenneService cayenneService;
 
+	@Inject
+	private IBinaryDataService binaryDataService;
+	
     @Inject
     private PreferenceController preferenceController;
 
@@ -773,4 +778,25 @@ public class PortalService implements IPortalService {
     public void logout() {
         authenticationService.logout();
     }
+
+
+	public String getProfilePicturePath(Contact contact) {
+		//check profile pictype at first
+		if (binaryDataService.getProfilePicture(contact) != null) {
+			return binaryDataService.getUrl(binaryDataService.getProfilePicture(contact));
+		}
+		
+		if (contact.getEmailAddress() == null) {
+			return "portal/img/Fico-student-default.png";
+		}
+		
+		//else finde avatar on gravatar servise - use special URL https://s.gravatar.com/avatar/hash?d=default_img_URL
+		//the following steps should be taken to create a hash:
+		//1.Trim leading and trailing whitespace from an email address
+		//2.Force all characters to lower-case
+		//3.md5 hash the final string
+		return "https://s.gravatar.com/avatar/" 
+				+ DigestUtils.md5Hex(contact.getEmailAddress().trim().toLowerCase().getBytes())
+				+ "?d=https%3A%2F%2Fskillsoncourse.com.au%2Fportal%2Fimg%2Fico-student-default.png";
+	}
 }
