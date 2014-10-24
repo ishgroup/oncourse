@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Class"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:timetable">
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:timetable" xmlns:p="tapestry:parameter">
 
 
 
@@ -8,15 +8,15 @@
         </t:if>
         <div class="page-header zero-padding clearfix">
                 <ul class="nav nav-tabs header-tabs">
-                    <span t:type="courseclass/classTabs" courseClass="courseClass"/>
+                    <t:courseclass.classTabs courseClass="courseClass"/>
                 </ul>
                 <h1>
                     <t:if test="url">
                         <a href="${url}" target="_blank">${courseClass.course.name}</a>
+                        <p:else>
+                            <a href="#">${courseClass.course.name}</a>
+                        </p:else>
                     </t:if>
-                    <t:unless test="url">
-                        <a href="#">${courseClass.course.name}</a>
-                    </t:unless>
 
                     <span class="info">
                         <small>  (${courseClass.uniqueIdentifier})</small>
@@ -27,13 +27,13 @@
                 </h1>
         </div>
         <div class="tab-content">
-            <span t:type="courseclass/classDetails" courseClass="courseClass"></span>
-            <span t:type="courseclass/classLocation" courseClass="courseClass" ></span>
+            <t:courseclass.classDetails courseClass="courseClass"/>
+            <t:courseclass.classLocation courseClass="courseClass"/>
             <t:if test="hasResources()">
-                <span t:type="courseclass/classResources" courseClass="courseClass"></span>
+                <t:courseclass.classResources courseClass="courseClass"/>
             </t:if>
             <t:if test="hasResults()">
-                <span t:type="courseclass/classResults" courseClass="courseClass"></span>
+                <t:courseclass.classResults courseClass="courseClass"/>
             </t:if>
         </div>
 

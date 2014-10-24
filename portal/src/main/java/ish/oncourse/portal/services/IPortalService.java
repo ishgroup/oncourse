@@ -116,6 +116,12 @@ public interface IPortalService {
 
     public void logout();
 
+    public Survey getStudentSurveyFor(CourseClass courseClass);
+
+    public Survey createStudentSurveyFor(CourseClass courseClass);
+
+    JSONObject getJSONSurvey(Survey survey);
+
 	/**
 	 * Return URL to profile picture for contact
 	 * check profile pictype in onCourse system at first

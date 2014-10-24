@@ -1059,3 +1059,11 @@
   z-index: 99;
   background: none;
 }
+
+.ui-tooltip {
+  position: absolute;
+  z-index: 1030;
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+}

@@ -16,6 +16,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.FormatUtils;
+import ish.util.SecurityUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
@@ -777,6 +778,51 @@ public class PortalService implements IPortalService {
     @Override
     public void logout() {
         authenticationService.logout();
+    }
+
+    @Override
+    public Survey getStudentSurveyFor(CourseClass courseClass) {
+        return getSurveyBy(getContact().getStudent(), courseClass);
+    }
+
+    @Override
+    public Survey createStudentSurveyFor(CourseClass courseClass) {
+        ObjectContext context = cayenneService.newContext();
+        Survey survey = context.newObject(Survey.class);
+        survey.setCollege(getContact().getCollege());
+        survey.setEnrolment(getEnrolmentBy(getContact().getStudent(), courseClass));
+        survey.setUniqueCode(SecurityUtil.generateRandomPassword(8));
+        return survey;
+    }
+
+    private Enrolment getEnrolmentBy(Student student, CourseClass courseClass) {
+        Expression enrolmentExp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student)
+                .andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass))
+                .andExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
+        SelectQuery query = new SelectQuery(Enrolment.class, enrolmentExp);
+
+        return (Enrolment) Cayenne.objectForQuery(student.getObjectContext(), query);
+    }
+
+
+    private Survey getSurveyBy(Student student, CourseClass courseClass) {
+        Expression surveyExp = ExpressionFactory.matchExp(Survey.ENROLMENT_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, student)
+                .andExp(ExpressionFactory.matchExp(Survey.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass));
+        SelectQuery query = new SelectQuery(Survey.class, surveyExp);
+
+        return (Survey) Cayenne.objectForQuery(student.getObjectContext(), query);
+    }
+
+    @Override
+    public JSONObject getJSONSurvey(Survey survey) {
+        JSONObject result = new JSONObject();
+        result.put(Survey.COURSE_SCORE_PROPERTY, survey.getCourseScore());
+        result.put(Survey.TUTOR_SCORE_PROPERTY, survey.getTutorScore());
+        result.put(Survey.VENUE_SCORE_PROPERTY, survey.getVenueScore());
+        result.put(Survey.UNIQUE_CODE_PROPERTY, survey.getUniqueCode());
+        result.put(Survey.ENROLMENT_PROPERTY, survey.getEnrolment().getId());
+        result.put(Survey.COMMENT_PROPERTY, survey.getComment());
+        return result;
     }
 
 

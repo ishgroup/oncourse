@@ -1,0 +1,31 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div id="class-reviews">
+        <span class="arrow-top"></span>
+        <ul class="rating-class-details">
+            <li>
+                <label>Venue</label>
+                <span class="rate rate-inline venue-rate"/>
+            </li>
+            <li>
+                <label>Course</label>
+                <span class="rate rate-inline course-rate"/>
+            </li>
+            <li>
+                <label>Tutor</label>
+                <span class="rate rate-inline tutor-rate"/>
+            </li>
+        </ul>
+        <textarea rows="5" class="form-control survey-comment" placeholder="Enter comments..."/>
+
+        <!--<div class="checkbox">-->
+            <!--<input type="checkbox" id="public"/>-->
+            <!--<label for="public">-->
+                <!--Allow my comments to be made public.-->
+            <!--</label>-->
+        <!--</div>-->
+        <p>
+            <button type="submit" class="btn btn-primary rate-submit">Submit</button>
+        </p>
+
+    </div>
+</t:container>
