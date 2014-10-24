@@ -1,4 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <h4>Your rating
+            <span class="rating rate-inline rate-class">
+                <input type="hidden" name="score"/>
+            </span>
+    </h4>
     <div id="class-reviews">
         <span class="arrow-top"></span>
         <ul class="rating-class-details">

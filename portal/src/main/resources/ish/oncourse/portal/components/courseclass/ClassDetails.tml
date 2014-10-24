@@ -8,11 +8,6 @@
                     class="icon-arrow-down"></span> <span class="text">Show all</span></a></p>
         </div>
 
-        <h4>Your rating
-            <span class="rating rate-inline rate-class">
-                <input type="hidden" name="score"/>
-            </span>
-        </h4>
         <t:if test="!isTutor">
             <t:surveys.studentsurvey courseClass="courseClass"/>
         </t:if>
