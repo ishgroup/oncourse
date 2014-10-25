@@ -789,8 +789,8 @@ public class PortalService implements IPortalService {
     public Survey createStudentSurveyFor(CourseClass courseClass) {
         ObjectContext context = cayenneService.newContext();
         Survey survey = context.newObject(Survey.class);
-        survey.setCollege(getContact().getCollege());
-        survey.setEnrolment(getEnrolmentBy(getContact().getStudent(), courseClass));
+        survey.setCollege(context.localObject(getContact().getCollege()));
+        survey.setEnrolment(context.localObject(getEnrolmentBy(getContact().getStudent(), courseClass)));
         survey.setUniqueCode(SecurityUtil.generateRandomPassword(8));
         return survey;
     }
@@ -813,14 +813,38 @@ public class PortalService implements IPortalService {
         return (Survey) Cayenne.objectForQuery(student.getObjectContext(), query);
     }
 
+    public Survey getAverageSurveyFor(CourseClass courseClass)
+    {
+        ObjectContext context = cayenneService.newNonReplicatingContext();
+        Expression surveyExp = ExpressionFactory.matchExp(Survey.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass);
+        SelectQuery query = new SelectQuery(Survey.class, surveyExp);
+        List<Survey> surveys = context.performQuery(query);
+
+        Survey result = new Survey();
+        result.setCourseScore(0);
+        result.setVenueScore(0);
+        result.setTutorScore(0);
+        for (Survey survey : surveys) {
+            result.setCourseScore(result.getCourseScore() + survey.getCourseScore());
+            result.setVenueScore(result.getCourseScore() + survey.getVenueScore());
+            result.setTutorScore(result.getTutorScore() + survey.getTutorScore());
+        }
+
+        int size = surveys.size();
+        if (size != 0) {
+            result.setCourseScore(((int) Math.floor(result.getCourseScore() / size)));
+            result.setTutorScore(((int) Math.floor(result.getCourseScore() / size)));
+            result.setVenueScore(((int) Math.floor(result.getCourseScore() / size)));
+        }
+        return result;
+    }
+
     @Override
     public JSONObject getJSONSurvey(Survey survey) {
         JSONObject result = new JSONObject();
         result.put(Survey.COURSE_SCORE_PROPERTY, survey.getCourseScore());
         result.put(Survey.TUTOR_SCORE_PROPERTY, survey.getTutorScore());
         result.put(Survey.VENUE_SCORE_PROPERTY, survey.getVenueScore());
-        result.put(Survey.UNIQUE_CODE_PROPERTY, survey.getUniqueCode());
-        result.put(Survey.ENROLMENT_PROPERTY, survey.getEnrolment().getId());
         result.put(Survey.COMMENT_PROPERTY, survey.getComment());
         return result;
     }

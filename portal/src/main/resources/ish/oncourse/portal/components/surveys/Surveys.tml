@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <h4>Your rating
+    <h4>Class rating
             <span class="rating rate-inline rate-class">
                 <input type="hidden" name="score"/>
             </span>
@@ -20,17 +20,19 @@
                 <span class="rate rate-inline tutor-rate"/>
             </li>
         </ul>
-        <textarea rows="5" class="form-control survey-comment" placeholder="Enter comments..."/>
+        <t:if test="!readOnly">
+            <textarea rows="5" class="form-control survey-comment" placeholder="Enter comments..."/>
 
-        <!--<div class="checkbox">-->
+            <!--<div class="checkbox">-->
             <!--<input type="checkbox" id="public"/>-->
             <!--<label for="public">-->
-                <!--Allow my comments to be made public.-->
+            <!--Allow my comments to be made public.-->
             <!--</label>-->
-        <!--</div>-->
-        <p>
-            <button type="submit" class="btn btn-primary rate-submit">Submit</button>
-        </p>
+            <!--</div>-->
+            <p>
+                <button type="submit" class="btn btn-primary rate-submit">Submit</button>
+            </p>
+        </t:if>
 
     </div>
 </t:container>

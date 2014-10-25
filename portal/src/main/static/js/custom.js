@@ -155,11 +155,14 @@ $j(document).ready(function () {
 	/* Timetable Session slider ends */
 	
 	var courses_length = $j(".classes-content > li").length;
-	if(courses_length <= 3)
+    //.classes-content section contains past classes else and they are hidden by default
+    var hidden_courses_length = $j(".classes-content > li[style='display: none;']").length;
+    var visible_courses_length =  courses_length - hidden_courses_length;
+	if(courses_length <= 3 && hidden_courses_length == 0)
 		$j(".expanded .classes-content + .list-inline .show-all-sessions").hide();
-	$j(".expanded .classes-content > li:nth-child(3) ~ li").hide();
+	$j(".expanded .classes-content > li:nth-child("+visible_courses_length+") ~ li").hide();
 	$j('.show-all-sessions').click(function(){
-		$j(".expanded .classes-content > li:nth-child(3) ~ li").slideDown();
+		$j(".expanded .classes-content > li:nth-child("+visible_courses_length+") ~ li").slideDown();
 		$j(this).hide();
 		return false;
 	});

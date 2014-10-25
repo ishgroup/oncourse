@@ -116,18 +116,32 @@ public interface IPortalService {
 
     public void logout();
 
-    public Survey getStudentSurveyFor(CourseClass courseClass);
+    /**
+     * returns survey for selected student and for the <code>courseClass</code>
+     */
+    Survey getStudentSurveyFor(CourseClass courseClass);
 
-    public Survey createStudentSurveyFor(CourseClass courseClass);
+    /**
+     * create new survey object for selected student and for the <code>courseClass</code>
+     */
+    Survey createStudentSurveyFor(CourseClass courseClass);
 
+    /**
+     * serializes the <code>Survey</code> to json object.
+     */
     JSONObject getJSONSurvey(Survey survey);
+
+    /**
+     * returns average survey for the <code>courseClass</code>
+     */
+    Survey getAverageSurveyFor(CourseClass courseClass);
 
 	/**
 	 * Return URL to profile picture for contact
 	 * check profile pictype in onCourse system at first
 	 * else finde avatar on gravatar servise
 	 * 
-	 * retunr ico-student-default.png (see portal resourses) by default
+	 * returns ico-student-default.png (see portal resourses) by default
 	 */
 	public String getProfilePicturePath(Contact contact);
 }
