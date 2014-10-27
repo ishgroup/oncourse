@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v4.updaters;
 
+import ish.common.types.CourseEnrolmentType;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -44,5 +45,7 @@ public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 		}
 
 		entity.setSearchText(stub.getSearchText());
+		//required from v8; 
+		entity.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
 	}
 }

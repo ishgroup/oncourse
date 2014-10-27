@@ -11,12 +11,14 @@
     <Course id="10" collegeId="10" angelId="10" code="AAV"
             isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
             created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
-            allowWaitingList="1" name="Managerial Accounting"/>
+            allowWaitingList="1" name="Managerial Accounting"
+			enrolmentType="1"/>
 
     <Course id="11" collegeId="10" angelId="11" code="AAV2"
             isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
             created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
-            allowWaitingList="1" name="Managerial Accounting"/>
+            allowWaitingList="1" name="Managerial Accounting"
+			enrolmentType="1"/>
 
     <Site id="10" collegeId="10" angelId="10" isWebVisible="0"
           created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
