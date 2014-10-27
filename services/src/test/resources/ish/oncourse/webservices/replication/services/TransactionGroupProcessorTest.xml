@@ -18,7 +18,7 @@
     <Contact id="1" angelId="1" collegeId="1" studentId="1" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="1@kremlin.ru" familyName="1" givenName="1"  faxNumber="1234-567" suburb="Moscow"/>
 
     <Room id="1" angelId="1" collegeId="1"/>
-    <Course id="1" angelId="1" collegeId="1" code="def123" detail="Course description goes here." name="Basic computer skills"/>
+    <Course id="1" angelId="1" collegeId="1" code="def123" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
     <CourseClass id="1" angelId="1" maximumPlaces="3" code="200701RW" collegeId="1" countOfSessions="3" courseId="1" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" roomId="1" isDistantLearningCourse="0"/>
     <Enrolment id="1" angelId="1" collegeId="1" courseClassId="1" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
     <Invoice id="1" angelId="1" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91"
@@ -66,7 +66,7 @@
     <Contact id="2" angelId="2" collegeId="1" studentId="2" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="2@kremlin.ru" familyName="2" givenName="2"  faxNumber="1234-567" suburb="Moscow"/>
 
     <Room id="2" angelId="2" collegeId="1"/>
-    <Course id="2" angelId="2" collegeId="1" code="def123" detail="Course description goes here." name="Basic computer skills"/>
+    <Course id="2" angelId="2" collegeId="1" code="def123" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
     <CourseClass id="2" angelId="2" maximumPlaces="3" code="200701RW" collegeId="1" countOfSessions="3" courseId="2" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" roomId="1" isDistantLearningCourse="0"/>
     <Enrolment id="2" angelId="2" collegeId="1" courseClassId="2" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
     <Invoice id="2" angelId="2" source="O" amountOwing="0.00" contactId="2" collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91"

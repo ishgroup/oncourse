@@ -9,12 +9,12 @@
 
     <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
 
-    <Course id="1" collegeId="1" code="1" detail="Course1" name="Course1"/>
-    <Course id="2" collegeId="1" code="2" detail="Course2" name="Basic2"/>
-    <Course id="3" collegeId="1" code="3" detail="Course3" name="Basic3"/>
+    <Course id="1" collegeId="1" code="1" detail="Course1" name="Course1" enrolmentType="1"/>
+    <Course id="2" collegeId="1" code="2" detail="Course2" name="Basic2" enrolmentType="1"/>
+    <Course id="3" collegeId="1" code="3" detail="Course3" name="Basic3" enrolmentType="1"/>
 
-    <Course id="4" collegeId="1" code="4" detail="Course4" name="Course4"/>
-    <Course id="5" collegeId="1" code="5" detail="Course5" name="Course5"/>
+    <Course id="4" collegeId="1" code="4" detail="Course4" name="Course4" enrolmentType="1"/>
+    <Course id="5" collegeId="1" code="5" detail="Course5" name="Course5" enrolmentType="1"/>
 
     <Room id="1" collegeId="1"/>
     <Room id="2" collegeId="1"/>
