@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="nominalHours" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
  *         &lt;element name="searchText" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="qualificationId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="enrolmentType" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -53,7 +54,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "name",
     "nominalHours",
     "searchText",
-    "qualificationId"
+    "qualificationId",
+    "enrolmentType"
 })
 public class CourseStub
     extends ReplicationStub
@@ -93,6 +95,10 @@ public class CourseStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long qualificationId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer enrolmentType;
 
     /**
      * Gets the value of the allowWaitingList property.
@@ -380,6 +386,30 @@ public class CourseStub
      */
     public void setQualificationId(Long value) {
         this.qualificationId = value;
+    }
+
+    /**
+     * Gets the value of the enrolmentType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getEnrolmentType() {
+        return enrolmentType;
+    }
+
+    /**
+     * Sets the value of the enrolmentType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setEnrolmentType(Integer value) {
+        this.enrolmentType = value;
     }
 
 }

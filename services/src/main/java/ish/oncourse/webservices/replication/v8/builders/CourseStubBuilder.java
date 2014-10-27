@@ -28,6 +28,7 @@ public class CourseStubBuilder extends AbstractWillowStubBuilder<Course, CourseS
 		stub.setAllowWaitingList(entity.getAllowWaitingList());
 		stub.setVETCourse(entity.getIsVETCourse());
 		stub.setWebVisible(entity.getIsWebVisible());
+		stub.setEnrolmentType(entity.getEnrolmentType());
 		return stub;
 	}
 }

@@ -38,5 +38,6 @@ public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 			entity.setNominalHours(stub.getNominalHours().floatValue());
 		}
 		entity.setSearchText(stub.getSearchText());
+		entity.setEnrolmentType(stub.getEnrolmentType());
 	}
 }

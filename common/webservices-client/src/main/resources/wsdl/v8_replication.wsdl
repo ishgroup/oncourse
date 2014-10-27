@@ -429,6 +429,7 @@
                             <xs:element name="nominalHours" type="xs:decimal" />
                             <xs:element name="searchText" type="xs:string" />
                             <xs:element name="qualificationId" type="xs:long" />
+							<xs:element name="enrolmentType" type="xs:int" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
