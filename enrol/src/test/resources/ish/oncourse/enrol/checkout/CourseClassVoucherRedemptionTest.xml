@@ -32,7 +32,8 @@
 	<Course id="1001" collegeId="1" angelId="200" code="AAV"
 			isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
 			created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
-			allowWaitingList="1" name="Managerial Accounting" />
+			allowWaitingList="1" name="Managerial Accounting"
+			enrolmentType="1"/>
 	
 	<CourseClass id="1001" collegeId="1" code="1" courseId="1001"
 				 roomId="1181746" angelId="200" startDate="2011-10-12 00:55:59.0"
@@ -45,7 +46,8 @@
 	<Course id="1002" collegeId="1" angelId="201" code="AAVV"
 			isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
 			created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
-			allowWaitingList="1" name="Managerial Accounting Accounting" />
+			allowWaitingList="1" name="Managerial Accounting Accounting"
+			enrolmentType="1"/>
 
 	<CourseClass id="1002" collegeId="1" code="1" courseId="1002"
 				 roomId="1181746" angelId="201" startDate="2011-10-12 00:55:59.0"

@@ -102,15 +102,18 @@
 	<Course id="1001" collegeId="1" angelId="1001" code="AAV"
 		isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
 		created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
-		allowWaitingList="1" name="Managerial Accounting" />
+		allowWaitingList="1" name="Managerial Accounting"
+		enrolmentType="1"/>
 	<Course id="1002" collegeId="1" angelId="1002" code="MSC"
 		isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
 		created="2011-09-12 00:57:38.0" modified="2011-09-12 00:59:00.0"
-		allowWaitingList="1" name="Microsoft Word" />
+		allowWaitingList="1" name="Microsoft Word"
+		enrolmentType="1"/>
 	<Course id="1003" collegeId="1" angelId="1003" code="PPO"
 		isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
 		created="2011-09-12 00:59:38.0" modified="2011-09-12 01:02:00.0"
-		allowWaitingList="1" name="Adobe Photoshop essentials" />
+		allowWaitingList="1" name="Adobe Photoshop essentials"
+		enrolmentType="1"/>
 
 	<CourseClass id="1001" collegeId="1" code="1" courseId="1001"
 		roomId="1" angelId="1001" startDate="2011-10-12 00:55:59.0"
