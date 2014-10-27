@@ -5,16 +5,19 @@ package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
 
-public enum EnrolmentType implements DisplayableExtendedEnumeration<Integer> {
-	
-	OPEN(1, "Open enrolment"),
-	
-	BY_APPLICATION(2, "Enrolment by application");
+/**
+ * enumeration of available enrolment types to course
+ */
+public enum CourseEnrolmentType implements DisplayableExtendedEnumeration<Integer> {
+
+	OPEN_FOR_ENROLMENT(1, "Open enrolment"),
+
+	ENROLMENT_BY_APPLICATION(2, "Enrolment by application");
 
 	private String displayName;
 	private int value;
 
-	private EnrolmentType(int value, String displayName) {
+	private CourseEnrolmentType(int value, String displayName) {
 		this.value = value;
 		this.displayName = displayName;
 	}
