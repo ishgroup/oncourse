@@ -220,6 +220,7 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="enrolmentType" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="128"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isSufficientForQualification" type="BIT"/>
@@ -1392,6 +1393,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
+		<obj-attribute name="enrolmentType" type="ish.common.types.CourseEnrolmentType" db-attribute-path="enrolmentType"/>
 		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
 		<obj-attribute name="isSufficientForQualification" type="java.lang.Boolean" db-attribute-path="isSufficientForQualification"/>
 		<obj-attribute name="isVETCourse" type="java.lang.Boolean" db-attribute-path="isVETCourse"/>
@@ -3483,6 +3485,7 @@
 	<obj-relationship name="fromCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseFromRelation"/>
 	<obj-relationship name="qualification" source="Course" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
 	<obj-relationship name="toCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseToRelation"/>
+	<obj-relationship name="voucherProductCourses" source="Course" target="VoucherProductCourse" deleteRule="Deny" db-relationship-path="voucherProductCourses"/>
 	<obj-relationship name="waitingLists" source="Course" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
 	<obj-relationship name="college" source="CourseClass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="CourseClass" target="Course" deleteRule="Nullify" db-relationship-path="course"/>

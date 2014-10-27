@@ -2924,4 +2924,17 @@
 			<column name="enrolBy"/>
 		</createIndex>
 	</changeSet>
+
+	<changeSet id="191" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Course" columnName="enrolmentType"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Course">
+			<column name="enrolmentType" type="INTEGER" defaultValueNumeric="1">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

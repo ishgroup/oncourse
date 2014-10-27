@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.CourseEnrolmentType;
 import ish.oncourse.model.Application;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseCourseRelation;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.Qualification;
+import ish.oncourse.model.VoucherProductCourse;
 import ish.oncourse.model.WaitingList;
 
 /**
@@ -27,6 +29,7 @@ public abstract class _Course extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String DETAIL_PROPERTY = "detail";
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
+    public static final String ENROLMENT_TYPE_PROPERTY = "enrolmentType";
     public static final String FIELD_OF_EDUCATION_PROPERTY = "fieldOfEducation";
     public static final String IS_SUFFICIENT_FOR_QUALIFICATION_PROPERTY = "isSufficientForQualification";
     public static final String IS_VETCOURSE_PROPERTY = "isVETCourse";
@@ -86,6 +89,13 @@ public abstract class _Course extends CayenneDataObject {
     }
     public String getDetailTextile() {
         return (String)readProperty(DETAIL_TEXTILE_PROPERTY);
+    }
+
+    public void setEnrolmentType(CourseEnrolmentType enrolmentType) {
+        writeProperty(ENROLMENT_TYPE_PROPERTY, enrolmentType);
+    }
+    public CourseEnrolmentType getEnrolmentType() {
+        return (CourseEnrolmentType)readProperty(ENROLMENT_TYPE_PROPERTY);
     }
 
     public void setFieldOfEducation(String fieldOfEducation) {
