@@ -1,6 +1,7 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Site;
+import ish.oncourse.ui.utils.JSONFormat;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -48,12 +49,16 @@ public class GoogleDirections {
 	@Property
 	private String directionsFrom;
 
+	@Property
+	private JSONFormat jsonFormat;
+
 	public static final String NO_MATCH_IMAGE = "/s/img/marker-no-match.png";
 	public static final String PARTIAL_IMAGE = "/s/img/marker-match-partial.png";
 	public static final String PERFECT_IMAGE = "/s/img/marker-match-exact.png";
 
 	@SetupRender
 	public void beforeRender() {
+		jsonFormat = new JSONFormat();
 		sitesArray = new ArrayList<>();
 		for (Site item : sites) {
 			if (item.isHasCoordinates()) {

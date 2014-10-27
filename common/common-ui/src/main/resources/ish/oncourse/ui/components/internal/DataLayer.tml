@@ -24,8 +24,8 @@
                                         'userId': '${product.userId}',
                                     </t:if>
 									'sku': '${product.id.sku}',
-									'name': '<t:output value="product.id.name" format="escapeQuotes" filter="true"/>',
-									'category': '<t:output value="product.category.primary" format="escapeQuotes" filter="true"/>',
+									'name': '<t:output value="product.id.name" format="jsonFormat" filter="true"/>',
+									'category': '<t:output value="product.category.primary" format="jsonFormat" filter="true"/>',
 									'price': '<t:output value="product.price.withTax" format="moneyFormat"/>',
 									'quantity': '${product.quantity}'
 								},

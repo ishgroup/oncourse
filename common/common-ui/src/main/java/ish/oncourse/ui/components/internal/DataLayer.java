@@ -8,6 +8,7 @@ import ish.oncourse.services.datalayer.DataLayerFactory;
 import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.ui.utils.JSONFormat;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -58,7 +59,7 @@ public class DataLayer {
 	private NumberFormat moneyFormat;
 
 	@Property
-	private Format escapeQuotes;
+	private JSONFormat jsonFormat;
 
 	/**
 	 * Google tag mananger event name.
@@ -80,20 +81,7 @@ public class DataLayer {
 		moneyFormat.setMaximumFractionDigits(2);
 		moneyFormat.setGroupingUsed(false);
 
-		escapeQuotes = new Format() {
-			@Override
-			public StringBuffer format(Object object,
-									   StringBuffer toAppendTo, FieldPosition pos) {
-				String s = String.valueOf(object);
-				//escape single quote for json value
-				return toAppendTo.append(s.replaceAll("'", "\\\\'"));
-			}
-
-			@Override
-			public Object parseObject(String source, ParsePosition pos) {
-				throw new UnsupportedOperationException();
-			}
-		};
+		jsonFormat = new JSONFormat();
 
 		initItems();
 

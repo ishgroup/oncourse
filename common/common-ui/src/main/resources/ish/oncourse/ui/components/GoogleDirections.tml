@@ -16,8 +16,8 @@
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
 				near = "${searchingNear}";
-				vSiteAddress = "${address}";
-				vFrom = "${directionsFrom}";
+				vSiteAddress = "<t:output value="address" format="jsonFormat" filter="true"/>";
+				vFrom = "<t:output value="directionsFrom" format="jsonFormat" filter="true"/>";
 				showNearMarker = "${hasGlobalPosition}";
 				showMapItems = "${showMapItems}";
 				zoom = null;
