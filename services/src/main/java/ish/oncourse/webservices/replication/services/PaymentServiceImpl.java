@@ -18,7 +18,7 @@ import ish.oncourse.webservices.replication.services.IReplicationService.Interna
 import ish.oncourse.webservices.replication.v4.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.FaultCode;
-import ish.oncourse.webservices.usi.USIVerificationUtil;
+import ish.oncourse.webservices.util.USIVerificationUtil;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;

@@ -1,16 +1,12 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.webservices.usi;
+package ish.oncourse.webservices.util;
 
 import ish.common.types.USIFieldStatus;
 import ish.common.types.USIVerificationRequest;
 import ish.common.types.USIVerificationResult;
 import ish.common.types.USIVerificationStatus;
-import ish.oncourse.webservices.util.GenericParameterEntry;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.util.SupportedVersions;
 
 import java.text.DateFormat;
 import java.text.ParseException;
