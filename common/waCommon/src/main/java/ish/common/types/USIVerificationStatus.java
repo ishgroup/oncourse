@@ -1,31 +1,31 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.webservices.usi;
+package ish.common.types;
 
-public enum USIStatus {
-	
+public enum USIVerificationStatus {
+
 	VALID("Valid"),
 	INVALID("Invalid"),
 	DEACTIVATED("Deactivated");
-	
+
 	private String stringValue;
-	
-	private USIStatus(String stringValue) {
+
+	private USIVerificationStatus(String stringValue) {
 		this.stringValue = stringValue;
 	}
-	
+
 	public String getStringValue() {
 		return stringValue;
 	}
-	
-	public static USIStatus fromString(String stringValue) {
-		for (USIStatus usiStatus : values()) {
+
+	public static USIVerificationStatus fromString(String stringValue) {
+		for (USIVerificationStatus usiStatus : values()) {
 			if (usiStatus.getStringValue().equals(stringValue)) {
 				return usiStatus;
 			}
 		}
-		
+
 		return null;
 	}
 }
