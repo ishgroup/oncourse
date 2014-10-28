@@ -92,7 +92,7 @@
 			isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
 			allowWaitingList="1" name="Managerial Accounting" detail="detail"
 			detail_textile="detailTextile" fieldOfEducation="fieldOfEducation"
-			nominalHours="1.1" qualificationId="1" searchText="searchText"/>
+			nominalHours="1.1" qualificationId="1" searchText="searchText" enrolmentType="1"/>
 
 	<CourseClass id="1" collegeId="1"
 				 code="1" courseId="1" roomId="1" angelId="1"
@@ -110,7 +110,7 @@
 			isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
 			allowWaitingList="1" name="Managerial Accounting" detail="detail"
 			detail_textile="detailTextile" fieldOfEducation="fieldOfEducation"
-			nominalHours="1.1" qualificationId="1" searchText="searchText"/>
+			nominalHours="1.1" qualificationId="1" searchText="searchText" enrolmentType="1"/>
 
 	<CourseClass id="2" collegeId="1"
 				 code="1" courseId="2" roomId="1" angelId="1"

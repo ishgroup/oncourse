@@ -8,6 +8,8 @@ package ish.oncourse.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
 import ish.oncourse.test.ContextUtils;
 
@@ -106,6 +108,7 @@ public class CourseClassTest {
 
 		Course course = context.newObject(Course.class);
 		course.setCollege(college);
+		course.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
 
 		firstClass = context.newObject(CourseClass.class);
 		firstClass.setCourse(course);

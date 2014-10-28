@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.CourseEnrolmentType;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
@@ -40,6 +41,7 @@ public class PaymentInLineTest {
 		
 		course = context.newObject(Course.class);
 		course.setCollege(college);
+		course.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
 		
 		courseClass = context.newObject(CourseClass.class);
 		courseClass.setCourse(course);

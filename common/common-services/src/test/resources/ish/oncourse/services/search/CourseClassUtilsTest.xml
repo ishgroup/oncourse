@@ -7,7 +7,7 @@
 
     <Room id="1" collegeId="1"/>
 
-    <Course id="1" collegeId="1" code="1" detail="Course1" name="Course1"/>
+    <Course id="1" collegeId="1" code="1" detail="Course1" name="Course1" enrolmentType="1"/>
 
 
     <!--daytime-->

@@ -6,8 +6,8 @@
 	<Student id="3" collegeId="1"/>
 	<Student id="4" collegeId="1"/>
 	
-	<Course id="1" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills"/>
-	<Course id="2" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills2"/>
+	<Course id="1" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
+	<Course id="2" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills2" enrolmentType="1"/>
 	
 	<WaitingList id="1" angelId="1" collegeId="1" courseId="1" detail="test" potentialStudents="5" studentId="4"/>
 	<WaitingList id="2" angelId="2" collegeId="1" courseId="2" detail="test" potentialStudents="10" studentId="4"/>

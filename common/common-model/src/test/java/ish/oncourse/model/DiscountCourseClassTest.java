@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.CourseEnrolmentType;
 import ish.oncourse.test.ContextUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.validation.ValidationException;
@@ -50,6 +51,7 @@ public class DiscountCourseClassTest {
          */
         course = context.newObject(Course.class);
         course.setCollege(college);
+		course.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
 
         context.commitChanges();
         /**

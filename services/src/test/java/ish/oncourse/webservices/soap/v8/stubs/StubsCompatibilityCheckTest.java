@@ -159,6 +159,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		courseParameters.add(new ReplicationStubFieldParameter("nominalHours", BigDecimal.class));
 		courseParameters.add(new ReplicationStubFieldParameter("searchText", String.class));
 		courseParameters.add(new ReplicationStubFieldParameter("qualificationId", Long.class));
+		courseParameters.add(new ReplicationStubFieldParameter("enrolmentType", Integer.class));
 		stubsPropertyMap.put(getStubName(CourseStub.class), courseParameters);
 		final List<ReplicationStubFieldParameter> discountParameters = fillDefaultReplicationStubFields();
 		discountParameters.add(new ReplicationStubFieldParameter("code", String.class));
@@ -179,7 +180,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		discountParameters.add(new ReplicationStubFieldParameter("discountType", Integer.class));
 		discountParameters.add(new ReplicationStubFieldParameter("hideOnWeb", Boolean.class));
 		discountParameters.add(new ReplicationStubFieldParameter("availableOnWeb", Boolean.class));
-		discountParameters.add(new ReplicationStubFieldParameter("enrolmentType", Integer.class));
 		stubsPropertyMap.put(getStubName(DiscountStub.class), discountParameters);
 
 		List<ReplicationStubFieldParameter> enrolmentParameters = fillDefaultReplicationStubFields();

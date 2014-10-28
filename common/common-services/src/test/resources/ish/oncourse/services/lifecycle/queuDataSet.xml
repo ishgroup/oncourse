@@ -10,12 +10,12 @@
 	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
 	<WebSite id="2" collegeId="2" name="Tasmania Adult Education" siteKey="tss" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
-	<Course id="3" collegeId="1" code="BNN-453" angelId="1" detail="Course Basic New Test" name="Course Basic New Test"/>
-	<Course id="4" collegeId="1" code="CNN-876" angelId="1" detail="Basic Art Work" name="Basic Art Work"/>
-	<Course id="5" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills"/>
+	<Course id="3" collegeId="1" code="BNN-453" angelId="1" detail="Course Basic New Test" name="Course Basic New Test" enrolmentType="1"/>
+	<Course id="4" collegeId="1" code="CNN-876" angelId="1" detail="Basic Art Work" name="Basic Art Work" enrolmentType="1"/>
+	<Course id="5" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
 	
-	<Course id="6" collegeId="2" code="BNN-453" angelId="34" detail="Course two New Test" name="Course two New Test"/>
-	<Course id="7" collegeId="2" code="BNN-453" angelId="45" detail="Course three New Test" name="Course three New Test"/>
+	<Course id="6" collegeId="2" code="BNN-453" angelId="34" detail="Course two New Test" name="Course two New Test" enrolmentType="1"/>
+	<Course id="7" collegeId="2" code="BNN-453" angelId="45" detail="Course three New Test" name="Course three New Test" enrolmentType="1"/>
 	
 	<Room id="1" collegeId="1"/>
 	<CourseClass id="10" code="200701RW" collegeId="1" countOfSessions="3" courseId="5" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" roomId="1" maximumPlaces="3" isDistantLearningCourse="0"/>

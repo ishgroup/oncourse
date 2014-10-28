@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Date;
 
+import ish.common.types.CourseEnrolmentType;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +43,7 @@ public class TaggableListenerTest extends ServiceTest {
 		Course course = context.newObject(Course.class);
 		course.setCollege(college);
 		course.setAngelId(1L);
+		course.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
 		
 		Taggable t = context.newObject(Taggable.class);
 		t.setCollege(college);

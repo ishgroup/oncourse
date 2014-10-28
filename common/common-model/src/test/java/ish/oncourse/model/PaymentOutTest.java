@@ -3,6 +3,8 @@ package ish.oncourse.model;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import ish.common.types.CourseEnrolmentType;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.test.ContextUtils;
 import java.util.Date;
@@ -33,6 +35,7 @@ public class PaymentOutTest {
 
 		this.course = context.newObject(Course.class);
 		course.setCollege(college);
+		course.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
 
 		this.courseClass = context.newObject(CourseClass.class);
 		courseClass.setCourse(course);

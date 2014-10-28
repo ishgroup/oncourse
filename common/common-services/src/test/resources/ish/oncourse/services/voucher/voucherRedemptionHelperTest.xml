@@ -14,13 +14,15 @@
             isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
             allowWaitingList="1" name="Test 1" detail="detail"
             detail_textile="detailTextile" fieldOfEducation="fieldOfEducation"
-            nominalHours="1.1" qualificationId="1" searchText="searchText"/>
+            nominalHours="1.1" qualificationId="1" searchText="searchText"
+			enrolmentType="1"/>
 
     <Course id="2" collegeId="1" angelId="2" code="ATT2" isWebVisible="1" isVETCourse="0"
             isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
             allowWaitingList="1" name="Test 2" detail="detail"
             detail_textile="detailTextile" fieldOfEducation="fieldOfEducation"
-            nominalHours="1.1" qualificationId="1" searchText="searchText"/>
+            nominalHours="1.1" qualificationId="1" searchText="searchText"
+			enrolmentType="1"/>
 		
     <Site id="1" collegeId="1" angelId="1" isWebVisible="0" created="2011-09-12 00:17:18.0"
           modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"

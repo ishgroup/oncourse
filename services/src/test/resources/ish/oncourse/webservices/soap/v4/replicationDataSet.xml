@@ -40,7 +40,7 @@
 		isMarketingViaEmailAllowed="1" isMarketingViaSMSAllowed="1" isMarketingViaPostAllowed="1"/>
 	
 	<Room id="1" angelId="1" collegeId="1"/>
-	<Course id="1" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills"/>
+	<Course id="1" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
 	<CourseClass id="1482" maximumPlaces="3" code="200701RW" collegeId="1" countOfSessions="3" courseId="1" deliveryMode="1" detail="Test Course Class" 
 		feeExGst="20.00" feeGst="1.25" roomId="1" isDistantLearningCourse="0"/>
 	<Enrolment id="1" source="O" angelid = "1" collegeId="1" courseClassId="1482" studentId="200" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3"/>
