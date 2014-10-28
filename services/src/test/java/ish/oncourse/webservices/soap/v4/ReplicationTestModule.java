@@ -10,6 +10,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.system.ICollegeService;
+import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.replication.services.*;
@@ -19,6 +20,7 @@ import ish.oncourse.webservices.replication.v4.builders.TransactionStubBuilderIm
 import ish.oncourse.webservices.replication.v4.builders.WillowStubBuilderImpl;
 import ish.oncourse.webservices.replication.v4.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.WillowUpdaterImpl;
+import ish.oncourse.webservices.usi.USIVerificationService;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
@@ -66,6 +68,7 @@ public class ReplicationTestModule {
 		}).withId("WebSiteServiceOverride");
 
 		binder.bind(IPaymentGatewayService.class, TestPaymentGatewayService.class).withId("PaymentGatewayServiceOverride");
+		binder.bind(IUSIVerificationService.class, USIVerificationService.class);
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
