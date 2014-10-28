@@ -72,6 +72,7 @@ public class SampleEntityBuilder {
 
 		Qualification qualification = Cayenne.objectForPK(ctx, Qualification.class, 1l);
 		c.setQualification(qualification);
+		c.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
 
 		return c;
 	}

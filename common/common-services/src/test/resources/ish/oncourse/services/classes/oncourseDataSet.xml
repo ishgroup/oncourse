@@ -13,8 +13,8 @@
     <Course id="2" collegeId="1" code="2" detail="Course2" name="Basic2" isWebVisible="1" enrolmentType="1"/>
     <Course id="3" collegeId="1" code="3" detail="Course3" name="Basic3" isWebVisible="1" enrolmentType="1"/>
 
-    <Course id="4" collegeId="1" code="4" detail="Course4" name="Course4" isWebVisible="1"/>
-    <Course id="5" collegeId="1" code="5" detail="Course5" name="Course5" isWebVisible="1"/>
+    <Course id="4" collegeId="1" code="4" detail="Course4" name="Course4" isWebVisible="1" enrolmentType="1"/>
+    <Course id="5" collegeId="1" code="5" detail="Course5" name="Course5" isWebVisible="1" enrolmentType="1"/>
 
     <Room id="1" collegeId="1"/>
     <Room id="2" collegeId="1"/>
