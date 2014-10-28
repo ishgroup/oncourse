@@ -158,6 +158,22 @@ public class PortHelper {
 		
 		throw new IllegalArgumentException("This version of ReplicatedRecord is not supported.");
 	}
+	
+	public static SupportedVersions getVersionByParametersMap(GenericParametersMap parametersMap) {
+		if (parametersMap instanceof ish.oncourse.webservices.v4.stubs.replication.ParametersMap) {
+			return SupportedVersions.V4;
+		} else if (parametersMap instanceof ish.oncourse.webservices.v5.stubs.replication.ParametersMap) {
+			return SupportedVersions.V5;
+		} else if (parametersMap instanceof ish.oncourse.webservices.v6.stubs.replication.ParametersMap) {
+			return SupportedVersions.V6;
+		} else if (parametersMap instanceof ish.oncourse.webservices.v7.stubs.replication.ParametersMap) {
+			return SupportedVersions.V7;
+		} else if (parametersMap instanceof ish.oncourse.webservices.v8.stubs.replication.ParametersMap) {
+			return SupportedVersions.V8;
+		}
+		
+		throw new IllegalArgumentException("This version of ParametersMap is not supported");
+	}
 
 	public static GenericTransactionGroup createTransactionGroup(final GenericTransactionGroup group) {
 		return createTransactionGroup(getVersionByTransactionGroup(group));

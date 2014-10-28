@@ -1505,6 +1505,14 @@
     <wsdl:message name="getUnreplicatedEntitiesResponse">
         <wsdl:part element="tns:getUnreplicatedEntitiesResponse" name="parameters" />
     </wsdl:message>
+	
+	<wsdl:message name="verifyUSIRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		<wsdl:part name="verificationRequest" type="tns:ParametersMap"/>
+	</wsdl:message>
+	
+	<wsdl:message name="verifyUSIResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		<wsdl:part name="verificationResponse" type="tns:ParametersMap"/>
+	</wsdl:message>
 
     <wsdl:portType name="ReplicationPortType">
 
@@ -1580,6 +1588,11 @@
 			<wsdl:fault name="fault" message="tns:replicationFault"/>
 		</wsdl:operation>
 
+		<wsdl:operation name="verifyUSI">
+			<wsdl:input message="tns:verifyUSIRequest" name="verifyUSIRequest"/>
+			<wsdl:output message="tns:verifyUSIResponse" name="verifyUSIResponse"/>
+			<wsdl:fault name="fault" message="tns:replicationFault"/>
+		</wsdl:operation>
     </wsdl:portType>
 
     <wsdl:binding name="ReplicationServiceSoapBinding" type="tns:ReplicationPortType">
@@ -1721,6 +1734,18 @@
 			</wsdl:fault>
 		</wsdl:operation>
 
+		<wsdl:operation name="verifyUSI">
+			<soap:operation soapAction="verifyUSI" style="document"/>
+			<wsdl:input name="verifyUSIRequest">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="verifyUSIResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap:fault use="literal" name="fault" />
+			</wsdl:fault>
+		</wsdl:operation>
     </wsdl:binding>
 
     <wsdl:service name="ReplicationService">
