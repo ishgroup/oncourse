@@ -1,5 +1,11 @@
 dependencies {
-    compile 'org.apache.cxf:cxf-bundle:2.7.13'
+    compile project(':common:webservices-client')
+    
+    // TODO: due to the CXF bug https://issues.apache.org/jira/browse/CXF-4794
+    // webservices authentication won't work until we switch to CXF 2.6.7
+    compile 'org.apache.cxf:cxf-bundle:2.6.1'
+    compile 'au.gov.abr:abrakm:1.5'
+    compile 'com.sun.xml.ws:webservices-rt:2.0'
 }
 
 jar {
@@ -14,9 +20,9 @@ configurations {
 }
 
 dependencies{
-    ws "org.apache.cxf:cxf-tools:2.7.13",
-            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.7.13",
-            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.7.13",
+    ws "org.apache.cxf:cxf-tools:2.6.1",
+            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.1",
+            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.1",
             "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
     "log4j:log4j:1.2.17"
 }
