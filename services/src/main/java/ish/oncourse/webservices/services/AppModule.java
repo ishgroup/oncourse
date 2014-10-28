@@ -4,22 +4,16 @@
  */
 package ish.oncourse.webservices.services;
 
-import ish.oncourse.mbean.ApplicationData;
-import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
-import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
-import ish.oncourse.services.payment.IPaymentService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
-import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
+import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.util.UIRequestExceptionHandler;
-import ish.oncourse.util.payment.PaymentProcessControllerBuilder;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
@@ -36,26 +30,20 @@ import ish.oncourse.webservices.replication.v4.updaters.WillowUpdaterImpl;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl;
 
+import ish.oncourse.webservices.usi.USIVerificationService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.apache.tapestry5.ioc.internal.OperationException;
-import org.apache.tapestry5.ioc.services.ParallelExecutor;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
-import org.apache.tapestry5.runtime.ComponentEventException;
 import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.ComponentSource;
-import org.apache.tapestry5.services.ExceptionReporter;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestExceptionHandler;
 import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.services.ResponseRenderer;
 
-import java.io.IOException;
 /**
  * @author marek
  */
@@ -84,6 +72,7 @@ public class AppModule {
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId(WEB_SITE_SERVICE_OVERRIDE_NAME);
+		binder.bind(IUSIVerificationService.class, USIVerificationService.class);
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);

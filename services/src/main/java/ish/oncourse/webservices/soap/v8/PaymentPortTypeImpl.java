@@ -4,11 +4,13 @@ import ish.oncourse.webservices.replication.services.IReplicationService.Interna
 import ish.oncourse.webservices.replication.services.InternalPaymentService;
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.SupportedVersions;
+import ish.oncourse.webservices.v8.stubs.replication.ParametersMap;
 import ish.oncourse.webservices.v8.stubs.replication.TransactionGroup;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v8.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType",
@@ -54,6 +56,16 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 	public TransactionGroup getVouchers(TransactionGroup transactionGroup) throws ReplicationFault {
 		try {
 			return PortHelper.getV8TransactionGroup(paymentPort.getVouchers(transactionGroup, SupportedVersions.V8));
+		} catch (InternalReplicationFault e) {
+			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
+		}
+	}
+	
+	@WebMethod(operationName = "verifyUSI")
+	@Override
+	public ParametersMap verifyUSI(ParametersMap parametersMap) throws ReplicationFault {
+		try {
+			return (ParametersMap) paymentPort.verifyUSI(parametersMap);
 		} catch (InternalReplicationFault e) {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}

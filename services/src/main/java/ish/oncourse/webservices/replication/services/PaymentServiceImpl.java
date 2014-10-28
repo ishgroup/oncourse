@@ -1,8 +1,6 @@
 package ish.oncourse.webservices.replication.services;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.enrol.IEnrolmentService;
@@ -11,6 +9,7 @@ import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
+import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.utils.PaymentInUtil;
 import ish.oncourse.utils.SessionIdGenerator;
@@ -19,6 +18,7 @@ import ish.oncourse.webservices.replication.services.IReplicationService.Interna
 import ish.oncourse.webservices.replication.v4.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.FaultCode;
+import ish.oncourse.webservices.usi.USIVerificationUtil;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -47,6 +47,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	private final IVoucherService voucherService;
 
 	private final IEnrolmentService enrolService;
+	
+	private final IUSIVerificationService usiVerificationService;
 
 	private final ITransactionStubBuilder transactionBuilder;
 
@@ -59,7 +61,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	@Inject
 	public PaymentServiceImpl(ITransactionGroupProcessor groupProcessor, IPaymentGatewayService paymentGatewayService,
 			ICayenneService cayenneService, IPaymentService paymentInService, IEnrolmentService enrolService, IVoucherService voucherService,
-			ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder, PreferenceControllerFactory prefsFactory) {
+			IUSIVerificationService usiVerificationService, ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder, 
+			PreferenceControllerFactory prefsFactory) {
 		super();
 		this.groupProcessor = groupProcessor;
 		this.paymentGatewayService = paymentGatewayService;
@@ -67,6 +70,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 		this.paymentInService = paymentInService;
 		this.enrolService = enrolService;
 		this.voucherService = voucherService;
+		this.usiVerificationService = usiVerificationService;
 		this.transactionBuilder = transactionBuilder;
 		this.stubBuilder = stubBuilder;
 		this.prefsFactory = prefsFactory;
@@ -341,5 +345,16 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(enrl, version));
 		}
 		return response;
+	}
+
+	@Override
+	public GenericParametersMap verifyUSI(GenericParametersMap parametersMap) throws InternalReplicationFault {
+		USIVerificationRequest request = USIVerificationUtil.parseVerificationRequest(parametersMap);
+		
+		USIVerificationResult result = usiVerificationService.verifyUsi(request);
+		
+		SupportedVersions version = PortHelper.getVersionByParametersMap(parametersMap);
+		
+		return USIVerificationUtil.createVerificationResultParametersMap(result, version);
 	}
 }
