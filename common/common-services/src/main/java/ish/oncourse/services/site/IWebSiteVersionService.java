@@ -3,6 +3,7 @@
  */
 package ish.oncourse.services.site;
 
+import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.cache.RequestCached;
 
@@ -23,4 +24,9 @@ public interface IWebSiteVersionService {
 	 * deletes the specified WebSiteVersion with all objects related to it.
 	 */
 	void deleteWebSiteVersion(WebSiteVersion versionToDelete);
+
+	/**
+	 * delete all revisions older than 60 days, but always to keep at least 5 revisions, even if they are older
+	 */
+	void removeOldWebSiteVersions(WebSite webSite); 	
 }

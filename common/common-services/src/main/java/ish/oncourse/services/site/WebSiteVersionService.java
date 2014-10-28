@@ -3,6 +3,7 @@
  */
 package ish.oncourse.services.site;
 
+import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -27,6 +28,11 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 
 	@Override
 	public void deleteWebSiteVersion(WebSiteVersion versionToDelete) {
+		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from Admin.");
+	}
+
+	@Override
+	public void removeOldWebSiteVersions(WebSite webSite) {
 		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from Admin.");
 	}
 }

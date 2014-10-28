@@ -10,6 +10,7 @@ import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang.time.DateUtils;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -19,6 +20,7 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -45,6 +47,69 @@ public class WebSiteVersionServiceOverrideTest extends ServiceTest {
 		cayenneService = getService(ICayenneService.class);
 		webSiteVersionService = getService(IWebSiteVersionService.class);
 	}
+
+	/**
+	 * delete all revisions older than 60 days, but always to keep at least 5 revisions, even if they are older
+	 */
+	@Test
+	public void testDeleteOldWebSiteVersions() {
+		ObjectContext context = cayenneService.newContext();
+
+		//case 1 always to keep at least 5 revisions, even if they are older than 60 days
+		SelectQuery selectQuery = new SelectQuery(WebSite.class, ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, 1));
+		List<WebSite> webSites = context.performQuery(selectQuery);
+		assertEquals(1, webSites.size());
+		WebSite siteToDelete = webSites.get(0);
+
+		selectQuery = new SelectQuery(WebSiteVersion.class, ExpressionFactory.matchExp(WebSiteVersion.WEB_SITE_PROPERTY, siteToDelete));
+		List<WebSiteVersion> allVersions = context.performQuery(selectQuery);
+		
+		assertEquals(12, allVersions.size());
+		//number of revisions which younger than 60 days
+		assertEquals(3, ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
+		//unpublished revisions yet (always one)
+		assertEquals(1, ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null).filterObjects(allVersions).size());
+		
+		webSiteVersionService.removeOldWebSiteVersions(siteToDelete);
+
+		allVersions = context.performQuery(selectQuery);
+		
+		//the number of remaining
+		assertEquals(5, allVersions.size());
+		//including number of revisions younger than 60 days (currently deployed too)
+		assertEquals(3, ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
+		//unpublished revisions yet 
+		assertEquals(1, ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null).filterObjects(allVersions).size());
+
+		
+		//case 2 delete all revisions older than 60 days (number of revisions which younger than 60 days more than 5)
+		selectQuery = new SelectQuery(WebSite.class, ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, 2));
+		webSites = context.performQuery(selectQuery);
+		assertEquals(1, webSites.size());
+	 	siteToDelete = webSites.get(0);
+
+		selectQuery = new SelectQuery(WebSiteVersion.class, ExpressionFactory.matchExp(WebSiteVersion.WEB_SITE_PROPERTY, siteToDelete));
+		allVersions = context.performQuery(selectQuery);
+
+		assertEquals(12, allVersions.size());
+		//number of revisions which younger than 60 days
+		assertEquals(7, ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
+		//unpublished revisions yet (always one)
+		assertEquals(1, ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null).filterObjects(allVersions).size());
+
+		webSiteVersionService.removeOldWebSiteVersions(siteToDelete);
+
+		allVersions = context.performQuery(selectQuery);
+
+		//the number of remaining
+		assertEquals(8, allVersions.size());
+		//including number of revisions younger than 60 days (currently deployed too)
+		assertEquals(7, ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
+		//unpublished revisions yet 
+		assertEquals(1, ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null).filterObjects(allVersions).size());
+		
+	}
+	
 	
 	@Test
 	public void testDeleteWebSiteVersion() {
@@ -85,8 +150,8 @@ public class WebSiteVersionServiceOverrideTest extends ServiceTest {
 		List<WebContentVisibility> list9 = context.performQuery(selectQuery9);
 		List<WebMenu> list0 = context.performQuery(selectQuery0);
 		
-		assertEquals(1, list1.size());
-		assertEquals(3, list2.size());
+		assertEquals(2, list1.size());
+		assertEquals(24, list2.size());
 		assertEquals(10, list3.size());
 		assertEquals(34, list4.size());
 		assertEquals(6, list5.size());	
@@ -138,8 +203,8 @@ public class WebSiteVersionServiceOverrideTest extends ServiceTest {
 		List<WebContentVisibility> list9 = context.performQuery(selectQuery9);
 		List<WebMenu> list0 = context.performQuery(selectQuery0);
 
-		assertEquals(1, list1.size());
-		assertEquals(2, list2.size());
+		assertEquals(2, list1.size());
+		assertEquals(23, list2.size());
 		assertEquals(6, list3.size());
 		assertEquals(16, list4.size());
 		assertEquals(3, list5.size());

@@ -3,10 +3,33 @@
 	<College id="1" name="College" webServicesSecurityCode="345ttn44$%9" communication_key="111111111111" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
 	
 	<WebSite id="1" collegeId="1" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00"/>
+	<WebSite id="2" collegeId="1" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00"/>
 	
-	<WebSiteVersion id="1" webSiteId="1"/>
-	<WebSiteVersion id="2" webSiteId="1"/>
-	<WebSiteVersion id="3" webSiteId="1"/>
+	<WebSiteVersion id="1" webSiteId="1" deployedOn="2014-01-24 09:00:00"/>
+	<WebSiteVersion id="2" webSiteId="1" deployedOn="2014-02-23 09:00:00"/>
+	<WebSiteVersion id="3" webSiteId="1" deployedOn="2014-03-20 09:00:00"/>
+	<WebSiteVersion id="4" webSiteId="1" deployedOn="2014-04-24 09:00:00"/>
+	<WebSiteVersion id="5" webSiteId="1" deployedOn="2014-05-24 09:00:00"/>
+	<WebSiteVersion id="6" webSiteId="1" deployedOn="2014-06-24 09:00:00"/>
+	<WebSiteVersion id="7" webSiteId="1" deployedOn="2014-07-24 09:00:00"/>
+	<WebSiteVersion id="8" webSiteId="1" deployedOn="2014-07-25 09:00:00"/>
+	<WebSiteVersion id="9" webSiteId="1" deployedOn="2114-01-21 09:00:00"/>
+	<WebSiteVersion id="10" webSiteId="1" deployedOn="2114-01-22 09:00:00"/>
+	<WebSiteVersion id="11" webSiteId="1" deployedOn="2114-01-24 09:00:00"/>
+	<WebSiteVersion id="12" webSiteId="1"/>
+
+	<WebSiteVersion id="13" webSiteId="2" deployedOn="2014-01-24 09:00:00"/>
+	<WebSiteVersion id="14" webSiteId="2" deployedOn="2014-02-23 09:00:00"/>
+	<WebSiteVersion id="15" webSiteId="2" deployedOn="2014-03-20 09:00:00"/>
+	<WebSiteVersion id="16" webSiteId="2" deployedOn="2014-04-24 09:00:00"/>
+	<WebSiteVersion id="17" webSiteId="2" deployedOn="2114-05-24 09:00:00"/>
+	<WebSiteVersion id="18" webSiteId="2" deployedOn="2114-06-24 09:00:00"/>
+	<WebSiteVersion id="19" webSiteId="2" deployedOn="2114-07-24 09:00:00"/>
+	<WebSiteVersion id="20" webSiteId="2" deployedOn="2114-07-25 09:00:00"/>
+	<WebSiteVersion id="21" webSiteId="2" deployedOn="2114-01-21 09:00:00"/>
+	<WebSiteVersion id="22" webSiteId="2" deployedOn="2114-01-22 09:00:00"/>
+	<WebSiteVersion id="23" webSiteId="2" deployedOn="2114-01-24 09:00:00"/>
+	<WebSiteVersion id="24" webSiteId="2"/>
 
 	<WebSiteLayout id="1" webSiteVersionId="1" layoutKey="default"/>
 	<WebSiteLayout id="2" webSiteVersionId="1" layoutKey="default"/>
