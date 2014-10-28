@@ -13,7 +13,7 @@ import javax.xml.ws.BindingProvider;
 
 import au.gov.usi._2013.ws.servicepolicy.IUSIService;
 import au.gov.usi._2013.ws.servicepolicy.USIService;
-import com.sun.xml.internal.ws.client.BindingProviderProperties;
+import com.sun.xml.ws.client.BindingProviderProperties;
 import com.sun.xml.ws.api.security.trust.client.STSIssuedTokenConfiguration;
 import com.sun.xml.wss.XWSSConstants;
 
