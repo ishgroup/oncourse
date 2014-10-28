@@ -1,0 +1,52 @@
+dependencies {
+    compile 'org.apache.cxf:cxf-bundle:2.7.13'
+}
+
+jar {
+    manifest {
+        from sharedManifest
+    }
+}
+
+
+configurations {
+    ws
+}
+
+dependencies{
+    ws "org.apache.cxf:cxf-tools:2.7.13",
+            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.7.13",
+            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.7.13",
+            "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
+    "log4j:log4j:1.2.17"
+}
+
+project.ext {
+    wsdlDir = file("${projectDir}/src/main/resources/wsdl")
+    generatedWsdlDir = file("${projectDir}/src/main/java")
+    wsdlsToGenerate = [
+            [       '-wsdlLocation', "/wsdl/USIService.wsdl",
+                    '-b', "$wsdlDir/usi_bindings.xml",
+                    "-client",
+                    "$wsdlDir/USIService.wsdl"],
+    ]
+}
+
+task wsdl2Java() {
+    inputs.files wsdlDir.listFiles()
+    outputs.files generatedWsdlDir
+
+    doLast {
+        wsdlsToGenerate.each { argsin ->
+            argsin.add(argsin.size - 1, '-d')
+            argsin.add(argsin.size - 1, generatedWsdlDir)
+            javaexec {
+                classpath configurations.ws
+                main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
+                args = argsin
+                systemProperties = ['exitOnFinish':'TRUE']
+            }
+        }
+    }
+}
+

@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="USIService"
+                  targetNamespace="http://usi.gov.au/2013/ws/servicepolicy"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy"
+                  xmlns:wsa10="http://www.w3.org/2005/08/addressing"
+                  xmlns:tns="http://usi.gov.au/2013/ws/servicepolicy"
+                  xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract"
+                  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+                  xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"
+                  xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:u="http://usi.gov.au/2013/ws">
+  <wsp:Policy wsu:Id="WS2007FederationHttpBinding_IUSIService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken>
+					<wsp:Policy/>
+				</sp:HttpsToken>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp/>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:EndorsingSupportingTokens xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
+          <wsp:Policy>
+            <sp:IssuedToken sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
+              <Issuer xmlns="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
+                <Address xmlns="http://www.w3.org/2005/08/addressing">https://thirdparty.authentication.business.gov.au/R3.0/vanguard/S007v1.2/Service.svc</Address>
+                <Metadata xmlns="http://www.w3.org/2005/08/addressing">
+                  <Metadata xmlns="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <wsx:MetadataSection xmlns="">
+                      <wsx:MetadataReference>
+                        <Address xmlns="http://www.w3.org/2005/08/addressing">https://thirdparty.authentication.business.gov.au/R3.0/vanguard/S007v1.2/Service.svc/mex</Address>
+                      </wsx:MetadataReference>
+                    </wsx:MetadataSection>
+                  </Metadata>
+                </Metadata>
+              </Issuer>
+              <sp:RequestSecurityTokenTemplate xmlns:trust="http://docs.oasis-open.org/ws-sx/ws-trust/200512">
+                <trust:KeyType>http://docs.oasis-open.org/ws-sx/ws-trust/200512/SymmetricKey</trust:KeyType>
+                <trust:KeySize>256</trust:KeySize>
+                <trust:KeyWrapAlgorithm>http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p</trust:KeyWrapAlgorithm>
+                <trust:Claims Dialect="http://schemas.xmlsoap.org/ws/2005/05/identity" xmlns:wsid="http://schemas.xmlsoap.org/ws/2005/05/identity">
+                  <wsid:ClaimType Uri="http://vanguard.ebusiness.gov.au/2008/06/identity/claims/abn"/>
+                  <wsid:ClaimType Uri="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"/>
+                </trust:Claims>
+                <trust:EncryptWith>http://www.w3.org/2001/04/xmlenc#aes256-cbc</trust:EncryptWith>
+                <trust:SignWith>http://www.w3.org/2000/09/xmldsig#hmac-sha1</trust:SignWith>
+                <trust:CanonicalizationAlgorithm>http://www.w3.org/2001/10/xml-exc-c14n#</trust:CanonicalizationAlgorithm>
+                <trust:EncryptionAlgorithm>http://www.w3.org/2001/04/xmlenc#aes256-cbc</trust:EncryptionAlgorithm>
+              </sp:RequestSecurityTokenTemplate>
+              <wsp:Policy>
+                <sp:RequireInternalReference/>
+              </wsp:Policy>
+            </sp:IssuedToken>
+          </wsp:Policy>
+        </sp:EndorsingSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
+          <wsp:Policy/>
+        </sp:Wss11>
+        <sp:Trust13 xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens/>
+          </wsp:Policy>
+        </sp:Trust13>
+        <wsaw:UsingAddressing/>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xs:schema targetNamespace="http://usi.gov.au/2013/ws"
+        elementFormDefault="qualified"
+        xmlns="http://usi.gov.au/2013/ws"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+      <xs:element name="BulkUpload" type="BulkUploadType" />
+      <xs:element name="BulkUploadResponse" type="BulkUploadResponseType" />
+
+      <xs:element name="BulkUploadRetrieve" type="BulkUploadRetrieveType" />
+      <xs:element name="BulkUploadRetrieveResponse" type="BulkUploadRetrieveResponseType" />
+
+      <xs:element name="CreateUSI" type="CreateUSIType" />
+      <xs:element name="CreateUSIResponse" type="CreateUSIResponseType" />
+
+      <xs:element name="VerifyUSI" type="VerifyUSIType" />
+      <xs:element name="VerifyUSIResponse" type="VerifyUSIResponseType" />
+
+      <xs:element name="BulkVerifyUSI" type="BulkVerifyUSIType" />
+      <xs:element name="BulkVerifyUSIResponse" type="BulkVerifyUSIResponseType" />
+
+      <xs:complexType name="ApplicationType">
+        <xs:sequence>
+          <xs:element name="ApplicationId" type="ApplicationIDType" />
+          <xs:element name="DVSCheckRequired" type="xs:boolean" />
+          <xs:element name="UserReference" type="UserReferenceType" />
+          <xs:element name="ContactDetails" type="ContactDetailsType" />
+          <xs:element name="PersonalDetails" type="PersonalDetailsType" />
+          <xs:element name="DVSDocument" type="DVSDocumentType" minOccurs="0" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:simpleType name="UserReferenceType">
+        <xs:restriction base="xs:string">
+          <xs:maxLength value="40" />
+          <xs:minLength value="1" />
+        </xs:restriction>
+      </xs:simpleType>
+
+      <xs:simpleType name="USIType">
+        <xs:restriction base="xs:string">
+          <xs:length value="10" />
+          <xs:pattern value="[A-HJ-NP-Z2-9]*" />
+        </xs:restriction>
+      </xs:simpleType>
+
+      <xs:simpleType name="OrgCodeType">
+        <xs:restriction base="xs:string">
+          <xs:minLength value="1" />
+          <xs:maxLength value="6" />
+          <xs:pattern value="[A-Za-z0-9]*" />
+        </xs:restriction>
+      </xs:simpleType>
+
+      <xs:simpleType name="RequestIDType">
+        <xs:restriction base="xs:string">
+          <xs:maxLength value="20" />
+        </xs:restriction>
+      </xs:simpleType>
+
+      <xs:simpleType name="ApplicationIDType">
+        <xs:restriction base="xs:string">
+          <xs:maxLength value="20" />
+        </xs:restriction>
+      </xs:simpleType>
+
+      <xs:simpleType name="BulkReceiptNumberType">
+        <xs:restriction base="xs:string">
+          <xs:length value="36" />
+        </xs:restriction>
+      </xs:simpleType>
+
+      <xs:complexType name="BirthCertificateDocumentType">
+        <xs:complexContent>
+          <xs:extension base="DVSDocumentType">
+            <xs:sequence>
+              <xs:element name="RegistrationNumber" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RegistrationState" type="StateListType" />
+              <xs:element name="RegistrationDate" minOccurs="0" type="xs:date" />
+              <xs:element name="RegistrationYear" type="YearListType" minOccurs="0" />
+              <xs:element name="DatePrinted" minOccurs="0" type="xs:date" />
+              <xs:element name="CertificateNumber" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="11" />
+                    <xs:pattern value="[A-Za-z0-9]*" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+
+      <xs:complexType name="BulkUploadType">
+        <xs:sequence>
+          <xs:element name="OrgCode" type="OrgCodeType" />
+          <xs:element name="RequestId" type="RequestIDType" />
+          <xs:element name="NoOfApplications">
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:maxInclusive value="500" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Applications">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Application" type="ApplicationType" maxOccurs="500">
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+            <xs:key name="ApplicationKey">
+              <xs:selector xpath="Application" />
+              <xs:field xpath="ApplicationId" />
+            </xs:key>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="BulkUploadResponseType">
+        <xs:sequence>
+          <xs:element name="ReceiptNumber" type="BulkReceiptNumberType" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="BulkVerifyUSIType">
+        <xs:sequence>
+          <xs:element name="OrgCode" type="OrgCodeType" />
+          <xs:element name="NoOfVerifications">
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:maxInclusive value="500"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Verifications">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Verification" type="VerificationType" maxOccurs="500">
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+            <xs:key name="VerificationKey">
+              <xs:selector xpath="Verification" />
+              <xs:field xpath="RecordId" />
+            </xs:key>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="VerificationType">
+        <xs:sequence>
+          <xs:element name="RecordId" >
+            <xs:simpleType>
+              <xs:restriction base="xs:int" />
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="USI" type="USIType" />
+          <xs:choice>
+            <xs:sequence>
+              <xs:element name="FirstName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="40" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FamilyName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="40" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+            <xs:element name="SingleName">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="40" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:choice>
+          <xs:element name="DateOfBirth" type="xs:date" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="BulkVerifyUSIResponseType">
+        <xs:sequence>
+          <xs:element name="VerificationResponses">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="VerificationResponse" type="VerificationResponseType" maxOccurs="500">
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="VerificationResponseType">
+        <xs:sequence>
+          <xs:element name="USIStatus">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Valid" />
+                <xs:enumeration value="Invalid" />
+                <xs:enumeration value="Deactivated" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:choice>
+            <xs:sequence>
+              <xs:element name="FirstName" minOccurs="0" type="MatchResultType" />
+              <xs:element name="FamilyName" minOccurs="0" type="MatchResultType" />
+            </xs:sequence>
+            <xs:element name="SingleName" minOccurs="0" type="MatchResultType" />
+          </xs:choice>
+          <xs:element name="DateOfBirth" minOccurs="0" type="MatchResultType" />
+          <xs:element name="USI" type="USIType" />
+          <xs:element name="RecordId" >
+            <xs:simpleType>
+              <xs:restriction base="xs:int" />
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="CertificateOfRegistrationByDescentDocumentType">
+        <xs:complexContent>
+          <xs:extension base="DVSDocumentType">
+            <xs:sequence>
+              <xs:element name="AcquisitionDate" type="xs:date" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+
+      <xs:complexType name="CitizenshipCertificateDocumentType">
+        <xs:complexContent>
+          <xs:extension base="DVSDocumentType">
+            <xs:sequence>
+              <xs:element name="StockNumber">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="4" />
+                    <xs:maxLength value="11" />
+                    <xs:pattern value="[-A-Za-z0-9/]*" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AcquisitionDate" type="xs:date" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+
+      <xs:complexType name="ContactDetailsType">
+        <xs:sequence>
+          <xs:element name="PreferredMethod">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Mobile" />
+                <xs:enumeration value="Email" />
+                <xs:enumeration value="Mail" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="CountryOfResidence">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="50" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="EmailAddress" minOccurs="0">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="254" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Phone" type="PhoneType" minOccurs="0" />
+          <xs:choice minOccurs="0">
+            <xs:element name="InternationalAddress">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="250" />
+                  <xs:pattern value="[A-Za-z0-9 , .'/-]*" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="NationalAddress" type="NationalAddressType" />
+          </xs:choice>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="CreateUSIType">
+        <xs:sequence>
+          <xs:element name="RequestId" type="RequestIDType" />
+          <xs:element name="OrgCode" type="OrgCodeType" />
+          <xs:element name="Application" type="ApplicationType" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="CreateUSIResponseType">
+        <xs:sequence>
+          <xs:element name="Application" type="ApplicationResponseType" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="DriversLicenceDocumentType">
+        <xs:complexContent>
+          <xs:extension base="DVSDocumentType">
+            <xs:sequence>
+              <xs:element name="LicenceNumber">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="State" type="StateListType" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+
+      <xs:complexType name="ImmiCardDocumentType">
+        <xs:complexContent>
+          <xs:extension base="DVSDocumentType">
+            <xs:sequence>
+              <xs:element name="ImmiCardNumber">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="9" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+
+      <xs:complexType name="MedicareDocumentType">
+        <xs:complexContent>
+          <xs:extension base="DVSDocumentType">
+            <xs:sequence>
+              <xs:element name="MedicareCardNumber">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="10" />
+                    <xs:pattern value="[0-9]*" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IndividualRefNumber">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="1" />
+                    <xs:pattern value="[1-9]" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ExpiryDate">
+                <xs:simpleType>
+                  <xs:union memberTypes="xs:date xs:gYearMonth"/>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CardColour">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="Green" />
+                    <xs:enumeration value="Blue" />
+                    <xs:enumeration value="Yellow" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NameLine1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="27" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NameLine2" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="25" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NameLine3" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="23" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NameLine4" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="21" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="NationalAddressType">
+        <xs:sequence>
+          <xs:element name="Address1">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:minLength value="1" />
+                <xs:maxLength value="50" />
+                <xs:pattern value="[A-Za-z0-9 ,\.'/-]*" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Address2" minOccurs="0">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:minLength value="1" />
+                <xs:maxLength value="50" />
+                <xs:pattern value="[A-Za-z0-9 ,\.'/-]*" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="SuburbTownCity">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:minLength value="1" />
+                <xs:maxLength value="50" />
+                <xs:pattern value="[A-Za-z ,\.'-]*" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="State" type="StateListType" />
+          <xs:element name="PostCode">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:length value="4" />
+                <xs:pattern value="[0-9]*" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="PassportDocumentType">
+        <xs:complexContent>
+          <xs:extension base="DVSDocumentType">
+            <xs:sequence>
+              <xs:element name="DocumentNumber">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="8" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+
+      <xs:complexType name="PersonalDetailsType">
+        <xs:sequence>
+          <xs:element name="Gender">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="M" />
+                <xs:enumeration value="F" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:choice>
+            <xs:sequence>
+              <xs:element name="FirstName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="40" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MiddleName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="80" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FamilyName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="40" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+            <xs:element name="SingleName">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="40" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:choice>
+          <xs:element name="DateOfBirth" type="xs:date" />
+          <xs:element name="CountryOfBirth">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="50" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="TownCityOfBirth">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="50" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="CountryStudyingIn">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="50" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="PhoneType">
+        <xs:sequence>
+          <xs:element name="Home" minOccurs="0">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="20" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Mobile" minOccurs="0">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="20" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="VerifyUSIType">
+        <xs:sequence>
+          <xs:element name="OrgCode" type="OrgCodeType" />
+          <xs:element name="USI" type="USIType" />
+          <xs:choice>
+            <xs:sequence>
+              <xs:element name="FirstName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="40" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FamilyName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="40" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+            <xs:element name="SingleName">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="40" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:choice>
+          <xs:element name="DateOfBirth" type="xs:date" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="VerifyUSIResponseType">
+        <xs:sequence>
+          <xs:element name="USIStatus">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Valid" />
+                <xs:enumeration value="Invalid" />
+                <xs:enumeration value="Deactivated" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:choice>
+            <xs:sequence>
+              <xs:element name="FirstName" minOccurs="0" type="MatchResultType" />
+              <xs:element name="FamilyName" minOccurs="0" type="MatchResultType" />
+            </xs:sequence>
+            <xs:element name="SingleName" minOccurs="0" type="MatchResultType" />
+          </xs:choice>
+          <xs:element name="DateOfBirth" minOccurs="0" type="MatchResultType" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="VisaDocumentType">
+        <xs:complexContent>
+          <xs:extension base="DVSDocumentType">
+            <xs:sequence>
+              <xs:element name="PassportNumber">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="14" />
+                    <xs:pattern value="[A-Za-z0-9]*" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CountryOfIssue">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="80" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType abstract="true" name="DVSDocumentType" />
+
+      <!-- Bulk Response Types -->
+      <xs:complexType name="ApplicationResponseType">
+        <xs:sequence>
+          <xs:element name="ProcessedDate" type="xs:dateTime" />
+          <xs:element name="ApplicationId" type="ApplicationIDType" />
+          <xs:element name="Result">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Success" />
+                <xs:enumeration value="Failure" />
+                <xs:enumeration value="MatchFound" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="IdentityDocumentVerified">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="True" />
+                <xs:enumeration value="False" />
+                <xs:enumeration value="NotRequired" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="USI" minOccurs="0" type="USIType" />
+          <xs:element name="Errors" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Error" type="ErrorType" maxOccurs="unbounded">
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="BulkUploadRetrieveType">
+        <xs:sequence>
+          <xs:element name="ReceiptNumber" type="BulkReceiptNumberType" />
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="BulkUploadRetrieveResponseType">
+        <xs:sequence>
+          <xs:element name="RequestId" type="RequestIDType" />
+          <xs:element name="NoOfApplications">
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:maxInclusive value="500" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="NoOfApplicationsFailed">
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:maxInclusive value="500" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Applications">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Application" type="ApplicationResponseType" maxOccurs="500" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="ErrorType">
+        <xs:sequence>
+          <xs:element name="Code">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:length value="4" />
+                <xs:pattern value="E[0-9]*" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Message">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="255" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:simpleType name="MatchResultType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Match" />
+          <xs:enumeration value="NoMatch" />
+        </xs:restriction>
+      </xs:simpleType>
+
+      <xs:simpleType name="StateListType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="NSW" />
+          <xs:enumeration value="VIC" />
+          <xs:enumeration value="QLD" />
+          <xs:enumeration value="SA" />
+          <xs:enumeration value="WA" />
+          <xs:enumeration value="TAS" />
+          <xs:enumeration value="NT" />
+          <xs:enumeration value="ACT" />
+        </xs:restriction>
+      </xs:simpleType>
+
+      <xs:simpleType name="YearListType">
+        <xs:restriction base="xs:string">
+          <xs:length value="4" />
+          <xs:pattern value="[0-9]*" />
+        </xs:restriction>
+
+      </xs:simpleType>
+
+      <xs:complexType name="ErrorInfoType">
+        <xs:sequence>
+          <xs:element type="xs:int" name="Code"></xs:element>
+          <xs:element type="xs:string" name="Title"></xs:element>
+          <xs:element type="xs:string" name="Message"></xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ErrorInfo" type="ErrorInfoType"></xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IUSIService_BulkUpload_InputMessage">
+    <wsdl:part name="in" element="u:BulkUpload"/>
+  </wsdl:message>
+  <wsdl:message name="IUSIService_BulkUpload_OutputMessage">
+    <wsdl:part name="out" element="u:BulkUploadResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUSIService_BulkUpload_ErrorInfoFault_FaultMessage">
+    <wsdl:part name="detail" element="u:ErrorInfo" />
+  </wsdl:message>
+  <wsdl:message name="IUSIService_BulkVerifyUSI_InputMessage">
+    <wsdl:part name="in" element="u:BulkVerifyUSI"/>
+  </wsdl:message>
+  <wsdl:message name="IUSIService_BulkVerifyUSI_OutputMessage">
+    <wsdl:part name="out" element="u:BulkVerifyUSIResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUSIService_BulkVerifyUSI_ErrorInfoFault_FaultMessage">
+    <wsdl:part name="detail" element="u:ErrorInfo" />
+  </wsdl:message>
+  <wsdl:message name="IUSIService_VerifyUSI_InputMessage">
+    <wsdl:part name="in" element="u:VerifyUSI"/>
+  </wsdl:message>
+  <wsdl:message name="IUSIService_VerifyUSI_OutputMessage">
+    <wsdl:part name="out" element="u:VerifyUSIResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUSIService_VerifyUSI_ErrorInfoFault_FaultMessage">
+    <wsdl:part name="detail" element="u:ErrorInfo" />
+  </wsdl:message>
+  <wsdl:message name="IUSIService_BulkUploadRetrieve_InputMessage">
+    <wsdl:part name="in" element="u:BulkUploadRetrieve"/>
+  </wsdl:message>
+  <wsdl:message name="IUSIService_BulkUploadRetrieve_OutputMessage">
+    <wsdl:part name="out" element="u:BulkUploadRetrieveResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUSIService_BulkUploadRetrieve_ErrorInfoFault_FaultMessage">
+    <wsdl:part name="detail" element="u:ErrorInfo" />
+  </wsdl:message>
+  <wsdl:message name="IUSIService_CreateUSI_InputMessage">
+    <wsdl:part name="in" element="u:CreateUSI"/>
+  </wsdl:message>
+  <wsdl:message name="IUSIService_CreateUSI_OutputMessage">
+    <wsdl:part name="out" element="u:CreateUSIResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUSIService_CreateUSI_ErrorInfoFault_FaultMessage">
+    <wsdl:part name="detail" element="u:ErrorInfo" />
+  </wsdl:message>
+  <wsdl:portType name="IUSIService">
+    <wsdl:operation name="BulkUpload">
+      <wsdl:input wsaw:Action="http://usi.gov.au/2013/ws/BulkUpload" message="tns:IUSIService_BulkUpload_InputMessage"/>
+      <wsdl:output wsaw:Action="http://usi.gov.au/2013/ws/BulkUploadResponse" message="tns:IUSIService_BulkUpload_OutputMessage"/>
+      <wsdl:fault name="ErrorInfoFault" wsaw:Action="http://usi.gov.au/2013/ws/BulkUploadResponseErrorInfoFault" message="tns:IUSIService_BulkUpload_ErrorInfoFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="BulkVerifyUSI">
+      <wsdl:input wsaw:Action="http://usi.gov.au/2013/ws/BulkVerifyUSI" message="tns:IUSIService_BulkVerifyUSI_InputMessage"/>
+      <wsdl:output wsaw:Action="http://usi.gov.au/2013/ws/BulkVerifyUSIResponse" message="tns:IUSIService_BulkVerifyUSI_OutputMessage"/>
+      <wsdl:fault name="ErrorInfoFault" wsaw:Action="http://usi.gov.au/2013/ws/BulkVerifyUSIResponseErrorInfoFault" message="tns:IUSIService_BulkVerifyUSI_ErrorInfoFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="VerifyUSI">
+      <wsdl:input wsaw:Action="http://usi.gov.au/2013/ws/VerifyUSI" message="tns:IUSIService_VerifyUSI_InputMessage"/>
+      <wsdl:output wsaw:Action="http://usi.gov.au/2013/ws/VerifyUSIResponse" message="tns:IUSIService_VerifyUSI_OutputMessage"/>
+      <wsdl:fault name="ErrorInfoFault" wsaw:Action="http://usi.gov.au/2013/ws/VerifyUSIResponseErrorInfoFault" message="tns:IUSIService_VerifyUSI_ErrorInfoFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="BulkUploadRetrieve">
+      <wsdl:input wsaw:Action="http://usi.gov.au/2013/ws/BulkUploadRetrieve" message="tns:IUSIService_BulkUploadRetrieve_InputMessage"/>
+      <wsdl:output wsaw:Action="http://usi.gov.au/2013/ws/BulkUploadRetrieveResponse" message="tns:IUSIService_BulkUploadRetrieve_OutputMessage"/>
+      <wsdl:fault name="ErrorInfoFault" wsaw:Action="http://usi.gov.au/2013/ws/BulkUploadRetrieveResponseErrorInfoFault" message="tns:IUSIService_BulkUploadRetrieve_ErrorInfoFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUSI">
+      <wsdl:input wsaw:Action="http://usi.gov.au/2013/ws/CreateUSI" message="tns:IUSIService_CreateUSI_InputMessage"/>
+      <wsdl:output wsaw:Action="http://usi.gov.au/2013/ws/CreateUSIResponse" message="tns:IUSIService_CreateUSI_OutputMessage"/>
+      <wsdl:fault name="ErrorInfoFault" wsaw:Action="http://usi.gov.au/2013/ws/CreateUSIResponseErrorInfoFault" message="tns:IUSIService_CreateUSI_ErrorInfoFault_FaultMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WS2007FederationHttpBinding_IUSIService" type="tns:IUSIService">
+    <wsp:PolicyReference URI="#WS2007FederationHttpBinding_IUSIService_policy"/>
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="BulkUpload">
+      <soap12:operation soapAction="http://usi.gov.au/2013/ws/BulkUpload" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ErrorInfoFault">
+        <soap12:fault use="literal" name="ErrorInfoFault" namespace=""/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="BulkVerifyUSI">
+      <soap12:operation soapAction="http://usi.gov.au/2013/ws/BulkVerifyUSI" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ErrorInfoFault">
+        <soap12:fault use="literal" name="ErrorInfoFault" namespace=""/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="VerifyUSI">
+      <soap12:operation soapAction="http://usi.gov.au/2013/ws/VerifyUSI" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ErrorInfoFault">
+        <soap12:fault use="literal" name="ErrorInfoFault" namespace=""/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="BulkUploadRetrieve">
+      <soap12:operation soapAction="http://usi.gov.au/2013/ws/BulkUploadRetrieve" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ErrorInfoFault">
+        <soap12:fault use="literal" name="ErrorInfoFault" namespace=""/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUSI">
+      <soap12:operation soapAction="http://usi.gov.au/2013/ws/CreateUSI" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ErrorInfoFault">
+        <soap12:fault use="literal" name="ErrorInfoFault" namespace=""/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="USIService">
+    <wsdl:port name="WS2007FederationHttpBinding_IUSIService" binding="tns:WS2007FederationHttpBinding_IUSIService">
+      <soap12:address location="https://3pt.portal.usi.gov.au/Service/BatchCreateService.svc"/>
+      <wsa10:EndpointReference>
+        <wsa10:Address>https://3pt.portal.usi.gov.au/Service/BatchCreateService.svc</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
