@@ -1298,6 +1298,8 @@ public abstract class CommonPreferenceController {
 	public static final String QE_DEFAULT_REPORT_ENROLMENT_KEYCODE = "qe.default.report.enrolment.keycode";
 	public static final String QE_DEFAULT_REPORT_INVOICE_KEYCODE = "qe.default.report.invoice.keycode";
 
+	public static final String GRAVATAR = "gravatar.enabled";
+
 	public synchronized boolean getQEDefaultsToZeroPayment() {
 		String aPref = getValue(QE_DEFAULTS_TO_ZERO, false);
 		return aPref != null && Boolean.parseBoolean(aPref);
@@ -1336,6 +1338,18 @@ public abstract class CommonPreferenceController {
 		setValue(QE_DEFAULT_REPORT_INVOICE_KEYCODE, false, value);
 	}
 
+	public synchronized String getGravatarSettings() {
+		String value = getValue(GRAVATAR, false);
+		if (StringUtils.isEmpty(value)) {
+			return Boolean.toString(true);
+		}
+		return value;
+	}
+
+	public synchronized void setGravatarSettings(boolean value) {
+		setValue(GRAVATAR, false, Boolean.toString(value));
+	}
+	
 	// **************************************
 	// Frame preferences
 	// **************************************
@@ -1904,6 +1918,8 @@ public abstract class CommonPreferenceController {
 			return getDefaultQEInvoiceReportKeycode();
 		} else if (QE_DEFAULT_REPORT_ENROLMENT_KEYCODE.equals(key)) {
 			return getDefaultQEEnrolmentReportKeycode();
+		} else if (GRAVATAR.equals(key)) {
+			return getGravatarSettings();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -2098,6 +2114,8 @@ public abstract class CommonPreferenceController {
 			setDefaultQEInvoiceReportKeycode((String)value);
 		} else if (QE_DEFAULT_REPORT_ENROLMENT_KEYCODE.equals(key)) {
 			setDefaultQEEnrolmentReportKeycode((String)value);
+		} else if (GRAVATAR.equals(key)) {
+			setGravatarSettings((Boolean) value);
 		}
 
 	}
