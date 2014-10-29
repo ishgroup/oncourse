@@ -5,7 +5,6 @@ dependencies {
     
     compile 'org.apache.cxf:cxf-bundle:2.6.16'
     compile 'au.gov.abr:abrakm:1.5'
-    compile 'com.sun.xml.ws:webservices-rt:2.0'
 }
 
 jar {

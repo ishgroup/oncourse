@@ -3,23 +3,18 @@
  */
 package ish.oncourse.webservices.usi;
 
+import au.gov.abr.akm.credential.store.ABRCredential;
+import au.gov.abr.akm.credential.store.ABRKeyStore;
+import au.gov.usi._2013.ws.servicepolicy.IUSIService;
+import au.gov.usi._2013.ws.servicepolicy.USIService;
+import org.apache.log4j.Logger;
+
+import javax.xml.ws.BindingProvider;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.Map;
-
-import javax.xml.ws.BindingProvider;
-
-import au.gov.usi._2013.ws.servicepolicy.IUSIService;
-import au.gov.usi._2013.ws.servicepolicy.USIService;
-import com.sun.xml.ws.client.BindingProviderProperties;
-import com.sun.xml.ws.api.security.trust.client.STSIssuedTokenConfiguration;
-import com.sun.xml.wss.XWSSConstants;
-
-import au.gov.abr.akm.credential.store.ABRCredential;
-import au.gov.abr.akm.credential.store.ABRKeyStore;
-import org.apache.log4j.Logger;
 
 public class AUSKeyUtil {
 	
@@ -42,16 +37,16 @@ public class AUSKeyUtil {
 
 		Map<String, Object> requestContext = ((BindingProvider)endpoint).getRequestContext();
 
-		requestContext.put(XWSSConstants.CERTIFICATE_PROPERTY, certificate);
-		requestContext.put(XWSSConstants.PRIVATEKEY_PROPERTY, privateKey);
-		requestContext.put(STSIssuedTokenConfiguration.STS_ENDPOINT, stsEndpoint);
-		requestContext.put(STSIssuedTokenConfiguration.STS_NAMESPACE, STS_NAMESPACE);
-		requestContext.put(STSIssuedTokenConfiguration.STS_WSDL_LOCATION, stsEndpoint);
-		requestContext.put(STSIssuedTokenConfiguration.STS_SERVICE_NAME, STS_SERVICE_NAME);
-		requestContext.put(STSIssuedTokenConfiguration.LIFE_TIME, STS_LIFE_TIME);
-		requestContext.put(STSIssuedTokenConfiguration.STS_PORT_NAME, STS_PORT_NAME);
-		requestContext.put(BindingProviderProperties.REQUEST_TIMEOUT, REQUEST_TIMEOUT);
-		requestContext.put(BindingProviderProperties.CONNECT_TIMEOUT, CONNECT_TIMEOUT);
+		requestContext.put(Constants.CERTIFICATE_PROPERTY, certificate);
+		requestContext.put(Constants.PRIVATEKEY_PROPERTY, privateKey);
+		requestContext.put(Constants.STS_ENDPOINT, stsEndpoint);
+		requestContext.put(Constants.STS_NAMESPACE, STS_NAMESPACE);
+		requestContext.put(Constants.STS_WSDL_LOCATION, stsEndpoint);
+		requestContext.put(Constants.STS_SERVICE_NAME, STS_SERVICE_NAME);
+		requestContext.put(Constants.LIFE_TIME, STS_LIFE_TIME);
+		requestContext.put(Constants.STS_PORT_NAME, STS_PORT_NAME);
+		requestContext.put(Constants.REQUEST_TIMEOUT, REQUEST_TIMEOUT);
+		requestContext.put(Constants.CONNECT_TIMEOUT, CONNECT_TIMEOUT);
 		
 		return endpoint;
 	}
