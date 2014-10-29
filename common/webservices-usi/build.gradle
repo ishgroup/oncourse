@@ -1,5 +1,7 @@
 dependencies {
-    compile project(':common:webservices-client')
+    compile ('ish.oncourse.willow:waCommon:5.1.32') {
+        exclude group: 'org.apache.cayenne', module: 'cayenne-server'
+    }
     
     // TODO: due to the CXF bug https://issues.apache.org/jira/browse/CXF-4794
     // webservices authentication won't work until we switch to CXF 2.6.7

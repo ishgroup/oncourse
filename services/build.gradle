@@ -5,9 +5,7 @@ dependencies {
 
 	compile project(':common:common-model')
 	compile project(':common:common-services')
-    compile (project(':common:webservices-usi')) {
-        exclude group: 'ish.oncourse.willow', module: 'webservices-client'
-    }
+    compile project(':common:webservices-usi')
 
 	compile ('ish.oncourse.willow:webservices-client:5.1.32')
 	{
