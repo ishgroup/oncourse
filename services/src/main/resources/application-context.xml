@@ -48,8 +48,6 @@
 		<jaxws:inInterceptors>
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
-        <jaxws:features>
-        </jaxws:features>
     </jaxws:endpoint>
 
     <jaxws:endpoint id="v6_replication" implementor="#v6_replicationPortType"
@@ -58,8 +56,6 @@
             <ref bean="v4_communicationKeyInterceptor" />
             <ref bean="v4_collegeRequestInterceptor" />
         </jaxws:inInterceptors>
-        <jaxws:features>
-        </jaxws:features>
     </jaxws:endpoint>
 
     <jaxws:endpoint id="v6_payment" implementor="#v6_paymentPortType"
@@ -68,8 +64,6 @@
             <ref bean="v4_securityCodeInterceptor" />
             <ref bean="v4_collegeRequestInterceptor" />
         </jaxws:inInterceptors>
-        <jaxws:features>
-        </jaxws:features>
     </jaxws:endpoint>
 
 	<jaxws:endpoint id="v7_replication" implementor="#v7_replicationPortType"
@@ -78,8 +72,6 @@
 			<ref bean="v4_communicationKeyInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
-        <jaxws:features>
-        </jaxws:features>
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v7_payment" implementor="#v7_paymentPortType"
@@ -88,8 +80,6 @@
 			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
-        <jaxws:features>
-        </jaxws:features>
 	</jaxws:endpoint>
 	
 	<jaxws:endpoint id="v8_replication" implementor="#v8_replicationPortType"
@@ -98,8 +88,6 @@
 			<ref bean="v4_communicationKeyInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
-		<jaxws:features>
-		</jaxws:features>
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v8_payment" implementor="#v8_paymentPortType"
@@ -108,7 +96,5 @@
 			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
-		<jaxws:features>
-		</jaxws:features>
 	</jaxws:endpoint>
 </beans>

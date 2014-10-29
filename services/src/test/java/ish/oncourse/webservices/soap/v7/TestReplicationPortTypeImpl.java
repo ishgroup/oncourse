@@ -2,6 +2,7 @@ package ish.oncourse.webservices.soap.v7;
 
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
 import ish.oncourse.webservices.v7.stubs.replication.*;
+import org.apache.cxf.annotations.EndpointProperty;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -13,6 +14,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v7.ReplicationPortType", serviceName = "ReplicationService", portName = "ReplicationPort", targetNamespace = "http://repl.v7.soap.webservices.oncourse.ish/")
+@EndpointProperty(key = "soap.no.validate.parts", value = "true")
 public class TestReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Override
@@ -26,7 +28,7 @@ public class TestReplicationPortTypeImpl implements ReplicationPortType {
 	@Override
 	public void confirmExecution(@WebParam(name = "arg0", targetNamespace = "") Long aLong, @WebParam(name = "arg1", targetNamespace = "") String s) {
 		assertEquals(Long.MAX_VALUE, aLong.longValue());
-		assertEquals(Long.MAX_VALUE, "confirmExecution");
+		assertEquals(s, "confirmExecution");
 	}
 
 	@Override

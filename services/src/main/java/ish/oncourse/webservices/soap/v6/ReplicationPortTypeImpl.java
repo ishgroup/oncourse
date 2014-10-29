@@ -3,35 +3,27 @@ package ish.oncourse.webservices.soap.v6;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.replication.services.AuthenticateServiceImpl;
-import ish.oncourse.webservices.replication.services.IAuthenticateService;
-import ish.oncourse.webservices.replication.services.IInstructionService;
-import ish.oncourse.webservices.replication.services.IReplicationService;
-import ish.oncourse.webservices.replication.services.InstructionServiceImpl;
-import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.util.SupportedVersions;
+import ish.oncourse.webservices.replication.services.*;
 import ish.oncourse.webservices.replication.services.IAuthenticateService.InternalAuthenticationException;
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
-import ish.oncourse.webservices.v6.stubs.replication.ErrorCode;
-import ish.oncourse.webservices.v6.stubs.replication.FaultReason;
-import ish.oncourse.webservices.v6.stubs.replication.InstructionStub;
-import ish.oncourse.webservices.v6.stubs.replication.ReplicationRecords;
-import ish.oncourse.webservices.v6.stubs.replication.ReplicationResult;
-import ish.oncourse.webservices.v6.stubs.replication.UnreplicatedEntitiesStub;
-
-import java.util.ArrayList;
-import java.util.List;
+import ish.oncourse.webservices.util.PortHelper;
+import ish.oncourse.webservices.util.SupportedVersions;
+import ish.oncourse.webservices.v6.stubs.replication.*;
+import org.apache.cxf.annotations.EndpointProperty;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceContext;
-
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v6.ReplicationPortType", serviceName = "ReplicationService",
 		portName = "ReplicationPort", targetNamespace = "http://repl.v6.soap.webservices.oncourse.ish/")
+//Workaround to avoid validation for soap operations body in cxf > 2.6.1. see http://cxf.apache.org/cve-2012-3451.html
+@EndpointProperty(key = "soap.no.validate.parts", value = "true")
 public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Inject

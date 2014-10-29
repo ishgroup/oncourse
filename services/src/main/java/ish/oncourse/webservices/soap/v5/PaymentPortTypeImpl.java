@@ -1,19 +1,19 @@
 package ish.oncourse.webservices.soap.v5;
 
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
 import ish.oncourse.webservices.replication.services.InternalPaymentService;
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.SupportedVersions;
-import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
 import ish.oncourse.webservices.v5.stubs.replication.TransactionGroup;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v5.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType", 
 	targetNamespace = "http://repl.v5.soap.webservices.oncourse.ish/")
+@Deprecated
 public class PaymentPortTypeImpl implements PaymentPortType {
 
 	@Inject

@@ -5,12 +5,11 @@ import ish.oncourse.webservices.replication.services.InternalPaymentService;
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This decorator was created as workaround for
@@ -23,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v4.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType", targetNamespace = "http://repl.v4.soap.webservices.oncourse.ish/")
+@Deprecated
 public class PaymentPortTypeImpl implements PaymentPortType {
 
 	@Inject

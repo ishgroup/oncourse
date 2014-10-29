@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.soap.v7;
 
+import ish.oncourse.webservices.soap.StubPopulator;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferenceService;
 import ish.oncourse.webservices.util.GenericReplicationStub;
@@ -24,8 +25,6 @@ import org.springframework.core.type.filter.TypeFilter;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,23 +147,9 @@ public abstract class AbstractTransportTest {
 		TransactionGroup transactionGroup = new TransactionGroup();
 		List<String> stubClassNames = AbstractTransportTest.getReplicationStubBeanNames();
 
-		ArrayList<ReplicationStub> stubs = createStubsBy(stubClassNames,PACKAGE_NAME_REPLICATION_STUBS, ReplicationStub.class);
+		ArrayList<ReplicationStub> stubs = new StubPopulator(PACKAGE_NAME_REPLICATION_STUBS, stubClassNames, ReplicationStub.class).populate();
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(stubs);
 		return transactionGroup;
-	}
-
-	public static <T> ArrayList<T> createStubsBy(List<String> stubClassNames,String packageName,Class<T> parentStubClass) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-		ArrayList<T> stubs = new ArrayList<>();
-		for (String stubClassName : stubClassNames) {
-			@SuppressWarnings("rawtypes")
-			Class aClass = Class.forName(String.format("%s.%s", packageName, stubClassName));
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			Constructor constructor = aClass.getConstructor();
-			@SuppressWarnings("unchecked")
-			T replicationStub = (T) constructor.newInstance();
-			stubs.add(replicationStub);
-		}
-		return stubs;
 	}
 
 	public static void assertTransactionGroup(TransactionGroup transactionGroup) {
@@ -187,7 +172,7 @@ public abstract class AbstractTransportTest {
 	}
 	
 	protected PaymentPortType getPaymentPortType(String wsdlPath, String endpointPath) throws JAXBException {
-		ReplicationService replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource(wsdlPath));
+		ReplicationService replicationService = new ReplicationService(PaymentPortType.class.getClassLoader().getResource(wsdlPath));
 		PaymentPortType paymentPortType = replicationService.getPaymentPortType();
 		initPortType((BindingProvider) paymentPortType, endpointPath);
 		return paymentPortType;

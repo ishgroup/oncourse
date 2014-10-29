@@ -9,6 +9,7 @@ import ish.oncourse.webservices.replication.services.IReplicationService.Interna
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v7.stubs.replication.*;
+import org.apache.cxf.annotations.EndpointProperty;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +22,8 @@ import java.util.List;
 
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v7.ReplicationPortType", serviceName = "ReplicationService",
 		portName = "ReplicationPort", targetNamespace = "http://repl.v7.soap.webservices.oncourse.ish/")
+//Workaround to avoid validation for soap operations body in cxf > 2.6.1. see http://cxf.apache.org/cve-2012-3451.html
+@EndpointProperty(key = "soap.no.validate.parts", value = "true")
 public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Inject

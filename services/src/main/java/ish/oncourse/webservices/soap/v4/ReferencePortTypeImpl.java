@@ -5,17 +5,16 @@ import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.util.GenericReferenceStub;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.jws.WebService;
-import javax.ws.rs.WebApplicationException;
-
 import org.apache.cayenne.Persistent;
+import org.apache.cxf.annotations.EndpointProperty;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.jws.WebService;
+import javax.ws.rs.WebApplicationException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -55,6 +54,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v4.ReferencePortType",
 			serviceName = "ReferenceService",
 			portName = "ReferencePort", targetNamespace="http://ref.v4.soap.webservices.oncourse.ish/")
+@EndpointProperty(key = "soap.no.validate.parts", value = "true")
+@Deprecated
 public class ReferencePortTypeImpl implements ReferencePortType {
 
 	@Inject
