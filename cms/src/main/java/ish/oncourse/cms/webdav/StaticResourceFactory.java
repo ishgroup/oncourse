@@ -158,9 +158,11 @@ public class StaticResourceFactory implements ResourceFactory {
 
 		@Override
 		public void moveTo(CollectionResource newParent, String newName) {
+			File oldFile = getFile();
 			super.moveTo(newParent, newName);
 			
 			executeEditFileScript(getFile());
+			executeEditFileScript(oldFile);
 		}
 
 		@Override
