@@ -27,6 +27,8 @@ import java.util.*;
  * Current version is determined as staged version (WebSiteVersion.deployedOn == null).
  */
 public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
+
+	private static final int KEEP_AT_LEAST = 4;
 	
 	private static final Logger logger = Logger.getLogger(CMSWebSiteVersionService.class);
 	
@@ -209,6 +211,13 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 
 	@Override
 	public void deleteWebSiteVersion(WebSiteVersion webSiteVersionToDelte) {
+		
+		if (getCurrentVersion().getId() == webSiteVersionToDelte.getId() 
+				|| getDeployedVersion(webSiteService.getCurrentWebSite()).getId() == webSiteVersionToDelte.getId()) {
+			// prevent the deletion of the current live site or the draft site!
+			logger.error("Attempt to delete current live site or the draft site version");
+			return;
+		}
 
 		ObjectContext context = cayenneService.newContext();
 		WebSiteVersion versionToDelete = context.localObject(webSiteVersionToDelte);
@@ -239,7 +248,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	@Override
 	public void removeOldWebSiteVersions(WebSite webSite) {
 		ObjectContext context = cayenneService.newContext();
-
+		//delete all revisions older than 60 days
 		Date deleteBeforeDate = DateUtils.addDays(new Date(), -60);
 
 		SelectQuery query = new SelectQuery(WebSiteVersion.class);
@@ -251,17 +260,14 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 		List<WebSiteVersion> allVersions = context.performQuery(query);
 
 		//if number of revisions less than 5 (4 + 1 unpublished) - nothing to delete 
-		if (allVersions.size() > 4) {
+		if (allVersions.size() > KEEP_AT_LEAST) {
+		
 			List<WebSiteVersion> versionsToDelete = new ArrayList<>();
 
-			List<WebSiteVersion> lastVersions = ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, deleteBeforeDate).filterObjects(allVersions);
-			if (lastVersions.size() >= 4) {
-				//if number of revisions which younger than 60 days more than 5 - simply delete all revisions older than 60 days 
-				versionsToDelete.addAll(ExpressionFactory.lessExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, deleteBeforeDate).filterObjects(allVersions));
-			} else {
-				//if number of revisions which younger than 60 days less than 5 then keep at least 5 revisions, even if they are older
-				versionsToDelete.addAll(allVersions.subList(4, allVersions.size()));
-			}
+			//don't delete the last few
+			versionsToDelete = allVersions.subList(KEEP_AT_LEAST, allVersions.size());
+			//delete all revisions older than 60 days
+			versionsToDelete = ExpressionFactory.lessExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, deleteBeforeDate).filterObjects(versionsToDelete);
 
 			for (WebSiteVersion version : versionsToDelete) {
 				deleteWebSiteVersion(version);
