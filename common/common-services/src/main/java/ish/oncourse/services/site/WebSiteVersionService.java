@@ -28,11 +28,11 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 
 	@Override
 	public void deleteWebSiteVersion(WebSiteVersion versionToDelete) {
-		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from Admin.");
+		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from CMS.");
 	}
 
 	@Override
 	public void removeOldWebSiteVersions(WebSite webSite) {
-		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from Admin.");
+		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from CMS.");
 	}
 }

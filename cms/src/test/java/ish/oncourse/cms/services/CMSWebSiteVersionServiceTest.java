@@ -1,8 +1,9 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.admin.services;
+package ish.oncourse.cms.services;
 
+import ish.oncourse.cms.services.site.CMSWebSiteVersionService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -24,18 +25,19 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class WebSiteVersionServiceOverrideTest extends ServiceTest {
+public class CMSWebSiteVersionServiceTest extends ServiceTest {
 
 	private ICayenneService cayenneService;
-	
+
 	private IWebSiteVersionService webSiteVersionService;
 
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.admin", "admin", AdminTestModule.class);
-		InputStream st = WebSiteVersionServiceOverrideTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/admin/services/webSiteVersionServiceOverrideTestDataSet.xml");
+		initTest("ish.oncourse.admin", "admin", CmsTestModule.class);
+		InputStream st = CMSWebSiteVersionService.class.getClassLoader().getResourceAsStream(
+				"ish/oncourse/cms/services/webSiteVersionServiceOverrideTestDataSet.xml");
 
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
 		builder.setColumnSensing(true);
@@ -54,6 +56,9 @@ public class WebSiteVersionServiceOverrideTest extends ServiceTest {
 	@Test
 	public void testDeleteOldWebSiteVersions() {
 		ObjectContext context = cayenneService.newContext();
+		
+		//get current wersion before
+		WebSiteVersion currentVersion = webSiteVersionService.getCurrentVersion();
 
 		//case 1 always to keep at least 5 revisions, even if they are older than 60 days
 		SelectQuery selectQuery = new SelectQuery(WebSite.class, ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, 1));
@@ -63,30 +68,32 @@ public class WebSiteVersionServiceOverrideTest extends ServiceTest {
 
 		selectQuery = new SelectQuery(WebSiteVersion.class, ExpressionFactory.matchExp(WebSiteVersion.WEB_SITE_PROPERTY, siteToDelete));
 		List<WebSiteVersion> allVersions = context.performQuery(selectQuery);
-		
+
 		assertEquals(12, allVersions.size());
 		//number of revisions which younger than 60 days
 		assertEquals(3, ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
 		//unpublished revisions yet (always one)
 		assertEquals(1, ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null).filterObjects(allVersions).size());
-		
+
 		webSiteVersionService.removeOldWebSiteVersions(siteToDelete);
 
 		allVersions = context.performQuery(selectQuery);
-		
+
 		//the number of remaining
 		assertEquals(5, allVersions.size());
 		//including number of revisions younger than 60 days (currently deployed too)
 		assertEquals(3, ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
 		//unpublished revisions yet 
 		assertEquals(1, ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null).filterObjects(allVersions).size());
+		//check that current version is not removed
+		assertTrue(webSiteVersionService.getCurrentVersion().equals(currentVersion));
 
-		
+
 		//case 2 delete all revisions older than 60 days (number of revisions which younger than 60 days more than 5)
 		selectQuery = new SelectQuery(WebSite.class, ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, 2));
 		webSites = context.performQuery(selectQuery);
 		assertEquals(1, webSites.size());
-	 	siteToDelete = webSites.get(0);
+		siteToDelete = webSites.get(0);
 
 		selectQuery = new SelectQuery(WebSiteVersion.class, ExpressionFactory.matchExp(WebSiteVersion.WEB_SITE_PROPERTY, siteToDelete));
 		allVersions = context.performQuery(selectQuery);
@@ -107,10 +114,10 @@ public class WebSiteVersionServiceOverrideTest extends ServiceTest {
 		assertEquals(7, ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
 		//unpublished revisions yet 
 		assertEquals(1, ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null).filterObjects(allVersions).size());
-		
+
 	}
-	
-	
+
+
 	@Test
 	public void testDeleteWebSiteVersion() {
 		ObjectContext context = cayenneService.newContext();
@@ -119,14 +126,14 @@ public class WebSiteVersionServiceOverrideTest extends ServiceTest {
 		List<WebSiteVersion> list = context.performQuery(selectQuery);
 		assertEquals(1,list.size());
 		WebSiteVersion versionToDelete = list.get(0);
-		
+
 		checkCountOfObjectBeforeMethod(context, versionToDelete);
-		
+
 		webSiteVersionService.deleteWebSiteVersion(versionToDelete);
-		
+
 		checkCountOfObjectAfterMethod(context, versionToDelete);
 	}
-	
+
 	private void checkCountOfObjectBeforeMethod(ObjectContext context, WebSiteVersion versionToDelete) {
 		SelectQuery selectQuery1 = new SelectQuery(WebSite.class);
 		SelectQuery selectQuery2 = new SelectQuery(WebSiteVersion.class);
@@ -138,7 +145,7 @@ public class WebSiteVersionServiceOverrideTest extends ServiceTest {
 		SelectQuery selectQuery8 = new SelectQuery(WebContent.class);
 		SelectQuery selectQuery9 = new SelectQuery(WebContentVisibility.class);
 		SelectQuery selectQuery0 = new SelectQuery(WebMenu.class);
-				
+
 		List<WebSite> list1 = context.performQuery(selectQuery1);
 		List<WebSiteVersion> list2 = context.performQuery(selectQuery2);
 		List<WebSiteLayout> list3 = context.performQuery(selectQuery3);
@@ -149,12 +156,12 @@ public class WebSiteVersionServiceOverrideTest extends ServiceTest {
 		List<WebContent> list8 = context.performQuery(selectQuery8);
 		List<WebContentVisibility> list9 = context.performQuery(selectQuery9);
 		List<WebMenu> list0 = context.performQuery(selectQuery0);
-		
+
 		assertEquals(2, list1.size());
 		assertEquals(24, list2.size());
 		assertEquals(10, list3.size());
 		assertEquals(34, list4.size());
-		assertEquals(6, list5.size());	
+		assertEquals(6, list5.size());
 		assertEquals(19, list6.size());
 		assertEquals(21, list7.size());
 		assertEquals(7, list8.size());
@@ -232,4 +239,5 @@ public class WebSiteVersionServiceOverrideTest extends ServiceTest {
 		assertEquals(0, webContentVisibilities.size());
 		assertEquals(0, menuList.size());
 	}
+	
 }

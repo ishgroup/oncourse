@@ -5,12 +5,14 @@ package ish.oncourse.cms.services;
 
 import ish.oncourse.cms.services.access.AuthenticationService;
 import ish.oncourse.cms.services.access.IAuthenticationService;
+import ish.oncourse.cms.services.site.CMSWebSiteVersionService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -25,6 +27,7 @@ public class CmsTestModule {
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("testWebSiteService");
+		binder.bind(IWebSiteVersionService.class, CMSWebSiteVersionService.class);
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
