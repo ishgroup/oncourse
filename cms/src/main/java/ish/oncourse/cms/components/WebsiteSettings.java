@@ -98,5 +98,6 @@ public class WebsiteSettings {
         if (!request.isXHR())
             return;
 		webSiteVersionService.deploy();
+		webSiteVersionService.removeOldWebSiteVersions(webSiteService.getCurrentWebSite());
 	}
 }
