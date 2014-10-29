@@ -3,6 +3,7 @@ package ish.oncourse.webservices.soap.v6;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
 import ish.oncourse.webservices.soap.AbstractTransportTest;
 import ish.oncourse.webservices.v6.stubs.replication.*;
+import org.apache.cxf.annotations.EndpointProperty;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -14,6 +15,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v6.ReplicationPortType", serviceName = "ReplicationService", portName = "ReplicationPort", targetNamespace = "http://repl.v6.soap.webservices.oncourse.ish/")
+@EndpointProperty(key = "soap.no.validate.parts", value = "true")
 public class TestReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Override
