@@ -2937,4 +2937,133 @@
 			</column>
 		</addColumn>
 	</changeSet>
+
+	<changeSet id="192" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="feeHelpAmount"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Enrolment">
+			<column name="feeHelpAmount" type="DECIMAL(10,2)" defaultValueNumeric="0">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="193" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="confirmationStatus"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="Enrolment">
+			<column name="confirmationStatus" type="INTEGER" defaultValueNumeric="1">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+
+		<!-- set confirmation status to SENT for all existing enrolments -->
+		<sql>UPDATE Enrolment SET confirmationStatus = 2;</sql>
+	</changeSet>
+
+	<changeSet id="194" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Invoice" columnName="confirmationStatus"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="Invoice">
+			<column name="confirmationStatus" type="INTEGER" defaultValueNumeric="1">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+
+		<!-- set confirmation status to SENT for all existing invoices -->
+		<sql>UPDATE Invoice SET confirmationStatus = 2;</sql>
+	</changeSet>
+
+	<changeSet id="195" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="ProductItem" columnName="confirmationStatus"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="ProductItem">
+			<column name="confirmationStatus" type="INTEGER"/>
+		</addColumn>
+
+		<!-- set confirmation status to SENT for all existing vouchers -->
+		<sql>UPDATE ProductItem SET confirmationStatus = 2 WHERE type = 3</sql>
+	</changeSet>
+
+	<changeSet id="196" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="PaymentIn" columnName="confirmationStatus"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="PaymentIn">
+			<column name="confirmationStatus" type="INTEGER" defaultValueNumeric="1">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+
+		<!-- set confirmation status to SENT for all existing payments -->
+		<sql>UPDATE PaymentIn SET confirmationStatus = 2</sql>
+	</changeSet>
+
+	<changeSet id="197" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Application" columnName="confirmationStatus"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="Application">
+			<column name="confirmationStatus" type="INTEGER" defaultValueNumeric="1">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+
+		<!-- set confirmation status to SENT for all existing payments -->
+		<sql>UPDATE Application SET confirmationStatus = 2</sql>
+	</changeSet>
+
+	<changeSet id="198" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="PaymentOut" columnName="confirmationStatus"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="PaymentOut">
+			<column name="confirmationStatus" type="INTEGER" defaultValueNumeric="1">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+
+		<!-- set confirmation status to SENT for all existing payments -->
+		<sql>UPDATE PaymentOut SET confirmationStatus = 2</sql>
+	</changeSet>
+
+	<changeSet id="199" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Survey" columnName="publicComment"/>
+			</not>
+		</preConditions>
+
+		<addColumn tableName="Survey">
+			<column name="publicComment" type="SMALLINT" defaultValueNumeric="1">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+
+
 </databaseChangeLog>
