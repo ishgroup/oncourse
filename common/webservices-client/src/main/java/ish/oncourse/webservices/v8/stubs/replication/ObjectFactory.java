@@ -4,6 +4,7 @@ package ish.oncourse.webservices.v8.stubs.replication;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
 
@@ -24,6 +25,7 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _AuthLastCommunicationKey_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "authLastCommunicationKey");
     private final static QName _VoucherProduct_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "voucherProduct");
     private final static QName _InvoiceLineDiscount_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "invoiceLineDiscount");
     private final static QName _GetUnreplicatedEntitiesResponse_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "getUnreplicatedEntitiesResponse");
@@ -32,6 +34,7 @@ public class ObjectFactory {
     private final static QName _Message_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "message");
     private final static QName _CourseClass_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "courseClass");
     private final static QName _Product_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "product");
+    private final static QName _PaymentStatusResponse_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "paymentStatusResponse");
     private final static QName _AclRole_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "aclRole");
     private final static QName _Invoice_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "invoice");
     private final static QName _TagRequirement_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "tagRequirement");
@@ -46,14 +49,21 @@ public class ObjectFactory {
     private final static QName _QueuedStatistic_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "queuedStatistic");
     private final static QName _Application_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "application");
     private final static QName _CourseModule_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "courseModule");
+    private final static QName _RefundRequest_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "refundRequest");
     private final static QName _Membership_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "membership");
     private final static QName _PaymentOut_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "paymentOut");
+    private final static QName _UsiResponse_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "usiResponse");
     private final static QName _ConfirmExecution_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "confirmExecution");
     private final static QName _Certificate_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "certificate");
     private final static QName _SystemUser_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "systemUser");
     private final static QName _BinaryInfo_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "binaryInfo");
     private final static QName _TutorAttendance_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "tutorAttendance");
+    private final static QName _VoucherRequest_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "voucherRequest");
+    private final static QName _GetRecordsResponse_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "getRecordsResponse");
+    private final static QName _ResultsRequest_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "resultsRequest");
+    private final static QName _VoucherResponse_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "voucherResponse");
     private final static QName _Document_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "document");
+    private final static QName _RefundResponse_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "refundResponse");
     private final static QName _Session_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "session");
     private final static QName _Student_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "student");
     private final static QName _WaitingListSite_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "waitingListSite");
@@ -61,6 +71,7 @@ public class ObjectFactory {
     private final static QName _InvoiceLine_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "invoiceLine");
     private final static QName _ConcessionType_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "concessionType");
     private final static QName _Course_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "course");
+    private final static QName _PaymentRequest_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "paymentRequest");
     private final static QName _Outcome_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "outcome");
     private final static QName _SessionModule_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "sessionModule");
     private final static QName _DiscountCourseClass_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "discountCourseClass");
@@ -75,16 +86,20 @@ public class ObjectFactory {
     private final static QName _Article_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "article");
     private final static QName _CustomField_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "customField");
     private final static QName _DiscountConcessionType_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "discountConcessionType");
+    private final static QName _AuthSecurityCode_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "authSecurityCode");
     private final static QName _Preference_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "preference");
     private final static QName _GetUnreplicatedEntities_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "getUnreplicatedEntities");
     private final static QName _WaitingList_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "waitingList");
+    private final static QName _AuthNewCommunicationKey_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "authNewCommunicationKey");
     private final static QName _Survey_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "survey");
     private final static QName _CustomFieldType_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "customFieldType");
     private final static QName _Enrolment_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "enrolment");
+    private final static QName _SendRecordsRequest_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "sendRecordsRequest");
     private final static QName _ProductItem_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "productItem");
     private final static QName _CorporatePassCourseClass_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "corporatePassCourseClass");
     private final static QName _BinaryData_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "binaryData");
     private final static QName _ContactRelationType_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "contactRelationType");
+    private final static QName _UsiRequest_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "usiRequest");
     private final static QName _DiscountMembershipRelationType_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "discountMembershipRelationType");
     private final static QName _Discount_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "discount");
     private final static QName _ArticleProduct_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "articleProduct");
@@ -92,12 +107,17 @@ public class ObjectFactory {
     private final static QName _DiscountMembership_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "discountMembership");
     private final static QName _GetInstructions_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "getInstructions");
     private final static QName _MessagePerson_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "messagePerson");
+    private final static QName _ResultsResponse_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "resultsResponse");
+    private final static QName _PaymentStatusRequest_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "paymentStatusRequest");
     private final static QName _CertificateOutcome_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "certificateOutcome");
     private final static QName _PaymentInLine_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "paymentInLine");
     private final static QName _Voucher_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "voucher");
     private final static QName _Tag_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "tag");
+    private final static QName _FaultResponse_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "faultResponse");
+    private final static QName _SendRecordsResponse_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "sendRecordsResponse");
     private final static QName _PaymentIn_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "paymentIn");
     private final static QName _ContactRelation_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "contactRelation");
+    private final static QName _PaymentResponse_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "paymentResponse");
     private final static QName _Contact_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "contact");
     private final static QName _CorporatePass_QNAME = new QName("http://repl.v8.soap.webservices.oncourse.ish/", "corporatePass");
 
@@ -109,635 +129,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RoomStub }
-     * 
-     */
-    public RoomStub createRoomStub() {
-        return new RoomStub();
-    }
-
-    /**
-     * Create an instance of {@link VoucherPaymentInStub }
-     * 
-     */
-    public VoucherPaymentInStub createVoucherPaymentInStub() {
-        return new VoucherPaymentInStub();
-    }
-
-    /**
-     * Create an instance of {@link InvoiceLineDiscountStub }
-     * 
-     */
-    public InvoiceLineDiscountStub createInvoiceLineDiscountStub() {
-        return new InvoiceLineDiscountStub();
-    }
-
-    /**
-     * Create an instance of {@link DiscountConcessionTypeStub }
-     * 
-     */
-    public DiscountConcessionTypeStub createDiscountConcessionTypeStub() {
-        return new DiscountConcessionTypeStub();
-    }
-
-    /**
-     * Create an instance of {@link GetInstructionsResponse }
-     * 
-     */
-    public GetInstructionsResponse createGetInstructionsResponse() {
-        return new GetInstructionsResponse();
-    }
-
-    /**
-     * Create an instance of {@link SystemUserStub }
-     * 
-     */
-    public SystemUserStub createSystemUserStub() {
-        return new SystemUserStub();
-    }
-
-    /**
-     * Create an instance of {@link CertificateOutcomeStub }
-     * 
-     */
-    public CertificateOutcomeStub createCertificateOutcomeStub() {
-        return new CertificateOutcomeStub();
-    }
-
-    /**
-     * Create an instance of {@link MembershipProductStub }
-     * 
-     */
-    public MembershipProductStub createMembershipProductStub() {
-        return new MembershipProductStub();
-    }
-
-    /**
-     * Create an instance of {@link TagRequirementStub }
-     * 
-     */
-    public TagRequirementStub createTagRequirementStub() {
-        return new TagRequirementStub();
-    }
-
-    /**
-     * Create an instance of {@link MessageTemplateStub }
-     * 
-     */
-    public MessageTemplateStub createMessageTemplateStub() {
-        return new MessageTemplateStub();
-    }
-
-    /**
-     * Create an instance of {@link HollowStub }
-     * 
-     */
-    public HollowStub createHollowStub() {
-        return new HollowStub();
-    }
-
-    /**
-     * Create an instance of {@link DiscountCourseClassStub }
-     * 
-     */
-    public DiscountCourseClassStub createDiscountCourseClassStub() {
-        return new DiscountCourseClassStub();
-    }
-
-    /**
-     * Create an instance of {@link DiscountMembershipRelationTypeStub }
-     * 
-     */
-    public DiscountMembershipRelationTypeStub createDiscountMembershipRelationTypeStub() {
-        return new DiscountMembershipRelationTypeStub();
-    }
-
-    /**
-     * Create an instance of {@link BinaryDataStub }
-     * 
-     */
-    public BinaryDataStub createBinaryDataStub() {
-        return new BinaryDataStub();
-    }
-
-    /**
-     * Create an instance of {@link WaitingListSiteStub }
-     * 
-     */
-    public WaitingListSiteStub createWaitingListSiteStub() {
-        return new WaitingListSiteStub();
-    }
-
-    /**
-     * Create an instance of {@link CourseClassStub }
-     * 
-     */
-    public CourseClassStub createCourseClassStub() {
-        return new CourseClassStub();
-    }
-
-    /**
-     * Create an instance of {@link UnreplicatedEntitiesStub }
-     * 
-     */
-    public UnreplicatedEntitiesStub createUnreplicatedEntitiesStub() {
-        return new UnreplicatedEntitiesStub();
-    }
-
-    /**
-     * Create an instance of {@link PaymentOutStub }
-     * 
-     */
-    public PaymentOutStub createPaymentOutStub() {
-        return new PaymentOutStub();
-    }
-
-    /**
-     * Create an instance of {@link InstructionStub }
-     * 
-     */
-    public InstructionStub createInstructionStub() {
-        return new InstructionStub();
-    }
-
-    /**
-     * Create an instance of {@link ReplicatedRecord }
-     * 
-     */
-    public ReplicatedRecord createReplicatedRecord() {
-        return new ReplicatedRecord();
-    }
-
-    /**
-     * Create an instance of {@link CourseStub }
-     * 
-     */
-    public CourseStub createCourseStub() {
-        return new CourseStub();
-    }
-
-    /**
-     * Create an instance of {@link CourseClassTutorStub }
-     * 
-     */
-    public CourseClassTutorStub createCourseClassTutorStub() {
-        return new CourseClassTutorStub();
-    }
-
-    /**
-     * Create an instance of {@link CustomFieldStub }
-     * 
-     */
-    public CustomFieldStub createCustomFieldStub() {
-        return new CustomFieldStub();
-    }
-
-    /**
-     * Create an instance of {@link MessagePersonStub }
-     * 
-     */
-    public MessagePersonStub createMessagePersonStub() {
-        return new MessagePersonStub();
-    }
-
-    /**
-     * Create an instance of {@link PreferenceStub }
-     * 
-     */
-    public PreferenceStub createPreferenceStub() {
-        return new PreferenceStub();
-    }
-
-    /**
-     * Create an instance of {@link StudentConcessionStub }
-     * 
-     */
-    public StudentConcessionStub createStudentConcessionStub() {
-        return new StudentConcessionStub();
-    }
-
-    /**
-     * Create an instance of {@link BinaryInfoStub }
-     * 
-     */
-    public BinaryInfoStub createBinaryInfoStub() {
-        return new BinaryInfoStub();
-    }
-
-    /**
-     * Create an instance of {@link OutcomeStub }
-     * 
-     */
-    public OutcomeStub createOutcomeStub() {
-        return new OutcomeStub();
-    }
-
-    /**
-     * Create an instance of {@link DiscountStub }
-     * 
-     */
-    public DiscountStub createDiscountStub() {
-        return new DiscountStub();
-    }
-
-    /**
-     * Create an instance of {@link VoucherProductStub }
-     * 
-     */
-    public VoucherProductStub createVoucherProductStub() {
-        return new VoucherProductStub();
-    }
-
-    /**
-     * Create an instance of {@link ConfirmExecution }
-     * 
-     */
-    public ConfirmExecution createConfirmExecution() {
-        return new ConfirmExecution();
-    }
-
-    /**
-     * Create an instance of {@link ConcessionTypeStub }
-     * 
-     */
-    public ConcessionTypeStub createConcessionTypeStub() {
-        return new ConcessionTypeStub();
-    }
-
-    /**
-     * Create an instance of {@link VoucherProductCourseStub }
-     * 
-     */
-    public VoucherProductCourseStub createVoucherProductCourseStub() {
-        return new VoucherProductCourseStub();
-    }
-
-    /**
-     * Create an instance of {@link ProductItemStub }
-     * 
-     */
-    public ProductItemStub createProductItemStub() {
-        return new ProductItemStub();
-    }
-
-    /**
-     * Create an instance of {@link CorporatePassCourseClassStub }
-     * 
-     */
-    public CorporatePassCourseClassStub createCorporatePassCourseClassStub() {
-        return new CorporatePassCourseClassStub();
-    }
-
-    /**
-     * Create an instance of {@link MembershipStub }
-     * 
-     */
-    public MembershipStub createMembershipStub() {
-        return new MembershipStub();
-    }
-
-    /**
-     * Create an instance of {@link AclAccessKeyStub }
-     * 
-     */
-    public AclAccessKeyStub createAclAccessKeyStub() {
-        return new AclAccessKeyStub();
-    }
-
-    /**
-     * Create an instance of {@link WaitingListStub }
-     * 
-     */
-    public WaitingListStub createWaitingListStub() {
-        return new WaitingListStub();
-    }
-
-    /**
-     * Create an instance of {@link TutorStub }
-     * 
-     */
-    public TutorStub createTutorStub() {
-        return new TutorStub();
-    }
-
-    /**
-     * Create an instance of {@link GetUnreplicatedEntitiesResponse }
-     * 
-     */
-    public GetUnreplicatedEntitiesResponse createGetUnreplicatedEntitiesResponse() {
-        return new GetUnreplicatedEntitiesResponse();
-    }
-
-    /**
-     * Create an instance of {@link QueuedStatisticStub }
-     * 
-     */
-    public QueuedStatisticStub createQueuedStatisticStub() {
-        return new QueuedStatisticStub();
-    }
-
-    /**
-     * Create an instance of {@link ApplicationStub }
-     * 
-     */
-    public ApplicationStub createApplicationStub() {
-        return new ApplicationStub();
-    }
-
-    /**
-     * Create an instance of {@link ReplicationRecords }
-     * 
-     */
-    public ReplicationRecords createReplicationRecords() {
-        return new ReplicationRecords();
-    }
-
-    /**
-     * Create an instance of {@link VoucherStub }
-     * 
-     */
-    public VoucherStub createVoucherStub() {
-        return new VoucherStub();
-    }
-
-    /**
-     * Create an instance of {@link DiscountMembershipStub }
-     * 
-     */
-    public DiscountMembershipStub createDiscountMembershipStub() {
-        return new DiscountMembershipStub();
-    }
-
-    /**
-     * Create an instance of {@link SessionModuleStub }
-     * 
-     */
-    public SessionModuleStub createSessionModuleStub() {
-        return new SessionModuleStub();
-    }
-
-    /**
-     * Create an instance of {@link PaymentInLineStub }
-     * 
-     */
-    public PaymentInLineStub createPaymentInLineStub() {
-        return new PaymentInLineStub();
-    }
-
-    /**
-     * Create an instance of {@link SiteStub }
-     * 
-     */
-    public SiteStub createSiteStub() {
-        return new SiteStub();
-    }
-
-    /**
-     * Create an instance of {@link CustomFieldTypeStub }
-     * 
-     */
-    public CustomFieldTypeStub createCustomFieldTypeStub() {
-        return new CustomFieldTypeStub();
-    }
-
-    /**
-     * Create an instance of {@link ContactRelationStub }
-     * 
-     */
-    public ContactRelationStub createContactRelationStub() {
-        return new ContactRelationStub();
-    }
-
-    /**
-     * Create an instance of {@link EnrolmentStub }
-     * 
-     */
-    public EnrolmentStub createEnrolmentStub() {
-        return new EnrolmentStub();
-    }
-
-    /**
-     * Create an instance of {@link DocumentStub }
-     * 
-     */
-    public DocumentStub createDocumentStub() {
-        return new DocumentStub();
-    }
-
-    /**
-     * Create an instance of {@link FaultReason }
-     * 
-     */
-    public FaultReason createFaultReason() {
-        return new FaultReason();
-    }
-
-    /**
-     * Create an instance of {@link InvoiceStub }
-     * 
-     */
-    public InvoiceStub createInvoiceStub() {
-        return new InvoiceStub();
-    }
-
-    /**
-     * Create an instance of {@link AttendanceStub }
-     * 
-     */
-    public AttendanceStub createAttendanceStub() {
-        return new AttendanceStub();
-    }
-
-    /**
-     * Create an instance of {@link ParametersMap }
-     * 
-     */
-    public ParametersMap createParametersMap() {
-        return new ParametersMap();
-    }
-
-    /**
-     * Create an instance of {@link EntityRelationStub }
-     * 
-     */
-    public EntityRelationStub createEntityRelationStub() {
-        return new EntityRelationStub();
-    }
-
-    /**
-     * Create an instance of {@link TransactionGroup }
-     * 
-     */
-    public TransactionGroup createTransactionGroup() {
-        return new TransactionGroup();
-    }
-
-    /**
-     * Create an instance of {@link TagRelationStub }
-     * 
-     */
-    public TagRelationStub createTagRelationStub() {
-        return new TagRelationStub();
-    }
-
-    /**
      * Create an instance of {@link ArticleProductStub }
      * 
      */
     public ArticleProductStub createArticleProductStub() {
         return new ArticleProductStub();
-    }
-
-    /**
-     * Create an instance of {@link GetInstructions }
-     * 
-     */
-    public GetInstructions createGetInstructions() {
-        return new GetInstructions();
-    }
-
-    /**
-     * Create an instance of {@link CertificateStub }
-     * 
-     */
-    public CertificateStub createCertificateStub() {
-        return new CertificateStub();
-    }
-
-    /**
-     * Create an instance of {@link ReplicationResult }
-     * 
-     */
-    public ReplicationResult createReplicationResult() {
-        return new ReplicationResult();
-    }
-
-    /**
-     * Create an instance of {@link SurveyStub }
-     * 
-     */
-    public SurveyStub createSurveyStub() {
-        return new SurveyStub();
-    }
-
-    /**
-     * Create an instance of {@link CorporatePassProductStub }
-     * 
-     */
-    public CorporatePassProductStub createCorporatePassProductStub() {
-        return new CorporatePassProductStub();
-    }
-
-    /**
-     * Create an instance of {@link StudentStub }
-     * 
-     */
-    public StudentStub createStudentStub() {
-        return new StudentStub();
-    }
-
-    /**
-     * Create an instance of {@link TutorAttendanceStub }
-     * 
-     */
-    public TutorAttendanceStub createTutorAttendanceStub() {
-        return new TutorAttendanceStub();
-    }
-
-    /**
-     * Create an instance of {@link ProductStub }
-     * 
-     */
-    public ProductStub createProductStub() {
-        return new ProductStub();
-    }
-
-    /**
-     * Create an instance of {@link ContactRelationTypeStub }
-     * 
-     */
-    public ContactRelationTypeStub createContactRelationTypeStub() {
-        return new ContactRelationTypeStub();
-    }
-
-    /**
-     * Create an instance of {@link CourseModuleStub }
-     * 
-     */
-    public CourseModuleStub createCourseModuleStub() {
-        return new CourseModuleStub();
-    }
-
-    /**
-     * Create an instance of {@link MessageStub }
-     * 
-     */
-    public MessageStub createMessageStub() {
-        return new MessageStub();
-    }
-
-    /**
-     * Create an instance of {@link SessionStub }
-     * 
-     */
-    public SessionStub createSessionStub() {
-        return new SessionStub();
-    }
-
-    /**
-     * Create an instance of {@link BinaryInfoRelationStub }
-     * 
-     */
-    public BinaryInfoRelationStub createBinaryInfoRelationStub() {
-        return new BinaryInfoRelationStub();
-    }
-
-    /**
-     * Create an instance of {@link ParameterEntry }
-     * 
-     */
-    public ParameterEntry createParameterEntry() {
-        return new ParameterEntry();
-    }
-
-    /**
-     * Create an instance of {@link DeletedStub }
-     * 
-     */
-    public DeletedStub createDeletedStub() {
-        return new DeletedStub();
-    }
-
-    /**
-     * Create an instance of {@link AclRoleStub }
-     * 
-     */
-    public AclRoleStub createAclRoleStub() {
-        return new AclRoleStub();
-    }
-
-    /**
-     * Create an instance of {@link PaymentInStub }
-     * 
-     */
-    public PaymentInStub createPaymentInStub() {
-        return new PaymentInStub();
-    }
-
-    /**
-     * Create an instance of {@link GetUnreplicatedEntities }
-     * 
-     */
-    public GetUnreplicatedEntities createGetUnreplicatedEntities() {
-        return new GetUnreplicatedEntities();
-    }
-
-    /**
-     * Create an instance of {@link ArticleStub }
-     * 
-     */
-    public ArticleStub createArticleStub() {
-        return new ArticleStub();
     }
 
     /**
@@ -749,19 +145,115 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CorporatePassStub }
+     * Create an instance of {@link VoucherStub }
      * 
      */
-    public CorporatePassStub createCorporatePassStub() {
-        return new CorporatePassStub();
+    public VoucherStub createVoucherStub() {
+        return new VoucherStub();
     }
 
     /**
-     * Create an instance of {@link TagStub }
+     * Create an instance of {@link GetUnreplicatedEntities }
      * 
      */
-    public TagStub createTagStub() {
-        return new TagStub();
+    public GetUnreplicatedEntities createGetUnreplicatedEntities() {
+        return new GetUnreplicatedEntities();
+    }
+
+    /**
+     * Create an instance of {@link ContactRelationTypeStub }
+     * 
+     */
+    public ContactRelationTypeStub createContactRelationTypeStub() {
+        return new ContactRelationTypeStub();
+    }
+
+    /**
+     * Create an instance of {@link DiscountMembershipStub }
+     * 
+     */
+    public DiscountMembershipStub createDiscountMembershipStub() {
+        return new DiscountMembershipStub();
+    }
+
+    /**
+     * Create an instance of {@link TutorAttendanceStub }
+     * 
+     */
+    public TutorAttendanceStub createTutorAttendanceStub() {
+        return new TutorAttendanceStub();
+    }
+
+    /**
+     * Create an instance of {@link ConcessionTypeStub }
+     * 
+     */
+    public ConcessionTypeStub createConcessionTypeStub() {
+        return new ConcessionTypeStub();
+    }
+
+    /**
+     * Create an instance of {@link DiscountMembershipRelationTypeStub }
+     * 
+     */
+    public DiscountMembershipRelationTypeStub createDiscountMembershipRelationTypeStub() {
+        return new DiscountMembershipRelationTypeStub();
+    }
+
+    /**
+     * Create an instance of {@link ReplicationRecords }
+     * 
+     */
+    public ReplicationRecords createReplicationRecords() {
+        return new ReplicationRecords();
+    }
+
+    /**
+     * Create an instance of {@link WaitingListSiteStub }
+     * 
+     */
+    public WaitingListSiteStub createWaitingListSiteStub() {
+        return new WaitingListSiteStub();
+    }
+
+    /**
+     * Create an instance of {@link BinaryDataStub }
+     * 
+     */
+    public BinaryDataStub createBinaryDataStub() {
+        return new BinaryDataStub();
+    }
+
+    /**
+     * Create an instance of {@link CourseClassStub }
+     * 
+     */
+    public CourseClassStub createCourseClassStub() {
+        return new CourseClassStub();
+    }
+
+    /**
+     * Create an instance of {@link VoucherProductStub }
+     * 
+     */
+    public VoucherProductStub createVoucherProductStub() {
+        return new VoucherProductStub();
+    }
+
+    /**
+     * Create an instance of {@link TransactionGroup }
+     * 
+     */
+    public TransactionGroup createTransactionGroup() {
+        return new TransactionGroup();
+    }
+
+    /**
+     * Create an instance of {@link DiscountConcessionTypeStub }
+     * 
+     */
+    public DiscountConcessionTypeStub createDiscountConcessionTypeStub() {
+        return new DiscountConcessionTypeStub();
     }
 
     /**
@@ -773,11 +265,549 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link PaymentInLineStub }
+     * 
+     */
+    public PaymentInLineStub createPaymentInLineStub() {
+        return new PaymentInLineStub();
+    }
+
+    /**
+     * Create an instance of {@link TagStub }
+     * 
+     */
+    public TagStub createTagStub() {
+        return new TagStub();
+    }
+
+    /**
+     * Create an instance of {@link VoucherPaymentInStub }
+     * 
+     */
+    public VoucherPaymentInStub createVoucherPaymentInStub() {
+        return new VoucherPaymentInStub();
+    }
+
+    /**
+     * Create an instance of {@link GetUnreplicatedEntitiesResponse }
+     * 
+     */
+    public GetUnreplicatedEntitiesResponse createGetUnreplicatedEntitiesResponse() {
+        return new GetUnreplicatedEntitiesResponse();
+    }
+
+    /**
+     * Create an instance of {@link SiteStub }
+     * 
+     */
+    public SiteStub createSiteStub() {
+        return new SiteStub();
+    }
+
+    /**
+     * Create an instance of {@link ProductStub }
+     * 
+     */
+    public ProductStub createProductStub() {
+        return new ProductStub();
+    }
+
+    /**
+     * Create an instance of {@link PreferenceStub }
+     * 
+     */
+    public PreferenceStub createPreferenceStub() {
+        return new PreferenceStub();
+    }
+
+    /**
+     * Create an instance of {@link CourseModuleStub }
+     * 
+     */
+    public CourseModuleStub createCourseModuleStub() {
+        return new CourseModuleStub();
+    }
+
+    /**
+     * Create an instance of {@link MembershipProductStub }
+     * 
+     */
+    public MembershipProductStub createMembershipProductStub() {
+        return new MembershipProductStub();
+    }
+
+    /**
+     * Create an instance of {@link EntityRelationStub }
+     * 
+     */
+    public EntityRelationStub createEntityRelationStub() {
+        return new EntityRelationStub();
+    }
+
+    /**
+     * Create an instance of {@link PaymentInStub }
+     * 
+     */
+    public PaymentInStub createPaymentInStub() {
+        return new PaymentInStub();
+    }
+
+    /**
+     * Create an instance of {@link EnrolmentStub }
+     * 
+     */
+    public EnrolmentStub createEnrolmentStub() {
+        return new EnrolmentStub();
+    }
+
+    /**
+     * Create an instance of {@link CorporatePassProductStub }
+     * 
+     */
+    public CorporatePassProductStub createCorporatePassProductStub() {
+        return new CorporatePassProductStub();
+    }
+
+    /**
+     * Create an instance of {@link ParametersMap }
+     * 
+     */
+    public ParametersMap createParametersMap() {
+        return new ParametersMap();
+    }
+
+    /**
+     * Create an instance of {@link ParameterEntry }
+     * 
+     */
+    public ParameterEntry createParameterEntry() {
+        return new ParameterEntry();
+    }
+
+    /**
+     * Create an instance of {@link TagRequirementStub }
+     * 
+     */
+    public TagRequirementStub createTagRequirementStub() {
+        return new TagRequirementStub();
+    }
+
+    /**
+     * Create an instance of {@link QueuedStatisticStub }
+     * 
+     */
+    public QueuedStatisticStub createQueuedStatisticStub() {
+        return new QueuedStatisticStub();
+    }
+
+    /**
+     * Create an instance of {@link SessionModuleStub }
+     * 
+     */
+    public SessionModuleStub createSessionModuleStub() {
+        return new SessionModuleStub();
+    }
+
+    /**
+     * Create an instance of {@link AttendanceStub }
+     * 
+     */
+    public AttendanceStub createAttendanceStub() {
+        return new AttendanceStub();
+    }
+
+    /**
+     * Create an instance of {@link MessageStub }
+     * 
+     */
+    public MessageStub createMessageStub() {
+        return new MessageStub();
+    }
+
+    /**
+     * Create an instance of {@link PaymentOutStub }
+     * 
+     */
+    public PaymentOutStub createPaymentOutStub() {
+        return new PaymentOutStub();
+    }
+
+    /**
+     * Create an instance of {@link MessageTemplateStub }
+     * 
+     */
+    public MessageTemplateStub createMessageTemplateStub() {
+        return new MessageTemplateStub();
+    }
+
+    /**
+     * Create an instance of {@link MembershipStub }
+     * 
+     */
+    public MembershipStub createMembershipStub() {
+        return new MembershipStub();
+    }
+
+    /**
+     * Create an instance of {@link DocumentStub }
+     * 
+     */
+    public DocumentStub createDocumentStub() {
+        return new DocumentStub();
+    }
+
+    /**
+     * Create an instance of {@link WaitingListStub }
+     * 
+     */
+    public WaitingListStub createWaitingListStub() {
+        return new WaitingListStub();
+    }
+
+    /**
+     * Create an instance of {@link AclAccessKeyStub }
+     * 
+     */
+    public AclAccessKeyStub createAclAccessKeyStub() {
+        return new AclAccessKeyStub();
+    }
+
+    /**
+     * Create an instance of {@link TutorStub }
+     * 
+     */
+    public TutorStub createTutorStub() {
+        return new TutorStub();
+    }
+
+    /**
+     * Create an instance of {@link GetInstructions }
+     * 
+     */
+    public GetInstructions createGetInstructions() {
+        return new GetInstructions();
+    }
+
+    /**
+     * Create an instance of {@link CorporatePassCourseClassStub }
+     * 
+     */
+    public CorporatePassCourseClassStub createCorporatePassCourseClassStub() {
+        return new CorporatePassCourseClassStub();
+    }
+
+    /**
+     * Create an instance of {@link StudentStub }
+     * 
+     */
+    public StudentStub createStudentStub() {
+        return new StudentStub();
+    }
+
+    /**
+     * Create an instance of {@link DiscountStub }
+     * 
+     */
+    public DiscountStub createDiscountStub() {
+        return new DiscountStub();
+    }
+
+    /**
+     * Create an instance of {@link InstructionStub }
+     * 
+     */
+    public InstructionStub createInstructionStub() {
+        return new InstructionStub();
+    }
+
+    /**
+     * Create an instance of {@link ArticleStub }
+     * 
+     */
+    public ArticleStub createArticleStub() {
+        return new ArticleStub();
+    }
+
+    /**
+     * Create an instance of {@link GetInstructionsResponse }
+     * 
+     */
+    public GetInstructionsResponse createGetInstructionsResponse() {
+        return new GetInstructionsResponse();
+    }
+
+    /**
+     * Create an instance of {@link UnreplicatedEntitiesStub }
+     * 
+     */
+    public UnreplicatedEntitiesStub createUnreplicatedEntitiesStub() {
+        return new UnreplicatedEntitiesStub();
+    }
+
+    /**
+     * Create an instance of {@link CourseClassTutorStub }
+     * 
+     */
+    public CourseClassTutorStub createCourseClassTutorStub() {
+        return new CourseClassTutorStub();
+    }
+
+    /**
      * Create an instance of {@link DocumentVersionStub }
      * 
      */
     public DocumentVersionStub createDocumentVersionStub() {
         return new DocumentVersionStub();
+    }
+
+    /**
+     * Create an instance of {@link ConfirmExecution }
+     * 
+     */
+    public ConfirmExecution createConfirmExecution() {
+        return new ConfirmExecution();
+    }
+
+    /**
+     * Create an instance of {@link SessionStub }
+     * 
+     */
+    public SessionStub createSessionStub() {
+        return new SessionStub();
+    }
+
+    /**
+     * Create an instance of {@link InvoiceStub }
+     * 
+     */
+    public InvoiceStub createInvoiceStub() {
+        return new InvoiceStub();
+    }
+
+    /**
+     * Create an instance of {@link ReplicationResult }
+     * 
+     */
+    public ReplicationResult createReplicationResult() {
+        return new ReplicationResult();
+    }
+
+    /**
+     * Create an instance of {@link RoomStub }
+     * 
+     */
+    public RoomStub createRoomStub() {
+        return new RoomStub();
+    }
+
+    /**
+     * Create an instance of {@link CustomFieldStub }
+     * 
+     */
+    public CustomFieldStub createCustomFieldStub() {
+        return new CustomFieldStub();
+    }
+
+    /**
+     * Create an instance of {@link SystemUserStub }
+     * 
+     */
+    public SystemUserStub createSystemUserStub() {
+        return new SystemUserStub();
+    }
+
+    /**
+     * Create an instance of {@link HollowStub }
+     * 
+     */
+    public HollowStub createHollowStub() {
+        return new HollowStub();
+    }
+
+    /**
+     * Create an instance of {@link TagRelationStub }
+     * 
+     */
+    public TagRelationStub createTagRelationStub() {
+        return new TagRelationStub();
+    }
+
+    /**
+     * Create an instance of {@link BinaryInfoRelationStub }
+     * 
+     */
+    public BinaryInfoRelationStub createBinaryInfoRelationStub() {
+        return new BinaryInfoRelationStub();
+    }
+
+    /**
+     * Create an instance of {@link FaultReason }
+     * 
+     */
+    public FaultReason createFaultReason() {
+        return new FaultReason();
+    }
+
+    /**
+     * Create an instance of {@link SurveyStub }
+     * 
+     */
+    public SurveyStub createSurveyStub() {
+        return new SurveyStub();
+    }
+
+    /**
+     * Create an instance of {@link CertificateStub }
+     * 
+     */
+    public CertificateStub createCertificateStub() {
+        return new CertificateStub();
+    }
+
+    /**
+     * Create an instance of {@link InvoiceLineDiscountStub }
+     * 
+     */
+    public InvoiceLineDiscountStub createInvoiceLineDiscountStub() {
+        return new InvoiceLineDiscountStub();
+    }
+
+    /**
+     * Create an instance of {@link DeletedStub }
+     * 
+     */
+    public DeletedStub createDeletedStub() {
+        return new DeletedStub();
+    }
+
+    /**
+     * Create an instance of {@link BinaryInfoStub }
+     * 
+     */
+    public BinaryInfoStub createBinaryInfoStub() {
+        return new BinaryInfoStub();
+    }
+
+    /**
+     * Create an instance of {@link DiscountCourseClassStub }
+     * 
+     */
+    public DiscountCourseClassStub createDiscountCourseClassStub() {
+        return new DiscountCourseClassStub();
+    }
+
+    /**
+     * Create an instance of {@link ProductItemStub }
+     * 
+     */
+    public ProductItemStub createProductItemStub() {
+        return new ProductItemStub();
+    }
+
+    /**
+     * Create an instance of {@link AclRoleStub }
+     * 
+     */
+    public AclRoleStub createAclRoleStub() {
+        return new AclRoleStub();
+    }
+
+    /**
+     * Create an instance of {@link VoucherProductCourseStub }
+     * 
+     */
+    public VoucherProductCourseStub createVoucherProductCourseStub() {
+        return new VoucherProductCourseStub();
+    }
+
+    /**
+     * Create an instance of {@link ReplicatedRecord }
+     * 
+     */
+    public ReplicatedRecord createReplicatedRecord() {
+        return new ReplicatedRecord();
+    }
+
+    /**
+     * Create an instance of {@link CorporatePassStub }
+     * 
+     */
+    public CorporatePassStub createCorporatePassStub() {
+        return new CorporatePassStub();
+    }
+
+    /**
+     * Create an instance of {@link MessagePersonStub }
+     * 
+     */
+    public MessagePersonStub createMessagePersonStub() {
+        return new MessagePersonStub();
+    }
+
+    /**
+     * Create an instance of {@link CourseStub }
+     * 
+     */
+    public CourseStub createCourseStub() {
+        return new CourseStub();
+    }
+
+    /**
+     * Create an instance of {@link CertificateOutcomeStub }
+     * 
+     */
+    public CertificateOutcomeStub createCertificateOutcomeStub() {
+        return new CertificateOutcomeStub();
+    }
+
+    /**
+     * Create an instance of {@link ContactRelationStub }
+     * 
+     */
+    public ContactRelationStub createContactRelationStub() {
+        return new ContactRelationStub();
+    }
+
+    /**
+     * Create an instance of {@link ApplicationStub }
+     * 
+     */
+    public ApplicationStub createApplicationStub() {
+        return new ApplicationStub();
+    }
+
+    /**
+     * Create an instance of {@link OutcomeStub }
+     * 
+     */
+    public OutcomeStub createOutcomeStub() {
+        return new OutcomeStub();
+    }
+
+    /**
+     * Create an instance of {@link CustomFieldTypeStub }
+     * 
+     */
+    public CustomFieldTypeStub createCustomFieldTypeStub() {
+        return new CustomFieldTypeStub();
+    }
+
+    /**
+     * Create an instance of {@link StudentConcessionStub }
+     * 
+     */
+    public StudentConcessionStub createStudentConcessionStub() {
+        return new StudentConcessionStub();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Long }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "authLastCommunicationKey")
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    public JAXBElement<Long> createAuthLastCommunicationKey(Long value) {
+        return new JAXBElement<Long>(_AuthLastCommunicationKey_QNAME, Long.class, null, value);
     }
 
     /**
@@ -850,6 +880,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "product")
     public JAXBElement<ProductStub> createProduct(ProductStub value) {
         return new JAXBElement<ProductStub>(_Product_QNAME, ProductStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "paymentStatusResponse")
+    public JAXBElement<TransactionGroup> createPaymentStatusResponse(TransactionGroup value) {
+        return new JAXBElement<TransactionGroup>(_PaymentStatusResponse_QNAME, TransactionGroup.class, null, value);
     }
 
     /**
@@ -979,6 +1018,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "refundRequest")
+    public JAXBElement<TransactionGroup> createRefundRequest(TransactionGroup value) {
+        return new JAXBElement<TransactionGroup>(_RefundRequest_QNAME, TransactionGroup.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link MembershipStub }{@code >}}
      * 
      */
@@ -994,6 +1042,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "paymentOut")
     public JAXBElement<PaymentOutStub> createPaymentOut(PaymentOutStub value) {
         return new JAXBElement<PaymentOutStub>(_PaymentOut_QNAME, PaymentOutStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ParametersMap }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "usiResponse")
+    public JAXBElement<ParametersMap> createUsiResponse(ParametersMap value) {
+        return new JAXBElement<ParametersMap>(_UsiResponse_QNAME, ParametersMap.class, null, value);
     }
 
     /**
@@ -1042,12 +1099,57 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "voucherRequest")
+    public JAXBElement<TransactionGroup> createVoucherRequest(TransactionGroup value) {
+        return new JAXBElement<TransactionGroup>(_VoucherRequest_QNAME, TransactionGroup.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReplicationResult }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "getRecordsResponse")
+    public JAXBElement<ReplicationResult> createGetRecordsResponse(ReplicationResult value) {
+        return new JAXBElement<ReplicationResult>(_GetRecordsResponse_QNAME, ReplicationResult.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReplicationResult }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "resultsRequest")
+    public JAXBElement<ReplicationResult> createResultsRequest(ReplicationResult value) {
+        return new JAXBElement<ReplicationResult>(_ResultsRequest_QNAME, ReplicationResult.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "voucherResponse")
+    public JAXBElement<TransactionGroup> createVoucherResponse(TransactionGroup value) {
+        return new JAXBElement<TransactionGroup>(_VoucherResponse_QNAME, TransactionGroup.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DocumentStub }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "document")
     public JAXBElement<DocumentStub> createDocument(DocumentStub value) {
         return new JAXBElement<DocumentStub>(_Document_QNAME, DocumentStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "refundResponse")
+    public JAXBElement<TransactionGroup> createRefundResponse(TransactionGroup value) {
+        return new JAXBElement<TransactionGroup>(_RefundResponse_QNAME, TransactionGroup.class, null, value);
     }
 
     /**
@@ -1111,6 +1213,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "course")
     public JAXBElement<CourseStub> createCourse(CourseStub value) {
         return new JAXBElement<CourseStub>(_Course_QNAME, CourseStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "paymentRequest")
+    public JAXBElement<TransactionGroup> createPaymentRequest(TransactionGroup value) {
+        return new JAXBElement<TransactionGroup>(_PaymentRequest_QNAME, TransactionGroup.class, null, value);
     }
 
     /**
@@ -1240,6 +1351,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "authSecurityCode")
+    public JAXBElement<String> createAuthSecurityCode(String value) {
+        return new JAXBElement<String>(_AuthSecurityCode_QNAME, String.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PreferenceStub }{@code >}}
      * 
      */
@@ -1267,6 +1387,16 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Long }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "authNewCommunicationKey")
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    public JAXBElement<Long> createAuthNewCommunicationKey(Long value) {
+        return new JAXBElement<Long>(_AuthNewCommunicationKey_QNAME, Long.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link SurveyStub }{@code >}}
      * 
      */
@@ -1291,6 +1421,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "enrolment")
     public JAXBElement<EnrolmentStub> createEnrolment(EnrolmentStub value) {
         return new JAXBElement<EnrolmentStub>(_Enrolment_QNAME, EnrolmentStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReplicationRecords }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "sendRecordsRequest")
+    public JAXBElement<ReplicationRecords> createSendRecordsRequest(ReplicationRecords value) {
+        return new JAXBElement<ReplicationRecords>(_SendRecordsRequest_QNAME, ReplicationRecords.class, null, value);
     }
 
     /**
@@ -1327,6 +1466,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "contactRelationType")
     public JAXBElement<ContactRelationTypeStub> createContactRelationType(ContactRelationTypeStub value) {
         return new JAXBElement<ContactRelationTypeStub>(_ContactRelationType_QNAME, ContactRelationTypeStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ParametersMap }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "usiRequest")
+    public JAXBElement<ParametersMap> createUsiRequest(ParametersMap value) {
+        return new JAXBElement<ParametersMap>(_UsiRequest_QNAME, ParametersMap.class, null, value);
     }
 
     /**
@@ -1393,6 +1541,25 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "resultsResponse")
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    public JAXBElement<Integer> createResultsResponse(Integer value) {
+        return new JAXBElement<Integer>(_ResultsResponse_QNAME, Integer.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "paymentStatusRequest")
+    public JAXBElement<String> createPaymentStatusRequest(String value) {
+        return new JAXBElement<String>(_PaymentStatusRequest_QNAME, String.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link CertificateOutcomeStub }{@code >}}
      * 
      */
@@ -1429,6 +1596,24 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FaultReason }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "faultResponse")
+    public JAXBElement<FaultReason> createFaultResponse(FaultReason value) {
+        return new JAXBElement<FaultReason>(_FaultResponse_QNAME, FaultReason.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReplicationResult }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "sendRecordsResponse")
+    public JAXBElement<ReplicationResult> createSendRecordsResponse(ReplicationResult value) {
+        return new JAXBElement<ReplicationResult>(_SendRecordsResponse_QNAME, ReplicationResult.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PaymentInStub }{@code >}}
      * 
      */
@@ -1444,6 +1629,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "contactRelation")
     public JAXBElement<ContactRelationStub> createContactRelation(ContactRelationStub value) {
         return new JAXBElement<ContactRelationStub>(_ContactRelation_QNAME, ContactRelationStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "paymentResponse")
+    public JAXBElement<TransactionGroup> createPaymentResponse(TransactionGroup value) {
+        return new JAXBElement<TransactionGroup>(_PaymentResponse_QNAME, TransactionGroup.class, null, value);
     }
 
     /**

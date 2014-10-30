@@ -15,9 +15,9 @@ configurations {
 }
  
 dependencies{
-    ws "org.apache.cxf:cxf-tools:2.6.1",
-        "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.1",
-        "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.1",
+    ws "org.apache.cxf:cxf-tools:2.6.16",
+        "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.16",
+        "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.16",
         "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
         "log4j:log4j:1.2.17"
 }

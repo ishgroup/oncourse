@@ -85,6 +85,25 @@
             <xs:element name="getInstructionsResponse" type="tns:getInstructionsResponse" />
             <xs:element name="getUnreplicatedEntities" type="tns:getUnreplicatedEntities" />
             <xs:element name="getUnreplicatedEntitiesResponse" type="tns:getUnreplicatedEntitiesResponse" />
+			<xs:element name="paymentStatusRequest" type="xs:string"/>
+			<xs:element name="paymentStatusResponse" type="tns:transactionGroup"/>
+			<xs:element name="refundRequest" type="tns:transactionGroup"/>
+			<xs:element name="refundResponse" type="tns:transactionGroup"/>
+			<xs:element name="paymentRequest" type="tns:transactionGroup"/>
+			<xs:element name="paymentResponse" type="tns:transactionGroup"/>
+			<xs:element name="voucherRequest" type="tns:transactionGroup"/>
+			<xs:element name="voucherResponse" type="tns:transactionGroup"/>
+			<xs:element name="sendRecordsRequest" type="tns:replicationRecords"/>
+			<xs:element name="sendRecordsResponse" type="tns:replicationResult"/>
+			<xs:element name="getRecordsResponse" type="tns:replicationResult"/>
+			<xs:element name="resultsRequest" type="tns:replicationResult"/>
+			<xs:element name="resultsResponse" type="xs:int"/>
+			<xs:element name="usiRequest" type="tns:ParametersMap"/>
+			<xs:element name="usiResponse" type="tns:ParametersMap"/>
+			<xs:element name="authSecurityCode" type="xs:string"/>
+			<xs:element name="authLastCommunicationKey" type="xs:long"/>
+			<xs:element name="authNewCommunicationKey" type="xs:long"/>
+			<xs:element name="faultResponse" type="tns:FaultReason"/>
 
             <xs:simpleType name="errorCode">
                 <xs:restriction base="xs:string">
@@ -1414,72 +1433,70 @@
     </wsdl:types>
 
     <wsdl:message name="sendRecords">
-        <wsdl:part name="records" type="tns:replicationRecords">
-        </wsdl:part>
+        <wsdl:part name="records" element="tns:sendRecordsRequest"/>
     </wsdl:message>
 
     <wsdl:message name="sendRecordsResponse">
-        <wsdl:part name="result" type="tns:replicationResult" />
+        <wsdl:part name="result" element="tns:sendRecordsResponse"/>
     </wsdl:message>
 
     <wsdl:message name="getRecordsResponse">
-        <wsdl:part name="parameters" type="tns:replicationRecords" />
+        <wsdl:part name="parameters" element="tns:getRecordsResponse" />
     </wsdl:message>
 
-    <wsdl:message name="getRecords" />
+    <wsdl:message name="getRecords"/>
 
     <wsdl:message name="sendResultsRequest">
-        <wsdl:part name="replResult" type="tns:replicationResult">
-        </wsdl:part>
+        <wsdl:part name="replResult" element="tns:resultsRequest"/>
     </wsdl:message>
 
-    <wsdl:message name="sendResultsResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-        <wsdl:part name="numberUpdated" type="xs:int" />
+    <wsdl:message name="sendResultsResponse">
+        <wsdl:part name="numberUpdated" element="tns:resultsResponse" />
     </wsdl:message>
 
-    <wsdl:message name="processPaymentRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-        <wsdl:part name="transaction" type="tns:transactionGroup" />
+    <wsdl:message name="processPaymentRequest">
+        <wsdl:part name="transaction" element="tns:paymentRequest" />
     </wsdl:message>
 
-    <wsdl:message name="processPaymentResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-        <wsdl:part name="transactionGroup" type="tns:transactionGroup" />
+    <wsdl:message name="processPaymentResponse">
+        <wsdl:part name="transactionGroup" element="tns:paymentResponse" />
     </wsdl:message>
 
-    <wsdl:message name="processRefundRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-        <wsdl:part name="paymentOut" type="tns:transactionGroup" />
+    <wsdl:message name="processRefundRequest">
+        <wsdl:part name="paymentOut" element="tns:refundRequest" />
     </wsdl:message>
 
-    <wsdl:message name="processRefundResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-        <wsdl:part name="transactionGroup" type="tns:transactionGroup" />
+    <wsdl:message name="processRefundResponse">
+        <wsdl:part name="transactionGroup" element="tns:refundResponse" />
     </wsdl:message>
 
-    <wsdl:message name="getPaymentStatusRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-        <wsdl:part name="sessionId" type="xs:string" />
+    <wsdl:message name="getPaymentStatusRequest">
+        <wsdl:part name="sessionId" element="tns:paymentStatusRequest" />
     </wsdl:message>
 
-    <wsdl:message name="getPaymentStatusResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-        <wsdl:part name="transactionGroup" type="tns:transactionGroup" />
+    <wsdl:message name="getPaymentStatusResponse">
+        <wsdl:part name="transactionGroup" element="tns:paymentStatusResponse" />
     </wsdl:message>
 
-	<wsdl:message name="getVouchersRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-		<wsdl:part name="transactionRequest" type="tns:transactionGroup"/>
+	<wsdl:message name="getVouchersRequest">
+		<wsdl:part name="transactionRequest" element="tns:voucherRequest"/>
 	</wsdl:message>
 
-	<wsdl:message name="getVouchersResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-		<wsdl:part name="transactionResponse" type="tns:transactionGroup"/>
+	<wsdl:message name="getVouchersResponse">
+		<wsdl:part name="transactionResponse" element="tns:voucherResponse"/>
 	</wsdl:message>
 
     <wsdl:message name="replicationFault">
-        <wsdl:part name="faultReason" type="tns:FaultReason" />
+        <wsdl:part name="faultReason" element="tns:faultResponse" />
     </wsdl:message>
 
-    <wsdl:message name="authenticateRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-        <wsdl:part name="securityCode" type="xs:string" />
-        <wsdl:part name="lastCommunicationKey" type="xs:long" />
+    <wsdl:message name="authenticateRequest">
+        <wsdl:part name="securityCode" element="tns:authSecurityCode" />
+        <wsdl:part name="lastCommunicationKey" element="tns:authLastCommunicationKey" />
     </wsdl:message>
 
-    <wsdl:message name="authenticateResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-        <wsdl:part name="newCommunicationKey" type="xsd:long" />
+    <wsdl:message name="authenticateResponse">
+        <wsdl:part name="newCommunicationKey" element="tns:authNewCommunicationKey" />
     </wsdl:message>
 
     <wsdl:message name="authFailure">
@@ -1506,12 +1523,12 @@
         <wsdl:part element="tns:getUnreplicatedEntitiesResponse" name="parameters" />
     </wsdl:message>
 	
-	<wsdl:message name="verifyUSIRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-		<wsdl:part name="verificationRequest" type="tns:ParametersMap"/>
+	<wsdl:message name="verifyUSIRequest">
+		<wsdl:part name="verificationRequest" element="tns:usiRequest"/>
 	</wsdl:message>
 	
-	<wsdl:message name="verifyUSIResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-		<wsdl:part name="verificationResponse" type="tns:ParametersMap"/>
+	<wsdl:message name="verifyUSIResponse">
+		<wsdl:part name="verificationResponse" element="tns:usiResponse"/>
 	</wsdl:message>
 
     <wsdl:portType name="ReplicationPortType">
