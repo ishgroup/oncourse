@@ -243,6 +243,7 @@
 							<xs:element name="enrolBy" type="xs:dateTime" />
 							<xs:element name="feeOverride" type="xs:decimal" />
 							<xs:element name="reason" type="xs:string" />
+							<xs:element name="confirmationStatus" type="xs:int"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -707,6 +708,7 @@
                             <xs:element name="redemptionValue" type="xs:decimal" />
                             <xs:element name="source" type="xs:string" />
 							<xs:element name="valueOnPurchase" type="xs:decimal"/>
+							<xs:element name="confirmationStatus" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -774,6 +776,8 @@
                             <xs:element name="creditProviderType" type="xs:int" />
                             <xs:element name="feeStatus" type="xs:int" />
                             <xs:element name="creditTotal" type="xs:int" />
+							<xs:element name="feeHelpAmount" type="xs:decimal"/>
+							<xs:element name="confirmationStatus" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -788,6 +792,7 @@
                             <xs:element name="venueScore" type="xs:int" />
                             <xs:element name="uniqueCode" type="xs:string" />
                             <xs:element name="enrolmentId" type="xs:long" />
+							<xs:element name="publicComment" type="xs:boolean"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -922,6 +927,7 @@
                             <xs:element name="totalGst" type="xs:decimal" />
                             <xs:element name="contactId" type="xs:long" />
                             <xs:element name="corporatePassId" type="xs:long" />
+							<xs:element name="confirmationStatus" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1059,6 +1065,7 @@
                             <xs:element name="creditCardNumber" type="xs:string" />
                             <xs:element name="creditCardType" type="xs:string" />
                             <xs:element name="dateBanked" type="xs:dateTime" />
+							<xs:element name="confirmationStatus" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1081,6 +1088,7 @@
                             <xs:element name="status" type="xs:int" />
                             <xs:element name="dateBanked" type="xs:dateTime" />
                             <xs:element name="datePaid" type="xs:dateTime" />
+							<xs:element name="confirmationStatus" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

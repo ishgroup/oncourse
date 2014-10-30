@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="venueScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="uniqueCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="publicComment" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -40,7 +41,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "tutorScore",
     "venueScore",
     "uniqueCode",
-    "enrolmentId"
+    "enrolmentId",
+    "publicComment"
 })
 public class SurveyStub
     extends ReplicationStub
@@ -66,6 +68,10 @@ public class SurveyStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long enrolmentId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlSchemaType(name = "boolean")
+    protected Boolean publicComment;
 
     /**
      * Gets the value of the comment property.
@@ -209,6 +215,30 @@ public class SurveyStub
      */
     public void setEnrolmentId(Long value) {
         this.enrolmentId = value;
+    }
+
+    /**
+     * Gets the value of the publicComment property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Boolean isPublicComment() {
+        return publicComment;
+    }
+
+    /**
+     * Sets the value of the publicComment property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPublicComment(Boolean value) {
+        this.publicComment = value;
     }
 
 }

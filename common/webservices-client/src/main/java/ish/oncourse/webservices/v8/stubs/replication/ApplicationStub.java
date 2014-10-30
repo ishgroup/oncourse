@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="enrolBy" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="feeOverride" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
  *         &lt;element name="reason" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -44,7 +45,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "status",
     "enrolBy",
     "feeOverride",
-    "reason"
+    "reason",
+    "confirmationStatus"
 })
 public class ApplicationStub
     extends ReplicationStub
@@ -72,6 +74,10 @@ public class ApplicationStub
     protected BigDecimal feeOverride;
     @XmlElement(required = true)
     protected String reason;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer confirmationStatus;
 
     /**
      * Gets the value of the courseId property.
@@ -239,6 +245,30 @@ public class ApplicationStub
      */
     public void setReason(String value) {
         this.reason = value;
+    }
+
+    /**
+     * Gets the value of the confirmationStatus property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getConfirmationStatus() {
+        return confirmationStatus;
+    }
+
+    /**
+     * Sets the value of the confirmationStatus property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setConfirmationStatus(Integer value) {
+        this.confirmationStatus = value;
     }
 
 }

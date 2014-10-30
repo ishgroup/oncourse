@@ -30,6 +30,7 @@ import ish.oncourse.webservices.util.GenericPaymentOutStub;
  *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="dateBanked" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="datePaid" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+ *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -47,7 +48,8 @@ import ish.oncourse.webservices.util.GenericPaymentOutStub;
     "source",
     "status",
     "dateBanked",
-    "datePaid"
+    "datePaid",
+    "confirmationStatus"
 })
 public class PaymentOutStub
     extends ReplicationStub
@@ -80,6 +82,10 @@ public class PaymentOutStub
     @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date datePaid;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer confirmationStatus;
 
     /**
      * Gets the value of the amount property.
@@ -271,6 +277,30 @@ public class PaymentOutStub
      */
     public void setDatePaid(Date value) {
         this.datePaid = value;
+    }
+
+    /**
+     * Gets the value of the confirmationStatus property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getConfirmationStatus() {
+        return confirmationStatus;
+    }
+
+    /**
+     * Sets the value of the confirmationStatus property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setConfirmationStatus(Integer value) {
+        this.confirmationStatus = value;
     }
 
 }
