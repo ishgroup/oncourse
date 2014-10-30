@@ -7,6 +7,7 @@
 	<db-entity name="Application" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="enrolBy" type="TIMESTAMP" length="19"/>
@@ -424,6 +425,7 @@
 	<db-entity name="Enrolment" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="creditFOEId" type="VARCHAR" length="4"/>
@@ -434,6 +436,7 @@
 		<db-attribute name="creditTotal" type="INTEGER"/>
 		<db-attribute name="creditType" type="INTEGER"/>
 		<db-attribute name="creditUsedValue" type="VARCHAR" length="4"/>
+		<db-attribute name="feeHelpAmount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="feeHelpStatus" type="INTEGER"/>
 		<db-attribute name="feeStatus" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -474,6 +477,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="billToAddress" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="contactId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="corporatePassId" type="BIGINT"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
@@ -643,6 +647,7 @@
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="creditCardCVV" type="VARCHAR" length="4"/>
@@ -675,6 +680,7 @@
 	<db-entity name="PaymentOut" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="creditCardCVV" type="VARCHAR" length="4"/>
@@ -746,6 +752,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="code" type="VARCHAR" length="10"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="confirmationStatus" type="INTEGER"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="expiryDate" type="TIMESTAMP"/>
@@ -937,6 +944,7 @@
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="publicComment" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="tutorScore" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="uniqueCode" type="VARCHAR" isMandatory="true" length="8"/>
 		<db-attribute name="venueScore" type="INTEGER" isMandatory="true" length="10"/>
@@ -1218,6 +1226,7 @@
 	</db-entity>
 	<obj-entity name="Application" className="ish.oncourse.model.Application" dbEntityName="Application">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="enrolBy" type="java.util.Date" db-attribute-path="enrolBy"/>
 		<obj-attribute name="feeOverride" type="ish.math.Money" db-attribute-path="feeOverride"/>
@@ -1225,6 +1234,7 @@
 		<obj-attribute name="reason" type="java.lang.String" db-attribute-path="reason"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="ish.common.types.ApplicationStatus" db-attribute-path="status"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="Article" superEntityName="ProductItem" className="ish.oncourse.model.Article">
 		<qualifier><![CDATA[type = 1]]></qualifier>
@@ -1556,6 +1566,7 @@
 	</obj-entity>
 	<obj-entity name="Enrolment" className="ish.oncourse.model.Enrolment" dbEntityName="Enrolment">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="creditFOEId" type="java.lang.String" db-attribute-path="creditFOEId"/>
 		<obj-attribute name="creditLevel" type="ish.common.types.CreditLevel" db-attribute-path="creditLevel"/>
@@ -1565,6 +1576,7 @@
 		<obj-attribute name="creditTotal" type="ish.common.types.RecognitionOfPriorLearningIndicator" db-attribute-path="creditTotal"/>
 		<obj-attribute name="creditType" type="ish.common.types.CreditType" db-attribute-path="creditType"/>
 		<obj-attribute name="creditUsedValue" type="java.lang.String" db-attribute-path="creditUsedValue"/>
+		<obj-attribute name="feeHelpAmount" type="ish.math.Money" db-attribute-path="feeHelpAmount"/>
 		<obj-attribute name="feeHelpStatus" type="ish.common.types.EnrolmentVETFeeHelpStatus" db-attribute-path="feeHelpStatus"/>
 		<obj-attribute name="feeStatus" type="ish.common.types.StudentStatusForUnitOfStudy" db-attribute-path="feeStatus"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -1598,6 +1610,7 @@
 		<obj-attribute name="amountOwing" type="ish.math.Money" db-attribute-path="amountOwing"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="billToAddress" type="java.lang.String" db-attribute-path="billToAddress"/>
+		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="customerReference" type="java.lang.String" db-attribute-path="customerReference"/>
 		<obj-attribute name="dateDue" type="java.util.Date" db-attribute-path="dateDue"/>
@@ -1740,6 +1753,7 @@
 	<obj-entity name="PaymentIn" className="ish.oncourse.model.PaymentIn" dbEntityName="PaymentIn">
 		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="creditCardCVV" type="java.lang.String" db-attribute-path="creditCardCVV"/>
 		<obj-attribute name="creditCardExpiry" type="java.lang.String" db-attribute-path="creditCardExpiry"/>
@@ -1770,6 +1784,7 @@
 	</obj-entity>
 	<obj-entity name="PaymentOut" className="ish.oncourse.model.PaymentOut" dbEntityName="PaymentOut">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="creditCardCVV" type="java.lang.String" db-attribute-path="creditCardCVV"/>
 		<obj-attribute name="creditCardType" type="ish.common.types.CreditCardType" db-attribute-path="creditCardType"/>
@@ -1781,6 +1796,7 @@
 		<obj-attribute name="status" type="ish.common.types.PaymentStatus" db-attribute-path="status"/>
 		<obj-attribute name="statusNotes" type="java.lang.String" db-attribute-path="statusNotes"/>
 		<obj-attribute name="totalAmount" type="ish.math.Money" db-attribute-path="totalAmount"/>
+		<post-add method-name="onPostAdd"/>
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
 	<obj-entity name="PaymentOutTransaction" className="ish.oncourse.model.PaymentOutTransaction" dbEntityName="PaymentOutTransaction">
@@ -2003,9 +2019,11 @@
 		<obj-attribute name="courseScore" type="java.lang.Integer" db-attribute-path="courseScore"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="publicComment" type="java.lang.Boolean" db-attribute-path="publicComment"/>
 		<obj-attribute name="tutorScore" type="java.lang.Integer" db-attribute-path="tutorScore"/>
 		<obj-attribute name="uniqueCode" type="java.lang.String" db-attribute-path="uniqueCode"/>
 		<obj-attribute name="venueScore" type="java.lang.Integer" db-attribute-path="venueScore"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="SystemUser" className="ish.oncourse.model.SystemUser" dbEntityName="SystemUser">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -2095,6 +2113,7 @@
 	<obj-entity name="Voucher" superEntityName="ProductItem" className="ish.oncourse.model.Voucher">
 		<qualifier><![CDATA[type = 3]]></qualifier>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
+		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="idKey" type="java.lang.String" db-attribute-path="idKey"/>
 		<obj-attribute name="redeemedCoursesCount" type="java.lang.Integer" db-attribute-path="redeemedCoursesCount"/>
 		<obj-attribute name="redemptionValue" type="ish.math.Money" db-attribute-path="value"/>
