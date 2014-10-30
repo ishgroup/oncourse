@@ -1108,12 +1108,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ReplicationResult }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReplicationRecords }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://repl.v8.soap.webservices.oncourse.ish/", name = "getRecordsResponse")
-    public JAXBElement<ReplicationResult> createGetRecordsResponse(ReplicationResult value) {
-        return new JAXBElement<ReplicationResult>(_GetRecordsResponse_QNAME, ReplicationResult.class, null, value);
+    public JAXBElement<ReplicationRecords> createGetRecordsResponse(ReplicationRecords value) {
+        return new JAXBElement<ReplicationRecords>(_GetRecordsResponse_QNAME, ReplicationRecords.class, null, value);
     }
 
     /**

@@ -95,7 +95,7 @@
 			<xs:element name="voucherResponse" type="tns:transactionGroup"/>
 			<xs:element name="sendRecordsRequest" type="tns:replicationRecords"/>
 			<xs:element name="sendRecordsResponse" type="tns:replicationResult"/>
-			<xs:element name="getRecordsResponse" type="tns:replicationResult"/>
+			<xs:element name="getRecordsResponse" type="tns:replicationRecords"/>
 			<xs:element name="resultsRequest" type="tns:replicationResult"/>
 			<xs:element name="resultsResponse" type="xs:int"/>
 			<xs:element name="usiRequest" type="tns:ParametersMap"/>
