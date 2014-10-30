@@ -212,11 +212,10 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	@Override
 	public void deleteWebSiteVersion(WebSiteVersion webSiteVersionToDelte) {
 		
-		if (getCurrentVersion().getId() == webSiteVersionToDelte.getId() 
-				|| getDeployedVersion(webSiteService.getCurrentWebSite()).getId() == webSiteVersionToDelte.getId()) {
+		if (getCurrentVersion().getId().equals(webSiteVersionToDelte.getId())
+				|| getDeployedVersion(webSiteService.getCurrentWebSite()).getId().equals(webSiteVersionToDelte.getId())) {
 			// prevent the deletion of the current live site or the draft site!
-			logger.error("Attempt to delete current live site or the draft site version");
-			return;
+			throw new RuntimeException("Attempt to delete current live site or the draft site version");
 		}
 
 		ObjectContext context = cayenneService.newContext();
