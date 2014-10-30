@@ -20,6 +20,7 @@ public abstract class _Survey extends CayenneDataObject {
     public static final String COURSE_SCORE_PROPERTY = "courseScore";
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String PUBLIC_COMMENT_PROPERTY = "publicComment";
     public static final String TUTOR_SCORE_PROPERTY = "tutorScore";
     public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
     public static final String VENUE_SCORE_PROPERTY = "venueScore";
@@ -63,6 +64,13 @@ public abstract class _Survey extends CayenneDataObject {
         return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
+    public void setPublicComment(Boolean publicComment) {
+        writeProperty(PUBLIC_COMMENT_PROPERTY, publicComment);
+    }
+    public Boolean getPublicComment() {
+        return (Boolean)readProperty(PUBLIC_COMMENT_PROPERTY);
+    }
+
     public void setTutorScore(Integer tutorScore) {
         writeProperty(TUTOR_SCORE_PROPERTY, tutorScore);
     }
@@ -101,5 +109,7 @@ public abstract class _Survey extends CayenneDataObject {
         return (Enrolment)readProperty(ENROLMENT_PROPERTY);
     }
 
+
+    protected abstract void onPostAdd();
 
 }

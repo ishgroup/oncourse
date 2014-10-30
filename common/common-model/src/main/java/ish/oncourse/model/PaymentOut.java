@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.auto._PaymentOut;
@@ -118,5 +119,12 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 	@Override
 	public boolean isAsyncReplicationAllowed() {
 		return true;
+	}
+
+	@Override
+	protected void onPostAdd() {
+		if (getConfirmationStatus() == null) {
+			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+		}
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.common.types.ApplicationStatus;
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.model.College;
@@ -20,6 +21,7 @@ import ish.oncourse.model.Student;
 public abstract class _Application extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
+    public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
     public static final String CREATED_PROPERTY = "created";
     public static final String ENROL_BY_PROPERTY = "enrolBy";
     public static final String FEE_OVERRIDE_PROPERTY = "feeOverride";
@@ -38,6 +40,13 @@ public abstract class _Application extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty(ANGEL_ID_PROPERTY);
+    }
+
+    public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
+        writeProperty(CONFIRMATION_STATUS_PROPERTY, confirmationStatus);
+    }
+    public ConfirmationStatus getConfirmationStatus() {
+        return (ConfirmationStatus)readProperty(CONFIRMATION_STATUS_PROPERTY);
     }
 
     public void setCreated(Date created) {
@@ -115,5 +124,7 @@ public abstract class _Application extends CayenneDataObject {
         return (Student)readProperty(STUDENT_PROPERTY);
     }
 
+
+    protected abstract void onPostAdd();
 
 }

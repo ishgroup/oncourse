@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.payable.EnrolmentInterface;
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
@@ -58,6 +59,12 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
         }
 		if (getModified() == null) {
 			setModified(getCreated());
+		}
+		if (getFeeHelpAmount() == null) {
+			setFeeHelpAmount(Money.ZERO);
+		}
+		if (getConfirmationStatus() == null) {
+			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
 		}
 
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.CreditLevel;
 import ish.common.types.CreditProviderType;
 import ish.common.types.CreditType;
@@ -13,6 +14,7 @@ import ish.common.types.EnrolmentVETFeeHelpStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.RecognitionOfPriorLearningIndicator;
 import ish.common.types.StudentStatusForUnitOfStudy;
+import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.InvoiceLine;
@@ -29,6 +31,7 @@ import ish.oncourse.model.Survey;
 public abstract class _Enrolment extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
+    public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
     public static final String CREATED_PROPERTY = "created";
     public static final String CREDIT_FOEID_PROPERTY = "creditFOEId";
     public static final String CREDIT_LEVEL_PROPERTY = "creditLevel";
@@ -38,6 +41,7 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final String CREDIT_TOTAL_PROPERTY = "creditTotal";
     public static final String CREDIT_TYPE_PROPERTY = "creditType";
     public static final String CREDIT_USED_VALUE_PROPERTY = "creditUsedValue";
+    public static final String FEE_HELP_AMOUNT_PROPERTY = "feeHelpAmount";
     public static final String FEE_HELP_STATUS_PROPERTY = "feeHelpStatus";
     public static final String FEE_STATUS_PROPERTY = "feeStatus";
     public static final String MODIFIED_PROPERTY = "modified";
@@ -58,6 +62,13 @@ public abstract class _Enrolment extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
+    }
+
+    public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
+        writeProperty(CONFIRMATION_STATUS_PROPERTY, confirmationStatus);
+    }
+    public ConfirmationStatus getConfirmationStatus() {
+        return (ConfirmationStatus)readProperty(CONFIRMATION_STATUS_PROPERTY);
     }
 
     public void setCreated(Date created) {
@@ -121,6 +132,13 @@ public abstract class _Enrolment extends CayenneDataObject {
     }
     public String getCreditUsedValue() {
         return (String)readProperty("creditUsedValue");
+    }
+
+    public void setFeeHelpAmount(Money feeHelpAmount) {
+        writeProperty(FEE_HELP_AMOUNT_PROPERTY, feeHelpAmount);
+    }
+    public Money getFeeHelpAmount() {
+        return (Money)readProperty(FEE_HELP_AMOUNT_PROPERTY);
     }
 
     public void setFeeHelpStatus(EnrolmentVETFeeHelpStatus feeHelpStatus) {

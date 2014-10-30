@@ -548,6 +548,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		if (getModified() == null) {
 			setModified(getCreated());
 		}
+		if (getConfirmationStatus() == null) {
+			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+		}
 	}
 
 	@Override

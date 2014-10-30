@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
@@ -102,6 +103,9 @@ public class Invoice extends _Invoice implements Queueable {
 		}
 		if (getModified() == null) {
 			setModified(getCreated());
+		}
+		if (getConfirmationStatus() == null) {
+			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
 		}
 	}
 

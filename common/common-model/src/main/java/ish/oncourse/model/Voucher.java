@@ -1,13 +1,14 @@
 package ish.oncourse.model;
 
-import ish.common.types.PaymentStatus;
-import ish.common.types.ProductStatus;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.model.auto._Voucher;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Date;
 
 public class Voucher extends _Voucher implements Queueable {
 	private static final long serialVersionUID = -836996096054884238L;
@@ -133,4 +134,12 @@ public class Voucher extends _Voucher implements Queueable {
     public boolean isExpired() {
         return ProductStatus.EXPIRED.equals(getStatus());
     }
+
+	@Override
+	protected void onPostAdd() {
+		if (getConfirmationStatus() == null) {
+			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+		}
+	}
+	
 }

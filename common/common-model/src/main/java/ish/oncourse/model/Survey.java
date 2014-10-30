@@ -14,4 +14,11 @@ public class Survey extends _Survey implements Queueable {
 	public boolean isAsyncReplicationAllowed() {
 		return true;
 	}
+	
+	@Override
+	protected void onPostAdd() {
+		if (getPublicComment() == null) {
+			setPublicComment(true);
+		}
+	}
 }

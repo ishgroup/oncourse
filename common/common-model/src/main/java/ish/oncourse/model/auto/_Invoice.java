@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.model.College;
@@ -25,6 +26,7 @@ public abstract class _Invoice extends CayenneDataObject {
     public static final String AMOUNT_OWING_PROPERTY = "amountOwing";
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String BILL_TO_ADDRESS_PROPERTY = "billToAddress";
+    public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
     public static final String CREATED_PROPERTY = "created";
     public static final String CUSTOMER_REFERENCE_PROPERTY = "customerReference";
     public static final String DATE_DUE_PROPERTY = "dateDue";
@@ -65,6 +67,13 @@ public abstract class _Invoice extends CayenneDataObject {
     }
     public String getBillToAddress() {
         return (String)readProperty("billToAddress");
+    }
+
+    public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
+        writeProperty(CONFIRMATION_STATUS_PROPERTY, confirmationStatus);
+    }
+    public ConfirmationStatus getConfirmationStatus() {
+        return (ConfirmationStatus)readProperty(CONFIRMATION_STATUS_PROPERTY);
     }
 
     public void setCreated(Date created) {

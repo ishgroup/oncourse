@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
@@ -22,6 +23,7 @@ import ish.oncourse.model.PaymentOutTransaction;
 public abstract class _PaymentOut extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
+    public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
     public static final String CREATED_PROPERTY = "created";
     public static final String CREDIT_CARD_CVV_PROPERTY = "creditCardCVV";
     public static final String CREDIT_CARD_TYPE_PROPERTY = "creditCardType";
@@ -44,6 +46,13 @@ public abstract class _PaymentOut extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
+    }
+
+    public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
+        writeProperty(CONFIRMATION_STATUS_PROPERTY, confirmationStatus);
+    }
+    public ConfirmationStatus getConfirmationStatus() {
+        return (ConfirmationStatus)readProperty(CONFIRMATION_STATUS_PROPERTY);
     }
 
     public void setCreated(Date created) {
@@ -152,6 +161,8 @@ public abstract class _PaymentOut extends CayenneDataObject {
         return (List<PaymentOutTransaction>)readProperty("paymentOutTransactions");
     }
 
+
+    protected abstract void onPostAdd();
 
     protected abstract void onPrePersist();
 
