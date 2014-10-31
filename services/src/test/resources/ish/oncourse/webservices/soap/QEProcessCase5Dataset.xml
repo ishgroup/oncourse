@@ -43,12 +43,12 @@
 	
     <Enrolment id="10" source="O" collegeId="1" courseClassId="1" angelId="10"
                studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3" confirmationStatus="1" feehelpamount="0"/>
 
     <Invoice id="10" source="O" amountOwing="100.00" contactId="1" angelId="10"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="100" totalExGst="320.00"
-             totalGst="10.91" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"/>
+             totalGst="10.91" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0" confirmationStatus="1"/>
 
     <InvoiceLine id="10" collegeId="1" enrolmentId="10" angelId="10"
                  invoiceId="10" quantity="1.0" discountEachExTax="0.00"
@@ -57,7 +57,7 @@
 
     <PaymentIn id="10" amount="100" angelId="10" collegeId="1"
                contactId="1" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
-               source="O" status="6" statusNotes="" type="2" sessionId="SESSIONID1_4" />
+               source="O" status="6" statusNotes="" type="2" sessionId="SESSIONID1_4" confirmationStatus="1"/>
 
     <PaymentInLine id="10" amount="100" angelId="10"
                    collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="10"

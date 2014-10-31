@@ -46,7 +46,7 @@
 
     <Invoice id="4" angelId="4" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54"
              description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91"
-             created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 
     <InvoiceLine id="4" angelId="4" collegeId="1" invoiceId="4" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
                  taxEach="10.91" title="Test Invoice Line"
@@ -60,16 +60,16 @@
 
     <ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="4"
                  MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="3" angelId="4" code="qwerty_4" value="10.00" redeemedCoursesCount="1" source="O"
-                 status="0" INVOICELINEID="4"/>
+                 status="0" INVOICELINEID="4" confirmationStatus="1"/>
     <Enrolment id="10" source="O" collegeId="1" courseClassId="1" angelId="10"
                studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3" confirmationStatus="1" feehelpamount="0"/>
 
     <Invoice id="5" source="O" amountOwing="100.00" contactId="1" angelId="5"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="100" totalExGst="320.00"
              totalGst="10.91"
-             created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 
     <InvoiceLine id="5" collegeId="1" enrolmentId="10" angelId="5"
                  invoiceId="5" quantity="1.0" discountEachExTax="0.00"

@@ -157,7 +157,7 @@
                studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
                status="2" reasonForStudy="1" creditFOEId="1234" creditLevel="0" creditOfferedValue="1234"
                creditProvider="ABCD" creditUsedValue="1234" creditType="0" creditProviderType="0" feeStatus="1"
-               creditTotal="0" feeHelpStatus="0"/>
+               creditTotal="0" feeHelpStatus="0" confirmationStatus="1" feehelpamount="0"/>
                
 	<CorporatePass id="1" angelId="2" collegeId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" expiryDate="2112-02-03 09:18:09"
 				invoiceEmail="test@test.test" password="test" contactId="1"/>
@@ -170,7 +170,7 @@
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
              totalGst="10.91" created="2011-09-10 11:14:54"
              customerReference="customerReference" modified="2011-09-10 11:14:54"
-             publicNotes="publicNotes" shippingAddress="shippingAddress" corporatePassId="1"/>
+             publicNotes="publicNotes" shippingAddress="shippingAddress" corporatePassId="1" confirmationStatus="1"/>
 
 
     <InvoiceLine id="1" angelId="2000" collegeId="3" enrolmentId="1"
@@ -262,7 +262,7 @@
             status="1"
             statusNotes="statusNotes"
             studentId="1"
-            type="1"/>
+            type="1" confirmationStatus="1"/>
 
     <PaymentIn
             amount="1.11"
@@ -285,7 +285,7 @@
             status="10"
             statusNotes="statusNotes"
             studentId="1"
-            type="1"/>
+            type="1" confirmationStatus="1"/>
 
     <PaymentOut
             angelId="2"
@@ -302,7 +302,7 @@
             source="W"
             status="1"
             statusNotes="statusNotes"
-            totalAmount="1.11"/>
+            totalAmount="1.11" confirmationStatus="1"/>
 
     <PaymentInLine
         amount="1"
@@ -349,19 +349,19 @@
 
     <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="1"
                  MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="2" code="qwertyb" value="50.00" redeemedCoursesCount="0" source="W"
-                 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2"/>
+                 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2" confirmationStatus="1"/>
 
     <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="2"
                  MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="2" TYPE="1" code="qwertyb" value="50.00" redeemedCoursesCount="0" source="W"
-                 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2"/>
+                 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2" confirmationStatus="1"/>
 
     <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="3"
                  MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" code="qwertyb" redeemedCoursesCount="0" source="W"
-                 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2"/>
+                 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2" confirmationStatus="1"/>
 
 	<ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="4"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="4" TYPE="3" code="qwertyb" value="50.00" valueOnPurchase="50.0" source="W"
-				 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2"/>
+				 status="0" INVOICELINEID="1" collegeId="3" contactId="1" angelId="2" confirmationStatus="1"/>
 
     <VoucherProductCourse id="1" voucherProductId="3" courseId="1" collegeId="3" angelId="2" created="2012-05-14 14:33:16.537" modified="2012-05-14 14:33:16.537"/>
 

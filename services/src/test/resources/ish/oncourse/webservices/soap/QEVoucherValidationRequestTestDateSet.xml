@@ -25,7 +25,7 @@
 
 	<Invoice id="1" angelId="1" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54"
 			 description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91"
-             created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"/>
+             created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0" confirmationStatus="1"/>
 	<InvoiceLine id="1" angelId="1" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
 				 taxEach="10.91" title="Test Invoice Line" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"/>
 	<InvoiceLine id="2" angelId="2" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
@@ -46,7 +46,7 @@
 			source="O"
 			status="2"
 			studentId="1"
-			type="8"/>
+			type="8" confirmationStatus="1"/>
 
 	<PaymentInLine
 			amount="1.11"
@@ -126,19 +126,19 @@
 
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="1"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="3" angelId="1" code="qwerty" value="10.00" source="W"
-				 status="0" INVOICELINEID="1"/>
+				 status="0" INVOICELINEID="1" confirmationStatus="1"/>
 
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="2"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="2" TYPE="3" angelId="2" code="qwerty_2" value="5.00" source="O"
-				 status="0" INVOICELINEID="2"/>
+				 status="0" INVOICELINEID="2" confirmationStatus="1"/>
 
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="3"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" angelId="3" code="qwerty_3" redeemedCoursesCount="0" source="O"
-				 status="0" INVOICELINEID="3"/>
+				 status="0" INVOICELINEID="3" confirmationStatus="1"/>
 
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="4"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="4" TYPE="3" angelId="4" code="qwerty_4" redeemedCoursesCount="2" source="O"
-				 status="0" INVOICELINEID="4"/>
+				 status="0" INVOICELINEID="4" confirmationStatus="1"/>
 
 	<VoucherPaymentIn id="1" angelId="1" collegeId="1" paymentInId="1" voucherId="1" status="0" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 </dataset>

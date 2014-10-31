@@ -20,9 +20,9 @@
     <Room id="1" angelId="1" collegeId="1"/>
     <Course id="1" angelId="1" collegeId="1" code="def123" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
     <CourseClass id="1" angelId="1" maximumPlaces="3" code="200701RW" collegeId="1" countOfSessions="3" courseId="1" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" roomId="1" isDistantLearningCourse="0"/>
-    <Enrolment id="1" angelId="1" collegeId="1" courseClassId="1" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
+    <Enrolment id="1" angelId="1" collegeId="1" courseClassId="1" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
     <Invoice id="1" angelId="1" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91"
-             created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <InvoiceLine id="1" angelId="1" collegeId="1" enrolmentId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" taxEach="10.91" title="Test Invoice Line" created="2011-09-20 11:14:54" modified="2010-02-03 09:18:09"/>
 
 
@@ -47,7 +47,7 @@
             status="1"
             statusNotes="statusNotes"
             studentId="1"
-            type="1"/>
+            type="1" confirmationStatus="1"/>
 
     <PaymentInLine
             amount="1.11"
@@ -68,9 +68,9 @@
     <Room id="2" angelId="2" collegeId="1"/>
     <Course id="2" angelId="2" collegeId="1" code="def123" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
     <CourseClass id="2" angelId="2" maximumPlaces="3" code="200701RW" collegeId="1" countOfSessions="3" courseId="2" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" roomId="1" isDistantLearningCourse="0"/>
-    <Enrolment id="2" angelId="2" collegeId="1" courseClassId="2" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
+    <Enrolment id="2" angelId="2" collegeId="1" courseClassId="2" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
     <Invoice id="2" angelId="2" source="O" amountOwing="0.00" contactId="2" collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91"
-             created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <InvoiceLine id="2" angelId="2" collegeId="1" enrolmentId="2" invoiceId="2" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" taxEach="10.91" title="Test Invoice Line" created="2011-09-20 11:14:54" modified="2010-02-03 09:18:09"/>
 
     <PaymentIn
@@ -94,7 +94,7 @@
             status="1"
             statusNotes="statusNotes"
             studentId="2"
-            type="1"/>
+            type="1" confirmationStatus="1"/>
 
     <PaymentInLine
             amount="1.11"
