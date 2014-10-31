@@ -85,25 +85,25 @@
     <SessionTutor id="5" collegeId="1" sessionId="5" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
     <SessionTutor id="6" collegeId="1" sessionId="6" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
 
-    <Enrolment id="1" collegeId="1" courseClassId="1" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="2" collegeId="1" courseClassId="2" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="3" collegeId="1" courseClassId="3" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="4" collegeId="1" courseClassId="4" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="5" collegeId="1" courseClassId="5" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="4" source="O"/>
-    <Enrolment id="6" collegeId="1" courseClassId="6" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="7" collegeId="1" courseClassId="7" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="8" collegeId="1" courseClassId="8" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="9" collegeId="1" courseClassId="1" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="10" collegeId="1" courseClassId="3" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="11" collegeId="1" courseClassId="9" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="12" collegeId="1" courseClassId="10" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
+    <Enrolment id="1" collegeId="1" courseClassId="1" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="2" collegeId="1" courseClassId="2" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="3" collegeId="1" courseClassId="3" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="4" collegeId="1" courseClassId="4" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="5" collegeId="1" courseClassId="5" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="4" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="6" collegeId="1" courseClassId="6" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="7" collegeId="1" courseClassId="7" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="8" collegeId="1" courseClassId="8" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="9" collegeId="1" courseClassId="1" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="10" collegeId="1" courseClassId="3" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="11" collegeId="1" courseClassId="9" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="12" collegeId="1" courseClassId="10" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
 
-    <survey id="1" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="1" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="1"/>
-    <survey id="2" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="2" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="2"/>
-    <survey id="3" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="3" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="3"/>
-    <survey id="4" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="4" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="4"/>
-    <survey id="5" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="5" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="5"/>
-    <survey id="6" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="6" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="6"/>
+    <survey id="1" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="1" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="1" publicComment="1"/>
+    <survey id="2" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="2" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="2" publicComment="1"/>
+    <survey id="3" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="3" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="3" publicComment="1"/>
+    <survey id="4" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="4" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="4" publicComment="1"/>
+    <survey id="5" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="5" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="5" publicComment="1"/>
+    <survey id="6" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" enrolmentId="6" tutorScore="5" venueScore="5" courseScore="5" uniqueCode="6" publicComment="1"/>
 
 	<Document id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
 			  name="test" description="test" fileUUID="test" isShared="1" isRemoved="0" webVisibility="0"/>
