@@ -17,8 +17,9 @@ public class Survey extends _Survey implements Queueable {
 	
 	@Override
 	protected void onPostAdd() {
-		if (getPublicComment() == null) {
-			setPublicComment(true);
-		}
+        setCourseScore(0);
+        setTutorScore(0);
+        setVenueScore(0);
+	    setPublicComment(true);
 	}
 }
