@@ -62,7 +62,7 @@
             status="1"
             statusNotes="statusNotes"
             studentId="1"
-            type="1"/>
+            type="1" confirmationStatus="1"/>
 
     <PaymentInLine
             amount="1.11"
