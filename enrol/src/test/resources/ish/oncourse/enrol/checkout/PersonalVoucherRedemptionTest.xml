@@ -63,7 +63,7 @@
 	<Invoice id="1003" source="O" amountOwing="0" contactId="1001"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
-			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 	<InvoiceLine id="1003" collegeId="1" invoiceId="1003" quantity="1.0" discountEachExTax="0.00"
 				 priceEachExTax="100.00" taxEach="10.00"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line"/>
@@ -77,12 +77,12 @@
 				 INVOICELINEID="1003" PRODUCTID="1003" TYPE="3"
 				 code="v1003" value="450.00"
 				 source="O" status="0" valueOnPurchase="200.00"
-				 EXPIRYDATE="2113-07-01 00:00:00.001"/>
+				 EXPIRYDATE="2113-07-01 00:00:00.001" confirmationStatus="1"/>
 
 	<Invoice id="1004" source="O" amountOwing="0" contactId="1001"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
-			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 	<InvoiceLine id="1004" collegeId="1" invoiceId="1004" quantity="1.0" discountEachExTax="0.00"
 				 priceEachExTax="100.00" taxEach="10.00"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line"/>
@@ -95,7 +95,7 @@
 				 INVOICELINEID="1003" PRODUCTID="1003" TYPE="3"
 				 code="v1004" value="400.00"
 				 source="O" status="0" valueOnPurchase="200.00"
-				 EXPIRYDATE="2113-07-01 00:00:00.001"/>
+				 EXPIRYDATE="2113-07-01 00:00:00.001" confirmationStatus="1"/>
 
 	<Contact id="2001" collegeId="1"
 			 countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"

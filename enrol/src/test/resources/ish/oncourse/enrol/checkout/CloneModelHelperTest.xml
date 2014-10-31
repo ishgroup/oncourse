@@ -77,7 +77,7 @@
     <Invoice id="1003" source="O" amountOwing="0" contactId="1001"
              collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
              invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
-             totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <InvoiceLine id="1003" collegeId="1" invoiceId="1003" quantity="1.0" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00"
                  created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
     <Product id="1003" collegeId="1" angelId="3" SKU="1003" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="1004" EXPIRYTYPE="4" ISONSALE="1"
@@ -86,13 +86,13 @@
     <ProductItem ID="1003" angelId="1004" collegeId="1" INVOICELINEID="1003" PRODUCTID="1003"  TYPE="3"
                  code="v1003" value="1.00" source="W" status="0" valueOnPurchase="1.00"
                  CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-                 MODIFIEDON="2012-05-14 14:35:01.618" />
+                 MODIFIEDON="2012-05-14 14:35:01.618" confirmationStatus="1"/>
 
     <!--voucehr 1004 for contact 1001-->
     <Invoice id="1004" source="O" amountOwing="0" contactId="1001"
              collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
              invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
-             totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <InvoiceLine id="1004" collegeId="1" invoiceId="1004" quantity="1.0" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00"
                  created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
     <Product id="1004" collegeId="1" angelId="4" SKU="1004" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="1004" EXPIRYTYPE="4" ISONSALE="1"
@@ -101,7 +101,7 @@
     <ProductItem ID="1004" angelId="1004" collegeId="1" INVOICELINEID="1004" PRODUCTID="1004"  TYPE="3"
                  code="v1004" value="1.00" source="W" status="0" valueOnPurchase="1.00"
                  CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-                 MODIFIEDON="2012-05-14 14:35:01.618" />
+                 MODIFIEDON="2012-05-14 14:35:01.618" confirmationStatus="1"/>
 
 
     <Discount

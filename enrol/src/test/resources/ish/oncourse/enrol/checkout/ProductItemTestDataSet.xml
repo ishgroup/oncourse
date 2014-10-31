@@ -107,7 +107,7 @@
     <Invoice id="1000" source="O" amountOwing="0" contactId="1189158"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
-             totalGst="10.91" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
+             totalGst="10.91" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0" confirmationStatus="1"/>
 
     <InvoiceLine id="11111" collegeId="1" invoiceId="1000" quantity="1.0" discountEachExTax="0.00"
                  priceEachExTax="99" taxEach="1" title="Test Invoice Line"
@@ -117,7 +117,7 @@
     <Invoice id="1002" source="O" amountOwing="-100" contactId="1189160"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
-             totalGst="10.91" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
+             totalGst="10.91" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0" confirmationStatus="1"/>
 
     <InvoiceLine id="11112" collegeId="1" invoiceId="1002" quantity="1.0" discountEachExTax="0.00"
                  priceEachExTax="99" taxEach="1" title="Test Invoice Line"
@@ -127,7 +127,7 @@
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
              totalGst="10.91"
-             created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
+             created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0" confirmationStatus="1"/>
 
     <InvoiceLine id="11113" collegeId="1" invoiceId="1003" quantity="1.0" discountEachExTax="0.00"
                  priceEachExTax="99" taxEach="1" title="Test Invoice Line"
@@ -160,7 +160,7 @@
 
     <ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="20"
                  MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="7" TYPE="2" angelId="3" code="test" value="100.00" source="O"
-                 status="0" INVOICELINEID="11111"/>
+                 status="0" INVOICELINEID="11111" confirmationStatus="1"/>
 
     <ConcessionType id="1"
                     angelId="2"

@@ -60,7 +60,7 @@
 	<Invoice id="1003" source="O" amountOwing="0" contactId="1001"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
-			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 	
 	<InvoiceLine id="1003" collegeId="1" invoiceId="1003" quantity="1.0" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
@@ -72,7 +72,7 @@
 	<ProductItem ID="1003" angelId="1003" collegeId="1" INVOICELINEID="1003" PRODUCTID="1003"  TYPE="3"
 				 code="v1003"  source="O" status="0" redeemedCoursesCount="0"
 				 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-				 MODIFIEDON="2012-05-14 14:35:01.618"  />
+				 MODIFIEDON="2012-05-14 14:35:01.618" confirmationStatus="1"/>
 	
 	<VoucherProductCourse ID="1" ANGELID="1" COLLEGEID="1" CREATED="2012-05-14 14:33:16.537" MODIFIED="2012-05-14 14:35:01.618" COURSEID="1001" VOUCHERPRODUCTID="1003"/>
 
@@ -81,7 +81,7 @@
 	<Invoice id="1004" source="O" amountOwing="0" contactId="1001"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1322" totalExGst="200.00"
-			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 
 	<InvoiceLine id="1004" collegeId="1" invoiceId="1004" quantity="1.0" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
@@ -93,7 +93,7 @@
 	<ProductItem ID="1004" angelId="1004" collegeId="1" INVOICELINEID="1004" PRODUCTID="1004"  TYPE="3"
 				 code="v1004"  source="O" status="0" redeemedCoursesCount="0"
 				 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-				 MODIFIEDON="2012-05-14 14:35:01.618"  />
+				 MODIFIEDON="2012-05-14 14:35:01.618" confirmationStatus="1"/>
 
 	<VoucherProductCourse ID="2" ANGELID="2" COLLEGEID="1" CREATED="2012-05-14 14:33:16.537" MODIFIED="2012-05-14 14:35:01.618" COURSEID="1002" VOUCHERPRODUCTID="1004"/>
 	

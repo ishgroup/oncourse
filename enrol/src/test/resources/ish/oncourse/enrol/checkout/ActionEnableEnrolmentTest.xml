@@ -167,15 +167,15 @@
 
     <Enrolment id="1001" source="O" collegeId="1" courseClassId="1001"
                studentId="1001" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="2" />
+               status="2" confirmationStatus="1" feehelpamount="0"/>
 
     <Enrolment id="1002" source="O" collegeId="1" courseClassId="1001"
                studentId="1002" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="2" />
+               status="2" confirmationStatus="1" feehelpamount="0"/>
 
     <Enrolment id="1003" source="O" collegeId="1" courseClassId="1003"
                studentId="1004" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="2" />
+               status="2" confirmationStatus="1" feehelpamount="0"/>
 
     <Discount
             id="1003"
