@@ -27,7 +27,7 @@
 		
 	<Invoice id="1" angelId="1" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54" 
 		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91"
-        created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
+        created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1"/>
     <InvoiceLine id="1" angelId="1" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
     	taxEach="10.91" title="Test Invoice Line"
         created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
@@ -99,11 +99,11 @@
 	
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="1" 
 		MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="3" angelId="1" code="qwerty" value="100.00" redeemedCoursesCount="0" source="W"
-		status="0" INVOICELINEID="1"/>
+		status="0" INVOICELINEID="1" confirmationStatus="1"/>
 		
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="2" 
 		MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" angelId="2" code="qwerty_2" value="101.00" redeemedCoursesCount="0" source="O"
-		status="0" INVOICELINEID="2"/>
+		status="0" INVOICELINEID="2" confirmationStatus="1"/>
 		
 	<Site id="1" collegeId="1" angelId="1" isWebVisible="0" created="2011-09-12 00:17:18.0"
 		modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
@@ -163,7 +163,7 @@
 		
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="3" 
 		MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="7" TYPE="3" angelId="3" code="qwerty_3" value="10.00" redeemedCoursesCount="0" source="O"
-		status="0" INVOICELINEID="3"/>
+		status="0" INVOICELINEID="3" confirmationStatus="1"/>
 	
 	<Product collegeId="1" SKU="234567" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="8" ISONSALE="1" 
 		ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 6" TYPE="3" angelId="8" 
@@ -171,6 +171,6 @@
 		
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="4" 
 		MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="3" angelId="4" code="qwerty_4" value="10.00" redeemedCoursesCount="0" source="O"
-		status="0" INVOICELINEID="4"/>
+		status="0" INVOICELINEID="4" confirmationStatus="1"/>
 		
 </dataset>
