@@ -93,11 +93,11 @@ public class WebsiteSettings {
 		return websiteSettingsZone;
 	}
 
-    @OnEvent(value = "deploySite")
-	public void deploySite(){
+    @OnEvent(value = "publish")
+	public void publish(){
         if (!request.isXHR())
             return;
-		webSiteVersionService.deploy();
+		webSiteVersionService.publish();
 		webSiteVersionService.removeOldWebSiteVersions(webSiteService.getCurrentWebSite());
 	}
 }

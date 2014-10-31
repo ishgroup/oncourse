@@ -23,7 +23,7 @@ function reloadPageOnSessionTimeout() {
 jQuery(document).ready(
     function () {
         jQuery(".cms_editor_tabs").tabs();
-        initDeploy();
+        initPublish();
     });
 
 function customForms() {
@@ -35,17 +35,17 @@ function customForms() {
     }
 }
 
-function initDeploy() {
+function initPublish() {
 
-    jQuery('#cms-deploy').click(function () {
-        var action = jQuery("#cms-deploy-action");
+    jQuery('#cms-publish').click(function () {
+        var action = jQuery("#cms-publish-action");
         if (action.hasClass("cms-disabled"))
             return;
 
         action.addClass("cms-disabled");
-        deploy();
+        publish();
 
-        jQuery("#cms-deploy-dialog").dialog({
+        jQuery("#cms-publish-dialog").dialog({
             modal: true,
             resizable: false,
             draggable: false,
@@ -65,17 +65,17 @@ function initDeploy() {
     });
 }
 
-function deploy() {
+function publish() {
     jQuery.ajax({
         type: "GET",
-        url: "/ui/internal/page.pagestructure.cmsnavigation.sitesettings.websitesettings:deploysite",
+        url: "/ui/internal/page.pagestructure.cmsnavigation.sitesettings.websitesettings:publish",
         async: false,
         //if the parameter is not set internet explorer loads content from cache
         cache: false,
         success: function (data) {
         },
         error: function (data) {
-            jQuery("#cms-deploy-error").dialog({
+            jQuery("#cms-publish-error").dialog({
                 modal: true,
                 resizable: false,
                 draggable: false,

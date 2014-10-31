@@ -10,8 +10,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.*;
-
 public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
 	
 	@Inject
@@ -26,12 +24,12 @@ public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
 	}
 
 	@Override
-	public void deploy() {
+	public void publish() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void deleteWebSiteVersion(WebSiteVersion webSiteVersionToDelte) {
+	public void delete(WebSiteVersion webSiteVersionToDelte) {
 		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from CMS.");
 	}
 	 

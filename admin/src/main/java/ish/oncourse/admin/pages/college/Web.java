@@ -5,6 +5,8 @@ import ish.oncourse.model.*;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.site.WebSitePublisher;
 import ish.oncourse.services.system.ICollegeService;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.Cayenne;
@@ -120,6 +122,9 @@ public class Web {
 	
 	@Inject
 	private Response response;
+
+    @Inject
+    private IWebSiteVersionService webSiteVersionService;
 	
 	void onActivate(Long id) {
 		this.college = collegeService.findById(id);
@@ -226,30 +231,30 @@ public class Web {
 		site.setCoursesRootTagName(newSiteCoursesRootTagName);
 		site.setCreated(now);
 		site.setModified(now);
-		
-		WebSiteVersion initialVersion = context.newObject(WebSiteVersion.class);
-		initialVersion.setWebSite(site);
-		initialVersion.setDeployedOn(now);
+
+        //we create staged web site version
+		WebSiteVersion stagedVersion = context.newObject(WebSiteVersion.class);
+		stagedVersion.setWebSite(site);
 
         WebSiteLayout webSiteLayout = context.newObject(WebSiteLayout.class);
         webSiteLayout.setLayoutKey(WebNodeType.DEFAULT_LAYOUT_KEY);
-        webSiteLayout.setWebSiteVersion(initialVersion);
+        webSiteLayout.setWebSiteVersion(stagedVersion);
 
 		WebNodeType page = context.newObject(WebNodeType.class);
 		page.setName(WebNodeType.PAGE);
 		page.setCreated(now);
 		page.setModified(now);
 		page.setLayoutKey(WebNodeType.DEFAULT_LAYOUT_KEY);
-		page.setWebSiteVersion(initialVersion);
+		page.setWebSiteVersion(stagedVersion);
 
-        WebNode node = webNodeService.createNewNodeBy(initialVersion, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1);
+        WebNode node = webNodeService.createNewNodeBy(stagedVersion, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1);
 		node.setPublished(true);
 		
 		WebMenu menu = context.newObject(WebMenu.class);
 		menu.setName("Home");
 		menu.setCreated(now);
 		menu.setModified(now);
-		menu.setWebSiteVersion(initialVersion);
+		menu.setWebSiteVersion(stagedVersion);
 		menu.setWeight(1);
 		menu.setWebNode(node);
 
@@ -275,14 +280,18 @@ public class Web {
 		}
 		
 		context.commitChanges();
-		
+
 		WebUrlAlias urlAlias = context.newObject(WebUrlAlias.class);
-		urlAlias.setWebSiteVersion(initialVersion);
+		urlAlias.setWebSiteVersion(stagedVersion);
 		urlAlias.setUrlPath("/");
 		urlAlias.setWebNode(node);
         urlAlias.setDefault(true);
 
 		context.commitChanges();
+
+        WebSitePublisher publisher = WebSitePublisher.valueOf(stagedVersion);
+        publisher.publish();
+        context.commitChanges();
 	}
 
 	@OnEvent(value = "setMainDomainEvent")

@@ -16,17 +16,17 @@ public interface IWebSiteVersionService {
 	WebSiteVersion getCurrentVersion();
 
 	/**
-	 * Makes currently staged website version active by setting its deployedOn field to current time.
+	 * Create a copy of the staged web site version, sets deployedOn field to current time
 	 */
-	void deploy();
+	void publish();
 
 	/**
 	 * deletes the specified WebSiteVersion with all objects related to it.
 	 */
-	void deleteWebSiteVersion(WebSiteVersion versionToDelete);
+	void delete(WebSiteVersion version);
 
 	/**
 	 * delete all revisions older than 60 days, but always to keep at least 5 revisions, even if they are older
 	 */
-	void removeOldWebSiteVersions(WebSite webSite); 	
+	void removeOldWebSiteVersions(WebSite webSite);
 }

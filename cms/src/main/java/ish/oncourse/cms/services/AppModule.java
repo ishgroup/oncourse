@@ -18,6 +18,7 @@ import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.resource.Resource;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.ui.components.internal.ContentStructure;
 import ish.oncourse.ui.components.internal.PageStructure;
 import ish.oncourse.ui.pages.internal.Page;
@@ -159,6 +160,11 @@ public class AppModule {
         applyRequestCachedAdvice(receiver, requestCacheService);
     }
 
+    @Advise(serviceInterface=ITagService.class)
+    public static void adviceTagService(final MethodAdviceReceiver receiver, @Inject final IRequestCacheService requestCacheService)
+    {
+        applyRequestCachedAdvice(receiver, requestCacheService);
+    }
 
     private static void applyRequestCachedAdvice(final MethodAdviceReceiver receiver, final IRequestCacheService requestCacheService) {
         MethodAdvice advice = new MethodAdvice()

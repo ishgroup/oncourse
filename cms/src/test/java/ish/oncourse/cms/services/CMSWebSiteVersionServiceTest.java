@@ -129,7 +129,7 @@ public class CMSWebSiteVersionServiceTest extends ServiceTest {
 
 		checkCountOfObjectBeforeMethod(context, versionToDelete);
 
-		webSiteVersionService.deleteWebSiteVersion(versionToDelete);
+		webSiteVersionService.delete(versionToDelete);
 
 		checkCountOfObjectAfterMethod(context, versionToDelete);
 	}

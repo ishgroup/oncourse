@@ -22,12 +22,12 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 	}
 
 	@Override
-	public void deploy() {
+	public void publish() {
 		throw new UnsupportedOperationException("Websites can only be deployed from CMS.");
 	}
 
 	@Override
-	public void deleteWebSiteVersion(WebSiteVersion versionToDelete) {
+	public void delete(WebSiteVersion versionToDelete) {
 		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from CMS.");
 	}
 

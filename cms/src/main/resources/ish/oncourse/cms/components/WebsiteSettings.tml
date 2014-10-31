@@ -70,18 +70,18 @@
 		</t:form>
 	</t:zone>
 
-    <div id="cms-deploy">
+    <div id="cms-publish">
         <h5 class="cms-block-sub-title">Publish Website</h5>
-        <div class="cms-deploy-control">
-            <div id="cms-deploy-action" class="cms-btn">Publish</div>
+        <div class="cms-publish-control">
+            <div id="cms-publish-action" class="cms-btn">Publish</div>
         </div>
-        <div class="cms-deploy-description">
+        <div class="cms-publish-description">
             All changes made to the CMS and WebDAV are only visible in the draft site. To publish all changes made to the Blocks, Pages, Menus, Themes within the CMS along with the changes made to the css style sheets, javascript, images and fonts within WebDAV click the Publish button below.
         </div>
-        <div id="cms-deploy-dialog" class="cms-deploy-hidden">
+        <div id="cms-publish-dialog" class="cms-publish-hidden">
             Please wait up to 10 minutes for the changes to be visible on the live site.
         </div>
-        <div id="cms-deploy-error" class="cms-deploy-hidden cms-error-txt">
+        <div id="cms-publish-error" class="cms-publish-hidden cms-error-txt">
             <h1>Something unexpected has happened.</h1>
             <p>We're sorry you're seeing this error message. To make sure this doesn't happen again, we'd appreciate if you could let us know how you got to this page.</p>
         </div>
