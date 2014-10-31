@@ -3066,4 +3066,18 @@
 	</changeSet>
 
 
+    <changeSet id="200" author="andrey" runOnChange="false" context="production">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists tableName="WebNode" indexName="version_number"/>
+            </not>
+        </preConditions>
+        <comment>create index for pair nodeNumber, webSiteVersionId </comment>
+
+        <sql>
+            CREATE INDEX version_number ON WebNode (webSiteVersionId, nodeNumber);
+        </sql>
+
+    </changeSet>
+
 </databaseChangeLog>
