@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.soap.v8.stubs;
 
+import ish.common.types.ConfirmationStatus;
+import ish.math.Money;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v8.stubs.replication.*;
@@ -199,6 +201,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		enrolmentParameters.add(new ReplicationStubFieldParameter("creditProviderType", Integer.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("feeStatus", Integer.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("creditTotal", Integer.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("feeHelpAmount", BigDecimal.class));
 		stubsPropertyMap.put(getStubName(EnrolmentStub.class), enrolmentParameters);
 
 		final List<ReplicationStubFieldParameter> invoiceLineDiscountParameters = fillDefaultReplicationStubFields();
@@ -237,6 +241,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		invoiceParameters.add(new ReplicationStubFieldParameter("totalGst", BigDecimal.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("contactId", Long.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("corporatePassId", Long.class));
+		invoiceParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		stubsPropertyMap.put(getStubName(InvoiceStub.class), invoiceParameters);
 		final List<ReplicationStubFieldParameter> messagePersonParameters = fillDefaultReplicationStubFields();
 		messagePersonParameters.add(new ReplicationStubFieldParameter("destinationAddress", String.class));
@@ -281,6 +286,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		paymentInParameters.add(new ReplicationStubFieldParameter("creditCardNumber", String.class));
 		paymentInParameters.add(new ReplicationStubFieldParameter("creditCardType", String.class));
 		paymentInParameters.add(new ReplicationStubFieldParameter("dateBanked", Date.class));
+		paymentInParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		stubsPropertyMap.put(getStubName(PaymentInStub.class), paymentInParameters);
 		final List<ReplicationStubFieldParameter> paymentOutParameters = fillDefaultReplicationStubFields();
 		paymentOutParameters.add(new ReplicationStubFieldParameter("amount", BigDecimal.class));
@@ -291,6 +297,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		paymentOutParameters.add(new ReplicationStubFieldParameter("status", Integer.class));
 		paymentOutParameters.add(new ReplicationStubFieldParameter("dateBanked", Date.class));
 		paymentOutParameters.add(new ReplicationStubFieldParameter("datePaid", Date.class));
+		paymentOutParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		stubsPropertyMap.put(getStubName(PaymentOutStub.class), paymentOutParameters);
 		final List<ReplicationStubFieldParameter> preferenceParameters = fillDefaultReplicationStubFields();
 		preferenceParameters.add(new ReplicationStubFieldParameter("name", String.class));
@@ -444,6 +451,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		voucherParameters.add(new ReplicationStubFieldParameter("status", Integer.class));
 		voucherParameters.add(new ReplicationStubFieldParameter("source", String.class));
 		voucherParameters.add(new ReplicationStubFieldParameter("valueOnPurchase", BigDecimal.class));
+		voucherParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		stubsPropertyMap.put(getStubName(VoucherStub.class), voucherParameters);
 		
 		final List<ReplicationStubFieldParameter> voucherProductParameters = fillProductStubFields(fillDefaultReplicationStubFields());
@@ -478,6 +486,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		surveyParameters.add(new ReplicationStubFieldParameter("venueScore", Integer.class));
 		surveyParameters.add(new ReplicationStubFieldParameter("uniqueCode", String.class));
 		surveyParameters.add(new ReplicationStubFieldParameter("enrolmentId", Long.class));
+		surveyParameters.add(new ReplicationStubFieldParameter("publicComment", Boolean.class));
 		stubsPropertyMap.put(getStubName(SurveyStub.class), surveyParameters);
 
 		List<ReplicationStubFieldParameter> entityRelationParameters = fillDefaultReplicationStubFields();
@@ -544,6 +553,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		applicationParameters.add(new ReplicationStubFieldParameter("enrolBy", Date.class));
 		applicationParameters.add(new ReplicationStubFieldParameter("feeOverride", BigDecimal.class));
 		applicationParameters.add(new ReplicationStubFieldParameter("reason", String.class));
+		applicationParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		stubsPropertyMap.put(getStubName(ApplicationStub.class), applicationParameters);
 
 		//TODO: add new stubs here
