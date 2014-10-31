@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.v8.updaters;
 
 import ish.common.types.*;
+import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
@@ -60,6 +61,12 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 		}
 		if (stub.getFeeHelpStatus() != null) {
 			entity.setFeeHelpStatus(TypesUtil.getEnumForDatabaseValue(stub.getFeeHelpStatus(), EnrolmentVETFeeHelpStatus.class));
+		}
+		if (stub.getFeeHelpAmount() != null) {
+			entity.setFeeHelpAmount(new Money(stub.getFeeHelpAmount()));
+		}
+		if (stub.getConfirmationStatus() != null) {
+			entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class));
 		}
 	}
 }

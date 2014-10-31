@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v8.updaters;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.TypesUtil;
@@ -30,6 +31,9 @@ public class PaymentOutUpdater extends AbstractWillowUpdater<PaymentOutStub, Pay
 		}
 		if (entity.getSource() == null) {
 			entity.setSource(PaymentSource.SOURCE_ONCOURSE);
+		}
+		if (stub.getConfirmationStatus() != null) {
+			entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class));
 		}
 	}
 }

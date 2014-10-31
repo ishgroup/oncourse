@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v8.updaters;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
 import ish.math.Money;
@@ -30,6 +31,9 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
 		entity.setTotalGst(new Money(stub.getTotalGst()));
 		entity.setCorporatePassUsed(callback.updateRelationShip(stub.getCorporatePassId(), CorporatePass.class));
+		if (stub.getConfirmationStatus() != null) {
+			entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class));
+		}
 	}
 
 }

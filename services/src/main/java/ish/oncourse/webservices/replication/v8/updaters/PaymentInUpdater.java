@@ -26,5 +26,8 @@ public class PaymentInUpdater extends AbstractWillowUpdater<PaymentInStub, Payme
 		}
 		entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), PaymentType.class));
 		entity.setDateBanked(stub.getDateBanked());
+		if (stub.getConfirmationStatus() != null) {
+			entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class));
+		}
 	}
 }

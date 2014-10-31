@@ -27,6 +27,9 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 		stub.setTotalGst(entity.getTotalGst().toBigDecimal());
 		CorporatePass corporatePass = entity.getCorporatePassUsed();
 		stub.setCorporatePassId(corporatePass != null ? entity.getCorporatePassUsed().getId() : null);
+		if (entity.getConfirmationStatus() != null) {
+			stub.setConfirmationStatus(entity.getConfirmationStatus().getDatabaseValue());
+		}
 		return stub;
 	}
 }

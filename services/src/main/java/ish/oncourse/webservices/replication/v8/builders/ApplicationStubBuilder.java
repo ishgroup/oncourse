@@ -25,6 +25,9 @@ public class ApplicationStubBuilder extends AbstractWillowStubBuilder<Applicatio
 		
 		applicationStub.setCreated(entity.getCreated());
 		applicationStub.setModified(entity.getModified());
+		if (entity.getConfirmationStatus() != null) {
+			applicationStub.setConfirmationStatus(entity.getConfirmationStatus().getDatabaseValue());
+		}
 		
 		return applicationStub;
 	}

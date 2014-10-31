@@ -4,6 +4,7 @@
 package ish.oncourse.webservices.replication.v8.updaters;
 
 import ish.common.types.ApplicationStatus;
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
 import ish.math.Money;
@@ -31,6 +32,9 @@ public class ApplicationUpdater extends AbstractWillowUpdater<ApplicationStub, A
 		
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
+		if (stub.getConfirmationStatus() != null) {
+			entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class));
+		}
 		
 	}
 }

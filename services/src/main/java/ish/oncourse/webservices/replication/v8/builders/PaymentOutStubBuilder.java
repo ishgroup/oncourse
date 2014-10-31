@@ -25,6 +25,9 @@ public class PaymentOutStubBuilder extends AbstractWillowStubBuilder<PaymentOut,
 		stub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
 		stub.setDateBanked(entity.getDateBanked());
 		stub.setDatePaid(entity.getDatePaid());
+		if (entity.getConfirmationStatus() != null) {
+			stub.setConfirmationStatus(entity.getConfirmationStatus().getDatabaseValue());
+		}
 		return stub;
 	}
 }

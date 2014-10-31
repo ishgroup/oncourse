@@ -22,6 +22,9 @@ public class VoucherStubBuilder extends AbstractProductItemStubBuilder<Voucher, 
 			stub.setValueOnPurchase(entity.getValueOnPurchase().toBigDecimal());
 		}
 		stub.setSource(entity.getSource().getDatabaseValue());
+		if (entity.getConfirmationStatus() != null) {
+			stub.setConfirmationStatus(entity.getConfirmationStatus().getDatabaseValue());
+		}
 		return stub;
 	}
 	
