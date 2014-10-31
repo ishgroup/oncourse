@@ -28,7 +28,7 @@
 		emailAddress="4@kremlin.ru" familyName="1" givenName="1"  faxNumber="1234-567" suburb="Moscow"/>
 		
 	<Invoice id="10" angelId="10" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54" 
-		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"  confirmationStatus="1"/>
 		
     <InvoiceLine id="11" angelId="1" collegeId="1" invoiceId="10" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
     	taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
@@ -73,7 +73,7 @@
             paymentInId="10"/>
             
 	<Invoice id="2" angelId="2" source="O" amountOwing="0.00" contactId="4" collegeId="1" dateDue="2011-09-20 11:14:54" 
-		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="123" totalExGst="109.09" totalGst="120" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="123" totalExGst="109.09" totalGst="120" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 	
 	<InvoiceLine id="5" angelId="5" collegeId="1" invoiceId="2" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
     	taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
@@ -83,7 +83,7 @@
 		creditCardName="creditCardName" creditCardNumber="creditCardNumberX" creditCardType="VISA" dateBanked="2011-09-20 11:14:54"
 		gatewayReference="gatewayReference" gatewayResponse="gatewayResponse" id="200"
 		modified="2011-09-20 11:14:54" sessionId="sessionId" source="W" status="2" 
-		statusNotes="statusNotes" studentId="4" type="2"/>
+		statusNotes="statusNotes" studentId="4" type="2" confirmationStatus="1"/>
 	
 	<PaymentInLine  amount="120.00" angelId="12" collegeId="1" created="2011-09-20 11:14:54" id="12" invoiceId="2" modified="2011-09-20 11:14:54"
 		paymentInId="200"/>
@@ -93,13 +93,13 @@
                creditCardName="creditCardName" creditCardNumber="creditCardNumberX" creditCardType="VISA" dateBanked="2011-09-20 11:14:54"
                gatewayReference="gatewayReference" gatewayResponse="gatewayResponse" id="20"
                modified="2011-09-20 11:14:54" sessionId="sessionId" source="W" status="2"
-               statusNotes="statusNotes" studentId="4" type="2"/>
+               statusNotes="statusNotes" studentId="4" type="2" confirmationStatus="1"/>
 
     <PaymentInLine  amount="100.00" angelId="20" collegeId="1" created="2011-09-20 11:14:54" id="20" invoiceId="20" modified="2011-09-20 11:14:54"
                     paymentInId="20"/>
 
     <Invoice id="20" angelId="20" source="O" amountOwing="0.00" contactId="4" collegeId="1" dateDue="2011-09-20 11:14:54"
-             description="invoice for testing multiple enrollments reverse" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="91.00" totalGst="100" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             description="invoice for testing multiple enrollments reverse" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="91.00" totalGst="100" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 
     <InvoiceLine id="20" angelId="20" collegeId="1" invoiceId="20" quantity="1.0" discountEachExTax="0.00" priceEachExTax="45.50"
                  taxEach="4.50" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
@@ -108,7 +108,7 @@
                  taxEach="4.50" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 	
 	<Invoice id="3" angelId="3" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54" 
-		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+		description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 	
 	<InvoiceLine id="6" angelId="6" collegeId="1" invoiceId="3" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" 
     	taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
@@ -117,13 +117,13 @@
     	creditCardExpiry="creditCardExpiry" creditCardName="creditCardName" creditCardNumber="creditCardNumberX" creditCardType="VISA" 
     	dateBanked="2011-09-20 11:14:54" gatewayReference="gatewayReference" gatewayResponse="gatewayResponse" id="300"
 		modified="2011-09-20 11:14:54" sessionId="sessionId" source="W" status="2" 
-		statusNotes="statusNotes" studentId="1" type="2"/>
+		statusNotes="statusNotes" studentId="1" type="2"  confirmationStatus="1"/>
 	
 	<PaymentInLine  amount="120.00" angelId="3" collegeId="1" created="2011-09-20 11:14:54" id="300" invoiceId="3" modified="2011-09-20 11:14:54"
 		paymentInId="300"/>
 
 	<Invoice id="4" angelId="4" source="O" amountOwing="0.00" contactId="1" collegeId="1" dateDue="2011-09-20 11:14:54"
-			 description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="120" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+			 description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="124" totalExGst="109.09" totalGst="120" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 
 	<InvoiceLine id="7" angelId="7" collegeId="1" invoiceId="4" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09"
 				 taxEach="10.91" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
@@ -137,7 +137,7 @@
 	<PaymentInLine  amount="50.00" angelId="4" collegeId="1" created="2011-09-20 11:14:54" id="400" invoiceId="4" modified="2011-09-20 11:14:54"
 					paymentInId="400"/>
 
-	<PaymentIn amount="70.0" angelId="5" id="500" collegeId="1" contactId="1" type="8" status="2" source="O" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54"/>
+	<PaymentIn amount="70.0" angelId="5" id="500" collegeId="1" contactId="1" type="8" status="2" source="O" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" confirmationStatus="1"/>
 
 	<PaymentInLine amount="70.0" angelId="5" collegeId="1" id="500" invoiceId="4" paymentInId="500" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54"/>
 
@@ -169,12 +169,12 @@
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="1"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="3" angelId="1" code="qwerty"
 				 valueOnPurchase="100.00" value="100.00" redeemedCoursesCount="0" source="W"
-				 status="0" INVOICELINEID="11"/>
+				 status="0" INVOICELINEID="11" confirmationStatus="1"/>
 		
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="2"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" angelId="2" code="qwerty_2"
 				 valueOnPurchase="101.00" value="101.00" redeemedCoursesCount="0" source="O"
-				 status="0" INVOICELINEID="12"/>
+				 status="0" INVOICELINEID="12" confirmationStatus="1"/>
 		
 	<Site id="1" collegeId="1" angelId="1" isWebVisible="0" created="2011-09-12 00:17:18.0"
 		modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
@@ -235,7 +235,7 @@
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="3"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="7" TYPE="3" angelId="3" code="qwerty_3"
 				 valueOnPurchase="10.00" value="10.00" redeemedCoursesCount="0" source="O"
-				 status="0" INVOICELINEID="13"/>
+				 status="0" INVOICELINEID="13"  confirmationStatus="1"/>
 	
 	<Product collegeId="1" SKU="234567" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="8" ISONSALE="1" 
 		ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product part 6" TYPE="3" angelId="8" 
@@ -244,7 +244,7 @@
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="4"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="3" angelId="4" code="qwerty_4"
 				 valueOnPurchase="10.00" value="10.00" redeemedCoursesCount="0" source="O"
-				 status="0" INVOICELINEID="14"/>
+				 status="0" INVOICELINEID="14"  confirmationStatus="1"/>
 
 	<Product collegeId="1" SKU="money" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$70" EXPIRYTYPE="4" ID="9" ISONSALE="1"
 			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="$70 voucher" TYPE="3" angelId="8"
@@ -253,7 +253,7 @@
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="5"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="9" TYPE="3" angelId="5" code="qwerty_4"
 				 valueOnPurchase="70.00" value="0.0" redeemedCoursesCount="0" source="O"
-				 status="3" INVOICELINEID="14"/>
+				 status="3" INVOICELINEID="14"  confirmationStatus="1"/>
 
 	<VoucherPaymentIn id="5" angelId="5" invoiceLineId="7" paymentInId="500" voucherId="5" collegeId="1" status="0" created="2011-09-12 00:47:01.0"
 					  modified="2011-09-12 01:02:00.0"/>

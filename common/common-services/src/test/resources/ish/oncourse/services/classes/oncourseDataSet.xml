@@ -69,12 +69,12 @@
     <SessionTutor id="6" collegeId="1" sessionId="6" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
 
 
-    <Enrolment id="1" collegeId="1" courseClassId="1" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="2" collegeId="1" courseClassId="2" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="3" collegeId="1" courseClassId="3" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="4" collegeId="1" courseClassId="4" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
-    <Enrolment id="5" collegeId="1" courseClassId="5" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="4" source="O"/>
-    <Enrolment id="6" collegeId="1" courseClassId="6" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
+    <Enrolment id="1" collegeId="1" courseClassId="1" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="2" collegeId="1" courseClassId="2" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="3" collegeId="1" courseClassId="3" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="4" collegeId="1" courseClassId="4" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="5" collegeId="1" courseClassId="5" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="4" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="6" collegeId="1" courseClassId="6" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
 
 	<Tag id="3471" collegeId="1" angelId="201" isWebVisible="1" nodeType="2" weighting="1" created="2011-09-12 00:38:54.0" modified="2011-09-12 00:17:14.0" shortName="Welcome" name="Welcome page" detail="&lt;h3 id=&quot;Homepage&quot;&gt;Home page &lt;/h3&gt;&lt;p&gt;This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse.&lt;/p&gt;" detail_textile="h3. Home page &#xA;&#xA;This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse."/>
 	<Tag id="3472" collegeId="1" angelId="200" isWebVisible="1" nodeType="1" weighting="1" created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" name="Subjects"/>

@@ -174,90 +174,90 @@
 
     <Enrolment id="1" source="O" collegeId="1" courseClassId="1"
                studentId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3"  confirmationStatus="1" feehelpamount="0"/>
     <Enrolment id="2" source="O" collegeId="1" courseClassId="1"
                studentId="4" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3"  confirmationStatus="1" feehelpamount="0"/>
     <Enrolment id="3" source="O" collegeId="1" courseClassId="2"
                studentId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3"  confirmationStatus="1" feehelpamount="0"/>
     <Enrolment id="4" source="O" collegeId="1" courseClassId="2"
                studentId="4" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3"  confirmationStatus="1" feehelpamount="0"/>
     <Enrolment id="5" source="O" collegeId="1" courseClassId="3"
                studentId="5" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3"  confirmationStatus="1" feehelpamount="0"/>
     <Enrolment id="6" source="O" collegeId="1" courseClassId="4"
                studentId="6" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3" confirmationStatus="1" feehelpamount="0" />
     <Enrolment id="7" source="O" collegeId="1" courseClassId="2"
                studentId="7" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3"  confirmationStatus="1" feehelpamount="0"/>
     <Enrolment id="8" source="O" collegeId="1" courseClassId="2"
                studentId="8" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3"  confirmationStatus="1" feehelpamount="0"/>
     <Enrolment id="9" source="O" collegeId="1" courseClassId="1"
                studentId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3"  confirmationStatus="1" feehelpamount="0"/>
     <Enrolment id="10" source="O" collegeId="1" courseClassId="2"
                studentId="10" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" />
+               status="3"  confirmationStatus="1" feehelpamount="0"/>
     <Enrolment id="11" source="O" collegeId="1" courseClassId="2"
                studentId="10" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="8" />
+               status="8"  confirmationStatus="1" feehelpamount="0"/>
     <Enrolment id="12" source="O" collegeId="1" courseClassId="4"
                studentId="10" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="4" />
+               status="4"  confirmationStatus="1" feehelpamount="0"/>
 
 
     <Invoice id="1" source="O" amountOwing="0" contactId="3"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="2" source="O" amountOwing="0" contactId="3"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="3" source="O" amountOwing="0" contactId="4"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="4" source="O" amountOwing="0" contactId="4"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="5" source="O" amountOwing="0" contactId="5"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="6" source="O" amountOwing="0" contactId="6"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="7" source="O" amountOwing="0" contactId="7"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="8" source="O" amountOwing="0" contactId="8"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="8.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="8.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="9" source="O" amountOwing="0" contactId="9"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="10" source="O" amountOwing="0" contactId="10"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="8.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="8.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="11" source="O" amountOwing="110.00" contactId="10"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="100.00"
-             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
     <Invoice id="12" source="O" amountOwing="220.00" contactId="3"
              collegeId="1" dateDue="[start_date4]" description="invoice for testing"
              invoiceDate="[start_date1]" invoiceNumber="1321" totalExGst="200.00"
-             totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+             totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 
 
     <InvoiceLine id="1" collegeId="1" invoiceId="1" quantity="1.0" enrolmentId="[null]" discountEachExTax="0.00" priceEachExTax="100.00" taxEach="10.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" title="Test Invoice Line" />
@@ -294,31 +294,31 @@
     <ProductItem ID="1" angelId="1" collegeId="1" INVOICELINEID="1" PRODUCTID="1"  TYPE="3"
                  code="qwerty" value="100.00" redeemedCoursesCount="0" source="W" status="0" valueOnPurchase="100.00"
                  CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-                 MODIFIEDON="2012-05-14 14:35:01.618" />
+                 MODIFIEDON="2012-05-14 14:35:01.618"  confirmationStatus="1"/>
     <ProductItem ID="2" angelId="2" collegeId="1" INVOICELINEID="3" PRODUCTID="3"  TYPE="3"
                  code="qwerty_2" value="110.00" redeemedCoursesCount="0" source="O" status="0" valueOnPurchase="110.0"
                  CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-                 MODIFIEDON="2012-05-14 14:35:01.618" />
+                 MODIFIEDON="2012-05-14 14:35:01.618"  confirmationStatus="1"/>
     <ProductItem ID="3" angelId="3" collegeId="1" INVOICELINEID="3" PRODUCTID="1"  TYPE="3"
                  code="qwertyb" value="50.00" redeemedCoursesCount="0" source="O" status="0" valueOnPurchase="50.00"
                  CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-                 MODIFIEDON="2012-05-14 14:35:01.618" />
+                 MODIFIEDON="2012-05-14 14:35:01.618"  confirmationStatus="1"/>
     <ProductItem ID="4" angelId="4" collegeId="1" INVOICELINEID="3" PRODUCTID="3"  TYPE="3"
                  code="qwerty_3" value="200.00" redeemedCoursesCount="0" source="W" status="0" valueOnPurchase="200.0"
                  CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-                 MODIFIEDON="2012-05-14 14:35:01.618" />
+                 MODIFIEDON="2012-05-14 14:35:01.618"  confirmationStatus="1"/>
     <ProductItem ID="5" angelId="5" collegeId="1" INVOICELINEID="3" PRODUCTID="3"  TYPE="3"
                  code="qwerty_5" value="50.00" redeemedCoursesCount="0" source="O" status="0" valueOnPurchase="50.0"
                  CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-                 MODIFIEDON="2012-05-14 14:35:01.618" />
+                 MODIFIEDON="2012-05-14 14:35:01.618"  confirmationStatus="1"/>
     <ProductItem ID="6" angelId="6" collegeId="1" INVOICELINEID="3" PRODUCTID="3"  TYPE="3"
                  code="qwerty_6" value="120.00" redeemedCoursesCount="0" source="O" status="0" valueOnPurchase="120.0"
                  CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-                 MODIFIEDON="2012-05-14 14:35:01.618" />
+                 MODIFIEDON="2012-05-14 14:35:01.618"  confirmationStatus="1"/>
     <ProductItem ID="7" angelId="7" collegeId="1" INVOICELINEID="3" PRODUCTID="5"  TYPE="3"
                  code="qwertya" value="50.00" redeemedCoursesCount="0" source="O" status="0"  valueOnPurchase="50.0"
                  CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
-                 MODIFIEDON="2012-05-14 14:35:01.618" />
+                 MODIFIEDON="2012-05-14 14:35:01.618"  confirmationStatus="1"/>
 
 
 	<VoucherProductCourse id="1" collegeId="1" voucherProductId="1" courseId="1"/>
