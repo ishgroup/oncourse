@@ -69,7 +69,7 @@
 
     <Enrolment id="10" source="O" collegeId="10" courseClassId="12"
                studentId="10" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="2" />
+               status="2" confirmationStatus="1" feehelpamount="0"/>
 
     <!--Invoice id="10" source="O" amountOwing="100.00" contactId="1"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
@@ -83,7 +83,7 @@
 
     <PaymentIn id="10" amount="100" angelId="1" collegeId="1"
                contactId="1" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
-               source="O" status="2" statusNotes="" type="2" sessionId="SESSIONID" />
+               source="O" status="2" statusNotes="" type="2" sessionId="SESSIONID" confirmationStatus="1"/>
 
     <PaymentInLine id="10" amount="100" angelId="1"
                    collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="10"
