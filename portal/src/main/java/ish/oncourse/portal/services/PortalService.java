@@ -833,8 +833,8 @@ public class PortalService implements IPortalService {
         int size = surveys.size();
         if (size != 0) {
             result.setCourseScore(((int) Math.floor(result.getCourseScore() / size)));
-            result.setTutorScore(((int) Math.floor(result.getCourseScore() / size)));
-            result.setVenueScore(((int) Math.floor(result.getCourseScore() / size)));
+            result.setTutorScore(((int) Math.floor(result.getTutorScore() / size)));
+            result.setVenueScore(((int) Math.floor(result.getVenueScore() / size)));
         }
         return result;
     }
@@ -846,6 +846,7 @@ public class PortalService implements IPortalService {
         result.put(Survey.TUTOR_SCORE_PROPERTY, survey.getTutorScore());
         result.put(Survey.VENUE_SCORE_PROPERTY, survey.getVenueScore());
         result.put(Survey.COMMENT_PROPERTY, survey.getComment());
+        result.put(Survey.PUBLIC_COMMENT_PROPERTY, survey.getPublicComment());
         return result;
     }
 

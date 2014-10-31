@@ -1,13 +1,14 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div class="collapse nav-links logged navbar-collapse">
-		<strong>${contact.givenName} ${contact.familyName}</strong><span class="caret"></span>
+		<strong>${contact.givenName} ${contact.familyName}</strong>
         <span t:type="switchcontact"/>
 		<ul class="clearfix">
             <li>
               <a href="#" t:type="ActionLink" t:id="logout">Logout</a>
             </li>
 		</ul>
-		<img src="${profilePicturePath}" height="50" width="50"/>
+		<img class="login-avatar-icon" src="${profilePicturePath}"/>
+        <span class="caret"/>
 	</div>
 </t:container>

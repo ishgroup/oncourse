@@ -20,6 +20,7 @@ public class Surveys {
     private static final String JSONPROPERTY_readOnly = "readOnly";
 
     @Inject
+    @Property
     private IPortalService portalService;
 
     @Inject
@@ -59,28 +60,31 @@ public class Surveys {
         if (!request.isXHR())
             return;
 
-        ish.oncourse.model.Survey survey = portalService.getStudentSurveyFor(courseClass);
+        Survey survey = portalService.getStudentSurveyFor(courseClass);
         if (survey == null) {
             survey = portalService.createStudentSurveyFor(courseClass);
         }
 
-        String value = StringUtils.trimToNull(request.getParameter(ish.oncourse.model.Survey.TUTOR_SCORE_PROPERTY));
+        String value = StringUtils.trimToNull(request.getParameter(Survey.TUTOR_SCORE_PROPERTY));
         if (StringUtils.isNumeric(value)) {
             survey.setTutorScore(Integer.valueOf(value));
         }
 
-        value = StringUtils.trimToNull(request.getParameter(ish.oncourse.model.Survey.VENUE_SCORE_PROPERTY));
+        value = StringUtils.trimToNull(request.getParameter(Survey.VENUE_SCORE_PROPERTY));
         if (StringUtils.isNumeric(value)) {
             survey.setVenueScore(Integer.valueOf(value));
         }
 
-        value = StringUtils.trimToNull(request.getParameter(ish.oncourse.model.Survey.COURSE_SCORE_PROPERTY));
+        value = StringUtils.trimToNull(request.getParameter(Survey.COURSE_SCORE_PROPERTY));
         if (StringUtils.isNumeric(value)) {
             survey.setCourseScore(Integer.valueOf(value));
         }
 
-        value = StringUtils.trimToEmpty(request.getParameter(ish.oncourse.model.Survey.COMMENT_PROPERTY));
+        value = StringUtils.trimToEmpty(request.getParameter(Survey.COMMENT_PROPERTY));
         survey.setComment(value);
+
+        value = StringUtils.trimToEmpty(request.getParameter(Survey.PUBLIC_COMMENT_PROPERTY));
+        survey.setPublicComment(Boolean.valueOf(value));
 
         survey.getObjectContext().commitChanges();
     }

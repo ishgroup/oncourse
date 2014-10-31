@@ -154,6 +154,12 @@
 			border-top-color: $white;
 			margin-left: 10px;
 		}
+        img.login-avatar-icon
+        {
+          width: 20px;
+          height: 20px;
+          margin-left: 5px;
+        }
 
 		.change-user {
 			display: inherit;
