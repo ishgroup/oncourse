@@ -137,6 +137,9 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
                 return ((Voucher) entity).getStatus().getDatabaseValue();
             }
         } else if (entity instanceof ProductItem) {
+			if (propertyName.equals("confirmationStatus")) {
+				return ((ProductItem) entity).getConfirmationStatus().getDatabaseValue();
+			}
             if (propertyName.equals("status")) {
                 return ((ProductItem) entity).getStatus().getDatabaseValue();
             }
