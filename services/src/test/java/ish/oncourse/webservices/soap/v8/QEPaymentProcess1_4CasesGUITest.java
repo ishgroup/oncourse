@@ -29,6 +29,7 @@ public abstract class QEPaymentProcess1_4CasesGUITest extends QEPaymentProcessTe
 		paymentInStub.setStatus(PaymentStatus.IN_TRANSACTION.getDatabaseValue());
 		paymentInStub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
 		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
+        paymentInStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 		stubs.add(paymentInStub);
 		InvoiceStub invoiceStub = new InvoiceStub();
 		invoiceStub.setContactId(1l);
@@ -43,6 +44,7 @@ public abstract class QEPaymentProcess1_4CasesGUITest extends QEPaymentProcessTe
 		invoiceStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
 		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
+        invoiceStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 		stubs.add(invoiceStub);
 		PaymentInLineStub paymentLineStub = new PaymentInLineStub();
 		paymentLineStub.setAngelId(1l);
@@ -120,7 +122,8 @@ public abstract class QEPaymentProcess1_4CasesGUITest extends QEPaymentProcessTe
 		enrolmentStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
 		enrolmentStub.setStatus(EnrolmentStatus.IN_TRANSACTION.name());
 		enrolmentStub.setStudentId(1l);
-		//link the invoiceLine with enrolment
+        enrolmentStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
+        //link the invoiceLine with enrolment
 		invoiceLineStub.setEnrolmentId(enrolmentStub.getAngelId());
 		stubs.add(enrolmentStub);
 
@@ -134,6 +137,7 @@ public abstract class QEPaymentProcess1_4CasesGUITest extends QEPaymentProcessTe
 		membershipStub.setProductId(2l);
 		membershipStub.setType(ProductType.MEMBERSHIP.getDatabaseValue());
 		membershipStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+        membershipStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 		stubs.add(membershipStub);
 
 		VoucherStub voucherStub = new VoucherStub();
@@ -151,6 +155,7 @@ public abstract class QEPaymentProcess1_4CasesGUITest extends QEPaymentProcessTe
 		voucherStub.setRedeemedCoursesCount(0);
 		voucherStub.setRedemptionValue(invoiceStub.getAmountOwing().divide(new BigDecimal(4)));
 		voucherStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+        voucherStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 		stubs.add(voucherStub);
 
 		ArticleStub articleStub = new ArticleStub();
@@ -163,6 +168,7 @@ public abstract class QEPaymentProcess1_4CasesGUITest extends QEPaymentProcessTe
 		articleStub.setProductId(3l);
 		articleStub.setType(ProductType.ARTICLE.getDatabaseValue());
 		articleStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+        articleStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 		stubs.add(articleStub);
 
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());

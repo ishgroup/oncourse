@@ -29,7 +29,8 @@ public abstract class QEPaymentProcess8CaseGUITest extends QEPaymentProcessTest 
 		paymentInStub.setStatus(PaymentStatus.IN_TRANSACTION.getDatabaseValue());
 		paymentInStub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
 		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
-		stubs.add(paymentInStub);
+        paymentInStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
+        stubs.add(paymentInStub);
 		PaymentInLineStub paymentLineStub = new PaymentInLineStub();
 		paymentLineStub.setAngelId(1l);
 		paymentLineStub.setAmount(paymentInStub.getAmount());
@@ -92,7 +93,8 @@ public abstract class QEPaymentProcess8CaseGUITest extends QEPaymentProcessTest 
 		membershipStub.setProductId(2l);
 		membershipStub.setType(ProductType.MEMBERSHIP.getDatabaseValue());
 		membershipStub.setStatus(ProductStatus.NEW.getDatabaseValue());
-		stubs.add(membershipStub);
+        membershipStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
+        stubs.add(membershipStub);
 
 		VoucherStub voucherStub = new VoucherStub();
 		voucherStub.setAngelId(2l);
@@ -109,6 +111,7 @@ public abstract class QEPaymentProcess8CaseGUITest extends QEPaymentProcessTest 
 		voucherStub.setRedeemedCoursesCount(0);
 		voucherStub.setRedemptionValue(twoHundredDollars.divide(new BigDecimal(8)).toBigDecimal());
 		voucherStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
+        voucherStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 		stubs.add(voucherStub);
 
 		ArticleStub articleStub = new ArticleStub();
@@ -121,6 +124,7 @@ public abstract class QEPaymentProcess8CaseGUITest extends QEPaymentProcessTest 
 		articleStub.setProductId(3l);
 		articleStub.setType(ProductType.ARTICLE.getDatabaseValue());
 		articleStub.setStatus(ProductStatus.NEW.getDatabaseValue());
+        articleStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 		stubs.add(articleStub);
 
 		assertNull("Payment sessionid should be empty before processing", paymentInStub.getSessionId());
