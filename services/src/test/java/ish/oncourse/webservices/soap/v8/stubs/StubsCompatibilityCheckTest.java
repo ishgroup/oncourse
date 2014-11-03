@@ -452,6 +452,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		voucherParameters.add(new ReplicationStubFieldParameter("status", Integer.class));
 		voucherParameters.add(new ReplicationStubFieldParameter("source", String.class));
 		voucherParameters.add(new ReplicationStubFieldParameter("valueOnPurchase", BigDecimal.class));
+		voucherParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		stubsPropertyMap.put(getStubName(VoucherStub.class), voucherParameters);
 		
 		final List<ReplicationStubFieldParameter> voucherProductParameters = fillProductStubFields(fillDefaultReplicationStubFields());
@@ -463,6 +464,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		final List<ReplicationStubFieldParameter> membershipParameters = fillProductItemStubFields(fillDefaultReplicationStubFields());
 		membershipParameters.add(new ReplicationStubFieldParameter("expiryDate", Date.class));
 		membershipParameters.add(new ReplicationStubFieldParameter("contactId", Long.class));
+		membershipParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		stubsPropertyMap.put(getStubName(MembershipStub.class), membershipParameters);
 		final List<ReplicationStubFieldParameter> voucherPaymentInParameters = fillDefaultReplicationStubFields();
 		voucherPaymentInParameters.add(new ReplicationStubFieldParameter("paymentInId", Long.class));
