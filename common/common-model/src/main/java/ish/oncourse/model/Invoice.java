@@ -105,7 +105,7 @@ public class Invoice extends _Invoice implements Queueable {
 			setModified(getCreated());
 		}
 		if (getConfirmationStatus() == null) {
-			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+			setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND);
 		}
 	}
 

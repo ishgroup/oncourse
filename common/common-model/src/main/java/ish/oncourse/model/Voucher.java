@@ -134,12 +134,5 @@ public class Voucher extends _Voucher implements Queueable {
     public boolean isExpired() {
         return ProductStatus.EXPIRED.equals(getStatus());
     }
-
-	@Override
-	protected void onPostAdd() {
-		if (getConfirmationStatus() == null) {
-			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
-		}
-	}
 	
 }

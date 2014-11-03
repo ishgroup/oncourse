@@ -752,7 +752,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="code" type="VARCHAR" length="10"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="confirmationStatus" type="INTEGER"/>
+		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="expiryDate" type="TIMESTAMP"/>
@@ -1871,6 +1871,7 @@
 	<obj-entity name="ProductItem" className="ish.oncourse.model.ProductItem" dbEntityName="ProductItem">
 		<qualifier><![CDATA[type = 1]]></qualifier>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
@@ -2113,7 +2114,6 @@
 	<obj-entity name="Voucher" superEntityName="ProductItem" className="ish.oncourse.model.Voucher">
 		<qualifier><![CDATA[type = 3]]></qualifier>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
-		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="idKey" type="java.lang.String" db-attribute-path="idKey"/>
 		<obj-attribute name="redeemedCoursesCount" type="java.lang.Integer" db-attribute-path="redeemedCoursesCount"/>
 		<obj-attribute name="redemptionValue" type="ish.math.Money" db-attribute-path="value"/>

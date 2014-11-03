@@ -21,7 +21,7 @@ public class Application extends _Application implements Queueable {
 	@Override
 	protected void onPostAdd() {
 		if (getConfirmationStatus() == null) {
-			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+			setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND);
 		}
 	}
 }

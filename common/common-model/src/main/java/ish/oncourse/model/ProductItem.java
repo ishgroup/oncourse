@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.ProductStatus;
 import ish.oncourse.model.auto._ProductItem;
 import ish.oncourse.utils.QueueableObjectUtils;
@@ -24,6 +25,9 @@ public class ProductItem extends _ProductItem implements Queueable {
 		}
 		if (getModified() == null) {
 			setModified(getCreated());
+		}
+		if (getConfirmationStatus() == null) {
+			setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND);
 		}
     }
 }

@@ -549,7 +549,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			setModified(getCreated());
 		}
 		if (getConfirmationStatus() == null) {
-			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+			setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND);
 		}
 	}
 

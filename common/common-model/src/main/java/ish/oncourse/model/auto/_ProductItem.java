@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.ProductStatus;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -19,6 +20,7 @@ import ish.oncourse.model.Product;
 public abstract class _ProductItem extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
+    public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
     public static final String CREATED_PROPERTY = "created";
     public static final String EXPIRY_DATE_PROPERTY = "expiryDate";
     public static final String MODIFIED_PROPERTY = "modified";
@@ -36,6 +38,13 @@ public abstract class _ProductItem extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty(ANGEL_ID_PROPERTY);
+    }
+
+    public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
+        writeProperty(CONFIRMATION_STATUS_PROPERTY, confirmationStatus);
+    }
+    public ConfirmationStatus getConfirmationStatus() {
+        return (ConfirmationStatus)readProperty(CONFIRMATION_STATUS_PROPERTY);
     }
 
     public void setCreated(Date created) {

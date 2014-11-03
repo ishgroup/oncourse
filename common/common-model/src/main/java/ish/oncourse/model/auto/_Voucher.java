@@ -2,7 +2,6 @@ package ish.oncourse.model.auto;
 
 import java.util.List;
 
-import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.model.PaymentIn;
@@ -18,7 +17,6 @@ import ish.oncourse.model.VoucherPaymentIn;
 public abstract class _Voucher extends ProductItem {
 
     public static final String CODE_PROPERTY = "code";
-    public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
     public static final String ID_KEY_PROPERTY = "idKey";
     public static final String REDEEMED_COURSES_COUNT_PROPERTY = "redeemedCoursesCount";
     public static final String REDEMPTION_VALUE_PROPERTY = "redemptionValue";
@@ -34,13 +32,6 @@ public abstract class _Voucher extends ProductItem {
     }
     public String getCode() {
         return (String)readProperty(CODE_PROPERTY);
-    }
-
-    public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
-        writeProperty(CONFIRMATION_STATUS_PROPERTY, confirmationStatus);
-    }
-    public ConfirmationStatus getConfirmationStatus() {
-        return (ConfirmationStatus)readProperty(CONFIRMATION_STATUS_PROPERTY);
     }
 
     public void setIdKey(String idKey) {

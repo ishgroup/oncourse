@@ -64,7 +64,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 			setFeeHelpAmount(Money.ZERO);
 		}
 		if (getConfirmationStatus() == null) {
-			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+			setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND);
 		}
 
 	}

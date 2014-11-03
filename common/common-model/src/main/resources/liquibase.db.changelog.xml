@@ -2947,8 +2947,7 @@
         <!-- set confirmation status to SENT for all existing enrolments -->
         <sql>ALTER TABLE Enrolment
                 ADD COLUMN feeHelpAmount DECIMAL(10,2) NOT NULL DEFAULT 0,
-                ADD COLUMN confirmationStatus INTEGER NOT NULL DEFAULT 1;
-            UPDATE Enrolment SET confirmationStatus = 2;
+                ADD COLUMN confirmationStatus INTEGER NOT NULL DEFAULT 3;
         </sql>
 	</changeSet>
 
@@ -2961,8 +2960,7 @@
 
         <!-- set confirmation status to SENT for all existing invoices -->
         <sql>ALTER TABLE Invoice
-            ADD COLUMN confirmationStatus INTEGER NOT NULL DEFAULT 1;
-            UPDATE Invoice SET confirmationStatus = 2;
+            ADD COLUMN confirmationStatus INTEGER NOT NULL DEFAULT 3;
         </sql>
 	</changeSet>
 
@@ -2975,8 +2973,7 @@
 
         <!-- set confirmation status to SENT for all existing vouchers -->
         <sql>ALTER TABLE ProductItem
-            ADD COLUMN confirmationStatus INTEGER;
-            UPDATE ProductItem SET confirmationStatus = 2 WHERE type = 3;
+            ADD COLUMN confirmationStatus INTEGER NOT NULL DEFAULT 3;
         </sql>
 	</changeSet>
 
@@ -2989,8 +2986,7 @@
 
         <!-- set confirmation status to SENT for all existing payments -->
         <sql>ALTER TABLE PaymentIn
-            ADD COLUMN confirmationStatus INTEGER NOT NULL DEFAULT 1;
-            UPDATE PaymentIn SET confirmationStatus = 2;
+            ADD COLUMN confirmationStatus INTEGER NOT NULL DEFAULT 3;
         </sql>
 	</changeSet>
 
@@ -3003,8 +2999,7 @@
 
         <!-- set confirmation status to SENT for all existing Applications -->
         <sql>ALTER TABLE Application
-            ADD COLUMN confirmationStatus INTEGER NOT NULL  DEFAULT 1;
-            UPDATE Application SET confirmationStatus = 2;
+            ADD COLUMN confirmationStatus INTEGER NOT NULL  DEFAULT 3;
         </sql>
 	</changeSet>
 
@@ -3017,8 +3012,7 @@
 
         <!-- set confirmation status to SENT for all existing PaymentOuts -->
         <sql>ALTER TABLE PaymentOut
-            ADD COLUMN confirmationStatus INTEGER NOT NULL DEFAULT 1;
-            UPDATE PaymentOut SET confirmationStatus = 2;
+            ADD COLUMN confirmationStatus INTEGER NOT NULL DEFAULT 3;
         </sql>
 	</changeSet>
 

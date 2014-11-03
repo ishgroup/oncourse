@@ -1,5 +1,5 @@
 dependencies {
-    compile ('ish.oncourse.willow:waCommon:5.1.37') {
+    compile ('ish.oncourse.willow:waCommon:5.1.39') {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
     

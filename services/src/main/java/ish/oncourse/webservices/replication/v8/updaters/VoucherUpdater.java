@@ -24,9 +24,6 @@ public class VoucherUpdater extends AbstractProductItemUpdater<VoucherStub, Vouc
 		entity.setRedemptionValue(stub.getRedemptionValue() != null ? Money.valueOf(stub.getRedemptionValue()) : null);
 		entity.setValueOnPurchase(stub.getValueOnPurchase() != null ? Money.valueOf(stub.getValueOnPurchase()) : null);
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
-		if (stub.getConfirmationStatus() != null) {
-			entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class));
-		}
 	}
 
 }

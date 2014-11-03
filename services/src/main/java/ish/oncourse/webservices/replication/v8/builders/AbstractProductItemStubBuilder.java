@@ -15,6 +15,7 @@ public abstract class AbstractProductItemStubBuilder<E extends ProductItem, S ex
 		stub.setProductId(entity.getProduct().getId());
 		stub.setStatus(entity.getStatus().getDatabaseValue());
 		stub.setType(entity.getType());
+		stub.setConfirmationStatus(entity.getConfirmationStatus().getDatabaseValue());
 		return stub;
 	}
 

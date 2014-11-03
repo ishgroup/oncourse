@@ -124,7 +124,7 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 	@Override
 	protected void onPostAdd() {
 		if (getConfirmationStatus() == null) {
-			setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+			setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND);
 		}
 	}
 }

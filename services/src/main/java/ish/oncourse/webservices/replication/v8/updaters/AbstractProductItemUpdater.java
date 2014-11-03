@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v8.updaters;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.ProductStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.InvoiceLine;
@@ -22,5 +23,6 @@ public abstract class AbstractProductItemUpdater<S extends ProductItemStub, E ex
 			//set default new status because this may be V4.1 product item and we need to have ability succeed them
 			entity.setStatus(ProductStatus.NEW);
 		}
+		entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class));
 	}
 }
