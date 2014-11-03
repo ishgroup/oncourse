@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="invoiceLineId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="productId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -37,7 +38,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "type",
     "invoiceLineId",
     "productId",
-    "status"
+    "status",
+    "confirmationStatus"
 })
 @XmlSeeAlso({
     VoucherStub.class,
@@ -64,6 +66,10 @@ public class ProductItemStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer status;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer confirmationStatus;
 
     /**
      * Gets the value of the type property.
@@ -159,6 +165,30 @@ public class ProductItemStub
      */
     public void setStatus(Integer value) {
         this.status = value;
+    }
+
+    /**
+     * Gets the value of the confirmationStatus property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getConfirmationStatus() {
+        return confirmationStatus;
+    }
+
+    /**
+     * Sets the value of the confirmationStatus property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setConfirmationStatus(Integer value) {
+        this.confirmationStatus = value;
     }
 
 }
