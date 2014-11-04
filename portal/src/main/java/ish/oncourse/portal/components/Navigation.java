@@ -83,7 +83,7 @@ public class Navigation {
 
         contact = portalService.getContact();
         if (contact.getTutor() != null) {
-            List<CourseClass> unconfirmedClasses = courseClassService.getContactCourseClasses(contact, CourseClassFilter.UNCONFIRMED);
+            List<CourseClass> unconfirmedClasses = portalService.getContactCourseClasses(CourseClassFilter.UNCONFIRMED);
             approvals = unconfirmedClasses.size();
             if (approvals > 0) {
                 unconfirmedClass = unconfirmedClasses.get(0);

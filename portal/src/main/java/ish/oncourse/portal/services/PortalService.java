@@ -288,8 +288,6 @@ public class PortalService implements IPortalService {
         Expression expr = ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, getContact().getStudent());
         expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
         expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
-        expr = expr.andExp(ExpressionFactory.greaterExp(CourseClass.END_DATE_PROPERTY, DateUtils.addMonths(DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH), -1))
-                .orExp(ExpressionFactory.matchExp(CourseClass.IS_DISTANT_LEARNING_COURSE_PROPERTY, true)));
         return expr;
     }
 
@@ -297,8 +295,6 @@ public class PortalService implements IPortalService {
     private Expression getTutorClassesExpression() {
         Expression expr = ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.TUTOR_PROPERTY, getContact().getTutor());
         expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.CANCELLED_PROPERTY, false));
-        expr = expr.andExp(ExpressionFactory.greaterExp(CourseClass.END_DATE_PROPERTY, DateUtils.addMonths(DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH), -1))
-                .orExp(ExpressionFactory.matchExp(CourseClass.IS_DISTANT_LEARNING_COURSE_PROPERTY, true)));
         return expr;
     }
 

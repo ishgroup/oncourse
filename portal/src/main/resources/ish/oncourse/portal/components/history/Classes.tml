@@ -1,0 +1,21 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+    <ul class="list-unstyled classes-content">
+        <t:if test="!classes">
+            <div>You have no classes history.</div>
+        </t:if>
+
+        <t:loop source="classes" value="courseClass">
+            <li>
+                <p class="arrow-content">
+                    <strong> <t:pagelink page="class" context="courseClass.id">${courseClass.course.name}</t:pagelink></strong><small class="text-muted"> (${courseClass.uniqueIdentifier})</small>
+                    <label>${getDate()}</label>
+                    <t:if test="isNew()">
+                        <span class="label label-primary">NEW</span>
+                    </t:if>
+                </p>
+            </li>
+        </t:loop>
+    </ul>
+
+</t:container>

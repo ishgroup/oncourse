@@ -20,44 +20,11 @@
                             <t:delegate to="block:currentClassInfo"/><br/>
                         </li>
                     </t:loop>
-                    <t:loop source="pastCourseClasses" value="pastCourseClass">
-                        <li style="display: none;">
-                            <t:delegate to="block:pastClassInfo"/><br/>
-                        </li>
-                    </t:loop>
                 </ul>
-                <!--<t:if test="${pastCourseClasses.isEmpty()}" negate="true">-->
-                <ul class="list-inline">
-                    <li class="show-all-courses"><a class="show-all-sessions" href="#">Show All <span class="icon-arrow-down"></span></a></li>
-                </ul>
-                <!--</t:if>-->
             </li>
         </ul>
     </div>
 
-
-    <t:block t:id="pastClassInfo">
-        <p>
-            <strong><a href="${request.contextPath}/class/${pastCourseClass.id}">${pastCourseClass.course.name}</a></strong>
-            <small class="text-muted">  (${pastCourseClass.uniqueIdentifier})</small> <br/>
-            <label>
-
-                <t:if test="pastCourseClass.startDate">
-                    <span>${getDate(pastCourseClass)}</span>
-                </t:if>
-                <t:unless test="pastCourseClass.startDate">
-                    <t:if test="${pastCourseClass.getIsDistantLearningCourse()}">
-                        <span>Self paced class</span>
-                    </t:if>
-                    <t:unless test="${pastCourseClass.getIsDistantLearningCourse()}">
-                        <span>This class does not have sessions</span>
-                    </t:unless>
-                </t:unless>
-
-            </label>
-        </p>
-
-    </t:block>
 
     <t:block t:id="currentClassInfo">
         <p>

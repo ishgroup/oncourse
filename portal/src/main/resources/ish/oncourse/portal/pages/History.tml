@@ -4,32 +4,20 @@
 		<ul class="nav nav-tabs header-tabs">
 			<li class="active"><a data-toggle="tab" href="#finance-history">Finance</a></li>
 
-            <t:if test="student">
-		    	<li class=""><a data-toggle="tab" href="#enrolments-history">Enrolments</a></li>
-		    </t:if>
+		    <li class=""><a data-toggle="tab" href="#enrolments-history">Classes</a></li>
         </ul>
 		<h1><a href="#">History</a></h1>
 	</div>
 	<div class="tab-content">
     
-    <div class="tab-pane active" id="finance-history">
-      <table class="table">
-        <span t:type="history/finance"/>
-      </table>
-    </div>
+        <div class="tab-pane active" id="finance-history">
+          <table class="table">
+            <span t:type="history/finance"/>
+          </table>
+        </div>
 
-
-        <t:if test="student">
-		    <div class="tab-pane" id="enrolments-history">
-                <span t:type="history/enrolments"/>
-		    </div>
-        </t:if>
+        <div class="tab-pane" id="enrolments-history">
+            <span t:type="history/classes"/>
+        </div>
 	</div>
-
-
-
-
-
-
-
 </html>
