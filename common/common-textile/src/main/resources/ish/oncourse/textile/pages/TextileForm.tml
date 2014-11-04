@@ -26,7 +26,9 @@
 								<input type="radio" name="${index}_${field.label}_input" id="${index}_${field.label}_input${optionChecked}_radio" class="formField ${required}" value="${option}"/> ${option}
 							</t:loop>
 							<script type="text/javascript">
-								document.getElementById('${index}_${field.label}_input_checked_radio').checked=true;
+                                var element = document.getElementById('${index}_${field.label}_input_checked_radio');
+                                if (element)
+                                    document.getElementById('${index}_${field.label}_input_checked_radio').checked=true;
 							</script>
 						</t:if>
 						
