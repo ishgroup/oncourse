@@ -364,4 +364,9 @@
     <ContactRelationType id="2" collegeId="2" angelId="-1" createdOn="2011-09-12 00:59:00.0" modifiedOn="2011-09-12 00:58:51.0"
                          fromContactName="Parent or Guardian" toContactName="Child" delegatedAccessToContact="1"/>
 
+	<CorporatePass id="2002" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
+				   contactId="1189156" password="password2" expiryDate="2111-01-01 00:00:00.0"/>
+	<CorporatePass_CourseClass id="2" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
+							   corporatePassId="2002" courseClassId="1186958"/>
+
 </dataset>

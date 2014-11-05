@@ -769,5 +769,30 @@ public class PurchaseControllerTest extends ACheckoutTest {
 		}
 
 	}
+	
+	@Test
+	public void testConfirmationStatusUseCorporatePass() {
+		
+		//corporate pass enabled only for CourseClasses, not for Product
+		PurchaseController purchaseController = init(Arrays.asList(1186958L), Collections.EMPTY_LIST, Collections.EMPTY_LIST, false);
+		
+		addFirstContact(1189157);
+		proceedToPayment();
+		
+		ActionParameter parameter = new ActionParameter(selectCorporatePassEditor);
+		performAction(parameter);
+		
+		parameter = new ActionParameter(addCorporatePass);
+		parameter.setValue("password2");
+		performAction(parameter);
+		
+		parameter= new ActionParameter(makePayment);
+		performAction(parameter);
+		assertEquals(ConfirmationStatus.NOT_SENT, purchaseController.getModel().getInvoice().getConfirmationStatus());
 
+		for (Enrolment enrolment : purchaseController.getModel().getAllEnabledEnrolments()) {
+			assertEquals(ConfirmationStatus.NOT_SENT, enrolment.getConfirmationStatus());
+		}
+	}
+	
 }
