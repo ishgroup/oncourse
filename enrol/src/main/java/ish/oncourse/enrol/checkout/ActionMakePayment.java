@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.ProductStatus;
 import ish.oncourse.model.Enrolment;
@@ -25,6 +26,7 @@ public class ActionMakePayment extends APurchaseAction {
 			for (ProductItem productItem : productItems) {
 				productItem.setStatus(ProductStatus.ACTIVE);
 			}
+			getController().setConfirmationStatus(ConfirmationStatus.NOT_SENT);
 		} else if (getController().isEditPayment()) {
 			getController().setState(PurchaseController.State.paymentProgress);
 		} else

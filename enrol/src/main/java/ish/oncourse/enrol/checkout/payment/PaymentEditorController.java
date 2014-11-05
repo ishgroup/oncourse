@@ -62,10 +62,6 @@ public class PaymentEditorController implements PaymentEditorDelegate {
     public void updatePaymentStatus() {
         paymentProcessController.processAction(PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS);
         if (paymentProcessController.isFinalState()) {
-			if (isPaymentSuccess()) {
-				purchaseController.setConfirmationStatus(ConfirmationStatus.NOT_SENT);
-				purchaseController.getModel().getObjectContext().commitChanges();
-			}
             finalizeProcess();
         }
     }
@@ -109,7 +105,15 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
 	private void initPaymentProcessController()
 	{
-		paymentProcessController = new PaymentProcessController();
+		paymentProcessController = new PaymentProcessController() {
+			@Override
+			protected void commitChanges() {
+				purchaseController.setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+				purchaseController.getModel().getObjectContext().commitChanges();
+				super.commitChanges();
+			}
+			
+		};
 		paymentProcessController.setStartWatcher(false);
 		paymentProcessController.setObjectContext(purchaseController.getModel().getObjectContext());
 		paymentProcessController.setPaymentIn(purchaseController.getModel().getPayment());

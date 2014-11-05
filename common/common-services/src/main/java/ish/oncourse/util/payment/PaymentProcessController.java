@@ -279,7 +279,7 @@ public class PaymentProcessController {
     	//synchronized (this) {//TODO: this is one of WA for 15839
     		paymentGatewayService.performGatewayOperation(paymentIn);
     		if (paymentIn.getStatus().equals(PaymentStatus.SUCCESS))
-    			objectContext.commitChanges();
+    			commitChanges();
     		return paymentIn;
     	//}
     }
@@ -418,4 +418,8 @@ public class PaymentProcessController {
 		}
 	}
 
+	protected void commitChanges() {
+		objectContext.commitChanges();
+	}
+	
 }
