@@ -2,7 +2,7 @@
 	<div id="advanced_search_container">
 		<div class="" id="advanced_search">
 			<!--clientValidation should be NONE to exclude usage Tapestry java script injection-->
-			<t:form t:id="search2" class="advanced-search-form" method="get" name="search" clientValidation="literal:NONE">
+			<t:form t:id="search2" class="advanced-search-form" method="get" name="search" secure="request.isSecure()" clientValidation="literal:NONE">
 				<div id="adv_search_keyword">
 					<label title="Search keywords and functions" for="adv_keyword">I'm Looking For</label>
 					<input t:type="TextField" clientId="adv_keyword" t:value="advKeyword" default="keyword" name="s" />

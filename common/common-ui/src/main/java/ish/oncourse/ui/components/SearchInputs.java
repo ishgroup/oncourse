@@ -26,6 +26,7 @@ public class SearchInputs {
 	private ITagService tagService;
 	
 	@Inject
+    @Property
 	private Request request;
 
 	@Property
