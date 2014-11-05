@@ -1,9 +1,11 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentType;
 import ish.common.types.ProductStatus;
+import ish.common.types.ProductType;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.AddContactController;
 import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
@@ -776,7 +778,25 @@ public class PurchaseController {
         return cart;
     }
 
-    public static enum State {
+	public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
+		if (getModel().getPayment() != null)
+		{
+			getModel().getPayment().setConfirmationStatus(confirmationStatus);
+		}
+		getModel().getInvoice().setConfirmationStatus(confirmationStatus);
+		
+		for (Enrolment enrolment : getModel().getAllEnabledEnrolments()) {
+			enrolment.setConfirmationStatus(confirmationStatus);
+		}
+		
+		for (ProductItem productItem : getModel().getAllEnabledProductItems()) {
+			if (ProductType.VOUCHER.getDatabaseValue() == productItem.getType()) {
+				productItem.setConfirmationStatus(confirmationStatus);
+			}
+		}
+	}
+
+	public static enum State {
 		init(Action.init, Action.addContact),
 		editCheckout(COMMON_ACTIONS, addCode, selectVoucher, deselectVoucher, removeDiscount, proceedToPayment, addCourseClass, addProduct),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),

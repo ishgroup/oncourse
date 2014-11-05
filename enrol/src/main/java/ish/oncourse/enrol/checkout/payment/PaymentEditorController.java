@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout.payment;
 
+import ish.common.types.ConfirmationStatus;
 import ish.math.Money;
 import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
@@ -61,6 +62,10 @@ public class PaymentEditorController implements PaymentEditorDelegate {
     public void updatePaymentStatus() {
         paymentProcessController.processAction(PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS);
         if (paymentProcessController.isFinalState()) {
+			if (isPaymentSuccess()) {
+				purchaseController.setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+				purchaseController.getModel().getObjectContext().commitChanges();
+			}
             finalizeProcess();
         }
     }

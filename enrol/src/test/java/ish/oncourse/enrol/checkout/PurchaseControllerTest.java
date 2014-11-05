@@ -1,8 +1,10 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.ConfirmationStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
+import ish.common.types.ProductType;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -724,5 +726,48 @@ public class PurchaseControllerTest extends ACheckoutTest {
     public void testNeedGuardianFor()
     {
     }
+	
+	@Test
+	public void testConfirmationStatusOnSuccess() throws InterruptedException {
+		PurchaseController purchaseController = init(Arrays.asList(1186958L,1186959L,1186960L), Arrays.asList(7L, 9L), Arrays.asList(2L), true);
+		proceedToPayment();
+		makeValidPayment();
+		assertEquals(ConfirmationStatus.NOT_SENT, purchaseController.getModel().getPayment().getConfirmationStatus());
+		assertEquals(ConfirmationStatus.NOT_SENT, purchaseController.getModel().getInvoice().getConfirmationStatus());
+		
+		for (Enrolment enrolment : purchaseController.getModel().getAllEnabledEnrolments()) {
+			assertEquals(ConfirmationStatus.NOT_SENT, enrolment.getConfirmationStatus());
+		}
+
+		for (ProductItem productItem : purchaseController.getModel().getAllEnabledProductItems()) {
+			if (ProductType.VOUCHER.getDatabaseValue() == productItem.getType()) {
+				assertEquals(ConfirmationStatus.NOT_SENT, productItem.getConfirmationStatus());
+			} else {
+				assertEquals(ConfirmationStatus.DO_NOT_SEND, productItem.getConfirmationStatus());
+			}
+		}
+
+	}
+
+	@Test
+	public void testConfirmationStatusOnFail() throws InterruptedException {
+		PurchaseController purchaseController = init(Arrays.asList(1186958L,1186959L,1186960L), Arrays.asList(7L, 9L), Arrays.asList(2L), true);
+		proceedToPayment();
+		makeInvalidPayment();
+		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
+		delegate.abandon();
+		
+		assertEquals(ConfirmationStatus.DO_NOT_SEND, purchaseController.getModel().getPayment().getConfirmationStatus());
+		assertEquals(ConfirmationStatus.DO_NOT_SEND, purchaseController.getModel().getInvoice().getConfirmationStatus());
+
+		for (Enrolment enrolment : purchaseController.getModel().getAllEnabledEnrolments()) {
+			assertEquals(ConfirmationStatus.DO_NOT_SEND, enrolment.getConfirmationStatus());
+		}
+
+		for (ProductItem productItem : purchaseController.getModel().getAllEnabledProductItems()) {
+				assertEquals(ConfirmationStatus.DO_NOT_SEND, productItem.getConfirmationStatus());
+		}
+
+	}
 
 }
