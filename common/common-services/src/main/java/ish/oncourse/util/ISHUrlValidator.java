@@ -1,7 +1,7 @@
 package ish.oncourse.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.UrlValidator;
+import org.apache.commons.validator.routines.UrlValidator;
 
 public class ISHUrlValidator extends UrlValidator {
 
