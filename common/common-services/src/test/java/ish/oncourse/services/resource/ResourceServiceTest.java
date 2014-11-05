@@ -45,64 +45,14 @@ public class ResourceServiceTest extends Assert {
 		IWebSiteService webSiteService1 = mockWebSiteService("scc");
 		ILookupService lookupService = mock(ILookupService.class);
 		
-		ResourceService resourceService = new ResourceService(propertyService,
-				webSiteService1, lookupService, null, null);
+		ResourceService resourceService = new ResourceService(
+				webSiteService1, null, null);
 
 		Resource r1 = resourceService.getWebResource("x/some.css");
 		assertNotNull(r1);
 		assertEquals("/s/x/some.css", r1.getPublicUrl());
 	}
 
-	@Test
-	public void getConfigResource() throws Exception {
-
-		String packagePath = getClass().getPackage().getName()
-				.replace('.', '/');
-
-		URL placeholderUrl = getClass().getClassLoader().getResource(
-				packagePath + "/placeholder.txt");
-
-		final File root = new File(placeholderUrl.toURI()).getParentFile();
-
-		IPropertyService propertyService = new IPropertyService() {
-
-			public String string(Property property) {
-				switch (property) {
-				case CustomComponentsPath:
-					return root.getAbsolutePath();
-				default:
-					throw new IllegalArgumentException(String.valueOf(property));
-				}
-			}
-		};
-
-		IWebSiteService webSiteService1 = mockWebSiteService("-non-existent-");
-		ILookupService lookupService = mock(ILookupService.class);
-		
-		ResourceService resourceService = new ResourceService(propertyService,
-				webSiteService1, lookupService, null, null);
-
-		List<PrivateResource> dummyConf = resourceService
-				.getConfigResources("dummy.conf");
-		
-		assertNotNull(dummyConf);
-		assertEquals(root.toURI().toURL().toExternalForm()
-				+ "default/conf/dummy.conf", dummyConf.get(0).getPrivateUrl()
-				.toExternalForm());
-
-		IWebSiteService webSiteService2 = mockWebSiteService("testcollege");
-
-		resourceService = new ResourceService(propertyService, webSiteService2, lookupService, null, null);
-
-		List<PrivateResource> dummyConf2 = resourceService
-				.getConfigResources("dummy.conf");
-		
-		assertNotNull(dummyConf2);
-		//because this resource doesn't exist in real test path
-		assertEquals(root.toURI().toURL().toExternalForm()
-				+ "default/conf/dummy.conf", dummyConf2.get(0).getPrivateUrl()
-				.toExternalForm());
-	}
 	
 	private IWebSiteService mockWebSiteService(String siteCode) {
 		WebSite webSite = mock(WebSite.class);

@@ -2,8 +2,6 @@ package ish.oncourse.services;
 
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
-import ish.oncourse.services.assetgroup.AssetGroupService;
-import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cache.*;
@@ -129,7 +127,6 @@ public class ServiceModule {
 			binder.bind(ICacheService.class, NoopCacheService.class);
 			LOGGER.info("Query caching disabled.");
 		}
-		binder.bind(IAssetGroupService.class, AssetGroupService.class);
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(ICookiesOverride.class, CookiesImplOverride.class);

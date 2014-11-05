@@ -2,8 +2,6 @@ package ish.oncourse.solr;
 
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
-import ish.oncourse.services.assetgroup.AssetGroupService;
-import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cache.ICacheService;
@@ -75,7 +73,6 @@ public class SearchTestModule {
 	public static void bind(ServiceBinder binder) {
 		binder.bind(ICacheService.class, NoopCacheService.class);
 
-		binder.bind(IAssetGroupService.class, AssetGroupService.class);
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(IEnvironmentService.class, EnvironmentService.class);

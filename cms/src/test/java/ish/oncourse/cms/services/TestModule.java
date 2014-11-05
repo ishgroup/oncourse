@@ -5,7 +5,6 @@ import ish.oncourse.model.*;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.access.AuthenticationStatus;
-import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.menu.IWebMenuService;
@@ -232,17 +231,6 @@ public class TestModule {
                                           @Local IWebNodeService webNodeServiceOverride) {
         configuration.add(IWebNodeService.class, webNodeServiceOverride);
     }
-
-    public IAssetGroupService buildAssetGroupServiceOverride() {
-        IAssetGroupService mock = mock(IAssetGroupService.class);
-        return mock;
-    }
-
-    public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
-                                          @Local IAssetGroupService assetGroupServiceOverride) {
-        configuration.add(IAssetGroupService.class, assetGroupServiceOverride);
-    }
-
 
     public IWebSiteVersionService buildWebSiteVersionServiceOverride()
     {

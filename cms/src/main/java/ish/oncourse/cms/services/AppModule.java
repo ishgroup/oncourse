@@ -14,7 +14,6 @@ import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.resource.IResourceService;
-import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.resource.Resource;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -34,9 +33,7 @@ import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.Dispatcher;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
-import java.io.File;
 import java.lang.reflect.Method;
-import java.util.List;
 
 /**
  * The module that is automatically included as part of the Tapestry IoC
@@ -104,21 +101,9 @@ public class AppModule {
 	
 	public IResourceService decorateIResourceService(final IResourceService original) {
 		return new IResourceService() {
-			
-			public File getCustomComponentRoot() {
-				return original.getCustomComponentRoot();
-			}
 
 			public Resource getWebResource(String fileName) {
 				return original.getWebResource(fileName);
-			}
-
-			public PrivateResource getTemplateResource(String layoutKey, String fileName) {
-				if (PAGE_TEMPLATE.equalsIgnoreCase(fileName) || PAGE_STRUCTURE_TEMPLATE.equalsIgnoreCase(fileName)
-						|| CONTENT_STRUCTURE_TEMPLATE.equalsIgnoreCase(fileName)) {
-					return null;
-				}
-				return original.getTemplateResource(layoutKey, fileName);
 			}
 
 			public org.apache.tapestry5.ioc.Resource getDbTemplateResource(String layoutKey, String fileName) {
@@ -127,10 +112,6 @@ public class AppModule {
 					return null;
 				}
 				return original.getDbTemplateResource(layoutKey, fileName);
-			}
-
-			public List<PrivateResource> getConfigResources(String fileName) {
-				return original.getConfigResources(fileName);
 			}
 		};
 	}
