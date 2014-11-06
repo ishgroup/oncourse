@@ -5,9 +5,10 @@ package ish.common.types;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class USIVerificationRequest {
+public class USIVerificationRequest implements Serializable{
 	
 	private String studentFirstName;
 	private String studentLastName;
