@@ -20,21 +20,21 @@ public class USIService {
 	
 	private static final Logger logger = Logger.getLogger(USIService.class);
 	
-	private String keystorePath;
-	private String auskeyAlias;
-	private String auskeyPassword;
-	private String stsEndpoint;
+	private String ausKeyPassword;
+	private String ausKeyCert;
+	private String ausKeyPrivateKey;
+	private String ausKeySalt;
 	
-	public USIService(String keystorePath, String auskeyAlias, String auskeyPassword, String stsEndpoint) {
-		this.keystorePath = keystorePath;
-		this.auskeyAlias = auskeyAlias;
-		this.auskeyPassword = auskeyPassword;
-		this.stsEndpoint = stsEndpoint;
+	public USIService(String ausKeyPassword, String ausKeyCert, String ausKeyPrivateKey, String ausKeySalt) {
+		this.ausKeyPassword = ausKeyPassword;
+		this.ausKeyCert = ausKeyCert;
+		this.ausKeyPrivateKey = ausKeyPrivateKey;
+		this.ausKeySalt = ausKeySalt;
 	}
 	
 	public USIVerificationResult verifyUsi(USIVerificationRequest request) {
 		try {
-			IUSIService endpoint = AUSKeyUtil.createUSIService(keystorePath, auskeyAlias, auskeyPassword, stsEndpoint);
+			IUSIService endpoint = AUSKeyUtil.createUSIService(ausKeyPassword, ausKeyCert, ausKeyPrivateKey, ausKeySalt);
 
 			VerifyUSIType verifyUSI = new VerifyUSIType();
 

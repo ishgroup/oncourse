@@ -25,11 +25,6 @@ public class ContextUtil {
 	public static final String CMS_EDIT_SCRIPT_PATH = "cms.script.edit";
 	public static final String CMS_DEPLOY_SCRIPT_PATH = "cms.script.deploy";
 	
-	public static final String AUSKEY_KEYSTORE_PATH = "auskey.keystore";
-	public static final String AUSKEY_ALIAS = "auskey.alias";
-	public static final String AUSKEY_PASSWORD = "auskey.password";
-	public static final String USI_STS_ENDPOINT = "usi.sts.endpoint";
-	
 	/**
 	 * Look up specified path in the apps context
 	 * 
@@ -122,42 +117,6 @@ public class ContextUtil {
 			return (String) lookup(CMS_DEPLOY_SCRIPT_PATH);
 		} catch (Exception e) {
 			LOGGER.warn("cms.script.deploy is not configured in context.xml, cms won't be able to deploy resources.");
-			return null;
-		}
-	}
-	
-	public static String getAuskeyKeystorePath() {
-		try {
-			return (String) lookup(AUSKEY_KEYSTORE_PATH);
-		} catch (Exception e) {
-			LOGGER.error("auskey.keystore is not configured in context.xml, USI verification won't be available.");
-			return null;
-		}
-	}
-	
-	public static String getAuskeyAlias() {
-		try {
-			return (String) lookup(AUSKEY_ALIAS);
-		} catch (Exception e) {
-			LOGGER.error("auskey.alias is not configured in context.xml, USI verification won't be available.");
-			return null;
-		}
-	}
-	
-	public static String getAuskeyPassword() {
-		try {
-			return (String) lookup(AUSKEY_PASSWORD);
-		} catch (Exception e) {
-			LOGGER.error("auskey.password is not configured in context.xml, USI verification won't be available.");
-			return null;
-		}
-	}
-	
-	public static String getUsiStsEndpoint() {
-		try {
-			return (String) lookup(USI_STS_ENDPOINT);
-		} catch (Exception e) {
-			LOGGER.error("usi.sts.endpoint is not configured in context.xml, USI verification won't be available");
 			return null;
 		}
 	}

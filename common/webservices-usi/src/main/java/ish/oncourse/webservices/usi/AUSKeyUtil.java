@@ -3,23 +3,19 @@
  */
 package ish.oncourse.webservices.usi;
 
-import au.gov.abr.akm.credential.store.ABRCredential;
-import au.gov.abr.akm.credential.store.ABRKeyStore;
 import au.gov.usi._2013.ws.servicepolicy.IUSIService;
 import au.gov.usi._2013.ws.servicepolicy.USIService;
-import org.apache.log4j.Logger;
+import ish.oncourse.webservices.usi.crypto.CryptoUtils;
+import org.bouncycastle.util.encoders.Base64;
 
 import javax.xml.ws.BindingProvider;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 
 public class AUSKeyUtil {
 	
-	private static final Logger logger = Logger.getLogger(AUSKeyUtil.class);
-	
+	private static final String STS_ENDPOINT = "https://thirdparty.authentication.business.gov.au/R3.0/vanguard/S007v1.2/Service.svc";
 	private static final String STS_NAMESPACE = "http://schemas.microsoft.com/ws/2008/06/identity/securitytokenservice";
 	private static final String STS_SERVICE_NAME = "SecurityTokenService";
 	private static final String STS_PORT_NAME = "S007SecurityTokenServiceEndpoint";
@@ -28,9 +24,10 @@ public class AUSKeyUtil {
 	private static final int CONNECT_TIMEOUT = 60000;
 	private static final int REQUEST_TIMEOUT = 60000;
 	
-	public static IUSIService createUSIService(String keyStorePath, String auskeyAlias, String auskeyPassword, String stsEndpoint) {
-		PrivateKey privateKey = getAUSKeyPrivateKey(keyStorePath, auskeyAlias, auskeyPassword);
-		X509Certificate certificate = getAUSKeyCertificate(keyStorePath, auskeyAlias);
+	public static IUSIService createUSIService(String auskeyPassword, String cert, String encodedPrivateKey, String salt) {
+		
+		PrivateKey privateKey = getAUSKeyPrivateKey(encodedPrivateKey, auskeyPassword, salt);
+		X509Certificate certificate = getAUSKeyCertificate(cert);
 		
 		USIService service = new USIService();
 		IUSIService endpoint = service.getWS2007FederationHttpBindingIUSIService();
@@ -39,9 +36,9 @@ public class AUSKeyUtil {
 
 		requestContext.put(Constants.CERTIFICATE_PROPERTY, certificate);
 		requestContext.put(Constants.PRIVATEKEY_PROPERTY, privateKey);
-		requestContext.put(Constants.STS_ENDPOINT, stsEndpoint);
+		requestContext.put(Constants.STS_ENDPOINT, STS_ENDPOINT);
 		requestContext.put(Constants.STS_NAMESPACE, STS_NAMESPACE);
-		requestContext.put(Constants.STS_WSDL_LOCATION, stsEndpoint);
+		requestContext.put(Constants.STS_WSDL_LOCATION, STS_ENDPOINT);
 		requestContext.put(Constants.STS_SERVICE_NAME, STS_SERVICE_NAME);
 		requestContext.put(Constants.LIFE_TIME, STS_LIFE_TIME);
 		requestContext.put(Constants.STS_PORT_NAME, STS_PORT_NAME);
@@ -50,41 +47,24 @@ public class AUSKeyUtil {
 		
 		return endpoint;
 	}
-
-	private static X509Certificate getAUSKeyCertificate(String keyStorePath, String auskeyAlias) {
-		File keyStoreFile = new File(keyStorePath);
-		
+	
+	public static X509Certificate getAUSKeyCertificate(String cert) {
 		try {
-			if (!keyStoreFile.exists()) {
-				throw new FileNotFoundException(keyStoreFile.getCanonicalPath());
-			}
-
-			ABRKeyStore keyStore = ABRKeyStore.getInstance(keyStoreFile);
-
-			ABRCredential abrCredential = keyStore.getCredential(auskeyAlias);
-			X509Certificate[] certificate = abrCredential.getX509CertificateChain();
-			return certificate[0];
-
+			X509Certificate[] certificateChain =  CryptoUtils.getCertificateChain(Base64.decode(cert));
+			return certificateChain[0];
 		} catch (Exception e) {
-			logger.error(String.format("Unable to load AUSKey certificate from keystore file: %s", keyStoreFile.getAbsolutePath()), e);
-			return null;
+			throw new RuntimeException("Cannot load AUSKey certificate.", e);
 		}
 	}
-
-	private static PrivateKey getAUSKeyPrivateKey(String keyStorePath, String auskeyAlias, String auskeyPassword) {
-		File keyStoreFile = new File(keyStorePath);
-		
+	
+	public static PrivateKey getAUSKeyPrivateKey(String encodedKey, String password, String salt) {
 		try {
-			if (!keyStoreFile.exists()) {
-				throw new FileNotFoundException(keyStoreFile.getAbsolutePath());
-			}
-
-			ABRKeyStore keyStore = ABRKeyStore.getInstance(keyStoreFile);
-
-			return keyStore.getPrivateKey(auskeyAlias, auskeyPassword.toCharArray());
+			return CryptoUtils.decryptPrivateKey(
+					Base64.decode(encodedKey),
+					password.toCharArray(),
+					Base64.decode(salt));
 		} catch (Exception e) {
-			logger.error(String.format("Unable to load AUSKey private key from keystore file: %s", keyStoreFile.getAbsolutePath()), e);
-			return null;
+			throw new RuntimeException("Cannot decrypt AUSKey private key.", e);
 		}
 	}
 }

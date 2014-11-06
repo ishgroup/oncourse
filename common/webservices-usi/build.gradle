@@ -1,10 +1,9 @@
 dependencies {
-    compile ('ish.oncourse.willow:waCommon:5.1.39') {
+    compile ('ish.oncourse.willow:waCommon:5.1.41') {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
     
     compile 'org.apache.cxf:cxf-bundle:2.6.16'
-    compile 'au.gov.abr:abrakm:1.5'
 }
 
 jar {
