@@ -1675,6 +1675,46 @@ public abstract class CommonPreferenceController {
 		return StringUtils.trimToNull(getStorageAccessId()) != null;
 	}
 
+	// **************************************
+	// AUSKey preferences
+	// **************************************
+	public static final String AUSKEY_PASSWORD = "auskey.password";
+	public static final String AUSKEY_CERTIFICATE = "auskey.certificate";
+	public static final String AUSKEY_PRIVATE_KEY = "auskey.privatekey";
+	public static final String AUSKEY_SALT = "auskey.salt";
+	
+	public synchronized void setAuskeyPassword(String value) {
+		setValue(AUSKEY_PASSWORD, false, value);
+	}
+	
+	public synchronized String getAuskeyPassword() {
+		return getValue(AUSKEY_PASSWORD, false);
+	}
+	
+	public synchronized void setAuskeyCertificate(String value) {
+		setValue(AUSKEY_CERTIFICATE, false, value);
+	}
+	
+	public synchronized String getAuskeyCertificate() {
+		return getValue(AUSKEY_CERTIFICATE, false);
+	}
+	
+	public synchronized void setAuskeyPrivateKey(String value) {
+		setValue(AUSKEY_PRIVATE_KEY, false, value);
+	}
+	
+	public synchronized String getAuskeyPrivateKey() {
+		return getValue(AUSKEY_PRIVATE_KEY, false);
+	}
+	
+	public synchronized void setAuskeySalt(String value) {
+		setValue(AUSKEY_SALT, false, value);
+	}
+	
+	public synchronized String getAuskeySalt() {
+		return getValue(AUSKEY_SALT, false);
+	}
+	
 	/*
 	 * Other preferences
 	 */
