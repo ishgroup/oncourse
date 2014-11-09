@@ -71,12 +71,16 @@
     <TutorRole id="10" angelId="10" collegeId="1" courseClassId="9" created="2010-02-03 09:18:09" isConfirmed="0" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
     <TutorRole id="11" angelId="11" collegeId="1" courseClassId="10" created="2010-02-03 09:18:09" isConfirmed="0" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
 
-    <Session id="1"  collegeId="1" courseClassId="1" roomId="1" angelId="201" startDate="1980-01-01 01:00:00" endDate="1980-01-01 01:00:00" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
-    <Session id="2" collegeId="1" courseClassId="2" roomId="2" angelId="202" startDate="1980-01-02 01:00:00" endDate="1980-01-02 00:00:00" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
-    <Session id="3" collegeId="1" courseClassId="3" roomId="3" angelId="203" startDate="2100-01-01 00:00:00" endDate="2100-01-01 00:00:00" created="2011-09-12 00:56:01.0" modified="2011-09-12 00:56:01.0"/>
-    <Session id="4" collegeId="1" courseClassId="4" roomId="4" angelId="204" startDate="2101-01-02 00:00:00" endDate="2101-01-02 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
-    <Session id="5" collegeId="1" courseClassId="5" roomId="5" angelId="205" startDate="2102-01-03 00:00:00" endDate="2102-01-03 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
-    <Session id="6" collegeId="1" courseClassId="6" roomId="6" angelId="206" startDate="2103-01-04 00:00:00" endDate="2103-01-04 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="1"  collegeId="1" courseClassId="1" roomId="1" angelId="201" startDate="[oldThen15Days]" endDate="[oldThen15Days]" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+    <Session id="2" collegeId="1" courseClassId="2" roomId="2" angelId="202" startDate="[oldThen15Days]" endDate="[oldThen15Days]" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+    <Session id="3" collegeId="1" courseClassId="3" roomId="3" angelId="203" startDate="[currentDate]" endDate="[currentDate]" created="2011-09-12 00:56:01.0" modified="2011-09-12 00:56:01.0"/>
+    <Session id="4" collegeId="1" courseClassId="4" roomId="4" angelId="204" startDate="[currentDate]" endDate="[currentDate]" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="5" collegeId="1" courseClassId="5" roomId="5" angelId="205" startDate="[currentDate]" endDate="[currentDate]" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="6" collegeId="1" courseClassId="6" roomId="6" angelId="206" startDate="[currentDate]" endDate="[currentDate]" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="7" collegeId="1" courseClassId="7" roomId="6" angelId="206" startDate="2103-01-04 00:00:00" endDate="2103-01-04 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="8" collegeId="1" courseClassId="8" roomId="6" angelId="206" startDate="2103-01-04 00:00:00" endDate="2103-01-04 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="9" collegeId="1" courseClassId="9" roomId="6" angelId="206" startDate="[oldThenMonth]" endDate="[oldThenMonth]" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="10" collegeId="1" courseClassId="10" roomId="6" angelId="206" startDate="[oldThenMonth]" endDate="[oldThenMonth]" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
 
     <SessionTutor id="1" collegeId="1" sessionId="1" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
     <SessionTutor id="2" collegeId="1" sessionId="2" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>

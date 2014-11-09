@@ -870,6 +870,6 @@ public class PortalService implements IPortalService {
 
     private Date getOldestDate()
     {
-        return DateUtils.truncate(DateUtils.addMonths(new Date(), -1), Calendar.DAY_OF_WEEK);
+        return DateUtils.truncate(DateUtils.addMonths(new Date(), -1), Calendar.DAY_OF_MONTH);
     }
 }
