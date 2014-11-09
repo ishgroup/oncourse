@@ -309,7 +309,7 @@ public class PortalService implements IPortalService {
 
     private List<CourseClass> getCurrentTutorClasses(List<CourseClass> courseClasses) {
         List<CourseClass> current = new ArrayList<>();
-        Date date = new Date();
+        Date date = getOldestDate();
 
         for (CourseClass courseClass : courseClasses) {
             if (courseClass.getIsDistantLearningCourse()) {
@@ -353,7 +353,7 @@ public class PortalService implements IPortalService {
     private List<CourseClass> getCurrentStudentClasses(List<CourseClass> courseClasses, Contact contact) {
 
         List<CourseClass> current = new ArrayList<>();
-        Date date = new Date();
+        Date date = getOldestDate();
 
         for (CourseClass courseClass : courseClasses) {
 
@@ -651,7 +651,7 @@ public class PortalService implements IPortalService {
         }
 
         Ordering.orderList(sessions, Arrays.asList(new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING)));
-        Expression ex = ExpressionFactory.greaterExp(Session.START_DATE_PROPERTY, new Date());
+        Expression ex = ExpressionFactory.greaterExp(Session.START_DATE_PROPERTY, getOldestDate());
 
         sessions = ex.filterObjects(sessions);
 
@@ -866,4 +866,10 @@ public class PortalService implements IPortalService {
 				+ DigestUtils.md5Hex(contact.getEmailAddress().trim().toLowerCase().getBytes())
 				+ "?d=https%3A%2F%2Fskillsoncourse.com.au%2Fportal%2Fimg%2Fico-student-default.png";
 	}
+
+
+    private Date getOldestDate()
+    {
+        return DateUtils.truncate(DateUtils.addMonths(new Date(), -1), Calendar.DAY_OF_WEEK);
+    }
 }
