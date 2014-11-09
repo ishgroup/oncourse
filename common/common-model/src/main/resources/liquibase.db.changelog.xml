@@ -3062,5 +3062,17 @@
 
     </changeSet>
 
+    <changeSet id="201" author="andrey" runOnChange="false" context="production">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists tableName="WebNode" indexName="nodeNumber_version_unique"/>
+            </not>
+        </preConditions>
+
+        <sql>
+            ALTER TABLE `WebNode` ADD UNIQUE `nodeNumber_version_unique`(`nodeNumber`, `webSiteVersionId`);
+        </sql>
+    </changeSet>
+
 
 </databaseChangeLog>
