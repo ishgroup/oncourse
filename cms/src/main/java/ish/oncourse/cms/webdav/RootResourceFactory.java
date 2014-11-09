@@ -13,6 +13,7 @@ import io.milton.http.exceptions.ConflictException;
 import io.milton.http.exceptions.NotAuthorizedException;
 import io.milton.resource.Resource;
 import ish.oncourse.cms.services.access.IAuthenticationService;
+import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.ContextUtil;
 import org.apache.commons.lang3.ArrayUtils;
@@ -28,6 +29,7 @@ public class RootResourceFactory implements ResourceFactory {
 	public static final String WEBDAV_PATH_PREFIX = "/cms/webdav";
 
 	private IWebSiteService webSiteService;
+    private IMailService mailService;
 
 	private Registry registry;
 
@@ -45,6 +47,7 @@ public class RootResourceFactory implements ResourceFactory {
 		this.securityManager = securityManager;
 
 		this.webSiteService = registry.getService(IWebSiteService.class);
+        this.mailService = registry.getService(IMailService.class);
 
 		this.sRoot = ContextUtil.getSRoot();
 
@@ -52,7 +55,8 @@ public class RootResourceFactory implements ResourceFactory {
 		this.pageResourceFactory = registry.autobuild(PageResourceFactory.class);
 		this.templateResourceFactory = registry.autobuild(TemplateResourceFactory.class);
 		this.staticResourceFactory = new StaticResourceFactory(sRoot, webSiteService,
-				registry.getService(IAuthenticationService.class), securityManager);
+				registry.getService(IAuthenticationService.class), securityManager,
+                mailService);
 
 		this.blockResourceFactory.setSecurityManager(securityManager);
 		this.pageResourceFactory.setSecurityManager(securityManager);

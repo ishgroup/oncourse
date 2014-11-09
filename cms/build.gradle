@@ -9,6 +9,7 @@ dependencies {
 	compile project(':common:common-ui')
 
 	compile 'commons-collections:commons-collections:3.2.1'
+    compile 'org.apache.commons:commons-compress:1.9'
 	compile 'commons-logging:commons-logging:1.1.1'
 	compile 'org.apache.tapestry:tapestry-core:5.2.6'
 	compile 'org.apache.tapestry:tapestry-json:5.2.6'
@@ -17,6 +18,8 @@ dependencies {
     compile 'io.milton:milton-api:2.6.0.1'
     compile 'io.milton:milton-server-ce:2.6.0.1'
     compile 'org.reflections:reflections:0.9.8'
+
+    compile 'com.google.javascript:closure-compiler:v20140814'
 
 	testCompile 'org.apache.tapestry:tapestry-test:5.2.6'
 
