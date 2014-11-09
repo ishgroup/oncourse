@@ -56,7 +56,8 @@ public class Classes {
         Date date = courseClass.getStartDate();
         if (date != null)
         {
-            return String.format("%s", FormatUtils.getDateFormat(PortalUtils.DATE_FORMAT_d_MMMMM_h_mma, timeZone).format(date));
+            //Date should be in format 19 November 2014 10:00am
+            return String.format("%s", FormatUtils.getDateFormat(PortalUtils.DATE_FORMAT_d_MMMM_yyyy_h_mma, timeZone).format(date));
         }
         else
         {
