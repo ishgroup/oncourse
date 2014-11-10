@@ -7,9 +7,12 @@ import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -59,4 +62,16 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 					.matchExp(WebUrlAlias.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion());
 		return expression;
 	}
+
+    @Override
+    public List<WebUrlAlias> getRedirects() {
+        ObjectContext context = cayenneService.newContext();
+
+        Expression expression = ExpressionFactory.matchExp(WebUrlAlias.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion());
+        expression = expression.andExp(ExpressionFactory.matchExp(WebUrlAlias.WEB_NODE_PROPERTY, null));
+
+        SelectQuery query = new SelectQuery(WebUrlAlias.class, expression);
+        query.addOrdering(new Ordering(WebUrlAlias.MODIFIED_PROPERTY, SortOrder.DESCENDING));
+        return context.performQuery(query);
+    }
 }
