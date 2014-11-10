@@ -23,12 +23,6 @@
         <t:if test="!readOnly">
             <textarea rows="5" class="form-control survey-comment" placeholder="Enter comments..."/>
 
-            <div class="checkbox">
-            <input type="checkbox" id="public" name="publicComment" class="survey-public-comment"/>
-                <label for="public">
-                Allow my comments to be made public.
-                </label>
-            </div>
             <div class="alert alert-info">
                 Your comment may be used for quality improvement processes or marketing and your name will be displayed as ${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}.</t:if>
             </div>

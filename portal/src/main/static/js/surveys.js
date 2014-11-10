@@ -83,7 +83,6 @@ Survey.prototype = {
         $j(".tutor-rate").raty("score", this.survey.tutorScore);
         $j(".course-rate").raty("score", this.survey.courseScore);
         $j(".survey-comment").val(this.survey.comment);
-        $j(".survey-public-comment").prop('checked', this.survey.publicComment);
         this.refreshAverageRating();
     },
 
@@ -96,7 +95,6 @@ Survey.prototype = {
             "courseScore": $j(".course-rate").find('input[name=score]').val(),
             "tutorScore": $j(".tutor-rate").find('input[name=score]').val(),
             "venueScore": $j(".venue-rate").find('input[name=score]').val(),
-            "publicComment": $j(".survey-public-comment").is(':checked')
         };
         $j.ajax({
             url: actionLink,
