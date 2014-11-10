@@ -1,0 +1,1 @@
+var file = 'site1.js';

@@ -1,7 +1,7 @@
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.cms.webdav;
+package ish.oncourse.cms.webdav.jscompiler;
 
 import com.google.javascript.jscomp.*;
 import com.google.javascript.jscomp.Compiler;
@@ -11,7 +11,6 @@ import org.apache.commons.compress.compressors.CompressorOutputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -19,22 +18,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class JavaScriptCompiler {
-    private static final Logger LOGGER = LogManager.getLogger(JavaScriptCompiler.class);
+public class JSCompiler {
+    private static final Logger LOGGER = LogManager.getLogger(JSCompiler.class);
 
     private static final String RESULT_FILE_NAME = "all.js";
     private static final String GZ_RESULT_FILE_NAME = "all.js.gz";
 
-    //the file contains dependencies for default java scripts
-    private static final String DEFAULT_BASE_JS = "base.js";
-
-    //the file contains dependencies for default java scripts
-    private static final String CUSTOM_SITE_JS = "site.js";
-
-    private static final String REQUIRE_PATTERN = "^(//= require )(.*)";
 
     private static final String EMAIL_FROM = "support@ish.com.au";
     private static final String EMAIL_SUBJECT = "[onCourse Website] JSP Combiner error";
@@ -71,8 +61,9 @@ public class JavaScriptCompiler {
     private Compiler compiler;
     private CompilerOptions compilerOptions;
     private List<SourceFile> inputFiles = new ArrayList<>();
+    private JSCompilerErrorHandler errorHandler = new JSCompilerErrorHandler();
 
-    private List<String> errors = new ArrayList<>();
+    private boolean minify = false;
 
     private ByteArrayOutputStream errorsOutputStream;
     private File result;
@@ -82,27 +73,26 @@ public class JavaScriptCompiler {
 
         initFileSystem();
 
+        JSSourceParser sourceParser = new JSSourceParser();
+        sourceParser.setErrorHandler(errorHandler);
+        sourceParser.setCustomJSPath(customJSPath);
+        sourceParser.setDefaultJSPath(defaultJSPath);
+        sourceParser.parse();
+
+        this.minify = sourceParser.isMinify();
+        List<JSSource> sources = sourceParser.getSources();
+        for (JSSource source : sources) {
+            inputFiles.add(source.getSourceFile());
+        }
         initCompiler();
-
-        File baseJSFile = new File(getDefaultJSPath(), DEFAULT_BASE_JS);
-        if (!baseJSFile.exists() || !baseJSFile.isFile()) {
-            logError(String.format("File %s does not exist", baseJSFile.getAbsolutePath()));
-            return;
-        }
-        parse(baseJSFile);
-
-        File siteJSFile = new File(getCustomJSPath(), CUSTOM_SITE_JS);
-        if (siteJSFile.exists() && siteJSFile.isFile()) {
-            parse(siteJSFile);
-        }
     }
 
     private void initFileSystem() {
         customJSPath = String.format("%s/%s/js", sRoot, siteKey);
         defaultJSPath = String.format("%s/default/js", sRoot);
 
-        result = new File(getCustomJSPath(), RESULT_FILE_NAME);
-        gzResult = new File(getCustomJSPath(), GZ_RESULT_FILE_NAME);
+        result = new File(customJSPath, RESULT_FILE_NAME);
+        gzResult = new File(customJSPath, GZ_RESULT_FILE_NAME);
     }
 
     private void initCompiler() {
@@ -110,75 +100,35 @@ public class JavaScriptCompiler {
         errorsOutputStream = new ByteArrayOutputStream();
         compiler.setErrorManager(new PrintStreamErrorManager(new PrintStream(errorsOutputStream)));
         compilerOptions = new CompilerOptions();
-        CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(compilerOptions);
+        if (minify) {
+            CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(compilerOptions);
+        } else {
+            CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(compilerOptions);
+        }
     }
 
     public void compile() {
+        if (!errorHandler.getErrors().isEmpty())
+            return;
         if (inputFiles.isEmpty()) {
-            logError("Nothing to compile. Input js files is empty");
+            errorHandler.logError(LOGGER, "Nothing to compile. Input js files is empty");
             return;
         }
 
         try {
-
             compiler.compile(Collections.EMPTY_LIST, inputFiles, compilerOptions);
-
-
             if (!compiler.hasErrors()) {
                 saveResult(compiler);
                 gzResult();
                 LOGGER.debug("jsCombiner success");
             } else {
-                logError(errorsOutputStream.toString());
-                LOGGER.error(String.format("jsCombiner failed: %s", StringUtils.join(errors, "\n")));
+                errorHandler.logError(LOGGER, errorsOutputStream.toString());
+                LOGGER.error(String.format("jsCombiner failed: %s", StringUtils.join(errorHandler.getErrors(), "\n")));
             }
         } catch (Exception e) {
-            logError(e);
+            errorHandler.logError(LOGGER, e);
         } finally {
             IOUtils.closeQuietly(errorsOutputStream);
-        }
-    }
-
-    private void logError(Exception e) {
-
-        errors.add(String.format("Unexpected exception: %s", ExceptionUtils.getStackTrace(e)));
-        LOGGER.error(e.getMessage(), e);
-    }
-
-    private void logError(String message) {
-        errors.add(message);
-        LOGGER.error(message);
-    }
-
-
-    private void parse(File file) {
-        FileReader fileReader = null;
-        BufferedReader reader = null;
-
-        try {
-            fileReader = new FileReader(file);
-            reader = new BufferedReader(fileReader);
-
-            Pattern pattern = Pattern.compile(REQUIRE_PATTERN);
-
-            while (reader.ready()) {
-                String s = reader.readLine();
-                Matcher matcher = pattern.matcher(s);
-                if (matcher.matches()) {
-                    String fileName = matcher.group(2);
-                    File fileJS = new File(file.getParent(), fileName);
-                    if (fileJS.exists() && fileJS.isFile()) {
-                        inputFiles.add(SourceFile.fromFile(fileJS));
-                    } else {
-                        logError(String.format("File %s does not exist", s));
-                    }
-                }
-            }
-        } catch (IOException e) {
-            logError(e);
-        } finally {
-            IOUtils.closeQuietly(reader);
-            IOUtils.closeQuietly(fileReader);
         }
     }
 
@@ -195,7 +145,7 @@ public class JavaScriptCompiler {
                     .createCompressorOutputStream(CompressorStreamFactory.GZIP, fos);
             IOUtils.copy(fis, gos);
         } catch (Exception e) {
-            logError(e);
+            errorHandler.logError(LOGGER, e);
         } finally {
             IOUtils.closeQuietly(gos);
             IOUtils.closeQuietly(fos);
@@ -210,31 +160,14 @@ public class JavaScriptCompiler {
             outputFile = new FileWriter(result);
             outputFile.write(compiler.toSource());
         } catch (IOException e) {
-            logError(e);
+            errorHandler.logError(LOGGER, e);
         } finally {
             IOUtils.closeQuietly(outputFile);
         }
     }
 
     public boolean hasErrors() {
-        return compiler.hasErrors() || !errors.isEmpty();
-    }
-
-    public String getSRoot() {
-        return sRoot;
-    }
-
-    public void setSRoot(String sRoot) {
-        this.sRoot = sRoot;
-    }
-
-    public String getDefaultJSPath() {
-        return defaultJSPath;
-    }
-
-
-    public String getCustomJSPath() {
-        return customJSPath;
+        return compiler.hasErrors() || !errorHandler.getErrors().isEmpty();
     }
 
     public File getResult() {
@@ -246,27 +179,19 @@ public class JavaScriptCompiler {
     }
 
 
-    public String getSiteKey() {
-        return siteKey;
-    }
-
-    public void setSiteKey(String siteKey) {
-        this.siteKey = siteKey;
-    }
-
     public EmailBuilder buildErrorMail(String emailTo, String fileName) {
         EmailBuilder emailBuilder = new EmailBuilder();
         emailBuilder.setFromEmail(EMAIL_FROM);
         emailBuilder.setToEmails(emailTo);
         emailBuilder.setSubject(EMAIL_SUBJECT);
-        emailBuilder.setBody(String.format(EMAIL_BODY_TEMPLATE, emailTo, siteKey, fileName, StringUtils.join(errors, "\n")));
+        emailBuilder.setBody(String.format(EMAIL_BODY_TEMPLATE, emailTo, siteKey, fileName, StringUtils.join(errorHandler.getErrors(), "\n")));
         return emailBuilder;
     }
 
-    public static JavaScriptCompiler valueOf(String sRoot, WebSite webSite) {
-        JavaScriptCompiler javaScriptCompiler = new JavaScriptCompiler();
-        javaScriptCompiler.setSRoot(sRoot);
-        javaScriptCompiler.setSiteKey(webSite.getSiteKey());
+    public static JSCompiler valueOf(String sRoot, WebSite webSite) {
+        JSCompiler javaScriptCompiler = new JSCompiler();
+        javaScriptCompiler.sRoot = sRoot;
+        javaScriptCompiler.siteKey = webSite.getSiteKey();
         javaScriptCompiler.init();
         return javaScriptCompiler;
     }

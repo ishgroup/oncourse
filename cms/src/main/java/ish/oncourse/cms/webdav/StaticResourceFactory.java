@@ -14,6 +14,7 @@ import io.milton.http.fs.*;
 import io.milton.resource.CollectionResource;
 import io.milton.resource.Resource;
 import ish.oncourse.cms.services.access.IAuthenticationService;
+import ish.oncourse.cms.webdav.jscompiler.JSCompiler;
 import ish.oncourse.services.mail.EmailBuilder;
 import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -98,7 +99,7 @@ public class StaticResourceFactory implements ResourceFactory {
     }
 
     private void compileJavaScript(File file) {
-        JavaScriptCompiler compiler = JavaScriptCompiler.valueOf(sRoot, webSiteService.getCurrentWebSite());
+        JSCompiler compiler = JSCompiler.valueOf(sRoot, webSiteService.getCurrentWebSite());
         compiler.compile();
         if (!compiler.hasErrors())
         {
