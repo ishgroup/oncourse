@@ -130,7 +130,7 @@ public class JavaScriptCompiler {
                 LOGGER.debug("jsCombiner success");
             } else {
                 logError(errorsOutputStream.toString());
-                LOGGER.debug(String.format("jsCombiner failed: %s", StringUtils.join(errors, "\n")));
+                LOGGER.error(String.format("jsCombiner failed: %s", StringUtils.join(errors, "\n")));
             }
         } catch (Exception e) {
             logError(e);
@@ -170,10 +170,8 @@ public class JavaScriptCompiler {
                     if (fileJS.exists() && fileJS.isFile()) {
                         inputFiles.add(SourceFile.fromFile(fileJS));
                     } else {
-                        LOGGER.debug(String.format("File %s does not exist", s));
+                        logError(String.format("File %s does not exist", s));
                     }
-                } else {
-                    LOGGER.debug(String.format("%s does not match", s));
                 }
             }
         } catch (IOException e) {
