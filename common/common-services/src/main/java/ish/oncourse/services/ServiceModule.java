@@ -185,7 +185,7 @@ public class ServiceModule {
 			binder.bind(ISMSService.class, DefaultSMSService.class);
 		}
 		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
-		binder.bind(IS3Service.class, S3Service.class);
+		binder.bind(IS3Service.class, S3Service.class).scope(ScopeConstants.PERTHREAD);
 		binder.bind(IVoucherService.class, VoucherService.class);
 		binder.bind(IFacebookMetaProvider.class, FacebookMetaProvider.class);
 		binder.bind(ICacheMetaProvider.class, NoCacheMetaProvider.class).eagerLoad();
