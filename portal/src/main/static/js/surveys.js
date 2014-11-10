@@ -94,7 +94,7 @@ Survey.prototype = {
             "comment": $j(".survey-comment").val(),
             "courseScore": $j(".course-rate").find('input[name=score]').val(),
             "tutorScore": $j(".tutor-rate").find('input[name=score]').val(),
-            "venueScore": $j(".venue-rate").find('input[name=score]').val(),
+            "venueScore": $j(".venue-rate").find('input[name=score]').val()
         };
         $j.ajax({
             url: actionLink,
