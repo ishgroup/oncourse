@@ -40,13 +40,14 @@ public class Surveys {
 
         Contact contact = portalService.getContact();
 
-        Survey survey = null;
-        if (contact.getTutor() != null) {
-            survey = portalService.getAverageSurveyFor(courseClass);
-        } else {
+        Survey survey;
+        //we should check at fist that the current contact is a student and try to load survey for student
+        if (contact.getStudent() != null) {
             survey = portalService.getStudentSurveyFor(courseClass);
             if (survey == null)
                 survey = portalService.createStudentSurveyFor(courseClass);
+        } else {
+            survey = portalService.getAverageSurveyFor(courseClass);
         }
 
         //adds readonly for tutor
