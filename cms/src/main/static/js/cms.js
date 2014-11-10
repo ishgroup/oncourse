@@ -24,6 +24,7 @@ jQuery(document).ready(
     function () {
         jQuery(".cms_editor_tabs").tabs();
         initPublish();
+        initAddNewPage();
     });
 
 function customForms() {
@@ -122,3 +123,36 @@ function initChangeVisibility() {
         });
     });
 }
+
+function initAddNewPage() {
+    jQuery('#newPage').click(function () {
+        jQuery.ajax({
+            type: "POST",
+            url: "/ui/internal/page.pagestructure.cmsnavigation.pagesComponent:newPage",
+            async: true,
+            cache: false,
+            success: function (data) {
+                if (data.path == null) {
+                    jQuery("#cms-addPage-error").dialog({
+                        modal: true,
+                        resizable: false,
+                        draggable: false,
+                        width: '50%',
+                        buttons: [
+                            {
+                                text: "OK",
+                                click: function () {
+                                    jQuery(this).dialog("close");
+                                },
+                                'class': "cms-btn"
+                            }
+                        ]
+                    });
+                } else {
+                    window.location.href = data.path;                    
+                }
+            }
+        });
+    });
+}
+		

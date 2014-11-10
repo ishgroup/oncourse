@@ -770,6 +770,22 @@ a.cms-logout {
 
 /* Pages controls */
 
+#cms-addPage {
+
+    .cms-addPage-control {
+      padding-bottom: 6px;
+    }
+
+    #cms-addPage .cms-addPage-description {
+      width: 800px;
+    }
+
+    .cms-addPage-hidden
+    {
+      display: none;
+    }
+  }
+
 .cms-page-controls {
     position:fixed;
     width:100%;

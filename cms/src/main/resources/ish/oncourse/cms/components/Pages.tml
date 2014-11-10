@@ -15,7 +15,7 @@
         </div>
         <div class="cms-main-controls">
         	<span class="cms-ico-plus"></span>
-            <a t:id="newPage" t:type="actionLink" class="button">Add new page</a>
+            <a id="newPage" class="button">Add new page</a>
        	</div>
         <div class="cms-search-block">
             <input id="pageFilter" maxlength="300" class="cms-span2 cms-search-query" type="text" value=""/>
@@ -23,7 +23,16 @@
             <button class="cms-btn-search" type="button"></button-->
         </div>
     </div>
+	
+	<div id="cms-addPage">
 
+		<div id="cms-addPage-error" class="cms-addPage-hidden">
+			<h1>Something unexpected has happened.</h1>
+			<p>We're sorry you're seeing this error message. To make sure this doesn't happen again, we'd appreciate if you could let us know how you got to this page.</p>
+		</div>
+
+	</div>
+	
 	<t:zone t:id="pagesListZone">
     	<div class="cms-content cms-page-blocks"  >
 				
