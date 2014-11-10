@@ -8,11 +8,6 @@ import ish.oncourse.util.ISHUrlValidator;
 import ish.oncourse.util.URLUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -90,15 +85,9 @@ public class RedirectsSettings {
 
     @OnEvent(value = "loadItems")
     public Object loadItems() {
-        ObjectContext context = cayenneService.newContext();
         JSONArray result = new JSONArray();
 
-        Expression expression = ExpressionFactory.matchExp(WebUrlAlias.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion());
-        expression = expression.andExp(ExpressionFactory.matchExp(WebUrlAlias.WEB_NODE_PROPERTY, null));
-
-        SelectQuery query = new SelectQuery(WebUrlAlias.class, expression);
-        query.addOrdering(new Ordering(WebUrlAlias.MODIFIED_PROPERTY, SortOrder.DESCENDING));
-        List<WebUrlAlias> aliases = context.performQuery(query);
+        List<WebUrlAlias> aliases = webUrlAliasService.getRedirects();
         for (WebUrlAlias webUrlAlias : aliases) {
             result.put(getJSONWebUrl(webUrlAlias));
         }

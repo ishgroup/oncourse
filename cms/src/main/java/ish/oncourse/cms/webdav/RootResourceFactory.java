@@ -13,6 +13,7 @@ import io.milton.http.exceptions.ConflictException;
 import io.milton.http.exceptions.NotAuthorizedException;
 import io.milton.resource.Resource;
 import ish.oncourse.cms.services.access.IAuthenticationService;
+import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.ContextUtil;
@@ -28,10 +29,7 @@ public class RootResourceFactory implements ResourceFactory {
 
 	public static final String WEBDAV_PATH_PREFIX = "/cms/webdav";
 
-	private IWebSiteService webSiteService;
-    private IMailService mailService;
-
-	private Registry registry;
+    private IWebUrlAliasService webUrlAliasService;
 
 	private BlockResourceFactory blockResourceFactory;
 	private PageResourceFactory pageResourceFactory;
@@ -43,11 +41,11 @@ public class RootResourceFactory implements ResourceFactory {
 	private String sRoot;
 
 	public RootResourceFactory(Registry registry, io.milton.http.SecurityManager securityManager) {
-		this.registry = registry;
 		this.securityManager = securityManager;
 
-		this.webSiteService = registry.getService(IWebSiteService.class);
-        this.mailService = registry.getService(IMailService.class);
+        IWebSiteService webSiteService = registry.getService(IWebSiteService.class);
+        IMailService mailService = registry.getService(IMailService.class);
+        webUrlAliasService = registry.getService(IWebUrlAliasService.class);
 
 		this.sRoot = ContextUtil.getSRoot();
 
@@ -82,7 +80,13 @@ public class RootResourceFactory implements ResourceFactory {
 
 					@Override
 					public Resource child(String childName) throws NotAuthorizedException, BadRequestException {
-						return getDirectoryByName(TopLevelDir.valueOf(childName), host, path.getStripFirst().toPath());
+                        switch (childName)
+                        {
+                             case RedirectsResource.FILE_NAME:
+                                 return new RedirectsResource(securityManager, webUrlAliasService);
+                             default:
+                                 return getDirectoryByName(TopLevelDir.valueOf(childName), host, path.getStripFirst().toPath());
+                        }
 					}
 
 					@Override
@@ -93,6 +97,7 @@ public class RootResourceFactory implements ResourceFactory {
 							resources.add(getDirectoryByName(dir, host, path.getStripFirst().toPath()));
 						}
 
+						resources.add(new RedirectsResource(securityManager, webUrlAliasService));
 						return resources;
 					}
 
@@ -107,9 +112,9 @@ public class RootResourceFactory implements ResourceFactory {
             {
                 return getDirectoryByName(TopLevelDir.valueOf(path.getFirst()), host, path.getStripFirst().toPath());
             }
-            else
+            else if (RedirectsResource.FILE_NAME.equals(path.getFirst()))
             {
-                return null;
+                return new RedirectsResource(securityManager, webUrlAliasService);
             }
 		}
 
