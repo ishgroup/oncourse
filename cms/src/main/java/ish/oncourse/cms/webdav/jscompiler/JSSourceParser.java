@@ -50,9 +50,9 @@ public class JSSourceParser {
     private List<JSSource> sources = new ArrayList<>();
 
     private void init() {
-        fileJS = JSSource.valueOf(CUSTOM_SITE_JS, new File(getCustomJSPath(), CUSTOM_SITE_JS));
+        fileJS = JSSource.valueOf(CUSTOM_SITE_JS, new File(getCustomJSPath(), CUSTOM_SITE_JS), null);
         if (!fileJS.exists()) {
-            fileJS = JSSource.valueOf(DEFAULT_BASE_JS, new File(getDefaultJSPath(), DEFAULT_BASE_JS));
+            fileJS = JSSource.valueOf(DEFAULT_BASE_JS, new File(getDefaultJSPath(), DEFAULT_BASE_JS), null);
         }
     }
 
@@ -68,7 +68,7 @@ public class JSSourceParser {
             protected void callback(String line) {
                 if (parseMinify(line))
                     return;
-                parseRequire(line);
+                parseRequire(fileJS, line);
             }
         };
         try {
@@ -78,9 +78,10 @@ public class JSSourceParser {
         }
     }
 
-    private boolean parseRequire(String line) {
+    private boolean parseRequire(JSSource parentJS, String line) {
 
         String fileName = null;
+        boolean isOverride = false;
 
         Matcher matcher = REQUIRE_PATTERN.matcher(line);
         if (matcher.matches()) {
@@ -88,36 +89,67 @@ public class JSSourceParser {
             fileName = matcher.group(2);
         } else {
             matcher = OVERRIDE_PATTERN.matcher(line);
-            if (matcher.matches())
-                //regexp group with index 2 contains filename see REQUIRE_PATTERN
+            if (matcher.matches()) {
+                //regexp group with index 2 contains filename see OVERRIDE_PATTERN
                 fileName = matcher.group(2);
+                isOverride = true;
+            }
         }
 
         if (fileName != null) {
-            File file = new File(fileJS.getFile().getParent(), fileName);
-            JSSource source = JSSource.valueOf(fileName, file);
+            File file = new File(parentJS.getFile().getParent(), fileName);
+            JSSource source = JSSource.valueOf(fileName, file, parentJS);
             if (source.exists()) {
-                parseSource(source);
-            } else {
+                parseSource(source, isOverride);
+            //
+            } else if (fileName.equals(DEFAULT_BASE_JS)){
                 file = new File(defaultJSPath, fileName);
-                source = JSSource.valueOf(fileName, file);
-                if (source.exists()) {
-                    parseSource(source);
-                } else {
-                    errorHandler.logError(LOGGER, String.format("File %s does not exist", fileName));
+                if (file.exists()) {
+                    source = JSSource.valueOf(fileName, file, parentJS);
+                    parseSource(source, isOverride);
                 }
+            }
+
+            if (!source.exists())
+            {
+                errorHandler.logError(LOGGER, String.format("File %s does not exist", source.getFile()));
             }
             return true;
         }
         return false;
     }
 
-    private void parseSource(JSSource source) {
-        addSource(source);
+    private Verify verify(JSSource source)
+    {
+        Verify result = new Verify();
+        for (int i = 0; i < sources.size(); i++) {
+            JSSource jsSource = sources.get(i);
+            if (jsSource.isSameFile(source)) {
+                result.theSame = jsSource;
+                break;
+            } else if (source.getFileName().equals(jsSource.getFileName())) {
+                result.replacingIndex = i;
+            }
+        }
+        return result;
+    }
+
+    private void parseSource(final JSSource source, boolean isOverride) {
+        Verify verify = verify(source);
+        if (verify.theSame != null)
+        {
+            errorHandler.logError(LOGGER, String.format("File %s is included in more then once. Usages:\n%s\n%s",
+                    source.getFile(),
+                    verify.theSame.getPath(),
+                    source.getPath()));
+            return;
+        }
+
+        addSource(source, verify, isOverride);
         FileIterator fileIterator = new FileIterator(source.getFile()) {
             @Override
             protected void callback(String line) {
-                parseRequire(line);
+                parseRequire(source, line);
             }
         };
         try {
@@ -141,11 +173,10 @@ public class JSSourceParser {
         return false;
     }
 
-    private void addSource(JSSource source) {
-        int index = sources.indexOf(source);
-        if (index > -1) {
-            sources.remove(index);
-            sources.add(index, source);
+    private void addSource(JSSource source, Verify verify, boolean isOverride) {
+        if (verify.replacingIndex > -1 && isOverride) {
+            sources.remove(verify.replacingIndex);
+            sources.add(verify.replacingIndex, source);
         } else {
             sources.add(source);
         }
@@ -215,5 +246,10 @@ public class JSSourceParser {
         }
     }
 
+    private static class Verify
+    {
+        private JSSource theSame;
+        private int replacingIndex = -1;
+    }
 
 }

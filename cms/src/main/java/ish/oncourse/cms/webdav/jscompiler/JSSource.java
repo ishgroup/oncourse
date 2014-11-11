@@ -11,6 +11,7 @@ public class JSSource {
     private String fileName;
     private File file;
     private SourceFile sourceFile;
+    private JSSource parent;
 
     public String getFileName() {
         return fileName;
@@ -25,22 +26,34 @@ public class JSSource {
         return file.isFile() && file.exists();
     }
 
-    public boolean equals(Object o)
+    public boolean isSameFile(JSSource source)
     {
-        return o instanceof JSSource && (o == this || (((JSSource) o).fileName.equals(this.fileName)));
-
+        return this.file.equals(source.file);
     }
 
-    public static JSSource valueOf(String fileName, File file)
+    public static JSSource valueOf(String fileName, File file, JSSource parent)
     {
         JSSource source = new JSSource();
         source.fileName = fileName;
         source.file = file;
         source.sourceFile = SourceFile.fromFile(file);
+        source.parent = parent;
         return source;
     }
 
     public SourceFile getSourceFile() {
         return sourceFile;
+    }
+
+    public JSSource getParent() {
+        return parent;
+    }
+
+    public String getPath()
+    {
+        StringBuilder builder = new StringBuilder();
+        if (parent == null)
+            return builder.append(fileName).toString();
+        return builder.append(parent.getPath()).append("->").append(fileName).toString();
     }
 }

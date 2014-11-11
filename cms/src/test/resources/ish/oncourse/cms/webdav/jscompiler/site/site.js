@@ -1,5 +1,5 @@
 //= minify on
 //= require base.js
-//= require file3.js
-//= require site1.js
-//= require site2.js
+//= file3.js
+//= require extra1.js
+//= require extra2.js
