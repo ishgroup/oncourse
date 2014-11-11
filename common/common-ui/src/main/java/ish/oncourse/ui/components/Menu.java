@@ -5,16 +5,21 @@ import ish.oncourse.model.WebMenu;
 import java.util.HashMap;
 import java.util.Map;
 
+import ish.oncourse.services.menu.IWebMenuService;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class Menu {
 
 	@Property
 	@Parameter
 	private WebMenu rootMenu;
+
+	@Inject
+	private IWebMenuService webMenuService;
 
 	@Property
 	@Component(id = "menuItem", parameters = { "menu=currentMenu",
@@ -28,6 +33,10 @@ public class Menu {
 	@SetupRender
 	boolean beforeRender() {
 		childPositions = new HashMap<>();
+		if (rootMenu == null) {
+			rootMenu = webMenuService.getRootMenu();
+		}
+		
 		return rootMenu != null;
 	}
 

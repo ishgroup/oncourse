@@ -5,7 +5,7 @@
 			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
 			<div t:type="ui/globalnavi" />
 			<nav class="site-nav" id="nav">
-				<div t:type="ui/menu" rootMenu="rootMenu" />
+				<div t:type="ui/menu"/>
 			</nav>
 		</header>
 		<section class="content-container" id="contentContainer">
