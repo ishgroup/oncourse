@@ -184,7 +184,9 @@ public class JSCompiler {
         emailBuilder.setFromEmail(EMAIL_FROM);
         emailBuilder.setToEmails(emailTo);
         emailBuilder.setSubject(EMAIL_SUBJECT);
-        emailBuilder.setBody(String.format(EMAIL_BODY_TEMPLATE, emailTo, siteKey, fileName, StringUtils.join(errorHandler.getErrors(), "\n")));
+        //we should replace all line breaks to <p> because our MailService sends mail as html
+        emailBuilder.setBody(String.format(EMAIL_BODY_TEMPLATE, emailTo, siteKey, fileName, StringUtils.join(errorHandler.getErrors(), "\n"))
+                .replace("\n", "<p>"));
         return emailBuilder;
     }
 
