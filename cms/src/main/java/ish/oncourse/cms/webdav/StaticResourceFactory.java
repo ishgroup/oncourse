@@ -45,7 +45,7 @@ public class StaticResourceFactory implements ResourceFactory {
                     "/s/js/",
             };
 
-    private static final String JS_FILE_PATTERN = "^%s/js/(.*)";
+    private static final String JS_FILE_PATTERN = "^%s/js/(.*)\\.js$";
     private static final String JS_TEMP_FILE_PATTERN = "^%s/js/(.*)\\.js\\.(.*)$";
 
 
