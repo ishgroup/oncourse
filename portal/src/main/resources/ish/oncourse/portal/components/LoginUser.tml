@@ -2,7 +2,7 @@
 
 	<div class="collapse nav-links logged navbar-collapse">
 		<strong>${contact.givenName} ${contact.familyName}</strong>
-        <span t:type="switchcontact"/>
+       
 		<ul class="clearfix">
             <li>
               <a href="#" t:type="ActionLink" t:id="logout">Logout</a>
@@ -10,5 +10,6 @@
 		</ul>
 		<img class="login-avatar-icon" src="${profilePicturePath}"/>
         <span class="caret"/>
+		<span t:type="switchcontact"/>
 	</div>
 </t:container>
