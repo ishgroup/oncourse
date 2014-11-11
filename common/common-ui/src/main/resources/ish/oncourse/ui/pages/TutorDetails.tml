@@ -1,33 +1,51 @@
-<html t:type="ui/dialogstructure" title="${tutorDetailsTitle}" bodyId="literal:DetailsPage"
-	  bodyClass="literal:internal-page"
-	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<div class="tutors_details">
-		<t:if t:test="${tutorFound}">
-
-			<div class="tutor_info">
-				<t:if t:test="${profilePicture}">
-					<div class="tutor_pic">
-						<img class="profilePicture" src="${profilePictureUrl}" alt=""/>
-					</div>
-				</t:if>
-				<t:if t:test="${hasResume}">
-					<h4>Resume</h4>
-					<t:outputraw value="resume"/>
-				</t:if>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<t:if test="request.XHR">
+		<html t:type="ui/dialogstructure" title="${tutorDetailsTitle}" bodyId="literal:DetailsPage"
+			  bodyClass="literal:internal-page"
+			  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+			<t:delegate to="block:tutorDetailsBlock"/>
+		</html>
+	</t:if>
+	<t:if test="request.XHR" negate="true">
+		<html t:type="ui/internal/pagestructure" title="${tutorDetailsTitle}" bodyId="literal:DetailsPage"
+				  bodyClass="literal:internal-page">
+			<div id="popup-content">
+				<h2>${tutorDetailsTitle}</h2>
+				<t:delegate to="block:tutorDetailsBlock"/>
 			</div>
-			<t:if t:test="${hasRoles}">
-				<h4>Classes</h4>
-				<div class="tutors_classes">
-					<t:loop t:source="currentVisibleTutorRoles" t:value="role">
+		</html>
+	</t:if>
+
+	<t:block t:id="tutorDetailsBlock">
+		<div class="tutors_details">
+			<t:if t:test="${tutorFound}">
+
+				<div class="tutor_info">
+					<t:if t:test="${profilePicture}">
+						<div class="tutor_pic">
+							<img class="profilePicture" src="${profilePictureUrl}" alt=""/>
+						</div>
+					</t:if>
+					<t:if t:test="${hasResume}">
+						<h4>Resume</h4>
+						<t:outputraw value="resume"/>
+					</t:if>
+				</div>
+				<t:if t:test="${hasRoles}">
+					<h4>Classes</h4>
+					<div class="tutors_classes">
+						<t:loop t:source="currentVisibleTutorRoles" t:value="role">
 						<span>
 							<a href="/class/${role.courseClass.uniqueIdentifier}">${role.courseClass.uniqueIdentifier} ${role.courseClass.course.name}</a>
 						</span>
-					</t:loop>
-				</div>
+						</t:loop>
+					</div>
+				</t:if>
+
+				<span t:type="ui/Attachments" entityIdentifier="literal:Contact" entityIdNum="${tutor.contact.id}"/>
+
 			</t:if>
-			
-			<span t:type="ui/Attachments" entityIdentifier="literal:Contact" entityIdNum="${tutor.contact.id}"/>
-			
-		</t:if>
-	</div>
-</html>
+		</div>
+	</t:block>
+
+</t:container>

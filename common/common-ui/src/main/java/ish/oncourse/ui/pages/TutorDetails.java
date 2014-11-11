@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.common.types.AttachmentInfoVisibility;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
@@ -25,7 +26,8 @@ public class TutorDetails {
 
 	@Inject
 	private ITextileConverter textileConverter;
-
+	
+	@Property
 	@Inject
 	private Request request;
 
@@ -34,6 +36,9 @@ public class TutorDetails {
 
 	@Property
 	private TutorRole role;
+
+	@Property
+	private Boolean ajax;
 	
 	private static final Logger logger = Logger.getLogger(TutorDetails.class);
 	
@@ -47,6 +52,12 @@ public class TutorDetails {
                 tutor = null;
             }
 		}
+		if (request.isXHR()) {
+			ajax = true;
+		} else {
+			ajax = false;
+		}
+			
 	}
 
 	public boolean getTutorFound() {
@@ -78,7 +89,12 @@ public class TutorDetails {
 
 	public Document getProfilePicture()
 	{
-		return binaryDataService.getProfilePicture(tutor.getContact());
+		Document profilePicture =  binaryDataService.getProfilePicture(tutor.getContact());
+		if (profilePicture == null || AttachmentInfoVisibility.PRIVATE.equals(profilePicture.getWebVisibility())) {
+			return null;
+		} else {
+			return profilePicture;
+		}
 	}
 	
 	public String getProfilePictureUrl() {
