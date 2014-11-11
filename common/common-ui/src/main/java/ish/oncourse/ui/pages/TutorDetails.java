@@ -36,9 +36,6 @@ public class TutorDetails {
 
 	@Property
 	private TutorRole role;
-
-	@Property
-	private Boolean ajax;
 	
 	private static final Logger logger = Logger.getLogger(TutorDetails.class);
 	
@@ -51,13 +48,7 @@ public class TutorDetails {
             {
                 tutor = null;
             }
-		}
-		if (request.isXHR()) {
-			ajax = true;
-		} else {
-			ajax = false;
-		}
-			
+		}	
 	}
 
 	public boolean getTutorFound() {
