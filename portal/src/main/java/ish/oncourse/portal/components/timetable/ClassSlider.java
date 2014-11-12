@@ -1,7 +1,6 @@
 package ish.oncourse.portal.components.timetable;
 
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PCourseClass;
 import ish.oncourse.services.courseclass.CourseClassFilter;
@@ -34,7 +33,9 @@ public class ClassSlider {
 
     @SetupRender
     boolean setupRender() {
-		pCourseClasses = portalService.fillCourseClassSessions(CourseClassFilter.CURRENT);
+        pCourseClasses = new ArrayList<>();
+        pCourseClasses.addAll(portalService.fillCourseClassSessions(CourseClassFilter.PAST));
+		pCourseClasses.addAll(portalService.fillCourseClassSessions(CourseClassFilter.CURRENT));
         return true;
     }
 

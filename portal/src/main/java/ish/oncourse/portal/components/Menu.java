@@ -36,6 +36,12 @@ public class Menu {
 	private IPortalService portalService;
 
 	@Property
+	private CourseClass pastCourseClass;
+
+	@Property
+	private List<CourseClass> pastCourseClasses;
+
+	@Property
 	private CourseClass nearestCourseClass;
 
 	@Property
@@ -50,7 +56,12 @@ public class Menu {
 
 		pCourseClasses = portalService.fillCourseClassSessions(CourseClassFilter.CURRENT);
 
+		pastCourseClasses = portalService.getContactCourseClasses(CourseClassFilter.PAST);
+
 		nearestCourseClass = !pCourseClasses.isEmpty() ? pCourseClasses.get(0).getCourseClass() : null;
+
+		if (nearestCourseClass == null)
+			nearestCourseClass = !pastCourseClasses.isEmpty() ? pastCourseClasses.get(0) : null;
 	}
 
 	public String getDate(Object courseClass) {
@@ -59,6 +70,11 @@ public class Menu {
 		if (courseClass instanceof PCourseClass) {
 			timeZone = courseClassService.getClientTimeZone(pCourseClass.getCourseClass());
 			return 	FormatUtils.getDateFormat(DATE_FORMAT_d_MMMM_yyyy_h_mma, timeZone).format(pCourseClass.getStartDate());
+		}
+
+		if (courseClass instanceof CourseClass) {
+			timeZone = courseClassService.getClientTimeZone(pastCourseClass);
+			return 	FormatUtils.getDateFormat(DATE_FORMAT_d_MMMM_yyyy_h_mma, timeZone).format(pastCourseClass.getStartDate());
 		}
 		return StringUtils.EMPTY;
 

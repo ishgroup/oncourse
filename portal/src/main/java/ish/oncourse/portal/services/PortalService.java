@@ -304,12 +304,14 @@ public class PortalService implements IPortalService {
         past.addAll(courseClasses);
         past.removeAll(getCurrentTutorClasses(courseClasses));
 
+        Expression filter = ExpressionFactory.greaterExp(CourseClass.END_DATE_PROPERTY, getOldestDate());
+        past = filter.filterObjects(past);
         return past;
     }
 
     private List<CourseClass> getCurrentTutorClasses(List<CourseClass> courseClasses) {
         List<CourseClass> current = new ArrayList<>();
-        Date date = getOldestDate();
+        Date date = getCurrentDate();
 
         for (CourseClass courseClass : courseClasses) {
             if (courseClass.getIsDistantLearningCourse()) {
@@ -353,7 +355,7 @@ public class PortalService implements IPortalService {
     private List<CourseClass> getCurrentStudentClasses(List<CourseClass> courseClasses, Contact contact) {
 
         List<CourseClass> current = new ArrayList<>();
-        Date date = getOldestDate();
+        Date date = getCurrentDate();
 
         for (CourseClass courseClass : courseClasses) {
 
@@ -398,6 +400,9 @@ public class PortalService implements IPortalService {
         List<CourseClass> past = new ArrayList<>();
         past.addAll(courseClasses);
         past.removeAll(getCurrentStudentClasses(courseClasses, contact));
+
+        Expression filter = ExpressionFactory.greaterExp(CourseClass.END_DATE_PROPERTY, getOldestDate());
+        past = filter.filterObjects(past);
         return past;
     }
 
@@ -868,8 +873,14 @@ public class PortalService implements IPortalService {
 	}
 
 
+    private Date getCurrentDate()
+    {
+        return DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
+    }
+
     private Date getOldestDate()
     {
         return DateUtils.truncate(DateUtils.addMonths(new Date(), -1), Calendar.DAY_OF_MONTH);
     }
+
 }
