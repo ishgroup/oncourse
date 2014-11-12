@@ -77,14 +77,12 @@ public class PortalServiceTest extends ServiceTest {
          * self paced and unconfirmed classes are current too
          */
         courseClasses = service.getContactCourseClasses(CourseClassFilter.CURRENT);
-        assertEquals("Test Current courses count", 7, courseClasses.size());
+        assertEquals("Test Current courses count", 5, courseClasses.size());
         assertEquals("Test order Current course 7", 7L, courseClasses.get(0).getId().longValue());
         assertEquals("Test order Current course 8", 8L, courseClasses.get(1).getId().longValue());
-        assertEquals("Test order Current course 1", 1L, courseClasses.get(2).getId().longValue());
-        assertEquals("Test order Current course 2", 2L, courseClasses.get(3).getId().longValue());
-        assertEquals("Test order Current course 3", 3L, courseClasses.get(4).getId().longValue());
-        assertEquals("Test order Current course 4", 4L, courseClasses.get(5).getId().longValue());
-        assertEquals("Test order Current course 5", 5L, courseClasses.get(6).getId().longValue());
+        assertEquals("Test order Current course 3", 3L, courseClasses.get(2).getId().longValue());
+        assertEquals("Test order Current course 4", 4L, courseClasses.get(3).getId().longValue());
+        assertEquals("Test order Current course 5", 5L, courseClasses.get(4).getId().longValue());
 
 
 
@@ -97,8 +95,8 @@ public class PortalServiceTest extends ServiceTest {
 
         courseClasses = service.getContactCourseClasses(CourseClassFilter.PAST);
         assertEquals("Past courses count",2, courseClasses.size());
-        assertEquals("Test order Past course 9",9L, courseClasses.get(0).getId().longValue());
-        assertEquals("Test order Past course 10",10L, courseClasses.get(1).getId().longValue());
+        assertEquals("Test order Past course 1",1L, courseClasses.get(0).getId().longValue());
+        assertEquals("Test order Past course 2",2L, courseClasses.get(1).getId().longValue());
 
 
         //student test
@@ -123,18 +121,15 @@ public class PortalServiceTest extends ServiceTest {
 
 
         courseClasses = service.getContactCourseClasses(CourseClassFilter.CURRENT);
-        assertEquals("Current courses count",5, courseClasses.size());
+        assertEquals("Current courses count",3, courseClasses.size());
         assertEquals("Test order Past course 8",8L, courseClasses.get(0).getId().longValue());
-        assertEquals("Test order Current course 1", 1L, courseClasses.get(1).getId().longValue());
-        assertEquals("Test order Current course 2", 2L, courseClasses.get(2).getId().longValue());
-        assertEquals("Test order Past course 3",3L, courseClasses.get(3).getId().longValue());
-        assertEquals("Test order Past course 4",4L, courseClasses.get(4).getId().longValue());
+        assertEquals("Test order Past course 3",3L, courseClasses.get(1).getId().longValue());
+        assertEquals("Test order Past course 4",4L, courseClasses.get(2).getId().longValue());
 
         courseClasses = service.getContactCourseClasses(CourseClassFilter.PAST);
-        assertEquals("Current courses count",3, courseClasses.size());
-        assertEquals("Test order Past course 7",7L, courseClasses.get(0).getId().longValue());
-        assertEquals("Test order Past course 9",9L, courseClasses.get(1).getId().longValue());
-        assertEquals("Test order Past course 10",10L, courseClasses.get(2).getId().longValue());
+        assertEquals("Current courses count",2, courseClasses.size());
+        assertEquals("Test order Past course 1",1L, courseClasses.get(0).getId().longValue());
+        assertEquals("Test order Past course 2",2L, courseClasses.get(1).getId().longValue());
 
         courseClasses = service.getContactCourseClasses(CourseClassFilter.UNCONFIRMED);
         assertEquals("Current courses count",0, courseClasses.size());
@@ -158,13 +153,13 @@ public class PortalServiceTest extends ServiceTest {
         assertNull(service.getCourseClassBy(5));
 
         courseClasses = service.getContactCourseClasses(CourseClassFilter.CURRENT);
-        assertEquals("Current courses count",3, courseClasses.size());
+        assertEquals("Current courses count",2, courseClasses.size());
         assertEquals("Test order Past course 8",8L, courseClasses.get(0).getId().longValue());
-        assertEquals("Test order Past course 1",1L, courseClasses.get(1).getId().longValue());
-        assertEquals("Test order Past course 3",3L, courseClasses.get(2).getId().longValue());
+        assertEquals("Test order Past course 3",3L, courseClasses.get(1).getId().longValue());
 
         courseClasses = service.getContactCourseClasses(CourseClassFilter.PAST);
-        assertEquals("Current courses count",0, courseClasses.size());
+        assertEquals("Current courses count",1, courseClasses.size());
+        assertEquals("Test order Past course 1",1L, courseClasses.get(0).getId().longValue());
 
         courseClasses = service.getContactCourseClasses(CourseClassFilter.UNCONFIRMED);
         assertEquals("Current courses count",1, courseClasses.size());
