@@ -656,7 +656,7 @@ public class PortalService implements IPortalService {
         }
 
         Ordering.orderList(sessions, Arrays.asList(new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING)));
-        Expression ex = ExpressionFactory.greaterExp(Session.START_DATE_PROPERTY, getOldestDate());
+        Expression ex = ExpressionFactory.greaterExp(Session.START_DATE_PROPERTY, (filter == CourseClassFilter.CURRENT) ? getCurrentDate(): getOldestDate());
 
         sessions = ex.filterObjects(sessions);
 
