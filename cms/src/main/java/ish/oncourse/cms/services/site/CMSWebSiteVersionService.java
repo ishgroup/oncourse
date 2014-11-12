@@ -12,7 +12,9 @@ import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSitePublisher;
 import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
@@ -21,6 +23,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import javax.naming.Context;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -105,6 +108,18 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 		}
 		context.deleteObjects(versionToDelete.getContents());
 
+		
+		//find root menu for entry in menus tree
+		if (!versionToDelete.getMenus().isEmpty()) {
+			WebMenu rootMenu = versionToDelete.getMenus().get(0);
+			while (rootMenu.getParentWebMenu() != null) {
+				rootMenu = rootMenu.getParentWebMenu();
+			}
+			
+			deleteChildrenMenus(rootMenu.getChildrenMenus(), context);
+			context.deleteObject(rootMenu);
+		}
+
 		context.deleteObjects(versionToDelete.getMenus());
 
 		context.deleteObjects(versionToDelete.getWebURLAliases());
@@ -114,6 +129,17 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 		context.deleteObjects(versionToDelete);
 
 		context.commitChanges();
+	}
+	
+	//recursively remove all childrenMenus then remove parent
+	private void deleteChildrenMenus(List<WebMenu> webMenus, ObjectContext context) {
+		List<WebMenu> copyList = webMenus;
+		for (WebMenu webMenu : copyList) {
+			if (!webMenu.getChildrenMenus().isEmpty()) {
+				deleteChildrenMenus(webMenu.getChildrenMenus(), context);
+			}
+			context.deleteObject(webMenu);
+		}
 	}
 
 

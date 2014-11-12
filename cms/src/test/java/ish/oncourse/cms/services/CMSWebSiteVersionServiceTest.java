@@ -166,7 +166,7 @@ public class CMSWebSiteVersionServiceTest extends ServiceTest {
 		assertEquals(21, list7.size());
 		assertEquals(7, list8.size());
 		assertEquals(16, list9.size());
-		assertEquals(11, list0.size());
+		assertEquals(16, list0.size());
 
 		List<WebSiteLayout> webSiteLayouts = ExpressionFactory.matchExp(WebSiteLayout.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list3);
 		List<WebTemplate> webTemplates = ExpressionFactory.matchExp(WebTemplate.LAYOUT_PROPERTY, webSiteLayouts).filterObjects(list4);
@@ -184,7 +184,7 @@ public class CMSWebSiteVersionServiceTest extends ServiceTest {
 		assertEquals(5, webUrlAliases.size());
 		assertEquals(2, webContents.size());
 		assertEquals(7, webContentVisibilities.size());
-		assertEquals(5, menuList.size());
+		assertEquals(10, menuList.size());
 	}
 
 	private void checkCountOfObjectAfterMethod(ObjectContext context, WebSiteVersion versionToDelete) {
