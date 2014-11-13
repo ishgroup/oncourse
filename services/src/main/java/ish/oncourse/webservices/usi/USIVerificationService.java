@@ -5,7 +5,6 @@ package ish.oncourse.webservices.usi;
 
 import ish.common.types.USIVerificationRequest;
 import ish.common.types.USIVerificationResult;
-import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -14,12 +13,8 @@ public class USIVerificationService implements IUSIVerificationService {
 	private USIService usiService;
 	
 	@Inject
-	public USIVerificationService(PreferenceController preferenceController) {
-		this.usiService = new USIService(
-				preferenceController.getAuskeyPassword(),
-				preferenceController.getAuskeyCertificate(),
-				preferenceController.getAuskeyPrivateKey(),
-				preferenceController.getAuskeySalt());
+	public USIVerificationService() {
+		this.usiService = new USIService();
 	}
 
 	@Override
