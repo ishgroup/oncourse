@@ -14,7 +14,7 @@
                 <ul class="list-unstyled resources-list">
                 <div class="${tutorsMaterial.type}">
                     <img src="${contextPath}/img/ico-${tutorsMaterial.type}.png" alt=""/>
-                    <a href="${tutorsMaterialUrl}">
+                    <a href="${tutorsMaterialUrl}" target="_blank">
                         ${tutorsMaterial.name}
                         <t:if test="tutorsMaterial.type.empty" negate="true">
                             .${tutorsMaterial.type}

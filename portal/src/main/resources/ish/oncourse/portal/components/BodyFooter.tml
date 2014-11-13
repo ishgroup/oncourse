@@ -4,7 +4,7 @@
 		<div class="container clearfix">
 			<!--<p class="text-muted credit pull-left">&copy; 2013</p>-->
 			<p class="text-muted credit pull-right text-right">
-				<a href="http://www.ish.com.au/oncourse"><img src="/portal/img/poweredby.png" alt=""/></a>
+				<a href="http://www.ish.com.au/oncourse" target="_blank"><img src="/portal/img/poweredby.png" alt=""/></a>
 				<br><small class="pull-right">&copy; 2014</small></br>
 			</p>
 		</div>

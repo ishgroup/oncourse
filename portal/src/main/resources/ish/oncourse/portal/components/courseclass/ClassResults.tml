@@ -16,7 +16,7 @@
                     <t:loop source="enrolment.outcomes" value="outcome">
                         <li>
                             <t:if test="hasModules">
-                                <span>${outcome.module.title} (<a href="http://training.gov.au/Training/Details/${outcome.module.nationalCode}">${outcome.module.nationalCode}</a>)</span>
+                                <span>${outcome.module.title} (<a href="http://training.gov.au/Training/Details/${outcome.module.nationalCode}" target="_blank">${outcome.module.nationalCode}</a>)</span>
                             </t:if>
                             <t:unless test="hasModules">
                                 <span>${courseClass.course.name}</span>

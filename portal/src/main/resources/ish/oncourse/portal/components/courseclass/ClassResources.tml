@@ -6,7 +6,7 @@
                 <t:loop source="materials" value="material">
                     <li class="${material.type}">
                         <span class="glyphicon glyphicon-file"></span>
-                        <a href="${materialUrl}">
+                        <a href="${materialUrl}" target="_blank">
                             ${material.name}
                                 <t:if test="material.type.empty" negate="true">
                                     .${material.type}
