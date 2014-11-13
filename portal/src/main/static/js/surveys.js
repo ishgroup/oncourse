@@ -8,8 +8,8 @@ var $j = jQuery.noConflict();
 var document = window.document,
 
 
-Survey = function () {
-};
+    Survey = function () {
+    };
 
 Survey.prototype = {
     survey: 0,
@@ -26,8 +26,7 @@ Survey.prototype = {
         });
     },
 
-    initRate: function(rateHtml, score, readOnly)
-    {
+    initRate: function (rateHtml, score, readOnly) {
         rateHtml.raty({
             half: false,
             size: 24,
@@ -47,21 +46,19 @@ Survey.prototype = {
         this.loadSurvey();
         var self = this;
 
-        this.initRate( $j(".venue-rate"), this.survey.venueScore, this.survey.readOnly);
-        this.initRate( $j(".tutor-rate"), this.survey.tutorScore, this.survey.readOnly);
-        this.initRate( $j(".course-rate"), this.survey.courseScore, this.survey.readOnly);
+        this.initRate($j(".venue-rate"), this.survey.venueScore, this.survey.readOnly);
+        this.initRate($j(".tutor-rate"), this.survey.tutorScore, this.survey.readOnly);
+        this.initRate($j(".course-rate"), this.survey.courseScore, this.survey.readOnly);
 
         $j('.rate-submit').click(function () {
             self.saveSurvey();
         });
 
         setTimeout(function () {
-            if (self.survey.readOnly)
-            {
+            if (self.survey.readOnly) {
                 $j('.rate-class').tooltip({ content: 'Click here to see reviews' });
             }
-            else
-            {
+            else {
                 $j('.rate-class').tooltip({ content: 'Click here to provide reviews' });
             }
         }, 1000);
@@ -117,8 +114,7 @@ Survey.prototype = {
         });
     },
 
-    loadSurvey: function()
-    {
+    loadSurvey: function () {
         var self = this;
         //get json survey and fill controls
         var actionLink = "/portal/class.classdetails.surveys:getSurvey";
@@ -130,7 +126,7 @@ Survey.prototype = {
             success: function (data) {
                 self.survey = data;
             },
-            error: function (jqXHR, textStatus,errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 window.location.reload();
             }
         });
@@ -138,6 +134,6 @@ Survey.prototype = {
 };
 
 
-$j('document').ready(function(){
+$j('document').ready(function () {
     new Survey().initializeSurveys();
 });
