@@ -46,12 +46,12 @@
           <wsp:Policy>
             <sp:IssuedToken sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
               <Issuer xmlns="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
-                <Address xmlns="http://www.w3.org/2005/08/addressing">https://thirdparty.authentication.business.gov.au/R3.0/vanguard/S007v1.2/Service.svc</Address>
+                <Address xmlns="http://www.w3.org/2005/08/addressing">https://authentication.business.gov.au/R3.0/vanguard/S007v1.2/Service.svc</Address>
                 <Metadata xmlns="http://www.w3.org/2005/08/addressing">
                   <Metadata xmlns="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                     <wsx:MetadataSection xmlns="">
                       <wsx:MetadataReference>
-                        <Address xmlns="http://www.w3.org/2005/08/addressing">https://thirdparty.authentication.business.gov.au/R3.0/vanguard/S007v1.2/Service.svc/mex</Address>
+                        <Address xmlns="http://www.w3.org/2005/08/addressing">https://authentication.business.gov.au/R3.0/vanguard/S007v1.2/Service.svc/mex</Address>
                       </wsx:MetadataReference>
                     </wsx:MetadataSection>
                   </Metadata>
@@ -998,9 +998,9 @@
   </wsdl:binding>
   <wsdl:service name="USIService">
     <wsdl:port name="WS2007FederationHttpBinding_IUSIService" binding="tns:WS2007FederationHttpBinding_IUSIService">
-      <soap12:address location="https://3pt.portal.usi.gov.au/Service/BatchCreateService.svc"/>
+      <soap12:address location="https://portal.usi.gov.au/Service/BatchCreateService.svc"/>
       <wsa10:EndpointReference>
-        <wsa10:Address>https://3pt.portal.usi.gov.au/Service/BatchCreateService.svc</wsa10:Address>
+        <wsa10:Address>https://portal.usi.gov.au/Service/BatchCreateService.svc</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>
