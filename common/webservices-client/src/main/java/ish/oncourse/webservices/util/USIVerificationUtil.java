@@ -50,10 +50,10 @@ public class USIVerificationUtil {
 		
 		USIVerificationResult result = new USIVerificationResult();
 		
-		result.setUsiStatus(USIVerificationStatus.fromString(usiParams.get(USI_CODE)));
-		result.setFirstNameStatus(USIFieldStatus.fromString(usiParams.get(USI_FIRST_NAME)));
-		result.setLastNameStatus(USIFieldStatus.fromString(usiParams.get(USI_LAST_NAME)));
-		result.setDateOfBirthStatus(USIFieldStatus.fromString(usiParams.get(USI_BIRTH_DATE)));
+		result.setUsiStatus(USIVerificationStatus.valueOf(usiParams.get(USI_CODE)));
+		result.setFirstNameStatus(USIFieldStatus.valueOf(usiParams.get(USI_FIRST_NAME)));
+		result.setLastNameStatus(USIFieldStatus.valueOf(usiParams.get(USI_LAST_NAME)));
+		result.setDateOfBirthStatus(USIFieldStatus.valueOf(usiParams.get(USI_BIRTH_DATE)));
 		
 		return result;
 	}
@@ -74,10 +74,10 @@ public class USIVerificationUtil {
 	public static GenericParametersMap createVerificationResultParametersMap(USIVerificationResult result, SupportedVersions stubVersion) {
 		GenericParametersMap parametersMap = PortHelper.createParametersMap(stubVersion);
 		
-		parametersMap.getGenericEntry().add(createEntry(USI_FIRST_NAME, result.getFirstNameStatus().getStringValue(), stubVersion));
-		parametersMap.getGenericEntry().add(createEntry(USI_LAST_NAME, result.getLastNameStatus().getStringValue(), stubVersion));
-		parametersMap.getGenericEntry().add(createEntry(USI_BIRTH_DATE, result.getDateOfBirthStatus().getStringValue(), stubVersion));
-		parametersMap.getGenericEntry().add(createEntry(USI_CODE, result.getUsiStatus().getStringValue(), stubVersion));
+		parametersMap.getGenericEntry().add(createEntry(USI_FIRST_NAME, result.getFirstNameStatus().name(), stubVersion));
+		parametersMap.getGenericEntry().add(createEntry(USI_LAST_NAME, result.getLastNameStatus().name(), stubVersion));
+		parametersMap.getGenericEntry().add(createEntry(USI_BIRTH_DATE, result.getDateOfBirthStatus().name(), stubVersion));
+		parametersMap.getGenericEntry().add(createEntry(USI_CODE, result.getUsiStatus().name(), stubVersion));
 		
 		return parametersMap;
 	}

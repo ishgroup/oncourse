@@ -5,8 +5,8 @@ package ish.common.types;
 
 public enum  USIFieldStatus {
 
-	MATCH("Match"),
-	NO_MATCH("No Match");
+	MATCH("MATCH"),
+	NO_MATCH("NO_MATCH");
 
 	private String stringValue;
 
