@@ -15,6 +15,7 @@ import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteVersionService;
+import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.UIRequestExceptionHandler;
@@ -50,6 +51,7 @@ public class AppModule {
         binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
         binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
         binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
+        binder.bind(IUSIVerificationService.class, PortalUSIService.class);
     }
 
     @EagerLoad
