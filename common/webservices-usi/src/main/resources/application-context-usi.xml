@@ -1,0 +1,44 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+	   xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<context:annotation-config />
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	
+	<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
+	<bean id="ausKeyCryptoService" class="ish.oncourse.webservices.usi.crypto.AUSKeyCryptoService"/>
+
+	<cxf:bus id="usiClientBus" name="usiClientBus">
+		<cxf:features>
+			<ref bean="loggingFeature" />
+		</cxf:features>
+	</cxf:bus>
+
+	<jaxws:client name="{http://usi.gov.au/2013/ws/servicepolicy}WS2007FederationHttpBinding_IUSIService" createdFromAPI="true">
+		<jaxws:properties>
+			<entry key="ws-security.sts.client">
+				<bean class="org.apache.cxf.ws.security.trust.STSClient">
+					<constructor-arg ref="usiClientBus"/>
+					<property name="wsdlLocation" value="https://authentication.business.gov.au/R3.0/vanguard/S007v1.2/Service.svc?wsdl"/>
+					<property name="serviceName" value="{http://schemas.microsoft.com/ws/2008/06/identity/securitytokenservice}SecurityTokenService"/>
+					<property name="endpointName" value="{http://schemas.microsoft.com/ws/2008/06/identity/securitytokenservice}S007SecurityTokenServiceEndpoint"/>
+					<property name="properties">
+						<map>
+							<entry key="ws-security.sts.client-soap12-binding" value="true"/>
+							<entry key="ws-security.signature.crypto" value-ref="ausKeyCryptoService"/>
+							<entry key="ws-security.callback-handler" value-ref="ausKeyCryptoService"/>
+						</map>
+					</property>
+				</bean>
+			</entry>
+		</jaxws:properties>
+	</jaxws:client>
+</beans>

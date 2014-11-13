@@ -20,22 +20,15 @@ public class USIService {
 	
 	private static final Logger logger = Logger.getLogger(USIService.class);
 	
-	private String ausKeyPassword;
-	private String ausKeyCert;
-	private String ausKeyPrivateKey;
-	private String ausKeySalt;
+	private IUSIService endpoint;
 	
-	public USIService(String ausKeyPassword, String ausKeyCert, String ausKeyPrivateKey, String ausKeySalt) {
-		this.ausKeyPassword = ausKeyPassword;
-		this.ausKeyCert = ausKeyCert;
-		this.ausKeyPrivateKey = ausKeyPrivateKey;
-		this.ausKeySalt = ausKeySalt;
+	public USIService() {
+		au.gov.usi._2013.ws.servicepolicy.USIService service = new au.gov.usi._2013.ws.servicepolicy.USIService();
+		this.endpoint = service.getWS2007FederationHttpBindingIUSIService();
 	}
 	
 	public USIVerificationResult verifyUsi(USIVerificationRequest request) {
 		try {
-			IUSIService endpoint = AUSKeyUtil.createUSIService(ausKeyPassword, ausKeyCert, ausKeyPrivateKey, ausKeySalt);
-
 			VerifyUSIType verifyUSI = new VerifyUSIType();
 
 			GregorianCalendar cal = new GregorianCalendar();
@@ -51,12 +44,12 @@ public class USIService {
 			VerifyUSIResponseType response = endpoint.verifyUSI(verifyUSI);
 
 			USIVerificationResult result = new USIVerificationResult();
-			
+
 			result.setUsiStatus(USIVerificationStatus.fromString(response.getUSIStatus()));
 			result.setFirstNameStatus(USIFieldStatus.fromString(response.getFirstName().value()));
 			result.setLastNameStatus(USIFieldStatus.fromString(response.getFamilyName().value()));
 			result.setDateOfBirthStatus(USIFieldStatus.fromString(response.getDateOfBirth().value()));
-			
+
 			return result;
 		} catch (Exception e) {
 			logger.error(String.format("Unable to verify USI code for %s %s.", request.getStudentFirstName(), request.getStudentLastName()), e);

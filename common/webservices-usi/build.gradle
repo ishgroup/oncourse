@@ -1,9 +1,18 @@
 dependencies {
+    compile project(':common:common-services')
     compile ('ish.oncourse.willow:waCommon:5.1.41') {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
+
+    compile 'org.apache.cxf:cxf-rt-frontend-jaxws:2.6.16'
+    compile 'org.apache.cxf:cxf-rt-ws-addr:2.6.16'
+    compile 'org.apache.cxf:cxf-rt-ws-policy:2.6.16'
+    compile 'org.apache.cxf:cxf-rt-ws-security:2.6.16'
+    compile 'org.apache.cxf:cxf-rt-ws-mex:2.6.16'
+    compile 'org.apache.cxf:cxf-rt-transports-http-jetty:2.6.16'
     
-    compile 'org.apache.cxf:cxf-bundle:2.6.16'
+    compile 'org.springframework:spring-beans:3.0.5.RELEASE'
+    compile 'org.bouncycastle:bcprov-jdk15:1.45'
 }
 
 jar {
@@ -18,9 +27,9 @@ configurations {
 }
 
 dependencies{
-    ws "org.apache.cxf:cxf-tools:2.6.1",
-            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.1",
-            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.1",
+    ws "org.apache.cxf:cxf-tools:2.6.16",
+            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.16",
+            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.16",
             "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
     "log4j:log4j:1.2.17"
 }
