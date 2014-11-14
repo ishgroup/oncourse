@@ -14,8 +14,12 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
 
 	compile project(':common:common-model')
-	compile project(':common:common-textile')
-	compile project(':common:common-services')
+	compile (project(':common:common-textile')) {
+		exclude group: 'axis', module: 'axis-wsdl4j'
+	}
+	compile (project(':common:common-services')) {
+		exclude group: 'axis', module: 'axis-wsdl4j'
+	}
 	compile project(':common:webservices-usi')
 
 	// The odd next line is to work around gradle pulling in the wrong configuration

@@ -4,7 +4,9 @@ dependencies {
 	providedCompile 'javax.servlet:servlet-api:2.5'
 
 	compile project(':common:common-model')
-	compile project(':common:common-services')
+	compile (project(':common:common-services')) {
+		exclude group: 'axis', module: 'axis-wsdl4j'
+	}
     compile project(':common:webservices-usi')
 
 	compile ('ish.oncourse.willow:webservices-client:5.1.42')
