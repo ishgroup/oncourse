@@ -313,6 +313,14 @@ public class Courses {
 		return textileConverter.convertCustomTextile(getBrowseTag().getDetail(), new ValidationErrors());
 	}
 
+	public String getMetaDescription() {
+		if (getBrowseTag() !=null && getBrowseTag().getDetail() != null) {
+			return getBrowseTagDetail();
+		} else {
+			return null;
+		}
+	}
+
 	public String getCanonicalLinkPath() {
 		return HTMLUtils.getCanonicalLinkPathForCourses(request, tagService.getBrowseTag());
 	}
