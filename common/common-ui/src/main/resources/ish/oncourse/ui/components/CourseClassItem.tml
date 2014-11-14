@@ -64,9 +64,11 @@
                         </t:loop>
                     </div>
                 </t:if>
-                <div class="price">
-                    <span t:type="ui/CourseClassPrice" courseClass="courseClass"/>
-                </div>
+				<t:if test="allowByAplication" negate="true">
+					<div class="price">
+						<span t:type="ui/CourseClassPrice" courseClass="courseClass"/>
+					</div>
+				</t:if>
             </div>
         </div>
         <div class="classAction">
@@ -80,9 +82,16 @@
                             <a class="enrolAction enrol-added-class"
                                href="/addToCookies?key=shortlist&amp;addItemId=${courseClass.id}">Added</a>
                             <p:else>
-                                <a class="enrolAction"
-                                   href="/addToCookies?key=shortlist&amp;addItemId=${courseClass.id}"
-                                   title="${enrolHoverTitle}">Enrol Now</a>
+								<t:if test="allowByAplication">
+									<a class="enrolAction"
+									   href="/addToCookies?key=shortlist&amp;addItemId=${courseClass.id}"
+									   title="${enrolHoverTitle}" data="application">Apply Now</a>
+									<p:else>
+										<a class="enrolAction"
+										   href="/addToCookies?key=shortlist&amp;addItemId=${courseClass.id}"
+										   title="${enrolHoverTitle}">Enrol Now</a>
+									</p:else>
+								</t:if>
                             </p:else>
                         </t:if>
                     </t:if>

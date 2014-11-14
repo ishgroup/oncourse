@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.common.types.CourseEnrolmentType;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
@@ -332,5 +333,9 @@ public class CourseClassItem {
 		Session session = courseClass.getFirstSession();
 		Date date = session != null ? session.getStartDate():null;
 		return date == null || date.compareTo(new Date()) < 0 ? CLASS_NAME_classCommenced: StringUtils.EMPTY;
+	}
+	
+	public boolean isAllowByAplication() {
+		return CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(courseClass.getCourse().getEnrolmentType());
 	}
 }
