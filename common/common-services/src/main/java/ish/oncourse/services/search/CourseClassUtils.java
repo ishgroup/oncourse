@@ -203,12 +203,12 @@ public class CourseClassUtils {
 
             float beforeMatch = 1.0f;
             if (searchParams.getBefore() != null) {
-                if (courseClass.getEndDate() == null) {
+                if (courseClass.getStartDate() == null) {
                     beforeMatch = 0f;
-                } else if (courseClass.getEndDate().before(searchParams.getBefore()))
+                } else if (courseClass.getStartDate().before(searchParams.getBefore()))
                     beforeMatch = 1.0f;
                 else {
-                    int days =  (int) Math.ceil( (courseClass.getEndDate().getTime() - searchParams.getBefore().getTime())/ (1000 * 60 * 60 * 24));
+                    int days =  (int) Math.ceil( (courseClass.getStartDate().getTime() - searchParams.getBefore().getTime())/ (1000 * 60 * 60 * 24));
                     if (days <= 1) {
                     	return 0.5f;
                     }

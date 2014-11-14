@@ -48,9 +48,8 @@ public class SolrQueryBuilder {
     static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
     static final String FILTER_TEMPLATE_when = "when:%s";
     static final String FILTER_TEMPLATE_tagId = "tagId:%d";
-    static final String FILTER_TEMPLATE_after = FIELD_class_start  + ":[%s TO *]";
-    static final String FILTER_TEMPLATE_before = FIELD_end + ":[NOW TO %s]";
-
+    static final String FILTER_TEMPLATE_between = FIELD_class_start  + ":[%s TO %s]";
+	
     static final String FILTER_TEMPLATE_geofilt = "{!score=distance}%s:\"Intersects(Circle(%s %s=%s))\"";
 
     public static final String FILTER_TEMPLATE_ALL = "*:*";
@@ -106,10 +105,7 @@ public class SolrQueryBuilder {
         appendFilterTime(filters);
         appendAnd(filters);
 
-        appendFilterAfter(filters);
-        appendAnd(filters);
-
-        appendFilterBefore(filters);
+		appendFilterStartBetween(filters);
         appendAnd(filters);
 
 		appendFilterTag(q);
@@ -186,16 +182,12 @@ public class SolrQueryBuilder {
         filters.add(FILTER_TEMPLATE_ALL);
     }
 
-    void appendFilterAfter(List<String> filters) {
-        if (params.getAfter() != null) {
-            filters.add(String.format(FILTER_TEMPLATE_after, FormatUtils.convertDateToISO8601(params.getAfter())));
-        }
-    }
-
-    void appendFilterBefore(List<String> filters) {
-        if (params.getBefore() != null) {
-            filters.add(String.format(FILTER_TEMPLATE_before, FormatUtils.convertDateToISO8601(params.getBefore())));
-        }
+    void appendFilterStartBetween(List<String> filters) {
+		if (params.getAfter() != null || params.getBefore() != null) {
+			filters.add(String.format(FILTER_TEMPLATE_between,
+					params.getAfter() != null ? FormatUtils.convertDateToISO8601(params.getAfter()) : "*",
+					params.getBefore() != null ? FormatUtils.convertDateToISO8601(params.getBefore()) : "*"));
+		}
     }
 
     void appendFilterS(List<String> filters) {
