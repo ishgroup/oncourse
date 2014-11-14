@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.amazonaws.services.identitymanagement.model.AccessKey;
+import ish.oncourse.admin.utils.AUSKeyUtil;
 import ish.oncourse.admin.utils.PreferenceUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
@@ -19,16 +20,22 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.upload.services.UploadedFile;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 public class Overview {
+	
+	private static final Logger logger = Logger.getLogger(Overview.class);
 	
 	private static final String BUCKET_NAME_PARAMETER = "bucket_name";
 	private static final String USER_NAME_PARAMETER = "user_name";
@@ -57,6 +64,10 @@ public class Overview {
 	
 	@Inject
 	private Request request;
+
+	@InjectComponent
+	@Property
+	private Form ausKeyForm;
 	
 	@Property
 	private College college;
@@ -72,6 +83,12 @@ public class Overview {
 	
 	@Property
 	private String lastReplication;
+	
+	@Property
+	private UploadedFile auskeyFile;
+	
+	@Property
+	private String auskeyPassword;
 	
 	@SetupRender
 	void setupRender() {
@@ -128,6 +145,63 @@ public class Overview {
 		return new TextStreamResponse("text/json", response.toString());
 	}
 
+	@OnEvent(component = "ausKeyForm", value="success")
+	public void uploadAusKey() {
+		ausKeyForm.clearErrors();
+		
+		if (StringUtils.trimToNull(auskeyPassword) == null) {
+			ausKeyForm.recordError("Password cannot be empty.");
+			return;
+		}
+
+		AUSKeyUtil.AUSKey ausKey = null;
+		
+		try {
+			ausKey = AUSKeyUtil.parseKeystoreXml(auskeyFile.getStream());
+		} catch (Exception e) {
+			logger.info(e);
+		}
+		
+		if (ausKey == null || !ausKey.isFilled()) {
+			ausKeyForm.recordError("Keystore file cannot be parsed.");
+			return;
+		}
+		
+		ObjectContext context = cayenneService.newContext();
+		College localCollege = context.localObject(college);
+		
+		Preference password = PreferenceUtil.getPreference(context, localCollege, PreferenceController.AUSKEY_PASSWORD);
+		Preference certificate = PreferenceUtil.getPreference(context, localCollege, PreferenceController.AUSKEY_CERTIFICATE);
+		Preference privateKey = PreferenceUtil.getPreference(context, localCollege, PreferenceController.AUSKEY_PRIVATE_KEY);
+		Preference salt = PreferenceUtil.getPreference(context, localCollege, PreferenceController.AUSKEY_SALT);
+		
+		if (password != null) {
+			password.setValueString(auskeyPassword);
+		} else {
+			PreferenceUtil.createPreference(context, localCollege, PreferenceController.AUSKEY_PASSWORD, auskeyPassword);
+		}
+		
+		if (certificate != null) {
+			certificate.setValueString(ausKey.getCertificate());
+		} else {
+			PreferenceUtil.createPreference(context, localCollege, PreferenceController.AUSKEY_CERTIFICATE, ausKey.getCertificate());
+		}
+		
+		if (privateKey != null) {
+			privateKey.setValueString(ausKey.getPrivateKey());
+		} else {
+			PreferenceUtil.createPreference(context, localCollege, PreferenceController.AUSKEY_PRIVATE_KEY, ausKey.getPrivateKey());
+		}
+		
+		if (salt != null) {
+			salt.setValueString(ausKey.getSalt());
+		} else {
+			PreferenceUtil.createPreference(context, localCollege, PreferenceController.AUSKEY_SALT, ausKey.getSalt());
+		}
+		
+		context.commitChanges();
+	}
+	
 	private void disableCollege(ObjectContext context, College college) {
 		college.setBillingCode(null);
 		
@@ -171,5 +245,10 @@ public class Overview {
 			return null;
 		}
 		return bucketPref.getValueString();
+	}
+	
+	public boolean isAusKeySet() {
+		return PreferenceUtil.getPreference(
+				college.getObjectContext(), college, PreferenceController.AUSKEY_CERTIFICATE) != null;
 	}
 }

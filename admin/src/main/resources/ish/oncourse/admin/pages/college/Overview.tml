@@ -33,6 +33,33 @@
 				</t:if>
 			</td>
 		</tr>
+		<tr>
+			<td>AUSKey status:</td>
+			<td>
+				<t:if test="ausKeySet">
+					AUSKey has been set up
+					<p:else>
+						No AUSKey has been provided yet
+					</p:else>
+				</t:if>
+			</td>
+		</tr>
+		<tr>
+			<td>Upload AUSKey</td>
+			<td>
+				<t:form t:id="ausKeyForm">
+					<t:errors/>
+					<label for="file">Keystore file:</label><input t:type="upload" id="file" t:id="file" t:value="auskeyFile" validate="required"/><label for="password">Password:</label>
+					<input t:type="passwordfield" id="password" t:id="password" t:value="auskeyPassword" validate="required"/>
+					<t:if test="ausKeySet">
+						<p><input t:type="submit" t:id="reUpload" class="btn btn-danger" value="Override AUSKey"/></p>
+						<p:else>
+							<p><input t:type="submit" t:id="upload" class="btn btn-success" value="Upload"/></p>
+						</p:else>
+					</t:if>
+				</t:form>
+			</td>
+		</tr>
 	</table>
 
 	<a href="#disableModal" role="button" class="btn btn-danger" data-toggle="modal" data-target="#disableModal">Disable College</a>

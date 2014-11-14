@@ -17,8 +17,8 @@ dependencies {
 	compile 'org.apache.cxf:cxf-rt-ws-security:2.6.6'
 	compile 'org.apache.cxf:cxf-rt-transports-http:2.6.6'
 	compile 'xalan:xalan:2.7.1'
-            
 	compile 'wsdl4j:wsdl4j:1.6.2'
+	compile 'org.apache.tapestry:tapestry-upload:5.2.6'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
