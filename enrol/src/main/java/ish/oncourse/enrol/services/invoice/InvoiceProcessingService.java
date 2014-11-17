@@ -95,7 +95,9 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 
-		invoiceLine.setDescription(String.format("%s %s", productItem.getClass().getSimpleName(), product.getDescription()));
+		invoiceLine.setDescription(String.format("%s (%s %s)",
+				productItem.getContact().getFullName(), productItem.getProduct().getSku(), productItem.getProduct().getName()));
+
 		invoiceLine.setTitle(String.format("%s %s", contact.getFullName(), product.getName()));
 
 		invoiceLine.setQuantity(BigDecimal.ONE);
