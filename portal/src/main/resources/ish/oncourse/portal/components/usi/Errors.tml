@@ -1,0 +1,19 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<t:if test="validationResult.hasErrors()">
+		<div class="error-message">
+			<ul>
+				<t:loop source="validationResult.errors.values()" value="error">
+					<li><t:outputraw value="${error}"/></li>
+				</t:loop>
+			</ul>
+		</div>
+	</t:if>
+
+    <t:if test="validationResult.hasWarnings()">
+        <div class="alert">
+            <t:loop source="validationResult.warnings.values()" value="warning">
+                <p><t:outputraw value="${warning}"/></p>
+            </t:loop>
+        </div>
+    </t:if>
+</t:container>

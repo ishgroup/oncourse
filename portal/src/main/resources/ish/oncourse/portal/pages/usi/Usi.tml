@@ -1,0 +1,50 @@
+<html title="literal:Student Identification"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+        >
+    <t:pageheader title="literal:Student Identification"/>
+    <body>
+        <t:delegate to="block:bodyheader"/>
+        <div id="wrap">
+            <div class="container">
+                <div class="col-lg-9 col-sm-8 main-container">
+                    <h1>${contact.fullName}</h1>
+                    <div class="col-lg-9 col-sm-8 main-container">
+                        <!--<t:delegate to="block:errors"/>-->
+                        <t:delegate to="block:step1Result"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <t:bodyfooter/>
+    </body>
+
+    <t:block t:id="bodyheader">
+        <div class="navbar navbar-fixed-top">
+            <div class="header-top">
+                <div class="container">
+                  <span class="navbar-brand">
+                    <a href="${request.contextPath}"><img src="/portal/img/logo-v3.png" alt=""/></a>
+                  </span>
+                </div>
+            </div>
+            <t:usi.progress/>
+        </div>
+    </t:block>
+
+    <t:block t:id="errors">
+        <t:usi.errors validationResult="validationResult"/>
+    </t:block>
+
+    <t:block t:id="initstep">
+        <t:usi.initstep usiController="usiController"/>
+    </t:block>
+
+    <t:block t:id="step1">
+        <t:usi.step1 usiController="usiController"/>
+    </t:block>
+
+    <t:block t:id="step1Result">
+        <t:usi.step1result usiController="usiController"/>
+    </t:block>
+
+</html>

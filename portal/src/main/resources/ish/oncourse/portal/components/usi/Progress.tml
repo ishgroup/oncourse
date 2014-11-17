@@ -1,0 +1,21 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+    <div class="header-nav">
+        <div class="container">
+            <div class="progress-steps">
+                <ul>
+                    <li class="">
+                        <a href="#">Step 1</a>
+                    </li>
+                    <li class="">
+                        <a href="#">Step 2</a>
+                    </li>
+                    <li class="">
+                        <a href="#">Step 3</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</t:container>

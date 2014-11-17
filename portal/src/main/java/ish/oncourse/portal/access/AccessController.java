@@ -2,6 +2,7 @@ package ish.oncourse.portal.access;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.annotations.UserRole;
+import ish.oncourse.portal.pages.usi.Usi;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -12,18 +13,19 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
 
 public class AccessController implements Dispatcher {
 
 	private final static String LOGIN_PAGE = "/login";
 	private final static String FORGOT_PASSWORD_PAGE = "/forgotpassword";
-	private final static String PASSWORD_RECOVERY_PAGE = "/passwordrecovery"; 
-	private final static String SELECT_COLLEGE_PAGE = "/selectcollege"; 
+	private final static String PASSWORD_RECOVERY_PAGE = "/passwordrecovery";
+	private final static String SELECT_COLLEGE_PAGE = "/selectcollege";
 	private final static String CALENDAR_FILE = "/calendar";
 	private final static String UNSUBSCRIBE_PAGE = "/unsubscribe";
 
     private final static String[] RESOURCES = {"/css","/js","/img","/fonts"};
-	
+
 
 	@Inject
 	private IAuthenticationService authenticationService;
@@ -48,6 +50,11 @@ public class AccessController implements Dispatcher {
         for (String resource : RESOURCES) {
             if (path.toLowerCase().startsWith(resource))
                 return true;
+        }
+
+        Matcher matcher = Usi.REGEXP_USI_PATH.matcher(path.toLowerCase());
+        if (matcher.matches()) {
+            return false;
         }
 
 		int nextslashx = path.length();

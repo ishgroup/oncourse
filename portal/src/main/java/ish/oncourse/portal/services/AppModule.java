@@ -32,6 +32,7 @@ import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
+import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 @SubModule({ModelModule.class, ServiceModule.class, TextileModule.class})
 public class AppModule {
@@ -106,4 +107,11 @@ public class AppModule {
     public static void deactiveJavaScript(MappedConfiguration<String, JavaScriptStack> configuration) {
         configuration.overrideInstance(InternalConstants.CORE_STACK_NAME, DisableJavaScriptStack.class);
     }
+
+    @Contribute(PageRenderLinkTransformer.class)
+    @Primary
+    public static void provideURLRewriting(OrderedConfiguration<PageRenderLinkTransformer> configuration) {
+        configuration.addInstance("PageLinkRule", PageLinkTransformer.class);
+    }
+
 }

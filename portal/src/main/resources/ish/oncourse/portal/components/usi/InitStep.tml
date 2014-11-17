@@ -1,0 +1,56 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <form>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="dateOfBirth"  class="control-label">Date Of Birth*</label>
+                    <div class="${validateHandler.validateClass('dateOfBirth')}">
+                        <input id="dateOfBirth" type="text" value="${dateOfBirth}" name="dateOfBirth" class="form-control ${validateHandler.errorClass('dateOfBirth')}"/>
+                        <t:hintComponent validationMessage="${validateHandler.error('dateOfBirth')}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="usi"  class="control-label">USI*</label>
+                    <div class="${validateHandler.validateClass('usi')}">
+                        <input id="usi" type="text" value="" name="usi" class="form-control ${validateHandler.errorClass('usi')}"/>
+                        <t:hintComponent validationMessage="${validateHandler.error('usi')}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="actions" xml:space="preserve">
+                            <a  href="https://portal.usi.gov.au/student/Usi/Create" class="btn btn-primary">I don't know my USI</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="actions" xml:space="preserve">
+                            <t:eventlink t:id="next" class="btn btn-primary">Next</t:eventlink>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row alert alert-info">
+                <strong>Why do I need a Unique Student Identifier ?</strong>
+                <p/>
+                <span>All students undertaking vactional training in
+                Australia must supply their Goverment issued
+                Unique Student Identifier (USI). The Training
+                provider is not allowed to issue your Certificate
+                until this is provided.</span>
+            </div>
+        </div>
+
+    </form>
+</t:container>
