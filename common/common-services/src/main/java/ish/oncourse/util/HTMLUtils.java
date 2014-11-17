@@ -42,20 +42,20 @@ public class HTMLUtils {
 	public static String getCanonicalLinkPathFor(Course course, Request request)
 	{
 		  return HTMLUtils.HTTP_PROTOCOL + request.getServerName() +
-				String.format("%s/course/%s", request.getContextPath(), course.getCode().toUpperCase());
+				String.format("%s/course/%s", request.getContextPath(), course.getCode());
 
 	}
 
 	public static String getCanonicalLinkPathFor(Product product, Request request)
 	{
 		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() +
-				String.format("%s/product/%s", request.getContextPath(), product.getSku().toUpperCase());
+				String.format("%s/product/%s", request.getContextPath(), product.getSku());
 	}
 
 
 	public static String getCanonicalLinkPathForCourses(Request request, Tag browseTag)
 	{
-		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + (browseTag == null ? request.getPath(): browseTag.getLink().toLowerCase());
+		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + (browseTag == null ? request.getPath(): browseTag.getLink());
 
 	}
 
