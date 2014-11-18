@@ -42,7 +42,7 @@ public class HTMLUtilsTest {
 
 	@Test
 	public void test_getCanonicalLinkPathFor() {
-		String expected = "http://localhost.localdomain/context/course/COURSE1";
+		String expected = "http://localhost.localdomain/context/course/course1";
 		Request request = createRequest();
 
 		Course course = mock(Course.class);
