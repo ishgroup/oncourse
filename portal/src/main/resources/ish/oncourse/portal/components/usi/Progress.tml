@@ -4,18 +4,17 @@
         <div class="container">
             <div class="progress-steps">
                 <ul>
-                    <li class="">
+                    <li class="${classStep1}">
                         <a href="#">Step 1</a>
                     </li>
-                    <li class="">
+                    <li class="${classStep2}">
                         <a href="#">Step 2</a>
                     </li>
-                    <li class="">
+                    <li class="${classStep3}">
                         <a href="#">Step 3</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-
 </t:container>

@@ -135,5 +135,8 @@ Survey.prototype = {
 
 
 $j('document').ready(function () {
-    new Survey().initializeSurveys();
+    if ($j('#class-reviews'))
+    {
+        new Survey().initializeSurveys();
+    }
 });

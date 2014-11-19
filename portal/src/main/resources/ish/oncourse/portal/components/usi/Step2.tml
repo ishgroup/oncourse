@@ -1,0 +1,185 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div id="usi-form" class="">
+        <div class="row">
+            <div class="col-sm-12">
+                <fieldset>
+
+                    <!-- Form Name -->
+                    <!-- <legend>Step2</legend> -->
+
+                    <!-- Form Submit Mesage -->
+                    <div class="form-group">
+                        <div class="bs-callout bs-callout-success">
+                            <h5>Success!</h5>
+                            <p> <strong>You have provied sufficent information for your indentity to be verified.</strong> 
+                                <br />                        
+                                Some additional stistical information is requested for goverment educational planning. Completing these questions is optional.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class=" control-label" for="selectbasic">Select Basic</label>
+                        <div class="">
+                            <select id="selectbasic" name="selectbasic" class="form-control">
+                                <option value="1">Option one</option>
+                                <option value="2">Option two</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class=" control-label" for="undertakeReason_1">
+                            Which bet describes your main reason for undertaking the course Woodworking for Beginners on 14 July 2013.
+                        </label>
+                        <div class="">
+                            <select id="undertakeReason_1" name="undertakeReason_1" class="form-control">
+                                <option value="Not_stated">Not stated</option>
+                                <option value="Another_option">Another option</option>
+                                <option value="Another_option_3">Another option #3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class=" control-label" for="undertakeReason_2">
+                            Which bet describes your main reason for undertaking the course French for Travelers on 28 July 2013.
+                        </label>
+                        <div class="">
+                            <select id="undertakeReason_2" name="undertakeReason_2" class="form-control">
+                                <option value="Not_stated">Not stated</option>
+                                <option value="Another_option">Another option</option>
+                                <option value="Another_option_3">Another option #3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" control-label" for="countryOfBirth">Country of birth</label>
+                        <div class="">
+                            <input id="countryOfBirth" name="countryOfBirth" type="text" placeholder="For example, Australia" class="form-control input-md" required=""/>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" control-label" for="nativeLanguage">What language do you normally speak at home?</label>
+                        <div class="">
+                            <input id="nativeLanguage" name="nativeLanguage" type="text" placeholder="For example, English" class="form-control input-md" required=""/>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class=" control-label" for="englishLangLvl">How well do you speak English?</label>
+                        <div class="">
+                            <select id="englishLangLvl" name="englishLangLvl" class="form-control">
+                                <option value="Please_select">Please select...</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Freely">Freely</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class=" control-label" for="aborigOrTorres">Are you of Aboriginal / Torres Straight Islander origin?</label>
+                        <div class="">
+                            <select id="aborigOrTorres" name="aborigOrTorres" class="form-control">
+                                <option value="Please_select">Please select...</option>
+                                <option value="Option_1">Option #1</option>
+                                <option value="Option_2">Option #2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class=" control-label" for="secondarySchool">Are you still attending secondary school?</label>
+                        <div class="">
+                            <select id="secondarySchool" name="secondarySchool" class="form-control">
+                                <option value="Please_select">Please select...</option>
+                                <option value="Option_1">Option #1</option>
+                                <option value="Option_2">Option #2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class=" control-label" for="highestSchollLvl">What is your highest school level?</label>
+                        <div class="">
+                            <select id="highestSchollLvl" name="highestSchollLvl" class="form-control">
+                                <option value="Please_select">Please select...</option>
+                                <option value="Option_1">Option #1</option>
+                                <option value="Option_2">Option #2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" control-label" for="schoolCompleteYear">In which year did you complete that school level?</label>
+                        <div class="">
+                            <input id="schoolCompleteYear" name="schoolCompleteYear" type="text" placeholder="For example, 2014" class="form-control input-md" required=""/>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class=" control-label" for="highestQualLvl">
+                            What is your highest qualification level you have successfully completed?
+                        </label>
+                        <div class="">
+                            <select id="highestQualLvl" name="highestQualLvl" class="form-control">
+                                <option value="Please_select">Please select...</option>
+                                <option value="Option_1">Option #1</option>
+                                <option value="Option_2">Option #2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class=" control-label" for="employmentStatus">
+                            Of the following, which best describes your current employment status?
+                        </label>
+                        <div class="">
+                            <select id="employmentStatus" name="employmentStatus" class="form-control">
+                                <option value="Please_select">Please select...</option>
+                                <option value="Option_1">Option #1</option>
+                                <option value="Option_2">Option #2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class=" control-label" for="disability">
+                            Do you consider yourself to have a disability, impairment or long term condition?
+                        </label>
+                        <div class="">
+                            <select id="disability" name="disability" class="form-control">
+                                <option value="Please_select">Please select...</option>
+                                <option value="Option_1">Option #1</option>
+                                <option value="Option_2">Option #2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="form-group">
+                        <div class="actions">
+                            <button class="btn btn-primary" id="usi-next">Next</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</t:container>

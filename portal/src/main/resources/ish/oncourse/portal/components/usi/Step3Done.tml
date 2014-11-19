@@ -1,0 +1,32 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div id="usi-form" class="">
+        <div class="row">
+            <div class="col-sm-12">
+                <fieldset>
+
+                    <!-- Form Name -->
+                    <!-- <legend>Step3Finished</legend> -->
+
+                    <div class="form-group">
+                        <div class="bs-callout bs-callout-info">
+                            <h5>Update your personal detail</h5>
+                            <p> <strong>All your contact details were provided during the enrolment process. Thank you.</strong> 
+                                <br />                        
+                                You can log on to
+                                <a class="alert-link" href="#">https://skillsoncourse.com.au</a>
+                                at any time if you wish to make changes to your preferred contact methods.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- <br /> -->
+                    <div class="form-group">
+                        <div class="actions">
+                            <button class="btn btn-primary" id="usi-next">Done</button>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</t:container>

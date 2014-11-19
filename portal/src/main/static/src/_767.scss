@@ -4,8 +4,12 @@
 		position: static;
 	}
 	
-	#wrap > 	.container {
-		padding: 0;
+	#wrap,
+	#usi-page #wrap {
+
+		> 	.container {
+			padding: 0 !important;
+		}
 	}
 
 	.main-menu {

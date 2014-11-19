@@ -4,18 +4,27 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.usi.UsiController;
 import ish.oncourse.portal.usi.ValidationResult;
+import ish.oncourse.portal.usi.Value;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.json.JSONArray;
+import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.util.TextStreamResponse;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -40,6 +49,7 @@ public class Usi {
     @Property
     private UsiController usiController;
 
+
     public Object onActivate() {
 
         if (usiController == null) {
@@ -49,6 +59,7 @@ public class Usi {
             }
             usiController = new UsiController();
             usiController.setContact(contact);
+            usiController.setMessages(messages);
             usiController.getValidationResult().setMessages(messages);
             usiController.getValidationResult().addError("message-invalidUsi");
             usiController.getValidationResult().addError("message-personalDetailsNotMatch");
@@ -113,5 +124,48 @@ public class Usi {
 //        if (!UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
 //            return PageNotFound.class;
 //        }
+    }
+
+    @OnEvent(value = "next")
+    public Object next() {
+        List<String> keys = request.getParameterNames();
+        HashMap<String, Value> inputValues = new HashMap<>();
+        for (String key : keys) {
+            inputValues.put(key, Value.valueOf(key, (Object) StringUtils.trimToNull(request.getParameter(key))));
+        }
+
+        Map<String, Value> values = usiController.next(inputValues);
+        JSONObject result = getJSONObject(values);
+        return new TextStreamResponse("text/json", result.toString());
+    }
+
+    private JSONObject getJSONObject(Map<String, Value> values) {
+        JSONObject result = new JSONObject();
+        JSONArray jsonValues = new JSONArray();
+        boolean hasErrors = false;
+        for (Map.Entry<String, Value> value : values.entrySet()) {
+            JSONObject jsonValue = new JSONObject();
+            jsonValue.put("key", value.getValue().getKey());
+            if (value.getValue().getValue() != null) {
+                jsonValue.put("value", value.getValue().getValue().toString());
+            }
+
+            if (value.getValue().getError() != null) {
+                jsonValue.put("error", value.getValue().getError());
+                hasErrors = true;
+            }
+            jsonValues.put(jsonValue);
+        }
+        result.put("values", jsonValues);
+        result.put("hasErrors", hasErrors);
+        result.put("step", usiController.getStep().name());
+        return result;
+    }
+
+    @OnEvent(value = "value")
+    public Object value() {
+        Map<String, Value> values = usiController.getValue();
+        JSONObject result = getJSONObject(values);
+        return new TextStreamResponse("text/json", result.toString());
     }
 }

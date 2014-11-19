@@ -1,0 +1,95 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div id="usi-form" class="">
+        <div class="row">
+            <div class="col-sm-12">
+                <fieldset>
+
+                    <!-- Form Name -->
+                    <!-- <legend>Step3</legend> -->
+
+                    <div class="bs-callout bs-callout-info">
+                        <h5>Update your personal detail</h5>
+                        <p> <strong>There are some contact details we do not have on file for you.</strong><br />                    
+                        We would appreciate if you could complete the information below.
+                        </p>
+                    </div>
+
+                    <!-- Multiple Radios (inline) -->
+                    <div class="form-group">
+                        <label class=" control-label" for="gender">Gender *</label>
+                        <div class="">
+                            <label class="radio-inline" for="gender-0">
+                                <input type="radio" name="gender" id="gender-0" value="female" checked="checked"/>Female</label>
+                            <label class="radio-inline" for="gender-1">
+                                <input type="radio" name="gender" id="gender-1" value="male"/>Male</label>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" control-label" for="address">Street address *</label>
+                        <div class="">
+                            <input id="address" name="address" type="text" placeholder="For example, 215 Anzac Parade" class="form-control input-md" required=""/></div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" control-label" for="suburb">Suburb *</label>
+                        <div class="">
+                            <input id="suburb" name="suburb" type="text" placeholder="For example, NSW" class="form-control input-md" required=""/></div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" control-label" for="postcode">Postcode *</label>
+                        <div class="">
+                            <input id="postcode" name="postcode" type="text" placeholder="For example, 2033" class="form-control input-md" required=""/></div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" control-label" for="country">Сountry *</label>
+                        <div class="">
+                            <input id="country" name="country" type="text" placeholder="For example, Australia" class="form-control input-md" required=""/></div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" control-label" for="mobPhone">Mobile phone</label>
+                        <div class="">
+                            <input id="mobPhone" name="mobPhone" type="text" placeholder="For example, +61 2 1234 5678 " class="form-control input-md" required=""/></div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" control-label" for="homePhone">Home phone</label>
+                        <div class="">
+                            <input id="homePhone" name="homePhone" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" required=""/></div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" control-label" for="workPhone">Work phone</label>
+                        <div class="">
+                            <input id="workPhone" name="workPhone" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" required=""/></div>
+                    </div>
+
+                    <!-- Textarea -->
+                    <div class="form-group">
+                        <label class=" control-label" for="specialNeeds">Special needs or medical conditions</label>
+                        <div class="">
+                            <textarea class="form-control" id="specialNeeds" name="specialNeeds"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="actions">
+                            <button class="btn btn-primary" id="usi-next">Next</button>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</t:container>

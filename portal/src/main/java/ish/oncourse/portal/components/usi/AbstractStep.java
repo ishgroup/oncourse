@@ -37,4 +37,8 @@ public abstract class AbstractStep {
     public DateFormat getDateFormat() {
         return FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, usiController.getContact().getCollege().getTimeZone());
     }
+
+    public UsiController getUsiController() {
+        return usiController;
+    }
 }

@@ -2,15 +2,17 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
         >
     <t:pageheader title="literal:Student Identification"/>
-    <body>
+    <body id="usi-page">
         <t:delegate to="block:bodyheader"/>
         <div id="wrap">
             <div class="container">
-                <div class="col-lg-9 col-sm-8 main-container">
+                <div class="col-md-5 col-sm-12 main-container usi-form-holder">
                     <h1>${contact.fullName}</h1>
-                    <div class="col-lg-9 col-sm-8 main-container">
-                        <!--<t:delegate to="block:errors"/>-->
-                        <t:delegate to="block:step1Result"/>
+                    <div class="row">
+                        <div class="col-sm-12 main-container">
+                            <t:delegate to="block:errors"/>
+                            <t:usi.currentstep usiController="usiController"/>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -27,24 +29,11 @@
                   </span>
                 </div>
             </div>
-            <t:usi.progress/>
+            <t:usi.progress usiController="usiController"/>
         </div>
     </t:block>
 
     <t:block t:id="errors">
         <t:usi.errors validationResult="validationResult"/>
     </t:block>
-
-    <t:block t:id="initstep">
-        <t:usi.initstep usiController="usiController"/>
-    </t:block>
-
-    <t:block t:id="step1">
-        <t:usi.step1 usiController="usiController"/>
-    </t:block>
-
-    <t:block t:id="step1Result">
-        <t:usi.step1result usiController="usiController"/>
-    </t:block>
-
 </html>

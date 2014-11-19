@@ -1,0 +1,28 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <t:delegate to="block"/>
+
+    <t:block t:id="step1">
+        <t:usi.step1 usiController="usiController"/>
+    </t:block>
+    <t:block t:id="step1Done">
+        <t:usi.step1done usiController="usiController"/>
+    </t:block>
+    <t:block t:id="step1Failed">
+        <t:usi.step1failed usiController="usiController"/>
+    </t:block>
+    <t:block t:id="step2">
+        <t:usi.step2 usiController="usiController"/>
+    </t:block>
+    <t:block t:id="step3">
+        <t:usi.step3 usiController="usiController"/>
+    </t:block>
+    <t:block t:id="step3Done">
+        <t:usi.step3done usiController="usiController"/>
+    </t:block>
+    <t:block t:id="done">
+        <t:usi.done usiController="usiController"/>
+    </t:block>
+    <t:block t:id="wait">
+        <t:usi.wait usiController="usiController"/>
+    </t:block>
+</t:container>

@@ -1,0 +1,26 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div id="usi-form" class="">
+        <div class="row">
+            <div class="col-sm-12">
+                <fieldset>
+
+                    <!-- Form Name -->
+                    <!-- <legend>Step3Finished+Message</legend> -->
+
+                    <div class="bs-callout bs-callout-success">
+                        <h5>Success!</h5>
+                        <p> <strong>You have provied sufficent information for your indentity to be verified.</strong> 
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <div class="actions">
+                            <button class="btn btn-primary btn-block" id="usi-next" href="#"><span class="glyphicon glyphicon-info-sign"/> Review enrolment questionaire</button>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</t:container>
+

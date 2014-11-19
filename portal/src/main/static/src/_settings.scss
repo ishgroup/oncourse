@@ -14,7 +14,7 @@ $heading-border-color: #E6D4CE;
 $dark-brown: #69524a;
 $primary-label-hover: #F7AC00;
 $primary-label-hover-border: #BB8200;
-$white: #ffffff;
+$white: #ffffff; 
 $black: #cccccc;
 $body-font: 'Droid Sans';
 $heading-font: 'PT Serif';
@@ -36,3 +36,12 @@ $header-dropdown-bg: #442E26;
 $header-dropdown-list-separator: #69524A;
 $tabs-text-color: #9c9c9c;
 $tabs-text-hover-color: #e8e6ca;
+/*USI Variables*/ 
+$progress-step-bg: #dcd6bf;
+$progress-step-color: darken($progress-step-bg, 35%);
+
+$progress-step-bg-active: #fcce65;
+$progress-step-color-active: darken($progress-step-bg-active, 35%);
+
+$progress-step-bg-finished: #c3d6b3;
+$progress-step-color-finished: darken($progress-step-bg-finished, 35%);

@@ -1,0 +1,36 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div id="usi-form" class="">
+        <div class="row">
+            <div class="col-sm-12">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="control-label" for="givenName">First Name*</label>
+                        <div class="valid">
+                            <input class="form-control " name="givenName" id="givenName" type="text"/>
+                            <span class="validate-text"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="familyName">Last Name*</label>
+                        <div class="valid">
+                            <input class="form-control " name="familyName" id="familyName" type="text"/>
+                            <span class="validate-text"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="dateOfBirth">Date Of Birth*</label>
+                        <div class="valid">
+                            <input class="form-control " name="dateOfBirth" id="dateOfBirth" type="text"/>
+                            <span class="validate-text"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="actions">
+                            <button class="btn btn-primary" id="usi-next">Next</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</t:container>

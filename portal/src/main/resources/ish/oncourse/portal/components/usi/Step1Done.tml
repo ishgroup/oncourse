@@ -1,0 +1,26 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div id="usi-form" class="">
+        <div class="row">
+            <div class="col-sm-12">
+                <fieldset>
+
+                    <div class="form-group">
+                        <div class="bs-callout bs-callout-success">
+                            <h5>Success!</h5>
+                            <p> <strong>You have provied sufficent information for your indentity to be verified.</strong> 
+                                <br />                        
+                                Some additional stistical information is requested for goverment educational planning. Completing these questions is optional.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="actions center-block">
+                            <button class="btn btn-primary" id="usi-next">Continue to Step 2</button>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</t:container>
