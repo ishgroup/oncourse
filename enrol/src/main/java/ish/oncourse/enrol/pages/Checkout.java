@@ -114,20 +114,17 @@ public class Checkout {
 		if (request.isXHR())
 			return null;
 
-
-        synchronized (this) {
-            if (isInitRequest()) {
-                purchaseController = buildPaymentController();
-                if (purchaseController.isPaymentResult())
-                    //redirect if init data is not correct , for example: course classes are not selected
-                    return Payment.class.getSimpleName();
-            } else if (purchaseController.isPaymentState() && !purchaseController.adjustState(Action.enableEnrolment)) {
-                //browser back-button handle
-                return Payment.class.getSimpleName();
-            } else if (purchaseController.isEditCheckout())
-                //add new items from shopping basket
-                updatePurchaseItems();
-        }
+		if (isInitRequest()) {
+			purchaseController = buildPaymentController();
+			if (purchaseController.isPaymentResult())
+				//redirect if init data is not correct , for example: course classes are not selected
+				return Payment.class.getSimpleName();
+		} else if (purchaseController.isPaymentState() && !purchaseController.adjustState(Action.enableEnrolment)) {
+			//browser back-button handle
+			return Payment.class.getSimpleName();
+		} else if (purchaseController.isEditCheckout())
+			//add new items from shopping basket
+			updatePurchaseItems();
         pageStructure.setCart(purchaseController.getCart());
         return null;
 
@@ -137,7 +134,7 @@ public class Checkout {
 		return purchaseController == null && request.getPath().toLowerCase().equals("/checkout");
 	}
 
-    public synchronized PurchaseController getPurchaseController() {
+    public PurchaseController getPurchaseController() {
         return purchaseController;
     }
 
