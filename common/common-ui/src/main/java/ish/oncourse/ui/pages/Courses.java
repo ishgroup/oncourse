@@ -3,6 +3,7 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.search.*;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
@@ -56,6 +57,8 @@ public class Courses {
 	private ICookiesService cookiesService;
 	@Inject
 	private IWebSiteService webSiteService;
+	@Inject
+	private IFacebookMetaProvider facebookMetaProvider;
 
 	@Property
 	private List<Course> courses;
@@ -314,8 +317,9 @@ public class Courses {
 	}
 
 	public String getMetaDescription() {
+		
 		if (getBrowseTag() !=null && getBrowseTag().getDetail() != null) {
-			return getBrowseTagDetail();
+			return facebookMetaProvider.getDescriptionContent(getBrowseTag());
 		} else {
 			return null;
 		}

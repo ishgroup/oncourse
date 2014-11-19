@@ -3,6 +3,7 @@ package ish.oncourse.services.html;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Tag;
 import ish.oncourse.model.WebNode;
 
 public interface IFacebookMetaProvider {
@@ -21,4 +22,9 @@ public interface IFacebookMetaProvider {
 	 * @return content for meta 'description' for webNode
 	 */
 	public String getDescriptionContent(WebNode webNode);
+
+	/**
+	 * @return content for meta 'description' for tag
+	 */
+	public String getDescriptionContent(Tag tag);
 }

@@ -2,6 +2,7 @@ package ish.oncourse.services.html;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Tag;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
@@ -34,6 +35,12 @@ public class FacebookMetaProvider implements IFacebookMetaProvider {
 			return getDescriptionContent(webNode.getWebContentVisibility().get(0).getWebContent().getContent(), 150);
 		else
 			return StringUtils.EMPTY;
+	}
+
+	@Override
+	public String getDescriptionContent(Tag tag) {
+		String detail = StringUtils.trimToEmpty(tag.getDetail());
+		return getDescriptionContent(detail, detail.length());
 	}
 
 	private String getDescriptionContent(String details, int size)
