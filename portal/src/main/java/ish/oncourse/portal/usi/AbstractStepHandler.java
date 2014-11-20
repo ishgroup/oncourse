@@ -29,7 +29,7 @@ public abstract class AbstractStepHandler implements StepHandler {
 
     protected <T> void parseRequiredValue(String key, Value inputValue, T entity) {
         if (inputValue == null || inputValue.getValue() == null) {
-            result.put(key, Value.valueOf(key, getUsiController().getMessages().format("message-fieldRequired")));
+            result.put(key, Value.valueOf(key, null, getUsiController().getMessages().format("message-fieldRequired")));
             hasErrors = true;
         } else {
             try {

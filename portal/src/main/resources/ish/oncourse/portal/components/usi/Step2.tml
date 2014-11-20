@@ -18,21 +18,9 @@
                         </div>
                     </div>
 
-                    <!-- Select Basic -->
-                    <div class="form-group">
-                        <label class=" control-label" for="selectbasic">Select Basic</label>
-                        <div class="">
-                            <select id="selectbasic" name="selectbasic" class="form-control">
-                                <option value="1">Option one</option>
-                                <option value="2">Option two</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Select Basic -->
                     <div class="form-group">
                         <label class=" control-label" for="undertakeReason_1">
-                            Which bet describes your main reason for undertaking the course Woodworking for Beginners on 14 July 2013.
+                            Which best describes your main reason for undertaking the course Woodworking for Beginners on 14 July 2013.
                         </label>
                         <div class="">
                             <select id="undertakeReason_1" name="undertakeReason_1" class="form-control">
@@ -43,10 +31,9 @@
                         </div>
                     </div>
 
-                    <!-- Select Basic -->
                     <div class="form-group">
                         <label class=" control-label" for="undertakeReason_2">
-                            Which bet describes your main reason for undertaking the course French for Travelers on 28 July 2013.
+                            Which best describes your main reason for undertaking the course French for Travelers on 28 July 2013.
                         </label>
                         <div class="">
                             <select id="undertakeReason_2" name="undertakeReason_2" class="form-control">
@@ -57,7 +44,6 @@
                         </div>
                     </div>
 
-                    <!-- Text input-->
                     <div class="form-group">
                         <label class=" control-label" for="countryOfBirth">Country of birth</label>
                         <div class="">
@@ -65,19 +51,17 @@
                         </div>
                     </div>
 
-                    <!-- Text input-->
                     <div class="form-group">
-                        <label class=" control-label" for="nativeLanguage">What language do you normally speak at home?</label>
+                        <label class=" control-label" for="languageHome">What language do you normally speak at home?</label>
                         <div class="">
-                            <input id="nativeLanguage" name="nativeLanguage" type="text" placeholder="For example, English" class="form-control input-md" required=""/>
+                            <input id="languageHome" name="languageHome" type="text" placeholder="For example, English" class="form-control input-md" required=""/>
                         </div>
                     </div>
 
-                    <!-- Select Basic -->
                     <div class="form-group">
-                        <label class=" control-label" for="englishLangLvl">How well do you speak English?</label>
+                        <label class=" control-label" for="englishProficiency">How well do you speak English?</label>
                         <div class="">
-                            <select id="englishLangLvl" name="englishLangLvl" class="form-control">
+                            <select id="englishProficiency" name="englishProficiency" class="form-control">
                                 <option value="Please_select">Please select...</option>
                                 <option value="Beginner">Beginner</option>
                                 <option value="Intermediate">Intermediate</option>
@@ -86,11 +70,10 @@
                         </div>
                     </div>
 
-                    <!-- Select Basic -->
                     <div class="form-group">
-                        <label class=" control-label" for="aborigOrTorres">Are you of Aboriginal / Torres Straight Islander origin?</label>
+                        <label class=" control-label" for="indigenousStatus">Are you of Aboriginal / Torres Straight Islander origin?</label>
                         <div class="">
-                            <select id="aborigOrTorres" name="aborigOrTorres" class="form-control">
+                            <select id="indigenousStatus" name="indigenousStatus" class="form-control">
                                 <option value="Please_select">Please select...</option>
                                 <option value="Option_1">Option #1</option>
                                 <option value="Option_2">Option #2</option>
@@ -98,11 +81,10 @@
                         </div>
                     </div>
 
-                    <!-- Select Basic -->
                     <div class="form-group">
-                        <label class=" control-label" for="secondarySchool">Are you still attending secondary school?</label>
+                        <label class=" control-label" for="isStillAtSchool">Are you still attending secondary school?</label>
                         <div class="">
-                            <select id="secondarySchool" name="secondarySchool" class="form-control">
+                                <select id="isStillAtSchool" name="isStillAtSchool" class="form-control">
                                 <option value="Please_select">Please select...</option>
                                 <option value="Option_1">Option #1</option>
                                 <option value="Option_2">Option #2</option>
@@ -110,11 +92,10 @@
                         </div>
                     </div>
 
-                    <!-- Select Basic -->
                     <div class="form-group">
-                        <label class=" control-label" for="highestSchollLvl">What is your highest school level?</label>
+                        <label class=" control-label" for="highestSchoolLevel">What is your highest school level?</label>
                         <div class="">
-                            <select id="highestSchollLvl" name="highestSchollLvl" class="form-control">
+                            <select id="highestSchoolLevel" name="highestSchoolLevel" class="form-control">
                                 <option value="Please_select">Please select...</option>
                                 <option value="Option_1">Option #1</option>
                                 <option value="Option_2">Option #2</option>
@@ -122,21 +103,19 @@
                         </div>
                     </div>
 
-                    <!-- Text input-->
                     <div class="form-group">
-                        <label class=" control-label" for="schoolCompleteYear">In which year did you complete that school level?</label>
+                        <label class=" control-label" for="yearSchoolCompleted">In which year did you complete that school level?</label>
                         <div class="">
-                            <input id="schoolCompleteYear" name="schoolCompleteYear" type="text" placeholder="For example, 2014" class="form-control input-md" required=""/>
+                            <input id="yearSchoolCompleted" name="yearSchoolCompleted" type="text" placeholder="For example, 2014" class="form-control input-md" required=""/>
                         </div>
                     </div>
 
-                    <!-- Select Basic -->
                     <div class="form-group">
-                        <label class=" control-label" for="highestQualLvl">
+                        <label class=" control-label" for="priorEducationCode">
                             What is your highest qualification level you have successfully completed?
                         </label>
                         <div class="">
-                            <select id="highestQualLvl" name="highestQualLvl" class="form-control">
+                            <select id="priorEducationCode" name="priorEducationCode" class="form-control">
                                 <option value="Please_select">Please select...</option>
                                 <option value="Option_1">Option #1</option>
                                 <option value="Option_2">Option #2</option>
@@ -144,13 +123,12 @@
                         </div>
                     </div>
 
-                    <!-- Select Basic -->
                     <div class="form-group">
-                        <label class=" control-label" for="employmentStatus">
+                        <label class=" control-label" for="labourForceStatus">
                             Of the following, which best describes your current employment status?
                         </label>
                         <div class="">
-                            <select id="employmentStatus" name="employmentStatus" class="form-control">
+                            <select id="labourForceStatus" name="labourForceStatus" class="form-control">
                                 <option value="Please_select">Please select...</option>
                                 <option value="Option_1">Option #1</option>
                                 <option value="Option_2">Option #2</option>
@@ -158,13 +136,12 @@
                         </div>
                     </div>
 
-                    <!-- Select Basic -->
                     <div class="form-group">
-                        <label class=" control-label" for="disability">
+                        <label class=" control-label" for="disabilityType">
                             Do you consider yourself to have a disability, impairment or long term condition?
                         </label>
                         <div class="">
-                            <select id="disability" name="disability" class="form-control">
+                            <select id="disabilityType" name="disabilityType" class="form-control">
                                 <option value="Please_select">Please select...</option>
                                 <option value="Option_1">Option #1</option>
                                 <option value="Option_2">Option #2</option>
@@ -172,7 +149,6 @@
                         </div>
                     </div>
 
-                    <!-- Button -->
                     <div class="form-group">
                         <div class="actions">
                             <button class="btn btn-primary" id="usi-next">Next</button>

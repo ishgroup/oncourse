@@ -24,4 +24,6 @@
 
     <script type="text/javascript" src="/portal/js/portal-min.js"></script>
 
+    <script type="text/javascript" src="/portal/dev/usi.js"></script>
+
 </t:container>

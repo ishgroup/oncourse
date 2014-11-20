@@ -6,6 +6,8 @@ import ish.oncourse.portal.usi.UsiController;
 import ish.oncourse.portal.usi.ValidationResult;
 import ish.oncourse.portal.usi.Value;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.reference.ICountryService;
+import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -45,6 +47,12 @@ public class Usi {
     @Inject
     private ICayenneService cayenneService;
 
+    @Inject
+    private ILanguageService languageService;
+
+    @Inject
+    private ICountryService countryService;
+
     @Persist
     @Property
     private UsiController usiController;
@@ -59,6 +67,8 @@ public class Usi {
             }
             usiController = new UsiController();
             usiController.setContact(contact);
+            usiController.setCountryService(countryService);
+            usiController.setLanguageService(languageService);
             usiController.setMessages(messages);
             usiController.getValidationResult().setMessages(messages);
             usiController.getValidationResult().addError("message-invalidUsi");
@@ -144,14 +154,9 @@ public class Usi {
         JSONArray jsonValues = new JSONArray();
         boolean hasErrors = false;
         for (Map.Entry<String, Value> value : values.entrySet()) {
-            JSONObject jsonValue = new JSONObject();
-            jsonValue.put("key", value.getValue().getKey());
-            if (value.getValue().getValue() != null) {
-                jsonValue.put("value", value.getValue().getValue().toString());
-            }
+            JSONObject jsonValue = getJSONValue(value.getValue());
 
             if (value.getValue().getError() != null) {
-                jsonValue.put("error", value.getValue().getError());
                 hasErrors = true;
             }
             jsonValues.put(jsonValue);
@@ -160,6 +165,30 @@ public class Usi {
         result.put("hasErrors", hasErrors);
         result.put("step", usiController.getStep().name());
         return result;
+    }
+
+    private JSONObject getJSONValue(Value value) {
+        JSONObject jsonValue = new JSONObject();
+        jsonValue.put("key", value.getKey());
+        if (value.getValue() != null) {
+            jsonValue.put("value", value.getValue().toString());
+        }
+
+        if (value.getError() != null) {
+            jsonValue.put("error", value.getError());
+        }
+
+        List<Value> options = value.getOptions();
+        if (options.size() > 0)
+        {
+            JSONArray jsonOptions = new JSONArray();
+            for (Value option : options) {
+                jsonOptions.put(getJSONValue(option));
+            }
+            jsonValue.put("options", jsonOptions);
+        }
+
+        return jsonValue;
     }
 
     @OnEvent(value = "value")

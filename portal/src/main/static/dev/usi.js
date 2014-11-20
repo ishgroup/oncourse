@@ -1,5 +1,5 @@
-goog.provide('usi');
-goog.require('jquery');
+//goog.provide('usi');
+//goog.require('jquery');
 
 var $j = jQuery.noConflict();
 
@@ -20,15 +20,15 @@ Usi.prototype = {
     showData: function () {
         var self = this;
 
-        $j('input.form-control').removeClass('t-error');
-        $j('input.form-control').parent().removeClass('validate has-error').addClass('valid');
+        $j('.form-control').removeClass('t-error');
+        $j('.form-control').parent().removeClass('validate has-error').addClass('valid');
         $j.each(this.data.values, function (index, value) {
             self.fillControl(value);
         });
     },
 
     fillControl: function (value) {
-        var control = $j('input[name=' + value.key + ']');
+        var control = $j('.form-control[name=' + value.key + ']');
         if (value.error) {
             control.parent().removeClass('valid');
             control.parent().addClass('validate has-error');
@@ -36,12 +36,18 @@ Usi.prototype = {
             control.next('span.validate-text').text(value.error);
         }
         else {
-            control.val(value.value);
             if (value.options) {
-
+                control.empty();
+                $j.each(value.options, function(index, option) {
+                    control.append($j("<option></option>")
+                        .attr("value",option.key)
+                        .text(option.value));
+                });
             }
+            control.val(value.value);
         }
     },
+
     loadData: function () {
         var self = this;
 
@@ -75,7 +81,7 @@ Usi.prototype = {
 
     next: function () {
         var self = this;
-        var data = $j("input.form-control").serialize();
+        var data = $j(".form-control").serialize();
         var actionLink = "/portal/usi/usi:next";
         $j.ajax({
             url: actionLink,

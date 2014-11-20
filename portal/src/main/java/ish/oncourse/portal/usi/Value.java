@@ -24,9 +24,9 @@ public class Value {
         return result;
     }
 
-    public static Value valueOf(String key, String error)
+    public static Value valueOf(String key, Object value, String error)
     {
-        return Value.valueOf(key, null, error);
+        return Value.valueOf(key, value, error, new Value[]{});
     }
 
     public static Value valueOf(String key, Object value)

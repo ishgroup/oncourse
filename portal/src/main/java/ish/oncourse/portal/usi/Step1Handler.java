@@ -54,7 +54,7 @@ public class Step1Handler extends AbstractStepHandler {
 
     private void parseUsi(Value inputValue) {
         if (inputValue == null || inputValue.getValue() == null) {
-            result.put(Student.USI_PROPERTY, Value.valueOf(Student.USI_PROPERTY, getUsiController().getMessages().format("message-usiRequired")));
+            result.put(Student.USI_PROPERTY, Value.valueOf(Student.USI_PROPERTY, null,  getUsiController().getMessages().format("message-usiRequired")));
             hasErrors = true;
         } else {
             getUsiController().getContact().getStudent().setUsi((String) inputValue.getValue());
@@ -84,7 +84,7 @@ public class Step1Handler extends AbstractStepHandler {
         }
         public Value parse(Value inputValue, UsiController controller) {
             if (inputValue == null || inputValue.getValue() == null) {
-                return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, controller.getMessages().format("message-fieldRequired"));
+                return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, null, controller.getMessages().format("message-fieldRequired"));
             } else {
                 /**
                  * the format is used to parse string value which an user puts in date field.
@@ -97,14 +97,14 @@ public class Step1Handler extends AbstractStepHandler {
                     Date date = FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_PARSE_FORMAT, timeZone).parse(inputValue.getValue().toString());
 
                     if (date.after(new Date()))
-                        return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, controller.getMessages().format("message-dateOfBirthShouldBeInPast"));
+                        return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, null, controller.getMessages().format("message-dateOfBirthShouldBeInPast"));
                     if (date.before(MIN_DATE_OF_BIRTH))
-                        return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, controller.getMessages().format("message-dateOfBirthWrongFormat"));
+                        return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, null, controller.getMessages().format("message-dateOfBirthWrongFormat"));
 
                     controller.getContact().setDateOfBirth(date);
                     return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (Object) FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(date));
                 } catch (ParseException e) {
-                    return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, controller.getMessages().format("message-dateOfBirthWrongFormat"));
+                    return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, null, controller.getMessages().format("message-dateOfBirthWrongFormat"));
                 }
             }
         }

@@ -2,6 +2,8 @@ package ish.oncourse.portal.usi;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.services.PortalUSIService;
+import ish.oncourse.services.reference.ICountryService;
+import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.tapestry5.ioc.Messages;
 
@@ -11,6 +13,8 @@ import java.util.Map;
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
 public class UsiController {
+    private ILanguageService languageService;
+    private ICountryService countryService;
     private PortalUSIService portalUSIService;
     private Messages messages;
 
@@ -91,6 +95,22 @@ public class UsiController {
 
     public void setPortalUSIService(PortalUSIService portalUSIService) {
         this.portalUSIService = portalUSIService;
+    }
+
+    public ILanguageService getLanguageService() {
+        return languageService;
+    }
+
+    public void setLanguageService(ILanguageService languageService) {
+        this.languageService = languageService;
+    }
+
+    public ICountryService getCountryService() {
+        return countryService;
+    }
+
+    public void setCountryService(ICountryService countryService) {
+        this.countryService = countryService;
     }
 
 
