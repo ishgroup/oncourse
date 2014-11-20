@@ -35,10 +35,10 @@
 
           <t:if test="${hasResources(courseClass)}">
             <li>
-              <h4>
+              <h6>
                   <t:pagelink page="class" context="courseClass.id">${courseClass.course.name}</t:pagelink>
                   <small> (${courseClass.uniqueIdentifier})</small>
-              </h4>
+              </h6>
               <small class="text-muted">${getDate(courseClass)}</small>
               <ul class="list-unstyled">
                 <span t:type="courseclass/classresources" courseClass="courseClass"/>
