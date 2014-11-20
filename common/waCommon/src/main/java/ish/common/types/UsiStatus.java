@@ -11,8 +11,8 @@ import ish.common.util.DisplayableExtendedEnumeration;
  */
 public enum UsiStatus implements DisplayableExtendedEnumeration<Integer> {
 
-	DEFAULT_NOT_SUPPLIED(0, "Not supplied"),
-	NON_VERIFIED(1, "Manual"),
+	DEFAULT_NOT_SUPPLIED(0, "Not set"),
+	NON_VERIFIED(1, "Not verified"),
 	VERIFIED(2, "Verified");
 
 	private String displayName;
