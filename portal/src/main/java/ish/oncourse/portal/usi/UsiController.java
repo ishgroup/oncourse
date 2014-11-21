@@ -1,14 +1,23 @@
 package ish.oncourse.portal.usi;
 
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.portal.services.PortalUSIService;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.util.ValidateHandler;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.ioc.Messages;
+import sun.jvm.hotspot.ui.EditorFactory;
 
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -153,4 +162,14 @@ public class UsiController {
             this.handlerClass = handlerClass;
         }
     }
+
+	public List<Enrolment> getExtraEmrolments() {
+		Expression extraEmrolments = ExpressionFactory.greaterExp(Enrolment.COURSE_CLASS_PROPERTY + "." + CourseClass.END_DATE_PROPERTY, new Date()).
+			andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY + "." + CourseClass.COURSE_PROPERTY + "." + Course.IS_VETCOURSE_PROPERTY, true));
+		if (contact.getStudent() != null) {
+			return extraEmrolments.filterObjects(contact.getStudent().getEnrolments()); 
+		} else {
+			return Collections.EMPTY_LIST;
+		}
+	}
 }
