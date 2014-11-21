@@ -4,10 +4,7 @@
             <div class="col-sm-12">
                 <fieldset>
 
-                    <!-- Form Name -->
-                    <!-- <legend>Step2</legend> -->
-
-                    <!-- Form Submit Mesage -->
+                    
                     <div class="form-group">
                         <div class="bs-callout bs-callout-success">
                             <h5>Success!</h5>
@@ -29,6 +26,7 @@
                                 <option value="Another_option_3">Another option #3</option>
                             </select>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
@@ -42,20 +40,25 @@
                                 <option value="Another_option_3">Another option #3</option>
                             </select>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="countryOfBirth">Country of birth</label>
                         <div class="">
                             <input id="countryOfBirth" name="countryOfBirth" type="text" placeholder="For example, Australia" class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="languageHome">What language do you normally speak at home?</label>
                         <div class="">
                             <input id="languageHome" name="languageHome" type="text" placeholder="For example, English" class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
@@ -68,6 +71,7 @@
                                 <option value="Freely">Freely</option>
                             </select>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
@@ -79,6 +83,7 @@
                                 <option value="Option_2">Option #2</option>
                             </select>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
@@ -90,6 +95,7 @@
                                 <option value="Option_2">Option #2</option>
                             </select>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
@@ -101,13 +107,16 @@
                                 <option value="Option_2">Option #2</option>
                             </select>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="yearSchoolCompleted">In which year did you complete that school level?</label>
                         <div class="">
                             <input id="yearSchoolCompleted" name="yearSchoolCompleted" type="text" placeholder="For example, 2014" class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
@@ -121,6 +130,7 @@
                                 <option value="Option_2">Option #2</option>
                             </select>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
@@ -134,6 +144,7 @@
                                 <option value="Option_2">Option #2</option>
                             </select>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
@@ -147,6 +158,7 @@
                                 <option value="Option_2">Option #2</option>
                             </select>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">

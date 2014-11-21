@@ -4,18 +4,21 @@
             <div class="col-sm-12">
                 <fieldset>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class="control-label" for="dateOfBirth">Date Of Birth*</label>
-                        <div class="valid">
+                        <div class="valid field-holder">
                             <input class="form-control " name="dateOfBirth" id="dateOfBirth" type="text"/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
+                        <small class="help-block"></small>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class="control-label" for="usi">USI*</label>
-                        <div class="valid">
+                        <div class="valid field-holder">
                             <input class="form-control " name="usi" id="usi" type="text"/>
-                            <span class="validate-text"></span>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
+                        <small class="help-block"></small>
                     </div>
                     <div class="form-group">
                         <div class="actions">

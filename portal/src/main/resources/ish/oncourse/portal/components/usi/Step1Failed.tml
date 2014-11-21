@@ -3,26 +3,29 @@
         <div class="row">
             <div class="col-sm-12">
                 <fieldset>
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class="control-label" for="givenName">First Name*</label>
                         <div class="valid">
                             <input class="form-control " name="givenName" id="givenName" type="text"/>
-                            <span class="validate-text"></span>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
+                        <small class="help-block"></small>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class="control-label" for="familyName">Last Name*</label>
                         <div class="valid">
                             <input class="form-control " name="familyName" id="familyName" type="text"/>
-                            <span class="validate-text"></span>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
+                        <small class="help-block"></small>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class="control-label" for="dateOfBirth">Date Of Birth*</label>
                         <div class="valid">
                             <input class="form-control " name="dateOfBirth" id="dateOfBirth" type="text"/>
-                            <span class="validate-text"></span>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
+                        <small class="help-block"></small>
                     </div>
                     <div class="form-group">
                         <div class="actions">

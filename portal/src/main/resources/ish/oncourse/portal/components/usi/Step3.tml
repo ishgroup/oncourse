@@ -4,9 +4,6 @@
             <div class="col-sm-12">
                 <fieldset>
 
-                    <!-- Form Name -->
-                    <!-- <legend>Step3</legend> -->
-
                     <div class="bs-callout bs-callout-info">
                         <h5>Update your personal detail</h5>
                         <p> <strong>There are some contact details we do not have on file for you.</strong><br />                    
@@ -22,66 +19,92 @@
                             <label class="radio-inline" for="male">
                                 <input type="radio" name="isMale" id="male" value="male" class="form-control"/>Male</label>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="street">Street address</label>
                         <div class="">
-                            <input id="street" name="street" type="text" placeholder="For example, 215 Anzac Parade" class="form-control input-md" required=""/></div>
+                            <input id="street" name="street" type="text" placeholder="For example, 215 Anzac Parade" class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                        </div>
+                        <small class="help-block"></small>
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="suburb">Suburb</label>
                         <div class="">
-                            <input id="suburb" name="suburb" type="text" placeholder="For example, SYDNEY" class="form-control input-md" required=""/></div>
+                            <input id="suburb" name="suburb" type="text" placeholder="For example, SYDNEY" class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                        </div>
+                        <small class="help-block"></small>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="postcode">Postcode</label>
                         <div class="">
-                            <input id="postcode" name="postcode" type="text" placeholder="For example, 2033" class="form-control input-md" required=""/></div>
+                            <input id="postcode" name="postcode" type="text" placeholder="For example, 2033" class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                        </div>
+                        <small class="help-block"></small>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="state">State</label>
                         <div class="">
-                            <input id="state" name="state" type="text" placeholder="For example, NSW" class="form-control input-md" required=""/></div>
+                            <input id="state" name="state" type="text" placeholder="For example, NSW" class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                        </div>
+                        <small class="help-block"></small>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="country">Сountry</label>
                         <div class="">
-                            <input id="country" name="country" type="text" placeholder="For example, Australia" class="form-control input-md" required=""/></div>
+                            <input id="country" name="country" type="text" placeholder="For example, Australia" class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                        </div>
+                        <small class="help-block"></small>
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="mobilePhoneNumber">Mobile phone</label>
                         <div class="">
-                            <input id="mobilePhoneNumber" name="mobilePhoneNumber" type="text" placeholder="For example, 04123 456 789 " class="form-control input-md" required=""/></div>
+                            <input id="mobilePhoneNumber" name="mobilePhoneNumber" type="text" placeholder="For example, 04123 456 789 " class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                        </div>
+                        <small class="help-block"></small>
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="homePhoneNumber">Home phone</label>
                         <div class="">
-                            <input id="homePhoneNumber" name="homePhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" required=""/></div>
+                            <input id="homePhoneNumber" name="homePhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                        </div>
+                        <small class="help-block"></small>
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="businessPhoneNumber">Work phone</label>
                         <div class="">
-                            <input id="businessPhoneNumber" name="businessPhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" required=""/></div>
+                            <input id="businessPhoneNumber" name="businessPhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" required=""/>
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                        </div>
+                        <small class="help-block"></small>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <label class=" control-label" for="specialNeeds">Special needs or medical conditions</label>
                         <div class="">
                             <textarea class="form-control" id="specialNeeds" name="specialNeeds"/>
                         </div>
+                        <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">

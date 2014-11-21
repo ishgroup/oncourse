@@ -4,9 +4,6 @@
             <div class="col-sm-12">
                 <fieldset>
 
-                    <!-- Form Name -->
-                    <!-- <legend>Step3Finished</legend> -->
-
                     <div class="form-group">
                         <div class="bs-callout bs-callout-info">
                             <h5>Update your personal detail</h5>
@@ -18,7 +15,7 @@
                             </p>
                         </div>
                     </div>
-                    <!-- <br /> -->
+                    
                     <div class="form-group">
                         <div class="actions">
                             <button class="btn btn-primary" id="usi-next">Done</button>
