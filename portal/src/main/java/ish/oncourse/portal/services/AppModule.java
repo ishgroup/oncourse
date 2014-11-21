@@ -52,7 +52,7 @@ public class AppModule {
         binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
         binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
         binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
-        binder.bind(IUSIVerificationService.class, PortalUSIService.class);
+        binder.bind(IUSIVerificationService.class, TestUSISevice.class);
     }
 
     @EagerLoad

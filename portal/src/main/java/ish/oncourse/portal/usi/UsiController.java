@@ -9,11 +9,11 @@ import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
+import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.ioc.Messages;
-import sun.jvm.hotspot.ui.EditorFactory;
 
 import java.util.Collections;
 import java.util.Date;
@@ -24,6 +24,7 @@ import java.util.Map;
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
 public class UsiController {
+    private IUSIVerificationService usiVerificationService;
     private ILanguageService languageService;
     private ICountryService countryService;
     private PortalUSIService portalUSIService;
@@ -143,6 +144,14 @@ public class UsiController {
 
     public void setContactFieldHelper(ContactFieldHelper contactFieldHelper) {
         this.contactFieldHelper = contactFieldHelper;
+    }
+
+    public IUSIVerificationService getUsiVerificationService() {
+        return usiVerificationService;
+    }
+
+    public void setUsiVerificationService(IUSIVerificationService usiVerificationService) {
+        this.usiVerificationService = usiVerificationService;
     }
 
 

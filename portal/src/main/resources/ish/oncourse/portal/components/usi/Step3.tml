@@ -4,6 +4,9 @@
             <div class="col-sm-12">
                 <fieldset>
 
+                    <!-- Form Name -->
+                    <!-- <legend>Step3</legend> -->
+
                     <div class="bs-callout bs-callout-info">
                         <h5>Update your personal detail</h5>
                         <p> <strong>There are some contact details we do not have on file for you.</strong><br />                    
@@ -19,7 +22,6 @@
                             <label class="radio-inline" for="male">
                                 <input type="radio" name="isMale" id="male" value="male" class="form-control"/>Male</label>
                         </div>
-                        <small class="help-block"></small>
                     </div>
 
 

@@ -7,10 +7,10 @@ import ish.oncourse.portal.usi.ValidationResult;
 import ish.oncourse.portal.usi.Value;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
-import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
+import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -61,6 +61,9 @@ public class Usi {
     @Inject
     private PreferenceControllerFactory preferenceControllerFactory;
 
+    @Inject
+    private IUSIVerificationService usiVerificationService;
+
     @Persist
     @Property
     private UsiController usiController;
@@ -79,6 +82,7 @@ public class Usi {
             usiController.setLanguageService(languageService);
             usiController.setPreferenceController(preferenceControllerFactory.getPreferenceController(contact.getCollege()));
             usiController.setContactFieldHelper(new ContactFieldHelper(usiController.getPreferenceController(), enrolment));
+            usiController.setUsiVerificationService(usiVerificationService);
 
             usiController.setMessages(messages);
             usiController.getValidationResult().setMessages(messages);

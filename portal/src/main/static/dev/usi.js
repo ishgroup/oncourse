@@ -20,8 +20,8 @@ Usi.prototype = {
     showData: function () {
         var self = this;
 
-        $j('.form-control').removeClass('t-error');
-        $j('.form-control').parent().removeClass('validate has-error').addClass('valid');
+        $j('.form-group').removeClass('has-error');
+        $j('small.help-block').empty();
         $j.each(this.data.values, function (index, value) {
             self.fillControl(value);
         });
@@ -30,10 +30,9 @@ Usi.prototype = {
     fillControl: function (value) {
         var control = $j('.form-control[name=' + value.key + ']');
         if (value.error) {
-            control.parent().removeClass('valid');
-            control.parent().addClass('validate has-error');
-            control.addClass('t-error');
-            control.next('span.validate-text').text(value.error);
+            var parent = control.closest('.form-group');
+            parent.addClass('has-error');
+            parent.find('small.help-block').text(value.error);
         }
         else {
             if (value.options) {
