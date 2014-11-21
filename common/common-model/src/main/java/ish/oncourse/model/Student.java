@@ -15,6 +15,8 @@ public class Student extends _Student implements Queueable {
 	private static final long serialVersionUID = 8299657371084046806L;
     public static final int MIN_SCHOOL_COMPLETION_YEAR = 1940;
 
+    public static final String LABOUR_FORCE_STATUS_PROPERTY = "labourForceStatus";
+
 
     public Long getId() {
 		return QueueableObjectUtils.getId(this);
