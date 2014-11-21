@@ -6,6 +6,9 @@ import ish.oncourse.portal.usi.UsiController;
 import ish.oncourse.portal.usi.ValidationResult;
 import ish.oncourse.portal.usi.Value;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.ContactFieldHelper;
+import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.util.ValidateHandler;
@@ -28,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -53,6 +58,9 @@ public class Usi {
     @Inject
     private ICountryService countryService;
 
+    @Inject
+    private PreferenceControllerFactory preferenceControllerFactory;
+
     @Persist
     @Property
     private UsiController usiController;
@@ -69,6 +77,9 @@ public class Usi {
             usiController.setContact(contact);
             usiController.setCountryService(countryService);
             usiController.setLanguageService(languageService);
+            usiController.setPreferenceController(preferenceControllerFactory.getPreferenceController(contact.getCollege()));
+            usiController.setContactFieldHelper(new ContactFieldHelper(usiController.getPreferenceController(), enrolment));
+
             usiController.setMessages(messages);
             usiController.getValidationResult().setMessages(messages);
             usiController.getValidationResult().addError("message-invalidUsi");
@@ -187,7 +198,7 @@ public class Usi {
             }
             jsonValue.put("options", jsonOptions);
         }
-
+        jsonValue.put("required", value.isRequired());
         return jsonValue;
     }
 

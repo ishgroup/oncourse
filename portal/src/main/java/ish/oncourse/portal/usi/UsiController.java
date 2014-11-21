@@ -2,6 +2,8 @@ package ish.oncourse.portal.usi;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.services.PortalUSIService;
+import ish.oncourse.services.preference.ContactFieldHelper;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.util.ValidateHandler;
@@ -16,6 +18,8 @@ public class UsiController {
     private ILanguageService languageService;
     private ICountryService countryService;
     private PortalUSIService portalUSIService;
+    private PreferenceController preferenceController;
+    private ContactFieldHelper contactFieldHelper;
     private Messages messages;
 
     private Contact contact;
@@ -30,9 +34,10 @@ public class UsiController {
 
     public UsiController()
     {
+        step = Step.step1;
         currentHandler = new Step1Handler();
         currentHandler.setUsiController(this);
-        step = Step.step1;
+        currentHandler.init();
     }
 
     public Contact getContact() {
@@ -57,21 +62,23 @@ public class UsiController {
     }
 
     public Map<String, Value> next(Map<String, Value> inputValue) {
+        currentHandler.init();
         StepHandler stepHandler = currentHandler.handle(inputValue);
         if (!stepHandler.hasErrors()) {
             if (step != stepHandler.getNextStep()) {
                 step = stepHandler.getNextStep();
-                updateCurrentHandler();
+                initCurrentHandler();
             }
         }
         return stepHandler.getResult();
     }
 
-    private void updateCurrentHandler() {
+    private void initCurrentHandler() {
 
         try {
             currentHandler = step.handlerClass.newInstance();
             currentHandler.setUsiController(this);
+            currentHandler.init();
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
@@ -111,6 +118,22 @@ public class UsiController {
 
     public void setCountryService(ICountryService countryService) {
         this.countryService = countryService;
+    }
+
+    public PreferenceController getPreferenceController() {
+        return preferenceController;
+    }
+
+    public void setPreferenceController(PreferenceController preferenceController) {
+        this.preferenceController = preferenceController;
+    }
+
+    public ContactFieldHelper getContactFieldHelper() {
+        return contactFieldHelper;
+    }
+
+    public void setContactFieldHelper(ContactFieldHelper contactFieldHelper) {
+        this.contactFieldHelper = contactFieldHelper;
     }
 
 

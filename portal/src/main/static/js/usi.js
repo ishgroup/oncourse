@@ -38,16 +38,26 @@ Usi.prototype = {
         else {
             if (value.options) {
                 control.empty();
-                $j.each(value.options, function(index, option) {
+                $j.each(value.options, function (index, option) {
                     control.append($j("<option></option>")
-                        .attr("value",option.key)
+                        .attr("value", option.key)
                         .text(option.value));
                 });
             }
-            control.val(value.value);
+            if (value.required) {
+                var label = $j('.control-label[for=' + value.key + ']');
+                label.text(label.text() + ' *');
+            }
+
+            if (value.key == 'isMale') {
+                $j('#female.form-control').prop("checked", value.value != "true");
+                $j('#male.form-control').prop("checked", value.value == "true");
+            }
+            else {
+                control.val(value.value);
+            }
         }
     },
-
     loadData: function () {
         var self = this;
 
@@ -65,8 +75,8 @@ Usi.prototype = {
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log (textStatus);
-                console.log (errorThrown);
+                console.log(textStatus);
+                console.log(errorThrown);
                 window.location.reload();
             }
         });
@@ -100,8 +110,8 @@ Usi.prototype = {
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log (textStatus);
-                console.log (errorThrown);
+                console.log(textStatus);
+                console.log(errorThrown);
                 window.location.reload();
             }
         });

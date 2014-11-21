@@ -11,11 +11,6 @@ import static ish.oncourse.portal.usi.UsiController.Step.step2;
 public class DoneHandler extends AbstractStepHandler {
 
     @Override
-    public Map<String, Value> getValue() {
-        return Collections.emptyMap();
-    }
-
-    @Override
     public UsiController.Step getNextStep() {
         return step2;
     }

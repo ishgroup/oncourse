@@ -14,67 +14,69 @@
                         </p>
                     </div>
 
-                    <!-- Multiple Radios (inline) -->
                     <div class="form-group">
-                        <label class=" control-label" for="gender">Gender *</label>
+                        <label class=" control-label" for="gender">Gender</label>
                         <div class="">
-                            <label class="radio-inline" for="gender-0">
-                                <input type="radio" name="gender" id="gender-0" value="female" checked="checked"/>Female</label>
-                            <label class="radio-inline" for="gender-1">
-                                <input type="radio" name="gender" id="gender-1" value="male"/>Male</label>
+                            <label class="radio-inline" for="female">
+                                <input type="radio" name="isMale" id="female" value="female" class="form-control"/>Female</label>
+                            <label class="radio-inline" for="male">
+                                <input type="radio" name="isMale" id="male" value="male" class="form-control"/>Male</label>
                         </div>
                     </div>
 
-                    <!-- Text input-->
+
                     <div class="form-group">
-                        <label class=" control-label" for="address">Street address *</label>
+                        <label class=" control-label" for="street">Street address</label>
                         <div class="">
-                            <input id="address" name="address" type="text" placeholder="For example, 215 Anzac Parade" class="form-control input-md" required=""/></div>
+                            <input id="street" name="street" type="text" placeholder="For example, 215 Anzac Parade" class="form-control input-md" required=""/></div>
                     </div>
 
-                    <!-- Text input-->
+
                     <div class="form-group">
-                        <label class=" control-label" for="suburb">Suburb *</label>
+                        <label class=" control-label" for="suburb">Suburb</label>
                         <div class="">
-                            <input id="suburb" name="suburb" type="text" placeholder="For example, NSW" class="form-control input-md" required=""/></div>
+                            <input id="suburb" name="suburb" type="text" placeholder="For example, SYDNEY" class="form-control input-md" required=""/></div>
                     </div>
 
-                    <!-- Text input-->
                     <div class="form-group">
-                        <label class=" control-label" for="postcode">Postcode *</label>
+                        <label class=" control-label" for="postcode">Postcode</label>
                         <div class="">
                             <input id="postcode" name="postcode" type="text" placeholder="For example, 2033" class="form-control input-md" required=""/></div>
                     </div>
 
-                    <!-- Text input-->
                     <div class="form-group">
-                        <label class=" control-label" for="country">Сountry *</label>
+                        <label class=" control-label" for="state">State</label>
+                        <div class="">
+                            <input id="state" name="state" type="text" placeholder="For example, NSW" class="form-control input-md" required=""/></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class=" control-label" for="country">Сountry</label>
                         <div class="">
                             <input id="country" name="country" type="text" placeholder="For example, Australia" class="form-control input-md" required=""/></div>
                     </div>
 
-                    <!-- Text input-->
+
                     <div class="form-group">
-                        <label class=" control-label" for="mobPhone">Mobile phone</label>
+                        <label class=" control-label" for="mobilePhoneNumber">Mobile phone</label>
                         <div class="">
-                            <input id="mobPhone" name="mobPhone" type="text" placeholder="For example, +61 2 1234 5678 " class="form-control input-md" required=""/></div>
+                            <input id="mobilePhoneNumber" name="mobilePhoneNumber" type="text" placeholder="For example, 04123 456 789 " class="form-control input-md" required=""/></div>
                     </div>
 
-                    <!-- Text input-->
+
                     <div class="form-group">
-                        <label class=" control-label" for="homePhone">Home phone</label>
+                        <label class=" control-label" for="homePhoneNumber">Home phone</label>
                         <div class="">
-                            <input id="homePhone" name="homePhone" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" required=""/></div>
+                            <input id="homePhoneNumber" name="homePhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" required=""/></div>
                     </div>
 
-                    <!-- Text input-->
+
                     <div class="form-group">
-                        <label class=" control-label" for="workPhone">Work phone</label>
+                        <label class=" control-label" for="businessPhoneNumber">Work phone</label>
                         <div class="">
-                            <input id="workPhone" name="workPhone" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" required=""/></div>
+                            <input id="businessPhoneNumber" name="businessPhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" required=""/></div>
                     </div>
 
-                    <!-- Textarea -->
                     <div class="form-group">
                         <label class=" control-label" for="specialNeeds">Special needs or medical conditions</label>
                         <div class="">

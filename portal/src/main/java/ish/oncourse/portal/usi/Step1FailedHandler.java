@@ -15,30 +15,25 @@ public class Step1FailedHandler extends Step1Handler{
     @Override
     public Map<String, Value> getValue() {
 
-        Map<String, Value> values = new HashMap<>();
-
         Contact contact = getUsiController().getContact();
+        String timeZone = getUsiController().getContact().getCollege().getTimeZone();
         Date date = getUsiController().getContact().getDateOfBirth();
-        values.put(Contact.DATE_OF_BIRTH_PROPERTY, Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (Object) (date != null ?
-                FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, getUsiController().getContact().getCollege().getTimeZone()).format(date) :
+        addValue(Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (Object) (date != null ?
+                FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(date) :
                 null)));
-        values.put(Contact.GIVEN_NAME_PROPERTY, Value.valueOf(Contact.GIVEN_NAME_PROPERTY, (Object) contact.getGivenName()));
-        values.put(Contact.FAMILY_NAME_PROPERTY, Value.valueOf(Contact.FAMILY_NAME_PROPERTY, (Object) contact.getFamilyName()));
-        return values;
+        addValue(Value.valueOf(Contact.GIVEN_NAME_PROPERTY, contact.getGivenName()));
+        addValue(Value.valueOf(Contact.FAMILY_NAME_PROPERTY, contact.getFamilyName()));
+        return value;
     }
 
     @Override
     public Step1FailedHandler handle(Map<String, Value> inputValues) {
         this.inputValues = inputValues;
-        result = new HashMap<>();
-        Value inputValue = inputValues.get(Contact.DATE_OF_BIRTH_PROPERTY);
-        parseDateOfBirth(inputValue);
 
-        inputValue = inputValues.get(Contact.GIVEN_NAME_PROPERTY);
-        parseRequiredValue(Contact.GIVEN_NAME_PROPERTY, inputValue, getUsiController().getContact());
+        handleDateOfBirth(Contact.DATE_OF_BIRTH_PROPERTY);
 
-        inputValue = inputValues.get(Contact.FAMILY_NAME_PROPERTY);
-        parseRequiredValue(Contact.FAMILY_NAME_PROPERTY, inputValue, getUsiController().getContact());
+        handleRequiredValue(getUsiController().getContact(), Contact.GIVEN_NAME_PROPERTY);
+        handleRequiredValue(getUsiController().getContact(), Contact.FAMILY_NAME_PROPERTY);
         return this;
     }
 }

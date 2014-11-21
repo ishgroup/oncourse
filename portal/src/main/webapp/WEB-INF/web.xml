@@ -30,8 +30,33 @@
 		<filter-name>app</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	<listener>
+
+    <!--CheckDBVersionListener validates that all liquibase changeSets are applied. -->
+    <context-param>
+        <param-name>liquibase.changelog</param-name>
+        <param-value>liquibase.db.changelog.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>liquibase.datasource</param-name>
+        <param-value>java:comp/env/jdbc/oncourse</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>liquibase.onerror.fail</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>liquibase.contexts</param-name>
+        <param-value>production</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>ish.oncourse.listeners.CheckDBVersionListener</listener-class>
+    </listener>
+
+    <listener>
   		<listener-class>ish.oncourse.listeners.TheLeakPreventionListener</listener-class>
   	</listener>
   	
