@@ -74,8 +74,8 @@ public class Step3Handler extends AbstractStepHandler {
             super.handleCountryValue(contact, key);
         } else {
             if (isRequiredField(key)) {
-                result.put(key, Value.valueOf(key, null, getUsiController().getMessages().format("message-fieldRequired")));
-                hasErrors = true;
+                result.addValue(Value.valueOf(key, null, getUsiController().getMessages().format("message-fieldRequired")));
+                result.setHasErrors(true);
             }
         }
     }
@@ -85,15 +85,15 @@ public class Step3Handler extends AbstractStepHandler {
         Value inputValue = inputValues.get("isMale");
 
         if (inputValue == null) {
-            result.put(key, Value.valueOf(key, null, getUsiController().getMessages().format("message-fieldRequired")));
-            hasErrors = true;
+            result.addValue(Value.valueOf(key, null, getUsiController().getMessages().format("message-fieldRequired")));
+            result.setHasErrors(true);
         } else {
             if (inputValue.getValue().equals("male")) {
                 contact.setIsMale(Boolean.TRUE);
             } else if (inputValue.getValue().equals("female")) {
                 contact.setIsMale(Boolean.FALSE);
             }
-            result.put(key, Value.valueOf(key, contact.getIsMale()));
+            result.addValue(Value.valueOf(key, contact.getIsMale()));
         }
     }
 

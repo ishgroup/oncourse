@@ -1,21 +1,22 @@
 package ish.oncourse.portal.usi;
 
-import ish.common.util.DisplayableExtendedEnumeration;
-import ish.oncourse.components.AvetmissStrings;
+import ish.common.types.StudyReason;
 import ish.oncourse.model.Country;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.Student;
 import ish.oncourse.selectutils.BooleanSelection;
 import ish.oncourse.util.MessagesNamingConvention;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneDataObject;
-import org.apache.commons.beanutils.BeanUtilsBean2;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
-import org.apache.tapestry5.ioc.Messages;
-import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static ish.oncourse.model.Student.LABOUR_FORCE_STATUS_PROPERTY;
 import static ish.oncourse.model.auto._Student.*;
@@ -25,8 +26,7 @@ import static ish.oncourse.portal.usi.UsiController.Step.step3;
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
 public class Step2Handler extends AbstractStepHandler {
-
-
+    private static final Pattern ENROLMENT_KEY_PATTERN = Pattern.compile("^enrolment-([0-9]+)$");
 
     @Override
     public Map<String, Value> getValue() {
@@ -55,7 +55,27 @@ public class Step2Handler extends AbstractStepHandler {
         addValue(getEnumValue(student, LABOUR_FORCE_STATUS_PROPERTY));
         addValue(getEnumValue(student, DISABILITY_TYPE_PROPERTY));
         addValue(getBooleanSelectionValue(student, IS_STILL_AT_SCHOOL_PROPERTY));
+
+        List<Enrolment> enrolments = getUsiController().getVETEnrolments();
+        for (Enrolment enrolment : enrolments) {
+            addValue(getEnrolmentValue(enrolment));
+        }
         return this.value;
+    }
+
+    private Value getEnrolmentValue(Enrolment enrolment) {
+        String key = String.format("enrolment-%d", enrolment.getId());
+
+        StudyReason[] studyReasons = StudyReason.values();
+        String value = null;
+        Value[] options = new Value[studyReasons.length];
+        for (int i = 0; i < studyReasons.length; i++) {
+            StudyReason studyReason = studyReasons[i];
+            options[i] = Value.valueOf(studyReason.name(), studyReason.getDisplayName());
+            if (studyReason.getDatabaseValue().equals(enrolment.getReasonForStudy()))
+                value = studyReason.name();
+        }
+        return Value.valueOf(key, value, null, options);
     }
 
 
@@ -70,51 +90,46 @@ public class Step2Handler extends AbstractStepHandler {
         return Value.valueOf(key, value.name(), null, options);
     }
 
-    private Value getEnumValue(CayenneDataObject entity, String key) {
-        try {
-
-            Enum property = (Enum) BeanUtilsBean2.getInstance().getPropertyUtils().getProperty(entity, key);
-            Class enumClass = BeanUtilsBean2.getInstance().getPropertyUtils().getPropertyType(entity, key);
-            Object value = null;
-            if (property != null) {
-                value = property.name();
-            }
-
-            Enum[] enumValues = (Enum[]) MethodUtils.invokeExactStaticMethod(enumClass, "values");
-            Value[] options = new Value[enumValues.length];
-            for (int i = 0; i < enumValues.length; i++) {
-                Enum enumValue = enumValues[i];
-                if (enumValue instanceof DisplayableExtendedEnumeration) {
-                    options[i] = Value.valueOf(enumValue.name(), ((DisplayableExtendedEnumeration) enumValue).getDisplayName());
-                }
-            }
-            return Value.valueOf(key, value, null, options);
-        } catch (Exception e) {
-
-            throw new IllegalArgumentException(e);
-        }
-    }
-
     @Override
     public UsiController.Step getNextStep() {
         return step3;
     }
 
     public Step2Handler handle(Map<String, Value> input) {
-        this.result = new HashMap<>();
         this.inputValues = input;
         Student student = getUsiController().getContact().getStudent();
 
-        handleEnumValue(student, ENGLISH_PROFICIENCY_PROPERTY);
-        handleEnumValue(student, INDIGENOUS_STATUS_PROPERTY);
-        handleEnumValue(student, HIGHEST_SCHOOL_LEVEL_PROPERTY);
-        handleEnumValue(student, PRIOR_EDUCATION_CODE_PROPERTY);
-        handleEnumValue(student, LABOUR_FORCE_STATUS_PROPERTY);
-        handleEnumValue(student, DISABILITY_TYPE_PROPERTY);
-        handleBooleanSelectionValue(student, IS_STILL_AT_SCHOOL_PROPERTY);
-        handleCountryValue(student, COUNTRY_OF_BIRTH_PROPERTY);
-        handleLanguageValue(student, LANGUAGE_HOME_PROPERTY);
-        handleYearSchoolCompleted(student, YEAR_SCHOOL_COMPLETED_PROPERTY);
+        Set<String> keys = inputValues.keySet();
+        for (String key : keys) {
+            switch (key) {
+                case ENGLISH_PROFICIENCY_PROPERTY:
+                case INDIGENOUS_STATUS_PROPERTY:
+                case HIGHEST_SCHOOL_LEVEL_PROPERTY:
+                case PRIOR_EDUCATION_CODE_PROPERTY:
+                case LABOUR_FORCE_STATUS_PROPERTY:
+                case DISABILITY_TYPE_PROPERTY:
+                    handleEnumValue(student, key);
+                    break;
+                case IS_STILL_AT_SCHOOL_PROPERTY:
+                    handleBooleanSelectionValue(student, IS_STILL_AT_SCHOOL_PROPERTY);
+                    break;
+                case COUNTRY_OF_BIRTH_PROPERTY:
+                    handleCountryValue(student, COUNTRY_OF_BIRTH_PROPERTY);
+                    break;
+                case LANGUAGE_HOME_PROPERTY:
+                    handleLanguageValue(student, LANGUAGE_HOME_PROPERTY);
+                    break;
+                case YEAR_SCHOOL_COMPLETED_PROPERTY:
+                    handleYearSchoolCompleted(student, YEAR_SCHOOL_COMPLETED_PROPERTY);
+                    break;
+                default:
+                    Matcher matcher = ENROLMENT_KEY_PATTERN.matcher(key);
+                    if (matcher.matches())
+                    {
+                        handleEnrolmentValue(key, Long.valueOf(matcher.group(0)));
+                    }
+            }
+        }
         return this;
     }
 
@@ -125,8 +140,8 @@ public class Step2Handler extends AbstractStepHandler {
             if (StringUtils.isNumeric(sYear)) {
                 student.setYearSchoolCompleted(Integer.valueOf(sYear));
             } else {
-                result.put(key, Value.valueOf(key, value.getValue(), avetmissMessages.format(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, key))));
-                hasErrors = true;
+                result.addValue(Value.valueOf(key, value.getValue(), avetmissMessages.format(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, key))));
+                result.setHasErrors(true);
             }
 
         }
@@ -138,10 +153,10 @@ public class Step2Handler extends AbstractStepHandler {
             Language language = getUsiController().getLanguageService().getLanguageByName((String) value.getValue());
             if (language != null) {
                 student.setLanguageHome(student.getObjectContext().localObject(language));
-                result.put(key, value);
+                result.addValue(value);
             } else {
-                result.put(key, Value.valueOf(key, value.getValue(), avetmissMessages.format(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, key))));
-                hasErrors = true;
+                result.addValue(Value.valueOf(key, value.getValue(), avetmissMessages.format(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, key))));
+                result.setHasErrors(true);
             }
         }
     }
@@ -150,21 +165,19 @@ public class Step2Handler extends AbstractStepHandler {
         Value value = inputValues.get(key);
         if (value != null && value.getValue() != null) {
             student.writeProperty(value.getKey(), BooleanSelection.valueOf((String) value.getValue()).getValue());
-            result.put(key, value);
+            result.addValue(value);
         }
     }
 
-
-    private void handleEnumValue(Student student, String key) {
+    private void handleEnrolmentValue(String key, Long enrolmentId)
+    {
         Value value = inputValues.get(key);
-        if (value != null && value.getValue() != null) {
-            try {
-                Class propertyClass = BeanUtilsBean2.getInstance().getPropertyUtils().getPropertyType(student, value.getKey());
-                BeanUtilsBean2.getInstance().getPropertyUtils().setProperty(student, value.getKey(),
-                        MethodUtils.invokeExactStaticMethod(propertyClass, "valueOf", (String) value.getValue()));
-                result.put(key, value);
-            } catch (Exception e) {
-                throw new IllegalArgumentException(e);
+        if (value != null && value.getValue() != null)
+        {
+            Enrolment enrolment = Cayenne.objectForPK(getUsiController().getContact().getObjectContext(), Enrolment.class, enrolmentId);
+            if (enrolment != null && enrolment.getStudent().getId().equals(getUsiController().getContact().getId()))
+            {
+                enrolment.setReasonForStudy(StudyReason.valueOf((String) value.getValue()).getDatabaseValue());
             }
         }
     }

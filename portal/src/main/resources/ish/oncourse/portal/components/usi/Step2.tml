@@ -1,61 +1,64 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
     <div id="usi-form" class="">
         <div class="row">
             <div class="col-sm-12">
                 <fieldset>
 
-                    
+
                     <div class="form-group">
                         <div class="bs-callout bs-callout-success">
                             <h5>Success!</h5>
-                            <p> <strong>You have provied sufficent information for your indentity to be verified.</strong> 
-                                <br />                        
-                                Some additional stistical information is requested for goverment educational planning. Completing these questions is optional.
+
+                            <p><strong>You have provided sufficient information for your identity to be
+                                verified.</strong>
+                                <br/>
+                                Some additional statistical information is requested for government educational planning.
+                                Completing these questions is optional.
                             </p>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class=" control-label" for="undertakeReason_1">
-                            Which best describes your main reason for undertaking the course Woodworking for Beginners on 14 July 2013.
-                        </label>
-                        <div class="">
-                            <select id="undertakeReason_1" name="undertakeReason_1" class="form-control">
-                                <option value="Not_stated">Not stated</option>
-                                <option value="Another_option">Another option</option>
-                                <option value="Another_option_3">Another option #3</option>
-                            </select>
-                        </div>
-                        <small class="help-block"></small>
-                    </div>
+                    <t:loop source="enrolments" value="enrolment">
+                        <div class="form-group">
+                            <label class=" control-label" for="enrolment-${enrolment.id}">
+                                <t:if test="enrolment.courseClass.startDate">
+                                    Which best describes your main reason for undertaking the
+                                    course ${enrolment.courseClass.course.name}
+                                    on ${formatDate(enrolment.courseClass.startDate)}.
+                                    <p:else>
+                                        Which best describes your main reason for undertaking the
+                                        course ${enrolment.courseClass.course.name}.
+                                    </p:else>
+                                </t:if>
+                            </label>
 
-                    <div class="form-group">
-                        <label class=" control-label" for="undertakeReason_2">
-                            Which best describes your main reason for undertaking the course French for Travelers on 28 July 2013.
-                        </label>
-                        <div class="">
-                            <select id="undertakeReason_2" name="undertakeReason_2" class="form-control">
-                                <option value="Not_stated">Not stated</option>
-                                <option value="Another_option">Another option</option>
-                                <option value="Another_option_3">Another option #3</option>
-                            </select>
+                            <div class="">
+                                <select id="enrolment-${enrolment.id}" name="enrolment-${enrolment.id}"
+                                        class="form-control">
+                                </select>
+                            </div>
+                            <small class="help-block"></small>
                         </div>
-                        <small class="help-block"></small>
-                    </div>
+                    </t:loop>
 
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="countryOfBirth">Country of birth</label>
+
                         <div class="">
-                            <input id="countryOfBirth" name="countryOfBirth" type="text" placeholder="For example, Australia" class="form-control input-md" required=""/>
+                            <input id="countryOfBirth" name="countryOfBirth" type="text"
+                                   placeholder="For example, Australia" class="form-control input-md" required=""/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
                     </div>
 
                     <div class="form-group has-feedback">
-                        <label class=" control-label" for="languageHome">What language do you normally speak at home?</label>
+                        <label class=" control-label" for="languageHome">What language do you normally speak at
+                            home?</label>
+
                         <div class="">
-                            <input id="languageHome" name="languageHome" type="text" placeholder="For example, English" class="form-control input-md" required=""/>
+                            <input id="languageHome" name="languageHome" type="text" placeholder="For example, English"
+                                   class="form-control input-md" required=""/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -63,57 +66,54 @@
 
                     <div class="form-group">
                         <label class=" control-label" for="englishProficiency">How well do you speak English?</label>
+
                         <div class="">
                             <select id="englishProficiency" name="englishProficiency" class="form-control">
-                                <option value="Please_select">Please select...</option>
-                                <option value="Beginner">Beginner</option>
-                                <option value="Intermediate">Intermediate</option>
-                                <option value="Freely">Freely</option>
                             </select>
                         </div>
                         <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
-                        <label class=" control-label" for="indigenousStatus">Are you of Aboriginal / Torres Straight Islander origin?</label>
+                        <label class=" control-label" for="indigenousStatus">Are you of Aboriginal / Torres Straight
+                            Islander origin?</label>
+
                         <div class="">
                             <select id="indigenousStatus" name="indigenousStatus" class="form-control">
-                                <option value="Please_select">Please select...</option>
-                                <option value="Option_1">Option #1</option>
-                                <option value="Option_2">Option #2</option>
                             </select>
                         </div>
                         <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
-                        <label class=" control-label" for="isStillAtSchool">Are you still attending secondary school?</label>
+                        <label class=" control-label" for="isStillAtSchool">Are you still attending secondary
+                            school?</label>
+
                         <div class="">
-                                <select id="isStillAtSchool" name="isStillAtSchool" class="form-control">
-                                <option value="Please_select">Please select...</option>
-                                <option value="Option_1">Option #1</option>
-                                <option value="Option_2">Option #2</option>
+                            <select id="isStillAtSchool" name="isStillAtSchool" class="form-control">
                             </select>
                         </div>
                         <small class="help-block"></small>
                     </div>
 
                     <div class="form-group">
-                        <label class=" control-label" for="highestSchoolLevel">What is your highest school level?</label>
+                        <label class=" control-label" for="highestSchoolLevel">What is your highest school
+                            level?</label>
+
                         <div class="">
                             <select id="highestSchoolLevel" name="highestSchoolLevel" class="form-control">
-                                <option value="Please_select">Please select...</option>
-                                <option value="Option_1">Option #1</option>
-                                <option value="Option_2">Option #2</option>
                             </select>
                         </div>
                         <small class="help-block"></small>
                     </div>
 
                     <div class="form-group has-feedback">
-                        <label class=" control-label" for="yearSchoolCompleted">In which year did you complete that school level?</label>
+                        <label class=" control-label" for="yearSchoolCompleted">In which year did you complete that
+                            school level?</label>
+
                         <div class="">
-                            <input id="yearSchoolCompleted" name="yearSchoolCompleted" type="text" placeholder="For example, 2014" class="form-control input-md" required=""/>
+                            <input id="yearSchoolCompleted" name="yearSchoolCompleted" type="text"
+                                   placeholder="For example, 2014" class="form-control input-md" required=""/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -123,11 +123,9 @@
                         <label class=" control-label" for="priorEducationCode">
                             What is your highest qualification level you have successfully completed?
                         </label>
+
                         <div class="">
                             <select id="priorEducationCode" name="priorEducationCode" class="form-control">
-                                <option value="Please_select">Please select...</option>
-                                <option value="Option_1">Option #1</option>
-                                <option value="Option_2">Option #2</option>
                             </select>
                         </div>
                         <small class="help-block"></small>
@@ -137,11 +135,9 @@
                         <label class=" control-label" for="labourForceStatus">
                             Of the following, which best describes your current employment status?
                         </label>
+
                         <div class="">
                             <select id="labourForceStatus" name="labourForceStatus" class="form-control">
-                                <option value="Please_select">Please select...</option>
-                                <option value="Option_1">Option #1</option>
-                                <option value="Option_2">Option #2</option>
                             </select>
                         </div>
                         <small class="help-block"></small>
@@ -151,11 +147,9 @@
                         <label class=" control-label" for="disabilityType">
                             Do you consider yourself to have a disability, impairment or long term condition?
                         </label>
+
                         <div class="">
                             <select id="disabilityType" name="disabilityType" class="form-control">
-                                <option value="Please_select">Please select...</option>
-                                <option value="Option_1">Option #1</option>
-                                <option value="Option_2">Option #2</option>
                             </select>
                         </div>
                         <small class="help-block"></small>

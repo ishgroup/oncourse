@@ -13,10 +13,30 @@ public class TestUSISevice implements IUSIVerificationService {
     @Override
     public USIVerificationResult verifyUsi(USIVerificationRequest request) {
         USIVerificationResult result = new USIVerificationResult();
-        result.setUsiStatus(USIVerificationStatus.VALID);
-        result.setDateOfBirthStatus(USIFieldStatus.MATCH);
-        result.setFirstNameStatus(USIFieldStatus.MATCH);
-        result.setLastNameStatus(USIFieldStatus.MATCH);
+
+        if (request.getUsiCode().endsWith("_W")) {
+            result.setUsiStatus(USIVerificationStatus.INVALID);
+        } else {
+            result.setUsiStatus(USIVerificationStatus.VALID);
+        }
+
+        if (request.getUsiCode().endsWith("_WL")) {
+            result.setLastNameStatus(USIFieldStatus.NO_MATCH);
+        } else {
+            result.setLastNameStatus(USIFieldStatus.MATCH);
+        }
+
+        if (request.getUsiCode().endsWith("_WF")) {
+            result.setFirstNameStatus(USIFieldStatus.NO_MATCH);
+        } else {
+            result.setFirstNameStatus(USIFieldStatus.MATCH);
+        }
+
+        if (request.getUsiCode().endsWith("_WD")) {
+            result.setDateOfBirthStatus(USIFieldStatus.NO_MATCH);
+        } else {
+            result.setDateOfBirthStatus(USIFieldStatus.MATCH);
+        }
         return result;
     }
 }

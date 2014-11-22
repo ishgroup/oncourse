@@ -4,14 +4,10 @@
 
 package ish.oncourse.portal.services;
 
-import ish.oncourse.model.Contact;
-import ish.oncourse.portal.pages.usi.Usi;
 import ish.oncourse.services.persistence.ICayenneService;
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.tapestry5.EventContext;
 import org.apache.tapestry5.Link;
+import org.apache.tapestry5.internal.AbstractEventContext;
 import org.apache.tapestry5.internal.EmptyEventContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderRequestParameters;
@@ -19,8 +15,13 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PageLinkTransformer implements PageRenderLinkTransformer {
+    //https://skillsoncourse.com.au/portal/usi/uniqueCode?valid=21140101&key=k9_S8uk68W5PoCvq5lSUp70sqQY
+    public static final Pattern REGEXP_USI_PATH = Pattern.compile("^/usi/(.*)$");
+    public static final Pattern REGEXP_USI_CONTEXT = Pattern.compile("^([^?.]*)?(.*)$");
+
 
     @Inject
     private ICayenneService cayenneService;
@@ -35,18 +36,27 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
     public PageRenderRequestParameters decodePageRenderRequest(Request request) {
         String path = request.getPath();
 
-        Matcher matcher = Usi.REGEXP_USI_PATH.matcher(path);
+        Matcher matcher = REGEXP_USI_PATH.matcher(path);
         if (matcher.matches()) {
+            matcher = REGEXP_USI_CONTEXT.matcher(matcher.group(1));
 
-            ObjectContext context = cayenneService.newNonReplicatingContext();
-            Expression expression = ExpressionFactory.matchAllExp(Contact.GIVEN_NAME_PROPERTY, "James");
-            expression = expression.andExp(ExpressionFactory.matchAllExp(Contact.FAMILY_NAME_PROPERTY, "Saum"));
-            expression = expression.andExp(ExpressionFactory.matchAllExp(Contact.EMAIL_ADDRESS_PROPERTY, "JamesKSaum@dayrep.com"));
+            EventContext eventContext = new EmptyEventContext();
+            if (matcher.matches())
+            {
+                final String uniqueCode = matcher.group(0);
+                eventContext = new AbstractEventContext() {
+                    @Override
+                    public int getCount() {
+                        return 1;
+                    }
 
-            SelectQuery query = new SelectQuery(Contact.class, expression);
-            Contact contact = (Contact) context.performQuery(query).get(0);
-            request.setAttribute(Usi.ATTR_usiContact, contact);
-            return new PageRenderRequestParameters("usi/usi", new EmptyEventContext(), false);
+                    @Override
+                    public <T> T get(Class<T> desiredType, int index) {
+                        return (T) uniqueCode;
+                    }
+                };
+            }
+            return new PageRenderRequestParameters("usi/usi", eventContext, false);
         }
 
         return null;

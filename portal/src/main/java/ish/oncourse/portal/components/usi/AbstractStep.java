@@ -3,7 +3,6 @@ package ish.oncourse.portal.components.usi;
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.usi.UsiController;
 import ish.oncourse.util.FormatUtils;
-import ish.oncourse.util.ValidateHandler;
 import org.apache.tapestry5.annotations.Parameter;
 
 import java.text.DateFormat;
@@ -17,10 +16,6 @@ public abstract class AbstractStep {
     @Parameter(required = true)
     private UsiController usiController;
 
-
-    public ValidateHandler getValidateHandler() {
-        return usiController.getValidateHandler();
-    }
 
     public Contact getContact() {
         return usiController.getContact();

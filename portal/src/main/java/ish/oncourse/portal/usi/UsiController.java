@@ -4,13 +4,11 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
-import ish.oncourse.portal.services.PortalUSIService;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.services.usi.IUSIVerificationService;
-import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.ioc.Messages;
@@ -27,7 +25,6 @@ public class UsiController {
     private IUSIVerificationService usiVerificationService;
     private ILanguageService languageService;
     private ICountryService countryService;
-    private PortalUSIService portalUSIService;
     private PreferenceController preferenceController;
     private ContactFieldHelper contactFieldHelper;
     private Messages messages;
@@ -36,8 +33,6 @@ public class UsiController {
 
     private AbstractStepHandler currentHandler;
     private Step step;
-
-    private ValidateHandler validateHandler = new ValidateHandler();
 
     private ValidationResult validationResult = new ValidationResult();
 
@@ -58,11 +53,6 @@ public class UsiController {
         this.contact = contact;
     }
 
-    public ValidateHandler getValidateHandler() {
-        return validateHandler;
-    }
-
-
     public ValidationResult getValidationResult() {
         return validationResult;
     }
@@ -71,16 +61,20 @@ public class UsiController {
         return step;
     }
 
-    public Map<String, Value> next(Map<String, Value> inputValue) {
+    public Result next(Map<String, Value> inputValue) {
+        validationResult.clear();
         currentHandler.init();
         StepHandler stepHandler = currentHandler.handle(inputValue);
-        if (!stepHandler.hasErrors()) {
+        Result result = stepHandler.getResult();
+        if (!result.hasErrors()) {
             if (step != stepHandler.getNextStep()) {
+                contact.getObjectContext().commitChanges();
                 step = stepHandler.getNextStep();
                 initCurrentHandler();
+                currentHandler.setPreviousResult(result);
             }
         }
-        return stepHandler.getResult();
+        return result;
     }
 
     private void initCurrentHandler() {
@@ -104,14 +98,6 @@ public class UsiController {
 
     public Map<String, Value> getValue() {
         return currentHandler.getValue();
-    }
-
-    public PortalUSIService getPortalUSIService() {
-        return portalUSIService;
-    }
-
-    public void setPortalUSIService(PortalUSIService portalUSIService) {
-        this.portalUSIService = portalUSIService;
     }
 
     public ILanguageService getLanguageService() {
@@ -172,11 +158,11 @@ public class UsiController {
         }
     }
 
-	public List<Enrolment> getExtraEmrolments() {
-		Expression extraEmrolments = ExpressionFactory.greaterExp(Enrolment.COURSE_CLASS_PROPERTY + "." + CourseClass.END_DATE_PROPERTY, new Date()).
+	public List<Enrolment> getVETEnrolments() {
+		Expression expression = ExpressionFactory.greaterExp(Enrolment.COURSE_CLASS_PROPERTY + "." + CourseClass.END_DATE_PROPERTY, new Date()).
 			andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY + "." + CourseClass.COURSE_PROPERTY + "." + Course.IS_VETCOURSE_PROPERTY, true));
 		if (contact.getStudent() != null) {
-			return extraEmrolments.filterObjects(contact.getStudent().getEnrolments()); 
+			return expression.filterObjects(contact.getStudent().getEnrolments());
 		} else {
 			return Collections.EMPTY_LIST;
 		}

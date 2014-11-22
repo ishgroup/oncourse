@@ -42,9 +42,9 @@ public class Step1Handler extends AbstractStepHandler {
     protected void handleDateOfBirth( String key) {
         Value inputValue = inputValues.get(key);
         Value value = new DateOfBirthParser().parse(inputValue, getUsiController());
-        result.put(Contact.DATE_OF_BIRTH_PROPERTY, value);
+        result.addValue(value);
         if (value.getError() != null) {
-            hasErrors = true;
+            result.setHasErrors(true);
         }
     }
 }

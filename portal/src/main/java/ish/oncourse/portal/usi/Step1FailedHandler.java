@@ -4,7 +4,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.util.FormatUtils;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,7 +17,7 @@ public class Step1FailedHandler extends Step1Handler{
         Contact contact = getUsiController().getContact();
         String timeZone = getUsiController().getContact().getCollege().getTimeZone();
         Date date = getUsiController().getContact().getDateOfBirth();
-        addValue(Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (Object) (date != null ?
+        addValue(Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (date != null ?
                 FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(date) :
                 null)));
         addValue(Value.valueOf(Contact.GIVEN_NAME_PROPERTY, contact.getGivenName()));

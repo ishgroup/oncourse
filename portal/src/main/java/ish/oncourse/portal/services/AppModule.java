@@ -37,6 +37,8 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 @SubModule({ModelModule.class, ServiceModule.class, TextileModule.class})
 public class AppModule {
 
+    private static final String SYSPROP_USE_TEST_USI_SERVICE = "ish.oncourse.portal.useTestUSIService";
+
     private static final String EXCEPTION_REDIRECT_PAGE = "login";
 
     private static final String HMAC_PASSPHRASE = "T88LkO4uVSAH72BSU85FzhI6e3O31N6J";
@@ -52,7 +54,10 @@ public class AppModule {
         binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
         binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
         binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
-        binder.bind(IUSIVerificationService.class, TestUSISevice.class);
+        if (System.getProperty(SYSPROP_USE_TEST_USI_SERVICE) != null && System.getProperty(SYSPROP_USE_TEST_USI_SERVICE).equals("true"))
+            binder.bind(IUSIVerificationService.class, TestUSISevice.class);
+        else
+            binder.bind(IUSIVerificationService.class, PortalUSIService.class);
     }
 
     @EagerLoad

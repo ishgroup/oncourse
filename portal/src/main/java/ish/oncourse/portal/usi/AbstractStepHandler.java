@@ -1,18 +1,19 @@
 package ish.oncourse.portal.usi;
 
+import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
-import ish.oncourse.model.Student;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean2;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -23,11 +24,13 @@ import java.util.*;
 public abstract class AbstractStepHandler implements StepHandler {
     protected Messages avetmissMessages = MessagesImpl.forClass(AvetmissStrings.class);
     private UsiController usiController;
-    protected Map<String, Value> result = Collections.emptyMap();
+
+    private Result previousResult;
+
+    protected Result result = new Result();
 
     protected Map<String, Value> value = Collections.emptyMap();
 
-    protected boolean hasErrors = false;
     protected Map<String, Value> inputValues;
 
     public UsiController getUsiController() {
@@ -40,13 +43,13 @@ public abstract class AbstractStepHandler implements StepHandler {
 
     public void init()
     {
-        result = new HashMap<>();
+        previousResult = new Result();
+        result = new Result();
         value = new HashMap<>();
-        hasErrors = false;
     }
 
     @Override
-    public Map<String, Value> getResult() {
+    public Result getResult() {
         return result;
     }
 
@@ -56,14 +59,19 @@ public abstract class AbstractStepHandler implements StepHandler {
     }
 
     protected  void addValue(Value value) {
+        Result pResult = getPreviousResult();
+        Value pValue = pResult.getValue().get(value.getKey());
+        if (pValue != null) {
+            value = Value.valueOf(value.getKey(), pValue.getValue(), pValue.getError(), value.isRequired(), value.getOptions().toArray(new Value[value.getOptions().size()]));
+        }
         this.value.put(value.getKey(), value);
     }
 
     protected <T> void handleRequiredValue(T entity, String key) {
         Value inputValue = inputValues.get(key);
         if (inputValue == null || inputValue.getValue() == null) {
-            result.put(key, Value.valueOf(key, null, getUsiController().getMessages().format("message-fieldRequired")));
-            hasErrors = true;
+            result.addValue(Value.valueOf(key, null, getUsiController().getMessages().format("message-fieldRequired")));
+            result.setHasErrors(true);
         } else {
             handleValue(entity, key);
         }
@@ -75,7 +83,7 @@ public abstract class AbstractStepHandler implements StepHandler {
             try {
                 Object value = inputValue.getValue();
                 BeanUtils.setProperty(entity, key, value);
-                result.put(key, Value.valueOf(key, inputValue.getValue()));
+                result.addValue(Value.valueOf(key, inputValue.getValue()));
             } catch (Exception e) {
                 throw new IllegalArgumentException(e);
             }
@@ -89,10 +97,10 @@ public abstract class AbstractStepHandler implements StepHandler {
                 Country country = getUsiController().getCountryService().getCountryByName((String) value.getValue());
                 if (country != null) {
                     BeanUtils.setProperty(entity, key, entity.getObjectContext().localObject(country));
-                    result.put(key, value);
+                    result.addValue(value);
                 } else {
-                    result.put(key, Value.valueOf(key, value.getValue(), avetmissMessages.format(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, key))));
-                    hasErrors = true;
+                    result.addValue(Value.valueOf(key, value.getValue(), avetmissMessages.format(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, key))));
+                    result.setHasErrors(true);
                 }
             }
         } catch (Exception e) {
@@ -100,9 +108,53 @@ public abstract class AbstractStepHandler implements StepHandler {
         }
     }
 
+    protected <T extends CayenneDataObject> Value getEnumValue(T entity, String key) {
+        try {
+
+            Enum property = (Enum) BeanUtilsBean2.getInstance().getPropertyUtils().getProperty(entity, key);
+            Class enumClass = BeanUtilsBean2.getInstance().getPropertyUtils().getPropertyType(entity, key);
+            Object value = null;
+            if (property != null) {
+                value = property.name();
+            }
+
+            Enum[] enumValues = (Enum[]) MethodUtils.invokeExactStaticMethod(enumClass, "values");
+            Value[] options = new Value[enumValues.length];
+            for (int i = 0; i < enumValues.length; i++) {
+                Enum enumValue = enumValues[i];
+                if (enumValue instanceof DisplayableExtendedEnumeration) {
+                    options[i] = Value.valueOf(enumValue.name(), ((DisplayableExtendedEnumeration) enumValue).getDisplayName());
+                }
+            }
+            return Value.valueOf(key, value, null, options);
+        } catch (Exception e) {
+
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+
+    protected <T extends CayenneDataObject> void handleEnumValue(T entity, String key) {
+        Value value = inputValues.get(key);
+        if (value != null && value.getValue() != null) {
+            try {
+                Class propertyClass = BeanUtilsBean2.getInstance().getPropertyUtils().getPropertyType(entity, value.getKey());
+                BeanUtilsBean2.getInstance().getPropertyUtils().setProperty(entity, value.getKey(),
+                        MethodUtils.invokeExactStaticMethod(propertyClass, "valueOf", (String) value.getValue()));
+                result.addValue(value);
+            } catch (Exception e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+    }
+
     @Override
-    public boolean hasErrors() {
-        return hasErrors;
+    public Result getPreviousResult() {
+        return previousResult;
+    }
+
+    public void setPreviousResult(Result previousResult) {
+        this.previousResult = previousResult;
     }
 
     public static class DateOfBirthParser {

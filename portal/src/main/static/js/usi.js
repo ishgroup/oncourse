@@ -1,5 +1,5 @@
-//goog.provide('usi');
-//goog.require('jquery');
+goog.provide('usi');
+goog.require('jquery');
 
 var $j = jQuery.noConflict();
 
@@ -103,7 +103,6 @@ Usi.prototype = {
                 self.showData();
                 if (!data.hasErrors)
                     window.location.reload();
-
                 if (data.step == 'wait') {
                     self.reloadByTimeout();
                 }
@@ -119,7 +118,7 @@ Usi.prototype = {
 
 
 $j('document').ready(function () {
-    if ($j('#usi-page')) {
+    if ($j('#usi-page').length != 0) {
         new Usi().initialize();
     }
 });

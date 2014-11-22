@@ -6,7 +6,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-	<t:any element="meta" name="generator" content="prop:metaGeneratorContent"/>
+	<t:any element="meta" name="generator" content="${metaGeneratorContent}"/>
 
 	<title>${title}</title>
 
@@ -22,7 +22,7 @@
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;"></script>
 
-    <script type="text/javascript" src="/portal/js/portal-min.js"></script>
+    <script type="text/javascript" src="/portal/js/portal-min.js?${metaGeneratorContent}"></script>
 
     <script type="text/javascript" src="/portal/dev/usi.js"></script>
 

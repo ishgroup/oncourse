@@ -2,8 +2,8 @@ package ish.oncourse.portal.access;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.annotations.UserRole;
-import ish.oncourse.portal.pages.usi.Usi;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PageLinkTransformer;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.runtime.Component;
@@ -52,7 +52,7 @@ public class AccessController implements Dispatcher {
                 return true;
         }
 
-        Matcher matcher = Usi.REGEXP_USI_PATH.matcher(path.toLowerCase());
+        Matcher matcher = PageLinkTransformer.REGEXP_USI_PATH.matcher(path.toLowerCase());
         if (matcher.matches()) {
             return false;
         }

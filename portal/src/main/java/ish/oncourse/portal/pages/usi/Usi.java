@@ -2,6 +2,7 @@ package ish.oncourse.portal.pages.usi;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.pages.PageNotFound;
+import ish.oncourse.portal.usi.Result;
 import ish.oncourse.portal.usi.UsiController;
 import ish.oncourse.portal.usi.ValidationResult;
 import ish.oncourse.portal.usi.Value;
@@ -11,7 +12,8 @@ import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.services.usi.IUSIVerificationService;
-import ish.oncourse.util.ValidateHandler;
+import ish.oncourse.util.URLUtils;
+import ish.util.UrlUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -27,10 +29,10 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
 
@@ -38,10 +40,6 @@ import static ish.oncourse.services.preference.PreferenceController.ContactFiled
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
 public class Usi {
-
-    public static final String ATTR_usiContact = "usiContact";
-    public static final Pattern REGEXP_USI_PATH = Pattern.compile("^/usi/(.)*$");
-
     @Inject
     @Property
     private Request request;
@@ -72,47 +70,39 @@ public class Usi {
     public Object onActivate() {
 
         if (usiController == null) {
-            Contact contact = (Contact) request.getAttribute(ATTR_usiContact);
-            if (contact == null) {
-                return PageNotFound.class;
-            }
-            usiController = new UsiController();
-            usiController.setContact(contact);
-            usiController.setCountryService(countryService);
-            usiController.setLanguageService(languageService);
-            usiController.setPreferenceController(preferenceControllerFactory.getPreferenceController(contact.getCollege()));
-            usiController.setContactFieldHelper(new ContactFieldHelper(usiController.getPreferenceController(), enrolment));
-            usiController.setUsiVerificationService(usiVerificationService);
-
-            usiController.setMessages(messages);
-            usiController.getValidationResult().setMessages(messages);
-            usiController.getValidationResult().addError("message-invalidUsi");
-            usiController.getValidationResult().addError("message-personalDetailsNotMatch");
-            return null;
+            return PageNotFound.class;
         } else {
             return null;
         }
     }
 
     public Object onActivate(String uniqueCode) {
-        validateUrl();
+        if (usiController == null) {
+            Contact contact = parseUrl(uniqueCode);
+            if (contact != null) {
+                initUsiController(contact);
+                return null;
+            } else {
+                return PageNotFound.class;
+            }
+        } else {
+            return null;
+        }
+    }
 
-
-        ObjectContext context = cayenneService.newNonReplicatingContext();
-        Expression expression = ExpressionFactory.matchAllExp(Contact.GIVEN_NAME_PROPERTY, "James");
-        expression = expression.andExp(ExpressionFactory.matchAllExp(Contact.GIVEN_NAME_PROPERTY, "Saum"));
-        expression = expression.andExp(ExpressionFactory.matchAllExp(Contact.EMAIL_ADDRESS_PROPERTY, "JamesKSaum@dayrep.com"));
-
-        SelectQuery query = new SelectQuery(Contact.class, expression);
-        Contact contact = (Contact) context.performQuery(query).get(0);
+    private void initUsiController(Contact contact) {
+        ObjectContext context = cayenneService.newContext();
         usiController = new UsiController();
-        usiController.setContact(contact);
-        return null;
+        usiController.setContact(context.localObject(contact));
+        usiController.setCountryService(countryService);
+        usiController.setLanguageService(languageService);
+        usiController.setPreferenceController(preferenceControllerFactory.getPreferenceController(contact.getCollege()));
+        usiController.setContactFieldHelper(new ContactFieldHelper(usiController.getPreferenceController(), enrolment));
+        usiController.setUsiVerificationService(usiVerificationService);
+        usiController.setMessages(messages);
+        usiController.getValidationResult().setMessages(messages);
     }
 
-    public ValidateHandler getValidateHandler() {
-        return usiController.getValidateHandler();
-    }
 
     public ValidationResult getValidationResult() {
         return usiController.getValidationResult();
@@ -122,33 +112,34 @@ public class Usi {
         return usiController.getContact();
     }
 
-    private void validateUrl() {
-        //https://skillsoncourse.com.au/portal/usi/uniqueCode?valid=21140101&key=k9_S8uk68W5PoCvq5lSUp70sqQY
-//        String key = request.getParameter(UrlUtil.KEY);
-//        String valid = request.getParameter(UrlUtil.VALID_UNTIL);
-//
-//        if (key == null || valid == null) {
-//            return PageNotFound.class;
-//        }
-//        String url = String.format("%s?valid=%s&key=%s", URLUtils.buildURLString(request, request.getPath(), true), valid, key);
-//        ObjectContext context = cayenneService.newNonReplicatingContext();
-//        Expression expression = ExpressionFactory.matchAllExp(Contact.UNIQUE_CODE_PROPERTY, uniqueCode);
-//        SelectQuery<Contact> query = new SelectQuery<>(Contact.class, expression);
-//
-//        List<Contact> contacts = context.performQuery(query);
-//        if (contacts.isEmpty()) {
-//            return PageNotFound.class;
-//        }
-//
-//        if (contacts.size() > 1) {
-//            throw new IllegalStateException(String.format("% is not unique", uniqueCode));
-//        }
-//
-//        Contact contact = contacts.get(0);
-//
-//        if (!UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
-//            return PageNotFound.class;
-//        }
+    private Contact parseUrl(String uniqueCode) {
+
+        String key = request.getParameter(UrlUtil.KEY);
+        String valid = request.getParameter(UrlUtil.VALID_UNTIL);
+
+        if (key == null || valid == null) {
+            return null;
+        }
+        String url = String.format("%s?valid=%s&key=%s", URLUtils.buildURLString(request, request.getPath(), true), valid, key);
+        ObjectContext context = cayenneService.newNonReplicatingContext();
+        Expression expression = ExpressionFactory.matchAllExp(Contact.UNIQUE_CODE_PROPERTY, uniqueCode);
+        SelectQuery query = new SelectQuery(Contact.class, expression);
+
+        List<Contact> contacts = context.performQuery(query);
+        if (contacts.isEmpty()) {
+            return null;
+        }
+
+        if (contacts.size() > 1) {
+            throw new IllegalStateException(String.format("% is not unique", uniqueCode));
+        }
+
+        Contact contact = contacts.get(0);
+
+        if (!UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
+            return null;
+        }
+        return contact;
     }
 
     @OnEvent(value = "next")
@@ -156,30 +147,25 @@ public class Usi {
         List<String> keys = request.getParameterNames();
         HashMap<String, Value> inputValues = new HashMap<>();
         for (String key : keys) {
-            inputValues.put(key, Value.valueOf(key, (Object) StringUtils.trimToNull(request.getParameter(key))));
+            inputValues.put(key, Value.valueOf(key, StringUtils.trimToNull(request.getParameter(key))));
         }
 
-        Map<String, Value> values = usiController.next(inputValues);
-        JSONObject result = getJSONObject(values);
-        return new TextStreamResponse("text/json", result.toString());
+        Result result = usiController.next(inputValues);
+        JSONObject jsoResult = new JSONObject();
+        JSONArray jsonArray = getJSONValues(result.getValue());
+        jsoResult.put("values", jsonArray);
+        jsoResult.put("hasErrors", result.hasErrors());
+        jsoResult.put("step", usiController.getStep().name());
+        return new TextStreamResponse("text/json", jsoResult.toString());
     }
 
-    private JSONObject getJSONObject(Map<String, Value> values) {
-        JSONObject result = new JSONObject();
+    private JSONArray getJSONValues(Map<String, Value> values) {
         JSONArray jsonValues = new JSONArray();
-        boolean hasErrors = false;
         for (Map.Entry<String, Value> value : values.entrySet()) {
             JSONObject jsonValue = getJSONValue(value.getValue());
-
-            if (value.getValue().getError() != null) {
-                hasErrors = true;
-            }
             jsonValues.put(jsonValue);
         }
-        result.put("values", jsonValues);
-        result.put("hasErrors", hasErrors);
-        result.put("step", usiController.getStep().name());
-        return result;
+        return jsonValues;
     }
 
     private JSONObject getJSONValue(Value value) {
@@ -194,8 +180,7 @@ public class Usi {
         }
 
         List<Value> options = value.getOptions();
-        if (options.size() > 0)
-        {
+        if (options.size() > 0) {
             JSONArray jsonOptions = new JSONArray();
             for (Value option : options) {
                 jsonOptions.put(getJSONValue(option));
@@ -209,7 +194,12 @@ public class Usi {
     @OnEvent(value = "value")
     public Object value() {
         Map<String, Value> values = usiController.getValue();
-        JSONObject result = getJSONObject(values);
-        return new TextStreamResponse("text/json", result.toString());
+        JSONObject jsonResult = new JSONObject();
+        JSONArray jsonArray = getJSONValues(values);
+        jsonResult.put("values", jsonArray);
+        jsonResult.put("hasErrors", false);
+        jsonResult.put("step", usiController.getStep().name());
+
+        return new TextStreamResponse("text/json", jsonResult.toString());
     }
 }
