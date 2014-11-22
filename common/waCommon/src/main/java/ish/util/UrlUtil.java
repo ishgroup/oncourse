@@ -20,15 +20,15 @@ public class UrlUtil {
 	
 	public static final String PORTAL_URL = "https://skillsoncourse.com.au/portal";
 	
-	private static final String EXPIRY_DATE_FORMAT = "yyyyMMdd";
+	public static final String EXPIRY_DATE_FORMAT = "yyyyMMdd";
 	
 	private static final String URL_PARAM_START = "?";
 	private static final String URL_PARAM_DELIMITER = "&";
 	private static final String URL_PART_DELIMITER = "/";
 	
 	private static final String USI_PART = "usi";
-	private static final String VALID_UNTIL = "valid=";
-	private static final String KEY = "key=";
+	public static final String VALID_UNTIL = "valid";
+	public static final String KEY = "key";
 
 	/**
 	 * Creates link to portal's USI details entry page and signs it with hash.
@@ -66,7 +66,7 @@ public class UrlUtil {
 		urlBuilder.append(URL_PART_DELIMITER);
 		urlBuilder.append(contactCode);
 		urlBuilder.append(URL_PARAM_START);
-		urlBuilder.append(VALID_UNTIL);
+		urlBuilder.append(VALID_UNTIL).append('=');
 		urlBuilder.append(expiryDateFormat.format(expiry));
 		
 		String unsignedUrl = urlBuilder.toString();
@@ -74,7 +74,7 @@ public class UrlUtil {
 		String hashKey = sha1Base64(hashSalt + unsignedUrl);
 		
 		urlBuilder.append(URL_PARAM_DELIMITER);
-		urlBuilder.append(KEY);
+		urlBuilder.append(KEY).append('=');
 		urlBuilder.append(hashKey);
 		
 		return PORTAL_URL + urlBuilder.toString();

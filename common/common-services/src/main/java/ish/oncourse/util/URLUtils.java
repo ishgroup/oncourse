@@ -34,17 +34,18 @@ public class URLUtils {
     }
 
     public static URL buildURL(Request request, String path, boolean includeContext) throws MalformedURLException {
+
+        return new URL(buildURLString(request, path, includeContext));
+    }
+
+    public static String buildURLString(Request request, String path, boolean includeContext) {
         String schema = request.isSecure() ? "https" : "http";
         String hostName = request.getServerName();
         String context = request.getContextPath();
-        if (StringUtils.trimToNull(context) == null || !includeContext)
-        {
-            return new URL(String.format(URL_PATTERN_WITHOUT_CONTEXT, schema, hostName, path));
-        }
-        else
-        {
-            return new URL(String.format(URL_PATTERN, schema, hostName, context, path));
+        if (StringUtils.trimToNull(context) == null || !includeContext) {
+            return String.format(URL_PATTERN_WITHOUT_CONTEXT, schema, hostName, path);
+        } else {
+            return String.format(URL_PATTERN, schema, hostName, context, path);
         }
     }
-
 }
