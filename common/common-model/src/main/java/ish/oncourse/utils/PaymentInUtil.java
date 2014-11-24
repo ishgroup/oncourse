@@ -3,6 +3,7 @@
  */
 package ish.oncourse.utils;
 
+import ish.common.types.ApplicationStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
@@ -82,6 +83,7 @@ public class PaymentInUtil {
 				enrol.setModified(date);
 				if (enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
 					enrol.setStatus(enrolmentStatus);
+					updateApplicationStatusToAcceptedByEnrolment(enrol);
 				}
 			}
 
@@ -143,4 +145,19 @@ public class PaymentInUtil {
             voucherPaymentIn.setModified(new Date());
         }
     }
+
+
+	private static void updateApplicationStatusToAcceptedByEnrolment(Enrolment enrolment) {
+		List<Application> applications = enrolment.getStudent().getApplications();
+		if (!applications.isEmpty()) {
+			Expression exp = ExpressionFactory.matchExp(Application.STATUS_PROPERTY, ApplicationStatus.OFFERED)
+					.andExp(ExpressionFactory.matchExp(Application.COURSE_PROPERTY, enrolment.getCourseClass().getCourse()))
+					.andExp(ExpressionFactory.matchExp(Application.STUDENT_PROPERTY, enrolment.getStudent()));
+			List<Application> appList = exp.filterObjects(applications);
+			if (!appList.isEmpty()) {
+				Application app = appList.get(0);
+				app.setStatus(ApplicationStatus.ACCEPTED);
+			}
+		}
+	}
 }
