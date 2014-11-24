@@ -221,11 +221,6 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 			}
 		}
 		super.setStatus(status);
-
-		//update application status to accepted if student has enroled;
-		if (EnrolmentStatus.SUCCESS.equals(getStatus())) {
-			Application.updateApplicationStatusToAccepted(getObjectContext(), getCourseClass().getCourse(), getStudent());
-		}	
 	}
 
 	@Override
