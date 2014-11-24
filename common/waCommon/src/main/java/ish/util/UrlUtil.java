@@ -30,6 +30,8 @@ public class UrlUtil {
 	public static final String VALID_UNTIL = "valid";
 	public static final String KEY = "key";
 
+    public static final Pattern REGEXP_linkPattern = Pattern.compile("https://(.*)/portal(.*)&key=");
+
 	/**
 	 * Creates link to portal's USI details entry page and signs it with hash.
 	 * 
@@ -90,12 +92,11 @@ public class UrlUtil {
 	 * @return - true if URL is valid and not expired
 	 */
 	public static boolean validatePortalUsiLink(String link, String salt, Date validUntil) {
-		Pattern linkPattern = Pattern.compile("/portal(.*)&key=");
 
-		Matcher linkMatcher = linkPattern.matcher(link);
+		Matcher linkMatcher = REGEXP_linkPattern.matcher(link);
 		
 		if (linkMatcher.find()) {
-			String strippedLink = linkMatcher.group(1);
+			String strippedLink = linkMatcher.group(2);
 			
 			Pattern expiryPattern = Pattern.compile("valid=(.*)");
 			Matcher expiryMatcher = expiryPattern.matcher(strippedLink);
