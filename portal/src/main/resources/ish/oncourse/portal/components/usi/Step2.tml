@@ -12,8 +12,7 @@
                             <p><strong>You have provided sufficient information for your identity to be
                                 verified.</strong>
                                 <br/>
-                                Some additional statistical information is requested for government educational planning.
-                                Completing these questions is optional.
+                                Some additional statistical information is requested for government educational planning. Completing these questions is optional.
                             </p>
                         </div>
                     </div>
@@ -32,7 +31,7 @@
                                 </t:if>
                             </label>
 
-                            <div class="">
+                            <div class="field-holder">
                                 <select id="enrolment-${enrolment.id}" name="enrolment-${enrolment.id}"
                                         class="form-control">
                                 </select>
@@ -44,9 +43,9 @@
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="countryOfBirth">Country of birth</label>
 
-                        <div class="">
+                        <div class="field-holder">
                             <input id="countryOfBirth" name="countryOfBirth" type="text"
-                                   placeholder="For example, Australia" class="form-control input-md" required=""/>
+                                   placeholder="For example, Australia" class="form-control input-md" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -56,9 +55,8 @@
                         <label class=" control-label" for="languageHome">What language do you normally speak at
                             home?</label>
 
-                        <div class="">
-                            <input id="languageHome" name="languageHome" type="text" placeholder="For example, English"
-                                   class="form-control input-md" required=""/>
+                        <div class="field-holder">
+                            <input id="languageHome" name="languageHome" type="text" placeholder="For example, English" class="form-control input-md" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -67,7 +65,7 @@
                     <div class="form-group">
                         <label class=" control-label" for="englishProficiency">How well do you speak English?</label>
 
-                        <div class="">
+                        <div class="field-holder">
                             <select id="englishProficiency" name="englishProficiency" class="form-control">
                             </select>
                         </div>
@@ -75,10 +73,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label class=" control-label" for="indigenousStatus">Are you of Aboriginal / Torres Straight
-                            Islander origin?</label>
+                        <label class=" control-label" for="indigenousStatus">Are you of Aboriginal / Torres Straight Islander origin?</label>
 
-                        <div class="">
+                        <div class="field-holder">
                             <select id="indigenousStatus" name="indigenousStatus" class="form-control">
                             </select>
                         </div>
@@ -89,7 +86,7 @@
                         <label class=" control-label" for="isStillAtSchool">Are you still attending secondary
                             school?</label>
 
-                        <div class="">
+                        <div class="field-holder">
                             <select id="isStillAtSchool" name="isStillAtSchool" class="form-control">
                             </select>
                         </div>
@@ -97,10 +94,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label class=" control-label" for="highestSchoolLevel">What is your highest school
-                            level?</label>
+                        <label class=" control-label" for="highestSchoolLevel">What is your highest completed school level?</label>
 
-                        <div class="">
+                        <div class="field-holder">
                             <select id="highestSchoolLevel" name="highestSchoolLevel" class="form-control">
                             </select>
                         </div>
@@ -108,12 +104,11 @@
                     </div>
 
                     <div class="form-group has-feedback">
-                        <label class=" control-label" for="yearSchoolCompleted">In which year did you complete that
-                            school level?</label>
+                        <label class=" control-label" for="yearSchoolCompleted">In which year did you complete that school level?</label>
 
-                        <div class="">
+                        <div class="field-holder">
                             <input id="yearSchoolCompleted" name="yearSchoolCompleted" type="text"
-                                   placeholder="For example, 2014" class="form-control input-md" required=""/>
+                                   placeholder="For example, 2014" class="form-control input-md" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -124,7 +119,7 @@
                             What is your highest qualification level you have successfully completed?
                         </label>
 
-                        <div class="">
+                        <div class="field-holder">
                             <select id="priorEducationCode" name="priorEducationCode" class="form-control">
                             </select>
                         </div>
@@ -136,7 +131,7 @@
                             Of the following, which best describes your current employment status?
                         </label>
 
-                        <div class="">
+                        <div class="field-holder">
                             <select id="labourForceStatus" name="labourForceStatus" class="form-control">
                             </select>
                         </div>
@@ -148,7 +143,7 @@
                             Do you consider yourself to have a disability, impairment or long term condition?
                         </label>
 
-                        <div class="">
+                        <div class="field-holder">
                             <select id="disabilityType" name="disabilityType" class="form-control">
                             </select>
                         </div>

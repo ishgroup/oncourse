@@ -4,7 +4,7 @@
             <div class="col-sm-12">
                 <fieldset>
 
-                    <p>Please wait while we verify your USI identification details</p>
+                    <p>Please wait while we verify your USI identification details.</p>
 
                     <div class="progress">
                         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">

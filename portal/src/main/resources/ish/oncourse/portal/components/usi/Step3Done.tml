@@ -6,11 +6,10 @@
 
                     <div class="form-group">
                         <div class="bs-callout bs-callout-info">
-                            <h5>Update your personal detail</h5>
+                            <h5>Update your personal details</h5>
                             <p> <strong>All your contact details were provided during the enrolment process. Thank you.</strong> 
                                 <br />                        
-                                You can log on to
-                                <a class="alert-link" href="#">https://skillsoncourse.com.au</a>
+                                You can log in to <a class="alert-link" href="https://skillsoncourse.com.au">https://skillsoncourse.com.au</a>
                                 at any time if you wish to make changes to your preferred contact methods.
                             </p>
                         </div>
