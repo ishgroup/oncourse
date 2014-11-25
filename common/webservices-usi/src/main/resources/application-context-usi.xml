@@ -8,12 +8,7 @@
 			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<context:annotation-config />
-
-	<import resource="classpath:META-INF/cxf/cxf.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	
-	<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
 	<bean id="ausKeyCryptoService" class="ish.oncourse.webservices.usi.crypto.AUSKeyCryptoService"/>
 
 	<cxf:bus id="usiClientBus" name="usiClientBus">

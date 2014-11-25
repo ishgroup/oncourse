@@ -12,6 +12,7 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<import resource="classpath:application-context-usi.xml" />
 
 	<bean id="gzipFeature" class="org.apache.cxf.transport.common.gzip.GZIPFeature" />
 	<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
