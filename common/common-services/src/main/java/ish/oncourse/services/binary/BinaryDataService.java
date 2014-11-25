@@ -76,7 +76,7 @@ public class BinaryDataService implements IBinaryDataService {
 
 	private Document getRandomBinaryInfo(final Expression qualifier) {
 		ObjectContext sharedContext = cayenneService.sharedContext();
-		final SelectQuery binaryCount = new SelectQuery(Document.class, qualifier);
+		final SelectQuery binaryCount = new SelectQuery(Document.class, qualifier.andExp(ExpressionFactory.matchExp(Document.IS_REMOVED_PROPERTY, false)));
 		
 		List<Document> binaries = (List<Document>) sharedContext.performQuery(binaryCount);
 		Long count = (long) binaries.size();
