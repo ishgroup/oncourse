@@ -22,6 +22,7 @@ public class USIVerificationUtil {
 	public static final String USI_LAST_NAME = "usi_last_name";
 	public static final String USI_BIRTH_DATE = "usi_birth_date";
 	public static final String USI_CODE = "usi_code";
+	public static final String USI_ORGCODE = "usi_orgcode";
 	
 	public static USIVerificationRequest parseVerificationRequest(GenericParametersMap parametersMap) {
 		Map<String, String> usiParams = parseParametersMap(parametersMap);
@@ -31,6 +32,7 @@ public class USIVerificationUtil {
 		request.setStudentFirstName(usiParams.get(USI_FIRST_NAME));
 		request.setStudentLastName(usiParams.get(USI_LAST_NAME));
 		request.setUsiCode(usiParams.get(USI_CODE));
+		request.setOrgCode(usiParams.get(USI_ORGCODE));
 
 		DateFormat dateFormat = new SimpleDateFormat(USI_BIRTH_DATE_FORMAT);
 
@@ -67,6 +69,7 @@ public class USIVerificationUtil {
 		parametersMap.getGenericEntry().add(createEntry(USI_LAST_NAME, request.getStudentLastName(), stubVersion));
 		parametersMap.getGenericEntry().add(createEntry(USI_BIRTH_DATE, dateFormat.format(request.getStudentBirthDate()), stubVersion));
 		parametersMap.getGenericEntry().add(createEntry(USI_CODE, request.getUsiCode(), stubVersion));
+		parametersMap.getGenericEntry().add(createEntry(USI_ORGCODE, request.getOrgCode(), stubVersion));
 		
 		return parametersMap;
 	}
