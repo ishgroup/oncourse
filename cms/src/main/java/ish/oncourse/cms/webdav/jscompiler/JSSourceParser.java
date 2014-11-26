@@ -86,12 +86,12 @@ public class JSSourceParser {
         Matcher matcher = REQUIRE_PATTERN.matcher(line);
         if (matcher.matches()) {
             //regexp group with index 2 contains filename see REQUIRE_PATTERN
-            fileName = matcher.group(2);
+            fileName = StringUtils.trimToEmpty(matcher.group(2));
         } else {
             matcher = OVERRIDE_PATTERN.matcher(line);
             if (matcher.matches()) {
                 //regexp group with index 2 contains filename see OVERRIDE_PATTERN
-                fileName = matcher.group(2);
+                fileName = StringUtils.trimToEmpty(matcher.group(2));
                 isOverride = true;
             }
         }
@@ -164,8 +164,8 @@ public class JSSourceParser {
         Matcher matcher = MINIFY_PATTERN.matcher(s);
         if (matcher.matches()) {
             //regexp group with index 2 contains minify value
-            String value = matcher.group(2);
-            if (StringUtils.trimToEmpty(value).equals("on")) {
+            String value = StringUtils.trimToEmpty(matcher.group(2));
+            if (value.equals("on")) {
                 minify = true;
             }
             return true;
