@@ -24,7 +24,7 @@
 
 
                     <div class="form-group has-feedback">
-                        <label class=" control-label" for="street">Street address *</label>
+                        <label class=" control-label" for="street">Street address</label>
                         <div class="field-holder">
                             <input id="street" name="street" type="text" placeholder="For example, 215 Anzac Parade" class="form-control input-md" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
@@ -34,7 +34,7 @@
 
 
                     <div class="form-group has-feedback">
-                        <label class=" control-label" for="suburb">Suburb *</label>
+                        <label class=" control-label" for="suburb">Suburb</label>
                         <div class="field-holder">
                             <input id="suburb" name="suburb" type="text" placeholder="For example, SYDNEY" class="form-control input-md" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="form-group has-feedback">
-                        <label class=" control-label" for="postcode">Postcode *</label>
+                        <label class=" control-label" for="postcode">Postcode</label>
                         <div class="field-holder">
                             <input id="postcode" name="postcode" type="text" placeholder="For example, 2033" class="form-control input-md" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
@@ -52,7 +52,7 @@
                     </div>
 
                     <div class="form-group has-feedback">
-                        <label class=" control-label" for="state">State *</label>
+                        <label class=" control-label" for="state">State</label>
                         <div class="field-holder">
                             <input id="state" name="state" type="text" placeholder="For example, NSW" class="form-control input-md" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="form-group has-feedback">
-                        <label class=" control-label" for="country">Сountry *</label>
+                        <label class=" control-label" for="country">Сountry</label>
                         <div class="field-holder">
                             <input id="country" name="country" type="text" placeholder="For example, Australia" class="form-control input-md" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
