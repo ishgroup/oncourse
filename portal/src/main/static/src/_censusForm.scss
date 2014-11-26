@@ -1,0 +1,25 @@
+/* /portal/profile CENSUS QUESTIONS */
+
+
+#census-questions {
+
+  /* text input with a state addon on right */
+  .input-group {
+    
+    input[type=text] {
+      border-right: 0;
+    }
+
+    .input-group-addon {
+        border: 0;
+        color: #fff;
+    }
+  }
+
+  /* link after input group */
+
+  .create-usi {
+    margin-top: 7px;
+    display: block;
+  }
+}
