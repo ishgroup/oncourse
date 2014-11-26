@@ -4,6 +4,29 @@
 
     <t:form  t:id="censusForm" class="form" clientValidation="literal:NONE">
 
+        <div class="form-group">
+            <div class="text-left">
+                <div class="alert alert-info">
+                    All students studying nationally recognised training in Australia from 1 January 2015,
+                    are required to have a Unique Student Identifier (USI). Unless we have a verified USI on
+                    your student record, under the legislation we are unable to issue you with a Qualification
+                    or Statement of Attainment on the successful completion of your training.
+                    <p/>
+                    <p/>
+                    If you do not have, or know, your USI you can use the link below to create one. You will need
+                    to have at least one form of government issued identification available, like a drivers' license or
+                    medicare card available to successfully create a USI.
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="usi" class="control-label">Unique Student Identifier (USI)</label>
+            <div class="valid}">
+                <input type="text" id="usi" name="usi" class="form-control"/>
+                <span class="label label-primary">${getUSIStatus()}</span>
+                <a href="https://www.ish.com.au/oncourse/createUSI" target="_blank">Create a USI</a>
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="text-left">

@@ -272,4 +272,24 @@ public class CensusForm {
     public String messageBy(String fieldName) {
         return getAvetmissMessages().get(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, fieldName));
     }
+
+    public String getUSIStatus()
+    {
+        UsiStatus usiStatus = contact.getStudent().getUsiStatus();
+        if (usiStatus == null)
+        {
+            usiStatus = UsiStatus.DEFAULT_NOT_SUPPLIED;
+        }
+        switch (usiStatus)
+        {
+            case DEFAULT_NOT_SUPPLIED:
+                return "not verified";
+            case NON_VERIFIED:
+                return "verification failed";
+            case VERIFIED:
+                return "verified";
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
 }
