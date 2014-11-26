@@ -25,6 +25,7 @@
                 <input type="text" id="usi" name="usi" class="form-control"/>
                 <span class="input-group-addon label-primary">${getUSIStatus()}</span>
             </div>
+            <div class="bs-callout bs-callout-warning"></div>
             <a class="create-usi" href="https://www.ish.com.au/oncourse/createUSI" target="_blank">Create a USI</a>
         </div>
 

@@ -3,23 +3,51 @@
 
 #census-questions {
 
-  /* text input with a state addon on right */
-  .input-group {
-    
-    input[type=text] {
-      border-right: 0;
+  /* alternative for .alert panels */
+    .bs-callout {
+      padding: 20px;
+      margin: 10px 0 0;
+      border: 1px solid #eee;
+      border-left-width: 5px;
+      border-radius: 3px;
     }
 
-    .input-group-addon {
-        border: 0;
-        color: #fff;
+    .bs-callout-info {
+      border-left-color: #5bc0de;
+      h5 {color: #5bc0de;}
     }
-  }
+
+    .bs-callout-success {
+      border-left-color: #3c763d;
+      h5 {color: #3c763d;}
+    }
+
+    .bs-callout-warning {
+      border-left-color: #8a6d3b;
+      h5 {color: #8a6d3b;}
+    }
+
+    .bs-callout-error {
+      border-left-color: #a94442; 
+      h5 {color: #a94442;}
+    }
+
+  /* text input with a state addon on right */
+    .input-group {
+      
+      input[type=text] {
+        border-right: 0;
+      }
+
+      .input-group-addon {
+          border: 0;
+          color: #fff;
+      }
+    }
 
   /* link after input group */
-
-  .create-usi {
-    margin-top: 7px;
-    display: block;
-  }
+    .create-usi {
+      margin-top: 7px;
+      display: inline-block;
+    }
 }
