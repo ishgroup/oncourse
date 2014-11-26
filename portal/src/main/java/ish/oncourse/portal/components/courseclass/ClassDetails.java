@@ -21,6 +21,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -108,6 +109,11 @@ public class ClassDetails {
            }
         }
         session.getObjectContext().commitChanges();
+    }
+
+    public boolean showSurveys()
+    {
+        return courseClass.getEndDate() == null || courseClass.getEndDate().after(new Date());
     }
 
 

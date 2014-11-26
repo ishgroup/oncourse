@@ -8,8 +8,9 @@
                     class="icon-arrow-down"></span> <span class="text">Show all</span></a></p>
         </div>
 
-        <t:surveys.surveys courseClass="courseClass" readOnly="isTutor"/>
-
+        <t:if test="showSurveys()">
+            <t:surveys.surveys courseClass="courseClass" readOnly="isTutor"/>
+        </t:if>
 
         <div class="row">
             <t:courseclass.sessionSlider courseClass="courseClass" isTutor="isTutor"/>
