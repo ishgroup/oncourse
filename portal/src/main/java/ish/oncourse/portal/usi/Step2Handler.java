@@ -126,7 +126,7 @@ public class Step2Handler extends AbstractStepHandler {
                     Matcher matcher = ENROLMENT_KEY_PATTERN.matcher(key);
                     if (matcher.matches())
                     {
-                        handleEnrolmentValue(key, Long.valueOf(matcher.group(0)));
+                        handleEnrolmentValue(key, Long.valueOf(matcher.group(1)));
                     }
             }
         }
@@ -175,7 +175,7 @@ public class Step2Handler extends AbstractStepHandler {
         if (value != null && value.getValue() != null)
         {
             Enrolment enrolment = Cayenne.objectForPK(getUsiController().getContact().getObjectContext(), Enrolment.class, enrolmentId);
-            if (enrolment != null && enrolment.getStudent().getId().equals(getUsiController().getContact().getId()))
+            if (enrolment != null && enrolment.getStudent().getId().equals(getUsiController().getContact().getStudent().getId()))
             {
                 enrolment.setReasonForStudy(StudyReason.valueOf((String) value.getValue()).getDatabaseValue());
             }

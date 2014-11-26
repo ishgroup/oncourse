@@ -77,7 +77,7 @@ public class Usi {
     }
 
     public Object onActivate(String uniqueCode) {
-        if (usiController == null) {
+        if (usiController == null || !usiController.getContact().getUniqueCode().equals(uniqueCode)) {
             Contact contact = parseUrl(uniqueCode);
             if (contact != null) {
                 initUsiController(contact);

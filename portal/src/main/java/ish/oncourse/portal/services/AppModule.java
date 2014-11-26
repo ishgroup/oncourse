@@ -50,7 +50,7 @@ public class AppModule {
         binder.bind(AccessController.class).withId("AccessController");
         binder.bind(IWebSiteService.class, PortalSiteService.class).withId("WebSiteServiceOverride");
         binder.bind(IPageRenderer.class, PortalPageRenderer.class).withId("PortalPageRenderer");
-        //we set PERTHREAD scope for the service to be sure that we don't sure any data between requests
+        //we set PERTHREAD scope for the service to be sure that we don't share any data between requests
         binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
         binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
         binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");

@@ -19,24 +19,29 @@ import static ish.oncourse.portal.usi.UsiController.Step.*;
  */
 public class WaitHandler extends AbstractStepHandler {
 
+    private static final long USI_SERVICE_TIMEOUT = 1000 * 60;
+
     private static final Logger LOGGER = Logger.getLogger(WaitHandler.class);
 
     private Step nextStep = wait;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Future<USIVerificationResult> future;
+    private long starTime;
 
     private USIVerificationResult verificationResult;
 
-    private int count;
 
     public Step getNextStep() {
         return nextStep;
     }
 
     public WaitHandler handle(Map<String, Value> input) {
-        sendRequest();
-        handleResponse();
+        if (sendRequest()) {
+            handleResponse();
+        } else {
+            nextStep = step1;
+        }
         return this;
     }
 
@@ -50,22 +55,20 @@ public class WaitHandler extends AbstractStepHandler {
                 case VALID:
                     getUsiController().getContact().getStudent().setUsiStatus(UsiStatus.VERIFIED);
                     if (verificationResult.getLastNameStatus() == USIFieldStatus.NO_MATCH) {
-                        nextStep = step1Failed;
                         result.addValue(Value.valueOf(Contact.FAMILY_NAME_PROPERTY, contact.getFamilyName(), getUsiController().getMessages().format("message-fieldNotMatch")));
                     }
                     if (verificationResult.getFirstNameStatus() == USIFieldStatus.NO_MATCH) {
-                        nextStep = step1Failed;
                         result.addValue(
                                 Value.valueOf(Contact.GIVEN_NAME_PROPERTY, contact.getGivenName(), getUsiController().getMessages().format("message-fieldNotMatch")));
                     }
                     if (verificationResult.getDateOfBirthStatus() == USIFieldStatus.NO_MATCH) {
-                        nextStep = step1Failed;
                         result.addValue(
                                 Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, contact.getDateOfBirth(), getUsiController().getMessages().format("message-fieldNotMatch")));
                     }
                     if (result.getValue().isEmpty()) {
                         nextStep = step1Done;
                     } else {
+                        nextStep = step1Failed;
                         getUsiController().getValidationResult().addError("message-personalDetailsNotMatch");
                     }
                     break;
@@ -81,13 +84,25 @@ public class WaitHandler extends AbstractStepHandler {
         } catch (InterruptedException | ExecutionException e) {
             LOGGER.error(e.getMessage(), e);
             nextStep = step1;
+            executorService.shutdownNow();
             getUsiController().getValidationResult().addError("message-usiServiceUnexpectedException");
         } catch (TimeoutException e) {
+            if (System.currentTimeMillis() - starTime > USI_SERVICE_TIMEOUT)
+            {
+                nextStep = step1;
+                executorService.shutdownNow();
+                getUsiController().getValidationResult().addError("message-usiServiceUnexpectedException");
+            }
         }
     }
 
-    private void sendRequest() {
+    private boolean sendRequest() {
         if (future == null) {
+            String avetmissID = getUsiController().getPreferenceController().getAvetmissID();
+            if (avetmissID == null) {
+                getUsiController().getValidationResult().addError("messaget-avetmissIdentifierNotSet");
+                return false;
+            }
             Callable<USIVerificationResult> callable = new Callable<USIVerificationResult>() {
                 @Override
                 public USIVerificationResult call() throws Exception {
@@ -97,10 +112,12 @@ public class WaitHandler extends AbstractStepHandler {
                     request.setStudentFirstName(getUsiController().getContact().getGivenName());
                     request.setStudentLastName(getUsiController().getContact().getFamilyName());
                     request.setUsiCode(getUsiController().getContact().getStudent().getUsi());
+                    starTime = System.currentTimeMillis();
                     return getUsiController().getUsiVerificationService().verifyUsi(request);
                 }
             };
             future = executorService.submit(callable);
         }
+        return true;
     }
 }
