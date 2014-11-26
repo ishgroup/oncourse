@@ -6,15 +6,21 @@ import ish.common.types.OutcomeStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.pages.usi.Usi;
+import ish.oncourse.portal.usi.UsiController;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.reference.ICountryService;
+import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.util.FormatUtils;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.Cayenne;
@@ -32,6 +38,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.ApplicationStateManager;
@@ -41,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static ish.oncourse.portal.services.PortalUtils.*;
+import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
 
 /**
  * User: artem
@@ -74,6 +82,15 @@ public class PortalService implements IPortalService {
 
     @Inject
     private ICookiesService cookiesService;
+
+    @Inject
+    private ICountryService countryService;
+
+    @Inject
+    private ILanguageService languageService;
+
+    @Inject
+    private IUSIVerificationService usiVerificationService;
 
     @Inject
     private ApplicationStateManager applicationStateManager;
@@ -772,8 +789,10 @@ public class PortalService implements IPortalService {
 
     public void selectContact(Contact contact) {
         org.apache.tapestry5.services.Session session = request.getSession(false);
-        if (session != null)
+        if (session != null) {
             session.setAttribute("portal.selectedContact", contact);
+            session.setAttribute("portal.usiController", null);
+        }
     }
 
     @Override
@@ -883,4 +902,24 @@ public class PortalService implements IPortalService {
         return DateUtils.truncate(DateUtils.addMonths(new Date(), -1), Calendar.DAY_OF_MONTH);
     }
 
+    @Override
+    public UsiController getUsiController() {
+        org.apache.tapestry5.services.Session session = request.getSession(false);
+        UsiController usiController = (UsiController) session.getAttribute("portal.usiController");
+        if (usiController == null)
+        {
+            ObjectContext context = cayenneService.newContext();
+            usiController = new UsiController();
+            usiController.setContact(context.localObject(getContact()));
+            usiController.setCountryService(countryService);
+            usiController.setLanguageService(languageService);
+            usiController.setPreferenceController(preferenceController);
+            usiController.setContactFieldHelper(new ContactFieldHelper(usiController.getPreferenceController(), enrolment));
+            usiController.setUsiVerificationService(usiVerificationService);
+            usiController.setMessages(MessagesImpl.forClass(Usi.class));
+            usiController.getValidationResult().setMessages(usiController.getMessages());
+            session.setAttribute("portal.usiController", usiController);
+        }
+        return usiController;
+    }
 }

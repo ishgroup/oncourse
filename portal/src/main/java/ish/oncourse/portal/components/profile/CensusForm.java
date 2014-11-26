@@ -7,11 +7,16 @@ import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.Student;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.usi.JSONUtils;
+import ish.oncourse.portal.usi.Result;
+import ish.oncourse.portal.usi.UsiController;
+import ish.oncourse.portal.usi.Value;
 import ish.oncourse.selectutils.BooleanSelection;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
+import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.commons.lang.StringUtils;
@@ -21,6 +26,13 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
+import org.apache.tapestry5.json.JSONArray;
+import org.apache.tapestry5.json.JSONObject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.util.TextStreamResponse;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * User: artem
@@ -66,6 +78,9 @@ public class CensusForm {
     @Inject
     private IPortalService portalService;
 
+    @Inject
+    private Request request;
+
     /**
      * template properties
      */
@@ -102,9 +117,8 @@ public class CensusForm {
     @SetupRender
     void beforeRender() {
 
-        if(validateHandler==null)
+        if (validateHandler == null)
             validateHandler = new ValidateHandler();
-
 
 
         englishProficiencySelectModel = new ISHEnumSelectModel(
@@ -118,17 +132,14 @@ public class CensusForm {
     }
 
     @AfterRender
-    void   afterRender (){
+    void afterRender() {
         validateHandler.getErrors().clear();
 
     }
 
 
-
-    public Messages getAvetmissMessages()
-    {
-        if (avetmissMessages == null)
-        {
+    public Messages getAvetmissMessages() {
+        if (avetmissMessages == null) {
             avetmissMessages = MessagesImpl.forClass(AvetmissStrings.class);
         }
         return avetmissMessages;
@@ -225,8 +236,8 @@ public class CensusForm {
     @OnEvent(component = "censusForm")
     Object submitted() {
 
-        if(validate())
-        contact.getObjectContext().commitChanges();
+        if (validate())
+            contact.getObjectContext().commitChanges();
 
         return this;
     }
@@ -234,30 +245,30 @@ public class CensusForm {
 
     boolean validate() {
 
-            countryOfBirthErrorMessage = validateHandler.error(Student.COUNTRY_OF_BIRTH_PROPERTY);
+        countryOfBirthErrorMessage = validateHandler.error(Student.COUNTRY_OF_BIRTH_PROPERTY);
 
-            if (countryOfBirthErrorMessage != null) {
-                validateHandler.getErrors().put("countryOfBirth", countryOfBirthErrorMessage);
-                censusForm.recordError(countryOfBirthErrorMessage);
-            }
+        if (countryOfBirthErrorMessage != null) {
+            validateHandler.getErrors().put("countryOfBirth", countryOfBirthErrorMessage);
+            censusForm.recordError(countryOfBirthErrorMessage);
+        }
 
-            languageHomeErrorMessage = validateHandler.error(Student.LANGUAGE_HOME_PROPERTY);
-            if(languageHomeErrorMessage != null) {
-                validateHandler.getErrors().put("languageHome",languageHomeErrorMessage);
-                censusForm.recordError(languageHomeErrorMessage);
-            }
+        languageHomeErrorMessage = validateHandler.error(Student.LANGUAGE_HOME_PROPERTY);
+        if (languageHomeErrorMessage != null) {
+            validateHandler.getErrors().put("languageHome", languageHomeErrorMessage);
+            censusForm.recordError(languageHomeErrorMessage);
+        }
 
-            schoolYearErrorMessage = validateHandler.error(Student.YEAR_SCHOOL_COMPLETED_PROPERTY);
-            if (schoolYearErrorMessage == null && contact.getStudent() != null) {
-                schoolYearErrorMessage = contact.getStudent()
-                        .validateSchoolYear();
-            }
-            if (schoolYearErrorMessage != null) {
-                validateHandler.getErrors().put( "yearSchoolCompleted",schoolYearErrorMessage);
-                censusForm.recordError(schoolYearErrorMessage);
-            }
+        schoolYearErrorMessage = validateHandler.error(Student.YEAR_SCHOOL_COMPLETED_PROPERTY);
+        if (schoolYearErrorMessage == null && contact.getStudent() != null) {
+            schoolYearErrorMessage = contact.getStudent()
+                    .validateSchoolYear();
+        }
+        if (schoolYearErrorMessage != null) {
+            validateHandler.getErrors().put("yearSchoolCompleted", schoolYearErrorMessage);
+            censusForm.recordError(schoolYearErrorMessage);
+        }
 
-            return !censusForm.getHasErrors();
+        return !censusForm.getHasErrors();
     }
 
     public boolean getIsStudent() {
@@ -273,15 +284,12 @@ public class CensusForm {
         return getAvetmissMessages().get(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, fieldName));
     }
 
-    public String getUSIStatus()
-    {
+    private String getUSIStatus() {
         UsiStatus usiStatus = contact.getStudent().getUsiStatus();
-        if (usiStatus == null)
-        {
+        if (usiStatus == null) {
             usiStatus = UsiStatus.DEFAULT_NOT_SUPPLIED;
         }
-        switch (usiStatus)
-        {
+        switch (usiStatus) {
             case DEFAULT_NOT_SUPPLIED:
                 return "not verified";
             case NON_VERIFIED:
@@ -291,5 +299,59 @@ public class CensusForm {
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    @OnEvent(value = "usiVerify")
+    public Object usiVerify() {
+        UsiController usiController = portalService.getUsiController();
+        Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
+
+        Contact contact = usiController.getContact();
+        String timeZone = usiController.getContact().getCollege().getTimeZone();
+        Date date = usiController.getContact().getDateOfBirth();
+        inputValues.put(Contact.DATE_OF_BIRTH_PROPERTY, Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (date != null ?
+                FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(date) :
+                null)));
+        inputValues.put(Contact.GIVEN_NAME_PROPERTY, Value.valueOf(Contact.GIVEN_NAME_PROPERTY, contact.getGivenName()));
+        inputValues.put(Contact.FAMILY_NAME_PROPERTY, Value.valueOf(Contact.FAMILY_NAME_PROPERTY, contact.getFamilyName()));
+
+
+        Result result = usiController.next(inputValues);
+
+        JSONObject jsonResult = new JSONObject();
+        JSONArray jsonArray = JSONUtils.getJSONValues(usiController.getValue());
+        jsonResult.put("values", jsonArray);
+        jsonResult.put("hasErrors", result.hasErrors() || usiController.getValidationResult().hasErrors());
+        jsonResult.put("step", usiController.getStep().name());
+        if (result.hasErrors() || usiController.getValidationResult().hasErrors())
+        {
+            jsonResult.put("message", usiController.getMessages().format("message-usiVerificationFailed"));
+        }
+
+        if (usiController.getStep() == UsiController.Step.wait)
+        {
+            jsonResult.put("message", usiController.getMessages().format("message-usiVerificationMessage"));
+        }
+        return new TextStreamResponse("text/json", jsonResult.toString());
+    }
+
+    @OnEvent(value = "value")
+    public Object usiValue() {
+        String usi = contact.getStudent().getUsi();
+        UsiStatus usiStatus = contact.getStudent().getUsiStatus();
+
+        JSONObject jsonResult = new JSONObject();
+
+
+        UsiController usiController = portalService.getUsiController();
+        Map<String, Value> values = usiController.getValue();
+
+
+        JSONArray jsonArray = JSONUtils.getJSONValues(values);
+        jsonResult.put("values", jsonArray);
+        jsonResult.put("hasErrors", false);
+        jsonResult.put("step", usiController.getStep().name());
+
+        return new TextStreamResponse("text/json", jsonResult.toString());
     }
 }

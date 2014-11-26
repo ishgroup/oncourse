@@ -1,5 +1,6 @@
 package ish.oncourse.portal.usi;
 
+import ish.common.types.UsiStatus;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.util.FormatUtils;
@@ -18,11 +19,13 @@ public class Step1Handler extends AbstractStepHandler {
     @Override
     public Map<String, Value> getValue() {
         Date date = getUsiController().getContact().getDateOfBirth();
+        Student student = getUsiController().getContact().getStudent();
         addValue(Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (date != null ?
                 FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, getUsiController().getContact().getCollege().getTimeZone()).format(date) :
                 null)));
         addValue(Value.valueOf(Student.USI_PROPERTY,
-                getUsiController().getContact().getStudent().getUsi()));
+                student.getUsi()));
+        addValue(Value.valueOf(Student.USI_STATUS_PROPERTY, student.getUsiStatus() != null ? student.getUsiStatus().name() : UsiStatus.DEFAULT_NOT_SUPPLIED));
         return value;
     }
 

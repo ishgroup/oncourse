@@ -1,6 +1,7 @@
 package ish.oncourse.portal.services;
 
 import ish.oncourse.model.*;
+import ish.oncourse.portal.usi.UsiController;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.tapestry5.json.JSONObject;
@@ -144,4 +145,6 @@ public interface IPortalService {
 	 * returns ico-student-default.png (see portal resourses) by default
 	 */
 	public String getProfilePicturePath(Contact contact);
+
+    public UsiController getUsiController();
 }

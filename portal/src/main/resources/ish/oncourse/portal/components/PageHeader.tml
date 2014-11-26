@@ -23,4 +23,6 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;"></script>
 
     <script type="text/javascript" src="/portal/js/portal-min.js?v=${ciVersion}"></script>
+    <script type="text/javascript" src="/portal/dev/censusForm.js"></script>
+
 </t:container>

@@ -2,10 +2,7 @@ package ish.oncourse.portal.pages.usi;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.pages.PageNotFound;
-import ish.oncourse.portal.usi.Result;
-import ish.oncourse.portal.usi.UsiController;
-import ish.oncourse.portal.usi.ValidationResult;
-import ish.oncourse.portal.usi.Value;
+import ish.oncourse.portal.usi.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
@@ -18,7 +15,6 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -30,7 +26,6 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -144,58 +139,22 @@ public class Usi {
 
     @OnEvent(value = "next")
     public Object next() {
-        List<String> keys = request.getParameterNames();
-        HashMap<String, Value> inputValues = new HashMap<>();
-        for (String key : keys) {
-            inputValues.put(key, Value.valueOf(key, StringUtils.trimToNull(request.getParameter(key))));
-        }
+        Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
 
         Result result = usiController.next(inputValues);
         JSONObject jsoResult = new JSONObject();
-        JSONArray jsonArray = getJSONValues(result.getValue());
+        JSONArray jsonArray = JSONUtils.getJSONValues(result.getValue());
         jsoResult.put("values", jsonArray);
         jsoResult.put("hasErrors", result.hasErrors());
         jsoResult.put("step", usiController.getStep().name());
         return new TextStreamResponse("text/json", jsoResult.toString());
     }
 
-    private JSONArray getJSONValues(Map<String, Value> values) {
-        JSONArray jsonValues = new JSONArray();
-        for (Map.Entry<String, Value> value : values.entrySet()) {
-            JSONObject jsonValue = getJSONValue(value.getValue());
-            jsonValues.put(jsonValue);
-        }
-        return jsonValues;
-    }
-
-    private JSONObject getJSONValue(Value value) {
-        JSONObject jsonValue = new JSONObject();
-        jsonValue.put("key", value.getKey());
-        if (value.getValue() != null) {
-            jsonValue.put("value", value.getValue().toString());
-        }
-
-        if (value.getError() != null) {
-            jsonValue.put("error", value.getError());
-        }
-
-        List<Value> options = value.getOptions();
-        if (options.size() > 0) {
-            JSONArray jsonOptions = new JSONArray();
-            for (Value option : options) {
-                jsonOptions.put(getJSONValue(option));
-            }
-            jsonValue.put("options", jsonOptions);
-        }
-        jsonValue.put("required", value.isRequired());
-        return jsonValue;
-    }
-
     @OnEvent(value = "value")
     public Object value() {
         Map<String, Value> values = usiController.getValue();
         JSONObject jsonResult = new JSONObject();
-        JSONArray jsonArray = getJSONValues(values);
+        JSONArray jsonArray = JSONUtils.getJSONValues(values);
         jsonResult.put("values", jsonArray);
         jsonResult.put("hasErrors", false);
         jsonResult.put("step", usiController.getStep().name());

@@ -1,6 +1,8 @@
 package ish.oncourse.portal.usi;
 
+import ish.common.types.UsiStatus;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Student;
 import ish.oncourse.util.FormatUtils;
 
 import java.util.Date;
@@ -15,6 +17,7 @@ public class Step1FailedHandler extends Step1Handler{
     public Map<String, Value> getValue() {
 
         Contact contact = getUsiController().getContact();
+        Student student = contact.getStudent();
         String timeZone = getUsiController().getContact().getCollege().getTimeZone();
         Date date = getUsiController().getContact().getDateOfBirth();
         addValue(Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (date != null ?
@@ -22,6 +25,10 @@ public class Step1FailedHandler extends Step1Handler{
                 null)));
         addValue(Value.valueOf(Contact.GIVEN_NAME_PROPERTY, contact.getGivenName()));
         addValue(Value.valueOf(Contact.FAMILY_NAME_PROPERTY, contact.getFamilyName()));
+        addValue(Value.valueOf(Student.USI_PROPERTY,
+                student.getUsi()));
+        addValue(Value.valueOf(Student.USI_STATUS_PROPERTY, student.getUsiStatus() != null ? student.getUsiStatus().name() : UsiStatus.DEFAULT_NOT_SUPPLIED));
+
         return value;
     }
 

@@ -61,6 +61,12 @@ public class UsiController {
         return step;
     }
 
+    public void setStep(Step step)
+    {
+        this.step = step;
+        initCurrentHandler();
+    }
+
     public Result next(Map<String, Value> inputValue) {
         validationResult.clear();
         currentHandler.init();
