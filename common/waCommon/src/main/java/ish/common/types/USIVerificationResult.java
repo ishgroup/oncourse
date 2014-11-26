@@ -3,7 +3,9 @@
  */
 package ish.common.types;
 
-public class USIVerificationResult {
+import java.io.Serializable;
+
+public class USIVerificationResult implements Serializable {
 
 	private USIVerificationStatus usiStatus;
 
