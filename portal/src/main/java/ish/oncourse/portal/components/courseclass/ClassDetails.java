@@ -113,7 +113,7 @@ public class ClassDetails {
 
     public boolean showSurveys()
     {
-        return courseClass.getEndDate() == null || courseClass.getEndDate().after(new Date());
+        return courseClass.getEndDate() == null || courseClass.getEndDate().before(new Date());
     }
 
 
