@@ -1,5 +1,9 @@
 goog.provide('usi');
 goog.require('jquery');
+//we need add initialise.js code before the code because initialise.js contains common functionality
+// for all input controls (like unbind blur and focus functions)
+goog.require('initialise');
+
 
 var $j = jQuery.noConflict();
 
