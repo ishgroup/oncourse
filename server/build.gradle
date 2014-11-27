@@ -101,6 +101,17 @@ sourceSets {
   }
 }
 
+task scriptApiDocs(type: Javadoc) {
+	source = sourceSets.main.allJava
+	destinationDir = reporting.file("script-api-docs")
+	failOnError = false
+	classpath = configurations.compile
+
+	// this is ugly but it seems like there is no other way to get to the buildSrc jars
+	options.docletpath = rootProject.files('buildSrc/script-api-doclet/build/libs/script-api-doclet.jar').asList()
+	options.doclet = "ish.tools.ScriptApiDoclet"
+}
+
 task createResourceManifests {
 	doLast {
 		def sources = ["resources/schema/referenceData/exportTemplates", "resources/schema/referenceData/reports"]
