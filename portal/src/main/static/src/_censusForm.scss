@@ -1,9 +1,45 @@
 /* /portal/profile CENSUS QUESTIONS */
 
+$usi-success: #3c763d;
+$usi-warning: #8a6d3b;
+$usi-danger: #a94442;
+
 
 #census-questions {
+  
+  /* usi verification states */
+    .usi-verified {
+      .input-group-addon {
+        background-color: #5cb85c; 
+      }
 
-  /* alternative for .alert panels */
+      .bs-callout {
+        border-left-color: $usi-success;  
+      }
+    }
+
+    .usi-not-verified {
+      .input-group-addon {
+        background-color: $usi-warning; 
+      }
+
+      .bs-callout {
+        border-left-color: $usi-warning;  
+      }
+    }
+
+    .usi-failed-verify {
+      .input-group-addon {
+        background-color: #d9534f; 
+      }
+
+      .bs-callout {
+        border-left-color: $usi-danger;  
+      }
+    }
+
+
+  /* alternative for .alert panels only for #census-qiestions */
     .bs-callout {
       padding: 20px;
       margin: 10px 0 0;

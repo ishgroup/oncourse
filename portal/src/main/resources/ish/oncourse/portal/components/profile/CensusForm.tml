@@ -23,9 +23,9 @@
             <label for="usi" class="control-label">Unique Student Identifier (USI)</label>
             <div class="input-group">
                 <input type="text" id="usi" name="usi" class="form-control"/>
-                <span id="usiStatus" class="input-group-addon label-primary">verified</span>
+                <span id="usiStatus" class="input-group-addon">verified</span>
             </div>
-            <div id="usiStatusMessage" class="bs-callout bs-callout-warning hide"></div>
+            <div id="usiStatusMessage" class="bs-callout hide"></div>
             <a class="create-usi" href="https://www.ish.com.au/oncourse/createUSI" target="_blank">Create a USI</a>
         </div>
 
