@@ -9,7 +9,7 @@ goog.require('jquery');
  *
  * @author  : Washington Botelho
  * @doc     : http://wbotelhos.com/raty
- * @version : 2.6.0
+ * @version : 2.7.0
  *
  */
 
@@ -27,8 +27,10 @@ goog.require('jquery');
         this.opt = $.extend(true, {}, $.fn.raty.defaults, options);
 
         methods._adjustCallback.call(this);
-
         methods._adjustNumber.call(this);
+        methods._adjustHints.call(this);
+
+        this.opt.score = methods._adjustedScore.call(this, this.opt.score);
 
         if (this.opt.starType !== 'img') {
           methods._adjustStarType.call(this);
@@ -47,6 +49,7 @@ goog.require('jquery');
 
         methods._createScore.call(this);
         methods._apply.call(this, this.opt.score);
+        methods._setTitle.call(this, this.opt.score);
         methods._target.call(this, this.opt.score);
 
         if (this.opt.readOnly) {
@@ -56,8 +59,6 @@ goog.require('jquery');
 
           methods._binds.call(this);
         }
-
-        this.self.data('options', this.opt);
       });
     },
 
@@ -67,6 +68,48 @@ goog.require('jquery');
       for (var i = 0; i < options.length; i++) {
         if (typeof this.opt[options[i]] === 'function') {
           this.opt[options[i]] = this.opt[options[i]].call(this);
+        }
+      }
+    },
+
+    _adjustedScore: function(score) {
+      if (!score) {
+        return score;
+      }
+
+      return methods._between(score, 0, this.opt.number);
+    },
+
+    _adjustHints: function() {
+      if (!this.opt.hints) {
+        this.opt.hints = [];
+      }
+
+      if (!this.opt.halfShow && !this.opt.half) {
+        return;
+      }
+
+      var steps = this.opt.precision ? 10 : 2;
+
+      for (var i = 0; i < this.opt.number; i++) {
+        var group = this.opt.hints[i];
+
+        if (Object.prototype.toString.call(group) !== '[object Array]') {
+          group = [group];
+        }
+
+        this.opt.hints[i] = [];
+
+        for (var j = 0; j < steps; j++) {
+          var
+            hint = group[j],
+            last = group[group.length - 1];
+
+          if (last === undefined) {
+            last = null;
+          }
+
+          this.opt.hints[i][j] = hint === undefined ? last : hint;
         }
       }
     },
@@ -84,14 +127,13 @@ goog.require('jquery');
     },
 
     _adjustPrecision: function() {
-      this.opt.half       = true;
-      this.opt.targetType = 'score';
+      this.opt.half = true;
     },
 
     _adjustStarType: function() {
-      this.opt.path = '';
-
       var replaces = ['cancelOff', 'cancelOn', 'starHalf', 'starOff', 'starOn'];
+
+      this.opt.path = '';
 
       for (var i = 0; i < replaces.length; i++) {
         this.opt[replaces[i]] = this.opt[replaces[i]].replace('.', '-');
@@ -103,7 +145,7 @@ goog.require('jquery');
 
       if (score) {
         if (score > 0) {
-          this.score.val(methods._between(score, 0, this.opt.number));
+          this.score.val(score);
         }
 
         methods._roundStars.call(this, score);
@@ -130,12 +172,20 @@ goog.require('jquery');
       var that = this;
 
       that.stars.on('click.raty', function(evt) {
-        var star = $(this);
-
-        that.score.val((that.opt.half || that.opt.precision) ? that.self.data('score') : (this.alt || star.data('alt')));
+        var
+          execute = true,
+          score   = (that.opt.half || that.opt.precision) ? that.self.data('score') : (this.alt || $(this).data('alt'));
 
         if (that.opt.click) {
-          that.opt.click.call(that, +that.score.val(), evt);
+          execute = that.opt.click.call(that, +score, evt);
+        }
+
+        if (execute || execute === undefined) {
+          if (that.opt.half && !that.opt.precision) {
+            score = methods._roundHalfScore.call(that, score);
+          }
+
+          methods._apply.call(that, score);
         }
       });
     },
@@ -160,6 +210,7 @@ goog.require('jquery');
 
         methods._apply.call(that, score);
         methods._target.call(that, score, evt);
+        methods._resetTitle.call(that);
 
         if (that.opt.mouseout) {
           that.opt.mouseout.call(that, score, evt);
@@ -197,7 +248,8 @@ goog.require('jquery');
         methods._fill.call(that, score);
 
         if (that.opt.half) {
-          methods._roundStars.call(that, score);
+          methods._roundStars.call(that, score, evt);
+          methods._setTitle.call(that, score, evt);
 
           that.self.data('score', score);
         }
@@ -322,6 +374,22 @@ goog.require('jquery');
       }
     },
 
+    _getFirstDecimal: function(number) {
+      var
+        decimal = number.toString().split('.')[1],
+        result  = 0;
+
+      if (decimal) {
+        result = parseInt(decimal.charAt(0), 10);
+
+        if (decimal.slice(1, 5) === '9999') {
+          result++;
+        }
+      }
+
+      return result;
+    },
+
     _getRangeIcon: function(irange, turnOn) {
       return turnOn ? irange.on || this.opt.starOn : irange.off || this.opt.starOff;
     },
@@ -331,51 +399,57 @@ goog.require('jquery');
 
       if (this.opt.half) {
         var
-          size    = methods._getSize.call(this),
+          size    = methods._getWidth.call(this),
           percent = parseFloat((evt.pageX - $(icon).offset().left) / size);
 
-        if (this.opt.precision) {
-          score = score - 1 + percent;
-        } else {
-          score = score - 1 + (percent > 0.5 ? 1 : 0.5);
-        }
+        score = score - 1 + percent;
       }
 
       return score;
     },
 
-    _getSize: function() {
-      var size;
-
-      if (this.opt.starType === 'img') {
-        size = this.stars[0].width;
-      } else {
-        size = parseFloat(this.stars.eq(0).css('font-size'));
+    _getHint: function(score, evt) {
+      if (score !== 0 && !score) {
+        return this.opt.noRatedMsg;
       }
 
-      if (!size) {
-        methods._error.call(this, 'Could not be possible get the icon size!');
+      var
+        decimal = methods._getFirstDecimal.call(this, score),
+        integer = Math.ceil(score),
+        group   = this.opt.hints[(integer || 1) - 1],
+        hint    = group,
+        set     = !evt || this.move;
+
+      if (this.opt.precision) {
+        if (set) {
+          decimal = decimal === 0 ? 9 : decimal - 1;
+        }
+
+        hint = group[decimal];
+      } else if (this.opt.halfShow || this.opt.half) {
+        decimal = set && decimal === 0 ? 1 : decimal > 5 ? 1 : 0;
+
+        hint = group[decimal];
       }
-
-      return size;
-    },
-
-    _turnOn: function(i, score) {
-      return this.opt.single ? (i === score) : (i <= score);
-    },
-
-    _getHint: function(score) {
-      var hint = this.opt.hints[score - 1];
 
       return hint === '' ? '' : hint || score;
     },
 
-    _lock: function() {
-      var score = parseInt(this.score.val(), 10), // TODO: 3.1 >> [['1'], ['2'], ['3', '.1', '.2']]
-          hint  = score ? methods._getHint.call(this, score) : this.opt.noRatedMsg;
+    _getWidth: function() {
+      var width = this.stars[0].width || parseFloat(this.stars.eq(0).css('font-size'));
 
-      this.style.cursor   = '';
-      this.title          = hint;
+      if (!width) {
+        methods._error.call(this, 'Could not get the icon width!');
+      }
+
+      return width;
+    },
+
+    _lock: function() {
+      var hint = methods._getHint.call(this, this.score.val());
+
+      this.style.cursor = '';
+      this.title        = hint;
 
       this.score.prop('readonly', true);
       this.stars.prop('title', hint);
@@ -391,24 +465,47 @@ goog.require('jquery');
       return this.opt.score && this.opt.score >= i ? 'starOn' : 'starOff';
     },
 
-    _roundStars: function(score) {
-      var rest = (score % 1).toFixed(2);
+    _resetTitle: function(star) {
+      for (var i = 0; i < this.opt.number; i++) {
+        this.stars[i].title = methods._getHint.call(this, i + 1);
+      }
+    },
 
-      if (rest > this.opt.round.down) {                      // Up:   [x.76 .. x.99]
-        var name = 'starOn';
+     _roundHalfScore: function(score) {
+      var integer = parseInt(score, 10),
+          decimal = methods._getFirstDecimal.call(this, score);
 
-        if (this.opt.halfShow && rest < this.opt.round.up) { // Half: [x.26 .. x.75]
+      if (decimal !== 0) {
+        decimal = decimal > 5 ? 1 : 0.5;
+      }
+
+      return integer + decimal;
+    },
+
+    _roundStars: function(score, evt) {
+      var
+        decimal = (score % 1).toFixed(2),
+        name    ;
+
+      if (evt || this.move) {
+        name = decimal > 0.5 ? 'starOn' : 'starHalf';
+      } else if (decimal > this.opt.round.down) {               // Up:   [x.76 .. x.99]
+        name = 'starOn';
+
+        if (this.opt.halfShow && decimal < this.opt.round.up) { // Half: [x.26 .. x.75]
           name = 'starHalf';
-        } else if (rest < this.opt.round.full) {             // Down: [x.00 .. x.5]
+        } else if (decimal < this.opt.round.full) {             // Down: [x.00 .. x.5]
           name = 'starOff';
         }
+      }
 
+      if (name) {
         var
           icon = this.opt[name],
           star = this.stars[Math.ceil(score) - 1];
 
         methods._setIcon.call(this, star, icon);
-      }                                                      // Full down: [x.00 .. x.25]
+      }                                                         // Full down: [x.00 .. x.25]
     },
 
     _setIcon: function(star, icon) {
@@ -424,6 +521,16 @@ goog.require('jquery');
         target.val(score);
       } else {
         target.html(score);
+      }
+    },
+
+    _setTitle: function(score, evt) {
+      if (score) {
+        var
+          integer = parseInt(Math.ceil(score), 10),
+          star    = this.stars[integer - 1];
+
+        star.title = methods._getHint.call(this, score, evt);
       }
     },
 
@@ -443,7 +550,7 @@ goog.require('jquery');
           score = mouseover ? this.opt.cancelHint : this.opt.targetText;
         } else {
           if (this.opt.targetType === 'hint') {
-            score = methods._getHint.call(this, Math.ceil(score));
+            score = methods._getHint.call(this, score, evt);
           } else if (this.opt.precision) {
             score = parseFloat(score).toFixed(1);
           }
@@ -457,6 +564,10 @@ goog.require('jquery');
 
         methods._setTarget.call(this, target, score);
       }
+    },
+
+    _turnOn: function(i, score) {
+      return this.opt.single ? (i === score) : (i <= score);
     },
 
     _unlock: function() {
@@ -478,10 +589,10 @@ goog.require('jquery');
 
     cancel: function(click) {
       return this.each(function() {
-        var el = $(this);
+        var self = $(this);
 
-        if (el.data('readonly') !== true) {
-          methods[click ? 'click' : 'score'].call(el, null);
+        if (self.data('readonly') !== true) {
+          methods[click ? 'click' : 'score'].call(self, null);
 
           this.score.removeAttr('value');
         }
@@ -491,6 +602,8 @@ goog.require('jquery');
     click: function(score) {
       return this.each(function() {
         if ($(this).data('readonly') !== true) {
+          score = methods._adjustedScore.call(this, score);
+
           methods._apply.call(this, score);
 
           if (this.opt.click) {
@@ -532,22 +645,25 @@ goog.require('jquery');
       return this.each(function() {
         var
           integer  = parseInt(score, 10),
-          opt      = $(this).data('options'),
-          decimal  = (+score).toFixed(1).split('.')[1];
+          decimal  = methods._getFirstDecimal.call(this, score);
 
-        if (integer >= opt.number) {
-          integer = opt.number - 1;
+        if (integer >= this.opt.number) {
+          integer = this.opt.number - 1;
           decimal = 10;
         }
 
         var
-          size    = methods._getSize.call(this),
-          point   = size / 10,
+          width   = methods._getWidth.call(this),
+          steps   = width / 10,
           star    = $(this.stars[integer]),
-          percent = star.offset().left + point * parseInt(decimal, 10),
+          percent = star.offset().left + steps * decimal,
           evt     = $.Event('mousemove', { pageX: percent });
 
+        this.move = true;
+
         star.trigger(evt);
+
+        this.move = false;
       });
     },
 
@@ -582,17 +698,15 @@ goog.require('jquery');
 
     set: function(options) {
       return this.each(function() {
-        var self   = $(this),
-            actual = self.data('options'),
-            news   = $.extend({}, actual, options);
-
-        self.raty(news);
+        $(this).raty($.extend({}, this.opt, options));
       });
     },
 
     setScore: function(score) {
       return this.each(function() {
         if ($(this).data('readonly') !== true) {
+          score = methods._adjustedScore.call(this, score);
+
           methods._apply.call(this, score);
           methods._target.call(this, score);
         }

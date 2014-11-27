@@ -99,28 +99,28 @@ CensusForm.prototype = {
 
     fillUsiStatus: function (value) {
         var text = "not verified";
-        $j('#usiStatus').removeClass("bs-callout-warning bs-callout-error bs-callout-success");
-        var styleClass = "bs-callout-warning";
+        $j('#usiControl').removeClass("usi-verified usi-not-verified usi-failed-verify");
+        var styleClass = "label-warning";
         var disabled = false;
         switch (value.value) {
             case 'DEFAULT_NOT_SUPPLIED':
                 text = "not verified";
-                styleClass = "bs-callout-warning";
+                styleClass = "usi-not-verified";
                 disabled = false;
                 break;
             case 'NON_VERIFIED':
                 text = "verification failed";
-                styleClass = "bs-callout-error";
+                styleClass = "usi-failed-verify";
                 disabled = false;
                 break;
             case 'VERIFIED':
                 text = "verified";
-                styleClass = "bs-callout-success";
+                styleClass = "usi-verified";
                 disabled = true;
                 break;
         }
         $j("#usiStatus").text(text);
-        $j('#usiStatus').addClass(styleClass);
+        $j('#usiControl').addClass(styleClass);
         $j('.form-control[name=usi]').attr('disabled', disabled);
     },
 
