@@ -6,7 +6,7 @@
                     <div class="form-group has-feedback">
                         <label class="control-label" for="givenName">First Name *</label>
                         <div class="field-holder">
-                            <input class="form-control input-md" name="givenName" id="givenName" type="text"/>
+                            <input class="form-control input-md" name="givenName" id="givenName" type="text"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -14,7 +14,7 @@
                     <div class="form-group has-feedback">
                         <label class="control-label" for="familyName">Last Name *</label>
                         <div class="field-holder">
-                            <input class="form-control input-md" name="familyName" id="familyName" type="text"/>
+                            <input class="form-control input-md" name="familyName" id="familyName" type="text"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -22,7 +22,7 @@
                     <div class="form-group has-feedback">
                         <label class="control-label" for="dateOfBirth">Date Of Birth *</label>
                         <div class="field-holder">
-                            <input class="form-control input-md" name="dateOfBirth" id="dateOfBirth" type="text"/>
+                            <input class="form-control input-md" name="dateOfBirth" id="dateOfBirth" type="text"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>

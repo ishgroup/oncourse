@@ -36,7 +36,7 @@
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="suburb">Suburb</label>
                         <div class="field-holder">
-                            <input id="suburb" name="suburb" type="text" placeholder="For example, SYDNEY" class="form-control input-md" />
+                            <input id="suburb" name="suburb" type="text" placeholder="For example, SYDNEY" class="form-control input-md" maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -45,7 +45,7 @@
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="postcode">Postcode</label>
                         <div class="field-holder">
-                            <input id="postcode" name="postcode" type="text" placeholder="For example, 2033" class="form-control input-md" />
+                            <input id="postcode" name="postcode" type="text" placeholder="For example, 2033" class="form-control input-md"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -54,7 +54,7 @@
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="state">State</label>
                         <div class="field-holder">
-                            <input id="state" name="state" type="text" placeholder="For example, NSW" class="form-control input-md" />
+                            <input id="state" name="state" type="text" placeholder="For example, NSW" class="form-control input-md"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -63,7 +63,7 @@
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="country">Сountry</label>
                         <div class="field-holder">
-                            <input id="country" name="country" type="text" placeholder="For example, Australia" class="form-control input-md" />
+                            <input id="country" name="country" type="text" placeholder="For example, Australia" class="form-control input-md"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -73,7 +73,7 @@
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="mobilePhoneNumber">Mobile phone</label>
                         <div class="field-holder">
-                            <input id="mobilePhoneNumber" name="mobilePhoneNumber" type="text" placeholder="For example, 04123 456 789 " class="form-control input-md" />
+                            <input id="mobilePhoneNumber" name="mobilePhoneNumber" type="text" placeholder="For example, 04123 456 789 " class="form-control input-md"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -83,7 +83,7 @@
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="homePhoneNumber">Home phone</label>
                         <div class="field-holder">
-                            <input id="homePhoneNumber" name="homePhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" />
+                            <input id="homePhoneNumber" name="homePhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -93,7 +93,7 @@
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="businessPhoneNumber">Work phone</label>
                         <div class="field-holder">
-                            <input id="businessPhoneNumber" name="businessPhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md" />
+                            <input id="businessPhoneNumber" name="businessPhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>

@@ -45,7 +45,7 @@
 
                         <div class="field-holder">
                             <input id="countryOfBirth" name="countryOfBirth" type="text"
-                                   placeholder="For example, Australia" class="form-control input-md" />
+                                   placeholder="For example, Australia" class="form-control input-md"  maxlength="10"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -56,7 +56,7 @@
                             home?</label>
 
                         <div class="field-holder">
-                            <input id="languageHome" name="languageHome" type="text" placeholder="For example, English" class="form-control input-md" />
+                            <input id="languageHome" name="languageHome" type="text" placeholder="For example, English" class="form-control input-md"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
@@ -108,7 +108,7 @@
 
                         <div class="field-holder">
                             <input id="yearSchoolCompleted" name="yearSchoolCompleted" type="text"
-                                   placeholder="For example, 2014" class="form-control input-md" />
+                                   placeholder="For example, 2014" class="form-control input-md"  maxlength="4"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
