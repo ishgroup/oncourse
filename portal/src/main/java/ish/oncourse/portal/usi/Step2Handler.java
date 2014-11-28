@@ -11,10 +11,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,7 +135,17 @@ public class Step2Handler extends AbstractStepHandler {
         if (value != null && value.getValue() != null) {
             String sYear = (String) value.getValue();
             if (StringUtils.isNumeric(sYear)) {
-                student.setYearSchoolCompleted(Integer.valueOf(sYear));
+                int year = Integer.valueOf(sYear);
+                Calendar calendar = Calendar.getInstance();
+                if (year <= calendar.get(Calendar.YEAR))
+                {
+                    student.setYearSchoolCompleted(Integer.valueOf(sYear));
+                }
+                else
+                {
+                    result.addValue(Value.valueOf(key, value.getValue(), getUsiController().getMessages().format("message-yearSchoolCompletedShouldBeInPast")));
+                    result.setHasErrors(true);
+                }
             } else {
                 result.addValue(Value.valueOf(key, value.getValue(), avetmissMessages.format(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, key))));
                 result.setHasErrors(true);
