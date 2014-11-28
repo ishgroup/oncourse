@@ -1,5 +1,5 @@
 dependencies {
-	compile 'ish.oncourse.willow:waCommon:5.1.47'
+	compile 'ish.oncourse.willow:waCommon:5.1.49'
 
 	compile 'javax.jmdns:jmdns:3.4.1'
 	compile 'javax.mail:mail:1.4.6'
