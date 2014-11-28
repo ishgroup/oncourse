@@ -4,6 +4,7 @@ import ish.common.types.UsiStatus;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.util.FormatUtils;
+import ish.util.UsiUtil;
 
 import java.util.Date;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class Step1Handler extends AbstractStepHandler {
     public Step1Handler handle(Map<String, Value> input) {
         this.inputValues = input;
         handleDateOfBirth(Contact.DATE_OF_BIRTH_PROPERTY);
-        handleRequiredValue(getUsiController().getContact().getStudent(), Student.USI_PROPERTY);
+        handleUsi();
         return this;
     }
 
@@ -48,6 +49,20 @@ public class Step1Handler extends AbstractStepHandler {
         result.addValue(value);
         if (value.getError() != null) {
             result.setHasErrors(true);
+        }
+    }
+
+    private void handleUsi()
+    {
+        Student student = getUsiController().getContact().getStudent();
+        handleRequiredValue(getUsiController().getContact().getStudent(), Student.USI_PROPERTY);
+        if (result.getValue().get(Student.USI_PROPERTY).getError() == null)
+        {
+            if (!UsiUtil.validateKey(student.getUsi()))
+            {
+                result.addValue(Value.valueOf(Student.USI_PROPERTY, null, getUsiController().getMessages().format("message-invalidUsi")));
+                result.setHasErrors(true);
+            }
         }
     }
 }
