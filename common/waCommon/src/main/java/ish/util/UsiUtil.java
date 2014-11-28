@@ -23,11 +23,11 @@ public class UsiUtil {
 	public static boolean validateKey(String key) {
 		return key != null &&
 				key.length() == 10 &&
-				key.charAt(9) == generateCheckCharacter(key.toUpperCase().substring(0,9));
+				generateAndCheckCharacter(key.toUpperCase().substring(0,9), key.charAt(9));
 	}
 
 	// Implementation of Luhn Mod N algorithm for check digit.
-	private static Character generateCheckCharacter(String key) {
+	private static boolean generateAndCheckCharacter(String key, char character) {
 		int factor = 2;
 		int sum = 0;
 		int length = validChars.length;
@@ -38,7 +38,7 @@ public class UsiUtil {
 			int codePoint = Arrays.binarySearch(validChars, key.charAt(i));
 			if (codePoint < 0) {
 				logger.warn(String.format("invalid Char for USI: %s", key.charAt(i)));
-				return null;
+				return false;
 			}
 			int addend = factor * codePoint;
 
@@ -56,6 +56,7 @@ public class UsiUtil {
 		int remainder = sum % length;
 		int checkCodePoint = (length - remainder) % length;
 
-		return validChars[checkCodePoint];
+		//check last character with generated; 
+		return character == validChars[checkCodePoint];
 	}
 }
