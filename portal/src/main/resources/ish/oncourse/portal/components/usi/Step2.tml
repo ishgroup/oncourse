@@ -45,7 +45,7 @@
 
                         <div class="field-holder">
                             <input id="countryOfBirth" name="countryOfBirth" type="text"
-                                   placeholder="For example, Australia" class="form-control input-md"  maxlength="10"/>
+                                   placeholder="For example, Australia" class="form-control input-md"  maxlength="32"/>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                         </div>
                         <small class="help-block"></small>
