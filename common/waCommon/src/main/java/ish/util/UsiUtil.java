@@ -23,7 +23,7 @@ public class UsiUtil {
 	public static boolean validateKey(String key) {
 		return key != null &&
 				key.length() == 10 &&
-				generateAndCheckCharacter(key.toUpperCase());
+				generateAndCheckCharacter(key);
 	}
 
 	// Implementation of Luhn Mod N algorithm for check digit.
