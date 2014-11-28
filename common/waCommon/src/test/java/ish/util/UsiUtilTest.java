@@ -14,7 +14,7 @@ public class UsiUtilTest {
 	public void testValidationUSI() {
 		assertFalse(UsiUtil.validateKey("HGDFSGYHIG"));
 		assertFalse(UsiUtil.validateKey("5U9HD88TA3"));
-		assertTrue(UsiUtil.validateKey("2GF2UGXXV8"));
-		assertTrue(UsiUtil.validateKey("2GF2ugxxv8"));	
+		assertFalse(UsiUtil.validateKey("2GF2ugxxv8"));
+		assertTrue(UsiUtil.validateKey("2GF2UGXXV8"));		
 	}
 }
