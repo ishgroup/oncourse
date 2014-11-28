@@ -1,5 +1,6 @@
 package ish.oncourse.portal.pages.usi;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.usi.*;
@@ -96,6 +97,9 @@ public class Usi {
         usiController.setUsiVerificationService(usiVerificationService);
         usiController.setMessages(messages);
         usiController.getValidationResult().setMessages(messages);
+
+        // we need put college id to the session for WebSiteService.getCurrentCollege() method
+        request.getSession(false).setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, contact.getCollege().getId());
     }
 
 

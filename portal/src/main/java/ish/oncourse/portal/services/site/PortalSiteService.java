@@ -5,14 +5,23 @@ import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.system.ICollegeService;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 
 import java.util.List;
 
 public class PortalSiteService implements IWebSiteService {
 
+    @Inject
+    private Request request;
+
 	@Inject
 	private IAuthenticationService authService;
+
+    @Inject
+    private ICollegeService collegeService;
 
 	@Override
 	public WebSite getCurrentWebSite() {
@@ -26,7 +35,15 @@ public class PortalSiteService implements IWebSiteService {
 
 	@Override
 	public College getCurrentCollege() {
-		return authService.getUser().getCollege();
+        if (authService.getUser() == null) {
+            // we need the code for usi page.
+            Session session = request.getSession(false);
+            Long collegeId = (Long) session.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE);
+            return collegeService.findById(collegeId);
+        }
+        else {
+            return authService.getUser().getCollege();
+        }
 	}
 
 	@Override
