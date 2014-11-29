@@ -316,13 +316,29 @@ public class CensusForm {
         inputValues.put(Contact.FAMILY_NAME_PROPERTY, Value.valueOf(Contact.FAMILY_NAME_PROPERTY, contact.getFamilyName()));
 
 
+        usiController.next(inputValues);
         Result result = usiController.next(inputValues);
+        JSONObject jsonResult = getJSONResult(result);
+        return new TextStreamResponse("text/json", jsonResult.toString());
+    }
 
+    @OnEvent(value = "value")
+    public Object usiValue() {
+        UsiController usiController = portalService.getUsiController();
+        Result result = usiController.getValue();
+        JSONObject jsonResult = getJSONResult(result);
+
+        return new TextStreamResponse("text/json", jsonResult.toString());
+    }
+
+
+    private JSONObject getJSONResult(Result result) {
+        UsiController usiController = portalService.getUsiController();
         JSONObject jsonResult = new JSONObject();
-        JSONArray jsonArray = JSONUtils.getJSONValues(usiController.getValue());
+        JSONArray jsonArray = JSONUtils.getJSONValues(result.getValue());
         jsonResult.put("values", jsonArray);
-        jsonResult.put("hasErrors", result.hasErrors() || usiController.getValidationResult().hasErrors());
-        jsonResult.put("step", usiController.getStep().name());
+        jsonResult.put("hasErrors", result.hasErrors());
+        jsonResult.put("step", portalService.getUsiController().getStep().name());
         if (result.hasErrors() || usiController.getValidationResult().hasErrors())
         {
             jsonResult.put("message", usiController.getMessages().format("message-usiVerificationFailed"));
@@ -332,26 +348,6 @@ public class CensusForm {
         {
             jsonResult.put("message", usiController.getMessages().format("message-usiVerificationMessage"));
         }
-        return new TextStreamResponse("text/json", jsonResult.toString());
-    }
-
-    @OnEvent(value = "value")
-    public Object usiValue() {
-        String usi = contact.getStudent().getUsi();
-        UsiStatus usiStatus = contact.getStudent().getUsiStatus();
-
-        JSONObject jsonResult = new JSONObject();
-
-
-        UsiController usiController = portalService.getUsiController();
-        Map<String, Value> values = usiController.getValue();
-
-
-        JSONArray jsonArray = JSONUtils.getJSONValues(values);
-        jsonResult.put("values", jsonArray);
-        jsonResult.put("hasErrors", false);
-        jsonResult.put("step", usiController.getStep().name());
-
-        return new TextStreamResponse("text/json", jsonResult.toString());
+        return jsonResult;
     }
 }

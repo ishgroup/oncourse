@@ -19,19 +19,17 @@ CensusForm.prototype = {
                 return obj.key === "usi";
             })[0].value;
             var newUsi = $j('.form-control[name=usi]').val();
-            console.log(oldUsi);
             if (self.data.values['usiStatus'] != 'VERIFIED' &&
                 self.data.step == 'step1' &&
                 oldUsi != newUsi)
             {
                 self.verifyUsi();
+                self.reloadByTimeout();
             }
         });
     },
 
     verifyUsi: function () {
-        var self = this;
-
         var actionLink = "/portal/profile.censusform:usiVerify";
         $j('.form-control[name=usi]').attr('disabled', false);
         var data = $j(".form-control[name=usi]").serialize();
@@ -39,12 +37,9 @@ CensusForm.prototype = {
         $j.ajax({
             url: actionLink,
             type: 'post',
-            async: false,
             cache: false,
             data: data,
             success: function (data) {
-                self.data = data;
-                self.showData();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);
@@ -56,7 +51,7 @@ CensusForm.prototype = {
     reloadByTimeout: function () {
         var self = this;
         setTimeout(function () {
-            self.verifyUsi();
+            self.loadData();
         }, 5000);
     },
 
