@@ -37,7 +37,7 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 @SubModule({ModelModule.class, ServiceModule.class, TextileModule.class})
 public class AppModule {
 
-    private static final String SYSPROP_USE_TEST_USI_SERVICE = "ish.oncourse.portal.useTestUSIService";
+    public static final String SYSPROP_USE_TEST_USI_SERVICE = "ish.oncourse.portal.useTestUSIService";
 
     private static final String EXCEPTION_REDIRECT_PAGE = "login";
 

@@ -33,6 +33,7 @@ Usi.prototype = {
 
     fillControl: function (value) {
         var control = $j('.form-control[name=' + value.key + ']');
+
         if (value.error) {
             var parent = control.closest('.form-group');
             parent.addClass('has-error');
@@ -51,14 +52,13 @@ Usi.prototype = {
                 var label = $j('.control-label[for=' + value.key + ']');
                 label.text(label.text() + ' *');
             }
-
-            if (value.key == 'isMale') {
-                $j('#female.form-control').prop("checked", value.value != "true");
-                $j('#male.form-control').prop("checked", value.value == "true");
-            }
-            else {
-                control.val(value.value);
-            }
+        }
+        if (value.key == 'isMale') {
+            $j('#female.form-control').prop("checked", value.value != "true");
+            $j('#male.form-control').prop("checked", value.value == "true");
+        }
+        else {
+            control.val(value.value);
         }
     },
     loadData: function () {
@@ -88,14 +88,31 @@ Usi.prototype = {
     reloadByTimeout: function () {
         var self = this;
         setTimeout(function () {
-            self.next()
+            window.location.reload();
         }, 5000);
+    },
+
+    verifyUsi: function()
+    {
+            $j.ajax({
+                url: '/portal/usi/usi:verifyUsi',
+                type: 'post',
+                cache: false,
+                success: function (data) {
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    window.location.reload();
+                }
+            });
     },
 
     next: function () {
         var self = this;
         var data = $j(".form-control").serialize();
         var actionLink = "/portal/usi/usi:next";
+        var currentStep = this.data.step;
         $j.ajax({
             url: actionLink,
             type: 'post',
@@ -103,13 +120,15 @@ Usi.prototype = {
             cache: false,
             data: data,
             success: function (data) {
+                var oldStep = self.data.step;
                 self.data = data;
+                if (data.step == 'wait' && oldStep != 'wait')
+                {
+                    self.verifyUsi();
+                }
                 self.showData();
                 if (!data.hasErrors)
                     window.location.reload();
-                if (data.step == 'wait') {
-                    self.reloadByTimeout();
-                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);

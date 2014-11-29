@@ -17,21 +17,22 @@ import static ish.oncourse.portal.usi.UsiController.Step.step2;
 public class Step1DoneHandler extends AbstractStepHandler {
 
     @Override
-    public Map<String, Value> getValue() {
-        Contact contact = getUsiController().getContact();
-        Student student = contact.getStudent();
-        String timeZone = getUsiController().getContact().getCollege().getTimeZone();
-        Date date = getUsiController().getContact().getDateOfBirth();
-        addValue(Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (date != null ?
-                FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(date) :
-                null)));
-        addValue(Value.valueOf(Contact.GIVEN_NAME_PROPERTY, contact.getGivenName()));
-        addValue(Value.valueOf(Contact.FAMILY_NAME_PROPERTY, contact.getFamilyName()));
-        addValue(Value.valueOf(Student.USI_PROPERTY,
-                student.getUsi()));
-        addValue(Value.valueOf(Student.USI_STATUS_PROPERTY, student.getUsiStatus() != null ? student.getUsiStatus().name() : UsiStatus.DEFAULT_NOT_SUPPLIED));
-
-        return value;
+    public Result getValue() {
+        if (result.isEmpty()) {
+            Contact contact = getUsiController().getContact();
+            Student student = contact.getStudent();
+            String timeZone = getUsiController().getContact().getCollege().getTimeZone();
+            Date date = getUsiController().getContact().getDateOfBirth();
+            addValue(Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (date != null ?
+                    FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(date) :
+                    null)));
+            addValue(Value.valueOf(Contact.GIVEN_NAME_PROPERTY, contact.getGivenName()));
+            addValue(Value.valueOf(Contact.FAMILY_NAME_PROPERTY, contact.getFamilyName()));
+            addValue(Value.valueOf(Student.USI_PROPERTY,
+                    student.getUsi()));
+            addValue(Value.valueOf(Student.USI_STATUS_PROPERTY, student.getUsiStatus() != null ? student.getUsiStatus().name() : UsiStatus.DEFAULT_NOT_SUPPLIED));
+        }
+        return result;
     }
 
   @Override

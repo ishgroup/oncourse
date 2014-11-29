@@ -146,6 +146,27 @@ public class Usi {
         Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
 
         Result result = usiController.next(inputValues);
+        return getJSONResult(result);
+    }
+
+    @OnEvent(value = "value")
+    public Object value() {
+        Result values = usiController.getValue();
+
+        return getJSONResult(values);
+    }
+
+    @OnEvent(value = "verifyUsi")
+    public Object verifyUsi()
+    {
+        Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
+        Result values = usiController.next(inputValues);
+        return getJSONResult(values);
+    }
+
+
+
+    private Object getJSONResult(Result result) {
         JSONObject jsoResult = new JSONObject();
         JSONArray jsonArray = JSONUtils.getJSONValues(result.getValue());
         jsoResult.put("values", jsonArray);
@@ -154,15 +175,4 @@ public class Usi {
         return new TextStreamResponse("text/json", jsoResult.toString());
     }
 
-    @OnEvent(value = "value")
-    public Object value() {
-        Map<String, Value> values = usiController.getValue();
-        JSONObject jsonResult = new JSONObject();
-        JSONArray jsonArray = JSONUtils.getJSONValues(values);
-        jsonResult.put("values", jsonArray);
-        jsonResult.put("hasErrors", false);
-        jsonResult.put("step", usiController.getStep().name());
-
-        return new TextStreamResponse("text/json", jsonResult.toString());
-    }
 }

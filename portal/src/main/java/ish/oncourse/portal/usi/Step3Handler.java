@@ -1,13 +1,9 @@
 package ish.oncourse.portal.usi;
 
-import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.preference.PreferenceController;
-import org.apache.tapestry5.ioc.Messages;
-import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static ish.oncourse.model.auto._Contact.*;
@@ -18,26 +14,27 @@ import static ish.oncourse.portal.usi.UsiController.Step.step3Done;
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
 public class Step3Handler extends AbstractStepHandler {
-    private Messages avetmissMessages = MessagesImpl.forClass(AvetmissStrings.class);
 
 
     @Override
-    public Map<String, Value> getValue() {
-        this.value = new HashMap<>();
-        Contact contact = getUsiController().getContact();
-        Student student = contact.getStudent();
+    public Result getValue() {
+        if (result.isEmpty()) {
 
-        addValue(Value.valueOf(IS_MALE_PROPERTY, contact.getIsMale(), true));
-        addValue(Value.valueOf(STREET_PROPERTY, contact.getStreet(), isRequiredField(STREET_PROPERTY)));
-        addValue(Value.valueOf(SUBURB_PROPERTY, contact.getSuburb(), isRequiredField(SUBURB_PROPERTY)));
-        addValue(Value.valueOf(POSTCODE_PROPERTY, contact.getPostcode(), isRequiredField(POSTCODE_PROPERTY)));
-        addValue(Value.valueOf(STATE_PROPERTY, contact.getState(), isRequiredField(STATE_PROPERTY)));
-        addValue(Value.valueOf(COUNTRY_PROPERTY, contact.getCountry() != null ? contact.getCountry().getName() : null, isRequiredField(COUNTRY_PROPERTY)));
-        addValue(Value.valueOf(MOBILE_PHONE_NUMBER_PROPERTY, contact.getMobilePhoneNumber(), isRequiredField(COUNTRY_PROPERTY)));
-        addValue(Value.valueOf(HOME_PHONE_NUMBER_PROPERTY, contact.getHomePhoneNumber(), isRequiredField(COUNTRY_PROPERTY)));
-        addValue(Value.valueOf(BUSINESS_PHONE_NUMBER_PROPERTY, contact.getBusinessPhoneNumber(), isRequiredField(COUNTRY_PROPERTY)));
-        addValue(Value.valueOf(SPECIAL_NEEDS_PROPERTY, student.getSpecialNeeds(), isRequiredField(SPECIAL_NEEDS_PROPERTY)));
-        return value;
+            Contact contact = getUsiController().getContact();
+            Student student = contact.getStudent();
+
+            addValue(Value.valueOf(IS_MALE_PROPERTY, contact.getIsMale(), true));
+            addValue(Value.valueOf(STREET_PROPERTY, contact.getStreet(), isRequiredField(STREET_PROPERTY)));
+            addValue(Value.valueOf(SUBURB_PROPERTY, contact.getSuburb(), isRequiredField(SUBURB_PROPERTY)));
+            addValue(Value.valueOf(POSTCODE_PROPERTY, contact.getPostcode(), isRequiredField(POSTCODE_PROPERTY)));
+            addValue(Value.valueOf(STATE_PROPERTY, contact.getState(), isRequiredField(STATE_PROPERTY)));
+            addValue(Value.valueOf(COUNTRY_PROPERTY, contact.getCountry() != null ? contact.getCountry().getName() : null, isRequiredField(COUNTRY_PROPERTY)));
+            addValue(Value.valueOf(MOBILE_PHONE_NUMBER_PROPERTY, contact.getMobilePhoneNumber(), isRequiredField(COUNTRY_PROPERTY)));
+            addValue(Value.valueOf(HOME_PHONE_NUMBER_PROPERTY, contact.getHomePhoneNumber(), isRequiredField(COUNTRY_PROPERTY)));
+            addValue(Value.valueOf(BUSINESS_PHONE_NUMBER_PROPERTY, contact.getBusinessPhoneNumber(), isRequiredField(COUNTRY_PROPERTY)));
+            addValue(Value.valueOf(SPECIAL_NEEDS_PROPERTY, student.getSpecialNeeds(), isRequiredField(SPECIAL_NEEDS_PROPERTY)));
+        }
+        return result;
     }
 
     private boolean isRequiredField(String key) {

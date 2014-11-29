@@ -1,6 +1,5 @@
 package ish.oncourse.portal.usi;
 
-import java.util.Collections;
 import java.util.Map;
 
 import static ish.oncourse.portal.usi.UsiController.Step.done;
@@ -11,8 +10,8 @@ import static ish.oncourse.portal.usi.UsiController.Step.done;
 public class Step3DoneHandler extends AbstractStepHandler {
 
     @Override
-    public Map<String, Value> getValue() {
-        return Collections.emptyMap();
+    public Result getValue() {
+        return result;
     }
 
     @Override

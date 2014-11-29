@@ -16,7 +16,9 @@ import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -28,8 +30,6 @@ public abstract class AbstractStepHandler implements StepHandler {
     private Result previousResult;
 
     protected Result result = new Result();
-
-    protected Map<String, Value> value = Collections.emptyMap();
 
     protected Map<String, Value> inputValues;
 
@@ -45,26 +45,21 @@ public abstract class AbstractStepHandler implements StepHandler {
     {
         previousResult = new Result();
         result = new Result();
-        value = new HashMap<>();
     }
 
     @Override
-    public Result getResult() {
+    public Result getValue() {
         return result;
     }
 
-    @Override
-    public Map<String, Value> getValue() {
-        return value;
-    }
 
     protected  void addValue(Value value) {
         Result pResult = getPreviousResult();
         Value pValue = pResult.getValue().get(value.getKey());
         if (pValue != null) {
-            value = Value.valueOf(value.getKey(), pValue.getValue(), pValue.getError(), value.isRequired(), value.getOptions().toArray(new Value[value.getOptions().size()]));
+            value = Value.valueOf(value.getKey(), value.getValue(), pValue.getError(), value.isRequired(), value.getOptions().toArray(new Value[value.getOptions().size()]));
         }
-        this.value.put(value.getKey(), value);
+        this.result.addValue(value);
     }
 
     protected <T> void handleRequiredValue(T entity, String key) {
@@ -183,14 +178,14 @@ public abstract class AbstractStepHandler implements StepHandler {
                     Date date = FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_PARSE_FORMAT, timeZone).parse(inputValue.getValue().toString());
 
                     if (date.after(new Date()))
-                        return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, null, controller.getMessages().format("message-dateOfBirthShouldBeInPast"));
+                        return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, inputValue.getValue(), controller.getMessages().format("message-dateOfBirthShouldBeInPast"));
                     if (date.before(MIN_DATE_OF_BIRTH))
-                        return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, null, controller.getMessages().format("message-dateOfBirthWrongFormat"));
+                        return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, inputValue.getValue(), controller.getMessages().format("message-dateOfBirthWrongFormat"));
 
                     controller.getContact().setDateOfBirth(date);
                     return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (Object) FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(date));
                 } catch (ParseException e) {
-                    return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, null, controller.getMessages().format("message-dateOfBirthWrongFormat"));
+                    return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, inputValue.getValue(), controller.getMessages().format("message-dateOfBirthWrongFormat"));
                 }
             }
         }

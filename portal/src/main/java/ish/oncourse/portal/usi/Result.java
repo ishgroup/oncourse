@@ -30,4 +30,8 @@ public class Result {
         this.value.put(value.getKey(), value);
     }
 
+    public boolean isEmpty()
+    {
+        return value.isEmpty();
+    }
 }

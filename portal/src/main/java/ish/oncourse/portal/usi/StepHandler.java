@@ -10,9 +10,7 @@ import static ish.oncourse.portal.usi.UsiController.Step;
 public interface StepHandler {
     public Result getPreviousResult();
 
-    public Result getResult();
-
-    public Map<String, Value> getValue();
+    public Result getValue();
 
     public StepHandler handle(Map<String, Value> inputValue);
 

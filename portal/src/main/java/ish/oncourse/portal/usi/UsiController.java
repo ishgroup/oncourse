@@ -71,7 +71,7 @@ public class UsiController {
         validationResult.clear();
         currentHandler.init();
         StepHandler stepHandler = currentHandler.handle(inputValue);
-        Result result = stepHandler.getResult();
+        Result result = stepHandler.getValue();
         if (!result.hasErrors()) {
             if (step != stepHandler.getNextStep()) {
                 contact.getObjectContext().commitChanges();
@@ -102,7 +102,7 @@ public class UsiController {
         this.messages = messages;
     }
 
-    public Map<String, Value> getValue() {
+    public Result getValue() {
         return currentHandler.getValue();
     }
 
