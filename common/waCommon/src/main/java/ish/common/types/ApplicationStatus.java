@@ -6,18 +6,35 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration of available application statuses
+ * Enumeration of available application statuses
+ * 
+ * @PublicApi
  */
 public enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	NEW(0, "New"),
-	
+
+	/**
+	 * @PublicApi
+	 */
 	OFFERED(1, "Offered"),
-	
+
+	/**
+	 * @PublicApi
+	 */
 	ACCEPTED(2, "Accepted"),
-	
+
+	/**
+	 * @PublicApi
+	 */
 	REJECTED(3, "Rejected"),
-	
+
+	/**
+	 * @PublicApi
+	 */
 	WITHDRAWN(4, "Withdrawn");
 
 	private String displayName;
