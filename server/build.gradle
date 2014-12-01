@@ -107,9 +107,13 @@ task scriptApiDocs(type: Javadoc) {
 	failOnError = false
 	classpath = configurations.compile
 
-	// this is ugly but it seems like there is no other way to get to the buildSrc jars
-	options.docletpath = rootProject.files('buildSrc/script-api-doclet/build/libs/script-api-doclet.jar').asList()
-	options.doclet = "ish.tools.ScriptApiDoclet"
+	options {
+		// this is ugly but it seems like there is no other way to get to the buildSrc jars
+		docletpath = rootProject.files('buildSrc/script-api-doclet/build/libs/script-api-doclet.jar').asList()
+		doclet = "ish.tools.ScriptApiDoclet"
+		stylesheetFile = rootProject.file('buildSrc/script-api-doclet/src/main/resources/javadocs.css')
+		windowTitle = "onCourse scripting API"
+	}
 }
 
 task createResourceManifests {
