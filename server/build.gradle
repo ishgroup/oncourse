@@ -4,7 +4,7 @@ dependencies {
 	def jettyVersion = '8.1.16.v20140903'
 
 	compile project(':common')
-	compile ('ish.oncourse.willow:webservices-client:5.1.51') {
+	compile ('ish.oncourse.willow:webservices-client:5.1.52') {
 
         exclude group: 'javax.xml.soap'
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-ws-metadata_2.0_spec'
@@ -101,8 +101,20 @@ sourceSets {
   }
 }
 
+configurations {
+	apiDocs
+}
+
+dependencies {
+	apiDocs 'ish.oncourse.willow:waCommon:5.1.52:sources'
+}
+
 task scriptApiDocs(type: Javadoc) {
-	source = sourceSets.main.allJava
+	source = sourceSets.main.allJava.plus(zipTree(configurations.apiDocs.find { 
+		it.name.startsWith("waCommon") 
+	})).matching {
+		include '**/*.java'
+	}
 	destinationDir = reporting.file("script-api-docs")
 	failOnError = false
 	classpath = configurations.compile
