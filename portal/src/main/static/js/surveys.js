@@ -28,6 +28,7 @@ Survey.prototype = {
     },
 
     initRate: function (rateHtml, score, readOnly) {
+        var self = this;
         rateHtml.raty({
             half: false,
             size: 24,
