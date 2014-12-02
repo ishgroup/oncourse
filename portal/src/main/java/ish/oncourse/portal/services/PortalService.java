@@ -815,13 +815,20 @@ public class PortalService implements IPortalService {
         return survey;
     }
 
-    private Enrolment getEnrolmentBy(Student student, CourseClass courseClass) {
+    public Enrolment getEnrolmentBy(Student student, CourseClass courseClass) {
         Expression enrolmentExp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student)
                 .andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass))
                 .andExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
         SelectQuery query = new SelectQuery(Enrolment.class, enrolmentExp);
 
         return (Enrolment) Cayenne.objectForQuery(student.getObjectContext(), query);
+    }
+
+    public boolean isTutorFor(CourseClass courseClass)
+    {
+        courseClass = getContact().getTutor().getObjectContext().localObject(courseClass);
+        Expression exp = ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY, getContact().getTutor());
+        return  !exp.filterObjects(courseClass.getTutorRoles()).isEmpty();
     }
 
 

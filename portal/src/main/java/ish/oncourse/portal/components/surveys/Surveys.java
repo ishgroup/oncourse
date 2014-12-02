@@ -30,7 +30,7 @@ public class Surveys {
 
     @Parameter(required = true)
     @Property
-    private boolean isTutor = false;
+    private boolean isTutor;
 
     @OnEvent(value = "getSurvey")
     public TextStreamResponse getSurvey() throws IOException {
@@ -39,6 +39,7 @@ public class Surveys {
 
         Survey survey;
         //we should check at fist that the current contact is a student and try to load survey for student
+        boolean isTutor  = portalService.getContact().getTutor() != null && portalService.isTutorFor(courseClass);
         if (isTutor) {
             survey = portalService.getAverageSurveyFor(courseClass);
         } else {

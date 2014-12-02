@@ -117,6 +117,10 @@ public interface IPortalService {
 
     public void logout();
 
+    public boolean isTutorFor(CourseClass courseClass);
+
+    public Enrolment getEnrolmentBy(Student student, CourseClass courseClass);
+
     /**
      * returns survey for selected student and for the <code>courseClass</code>
      */
