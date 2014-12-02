@@ -1,6 +1,5 @@
 package ish.oncourse.portal.components.surveys;
 
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Survey;
 import ish.oncourse.portal.services.IPortalService;
@@ -29,30 +28,28 @@ public class Surveys {
     @Parameter(required = true)
     private CourseClass courseClass;
 
-    @Parameter
+    @Parameter(required = true)
     @Property
-    private boolean readOnly = false;
+    private boolean isTutor = false;
 
     @OnEvent(value = "getSurvey")
     public TextStreamResponse getSurvey() throws IOException {
         if (!request.isXHR())
             return null;
 
-        Contact contact = portalService.getContact();
-
         Survey survey;
         //we should check at fist that the current contact is a student and try to load survey for student
-        if (contact.getStudent() != null) {
+        if (isTutor) {
+            survey = portalService.getAverageSurveyFor(courseClass);
+        } else {
             survey = portalService.getStudentSurveyFor(courseClass);
             if (survey == null)
                 survey = portalService.createStudentSurveyFor(courseClass);
-        } else {
-            survey = portalService.getAverageSurveyFor(courseClass);
         }
 
         //adds readonly for tutor
         JSONObject jsonObject = portalService.getJSONSurvey(survey);
-        jsonObject.put(JSONPROPERTY_readOnly, contact.getTutor() != null);
+        jsonObject.put(JSONPROPERTY_readOnly, isTutor);
         return new TextStreamResponse("text/json", jsonObject.toString());
     }
 

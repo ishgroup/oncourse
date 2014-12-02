@@ -9,7 +9,7 @@
         </div>
 
         <t:if test="showSurveys()">
-            <t:surveys.surveys courseClass="courseClass" readOnly="isTutor"/>
+            <t:surveys.surveys courseClass="courseClass" isTutor="isTutor"/>
         </t:if>
 
         <div class="row">
