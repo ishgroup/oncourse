@@ -56,19 +56,18 @@ Survey.prototype = {
             self.saveSurvey();
         });
 
-        setTimeout(function () {
-            if (self.survey.readOnly) {
-                $j('.rate-class').tooltip({ content: 'Click here to see reviews' });
-            }
-            else {
-                $j('.rate-class').tooltip({ content: 'Click here to provide reviews' });
-            }
-        }, 1000);
-
         $j('.rate-class').click(function () {
             self.slideSurveys()
         });
         this.fillSurvey();
+
+        if (self.survey.readOnly) {
+            $j('.rate-class').tooltip({ content: 'Click here to see reviews' });
+        }
+        else {
+            $j('.rate-class').tooltip({ content: 'Click here to provide reviews' });
+        }
+
     },
     //slide survey form
     slideSurveys: function () {
