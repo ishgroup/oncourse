@@ -1,5 +1,6 @@
 package ish.oncourse.portal.components.courseclass;
 
+import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
@@ -83,9 +84,14 @@ public class SessionSliderItem {
     }
     public String getVenue()
     {
+        Room room  = session.getRoom();
 
-        if (session.getCourseClass().getRoom() != null)
-            return String.format("%s, %s", session.getCourseClass().getRoom().getName(), session.getCourseClass().getRoom().getSite().getName());
+        if (room == null) {
+            room =  session.getCourseClass().getRoom();
+        }
+
+        if (room != null)
+            return String.format("%s, %s", room.getName(), room.getSite().getName());
         else
             return StringUtils.EMPTY;
     }
