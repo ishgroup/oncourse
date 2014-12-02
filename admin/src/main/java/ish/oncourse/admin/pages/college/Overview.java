@@ -14,6 +14,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.system.ICollegeService;
 
+import ish.oncourse.webservices.usi.crypto.CryptoUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -32,6 +33,7 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.apache.tapestry5.util.TextStreamResponse;
+import org.bouncycastle.util.encoders.Base64;
 
 public class Overview {
 	
@@ -164,6 +166,14 @@ public class Overview {
 		
 		if (ausKey == null || !ausKey.isFilled()) {
 			ausKeyForm.recordError("Keystore file cannot be parsed.");
+			return;
+		}
+
+		try {
+			CryptoUtils.decryptPrivateKey(Base64.decode(ausKey.getPrivateKey()), auskeyPassword.toCharArray(), Base64.decode(ausKey.getSalt()));
+		} catch (Exception e) {
+			logger.info(e);
+			ausKeyForm.recordError("Unable to decrypt private key using specified password.");
 			return;
 		}
 		
