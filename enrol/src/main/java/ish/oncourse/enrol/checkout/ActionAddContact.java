@@ -1,5 +1,10 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Product;
+
+import java.util.List;
+
 public class ActionAddContact extends AAddContactAction {
 
     @Override
@@ -34,7 +39,17 @@ public class ActionAddContact extends AAddContactAction {
 
     @Override
     protected String getHeaderMessage() {
-        return getController().getMessages().format("message-enterDetailsForStudent");
+
+		List<Product> products = getModel().getProducts();
+		List<CourseClass> classes = getModel().getClasses();
+
+		if (products.size() > 0 && classes.size() > 0) {
+			return getController().getMessages().format("message-enterDetailsForStudent");
+		} else if (products.size() > 0) {
+			return getController().getMessages().format("message-enterDetailsForPersonMakingPurchase");
+		} else {
+			return getController().getMessages().format("message-enterDetailsForPersonEnrolling");
+		}
     }
 
     @Override

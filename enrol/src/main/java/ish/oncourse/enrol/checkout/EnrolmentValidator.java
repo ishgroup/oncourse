@@ -71,11 +71,13 @@ public class EnrolmentValidator {
             // validate age restrictions for the class
             if (minEnrolmentAge != null || maxEnrolmentAge != null) {
 
-                if ((minEnrolmentAge != null && age < minEnrolmentAge) ||
-                        (maxEnrolmentAge != null && age > maxEnrolmentAge)) {
-                    publishError(ageRequirementsNotMet, showErrors, enrolment.getStudent().getFullName());
-                    return false;
-                }
+                if ((minEnrolmentAge != null && age < minEnrolmentAge)) {
+					publishError(ageRequirementsUnderMinimum, showErrors, minEnrolmentAge, enrolment.getStudent().getFullName());
+					return false;
+                } else if ((maxEnrolmentAge != null && age > maxEnrolmentAge)) {
+					publishError(ageRequirementsOverMaximum, showErrors, maxEnrolmentAge, enrolment.getStudent().getFullName());
+					return false;
+				}
                 //validate age restrictions for global enrolment age restriction
             } else if (globalMinEnrolmentAge != null && age < globalMinEnrolmentAge) {
                 publishError(ageRequirementsNotMet, showErrors, enrolment.getStudent().getFullName());
