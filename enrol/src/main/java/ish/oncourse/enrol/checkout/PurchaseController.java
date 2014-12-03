@@ -981,7 +981,6 @@ public class PurchaseController {
         voucherWrongPayer,
         voucherAlreadyBeingUsed,
         voucherRedeemNotAllow,
-		ageRequirementsNotMet,
 		ageRequirementsOverMaximum,
 		ageRequirementsUnderMinimum,
         payerWasChangedToGuardian,

@@ -80,7 +80,7 @@ public class EnrolmentValidator {
 				}
                 //validate age restrictions for global enrolment age restriction
             } else if (globalMinEnrolmentAge != null && age < globalMinEnrolmentAge) {
-                publishError(ageRequirementsNotMet, showErrors, enrolment.getStudent().getFullName());
+                publishError(ageRequirementsUnderMinimum, showErrors, globalMinEnrolmentAge, enrolment.getStudent().getFullName());
                 return false;
             }
         }
