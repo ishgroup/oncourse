@@ -92,7 +92,9 @@ public enum PageIdentifier
 
 	PageNotFound("/pagenotfound", "ui/PageNotFound"),
 
-	SiteNotFound("/sitenotfound", "ui/SiteNotFound");
+	SiteNotFound("/sitenotfound", "ui/SiteNotFound"),
+	
+	WaitingListForm(new PrefixMatcher("/waitinglistform/"), "enrol/WaitingListForm" );
 
 	private  static final PageIdentifier[] sortedValues;
 	static

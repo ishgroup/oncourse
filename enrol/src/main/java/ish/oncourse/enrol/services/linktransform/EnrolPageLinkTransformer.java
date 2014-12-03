@@ -4,6 +4,7 @@
 package ish.oncourse.enrol.services.linktransform;
 
 import ish.oncourse.linktransform.PageIdentifier;
+import ish.oncourse.model.Site;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
@@ -35,10 +36,22 @@ public class EnrolPageLinkTransformer implements PageRenderLinkTransformer {
 
 	@Override
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
+
+		final String path = request.getPath().toLowerCase();
+		PageIdentifier pageIdentifier = PageIdentifier.getPageIdentifierByPath(path);
 		
 		if (webSiteService.getCurrentWebSite() == null) {
 			requestGlobals.getResponse().setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return new PageRenderRequestParameters(PageIdentifier.SiteNotFound.getPageName(), new EmptyEventContext(), false);
+		}
+		if (PageIdentifier.WaitingListForm.equals(pageIdentifier)) {
+			//get courseId parameter from request path 
+			String courseId = path.substring(path.lastIndexOf('/') + 1);
+			//check that courseId is number, else abort WaitingListForm rendering
+			if (!courseId.matches("\\d+")) {
+				LOGGER.warn("Wrong attribute:courseId for WaitingList Form, it should be correct course ID");
+				return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(), new EmptyEventContext(), false);
+			} 
 		}
 		return null;
 	}
