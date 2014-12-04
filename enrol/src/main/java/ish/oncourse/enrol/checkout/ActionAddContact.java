@@ -39,17 +39,7 @@ public class ActionAddContact extends AAddContactAction {
 
     @Override
     protected String getHeaderMessage() {
-
-		List<Product> products = getModel().getProducts();
-		List<CourseClass> classes = getModel().getClasses();
-
-		if (products.size() > 0 && classes.size() > 0) {
-			return getController().getMessages().format("message-enterDetailsForStudent");
-		} else if (products.size() > 0) {
-			return getController().getMessages().format("message-enterDetailsForPersonMakingPurchase");
-		} else {
-			return getController().getMessages().format("message-enterDetailsForPersonEnrolling");
-		}
+		return getController().getMessages().format("message-enterDetailsForStudent");
     }
 
     @Override
