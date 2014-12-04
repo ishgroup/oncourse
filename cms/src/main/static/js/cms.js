@@ -56,7 +56,7 @@ function initPublish() {
                 {
                     text: "OK",
                     click: function () {
-                        jQuery(this).dialog("close");
+                        jQuery("#cms-publish-dialog").dialog("close");
                         location.reload();
                     },
                     'class': "cms-btn"
@@ -87,9 +87,8 @@ function publish() {
                     {
                         text: "OK",
                         click: function () {
-                            jQuery(this).dialog("close");
-                        },
-                        'class': "cms-btn"
+                            jQuery("#cms-publish-dialog").dialog("close");
+                        }
                     }
                 ]
             }).open();
@@ -145,7 +144,7 @@ function initAddNewPage() {
                             {
                                 text: "OK",
                                 click: function () {
-                                    jQuery(this).dialog("close");
+                                    jQuery("#cms-publish-dialog").dialog("close");
                                 },
                                 'class': "cms-btn"
                             }
