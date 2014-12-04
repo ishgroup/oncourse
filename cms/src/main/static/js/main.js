@@ -199,6 +199,7 @@ function toolTips() {
 
 function modals(formId) {
     jQuery("#dialog").dialog({
+        autoOpen: false,
         modal : true,
 	    resizable: true,
 	    draggable: true,
@@ -208,21 +209,21 @@ function modals(formId) {
             {
                 text : "Cancel",
                 click : function() {
-                    jQuery(this).dialog("close");
+                    jQuery("#dialog").dialog("close");
                 },
                 'class' : "cms-btn"
             },
             {
                 text : "Save",
                 click : function() {
-                    jQuery(this).dialog("close");
+                    jQuery("#dialog").dialog("close");
                     $(formId).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
                     //$('${regionForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
                 },
                 'class' : "cms-btn cms-btn-primary"
             }
         ]
-    });
+    }).open();
     jQuery('.cms-close-popup').click(function() {
         jQuery(this).parents('.cms-popup-edit').dialog('close');
     });
