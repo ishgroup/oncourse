@@ -47,6 +47,7 @@ function initPublish() {
         publish();
 
         jQuery("#cms-publish-dialog").dialog({
+            autoOpen: false,
             modal: true,
             resizable: false,
             draggable: false,
@@ -61,7 +62,7 @@ function initPublish() {
                     'class': "cms-btn"
                 }
             ]
-        });
+        }).open();
 
     });
 }
@@ -77,7 +78,8 @@ function publish() {
         },
         error: function (data) {
             jQuery("#cms-publish-error").dialog({
-                modal: true,
+                 autoOpen: false,
+                    modal: true,
                 resizable: false,
                 draggable: false,
                 width: '50%',
@@ -90,7 +92,7 @@ function publish() {
                         'class': "cms-btn"
                     }
                 ]
-            });
+            }).open();
         }
     });
 }
@@ -134,6 +136,7 @@ function initAddNewPage() {
             success: function (data) {
                 if (data.path == null) {
                     jQuery("#cms-addPage-error").dialog({
+                        autoOpen: false,
                         modal: true,
                         resizable: false,
                         draggable: false,
@@ -147,7 +150,7 @@ function initAddNewPage() {
                                 'class': "cms-btn"
                             }
                         ]
-                    });
+                    }).open();
                 } else {
                     window.location.href = data.path;                    
                 }
