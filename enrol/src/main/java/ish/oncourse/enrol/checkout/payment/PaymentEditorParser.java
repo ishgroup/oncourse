@@ -72,6 +72,7 @@ public class PaymentEditorParser implements IFieldsParser {
 				paymentIn.setCreditCardName(value);
 				break;
 			case creditCardNumber:
+				value = value.replaceAll("\\D","");
 				paymentIn.setCreditCardNumber(value);
 				CreditCardParser parser = new CreditCardParser();
 				CreditCardType creditCardType = parser.parser(value);
