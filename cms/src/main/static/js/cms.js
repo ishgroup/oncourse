@@ -56,13 +56,13 @@ function initPublish() {
                 {
                     text: "OK",
                     click: function () {
-                        jQuery("#cms-publish-dialog").dialog("close");
+                        jQuery(this).dialog("close");
                         location.reload();
                     },
                     'class': "cms-btn"
                 }
             ]
-        }).open();
+        }).dialog('open');
 
     });
 }
@@ -87,11 +87,11 @@ function publish() {
                     {
                         text: "OK",
                         click: function () {
-                            jQuery("#cms-publish-dialog").dialog("close");
+                            jQuery(this).dialog("close");
                         }
                     }
                 ]
-            }).open();
+            }).dialog('open');
         }
     });
 }
@@ -144,12 +144,12 @@ function initAddNewPage() {
                             {
                                 text: "OK",
                                 click: function () {
-                                    jQuery("#cms-publish-dialog").dialog("close");
+                                    jQuery(this).dialog("close");
                                 },
                                 'class': "cms-btn"
                             }
                         ]
-                    }).open();
+                    }).dialog('open');
                 } else {
                     window.location.href = data.path;                    
                 }

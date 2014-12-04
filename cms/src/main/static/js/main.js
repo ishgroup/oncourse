@@ -209,21 +209,20 @@ function modals(formId) {
             {
                 text : "Cancel",
                 click : function() {
-                    jQuery("#dialog").dialog("close");
+                    jQuery(this).dialog("close");
                 },
                 'class' : "cms-btn"
             },
             {
                 text : "Save",
                 click : function() {
-                    jQuery("#dialog").dialog("close");
+                    jQuery(this).dialog("close");
                     $(formId).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
-                    //$('${regionForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
                 },
                 'class' : "cms-btn cms-btn-primary"
             }
         ]
-    }).open();
+    }).dialog('open');
     jQuery('.cms-close-popup').click(function() {
         jQuery(this).parents('.cms-popup-edit').dialog('close');
     });
