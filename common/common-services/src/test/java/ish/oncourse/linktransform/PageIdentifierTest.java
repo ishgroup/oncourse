@@ -135,6 +135,15 @@ public class PageIdentifierTest {
 		value.setInvalids("/tutor", "/tutor/","/tutor/ ");
 		urls.put(Tutor, value);
 
+		value =  new Urls();
+		value.setValids("/waitinglistform/1234",
+				"/waitinglistform/1234 "
+				
+		);
+		value.setInvalids("/waitinglistform","/waitinglistform/", "/waitinglistform /1234");
+		
+		urls.put(WaitingListForm, value);
+	
 		urls.put(Sitemap, forExectMattcher("/sitemap.xml",true));
 
 		urls.put(AdvancedKeyword, forExectMattcher("/advanced/keyword",true));
