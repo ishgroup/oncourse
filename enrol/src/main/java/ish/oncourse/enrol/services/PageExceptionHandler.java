@@ -8,6 +8,9 @@ import static ish.oncourse.enrol.services.Constants.*;
 
 public class PageExceptionHandler {
 	private static final java.lang.String METHOD_POST = "POST";
+	
+	private static final String ADD_CONTACT_PATH = "/checkout.addcontact.addcontactform";
+	private static final String EDIT_CONTACT_PATH = "/checkout.contacteditor.contacteditorform";
 
 	//input parameters
 	private Request request;
@@ -46,11 +49,34 @@ public class PageExceptionHandler {
 		NullPointerException exception = ExceptionUtils.findCause(cause, NullPointerException.class);
 		return exception != null &&
 				request.getMethod().equals(METHOD_POST) &&
-				((request.getParameterNames().contains(COMPONENT_submitContact) && !purchaseController.isAddContact() && !purchaseController.isEditContact())
+				(isWrongForSubmitContact()
 						||
 						(request.getParameterNames().contains(COMPONENT_paymentSubmit) && !purchaseController.isEditPayment() && !purchaseController.isEditCorporatePass()));
 	}
 
+	/**
+	 * Check that state matches correct edit form, because 
+	 * two states available for submitContact action: AddContact and EditContact,
+	 * we can delineate it using request pass, see use case
+	 * 
+	 * user have two or more browser tabs on different steps: AddContact and EditContact,
+	 * purchaseController state is EditContact
+	 * 
+	 * - do submitContact from AddContactForm (path is '/checkout.addcontact.addcontactform') - wrong, need redirection
+	 * - do submitContact from EditContactForm (path is '/checkout.contacteditor.contacteditorform') - correct
+	 *
+	 * @return true if state is wrong
+	 */
+	private boolean isWrongForSubmitContact() {
+		boolean result = request.getParameterNames().contains(COMPONENT_submitContact);
+		if (result) {
+			result = result && ((purchaseController.isAddContact() && !request.getPath().equals(ADD_CONTACT_PATH))
+							|| (purchaseController.isEditContact() && !request.getPath().equals(EDIT_CONTACT_PATH)));
+	}
+		return result;
+	}
+	
+	
 	/**
 	 * The method returns true when an user uses two tabs to process the purchase and one of these tabs the user does XHR request but
 	 * PurchaseController already got another state.
