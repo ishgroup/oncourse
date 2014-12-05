@@ -71,12 +71,14 @@ public class BinaryDataService implements IBinaryDataService {
 				qualifier = qualifier.andExp(ExpressionFactory.matchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PUBLIC));
 			}
 		}
+		//exclude deleted documents;
+		qualifier =  qualifier.andExp(ExpressionFactory.matchExp(Document.IS_REMOVED_PROPERTY, false));
 		return qualifier;
 	}
 
 	private Document getRandomBinaryInfo(final Expression qualifier) {
 		ObjectContext sharedContext = cayenneService.sharedContext();
-		final SelectQuery binaryCount = new SelectQuery(Document.class, qualifier.andExp(ExpressionFactory.matchExp(Document.IS_REMOVED_PROPERTY, false)));
+		final SelectQuery binaryCount = new SelectQuery(Document.class, qualifier);
 		
 		List<Document> binaries = (List<Document>) sharedContext.performQuery(binaryCount);
 		Long count = (long) binaries.size();
