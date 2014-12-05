@@ -14,6 +14,7 @@
 //= require html5.js
 //= require respond.min.js
 //= require selectivizr-min.js
+//= require placeholders.min.js
 
 
 //goog.provide('site');
@@ -33,3 +34,4 @@
 //goog.require('html5');
 //goog.require('respond');
 //goog.require('selectivizr');
+//goog.require('placeholders');
