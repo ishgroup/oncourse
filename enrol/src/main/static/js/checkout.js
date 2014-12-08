@@ -5,14 +5,22 @@ goog.require('common');
 var $j = jQuery.noConflict();
 
 function initSelectPayerHandle(){
-    $j("select[id*=contact]").change(function()
-        {
-            var actionLink = '/enrol/payment.paymenteditor:changepayerevent';
-            var f = $j("[id*=paymentform]")[0];
-            var data = $j(f).serialize();
-            sendAjaxWithData(actionLink, data);
-        }
-    );
+
+    $j('ul.new-payer-option').hide();
+
+    $j('.payer-selection a.button').click(function(){
+        $j(this).next('ul').toggle();
+        return false;
+    });
+
+    $j('.payer-selection ul.new-payer-option  li a').click(function(){
+        $j('ul.new-payer-option').hide();
+//        var actionLink = '/enrol/payment.paymenteditor:changepayerevent';
+//        var f = $j("[id*=paymentform]")[0];
+//        var data = $j(f).serialize();
+//        sendAjaxWithData(actionLink, data);
+        return false;
+    });
 }
 
 

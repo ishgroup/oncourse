@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
     <div id="paymentEditor">
 	    <t:delegate to="block:paymentEditor"/>
     </div>
@@ -28,10 +28,32 @@
 					</span>
 				</p>
 				<p>
-					<label for="contact">Payer<em title="${message:message-required}">*</em></label>
-					<t:select t:id="contact" value="payer" model="payersModel" encoder="payersEncoder" blankOption="NEVER" />
+					<label for="contact">Payer
+                        <em title="${message:message-required}">*</em> 
+                        <small>(issue invoice to)</small>
+                    </label>
+                    <span class="select-payer">
+                        <t:loop source="payers" value="payerValue">
+                            <label class="radio-btn">
+                                <t:if test="isSelected()">
+                                    <input type="radio" name="payer" value="${payerValue.id}" checked="true"/>${payerValue.fullName}
+                                    <p:else>
+                                        <input type="radio" name="payer" value="${payerValue.id}" />${payerValue.fullName}
+                                    </p:else>
+                                </t:if>
+                            </label>
+                        </t:loop>
+                    </span>
+                    <!--<t:select t:id="contact" value="payer" model="payersModel" encoder="payersEncoder" blankOption="NEVER" />-->
                     <!--<t:eventlink t:id="changePayerEvent" style="{display:none;}"/>-->
                 </p>
+                <div class="payer-selection">
+                    <a href="#" class="button">Choose a different payer</a>
+                    <ul class="new-payer-option">
+                        <li id="new-person"><a href="#">a person</a></li>
+                        <li id="new-company"><a href="#">a business</a></li>
+                    </ul>
+                </div>
                 <t:if test="zeroPayment" negate="true">
                     <p>
                         <label for="creditCardName">Name on Card<em title="${message:message-required}">*</em></label>

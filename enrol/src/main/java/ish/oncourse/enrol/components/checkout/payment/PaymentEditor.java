@@ -15,10 +15,7 @@ import ish.oncourse.util.ValidateHandler;
 import ish.persistence.CommonPreferenceController;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.Block;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
@@ -76,7 +73,11 @@ public class PaymentEditor implements IPaymentControlDelegate {
     private Block blockToRefresh;
 
     private Contact dummyPayer;
+
     private List<Contact> payers;
+
+    @Property
+    private Contact payerValue;
 
 
     @SetupRender
@@ -204,6 +205,12 @@ public class PaymentEditor implements IPaymentControlDelegate {
         return paymentEditorParser;
     }
 
+
+    public boolean isSelected()
+    {
+        return payerValue.getId().equals(delegate.getPaymentIn().getContact().getId());
+    }
+
     private Contact getDummyPayer()
     {
         if (dummyPayer == null)
@@ -223,14 +230,10 @@ public class PaymentEditor implements IPaymentControlDelegate {
         return dummyPayer;
     }
 
-    private List<Contact> getPayers()
+    @Cached
+    public List<Contact> getPayers()
     {
-        if (payers == null)
-        {
-            payers = new ArrayList<>(delegate.getContacts());
-            payers.add(getDummyPayer());
-        }
-        return payers;
+        return delegate.getContacts();
     }
 
 	public boolean isAmexAvailable()
