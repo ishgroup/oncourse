@@ -1,6 +1,6 @@
-goog.provide('html5fix');
+//goog.provide('html5fix');
 
-goog.require('jquery');
+//goog.require('jquery');
 
 
 var $j = jQuery.noConflict();
