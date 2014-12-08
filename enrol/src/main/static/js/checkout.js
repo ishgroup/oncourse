@@ -6,8 +6,6 @@ var $j = jQuery.noConflict();
 
 function initSelectPayerHandle(){
 
-    $j('ul.new-payer-option').hide();
-
     $j('.payer-selection a.button').click(function(){
         $j(this).next('ul').toggle();
         return false;

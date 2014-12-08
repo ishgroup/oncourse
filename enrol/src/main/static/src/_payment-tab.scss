@@ -68,7 +68,26 @@
 			background:#fff;
 			border-bottom-right-radius: 9px;
 			border-top-right-radius: 9px;
-			
+
+            .enrolmentsSelected fieldset {
+                position: relative;
+            }
+            .form-details p label > small {
+                color: #999;
+                font-size: 9px;
+                display: block;
+                line-height: 9px;
+            }
+          
+            .form-details p label.radio-btn {
+                width: auto;
+                float: none;
+                margin-left: 0px;
+                max-width: none;
+                display: block;
+                margin-bottom: 5px;
+            }
+          
 			.form-details select {
 				width: 188px;
 				
@@ -76,8 +95,116 @@
 					width: 55px;
 				}
 			}
-			
-			.single-tab {
+          
+            .payer-selection {
+                position: absolute;
+                top: 50px;
+                right: 20px;
+            }
+
+            .payer-selection > a.button {
+                float: none;
+                text-decoration: none;
+            }
+          
+            .payer-selection ul {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                z-index: 1000;
+                display: none;
+                float: left;
+                min-width: 160px;
+                padding: 5px 0;
+                margin: 2px 0 0;
+                list-style: none;
+                background-color: #FFF;
+                border: 1px solid #CCC;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                -webkit-border-radius: 6px;
+                -moz-border-radius: 6px;
+                border-radius: 6px;
+                -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+                -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+                -webkit-background-clip: padding-box;
+                -moz-background-clip: padding;
+                background-clip: padding-box;
+                top: 25px;
+                left: 12px;
+            }
+          
+            .payer-selection ul::before {
+                position: absolute;
+                top: -7px;
+                left: 9px;
+                display: inline-block;
+                border-right: 7px solid rgba(0, 0, 0, 0);
+                border-bottom: 7px solid #CCC;
+                border-left: 7px solid rgba(0, 0, 0, 0);
+                border-bottom-color: rgba(0, 0, 0, 0.2);
+                content: '';
+            }
+  
+            .payer-selection ul:after {
+                position: absolute;
+                top: -6px;
+                left: 10px;
+                display: inline-block;
+                border-right: 6px solid rgba(0, 0, 0, 0);
+                border-bottom: 6px solid #FFF;
+                border-left: 6px solid rgba(0, 0, 0, 0);
+                content: '';
+            }
+
+            .payer-selection ul li{
+                line-height: 20px;
+            }
+
+            .payer-selection ul li > a{
+                display: block;
+                padding: 3px 20px;
+                clear: both;
+                font-weight: normal;
+                line-height: 20px;
+                color: #333;
+                white-space: nowrap;
+                text-decoration: none;
+            }
+            
+            .payer-selection ul li > a:hover {
+                color: #FFF;
+                text-decoration: none;
+                background-color: #0081C2;
+                background-image: -moz-linear-gradient(top, #08C, #0077B3);
+                background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#0077B3));
+                background-image: -webkit-linear-gradient(top, #08C, #0077B3);
+                background-image: -o-linear-gradient(top, #08C, #0077B3);
+                background-image: linear-gradient(to bottom, #08C, #0077B3);
+                background-repeat: repeat-x;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+            }
+          
+            .form-details p label.radio-btn {
+                width: auto;
+                float: none;
+                margin-left: 0px;
+                max-width: none;
+                display: block;
+                margin-bottom: 5px;
+            }
+  
+            .form-details p label.radio-btn.text-right {
+                text-align: right;
+                padding: 0;
+            }
+  
+            .form-details p label.radio-btn input[type=radio]{
+                float: left;
+                margin-left: -20px;
+            }
+
+            .single-tab {
 				display: none;
 				
 				.info-content {
@@ -126,4 +253,14 @@
 			}
 		}
 	}
+}
+
+#cvvLink {
+  margin-left: 55px !important;
+}
+
+@-moz-document url-prefix() {
+  .payer-selection {
+    top: 65px;
+  }
 }
