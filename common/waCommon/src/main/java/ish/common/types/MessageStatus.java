@@ -8,11 +8,24 @@ import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
  * enumeration of available message statuses
+ * 
+ * @PublicApi
  */
 public enum MessageStatus implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	QUEUED(1, "queued"),
+	
+	/**
+	 * @PublicApi
+	 */
 	SENT(2, "sent"),
+
+	/**
+	 * @PublicApi
+	 */
 	FAILED(3, "failed");
 
 	private String displayName;

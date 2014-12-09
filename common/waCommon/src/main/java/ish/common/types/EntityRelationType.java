@@ -2,9 +2,19 @@ package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
 
+/**
+ * @PublicApi
+ */
 public enum EntityRelationType implements DisplayableExtendedEnumeration<Integer> {
-	
+
+	/**
+	 * @PublicApi
+	 */
 	COURSE(1, "Course"),
+
+	/**
+	 * @PublicApi
+	 */
 	PRODUCT(2, "Product");
 
 	private String displayName;

@@ -6,13 +6,39 @@ package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
 
+/**
+ * @PublicApi
+ */
 public enum ClassFundingSource implements DisplayableExtendedEnumeration<Integer>, AvetmissReportingEnum {
 
+	/**
+	 * @PublicApi
+	 */
 	COMMONWEALTH_AND_STATE_GENERAL(0, "Commonwealth and state - general recurrent", "11"),
+
+	/**
+	 * @PublicApi
+	 */
 	COMMONWEALTH_SPECIFIC(1, "Commonwealth - specific", "13"),
+
+	/**
+	 * @PublicApi
+	 */
 	STATE_SPECIFIC(2, "State - specific", "15"),
+
+	/**
+	 * @PublicApi
+	 */
 	DOMESTIC_FULL_FEE(3, "Domestic full fee paying student", "20"),
+
+	/**
+	 * @PublicApi
+	 */
 	INTERNATIONAL_FULL_FEE(4, "International full fee paying student", "30"),
+
+	/**
+	 * @PublicApi
+	 */
 	REVENUE_FROM_OTHER_TO(5, "Revenue from other RTO", "80");
 
 	private String displayName;

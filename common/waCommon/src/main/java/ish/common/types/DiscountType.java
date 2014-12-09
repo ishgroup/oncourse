@@ -8,6 +8,8 @@ import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
  * enumeration of available discount types
+ * 
+ * @PublicApi
  */
 public enum DiscountType implements DisplayableExtendedEnumeration<Integer> {
 
@@ -16,16 +18,24 @@ public enum DiscountType implements DisplayableExtendedEnumeration<Integer> {
 	 * The value will be rounded according to the discount round property. <br />
 	 * Discount min and max value can be also applied when the discount has defined them.<br />
 	 * Tax value will be calculated after the discounted price is calculated.
+	 * 
+	 * @PublicApi
 	 */
 	PERCENT(1, "Percent"),
+	
 	/**
 	 * Discount amount will be a set dollar value. This value applies to the original price without tax. <br />
 	 * Tax value will be calculated after the discounted price is calculated.
+	 * 
+	 * @PublicApi
 	 */
 	DOLLAR(2, "Dollar"),
+	
 	/**
 	 * Discounts of this type override the original price ex tax of the class.<br />
 	 * Tax, if applicable, will be added to the defined dollar value.
+	 * 
+	 * @PublicApi
 	 */
 	FEE_OVERRIDE(3, "Fee override");
 

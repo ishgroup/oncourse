@@ -7,13 +7,28 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * @author marcin
+ * @PublicApi
  */
 public enum ClassCostFlowType implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	EXPENSE(0, "Expense/Cost"),
+
+	/**
+	 * @PublicApi
+	 */
 	INCOME(1, "Income/Funding"),
+
+	/**
+	 * @PublicApi
+	 */
 	WAGES(2, "Wages"),
+
+	/**
+	 * @PublicApi
+	 */
 	DISCOUNT(3, "Discount");
 
 	private String displayName;

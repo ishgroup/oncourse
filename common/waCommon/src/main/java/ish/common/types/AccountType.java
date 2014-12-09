@@ -12,15 +12,38 @@ import java.util.List;
 /**
  * enumeration of account types available
  * 
- * @author marcin
+ * @PublicApi
  */
 public enum AccountType implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	ASSET(1, "asset"),
+
+	/**
+	 * @PublicApi
+	 */
 	LIABILITY(2, "liability"),
+
+	/**
+	 * @PublicApi
+	 */
 	EQUITY(3, "equity"),
+
+	/**
+	 * @PublicApi
+	 */
 	INCOME(4, "income"),
+
+	/**
+	 * @PublicApi
+	 */
 	COS(5, "COS"),
+
+	/**
+	 * @PublicApi
+	 */
 	EXPENSE(6, "expense");
 
 	public static final List<AccountType> DEBIT_TYPES = Arrays.asList(ASSET, COS, EQUITY);

@@ -7,13 +7,28 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * @author marcin
+ * @PublicApi
  */
 public enum PayslipStatus implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	HOLLOW(1, "New"),
+	
+	/**
+	 * @PublicApi
+	 */
 	COMPLETED(2, "Completed"),
+
+	/**
+	 * @PublicApi
+	 */
 	APPROVED(3, "Approved"),
+
+	/**
+	 * @PublicApi
+	 */
 	FINALISED(4, "Paid/Exported");
 
 	private String displayName;

@@ -8,11 +8,24 @@ import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
  * enumeration of available message types
+ * 
+ * @PublicApi
  */
 public enum MessageType implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	EMAIL(1, "email"),
+	
+	/**
+	 * @PublicApi
+	 */
 	SMS(2, "sms"),
+
+	/**
+	 * @PublicApi
+	 */
 	POST(3, "post");
 
 	private String displayName;

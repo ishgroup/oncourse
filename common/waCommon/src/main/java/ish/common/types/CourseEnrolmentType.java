@@ -7,11 +7,19 @@ import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
  * enumeration of available enrolment types to course
+ * 
+ * @PublicApi
  */
 public enum CourseEnrolmentType implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	OPEN_FOR_ENROLMENT(1, "Open enrolment"),
 
+	/**
+	 * @PublicApi
+	 */
 	ENROLMENT_BY_APPLICATION(2, "Enrolment by application");
 
 	private String displayName;

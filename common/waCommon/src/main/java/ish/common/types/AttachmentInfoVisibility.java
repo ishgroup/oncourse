@@ -5,12 +5,28 @@ import ish.common.util.DisplayableExtendedEnumeration;
 /**
  * choices for attachment visibility
  * 
- * @author marcin
+ * @PublicApi
  */
 public enum AttachmentInfoVisibility implements DisplayableExtendedEnumeration<Integer> {
+
+	/**
+	 * @PublicApi
+	 */
 	PRIVATE(0, "Private"),
+
+	/**
+	 * @PublicApi
+	 */
 	PUBLIC(1, "Public"),
+
+	/**
+	 * @PublicApi
+	 */
 	STUDENTS(2, "Tutors and enrolled students"),
+
+	/**
+	 * @PublicApi
+	 */
 	TUTORS(3, "Tutors only");
 
 	private final int value;

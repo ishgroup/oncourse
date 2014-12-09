@@ -5,8 +5,14 @@ package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
 
+/**
+ * @PublicApi
+ */
 public enum AttachmentSpecialType implements DisplayableExtendedEnumeration<Integer> {
-	
+
+	/**
+	 * @PublicApi
+	 */
 	PROFILE_PICTURE(0, "Profile picture");
 	
 	private int value;

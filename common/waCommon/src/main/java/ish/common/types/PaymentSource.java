@@ -4,15 +4,22 @@ import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
  * enumeration containing two choices of payment sources: website or office
+ * 
+ * @PublicApi
  */
 public enum PaymentSource implements DisplayableExtendedEnumeration<String> {
 
 	/**
 	 * all payments made from onCourse angel will have this source
+	 * 
+	 * @PublicApi
 	 */
 	SOURCE_ONCOURSE("O", "office"),
+	
 	/**
 	 * all payments made from onCourse website will have this source
+	 * 
+	 * @PublicApi
 	 */
 	SOURCE_WEB("W", "web");
 

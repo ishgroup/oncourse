@@ -10,13 +10,34 @@ import ish.common.util.DisplayableExtendedEnumeration;
  * an enumeration describing students indigineous status<br/>
  * <br/>
  * AVETMISS - page 46
+ * 
+ * @PublicApi
  */
 public enum AvetmissStudentIndigenousStatus implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	DEFAULT_POPUP_OPTION(0, "not stated"),
+
+	/**
+	 * @PublicApi
+	 */
 	ABORIGINAL(1, "Aboriginal"),
+
+	/**
+	 * @PublicApi
+	 */
 	TORRES(2, "Torres Strait Islander"),
+
+	/**
+	 * @PublicApi
+	 */
 	ABORIGINAL_AND_TORRES(3, "Aboriginal and Torres Strait Islander"),
+
+	/**
+	 * @PublicApi
+	 */
 	NEITHER(4, "Neither");
 
 	private String displayName;

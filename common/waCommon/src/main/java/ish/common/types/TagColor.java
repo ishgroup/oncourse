@@ -7,16 +7,43 @@ import java.awt.*;
 /**
  * enumeration of available colours for the tags
  * 
- * @author marcin
+ * @PublicApi
  */
 public enum TagColor implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	RED(0, Color.RED, "Red"),
+
+	/**
+	 * @PublicApi
+	 */
 	ORANGE(1, Color.ORANGE, "Orange"),
+
+	/**
+	 * @PublicApi
+	 */
 	YELLOW(2, Color.YELLOW, "Yellow"),
+
+	/**
+	 * @PublicApi
+	 */
 	GREEN(3, Color.GREEN, "Green"),
+
+	/**
+	 * @PublicApi
+	 */
 	BLUE(4, Color.BLUE, "Blue"),
+
+	/**
+	 * @PublicApi
+	 */
 	PURPLE(5, Color.PINK, "Purple"),
+
+	/**
+	 * @PublicApi
+	 */
 	GREY(6, Color.GRAY, "Grey");
 
 	private String displayName;

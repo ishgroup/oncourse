@@ -7,11 +7,18 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * @author marcin
+ * @PublicApi
  */
 public enum NodeType implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	TAG(1, "Tag"),
+
+	/**
+	 * @PublicApi
+	 */
 	WEBPAGE(2, "Web page");
 
 	private String displayName;

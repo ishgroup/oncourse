@@ -8,11 +8,24 @@ import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
  * enumeration with options describing usi status
+ * 
+ * @PublicApi
  */
 public enum UsiStatus implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	DEFAULT_NOT_SUPPLIED(0, "Not set"),
+
+	/**
+	 * @PublicApi
+	 */
 	NON_VERIFIED(1, "Not verified"),
+
+	/**
+	 * @PublicApi
+	 */
 	VERIFIED(2, "Verified");
 
 	private String displayName;

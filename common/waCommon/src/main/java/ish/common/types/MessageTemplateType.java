@@ -3,11 +3,18 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * @author vdavidovich
+ * @PublicApi
  */
 public enum MessageTemplateType implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	BASIC_TEMPLATE(0, "Basic template"),
+	
+	/**
+	 * @PublicApi
+	 */
 	XSLT_TEMPLATE(1, "XSLT template");
 
 	private String displayName;

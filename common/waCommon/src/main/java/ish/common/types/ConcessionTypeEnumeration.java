@@ -9,14 +9,29 @@ import ish.common.util.DisplayableExtendedEnumeration;
 /**
  * describes types of concessions available in onCourse
  * 
- * @author marcin
+ * @PublicApi
  */
 public enum ConcessionTypeEnumeration implements DisplayableExtendedEnumeration<Integer> {
 
 	// this is not an avetmiss field
+	/**
+	 * @PublicApi
+	 */
 	NO_CONCESSION(0, "No concession"),
+
+	/**
+	 * @PublicApi
+	 */
 	SENIORS_CARD(1, "Seniors card"),
+
+	/**
+	 * @PublicApi
+	 */
 	STUDENT(2, "Student"),
+
+	/**
+	 * @PublicApi
+	 */
 	PENSIONER(3, "Aged pensioner");
 
 	private String displayName;

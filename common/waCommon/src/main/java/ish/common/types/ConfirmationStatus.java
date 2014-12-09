@@ -5,9 +5,24 @@ package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
 
+/**
+ * @PublicApi
+ */
 public enum ConfirmationStatus implements DisplayableExtendedEnumeration<Integer> {
+
+	/**
+	 * @PublicApi
+	 */
 	NOT_SENT(1, "Not sent"),
+
+	/**
+	 * @PublicApi
+	 */
 	SENT(2, "Sent"),
+
+	/**
+	 * @PublicApi
+	 */
 	DO_NOT_SEND(3, "Don't send");
 
 	private int value;

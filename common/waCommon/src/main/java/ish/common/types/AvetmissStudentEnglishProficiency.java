@@ -10,13 +10,34 @@ import ish.common.util.DisplayableExtendedEnumeration;
  * an enumeration describing student english proficiency <br/>
  * <br/>
  * AVETMISS - page 79
+ * 
+ * @PublicApi
  */
 public enum AvetmissStudentEnglishProficiency implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	DEFAULT_POPUP_OPTION(0, "not stated"),
+
+	/**
+	 * @PublicApi
+	 */
 	VERY_WELL(1, "Very Well"),
+
+	/**
+	 * @PublicApi
+	 */
 	WELL(2, "Well"),
+
+	/**
+	 * @PublicApi
+	 */
 	NOT_WELL(3, "Not Well"),
+
+	/**
+	 * @PublicApi
+	 */
 	NOT_AT_ALL(4, "Not at all");
 
 	private String displayName;

@@ -6,10 +6,24 @@ package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
 
+/**
+ * @PublicApi
+ */
 public enum ProductType implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	ARTICLE(1, "Product"),
+
+	/**
+	 * @PublicApi
+	 */
 	MEMBERSHIP(2, "Membership"),
+
+	/**
+	 * @PublicApi
+	 */
 	VOUCHER(3, "Voucher");
 
 	private String displayName;

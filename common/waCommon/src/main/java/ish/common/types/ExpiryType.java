@@ -8,12 +8,29 @@ import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
  * enumeration of discount expire types
+ * 
+ * @PublicApi
  */
 public enum ExpiryType implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	DAYS(1, "Days"),
+
+	/**
+	 * @PublicApi
+	 */
 	FIRST_JANUARY(2, "1st January"),
+
+	/**
+	 * @PublicApi
+	 */
 	FIRST_JULY(3, "1st July"),
+
+	/**
+	 * @PublicApi
+	 */
 	LIFETIME(4, "Never (Lifetime)");
 
 	private String displayName;

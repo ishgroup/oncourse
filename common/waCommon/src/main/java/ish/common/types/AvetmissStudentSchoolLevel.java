@@ -10,16 +10,45 @@ import ish.common.util.DisplayableExtendedEnumeration;
  * an enumeration describing student's school level<br/>
  * <br/>
  * AVETMISS - page 31
+ * 
+ * @PublicApi
  */
 public enum AvetmissStudentSchoolLevel implements DisplayableExtendedEnumeration<Integer> {
 
 	// AVETMISS - page 31
+	/**
+	 * @PublicApi
+	 */
 	DEFAULT_POPUP_OPTION(0, "not stated"),
+	
+	/**
+	 * @PublicApi
+	 */
 	DID_NOT_GO_TO_SCHOOL(1, "Did not go to school"),
+
+	/**
+	 * @PublicApi
+	 */
 	COMPLETED_YEAR_8_OR_BELOW(2, "Year 8 or below"),
+
+	/**
+	 * @PublicApi
+	 */
 	COMPLETED_YEAR_9(3, "Year 9"),
+
+	/**
+	 * @PublicApi
+	 */
 	COMPLETED_YEAR_10(4, "Year 10"),
+
+	/**
+	 * @PublicApi
+	 */
 	COMPLETED_YEAR_11(5, "Year 11"),
+
+	/**
+	 * @PublicApi
+	 */
 	COMPLETED_YEAR_12(6, "Year 12");
 
 	private String displayName;

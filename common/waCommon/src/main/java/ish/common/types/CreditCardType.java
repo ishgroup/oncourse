@@ -23,14 +23,31 @@ import ish.common.util.DisplayableExtendedEnumeration;
  * <li>China union pay</li>
  * <li>Discover Novus</li>
  * </ul>
+ * 
+ * @PublicApi
  */
 public enum CreditCardType implements DisplayableExtendedEnumeration<String> {
 	// JCB("J", "JCB"),
+	/**
+	 * @PublicApi
+	 */
 	VISA("V", "VISA"),
+
+	/**
+	 * @PublicApi
+	 */
 	MASTERCARD("M", "Mastercard"),
+
+	/**
+	 * @PublicApi
+	 */
 	@Deprecated
 	BANKCARD("B", "Bankcard"),
 	// DINNERS("D", "Dinners Club"),
+
+	/**
+	 * @PublicApi
+	 */
 	AMEX("A", "Amex");
 	// CARTE_BLANCHE("CB", "Carte Blanche"),
 	// DISCOVER_NOVUS("DN", "Discover Novus"),

@@ -9,15 +9,38 @@ import ish.common.util.DisplayableExtendedEnumeration;
 /**
  * enumeration of available types of account transactions
  * 
- * @author marcin
+ * @PublicApi
  */
 public enum AccountTransactionType implements DisplayableExtendedEnumeration<String> {
 
+	/**
+	 * @PublicApi
+	 */
 	INVOICE_LINE("I", "Invoice line"),
+
+	/**
+	 * @PublicApi
+	 */
 	PAYMENT_IN_LINE("P", "Payment in line"),
+
+	/**
+	 * @PublicApi
+	 */
 	PAYMENT_OUT_LINE("O", "Payment out line"),
+
+	/**
+	 * @PublicApi
+	 */
 	PURCHASE_LINE("U", "Purchase line"),
+
+	/**
+	 * @PublicApi
+	 */
 	DEPRECIATION("D", "Depreciation"),
+
+	/**
+	 * @PublicApi
+	 */
 	JOURNAL("J", "Journal");
 
 	private String displayName;

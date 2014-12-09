@@ -8,13 +8,34 @@ import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
  * Qualifications must be one of these types
+ * 
+ * @PublicApi
  */
 public enum QualificationType implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	QUALIFICATION_TYPE(0, "Qualification"),
+
+	/**
+	 * @PublicApi
+	 */
 	COURSE_TYPE(1, "Accredited course"),
+	
+	/**
+	 * @PublicApi
+	 */
 	SKILLSET_TYPE(2, "Skill set"),
+
+	/**
+	 * @PublicApi
+	 */
 	SKILLSET_LOCAL_TYPE(3, "Local skill set"),
+
+	/**
+	 * @PublicApi
+	 */
 	HIGHER_TYPE(4, "Higher education");
 
 	private String displayName;

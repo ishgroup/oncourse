@@ -10,18 +10,59 @@ import ish.common.util.DisplayableExtendedEnumeration;
  * an enumeration describing student prior education<br/>
  * <br/>
  * AVETMISS - page 77
+ * 
+ * @PublicApi
  */
 public enum AvetmissStudentPriorEducation implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	DEFAULT_POPUP_OPTION(0, "not stated"),
+
+	/**
+	 * @PublicApi
+	 */
 	BACHELOR(1, "Bachelor degree or higher degree level"),
+
+	/**
+	 * @PublicApi
+	 */
 	ADVANCED_DIPLOMA(2, "Advanced diploma or associate degree level"),
+
+	/**
+	 * @PublicApi
+	 */
 	DIPLOMA(3, "Diploma level"),
+
+	/**
+	 * @PublicApi
+	 */
 	CERTIFICATE_IV(4, "Certificate IV"),
+
+	/**
+	 * @PublicApi
+	 */
 	CERTIFICATE_III(5, "Certificate III"),
+
+	/**
+	 * @PublicApi
+	 */
 	CERTIFICATE_II(6, "Certificate II"),
+
+	/**
+	 * @PublicApi
+	 */
 	CERTIFICATE_I(7, "Certificate I"),
+
+	/**
+	 * @PublicApi
+	 */
 	MISC(8, "Miscellaneous education"),
+
+	/**
+	 * @PublicApi
+	 */
 	NONE(100, "None");
 
 	private String displayName;

@@ -9,13 +9,33 @@ import ish.common.util.DisplayableExtendedEnumeration;
 /**
  * enumeration of available attendance types
  * 
- * @author thomas
+ * @PublicApi
  */
 public enum AttendanceType implements DisplayableExtendedEnumeration<Integer> {
+
+	/**
+	 * @PublicApi
+	 */
 	UNMARKED(0, "Unmarked"),
+	
+	/**
+	 * @PublicApi
+	 */
 	ATTENDED(1, "Attended"),
+
+	/**
+	 * @PublicApi
+	 */
 	DID_NOT_ATTEND_WITH_REASON(2, "Absent with reason"),
+
+	/**
+	 * @PublicApi
+	 */
 	DID_NOT_ATTEND_WITHOUT_REASON(3, "Absent without reason"),
+
+	/**
+	 * @PublicApi
+	 */
 	PARTIAL(4, "Partial");
 
 	private final int value;

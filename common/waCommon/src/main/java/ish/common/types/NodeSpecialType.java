@@ -7,13 +7,28 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * @author marcin
+ * @PublicApi
  */
 public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	SUBJECTS(1, "Subjects"),
+
+	/**
+	 * @PublicApi
+	 */
 	HOME_WEBPAGE(2, "Home web page"),
+
+	/**
+	 * @PublicApi
+	 */
 	MAILING_LISTS(3, "Mailing lists"),
+
+	/**
+	 * @PublicApi
+	 */
 	PAYROLL_WAGE_INTERVALS(4, "Payroll wage intervals");
 
 	private String displayName;
