@@ -1,6 +1,7 @@
 goog.provide('initialise');
 
 goog.require('custom');
+goog.require('placeholderpolyfill');
 
 
 var $j = jQuery.noConflict();
@@ -92,6 +93,13 @@ function initHandles()
 	initHints();
 }
 
+// placeholder polyfill for browsers that not support them
+function initPlaceholder()
+{
+    $j('input, textarea').placeholder();
+}
+
 $j(document).ready(function() {
 	initHandles();
+	initPlaceholder();
 });

@@ -5,6 +5,7 @@ goog.require('jquery');
 goog.require('initialise');
 
 
+
 var $j = jQuery.noConflict();
 
 Usi = function () {
@@ -138,6 +139,7 @@ Usi.prototype = {
         });
     }
 };
+
 
 
 $j('document').ready(function () {
