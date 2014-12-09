@@ -21,7 +21,6 @@ public class PaymentEditorParser implements IFieldsParser {
 	private Messages messages;
 	private PaymentIn paymentIn;
 
-	private boolean newPayer;
 	private boolean isCorporatePass;
 
 	private Map<String, String> errors = new HashMap<>();
@@ -49,11 +48,7 @@ public class PaymentEditorParser implements IFieldsParser {
 				if (value != null) {
 					setValue(field, value);
 				} else {
-					if (isCorporatePass && Field.contact.equals(field)) {
-						//skip the check
-					} else {
-						errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
-					}
+					errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, field.name())));
 				}
 			}
 		}
@@ -61,13 +56,6 @@ public class PaymentEditorParser implements IFieldsParser {
 
 	private void setValue(Field field, String value) {
 		switch (field) {
-			case contact:
-				Long id = Long.valueOf(value);
-				if (id.equals(Long.MIN_VALUE))
-					newPayer = true;
-				else
-					paymentIn.setContact(getContactBy(id));
-				break;
 			case creditCardName:
 				paymentIn.setCreditCardName(value);
 				break;
@@ -101,15 +89,6 @@ public class PaymentEditorParser implements IFieldsParser {
 		}
 	}
 
-	private Contact getContactBy(Long id) {
-		for (Contact contact : contacts) {
-			if (contact.getId().equals(id))
-				return contact;
-		}
-		throw new IllegalArgumentException();
-	}
-
-
 	public void setRequest(Request request) {
 		this.request = request;
 	}
@@ -130,10 +109,6 @@ public class PaymentEditorParser implements IFieldsParser {
 		return errors;
 	}
 
-	public boolean isNewPayer() {
-		return newPayer;
-	}
-
 	public void setCorporatePass(boolean corporatePass) {
 		isCorporatePass = corporatePass;
 	}
@@ -149,11 +124,11 @@ public class PaymentEditorParser implements IFieldsParser {
 		userAgreed;
 
 		public static Field[] zeroPaymentFields() {
-			return new Field[]{Field.userAgreed, Field.contact};
+			return new Field[]{Field.userAgreed};
 		}
 
 		public static Field[] noZeroPaymentFields() {
-			return new Field[]{Field.contact,
+			return new Field[]{
 					Field.creditCardName,
 					Field.creditCardNumber,
 					Field.creditCardCVV,

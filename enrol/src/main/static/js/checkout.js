@@ -12,11 +12,27 @@ function initSelectPayerHandle(){
     });
 
     $j('.payer-selection ul.new-payer-option  li a').click(function(){
+            $j('ul.new-payer-option').hide();
+            var actionLink;
+
+            if( $j(this).parent().attr('id') == 'new-person') {
+                actionLink = '/enrol/payment.paymenteditor:addpersonpayerevent';
+            } else {
+                actionLink = '/enrol/payment.paymenteditor:addcompanypayerevent';
+            }
+
+            sendAjax(actionLink);
+            return false;
+        }
+    );
+
+    $j("input[name=payer]").change(function(){
+        //hide 'Choose a different payer' toggle if it is currently being displayed
         $j('ul.new-payer-option').hide();
-//        var actionLink = '/enrol/payment.paymenteditor:changepayerevent';
-//        var f = $j("[id*=paymentform]")[0];
-//        var data = $j(f).serialize();
-//        sendAjaxWithData(actionLink, data);
+        
+        var payerId = $j(this).attr('value')
+        var actionLink = '/enrol/payment.paymenteditor:changepayerevent/'.concat(payerId);
+        sendAjax(actionLink);
         return false;
     });
 }

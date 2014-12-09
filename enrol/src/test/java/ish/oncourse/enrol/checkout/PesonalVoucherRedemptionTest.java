@@ -35,7 +35,7 @@ public class PesonalVoucherRedemptionTest extends ACheckoutTest {
 	}
 
 	private void changePayer() {
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addPayer);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addPersonPayer);
 		performAction(actionParameter);
 		assertTrue(purchaseController.isAddContact());
 

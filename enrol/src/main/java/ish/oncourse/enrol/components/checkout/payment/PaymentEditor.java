@@ -7,7 +7,6 @@ import ish.oncourse.enrol.checkout.payment.PaymentEditorParser;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
-import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
@@ -27,6 +26,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import static ish.oncourse.enrol.services.Constants.EVENT_changePayerEvent;
+import static ish.oncourse.enrol.services.Constants.EVENT_addPersonPayerEvent;
+import static ish.oncourse.enrol.services.Constants.EVENT_addCompanyPayerEvent;
 
 public class PaymentEditor implements IPaymentControlDelegate {
 
@@ -38,8 +39,6 @@ public class PaymentEditor implements IPaymentControlDelegate {
 	@Parameter(required = true)
 	@Property
 	private PaymentEditorDelegate delegate;
-
-	private ListSelectModel<Contact> payersModel;
 
 	private ListValueEncoder<Contact> payersEncoder;
 
@@ -71,10 +70,6 @@ public class PaymentEditor implements IPaymentControlDelegate {
     @Parameter
     @Property
     private Block blockToRefresh;
-
-    private Contact dummyPayer;
-
-    private List<Contact> payers;
 
     @Property
     private Contact payerValue;
@@ -108,14 +103,6 @@ public class PaymentEditor implements IPaymentControlDelegate {
 		return validateHandler;
 	}
 
-	public ListSelectModel<Contact> getPayersModel()
-	{
-		if (payersModel == null)
-		{
-			payersModel = new ListSelectModel<>(getPayers(), "fullName",propertyAccess);
-		}
-		return payersModel;
-	}
 
 	public  ListValueEncoder<Contact> getPayersEncoder()
 	{
@@ -172,17 +159,35 @@ public class PaymentEditor implements IPaymentControlDelegate {
 	}
 
 	@OnEvent(value = EVENT_changePayerEvent)
-	public Object changePayer() {
+	public Object changePayer(Long id) {
         if (!request.isXHR())
             return null;
-        PaymentEditorParser paymentEditorParser = getPaymentEditorParser();
-        paymentEditorParser.parse();
-        if (paymentEditorParser.isNewPayer())
-            delegate.addPayer();
-        else
-            delegate.changePayer();
-        return blockToRefresh;
+		
+		for (Contact contact : getPayers()) {
+			if (contact.getId().equals(id)) {
+				getPaymentIn().setContact(contact);
+				delegate.changePayer();
+				return blockToRefresh;
+			}
+		}
+		throw new IllegalArgumentException();
     }
+
+	@OnEvent(value = EVENT_addPersonPayerEvent)
+	public Object addPersonPayer() {
+		if (!request.isXHR())
+			return null;
+		delegate.addPayer(false);
+		return blockToRefresh;
+	}
+
+	@OnEvent(value = EVENT_addCompanyPayerEvent)
+	public Object addPCompanyPayer() {
+		if (!request.isXHR())
+			return null;
+		delegate.addPayer(true);
+		return blockToRefresh;
+	}
 
 	public Object makePayment()
 	{
@@ -211,25 +216,6 @@ public class PaymentEditor implements IPaymentControlDelegate {
         return payerValue.getId().equals(delegate.getPaymentIn().getContact().getId());
     }
 
-    private Contact getDummyPayer()
-    {
-        if (dummyPayer == null)
-        {
-            dummyPayer = new Contact(){
-                @Override
-                public String getFullName() {
-                    return messages.get("message-addDifferentPayer");
-                }
-
-                @Override
-                public Long getId() {
-                    return Long.MIN_VALUE;
-                }
-            };
-        }
-        return dummyPayer;
-    }
-
     @Cached
     public List<Contact> getPayers()
     {
@@ -241,18 +227,4 @@ public class PaymentEditor implements IPaymentControlDelegate {
 		return preferenceController.getServicesAmexEnabled();
 	}
 
-	/**
-	 * 	The method is used as setter for value attribute of select payer combobox.
-	 * 	we cannot use direct set PaymentIn.contact because sometime DUMMY contact can be passed to this
-	 * 	method and our application throws exception in this case. Reason is unknow. It is workaround.
-	 */
-	public void setPayer(Contact contact)
-	{
-
-	}
-
-	public Contact getPayer()
-	{
-		return delegate.getPaymentIn().getContact();
-	}
 }

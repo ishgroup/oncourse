@@ -40,4 +40,6 @@ public class Constants {
 	 * Event names
 	 */
 	public static final String EVENT_changePayerEvent = "changePayerEvent";
+	public static final String EVENT_addPersonPayerEvent = "addPersonPayerEvent";
+	public static final String EVENT_addCompanyPayerEvent = "addCompanyPayerEvent";
 }

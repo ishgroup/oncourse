@@ -228,7 +228,7 @@ public class MultiplePurchaseProductTest extends ACheckoutTest {
 
 		//add a different payer on Payment page
 		Contact newPayer = Cayenne.objectForPK(model.getObjectContext(), Contact.class, 1189158);
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addPayer);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addPersonPayer);
 		performAction(actionParameter);
 
 		ContactCredentials credential =  purchaseController.getAddContactDelegate().getContactCredentials();

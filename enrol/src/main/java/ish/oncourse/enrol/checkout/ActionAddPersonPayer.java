@@ -1,6 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
-public class ActionAddPayer extends AAddContactAction
+public class ActionAddPersonPayer extends AAddContactAction
 {
 
     @Override
@@ -25,7 +25,7 @@ public class ActionAddPayer extends AAddContactAction
 
     @Override
     protected PurchaseController.Action getAddAction() {
-        return PurchaseController.Action.addPayer;
+        return PurchaseController.Action.addPersonPayer;
     }
 
     @Override

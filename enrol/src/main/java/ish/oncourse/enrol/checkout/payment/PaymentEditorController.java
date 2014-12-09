@@ -76,8 +76,15 @@ public class PaymentEditorController implements PaymentEditorDelegate {
     }
 
     @Override
-    public void addPayer() {
-        PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addPayer);
+    public void addPayer(Boolean isCompany) {
+        PurchaseController.ActionParameter parameter; 
+		
+		if (isCompany) {
+			parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addCompanyPayer);
+		} else {
+			parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addPersonPayer);
+		}
+		
         purchaseController.performAction(parameter);
     }
 

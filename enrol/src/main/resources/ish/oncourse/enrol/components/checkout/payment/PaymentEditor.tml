@@ -33,7 +33,7 @@
                         <small>(issue invoice to)</small>
                     </label>
                     <span class="select-payer">
-                        <t:loop source="payers" value="payerValue">
+                        <t:loop source="payers" value="payerValue" encoder="payersEncoder">
                             <label class="radio-btn">
                                 <t:if test="isSelected()">
                                     <input type="radio" name="payer" value="${payerValue.id}" checked="true"/>${payerValue.fullName}
