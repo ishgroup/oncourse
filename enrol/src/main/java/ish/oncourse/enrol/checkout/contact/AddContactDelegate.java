@@ -10,4 +10,6 @@ public interface AddContactDelegate extends IDelegate
 
     String getHeaderTitle();
     String getHeaderMessage();
+	
+	boolean isCompanyPayer();
 }

@@ -12,6 +12,7 @@ public class AddContactController extends ADelegate implements AddContactDelegat
 
     private String headerTitle;
     private String headerMessage;
+	private boolean companyPayer = false;
 
 
 
@@ -54,7 +55,16 @@ public class AddContactController extends ADelegate implements AddContactDelegat
         return headerMessage;
     }
 
-    public void setHeaderMessage(String headerMessage) {
+	@Override
+	public boolean isCompanyPayer() {
+		return companyPayer;
+	}
+
+	public void setHeaderMessage(String headerMessage) {
         this.headerMessage = headerMessage;
     }
+
+	public void setCompanyPayer(boolean companyPayer) {
+		this.companyPayer = companyPayer;
+	}
 }

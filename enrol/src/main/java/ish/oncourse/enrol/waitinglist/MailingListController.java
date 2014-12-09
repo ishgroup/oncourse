@@ -115,4 +115,9 @@ public class MailingListController extends AContactController {
     public String getHeaderMessage() {
         return null;
     }
+
+	@Override
+	public boolean isCompanyPayer() {
+		return false;
+	}
 }

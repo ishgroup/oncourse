@@ -12,4 +12,9 @@ public class AddGuardianController extends AddContactController {
     public void setChildContact(Contact childContact) {
         this.childContact = childContact;
     }
+
+	@Override
+	public boolean isCompanyPayer() {
+		return false;
+	}
 }
