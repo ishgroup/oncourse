@@ -229,7 +229,7 @@ function modals(formId) {
 }
 
 function tabsContent() {
-    jQuery('#edMenu li').click( function(event) {
+    jQuery('#edMenu').delegate('li', 'click', function(event) {
 
 
         var ev = event.target;
