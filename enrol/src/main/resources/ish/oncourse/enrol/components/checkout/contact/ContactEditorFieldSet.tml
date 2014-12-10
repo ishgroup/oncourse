@@ -113,6 +113,7 @@
 				</span>
 			</p>
 		</t:if>
+	</t:if>
 		
 		<t:loop source="customFieldNames" value="customFieldName">
 			<t:if test="${delegate.contactFieldHelper.isCustomFieldVisible(getCustomFieldByName(customFieldName))}">
@@ -125,7 +126,8 @@
 				</p>
 			</t:if>
 		</t:loop>
-	
+
+	<t:if test="delegate.contact.isCompany" negate="true">
 		<t:if test="${delegate.visibleFields.contains('specialNeeds')}">
 			<p>
 				<label for="specialNeeds">${label('specialNeeds')}<t:if test="required('specialNeeds')"><em title="${message:message-required}">*</em> </t:if></label>
