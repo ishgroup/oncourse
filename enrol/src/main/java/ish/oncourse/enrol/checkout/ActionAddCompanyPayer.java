@@ -38,7 +38,7 @@ public class ActionAddCompanyPayer extends AAddContactAction {
 
 	@Override
 	protected String getHeaderMessage() {
-		return getController().getMessages().format("message-enterDetailsForPayer");
+		return getController().getMessages().format("message-enterDetailsForCompany");
 	}
 
 	@Override

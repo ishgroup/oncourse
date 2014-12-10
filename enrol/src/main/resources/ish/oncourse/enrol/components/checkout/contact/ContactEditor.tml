@@ -32,7 +32,14 @@
 	<t:block t:id="message">
 		<div class="student">${contact.fullName} <span>- ${contact.emailAddress}</span></div>
 		<div class="message">
-			<p><t:if test="studentEditor">${message:message-requerementDetailsForStudent} </t:if>${message:message-requireAdditionalInfo}</p>
+			<p><t:if test="studentEditor">${message:message-requerementDetailsForStudent} </t:if>
+				<t:if test="delegate.contact.isCompany">
+					${message:message-requerementDetailsForCompany}
+					<p:else>
+						${message:message-requireAdditionalInfo}
+					</p:else>
+				</t:if>
+			</p>
 		</div>
 	</t:block>
 
