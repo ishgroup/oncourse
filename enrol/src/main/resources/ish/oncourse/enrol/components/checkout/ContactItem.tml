@@ -12,13 +12,17 @@
                     <div class="student-info">${contact.fullName} <span class="student-email">(${contact.emailAddress})</span></div>
                 </p:else>
             </t:if>
-            <span t:type='checkout/namelist' className="literal:concession" names="concessionNames"/>
+			<t:if test="contact.isCompany" negate="true">
+            	<span t:type='checkout/namelist' className="literal:concession" names="concessionNames"/>
+			</t:if>
             <span t:type='checkout/namelist' className="literal:membership" names="membershipNames"/>
             <div>
-                <t:if test="purchaseController.activeConcessionTypes">
-                        <a href="#" class="add-concession">Add Concession</a>
-                        <t:actionlink t:id="editConcessionLink" context="index" style="{display:none}"/>
-                </t:if>
+				<t:if test="contact.isCompany" negate="true">
+					<t:if test="purchaseController.activeConcessionTypes">
+							<a href="#" class="add-concession">Add Concession</a>
+							<t:actionlink t:id="editConcessionLink" context="index" style="{display:none}"/>
+					</t:if>
+				</t:if>
             </div>
 		</td>
 	</tr>

@@ -32,22 +32,25 @@ public class ActionBackToEditCheckout extends APurchaseAction {
          * create disabled enrolments which were deleted after an user pressed ProceedToPayment
          */
 		for (Contact contact : contacts) {
-			for (CourseClass courseClass : classes) {
-				Enrolment enrolment = getModel().getEnrolmentBy(contact, courseClass);
-				if (enrolment == null)
-				{
-					enrolment = getController().createEnrolment(courseClass, contact.getStudent());
-					getModel().addEnrolment(enrolment);
-				} else {
-					PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.disableEnrolment);
-					parameter.setValue(enrolment);
-					getController().performAction(parameter);
-					parameter = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
-					parameter.setValue(enrolment);
-					getController().performAction(parameter);
+			// is not available for companies 
+			if (!contact.getIsCompany()) {
+				for (CourseClass courseClass : classes) {
+					Enrolment enrolment = getModel().getEnrolmentBy(contact, courseClass);
+					if (enrolment == null) {
+						enrolment = getController().createEnrolment(courseClass, contact.getStudent());
+						getModel().addEnrolment(enrolment);
+					} else {
+						PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.disableEnrolment);
+						parameter.setValue(enrolment);
+						getController().performAction(parameter);
+						parameter = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
+						parameter.setValue(enrolment);
+						getController().performAction(parameter);
+					}
 				}
-			}
+			}	
 		}
+		
 
         /**
          * create disabled productItems which were deleted after an user pressed ProceedToPayment
