@@ -376,13 +376,18 @@ public class PurchaseModel {
     }
 
     public boolean containsContactWith(ContactCredentials contactCredentials) {
-        for (Contact contact : getContacts()) {
-            if (contact.getFamilyName().equalsIgnoreCase(contactCredentials.getLastName()) &&
-                    contact.getGivenName().equalsIgnoreCase(contactCredentials.getFirstName()) &&
-                    contact.getEmailAddress().equalsIgnoreCase(contactCredentials.getEmail()))
-                return true;
-        }
-        return false;
+		
+		Expression expression = ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, contactCredentials.getLastName())
+				.andExp(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, contactCredentials.getEmail()));
+		
+		//check company
+		if (contactCredentials.getFirstName() == null) {
+			expression = expression.andExp(ExpressionFactory.matchExp(Contact.IS_COMPANY_PROPERTY, true));
+		} else {
+			expression = expression.andExp(ExpressionFactory.matchExp(Contact.GIVEN_NAME_PROPERTY,contactCredentials.getFirstName()));
+		}
+		
+		return !expression.filterObjects(getContacts()).isEmpty();
     }
 
     public void deleteDisabledItems() {
