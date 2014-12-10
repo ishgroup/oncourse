@@ -4,6 +4,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.CustomField;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet;
@@ -168,10 +169,16 @@ public class ContactFieldHelper {
 	public List<String> getVisibleFields(Contact contact, boolean isFillRequiredProperties) {
 		ArrayList<String> visibleFields = new ArrayList<>();
 
-		FieldDescriptor[] fieldDescriptors = FieldDescriptor.values();
-		for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
-			if (isVisible(fieldDescriptor, contact, isFillRequiredProperties))
+		if (contact.getIsCompany()) {
+			for (FieldDescriptor fieldDescriptor : FieldDescriptor.COMPANY_FIELDS) {
 				visibleFields.add(fieldDescriptor.name());
+			}
+		} else {
+			FieldDescriptor[] fieldDescriptors = FieldDescriptor.values();
+			for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
+				if (isVisible(fieldDescriptor, contact, isFillRequiredProperties))
+					visibleFields.add(fieldDescriptor.name());
+			}
 		}
 		if (visibleFields.size() < 1)
 			throw new IllegalArgumentException();

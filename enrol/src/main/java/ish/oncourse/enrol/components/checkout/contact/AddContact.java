@@ -62,6 +62,7 @@ public class AddContact {
 			AddContactParser addContactValidator = new AddContactParser();
 			addContactValidator.setContactCredentials(delegate.getContactCredentials());
 			addContactValidator.setRequest(request);
+			addContactValidator.setCompany(delegate.isCompanyPayer());
 			addContactValidator.parse();
 			delegate.setErrors(addContactValidator.getErrors());
 			delegate.addContact();

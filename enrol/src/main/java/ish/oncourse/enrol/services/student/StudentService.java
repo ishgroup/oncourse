@@ -32,12 +32,14 @@ public class StudentService implements IStudentService {
 	@Inject
 	private Request request;
 
-	public Contact getStudentContact(String firstName, String lastName, String email) {
+	@Override
+	public Contact getContact(String firstName, String lastName, String email, boolean isCompany) {
 		College currentCollege = webSiteService.getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Student.COLLEGE_PROPERTY, currentCollege)
 				.andExp(ExpressionFactory.matchExp(Contact.GIVEN_NAME_PROPERTY, firstName))
 				.andExp(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, lastName))
-				.andExp(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email));
+				.andExp(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email))
+				.andExp(ExpressionFactory.matchExp(Contact.IS_COMPANY_PROPERTY, isCompany));
 		SelectQuery query = new SelectQuery(Contact.class, qualifier);
 		@SuppressWarnings("unchecked")
 		List<Contact> results = cayenneService.sharedContext().performQuery(query);
@@ -46,6 +48,10 @@ public class StudentService implements IStudentService {
 					" contact with id = " + results.get(0).getId() + " used for this query.");
 		}
 		return results.isEmpty() ? null : results.get(0);
+	}
+
+	public Contact getStudentContact(String firstName, String lastName, String email) {
+		return getContact(firstName, lastName, email, false);
 	}
 
 	public void addStudentToShortlist(Contact student) {

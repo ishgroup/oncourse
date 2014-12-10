@@ -15,6 +15,7 @@ public class AddContactParser {
 
 	private Request request;
 	private ContactCredentials contactCredentials;
+	private boolean isCompany = false;
 
 	private Map<String, String> errors = new HashMap<>();
 
@@ -23,9 +24,12 @@ public class AddContactParser {
 		contactCredentials.setFirstName(StringUtilities.cutToNull(request.getParameter(FIELD_NAME_firstName)));
 		contactCredentials.setLastName(StringUtilities.cutToNull(request.getParameter(FIELD_NAME_lastName)));
 		contactCredentials.setEmail(StringUtilities.cutToNull(request.getParameter(FIELD_NAME_email)));
-		parseFirstName();
 		parseLastName();
 		parseEmail();
+		
+		if (!isCompany) {
+			parseFirstName();
+		}
 	}
 
 	private void parseFirstName()
@@ -71,5 +75,7 @@ public class AddContactParser {
 	}
 
 
-
+	public void setCompany(boolean isCompany) {
+		this.isCompany = isCompany;
+	}
 }

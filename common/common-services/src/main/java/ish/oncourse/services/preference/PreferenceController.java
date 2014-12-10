@@ -12,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -749,6 +751,8 @@ public class PreferenceController extends CommonPreferenceController {
 		mobilePhoneNumber("mobile", Contact.MOBILE_PHONE_NUMBER_PROPERTY, String.class),
 		dateOfBirth("birth", Contact.DATE_OF_BIRTH_PROPERTY, Date.class),
 		specialNeeds("specialneeds", Contact.STUDENT_PROPERTY + "." + Student.SPECIAL_NEEDS_PROPERTY, String.class);
+
+		public static final List<FieldDescriptor> COMPANY_FIELDS = Arrays.asList(street,suburb,postcode,state,country,businessPhoneNumber,faxNumber);
 
 		private final String preferenceName;
 		public final String propertyName;

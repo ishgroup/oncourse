@@ -1,22 +1,34 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-		<p>
-			<label for="firstName">
-				First name<em title="${message:message-required}">*</em>
-			</label>
-			<span class="${validateHandler.validateClass('firstName')}">
-				<t:textfield value="delegate.contactCredentials.firstName" t:id="firstName" class="input-fixed contact-field ${validateHandler.errorClass('firstName')}"/>
-				<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('firstName')}"/>
-			</span>
-		</p>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+
+		<t:if test="delegate.companyPayer" negate="true">
+			<p>
+				<label for="firstName">
+					First name<em title="${message:message-required}">*</em>
+				</label>
+				<span class="${validateHandler.validateClass('firstName')}">
+					<t:textfield value="delegate.contactCredentials.firstName" t:id="firstName" class="input-fixed contact-field ${validateHandler.errorClass('firstName')}"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('firstName')}"/>
+				</span>
+			</p>
+		</t:if>
 		<p>
 			<label for="lastName">
-				Last name<em title="${message:message-required}">*</em>
+				<t:if test="delegate.companyPayer">
+					Business Name
+					<p:else>
+						Last name
+					</p:else>
+				</t:if>		
+				<em title="${message:message-required}">*</em>
 			</label>
 			<span class="${validateHandler.validateClass('lastName')}">
 				<t:textfield value="delegate.contactCredentials.lastName" t:id="lastName" class="input-fixed contact-field ${validateHandler.errorClass('lastName')}"/>
 				<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('lastName')}"/>
 			</span>
 		</p>
+		
+		
 		<p>
 			<label for="email">
 				Email<em title="${message:message-required}">*</em>

@@ -198,11 +198,7 @@ public abstract class AAddContactAction extends APurchaseAction {
                 contact = null;
             else if (getController().getState() == addContact) {
                 contactCredentials = getParameter().getValue(ContactCredentials.class);
-                ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
-                contactCredentialsEncoder.setContactCredentials(contactCredentials);
-                contactCredentialsEncoder.setCollege(getModel().getCollege());
-                contactCredentialsEncoder.setObjectContext(getController().getCayenneService().newContext());
-                contactCredentialsEncoder.setStudentService(getController().getStudentService());
+				ContactCredentialsEncoder contactCredentialsEncoder = buildContactCredentialsEncoder();
                 contactCredentialsEncoder.encode();
                 contact = contactCredentialsEncoder.getContact();
             } else {
@@ -211,7 +207,16 @@ public abstract class AAddContactAction extends APurchaseAction {
         }
     }
 
-    @Override
+	protected ContactCredentialsEncoder buildContactCredentialsEncoder() {
+		ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
+		contactCredentialsEncoder.setContactCredentials(contactCredentials);
+		contactCredentialsEncoder.setCollege(getModel().getCollege());
+		contactCredentialsEncoder.setObjectContext(getController().getCayenneService().newContext());
+		contactCredentialsEncoder.setStudentService(getController().getStudentService());
+		return contactCredentialsEncoder;
+	}
+
+	@Override
     protected boolean validate() {
         if (contact == null)
             return true;

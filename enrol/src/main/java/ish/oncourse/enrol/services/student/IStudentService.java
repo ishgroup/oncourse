@@ -8,7 +8,9 @@ import java.util.List;
 public interface IStudentService {
 
 	String SHORTLIST_STUDENTS_KEY = "shortlistStudents";
-
+	
+	Contact getContact(String firstName, String lastName, String email, boolean isCompany);
+	
 	Contact getStudentContact(String firstName, String lastName, String email);
 
 	void addStudentToShortlist(Contact student);

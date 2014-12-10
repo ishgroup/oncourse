@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
 	<t:if test="${delegate.visibleFields.contains('street')}">
 		<p>
@@ -100,38 +100,40 @@
 		</span>
 		</p>
 	</t:if>
-	
-	<t:if test="delegate.fillRequiredProperties" negate="true">
-		<p>
-			<label>Gender</label>
-			<span class="radio-list">
-				<t:radiogroup t:id="isMale" t:value="delegate.contact.isMale">
-					<input type="radio" t:type="radio" t:value="true"/> Male
-					<input type="radio" t:type="radio" t:value="false"/> Female
-				</t:radiogroup>
-			</span>
-		</p>
-	</t:if>
-	
-	<t:loop source="customFieldNames" value="customFieldName">
-		<t:if test="${delegate.contactFieldHelper.isCustomFieldVisible(getCustomFieldByName(customFieldName))}">
+
+	<t:if test="delegate.contact.isCompany" negate="true">
+		<t:if test="delegate.fillRequiredProperties" negate="true">
 			<p>
-				<t:label for="customField">${customFieldName}<t:if test="customFieldRequired(getCustomFieldByName(customFieldName))"><em title="${message:message-required}">*</em></t:if></t:label>
-				<span class="${validateHandler.validateClass(customFieldName)}">
-					<t:textfield t:id="customField" value="currentCustomFieldValue" class="customField input-fixed ${validateHandler.errorClass(customFieldName)}"/>
-					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error(customFieldName)}"/>
+				<label>Gender</label>
+				<span class="radio-list">
+					<t:radiogroup t:id="isMale" t:value="delegate.contact.isMale">
+						<input type="radio" t:type="radio" t:value="true"/> Male
+						<input type="radio" t:type="radio" t:value="false"/> Female
+					</t:radiogroup>
 				</span>
 			</p>
 		</t:if>
-	</t:loop>
-
-    <t:if test="${delegate.visibleFields.contains('specialNeeds')}">
-        <p>
-            <label for="specialNeeds">${label('specialNeeds')}<t:if test="required('specialNeeds')"><em title="${message:message-required}">*</em> </t:if></label>
-			<span class="${validateHandler.validateClass('specialNeeds')}">
-				<t:textarea t:id="specialNeeds" value="delegate.contact.student.specialNeeds" class="specialNeeds input-fixed ${validateHandler.errorClass('specialNeeds')}" rows="4" placeholder="None" />
-				<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('specialNeeds')}" hint="${hint('specialNeeds')}"/>
-			</span>
-        </p>
-    </t:if>
+		
+		<t:loop source="customFieldNames" value="customFieldName">
+			<t:if test="${delegate.contactFieldHelper.isCustomFieldVisible(getCustomFieldByName(customFieldName))}">
+				<p>
+					<t:label for="customField">${customFieldName}<t:if test="customFieldRequired(getCustomFieldByName(customFieldName))"><em title="${message:message-required}">*</em></t:if></t:label>
+					<span class="${validateHandler.validateClass(customFieldName)}">
+						<t:textfield t:id="customField" value="currentCustomFieldValue" class="customField input-fixed ${validateHandler.errorClass(customFieldName)}"/>
+						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error(customFieldName)}"/>
+					</span>
+				</p>
+			</t:if>
+		</t:loop>
+	
+		<t:if test="${delegate.visibleFields.contains('specialNeeds')}">
+			<p>
+				<label for="specialNeeds">${label('specialNeeds')}<t:if test="required('specialNeeds')"><em title="${message:message-required}">*</em> </t:if></label>
+				<span class="${validateHandler.validateClass('specialNeeds')}">
+					<t:textarea t:id="specialNeeds" value="delegate.contact.student.specialNeeds" class="specialNeeds input-fixed ${validateHandler.errorClass('specialNeeds')}" rows="4" placeholder="None" />
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('specialNeeds')}" hint="${hint('specialNeeds')}"/>
+				</span>
+			</p>
+		</t:if>
+	</t:if>
 </t:container>

@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
 	<t:remove>
 		parameter secure=true is used to be sure that the form action action will be secure.
@@ -7,14 +7,19 @@
 	<t:form t:id="contactEditorForm" clientValidation="literal:NONE" secure="true">
 		<t:delegate to="block:message"/>
 		<t:delegate to="block:contactFields"/>
-		<t:if test="fillRequiredProperties" negate="true">
+		<t:if test="delegate.contact.isCompany">
 			<t:delegate to="block:options"/>
-			<t:if test="delegate.activeConcessionTypes">
-				<t:delegate to="block:concession"/>
-			</t:if>
-			<t:if test = "delegate.contact.college.requiresAvetmiss">
-				<t:delegate to="block:avetmissEditor"/>
-			</t:if>
+			<p:else>
+				<t:if test="fillRequiredProperties" negate="true">
+					<t:delegate to="block:options"/>
+					<t:if test="delegate.activeConcessionTypes">
+						<t:delegate to="block:concession"/>
+					</t:if>
+					<t:if test = "delegate.contact.college.requiresAvetmiss">
+						<t:delegate to="block:avetmissEditor"/>
+					</t:if>
+				</t:if>
+			</p:else>
 		</t:if>
         <div class="form-controls">
             <t:if test="showCancelLink">

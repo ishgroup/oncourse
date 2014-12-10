@@ -51,4 +51,12 @@ public class ActionAddCompanyPayer extends AAddContactAction {
 		super.initAddContact();
 		((AddContactController) getController().getAddContactDelegate()).setCompanyPayer(true);
 	}
+
+
+	@Override
+	protected ContactCredentialsEncoder buildContactCredentialsEncoder() {
+		ContactCredentialsEncoder result = super.buildContactCredentialsEncoder();
+		result.setCompany(true);
+		return result;
+	}
 }
