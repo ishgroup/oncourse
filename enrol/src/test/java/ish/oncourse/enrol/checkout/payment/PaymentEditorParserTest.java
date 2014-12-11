@@ -64,15 +64,6 @@ public class PaymentEditorParserTest {
         paymentEditorParser.parse();
         assertTrue(paymentEditorParser.getErrors().isEmpty());
 
-		//test when corporate pass web enrolment available only and corporate pass not entered yet
-		when(request.getParameter(Field.contact.name())).thenReturn(null);
-		paymentEditorParser = getPaymentEditorParser();
-		paymentEditorParser.parse();
-		assertFalse(paymentEditorParser.getErrors().isEmpty());
-		assertEquals(1, paymentEditorParser.getErrors().size());
-		key = String.format(MESSAGE_KEY_TEMPLATE, Field.contact.name());
-		assertEquals(key, paymentEditorParser.getErrors().get(Field.contact.name()));
-
 		//test when corporate pass web enrolment available only and corporate pass entered
 		paymentEditorParser = getPaymentEditorParser();
 		paymentEditorParser.setCorporatePass(true);
@@ -87,7 +78,7 @@ public class PaymentEditorParserTest {
         PaymentEditorParser paymentEditorParser = getPaymentEditorParser();
         paymentEditorParser.parse();
         assertFalse(paymentEditorParser.getErrors().isEmpty());
-        assertEquals(6, paymentEditorParser.getErrors().size());
+        assertEquals(5, paymentEditorParser.getErrors().size());
         Field[] values = Field.noZeroPaymentFields();
         for (Field value : values) {
             if (value == Field.expiryYear)
@@ -95,13 +86,6 @@ public class PaymentEditorParserTest {
             String key = String.format(MESSAGE_KEY_TEMPLATE, value.name());
             assertEquals(key,paymentEditorParser.getErrors().get(value.name()));
         }
-
-        //test set Contact
-        when(request.getParameter(Field.contact.name())).thenReturn("1");
-        paymentEditorParser = getPaymentEditorParser();
-        paymentEditorParser.parse();
-        verify(paymentIn, times(1)).setContact(contacts.get(0));
-        assertEquals(5, paymentEditorParser.getErrors().size());
 
         //test set creditCardName
         when(request.getParameter(Field.creditCardName.name())).thenReturn("creditCardName");
