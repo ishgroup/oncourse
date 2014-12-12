@@ -70,8 +70,9 @@ public class PageExceptionHandler {
 	private boolean isWrongForSubmitContact() {
 		boolean result = request.getParameterNames().contains(COMPONENT_submitContact);
 		if (result) {
-			result = result && ((purchaseController.isAddContact() && !request.getPath().equals(ADD_CONTACT_PATH))
-							|| (purchaseController.isEditContact() && !request.getPath().equals(EDIT_CONTACT_PATH)));
+			result = (!purchaseController.isAddContact() && !purchaseController.isEditContact()) 
+							|| (purchaseController.isAddContact() && !request.getPath().equals(ADD_CONTACT_PATH))
+							|| (purchaseController.isEditContact() && !request.getPath().equals(EDIT_CONTACT_PATH));
 	}
 		return result;
 	}
