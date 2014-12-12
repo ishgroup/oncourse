@@ -1,6 +1,5 @@
 package ish.oncourse.webservices.replication.v8.builders;
 
-import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.SystemUser;
 import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
