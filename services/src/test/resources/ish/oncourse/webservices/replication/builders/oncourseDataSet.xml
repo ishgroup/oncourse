@@ -15,7 +15,7 @@
     <College id="3" name="Sydney Community College" webServicesSecurityCode="345ttn44$%9"
              communication_key="7059522699886202880" communication_key_status="VALID" angelVersion="development"
              firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
-    <Site id="1" collegeId="3" angelId="2" isWebVisible="0" created="2011-09-12 00:17:18.0"
+    <Site id="1" collegeId="3" angelId="200" isWebVisible="0" created="2011-09-12 00:17:18.0"
           modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
           drivingDirections="drivingDirections" drivingDirections_textile="drivingDirections_textile" latitude="1.11"
           longitude="1.11" postcode="postcode" publicTransportDirections="publicTransportDirections"

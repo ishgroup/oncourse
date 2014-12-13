@@ -33,7 +33,7 @@ public class SystemUserStubBuilder extends AbstractWillowStubBuilder<SystemUser,
 	//temporary workaround for properly replication  SystemUsers on angel side:
 	//set Site.willowId instead of angelId.
 	//Currently willow SystemUser entity stores Site.angelId - it is not relationship at all. Will be fixed in future. 
-	private long getSiteWillowId(SystemUser entity) {
+	private Long getSiteWillowId(SystemUser entity) {
 		SelectQuery query = new SelectQuery(Site.class,
 				ExpressionFactory.matchExp(Site.ANGEL_ID_PROPERTY, entity.getDefaultAdministrationCentreId())
 						.andExp(ExpressionFactory.matchExp(Site.COLLEGE_PROPERTY, entity.getCollege())));
