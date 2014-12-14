@@ -9,13 +9,28 @@ import ish.common.util.DisplayableExtendedEnumeration;
 /**
  * enumeration of options for rounding money fields.
  * 
- * @author marcin
+ * @PublicApi
  */
 public enum MoneyRounding implements DisplayableExtendedEnumeration<Integer> {
 
+	/**
+	 * @PublicApi
+	 */
 	ROUNDING_NONE(0, "No Rounding"),
+
+	/**
+	 * @PublicApi
+	 */
 	ROUNDING_10C(1, "Nearest 10 cents"),
+
+	/**
+	 * @PublicApi
+	 */
 	ROUNDING_50C(2, "Nearest 50 cents"),
+
+	/**
+	 * @PublicApi
+	 */
 	ROUNDING_1D(3, "Nearest dollar");
 
 	private String displayName;

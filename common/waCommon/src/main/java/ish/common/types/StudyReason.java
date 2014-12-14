@@ -7,6 +7,8 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
+ * A set of values for AVETMISS reporting from the version 7 standard.
+ * Consult the AVETMISS documentation for more detail about these options.
  * @PublicApi
  */
 public enum StudyReason implements DisplayableExtendedEnumeration<Integer> {

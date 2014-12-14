@@ -8,9 +8,7 @@ import ish.common.util.DisplayableExtendedEnumeration;
 
 import java.util.Calendar;
 
-/**
- * @PublicApi
- */
+@Deprecated
 public enum SessionRepetitionType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**

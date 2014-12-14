@@ -3,14 +3,14 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration containing two choices of payment sources: website or office
+ * Payment can be made in onCourse (office) or from the onCourse website (web)
  * 
  * @PublicApi
  */
 public enum PaymentSource implements DisplayableExtendedEnumeration<String> {
 
 	/**
-	 * all payments made from onCourse angel will have this source
+	 * all payments made from onCourse will have this source
 	 * 
 	 * @PublicApi
 	 */

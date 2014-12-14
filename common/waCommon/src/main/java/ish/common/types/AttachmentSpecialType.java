@@ -6,11 +6,17 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
+ * A special type of attachment. Right now there is only one special
+ * type.
+ * 
  * @PublicApi
  */
 public enum AttachmentSpecialType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * The profile picture for a contact is seen in Quick Enrol, the contact edit view
+	 * and within the skillsOnCourse portal.
+	 * 
 	 * @PublicApi
 	 */
 	PROFILE_PICTURE(0, "Profile picture");

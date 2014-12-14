@@ -10,7 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * enumeration of available enrolment statuses
+ * Enrolments pass through various states as the enrolment process is completed.
+ * These statuses are particularly important for communication with the onCourse website
+ * and the progression of the enrolment through checks for number of places remaining
+ * and having the payment processed.
  * 
  * @PublicApi
  */
@@ -20,24 +23,12 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * Indicates an state of conflict with data integrity rules (e.g., between the website and onCourse). i.e., something that should never happen and needs
 	 * resolution.
-	 * 
-	 * @PublicApi
 	 */
 	CORRUPTED(-99, ""),
 	
 	/**
-	 * Previous comment said 'when the ish payment gateway is not used' which sounds a little confusing as to why it's called 'new'. Either way, that's blurring
-	 * the concepts with what 'type' is used to determine.
-	 * <p>
-	 * Suggested comment: 'Indicates an as yet unconfirmed payment or enrolment.'
-	 * <p>
-	 * Suggested logic: On server startup, any payments or enrolments left in this state (due to a crash of some kind) can be set to {@link #QUEUED} so as to
-	 * ensure that willow can be contacted again, if we crashed before the response, to obtain the result, or to contact willow for the first time if it never
-	 * got that far before a crash. This would seem to remove the need for a null status which is not one of the official statuses.
-	 * <p>
-	 * Otherwise perhaps it'd make sense to for new payments/enrolments to always be committed from the client with a status of new thus allowing the
-	 * server-side post-persist to update the status to success according to the logic of whether willow returned success, or willow is not involved, or if the
-	 * gateway is disabled. Something to think about.
+	 * Enrolments in NEW state will almost never be seen. Many of the older workflows have now been changed so enrolments in NEW
+	 * state aren't even saved to the database until they progress to IN_TRANSACTION.
 	 * 
 	 * @PublicApi
 	 */

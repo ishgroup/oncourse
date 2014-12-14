@@ -6,29 +6,15 @@ package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
 
-/**
- * @PublicApi
- */
 public enum MailingListType implements DisplayableExtendedEnumeration<Integer> {
 
-	/**
-	 * @PublicApi
-	 */
+
 	TYPE_UNDELIVERABLE(1, "Undeliverable"),
 	
-	/**
-	 * @PublicApi
-	 */
 	TYPE_MANUAL(2, "Manual"),
-
-	/**
-	 * @PublicApi
-	 */
+	
 	TYPE_BATCH(3, "Batch"),
-
-	/**
-	 * @PublicApi
-	 */
+	
 	TYPE_WEB(4, "Web");
 
 	private String displayName;

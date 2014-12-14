@@ -3,7 +3,8 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration of valid student citizen/resident indicator
+ * A set of values for AVETMISS reporting from the version 7 standard.
+ * Consult the AVETMISS documentation for more detail about these options.
  * 
  * @PublicApi
  */

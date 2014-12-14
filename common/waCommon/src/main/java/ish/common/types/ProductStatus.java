@@ -13,19 +13,26 @@ public enum ProductStatus implements DisplayableExtendedEnumeration<Integer> {
 	ACTIVE(0, "Active"),
 	
 	/**
+	 * A product sale which is cancelled but not reversed.
+	 * 
 	 * @PublicApi
 	 */
 	CANCELLED(1, "Cancelled"),
 
 	/**
+	 * When a product sale has been reversed.
+	 * 
 	 * @PublicApi
 	 */
 	CREDITED(2, "Credited"),
 
 	/**
+	 * A voucher which has been sold and also redeemed. Doesn't apply to other types of products.
+	 * 
 	 * @PublicApi
 	 */
 	REDEEMED(3, "Redeemed"),
+	
 	/**
 	 * Represents status when voucher is persisted to database but its payment is not yet successful.
 	 * 

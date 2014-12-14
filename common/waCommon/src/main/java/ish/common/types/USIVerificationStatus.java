@@ -3,24 +3,11 @@
  */
 package ish.common.types;
 
-/**
- * @PublicApi
- */
+
 public enum USIVerificationStatus {
 
-	/**
-	 * @PublicApi
-	 */
 	VALID("Valid"),
-
-	/**
-	 * @PublicApi
-	 */
 	INVALID("Invalid"),
-
-	/**
-	 * @PublicApi
-	 */
 	DEACTIVATED("Deactivated");
 
 	private String stringValue;

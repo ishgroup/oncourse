@@ -7,7 +7,7 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * collection of keycode values,used for access rights. Each value specified is attached to an entity or a specific part of user interface
+ * Keycode values are used for access rights. Each value specified is attached to an entity or a specific part of user interface
  * 
  * @PublicApi
  */

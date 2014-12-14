@@ -7,77 +7,82 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration of available payment types
+ * Different types of payment
  * 
  * @PublicApi
  */
 public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * payments made in cash
+	 * Payments made in cash. These payments will need to be manually banked.
 	 * 
 	 * @PublicApi
 	 */
 	CASH(0, "Cash"),
 	
 	/**
-	 * payments made with cheque
+	 * Payments made with cheque.  These payments will need to be manually banked.
 	 * 
 	 * @PublicApi
 	 */
 	CHEQUE(1, "Cheque"),
 	
 	/**
-	 * payments made with credit card
+	 * Payments made with credit card.  These payments will need to be manually banked if the
+	 * credit card gateway is not enabled. They will be marked as banked automatically if
+	 * the gateway is available and the payment is successful.
 	 * 
 	 * @PublicApi
 	 */
 	CREDIT_CARD(2, "Credit card"),
 	
 	/**
-	 * payments made by any means of electronic fund transfer (bank transfer etc.)
+	 * Payments made by any means of electronic fund transfer (bank transfer etc.).  These payments will need to be manually banked.
 	 * 
 	 * @PublicApi
 	 */
 	
 	EFT(3, "EFT"),
 	/**
-	 * payments made using b-pay
+	 * payments made using b-pay.  These payments will need to be manually banked.
 	 * 
 	 * @PublicApi
 	 */
 	BPAY(4, "B-Pay"),
 	
 	/**
-	 * special payment type for payments automatically created, but having $0 total
+	 * special payment type for payments automatically created, but having $0 total. They are not real payments but
+	 * just represent a cancellation of a credit note against an invoice. They should be suppressed from most reports.
+	 *  These payments will not need to be banked.
 	 * 
 	 * @PublicApi
 	 */
 	INTERNAL(5, "Zero"),
 	
 	/**
-	 * other types of payment (internal accounts transfer etc)
+	 * other types of payment (internal accounts transfer etc).  These payments will need to be manually banked.
 	 * 
 	 * @PublicApi
 	 */
 	OTHER(6, "Other"),
 	
 	/**
-	 * special payment created during class/enrolment refund. used to balance out the original and refund invoice.
+	 * special payment created during class/enrolment refund. used to balance out the original and refund invoice. They
+	 * work in a very similar way to "Zero" type.
 	 * 
 	 * @PublicApi
 	 */
 	CONTRA(7, "Contra"),
 	
 	/**
-	 * special payment type created during voucher redemption.
+	 * special payment type created during voucher redemption. Banking is not needed.
 	 * 
 	 * @PublicApi
 	 */
 	VOUCHER(8, "Voucher"),
 	
 	/**
-	 * payments using paypal
+	 * payments using paypal.  These payments will need to be manually banked.
 	 * 
 	 * @PublicApi
 	 */
@@ -91,7 +96,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	REVERSE(10, "Reverse"),
 	
 	/**
-	 * EFTPOS payments
+	 * EFTPOS payments.  These payments will need to be manually banked.
 	 * 
 	 * @PublicApi
 	 */

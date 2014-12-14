@@ -7,28 +7,37 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration of discount expire types
+ * Discounts can expire after a certain period of time. Once expired, new sales will not be allowed to
+ * take advantage of the discount.
  * 
  * @PublicApi
  */
 public enum ExpiryType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * This discount expires after a certain numbers of days.
+	 * 
 	 * @PublicApi
 	 */
 	DAYS(1, "Days"),
 
 	/**
+	 * This discount lasts until the beginning of the new year.
+	 * 
 	 * @PublicApi
 	 */
 	FIRST_JANUARY(2, "1st January"),
 
 	/**
+	 * This discount lasts until the 1 July.
+	 * 
 	 * @PublicApi
 	 */
 	FIRST_JULY(3, "1st July"),
 
 	/**
+	 * This discount never expires.
+	 * 
 	 * @PublicApi
 	 */
 	LIFETIME(4, "Never (Lifetime)");

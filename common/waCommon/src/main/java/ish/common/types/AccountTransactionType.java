@@ -7,7 +7,7 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration of available types of account transactions
+ * GL transactions have a 'type' depending on which entity created them.
  * 
  * @PublicApi
  */

@@ -7,26 +7,36 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
+ * Payslips go through a workflow set of statuses.
+ * 
  * @PublicApi
  */
 public enum PayslipStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * These payslips are still being edited.
+	 * 
 	 * @PublicApi
 	 */
 	HOLLOW(1, "New"),
 	
 	/**
+	 * These payslips are created and ready to be approved.
+	 * 
 	 * @PublicApi
 	 */
 	COMPLETED(2, "Completed"),
 
 	/**
+	 * The approval process has not yet been created in onCourse. But this step is a placeholder ready for that.
+	 * 
 	 * @PublicApi
 	 */
 	APPROVED(3, "Approved"),
 
 	/**
+	 * Once exported, payslips may no longer be edited.
+	 * 
 	 * @PublicApi
 	 */
 	FINALISED(4, "Paid/Exported");

@@ -10,7 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * enumeration of available payment statuses
+ * Payments pass through a number of statuses as the enrolment or sale is completed and the credit card is processed.
+ * Once a final state is reached, the status may not be changed again.
  * 
  * @PublicApi
  */
@@ -21,7 +22,6 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * Indicates an state of conflict with data integrity rules (e.g., between the website and onCourse). i.e., something that should never happen and needs
 	 * resolution.
 	 * 
-	 * @PublicApi
 	 */
 	CORRUPTED(-99, ""),
 
@@ -45,8 +45,8 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 								// status is not consistent with its meaning.
 
 	/**
-	 * Indicates a payment or enrolment that was unable to retrieve a result from willow on first attempt (i.e., on post-persist from quick enrol) and is as
-	 * such queued for later processing by a server-side thread. Used by angel and willow
+	 * Indicates a payment or enrolment that was unable to retrieve a result on first attempt (i.e., on post-persist from quick enrol) and is as
+	 * such queued for later processing by a server-side thread.
 	 * 
 	 * @PublicApi
 	 */
@@ -55,42 +55,42 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * Indicates current processing of a payment. E.g., the user has agreed to pay and all details are valid. However, all payments with STATUS_QUEUED will move
 	 * again to a state of STATUS_IN_TRANSACTION prior to attempting subsequent processing. It has this definite meaning: We are about to process the payment by
-	 * contacting the payment gateway. Used by willow
+	 * contacting the payment gateway.
 	 * 
 	 * @PublicApi
 	 */
 	IN_TRANSACTION(2, "In transaction"),
 
 	/**
-	 * Indicates successful and confirmed completion of a payment or enrolment. Used by angel and willow
+	 * Indicates successful and confirmed completion of a payment or enrolment.
 	 * 
 	 * @PublicApi
 	 */
 	SUCCESS(3, "Success"),
 
 	/**
-	 * Indicates a failed response due to an error. Used by angel and willow
+	 * Indicates a failed response due to an error.
 	 * 
 	 * @PublicApi
 	 */
 	FAILED(4, "Failed"),
 
 	/**
-	 * Indicates a failed response given by the credit card gateway. Used by angel and willow
+	 * Indicates a failed response given by the credit card gateway.
 	 * 
 	 * @PublicApi
 	 */
 	FAILED_CARD_DECLINED(6, "Card declined"),
 
 	/**
-	 * Indicates that the enrolment and payment could not be accepted because there were no enrolment places left. Used by angel and willow
+	 * Indicates that the enrolment and payment could not be accepted because there were no enrolment places left.
 	 * 
 	 * @PublicApi
 	 */
 	FAILED_NO_PLACES(7, "Rejected - no places available"),
 
 	/**
-	 * Indicates that payment was saved on willow side, but user needs to provide credit card details.
+	 * Indicates that payment was saved in onCourse Web, but user needs to provide credit card details.
 	 * 
 	 * @PublicApi
 	 */
@@ -102,7 +102,6 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * <p>
 	 * <b>Note:</b> The list is made up of both transient and final statuses.
 	 * 
-	 * @PublicApi
 	 */
 	public static final List<PaymentStatus> STATUSES_GATEWAY = Arrays.asList(PaymentStatus.CORRUPTED,
             PaymentStatus.QUEUED,
@@ -140,10 +139,7 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
             PaymentStatus.FAILED_NO_PLACES,
             PaymentStatus.CORRUPTED);
 	/**
-	 * The complete list of statuses that are final or otherwise set in stone.
-	 * <p>
-	 * <b>Note:</b> Corrupted status should of course, require investigation, as it has occurred due to a duplicate or conflicting record being found. Each of
-	 * the other statuses is the result of a known and expected path of logic discounting bugs.
+	 * The complete list of statuses that are final and cannot be modified.
 	 * 
 	 * @PublicApi
 	 */

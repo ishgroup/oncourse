@@ -7,8 +7,9 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enum representing the AvetmissStudentLabourStatus
- *
+ * A set of values for AVETMISS reporting from the version 7 standard.
+ * Consult the AVETMISS documentation for more detail about these options.
+ * 
  * @PublicApi
  */
 public enum AvetmissStudentLabourStatus implements DisplayableExtendedEnumeration<Integer> {

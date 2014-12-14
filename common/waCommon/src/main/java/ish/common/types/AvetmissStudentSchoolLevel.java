@@ -7,9 +7,8 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * an enumeration describing student's school level<br/>
- * <br/>
- * AVETMISS - page 31
+ * A set of values for AVETMISS reporting from the version 7 standard.
+ * Consult the AVETMISS documentation for more detail about these options.
  * 
  * @PublicApi
  */

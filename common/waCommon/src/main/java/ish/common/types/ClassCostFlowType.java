@@ -7,26 +7,36 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
+ * Each class cost has a type which determines its behaviour in the budget.
+ * 
  * @PublicApi
  */
 public enum ClassCostFlowType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * A regular expense in the budget, other than wages.
+	 * 
 	 * @PublicApi
 	 */
 	EXPENSE(0, "Expense/Cost"),
 
 	/**
+	 * Additional funding other than class fees.
+	 * 
 	 * @PublicApi
 	 */
 	INCOME(1, "Income/Funding"),
 
 	/**
+	 * Money paid to tutors which will appear on the payroll export.
+	 * 
 	 * @PublicApi
 	 */
 	WAGES(2, "Wages"),
 
 	/**
+	 * Discounts expected to be offered. 
+	 * 
 	 * @PublicApi
 	 */
 	DISCOUNT(3, "Discount");

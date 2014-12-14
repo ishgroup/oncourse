@@ -6,18 +6,22 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration of available enrolment types to course
+ * Courses can either be applied for, or its classes can be directly enrolled in.
  * 
  * @PublicApi
  */
 public enum CourseEnrolmentType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Allow students to enrol directly in classes for this course.
+	 * 
 	 * @PublicApi
 	 */
 	OPEN_FOR_ENROLMENT(1, "Open enrolment"),
 
 	/**
+	 * Allow students to only apply to be allowed to enrol.
+	 * 
 	 * @PublicApi
 	 */
 	ENROLMENT_BY_APPLICATION(2, "Enrolment by application");

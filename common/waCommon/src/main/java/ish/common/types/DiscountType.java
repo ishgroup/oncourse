@@ -7,7 +7,7 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration of available discount types
+ * Available discount types
  * 
  * @PublicApi
  */

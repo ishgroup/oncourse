@@ -7,7 +7,7 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * Qualifications must be one of these types
+ * Qualifications must be one of these types as per the AVETMISS standard
  * 
  * @PublicApi
  */

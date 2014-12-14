@@ -7,14 +7,13 @@ package ish.common.types;
 /**
  * interface for enumerations of values reported to AVETMISS
  * 
- * @PublicApi
+ * @deprecated 
  */
 public interface AvetmissReportingEnum {
 
 	/**
 	 * @return String code reported to avetmiss
 	 * 
-	 * @PublicApi
 	 */
 	public String getAvetmissCode();
 }

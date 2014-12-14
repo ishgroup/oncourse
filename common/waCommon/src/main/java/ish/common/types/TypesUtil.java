@@ -9,8 +9,6 @@ import java.util.Map;
 
 /**
  * utilities to use with DisplayableExtendedEnumeration
- * 
- * @author marcin
  */
 public final class TypesUtil {
 

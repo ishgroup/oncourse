@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * enumeration of account types available
+ * General ledger accounts have a type that defines their behaviour.
  * 
  * @PublicApi
  */
@@ -37,6 +37,7 @@ public enum AccountType implements DisplayableExtendedEnumeration<Integer> {
 	INCOME(4, "income"),
 
 	/**
+	 * This is just a type of expense.
 	 * @PublicApi
 	 */
 	COS(5, "COS"),

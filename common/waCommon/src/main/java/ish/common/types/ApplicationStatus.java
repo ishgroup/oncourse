@@ -6,7 +6,10 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * Enumeration of available application statuses
+ * A basic workflow for applications. Each application moves through the statuses, resulting in
+ * scripts firing off emails and different behaviour in the skillsOnCourse portal.
+ * 
+ * Tags can be used for more detailed workflow and tracking of progress.
  * 
  * @PublicApi
  */

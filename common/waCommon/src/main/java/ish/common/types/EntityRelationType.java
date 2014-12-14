@@ -3,6 +3,10 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
+ * Courses and products can be related to other courses and products.
+ * This type points to what sort of record to expect at the other end
+ * of the polymorphic join.
+ * 
  * @PublicApi
  */
 public enum EntityRelationType implements DisplayableExtendedEnumeration<Integer> {

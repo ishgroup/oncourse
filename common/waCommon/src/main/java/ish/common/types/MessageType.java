@@ -7,7 +7,8 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration of available message types
+ * Messages can either be an email, SMS or postal mail. If postal email, only the message subject
+ * has relevant as a note to show what was sent.
  * 
  * @PublicApi
  */

@@ -5,7 +5,7 @@
 package ish.common.types;
 
 /**
- * lists available access rights used per entity
+ * For each access key, a role may be given certain access levels.
  * 
  * @PublicApi
  */

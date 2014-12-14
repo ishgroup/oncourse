@@ -7,7 +7,8 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration of available message statuses
+ * Each MessagePerson object (the delivery record) starts as queued and then
+ * is processed by a special process which wakes up every few seconds.
  * 
  * @PublicApi
  */

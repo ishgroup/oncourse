@@ -3,8 +3,8 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * Voucher verification status enumeration should be marked by willow when processing voucher payments coming from 
- * angel and used in angel to display appropriate user message.
+ * Voucher verification status enumeration are set by onCourse Web when processing voucher payments coming from 
+ * onCourse and used to display appropriate user message.
  * 
  * @PublicApi
  */
@@ -14,6 +14,7 @@ public enum VoucherPaymentStatus implements DisplayableExtendedEnumeration<Integ
 	 * @PublicApi
 	 */
 	APPROVED(0, "Approved"),
+	
 	/**
 	 * @PublicApi
 	 */

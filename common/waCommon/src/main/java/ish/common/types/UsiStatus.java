@@ -7,7 +7,7 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * enumeration with options describing usi status
+ * A USI can be validated against the government verification service
  * 
  * @PublicApi
  */

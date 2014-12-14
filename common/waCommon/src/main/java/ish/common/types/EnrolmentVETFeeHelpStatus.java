@@ -4,7 +4,6 @@ import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
  * VET FEE HELP status.
- * values: not eligible, HELP not requested, HELP requested;
  * 
  * @PublicApi
  */

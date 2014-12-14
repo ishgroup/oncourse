@@ -9,7 +9,8 @@ import ish.common.util.DisplayableExtendedEnumeration;
 import java.util.*;
 
 /**
- * NOTE that this is a copy of the OutcomeStatus enum in Willow. If you change any of these values, you should also edit them in Willow.
+ * A set of values for AVETMISS reporting from the version 7 standard.
+ * Consult the AVETMISS documentation for more detail about these options.
  * 
  * @PublicApi
  */

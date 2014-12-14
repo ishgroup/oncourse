@@ -7,22 +7,7 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * an enumeration of available credit card types<br/>
- * <br/>
- * at the moment we are using securepay, which accepts (@see http://www.securepay.com.au/banks_cards_accepted.html)
- * <ul>
- * <li>JCB</li>
- * <li>VISA (and VISA debit)</li>
- * <li>MasterCard (and MasterCard debit)</li>
- * <li>Dinners</li>
- * <li>Amex</li>
- * </ul>
- * securepay does not accept:
- * <ul>
- * <li>Carte blanche</li>
- * <li>China union pay</li>
- * <li>Discover Novus</li>
- * </ul>
+ * Credit cards accepted by onCourse.
  * 
  * @PublicApi
  */
@@ -38,9 +23,7 @@ public enum CreditCardType implements DisplayableExtendedEnumeration<String> {
 	 */
 	MASTERCARD("M", "Mastercard"),
 
-	/**
-	 * @PublicApi
-	 */
+
 	@Deprecated
 	BANKCARD("B", "Bankcard"),
 	// DINNERS("D", "Dinners Club"),

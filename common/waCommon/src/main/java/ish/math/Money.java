@@ -12,7 +12,11 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 
 /**
- * Money.
+ * Money is a class which handles all the common features needed for handling currency.
+ * 
+ * Most importantly, this class properly handles rounding at all times.
+ * 
+ * @PublicApi
  */
 public class Money extends Number implements Comparable<Money> {
 
@@ -46,6 +50,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * Construct a new money instance. If null or empty string is passed, then a Money.ZERO amount will be created.
 	 * 
 	 * @param val value to create
+	 * @PublicApi   
 	 */
 	public Money(String val) {
 		if (val == null || val.length() == 0) {
@@ -60,6 +65,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param dollars
 	 * @param cents
+	 * @PublicApi
 	 */
 	public Money(int dollars, int cents) {
 		setValue(BigDecimal.valueOf(dollars).add(BigDecimal.valueOf(cents, DEFAULT_SCALE)));
@@ -70,6 +76,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val to be added to this money object
 	 * @return new money object
+	 * @PublicApi
 	 */
 	public Money add(Money val) {
 		if (val == null) {
@@ -84,6 +91,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val to be added to this money object
 	 * @return new money object
+	 * @PublicApi
 	 */
 	public Money add(BigDecimal val) {
 		if (val == null) {
@@ -98,6 +106,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val divisor
 	 * @return new money object
+	 * @PublicApi
 	 */
 	public Money divide(Money val) {
 		if (val == null) {
@@ -112,6 +121,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val divisor
 	 * @return new money object
+	 * @PublicApi
 	 */
 	public Money divide(BigDecimal val) {
 		if (val == null) {
@@ -128,6 +138,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * @param val divisor
 	 * @param roundingUp rounded up to the nearest dollar
 	 * @return new money object
+	 * @PublicApi
 	 */
 	public Money divide(BigDecimal val, boolean roundingUp) {
 		if (val == null) {
@@ -148,6 +159,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * @param val divisor
 	 * @param roundingUp rounded up to the nearest dollar
 	 * @return new money object
+	 * @PublicApi
 	 */
 	public Money divide(Money val, boolean roundingUp) {
 		if (val == null) {
@@ -162,6 +174,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val subtrahend
 	 * @return new money object
+	 * @PublicApi
 	 */
 	public Money subtract(Money val) {
 		if (val == null) {
@@ -188,6 +201,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val factor
 	 * @return new money object
+	 * @PublicApi
 	 */
 	public Money multiply(long val) {
 		return multiply(BigDecimal.valueOf(val));
@@ -208,6 +222,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val factor
 	 * @return new money object
+	 * @PublicApi
 	 */
 	public Money multiply(BigDecimal val) {
 		if (val == null) {
@@ -264,6 +279,11 @@ public class Money extends Number implements Comparable<Money> {
 		return this.decimalValue.signum() < 0 ? negate() : this;
 	}
 
+	/**
+	 * 
+	 * @return a big decimal representation
+	 * @PublicApi
+	 */
 	public BigDecimal toBigDecimal() {
 		return this.decimalValue;
 	}
