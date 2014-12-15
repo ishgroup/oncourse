@@ -186,7 +186,7 @@ public class AllV7StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testSystemUserStubBuilder() {
-		this.testStubBuilder(SystemUser.class, new SystemUserStubBuilder());
+		this.testStubBuilder(SystemUser.class, new SystemUserStubBuilder(), "defaultAdministrationCentreId");
 	}
 
 	@Test

@@ -140,7 +140,7 @@ public class AllStubBuildersTest extends AbstractAllStubBuildersTest {
     
     @Test
     public void testV5SystemUserStubBuilder() {
-        this.testStubBuilder(SystemUser.class, new ish.oncourse.webservices.replication.v5.builders.SystemUserStubBuilder());
+        this.testStubBuilder(SystemUser.class, new ish.oncourse.webservices.replication.v5.builders.SystemUserStubBuilder(), "defaultAdministrationCentreId");
     }
 
     @Test
@@ -286,7 +286,7 @@ public class AllStubBuildersTest extends AbstractAllStubBuildersTest {
     
     @Test
     public void testSystemUserStubBuilder() {
-        this.testStubBuilder(SystemUser.class, new SystemUserStubBuilder());
+        this.testStubBuilder(SystemUser.class, new SystemUserStubBuilder(), "defaultAdministrationCentreId");
     }
 
     @Test
