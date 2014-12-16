@@ -1568,6 +1568,8 @@ public abstract class CommonPreferenceController {
 	public static final String EXPORTTEMPLATE_IMPORT_FOLDER = "exporttemplate.xslImportFolder";
 	public static final String AVETMISS_EXPORT_PATH = "avetmiss.lastpath";
 
+	public static final String DOCUMENT_IMPORT_PATH = "document.lastpath";
+
 	public synchronized File getExportMailingListDestination() {
 		String dir = getFilePreference(MAILINGLIST_EXPORT_FOLDER, null);
 		if (dir == null || dir.length() == 0) {
@@ -1640,6 +1642,18 @@ public abstract class CommonPreferenceController {
 		setFilePreference(AVETMISS_EXPORT_PATH, value.getAbsolutePath());
 	}
 
+	public synchronized File getDocumentImportPath() {
+		String dir = getFilePreference(DOCUMENT_IMPORT_PATH, null);
+		if (dir == null || dir.length() == 0) {
+			dir = System.getProperty("user.dir");
+		}
+		return new File(dir);
+	}
+
+	public synchronized void setDocumentImportPath(File value) {
+		setFilePreference(DOCUMENT_IMPORT_PATH, value.getAbsolutePath());
+	}
+	
 	// **************************************
 	// External storage preferences
 	// **************************************
@@ -1956,6 +1970,8 @@ public abstract class CommonPreferenceController {
 			return getDefaultQEEnrolmentReportKeycode();
 		} else if (GRAVATAR.equals(key)) {
 			return getGravatarEnabled();
+		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
+			return getDocumentImportPath();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -2150,7 +2166,9 @@ public abstract class CommonPreferenceController {
 			setDefaultQEInvoiceReportKeycode((String)value);
 		} else if (QE_DEFAULT_REPORT_ENROLMENT_KEYCODE.equals(key)) {
 			setDefaultQEEnrolmentReportKeycode((String)value);
-		} 
+		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
+			setDocumentImportPath((File) value);
+		}
 	}
 
 	/**
