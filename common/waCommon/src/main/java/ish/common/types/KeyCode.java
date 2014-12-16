@@ -160,7 +160,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * @PublicApi
 	 */
-	ATTACHMENT_INFO(31, "Attachment", Mask.VIEW + Mask.PRINT), // view and print always permitted
+	ATTACHMENT_INFO(31, "Documents", Mask.VIEW + Mask.PRINT), // view and print always permitted
 
 	/**
 	 * @PublicApi
