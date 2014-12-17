@@ -30,20 +30,22 @@ public class CloneModelHelper {
         for (Contact oldContact : oldContacts) {
             Contact contact = newModel.localizeObject(oldContact);
             newModel.addContact(contact);
-
-            for (CourseClass oldCourseClass : oldClasses) {
-                CourseClass courseClass = newModel.localizeObject(oldCourseClass);
-                Enrolment enrolment = purchaseController.createEnrolment(courseClass,
-                        contact.getStudent());
-                newModel.addEnrolment(enrolment);
-                Enrolment oldEnrolment = oldModel.getEnrolmentBy(oldContact, oldCourseClass);
-                if (oldEnrolment != null) {
-                    ActionEnableEnrolment actionEnableEnrolment = new ActionEnableEnrolment();
-                    actionEnableEnrolment.setController(purchaseController);
-                    actionEnableEnrolment.setEnrolment(enrolment);
-                    actionEnableEnrolment.action();
-                }
-            }
+			
+			if (!contact.getIsCompany()) {
+				for (CourseClass oldCourseClass : oldClasses) {
+					CourseClass courseClass = newModel.localizeObject(oldCourseClass);
+					Enrolment enrolment = purchaseController.createEnrolment(courseClass,
+							contact.getStudent());
+					newModel.addEnrolment(enrolment);
+					Enrolment oldEnrolment = oldModel.getEnrolmentBy(oldContact, oldCourseClass);
+					if (oldEnrolment != null) {
+						ActionEnableEnrolment actionEnableEnrolment = new ActionEnableEnrolment();
+						actionEnableEnrolment.setController(purchaseController);
+						actionEnableEnrolment.setEnrolment(enrolment);
+						actionEnableEnrolment.action();
+					}
+				}
+			}
 
             for (Product oldProduct : oldProducts) {
                 Product product = newModel.localizeObject(oldProduct);
