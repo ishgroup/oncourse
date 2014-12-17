@@ -3,20 +3,34 @@
  */
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
 import ish.common.types.ProductType;
 import ish.oncourse.enrol.checkout.contact.AddContactController;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.ProductItem;
+import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
+import static ish.common.types.ProductType.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -37,7 +51,7 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 	}
 	
 	@Test
-	public void testExistingCommpany() {
+	public void testExistingCommpany() throws InterruptedException {
 		
 		// reach the payment page and press 'add business payer' button
 		prepareModel();
@@ -56,6 +70,49 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 		company = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 999L);
 
 		checkModel();
+
+		makeInvalidPayment();
+		assertEquals(PaymentStatus.FAILED_CARD_DECLINED, purchaseController.getPaymentEditorDelegate().getPaymentIn().getStatus());
+		
+		//press 'try again' button - purchase model will be cloned on this case
+		purchaseController.getPaymentEditorDelegate().tryAgain();
+
+		//reset 'contact' reference because model was cloned, contact object too
+		contact = ExpressionFactory.matchExp(Contact.ID_PK_COLUMN, contact.getId()).filterObjects(purchaseController.getModel().getContacts()).get(0);
+		
+		//make sure that model with company payer was cloned correct
+		checkModel();
+		
+		makeValidPayment();
+
+		
+		for (Enrolment e :  purchaseController.getModel().getAllEnabledEnrolments()) {
+			assertEquals(EnrolmentStatus.SUCCESS, e.getStatus());
+		}
+
+		ObjectContext objectContext = purchaseController.getModel().getObjectContext();
+		SelectQuery selectQuery = new SelectQuery(PaymentIn.class, ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, company));
+		List<PaymentIn> list = objectContext.performQuery(selectQuery);
+		
+		
+		//3 payments should be created for payer: failed, revert, and success
+		assertEquals(3, list.size());
+		
+		//get success payment and check it
+		Expression expression = ExpressionFactory.matchExp(PaymentIn.STATUS_PROPERTY,PaymentStatus.SUCCESS)
+				.andExp(ExpressionFactory.matchExp(PaymentIn.TYPE_PROPERTY, PaymentType.CREDIT_CARD));
+		
+		list = expression.filterObjects(list);
+		
+		assertEquals(1, list.size());
+		PaymentIn payment = list.get(0);
+		assertEquals(1, payment.getPaymentInLines().size());
+		Invoice invoice = payment.getPaymentInLines().get(0).getInvoice();
+		assertNotNull(invoice);
+		assertEquals(company.getId(), invoice.getContact().getId());
+		// enrolment, membership, article for contact and voucher for company - total invoice lines = 4
+		assertEquals(4, invoice.getInvoiceLines().size());
+
 	}
 
 
@@ -137,7 +194,7 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 		assertEquals(3, purchaseController.getModel().getAllEnabledProductItems().size());
 
 		assertEquals(1, purchaseController.getModel().getAllProductItems(company).size());
-		assertEquals(ProductType.VOUCHER.getDatabaseValue(), purchaseController.getModel().getAllProductItems(company).get(0).getType());
+		assertEquals(VOUCHER.getDatabaseValue(), purchaseController.getModel().getAllProductItems(company).get(0).getType());
 		assertEquals(2, purchaseController.getModel().getAllProductItems(contact).size());
 
 		//check that enrolnemts is not created for company
@@ -162,11 +219,14 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 		assertEquals(3, purchaseController.getModel().getAllProductItems(company).size());
 		//but voucher products should be ticked 
 		for (ProductItem productItem : purchaseController.getModel().getAllProductItems(company)) {
-			if (ProductType.VOUCHER.getDatabaseValue() == productItem.getType()) {
+			if (VOUCHER.getDatabaseValue() == productItem.getType()) {
 				assertTrue(purchaseController.getModel().isProductItemEnabled(productItem));
 			} else {
 				assertFalse(purchaseController.getModel().isProductItemEnabled(productItem));
 			}
 		}
+
+		//go back on payment edit page (restore original state before checking) 
+		proceedToPayment();
 	}
 }
