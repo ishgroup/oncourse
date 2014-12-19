@@ -82,7 +82,7 @@ div.clearboth {
 		padding: 4px 3px;
 	}
 	
-	#creditCardCVV {
+    [id*=creditCardCVV] {
 		width: 80px;
 	}
 	
