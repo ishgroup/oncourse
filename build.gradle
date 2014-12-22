@@ -9,8 +9,8 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'eu.appsatori:gradle-fatjar-plugin:0.2'
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.5'
+		classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.6'
         classpath 'au.com.ish.gradle:release:2.2.2'
 		classpath 'org.apache.cayenne:cayenne-tools:3.2M1.2'
 	}
@@ -64,7 +64,7 @@ allprojects {
 	}
 
 	dependencies {
-		testCompile 'junit:junit:4.11'
+		testCompile 'junit:junit:4.12'
         compile 'org.apache.logging.log4j:log4j-api:2.0.2'
         compile 'org.apache.logging.log4j:log4j-core:2.0.2'
         compile 'org.apache.logging.log4j:log4j-1.2-api:2.0.2'
