@@ -243,6 +243,14 @@ public class PurchaseModel {
         objectContext.deleteObjects(il);
         getContactNode(p.getContact()).disableProductItem(p);
     }
+	
+	public void enableApplication(Application a) {
+		getContactNode(a.getStudent().getContact()).enableApplication(a);
+	}
+
+	public void disableApplication(Application a) {
+		getContactNode(a.getStudent().getContact()).disableApplication(a);
+	}
 
     public List<Enrolment> getEnabledEnrolments(Contact contact) {
         return Collections.unmodifiableList(getContactNode(contact).enabledEnrolments);
@@ -252,6 +260,9 @@ public class PurchaseModel {
         return Collections.unmodifiableList(getContactNode(contact).enabledProductItems);
     }
 
+	public List<Application> getEnabledApplications(Contact contact) {
+		return Collections.unmodifiableList(getContactNode(contact).enabledApplications);
+	}
 
     public List<Enrolment> getDisabledEnrolments(Contact contact) {
         return Collections.unmodifiableList(getContactNode(contact).disabledEnrolments);
@@ -297,6 +308,10 @@ public class PurchaseModel {
     public boolean isProductItemEnabled(ProductItem productItem) {
         return getEnabledProductItems(productItem.getContact()).contains(productItem);
     }
+	
+	public boolean isApplicationEnabled(Application application) {
+		return getEnabledApplications(application.getStudent().getContact()).contains(application);
+	}
 
 
     public List<ProductItem> getAllProductItems(Contact contact) {
@@ -460,6 +475,16 @@ public class PurchaseModel {
         ContactNode contactNode = contacts.get(enrolment.getStudent().getContact());
         return contactNode.getErrorBy(enrolment);
     }
+	
+	public String setErrorFor(Application application, String error) {
+		ContactNode contactNode = contacts.get(application.getStudent().getContact());
+		return contactNode.setErrorFor(application, error);
+	}
+	
+	public String getErrorBy(Application application) {
+		ContactNode contactNode = contacts.get(application.getStudent().getContact());
+		return contactNode.getErrorBy(application);
+	}
 
     public WebSite getWebSite() {
         return webSite;
@@ -656,6 +681,7 @@ public class PurchaseModel {
          * map contains error for by course class id. we use courseClassId as key because Enrolment can be recreated
          */
         private Map<Long, String> courseClassErrors = new HashMap<>();
+		private Map<Long, String> courseError = new HashMap<>();
 
 		/**
 		 * This property was introduced to keep enrolment ordering.
@@ -804,7 +830,15 @@ public class PurchaseModel {
         public String setErrorFor(Enrolment enrolment, String error) {
             return courseClassErrors.put(enrolment.getCourseClass().getId(), error);
         }
-
+		
+		public String getErrorBy(Application application) {
+			return courseError.get(application.getCourse().getId());
+		}
+		
+		public String setErrorFor(Application application, String error) {
+			return courseError.put(application.getCourse().getId(), error);
+		}
+		
         public boolean isGuardian() {
             return isGuardian;
         }
