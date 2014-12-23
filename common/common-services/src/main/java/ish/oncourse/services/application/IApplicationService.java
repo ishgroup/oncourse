@@ -18,5 +18,6 @@ public interface IApplicationService {
 	@RequestCached
 	Application findOfferedApplicationBy(Course course, Student student);
 	
+	@RequestCached
 	Application findNewApplicationBy(Course course, Student student);
 }
