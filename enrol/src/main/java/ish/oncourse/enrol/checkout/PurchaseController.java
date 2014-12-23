@@ -286,6 +286,7 @@ public class PurchaseController {
 		application.setCourse(course);
 		application.setStatus(ApplicationStatus.NEW);
 		application.setSource(PaymentSource.SOURCE_WEB);
+		application.setConfirmationStatus(ConfirmationStatus.NOT_SENT);
 		return application;
 	}
 	
