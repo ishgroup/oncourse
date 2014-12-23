@@ -136,6 +136,10 @@ public class PurchaseModel {
         objectContext.deleteObjects(paymentInLines);
         objectContext.deleteObjects(payment);
     }
+	
+	void deleteInvoice() {
+		objectContext.deleteObject(invoice);
+	}
 
     private PaymentIn createPayment() {
         PaymentIn payment = objectContext.newObject(PaymentIn.class);
@@ -218,6 +222,7 @@ public class PurchaseModel {
 	
 	public void removeApplication(Application application) {
 		getContactNode(application.getStudent().getContact()).removeApplication(application);
+		objectContext.deleteObjects(application);
 	}
 	
     public void enableEnrolment(Enrolment e) {
@@ -268,6 +273,14 @@ public class PurchaseModel {
         return Collections.unmodifiableList(getContactNode(contact).disabledEnrolments);
     }
 
+	public List<ProductItem> getDisabledProductItems(Contact contact) {
+		return Collections.unmodifiableList(getContactNode(contact).disabledProductItems);
+	}
+
+	public List<Application> getDisabledApplications(Contact contact) {
+		return Collections.unmodifiableList(getContactNode(contact).disabledApplications);
+	}
+	
     public List<Enrolment> getAllEnrolments(Contact contact) {
         return getContactNode(contact).getAllEnrolments();
     }
@@ -324,10 +337,6 @@ public class PurchaseModel {
 	
     public ProductItem getProductItemBy(Contact contact, Integer integer) {
         return getAllProductItems(contact).get(integer);
-    }
-
-    public List<ProductItem> getDisabledProductItems(Contact contact) {
-        return Collections.unmodifiableList(getContactNode(contact).disabledProductItems);
     }
 
     /**
@@ -430,6 +439,7 @@ public class PurchaseModel {
         for (Contact contact : getContacts()) {
             deleteDisabledEnrollments(contact);
             deleteDisabledProductItems(contact);
+			deleteDisabledApplications(contact);
         }
     }
 
@@ -447,6 +457,13 @@ public class PurchaseModel {
             removeEnrolment(enrolment);
         }
     }
+	
+	void deleteDisabledApplications(Contact contact) {
+		List<Application> applications = new ArrayList<>(getDisabledApplications(contact));
+		for (Application application : applications) {
+			removeApplication(application);
+		}
+	}
 
     public List<Enrolment> getAllEnabledEnrolments() {
 
@@ -465,6 +482,14 @@ public class PurchaseModel {
         }
         return result;
     }
+	
+	public List<Application> getAllEnabledApplications() {
+		ArrayList<Application> result = new ArrayList<>();
+		for (Contact contact : getContacts()) {
+			result.addAll(getEnabledApplications(contact));
+		}
+		return result;
+	}
 
     public String setErrorFor(Enrolment enrolment, String error) {
         ContactNode contactNode = contacts.get(enrolment.getStudent().getContact());
@@ -650,6 +675,9 @@ public class PurchaseModel {
         return null;
     }
 
+	public boolean isApplicationsOnly() {
+		return invoice.getInvoiceLines().isEmpty() && !getAllEnabledApplications().isEmpty();
+	}
 
     public class VoucherNode {
         private boolean selected = false;
