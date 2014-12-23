@@ -77,6 +77,12 @@ function initProductItemListHandle()
 	});
 }
 
+function initApplicationListHandler() {
+    $j('.applicationSelect').click(function() {
+        var actionLink = $j(this).next('a.selectApplicationLink').attr('href');
+        sendAjax(actionLink);
+    })
+}
 
 function initAddConcessionHandle()
 {
@@ -282,6 +288,7 @@ function initHandles()
 	initConcessionEditorHandle();
 	initCheckoutHandle();
 	initProductItemListHandle();
+    initApplicationListHandler();
 	initAddCodeHandle();
 	initCreditAccessHandle();
 	initPaymentEditorsHandle();

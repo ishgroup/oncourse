@@ -6,16 +6,16 @@
 		<td class="enrolmentInfo">
 			<label>
 				<t:if test="checked">
-					<input type="checkbox" class="enrolmentSelect" checked="${checked}"/>
+					<input type="checkbox" class="applicationSelect" checked="${checked}"/>
 					<p:else>
-						<input type="checkbox" class="enrolmentSelect"/>
+						<input type="checkbox" class="applicationSelect"/>
 					</p:else>
 				</t:if>
+				<t:eventlink t:id="selectApplicationEvent" style="{display: none;}" class="selectApplicationLink" context="actionContext"/>
 				${application.course.name}
 				<t:if test="error" negate="true">
-					<span>(Application only)</span>
+					<span class="applicationOnly">(Application only)</span>
 				</t:if>
-				<t:eventlink t:id="selectApplicationEvent" style="{display: none;}" class="selectApplicationLink" context="actionContext"/>
 			</label>
 			<t:if test="error">
 				<span class="disabled"><t:outputraw value="${error}"/></span>
