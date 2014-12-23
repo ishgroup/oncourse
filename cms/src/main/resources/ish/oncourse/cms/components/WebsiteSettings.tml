@@ -27,7 +27,7 @@
 					});
 					
 					function checkState() {
-						if (jQuery(".enable-sm-checkbox").attr("checked")) {
+						if (jQuery(".enable-sm-checkbox").prop( "checked" )) {
 							jQuery(".sm-checkbox").removeAttr("disabled");
 						}
 						else {

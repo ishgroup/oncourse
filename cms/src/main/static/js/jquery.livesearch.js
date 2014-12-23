@@ -38,9 +38,9 @@ goog.provide('jquery.livesearch');
       };
     }
 
-    $(this).live('keypress', perform);
-    $(this).live('keydown', perform);
-    $(this).live('keyup', perform);
-    $(this).bind('blur', perform);
+    $(this).on('keypress', perform);
+    $(this).on('keydown', perform);
+    $(this).on('keyup', perform);
+    $(this).on('blur', perform);
   }
 })(jQuery);

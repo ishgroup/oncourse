@@ -2,7 +2,7 @@ goog.provide('menubuilder');
 
 goog.require("main");
 goog.require("jquery.jeditable");
-goog.require("jquery.livequery");
+// goog.require("jquery.livequery");
 goog.require("jquery.livesearch");
 goog.require("jquery.mjs.nestedSortable");
 
@@ -160,7 +160,7 @@ goog.require("jquery.mjs.nestedSortable");
             $(this).prev('.editable').click();
         });
 
-        $('.cms_expander').live('click', function() {
+        $(document).on('click', '.cms_expander', function() {
             $(this).parent().filter(':first').siblings('ul').toggle();
         });
 
