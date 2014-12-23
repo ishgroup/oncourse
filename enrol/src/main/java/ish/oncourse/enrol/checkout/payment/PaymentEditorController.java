@@ -8,6 +8,7 @@ import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.utils.StringUtilities;
+import org.apache.cayenne.PersistenceState;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -46,17 +47,32 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 	}
 
 	@Override
+	public boolean isApplicationOnly() {
+		return purchaseController.getModel().isApplicationsOnly();
+	}
+
+	@Override
+	public boolean isZeroPayment() {
+		return isApplicationOnly() || Money.ZERO.equals(purchaseController.getModel().getPayment().getAmount());
+	}
+
+	@Override
+	public List<Application> getApplications() {
+		return purchaseController.getModel().getAllEnabledApplications();
+	}
+
+	@Override
 	public boolean isFinalState() {
-		return isCorporatePass() || paymentProcessController.isFinalState();
+		return isApplicationOnly() || isCorporatePass() || paymentProcessController.isFinalState();
 	}
 
 	@Override
     public boolean isProcessFinished() {
-        return isCorporatePass() || paymentProcessController.isProcessFinished();
+        return isApplicationOnly() || isCorporatePass() || paymentProcessController.isProcessFinished();
     }
 
     public boolean isPaymentSuccess() {
-        return isCorporatePass() || paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
+        return isApplicationOnly() || isCorporatePass() || paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
     }
 
     public void updatePaymentStatus() {
@@ -99,10 +115,11 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 	public void makePayment() {
         purchaseController.setErrors(errors);
         if (errors.isEmpty()) {
-            PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
+			PurchaseController.Action action = purchaseController.getModel().isApplicationsOnly() ? PurchaseController.Action.confirmApplication : PurchaseController.Action.makePayment;
+            PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(action);
             purchaseController.performAction(actionParameter);
             if (purchaseController.getErrors().isEmpty() &&
-					purchaseController.getModel().getCorporatePass() == null) {
+					!purchaseController.isPaymentResult()) {
 				if (paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.INIT)
 					paymentProcessController.processAction(PaymentProcessController.PaymentAction.INIT_PAYMENT);
 				paymentProcessController.processAction(MAKE_PAYMENT);
