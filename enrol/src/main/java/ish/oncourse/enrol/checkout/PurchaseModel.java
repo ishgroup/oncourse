@@ -212,7 +212,14 @@ public class PurchaseModel {
         }
     }
 
-
+	public void addApplication(Application application) {
+		getContactNode(application.getStudent().getContact()).addApplication(application);
+	}
+	
+	public void removeApplication(Application application) {
+		getContactNode(application.getStudent().getContact()).removeApplication(application);
+	}
+	
     public void enableEnrolment(Enrolment e) {
         getContactNode(e.getStudent().getContact()).enableEnrolment(e);
     }
@@ -271,6 +278,16 @@ public class PurchaseModel {
         }
         return null;
     }
+	
+	Application getApplicationBy(Contact contact, Course course) {
+		List<Application> applications = getContactNode(contact).getAllApplications();
+		for (Application application : applications) {
+			if (application.getCourse().getId().equals(course.getId())) {
+				return application;
+			}
+		}
+		return null;
+	}
 
 
     public boolean isEnrolmentEnabled(Enrolment enrolment) {
@@ -286,6 +303,10 @@ public class PurchaseModel {
         return getContactNode(contact).getAllProductItems();
     }
 
+	public List<Application> getAllApplications(Contact contact) {
+		return getContactNode(contact).getAllApplications();
+	}
+	
     public ProductItem getProductItemBy(Contact contact, Integer integer) {
         return getAllProductItems(contact).get(integer);
     }
@@ -636,17 +657,21 @@ public class PurchaseModel {
          */
         private Map<Long, String> courseClassErrors = new HashMap<>();
 
-        private List<Enrolment> enabledEnrolments;
-        private List<Enrolment> disabledEnrolments;
 		/**
 		 * This property was introduced to keep enrolment ordering.
 		 */
 		private List<Enrolment> allEnrolments;
 		private List<ProductItem> allProductItem;
+		private List<Application> allApplications;
 
+        private List<Enrolment> enabledEnrolments;
+        private List<Enrolment> disabledEnrolments;
 
 		private List<ProductItem> enabledProductItems;
         private List<ProductItem> disabledProductItems;
+		
+		private List<Application> enabledApplications;
+		private List<Application> disabledApplications;
 
         private boolean isGuardian = false;
 
@@ -661,6 +686,10 @@ public class PurchaseModel {
             this.disabledProductItems = new ArrayList<>();
 			this.allProductItem = new ArrayList<>();
 
+			this.enabledApplications = new ArrayList<>();
+			this.disabledApplications = new ArrayList<>();
+			this.allApplications = new ArrayList<>();
+
 		}
 
         private List<Enrolment> getAllEnrolments() {
@@ -672,6 +701,12 @@ public class PurchaseModel {
 			ArrayList<ProductItem> result = new ArrayList<>(allProductItem);
 			return Collections.unmodifiableList(result);
 		}
+
+		private List<Application> getAllApplications() {
+			ArrayList<Application> result = new ArrayList<>(allApplications);
+			return Collections.unmodifiableList(result);
+		}
+		
 
         public void addConcession(ConcessionType c) {
             this.concessions.add(c);
@@ -707,6 +742,18 @@ public class PurchaseModel {
 			this.allProductItem.remove(p);
 		}
 
+		public void addApplication(Application a) {
+			this.disabledApplications.add(a);
+			this.allApplications.add(a);
+		}
+		
+		public void removeApplication(Application a) {
+			if (!this.enabledApplications.remove(a)) {
+				this.disabledApplications.remove(a);
+			}
+			this.allApplications.remove(a);
+		}
+		
 		public void enableEnrolment(Enrolment e) {
             courseClassErrors.remove(e.getCourseClass().getId());
             if (disabledEnrolments.contains(e)) {
@@ -735,7 +782,21 @@ public class PurchaseModel {
                 disabledProductItems.add(p);
             }
         }
+		
+		public void enableApplication(Application a) {
+			if (disabledApplications.contains(a)) {
+				disabledApplications.remove(a);
+				enabledApplications.add(a);
+			}
+		}
 
+		public void disableApplication(Application a) {
+			if (enabledApplications.contains(a)) {
+				enabledApplications.remove(a);
+				disabledApplications.add(a);
+			}
+		}
+		
         public String getErrorBy(Enrolment enrolment) {
             return courseClassErrors.get(enrolment.getCourseClass().getId());
         }
