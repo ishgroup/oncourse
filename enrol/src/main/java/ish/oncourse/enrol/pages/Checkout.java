@@ -1,6 +1,8 @@
 package ish.oncourse.enrol.pages;
 
 import ish.math.Money;
+import ish.oncourse.enrol.checkout.ActionConfirmApplication;
+import ish.oncourse.enrol.checkout.ActionEnableApplication;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -184,7 +186,15 @@ public class Checkout {
         return checkoutBlock;
     }
 
-    @OnEvent(value = "proceedToPaymentEvent")
+	@OnEvent(value = "proceedEvent")
+	public Object proceedEvent() {
+		if (purchaseController.getModel().isApplicationsOnly()) {
+			return confirmApplication();
+		} else {
+			return proceedToPayment();
+		}
+	}
+
     public Object proceedToPayment() {
         ActionParameter actionParameter = new ActionParameter(Action.proceedToPayment);
         actionParameter.setValue(purchaseController.getModel().getPayment());
@@ -194,6 +204,16 @@ public class Checkout {
         else
             return this;
     }
+	
+	public Object confirmApplication() {
+		ActionConfirmApplication action = PurchaseController.Action.confirmApplication.createAction(purchaseController);
+		action.action();
+		if (purchaseController.getErrors().isEmpty()) {
+			return paymentPage;
+		} else {
+			return this;
+		}
+	}
 
     public void updatePurchaseItems() {
         if (purchaseController != null) {
