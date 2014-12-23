@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.CourseEnrolmentType;
 import ish.oncourse.model.*;
 
 import java.util.List;
@@ -29,23 +30,33 @@ public class ActionBackToEditCheckout extends APurchaseAction {
 		List<Product> products = getModel().getProducts();
 
         /**
-         * create disabled enrolments which were deleted after an user pressed ProceedToPayment
+         * create disabled enrolments or applications which were deleted after an user pressed ProceedToPayment
          */
 		for (Contact contact : contacts) {
 			// is not available for companies 
 			if (!contact.getIsCompany()) {
 				for (CourseClass courseClass : classes) {
-					Enrolment enrolment = getModel().getEnrolmentBy(contact, courseClass);
-					if (enrolment == null) {
-						enrolment = getController().createEnrolment(courseClass, contact.getStudent());
-						getModel().addEnrolment(enrolment);
+
+					if (CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(courseClass.getCourse().getEnrolmentType()) &&
+							getController().getApplicationService().findOfferedApplicationBy(courseClass.getCourse(),contact.getStudent()) == null) {
+						Application application = getModel().getApplicationBy(contact, courseClass.getCourse());
+						if (application == null) {
+							application = getController().createApplication(contact.getStudent(), courseClass.getCourse());
+							getModel().addApplication(application);
+						}
 					} else {
-						PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.disableEnrolment);
-						parameter.setValue(enrolment);
-						getController().performAction(parameter);
-						parameter = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
-						parameter.setValue(enrolment);
-						getController().performAction(parameter);
+						Enrolment enrolment = getModel().getEnrolmentBy(contact, courseClass);
+						if (enrolment == null) {
+							enrolment = getController().createEnrolment(courseClass, contact.getStudent());
+							getModel().addEnrolment(enrolment);
+						} else {
+							PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.disableEnrolment);
+							parameter.setValue(enrolment);
+							getController().performAction(parameter);
+							parameter = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
+							parameter.setValue(enrolment);
+							getController().performAction(parameter);
+						}
 					}
 				}
 			}	
