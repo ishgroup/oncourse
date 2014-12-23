@@ -800,7 +800,11 @@ public class PurchaseController {
 		{
 			getModel().getPayment().setConfirmationStatus(confirmationStatus);
 		}
-		getModel().getInvoice().setConfirmationStatus(confirmationStatus);
+		
+		// no invoice when applications only 
+		if (getModel().getInvoice() != null) {
+			getModel().getInvoice().setConfirmationStatus(confirmationStatus);
+		}
 		
 		for (Enrolment enrolment : getModel().getAllEnabledEnrolments()) {
 			enrolment.setConfirmationStatus(confirmationStatus);
@@ -810,6 +814,10 @@ public class PurchaseController {
 			if (ProductType.VOUCHER.getDatabaseValue() == productItem.getType()) {
 				productItem.setConfirmationStatus(confirmationStatus);
 			}
+		}
+		
+		for (Application application : getModel().getAllEnabledApplications()) {
+			application.setConfirmationStatus(confirmationStatus);
 		}
 	}
 
