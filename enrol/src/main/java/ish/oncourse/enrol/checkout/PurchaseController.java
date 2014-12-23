@@ -66,8 +66,8 @@ public class PurchaseController {
      * see method PurchaseController.adjustState()
      */
 	public static final List<Action> COMMON_ACTIONS = Collections.unmodifiableList(Arrays.asList(
-			enableEnrolment, enableProductItem,
-			disableEnrolment, disableProductItem,
+			enableEnrolment, enableProductItem, enableApplication,
+			disableEnrolment, disableProductItem, disableApplication,
 			setVoucherPrice,
 			startConcessionEditor, Action.addContact, addGuardian));
 
@@ -855,6 +855,8 @@ public class PurchaseController {
 		disableEnrolment(ActionDisableEnrolment.class, Enrolment.class),
 		enableProductItem(ActionEnableProductItem.class, ProductItem.class, Money.class),
 		disableProductItem(ActionDisableProductItem.class, ProductItem.class),
+		enableApplication(ActionEnableApplication.class, Application.class),
+		disableApplication(ActionDisableApplication.class, Application.class),
 		addContact(ActionAddContact.class, ContactCredentials.class),
 		addConcession(ActionAddConcession.class, StudentConcession.class),
 		removeConcession(ActionRemoveConcession.class, ConcessionType.class, Contact.class),
@@ -1009,7 +1011,8 @@ public class PurchaseController {
         guardianAgeIsWrong,
         payerSetAsGuardian,
         courseClassCancelled,
-        courseClassIsNotVisible;
+        courseClassIsNotVisible,
+		applicationReceived;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);
