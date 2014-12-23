@@ -3074,5 +3074,15 @@
         </sql>
     </changeSet>
 
+	<changeSet id="202" author="andrey" context="production" runOnChange="false">
+		<sql>
+			ALTER TABLE Contact
+			CHANGE COLUMN isMarketingViaEmailAllowed isMarketingViaEmailAllowed tinyint NOT NULL DEFAULT 1,
+			CHANGE COLUMN isMarketingViaPostAllowed isMarketingViaPostAllowed tinyint NOT NULL DEFAULT 1,
+			CHANGE COLUMN isMarketingViaSMSAllowed isMarketingViaSMSAllowed tinyint NOT NULL DEFAULT 1;
+		</sql>
+	</changeSet>
+
+
 
 </databaseChangeLog>
