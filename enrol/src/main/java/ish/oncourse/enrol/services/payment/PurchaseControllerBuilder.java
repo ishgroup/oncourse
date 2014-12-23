@@ -8,6 +8,7 @@ import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Product;
+import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.datalayer.IDataLayerFactory;
@@ -74,6 +75,8 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
     @Inject
     private IDataLayerFactory dataLayerFactory;
 
+	@Inject
+	private IApplicationService iApplicationService;
 
     @Override
 	public PurchaseController build(PurchaseModel model) {
@@ -97,12 +100,14 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
         purchaseController.setParallelExecutor(parallelExecutor);
 		purchaseController.setPaymentService(paymentService);
         purchaseController.setDataLayerFactory(dataLayerFactory);
+		purchaseController.setApplicationService(iApplicationService);
 
         purchaseController.setVoucherRedemptionHelper(new VoucherRedemptionHelper(model.getObjectContext(), model.getCollege()));
 
         PurchaseModelValidator purchaseModelValidator = new PurchaseModelValidator();
         purchaseModelValidator.setPurchaseController(purchaseController);
         purchaseController.setModelValidator(purchaseModelValidator);
+		
 
 		return purchaseController;
 	}

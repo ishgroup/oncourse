@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.ApplicationStatus;
 import ish.common.types.ConfirmationStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
@@ -17,6 +18,7 @@ import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.*;
+import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.payment.IPaymentService;
@@ -84,6 +86,7 @@ public class PurchaseController {
 	private ITagService tagService;
 	private IPaymentService paymentService;
     private IDataLayerFactory dataLayerFactory;
+	private IApplicationService applicationService;
 
 	private VoucherRedemptionHelper voucherRedemptionHelper;
     private PurchaseModelValidator modelValidator;
@@ -276,6 +279,16 @@ public class PurchaseController {
 		}
 	}
 
+	Application createApplication(Student student, Course course) {
+		Application application = getModel().getObjectContext().newObject(Application.class);
+		application.setCollege(student.getCollege());
+		application.setStudent(student);
+		application.setCourse(course);
+		application.setStatus(ApplicationStatus.NEW);
+		application.setSource(PaymentSource.SOURCE_WEB);
+		return application;
+	}
+	
 	public IInvoiceProcessingService getInvoiceProcessingService() {
 		return invoiceProcessingService;
 	}
@@ -518,6 +531,13 @@ public class PurchaseController {
 		this.tagService = tagService;
 	}
 
+	public IApplicationService getApplicationService() {
+		return applicationService;
+	}
+
+	public void setApplicationService(IApplicationService applicationService) {
+		this.applicationService = applicationService;
+	}
 
 	public  void addError(Message message, Object... params) {
 		validationResult.addError(message, params);
