@@ -2,6 +2,8 @@ package ish.oncourse.services;
 
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
+import ish.oncourse.services.application.ApplicationServiceImpl;
+import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cache.*;
@@ -193,6 +195,7 @@ public class ServiceModule {
 		binder.bind(IDataLayerFactory.class, DataLayerFactory.class).scope(ScopeConstants.PERTHREAD);
 
         binder.bind(IRequestCacheService.class, RequestCacheService.class);
+		binder.bind(IApplicationService.class, ApplicationServiceImpl.class);
     }
 
 	@Scope("perthread")
