@@ -58,7 +58,7 @@ public class ActionProceedToPayment extends APurchaseAction {
                     paymentEditorController.getPaymentProcessController().isExpired() ||
                     paymentEditorController.getPaymentProcessController().geThrowable() != null);
         } else {
-            int size = getModel().getAllEnabledEnrolments().size() + getModel().getAllEnabledProductItems().size();
+            int size = getModel().getAllEnabledEnrolments().size() + getModel().getAllEnabledProductItems().size() + getModel().getAllEnabledApplications().size();
             if (size < 1) {
                 getController().addError(PurchaseController.Message.noEnabledItemForPurchase);
                 result = false;
