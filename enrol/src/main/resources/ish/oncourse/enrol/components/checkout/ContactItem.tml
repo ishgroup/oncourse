@@ -28,6 +28,7 @@
 	</tr>
 	</tbody>
 	<tbody class="checkoutList">
+		<span t:type="checkout/applicationlist" purchaseController="purchaseController" contact="contact" blockToRefresh="blockToRefresh"/>
 		<span t:type="checkout/enrolmentlist" purchaseController="purchaseController" contact="contact" blockToRefresh="blockToRefresh"/>
 		<span t:type="checkout/productlist" purchaseController="purchaseController" contact="contact" blockToRefresh="blockToRefresh"/>
 	</tbody>

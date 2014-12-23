@@ -1,0 +1,12 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		>
+	<t:loop source="applications" value="application" index="index">
+		<span t:type="checkout/applicationitem"
+			  application="application"
+			  applicationIndex="index"
+			  contactIndex="contactIndex"
+			  checked="checked"
+			  delegate="applicationItemDelegate" blockToRefresh="blockToRefresh"
+			  error="applicationError"/>
+	</t:loop>
+</t:container>

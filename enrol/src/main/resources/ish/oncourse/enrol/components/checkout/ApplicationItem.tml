@@ -1,0 +1,26 @@
+<t:container
+		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		xmlns:p="tapestry:parameter">
+
+	<tr class="enrolmentItem ${applicationClass}">
+		<td class="enrolmentInfo">
+			<label>
+				<t:if test="checked">
+					<input type="checkbox" class="enrolmentSelect" checked="${checked}"/>
+					<p:else>
+						<input type="checkbox" class="enrolmentSelect"/>
+					</p:else>
+				</t:if>
+				${application.course.name}
+				<t:if test="error" negate="true">
+					<span>(Application only)</span>
+				</t:if>
+				<t:eventlink t:id="selectApplicationEvent" style="{display: none;}" class="selectApplicationLink" context="actionContext"/>
+			</label>
+			<t:if test="error">
+				<span class="disabled"><t:outputraw value="${error}"/></span>
+			</t:if>
+			<br/>
+		</td>
+	</tr>
+</t:container>
