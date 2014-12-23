@@ -23,21 +23,34 @@ public class ApplicationServiceImpl implements IApplicationService {
 	/**
 	 * @param course
 	 * @param student
-	 * @return application for course-student if exist, else return null
+	 * @return offered application for course-student if exist, else return null
 	 */
 	@Override
 	public Application findOfferedApplicationBy(Course course, Student student) {
-
-		SelectQuery q = new SelectQuery(Application.class);
-		
-		q.andQualifier(ExpressionFactory.matchExp(Application.COURSE_PROPERTY, course));
-		q.andQualifier(ExpressionFactory.matchExp(Application.STUDENT_PROPERTY, student));
-		q.andQualifier(ExpressionFactory.matchExp(Application.STATUS_PROPERTY, ApplicationStatus.OFFERED));
-		q.addOrdering(Application.CREATED_PROPERTY, SortOrder.DESCENDING);
-
-		List<Application> applications = cayenneService.sharedContext().performQuery(q);
-		
-		
+		List<Application> applications = findeApplications(course, student, ApplicationStatus.OFFERED);
 		return applications.size() > 0 ? applications.get(0) : null;
 	}
+	
+	/**
+	 * @param course
+	 * @param student
+	 * @return new application for course-student if exist, else return null
+	 */
+	@Override
+	public Application findNewApplicationBy(Course course, Student student) {
+		List<Application> applications = findeApplications(course, student, ApplicationStatus.NEW);
+		return applications.size() > 0 ? applications.get(0) : null;	
+	}
+	
+	private List<Application> findeApplications(Course course, Student student, ApplicationStatus status) {
+		
+		SelectQuery q = new SelectQuery(Application.class);
+		q.andQualifier(ExpressionFactory.matchExp(Application.COURSE_PROPERTY, course));
+		q.andQualifier(ExpressionFactory.matchExp(Application.STUDENT_PROPERTY, student));
+		q.andQualifier(ExpressionFactory.matchExp(Application.STATUS_PROPERTY, status));
+		
+		return cayenneService.sharedContext().performQuery(q);
+	}
+
+
 }
