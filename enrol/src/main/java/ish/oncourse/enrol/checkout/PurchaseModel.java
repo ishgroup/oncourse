@@ -474,6 +474,24 @@ public class PurchaseModel {
         return result;
     }
 
+	public List<Enrolment> getAllDisabledEnrolments() {
+
+		ArrayList<Enrolment> result = new ArrayList<>();
+		for (Contact contact : getContacts()) {
+			result.addAll(getDisabledEnrolments(contact));
+		}
+		return result;
+	}
+
+	public List<ProductItem> getAllDisabledProductItems() {
+
+		ArrayList<ProductItem> result = new ArrayList<>();
+		for (Contact contact : getContacts()) {
+			result.addAll(getDisabledProductItems(contact));
+		}
+		return result;
+	}
+	
     public List<ProductItem> getAllEnabledProductItems() {
 
         ArrayList<ProductItem> result = new ArrayList<>();
@@ -675,8 +693,20 @@ public class PurchaseModel {
         return null;
     }
 
+	/**
+	 * IsApplicationsOnly = true  when no enabled and no disabled enrolments or productItems:
+	 * - if user has application and any disabled enrolments (on editCheckout step) then they should go on payment page (it will be able go back and select disabled items)
+	 * @return false
+	 * - if  no enabled and no disabled enrolments or productItems (IsApplicationsOnly) then go on final step - make 'Confirm Application' action (bypassing payment page)
+	 * @return true
+	 * - if user has any disabled enrolments - they will be removed after 'ProceedToPayment' action (only selected items will remain on editPayment step) - IsApplicationsOnly will be true
+	 * @return true
+	 */
 	public boolean isApplicationsOnly() {
-		return invoice.getInvoiceLines().isEmpty() && !getAllEnabledApplications().isEmpty();
+		return invoice.getInvoiceLines().isEmpty() 
+				&& !getAllEnabledApplications().isEmpty() 
+				&& getAllDisabledEnrolments().isEmpty()
+				&& getAllDisabledProductItems().isEmpty();
 	}
 
     public class VoucherNode {
