@@ -5,7 +5,12 @@
 	<t:if test="delegate">
 		<t:if test="delegate.processFinished">
 			<t:if test="delegate.paymentSuccess">
-				<t:delegate to="block:paymentSuccess"/>
+				<t:if test="delegate.zeroPayment">
+						<t:delegate to="block:transactionSuccess"/>
+					<p:else>
+						<t:delegate to="block:paymentSuccess"/>
+					</p:else>
+				</t:if>
 				<p:else>
                     <h2>This payment was cancelled.</h2>
 					<script type="text/javascript">
@@ -67,5 +72,41 @@
 		<t:eventlink t:id="tryAgain" title="Proceed with this enrolment">Try again with another card or reenter details</t:eventlink>
 		Or <t:eventlink t:id="abandon">Abandon</t:eventlink> this enrolment.
 
+	</t:block>
+	
+	<t:block t:id="transactionSuccess">
+		<h2>Transaction <span>&#187;</span> Successful</h2>
+		<p>${messageThanksForEnrolment}</p>
+		<p>Your transaction was <strong>SUCCESSFUL</strong> and recorded in our system against reference number 
+			<strong>
+				<t:if test="delegate.applicationOnly">
+					<t:loop source="delegate.applications" value="application">
+						W${application.id}
+					</t:loop>
+					<p:else>
+						W${paymentIn.id}
+					</p:else>
+				</t:if>
+			</strong>.
+		</p>
+		
+		<p>${message:message-successConfirmationForZeroInvoice}</p>
+		<t:if test="successUrl">
+			<p>
+				<strong>${message:message-pressContinue}</strong>
+				<br/>
+			</p>
+		</t:if>
+		<div class="successEnrolmentContinueButton">
+			<a href="${successUrl}">${message:continue.button.text}</a>
+		</div>
+
+		<t:if test="delegate.isApplicationOnly()" negate="true">
+			<t:AnalyticsTransaction transaction="delegate.analyticsTransaction"/>
+		</t:if>
+		
+		<script type="text/javascript">
+			refreshShortList();
+		</script>
 	</t:block>
 </t:container>

@@ -3,6 +3,7 @@ package ish.oncourse.enrol.components.checkout.payment;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.pages.Payment;
+import ish.oncourse.model.Application;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.tapestry5.annotations.*;
@@ -30,6 +31,9 @@ public class PaymentResult {
 
 	@InjectPage
 	private Checkout checkoutPage;
+	
+	@Property
+	private Application application;
 
 	public PaymentResult() {
 	}
