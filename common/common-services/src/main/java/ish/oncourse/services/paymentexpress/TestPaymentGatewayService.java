@@ -97,6 +97,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
                 payment.getCreditCardName().equals(creditCart.getName()) &&
                 payment.getCreditCardExpiry().equals(creditCart.getExpiry())) {
 
+            payment.setDateBanked(new Date());
             result.addStatusNote(PAYMETN_APPROVE);
             result.setSuccess(true);
         } else {
