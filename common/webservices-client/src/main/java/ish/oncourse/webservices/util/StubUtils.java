@@ -9,14 +9,6 @@ public class StubUtils {
 		SupportedVersions version = PortHelper.getVersionByInstructionStub(instructionStub);
 
 		switch (version) {
-			case V4:
-				((ish.oncourse.webservices.v4.stubs.replication.InstructionStub) instructionStub)
-						.setParameters((ish.oncourse.webservices.v4.stubs.replication.ParametersMap) parametersMap);
-				break;
-			case V5:
-				((ish.oncourse.webservices.v5.stubs.replication.InstructionStub) instructionStub)
-						.setParameters((ish.oncourse.webservices.v5.stubs.replication.ParametersMap) parametersMap);
-				break;
 			case V6:
 				((ish.oncourse.webservices.v6.stubs.replication.InstructionStub) instructionStub)
 						.setParameters((ish.oncourse.webservices.v6.stubs.replication.ParametersMap) parametersMap);
@@ -38,12 +30,6 @@ public class StubUtils {
 		SupportedVersions version = PortHelper.getVersionByReplicatedRecord(record);
 		
 		switch (version) {
-			case V4:
-				return ish.oncourse.webservices.v4.stubs.replication.Status.SUCCESS.equals(
-					((ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord) record).getStatus());
-			case V5:
-				return ish.oncourse.webservices.v5.stubs.replication.Status.SUCCESS.equals(
-						((ish.oncourse.webservices.v5.stubs.replication.ReplicatedRecord) record).getStatus());
 			case V6:
 				return ish.oncourse.webservices.v6.stubs.replication.Status.SUCCESS.equals(
 						((ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord) record).getStatus());
@@ -62,12 +48,6 @@ public class StubUtils {
 		SupportedVersions version = PortHelper.getVersionByReplicatedRecord(record);
 
 		switch (version) {
-			case V4:
-				return ish.oncourse.webservices.v4.stubs.replication.Status.FAILED.equals(
-						((ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord) record).getStatus());
-			case V5:
-				return ish.oncourse.webservices.v5.stubs.replication.Status.FAILED.equals(
-						((ish.oncourse.webservices.v5.stubs.replication.ReplicatedRecord) record).getStatus());
 			case V6:
 				return ish.oncourse.webservices.v6.stubs.replication.Status.FAILED.equals(
 						((ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord) record).getStatus());
@@ -86,14 +66,6 @@ public class StubUtils {
 		SupportedVersions version = PortHelper.getVersionByReplicatedRecord(record);
 
 		switch (version) {
-			case V4:
-				((ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord) record).setStatus(
-						ish.oncourse.webservices.v4.stubs.replication.Status.SUCCESS);
-				break;
-			case V5:
-				((ish.oncourse.webservices.v5.stubs.replication.ReplicatedRecord) record).setStatus(
-						ish.oncourse.webservices.v5.stubs.replication.Status.SUCCESS);
-				break;
 			case V6:
 				((ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v6.stubs.replication.Status.SUCCESS);
@@ -115,14 +87,6 @@ public class StubUtils {
 		SupportedVersions version = PortHelper.getVersionByReplicatedRecord(record);
 
 		switch (version) {
-			case V4:
-				((ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord) record).setStatus(
-						ish.oncourse.webservices.v4.stubs.replication.Status.FAILED);
-				break;
-			case V5:
-				((ish.oncourse.webservices.v5.stubs.replication.ReplicatedRecord) record).setStatus(
-						ish.oncourse.webservices.v5.stubs.replication.Status.FAILED);
-				break;
 			case V6:
 				((ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v6.stubs.replication.Status.FAILED);
