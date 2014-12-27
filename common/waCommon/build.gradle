@@ -1,7 +1,7 @@
 dependencies {
 	compile 'org.apache.cayenne:cayenne-server:3.2M1.2'
-    compile 'org.apache.commons:commons-lang3:3.3'
-    compile 'commons-codec:commons-codec:1.8'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'commons-codec:commons-codec:1.10'
 }
 
 jar {
