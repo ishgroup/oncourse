@@ -158,12 +158,7 @@ public class CollegeService implements ICollegeService {
         boolean angelVersionChanged = (CommonUtils.compare(angelVersion, college.getAngelVersion()) > 0);
 
         ObjectContext context = cayenneService.newNonReplicatingContext();
-		college = (College) context.localObject(college.getObjectId(), null);
-		if (college.getFirstRemoteAuthentication() == null) {
-			college.setFirstRemoteAuthentication(accessTime);
-		} else {
-			college.setLastRemoteAuthentication(accessTime);
-		}
+		college = context.localObject(college);
 		college.setAngelVersion(angelVersion);
 		college.setIpAddress(ipAddress);
 

@@ -7,11 +7,13 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.exception.StackTraceUtils;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.ws.WebServiceContext;
+import java.util.Date;
 import java.util.Random;
 
 public class AuthenticateServiceImpl implements IAuthenticateService {
@@ -65,6 +67,8 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 				LOGGER.error(message, ex);
 				throw ex;
 			}
+			//we need the code to reset cached college's properties
+			college.setPersistenceState(PersistenceState.HOLLOW);
 			Long currentKey = college.getCommunicationKey();
 			boolean recoverFromHALT = (currentKey == null) && (college.getCommunicationKeyStatus() == KeyStatus.HALT);
 			if (currentKey == null) {
@@ -116,11 +120,18 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 	@Override
 	public Long generateNewKey(College college) {
 		ObjectContext objectContext = takeCayenneService().newNonReplicatingContext();
-		College local = (College) objectContext.localObject(college.getObjectId(), null);
+		College local = objectContext.localObject(college);
 		Random randomGen = new Random();
 		long newCommunicationKey = ((long) randomGen.nextInt(63) << 59) + System.currentTimeMillis();
 		local.setCommunicationKey(newCommunicationKey);
 		local.setCommunicationKeyStatus(KeyStatus.VALID);
+
+		Date date = new Date();
+		if (local.getFirstRemoteAuthentication() == null) {
+			local.setFirstRemoteAuthentication(date);
+		} else {
+			local.setLastRemoteAuthentication(date);
+		}
 		objectContext.commitChanges();
 
 		HttpServletRequest request = (HttpServletRequest) takeWebServiceContext().getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
