@@ -3083,6 +3083,12 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="203" author="andrey" context="production" runOnChange="false">
+		<sql>
+			ALTER TABLE Session
+			CHANGE COLUMN courseClassId courseClassId BIGINT(19) NOT NULL;
+		</sql>
+	</changeSet>
 
 
 </databaseChangeLog>
