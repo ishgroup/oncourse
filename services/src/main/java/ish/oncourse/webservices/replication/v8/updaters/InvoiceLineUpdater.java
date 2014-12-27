@@ -4,14 +4,14 @@ import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v8.stubs.replication.InvoiceLineStub;
 
 public class InvoiceLineUpdater extends AbstractWillowUpdater<InvoiceLineStub, InvoiceLine> {
 
 	@Override
-	protected void updateEntity(InvoiceLineStub stub, InvoiceLine entity, RelationShipCallback callback) {
+	public void updateEntity(InvoiceLineStub stub, InvoiceLine entity, RelationShipCallback callback) {
 		entity.setCreated(stub.getCreated());
 		entity.setDescription(stub.getDescription());
 		entity.setDiscountEachExTax(Money.valueOf(stub.getDiscountEachExTax()));

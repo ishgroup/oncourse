@@ -4,7 +4,7 @@ import ish.common.types.ExpiryType;
 import ish.common.types.TypesUtil;
 import ish.math.Money;
 import ish.oncourse.model.VoucherProduct;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v6.stubs.replication.VoucherProductStub;
 
 public class VoucherProductUpdater extends AbstractProductUpdater<VoucherProductStub, VoucherProduct> {

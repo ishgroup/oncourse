@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.replication.v8.builders;
 
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v8.stubs.replication.StudentConcessionStub;
 
 public class StudentConcessionStubBuilder extends AbstractWillowStubBuilder<StudentConcession, StudentConcessionStub> { 

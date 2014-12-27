@@ -4,7 +4,7 @@
 package ish.oncourse.webservices.replication.v7.builders;
 
 import ish.oncourse.model.CustomField;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v7.stubs.replication.CustomFieldStub;
 
 public class CustomFieldStubBuilder extends AbstractWillowStubBuilder<CustomField, CustomFieldStub> {

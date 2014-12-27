@@ -3,8 +3,8 @@ package ish.oncourse.webservices.replication.v8.updaters;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v8.stubs.replication.SiteStub;
 import org.apache.cayenne.Cayenne;
 

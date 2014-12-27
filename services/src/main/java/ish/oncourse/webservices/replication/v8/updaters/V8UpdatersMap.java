@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.v8.updaters;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.webservices.replication.v4.updaters.IWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 
 import java.util.HashMap;
 import java.util.Map;

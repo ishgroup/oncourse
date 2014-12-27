@@ -4,9 +4,9 @@ import ish.common.types.MessageStatus;
 import ish.common.types.MessageType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.*;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v7.stubs.replication.MessagePersonStub;
 
 public class MessagePersonUpdater extends AbstractWillowUpdater<MessagePersonStub, MessagePerson> { 

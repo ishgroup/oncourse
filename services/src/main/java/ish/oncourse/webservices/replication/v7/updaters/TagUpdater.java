@@ -4,8 +4,8 @@ import ish.common.types.NodeSpecialType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v7.stubs.replication.TagStub;
 import org.apache.commons.lang.StringUtils;
 

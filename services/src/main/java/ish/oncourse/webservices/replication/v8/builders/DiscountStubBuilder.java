@@ -4,7 +4,7 @@ import ish.common.types.DiscountType;
 import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.Discount;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v8.stubs.replication.DiscountStub;
 
 public class DiscountStubBuilder extends AbstractWillowStubBuilder<Discount, DiscountStub> {

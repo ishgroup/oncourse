@@ -6,16 +6,16 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Student;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v8.stubs.replication.EnrolmentStub;
 import org.apache.commons.lang.StringUtils;
 
 public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrolment> {
 
 	@Override
-	protected void updateEntity(EnrolmentStub stub, Enrolment entity, RelationShipCallback callback) {
+	public void updateEntity(EnrolmentStub stub, Enrolment entity, RelationShipCallback callback) {
 		entity.setCourseClass(callback.updateRelationShip(stub.getCourseClassId(), CourseClass.class));
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());

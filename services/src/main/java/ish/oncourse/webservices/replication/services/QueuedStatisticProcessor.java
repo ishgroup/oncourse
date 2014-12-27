@@ -3,7 +3,7 @@ package ish.oncourse.webservices.replication.services;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedStatistic;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.webservices.replication.v4.updaters.IWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.util.GenericQueuedStatisticStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;

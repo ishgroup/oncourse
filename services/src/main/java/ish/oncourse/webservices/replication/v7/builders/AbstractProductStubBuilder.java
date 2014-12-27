@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.replication.v7.builders;
 
 import ish.oncourse.model.Product;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v7.stubs.replication.ProductStub;
 
 public abstract class AbstractProductStubBuilder<E extends Product, S extends ProductStub> extends AbstractWillowStubBuilder<E, S> {

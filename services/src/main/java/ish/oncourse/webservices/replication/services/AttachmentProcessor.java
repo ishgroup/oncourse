@@ -6,7 +6,7 @@ import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.util.GenericBinaryDataStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;

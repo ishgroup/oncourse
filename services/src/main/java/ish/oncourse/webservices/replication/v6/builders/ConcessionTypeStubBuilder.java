@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.replication.v6.builders;
 
 import ish.oncourse.model.ConcessionType;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v6.stubs.replication.ConcessionTypeStub;
 
 public class ConcessionTypeStubBuilder extends AbstractWillowStubBuilder<ConcessionType, ConcessionTypeStub> {

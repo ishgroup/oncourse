@@ -4,9 +4,9 @@ import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Student;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v7.stubs.replication.AttendanceStub;
 
 public class AttendanceUpdater extends AbstractWillowUpdater<AttendanceStub, Attendance> {

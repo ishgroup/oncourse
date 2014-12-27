@@ -1,8 +1,8 @@
 package ish.oncourse.webservices.replication.v7.updaters;
 
 import ish.oncourse.model.SystemUser;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v7.stubs.replication.SystemUserStub;
 import org.apache.commons.lang.StringUtils;
 

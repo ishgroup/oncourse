@@ -4,8 +4,8 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Tutor;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v8.stubs.replication.SessionStub;
 
 public class SessionUpdater extends AbstractWillowUpdater<SessionStub, Session> {

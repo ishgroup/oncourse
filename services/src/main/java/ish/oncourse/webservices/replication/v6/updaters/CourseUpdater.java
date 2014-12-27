@@ -4,8 +4,8 @@ import ish.common.types.CourseEnrolmentType;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v6.stubs.replication.CourseStub;
 import org.apache.cayenne.Cayenne;
 

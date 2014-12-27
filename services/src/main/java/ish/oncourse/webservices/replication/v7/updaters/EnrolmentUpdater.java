@@ -5,9 +5,9 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Student;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v7.stubs.replication.EnrolmentStub;
 import org.apache.commons.lang.StringUtils;
 

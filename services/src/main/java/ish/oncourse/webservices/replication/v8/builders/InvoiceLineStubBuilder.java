@@ -3,7 +3,7 @@ package ish.oncourse.webservices.replication.v8.builders;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v8.stubs.replication.InvoiceLineStub;
 
 public class InvoiceLineStubBuilder extends AbstractWillowStubBuilder<InvoiceLine, InvoiceLineStub> {

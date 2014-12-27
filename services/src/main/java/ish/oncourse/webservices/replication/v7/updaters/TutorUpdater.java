@@ -3,9 +3,9 @@ package ish.oncourse.webservices.replication.v7.updaters;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v7.stubs.replication.TutorStub;
 
 public class TutorUpdater extends AbstractWillowUpdater<TutorStub, Tutor> {

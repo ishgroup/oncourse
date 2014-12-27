@@ -6,8 +6,8 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.EntityRelation;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.Queueable;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v8.stubs.replication.EntityRelationStub;
 
 import java.util.HashMap;

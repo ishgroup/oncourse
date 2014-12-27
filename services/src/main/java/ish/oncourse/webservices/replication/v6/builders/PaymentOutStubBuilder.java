@@ -3,7 +3,7 @@ package ish.oncourse.webservices.replication.v6.builders;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentOut;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v6.stubs.replication.PaymentOutStub;
 
 public class PaymentOutStubBuilder extends AbstractWillowStubBuilder<PaymentOut, PaymentOutStub> {

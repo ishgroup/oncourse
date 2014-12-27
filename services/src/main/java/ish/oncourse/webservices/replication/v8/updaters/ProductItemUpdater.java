@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.v8.updaters;
 
 import ish.oncourse.model.Product;
 import ish.oncourse.model.ProductItem;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v8.stubs.replication.ProductItemStub;
 
 public class ProductItemUpdater extends AbstractProductItemUpdater<ProductItemStub, ProductItem> {

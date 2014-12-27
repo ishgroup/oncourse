@@ -9,8 +9,8 @@ import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
-import ish.oncourse.webservices.replication.v4.updaters.IWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
@@ -458,7 +458,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	class RelationShipCallbackImpl implements RelationShipCallback {
 
 		/**
-		 * @see ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback#updateRelationShip(java.lang.Long,java.lang.Class)
+		 * @see ish.oncourse.webservices.replication.updaters.RelationShipCallback#updateRelationShip(java.lang.Long,java.lang.Class)
 		 */
 		@SuppressWarnings("unchecked")
 		public <M extends Queueable> M updateRelationShip(Long angelId, Class<M> clazz) {

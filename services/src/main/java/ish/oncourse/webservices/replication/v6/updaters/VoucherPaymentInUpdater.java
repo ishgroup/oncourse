@@ -6,8 +6,8 @@ import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherPaymentIn;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v6.stubs.replication.VoucherPaymentInStub;
 
 public class VoucherPaymentInUpdater extends AbstractWillowUpdater<VoucherPaymentInStub, VoucherPaymentIn> {

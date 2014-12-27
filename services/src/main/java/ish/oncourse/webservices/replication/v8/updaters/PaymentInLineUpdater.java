@@ -4,15 +4,15 @@ import ish.math.Money;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v8.stubs.replication.PaymentInLineStub;
 
 public class PaymentInLineUpdater extends AbstractWillowUpdater<PaymentInLineStub, PaymentInLine> {
 
 	@Override
-	protected void updateEntity(PaymentInLineStub stub, PaymentInLine entity, RelationShipCallback callback) {
+	public void updateEntity(PaymentInLineStub stub, PaymentInLine entity, RelationShipCallback callback) {
 		entity.setAmount(new Money(stub.getAmount()));
 		entity.setCreated(stub.getCreated());
 		Invoice invoice = callback.updateRelationShip(stub.getInvoiceId(), Invoice.class);

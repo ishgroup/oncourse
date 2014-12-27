@@ -55,7 +55,6 @@ import java.util.List;
 			serviceName = "ReferenceService",
 			portName = "ReferencePort", targetNamespace="http://ref.v4.soap.webservices.oncourse.ish/")
 @EndpointProperty(key = "soap.no.validate.parts", value = "true")
-@Deprecated
 public class ReferencePortTypeImpl implements ReferencePortType {
 
 	@Inject

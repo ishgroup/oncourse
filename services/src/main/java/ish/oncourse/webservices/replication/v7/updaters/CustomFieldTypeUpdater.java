@@ -4,8 +4,8 @@
 package ish.oncourse.webservices.replication.v7.updaters;
 
 import ish.oncourse.model.CustomFieldType;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v7.stubs.replication.CustomFieldTypeStub;
 
 public class CustomFieldTypeUpdater extends AbstractWillowUpdater<CustomFieldTypeStub, CustomFieldType> {

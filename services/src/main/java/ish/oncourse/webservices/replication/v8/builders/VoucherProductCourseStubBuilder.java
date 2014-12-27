@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.replication.v8.builders;
 
 import ish.oncourse.model.VoucherProductCourse;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v8.stubs.replication.VoucherProductCourseStub;
 
 public class VoucherProductCourseStubBuilder extends AbstractWillowStubBuilder<VoucherProductCourse, VoucherProductCourseStub> {

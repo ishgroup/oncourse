@@ -4,7 +4,7 @@
 package ish.oncourse.webservices.replication.v7.builders;
 
 import ish.oncourse.model.Document;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v7.stubs.replication.DocumentStub;
 
 public class DocumentStubBuilder extends AbstractWillowStubBuilder<Document, DocumentStub> {

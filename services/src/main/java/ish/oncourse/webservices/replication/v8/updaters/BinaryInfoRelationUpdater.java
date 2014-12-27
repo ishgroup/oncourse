@@ -3,9 +3,9 @@ package ish.oncourse.webservices.replication.v8.updaters;
 import ish.common.types.AttachmentSpecialType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.*;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v8.stubs.replication.BinaryInfoRelationStub;
 
 public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoRelationStub, BinaryInfoRelation> {

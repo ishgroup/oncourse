@@ -1,8 +1,8 @@
 package ish.oncourse.webservices.replication.v6.updaters;
 
 import ish.oncourse.model.ConcessionType;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v6.stubs.replication.ConcessionTypeStub;
 
 public class ConcessionTypeUpdater extends AbstractWillowUpdater<ConcessionTypeStub, ConcessionType> {

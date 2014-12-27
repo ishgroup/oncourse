@@ -5,9 +5,9 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.Student;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v6.stubs.replication.StudentStub;
 import org.apache.cayenne.Cayenne;
 

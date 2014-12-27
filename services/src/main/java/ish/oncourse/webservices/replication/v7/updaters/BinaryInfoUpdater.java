@@ -3,8 +3,8 @@ package ish.oncourse.webservices.replication.v7.updaters;
 import ish.common.types.AttachmentInfoVisibility;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v7.stubs.replication.BinaryInfoStub;
 
 public class BinaryInfoUpdater extends AbstractWillowUpdater<BinaryInfoStub, BinaryInfo> {

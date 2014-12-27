@@ -11,8 +11,8 @@ import ish.math.Money;
 import ish.oncourse.model.Application;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Student;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v8.stubs.replication.ApplicationStub;
 
 public class ApplicationUpdater extends AbstractWillowUpdater<ApplicationStub, Application> {

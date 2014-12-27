@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.replication.v6.builders;
 
 import ish.oncourse.model.*;
-import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 
 import java.util.HashMap;
 import java.util.Map;

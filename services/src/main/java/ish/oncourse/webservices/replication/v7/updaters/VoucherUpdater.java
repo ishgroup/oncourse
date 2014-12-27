@@ -6,7 +6,7 @@ import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v7.stubs.replication.VoucherStub;
 
 public class VoucherUpdater extends AbstractProductItemUpdater<VoucherStub, Voucher> {

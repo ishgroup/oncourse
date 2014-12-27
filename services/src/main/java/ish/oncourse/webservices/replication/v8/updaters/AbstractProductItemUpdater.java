@@ -5,8 +5,8 @@ import ish.common.types.ProductStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.ProductItem;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v8.stubs.replication.ProductItemStub;
 
 public abstract class AbstractProductItemUpdater<S extends ProductItemStub, E extends ProductItem> extends AbstractWillowUpdater<S, E> {

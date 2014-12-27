@@ -6,8 +6,8 @@ import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.Invoice;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v6.stubs.replication.InvoiceStub;
 
 public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> {

@@ -5,8 +5,8 @@ import ish.common.types.TypesUtil;
 import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.Discount;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v7.stubs.replication.DiscountStub;
 
 public class DiscountUpdater extends AbstractWillowUpdater<DiscountStub, Discount> {

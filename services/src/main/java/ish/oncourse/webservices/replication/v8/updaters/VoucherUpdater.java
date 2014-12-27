@@ -1,13 +1,12 @@
 package ish.oncourse.webservices.replication.v8.updaters;
 
-import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v8.stubs.replication.VoucherStub;
 
 public class VoucherUpdater extends AbstractProductItemUpdater<VoucherStub, Voucher> {

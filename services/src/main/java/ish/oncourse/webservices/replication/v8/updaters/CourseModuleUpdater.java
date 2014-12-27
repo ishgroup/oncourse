@@ -3,8 +3,8 @@ package ish.oncourse.webservices.replication.v8.updaters;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.Module;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v8.stubs.replication.CourseModuleStub;
 import org.apache.cayenne.Cayenne;
 

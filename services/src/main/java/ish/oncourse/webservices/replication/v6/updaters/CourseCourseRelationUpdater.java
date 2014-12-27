@@ -3,8 +3,8 @@ package ish.oncourse.webservices.replication.v6.updaters;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseCourseRelation;
 import ish.oncourse.model.EntityRelation;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v6.stubs.replication.EntityRelationStub;
 
 public class CourseCourseRelationUpdater extends EntityRelationUpdater {

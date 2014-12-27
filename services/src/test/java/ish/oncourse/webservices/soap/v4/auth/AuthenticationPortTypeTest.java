@@ -7,11 +7,11 @@ import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
-import ish.oncourse.webservices.soap.v4.AuthFailure;
-import ish.oncourse.webservices.soap.v4.ReplicationPortType;
-import ish.oncourse.webservices.soap.v4.ReplicationPortTypeImpl;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
-import ish.oncourse.webservices.v4.stubs.replication.ErrorCode;
+import ish.oncourse.webservices.soap.v6.AuthFailure;
+import ish.oncourse.webservices.soap.v6.ReplicationPortType;
+import ish.oncourse.webservices.soap.v6.ReplicationPortTypeImpl;
+import ish.oncourse.webservices.v6.stubs.replication.ErrorCode;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
@@ -197,7 +197,5 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		ReplicationPortType port = getAuthenticationPort();
 
 		long newCommunicationKey = port.authenticate("345ttn44$%9", 7059522699886202880L);
-
-		port.logout(newCommunicationKey);
 	}
 }

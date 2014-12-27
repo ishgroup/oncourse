@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.replication.v7.builders;
 
 import ish.oncourse.model.EntityRelation;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v7.stubs.replication.EntityRelationStub;
 
 public class EntityRelationStubBuilder extends AbstractWillowStubBuilder<EntityRelation, EntityRelationStub> {

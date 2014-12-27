@@ -3,8 +3,8 @@ package ish.oncourse.webservices.replication.v6.updaters;
 import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.CorporatePassCourseClass;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v6.stubs.replication.CorporatePassCourseClassStub;
 
 public class CorporatePassCourseClassUpdater extends AbstractWillowUpdater<CorporatePassCourseClassStub, CorporatePassCourseClass> {

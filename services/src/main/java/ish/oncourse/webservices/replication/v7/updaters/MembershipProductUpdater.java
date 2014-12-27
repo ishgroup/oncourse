@@ -3,7 +3,7 @@ package ish.oncourse.webservices.replication.v7.updaters;
 import ish.common.types.ExpiryType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.MembershipProduct;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v7.stubs.replication.MembershipProductStub;
 
 public class MembershipProductUpdater extends AbstractProductUpdater<MembershipProductStub, MembershipProduct> {

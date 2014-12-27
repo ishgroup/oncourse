@@ -7,8 +7,8 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v6.stubs.replication.CourseClassStub;
 
 public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, CourseClass> {

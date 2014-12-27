@@ -20,16 +20,15 @@ import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
 import ish.oncourse.webservices.pages.PaymentNotFound;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
+import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
+import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.TransactionStubBuilderImpl;
+import ish.oncourse.webservices.replication.builders.WillowStubBuilderImpl;
 import ish.oncourse.webservices.replication.services.*;
-import ish.oncourse.webservices.replication.v4.builders.ITransactionStubBuilder;
-import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
-import ish.oncourse.webservices.replication.v4.builders.TransactionStubBuilderImpl;
-import ish.oncourse.webservices.replication.v4.builders.WillowStubBuilderImpl;
-import ish.oncourse.webservices.replication.v4.updaters.IWillowUpdater;
-import ish.oncourse.webservices.replication.v4.updaters.WillowUpdaterImpl;
+import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
+import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl;
-
 import ish.oncourse.webservices.usi.USIVerificationService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.*;
@@ -37,12 +36,7 @@ import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
-import org.apache.tapestry5.services.ApplicationGlobals;
-import org.apache.tapestry5.services.ComponentSource;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestExceptionHandler;
-import org.apache.tapestry5.services.Response;
-import org.apache.tapestry5.services.ResponseRenderer;
+import org.apache.tapestry5.services.*;
 
 /**
  * @author marek

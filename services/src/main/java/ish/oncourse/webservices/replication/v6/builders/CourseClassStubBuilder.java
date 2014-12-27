@@ -1,10 +1,9 @@
 package ish.oncourse.webservices.replication.v6.builders;
 
-import ish.common.types.AttendanceType;
 import ish.common.types.CourseClassAttendanceType;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
-import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
+import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v6.stubs.replication.CourseClassStub;
 
 public class CourseClassStubBuilder extends AbstractWillowStubBuilder<CourseClass, CourseClassStub> {
