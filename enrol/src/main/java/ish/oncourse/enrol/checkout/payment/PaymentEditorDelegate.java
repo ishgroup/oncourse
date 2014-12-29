@@ -39,7 +39,7 @@ public interface PaymentEditorDelegate {
 
 	public boolean isCorporatePass();
 	
-	public boolean isApplicationOnly();
+	public boolean isEmptyInvoice();
 	
 	public boolean isZeroPayment();
 

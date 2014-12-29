@@ -28,7 +28,14 @@ public class ActionMakePayment extends APurchaseAction {
 			}
 			getController().setConfirmationStatus(ConfirmationStatus.NOT_SENT);
 		} else if (getController().isEditPayment()) {
-			getController().setState(PurchaseController.State.paymentProgress);
+			if (getModel().getInvoice().getInvoiceLines().isEmpty()) {
+				getModel().deletePayment();
+				getModel().deleteInvoice();
+				getController().setState(PurchaseController.State.paymentResult);
+				getController().setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+			} else {
+				getController().setState(PurchaseController.State.paymentProgress);
+			}
 		} else
 			throw new IllegalArgumentException();
 

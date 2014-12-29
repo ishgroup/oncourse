@@ -79,7 +79,7 @@
 		<p>${messageThanksForEnrolment}</p>
 		<p>Your transaction was <strong>SUCCESSFUL</strong> and recorded in our system against reference number 
 			<strong>
-				<t:if test="delegate.applicationOnly">
+				<t:if test="delegate.emptyInvoice">
 					<t:loop source="delegate.applications" value="application">
 						W${application.id}
 					</t:loop>
@@ -101,7 +101,7 @@
 			<a href="${successUrl}">${message:continue.button.text}</a>
 		</div>
 
-		<t:if test="delegate.isApplicationOnly()" negate="true">
+		<t:if test="delegate.emptyInvoice" negate="true">
 			<t:AnalyticsTransaction transaction="delegate.analyticsTransaction"/>
 		</t:if>
 		

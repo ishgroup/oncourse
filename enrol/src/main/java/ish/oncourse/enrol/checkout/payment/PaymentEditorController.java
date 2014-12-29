@@ -47,13 +47,13 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 	}
 
 	@Override
-	public boolean isApplicationOnly() {
-		return purchaseController.getModel().isApplicationsOnly();
+	public boolean isEmptyInvoice() {
+		return purchaseController.getModel().getInvoice().getInvoiceLines().isEmpty();
 	}
 
 	@Override
 	public boolean isZeroPayment() {
-		return isApplicationOnly() || Money.ZERO.equals(purchaseController.getModel().getPayment().getAmount());
+		return isEmptyInvoice() || Money.ZERO.equals(purchaseController.getModel().getPayment().getAmount());
 	}
 
 	@Override
@@ -63,16 +63,16 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
 	@Override
 	public boolean isFinalState() {
-		return isApplicationOnly() || isCorporatePass() || paymentProcessController.isFinalState();
+		return isEmptyInvoice() || isCorporatePass() || paymentProcessController.isFinalState();
 	}
 
 	@Override
     public boolean isProcessFinished() {
-        return isApplicationOnly() || isCorporatePass() || paymentProcessController.isProcessFinished();
+        return isEmptyInvoice() || isCorporatePass() || paymentProcessController.isProcessFinished();
     }
 
     public boolean isPaymentSuccess() {
-        return isApplicationOnly() || isCorporatePass() || paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
+        return isEmptyInvoice() || isCorporatePass() || paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
     }
 
     public void updatePaymentStatus() {
@@ -115,8 +115,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 	public void makePayment() {
         purchaseController.setErrors(errors);
         if (errors.isEmpty()) {
-			PurchaseController.Action action = purchaseController.getModel().isApplicationsOnly() ? PurchaseController.Action.confirmApplication : PurchaseController.Action.makePayment;
-            PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(action);
+            PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
             purchaseController.performAction(actionParameter);
             if (purchaseController.getErrors().isEmpty() &&
 					!purchaseController.isPaymentResult()) {
