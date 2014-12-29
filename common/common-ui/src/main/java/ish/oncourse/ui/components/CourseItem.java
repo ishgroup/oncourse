@@ -1,7 +1,12 @@
 package ish.oncourse.ui.components;
 
+import ish.common.types.CourseEnrolmentType;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Module;
+import ish.oncourse.services.application.IApplicationService;
+import ish.oncourse.services.contact.IContactService;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
@@ -66,10 +71,22 @@ public class CourseItem {
     @Parameter(required = true)
     private CourseItemModel courseItemModel;
 
+	@Inject
+	private IApplicationService applicationService;
+
+	@Inject
+	private IContactService contactService;
+
+	@Inject
+	private ICookiesService cookiesService;
+
+	@Property
+	private boolean allowByAplication;
+	
 
     @SetupRender
     public void beforeRender() {
-
+		allowByAplication = isAllowByAplication();
     }
 
 
@@ -226,5 +243,26 @@ public class CourseItem {
 	
 	public String getAddThisProfileId() {
 		return preferenceController.getAddThisProfileId();
+	}
+
+	private boolean isAllowByAplication() {
+
+		if (CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(courseItemModel.getCourse().getEnrolmentType())) {
+
+			String uniqCode = StringUtils.trimToNull(request.getParameter(Contact.STUDENT_PROPERTY));
+
+			if (uniqCode == null) {
+				uniqCode = StringUtils.trimToNull(cookiesService.getCookieValue(Contact.STUDENT_PROPERTY));
+			}
+
+			if (uniqCode != null) {
+				Contact contact = contactService.findByUniqueCode(uniqCode);
+				if (contact != null && contact.getStudent() != null) {
+					return applicationService.findOfferedApplicationBy(courseItemModel.getCourse(), contact.getStudent()) == null;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 }

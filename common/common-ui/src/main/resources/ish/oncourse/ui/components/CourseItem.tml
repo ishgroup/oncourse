@@ -30,7 +30,7 @@
 				 course="courseItemModel.course"></div>
 		</t:if>
 		<t:loop source="courseItemModel.availableClasses" value="courseClass">
-			<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList"/>
+			<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication"/>
 		</t:loop>
 		<t:if test="courseItemModel.otherClasses.empty" negate="true">
 			<p class="other-classes-control clearfix">
@@ -38,7 +38,7 @@
 			</p>
 			<div class="other-classes" style="display:none;">
 				<t:loop source="courseItemModel.otherClasses" value="courseClass">
-					<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList"/>
+					<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication"/>
 				</t:loop>
 			</div>
 		</t:if>
@@ -48,7 +48,7 @@
 			</p>
 			<div class="full-classes" style="display:none;">
 				<t:loop source="courseItemModel.fullClasses" value="courseClass">
-					<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList"/>
+					<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication"/>
 				</t:loop>
 			</div>
 		</t:if>
