@@ -190,6 +190,11 @@ public class CookiesService implements ICookiesService {
 		cookiesOverride.writeCookieValue(cookieKey, cookieValue, "/", false);
 	}
 
+	@Override
+	public void writeCookieValue(String cookieKey, String cookieValue, int maxAge) {
+		cookiesOverride.writeCookieValue(cookieKey, cookieValue, maxAge);
+	}
+
 	public void removeValueFromCookieCollection(String cookieKey, String cookieValue) {
 		if (!checkParameters(cookieKey, cookieValue)) {
 			return;

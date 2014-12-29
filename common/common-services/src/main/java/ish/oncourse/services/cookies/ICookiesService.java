@@ -27,6 +27,8 @@ public interface ICookiesService {
 
 	void writeCookieValue(String cookieKey, String cookieValue);
 
+	void writeCookieValue(String cookieKey, String cookieValue, int maxAge);
+
 	void appendValueToCookieCollection(String cookieKey, String cookieValue);
 
 	void removeValueFromCookieCollection(String cookieKey, String cookieValue);
