@@ -115,6 +115,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
         final String path = request.getPath().toLowerCase();
 
+		String studentUniqCode = request.getParameter(Contact.STUDENT_PROPERTY);
+		
+		if (StringUtils.trimToNull(studentUniqCode) != null) {
+			cookiesService.writeCookieValue(Contact.STUDENT_PROPERTY, studentUniqCode, -1);
+		}
 
         LOGGER.info("Rewrite InBound: path is: " + path);
 
