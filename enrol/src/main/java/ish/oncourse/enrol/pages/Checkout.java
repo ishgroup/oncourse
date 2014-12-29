@@ -10,9 +10,11 @@ import ish.oncourse.enrol.checkout.PurchaseModel;
 import ish.oncourse.enrol.services.PageExceptionHandler;
 import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Product;
+import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -42,6 +44,9 @@ public class Checkout {
 
     @Inject
     private ICookiesService cookiesService;
+	
+	@Inject
+	private IContactService contactService;
 
     @Inject
     private IStudentService studentService;
@@ -155,7 +160,16 @@ public class Checkout {
     private PurchaseController buildPaymentController() {
         PurchaseModel model = purchaseControllerBuilder.build();
         PurchaseController purchaseController = purchaseControllerBuilder.build(model);
-        purchaseController.performAction(new ActionParameter(Action.init));
+
+		ActionParameter parameter = new ActionParameter(Action.init);
+		String uniqCode = cookiesService.getCookieValue(Contact.STUDENT_PROPERTY);
+		if (StringUtils.trimToNull(uniqCode) != null) {
+			Contact contact = contactService.findByUniqueCode(uniqCode);
+			if (contact != null) {
+				parameter.setValue(contact);
+			}
+		}
+        purchaseController.performAction(parameter);
         return purchaseController;
     }
 
