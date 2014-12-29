@@ -200,33 +200,15 @@ public class Checkout {
         return checkoutBlock;
     }
 
-	@OnEvent(value = "proceedEvent")
-	public Object proceedEvent() {
-		if (purchaseController.getModel().isApplicationsOnly()) {
-			return confirmApplication();
-		} else {
-			return proceedToPayment();
-		}
-	}
-
-    public Object proceedToPayment() {
-        ActionParameter actionParameter = new ActionParameter(Action.proceedToPayment);
-        actionParameter.setValue(purchaseController.getModel().getPayment());
-        purchaseController.performAction(actionParameter);
-        if (purchaseController.getErrors().isEmpty())
-            return paymentPage;
-        else
-            return this;
-    }
-	
-	public Object confirmApplication() {
-		ActionConfirmApplication action = PurchaseController.Action.confirmApplication.createAction(purchaseController);
-		action.action();
-		if (purchaseController.getErrors().isEmpty()) {
+	@OnEvent(value = "proceedToPaymentEvent")
+	public Object proceedToPayment() {
+		ActionParameter actionParameter = new ActionParameter(Action.proceedToPayment);
+		actionParameter.setValue(purchaseController.getModel().getPayment());
+		purchaseController.performAction(actionParameter);
+		if (purchaseController.getErrors().isEmpty())
 			return paymentPage;
-		} else {
+		else
 			return this;
-		}
 	}
 
     public void updatePurchaseItems() {

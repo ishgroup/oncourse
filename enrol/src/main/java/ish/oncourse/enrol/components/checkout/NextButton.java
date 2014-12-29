@@ -29,9 +29,9 @@ public class NextButton {
         validationResult.setMessages(checkout.getPurchaseController().getMessages());
     }
 
-    @OnEvent(value = "proceedEvent")
+    @OnEvent(value = "proceedToPaymentEvent")
     public Object proceedToPayment() {
-        return checkout.proceedEvent();
+        return checkout.proceedToPayment();
     }
 
     @OnEvent(value = "addGuardianEvent")
@@ -52,9 +52,4 @@ public class NextButton {
            return addGuardian;
         }
     }
-
-	public String getButtonLabel() {
-		return checkout.getPurchaseController().getModel().isApplicationsOnly() ? "Confirm application" : "Proceed to Payment";
-	}
-
 }
