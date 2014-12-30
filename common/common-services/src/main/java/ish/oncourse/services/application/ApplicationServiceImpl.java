@@ -8,11 +8,14 @@ import ish.oncourse.model.Application;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.Date;
 import java.util.List;
 
 public class ApplicationServiceImpl implements IApplicationService {
@@ -28,6 +31,19 @@ public class ApplicationServiceImpl implements IApplicationService {
 	@Override
 	public Application findOfferedApplicationBy(Course course, Student student) {
 		List<Application> applications = findeApplications(course, student, ApplicationStatus.OFFERED);
+
+		//find the lowest applicable fee
+		Ordering ordering = new Ordering();
+		ordering.setSortSpecString(Application.FEE_OVERRIDE_PROPERTY);
+		ordering.setNullSortedFirst(false);
+		ordering.setAscending();
+
+		ordering.orderList(applications);
+
+		//exclude expired applications
+		Expression expression = ExpressionFactory.greaterExp(Application.ENROL_BY_PROPERTY, new Date()).orExp(ExpressionFactory.matchExp(Application.ENROL_BY_PROPERTY, null));
+		applications = expression.filterObjects(applications);
+		
 		return applications.size() > 0 ? applications.get(0) : null;
 	}
 	
