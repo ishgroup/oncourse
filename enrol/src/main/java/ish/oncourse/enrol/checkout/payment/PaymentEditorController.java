@@ -53,7 +53,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
 	@Override
 	public boolean isZeroPayment() {
-		return isEmptyInvoice() || Money.ZERO.equals(purchaseController.getModel().getPayment().getAmount());
+		return getPaymentIn().isZeroPayment();
 	}
 
 	@Override
@@ -63,16 +63,16 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
 	@Override
 	public boolean isFinalState() {
-		return isEmptyInvoice() || isCorporatePass() || paymentProcessController.isFinalState();
+		return  isCorporatePass() || (isZeroPayment() && isEmptyInvoice()) || paymentProcessController.isFinalState();
 	}
 
 	@Override
     public boolean isProcessFinished() {
-        return isEmptyInvoice() || isCorporatePass() || paymentProcessController.isProcessFinished();
+        return  isCorporatePass() || (isZeroPayment() && isEmptyInvoice()) || paymentProcessController.isProcessFinished();
     }
 
     public boolean isPaymentSuccess() {
-        return isEmptyInvoice() || isCorporatePass() || paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
+        return  isCorporatePass() || (isZeroPayment() && isEmptyInvoice()) || paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
     }
 
     public void updatePaymentStatus() {

@@ -28,7 +28,8 @@ public class ActionMakePayment extends APurchaseAction {
 			}
 			getController().setConfirmationStatus(ConfirmationStatus.NOT_SENT);
 		} else if (getController().isEditPayment()) {
-			if (getModel().getInvoice().getInvoiceLines().isEmpty()) {
+			//check that student don't make any purchase or enrolments here, also check that no amount owing and credit nodes applied
+			if (getModel().getInvoice().getInvoiceLines().isEmpty() && getController().getPaymentEditorDelegate().isZeroPayment()) {
 				getModel().deletePayment();
 				getModel().deleteInvoice();
 				getController().setState(PurchaseController.State.paymentResult);
