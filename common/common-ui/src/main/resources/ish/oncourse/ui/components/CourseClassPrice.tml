@@ -1,7 +1,11 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-
-	<t:if test="hasFee">
-		<t:if test="hasDiscountValue">
+	
+	<t:if test="overridden">
+		<t:output value="feeOverride" format="feeFormat"/>
+		<t:delegate to="block:tax"/>
+		<p:else>
+			<t:if test="hasFee">
+				<t:if test="hasDiscountValue">
 			<span class="fee-disabled">
 				<t:output value="fee" format="feeFormat" />
 			</span>
@@ -10,27 +14,34 @@
 					<t:output value="discountedFee" format="feeFormat" />
 				</acronym>
 			</span>
-			<p:else><t:output value="fee" format="feeFormat" /></p:else>
-		</t:if>
+					<p:else><t:output value="fee" format="feeFormat" /></p:else>
+				</t:if>
 
+				<t:delegate to="block:tax"/>
+
+				<t:if t:test="paymentGatewayEnabled">
+					<t:loop source="discountItems" value="discountItem">
+						<span class="discount-price">/</span>
+						<acronym class="discount-price" title="${discountItem.title}">
+							<t:output value="discountItem.feeIncTax" format="discountItem.feeFormat" />
+						</acronym>
+					</t:loop>
+				</t:if>
+
+				<p:else>
+					<acronym title="To Be Advised">TBA</acronym>
+				</p:else>
+
+			</t:if>
+		</p:else>
+	</t:if>
+
+	<t:block t:id="tax">
 		<t:if test="showTax">
 			<span class="gst">
 				<t:if test="taxExempt" negate="true"> inc </t:if><acronym title="Goods and Services Tax">GST</acronym><t:if test="taxExempt"> free</t:if>
 			</span>
 		</t:if>
-		
-		<t:if t:test="paymentGatewayEnabled">
-			<t:loop source="discountItems" value="discountItem">
-				<span class="discount-price">/</span>
-				<acronym class="discount-price" title="${discountItem.title}">
-					<t:output value="discountItem.feeIncTax" format="discountItem.feeFormat" />
-				</acronym>
-			</t:loop>
-		</t:if>
+	</t:block>
 
-		<p:else>
-			<acronym title="To Be Advised">TBA</acronym>
-		</p:else>
-
-	</t:if>
 </t:container>

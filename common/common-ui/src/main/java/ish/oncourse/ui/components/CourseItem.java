@@ -1,6 +1,8 @@
 package ish.oncourse.ui.components;
 
 import ish.common.types.CourseEnrolmentType;
+import ish.math.Money;
+import ish.oncourse.model.Application;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Module;
@@ -82,6 +84,9 @@ public class CourseItem {
 
 	@Property
 	private boolean allowByAplication;
+
+	@Property
+	private Money feeOverride;
 	
 
     @SetupRender
@@ -258,7 +263,11 @@ public class CourseItem {
 			if (uniqCode != null) {
 				Contact contact = contactService.findByUniqueCode(uniqCode);
 				if (contact != null && contact.getStudent() != null) {
-					return applicationService.findOfferedApplicationBy(courseItemModel.getCourse(), contact.getStudent()) == null;
+					Application application = applicationService.findOfferedApplicationBy(courseItemModel.getCourse(), contact.getStudent());
+					if (application != null) {
+						feeOverride = application.getFeeOverride();
+						return false;
+					}
 				}
 			}
 			return true;

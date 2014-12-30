@@ -17,6 +17,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.math.BigDecimal;
 import java.text.Format;
 import java.util.*;
 
@@ -59,6 +60,9 @@ public class CourseClassPrice {
 
 	@Property
 	private String appliedDiscountsTitle;
+	
+	@Parameter
+	private Money feeOverride;
 	
 	private void fillAppliedDiscounts() {
 		List<Discount> promotions = discountService.getPromotions();
@@ -144,7 +148,20 @@ public class CourseClassPrice {
 		feeFormat = FormatUtils.chooseMoneyFormat(feeIncGst);
 		return feeIncGst;
 	}
+	
+	public Money getFeeOverride() {
+		feeFormat = FormatUtils.chooseMoneyFormat(feeOverride);
+		if (isTaxExempt()) {
+			return feeOverride;
+		} else {
+			return feeOverride.multiply(BigDecimal.ONE.add(courseClass.getTaxRate()));
+		}
+	}
 
+	public boolean isOverridden() {
+		return feeOverride != null;
+	}
+	
 	public Money getDiscountedFee() {
 		feeFormat = FormatUtils.chooseMoneyFormat(discountedFee);
 		return discountedFee;

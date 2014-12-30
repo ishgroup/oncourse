@@ -1,6 +1,7 @@
 package ish.oncourse.ui.components;
 
 import ish.common.types.CourseEnrolmentType;
+import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
@@ -103,6 +104,10 @@ public class CourseClassItem {
 	@Parameter
 	@Property
 	private boolean allowByAplication;
+
+	@Parameter
+	@Property
+	private Money feeOverride;
 	
 	@SetupRender
 	public void beforeRender() {
