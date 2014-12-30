@@ -54,45 +54,42 @@
                         <li id="new-company"><a href="#">a business</a></li>
                     </ul>
                 </div>
-                <t:if test="zeroPayment" negate="true">
-                    <p>
-                        <label for="creditCardName">Name on Card<em title="${message:message-required}">*</em></label>
-                        <span class="${validateHandler.validateClass('creditCardName')}">
-                            <t:textfield value="paymentIn.creditCardName" t:id="creditCardName" maxlength="80"  
-                            	class="input-fixed ${validateHandler.errorClass('creditCardName')}" autocomplete = "off"/>
-                            <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardName')}"/>
-                        </span>
-                    </p>
-                    <p>
-                        <label for="creditCardNumber">Number<em title="${message:message-required}">*</em></label>
-                        <span class="${validateHandler.validateClass('creditCardNumber')}">
-                            <t:textfield value="paymentIn.creditCardNumber" t:id="creditCardNumber" maxlength="20"  
-                            	class="input-fixed ${validateHandler.errorClass('creditCardNumber')}" autocomplete = "off"/>
-                            <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardNumber')}"/>
-                        </span>
-                    </p>
-                    <p>
-                        <label for="creditCardCVV">CVV<em title="${message:message-required}">*</em></label>
-                        <span class="${validateHandler.validateClass('creditCardCVV')}">
-                            <t:textfield value="paymentIn.creditCardCVV" t:id="creditCardCVV" maxlength="4" autocomplete = "off" 
-                            	class="input-fixed ${validateHandler.errorClass('creditCardCVV')}"/>
-                            <img src="/s/img/cvv-image.png" alt="CVV" class="vcc-card-image"/>
-                            <a id="cvvLink" href="/enrol/ui/cvv?wrap=false" class="nyromodal">What is CVV?</a>
-                            <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardCVV')}"/>
-                        </span>
-
-                    </p>
-                    <p>
-                        <label>Expiry<em title="${message:message-required}">*</em></label>
-                        <span class="${validateHandler.validateClass('expiryMonth')}">
-                            <t:select t:id="expiryMonth" value="expiryMonth" model="literal:01,02,03,04,05,06,07,08,09,10,11,12" blankLabel="mm"
-                                      class="${validateHandler.errorClass('expiryMonth')}"/>
-                            /
-                            <t:select t:id="expiryYear" value="expiryYear" model="years" blankLabel="yyyy" class="${validateHandler.errorClass('expiryMonth')}"/>
-                            <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('expiryMonth')}"/>
-                        </span>
-                    </p>
-                </t:if>
+				<p>
+					<label for="creditCardName">Name on Card<em title="${message:message-required}">*</em></label>
+					<span class="${validateHandler.validateClass('creditCardName')}">
+						<t:textfield value="paymentIn.creditCardName" t:id="creditCardName" maxlength="80"  
+							class="input-fixed ${validateHandler.errorClass('creditCardName')}" autocomplete = "off"/>
+						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardName')}"/>
+					</span>
+				</p>
+				<p>
+					<label for="creditCardNumber">Number<em title="${message:message-required}">*</em></label>
+					<span class="${validateHandler.validateClass('creditCardNumber')}">
+						<t:textfield value="paymentIn.creditCardNumber" t:id="creditCardNumber" maxlength="20"  
+							class="input-fixed ${validateHandler.errorClass('creditCardNumber')}" autocomplete = "off"/>
+						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardNumber')}"/>
+					</span>
+				</p>
+				<p>
+					<label for="creditCardCVV">CVV<em title="${message:message-required}">*</em></label>
+					<span class="${validateHandler.validateClass('creditCardCVV')}">
+						<t:textfield value="paymentIn.creditCardCVV" t:id="creditCardCVV" maxlength="4" autocomplete = "off" 
+							class="input-fixed ${validateHandler.errorClass('creditCardCVV')}"/>
+						<img src="/s/img/cvv-image.png" alt="CVV" class="vcc-card-image"/>
+						<a id="cvvLink" href="/enrol/ui/cvv?wrap=false" class="nyromodal">What is CVV?</a>
+						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardCVV')}"/>
+					</span>
+				</p>
+				<p>
+					<label>Expiry<em title="${message:message-required}">*</em></label>
+					<span class="${validateHandler.validateClass('expiryMonth')}">
+						<t:select t:id="expiryMonth" value="expiryMonth" model="literal:01,02,03,04,05,06,07,08,09,10,11,12" blankLabel="mm"
+								  class="${validateHandler.errorClass('expiryMonth')}"/>
+						/
+						<t:select t:id="expiryYear" value="expiryYear" model="years" blankLabel="yyyy" class="${validateHandler.errorClass('expiryMonth')}"/>
+						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('expiryMonth')}"/>
+					</span>
+				</p>
 			</div>
 		</fieldset>
 	</t:block>

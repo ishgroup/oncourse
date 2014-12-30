@@ -41,34 +41,36 @@
 		parameter clientValidation=NONE is used to exclude injection tapestry java script handling for this form
 	</t:remove>
 	<t:form t:id="paymentform" clientValidation="literal:NONE" secure="true">
-        <div id="tabable-container">
-            <ul class="nav">
-				<t:if test="purchaseController.creditCardPaymentEnabled">
-					<li class="first ${cardTabClass}">
-						<a href="#credit-card">Credit card</a>
-					</li>
-				</t:if>
-                <t:if test="containsProduct" negate="true">
-				    <t:if test="purchaseController.corporatePassPaymentEnabled">
-					    <li class="${corporatePassTabClass}">
-					    	<a href="#corporate-pass">CorporatePass</a>
-					    </li>
-				    </t:if>
-                </t:if>
-            </ul>
-            <div class="tab-content">
-				<t:if test="purchaseController.creditCardPaymentEnabled">
-					<div class="single-tab ${cardTabClass}" id="credit-card">
-						<t:delegate to="block:paymentEditor"/>
-					</div>
-				</t:if>
-				<t:if test="purchaseController.corporatePassPaymentEnabled">
-					<div class="single-tab ${corporatePassTabClass}" id="corporate-pass">
-						<t:delegate to="block:corporatePassEditor"/>
-					</div>
-				</t:if>
-            </div>
-        </div>
+		<t:if test="paymentPanelVisible">
+			<div id="tabable-container">
+				<ul class="nav">
+					<t:if test="purchaseController.creditCardPaymentEnabled">
+						<li class="first ${cardTabClass}">
+							<a href="#credit-card">Credit card</a>
+						</li>
+					</t:if>
+					<t:if test="containsProduct" negate="true">
+						<t:if test="purchaseController.corporatePassPaymentEnabled">
+							<li class="${corporatePassTabClass}">
+								<a href="#corporate-pass">CorporatePass</a>
+							</li>
+						</t:if>
+					</t:if>
+				</ul>
+				<div class="tab-content">
+					<t:if test="purchaseController.creditCardPaymentEnabled">
+						<div class="single-tab ${cardTabClass}" id="credit-card">
+							<t:delegate to="block:paymentEditor"/>
+						</div>
+					</t:if>
+					<t:if test="purchaseController.corporatePassPaymentEnabled">
+						<div class="single-tab ${corporatePassTabClass}" id="corporate-pass">
+							<t:delegate to="block:corporatePassEditor"/>
+						</div>
+					</t:if>
+				</div>
+			</div>
+		</t:if>
         <span t:type="checkout/payment/paymentcontrol" delegate="purchaseController.paymentEditorDelegate"/>
     </t:form>
 </t:block>

@@ -157,4 +157,7 @@ public class Payment {
 		return !getPurchaseController().getModel().getAllEnabledProductItems().isEmpty();
 	}
 
+	public boolean isPaymentPanelVisible() {
+		return getPurchaseController().isEditCorporatePass() || !paymentEditor.isZeroPayment();
+	}
 }
