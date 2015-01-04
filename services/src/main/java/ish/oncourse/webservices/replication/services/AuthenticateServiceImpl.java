@@ -122,7 +122,7 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 		ObjectContext objectContext = takeCayenneService().newNonReplicatingContext();
 		College local = objectContext.localObject(college);
 		Random randomGen = new Random();
-		long newCommunicationKey = ((long) randomGen.nextInt(63) << 59) + System.currentTimeMillis();
+		long newCommunicationKey = System.currentTimeMillis();
 		local.setCommunicationKey(newCommunicationKey);
 		local.setCommunicationKeyStatus(KeyStatus.VALID);
 
