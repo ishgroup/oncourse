@@ -1,11 +1,14 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.CourseEnrolmentType;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
 
@@ -51,7 +54,19 @@ public class EnrolmentValidator {
                     enrolment.getCourseClass().getCourse().getCode());
             return false;
         }
-
+		
+		if (CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(enrolment.getCourseClass().getCourse().getEnrolmentType())) {
+			List<Enrolment> enabledEnrolments = new ArrayList<>(purchaseController.getModel().getEnabledEnrolments(enrolment.getStudent().getContact()));
+			enabledEnrolments.remove(this.enrolment);
+			for (Enrolment enrolment : enabledEnrolments) {
+				if (enrolment.getCourseClass().getCourse().getId().equals(this.enrolment.getCourseClass().getCourse().getId())
+						&& enrolment.getStudent().getId().equals(this.enrolment.getStudent().getId())) {
+					publishError(applicationAlreadyApplyed, showErrors, purchaseController.getClassName(enrolment.getCourseClass()));
+					return false;
+				}
+			}
+		}
+		
         return validateDateOfBirth(showErrors);
 
     }

@@ -1021,7 +1021,8 @@ public class PurchaseController {
         payerSetAsGuardian,
         courseClassCancelled,
         courseClassIsNotVisible,
-		applicationReceived;
+		applicationReceived,
+		applicationAlreadyApplyed;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);
