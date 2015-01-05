@@ -55,6 +55,9 @@ public class EnrolmentValidator {
             return false;
         }
 		
+		// Prevent enrol student on multiple classes which has the same course with type ENROLMENT_BY_APPLICATION (in the single enrol process). 
+		// In other words prevent use a single offered application for more then one enrolment. 
+		// Show validation error in this case
 		if (CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(enrolment.getCourseClass().getCourse().getEnrolmentType())) {
 			List<Enrolment> enabledEnrolments = new ArrayList<>(purchaseController.getModel().getEnabledEnrolments(enrolment.getStudent().getContact()));
 			enabledEnrolments.remove(this.enrolment);

@@ -77,6 +77,8 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 
 		Application application = applicationService.findOfferedApplicationBy(course, student);
 		if (application != null && application.getFeeOverride() != null) {
+			//Calculate enrolment fee (for enrolments whose courses has ENROLMENT_BY_APPLICATION type) as application.feeOverride if !=null.
+			//Application.feeOverride doesn't need to combine with discounts.
 			InvoiceUtil.fillInvoiceLine(invoiceLine, application.getFeeOverride(), Money.ZERO, courseClass.getTaxRate(), Money.ZERO);
 		} else {
 			invoiceLine.setPriceEachExTax(fee);
