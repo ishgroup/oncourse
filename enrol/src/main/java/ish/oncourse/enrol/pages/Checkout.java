@@ -1,8 +1,6 @@
 package ish.oncourse.enrol.pages;
 
 import ish.math.Money;
-import ish.oncourse.enrol.checkout.ActionConfirmApplication;
-import ish.oncourse.enrol.checkout.ActionEnableApplication;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -162,7 +160,7 @@ public class Checkout {
         PurchaseController purchaseController = purchaseControllerBuilder.build(model);
 
 		ActionParameter parameter = new ActionParameter(Action.init);
-		String uniqCode = cookiesService.getCookieValue(Contact.STUDENT_PROPERTY);
+		String uniqCode = (String) request.getAttribute(Contact.STUDENT_PROPERTY);
 		if (StringUtils.trimToNull(uniqCode) != null) {
 			Contact contact = contactService.findByUniqueCode(uniqCode);
 			if (contact != null) {

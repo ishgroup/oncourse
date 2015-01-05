@@ -254,12 +254,7 @@ public class CourseItem {
 
 		if (CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(courseItemModel.getCourse().getEnrolmentType())) {
 
-			String uniqCode = StringUtils.trimToNull(request.getParameter(Contact.STUDENT_PROPERTY));
-
-			if (uniqCode == null) {
-				uniqCode = StringUtils.trimToNull(cookiesService.getCookieValue(Contact.STUDENT_PROPERTY));
-			}
-
+			String uniqCode = StringUtils.trimToNull((String) request.getAttribute(Contact.STUDENT_PROPERTY));
 			if (uniqCode != null) {
 				Contact contact = contactService.findByUniqueCode(uniqCode);
 				if (contact != null && contact.getStudent() != null) {

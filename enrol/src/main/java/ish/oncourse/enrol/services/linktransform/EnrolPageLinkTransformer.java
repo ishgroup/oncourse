@@ -4,8 +4,11 @@
 package ish.oncourse.enrol.services.linktransform;
 
 import ish.oncourse.linktransform.PageIdentifier;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Site;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.site.IWebSiteService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.EmptyEventContext;
@@ -27,6 +30,9 @@ public class EnrolPageLinkTransformer implements PageRenderLinkTransformer {
 	@Inject
 	private IWebSiteService webSiteService;
 	
+	@Inject
+	private ICookiesService cookiesService;
+	
 	@Override
 	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
 		LOGGER.info("Rewrite OutBound: path is: " + defaultLink.getBasePath());
@@ -39,6 +45,11 @@ public class EnrolPageLinkTransformer implements PageRenderLinkTransformer {
 
 		final String path = request.getPath().toLowerCase();
 		PageIdentifier pageIdentifier = PageIdentifier.getPageIdentifierByPath(path);
+
+		String studentUniqCode = cookiesService.getCookieValue(Contact.STUDENT_PROPERTY);
+		if (StringUtils.trimToNull(studentUniqCode) != null) {
+			request.setAttribute(Contact.STUDENT_PROPERTY, studentUniqCode);
+		}
 		
 		if (webSiteService.getCurrentWebSite() == null) {
 			requestGlobals.getResponse().setStatus(HttpServletResponse.SC_NOT_FOUND);
