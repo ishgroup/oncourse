@@ -1,13 +1,22 @@
 <t:container
         xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-        >
-	<span class="${feeClass} fullPrice" id="fullPrice_${index}">
-		<t:output value="fee" format="moneyFormat"/>
-	</span>
-	<span class="${feeDiscountedClass} discountedPrice" id="discountedPrice_${index}" data-index="${index}">
-		<t:output value="discountedPriceIncTax" format="moneyFormat"/>
-	</span>
-	<span class="discount" id="discount_${index}" style="display:none;">
-		<t:output value="discountIncTax" format="numberFormat"/>
-	</span>
+		xmlns:p="tapestry:parameter">
+	
+	<t:if test="overriden">
+		<span class="${feeClass} fullPrice" id="fullPrice_${index}">
+			<t:output value="feeOverride" format="moneyFormat"/>
+		</span>
+		<p:else>
+			<span class="${feeClass} fullPrice" id="fullPrice_${index}">
+				<t:output value="fee" format="moneyFormat"/>
+			</span>
+			<span class="${feeDiscountedClass} discountedPrice" id="discountedPrice_${index}" data-index="${index}">
+				<t:output value="discountedPriceIncTax" format="moneyFormat"/>
+			</span>
+			<span class="discount" id="discount_${index}" style="display:none;">
+				<t:output value="discountIncTax" format="numberFormat"/>
+			</span>
+		</p:else>
+	</t:if>
+
 </t:container>	

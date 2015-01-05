@@ -2,15 +2,18 @@ package ish.oncourse.enrol.components;
 
 import ish.math.Country;
 import ish.math.Money;
+import ish.oncourse.model.Application;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.RealDiscountsPolicy;
+import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
@@ -29,6 +32,9 @@ public class EnrolmentPrice {
 
 	@Inject
 	private IDiscountService discountService;
+	
+	@Inject
+	private IApplicationService applicationService;
 
 	@Parameter
 	@Property
@@ -49,6 +55,8 @@ public class EnrolmentPrice {
 	private Format numberFormat;
 
 	private List<Discount> discounts;
+	
+	private Application application;
 
 	/**
 	 * Initial setup of the component's instances. Formats; applicable discounts
@@ -62,7 +70,8 @@ public class EnrolmentPrice {
 		Locale locale = (country != null) ? country.locale() : Country.AUSTRALIA.locale();
 
 		numberFormat = new DecimalFormat("0.00");
-		if (!isInvoiced()) {
+		application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
+		if (!isOverriden() && !isInvoiced()) {
 			discounts = enrolment.getCourseClass().getDiscountsToApply(
 					new RealDiscountsPolicy(discountService.getPromotions(), enrolment.getStudent()));
 		}
@@ -145,5 +154,19 @@ public class EnrolmentPrice {
 		Money feeIncGst = courseClass.getFeeIncGst();
 		moneyFormat = FormatUtils.chooseMoneyFormat(feeIncGst);
 		return feeIncGst;
+	}
+	
+	public boolean isOverriden() {
+		return application != null && application.getFeeOverride() != null;
+	}
+
+	public Money getFeeOverride() {
+		Money feeOverride = application.getFeeOverride();
+		moneyFormat = FormatUtils.chooseMoneyFormat(feeOverride);
+		if (courseClass.isGstExempt()) {
+			return feeOverride;
+		} else {
+			return feeOverride.multiply(BigDecimal.ONE.add(courseClass.getTaxRate()));
+		}
 	}
 }
