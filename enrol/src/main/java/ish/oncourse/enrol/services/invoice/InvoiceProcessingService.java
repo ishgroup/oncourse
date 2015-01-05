@@ -5,6 +5,7 @@ package ish.oncourse.enrol.services.invoice;
 
 import ish.math.Money;
 import ish.oncourse.model.*;
+import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.util.InvoiceUtil;
 import org.apache.cayenne.ObjectContext;
@@ -29,7 +30,10 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	 */
 	public static final String INVOICE_LINE_TITLE_TEMPALTE = "%s %s %s-%s %s";
 	private final IDiscountService discountService;
-
+	
+	@Inject
+	private IApplicationService applicationService;
+	
 	@Inject
 	public InvoiceProcessingService(IDiscountService discountService) {
 		super();
@@ -69,10 +73,15 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 
 		invoiceLine.setQuantity(BigDecimal.ONE);
 		Money fee = courseClass.getFeeExGst();
-		invoiceLine.setPriceEachExTax(fee);
 		invoiceLine.setCollege(college);
 
-		setupDiscounts(enrolment, invoiceLine, actualPromotions);
+		Application application = applicationService.findOfferedApplicationBy(course, student);
+		if (application != null && application.getFeeOverride() != null) {
+			InvoiceUtil.fillInvoiceLine(invoiceLine, application.getFeeOverride(), Money.ZERO, courseClass.getTaxRate(), Money.ZERO);
+		} else {
+			invoiceLine.setPriceEachExTax(fee);
+			setupDiscounts(enrolment, invoiceLine, actualPromotions);
+		}
 		return invoiceLine;
 	}
 
