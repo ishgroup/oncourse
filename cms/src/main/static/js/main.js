@@ -1,6 +1,11 @@
 goog.provide('main');
 
+
+goog.require('tinyscrollbar');
+goog.require('tinycarousel');
+goog.require('qtip');
 goog.require('cms');
+
 
 jQuery.noConflict();
 
@@ -210,20 +215,10 @@ function customForms() {
 
 function toolTips() {
     jQuery('label[title]').qtip({
-        style : {
-            background : '#ffda8b',
-            color : '#613c00',
-            border : {
-                width : 1,
-                color : '#ffda8b'
-            },
-            tip : true
-        },
-        position : {
-            corner : {
-				target: 'topLeft',
-			 	tooltip: 'bottomLeft'
-            }
+        // style: 'qtip-light',
+        position: {
+            my: 'bottom left',  // Position my top left...
+            at: 'top left' // at the bottom right of...
         }
     });
 
