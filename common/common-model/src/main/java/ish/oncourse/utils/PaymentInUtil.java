@@ -4,6 +4,7 @@
 package ish.oncourse.utils;
 
 import ish.common.types.ApplicationStatus;
+import ish.common.types.CourseEnrolmentType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
@@ -12,6 +13,7 @@ import ish.oncourse.model.*;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 
@@ -83,7 +85,10 @@ public class PaymentInUtil {
 				enrol.setModified(date);
 				if (enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
 					enrol.setStatus(enrolmentStatus);
-					updateApplicationStatusToAcceptedByEnrolment(enrol);
+					if (EnrolmentStatus.SUCCESS.equals(enrolmentStatus) 
+							&& CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(enrol.getCourseClass().getCourse().getEnrolmentType())) {
+						updateApplicationStatusToAcceptedByEnrolment(enrol);
+					}
 				}
 			}
 
@@ -148,16 +153,22 @@ public class PaymentInUtil {
 
 
 	private static void updateApplicationStatusToAcceptedByEnrolment(Enrolment enrolment) {
-		List<Application> applications = enrolment.getStudent().getApplications();
+		Expression exp = ExpressionFactory.matchExp(Application.STATUS_PROPERTY, ApplicationStatus.OFFERED)
+				.andExp(ExpressionFactory.matchExp(Application.COURSE_PROPERTY, enrolment.getCourseClass().getCourse()))
+				.andExp(ExpressionFactory.matchExp(Application.STUDENT_PROPERTY, enrolment.getStudent()))
+				.andExp(ExpressionFactory.greaterExp(Application.ENROL_BY_PROPERTY, new Date()).orExp(ExpressionFactory.matchExp(Application.ENROL_BY_PROPERTY, null)));
+
+		List<Application> applications = enrolment.getObjectContext().performQuery(new SelectQuery(Application.class, exp));
+
+		Ordering ordering = new Ordering();
+		ordering.setSortSpecString(Application.FEE_OVERRIDE_PROPERTY);
+		ordering.setNullSortedFirst(false);
+		ordering.setAscending();
+		ordering.orderList(applications);
+		
 		if (!applications.isEmpty()) {
-			Expression exp = ExpressionFactory.matchExp(Application.STATUS_PROPERTY, ApplicationStatus.OFFERED)
-					.andExp(ExpressionFactory.matchExp(Application.COURSE_PROPERTY, enrolment.getCourseClass().getCourse()))
-					.andExp(ExpressionFactory.matchExp(Application.STUDENT_PROPERTY, enrolment.getStudent()));
-			List<Application> appList = exp.filterObjects(applications);
-			if (!appList.isEmpty()) {
-				Application app = appList.get(0);
-				app.setStatus(ApplicationStatus.ACCEPTED);
-			}
+			Application app =  enrolment.getObjectContext().localObject(applications.get(0));
+			app.setStatus(ApplicationStatus.ACCEPTED);
 		}
 	}
 }
