@@ -1,8 +1,12 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.common.types.CourseEnrolmentType;
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
 
@@ -55,10 +59,23 @@ public class EnrolmentValidator {
             return false;
         }
 		
-		// Prevent enrol student on multiple classes which has the same course with type ENROLMENT_BY_APPLICATION (in the single enrol process). 
-		// In other words prevent use a single offered application for more then one enrolment. 
-		// Show validation error in this case
 		if (CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(enrolment.getCourseClass().getCourse().getEnrolmentType())) {
+			
+			// Check that application for course-student is not uses in other enrolment process
+			Expression inTransactionEnrolments = ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.IN_TRANSACTION)
+					.andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY + "." + CourseClass.COURSE_PROPERTY, enrolment.getCourseClass().getCourse()))
+					.andExp(ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, enrolment.getStudent()));
+			
+			List<Enrolment> enrolments = getPurchaseController().getCayenneService().sharedContext().performQuery(new SelectQuery(Enrolment.class, inTransactionEnrolments));
+			
+			if (!enrolments.isEmpty()) {
+				publishError(applicationAlreadyInTransaction, showErrors, purchaseController.getClassName(enrolment.getCourseClass()));
+				return false;
+			}
+			
+			// Prevent enrol student on multiple classes which has the same course with type ENROLMENT_BY_APPLICATION (in the single enrol process). 
+			// In other words prevent use a single offered application for more then one enrolment. 
+			// Show validation error in this case
 			List<Enrolment> enabledEnrolments = new ArrayList<>(purchaseController.getModel().getEnabledEnrolments(enrolment.getStudent().getContact()));
 			enabledEnrolments.remove(this.enrolment);
 			for (Enrolment enrolment : enabledEnrolments) {
