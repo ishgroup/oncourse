@@ -72,6 +72,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 */
 	private static final String ADD_TO_COOKIES_PATH = "/addToCookies";
 
+	/**
+	 * Store cookie value for student unique code for 20 minutes
+	 */
+	private static final int STUDENT_EXPIRE_TIME = 1200;
+
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
 
@@ -119,7 +124,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		
 		if (StringUtils.trimToNull(studentUniqCode) != null) {
 			request.setAttribute(Contact.STUDENT_PROPERTY, studentUniqCode);
-			cookiesService.writeCookieValue(Contact.STUDENT_PROPERTY, studentUniqCode, -1);
+			cookiesService.writeCookieValue(Contact.STUDENT_PROPERTY, studentUniqCode, STUDENT_EXPIRE_TIME);
 		}
 
 		studentUniqCode = cookiesService.getCookieValue(Contact.STUDENT_PROPERTY);

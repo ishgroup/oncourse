@@ -147,6 +147,7 @@ public class Checkout {
 		cookiesService.writeCookieValue(Product.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
         cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
         cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, StringUtils.EMPTY);
+		cookiesService.writeCookieValue(Contact.STUDENT_PROPERTY, StringUtils.EMPTY);
         studentService.clearStudentsShortList();
     }
 
