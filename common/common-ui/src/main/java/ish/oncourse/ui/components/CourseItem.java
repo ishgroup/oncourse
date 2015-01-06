@@ -91,7 +91,7 @@ public class CourseItem {
 
     @SetupRender
     public void beforeRender() {
-		allowByAplication = isAllowByAplication();
+		init();
     }
 
 
@@ -250,23 +250,33 @@ public class CourseItem {
 		return preferenceController.getAddThisProfileId();
 	}
 
-	private boolean isAllowByAplication() {
-
+	private void init() {
+		// If course has ENROLMENT_BY_APPLICATION type:
+		// 		-if student specified (find by uniqCode) && student has offered application for this course
+		//				then show 'ENROL NOW' button and show special price - 'feeOverride'
+		//		-else show 'APPLY NOW' button and hide price
+		// Else show classes items as usual
 		if (CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(courseItemModel.getCourse().getEnrolmentType())) {
-
 			String uniqCode = StringUtils.trimToNull((String) request.getAttribute(Contact.STUDENT_PROPERTY));
 			if (uniqCode != null) {
 				Contact contact = contactService.findByUniqueCode(uniqCode);
 				if (contact != null && contact.getStudent() != null) {
 					Application application = applicationService.findOfferedApplicationBy(courseItemModel.getCourse(), contact.getStudent());
 					if (application != null) {
+						//allowed to enrol because user has offered application for this course
 						feeOverride = application.getFeeOverride();
-						return false;
+						allowByAplication = false;
+						return;
 					}
 				}
 			}
-			return true;
+			//is not allowed to enrol because course has ENROLMENT_BY_APPLICATION type && student is unknown
+			feeOverride = null;
+			allowByAplication = true;
+			return;
 		}
-		return false;
+		//allowed to enrol because course has OPEN_FOR_ENROLMENT type
+		feeOverride = null;
+		allowByAplication = false;
 	}
 }
