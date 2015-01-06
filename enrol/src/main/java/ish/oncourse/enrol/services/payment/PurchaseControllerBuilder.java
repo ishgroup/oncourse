@@ -21,7 +21,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
-import ish.oncourse.util.CommonUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
@@ -128,7 +127,7 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 		model.setWebSite(model.localizeObject(webSiteService.getCurrentWebSite()));
 		model.setDiscounts(discounts);
-		model.setAllowToUsePrevOwing(CommonUtils.compare(model.getCollege().getAngelVersion(), "4.0") >= 0);
+		model.setAllowToUsePrevOwing(true);
 		return model;
 	}
 
