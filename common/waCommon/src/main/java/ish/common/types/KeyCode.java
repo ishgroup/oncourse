@@ -210,6 +210,22 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * @PublicApi
 	 */
+	MEMBERSHIP(41, "Memberships", Mask.VIEW), // view always permitted
+	
+	/**
+	 * @PublicApi
+	 */
+	VOUCHER(42, "Vouchers", Mask.VIEW), // view always permitted
+	
+	/**
+	 * @PublicApi
+	 */
+	SALE(43, "Sales", Mask.VIEW), // view always permitted
+	
+
+	/**
+	 * @PublicApi
+	 */
 	FINANCIAL_PREFERENCES(60, "Financial preferences", Mask.NONE, Mask.CREATE | Mask.PRINT | Mask.DELETE),
 
 	/**
@@ -278,9 +294,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 */
 	SPECIAL_IMPORT(81, "Data import", Mask.ALL - Mask.VIEW),
 
-	/**
-	 * @PublicApi
-	 */
+	@Deprecated // merged with "Export AVETMISS";
 	SPECIAL_DET_EXPORT(82, "Export DET AVETMISS", Mask.ALL - Mask.VIEW),
 
 	/**
@@ -296,7 +310,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * @PublicApi
 	 */
-	EXPORTTEMPLATE(85, "ExportTemplate", Mask.VIEW), // view always permitted
+	EXPORT_TEMPLATE(85, "ExportTemplate", Mask.VIEW), // view always permitted
 
 	/**
 	 * @PublicApi
@@ -306,7 +320,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * @PublicApi
 	 */
-	MESSAGE_TEMPLATE(87, "EmailTemplate", Mask.VIEW),
+	EMAIL_TEMPLATE(87, "EmailTemplate", Mask.VIEW),
 
 	/**
 	 * @PublicApi
@@ -331,7 +345,17 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * @PublicApi
 	 */
-	PRINT_CERTIFICATE_WITHOUT_USI(92, "Print certificate without USI", Mask.ALL - Mask.VIEW);
+	PRINT_CERTIFICATE_WITHOUT_USI(92, "Print certificate without USI", Mask.ALL - Mask.VIEW),
+
+	/**
+	 * @PublicApi
+	 */
+	SCRIPT_TEMPLATE(93, "Scripts", Mask.VIEW), // view always permitted
+
+	/**
+	 * @PublicApi
+	 */
+	CONTACT_RELATION_TYPE(94, "Contact relation types", Mask.VIEW); // view always permitted
 
 	private int value;
 	private String displayName;
