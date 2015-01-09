@@ -66,7 +66,7 @@
 
 
     <t:block t:id="addContact">
-		<p>To join the waiting list for course ${controller.course.name}, please complete the following form:</p>
+		<p>To join the waiting list for ${controller.course.name}, please complete the following form:</p>
 		<fieldset>
 			<span t:type="checkout/contact/addcontactfieldset" delegate="controller" validateHandler="validateHandler"/>
 		</fieldset>
