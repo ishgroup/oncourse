@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<College id="1" name="Sydney Community College"
+			 webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+			 communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+			 timezone="Australia/Sydney"
+			 requiresAvetmiss="0" angelVersion="development"/>
+
+	<Site id="1" collegeId="1" angelId="1000" isWebVisible="0"
+		  created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
+
+	<WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<Room id="1" collegeId="1" siteId="1" angelId="1000"
+		  capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+		  name="TestRoom" />
+
+	<Student id="1000" collegeId="1" angelId="1000"
+			 created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+			 disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+			 indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+			 priorEducationCode="0" labourForceType="0" />
+	
+	<Student id="1001" collegeId="1" angelId="1000"
+			 created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+			 disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+			 indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+			 priorEducationCode="0" labourForceType="0" />
+
+	<Student id="1002" collegeId="1" angelId="1000"
+			 created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+			 disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+			 indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+			 priorEducationCode="0" labourForceType="0" />
+	
+	<Contact id="1000" collegeId="1" studentId="1000" angelId="1000"
+			 countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+			 isCompany="0" isMale="1" familyName="Contact" givenName="Contact"
+			 emailAddress="Contact1@Contact1.net" street="Kremlin 1" suburb="Moscow"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1" />
+
+	<Contact id="1001" collegeId="1" studentId="1001" angelId="1000"
+			 countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+			 isCompany="0" isMale="1" familyName="Contact1" givenName="Contact1"
+			 emailAddress="Contact1@Contact1.net" street="Kremlin 1" suburb="Moscow"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1" />
+
+	<Contact id="1002" collegeId="1" studentId="1002" angelId="1000"
+			 countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+			 isCompany="0" isMale="1" familyName="Contact2" givenName="Contact2"
+			 emailAddress="Contact1@Contact1.net" street="Kremlin 1" suburb="Moscow"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1" />
+
+	<Course id="1001" collegeId="1" angelId="1001" code="AAV"
+			isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+			created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+			allowWaitingList="1" name="Managerial Accounting"
+			enrolmentType="1"/>
+
+	<Course id="1002" collegeId="1" angelId="1002" code="APP1"
+			isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+			created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+			allowWaitingList="1" name="Application 1"
+			enrolmentType="2"/>
+
+	<Course id="1003" collegeId="1" angelId="1003" code="APP2"
+			isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+			created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+			allowWaitingList="1" name="Application 2"
+			enrolmentType="2"/>
+
+	<CourseClass id="1001" collegeId="1" code="1" courseId="1001"
+				 roomId="1" angelId="1001" startDate="2011-10-12 00:55:59.0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+				 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+
+	<CourseClass id="1002" collegeId="1" code="2" courseId="1001"
+				 roomId="1" angelId="1001" startDate="2011-10-12 00:55:59.0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="999" minimumPlaces="1" countOfSessions="3"
+				 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0" />
+
+	<CourseClass id="1003" collegeId="1" code="1" courseId="1002"
+				 roomId="1" angelId="1003" startDate="2011-10-12 00:55:59.0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+				 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+
+	<CourseClass id="1004" collegeId="1" code="2" courseId="1002"
+				 roomId="1" angelId="1004" startDate="2011-10-12 00:55:59.0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="999" minimumPlaces="1" countOfSessions="3"
+				 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0" />
+
+
+	<CourseClass id="1005" collegeId="1" code="1" courseId="1003"
+				 roomId="1" angelId="1005" startDate="2011-10-12 00:55:59.0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+				 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+
+	<CourseClass id="1006" collegeId="1" code="2" courseId="1003"
+				 roomId="1" angelId="1006" startDate="2011-10-12 00:55:59.0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="999" minimumPlaces="1" countOfSessions="3"
+				 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0" />
+
+
+	<Preference id="1000" collegeId="1" name="license.ccprocessing"
+				value_string="true" />
+	<Preference id="1001" collegeId="1" name="payment.gateway.type"
+				value_string="TEST" />
+
+
+	<Product collegeId="1" SKU="23456" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="7" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test voucher product" TYPE="3" angelId="7"
+			 TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00" value="20.00"/>
+
+	<Product collegeId="1" SKU="234567" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="8" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test membership product" TYPE="2" angelId="8"
+			 TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" maxCoursesRedemption="1" feeGST="0.00"/>
+
+	<Product collegeId="1" SKU="23458" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="9" ISONSALE="1"
+			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test article product" TYPE="1" angelId="9"
+			 TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00"/>
+	
+	<Application id="44" angelId="324" created="2014-12-29 17:43:13" modified="2014-12-29 17:43:13" studentId="1000" courseId="1002" collegeId="1"
+			 source="O" status="0" confirmationStatus="2"/>
+
+	<Application id="45" angelId="325" created="2014-12-29 17:43:13" modified="2014-12-29 17:43:13" studentId="1001" courseId="1002" collegeId="1"
+				 source="O" status="1" enrolBy="2014-12-27 10:15:22" feeOverride="10" confirmationStatus="2"/>
+
+	<Application id="46" angelId="326" created="2014-12-29 17:43:13" modified="2014-12-29 17:43:13" studentId="1001" courseId="1002" collegeId="1"
+				 source="O" status="1" feeOverride="15" confirmationStatus="2"/>
+
+	<Application id="47" angelId="327" created="2014-12-29 17:43:13" modified="2014-12-29 17:43:13" studentId="1001" courseId="1002" collegeId="1"
+				 source="O" status="1" feeOverride="20" confirmationStatus="2"/>
+		
+</dataset>
