@@ -5,7 +5,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.StackTraceUtils;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
-import ish.oncourse.webservices.soap.v4.FaultCode;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
@@ -17,6 +16,8 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.*;
+
+import static ish.oncourse.webservices.replication.services.ReplicationUtils.GENERIC_EXCEPTION;
 
 /**
  * Main version 4 synchronous replication implementation.
@@ -63,7 +64,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 		} catch (Exception e) {
 			logger.error("Unable to process replication records.", e);
-			throw new InternalReplicationFault("Unable to process replication records.", FaultCode.GENERIC_EXCEPTION, 
+			throw new InternalReplicationFault("Unable to process replication records.", GENERIC_EXCEPTION,
 				String.format("Unable to process replication records. Willow exception: %s", e.getMessage()));
 		}
 	}
@@ -201,7 +202,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 		} catch (Exception e) {
 			logger.error("Unable to get records for replication.", e);
-			throw new InternalReplicationFault("Unable to get records for replication.", FaultCode.GENERIC_EXCEPTION, 
+			throw new InternalReplicationFault("Unable to get records for replication.", GENERIC_EXCEPTION,
 				String.format("Unable to get records for replication. Willow exception: %s", e.getMessage()));
 		}
 	}
@@ -292,7 +293,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 		} catch (Exception e) {
 			logger.error("Unable to confirm replication results.", e);
-			throw new InternalReplicationFault("Unable to confirm replication results.", FaultCode.GENERIC_EXCEPTION, 
+			throw new InternalReplicationFault("Unable to confirm replication results.", GENERIC_EXCEPTION,
 				String.format("Unable to confirm replication results. Willow exception: %s", e.getMessage()));
 		}
 	}

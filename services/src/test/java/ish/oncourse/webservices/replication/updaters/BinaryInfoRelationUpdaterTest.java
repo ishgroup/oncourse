@@ -4,7 +4,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
-import ish.oncourse.webservices.v8.stubs.replication.BinaryInfoRelationStub;
+import ish.oncourse.webservices.v6.stubs.replication.BinaryInfoRelationStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
@@ -37,8 +37,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectTutorRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.TUTOR_ENTITY_NAME);
@@ -84,8 +84,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectStudentRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.STUDENT_ENTITY_NAME);
@@ -131,8 +131,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectSiteRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.SITE_ENTITY_NAME);
@@ -178,8 +178,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectSessionRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.SESSION_ENTITY_NAME);
@@ -225,8 +225,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectRoomRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.ROOM_ENTITY_NAME);
@@ -272,8 +272,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectInvoiceRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.INVOICE_ENTITY_NAME);
@@ -319,8 +319,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectEnrolmentRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME);
@@ -366,8 +366,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectCourseClassRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME);
@@ -413,8 +413,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectCertificateRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME);
@@ -460,8 +460,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectCourseRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.COURSE_ENTITY_NAME);
@@ -507,8 +507,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testCorrectContactRelation() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-			new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+			new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.CONTACT_ENTITY_NAME);
@@ -554,8 +554,8 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 
 	@Test
 	public void testInCorrectRelations() {
-		ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater updater =
-				new ish.oncourse.webservices.replication.v8.updaters.BinaryInfoRelationUpdater();
+		ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater updater =
+				new ish.oncourse.webservices.replication.v6.updaters.BinaryInfoRelationUpdater();
 		BinaryInfoRelationStub stub = new BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityName(AbstractWillowUpdater.CONTACT_ENTITY_NAME);

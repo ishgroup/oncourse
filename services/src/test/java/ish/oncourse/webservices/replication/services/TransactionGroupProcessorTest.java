@@ -12,6 +12,7 @@ import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v6.stubs.replication.BinaryDataStub;
 import ish.oncourse.webservices.v6.stubs.replication.BinaryInfoStub;
 import ish.oncourse.webservices.v6.stubs.replication.DeletedStub;
+import ish.oncourse.webservices.v6.stubs.replication.EnrolmentStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -56,19 +57,19 @@ public class TransactionGroupProcessorTest extends ServiceTest {
     }
     
     @Test
-    public void testDeleteV4Object() throws Exception {
+    public void testDeleteV7Object() throws Exception {
         /**
          * Transaction with one Contact delete.
          */
-    	GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V4);
+    	GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V7);
         List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
         assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
-        assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Contact",1,"Invoice") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
+        assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB, 1, "Contact", 1, "Invoice") + " and collegeId: 1", replicatedRecords.get(0).getMessage());
         /**
          * Transaction with one Student delete.
          */
-        transactionGroup = getTransactionGroup(1, SupportedVersions.V4);
+        transactionGroup = getTransactionGroup(1, SupportedVersions.V7);
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
         assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
@@ -76,7 +77,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         /**
          * Transaction with Merge Student 1 to 2  delete.
          */
-        transactionGroup = getTransactionGroup(2, SupportedVersions.V4);
+        transactionGroup = getTransactionGroup(2, SupportedVersions.V7);
         List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
         /**
          * Adjust relationships as the angel side does it.
@@ -84,6 +85,8 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         for (GenericReplicationStub replicationStub : replicationStubs) {
             if (replicationStub instanceof GenericEnrolmentStub) {
                 ((GenericEnrolmentStub)replicationStub).setStudentId(2L);
+                ((ish.oncourse.webservices.v7.stubs.replication.EnrolmentStub)replicationStub).setInvoiceLineId(1L);
+
             }
             else if (replicationStub instanceof GenericPaymentInStub) {
                 ((GenericPaymentInStub) replicationStub).setContactId(2L);
@@ -93,19 +96,19 @@ public class TransactionGroupProcessorTest extends ServiceTest {
             }
         }
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
-        assertEquals("Expecting success records, size test", 5, replicatedRecords.size());
+        assertEquals("Expecting success records, size test", 6, replicatedRecords.size());
         for (GenericReplicatedRecord replicatedRecord : replicatedRecords) {
             assertEquals("Expecting success record, status test", true, StubUtils.hasSuccessStatus(replicatedRecord));
         }
     }
-    
+
     @Test
-    public void testDeleteV5Object() throws Exception {
+    public void testDeleteV6Object() throws Exception {
     	setup();
         /**
          * Transaction with one Contact delete.
          */
-    	GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V5);
+    	GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V6);
         List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
         assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
@@ -113,7 +116,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         /**
          * Transaction with one Student delete.
          */
-        transactionGroup = getTransactionGroup(1, SupportedVersions.V5);
+        transactionGroup = getTransactionGroup(1, SupportedVersions.V6);
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
         assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
@@ -121,7 +124,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         /**
          * Transaction with Merge Student 1 to 2  delete.
          */
-        transactionGroup = getTransactionGroup(2, SupportedVersions.V5);
+        transactionGroup = getTransactionGroup(2, SupportedVersions.V6);
         List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
         /**
          * Adjust relationships as the angel side does it.
@@ -129,6 +132,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         for (GenericReplicationStub replicationStub : replicationStubs) {
             if (replicationStub instanceof GenericEnrolmentStub) {
                 ((GenericEnrolmentStub)replicationStub).setStudentId(2L);
+                ((EnrolmentStub)replicationStub).setInvoiceLineId(1L);
             }
             else if (replicationStub instanceof GenericPaymentInStub) {
                 ((GenericPaymentInStub) replicationStub).setContactId(2L);
@@ -138,7 +142,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
             }
         }
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
-        assertEquals("Expecting success records, size test", 5, replicatedRecords.size());
+        assertEquals("Expecting success records, size test", 6, replicatedRecords.size());
         for (GenericReplicatedRecord replicatedRecord : replicatedRecords) {
             assertEquals("Expecting success record, status test", true, StubUtils.hasSuccessStatus(replicatedRecord));
         }

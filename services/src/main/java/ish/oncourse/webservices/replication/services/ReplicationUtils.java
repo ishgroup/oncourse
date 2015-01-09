@@ -22,6 +22,8 @@ import java.util.*;
  */
 public class ReplicationUtils {
 
+	public static final int GENERIC_EXCEPTION = 1;
+
 	public static String getEntityName(Class<? extends Queueable> clazz) {
 		int index = clazz.getName().lastIndexOf(".") + 1;
 		return clazz.getName().substring(index);
@@ -52,16 +54,6 @@ public class ReplicationUtils {
 	public static GenericReplicatedRecord toReplicatedRecord(final GenericReplicationStub stub, final boolean setWillowId) {
 		final SupportedVersions version = PortHelper.getVersionByReplicationStub(stub);
 		switch (version) {
-		case V4:
-			ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord replV4Record = new ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV4Record);
-			replV4Record.setStub(toV4Hollow(stub, setWillowId));
-			return replV4Record;
-		case V5:
-			ish.oncourse.webservices.v5.stubs.replication.ReplicatedRecord replV5Record = new ish.oncourse.webservices.v5.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV5Record);
-			replV5Record.setStub(toV5Hollow(stub, setWillowId));
-			return replV5Record;
 		case V6:
 			ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord replV6Record = new ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord();
 			StubUtils.setSuccessStatus(replV6Record);
@@ -82,12 +74,6 @@ public class ReplicationUtils {
 		}
 	}
 
-	public static ish.oncourse.webservices.v4.stubs.replication.HollowStub toV4Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v4.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v4.stubs.replication.HollowStub();
-		fillHollowStub(stub, hollowStub, setWillowId);
-		return hollowStub;
-	}
-	
 	private static void fillHollowStub(final GenericReplicationStub stub, final GenericReplicationStub hollowStub, final boolean setWillowId) {
 		hollowStub.setEntityIdentifier(stub.getEntityIdentifier());
 		hollowStub.setAngelId(stub.getAngelId());
@@ -99,12 +85,6 @@ public class ReplicationUtils {
 		}
 	}
 	
-	public static ish.oncourse.webservices.v5.stubs.replication.HollowStub toV5Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v5.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v5.stubs.replication.HollowStub();
-		fillHollowStub(stub, hollowStub, setWillowId);
-		return hollowStub;
-	}
-
 	public static ish.oncourse.webservices.v6.stubs.replication.HollowStub toV6Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
 		ish.oncourse.webservices.v6.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v6.stubs.replication.HollowStub();
 		fillHollowStub(stub, hollowStub, setWillowId);

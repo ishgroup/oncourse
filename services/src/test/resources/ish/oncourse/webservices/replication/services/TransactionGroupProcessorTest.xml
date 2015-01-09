@@ -118,5 +118,6 @@
     <QueuedRecord id="5" transactionId="3" collegeId="1" action="UPDATE" entityIdentifier="Enrolment" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
     <QueuedRecord id="6" transactionId="3" collegeId="1" action="UPDATE" entityIdentifier="Invoice" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
     <QueuedRecord id="7" transactionId="3" collegeId="1" action="UPDATE" entityIdentifier="PaymentIn" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
-	
+    <QueuedRecord id="8" transactionId="3" collegeId="1" action="UPDATE" entityIdentifier="InvoiceLine" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+
 </dataset>

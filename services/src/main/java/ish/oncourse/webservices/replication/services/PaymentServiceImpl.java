@@ -17,7 +17,6 @@ import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
-import ish.oncourse.webservices.soap.v4.FaultCode;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -28,6 +27,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import static ish.oncourse.webservices.replication.services.ReplicationUtils.GENERIC_EXCEPTION;
 
 public class PaymentServiceImpl implements InternalPaymentService {
 
@@ -137,7 +138,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
 		} catch (Exception e) {
 			logger.error("Unable to process payment in.", e);
-			throw new InternalReplicationFault("Unable to process payment in.", FaultCode.GENERIC_EXCEPTION, 
+			throw new InternalReplicationFault("Unable to process payment in.", GENERIC_EXCEPTION,
 				String.format("Unable to process payment in. Willow exception: %s", e.getMessage()));
 		}
 
@@ -251,7 +252,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			return group;
 		} catch (Exception e) {
 			logger.error("Unable to process refund.", e);
-			throw new InternalReplicationFault("Unable to process refund.", FaultCode.GENERIC_EXCEPTION, 
+			throw new InternalReplicationFault("Unable to process refund.", GENERIC_EXCEPTION,
 				String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
 		}
 	}
@@ -289,7 +290,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			return tGroup;
 		} catch (Exception e) {
 			logger.error("Unable to get payment status.", e);
-			throw new InternalReplicationFault("Unable to get payment status.", FaultCode.GENERIC_EXCEPTION, 
+			throw new InternalReplicationFault("Unable to get payment status.", GENERIC_EXCEPTION,
 				String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
 		}
 	}
@@ -326,7 +327,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			return response;
 		} catch (Exception e) {
 			logger.error("Unable to get voucher info.", e);
-			throw new InternalReplicationFault("Unable to get voucher info.", FaultCode.GENERIC_EXCEPTION,
+			throw new InternalReplicationFault("Unable to get voucher info.", GENERIC_EXCEPTION,
 					String.format("Unable to get voucher info. Willow exception: %s", e.getMessage()));
 		}
 	}

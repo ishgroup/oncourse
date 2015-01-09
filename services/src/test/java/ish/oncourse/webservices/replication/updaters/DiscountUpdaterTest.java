@@ -61,6 +61,8 @@ public class DiscountUpdaterTest extends ServiceTest {
         discountStub.setStudentPostcodes("Postcodes");
         discountStub.setValidFrom(Calendar.getInstance().getTime());
         discountStub.setValidTo(Calendar.getInstance().getTime());
+        discountStub.setAvailableOnWeb(true);
+        discountStub.setHideOnWeb(false);
 
 
         TestDiscountUpdater discountUpdater = new TestDiscountUpdater();
