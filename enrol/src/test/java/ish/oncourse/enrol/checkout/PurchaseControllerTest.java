@@ -51,8 +51,8 @@ public class PurchaseControllerTest extends ACheckoutTest {
     @Test
     public void testActionsAndStates() {
         assertEquals(Arrays.asList(
-                enableEnrolment, enableProductItem,
-                disableEnrolment, disableProductItem,
+                enableEnrolment, enableProductItem, enableApplication,
+                disableEnrolment, disableProductItem, disableApplication,
                 setVoucherPrice,
                 startConcessionEditor, addContact, addGuardian),
                 COMMON_ACTIONS);
