@@ -106,7 +106,7 @@ configurations {
 }
 
 dependencies {
-	apiDocs 'ish.oncourse.willow:waCommon:5.1.54:sources'
+	apiDocs 'ish.oncourse.willow:waCommon:5.1.56:sources'
 }
 
 task scriptApiDocs(type: Javadoc) {
