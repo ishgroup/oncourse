@@ -132,6 +132,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 			@Override
 			protected void commitChanges() {
 				purchaseController.setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+				purchaseController.commitApplications();
 				purchaseController.getModel().getObjectContext().commitChanges();
 				super.commitChanges();
 			}

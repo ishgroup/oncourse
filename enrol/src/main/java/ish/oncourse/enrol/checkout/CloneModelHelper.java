@@ -44,6 +44,16 @@ public class CloneModelHelper {
 						actionEnableEnrolment.setEnrolment(enrolment);
 						actionEnableEnrolment.action();
 					}
+					
+					Application application = purchaseController.createApplication(contact.getStudent(), courseClass.getCourse());
+					newModel.addApplication(application);
+					Application oldApplication = oldModel.getApplicationBy(oldContact, oldCourseClass.getCourse());
+					if (oldApplication != null) {
+						ActionEnableApplication actionEnableApplication = new ActionEnableApplication();
+						actionEnableApplication.setController(purchaseController);
+						actionEnableApplication.setApplication(application);
+						actionEnableApplication.action();
+					}
 				}
 			}
 

@@ -33,6 +33,8 @@ import ish.oncourse.util.InvoiceUtils;
 import ish.util.InvoiceUtil;
 import ish.util.ProductUtil;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -280,10 +282,14 @@ public class PurchaseController {
 	}
 
 	Application createApplication(Student student, Course course) {
-		Application application = getModel().getObjectContext().newObject(Application.class);
-		application.setCollege(student.getCollege());
-		application.setStudent(student);
-		application.setCourse(course);
+		// Create all NEW Applications in separate ObjectContext and commit it only when paymentIn is success, 
+		// else (when user make abandon) do not commit  NEW Applications  at all.
+		// We should do this because Applications has no IN_TRANSACTION and FAILED status  
+		ObjectContext context = cayenneService.newContext();
+		Application application = context.newObject(Application.class);
+		application.setCollege(context.localObject(student.getCollege()));
+		application.setStudent(context.localObject(student));
+		application.setCourse(context.localObject(course));
 		application.setStatus(ApplicationStatus.NEW);
 		application.setSource(PaymentSource.SOURCE_WEB);
 		application.setConfirmationStatus(ConfirmationStatus.NOT_SENT);
@@ -819,6 +825,14 @@ public class PurchaseController {
 		
 		for (Application application : getModel().getAllEnabledApplications()) {
 			application.setConfirmationStatus(confirmationStatus);
+		}
+	}
+
+	public void commitApplications() {
+		for (Application application : getModel().getAllEnabledApplications()) {
+			if (PersistenceState.COMMITTED != application.getPersistenceState()) {
+				application.getObjectContext().commitChanges();
+			}
 		}
 	}
 

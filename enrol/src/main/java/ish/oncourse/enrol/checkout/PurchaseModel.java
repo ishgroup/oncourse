@@ -222,7 +222,6 @@ public class PurchaseModel {
 	
 	public void removeApplication(Application application) {
 		getContactNode(application.getStudent().getContact()).removeApplication(application);
-		objectContext.deleteObjects(application);
 	}
 	
     public void enableEnrolment(Enrolment e) {
@@ -345,6 +344,7 @@ public class PurchaseModel {
      * @return contact node structure
      */
     ContactNode getContactNode(Contact c) {
+		c = localizeObject(c);
         ContactNode cn = this.contacts.get(c);
         if (cn != null) {
             return cn;
@@ -520,12 +520,12 @@ public class PurchaseModel {
     }
 	
 	public String setErrorFor(Application application, String error) {
-		ContactNode contactNode = contacts.get(application.getStudent().getContact());
+		ContactNode contactNode = getContactNode(application.getStudent().getContact());
 		return contactNode.setErrorFor(application, error);
 	}
 	
 	public String getErrorBy(Application application) {
-		ContactNode contactNode = contacts.get(application.getStudent().getContact());
+		ContactNode contactNode = getContactNode(application.getStudent().getContact());
 		return contactNode.getErrorBy(application);
 	}
 
