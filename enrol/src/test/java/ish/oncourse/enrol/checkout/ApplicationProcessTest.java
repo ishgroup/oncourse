@@ -55,8 +55,8 @@ public class ApplicationProcessTest extends ACheckoutTest {
 		assertTrue(purchaseController.getModel().getAllDisabledEnrolments().isEmpty());
 		assertTrue(purchaseController.getModel().getAllEnabledEnrolments().isEmpty());
 		assertEquals(1, purchaseController.getModel().getAllEnabledApplications().size());
-		assertEquals(purchaseController.getModel().getClasses().get(0).getCourse(), purchaseController.getModel().getAllEnabledApplications().get(0).getCourse());
-		assertEquals(purchaseController.getModel().getContacts().get(0).getStudent(), purchaseController.getModel().getAllEnabledApplications().get(0).getStudent());
+		assertEquals(purchaseController.getModel().getClasses().get(0).getCourse().getId(), purchaseController.getModel().getAllEnabledApplications().get(0).getCourse().getId());
+		assertEquals(purchaseController.getModel().getContacts().get(0).getStudent().getId(), purchaseController.getModel().getAllEnabledApplications().get(0).getStudent().getId());
 		assertEquals(ApplicationStatus.NEW, purchaseController.getModel().getAllEnabledApplications().get(0).getStatus());
 		
 		//no invoiceLines here
@@ -139,7 +139,7 @@ public class ApplicationProcessTest extends ACheckoutTest {
 		assertFalse(proceedToPayment.action());
 		
 		assertFalse(purchaseController.getErrors().isEmpty());
-		assertNotNull(purchaseController.getErrors().get(noEnabledItemForPurchase.getMessage(purchaseController.getMessages())));
+		assertNotNull(purchaseController.getErrors().get(noEnabledItemForPurchase.name()));
 	}
 	
 	@Test
