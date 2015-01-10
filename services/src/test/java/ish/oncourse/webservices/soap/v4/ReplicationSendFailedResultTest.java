@@ -2,9 +2,7 @@ package ish.oncourse.webservices.soap.v4;
 
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
-import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.util.*;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
@@ -35,10 +33,10 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV4SendResultsStatusFail() throws Exception {
+	public void testV6SendResultsStatusFail() throws Exception {
 		IReplicationService service = getService(IReplicationService.class);
-		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V4);
-		GenericReplicationRecords replicatedRecords = service.getRecords(SupportedVersions.V4);
+		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V6);
+		GenericReplicationRecords replicatedRecords = service.getRecords(SupportedVersions.V6);
 		for (GenericTransactionGroup group : replicatedRecords.getGenericGroups()) {
 			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 				GenericReplicatedRecord confirmedRecord = ReplicationUtils.toReplicatedRecord(stub, true);
@@ -59,10 +57,10 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV5SendResultsStatusFail() throws Exception {
+	public void testV7SendResultsStatusFail() throws Exception {
 		IReplicationService service = getService(IReplicationService.class);
-		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V5);
-		GenericReplicationRecords replicatedRecords = service.getRecords(SupportedVersions.V5);
+		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V7);
+		GenericReplicationRecords replicatedRecords = service.getRecords(SupportedVersions.V7);
 		for (GenericTransactionGroup group : replicatedRecords.getGenericGroups()) {
 			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 				GenericReplicatedRecord confirmedRecord = ReplicationUtils.toReplicatedRecord(stub, true);

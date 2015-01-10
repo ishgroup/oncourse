@@ -43,7 +43,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 
 	@Test
 	public void testV4GetRecordsSuccess() throws Exception {
-		testGetRecordsSuccess(SupportedVersions.V4);
+		testGetRecordsSuccess(SupportedVersions.V6);
 	}
 	
 	private void testGetRecordsSuccess(SupportedVersions version) throws Exception {
@@ -73,7 +73,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV4SendRecordsFailToDelete() throws Exception {
+	public void testV6SendRecordsFailToDelete() throws Exception {
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);		
 		IReplicationService service = getService(IReplicationService.class);
 		ITable actualData = dbUnitConnection.createQueryTable("Contact", "select * from Contact where id=1");
@@ -89,10 +89,10 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		studentDeleteStub.setWillowId(200l);
 		studentDeleteStub.setAngelId(1200l);
 		studentDeleteStub.setEntityIdentifier("Student");
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V6);
 		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactDeleteStub);
 		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(studentDeleteStub);
-		GenericReplicationRecords records = PortHelper.createReplicationRecords(SupportedVersions.V4);
+		GenericReplicationRecords records = PortHelper.createReplicationRecords(SupportedVersions.V6);
 		records.getGenericGroups().add(group);
 		GenericReplicationResult replResult = service.sendRecords(records);
 		
@@ -109,7 +109,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 	}
 
 	@Test
-	public void testV4SendRecordsCreateAndDeleteSucess() throws Exception {
+	public void testV6SendRecordsCreateAndDeleteSuccess() throws Exception {
 
 		IReplicationService service = getService(IReplicationService.class);
 		
@@ -122,7 +122,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		actualData = dbUnitConnection.createQueryTable("CourseClass", "select * from CourseClass where angelId=123");
 		assertEquals("Initially don't have courseClass with angelId.", 0, actualData.getRowCount());
 		
-		GenericReplicationRecords records = PortHelper.createReplicationRecords(SupportedVersions.V4);
+		GenericReplicationRecords records = PortHelper.createReplicationRecords(SupportedVersions.V6);
 
 		ish.oncourse.webservices.v6.stubs.replication.CourseClassStub rootStub = new ish.oncourse.webservices.v6.stubs.replication.CourseClassStub();
 
@@ -139,6 +139,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		rootStub.setCountOfSessions(3);
 		rootStub.setCourseId(1l);
 		rootStub.setRoomId(1l);
+		rootStub.setDistantLearningCourse(false);
 		
 		ish.oncourse.webservices.v6.stubs.replication.DeletedStub contactDeleteStub = new ish.oncourse.webservices.v6.stubs.replication.DeletedStub();
 		contactDeleteStub.setWillowId(1658l);
