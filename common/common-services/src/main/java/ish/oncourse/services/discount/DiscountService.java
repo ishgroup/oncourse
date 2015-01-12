@@ -87,15 +87,7 @@ public class DiscountService implements IDiscountService {
 		SelectQuery query = new SelectQuery(Discount.class, qualifier);
 		@SuppressWarnings("unchecked")
 		List<Discount> result = cayenneService.sharedContext().performQuery(query);
-		
-		List<Discount> caseSensitiveDiscounts = new ArrayList<>();
-		for (Discount discount : result) {
-			if (code.equals(discount.getCode())) {
-				caseSensitiveDiscounts.add(discount);
-			}
-		}
-		
-		return caseSensitiveDiscounts.isEmpty() ? null : caseSensitiveDiscounts.get(0);
+		return result.isEmpty() ? null : result.get(0);
 	}
 
 	private Expression getCurrentCollegeFilter() {
