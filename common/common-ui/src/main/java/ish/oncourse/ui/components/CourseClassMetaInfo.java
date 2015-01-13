@@ -10,7 +10,8 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 
 public class CourseClassMetaInfo {
@@ -24,21 +25,24 @@ public class CourseClassMetaInfo {
 
 	private CourseClass courseClass;
 
-	private static final String DEFAULT_FORMAT= "yyyy-MM-dd'T'HH:mm:ss";
+	private static final String DEFAULT_FORMAT= "yyyy-MM-dd'T'HH:mm:ssZZ";
+	private DateTimeFormatter dtf;
 	
 	@SetupRender
-	public void beforeRender() {		
+	public void beforeRender() {
+		if (StringUtils.trimToNull(format) != null) {
+			dtf = DateTimeFormat.forPattern(format);
+		} else {
+			dtf = DateTimeFormat.forPattern(DEFAULT_FORMAT);
+		}
+		
 		courseClass = (CourseClass) request.getAttribute(CourseClass.class.getSimpleName());
 	}
 	
 	public String getClassStartDateTime() {
 
 		if (courseClass != null && courseClass.getStartDate() != null) {
-			if (StringUtils.trimToNull(format) != null) {
-				return FormatUtils.getDateFormat(format, "UTC").format(courseClass.getStartDate());
-			} else {
-				return FormatUtils.getDateFormat(DEFAULT_FORMAT, "UTC").format(courseClass.getStartDate());
-			}
+			return dtf.print(courseClass.getStartDate().getTime());
 		}
 		return null;
 	}
@@ -46,11 +50,7 @@ public class CourseClassMetaInfo {
 	public String getClassEndDateTime() {
 
 		if (courseClass != null && courseClass.getEndDate() != null) {
-			if (StringUtils.trimToNull(format) != null) {
-				return FormatUtils.getDateFormat(format, "UTC").format(courseClass.getEndDate());
-			} else {
-				return FormatUtils.getDateFormat(DEFAULT_FORMAT, "UTC").format(courseClass.getEndDate());
-			}
+			return dtf.print(courseClass.getStartDate().getTime());
 		}
 		return null;
 	}
