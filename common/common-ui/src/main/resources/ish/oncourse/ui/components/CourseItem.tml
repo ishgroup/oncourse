@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div itemtype="http://schema.org/Product" itemscope="itemscope" class="vevent courseItem">
+	<div itemtype="http://schema.org/Product" itemscope="itemscope" class="vevent courseItem${tagClasses}">
 		<t:if t:test="isList" negate="true">
 			<h1 class="summary page-title">${courseItemModel.course.name}</h1>
 			<t:if t:test="courseItemModel.nrt">

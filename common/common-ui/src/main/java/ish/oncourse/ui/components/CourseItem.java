@@ -4,14 +4,17 @@ import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
 import ish.oncourse.model.Application;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Module;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.ui.utils.CourseItemModel;
 import ish.oncourse.util.ValidationErrors;
@@ -81,6 +84,9 @@ public class CourseItem {
 
 	@Inject
 	private ICookiesService cookiesService;
+	
+	@Inject
+	private ITagService tagService;
 
 	@Property
 	private boolean allowByAplication;
@@ -278,5 +284,15 @@ public class CourseItem {
 		//allowed to enrol because course has OPEN_FOR_ENROLMENT type
 		feeOverride = null;
 		allowByAplication = false;
+	}
+
+	public String getTagClasses() {
+
+		StringBuilder result = new StringBuilder();
+		for (Tag tag : tagService.getTagsForEntity(Course.class.getSimpleName(), courseItemModel.getCourse().getId())) {
+			result.append(String.format(" tag-%s", tag.getName().replaceAll(" ", "_")));
+		}
+
+		return result.toString();
 	}
 }
