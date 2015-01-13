@@ -24,6 +24,8 @@ public class CourseClassMetaInfo {
 
 	private CourseClass courseClass;
 
+	private static final String DEFAULT_FORMAT= "yyyy-MM-dd'T'HH:mm:ss";
+	
 	@SetupRender
 	public void beforeRender() {		
 		courseClass = (CourseClass) request.getAttribute(CourseClass.class.getSimpleName());
@@ -35,7 +37,7 @@ public class CourseClassMetaInfo {
 			if (StringUtils.trimToNull(format) != null) {
 				return FormatUtils.getDateFormat(format, "UTC").format(courseClass.getStartDate());
 			} else {
-				return FormatUtils.convertDateToISO8601(courseClass.getStartDate());
+				return FormatUtils.getDateFormat(DEFAULT_FORMAT, "UTC").format(courseClass.getStartDate());
 			}
 		}
 		return null;
@@ -47,7 +49,7 @@ public class CourseClassMetaInfo {
 			if (StringUtils.trimToNull(format) != null) {
 				return FormatUtils.getDateFormat(format, "UTC").format(courseClass.getEndDate());
 			} else {
-				return FormatUtils.convertDateToISO8601(courseClass.getStartDate());
+				return FormatUtils.getDateFormat(DEFAULT_FORMAT, "UTC").format(courseClass.getEndDate());
 			}
 		}
 		return null;
