@@ -4,6 +4,7 @@
         >
 
 	<div id="waitingListBlock">
+		<h1>Waiting list</h1>
         <t:delegate to="block:editor"/>
 	</div>
 
