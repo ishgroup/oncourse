@@ -10,6 +10,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -31,11 +32,10 @@ public class CourseClassMetaInfo {
 	@SetupRender
 	public void beforeRender() {
 		if (StringUtils.trimToNull(format) != null) {
-			dtf = DateTimeFormat.forPattern(format);
+			dtf = DateTimeFormat.forPattern(format).withZone(DateTimeZone.forTimeZone(courseClass.getClassTimeZone()));
 		} else {
 			dtf = DateTimeFormat.forPattern(DEFAULT_FORMAT);
 		}
-		
 		courseClass = (CourseClass) request.getAttribute(CourseClass.class.getSimpleName());
 	}
 	
