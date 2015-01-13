@@ -34,7 +34,7 @@ public class CourseClassMetaInfo {
 		if (StringUtils.trimToNull(format) != null) {
 			dtf = DateTimeFormat.forPattern(format).withZone(DateTimeZone.forTimeZone(courseClass.getClassTimeZone()));
 		} else {
-			dtf = DateTimeFormat.forPattern(DEFAULT_FORMAT);
+			dtf = DateTimeFormat.forPattern(DEFAULT_FORMAT).withZone(DateTimeZone.forTimeZone(courseClass.getClassTimeZone()));
 		}
 		courseClass = (CourseClass) request.getAttribute(CourseClass.class.getSimpleName());
 	}
