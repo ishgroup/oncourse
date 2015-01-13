@@ -31,12 +31,16 @@ public class CourseClassMetaInfo {
 	
 	@SetupRender
 	public void beforeRender() {
-		if (StringUtils.trimToNull(format) != null) {
-			dtf = DateTimeFormat.forPattern(format).withZone(DateTimeZone.forTimeZone(courseClass.getClassTimeZone()));
-		} else {
-			dtf = DateTimeFormat.forPattern(DEFAULT_FORMAT).withZone(DateTimeZone.forTimeZone(courseClass.getClassTimeZone()));
-		}
+
 		courseClass = (CourseClass) request.getAttribute(CourseClass.class.getSimpleName());
+		
+		if (courseClass != null) {
+			if (StringUtils.trimToNull(format) != null) {
+				dtf = DateTimeFormat.forPattern(format).withZone(DateTimeZone.forTimeZone(courseClass.getClassTimeZone()));
+			} else {
+				dtf = DateTimeFormat.forPattern(DEFAULT_FORMAT).withZone(DateTimeZone.forTimeZone(courseClass.getClassTimeZone()));
+			}
+		}
 	}
 	
 	public String getClassStartDateTime() {
