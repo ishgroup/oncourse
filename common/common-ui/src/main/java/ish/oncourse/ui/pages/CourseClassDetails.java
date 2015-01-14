@@ -1,11 +1,18 @@
 package ish.oncourse.ui.pages;
 
+import ish.common.types.CourseEnrolmentType;
+import ish.math.Money;
+import ish.oncourse.model.Application;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
+import ish.oncourse.services.application.IApplicationService;
+import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidationErrors;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -27,10 +34,22 @@ public class CourseClassDetails {
 	@Inject
 	private Request request;
 
+	@Inject
+	private IApplicationService applicationService;
+
+	@Inject
+	private IContactService contactService;
+	
 	@Property
 	private CourseClass courseClass;
 
 	private List<String> timetableLabels;
+
+	@Property
+	private boolean allowByAplication;
+
+	@Property
+	private Money feeOverride;
 
 	@SetupRender
 	public void beforeRender() {
@@ -41,6 +60,7 @@ public class CourseClassDetails {
 		timetableLabels.add("Time");
 		timetableLabels.add("Where");
         timetableLabels.add("Session Notes");
+		init();
 	}
 
 	public String getCourseDetail() {
@@ -119,5 +139,35 @@ public class CourseClassDetails {
 
 	public String getMetaDescription() {
 		return facebookMetaProvider.getDescriptionContent(courseClass);
+	}
+
+	private void init() {
+		// If course has ENROLMENT_BY_APPLICATION type:
+		// 		-if student specified (find by uniqCode) && student has offered application for this course
+		//				then show 'ENROL NOW' button and show special price - 'feeOverride'
+		//		-else show 'APPLY NOW' button and hide price
+		// Else show classes items as usual
+		if (CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(courseClass.getCourse().getEnrolmentType())) {
+			String uniqCode = StringUtils.trimToNull((String) request.getAttribute(Contact.STUDENT_PROPERTY));
+			if (uniqCode != null) {
+				Contact contact = contactService.findByUniqueCode(uniqCode);
+				if (contact != null && contact.getStudent() != null) {
+					Application application = applicationService.findOfferedApplicationBy(courseClass.getCourse(), contact.getStudent());
+					if (application != null) {
+						//allowed to enrol because user has offered application for this course
+						feeOverride = application.getFeeOverride();
+						allowByAplication = false;
+						return;
+					}
+				}
+			}
+			//is not allowed to enrol because course has ENROLMENT_BY_APPLICATION type && student is unknown
+			feeOverride = null;
+			allowByAplication = true;
+			return;
+		}
+		//allowed to enrol because course has OPEN_FOR_ENROLMENT type
+		feeOverride = null;
+		allowByAplication = false;
 	}
 }

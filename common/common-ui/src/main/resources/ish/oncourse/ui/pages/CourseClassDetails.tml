@@ -16,7 +16,7 @@
 	
 	<div t:type="ui/confirmorderdialog"/>
 
-	<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false"></span>
+	<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false" allowByAplication="allowByAplication" feeOverride="feeOverride"></span>
 	
 	
 	<div class="courseDescription expandable">
