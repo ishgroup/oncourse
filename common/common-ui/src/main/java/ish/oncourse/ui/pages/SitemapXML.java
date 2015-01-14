@@ -5,7 +5,9 @@ import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tutor.ITutorService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -39,6 +41,9 @@ public class SitemapXML {
 
 	@Inject
 	private ITutorService tutorService;
+	
+	@Inject
+	private ITagService tagService;
 
 	@Property
 	private String hostName;
@@ -77,7 +82,19 @@ public class SitemapXML {
 	public void beforeRender() {
 		hostName = request.getServerName();
 		siteModificationDate=setupSiteModificationDate();
-		courses=courseService.getCourses(0, courseService.getCoursesCount());
+
+		String coursesRootTagName = webSiteService.getCurrentWebSite().getCoursesRootTagName();
+		if (StringUtils.trimToNull(coursesRootTagName) != null) {
+			Tag tag = tagService.getTagByFullPath(coursesRootTagName);
+			if (tag != null) {
+				courses=courseService.getCourses(tag, null, false, null);
+			} else {
+				courses=courseService.getCourses(0, courseService.getCoursesCount());
+			}
+		} else {
+			courses=courseService.getCourses(0, courseService.getCoursesCount());
+		}
+		
 		sites = webSiteService.getCurrentCollege().getSites();
 		tutors = tutorService.getTutors();
 		pages = webNodeService.getNodes();
