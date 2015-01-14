@@ -15,6 +15,7 @@ import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -41,7 +42,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
     public static final String REQUEST_ATTR_redirectTo = "redirectTo";
 
 
-    private static final String TUTOR_ID_ATTRIBUTE = "tutorId";
+    private static final String TUTOR_ATTRIBUTE = "tutor";
 	private static final String DIGIT_PATTERN = "\\d+";
 	private static final String CMS_PATH = "/cms";
 	private static final String COURSES_PATH = "/courses";
@@ -112,6 +113,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	@Inject
 	private IWebSiteService webSiteService;
+
+	@Inject
+	private ITutorService tutorService;
 
     @Inject
     private IWebUrlAliasService webUrlAliasService;
@@ -261,7 +265,16 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			break;
 		case Tutor:
 			String tutorId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
-			request.setAttribute(TUTOR_ID_ATTRIBUTE, tutorId);
+			if (tutorId != null && tutorId.length() > 0 && tutorId.matches("\\d+")) {
+				Tutor tutor = tutorService.findByAngelId(Long.valueOf(tutorId));
+				if (tutor == null || !tutorService.isActiveTutor(tutor))
+				{
+					pageIdentifier = PageIdentifier.PageNotFound;
+				}
+				request.setAttribute(TUTOR_ATTRIBUTE, tutor);
+			} else {
+				pageIdentifier = PageIdentifier.PageNotFound;
+			}
 			break;
 		case Sitemap:
 			break;
