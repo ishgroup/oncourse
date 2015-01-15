@@ -5,7 +5,6 @@ goog.require('jquery');
 goog.require('initialise');
 
 
-
 var $j = jQuery.noConflict();
 
 Usi = function () {
@@ -74,7 +73,8 @@ Usi.prototype = {
             success: function (data) {
                 self.data = data;
                 self.showData();
-                if (data.step == 'wait') {
+                //check current view is 'wait' view
+                if ($j('div.progress').length > 0) {
                     self.reloadByTimeout();
                 }
             },

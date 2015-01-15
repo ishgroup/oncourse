@@ -26,10 +26,10 @@ public class PageHeader {
     public String getCiVersion()
     {
         String ciVersion = environmentService.getCiVersion();
-        if (StringUtils.isEmpty(StringUtils.trimToEmpty(ciVersion))) {
+        if (!StringUtils.isEmpty(StringUtils.trimToEmpty(ciVersion))) {
             return "r" + ciVersion;
         } else {
-          return "dvelopment";
+          return "development";
         }
     }
 
