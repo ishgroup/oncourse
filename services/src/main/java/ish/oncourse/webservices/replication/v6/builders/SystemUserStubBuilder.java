@@ -14,7 +14,10 @@ public class SystemUserStubBuilder extends AbstractWillowStubBuilder<SystemUser,
 	@Override
 	protected SystemUserStub createFullStub(SystemUser entity) {
 		SystemUserStub stub = new SystemUserStub();
-		stub.setDefaultAdministrationCentreId(getSiteWillowId(entity));
+		Site defaultAdministrationCentre = entity.getDefaultAdministrationCentre();
+		if (defaultAdministrationCentre != null) {
+			stub.setDefaultAdministrationCentreId(defaultAdministrationCentre.getId());
+		}
 		stub.setEditCMS(entity.getEditCMS());
 		stub.setEditTara(entity.getEditTara());
 		stub.setEmail(entity.getEmail());
@@ -28,18 +31,5 @@ public class SystemUserStubBuilder extends AbstractWillowStubBuilder<SystemUser,
 		stub.setLastLoginOn(entity.getLastLoginOn());
 		stub.setModified(entity.getModified());
 		return stub;
-	}
-	
-	//temporary workaround for properly replication  SystemUsers on angel side:
-	//set Site.willowId instead of angelId.
-	//Currently willow SystemUser entity stores Site.angelId - it is not relationship at all. Will be fixed in future. 
-	private Long getSiteWillowId(SystemUser entity) {
-		SelectQuery query = new SelectQuery(Site.class,
-				ExpressionFactory.matchExp(Site.ANGEL_ID_PROPERTY, entity.getDefaultAdministrationCentreId())
-						.andExp(ExpressionFactory.matchExp(Site.COLLEGE_PROPERTY, entity.getCollege())));
-
-		List<Site> sites = entity.getObjectContext().performQuery(query);
-
-		return sites.isEmpty() || sites.size() > 1 ? null : sites.get(0).getId();
 	}
 }

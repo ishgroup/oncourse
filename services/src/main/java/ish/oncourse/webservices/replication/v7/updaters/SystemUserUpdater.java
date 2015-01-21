@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v7.updaters;
 
+import ish.oncourse.model.Site;
 import ish.oncourse.model.SystemUser;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
@@ -12,7 +13,7 @@ public class SystemUserUpdater extends AbstractWillowUpdater<SystemUserStub, Sys
 	protected void updateEntity(SystemUserStub stub, SystemUser entity, RelationShipCallback callback) {
 		entity.setEditCMS(Boolean.TRUE.equals(stub.isEditCMS()));
 		entity.setEditTara(Boolean.TRUE.equals(stub.isEditTara()));
-		entity.setDefaultAdministrationCentreId(stub.getDefaultAdministrationCentreId());
+		entity.setDefaultAdministrationCentre(callback.updateRelationShip(stub.getDefaultAdministrationCentreId(), Site.class));
 		entity.setEmail(stub.getEmail());
 		entity.setFirstName(StringUtils.trimToNull(stub.getFirstName()) != null ? stub.getFirstName() : StringUtils.EMPTY);
 		entity.setIsActive(Boolean.TRUE.equals(stub.isIsActive()));
