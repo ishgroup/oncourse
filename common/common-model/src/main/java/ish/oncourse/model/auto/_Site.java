@@ -9,6 +9,7 @@ import org.apache.cayenne.CayenneDataObject;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Room;
+import ish.oncourse.model.SystemUser;
 import ish.oncourse.model.WaitingListSite;
 
 /**
@@ -42,6 +43,7 @@ public abstract class _Site extends CayenneDataObject {
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COUNTRY_PROPERTY = "country";
     public static final String ROOMS_PROPERTY = "rooms";
+    public static final String SYSTEM_USERS_PROPERTY = "systemUsers";
     public static final String WAITING_LIST_SITES_PROPERTY = "waitingListSites";
 
     public static final String ID_PK_COLUMN = "id";
@@ -213,6 +215,18 @@ public abstract class _Site extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Room> getRooms() {
         return (List<Room>)readProperty(ROOMS_PROPERTY);
+    }
+
+
+    public void addToSystemUsers(SystemUser obj) {
+        addToManyTarget(SYSTEM_USERS_PROPERTY, obj, true);
+    }
+    public void removeFromSystemUsers(SystemUser obj) {
+        removeToManyTarget(SYSTEM_USERS_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<SystemUser> getSystemUsers() {
+        return (List<SystemUser>)readProperty(SYSTEM_USERS_PROPERTY);
     }
 
 

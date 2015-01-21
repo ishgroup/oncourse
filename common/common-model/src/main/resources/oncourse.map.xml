@@ -2029,7 +2029,6 @@
 	<obj-entity name="SystemUser" className="ish.oncourse.model.SystemUser" dbEntityName="SystemUser">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="defaultAdministrationCentreId" type="java.lang.Long" db-attribute-path="defaultAdministrationCentreId"/>
 		<obj-attribute name="editCMS" type="java.lang.Boolean" db-attribute-path="canEditCMS"/>
 		<obj-attribute name="editTara" type="java.lang.Boolean" db-attribute-path="canEditTara"/>
 		<obj-attribute name="email" type="java.lang.String" db-attribute-path="email"/>
@@ -3089,6 +3088,9 @@
 	<db-relationship name="rooms" source="Site" target="Room" toMany="true">
 		<db-attribute-pair source="id" target="siteId"/>
 	</db-relationship>
+	<db-relationship name="systemUsers" source="Site" target="SystemUser" toMany="true">
+		<db-attribute-pair source="id" target="defaultAdministrationCentreId"/>
+	</db-relationship>
 	<db-relationship name="waitingListSites" source="Site" target="WaitingListSite" toMany="true">
 		<db-attribute-pair source="id" target="siteId"/>
 	</db-relationship>
@@ -3151,6 +3153,9 @@
 	</db-relationship>
 	<db-relationship name="college" source="SystemUser" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site" toMany="false">
+		<db-attribute-pair source="defaultAdministrationCentreId" target="id"/>
 	</db-relationship>
 	<db-relationship name="documentVersions" source="SystemUser" target="DocumentVersion" toMany="true">
 		<db-attribute-pair source="id" target="createdByUserId"/>
@@ -3652,6 +3657,7 @@
 	<obj-relationship name="college" source="Site" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="country" source="Site" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
 	<obj-relationship name="rooms" source="Site" target="Room" deleteRule="Deny" db-relationship-path="rooms"/>
+	<obj-relationship name="systemUsers" source="Site" target="SystemUser" deleteRule="Deny" db-relationship-path="systemUsers"/>
 	<obj-relationship name="waitingListSites" source="Site" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
 	<obj-relationship name="applications" source="Student" target="Application" deleteRule="Deny" db-relationship-path="applications"/>
 	<obj-relationship name="attendances" source="Student" target="Attendance" deleteRule="Cascade" db-relationship-path="attendances"/>
@@ -3673,6 +3679,7 @@
 	<obj-relationship name="college" source="Survey" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="Survey" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="college" source="SystemUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site" deleteRule="Nullify" db-relationship-path="defaultAdministrationCentre"/>
 	<obj-relationship name="documentVersions" source="SystemUser" target="DocumentVersion" deleteRule="Deny" db-relationship-path="documentVersions"/>
 	<obj-relationship name="sitesDeployed" source="SystemUser" target="WebSiteVersion" deleteRule="Deny" db-relationship-path="sitesDeployed"/>
 	<obj-relationship name="college" source="Tag" target="College" deleteRule="Nullify" db-relationship-path="college"/>

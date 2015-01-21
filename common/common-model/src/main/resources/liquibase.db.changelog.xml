@@ -3090,5 +3090,16 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="204" author="artyom" context="production" runOnChange="false">
+		<sql>
+			update SystemUser u set u.defaultAdministrationCentreId = (select id from Site s where s.angelId=u.defaultAdministrationCentreId and s.collegeId=u.collegeId) where u.defaultAdministrationCentreId is not null;
+		</sql>
+	</changeSet>
+
+	<changeSet id="205" author="artyom" context="production" runOnChange="false">
+		<sql>
+			ALTER TABLE SystemUser ADD CONSTRAINT defaultAdministrationCentre FOREIGN KEY (defaultAdministrationCentreId) REFERENCES Site (id) ON DELETE NO ACTION;
+		</sql>
+	</changeSet>
 
 </databaseChangeLog>

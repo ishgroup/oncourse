@@ -7,6 +7,7 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.DocumentVersion;
+import ish.oncourse.model.Site;
 import ish.oncourse.model.WebSiteVersion;
 
 /**
@@ -19,7 +20,6 @@ public abstract class _SystemUser extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
-    public static final String DEFAULT_ADMINISTRATION_CENTRE_ID_PROPERTY = "defaultAdministrationCentreId";
     public static final String EDIT_CMS_PROPERTY = "editCMS";
     public static final String EDIT_TARA_PROPERTY = "editTara";
     public static final String EMAIL_PROPERTY = "email";
@@ -33,6 +33,7 @@ public abstract class _SystemUser extends CayenneDataObject {
     public static final String PASSWORD_PROPERTY = "password";
     public static final String SURNAME_PROPERTY = "surname";
     public static final String COLLEGE_PROPERTY = "college";
+    public static final String DEFAULT_ADMINISTRATION_CENTRE_PROPERTY = "defaultAdministrationCentre";
     public static final String DOCUMENT_VERSIONS_PROPERTY = "documentVersions";
     public static final String SITES_DEPLOYED_PROPERTY = "sitesDeployed";
 
@@ -50,13 +51,6 @@ public abstract class _SystemUser extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty(CREATED_PROPERTY);
-    }
-
-    public void setDefaultAdministrationCentreId(Long defaultAdministrationCentreId) {
-        writeProperty(DEFAULT_ADMINISTRATION_CENTRE_ID_PROPERTY, defaultAdministrationCentreId);
-    }
-    public Long getDefaultAdministrationCentreId() {
-        return (Long)readProperty(DEFAULT_ADMINISTRATION_CENTRE_ID_PROPERTY);
     }
 
     public void setEditCMS(Boolean editCMS) {
@@ -149,6 +143,15 @@ public abstract class _SystemUser extends CayenneDataObject {
 
     public College getCollege() {
         return (College)readProperty(COLLEGE_PROPERTY);
+    }
+
+
+    public void setDefaultAdministrationCentre(Site defaultAdministrationCentre) {
+        setToOneTarget(DEFAULT_ADMINISTRATION_CENTRE_PROPERTY, defaultAdministrationCentre, true);
+    }
+
+    public Site getDefaultAdministrationCentre() {
+        return (Site)readProperty(DEFAULT_ADMINISTRATION_CENTRE_PROPERTY);
     }
 
 
