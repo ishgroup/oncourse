@@ -29,6 +29,7 @@ $j.ajax({
 $j(function() {
 	if($j('.calendar-container').length){
         var cal = $j( '#calendar' ).calendario( {
+            checkUpdate: false,
         caldata : codropsEvents,
 
         onDayClick: function( date, allDay, jsEvent, view ) {
