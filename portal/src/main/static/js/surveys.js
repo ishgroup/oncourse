@@ -6,9 +6,6 @@ goog.require('initialise');
 
 var $j = jQuery.noConflict();
 
-var document = window.document,
-
-
     Survey = function () {
     };
 
