@@ -955,7 +955,6 @@
 		<db-attribute name="canEditTara" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
-		<db-attribute name="defaultAdministrationCentreId" type="BIGINT"/>
 		<db-attribute name="email" type="VARCHAR" length="500"/>
 		<db-attribute name="firstName" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -967,6 +966,7 @@
 		<db-attribute name="login" type="VARCHAR" isMandatory="true" length="20"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="siteId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Tag" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -3089,7 +3089,7 @@
 		<db-attribute-pair source="id" target="siteId"/>
 	</db-relationship>
 	<db-relationship name="systemUsers" source="Site" target="SystemUser" toMany="true">
-		<db-attribute-pair source="id" target="defaultAdministrationCentreId"/>
+		<db-attribute-pair source="id" target="siteId"/>
 	</db-relationship>
 	<db-relationship name="waitingListSites" source="Site" target="WaitingListSite" toMany="true">
 		<db-attribute-pair source="id" target="siteId"/>
@@ -3155,7 +3155,7 @@
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site" toMany="false">
-		<db-attribute-pair source="defaultAdministrationCentreId" target="id"/>
+		<db-attribute-pair source="siteId" target="id"/>
 	</db-relationship>
 	<db-relationship name="documentVersions" source="SystemUser" target="DocumentVersion" toMany="true">
 		<db-attribute-pair source="id" target="createdByUserId"/>

@@ -3091,14 +3091,29 @@
 	</changeSet>
 
 	<changeSet id="204" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+		<not>
+			<columnExists tableName="SystemUser" columnName="siteId"/>
+		</not>
+		</preConditions>
 		<sql>
-			update SystemUser u set u.defaultAdministrationCentreId = (select id from Site s where s.angelId=u.defaultAdministrationCentreId and s.collegeId=u.collegeId) where u.defaultAdministrationCentreId is not null;
+			ALTER TABLE SystemUser ADD COLUMN siteId BIGINT(19)
 		</sql>
 	</changeSet>
 
+	
 	<changeSet id="205" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="SystemUser" columnName="siteId"/>
+		</preConditions>
 		<sql>
-			ALTER TABLE SystemUser ADD CONSTRAINT defaultAdministrationCentre FOREIGN KEY (defaultAdministrationCentreId) REFERENCES Site (id) ON DELETE NO ACTION;
+			update SystemUser u set u.siteId = (select id from Site s where s.angelId=u.defaultAdministrationCentreId and s.collegeId=u.collegeId) where u.defaultAdministrationCentreId is not null;
+		</sql>
+	</changeSet>
+
+	<changeSet id="206" author="artyom" context="production" runOnChange="false">
+		<sql>
+			ALTER TABLE SystemUser ADD CONSTRAINT defaultAdministrationCentre FOREIGN KEY (siteId) REFERENCES Site (id) ON DELETE NO ACTION;
 		</sql>
 	</changeSet>
 
