@@ -12,6 +12,7 @@ import ish.common.types.USIVerificationResult;
 import ish.common.types.USIVerificationStatus;
 import org.apache.log4j.Logger;
 
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.GregorianCalendar;
@@ -34,6 +35,7 @@ public class USIService {
 			GregorianCalendar cal = new GregorianCalendar();
 			cal.setTime(request.getStudentBirthDate());
 			XMLGregorianCalendar xmlBirthDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+			xmlBirthDate.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
 
 			verifyUSI.setFirstName(request.getStudentFirstName());
 			verifyUSI.setFamilyName(request.getStudentLastName());
