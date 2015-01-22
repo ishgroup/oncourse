@@ -543,3 +543,16 @@
 		}
 	}
 }
+
+//hide jquery.calendario.js start and end time for event
+time.fc-allday{
+  display: none;
+}
+
+time.fc-starttime{
+  display: none;
+}
+
+time.fc-endtime{
+  display: none;
+}

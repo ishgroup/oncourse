@@ -1,7 +1,7 @@
 goog.provide('initialise');
 
 goog.require('custom');
-goog.require('placeholderpolyfill');
+goog.require('jquery.placeholder');
 
 
 var $j = jQuery.noConflict();

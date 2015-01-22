@@ -1,13 +1,25 @@
-goog.provide('placeholderpolyfill');
+goog.provide('jquery.placeholder');
 
-/*! http://mths.be/placeholder v2.0.8 by @mathias */
-;(function(window, document, $) {
+function isIE () {
+	var myNav = navigator.userAgent.toLowerCase();
+	return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
+}
+
+/*! http://mths.be/placeholder v2.1.0 by @mathias */
+(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD
+		define(['jquery'], factory);
+	} else {
+		// Browser globals
+		factory(jQuery);
+	}
+}(function($) {
 
 	// Opera Mini v7 doesn’t support placeholder although its DOM seems to indicate so
 	var isOperaMini = Object.prototype.toString.call(window.operamini) == '[object OperaMini]';
 	var isInputSupported = 'placeholder' in document.createElement('input') && !isOperaMini;
 	var isTextareaSupported = 'placeholder' in document.createElement('textarea') && !isOperaMini;
-	var prototype = $.fn;
 	var valHooks = $.valHooks;
 	var propHooks = $.propHooks;
 	var hooks;
@@ -15,7 +27,7 @@ goog.provide('placeholderpolyfill');
 
 	if (isInputSupported && isTextareaSupported) {
 
-		placeholder = prototype.placeholder = function() {
+		placeholder = $.fn.placeholder = function() {
 			return this;
 		};
 
@@ -23,11 +35,17 @@ goog.provide('placeholderpolyfill');
 
 	} else {
 
-		placeholder = prototype.placeholder = function() {
+		var settings = {};
+
+		placeholder = $.fn.placeholder = function(options) {
+
+			var defaults = {customClass: 'placeholder'};
+			settings = $.extend({}, defaults, options);
+
 			var $this = this;
 			$this
 				.filter((isInputSupported ? 'textarea' : ':input') + '[placeholder]')
-				.not('.placeholder')
+				.not('.'+settings.customClass)
 				.bind({
 					'focus.placeholder': clearPlaceholder,
 					'blur.placeholder': setPlaceholder
@@ -62,14 +80,14 @@ goog.provide('placeholderpolyfill');
 				if (!$element.data('placeholder-enabled')) {
 					return element.value = value;
 				}
-				if (value == '') {
+				if (value === '') {
 					element.value = value;
 					// Issue #56: Setting the placeholder causes problems if the element continues to have focus.
 					if (element != safeActiveElement()) {
 						// We can't use `triggerHandler` here because of dummy text/password inputs :(
 						setPlaceholder.call(element);
 					}
-				} else if ($element.hasClass('placeholder')) {
+				} else if ($element.hasClass(settings.customClass)) {
 					clearPlaceholder.call(element, true, value) || (element.value = value);
 				} else {
 					element.value = value;
@@ -92,7 +110,7 @@ goog.provide('placeholderpolyfill');
 			// Look for forms
 			$(document).delegate('form', 'submit.placeholder', function() {
 				// Clear the placeholder values so they don't get submitted
-				var $inputs = $('.placeholder', this).each(clearPlaceholder);
+				var $inputs = $('.'+settings.customClass, this).each(clearPlaceholder);
 				setTimeout(function() {
 					$inputs.each(setPlaceholder);
 				}, 10);
@@ -101,7 +119,7 @@ goog.provide('placeholderpolyfill');
 
 		// Clear placeholder values upon page reload
 		$(window).bind('beforeunload.placeholder', function() {
-			$('.placeholder').each(function() {
+			$('.'+settings.customClass).each(function() {
 				this.value = '';
 			});
 		});
@@ -111,9 +129,8 @@ goog.provide('placeholderpolyfill');
 	function args(elem) {
 		// Return an object of element attributes
 		var newAttrs = {};
-		var rinlinejQuery = /^jQuery\d+$/;
 		$.each(elem.attributes, function(i, attr) {
-			if (attr.specified && !rinlinejQuery.test(attr.name)) {
+			if (attr.specified) {
 				newAttrs[attr.name] = attr.value;
 			}
 		});
@@ -123,9 +140,9 @@ goog.provide('placeholderpolyfill');
 	function clearPlaceholder(event, value) {
 		var input = this;
 		var $input = $(input);
-		if (input.value == $input.attr('placeholder') && $input.hasClass('placeholder')) {
+		if (input.value == $input.attr('placeholder') && $input.hasClass(settings.customClass)) {
 			if ($input.data('placeholder-password')) {
-				$input = $input.hide().next().show().attr('id', $input.removeAttr('id').data('placeholder-id'));
+				$input = $input.hide().nextAll('input[type="password"]:first').show().attr('id', $input.removeAttr('id').data('placeholder-id'));
 				// If `clearPlaceholder` was called from `$.valHooks.input.set`
 				if (event === true) {
 					return $input[0].value = value;
@@ -133,7 +150,7 @@ goog.provide('placeholderpolyfill');
 				$input.focus();
 			} else {
 				input.value = '';
-				$input.removeClass('placeholder');
+				$input.removeClass(settings.customClass);
 				input == safeActiveElement() && input.select();
 			}
 		}
@@ -144,8 +161,8 @@ goog.provide('placeholderpolyfill');
 		var input = this;
 		var $input = $(input);
 		var id = this.id;
-		if (input.value == '') {
-			if (input.type == 'password') {
+		if (input.value === '') {
+			if (input.type === 'password') {
 				if (!$input.data('placeholder-textinput')) {
 					try {
 						$replacement = $input.clone().attr({ 'type': 'text' });
@@ -166,13 +183,13 @@ goog.provide('placeholderpolyfill');
 						})
 						.before($replacement);
 				}
-				$input = $input.removeAttr('id').hide().prev().attr('id', id).show();
+				$input = $input.removeAttr('id').hide().prevAll('input[type="text"]:first').attr('id', id).show();
 				// Note: `$input[0] != input` now!
 			}
-			$input.addClass('placeholder');
+			$input.addClass(settings.customClass);
 			$input[0].value = $input.attr('placeholder');
 		} else {
-			$input.removeClass('placeholder');
+			$input.removeClass(settings.customClass);
 		}
 	}
 
@@ -184,4 +201,4 @@ goog.provide('placeholderpolyfill');
 		} catch (exception) {}
 	}
 
-}(this, document, jQuery));
+}));
