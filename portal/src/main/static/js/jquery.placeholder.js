@@ -1,6 +1,6 @@
 goog.provide('jquery.placeholder');
 
-require('jquery')
+goog.require('jquery')
 
 function isIE () {
 	var myNav = navigator.userAgent.toLowerCase();
