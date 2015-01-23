@@ -383,7 +383,7 @@
         timeZone="timeZone"/>
         
 	<SystemUser angelId="2" canEditCMS="1" canEditTara="0" collegeId="3" id="1" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54"
-	defaultAdministrationCentreId="200" email="test@test.by" firstName="StubTest" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" 
+	siteId="1" email="test@test.by" firstName="StubTest" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" 
 	lastLoginOn="2011-09-20 11:14:54" lastName="StubTest" login="StubTest" password="StubTest"/>
 
     <Tag
