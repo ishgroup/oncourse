@@ -250,6 +250,10 @@ public class Money extends Number implements Comparable<Money> {
 		return compareTo(Money.ZERO) == 0;
 	}
 
+	public boolean isNegative() {
+		return isLessThan(Money.ZERO);
+	}
+
 	public static boolean isZeroOrEmpty(Money value) {
 		return value == null || value.isZero();
 	}
