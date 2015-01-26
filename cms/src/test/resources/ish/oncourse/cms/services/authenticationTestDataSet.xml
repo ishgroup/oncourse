@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	
 	<College id="3" name="College" webServicesSecurityCode="345ttn44$%9" communication_key="111111111111" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
 
+	<Site id="1" collegeId="3" angelId="200" isWebVisible="0" created="2011-09-12 00:17:18.0"
+		  modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
+		  drivingDirections="drivingDirections" drivingDirections_textile="drivingDirections_textile" latitude="1.11"
+		  longitude="1.11" postcode="postcode" publicTransportDirections="publicTransportDirections"
+		  publicTransportDirections_textile="publicTransportDirections_textile" specialInstructions="specialInstructions"
+		  specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="timeZone" isVirtual="0"/>
+	
 	<WillowUser id="1" email="willow@test.test" firstName="Willow" lastName="User" isActive="1" password="willow" collegeId="3"/>
 	<WillowUser id="2" email="super@test.test" firstName="Super" lastName="User" isActive="1" password="super"/>
 
-	<SystemUser angelId="2" canEditCMS="1" canEditTara="0" collegeId="3" id="1" defaultAdministrationCentreId="200" email="test@test.test" firstName="admin" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" lastLoginOn="2011-09-20 11:14:54" lastName="admin" login="test" password="5baa61e4c9b93f3f68225b6cf8331b7ee68fd8"/>
-	<SystemUser angelId="3" canEditCMS="1" canEditTara="0" collegeId="3" id="2" defaultAdministrationCentreId="200" firstName="admin" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" lastLoginOn="2011-09-20 11:14:54" lastName="admin" login="admin" password="PBKDF2WithHmacSHA1:1000:928f3f60385af3f7b222dadf4e2a72e913c7bc94e551dd94:59d33132b65eb6fa39e62f48b4b3aea1ada910117b879fc9"/>
-	<SystemUser angelId="4" canEditCMS="1" canEditTara="0" collegeId="3" id="3" defaultAdministrationCentreId="200" email="dup@dup.dup" firstName="dup" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" lastLoginOn="2011-09-20 11:14:54" lastName="dup1" login="dup1" password="5baa61e4c9b93f3f68225b6cf8331b7ee68fd8"/>
-	<SystemUser angelId="5" canEditCMS="1" canEditTara="0" collegeId="3" id="4" defaultAdministrationCentreId="200" email="dup@dup.dup" firstName="dup" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" lastLoginOn="2011-09-20 11:14:54" lastName="dup2" login="dup2" password="5baa61e4c9b93f3f68225b6cf8331b7ee68fd8"/>
+	<SystemUser angelId="2" canEditCMS="1" canEditTara="0" collegeId="3" id="1" siteId="1" email="test@test.test" firstName="admin" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" lastLoginOn="2011-09-20 11:14:54" lastName="admin" login="test" password="5baa61e4c9b93f3f68225b6cf8331b7ee68fd8"/>
+	<SystemUser angelId="3" canEditCMS="1" canEditTara="0" collegeId="3" id="2" siteId="1" firstName="admin" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" lastLoginOn="2011-09-20 11:14:54" lastName="admin" login="admin" password="PBKDF2WithHmacSHA1:1000:928f3f60385af3f7b222dadf4e2a72e913c7bc94e551dd94:59d33132b65eb6fa39e62f48b4b3aea1ada910117b879fc9"/>
+	<SystemUser angelId="4" canEditCMS="1" canEditTara="0" collegeId="3" id="3" siteId="1" email="dup@dup.dup" firstName="dup" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" lastLoginOn="2011-09-20 11:14:54" lastName="dup1" login="dup1" password="5baa61e4c9b93f3f68225b6cf8331b7ee68fd8"/>
+	<SystemUser angelId="5" canEditCMS="1" canEditTara="0" collegeId="3" id="4" siteId="1" email="dup@dup.dup" firstName="dup" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" lastLoginOn="2011-09-20 11:14:54" lastName="dup2" login="dup2" password="5baa61e4c9b93f3f68225b6cf8331b7ee68fd8"/>
 </dataset>
