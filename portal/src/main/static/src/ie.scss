@@ -4,28 +4,32 @@
  *   <link href="/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
  * <![endif]--> */
 
-.fc-calendar .fc-row>div, .fc-calendar .fc-head>div {
-  width: 14.28%;
-}
+// we need apply this style adjustment only for IE and anly when we show the calendar in table table view
+@media screen and (min-width: 900px)
+{
+  .fc-calendar .fc-row>div, .fc-calendar .fc-head>div {
+    width: 14.28% !important;
+  }
 
-.fc-calendar .fc-row>div {
-  border-left: 1px solid #B0AE99;
-}
+  .fc-calendar .fc-row>div {
+    border-left: 1px solid #B0AE99;
+  }
 
-.fc-calendar .fc-row>div:first-child {
-  border-left: 0;
-}
+  .fc-calendar .fc-row>div:first-child {
+    border-left: 0;
+  }
 
-.fc-calendar .fc-row {
-  border-top: 1px solid #B0AE99;
-}
+  .fc-calendar .fc-row {
+    border-top: 1px solid #B0AE99;
+  }
 
-.fc-calendar .fc-row:first-child {
-  border-top: 0;
-}
+  .fc-calendar .fc-row:first-child {
+    border-top: 0;
+  }
 
-.fc-calendar .fc-body {
-  background: #FEFBE8;
+  .fc-calendar .fc-body {
+    background: #FEFBE8;
+  }
 }
 
 input[type="radio"] {

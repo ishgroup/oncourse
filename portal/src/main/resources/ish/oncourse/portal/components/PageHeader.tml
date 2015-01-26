@@ -1,5 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
+    <t:remove>The meta is used to say IE10-11 to support conditional comments like  [if IE] </t:remove>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9"/>
+
 	<meta http-equiv="Cache-control" content="no-cache"/>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
