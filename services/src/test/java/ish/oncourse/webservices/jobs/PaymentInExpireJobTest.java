@@ -103,6 +103,8 @@ public class PaymentInExpireJobTest extends ServiceTest {
 
 		assertEquals("Payment has failed.", PaymentStatus.FAILED, p.getStatus());
 
+		objectContext = cayenneService.newContext();
+
 		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 2000);
 		assertEquals("Enrolment has failed.", EnrolmentStatus.FAILED, enrolment.getStatus());
 
