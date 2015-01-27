@@ -1,9 +1,9 @@
 package ish.oncourse.services.tag;
 
-import java.util.List;
-
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
+
+import java.util.List;
 
 /**
  * Service for manipulations with {@link Tag} entities.
@@ -107,4 +107,6 @@ public interface ITagService {
 	 * @param mailingList
 	 */
 	void unsubscribeContactFromMailingList(Contact contact, Tag mailingList);
+
+	boolean isContactSubscribedToMailingList(Contact contact, Tag mailingList);
 }

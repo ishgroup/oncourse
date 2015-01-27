@@ -1,17 +1,8 @@
 package ish.oncourse.portal.pages;
 
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.InputStream;
-import java.util.Collections;
-
-import javax.sql.DataSource;
-
 import ish.oncourse.portal.service.TestModule;
-import ish.oncourse.portal.services.AppModule;
 import ish.oncourse.test.ServiceTest;
-
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.test.PageTester;
@@ -22,6 +13,12 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.util.Collections;
+
+import static org.junit.Assert.assertNotNull;
 
 public class UnsubscribeTest extends ServiceTest {
 	

@@ -236,6 +236,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	}
 	
 	public void subscribeContactToMailingList(Contact contact, Tag mailingList) {
+		if (isContactSubscribedToMailingList(contact, mailingList))
+			return;
 		ObjectContext context = getCayenneService().newContext();
 		
 		Date date = new Date();
@@ -262,23 +264,50 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	
 	public void unsubscribeContactFromMailingList(Contact contact, Tag mailingList) {
 		ObjectContext context = getCayenneService().newContext();
-		College college = (College) context.localObject(contact.getCollege().getObjectId(), null);
-		
-		Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
-				.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()))
-				.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, college))
-				.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, mailingList));
-		SelectQuery query = new SelectQuery(Taggable.class, qual);
-		@SuppressWarnings("unchecked")
-		List<Taggable> taggables = context.performQuery(query);
-		
-		for (Taggable t : new ArrayList<>(taggables)) {
-			for (final TaggableTag tt : new ArrayList<>(t.getTaggableTags())) {
-				context.deleteObject(tt);
-				context.deleteObject(t);
-			}
+
+		TaggablesSupporter supporter = new TaggablesSupporter(context);
+		List<Taggable> taggables = supporter.load(contact, mailingList);
+		supporter.delete(taggables);
+	}
+
+	@Override
+	public boolean isContactSubscribedToMailingList(Contact contact, Tag mailingList) {
+		ObjectContext context = getCayenneService().newContext();
+		TaggablesSupporter supporter = new TaggablesSupporter(context);
+		List<Taggable> taggables = supporter.load(contact, mailingList);
+		return taggables.size() > 0;
+	}
+
+	private class TaggablesSupporter
+	{
+		private ObjectContext context;
+
+		private TaggablesSupporter(ObjectContext context) {
+			this.context = context;
 		}
-		
-		context.commitChanges();
+
+		public List<Taggable> load(Contact contact, Tag mailingList)
+		{
+			contact = context.localObject(contact);
+			mailingList = context.localObject(mailingList);
+
+			Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
+					.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()))
+					.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, contact.getCollege()))
+					.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, mailingList));
+			SelectQuery query = new SelectQuery(Taggable.class, qual);
+			return context.performQuery(query);
+		}
+
+		public void delete(List<Taggable> taggables)
+		{
+			for (Taggable t : new ArrayList<>(taggables)) {
+				for (final TaggableTag tt : new ArrayList<>(t.getTaggableTags())) {
+					context.deleteObject(tt);
+				}
+				context.deleteObjects(t);
+			}
+			context.commitChanges();
+		}
 	}
 }
