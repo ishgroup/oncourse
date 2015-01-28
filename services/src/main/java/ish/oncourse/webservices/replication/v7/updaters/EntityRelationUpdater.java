@@ -28,7 +28,7 @@ public class EntityRelationUpdater extends AbstractWillowUpdater<EntityRelationS
 		EntityRelationType fromType = TypesUtil.getEnumForDatabaseValue(stub.getFromEntityIdentifier(), EntityRelationType.class);
 		entity.setFromEntityIdentifier(fromType);
 		entity.setFromEntityWillowId(callback.updateRelationShip(stub.getFromEntityAngelId(), ENTITY_CLASS_MAPPING.get(fromType)).getId());
-		EntityRelationType toType = TypesUtil.getEnumForDatabaseValue(stub.getFromEntityIdentifier(), EntityRelationType.class);
+		EntityRelationType toType = TypesUtil.getEnumForDatabaseValue(stub.getToEntityIdentifier(), EntityRelationType.class);
 		entity.setToEntityIdentifier(toType);
 		entity.setToEntityWillowId(callback.updateRelationShip(stub.getToEntityAngelId(), ENTITY_CLASS_MAPPING.get(toType)).getId());
 	}

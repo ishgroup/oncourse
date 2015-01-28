@@ -69,7 +69,7 @@ private Map<String, IWillowUpdater> updaterMap;
         updaterMap.put(getEntityName(Survey.class), new SurveyUpdater());
         updaterMap.put(getEntityName(SessionModule.class), new SessionModuleUpdater());
         updaterMap.put(getEntityName(EntityRelation.class), new EntityRelationUpdater());
-        updaterMap.put(getEntityName(CourseCourseRelation.class), new CourseCourseRelationUpdater());
+        updaterMap.put(getEntityName(CourseCourseRelation.class), new CourseProductRelationUpdater());
         updaterMap.put(getEntityName(CourseProductRelation.class), new EntityRelationUpdater());
         updaterMap.put(getEntityName(CorporatePass.class), new CorporatePassUpdater());
         updaterMap.put(getEntityName(CorporatePassCourseClass.class), new CorporatePassCourseClassUpdater());
