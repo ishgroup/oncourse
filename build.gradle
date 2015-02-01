@@ -12,7 +12,7 @@ buildscript {
 	dependencies {
 		classpath 'org.apache.cayenne:cayenne-tools:3.1'
 		classpath 'au.com.ish.gradle:release:2.2.2'
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.5'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.7'
 		classpath 'org.gradle.plugins:gradle-compass:1.0.10'
 		classpath 'com.eriwen:gradle-js-plugin:1.12.1'
 	}
@@ -75,7 +75,7 @@ allprojects {
 	dependencies {
 		testCompile 'junit:junit:4.12'
 		testCompile 'dbunit:dbunit:2.4.8'
-		testCompile 'org.mockito:mockito-core:1.10.17'
+		testCompile 'org.mockito:mockito-core:1.10.19'
 
 		compile 'log4j:log4j:1.2.17'
 
