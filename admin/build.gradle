@@ -1,5 +1,4 @@
 apply plugin: 'war'
-apply plugin: 'compass'
 
 dependencies {
 	providedCompile 'javax.servlet:servlet-api:2.5'
@@ -50,4 +49,4 @@ processResources.inputs.files gzipJs
 processResources.inputs.files gzipCss
 
 clean.dependsOn cleanMinifyJs
-clean.dependsOn cleanCompileSass
+clean.dependsOn cleanCompassCompile
