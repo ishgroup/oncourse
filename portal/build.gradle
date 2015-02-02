@@ -45,4 +45,4 @@ processResources.inputs.files gzipJs
 processResources.inputs.files gzipCss
 
 clean.dependsOn cleanMinifyJs
-clean.dependsOn cleanCompassCompile
+clean.dependsOn cleanCompileSass
