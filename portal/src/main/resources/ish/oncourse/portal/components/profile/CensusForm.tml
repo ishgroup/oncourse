@@ -22,7 +22,7 @@
         <div id="usiControl" class="form-group">
             <label for="usi" class="control-label">Unique Student Identifier (USI)</label>
             <div class="input-group">
-                <input type="text" id="usi" name="usi" class="form-control"/>
+                <input type="text" id="usi" name="usi" class="form-control" maxlength="10"/>
                 <span id="usiStatus" class="input-group-addon">verified</span>
             </div>
             <div id="usiStatusMessage" class="bs-callout hide"></div>

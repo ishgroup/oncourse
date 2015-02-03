@@ -42,6 +42,10 @@ public class Step1FailedHandler extends Step1Handler{
 
         handleRequiredValue(getUsiController().getContact(), Contact.GIVEN_NAME_PROPERTY);
         handleRequiredValue(getUsiController().getContact(), Contact.FAMILY_NAME_PROPERTY);
+
+        if (this.inputValues.containsKey(Student.USI_PROPERTY)) {
+            handleRequiredValue(getUsiController().getContact().getStudent(), Student.USI_PROPERTY);
+        }
         return this;
     }
 }
