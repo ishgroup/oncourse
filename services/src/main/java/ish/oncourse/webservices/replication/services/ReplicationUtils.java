@@ -69,6 +69,11 @@ public class ReplicationUtils {
 			StubUtils.setSuccessStatus(replV8Record);
 			replV8Record.setStub(toV8Hollow(stub, setWillowId));
 			return replV8Record;
+		case V9:
+			ish.oncourse.webservices.v9.stubs.replication.ReplicatedRecord replV9Record = new ish.oncourse.webservices.v9.stubs.replication.ReplicatedRecord();
+			StubUtils.setSuccessStatus(replV9Record);
+			replV9Record.setStub(toV9Hollow(stub, setWillowId));
+			return replV9Record;
 		default:
 			return null;
 		}
@@ -103,6 +108,12 @@ public class ReplicationUtils {
 		return hollowStub;
 	}
 
+	public static ish.oncourse.webservices.v9.stubs.replication.HollowStub toV9Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
+		ish.oncourse.webservices.v9.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v9.stubs.replication.HollowStub();
+		fillHollowStub(stub, hollowStub, setWillowId);
+		return hollowStub;
+	}
+	
 	private static GenericPaymentInStub getPaymentInStub(final GenericTransactionGroup group) {
 		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {

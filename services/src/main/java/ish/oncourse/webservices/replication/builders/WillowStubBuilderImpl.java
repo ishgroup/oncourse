@@ -6,6 +6,7 @@ import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.replication.v6.builders.V6BuildersMap;
 import ish.oncourse.webservices.replication.v7.builders.V7BuildersMap;
 import ish.oncourse.webservices.replication.v8.builders.V8BuildersMap;
+import ish.oncourse.webservices.replication.v9.builders.V9BuildersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.SupportedVersions;
 
@@ -17,6 +18,7 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 	private Map<String, IWillowStubBuilder> v6builderMap = new HashMap<>();
 	private Map<String, IWillowStubBuilder> v7builderMap = new HashMap<>();
 	private Map<String, IWillowStubBuilder> v8builderMap = new HashMap<>();
+	private Map<String, IWillowStubBuilder> v9builderMap = new HashMap<>();
 
 	public WillowStubBuilderImpl() {
 		final V6BuildersMap v6map = new V6BuildersMap();
@@ -28,6 +30,9 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 		V8BuildersMap v8map = new V8BuildersMap();
 		v8map.initMap();
 		v8builderMap = v8map.getBuilderMap();
+		V9BuildersMap v9map = new V9BuildersMap();
+		v9map.initMap();
+		v9builderMap = v9map.getBuilderMap();
     }
 
 	@Override
@@ -44,6 +49,9 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 				break;
 			case V8:
 				builder = v8builderMap.get(key);
+				break;
+			case V9:
+				builder = v9builderMap.get(key);
 				break;
 			default:
 				builder = null;
@@ -72,6 +80,9 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 				break;
 			case V8:
 				builder = v8builderMap.get(key);
+				break;
+			case V9:
+				builder = v9builderMap.get(key);
 				break;
 			default:
 				builder = null;
