@@ -106,7 +106,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	}
 
 	protected SupportedVersions getSupportedVersion() {
-		return SupportedVersions.V8;
+		return SupportedVersions.V9;
 	}
 
 	protected TransactionGroup castGenericTransactionGroup(GenericTransactionGroup transaction) {
