@@ -15,14 +15,13 @@ CensusForm.prototype = {
         var self = this;
         this.loadData();
         $j('.form-control[name=usi]').blur(function () {
-            var oldUsi = $j.grep(self.data.values, function(obj) {
+            var oldUsi = $j.grep(self.data.values, function (obj) {
                 return obj.key === "usi";
             })[0].value;
             var newUsi = $j('.form-control[name=usi]').val();
             if (self.data.values['usiStatus'] != 'VERIFIED' &&
                 (self.data.step == 'step1' || self.data.step == 'step1Failed') &&
-                oldUsi != newUsi)
-            {
+                oldUsi != newUsi) {
                 self.verifyUsi();
                 self.reloadByTimeout();
             }
@@ -93,6 +92,9 @@ CensusForm.prototype = {
         if (this.data.step == 'wait') {
             $j('.form-control[name=usi]').attr('disabled', true);
             self.reloadByTimeout();
+        }
+        else {
+            $j('.form-control[name=usi]').attr('disabled', false);
         }
     },
 
