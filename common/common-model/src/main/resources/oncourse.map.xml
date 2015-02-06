@@ -127,6 +127,7 @@
 		<db-attribute name="requiresCredentialCheck" type="BIT"/>
 	</db-entity>
 	<db-entity name="Contact" catalog="willow_college">
+		<db-attribute name="abn" type="VARCHAR" length="50"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="businessPhoneNumber" type="VARCHAR" length="32"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -146,6 +147,7 @@
 		<db-attribute name="isMarketingViaPostAllowed" type="BIT"/>
 		<db-attribute name="isMarketingViaSMSAllowed" type="BIT"/>
 		<db-attribute name="lastLoginTime" type="TIMESTAMP"/>
+		<db-attribute name="middleName" type="VARCHAR" length="128"/>
 		<db-attribute name="mobilePhoneNumber" type="VARCHAR" length="32"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="password" type="VARCHAR" length="16"/>
@@ -1327,6 +1329,7 @@
 		<obj-attribute name="requiresCredentialCheck" type="java.lang.Boolean" db-attribute-path="requiresCredentialCheck"/>
 	</obj-entity>
 	<obj-entity name="Contact" className="ish.oncourse.model.Contact" dbEntityName="Contact">
+		<obj-attribute name="abn" type="java.lang.String" db-attribute-path="abn"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="businessPhoneNumber" type="java.lang.String" db-attribute-path="businessPhoneNumber"/>
 		<obj-attribute name="cookieHash" type="java.lang.String" db-attribute-path="cookieHash"/>
@@ -1343,6 +1346,7 @@
 		<obj-attribute name="isMarketingViaPostAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaPostAllowed"/>
 		<obj-attribute name="isMarketingViaSMSAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaSMSAllowed"/>
 		<obj-attribute name="lastLoginTime" type="java.util.Date" db-attribute-path="lastLoginTime"/>
+		<obj-attribute name="middleName" type="java.lang.String" db-attribute-path="middleName"/>
 		<obj-attribute name="mobilePhoneNumber" type="java.lang.String" db-attribute-path="mobilePhoneNumber"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>

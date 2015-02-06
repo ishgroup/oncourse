@@ -28,6 +28,7 @@ import ish.oncourse.model.Tutor;
  */
 public abstract class _Contact extends CayenneDataObject {
 
+    public static final String ABN_PROPERTY = "abn";
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String BUSINESS_PHONE_NUMBER_PROPERTY = "businessPhoneNumber";
     public static final String COOKIE_HASH_PROPERTY = "cookieHash";
@@ -44,6 +45,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String IS_MARKETING_VIA_POST_ALLOWED_PROPERTY = "isMarketingViaPostAllowed";
     public static final String IS_MARKETING_VIA_SMSALLOWED_PROPERTY = "isMarketingViaSMSAllowed";
     public static final String LAST_LOGIN_TIME_PROPERTY = "lastLoginTime";
+    public static final String MIDDLE_NAME_PROPERTY = "middleName";
     public static final String MOBILE_PHONE_NUMBER_PROPERTY = "mobilePhoneNumber";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String PASSWORD_PROPERTY = "password";
@@ -73,6 +75,13 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String TUTOR_PROPERTY = "tutor";
 
     public static final String ID_PK_COLUMN = "id";
+
+    public void setAbn(String abn) {
+        writeProperty(ABN_PROPERTY, abn);
+    }
+    public String getAbn() {
+        return (String)readProperty(ABN_PROPERTY);
+    }
 
     public void setAngelId(Long angelId) {
         writeProperty(ANGEL_ID_PROPERTY, angelId);
@@ -184,6 +193,13 @@ public abstract class _Contact extends CayenneDataObject {
     }
     public Date getLastLoginTime() {
         return (Date)readProperty(LAST_LOGIN_TIME_PROPERTY);
+    }
+
+    public void setMiddleName(String middleName) {
+        writeProperty(MIDDLE_NAME_PROPERTY, middleName);
+    }
+    public String getMiddleName() {
+        return (String)readProperty(MIDDLE_NAME_PROPERTY);
     }
 
     public void setMobilePhoneNumber(String mobilePhoneNumber) {

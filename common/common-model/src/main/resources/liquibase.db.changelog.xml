@@ -3117,4 +3117,15 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="207" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Contact" columnName="middleName"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Contact ADD COLUMN middleName VARCHAR(128), ADD COLUMN abn VARCHAR(50);
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
