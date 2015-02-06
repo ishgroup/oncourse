@@ -3,9 +3,6 @@ package ish.oncourse.webservices.soap.v9;
 import ish.oncourse.webservices.soap.StubPopulator;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferenceService;
-import ish.oncourse.webservices.soap.v9.PaymentPortType;
-import ish.oncourse.webservices.soap.v9.ReplicationPortType;
-import ish.oncourse.webservices.soap.v9.ReplicationService;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
 import ish.oncourse.webservices.v9.stubs.replication.ReplicationStub;
@@ -174,7 +171,7 @@ public abstract class AbstractTransportTest {
 		return referencePortType;
 	}
 	
-	protected ish.oncourse.webservices.soap.v9.PaymentPortType getPaymentPortType(String wsdlPath, String endpointPath) throws JAXBException {
+	protected PaymentPortType getPaymentPortType(String wsdlPath, String endpointPath) throws JAXBException {
 		ReplicationService replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource(wsdlPath));
 		PaymentPortType paymentPortType = replicationService.getPaymentPortType();
 		initPortType((BindingProvider) paymentPortType, endpointPath);
