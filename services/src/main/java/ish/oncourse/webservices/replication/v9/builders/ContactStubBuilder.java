@@ -44,6 +44,8 @@ public class ContactStubBuilder extends
 			stub.setTutorId(entity.getTutor().getId());
 		}
 		stub.setTaxFileNumber(entity.getTaxFileNumber());
+		stub.setMiddleName(entity.getMiddleName());
+		stub.setAbn(entity.getAbn());
 		return stub;
 	}
 }
