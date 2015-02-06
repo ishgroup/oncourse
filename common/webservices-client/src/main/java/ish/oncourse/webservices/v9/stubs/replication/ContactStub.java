@@ -45,6 +45,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="uniqueCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="tutorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="middleName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="abn" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -79,7 +81,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "taxFileNumber",
     "uniqueCode",
     "studentId",
-    "tutorId"
+    "tutorId",
+    "middleName",
+    "abn"
 })
 public class ContactStub
     extends ReplicationStub
@@ -153,6 +157,10 @@ public class ContactStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long tutorId;
+    @XmlElement(required = true)
+    protected String middleName;
+    @XmlElement(required = true)
+    protected String abn;
 
     /**
      * Gets the value of the businessPhoneNumber property.
@@ -752,6 +760,54 @@ public class ContactStub
      */
     public void setTutorId(Long value) {
         this.tutorId = value;
+    }
+
+    /**
+     * Gets the value of the middleName property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    /**
+     * Sets the value of the middleName property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMiddleName(String value) {
+        this.middleName = value;
+    }
+
+    /**
+     * Gets the value of the abn property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAbn() {
+        return abn;
+    }
+
+    /**
+     * Sets the value of the abn property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAbn(String value) {
+        this.abn = value;
     }
 
 }

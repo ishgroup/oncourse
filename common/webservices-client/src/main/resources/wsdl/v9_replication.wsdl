@@ -428,6 +428,8 @@
 							<xs:element name="uniqueCode" type="xs:string" />
 							<xs:element name="studentId" type="xs:long" />
 							<xs:element name="tutorId" type="xs:long" />
+							<xs:element name="middleName" type="xs:string" />
+							<xs:element name="abn" type="xs:string" />
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
