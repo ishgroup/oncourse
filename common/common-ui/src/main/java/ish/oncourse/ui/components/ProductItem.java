@@ -75,7 +75,7 @@ public class ProductItem {
 	}
 
 	public String getDetailText() {
-		String detail = textileConverter.convertCustomTextile(product.getDescription(), new ValidationErrors());
+		String detail = textileConverter.convertCustomTextile(textileConverter.convertCoreTextile(product.getDescription()), new ValidationErrors());
 		if (detail == null) {
 			return StringUtils.EMPTY;
 		}
