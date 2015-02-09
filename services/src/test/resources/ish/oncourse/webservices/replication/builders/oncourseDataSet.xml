@@ -95,9 +95,11 @@
              dateOfBirth="1952-10-07"
              emailAddress="putin@kremlin.ru"
              familyName="StubTest"
+			 middleName="StubTest"
              givenName="StubTest"
              faxNumber="1234-567"
-             suburb="Moscow"/>
+             suburb="Moscow"
+			 abn="1234554321"/>
 
     <Attendance id="1" angelId="2" attendanceType="1" collegeId="3" sessionId="1" studentId="1" markerId="1"
                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0" note="Note1" durationMinutes="100"/>

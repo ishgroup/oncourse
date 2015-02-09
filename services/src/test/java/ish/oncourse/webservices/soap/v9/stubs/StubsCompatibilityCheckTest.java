@@ -123,6 +123,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		contactParameters.add(new ReplicationStubFieldParameter("uniqueCode", String.class));
 		contactParameters.add(new ReplicationStubFieldParameter("studentId", Long.class));
 		contactParameters.add(new ReplicationStubFieldParameter("tutorId", Long.class));
+		contactParameters.add(new ReplicationStubFieldParameter("middleName", String.class));
+		contactParameters.add(new ReplicationStubFieldParameter("abn", String.class));
 		stubsPropertyMap.put(getStubName(ContactStub.class), contactParameters);
 
 		List<ReplicationStubFieldParameter> courseClassParameters = fillDefaultReplicationStubFields();
