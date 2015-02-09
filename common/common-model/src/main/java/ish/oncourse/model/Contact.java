@@ -58,17 +58,20 @@ public class Contact extends _Contact implements Queueable {
 
 		} else {
 			String givenName = getGivenName();
+			String middleName = getMiddleName();
 			if (givenName != null) {
 				buff.append(givenName);
+				buff.append(" ");
+			}
+			if (middleName != null) {
+				buff.append(middleName);
+				buff.append(" ");
 			}
 			if (familyName != null) {
-				if (buff.length() > 0) {
-					buff.append(" ");
-				}
 				buff.append(familyName);
 			}
 		}
-		return buff.toString();
+		return buff.toString().trim();
 	}
 
 	private String getEntityName() {
