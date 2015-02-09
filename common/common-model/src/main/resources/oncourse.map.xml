@@ -424,6 +424,18 @@
 		<db-attribute name="timestamp" type="TIMESTAMP"/>
 		<db-attribute name="versionId" type="VARCHAR" length="256"/>
 	</db-entity>
+	<db-entity name="EmailTemplate">
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="bodyHtml" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="bodyPlain" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="entity" type="VARCHAR" length="128"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="subject" type="LONGVARCHAR" length="16777215"/>
+	</db-entity>
 	<db-entity name="Enrolment" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -829,6 +841,21 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="siteId" type="BIGINT" length="19"/>
+	</db-entity>
+	<db-entity name="Script">
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="entityClass" type="VARCHAR" length="128"/>
+		<db-attribute name="entityEventType" type="INTEGER"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="result" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="schedule" type="VARCHAR" length="512"/>
+		<db-attribute name="script" type="LONGVARCHAR" isMandatory="true" length="16777215"/>
+		<db-attribute name="triggerType" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Session" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -1568,6 +1595,16 @@
 		<obj-attribute name="timestamp" type="java.util.Date" db-attribute-path="timestamp"/>
 		<obj-attribute name="versionId" type="java.lang.String" db-attribute-path="versionId"/>
 	</obj-entity>
+	<obj-entity name="EmailTemplate" className="ish.oncourse.model.EmailTemplate" dbEntityName="EmailTemplate">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="bodyHtml" type="java.lang.String" db-attribute-path="bodyHtml"/>
+		<obj-attribute name="bodyPlain" type="java.lang.String" db-attribute-path="bodyPlain"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="subject" type="java.lang.String" db-attribute-path="subject"/>
+	</obj-entity>
 	<obj-entity name="Enrolment" className="ish.oncourse.model.Enrolment" dbEntityName="Enrolment">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
@@ -1934,6 +1971,19 @@
 		<obj-attribute name="facilitiesTextile" type="java.lang.String" db-attribute-path="facilities_textile"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+	</obj-entity>
+	<obj-entity name="Script" className="ish.oncourse.model.Script" dbEntityName="Script">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
+		<obj-attribute name="entityClass" type="java.lang.String" db-attribute-path="entityClass"/>
+		<obj-attribute name="entityEventType" type="ish.common.types.EntityEvent" db-attribute-path="entityEventType"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="result" type="java.lang.String" db-attribute-path="result"/>
+		<obj-attribute name="schedule" type="java.lang.String" db-attribute-path="schedule"/>
+		<obj-attribute name="script" type="java.lang.String" db-attribute-path="script"/>
+		<obj-attribute name="triggerType" type="ish.common.types.TriggerType" db-attribute-path="triggerType"/>
 	</obj-entity>
 	<obj-entity name="Session" className="ish.oncourse.model.Session" dbEntityName="Session">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -2375,6 +2425,9 @@
 	<db-relationship name="documents" source="College" target="Document" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="emailTemplates" source="College" target="EmailTemplate" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="enrolments" source="College" target="Enrolment" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -2442,6 +2495,9 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="rooms" source="College" target="Room" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="scripts" source="College" target="Script" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="sessionModules" source="College" target="SessionModule" toMany="true">
@@ -2780,6 +2836,9 @@
 	<db-relationship name="document" source="DocumentVersion" target="Document" toMany="false">
 		<db-attribute-pair source="documentId" target="id"/>
 	</db-relationship>
+	<db-relationship name="college" source="EmailTemplate" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="Enrolment" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -3043,6 +3102,9 @@
 	</db-relationship>
 	<db-relationship name="site" source="Room" target="Site" toMany="false">
 		<db-attribute-pair source="siteId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="Script" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="attendances" source="Session" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="sessionId"/>
@@ -3438,6 +3500,7 @@
 	<obj-relationship name="discountMembershipRelationTypes" source="College" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="discountMembershipRelationTypes"/>
 	<obj-relationship name="discountMemberships" source="College" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discountMemberships"/>
 	<obj-relationship name="discounts" source="College" target="Discount" deleteRule="Deny" db-relationship-path="discounts"/>
+	<obj-relationship name="emailTemplates" source="College" target="EmailTemplate" deleteRule="Deny" db-relationship-path="emailTemplates"/>
 	<obj-relationship name="enrolments" source="College" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="instructions" source="College" target="Instruction" deleteRule="Deny" db-relationship-path="instructions"/>
 	<obj-relationship name="invoiceLineDiscounts" source="College" target="InvoiceLineDiscount" deleteRule="Deny" db-relationship-path="invoiceLineDiscounts"/>
@@ -3459,6 +3522,7 @@
 	<obj-relationship name="queuedRecords" source="College" target="QueuedRecord" deleteRule="Deny" db-relationship-path="queuedRecords"/>
 	<obj-relationship name="queuedTransactions" source="College" target="QueuedTransaction" deleteRule="Deny" db-relationship-path="queuedTransactions"/>
 	<obj-relationship name="rooms" source="College" target="Room" deleteRule="Deny" db-relationship-path="rooms"/>
+	<obj-relationship name="scripts" source="College" target="Script" deleteRule="Deny" db-relationship-path="scripts"/>
 	<obj-relationship name="sessionTutors" source="College" target="SessionTutor" deleteRule="Deny" db-relationship-path="sessionTutors"/>
 	<obj-relationship name="sessions" source="College" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="sites" source="College" target="Site" deleteRule="Deny" db-relationship-path="sites"/>
@@ -3565,6 +3629,7 @@
 	<obj-relationship name="college" source="DocumentVersion" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="createdByUser" source="DocumentVersion" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
 	<obj-relationship name="document" source="DocumentVersion" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
+	<obj-relationship name="college" source="EmailTemplate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="invoiceLines" source="Enrolment" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLines"/>
@@ -3645,6 +3710,7 @@
 	<obj-relationship name="courseClasses" source="Room" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="sessions" source="Room" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="site" source="Room" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
+	<obj-relationship name="college" source="Script" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="attendances" source="Session" target="Attendance" deleteRule="Cascade" db-relationship-path="attendances"/>
 	<obj-relationship name="college" source="Session" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Session" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>

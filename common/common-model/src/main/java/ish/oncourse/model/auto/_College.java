@@ -24,6 +24,7 @@ import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.DiscountMembership;
 import ish.oncourse.model.DiscountMembershipRelationType;
+import ish.oncourse.model.EmailTemplate;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Instruction;
 import ish.oncourse.model.Invoice;
@@ -46,6 +47,7 @@ import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.model.Room;
+import ish.oncourse.model.Script;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.Site;
@@ -110,6 +112,7 @@ public abstract class _College extends CayenneDataObject {
     public static final String DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY = "discountMembershipRelationTypes";
     public static final String DISCOUNT_MEMBERSHIPS_PROPERTY = "discountMemberships";
     public static final String DISCOUNTS_PROPERTY = "discounts";
+    public static final String EMAIL_TEMPLATES_PROPERTY = "emailTemplates";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
     public static final String INSTRUCTIONS_PROPERTY = "instructions";
     public static final String INVOICE_LINE_DISCOUNTS_PROPERTY = "invoiceLineDiscounts";
@@ -131,6 +134,7 @@ public abstract class _College extends CayenneDataObject {
     public static final String QUEUED_RECORDS_PROPERTY = "queuedRecords";
     public static final String QUEUED_TRANSACTIONS_PROPERTY = "queuedTransactions";
     public static final String ROOMS_PROPERTY = "rooms";
+    public static final String SCRIPTS_PROPERTY = "scripts";
     public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
     public static final String SESSIONS_PROPERTY = "sessions";
     public static final String SITES_PROPERTY = "sites";
@@ -522,6 +526,18 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
+    public void addToEmailTemplates(EmailTemplate obj) {
+        addToManyTarget(EMAIL_TEMPLATES_PROPERTY, obj, true);
+    }
+    public void removeFromEmailTemplates(EmailTemplate obj) {
+        removeToManyTarget(EMAIL_TEMPLATES_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<EmailTemplate> getEmailTemplates() {
+        return (List<EmailTemplate>)readProperty(EMAIL_TEMPLATES_PROPERTY);
+    }
+
+
     public void addToEnrolments(Enrolment obj) {
         addToManyTarget(ENROLMENTS_PROPERTY, obj, true);
     }
@@ -771,6 +787,18 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Room> getRooms() {
         return (List<Room>)readProperty(ROOMS_PROPERTY);
+    }
+
+
+    public void addToScripts(Script obj) {
+        addToManyTarget(SCRIPTS_PROPERTY, obj, true);
+    }
+    public void removeFromScripts(Script obj) {
+        removeToManyTarget(SCRIPTS_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Script> getScripts() {
+        return (List<Script>)readProperty(SCRIPTS_PROPERTY);
     }
 
 

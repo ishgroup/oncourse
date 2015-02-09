@@ -3128,4 +3128,92 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="208" author="artyom" context="production" runOnChange="false">
+
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="Script"/>
+			</not>
+		</preConditions>
+		
+		<createTable tableName="Script">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="angelId" type="BIGINT"/>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="enabled" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="entityClass" type="VARCHAR(128)"/>
+			<column name="entityEventType" type="INTEGER"/>
+			<column name="name" type="VARCHAR(128)">
+				<constraints nullable="false" unique="true"/>
+			</column>
+			<column name="result" type="TEXT"/>
+			<column name="schedule" type="VARCHAR(512)"/>
+			<column name="script" type="TEXT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="triggerType" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint baseTableName="Script" baseColumnNames="collegeId"
+								 constraintName="fk_Script_College"
+								 referencedTableName="College" referencedColumnNames="id"/>
+
+		<createIndex tableName="Script" indexName="Script_name">
+			<column name="name"/>
+		</createIndex>
+		<createIndex tableName="Script" indexName="Script_angelId">
+			<column name="angelId"/>
+		</createIndex>
+		
+	</changeSet>
+	
+	<changeSet id="209" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="EmailTemplate"/>
+			</not>
+		</preConditions>
+	
+		<createTable tableName="EmailTemplate">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="angelId" type="BIGINT"/>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="name" type="VARCHAR(128)">
+				<constraints nullable="false" unique="true"/>
+			</column>
+			<column name="bodyPlain" type="TEXT"/>
+			<column name="bodyHtml" type="TEXT"/>
+			<column name="subject" type="TEXT"/>
+			<column name="entity" type="VARCHAR(128)"/>
+		</createTable>
+		
+		<addForeignKeyConstraint baseTableName="EmailTemplate" baseColumnNames="collegeId"
+								 constraintName="fk_EmailTemplate_College"
+								 referencedTableName="College" referencedColumnNames="id"/>
+
+		<createIndex tableName="EmailTemplate" indexName="EmailTemplate_name">
+			<column name="name"/>
+		</createIndex>
+		<createIndex tableName="EmailTemplate" indexName="EmailTemplate_angelId">
+			<column name="angelId"/>
+		</createIndex>
+	</changeSet>
+
 </databaseChangeLog>
