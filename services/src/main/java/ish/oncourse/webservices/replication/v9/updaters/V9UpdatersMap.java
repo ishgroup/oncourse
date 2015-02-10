@@ -80,6 +80,8 @@ private Map<String, IWillowUpdater> updaterMap;
 		updaterMap.put(getEntityName(CustomFieldType.class), new CustomFieldTypeUpdater());
 		updaterMap.put(getEntityName(CustomField.class), new CustomFieldUpdater());
 		updaterMap.put(getEntityName(Application.class), new ApplicationUpdater());
+		updaterMap.put(getEntityName(EmailTemplate.class), new EmailTemplateUpdater());
+		updaterMap.put(getEntityName(Script.class), new ScriptUpdater());
     }
 
 	/**
