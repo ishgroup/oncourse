@@ -21,7 +21,7 @@ public class ScriptStubBuilder extends AbstractWillowStubBuilder<Script, ScriptS
 		stub.setScript(entity.getScript());
 		stub.setTriggerType(entity.getTriggerType().getDatabaseValue());
 		if (entity.getEntityEventType() != null) {
-			stub.setTriggerType(entity.getEntityEventType().getDatabaseValue());
+			stub.setEntityEventType(entity.getEntityEventType().getDatabaseValue());
 		}
 		return stub;
 	}
