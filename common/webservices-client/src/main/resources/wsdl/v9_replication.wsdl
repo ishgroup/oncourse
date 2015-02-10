@@ -78,6 +78,8 @@
 			<xs:element name="documentVersion" type="tns:documentVersionStub"/>
 			<xs:element name="customFieldType" type="tns:customFieldTypeStub"/>
 			<xs:element name="customField" type="tns:customFieldStub"/>
+			<xs:element name="script" type="tns:scriptStub"/>
+			<xs:element name="emailTemplate" type="tns:emailTemplateStub"/>
 			<xs:element name="hollow" type="tns:hollowStub" />
 			<xs:element name="deleted" type="tns:deletedStub" />
 			<xs:element name="confirmExecution" type="tns:confirmExecution" />
@@ -1355,6 +1357,37 @@
 							<xs:element name="customFieldTypeId" type="xs:long"/>
 							<xs:element name="foreignId" type="xs:long"/>
 							<xs:element name="value" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="scriptStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="schedule" type="xs:string"/>
+							<xs:element name="enabled" type="xs:boolean"/>
+							<xs:element name="entityClass" type="xs:string"/>
+							<xs:element name="entityEventType" type="xs:int"/>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="result" type="xs:string"/>
+							<xs:element name="script" type="xs:string"/>
+							<xs:element name="triggerType" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="emailTemplateStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="bodyHtml" type="xs:string"/>
+							<xs:element name="bodyPlain" type="xs:string"/>
+							<xs:element name="entity" type="xs:string"/>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="subject" type="xs:string"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
