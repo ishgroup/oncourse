@@ -2,7 +2,7 @@ dependencies {
     compile (project(':common:common-services')) {
         exclude group: 'axis'
     }
-    compile ('ish.oncourse.willow:waCommon:5.1.60') {
+    compile ('ish.oncourse.willow:waCommon:5.1.61') {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
