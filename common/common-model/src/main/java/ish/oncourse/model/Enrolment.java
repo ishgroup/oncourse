@@ -73,7 +73,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 	protected void onPrePersist() {
 		onPostAdd();
 	}
-	
+
 	/**
 	 * Convenience method getting an attendance for a given session and student
 	 * 
@@ -188,8 +188,8 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 				}
 				break;
 			case IN_TRANSACTION:
-				// TODO: status NEW should be included in this test after task 17341 will be done
-				if (status == null || /** EnrolmentStatus.NEW.equals(status) ||**/ EnrolmentStatus.QUEUED.equals(status)) {
+				// IN_TRANSACTION can be replaced to NEW in web enrolment when the enrolment is being marked as disabled.
+				if (status == null || EnrolmentStatus.QUEUED.equals(status)) {
 					throw new IllegalArgumentException(String.format(
 						"Can't set the %s status for enrolment with %s status and id= %s and angelid= %s!",
 							status, getStatus(), getId(), getAngelId()));

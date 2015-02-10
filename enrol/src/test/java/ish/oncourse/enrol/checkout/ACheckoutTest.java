@@ -173,7 +173,22 @@ public abstract class ACheckoutTest extends ServiceTest {
         addContact(contact);
     }
 
-	void proceedToPayment() {
+    Contact addPayer(long contactId) {
+        Contact newPayer = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, contactId);
+        PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addPersonPayer);
+        performAction(actionParameter);
+
+        ContactCredentials credential =  purchaseController.getAddContactDelegate().getContactCredentials();
+        credential.setEmail(newPayer.getEmailAddress());
+        credential.setFirstName(newPayer.getGivenName());
+        credential.setLastName(newPayer.getFamilyName());
+
+        purchaseController.getAddContactDelegate().addContact();
+        return newPayer;
+    }
+
+
+    void proceedToPayment() {
         assertNull(purchaseController.getPaymentEditorDelegate());
 		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
 		param.setValue(purchaseController.getModel().getPayment());

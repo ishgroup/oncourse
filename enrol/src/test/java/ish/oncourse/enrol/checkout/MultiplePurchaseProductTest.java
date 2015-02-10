@@ -5,10 +5,12 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.ProductType;
 import ish.math.Money;
-import ish.oncourse.model.*;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.Product;
+import ish.oncourse.model.ProductItem;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.cayenne.Cayenne;
-
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.junit.Before;
@@ -16,10 +18,8 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
-import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class MultiplePurchaseProductTest extends ACheckoutTest {
 
@@ -227,17 +227,7 @@ public class MultiplePurchaseProductTest extends ACheckoutTest {
 		proceedToPayment();
 
 		//add a different payer on Payment page
-		Contact newPayer = Cayenne.objectForPK(model.getObjectContext(), Contact.class, 1189158);
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addPersonPayer);
-		performAction(actionParameter);
-
-		ContactCredentials credential =  purchaseController.getAddContactDelegate().getContactCredentials();
-		credential.setEmail(newPayer.getEmailAddress());
-		credential.setFirstName(newPayer.getGivenName());
-		credential.setLastName(newPayer.getFamilyName());
-
-		purchaseController.getAddContactDelegate().addContact();
-
+		Contact newPayer = addPayer(1189158);
 
 		//added Voucher for payer
 		assertEquals(1, model.getEnabledProductItems(newPayer).size());
@@ -248,7 +238,7 @@ public class MultiplePurchaseProductTest extends ACheckoutTest {
 		assertTrue(voucherExp.filterObjects(model.getAllProductItems(oldPayer)).isEmpty());
 	}
 
-	private Product disableProductItem(Long productId, Contact contact) {
+    private Product disableProductItem(Long productId, Contact contact) {
 
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.disableProductItem);
 		Product disabledProduct1 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Product.class, productId);

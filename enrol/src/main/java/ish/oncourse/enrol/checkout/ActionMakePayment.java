@@ -43,6 +43,7 @@ public class ActionMakePayment extends APurchaseAction {
 			throw new IllegalArgumentException();
 
 		adjustSortOrder();
+        getModel().deleteDisabledItems();
 		getModel().getObjectContext().commitChanges();
 	}
 
