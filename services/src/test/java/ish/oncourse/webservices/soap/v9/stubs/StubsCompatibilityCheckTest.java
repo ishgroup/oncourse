@@ -573,6 +573,25 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		applicationParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		stubsPropertyMap.put(getStubName(ApplicationStub.class), applicationParameters);
 
+		List<ReplicationStubFieldParameter> scriptParameters = fillDefaultReplicationStubFields();
+		scriptParameters.add(new ReplicationStubFieldParameter("schedule", String.class));
+		scriptParameters.add(new ReplicationStubFieldParameter("enabled", Boolean.class));
+		scriptParameters.add(new ReplicationStubFieldParameter("entityClass", String.class));
+		scriptParameters.add(new ReplicationStubFieldParameter("entityEventType", Integer.class));
+		scriptParameters.add(new ReplicationStubFieldParameter("name", String.class));
+		scriptParameters.add(new ReplicationStubFieldParameter("result", String.class));
+		scriptParameters.add(new ReplicationStubFieldParameter("script", String.class));
+		scriptParameters.add(new ReplicationStubFieldParameter("triggerType", Integer.class));
+		stubsPropertyMap.put(getStubName(ScriptStub.class), scriptParameters);
+
+		List<ReplicationStubFieldParameter> emailTemplateParameters = fillDefaultReplicationStubFields();
+		emailTemplateParameters.add(new ReplicationStubFieldParameter("bodyHtml", String.class));
+		emailTemplateParameters.add(new ReplicationStubFieldParameter("bodyPlain", String.class));
+		emailTemplateParameters.add(new ReplicationStubFieldParameter("entity", String.class));
+		emailTemplateParameters.add(new ReplicationStubFieldParameter("name", String.class));
+		emailTemplateParameters.add(new ReplicationStubFieldParameter("subject", String.class));
+		stubsPropertyMap.put(getStubName(EmailTemplateStub.class), emailTemplateParameters);
+
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParameters = fillDefaultReplicationStubFields();
 		stubsPropertyMap.put(getStubName(ReplicationStub.class), replicationStubParameters);
@@ -912,6 +931,18 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 
+	@Test
+	public void testScriptStub() {
+		GenericReplicationStub stub = new ScriptStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testEmailTemplateStub() {
+		GenericReplicationStub stub = new EmailTemplateStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
 	@Test
 	public void testTransactionGroup() {
 		final GenericTransactionGroup group = new TransactionGroup();

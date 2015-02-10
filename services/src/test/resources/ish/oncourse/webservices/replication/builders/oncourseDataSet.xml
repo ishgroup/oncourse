@@ -520,4 +520,29 @@
 
 	<Application id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
 			studentId="1" courseId="1" source="W" status="1" enrolBy="2014-10-24 13:17:54" feeOverride="666" reason="test" confirmationStatus="1"/>
+
+
+	<Script id="1" angelId="1" collegeId="3" name="send_voucher" enabled="1" triggerType="2" entityClass="Voucher" entityEventType="4" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" result="OK" schedule="0 0 9 ? * MON"
+			script="def run(args) {&#xA;
+	def voucher = args.entity&#xA;
+
+	if (voucher.status == ProductStatus.ACTIVE &amp;&amp; voucher.confirmationStatus == ConfirmationStatus.NOT_SENT) {&#xA;
+		def m = Email.create(&quot;Voucher Email&quot;)&#xA;
+		m.bind(voucher: voucher)&#xA;
+
+		if (voucher.redeemableBy) {&#xA;
+			m.to(voucher.redeemableBy)&#xA;
+		} else {&#xA;
+			m.to(voucher.invoiceLine.invoice.contact)&#xA;
+		}&#xA;
+
+		m.send()&#xA;
+
+		voucher.setConfirmationStatus(ConfirmationStatus.SENT)&#xA;
+		args.context.commitChanges()&#xA;
+	}&#xA;
+	}"/>
+
+	<EmailTemplate id="1" angelId="1" collegeId="3" name="Voucher Email" subject="Voucher" bodyPlain="test" bodyHtml="test" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" entity="Application"/>
+	
 </dataset>

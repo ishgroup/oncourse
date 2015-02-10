@@ -253,4 +253,14 @@ public class AllV9StubBuildersTest extends AbstractAllStubBuildersTest {
 	public void testApplicationStubBuilder() {
 		this.testStubBuilder(Application.class, new ApplicationStubBuilder(), 1L);
 	}
+	
+	@Test
+	public void testScriptStubBuilder() {
+		this.testStubBuilder(Script.class, new ScriptStubBuilder());
+	}
+	
+	@Test
+	public void testEmailTemplateStubBuilder() {
+		this.testStubBuilder(EmailTemplate.class, new EmailTemplateStubBuilred());
+	}
 }

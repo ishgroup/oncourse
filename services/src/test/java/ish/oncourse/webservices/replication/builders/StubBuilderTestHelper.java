@@ -193,10 +193,17 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
             if (propertyName.equals(Application.CONFIRMATION_STATUS_PROPERTY)) {
                 return ((Application) entity).getConfirmationStatus().getDatabaseValue();
             }
-        }
+        } else if (entity instanceof Script) {
+			if (propertyName.equals(Script.ENTITY_EVENT_TYPE_PROPERTY)) {
+				return ((Script) entity).getEntityEventType().getDatabaseValue();
+			}
+			if (propertyName.equals(Script.TRIGGER_TYPE_PROPERTY)) {
+				return ((Script) entity).getTriggerType().getDatabaseValue();
+			}
+		}
 
 
-        if (propertyName.equals("willowId")) {
+			if (propertyName.equals("willowId")) {
             return entity.getId();
         }
 
