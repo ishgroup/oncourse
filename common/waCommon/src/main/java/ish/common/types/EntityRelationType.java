@@ -12,11 +12,13 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum EntityRelationType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 1
 	 * @PublicApi
 	 */
 	COURSE(1, "Course"),
 
 	/**
+	 * Database value: 2
 	 * @PublicApi
 	 */
 	PRODUCT(2, "Product");

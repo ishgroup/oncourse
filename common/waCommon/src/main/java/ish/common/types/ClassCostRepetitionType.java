@@ -7,42 +7,49 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * Some class costs can be repeated multiple times for the one class.
+ * Some class costs can be repeated multiple times for the one class. If these repetitions are attached
+ * to a payroll amount, then these repeating payroll entries will be created.
  * 
  * @PublicApi
  */
 public enum ClassCostRepetitionType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * a fixed amount
+	 * A fixed amount. For payroll, the amount will be paid once the first session has been delivered.
+	 * Database value: 1
 	 * 
 	 * @PublicApi
 	 */
 	FIXED(1, "Fixed", "", ""),
  
 	/**
-	 * This cost is incurred for every session (such as room hire).
+	 * This cost is a fixed amount per session. This is common for room hire where the amount doesn't depend on the duration of the session.
+	 * Database value: 2
 	 * 
 	 * @PublicApi
 	 */
 	PER_SESSION(2, "Per session", "sessions", "session"),
 
 	/**
-	 * A cost per enrolment (like class materials)
+	 * A cost per enrolment (like class materials).
+	 * Database value: 3
 	 * 
 	 * @PublicApi
 	 */
 	PER_ENROLMENT(3, "Per enrolment", "enrolments", "enrolment"),
  
 	/**
-	 * Any quantity you like. For example, you can budget for 4 hours of cleaning at the end of a class.
+	 * This is just like the fixed amount but with a multiplier again an arbitrary number of units.
+	 * Database value: 4
 	 * 
 	 * @PublicApi
 	 */
 	PER_UNIT(4, "Per unit", "hrs", "hr"),
  
 	/**
-	 * Discounts are a special type.
+	 * Discounts are a special type. You can't directly create these sorts of costs, but they are automatically
+	 * created for you when you attach a discount to a class.
+	 * Database value: 5
 	 * 
 	 * @PublicApi
 	 */
@@ -50,14 +57,14 @@ public enum ClassCostRepetitionType implements DisplayableExtendedEnumeration<In
 
 	/**
 	 * Total session duration. For wages, this amount is the payable session hours, not the actual hours.
-	 * 
+	 * Database value: 6
 	 * @PublicApi
 	 */
 	PER_TIMETABLED_HOUR(6, "Per timetabled hour", "hrs", "hr"), // using date session
 
 	/**
 	 * Timetabled hours multiplied by the number of enrolments
-	 * 
+	 * Database value: 6
 	 * @PublicApi
 	 */
 	PER_STUDENT_CONTACT_HOUR(7, "Per student contact hour", "hrs", "hr");

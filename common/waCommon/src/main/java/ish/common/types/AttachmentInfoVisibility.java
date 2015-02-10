@@ -13,12 +13,17 @@ public enum AttachmentInfoVisibility implements DisplayableExtendedEnumeration<I
 	 * This attachment is only visible in the onCourse application.
 	 * Links to the attachment will be creating using a special time-limited and securely signed URL.
 	 * 
+	 * Database value: 0
+	 * 
 	 * @PublicApi
 	 */
 	PRIVATE(0, "Private"),
 
 	/**
 	 * Everyone can see this attachment, including on the public facing website.
+	 * 
+	 * Database value: 1
+	 * 
 	 * @PublicApi
 	 */
 	PUBLIC(1, "Public"),
@@ -29,6 +34,8 @@ public enum AttachmentInfoVisibility implements DisplayableExtendedEnumeration<I
 	 * visibility type for attachments to courses and classes.
 	 * 
 	 * URLs to these attachments are time-limited and securely signed.
+	 * 
+	 * Database value: 2
 	 * 
 	 * @PublicApi
 	 */
@@ -41,6 +48,8 @@ public enum AttachmentInfoVisibility implements DisplayableExtendedEnumeration<I
 	 *
 	 * URLs to these attachments are time-limited and securely signed.
 	 *
+	 * Database value: 3
+	 * 
 	 * @PublicApi
 	 */
 	TUTORS(3, "Tutors only");

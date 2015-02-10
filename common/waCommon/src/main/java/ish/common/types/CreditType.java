@@ -11,11 +11,13 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum CreditType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 0
 	 * @PublicApi
 	 */
 	NO_CREDIT_RPL_WAS_OFFERED(0, "No credit/RPL was offered", "No credit/RPL was offered"),
 
 	/**
+	 * Database value: 100
 	 * @PublicApi
 	 */
 	CREDIT_RPL_FOR_PRIOR_HIGHER_EDUCATION_STUDY_ONLY(100,
@@ -23,12 +25,14 @@ public enum CreditType implements DisplayableExtendedEnumeration<Integer> {
 			"Credit/RPL was offered for prior higher education study only"),
 
 	/**
+	 * Database value: 200
 	 * @PublicApi
 	 */
 	CREDIT_RPL_FOR_PRIOR_VET_STUDY_ONLY(200, "Credit/RPL was offered for prior VET study only",
 		"Credit/RPL was offered for prior VET study only"),
 
 	/**
+	 * Database value: 300
 	 * @PublicApi
 	 */
 	CREDIT_RPL_FOR_COMBINATION_OF_PRIOR_HIGHER_EDUCATION_AND_VET_STUDY(300,
@@ -36,6 +40,7 @@ public enum CreditType implements DisplayableExtendedEnumeration<Integer> {
 			"Credit/RPL was offered for a combination of prior higher education and VET study"),
 
 	/**
+	 * Database value: 400
 	 * @PublicApi
 	 */
 	CREDIT_RPL_FOR_STUDY_OUTSIDE_AUSTRALIA(400,
@@ -43,6 +48,7 @@ public enum CreditType implements DisplayableExtendedEnumeration<Integer> {
 			"Credit/RPL was offered for study undertaken at an education provider outside Australia"),
 
 	/**
+	 * Database value: 500
 	 * @PublicApi
 	 */
 	CREDIT_RPL_FOR_WORK_EXPERIENCE(500,
@@ -50,6 +56,7 @@ public enum CreditType implements DisplayableExtendedEnumeration<Integer> {
 			"Credit/RPL was offered for work experience undertaken inside or outside Australia"),
 
 	/**
+	 * Database value: 600
 	 * @PublicApi
 	 */
 	OTHER(600, "Other", "Other");

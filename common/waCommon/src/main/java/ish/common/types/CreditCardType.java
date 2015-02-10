@@ -14,11 +14,13 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum CreditCardType implements DisplayableExtendedEnumeration<String> {
 	// JCB("J", "JCB"),
 	/**
+	 * Database value: V
 	 * @PublicApi
 	 */
 	VISA("V", "VISA"),
 
 	/**
+	 * Database value: M
 	 * @PublicApi
 	 */
 	MASTERCARD("M", "Mastercard"),
@@ -26,9 +28,9 @@ public enum CreditCardType implements DisplayableExtendedEnumeration<String> {
 
 	@Deprecated
 	BANKCARD("B", "Bankcard"),
-	// DINNERS("D", "Dinners Club"),
 
 	/**
+	 * Database value: A
 	 * @PublicApi
 	 */
 	AMEX("A", "Amex");

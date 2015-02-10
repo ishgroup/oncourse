@@ -11,16 +11,19 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum VoucherPaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 0
 	 * @PublicApi
 	 */
 	APPROVED(0, "Approved"),
 	
 	/**
+	 * Database value: 1
 	 * @PublicApi
 	 */
 	BUSY(1, "Busy"),
 
 	/**
+	 * Database value: 2
 	 * @PublicApi
 	 */
 	INCONSISTENT(2, "Inconsistent");

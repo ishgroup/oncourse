@@ -11,40 +11,47 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum CreditProviderType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 0
 	 * @PublicApi
 	 */
 	NO_CREDIT_RPL_WAS_OFFERED_FOR_VET(0, "No credit/RPL was offered for VET",
 		"No credit/RPL was offered for VET"),
 
 	/**
+	 * Database value: 10
 	 * @PublicApi
 	 */
 	UNIVERSITY(10, "University", "University"),
 
 	/**
+	 * Database value: 19
 	 * @PublicApi
 	 */
 	OTHER_HIGHER_EDUCATION_PROVIDER(19, "Other Higher Education Provider",
 		"Other Higher Education Provider"),
 
 	/**
+	 * Database value: 20
 	 * @PublicApi
 	 */
 	TAFE(20, "TAFE", "TAFE"),
 
 	/**
+	 * Database value: 21
 	 * @PublicApi
 	 */
 	SECONDARY_SCHOOLS_OR_COLLEGES(21, "Secondary Schools/Colleges",
 		"Secondary Schools/Colleges"),
 
 	/**
+	 * Database value: 29
 	 * @PublicApi
 	 */
 	OTHER_REGISTERED_TRAINING_ORGANIZATIONS(29, "Other Registered Training Organisations",
 		"Other Registered Training Organisations"),
 	
 	/**
+	 * Database value: 90
 	 * @PublicApi
 	 */
 	NOT_ELSEWHERE_CATEGORIZED(90, "Not elsewhere categorised",

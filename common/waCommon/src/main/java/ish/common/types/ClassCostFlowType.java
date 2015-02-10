@@ -16,6 +16,7 @@ public enum ClassCostFlowType implements DisplayableExtendedEnumeration<Integer>
 	/**
 	 * A regular expense in the budget, other than wages.
 	 * 
+	 * Database value: 0
 	 * @PublicApi
 	 */
 	EXPENSE(0, "Expense/Cost"),
@@ -23,6 +24,7 @@ public enum ClassCostFlowType implements DisplayableExtendedEnumeration<Integer>
 	/**
 	 * Additional funding other than class fees.
 	 * 
+	 * Database value: 1
 	 * @PublicApi
 	 */
 	INCOME(1, "Income/Funding"),
@@ -30,6 +32,7 @@ public enum ClassCostFlowType implements DisplayableExtendedEnumeration<Integer>
 	/**
 	 * Money paid to tutors which will appear on the payroll export.
 	 * 
+	 * Database value: 2
 	 * @PublicApi
 	 */
 	WAGES(2, "Wages"),
@@ -37,6 +40,7 @@ public enum ClassCostFlowType implements DisplayableExtendedEnumeration<Integer>
 	/**
 	 * Discounts expected to be offered. 
 	 * 
+	 * Database value: 3
 	 * @PublicApi
 	 */
 	DISCOUNT(3, "Discount");

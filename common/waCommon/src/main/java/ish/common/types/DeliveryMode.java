@@ -44,12 +44,6 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 */
 	NA(9, "Not applicable - recognition of prior learning/credit transfer (90)", 90),
 
-	// for some reason existing codes 10, 20, 30, 40, 90 were mapped to 1, 2, 3, 4, 9 into db
-	// therefore making most of the WA codes unavailable for mapping
-	//
-	// so now actual DeliveryMode code is defined in separate field
-	// and should be obtained using {@link DeliveryMode#getCode}
-
 	/**
 	 * @PublicApi
 	 */

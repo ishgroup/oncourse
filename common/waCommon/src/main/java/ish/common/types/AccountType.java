@@ -17,27 +17,33 @@ import java.util.List;
 public enum AccountType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 1
 	 * @PublicApi
 	 */
 	ASSET(1, "asset"),
 
 	/**
+	 * Database value: 2
 	 * @PublicApi
 	 */
 	LIABILITY(2, "liability"),
 
 	/**
+	 * Database value: 3
 	 * @PublicApi
 	 */
 	EQUITY(3, "equity"),
 
 	/**
+	 * Database value: 4
 	 * @PublicApi
 	 */
 	INCOME(4, "income"),
 
 	/**
-	 * This is just a type of expense.
+	 * Database value: 5
+	 * 
+	 * COS is a type of expense.
 	 * @PublicApi
 	 */
 	COS(5, "COS"),

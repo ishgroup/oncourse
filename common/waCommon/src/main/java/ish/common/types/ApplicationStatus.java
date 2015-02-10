@@ -16,26 +16,31 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 0
 	 * @PublicApi
 	 */
 	NEW(0, "New"),
 
 	/**
+	 * Database value: 1
 	 * @PublicApi
 	 */
 	OFFERED(1, "Offered"),
 
 	/**
+	 * Database value: 2
 	 * @PublicApi
 	 */
 	ACCEPTED(2, "Accepted"),
 
 	/**
+	 * Database value: 3
 	 * @PublicApi
 	 */
 	REJECTED(3, "Rejected"),
 
 	/**
+	 * Database value: 4
 	 * @PublicApi
 	 */
 	WITHDRAWN(4, "Withdrawn");

@@ -15,56 +15,66 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum AvetmissStudentDisabilityType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 0
 	 * @PublicApi
 	 */
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 
 	/**
+	 * Database value: 100
 	 * @PublicApi
 	 */
 	NONE(100, "none"),
 
 	/**
+	 * Database value: 1
 	 * @PublicApi
 	 */
 	HEARING(1, "Hearing/Deaf"),
 
-	/**
+	/**Database value: 2
 	 * @PublicApi
 	 */
 	PHYSICAL(2, "Physical"),
 
 	/**
+	 * Database value: 3
 	 * @PublicApi
 	 */
 	INTELLECTUAL(3, "Intellectual"),
 
 	/**
+	 * Database value: 4
 	 * @PublicApi
 	 */
 	LEARNING(4, "Learning"),
 
 	/**
+	 * Database value: 5
 	 * @PublicApi
 	 */
 	MENTAL(5, "Mental illness"),
 
 	/**
+	 * Database value: 6
 	 * @PublicApi
 	 */
 	BRAIN_IMPAIRMENT(6, "Acquired brain impairment"),
 
 	/**
+	 * Database value: 7
 	 * @PublicApi
 	 */
 	VISION(7, "Vision"),
 
 	/**
+	 * Database value: 8
 	 * @PublicApi
 	 */
 	MEDICAL_CONDITION(8, "Medical condition"),
 
 	/**
+	 * Database value: 9
 	 * @PublicApi
 	 */
 	OTHER(9, "Other");

@@ -14,31 +14,37 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum AccountTransactionType implements DisplayableExtendedEnumeration<String> {
 
 	/**
+	 * Database value: I
 	 * @PublicApi
 	 */
 	INVOICE_LINE("I", "Invoice line"),
 
 	/**
+	 * Database value: P
 	 * @PublicApi
 	 */
 	PAYMENT_IN_LINE("P", "Payment in line"),
 
 	/**
+	 * Database value: O
 	 * @PublicApi
 	 */
 	PAYMENT_OUT_LINE("O", "Payment out line"),
 
 	/**
+	 * Database value: U
 	 * @PublicApi
 	 */
 	PURCHASE_LINE("U", "Purchase line"),
 
 	/**
+	 * Database value: D
 	 * @PublicApi
 	 */
 	DEPRECIATION("D", "Depreciation"),
 
 	/**
+	 * Database value: J
 	 * @PublicApi
 	 */
 	JOURNAL("J", "Journal");

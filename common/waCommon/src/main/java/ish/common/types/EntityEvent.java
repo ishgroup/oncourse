@@ -9,6 +9,9 @@ import org.apache.cayenne.map.LifecycleEvent;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Scripts can be triggered on one of these events from any Cayenne entity.
+ */
 public enum EntityEvent  implements DisplayableExtendedEnumeration<Integer> {
 
 	CREATE(1, "Create", LifecycleEvent.POST_PERSIST),

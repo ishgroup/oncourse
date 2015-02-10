@@ -15,6 +15,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Payments made in cash. These payments will need to be manually banked.
+	 * Database value: 0
 	 * 
 	 * @PublicApi
 	 */
@@ -22,6 +23,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * Payments made with cheque.  These payments will need to be manually banked.
+	 * Database value: 1
 	 * 
 	 * @PublicApi
 	 */
@@ -31,6 +33,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	 * Payments made with credit card.  These payments will need to be manually banked if the
 	 * credit card gateway is not enabled. They will be marked as banked automatically if
 	 * the gateway is available and the payment is successful.
+	 * Database value: 2
 	 * 
 	 * @PublicApi
 	 */
@@ -38,6 +41,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * Payments made by any means of electronic fund transfer (bank transfer etc.).  These payments will need to be manually banked.
+	 * Database value: 3
 	 * 
 	 * @PublicApi
 	 */
@@ -45,30 +49,32 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	EFT(3, "EFT"),
 	/**
 	 * payments made using b-pay.  These payments will need to be manually banked.
+	 * Database value: 4
 	 * 
 	 * @PublicApi
 	 */
 	BPAY(4, "B-Pay"),
 	
 	/**
-	 * special payment type for payments automatically created, but having $0 total. They are not real payments but
-	 * just represent a cancellation of a credit note against an invoice. They should be suppressed from most reports.
-	 *  These payments will not need to be banked.
+	 * A zero dollar payment which can be created for $0 invoices under some circumstances.
+	 * Database value: 5
 	 * 
 	 * @PublicApi
 	 */
 	INTERNAL(5, "Zero"),
 	
 	/**
-	 * other types of payment (internal accounts transfer etc).  These payments will need to be manually banked.
+	 * Other types of payment (internal accounts transfer etc).  These payments will need to be manually banked.
+	 * Database value: 6
 	 * 
 	 * @PublicApi
 	 */
 	OTHER(6, "Other"),
 	
 	/**
-	 * special payment created during class/enrolment refund. used to balance out the original and refund invoice. They
-	 * work in a very similar way to "Zero" type.
+	 * Special payment created during class/enrolment refund. used to balance out the original and refund invoice. They aren't real
+	 * payments but represent a link between an invoice and a credit note where payment from one was applied to the other.
+	 * Database value: 7
 	 * 
 	 * @PublicApi
 	 */
@@ -76,6 +82,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * special payment type created during voucher redemption. Banking is not needed.
+	 * Database value: 8
 	 * 
 	 * @PublicApi
 	 */
@@ -83,13 +90,17 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * payments using paypal.  These payments will need to be manually banked.
+	 * Database value: 9
 	 * 
 	 * @PublicApi
 	 */
 	PAYPAL(9, "PayPal"),
 	
 	/**
-	 * special payment type used to link original and reverse invoices during payment cancellation
+	 * special payment type used to link original and reverse invoices during payment cancellation or failure.
+	 * This type cannot be created manually, but will appear when there is a failure during a payment transaction with the bank
+	 * or some other transaction processing error.
+	 * Database value: 10
 	 * 
 	 * @PublicApi
 	 */
@@ -97,6 +108,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * EFTPOS payments.  These payments will need to be manually banked.
+	 * Database value: 11
 	 * 
 	 * @PublicApi
 	 */

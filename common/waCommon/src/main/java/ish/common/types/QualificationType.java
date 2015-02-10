@@ -14,26 +14,41 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum QualificationType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Qualification.
+	 * 
+	 * Database value: 0
 	 * @PublicApi
 	 */
 	QUALIFICATION_TYPE(0, "Qualification"),
 
 	/**
+	 * Accredited course.
+	 * 
+	 * Database value: 1
 	 * @PublicApi
 	 */
 	COURSE_TYPE(1, "Accredited course"),
 	
 	/**
+	 * Skill set.
+	 * 
+	 * Database value: 2
 	 * @PublicApi
 	 */
 	SKILLSET_TYPE(2, "Skill set"),
 
 	/**
+	 * Local skill set.
+	 * 
+	 * Database value: 3
 	 * @PublicApi
 	 */
 	SKILLSET_LOCAL_TYPE(3, "Local skill set"),
 
 	/**
+	 * Higher education.
+	 * 
+	 * Database value: 4
 	 * @PublicApi
 	 */
 	HIGHER_TYPE(4, "Higher education");

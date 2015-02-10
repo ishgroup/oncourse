@@ -15,20 +15,23 @@ public enum PayslipStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * These payslips are still being edited.
+	 * Database value: 1
 	 * 
 	 * @PublicApi
 	 */
 	HOLLOW(1, "New"),
 	
 	/**
-	 * These payslips are created and ready to be approved.
+	 * These payslips are marked as complete and ready to be approved.
+	 * Database value: 2
 	 * 
 	 * @PublicApi
 	 */
 	COMPLETED(2, "Completed"),
 
 	/**
-	 * The approval process has not yet been created in onCourse. But this step is a placeholder ready for that.
+	 * Once approved by an onCourse user with sufficient permissions, the payslip is ready to be exported.
+	 * Database value: 3
 	 * 
 	 * @PublicApi
 	 */
@@ -36,6 +39,7 @@ public enum PayslipStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Once exported, payslips may no longer be edited.
+	 * Database value: 4
 	 * 
 	 * @PublicApi
 	 */

@@ -6,8 +6,7 @@ package ish.common.types;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * A special type of attachment. Right now there is only one special
- * type.
+ * A special type of attachment. This will result in special behaviour inside onCourse.
  * 
  * @PublicApi
  */
@@ -15,7 +14,9 @@ public enum AttachmentSpecialType implements DisplayableExtendedEnumeration<Inte
 
 	/**
 	 * The profile picture for a contact is seen in Quick Enrol, the contact edit view
-	 * and within the skillsOnCourse portal.
+	 * and within the skillsOnCourse portal. There can be only one of these attachments per Contact.
+	 * 
+	 * Database value: 0
 	 * 
 	 * @PublicApi
 	 */
