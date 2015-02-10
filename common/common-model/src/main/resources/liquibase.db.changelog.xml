@@ -3152,7 +3152,7 @@
 			<column name="entityClass" type="VARCHAR(128)"/>
 			<column name="entityEventType" type="INTEGER"/>
 			<column name="name" type="VARCHAR(128)">
-				<constraints nullable="false" unique="true"/>
+				<constraints nullable="false"/>
 			</column>
 			<column name="result" type="TEXT"/>
 			<column name="schedule" type="VARCHAR(512)"/>
@@ -3167,6 +3167,8 @@
 		<addForeignKeyConstraint baseTableName="Script" baseColumnNames="collegeId"
 								 constraintName="fk_Script_College"
 								 referencedTableName="College" referencedColumnNames="id"/>
+		<addUniqueConstraint tableName="Script"
+							 columnNames="collegeId,name" constraintName="college_name"/>
 
 		<createIndex tableName="Script" indexName="Script_name">
 			<column name="name"/>
@@ -3196,7 +3198,7 @@
 			<column name="created" type="DATETIME"/>
 			<column name="modified" type="DATETIME"/>
 			<column name="name" type="VARCHAR(128)">
-				<constraints nullable="false" unique="true"/>
+				<constraints nullable="false"/>
 			</column>
 			<column name="bodyPlain" type="TEXT"/>
 			<column name="bodyHtml" type="TEXT"/>
@@ -3207,6 +3209,9 @@
 		<addForeignKeyConstraint baseTableName="EmailTemplate" baseColumnNames="collegeId"
 								 constraintName="fk_EmailTemplate_College"
 								 referencedTableName="College" referencedColumnNames="id"/>
+
+		<addUniqueConstraint tableName="EmailTemplate"
+							 columnNames="collegeId,name" constraintName="college_name"/>
 
 		<createIndex tableName="EmailTemplate" indexName="EmailTemplate_name">
 			<column name="name"/>
