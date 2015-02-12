@@ -1,13 +1,15 @@
 package ish.oncourse.util.payment;
 
-import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessState.FILL_PAYMENT_DETAILS;
-import static org.junit.Assert.*;
-
-import java.io.InputStream;
-import java.util.List;
-
-import javax.sql.DataSource;
-
+import ish.oncourse.model.College;
+import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.Preference;
+import ish.oncourse.services.PaymentServiceTestModule;
+import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
+import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -23,15 +25,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.Preference;
-import ish.oncourse.services.PaymentServiceTestModule;
-import ish.oncourse.services.payment.IPaymentService;
-import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.util.List;
+
+import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessState.FILL_PAYMENT_DETAILS;
+import static org.junit.Assert.*;
 
 public class PaymentProcessControllerBuilderTest extends ServiceTest {
 	private ICayenneService cayenneService;
@@ -61,12 +60,13 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		//test invalid sessionid withot valid session
 		PaymentProcessControllerBuilder builder = new PaymentProcessControllerBuilder(new MockParallelExecutor(), paymentGatewayServiceBuilder, cayenneService, 
 			paymentService, request.getSession(false));
-		PaymentProcessController paymentProcessController = builder.build("illegalSessionId");
-		assertNull("build of paymentProcessController should return null for case when payment not found", paymentProcessController);
-		
+        PaymentIn paymentIn = paymentService.currentPaymentInBySessionId("illegalSessionId");
+		assertNull("paymentIn is null for case when payment not found", paymentIn);
+
 		//test valid sessionid without valid session
 		try {
-			paymentProcessController = builder.build(sessionId);
+            paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
+            PaymentProcessController paymentProcessController = builder.build(paymentIn);
 			assertFalse("Builder should throw an exception for cases when session is null", true);
 		} catch (Throwable t) {
 			assertTrue("Builder should throw an Illegal argument exception for cases when session is null", 
@@ -80,7 +80,8 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		assertNotNull("Correctly inited builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
 		assertTrue("PaymentGatewayType may be only disabled before builder.build(sessionId) call", 
 				builder.receivePaymentGatewayService() instanceof DisabledPaymentGatewayService);
-		paymentProcessController = builder.build(sessionId);
+        paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
+        PaymentProcessController paymentProcessController = builder.build(paymentIn);
 		assertNotNull("build of paymentProcessController should return not null result for case when payment found", paymentProcessController);
 		//update parallel executor because unable to finally init them for test on startup
 		paymentProcessController.setParallelExecutor(new MockParallelExecutor(paymentProcessController));
@@ -105,7 +106,8 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		preferences.get(0).setValueString(null/*"DISABLED"*/);
 		content.commitChanges();
 		try {
-			paymentProcessController = builder.build(sessionId);
+            paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
+			paymentProcessController = builder.build(paymentIn);
 			assertFalse("illegal state exception should throws when college have not preference allow to use payment express", true);
 		} catch (Throwable t) {
 			assertTrue("Builder should throw an Illegal state exception for cases when college have not preference allow to use payment express", 

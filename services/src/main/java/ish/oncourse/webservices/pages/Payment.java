@@ -1,15 +1,16 @@
 package ish.oncourse.webservices.pages;
 
+import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessControllerBuilder;
 import ish.oncourse.webservices.components.PaymentForm;
-import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.*;
@@ -27,12 +28,16 @@ import java.util.List;
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS;
 
 @Import(stylesheet = "css/screen.css")
+@Secure
 public class Payment {
+    private static final Logger logger = Logger.getLogger(Payment.class);
+
     public static final String PAYMENT_PAGE_NAME = "/Payment/";
     public static final String SESSION_ID_ATTRIBUTE = "sessionId";
     private static final Logger LOGGER = Logger.getLogger(Payment.class);
     private static final String PAYMENT_AMOUNT_FORMAT = "###,##0.00";
     public static final String HTTPS_PROTOCOL = "https://";
+
 
     @Inject
     private Messages messages;
@@ -63,18 +68,21 @@ public class Payment {
 
     @Persist
     private PaymentProcessController paymentProcessController;
-    
+
     @Inject
     private IPaymentService paymentService;
-    
+
     @Inject
-	private ICayenneService cayenneService;
-    
+    private ICayenneService cayenneService;
+
     @Inject
     private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
 
     @Inject
     private ParallelExecutor parallelExecutor;
+
+    @Property
+    private String errorMessage;
 
     /**
      * Clears all the properties with the @Persist annotation.
@@ -91,14 +99,14 @@ public class Payment {
             throw new IllegalArgumentException(e);
         }
     }
-    
+
     private void resetOldSessionController(String sessionId) {
-    	if (PaymentProcessControllerBuilder.isNeedResetOldSessionController(getPaymentProcessController(), sessionId)) {
-    		//reset the paymentProcessController to be able render actual payment
-    		paymentProcessController = null;
-    	}
+        if (PaymentProcessControllerBuilder.isNeedResetOldSessionController(getPaymentProcessController(), sessionId)) {
+            //reset the paymentProcessController to be able render actual payment
+            paymentProcessController = null;
+        }
     }
-    
+
     /**
      * Finds and init payment and payment transaciton by referenceId.
      *
@@ -106,41 +114,74 @@ public class Payment {
      */
     void onActivate(String sessionId) {
         synchronized (this) {
-        	//firstly check that there is no controller with expired session
-        	resetOldSessionController(sessionId);
+            //firstly check that there is no controller with expired session
+            resetOldSessionController(sessionId);
             if (paymentProcessController == null) {
-            	paymentProcessController = new PaymentProcessControllerBuilder(parallelExecutor, paymentGatewayServiceBuilder, cayenneService, paymentService, 
-            		request.getSession(true)).build(sessionId);
-            	if (paymentProcessController == null) {
-            		throw  new PaymentNotFoundException(messages.format("payment.not.found", sessionId));
-            	}
+                PaymentIn payment = validateSessionId(sessionId);
+                if (payment != null)
+                {
+                    paymentProcessController = new PaymentProcessControllerBuilder(parallelExecutor, paymentGatewayServiceBuilder, cayenneService, paymentService,
+                            request.getSession(true)).build(payment);
+                    initProperties();
+                }
+            } else {
+                if (paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.PROCESSING_PAYMENT) {
+                    paymentProcessController.processAction(UPDATE_PAYMENT_GATEWAY_STATUS);
+                }
+                initProperties();
             }
-
-            this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
-            this.totalIncGst = paymentProcessController.getAmount();
-            this.payer = paymentProcessController.getContact();
-            this.invoices = paymentProcessController.getInvoices();
-        }
-        if (paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.PROCESSING_PAYMENT)
-        {
-            paymentProcessController.processAction(UPDATE_PAYMENT_GATEWAY_STATUS);
         }
     }
 
+    private PaymentIn validateSessionId(String sessionId) {
+        List<PaymentIn> payments = paymentService.getPaymentsBySessionId(sessionId);
+        if (payments.size() == 1 && payments.get(0).getStatus() == PaymentStatus.IN_TRANSACTION) {
+            return payments.get(0);
+        }
+
+        if (payments.size() == 0) {
+            errorMessage = messages.format("payment.not.found", sessionId);
+            logger.error(errorMessage);
+            return null;
+        }
+
+        for (PaymentIn paymentIn : payments) {
+            if (paymentIn.getStatus() == PaymentStatus.CARD_DETAILS_REQUIRED) {
+                errorMessage = messages.format("payment.already.processed", sessionId);
+                logger.warn(String.format("collegeId: %s, %s", payments.get(0).getCollege().getId(), errorMessage));
+                return null;
+            }
+        }
+
+        errorMessage = messages.format("payment.has.finalstatus", sessionId);
+        logger.warn(String.format("collegeId: %s, %s", payments.get(0).getCollege().getId(), errorMessage));
+        return null;
+    }
+
+
+    private void initProperties() {
+        this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
+        this.totalIncGst = paymentProcessController.getAmount();
+        this.payer = paymentProcessController.getContact();
+        this.invoices = paymentProcessController.getInvoices();
+    }
+
+
     /**
      * Returns true if user tried to use a few tabs
+     *
      * @return
      */
     public boolean isIllegalState() {
         return paymentProcessController.isIllegalState();
     }
 
-	public boolean isExpired() {
-		return paymentProcessController.isExpired();
-	}
+    public boolean isExpired() {
+        return paymentProcessController.isExpired();
+    }
 
 
-	@AfterRender
+    @AfterRender
     public void afterRender() {
         if (paymentProcessController != null && paymentProcessController.isProcessFinished()) {
             clearPersistedProperties();

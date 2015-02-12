@@ -1,70 +1,88 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 <head>
-	<meta http-equiv="Cache-control" content="no-cache"/>
+    <meta http-equiv="Cache-control" content="no-cache"/>
     <meta charset="utf-8"/>
     <title>${message:headerTitle}</title>
     <t:if test="showProcessing">
-    	<meta http-equiv="refresh" content="3"/>
+        <meta http-equiv="refresh" content="3"/>
     </t:if>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge; chrome=1"/>
 </head>
-<body>
+    <body>
+        <div class="page">
 
-	<div class="page">
-	
-	    <div class="header">
-	        <h1 class="header-title">${message:headerTitle}</h1>
-	        <a href="#" class="logo"></a>
-	    </div>
+            <t:if test="errorMessage">
+                <div class="header">
+                    <h1 class="header-title">${errorMessage}</h1>
+                    <a href="#" class="logo"></a>
+                </div>
+                <p:else>
+                    <t:if test="paymentProcessController">
+                        <t:delegate to="block:payment"/>
+                        <p:else>
+                            <h2 class="page-title">This payment processing session has already been completed.</h2>
+                        </p:else>
+                    </t:if>
+                </p:else>
+            </t:if>
+        </div>
+    </body>
 
-        <t:if test="paymentProcessController">
-	    <div class="process">
+<t:block t:id="payment">
+    <div class="header">
+        <h1 class="header-title">${message:headerTitle}</h1>
+        <a href="#" class="logo"></a>
+    </div>
 
-	        <h2 class="page-title">${paymentTitle}</h2>
-	
-	        <ul class="process-list">
-	        	<t:loop source="invoices" value="invoice">
-	        		<li><span>${invoiceDescription}</span> ${message:currency}<t:output value="invoice.totalGst" format="moneyFormat"/></li>
-	        	</t:loop>
-	        </ul>
-	        <div class="process-total">
-	            <span>${message:totalOfPayment}</span>${message:currency}<t:output value="totalIncGst" format="moneyFormat"/>
-	        </div>
-	        
-	    </div>
-        <t:if test="illegalState">
-            <div class="pay-fail">
-				<t:if test="expired">
-					<h2 class="page-title">This payment processing session has timed out and the payment is now marked as failed. 
-					Please close this window and create a new payment in onCourse. The enrolment, student and invoice have all been retained.</h2>
-				<p:else>
-					<h2 class="page-title">You cannot use the back button in this payment process. You can see correct status below.</h2>
-				</p:else>
-				</t:if>
+    <div class="process">
+
+        <h2 class="page-title">${paymentTitle}</h2>
+
+        <ul class="process-list">
+            <t:loop source="invoices" value="invoice">
+                <li><span>${invoiceDescription}</span> ${message:currency}
+                    <t:output value="invoice.totalGst" format="moneyFormat"/>
+                </li>
+            </t:loop>
+        </ul>
+        <div class="process-total">
+            <span>${message:totalOfPayment}</span>${message:currency}
+            <t:output value="totalIncGst" format="moneyFormat"/>
+        </div>
+
+    </div>
+    <t:if test="illegalState">
+        <div class="pay-fail">
+            <t:if test="expired">
+                <h2 class="page-title">This payment processing session has timed out and the payment is now marked as
+                    failed.
+                    Please close this window and create a new payment in onCourse. The enrolment, student and invoice
+                    have all been retained.</h2>
+                <p:else>
+                    <h2 class="page-title">You cannot use the back button in this payment process. You can see correct
+                        status below.</h2>
+                </p:else>
+            </t:if>
+        </div>
+    </t:if>
+    <t:if test="showForm">
+        <span t:id="paymentForm" t:type="PaymentForm" payment="payment"/>
+    </t:if>
+    <t:if test="showResult">
+        <t:PaymentResult t:id="result" payment="payment"/>
+    </t:if>
+    <t:if test="showProcessing">
+        <div class="pay-form">
+            <div class="pay-process">
+                <h2 class="page-title">Payment is now being processed against the bank. Please wait...</h2>
+
+                <p>This page will update automatically, or <a href="${refreshLink}">click here</a> to check the payment
+                    status now.</p>
             </div>
-        </t:if>
-	    <t:if test="showForm">
-			<span t:id="paymentForm" t:type="PaymentForm" payment="payment"/>
-    	</t:if>
-    	<t:if test="showResult">
-			<t:PaymentResult t:id="result" payment="payment"/>
-    	</t:if>
-
-        <p:else>
-            <h2 class="page-title">This payment processing session has already been completed.</h2>
-        </p:else>
-        </t:if>
-    	<t:if test="showProcessing">
-			<div class="pay-form">
-				<div class="pay-process">
-					<h2 class="page-title">Payment is now being processed against the bank. Please wait...</h2>
-					<p>This page will update automatically, or <a href="${refreshLink}">click here</a> to check the payment status now.</p>
-				</div>
-			</div>
-		</t:if>
-	</div>
-</body>
+        </div>
+    </t:if>
+</t:block>
 </html>

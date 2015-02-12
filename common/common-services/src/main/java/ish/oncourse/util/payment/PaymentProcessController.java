@@ -97,7 +97,9 @@ public class PaymentProcessController {
 		}
 		switch (action) {
         	case INIT_PAYMENT:
-        		changeProcessState(FILL_PAYMENT_DETAILS);
+                paymentIn.setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
+                objectContext.commitChanges();
+                changeProcessState(FILL_PAYMENT_DETAILS);
         		break;
             case MAKE_PAYMENT:
                 processPayment();
@@ -168,15 +170,16 @@ public class PaymentProcessController {
 
 		switch (action) {
 			case INIT_PAYMENT:
+                return (paymentIn.getStatus() == PaymentStatus.IN_TRANSACTION);
 			case MAKE_PAYMENT:
 			case CANCEL_PAYMENT:
 			case TRY_ANOTHER_CARD:
 			case ABANDON_PAYMENT:
 			case ABANDON_PAYMENT_KEEP_INVOICE:
 			case EXPIRE_PAYMENT:
-				return (paymentIn.getStatus() == PaymentStatus.IN_TRANSACTION);
+				return (paymentIn.getStatus() == PaymentStatus.CARD_DETAILS_REQUIRED);
 			case UPDATE_PAYMENT_GATEWAY_STATUS:
-				return (paymentIn.getStatus() == PaymentStatus.IN_TRANSACTION ||
+				return (paymentIn.getStatus() == PaymentStatus.CARD_DETAILS_REQUIRED ||
 						paymentIn.getStatus() == PaymentStatus.SUCCESS);
 			default:
 				throw new IllegalArgumentException();
@@ -241,7 +244,7 @@ public class PaymentProcessController {
     private void tryOtherCard() {
         changeProcessState(PROCESSING_TRY_OTHER_CARD);
         this.paymentIn = paymentIn.makeCopy();
-        this.paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
+        this.paymentIn.setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
         objectContext.commitChanges();
         changeProcessState(FILL_PAYMENT_DETAILS);
     }

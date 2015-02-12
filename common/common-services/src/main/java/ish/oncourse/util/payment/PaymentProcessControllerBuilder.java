@@ -27,11 +27,7 @@ public class PaymentProcessControllerBuilder {
 		this.session = session;
 	}
 
-	public PaymentProcessController build(final String sessionId) {
-		final PaymentIn paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
-        if (paymentIn == null) {
-        	return null;
-        }
+	public PaymentProcessController build(PaymentIn paymentIn) {
 		PaymentProcessController controller = new PaymentProcessController();
 		if (session == null) {
 			throw new IllegalArgumentException("PaymentProcessControllerBuilder can't build the PaymentProcessController without valid session!");

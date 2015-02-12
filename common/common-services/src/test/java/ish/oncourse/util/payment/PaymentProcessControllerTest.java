@@ -6,6 +6,7 @@ import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
@@ -268,11 +269,12 @@ public class PaymentProcessControllerTest extends ServiceTest {
     private PaymentProcessController createPaymentProcessController() {
         String sessionId = "SESSIONID";
         Session session = new MockSession();
+        PaymentIn paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
         final PaymentProcessController paymentProcessController = new PaymentProcessControllerBuilder(new MockParallelExecutor(), null, cayenneService, 
         	paymentService, session) {
 			@Override
 			public IPaymentGatewayService receivePaymentGatewayService() {return paymentGatewayService;}
-        }.build(sessionId);
+        }.build(paymentIn);
         //update parallel executor because unable to finally init them for test on startup
         paymentProcessController.setParallelExecutor(new MockParallelExecutor(paymentProcessController));
         

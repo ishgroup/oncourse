@@ -94,7 +94,6 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * 
 	 * @PublicApi
 	 */
-	@Deprecated //we don't use the status anymore
 	CARD_DETAILS_REQUIRED(10, "Credit card details required");
 
 	/**
