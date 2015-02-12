@@ -28,7 +28,6 @@ import java.util.List;
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS;
 
 @Import(stylesheet = "css/screen.css")
-@Secure
 public class Payment {
     private static final Logger logger = Logger.getLogger(Payment.class);
 
