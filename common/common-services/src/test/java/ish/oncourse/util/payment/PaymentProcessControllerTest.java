@@ -89,7 +89,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
         paymentProcessController.processAction(TRY_ANOTHER_CARD);
         assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessController.getCurrentState());
         assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
-        assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.IN_TRANSACTION, paymentProcessController.getPaymentIn().getStatus());
+        assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.CARD_DETAILS_REQUIRED, paymentProcessController.getPaymentIn().getStatus());
         assertInvalidActionsForNO_PROCESSED(paymentProcessController);
 
         fillValidCard(paymentProcessController);
@@ -127,7 +127,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
         paymentProcessController.processAction(TRY_ANOTHER_CARD);
         assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessController.getCurrentState());
         assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
-        assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.IN_TRANSACTION, paymentProcessController.getPaymentIn().getStatus());
+        assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.CARD_DETAILS_REQUIRED, paymentProcessController.getPaymentIn().getStatus());
         assertInvalidActionsForNO_PROCESSED(paymentProcessController);
     }
 

@@ -106,7 +106,6 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		preferences.get(0).setValueString(null/*"DISABLED"*/);
 		content.commitChanges();
 		try {
-            paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
 			paymentProcessController = builder.build(paymentIn);
 			assertFalse("illegal state exception should throws when college have not preference allow to use payment express", true);
 		} catch (Throwable t) {
