@@ -7,11 +7,7 @@ import ish.common.types.TypesUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
-import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v6.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v6.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v6.stubs.replication.VoucherStub;
@@ -43,7 +39,7 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 		//load the payment structure till expiration
 		PaymentIn paymentIn = controller.getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
-		assertEquals("PaymentIn status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("PaymentIn status should be CARD_DETAILS_REQUIRED", PaymentStatus.CARD_DETAILS_REQUIRED, paymentIn.getStatus());
 		List<PaymentInLine> paymentInLines = paymentIn.getPaymentInLines();
 		assertTrue("PaymentInLines size should be 1", paymentInLines.size() == 1);
 		Invoice invoice = paymentInLines.get(0).getInvoice();

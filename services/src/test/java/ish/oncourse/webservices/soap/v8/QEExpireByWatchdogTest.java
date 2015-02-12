@@ -39,7 +39,7 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 		//load the payment structure till expiration
 		PaymentIn paymentIn = controller.getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
-		assertEquals("PaymentIn status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("PaymentIn status should be CARD_DETAILS_REQUIRED", PaymentStatus.CARD_DETAILS_REQUIRED, paymentIn.getStatus());
 		List<PaymentInLine> paymentInLines = paymentIn.getPaymentInLines();
 		assertTrue("PaymentInLines size should be 1", paymentInLines.size() == 1);
 		Invoice invoice = paymentInLines.get(0).getInvoice();

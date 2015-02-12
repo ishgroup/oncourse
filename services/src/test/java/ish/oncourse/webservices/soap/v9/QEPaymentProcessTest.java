@@ -18,10 +18,7 @@ import org.apache.tapestry5.services.Session;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Use cases described in squish task
@@ -65,7 +62,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		//load the payment structure
 		PaymentIn paymentIn = controller.getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
-		assertEquals("PaymentIn status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("PaymentIn status should be CARD_DETAILS_REQUIRED", PaymentStatus.CARD_DETAILS_REQUIRED, paymentIn.getStatus());
 
 		//submit the data
 		TestableResponse response = tester.clickSubmitAndReturnResponse(submitButton, fieldValues);
@@ -177,7 +174,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		//load the payment structure
 		PaymentIn paymentIn = controller.getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
-		assertEquals("PaymentIn status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("PaymentIn status should be CARD_DETAILS_REQUIRED", PaymentStatus.CARD_DETAILS_REQUIRED, paymentIn.getStatus());
 
 		//submit the data
 		TestableResponse response = tester.clickSubmitAndReturnResponse(submitButton, fieldValues);

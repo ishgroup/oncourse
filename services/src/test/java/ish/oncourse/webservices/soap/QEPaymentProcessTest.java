@@ -62,7 +62,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		//load the payment structure
 		PaymentIn paymentIn = controller.getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
-		assertEquals("PaymentIn status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("PaymentIn status should be CARD_DETAILS_REQUIRED", PaymentStatus.CARD_DETAILS_REQUIRED, paymentIn.getStatus());
 
 		//submit the data
 		TestableResponse response = tester.clickSubmitAndReturnResponse(submitButton, fieldValues);
@@ -174,7 +174,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		//load the payment structure
 		PaymentIn paymentIn = controller.getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
-		assertEquals("PaymentIn status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("PaymentIn status should be CARD_DETAILS_REQUIRED", PaymentStatus.CARD_DETAILS_REQUIRED, paymentIn.getStatus());
 
 		//submit the data
 		TestableResponse response = tester.clickSubmitAndReturnResponse(submitButton, fieldValues);

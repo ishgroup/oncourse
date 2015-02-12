@@ -4,23 +4,10 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.ProductStatus;
 import ish.common.types.TypesUtil;
-import ish.oncourse.model.Article;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.Membership;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.model.Voucher;
+import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.util.PortHelper;
+import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v9.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v9.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v9.stubs.replication.VoucherStub;
@@ -35,11 +22,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 
@@ -56,7 +39,7 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 		//load the payment structure till expiration
 		PaymentIn paymentIn = controller.getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
-		assertEquals("PaymentIn status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("PaymentIn status should be CARD_DETAILS_REQUIRED", PaymentStatus.CARD_DETAILS_REQUIRED, paymentIn.getStatus());
 		List<PaymentInLine> paymentInLines = paymentIn.getPaymentInLines();
 		assertTrue("PaymentInLines size should be 1", paymentInLines.size() == 1);
 		Invoice invoice = paymentInLines.get(0).getInvoice();
