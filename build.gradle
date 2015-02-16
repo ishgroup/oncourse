@@ -65,11 +65,11 @@ allprojects {
 
 	dependencies {
 		testCompile 'junit:junit:4.12'
-        compile 'org.apache.logging.log4j:log4j-api:2.1'
-        compile 'org.apache.logging.log4j:log4j-core:2.1'
-        compile 'org.apache.logging.log4j:log4j-1.2-api:2.1'
+        compile 'org.apache.logging.log4j:log4j-api:2.0.2'
+        compile 'org.apache.logging.log4j:log4j-core:2.0.2'
+        compile 'org.apache.logging.log4j:log4j-1.2-api:2.0.2'
         //log4j2 to commons-logging bridge
-        compile 'org.apache.logging.log4j:log4j-jcl:2.1'
+        compile 'org.apache.logging.log4j:log4j-jcl:2.0.2'
 	}
 
 	ext.sharedManifest = manifest {
