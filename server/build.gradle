@@ -112,6 +112,13 @@ dependencies {
 	apiDocs 'ish.oncourse.willow:waCommon:5.1.62:sources'
 }
 
+if (JavaVersion.current().isJava8Compatible()) {
+    tasks.withType(Javadoc) {
+        // disable the crazy super-strict doclint tool in Java 8
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
 task scriptApiDocs(type: Javadoc) {
 	source = sourceSets.main.allJava.plus(zipTree(configurations.apiDocs.find { 
 		it.name.startsWith("waCommon") 
