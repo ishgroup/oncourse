@@ -18,6 +18,7 @@ public class SearchInputs {
     private static final String URL_PATH_SEARCH_PATTERN = "/courses?s=%s" +
             "%s" +
             "&near=%s" +
+			"&km=%s" +
             "&price=%s" +
             "&time=%s" +
             "&day=%s";
@@ -34,6 +35,9 @@ public class SearchInputs {
 
 	@Property
 	private String searchNear;
+
+	@Property
+	private String km;
 
 	@Property
 	private String searchPrice;
@@ -199,6 +203,7 @@ public class SearchInputs {
                     (advKeyword == null ? StringUtils.EMPTY : advKeyword),
                     (tags.length() > 0 ? tags.toString() : StringUtils.EMPTY),
                     (searchNear == null ? StringUtils.EMPTY : searchNear),
+					(km == null ? StringUtils.EMPTY : km),
                     (searchPrice == null ? StringUtils.EMPTY : searchPrice),
                     (daytime ? "daytime" : (evening ? "evening" : StringUtils.EMPTY)),
                     (weekday ? "weekday" : (weekend ? "weekend" : StringUtils.EMPTY)));
