@@ -32,6 +32,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="isActive" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="isAdmin" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="defaultAdministrationCentreId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="tokenScratchCodes" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -53,7 +55,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "lastLoginOn",
     "isActive",
     "isAdmin",
-    "defaultAdministrationCentreId"
+    "defaultAdministrationCentreId",
+    "token",
+    "tokenScratchCodes"
 })
 public class SystemUserStub
     extends ReplicationStub
@@ -95,6 +99,10 @@ public class SystemUserStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long defaultAdministrationCentreId;
+    @XmlElement(required = true)
+    protected String token;
+    @XmlElement(required = true)
+    protected String tokenScratchCodes;
 
     /**
      * Gets the value of the editCMS property.
@@ -382,6 +390,54 @@ public class SystemUserStub
      */
     public void setDefaultAdministrationCentreId(Long value) {
         this.defaultAdministrationCentreId = value;
+    }
+
+    /**
+     * Gets the value of the token property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * Sets the value of the token property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setToken(String value) {
+        this.token = value;
+    }
+
+    /**
+     * Gets the value of the tokenScratchCodes property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getTokenScratchCodes() {
+        return tokenScratchCodes;
+    }
+
+    /**
+     * Sets the value of the tokenScratchCodes property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTokenScratchCodes(String value) {
+        this.tokenScratchCodes = value;
     }
 
 }

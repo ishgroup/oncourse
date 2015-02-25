@@ -80,6 +80,8 @@
 			<xs:element name="customField" type="tns:customFieldStub"/>
 			<xs:element name="script" type="tns:scriptStub"/>
 			<xs:element name="emailTemplate" type="tns:emailTemplateStub"/>
+			<xs:element name="courseClassPaymentPlanLine" type="tns:courseClassPaymentPlanLineStub"/>
+			<xs:element name="invoiceDueDate" type="tns:invoiceDueDateStub"/>
 			<xs:element name="hollow" type="tns:hollowStub" />
 			<xs:element name="deleted" type="tns:deletedStub" />
 			<xs:element name="confirmExecution" type="tns:confirmExecution" />
@@ -1230,6 +1232,8 @@
 							<xs:element name="isActive" type="xs:boolean" />
 							<xs:element name="isAdmin" type="xs:boolean" />
 							<xs:element name="defaultAdministrationCentreId" type="xs:long" />
+							<xs:element name="token" type="xs:string"/>
+							<xs:element name="tokenScratchCodes" type="xs:string"/>
 							<!--xs:element name="roleSystemUserId" type="xs:long" nillable="false"/-->
 						</xs:sequence>
 					</xs:extension>
@@ -1388,6 +1392,30 @@
 							<xs:element name="entity" type="xs:string"/>
 							<xs:element name="name" type="xs:string"/>
 							<xs:element name="subject" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="courseClassPaymentPlanLineStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="courseClassId" type="xs:long"/>
+							<xs:element name="amount" type="xs:decimal"/>
+							<xs:element name="dayOffset" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="invoiceDueDateStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="invoiceId" type="xs:long"/>
+							<xs:element name="amount" type="xs:decimal"/>
+							<xs:element name="dueDate" type="xs:dateTime"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
