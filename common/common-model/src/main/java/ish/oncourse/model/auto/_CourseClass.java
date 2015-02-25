@@ -10,6 +10,7 @@ import ish.common.types.CourseClassAttendanceType;
 import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClassPaymentPlanLine;
 import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.Discussion;
 import ish.oncourse.model.Enrolment;
@@ -66,6 +67,7 @@ public abstract class _CourseClass extends CayenneDataObject {
     public static final String DISCUSSIONS_PROPERTY = "discussions";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
+    public static final String PAYMENT_PLAN_LINES_PROPERTY = "paymentPlanLines";
     public static final String ROOM_PROPERTY = "room";
     public static final String SESSIONS_PROPERTY = "sessions";
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
@@ -374,6 +376,18 @@ public abstract class _CourseClass extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<InvoiceLine> getInvoiceLines() {
         return (List<InvoiceLine>)readProperty(INVOICE_LINES_PROPERTY);
+    }
+
+
+    public void addToPaymentPlanLines(CourseClassPaymentPlanLine obj) {
+        addToManyTarget(PAYMENT_PLAN_LINES_PROPERTY, obj, true);
+    }
+    public void removeFromPaymentPlanLines(CourseClassPaymentPlanLine obj) {
+        removeToManyTarget(PAYMENT_PLAN_LINES_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CourseClassPaymentPlanLine> getPaymentPlanLines() {
+        return (List<CourseClassPaymentPlanLine>)readProperty(PAYMENT_PLAN_LINES_PROPERTY);
     }
 
 

@@ -275,6 +275,16 @@
 		<db-attribute name="startingMinutePerSession" type="INTEGER" length="10"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="32"/>
 	</db-entity>
+	<db-entity name="CourseClassPaymentPlanLine">
+		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="14"/>
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="dayOffset" type="INTEGER"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+	</db-entity>
 	<db-entity name="CourseModule" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT"/>
@@ -508,6 +518,16 @@
 		<db-attribute name="totalExGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="totalGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
+	</db-entity>
+	<db-entity name="InvoiceDueDate">
+		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10"/>
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="dueDate" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
 	<db-entity name="InvoiceLine" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -996,6 +1016,8 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="siteId" type="BIGINT"/>
+		<db-attribute name="token" type="VARCHAR" length="16"/>
+		<db-attribute name="tokenScratchCodes" type="LONGVARCHAR" length="16777215"/>
 	</db-entity>
 	<db-entity name="Tag" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -1480,6 +1502,13 @@
 		<obj-attribute name="startingMinutePerSession" type="java.lang.Integer" db-attribute-path="startingMinutePerSession"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 	</obj-entity>
+	<obj-entity name="CourseClassPaymentPlanLine" className="ish.oncourse.model.CourseClassPaymentPlanLine" dbEntityName="CourseClassPaymentPlanLine">
+		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="dayOffset" type="java.lang.Integer" db-attribute-path="dayOffset"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
 	<obj-entity name="CourseCourseRelation" superEntityName="EntityRelation" className="ish.oncourse.model.CourseCourseRelation">
 		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 1)]]></qualifier>
 	</obj-entity>
@@ -1667,6 +1696,13 @@
 		<post-add method-name="onPostAdd"/>
 		<pre-persist method-name="onPrePersist"/>
 		<pre-update method-name="onPreUpdate"/>
+	</obj-entity>
+	<obj-entity name="InvoiceDueDate" className="ish.oncourse.model.InvoiceDueDate" dbEntityName="InvoiceDueDate">
+		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="dueDate" type="java.util.Date" db-attribute-path="dueDate"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<obj-entity name="InvoiceLine" className="ish.oncourse.model.InvoiceLine" dbEntityName="InvoiceLine" superClassName="ish.oncourse.model.InvoicePayableLine">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -2095,6 +2131,8 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
 		<obj-attribute name="surname" type="java.lang.String" db-attribute-path="lastName"/>
+		<obj-attribute name="token" type="java.lang.String" db-attribute-path="token"/>
+		<obj-attribute name="tokenScrathcCodes" type="java.lang.String" db-attribute-path="tokenScratchCodes"/>
 	</obj-entity>
 	<obj-entity name="Tag" className="ish.oncourse.model.Tag" dbEntityName="Tag">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -2437,6 +2475,9 @@
 	<db-relationship name="instructions" source="College" target="Instruction" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="invoiceDueDates" source="College" target="InvoiceDueDate" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="invoiceLineDiscounts" source="College" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -2468,6 +2509,9 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="paymentInLines" source="College" target="PaymentInLine" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="paymentPlanLines" source="College" target="CourseClassPaymentPlanLine" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="paymentsIn" source="College" target="PaymentIn" toMany="true">
@@ -2710,6 +2754,9 @@
 	<db-relationship name="invoiceLines" source="CourseClass" target="InvoiceLine" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
+	<db-relationship name="paymentPlanLines" source="CourseClass" target="CourseClassPaymentPlanLine" toMany="true">
+		<db-attribute-pair source="id" target="courseClassId"/>
+	</db-relationship>
 	<db-relationship name="room" source="CourseClass" target="Room" toMany="false">
 		<db-attribute-pair source="roomId" target="id"/>
 	</db-relationship>
@@ -2718,6 +2765,12 @@
 	</db-relationship>
 	<db-relationship name="tutorRoles" source="CourseClass" target="TutorRole" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
+	</db-relationship>
+	<db-relationship name="college" source="CourseClassPaymentPlanLine" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="courseClass" source="CourseClassPaymentPlanLine" target="CourseClass" toMany="false">
+		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="CourseModule" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -2890,6 +2943,9 @@
 	<db-relationship name="corporatePassUsed" source="Invoice" target="CorporatePass" toMany="false">
 		<db-attribute-pair source="corporatePassId" target="id"/>
 	</db-relationship>
+	<db-relationship name="invoiceDueDates" source="Invoice" target="InvoiceDueDate" toMany="true">
+		<db-attribute-pair source="id" target="invoiceId"/>
+	</db-relationship>
 	<db-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" toMany="true">
 		<db-attribute-pair source="id" target="invoiceId"/>
 	</db-relationship>
@@ -2898,6 +2954,12 @@
 	</db-relationship>
 	<db-relationship name="webSite" source="Invoice" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="InvoiceDueDate" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="invoice" source="InvoiceDueDate" target="Invoice" toMany="false">
+		<db-attribute-pair source="invoiceId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="InvoiceLine" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3503,6 +3565,7 @@
 	<obj-relationship name="emailTemplates" source="College" target="EmailTemplate" deleteRule="Deny" db-relationship-path="emailTemplates"/>
 	<obj-relationship name="enrolments" source="College" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="instructions" source="College" target="Instruction" deleteRule="Deny" db-relationship-path="instructions"/>
+	<obj-relationship name="invoiceDueDates" source="College" target="InvoiceDueDate" deleteRule="Deny" db-relationship-path="invoiceDueDates"/>
 	<obj-relationship name="invoiceLineDiscounts" source="College" target="InvoiceLineDiscount" deleteRule="Deny" db-relationship-path="invoiceLineDiscounts"/>
 	<obj-relationship name="invoiceLines" source="College" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="invoices" source="College" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
@@ -3514,6 +3577,7 @@
 	<obj-relationship name="notificationTemplates" source="College" target="NotificationTemplate" deleteRule="Deny" db-relationship-path="notificationTemplates"/>
 	<obj-relationship name="outcomes" source="College" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
 	<obj-relationship name="paymentInLines" source="College" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
+	<obj-relationship name="paymentPlanLines" source="College" target="CourseClassPaymentPlanLine" deleteRule="Deny" db-relationship-path="paymentPlanLines"/>
 	<obj-relationship name="paymentsIn" source="College" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="College" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="preferences" source="College" target="Preference" deleteRule="Deny" db-relationship-path="preferences"/>
@@ -3585,9 +3649,12 @@
 	<obj-relationship name="discussions" source="CourseClass" target="Discussion" deleteRule="Deny" db-relationship-path="discussions"/>
 	<obj-relationship name="enrolments" source="CourseClass" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="invoiceLines" source="CourseClass" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="paymentPlanLines" source="CourseClass" target="CourseClassPaymentPlanLine" deleteRule="Deny" db-relationship-path="paymentPlanLines"/>
 	<obj-relationship name="room" source="CourseClass" target="Room" deleteRule="Nullify" db-relationship-path="room"/>
 	<obj-relationship name="sessions" source="CourseClass" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="tutorRoles" source="CourseClass" target="TutorRole" deleteRule="Deny" db-relationship-path="tutorRoles"/>
+	<obj-relationship name="college" source="CourseClassPaymentPlanLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="courseClass" source="CourseClassPaymentPlanLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="fromCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
 	<obj-relationship name="toCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationToCourse"/>
 	<obj-relationship name="college" source="CourseModule" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -3643,9 +3710,12 @@
 	<obj-relationship name="college" source="Invoice" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="Invoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="corporatePassUsed" source="Invoice" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
+	<obj-relationship name="invoiceDueDates" source="Invoice" target="InvoiceDueDate" deleteRule="Deny" db-relationship-path="invoiceDueDates"/>
 	<obj-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
 	<obj-relationship name="webSite" source="Invoice" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
+	<obj-relationship name="college" source="InvoiceDueDate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="invoice" source="InvoiceDueDate" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="college" source="InvoiceLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="InvoiceLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="enrolment" source="InvoiceLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>

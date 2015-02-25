@@ -11,6 +11,7 @@ import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CorporatePass;
+import ish.oncourse.model.InvoiceDueDate;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.WebSite;
@@ -42,6 +43,7 @@ public abstract class _Invoice extends CayenneDataObject {
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
     public static final String CORPORATE_PASS_USED_PROPERTY = "corporatePassUsed";
+    public static final String INVOICE_DUE_DATES_PROPERTY = "invoiceDueDates";
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
     public static final String PAYMENT_IN_LINES_PROPERTY = "paymentInLines";
     public static final String WEB_SITE_PROPERTY = "webSite";
@@ -49,24 +51,24 @@ public abstract class _Invoice extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAmountOwing(Money amountOwing) {
-        writeProperty("amountOwing", amountOwing);
+        writeProperty(AMOUNT_OWING_PROPERTY, amountOwing);
     }
     public Money getAmountOwing() {
-        return (Money)readProperty("amountOwing");
+        return (Money)readProperty(AMOUNT_OWING_PROPERTY);
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setBillToAddress(String billToAddress) {
-        writeProperty("billToAddress", billToAddress);
+        writeProperty(BILL_TO_ADDRESS_PROPERTY, billToAddress);
     }
     public String getBillToAddress() {
-        return (String)readProperty("billToAddress");
+        return (String)readProperty(BILL_TO_ADDRESS_PROPERTY);
     }
 
     public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
@@ -77,146 +79,158 @@ public abstract class _Invoice extends CayenneDataObject {
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setCustomerReference(String customerReference) {
-        writeProperty("customerReference", customerReference);
+        writeProperty(CUSTOMER_REFERENCE_PROPERTY, customerReference);
     }
     public String getCustomerReference() {
-        return (String)readProperty("customerReference");
+        return (String)readProperty(CUSTOMER_REFERENCE_PROPERTY);
     }
 
     public void setDateDue(Date dateDue) {
-        writeProperty("dateDue", dateDue);
+        writeProperty(DATE_DUE_PROPERTY, dateDue);
     }
     public Date getDateDue() {
-        return (Date)readProperty("dateDue");
+        return (Date)readProperty(DATE_DUE_PROPERTY);
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        writeProperty(DESCRIPTION_PROPERTY, description);
     }
     public String getDescription() {
-        return (String)readProperty("description");
+        return (String)readProperty(DESCRIPTION_PROPERTY);
     }
 
     public void setInvoiceDate(Date invoiceDate) {
-        writeProperty("invoiceDate", invoiceDate);
+        writeProperty(INVOICE_DATE_PROPERTY, invoiceDate);
     }
     public Date getInvoiceDate() {
-        return (Date)readProperty("invoiceDate");
+        return (Date)readProperty(INVOICE_DATE_PROPERTY);
     }
 
     public void setInvoiceNumber(Long invoiceNumber) {
-        writeProperty("invoiceNumber", invoiceNumber);
+        writeProperty(INVOICE_NUMBER_PROPERTY, invoiceNumber);
     }
     public Long getInvoiceNumber() {
-        return (Long)readProperty("invoiceNumber");
+        return (Long)readProperty(INVOICE_NUMBER_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setPublicNotes(String publicNotes) {
-        writeProperty("publicNotes", publicNotes);
+        writeProperty(PUBLIC_NOTES_PROPERTY, publicNotes);
     }
     public String getPublicNotes() {
-        return (String)readProperty("publicNotes");
+        return (String)readProperty(PUBLIC_NOTES_PROPERTY);
     }
 
     public void setShippingAddress(String shippingAddress) {
-        writeProperty("shippingAddress", shippingAddress);
+        writeProperty(SHIPPING_ADDRESS_PROPERTY, shippingAddress);
     }
     public String getShippingAddress() {
-        return (String)readProperty("shippingAddress");
+        return (String)readProperty(SHIPPING_ADDRESS_PROPERTY);
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty("source", source);
+        writeProperty(SOURCE_PROPERTY, source);
     }
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty("source");
+        return (PaymentSource)readProperty(SOURCE_PROPERTY);
     }
 
     public void setTotalExGst(Money totalExGst) {
-        writeProperty("totalExGst", totalExGst);
+        writeProperty(TOTAL_EX_GST_PROPERTY, totalExGst);
     }
     public Money getTotalExGst() {
-        return (Money)readProperty("totalExGst");
+        return (Money)readProperty(TOTAL_EX_GST_PROPERTY);
     }
 
     public void setTotalGst(Money totalGst) {
-        writeProperty("totalGst", totalGst);
+        writeProperty(TOTAL_GST_PROPERTY, totalGst);
     }
     public Money getTotalGst() {
-        return (Money)readProperty("totalGst");
+        return (Money)readProperty(TOTAL_GST_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setContact(Contact contact) {
-        setToOneTarget("contact", contact, true);
+        setToOneTarget(CONTACT_PROPERTY, contact, true);
     }
 
     public Contact getContact() {
-        return (Contact)readProperty("contact");
+        return (Contact)readProperty(CONTACT_PROPERTY);
     }
 
 
     public void setCorporatePassUsed(CorporatePass corporatePassUsed) {
-        setToOneTarget("corporatePassUsed", corporatePassUsed, true);
+        setToOneTarget(CORPORATE_PASS_USED_PROPERTY, corporatePassUsed, true);
     }
 
     public CorporatePass getCorporatePassUsed() {
-        return (CorporatePass)readProperty("corporatePassUsed");
+        return (CorporatePass)readProperty(CORPORATE_PASS_USED_PROPERTY);
+    }
+
+
+    public void addToInvoiceDueDates(InvoiceDueDate obj) {
+        addToManyTarget(INVOICE_DUE_DATES_PROPERTY, obj, true);
+    }
+    public void removeFromInvoiceDueDates(InvoiceDueDate obj) {
+        removeToManyTarget(INVOICE_DUE_DATES_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<InvoiceDueDate> getInvoiceDueDates() {
+        return (List<InvoiceDueDate>)readProperty(INVOICE_DUE_DATES_PROPERTY);
     }
 
 
     public void addToInvoiceLines(InvoiceLine obj) {
-        addToManyTarget("invoiceLines", obj, true);
+        addToManyTarget(INVOICE_LINES_PROPERTY, obj, true);
     }
     public void removeFromInvoiceLines(InvoiceLine obj) {
-        removeToManyTarget("invoiceLines", obj, true);
+        removeToManyTarget(INVOICE_LINES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<InvoiceLine> getInvoiceLines() {
-        return (List<InvoiceLine>)readProperty("invoiceLines");
+        return (List<InvoiceLine>)readProperty(INVOICE_LINES_PROPERTY);
     }
 
 
     public void addToPaymentInLines(PaymentInLine obj) {
-        addToManyTarget("paymentInLines", obj, true);
+        addToManyTarget(PAYMENT_IN_LINES_PROPERTY, obj, true);
     }
     public void removeFromPaymentInLines(PaymentInLine obj) {
-        removeToManyTarget("paymentInLines", obj, true);
+        removeToManyTarget(PAYMENT_IN_LINES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<PaymentInLine> getPaymentInLines() {
-        return (List<PaymentInLine>)readProperty("paymentInLines");
+        return (List<PaymentInLine>)readProperty(PAYMENT_IN_LINES_PROPERTY);
     }
 
 
     public void setWebSite(WebSite webSite) {
-        setToOneTarget("webSite", webSite, true);
+        setToOneTarget(WEB_SITE_PROPERTY, webSite, true);
     }
 
     public WebSite getWebSite() {
-        return (WebSite)readProperty("webSite");
+        return (WebSite)readProperty(WEB_SITE_PROPERTY);
     }
 
 

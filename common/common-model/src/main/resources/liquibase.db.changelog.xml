@@ -3221,4 +3221,107 @@
 		</createIndex>
 	</changeSet>
 
+	<changeSet id="210" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="SystemUser" columnName="token"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE SystemUser ADD COLUMN token VARCHAR(16), ADD COLUMN tokenScratchCodes TEXT;
+		</sql>
+	</changeSet>
+	
+	<changeSet id="211" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="CourseClassPaymentPlanLine"/>
+			</not>
+		</preConditions>
+	
+		<createTable tableName="CourseClassPaymentPlanLine">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="angelId" type="BIGINT"/>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="courseClassId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="dayOffset" type="INTEGER"/>
+			<column name="amount" type="DECIMAL(10,2)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint baseTableName="CourseClassPaymentPlanLine" baseColumnNames="courseClassId"
+								 constraintName="fk_CourseClassPaymentPlanLine_CourseClass"
+								 referencedTableName="CourseClass"
+								 referencedColumnNames="id"/>
+
+		<addForeignKeyConstraint baseTableName="CourseClassPaymentPlanLine" baseColumnNames="collegeId"
+								 constraintName="fk_CourseClassPaymentPlanLine_College"
+								 referencedTableName="College" referencedColumnNames="id"/>
+
+		<addUniqueConstraint tableName="CourseClassPaymentPlanLine" columnNames="angelId,collegeId" constraintName="angelId_college_unique"/>
+
+		<createIndex tableName="CourseClassPaymentPlanLine" indexName="CourseClassPaymentPlanLine_angelId">
+			<column name="angelId"/>
+		</createIndex>
+		
+	</changeSet>
+
+	<changeSet id="212" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="InvoiceDueDate"/>
+			</not>
+		</preConditions>
+
+		<createTable tableName="InvoiceDueDate">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="angelId" type="BIGINT"/>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="dueDate" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
+			<column name="amount" type="DECIMAL(10,2)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="invoiceId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint baseTableName="InvoiceDueDate" baseColumnNames="invoiceId"
+								 constraintName="fk_InvoiceDueDate_Invoice"
+								 referencedTableName="Invoice"
+								 referencedColumnNames="id"/>
+
+		<addForeignKeyConstraint baseTableName="InvoiceDueDate" baseColumnNames="collegeId"
+								 constraintName="fk_InvoiceDueDate_College"
+								 referencedTableName="College" referencedColumnNames="id"/>
+		
+		<addUniqueConstraint tableName="InvoiceDueDate" columnNames="angelId,collegeId" constraintName="angelId_college_unique"/>
+
+		<createIndex tableName="InvoiceDueDate" indexName="InvoiceDueDate_angelId">
+			<column name="angelId"/>
+		</createIndex>
+
+		<createIndex tableName="InvoiceDueDate" indexName="InvoiceDueDate_dueDate">
+			<column name="dueDate"/>
+		</createIndex>
+		
+	</changeSet>
+	
 </databaseChangeLog>

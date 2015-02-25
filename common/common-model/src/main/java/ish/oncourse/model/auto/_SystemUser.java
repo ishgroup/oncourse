@@ -32,6 +32,8 @@ public abstract class _SystemUser extends CayenneDataObject {
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String PASSWORD_PROPERTY = "password";
     public static final String SURNAME_PROPERTY = "surname";
+    public static final String TOKEN_PROPERTY = "token";
+    public static final String TOKEN_SCRATHC_CODES_PROPERTY = "tokenScrathcCodes";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String DEFAULT_ADMINISTRATION_CENTRE_PROPERTY = "defaultAdministrationCentre";
     public static final String DOCUMENT_VERSIONS_PROPERTY = "documentVersions";
@@ -135,6 +137,20 @@ public abstract class _SystemUser extends CayenneDataObject {
     }
     public String getSurname() {
         return (String)readProperty(SURNAME_PROPERTY);
+    }
+
+    public void setToken(String token) {
+        writeProperty(TOKEN_PROPERTY, token);
+    }
+    public String getToken() {
+        return (String)readProperty(TOKEN_PROPERTY);
+    }
+
+    public void setTokenScrathcCodes(String tokenScrathcCodes) {
+        writeProperty(TOKEN_SCRATHC_CODES_PROPERTY, tokenScrathcCodes);
+    }
+    public String getTokenScrathcCodes() {
+        return (String)readProperty(TOKEN_SCRATHC_CODES_PROPERTY);
     }
 
     public void setCollege(College college) {

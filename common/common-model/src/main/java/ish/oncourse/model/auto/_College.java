@@ -17,6 +17,7 @@ import ish.oncourse.model.ContactRelation;
 import ish.oncourse.model.ContactRelationType;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.CourseClassPaymentPlanLine;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.model.Discount;
@@ -28,6 +29,7 @@ import ish.oncourse.model.EmailTemplate;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Instruction;
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceDueDate;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.InvoiceLineDiscount;
 import ish.oncourse.model.KeyStatus;
@@ -115,6 +117,7 @@ public abstract class _College extends CayenneDataObject {
     public static final String EMAIL_TEMPLATES_PROPERTY = "emailTemplates";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
     public static final String INSTRUCTIONS_PROPERTY = "instructions";
+    public static final String INVOICE_DUE_DATES_PROPERTY = "invoiceDueDates";
     public static final String INVOICE_LINE_DISCOUNTS_PROPERTY = "invoiceLineDiscounts";
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
     public static final String INVOICES_PROPERTY = "invoices";
@@ -126,6 +129,7 @@ public abstract class _College extends CayenneDataObject {
     public static final String NOTIFICATION_TEMPLATES_PROPERTY = "notificationTemplates";
     public static final String OUTCOMES_PROPERTY = "outcomes";
     public static final String PAYMENT_IN_LINES_PROPERTY = "paymentInLines";
+    public static final String PAYMENT_PLAN_LINES_PROPERTY = "paymentPlanLines";
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
     public static final String PAYMENTS_OUT_PROPERTY = "paymentsOut";
     public static final String PREFERENCES_PROPERTY = "preferences";
@@ -562,6 +566,18 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
+    public void addToInvoiceDueDates(InvoiceDueDate obj) {
+        addToManyTarget(INVOICE_DUE_DATES_PROPERTY, obj, true);
+    }
+    public void removeFromInvoiceDueDates(InvoiceDueDate obj) {
+        removeToManyTarget(INVOICE_DUE_DATES_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<InvoiceDueDate> getInvoiceDueDates() {
+        return (List<InvoiceDueDate>)readProperty(INVOICE_DUE_DATES_PROPERTY);
+    }
+
+
     public void addToInvoiceLineDiscounts(InvoiceLineDiscount obj) {
         addToManyTarget(INVOICE_LINE_DISCOUNTS_PROPERTY, obj, true);
     }
@@ -691,6 +707,18 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<PaymentInLine> getPaymentInLines() {
         return (List<PaymentInLine>)readProperty(PAYMENT_IN_LINES_PROPERTY);
+    }
+
+
+    public void addToPaymentPlanLines(CourseClassPaymentPlanLine obj) {
+        addToManyTarget(PAYMENT_PLAN_LINES_PROPERTY, obj, true);
+    }
+    public void removeFromPaymentPlanLines(CourseClassPaymentPlanLine obj) {
+        removeToManyTarget(PAYMENT_PLAN_LINES_PROPERTY, obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CourseClassPaymentPlanLine> getPaymentPlanLines() {
+        return (List<CourseClassPaymentPlanLine>)readProperty(PAYMENT_PLAN_LINES_PROPERTY);
     }
 
 
