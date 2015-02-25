@@ -1,5 +1,5 @@
 dependencies {
-    compile ('ish.oncourse.willow:waCommon:5.1.62') {
+    compile ('ish.oncourse.willow:waCommon:5.1.63') {
         //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
