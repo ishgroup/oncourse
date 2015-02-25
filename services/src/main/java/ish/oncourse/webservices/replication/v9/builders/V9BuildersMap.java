@@ -74,5 +74,7 @@ private Map<String, IWillowStubBuilder> builderMap;
 		builderMap.put(getEntityName(Application.class), new ApplicationStubBuilder());
 		builderMap.put(getEntityName(EmailTemplate.class), new EmailTemplateStubBuilred());
 		builderMap.put(getEntityName(Script.class), new ScriptStubBuilder());
+		builderMap.put(getEntityName(CourseClassPaymentPlanLine.class), new CourseClassPaymentPlanLineStubBuilder());
+		builderMap.put(getEntityName(InvoiceDueDate.class), new InvoiceDueDateStubBuilder());
     }
 }
