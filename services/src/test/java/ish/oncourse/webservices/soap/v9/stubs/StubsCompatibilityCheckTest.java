@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.soap.v9.stubs;
 
+import ish.oncourse.model.CourseClassPaymentPlanLine;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.util.GenericDeletedStub;
 import ish.oncourse.webservices.util.GenericInstructionStub;
@@ -392,6 +393,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		systemUserParameters.add(new ReplicationStubFieldParameter("isActive", Boolean.class));
 		systemUserParameters.add(new ReplicationStubFieldParameter("isAdmin", Boolean.class));
 		systemUserParameters.add(new ReplicationStubFieldParameter("defaultAdministrationCentreId", Long.class));
+		systemUserParameters.add(new ReplicationStubFieldParameter("token", String.class));
+		systemUserParameters.add(new ReplicationStubFieldParameter("tokenScratchCodes", String.class));
 		stubsPropertyMap.put(getStubName(SystemUserStub.class), systemUserParameters);
 		final List<ReplicationStubFieldParameter> tagRelationParameters = fillDefaultReplicationStubFields();
 		tagRelationParameters.add(new ReplicationStubFieldParameter("entityAngelId", Long.class));
@@ -591,6 +594,18 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		emailTemplateParameters.add(new ReplicationStubFieldParameter("name", String.class));
 		emailTemplateParameters.add(new ReplicationStubFieldParameter("subject", String.class));
 		stubsPropertyMap.put(getStubName(EmailTemplateStub.class), emailTemplateParameters);
+
+		List<ReplicationStubFieldParameter> courseClassPaymentPlanLineParameters = fillDefaultReplicationStubFields();
+		courseClassPaymentPlanLineParameters.add(new ReplicationStubFieldParameter("amount", BigDecimal.class));
+		courseClassPaymentPlanLineParameters.add(new ReplicationStubFieldParameter("dayOffset", Integer.class));
+		courseClassPaymentPlanLineParameters.add(new ReplicationStubFieldParameter("courseClassId", Long.class));
+		stubsPropertyMap.put(getStubName(CourseClassPaymentPlanLineStub.class), courseClassPaymentPlanLineParameters);
+
+		List<ReplicationStubFieldParameter> invoiceDueDateParameters = fillDefaultReplicationStubFields();
+		invoiceDueDateParameters.add(new ReplicationStubFieldParameter("amount", BigDecimal.class));
+		invoiceDueDateParameters.add(new ReplicationStubFieldParameter("dueDate", Date.class));
+		invoiceDueDateParameters.add(new ReplicationStubFieldParameter("invoiceId", Long.class));
+		stubsPropertyMap.put(getStubName(InvoiceDueDateStub.class), invoiceDueDateParameters);
 
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParameters = fillDefaultReplicationStubFields();
@@ -940,6 +955,18 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testEmailTemplateStub() {
 		GenericReplicationStub stub = new EmailTemplateStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testCourseClassPaymentPlanLineStub() {
+		GenericReplicationStub stub = new CourseClassPaymentPlanLineStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testInvoiceDueDateStub() {
+		GenericReplicationStub stub = new InvoiceDueDateStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	

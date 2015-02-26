@@ -386,7 +386,7 @@
         
 	<SystemUser angelId="2" canEditCMS="1" canEditTara="0" collegeId="3" id="1" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54"
 	siteId="1" email="test@test.by" firstName="StubTest" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" 
-	lastLoginOn="2011-09-20 11:14:54" lastName="StubTest" login="StubTest" password="StubTest"/>
+	lastLoginOn="2011-09-20 11:14:54" lastName="StubTest" login="StubTest" password="StubTest" token="4HNRF6AE4YHIEP3F" tokenScratchCodes="40676203,19811312,51082860,78200870,83349253"/>
 
     <Tag
             angelId="2"
@@ -544,5 +544,25 @@
 	}"/>
 
 	<EmailTemplate id="1" angelId="1" collegeId="3" name="Voucher Email" subject="Voucher" bodyPlain="test" bodyHtml="test" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" entity="Application"/>
+	
+	<CourseClassPaymentPlanLine
+			id="1"
+			angelId="1"
+			collegeId="3"
+			created="2011-09-20 11:14:54"  
+			modified="2011-09-20 11:14:54"
+			amount="100.00"
+			dayOffset="10"
+			courseClassId="1"/>
+	
+	<InvoiceDueDate
+			id="1"
+			angelId="1"
+			collegeId="3"
+			created="2011-09-20 11:14:54"
+			modified="2011-09-20 11:14:54"
+			amount="100.00"
+			dueDate="2016-09-20 11:14:54"
+			invoiceId="1"/>
 	
 </dataset>
