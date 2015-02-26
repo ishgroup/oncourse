@@ -27,7 +27,7 @@ public class SystemUserStubBuilder extends AbstractWillowStubBuilder<SystemUser,
 		stub.setLastLoginOn(entity.getLastLoginOn());
 		stub.setModified(entity.getModified());
 		stub.setToken(entity.getToken());
-		stub.setTokenScratchCodes(entity.getTokenScrathcCodes());
+		stub.setTokenScratchCodes(entity.getTokenScratchCodes());
 		return stub;
 	}
 }

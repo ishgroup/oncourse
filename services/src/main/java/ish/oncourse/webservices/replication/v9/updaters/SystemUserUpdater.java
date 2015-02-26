@@ -24,7 +24,7 @@ public class SystemUserUpdater extends AbstractWillowUpdater<SystemUserStub, Sys
 		entity.setLogin(StringUtils.trimToNull(stub.getLogin()) != null ? stub.getLogin() : StringUtils.EMPTY);
 		entity.setPassword(StringUtils.trimToNull(stub.getPassword()) != null ? stub.getPassword() : StringUtils.EMPTY);
 		entity.setToken(stub.getToken());
-		entity.setTokenScrathcCodes(stub.getTokenScratchCodes());
+		entity.setTokenScratchCodes(stub.getTokenScratchCodes());
 	}
 
 }
