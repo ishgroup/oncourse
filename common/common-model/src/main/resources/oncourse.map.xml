@@ -2132,7 +2132,7 @@
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
 		<obj-attribute name="surname" type="java.lang.String" db-attribute-path="lastName"/>
 		<obj-attribute name="token" type="java.lang.String" db-attribute-path="token"/>
-		<obj-attribute name="tokenScrathcCodes" type="java.lang.String" db-attribute-path="tokenScratchCodes"/>
+		<obj-attribute name="tokenScratchCodes" type="java.lang.String" db-attribute-path="tokenScratchCodes"/>
 	</obj-entity>
 	<obj-entity name="Tag" className="ish.oncourse.model.Tag" dbEntityName="Tag">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
