@@ -52,7 +52,9 @@ dependencies {
 
 	compile 'org.apache.derby:derbyclient:10.11.1.1'
 	compile 'org.apache.derby:derbynet:10.11.1.1'
-	compile 'org.liquibase:liquibase-core:3.3.1'
+    
+    // can't go above 2.0.5 due to the bug in liquibase [https://liquibase.jira.com/browse/CORE-2265]
+	compile 'org.liquibase:liquibase-core:2.0.5-fix'
 
 	compile 'net.sourceforge.jtds:jtds:1.3.1'
 	compile 'mysql:mysql-connector-java:5.1.34'
