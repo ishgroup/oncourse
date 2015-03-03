@@ -66,12 +66,9 @@ dependencies {
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
     compile ('net.sf.jasperreports:jasperreports:6.0.3') {
         exclude group: 'org.apache.poi', module: 'poi-ooxml'
-
-        //excluding the following, because they aren't correctly defined inside dependencies, causing duplicate jars to be added to the project
-        exclude group: 'bouncycastle', module: 'bcmail-jdk14'
-        exclude group: 'bouncycastle', module: 'bcprov-jdk14'
-        exclude group: 'bouncycastle', module: 'bctsp-jdk14'
     }
+    compile 'com.lowagie:itext:4.2.1'
+
 
     compile ('org.bouncycastle:bctsp-jdk14:1.46') {
     	exclude group: 'org.bouncycastle', module: 'bcmail-jdk14'
