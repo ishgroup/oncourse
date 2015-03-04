@@ -134,6 +134,10 @@ task scriptApiDocs(type: Javadoc) {
 		doclet = "ish.tools.ScriptApiDoclet"
 		stylesheetFile = rootProject.file('buildSrc/script-api-doclet/src/main/resources/javadocs.css')
 		windowTitle = "onCourse scripting API"
+		noDeprecated = true
+		noDeprecatedList = true
+		noTree = true
+		noSince = true
 	}
 }
 
