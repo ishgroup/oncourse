@@ -66,8 +66,13 @@ dependencies {
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
     compile ('net.sf.jasperreports:jasperreports:6.0.3') {
         exclude group: 'org.apache.poi', module: 'poi-ooxml'
+
+        exclude group:'org.codehaus.castor'
+        exclude group:'com.fasterxml.jackson.core'
+        exclude group:'org.apache.lucene'
+        exclude group:'org.olap4j'
     }
-    compile 'com.lowagie:itext:4.2.1'
+    
 
 
     compile ('org.bouncycastle:bctsp-jdk14:1.46') {
