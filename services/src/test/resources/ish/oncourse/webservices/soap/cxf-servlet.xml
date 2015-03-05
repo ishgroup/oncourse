@@ -42,8 +42,6 @@
 
 	<bean id="v9_paymentPortType" class="ish.oncourse.webservices.soap.v9.TestPaymentPortTypeImpl" />
 
-    <bean id="v9_TestServerInterceptor" class="ish.oncourse.webservices.soap.v4.interceptors.TestServerInterceptor"/>
-
 	<cxf:bus>
 		<cxf:features>
 			<ref bean="gzipFeature" />
@@ -119,7 +117,6 @@
 		<jaxws:inInterceptors>
 			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
-            <ref bean="v9_TestServerInterceptor"/>
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 </beans>
