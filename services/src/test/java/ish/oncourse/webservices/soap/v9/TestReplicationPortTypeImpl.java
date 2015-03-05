@@ -1,16 +1,7 @@
 package ish.oncourse.webservices.soap.v9;
 
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.soap.v9.AuthFailure;
-import ish.oncourse.webservices.soap.v9.ReplicationFault;
-import ish.oncourse.webservices.soap.v9.ReplicationPortType;
-import ish.oncourse.webservices.v9.stubs.replication.InstructionStub;
-import ish.oncourse.webservices.v9.stubs.replication.ReplicatedRecord;
-import ish.oncourse.webservices.v9.stubs.replication.ReplicationRecords;
-import ish.oncourse.webservices.v9.stubs.replication.ReplicationResult;
-import ish.oncourse.webservices.v9.stubs.replication.SiteStub;
-import ish.oncourse.webservices.v9.stubs.replication.TransactionGroup;
-import ish.oncourse.webservices.v9.stubs.replication.UnreplicatedEntitiesStub;
+import ish.oncourse.webservices.v9.stubs.replication.*;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -35,7 +26,7 @@ public class TestReplicationPortTypeImpl implements ReplicationPortType {
 	@Override
 	public void confirmExecution(@WebParam(name = "arg0", targetNamespace = "") Long aLong, @WebParam(name = "arg1", targetNamespace = "") String s) {
 		assertEquals(Long.MAX_VALUE, aLong.longValue());
-		assertEquals(Long.MAX_VALUE, "confirmExecution");
+		assertEquals(s, "confirmExecution");
 	}
 
 	@Override

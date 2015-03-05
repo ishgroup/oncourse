@@ -1,8 +1,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
-	   xsi:schemaLocation="
-			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
 			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
@@ -41,6 +41,8 @@
 	<bean id="v9_replicationPortType" class="ish.oncourse.webservices.soap.v9.TestReplicationPortTypeImpl" />
 
 	<bean id="v9_paymentPortType" class="ish.oncourse.webservices.soap.v9.TestPaymentPortTypeImpl" />
+
+    <bean id="v9_TestServerInterceptor" class="ish.oncourse.webservices.soap.v4.interceptors.TestServerInterceptor"/>
 
 	<cxf:bus>
 		<cxf:features>
@@ -97,9 +99,16 @@
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 
+    <jaxws:endpoint id="v4_reference" implementor="#v4_referencePortTypeBean"
+                    address="/v4/reference">
+        <jaxws:inInterceptors>
+            <ref bean="v4_collegeRequestInterceptor" />
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
 	<jaxws:endpoint id="v9_replication" implementor="#v9_replicationPortType"
 					address="/v9/replication">
-		<jaxws:inInterceptors>
+        <jaxws:inInterceptors>
 			<ref bean="v4_communicationKeyInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
@@ -110,15 +119,7 @@
 		<jaxws:inInterceptors>
 			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-	
-	
-
-	<jaxws:endpoint id="v4_reference" implementor="#v4_referencePortTypeBean"
-					address="/v4/reference">
-		<jaxws:inInterceptors>
-			<ref bean="v4_collegeRequestInterceptor" />
+            <ref bean="v9_TestServerInterceptor"/>
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 </beans>

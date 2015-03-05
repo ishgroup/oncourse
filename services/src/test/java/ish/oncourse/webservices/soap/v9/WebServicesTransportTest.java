@@ -1,24 +1,27 @@
 package ish.oncourse.webservices.soap.v9;
 
-import ish.oncourse.webservices.soap.v4.ReferencePortType;
-import ish.oncourse.webservices.soap.v9.PaymentPortType;
-import ish.oncourse.webservices.soap.v9.ReplicationFault;
-import ish.oncourse.webservices.soap.v9.ReplicationPortType;
+import ish.oncourse.webservices.util.Sent2WillowInterceptor;
+import ish.oncourse.webservices.util.SoapUtil;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
 import ish.oncourse.webservices.v9.stubs.replication.InstructionStub;
 import ish.oncourse.webservices.v9.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v9.stubs.replication.ReplicationResult;
 import ish.oncourse.webservices.v9.stubs.replication.TransactionGroup;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.interceptor.Fault;
+import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.AbstractPhaseInterceptor;
+import org.apache.cxf.phase.Phase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.ws.BindingProvider;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  */
@@ -26,7 +29,24 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 
 	private static TestServer server;
 
-	@BeforeClass
+    private Sent2WillowInterceptor sent2WillowInterceptor  = new Sent2WillowInterceptor();
+
+    @Override
+    public Client initPortType(BindingProvider bindingProvider, String url) throws JAXBException {
+        Client client = super.initPortType(bindingProvider, url);
+        client.getInInterceptors().add(sent2WillowInterceptor);
+        client.getOutInterceptors().add(new AbstractPhaseInterceptor<Message>(Phase.SEND_ENDING) {
+            @Override
+            public void handleMessage(Message message) throws Fault {
+                Boolean sent = SoapUtil.isRMProtocolMessage(message, true);
+                System.out.println(sent);
+            }
+        });
+        return client;
+    }
+
+
+    @BeforeClass
 	public static void before() throws Exception {
         server = startServer();
 	}
@@ -65,12 +85,6 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	}
 
 	@Test
-	public void testReplicationPortType_logout() throws Exception {
-		ReplicationPortType replicationPortType = getReplicationPortType();
-		//replicationPortType.logout(getCommunicationKey());
-	}
-
-	@Test
 	public void testReplicationPortType_sendRecords() throws Exception {
 		ReplicationPortType replicationPortType = getReplicationPortType();
 		ReplicationRecords replicationRecords = new ReplicationRecords();
@@ -95,13 +109,13 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	}
 
 	@Test
-	public void  test_getMaximumVersion() throws JAXBException {
+	public void  testReferencePortType_getMaximumVersion() throws JAXBException {
 		assertEquals(Long.MAX_VALUE, getReferencePortType().getMaximumVersion());
 	}
 
 
 	@Test
-	public void  test_getRecords() throws JAXBException {
+	public void  testReferencePortType_getRecords() throws JAXBException {
 		ReferenceResult referenceResult = getReferencePortType().getRecords(Long.MAX_VALUE);
 		List<ReferenceStub> resultStub = referenceResult.getCountryOrLanguageOrModule();
 		assertListStubs(resultStub,PACKAGE_NAME_REFERENCE_STUBS,ReferenceStub.class);
@@ -110,39 +124,38 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	@Test
 	public void test_processRefund() throws Throwable {
 		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
-		TransactionGroup transactionGroupResult = getPortType().processRefund(transactionGroup);
+		TransactionGroup transactionGroupResult = getPaymentPortType().processRefund(transactionGroup);
 		assertTransactionGroup(transactionGroupResult);
 	}
 
 	@Test
 	public void test_getPaymentStatus() throws JAXBException, ReplicationFault {
-		TransactionGroup transactionGroupResult = getPortType().getPaymentStatus("PaymentStatus");
+		TransactionGroup transactionGroupResult = getPaymentPortType().getPaymentStatus("PaymentStatus");
 		assertTransactionGroup(transactionGroupResult);
 	}
 
 	@Test
 	public void test_processPayment() throws Throwable {
 		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
-		TransactionGroup transactionGroupResult = getPortType().processPayment(transactionGroup);
+		TransactionGroup transactionGroupResult = getPaymentPortType().processPayment(transactionGroup);
 		assertTransactionGroup(transactionGroupResult);
 	}
 
 	@Test
 	public void test_getVouchers() throws Throwable {
 		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
-		TransactionGroup transactionGroupResult = getPortType().getVouchers(transactionGroup);
+		TransactionGroup transactionGroupResult = getPaymentPortType().getVouchers(transactionGroup);
 		assertTransactionGroup(transactionGroupResult);
 	}
 
-	private PaymentPortType getPortType() throws JAXBException {
-		return getPaymentPortType("wsdl/v9_replication.wsdl", "/services/v9/payment");
-	}
+    @Test
+    public void test() {
+        try {
+            getPaymentPortType().getPaymentStatus("PaymentStatus");
+            assertTrue(sent2WillowInterceptor.isSent());
+        } catch (ReplicationFault replicationFault) {
+            throw new RuntimeException(replicationFault);
+        }
+    }
 
-	private ReplicationPortType getReplicationPortType() throws JAXBException {
-		return getReplicationPortType("wsdl/v9_replication.wsdl", "/services/v9/replication");
-	}
-	
-	private ReferencePortType getReferencePortType() throws JAXBException {
-		return getReferencePortType("wsdl/v4_reference.wsdl", "/services/v4/reference");
-	}
 }

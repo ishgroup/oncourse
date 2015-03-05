@@ -2,6 +2,9 @@ package ish.oncourse.webservices.util;
 
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.headers.Header;
+import org.apache.cxf.message.Message;
+import org.apache.cxf.ws.addressing.AddressingProperties;
+import org.apache.cxf.ws.rm.RMContextUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -66,4 +69,18 @@ public class SoapUtil {
 	public static void addSecurityCode(SoapMessage message, String securityCode) {
 		addHeader(message, SECURITY_CODE_HEADER, securityCode);
 	}
+
+    public static boolean isRMProtocolMessage(Message message, boolean isOutbound) {
+        AddressingProperties maps =
+                RMContextUtils.retrieveMAPs(message, false, isOutbound);
+        String action;
+        if (maps != null && maps.getAction() != null) {
+            action = maps.getAction().getValue();
+        } else {
+            return false;
+        }
+
+        return RMContextUtils.isRMProtocolMessage(action);
+    }
+
 }

@@ -1,21 +1,8 @@
 package ish.oncourse.webservices.soap.v9;
 
-import ish.oncourse.model.Article;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Membership;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Voucher;
-import ish.oncourse.model.VoucherPaymentIn;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.soap.v9.PaymentPortType;
-import ish.oncourse.webservices.soap.v9.ReplicationPortType;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v9.stubs.replication.TransactionGroup;
@@ -35,7 +22,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import javax.sql.DataSource;
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -43,9 +29,7 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public abstract class RealWSTransportTest extends AbstractTransportTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessDataset.xml";
@@ -192,13 +176,5 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		College college = colleges.get(0);
 		assertNotNull("Security code should be not NULL", college.getWebServicesSecurityCode());
 		return college.getWebServicesSecurityCode();
-	}
-
-	protected ReplicationPortType getReplicationPortType() throws JAXBException {
-		return getReplicationPortType(REPLICATION_WSDL, REPLICATION_ENDPOINT_PATH);
-	}
-	
-	protected PaymentPortType getPaymentPortType() throws JAXBException {
-		return getPaymentPortType(REPLICATION_WSDL, PAYMENT_ENDPOINT_PATH);
 	}
 }
