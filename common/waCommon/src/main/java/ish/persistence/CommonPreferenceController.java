@@ -505,6 +505,8 @@ public abstract class CommonPreferenceController {
 	public static final String EMAIL_POP3ACCOUNT = "email.pop3.account";
 	public static final String EMAIL_POP3PASSWORD = "email.pop3.password";
 	public static final String SMS_FROM_ADDRESS = "sms.from";
+	public static final String SMTP_USERNAME = "smtp.username";
+	public static final String SMTP_PASSWORD = "smtp.password";
 
 	public synchronized String getEmailSMTPHost() {
 		return getValue(EMAIL_SMTPHOST, false);
@@ -589,6 +591,22 @@ public abstract class CommonPreferenceController {
 
 	public synchronized void setSMSFromAddress(String value) {
 		setValue(SMS_FROM_ADDRESS, false, value);
+	}
+
+	public synchronized String getSMTPUsername() {
+		return getValue(SMTP_USERNAME, false);
+	}
+
+	public synchronized void setSMTPUsername(String value) {
+		setValue(SMTP_USERNAME, false, value);
+	}
+
+	public synchronized String getSMTPPassword() {
+		return getValue(SMTP_PASSWORD, false);
+	}
+
+	public synchronized void setSMTPPassword(String value) {
+		setValue(SMTP_PASSWORD, false, value);
 	}
 
 	// **************************************
@@ -1972,6 +1990,10 @@ public abstract class CommonPreferenceController {
 			return getGravatarEnabled();
 		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
 			return getDocumentImportPath();
+		} else if (SMTP_USERNAME.equals(key)) {
+			return getSMTPUsername();
+		} else if (SMTP_PASSWORD.equals(key)) {
+			return getSMTPPassword();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -2168,6 +2190,10 @@ public abstract class CommonPreferenceController {
 			setDefaultQEEnrolmentReportKeycode((String)value);
 		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
 			setDocumentImportPath((File) value);
+		} else if (SMTP_USERNAME.equals(key)) {
+			setSMTPUsername((String) value);
+		} else if (SMTP_PASSWORD.equals(key)) {
+			setSMTPPassword((String) value);
 		}
 	}
 
