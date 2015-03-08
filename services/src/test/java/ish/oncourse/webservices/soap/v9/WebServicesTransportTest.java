@@ -1,7 +1,6 @@
 package ish.oncourse.webservices.soap.v9;
 
 import ish.oncourse.webservices.util.Sent2WillowInterceptor;
-import ish.oncourse.webservices.util.SoapUtil;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
 import ish.oncourse.webservices.v9.stubs.replication.InstructionStub;
@@ -9,10 +8,6 @@ import ish.oncourse.webservices.v9.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v9.stubs.replication.ReplicationResult;
 import ish.oncourse.webservices.v9.stubs.replication.TransactionGroup;
 import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.interceptor.Fault;
-import org.apache.cxf.message.Message;
-import org.apache.cxf.phase.AbstractPhaseInterceptor;
-import org.apache.cxf.phase.Phase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,14 +29,7 @@ public class WebServicesTransportTest extends AbstractTransportTest {
     @Override
     public Client initPortType(BindingProvider bindingProvider, String url) throws JAXBException {
         Client client = super.initPortType(bindingProvider, url);
-        client.getInInterceptors().add(sent2WillowInterceptor);
-        client.getOutInterceptors().add(new AbstractPhaseInterceptor<Message>(Phase.SEND_ENDING) {
-            @Override
-            public void handleMessage(Message message) throws Fault {
-                Boolean sent = SoapUtil.isRMProtocolMessage(message, true);
-                System.out.println(sent);
-            }
-        });
+        client.getOutInterceptors().add(sent2WillowInterceptor);
         return client;
     }
 
