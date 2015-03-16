@@ -80,6 +80,7 @@ dependencies {
     }
 	
 	compile 'org.codehaus.groovy:groovy-all:2.3.9'
+	compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
 
 	compile 'com.warrenstrange:googleauth:0.4.3'
 	compile 'net.glxn.qrgen:javase:2.0'
