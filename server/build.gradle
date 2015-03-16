@@ -78,9 +78,8 @@ dependencies {
     compile ('org.bouncycastle:bctsp-jdk14:1.46') {
     	exclude group: 'org.bouncycastle', module: 'bcmail-jdk14'
     }
-
-    compile 'org.codehaus.groovy:groovy-templates:2.3.9'
-    compile 'org.codehaus.groovy:groovy-jsr223:2.3.9'
+	
+	compile 'org.codehaus.groovy:groovy-all:2.3.9'
 
 	compile 'com.warrenstrange:googleauth:0.4.3'
 	compile 'net.glxn.qrgen:javase:2.0'
