@@ -262,23 +262,6 @@ public class Web {
 		LicenseFeeUtil.createFee(context, college, site, LicenseFeeUtil.CC_WEB_FEE_CODE);
 		LicenseFeeUtil.createFee(context, college, site, LicenseFeeUtil.ECOMMERCE_FEE_CODE);
 
-		if (college != null) {
-			Expression exp = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, college).andExp(
-					ExpressionFactory.matchExp(Tag.NAME_PROPERTY, Tag.SUBJECTS_TAG_NAME));
-			@SuppressWarnings("unchecked")
-			List<Tag> subjectsTags = context.performQuery(new SelectQuery(Tag.class, exp));
-			
-			if (subjectsTags.size() == 0) {
-				Tag tag = context.newObject(Tag.class);
-				tag.setCollege(context.localObject(college));
-				tag.setName(Tag.SUBJECTS_TAG_NAME);
-				tag.setIsWebVisible(true);
-				tag.setIsTagGroup(true);
-				tag.setCreated(now);
-				tag.setModified(now);
-			}
-		}
-		
 		context.commitChanges();
 
 		WebUrlAlias urlAlias = context.newObject(WebUrlAlias.class);
