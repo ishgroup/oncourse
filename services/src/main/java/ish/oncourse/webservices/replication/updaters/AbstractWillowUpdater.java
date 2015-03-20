@@ -19,6 +19,7 @@ public abstract class AbstractWillowUpdater<V extends GenericReplicationStub, T 
 	public static final String STUDENT_ENTITY_NAME = Student.class.getSimpleName();
 	public static final String TUTOR_ENTITY_NAME = Tutor.class.getSimpleName();
 	public static final String TAG_ENTITY_NAME = Tag.class.getSimpleName();
+	public static final String APPLICATION_ENTITY_NAME = Application.class.getSimpleName();
 
 	/**
 	 * @see ish.oncourse.server.replication.updater.IAngelUpdater#updateEntityFromStub(ish.oncourse.webservices.v4.stubs.replication.ReplicationStub,
