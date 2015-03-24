@@ -507,6 +507,8 @@ public abstract class CommonPreferenceController {
 	public static final String SMS_FROM_ADDRESS = "sms.from";
 	public static final String SMTP_USERNAME = "smtp.username";
 	public static final String SMTP_PASSWORD = "smtp.password";
+	public static final String SMTP_START_TLS = "mail.smtp.starttls.enable";
+	public static final String SMTP_PORT = "mail.smtp.port";
 
 	public synchronized String getEmailSMTPHost() {
 		return getValue(EMAIL_SMTPHOST, false);
@@ -607,6 +609,33 @@ public abstract class CommonPreferenceController {
 
 	public synchronized void setSMTPPassword(String value) {
 		setValue(SMTP_PASSWORD, false, value);
+	}
+
+	public synchronized boolean getSMTPStartTLS() {
+		String aPref = getValue(SMTP_START_TLS, false);
+		if (aPref == null) {
+			setSMTPStartTLS(false);
+			return getSMTPStartTLS();
+		}
+		return Boolean.parseBoolean(aPref);
+	}
+
+	public synchronized void setSMTPStartTLS(boolean value) {
+		setValue(SMTP_START_TLS, false, Boolean.toString(value));
+	}
+
+	public synchronized int getSMTPPort() {
+		String port = getValue(SMTP_PORT, false);
+		if (port == null) {
+			// set default value
+			setSMTPPort(25);
+			return getSMTPPort();
+		}
+		return Integer.parseInt(port);
+	}
+
+	public synchronized void setSMTPPort(int value) {
+		setValue(SMTP_PORT, false, Integer.valueOf(value).toString());
 	}
 
 	// **************************************
@@ -1994,6 +2023,10 @@ public abstract class CommonPreferenceController {
 			return getSMTPUsername();
 		} else if (SMTP_PASSWORD.equals(key)) {
 			return getSMTPPassword();
+		} else if (SMTP_START_TLS.equals(key)) {
+			return getSMTPStartTLS();
+		} else if (SMTP_PORT.equals(key)) {
+			return getSMTPPort();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -2194,6 +2227,10 @@ public abstract class CommonPreferenceController {
 			setSMTPUsername((String) value);
 		} else if (SMTP_PASSWORD.equals(key)) {
 			setSMTPPassword((String) value);
+		} else if (SMTP_START_TLS.equals(key)) {
+			setSMTPStartTLS((Boolean) value);
+		} else if (SMTP_PORT.equals(key)) {
+			setSMTPPort((Integer) value);
 		}
 	}
 
