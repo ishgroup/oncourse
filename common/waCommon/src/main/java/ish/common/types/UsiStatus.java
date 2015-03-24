@@ -16,7 +16,7 @@ public enum UsiStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * @PublicApi
 	 */
-	DEFAULT_NOT_SUPPLIED(0, "Not set"),
+	DEFAULT_NOT_SUPPLIED(0, "Not supplied"),
 
 	/**
 	 * @PublicApi
