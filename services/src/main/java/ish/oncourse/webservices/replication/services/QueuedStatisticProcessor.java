@@ -25,18 +25,25 @@ public class QueuedStatisticProcessor {
 
     private ObjectContext atomicContext;
 
+    private boolean active = false;
+
     public QueuedStatisticProcessor(ObjectContext atomicContext,
                                     IWebSiteService webSiteService,
                                     IWillowUpdater willowUpdater,
-                                    TransactionGroupProcessorImpl transactionGroupProcessor
+                                    TransactionGroupProcessorImpl transactionGroupProcessor,
+                                    boolean active
     ) {
         this.atomicContext = atomicContext;
         this.webSiteService = webSiteService;
         this.willowUpdater = willowUpdater;
         this.transactionGroupProcessor = transactionGroupProcessor;
+        this.active = active;
     }
 
     public void cleanupStatistic() {
+        if (!active)
+            return;
+
         if (receivedTimestamp == null)
             return;
 
@@ -66,6 +73,9 @@ public class QueuedStatisticProcessor {
 
 
     public Queueable process(GenericQueuedStatisticStub statisticStub) {
+        if (!active)
+            return null;
+
         if (Boolean.TRUE.equals(statisticStub.isCleanupStub())) {
             receivedTimestamp = statisticStub.getReceivedTimestamp();
             return null;
@@ -92,6 +102,8 @@ public class QueuedStatisticProcessor {
 	 * This code should be removed once there will be no colleges using angel 5.0 or earlier.
 	 */
 	public void fillQueuedStatisticStubs(GenericTransactionGroup group) {
+        if (!active)
+            return;
 		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericQueuedStatisticStub) {
 				if (stub.getEntityIdentifier() == null) {
