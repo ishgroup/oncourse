@@ -74,17 +74,19 @@
                     <div class="summary" itemprop="name">${product.name}</div>
                 </div>
             </div>
-            <div class="classAction">
-                <t:if t:test="paymentGatewayEnabled">
-                    <t:if test="addedProduct">
-                        <a class="enrolAction enrol-added-class" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">Added</a>
-                    </t:if>
-                    <t:unless test="addedProduct" >
-                        <a class="enrolAction" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">BUY NOW</a>
-                    </t:unless>
+            <t:if test="canBuy()">
+                <div class="classAction">
+                    <t:if t:test="paymentGatewayEnabled">
+                        <t:if test="addedProduct">
+                            <a class="enrolAction enrol-added-class" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">Added</a>
+                        </t:if>
+                        <t:unless test="addedProduct" >
+                            <a class="enrolAction" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">BUY NOW</a>
+                        </t:unless>
 
-                </t:if>
-            </div>
+                    </t:if>
+                </div>
+            </t:if>
         </div>
     </t:block>
 

@@ -72,11 +72,9 @@ public class VoucherService implements IVoucherService {
 	public Product loadAvailableVoucherProductBySKU(String sku) {
 		College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Product.COLLEGE_PROPERTY, currentCollege)
-				.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
 				.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE))
 				.andExp(ExpressionFactory.matchExp(Product.SKU_PROPERTY, sku));
 		SelectQuery query = new SelectQuery(Product.class, qualifier);
-		@SuppressWarnings("unchecked")
 		List<Product> results = cayenneService.sharedContext().performQuery(query);
 		return !results.isEmpty() ? results.get(0) : null;
 	}
