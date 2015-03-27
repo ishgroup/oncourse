@@ -2,6 +2,8 @@ package ish.oncourse.ui.utils;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Product;
+import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.CourseClassUtils;
 import ish.oncourse.services.search.SearchParams;
 import org.apache.cayenne.query.Ordering;
@@ -20,18 +22,21 @@ public class CourseItemModel {
 
     private List<CourseClass> fullClasses;
 
+    private List<Product> relatedProducts;
+
     private Course course;
 
-    public static CourseItemModel createCourseItemModel(Course course) {
-        return createCourseItemModel(course, null);
+    public static CourseItemModel valueOf(Course course, ICourseService courseService) {
+        return valueOf(course, null, courseService);
     }
 
-    public static CourseItemModel createCourseItemModel(Course course, SearchParams searchParams) {
+    public static CourseItemModel valueOf(Course course, SearchParams searchParams, ICourseService courseService) {
         CourseItemModel courseItemModel = new CourseItemModel();
         courseItemModel.course = course;
         courseItemModel.otherClasses = new ArrayList<>();
         courseItemModel.fullClasses = new ArrayList<>();
         courseItemModel.availableClasses = new ArrayList<>();
+        courseItemModel.relatedProducts = courseService.getRelatedProductsFor(course);
 
         if (searchParams == null) {
             courseItemModel.availableClasses.addAll(course.getEnrollableClasses());
@@ -105,5 +110,13 @@ public class CourseItemModel {
     
     public boolean isHaveRelatedCourses() {
     	return !course.getRelatedToCourses().isEmpty();
+    }
+
+    public boolean hasRelatedProducts() {
+        return !relatedProducts.isEmpty();
+    }
+
+    public List<Product> getRelatedProducts() {
+        return relatedProducts;
     }
 }

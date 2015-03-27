@@ -72,5 +72,9 @@
 			<h3>Related Courses</h3>
 			<div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
 		</t:if>
+		<t:if t:test="courseItemModel.hasRelatedProducts()">
+			<h3>Related Products</h3>
+			<div t:type="ui/relatedporducts" model="courseItemModel"></div>
+		</t:if>
 	</div>
 </t:container>

@@ -1,6 +1,7 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.ui.utils.CourseItemModel;
 import ish.oncourse.util.HTMLUtils;
@@ -9,6 +10,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class CourseDetails {
+	@Inject
+	private ICourseService courseService;
+
 	@Inject
 	private Request request;
 
@@ -23,7 +27,7 @@ public class CourseDetails {
 	}
 
 	public CourseItemModel getCourseItemModel() {
-		return CourseItemModel.createCourseItemModel(course, null);
+		return CourseItemModel.valueOf(course, courseService);
 	}
 
 	public String getCanonicalLinkPath() {

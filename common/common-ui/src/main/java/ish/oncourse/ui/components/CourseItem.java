@@ -2,12 +2,7 @@ package ish.oncourse.ui.components;
 
 import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
-import ish.oncourse.model.Application;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Module;
-import ish.oncourse.model.Tag;
+import ish.oncourse.model.*;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -58,7 +53,6 @@ public class CourseItem {
 	private PreferenceController preferenceController;
 	
 	@Property
-	//@InjectComponent
 	private Zone modulesZone;
 	
 	@SuppressWarnings("all")
