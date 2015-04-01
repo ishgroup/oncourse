@@ -113,7 +113,7 @@ configurations {
 }
 
 dependencies {
-	apiDocs 'ish.oncourse.willow:waCommon:5.1.68:sources'
+	apiDocs 'ish.oncourse.willow:waCommon:5.1.69:sources'
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
