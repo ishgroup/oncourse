@@ -543,7 +543,17 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Database value: 94
 	 * @PublicApi
 	 */
-	CONTACT_RELATION_TYPE(94, "Contact relation types", Mask.VIEW);
+	CONTACT_RELATION_TYPE(94, "Contact relation types", Mask.VIEW),
+
+	/**
+	 * Ability to create payment plan lines for invoice
+	 * Always disabled
+	 * 
+	 * Database value: 95
+	 * @PublicApi
+	 */
+	PAYMENT_PLAN(95, "Payment plan", Mask.NONE, Mask.VIEW);
+	
 
 	private int value;
 	private String displayName;
