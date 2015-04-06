@@ -163,14 +163,8 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * @PublicApi
 	 */
 	SYSTEMUSER(20, "Users", Mask.NONE, Mask.DELETE),
-
-	/**
-	 * Purchase orders aren't yet implemented in onCourse.
-	 * Always disabled: delete
-	 * 
-	 * Database value: 21
-	 * @PublicApi
-	 */
+	
+	@Deprecated
 	PURCHASE(21, "Purchase", Mask.NONE, Mask.DELETE),
 
 	/**
@@ -286,7 +280,8 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 */
 	PRODUCT(36, "Product", Mask.VIEW),
 
-	/**Database value: 37
+	/**
+	 * Database value: 37
 	 * @PublicApi
 	 */
 	PAY_PERIOD(37, "Pay period", Mask.NONE, Mask.CREATE + Mask.DELETE),
@@ -300,11 +295,13 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * Always enabled: view
 	 * 
+	 * Database value: 39
 	 * @PublicApi
 	 */
 	TUTOR_ROLE(39, "Tutor roles"),
 
 	/**
+	 * Database value: 40
 	 * @PublicApi
 	 */
 	APPLICATION(40, "Applications"),
@@ -312,6 +309,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * Always enabled: view
 	 * 
+	 * Database value: 41
 	 * @PublicApi
 	 */
 	MEMBERSHIP(41, "Memberships", Mask.VIEW),
@@ -319,6 +317,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * Always enabled: view
 	 * 
+	 * Database value: 42
 	 * @PublicApi
 	 */
 	VOUCHER(42, "Vouchers", Mask.VIEW),
@@ -327,16 +326,19 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Product sales.
 	 * Always enabled: view
 	 * 
+	 * Database value: 43
 	 * @PublicApi
 	 */
 	SALE(43, "Sales", Mask.VIEW),
 	
 	/**
+	 * Database value: 60
 	 * @PublicApi
 	 */
 	FINANCIAL_PREFERENCES(60, "Financial preferences", Mask.NONE, Mask.CREATE | Mask.PRINT | Mask.DELETE),
 
 	/**
+	 * Database value: 61
 	 * @PublicApi
 	 */
 	GENERAL_PREFERENCES(61, "General preferences", Mask.NONE, Mask.CREATE | Mask.PRINT | Mask.DELETE),
@@ -454,11 +456,12 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Special single option.
+	 * Always enabled: print
 	 * 
 	 * Database value: 83
 	 * @PublicApi
 	 */
-	SPECIAL_CHANGE_ADMINISTRATION_CENTRE(83, "Change administration centre", Mask.ALL - Mask.VIEW),
+	SPECIAL_CHANGE_ADMINISTRATION_CENTRE(83, "Change administration centre", Mask.PRINT),
 
 	/**
 	 * Special single option.
