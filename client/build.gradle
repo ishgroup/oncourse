@@ -5,7 +5,7 @@ dependencies {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
-	compile 'org.apache.cayenne:cayenne-client:3.2M1.2'
+	compile 'org.apache.cayenne:cayenne-client:4.0.M2'
 	compile 'foxtrot:foxtrot-core:4.0'
 	compile 'com.miglayout:miglayout-swing:4.2'
 	compile 'com.migcalendar:migcalendar:6.9.3'

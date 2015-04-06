@@ -43,7 +43,7 @@ dependencies {
         
     }
     
-	compile 'org.apache.cayenne:cayenne-lifecycle:3.2M1.2'
+	compile 'org.apache.cayenne:cayenne-lifecycle:4.0.M2'
 
 	compile 'foxtrot:foxtrot-core:4.0'
 

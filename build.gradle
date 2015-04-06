@@ -10,9 +10,9 @@ buildscript {
 
 	dependencies {
 		classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.6'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.8'
         classpath 'au.com.ish.gradle:release:2.2.2'
-		classpath 'org.apache.cayenne:cayenne-tools:3.2M1.2'
+		classpath 'org.apache.cayenne:cayenne-tools:4.0.M2'
 	}
 }
 
