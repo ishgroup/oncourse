@@ -232,12 +232,12 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * The right to edit reports. Note that a user with this right could create a report which contains any other data from the whole database.
-	 * Always enabled: view
+	 * Always enabled: view & print
 	 * 
 	 * Database value: 30
 	 * @PublicApi
 	 */
-	REPORT(30, "Report", Mask.VIEW),
+	REPORT(30, "Report", Mask.VIEW + Mask.PRINT),
 
 	/**
 	 * Always enabled: view & print
@@ -456,12 +456,11 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Special single option.
-	 * Always enabled: print
 	 * 
 	 * Database value: 83
 	 * @PublicApi
 	 */
-	SPECIAL_CHANGE_ADMINISTRATION_CENTRE(83, "Change administration centre", Mask.PRINT),
+	SPECIAL_CHANGE_ADMINISTRATION_CENTRE(83, "Change administration centre", Mask.ALL - Mask.VIEW),
 
 	/**
 	 * Special single option.
