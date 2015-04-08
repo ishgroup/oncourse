@@ -24,10 +24,6 @@ public class Image {
 
     @Property
     @Parameter
-    private String caption;
-
-    @Property
-    @Parameter
     private String alt;
 
     @Property
