@@ -69,10 +69,6 @@ public class PaymentControl {
 		return preferenceController.getRefundPolicyUrl() != null;
 	}
 
-	public String getSubmitButtonText() {
-		return isZeroPayment() ? messages.get("submit.button.text.enrol") : messages.get("submit.button.text.payment");
-	}
-
 	public boolean isZeroPayment() {
 		return delegate.getPaymentIn().isZeroPayment();
 	}

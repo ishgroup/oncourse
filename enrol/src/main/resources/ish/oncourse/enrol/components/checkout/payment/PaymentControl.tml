@@ -22,6 +22,6 @@
         </div>
     </p>
     <div class="form-controls enrolmentsSelected">
-        <t:submit t:id="paymentSubmit" value="${submitButtonText}" class="btn btn-primary"/>
+        <t:submit t:id="paymentSubmit" value="message:submit.button.text.payment" class="btn btn-primary"/>
     </div>
 </t:container>
