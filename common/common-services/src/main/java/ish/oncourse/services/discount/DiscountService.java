@@ -31,7 +31,7 @@ public class DiscountService implements IDiscountService {
 	 */
 	public List<Discount> getPromotions() {
 		List<Long> discountIds = cookiesService.getCookieCollectionValue(Discount.PROMOTIONS_KEY, Long.class);
-		if (discountIds == null) {
+		if (discountIds == null || discountIds.isEmpty()) {
 			return new ArrayList<>();
 		}
 		final List<Discount> result = ExpressionFactory.noMatchExp(Discount.CODE_PROPERTY, null).filterObjects(loadByIds(discountIds.toArray()));

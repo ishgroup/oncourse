@@ -1,12 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.common.types.ApplicationStatus;
-import ish.common.types.ConfirmationStatus;
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentType;
-import ish.common.types.ProductStatus;
-import ish.common.types.ProductType;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.AddContactController;
 import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
@@ -38,7 +32,6 @@ import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
@@ -771,7 +764,6 @@ public class PurchaseController {
     {
         SelectQuery selectQuery = new SelectQuery(Cayenne.getObjEntity(object),
                 ExpressionFactory.matchExp(object));
-        selectQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
         return (T) Cayenne.objectForQuery(getModel().getObjectContext(), selectQuery);
     }
 

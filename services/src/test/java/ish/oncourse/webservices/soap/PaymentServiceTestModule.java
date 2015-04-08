@@ -97,8 +97,6 @@ import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
  *
  */
 public class PaymentServiceTestModule {
-	public static final String TEST_IS_QUERY_CACHE_DISABLED = "test.isQueryCacheDisabled";
-	
 	public static void bind(ServiceBinder binder) {
 
 		// Tapestry and environment specific services
@@ -170,8 +168,8 @@ public class PaymentServiceTestModule {
 	}
 	
 	@EagerLoad
-	public static ICayenneService buildCayenneService(ICacheService cacheService, RegistryShutdownHub hub, IWebSiteService webSiteService) {
-		CayenneService cayenneService = new CayenneService(cacheService, webSiteService);
+	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
+		CayenneService cayenneService = new CayenneService(webSiteService);
 		hub.addRegistryShutdownListener(cayenneService);
 		return cayenneService;
 	}

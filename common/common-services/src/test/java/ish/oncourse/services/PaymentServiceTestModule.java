@@ -46,16 +46,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
-import ish.oncourse.services.reference.CountryService;
-import ish.oncourse.services.reference.ICountryService;
-import ish.oncourse.services.reference.ILanguageService;
-import ish.oncourse.services.reference.IModuleService;
-import ish.oncourse.services.reference.IQualificationService;
-import ish.oncourse.services.reference.ITrainingPackageService;
-import ish.oncourse.services.reference.LanguageService;
-import ish.oncourse.services.reference.ModuleService;
-import ish.oncourse.services.reference.QualificationService;
-import ish.oncourse.services.reference.TrainingPackageService;
+import ish.oncourse.services.reference.*;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.room.IRoomService;
@@ -144,8 +135,8 @@ public class PaymentServiceTestModule {
 	}
 	
 	@EagerLoad
-	public static ICayenneService buildCayenneService(ICacheService cacheService, RegistryShutdownHub hub, IWebSiteService webSiteService) {
-		CayenneService cayenneService = new CayenneService(cacheService, webSiteService);
+	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
+		CayenneService cayenneService = new CayenneService(webSiteService);
 		hub.addRegistryShutdownListener(cayenneService);
 		return cayenneService;
 	}

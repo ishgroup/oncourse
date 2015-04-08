@@ -1,10 +1,10 @@
 package ish.oncourse.util;
 
+import org.apache.log4j.Logger;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import org.apache.log4j.Logger;
 
 /**
  * Utility class to perform context lookups.
@@ -49,7 +49,7 @@ public class ContextUtil {
      * 
      * @return if cayenne cache should be enabled
      */
-    public static boolean isQueryCacheEnabled() {
+    public static boolean isObjectCacheEnabled() {
     	try {
     		Boolean cacheEnabled = (Boolean) lookup(CACHE_ENABLED_PROPERTY_KEY);
     		

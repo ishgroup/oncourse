@@ -2,11 +2,9 @@ package ish.oncourse.services.persistence;
 
 import ish.math.MoneyType;
 import ish.oncourse.listeners.IshVersionListener;
-import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.lifecycle.*;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
@@ -21,7 +19,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 	
 	private static final Logger LOGGER = Logger.getLogger(CayenneService.class);
 	
-	public CayenneService(ICacheService cacheService, IWebSiteService webSiteService) {
+	public CayenneService(IWebSiteService webSiteService) {
 		
 		LOGGER.info("Starting CayenneService....");
 		
@@ -32,10 +30,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 			throw new RuntimeException("Error loading Cayenne stack", e);
 		}
 		
-		DataContext context = (DataContext) cayenneRuntime.getContext();
-		//QueryCache already set in factory
-		//context.setQueryCache(cacheService.cayenneCache());
-		this.sharedContext = context;
+		this.sharedContext = cayenneRuntime.getContext();
 		
 		QueueableLifecycleListener listener = new QueueableLifecycleListener(this);
 		cayenneRuntime.getDataDomain().addFilter(listener);

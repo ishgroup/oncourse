@@ -6,7 +6,8 @@ import ish.oncourse.services.application.ApplicationServiceImpl;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.cache.*;
+import ish.oncourse.services.cache.IRequestCacheService;
+import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.content.IWebContentService;
@@ -123,12 +124,6 @@ public class ServiceModule {
 		// Tapestry and environment specific services
 		binder.bind(ReferenceService.class);
 
-		if (ContextUtil.isQueryCacheEnabled()) {
-			binder.bind(ICacheService.class, OSCacheService.class);
-		} else {
-			binder.bind(ICacheService.class, NoopCacheService.class);
-			LOGGER.info("Query caching disabled.");
-		}
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(ICookiesOverride.class, CookiesImplOverride.class);
@@ -204,8 +199,8 @@ public class ServiceModule {
 	}
 
 	@EagerLoad
-	public static ICayenneService buildCayenneService(ICacheService cacheService, RegistryShutdownHub hub, IWebSiteService webSiteService) {
-		CayenneService cayenneService = new CayenneService(cacheService, webSiteService);
+	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
+		CayenneService cayenneService = new CayenneService(webSiteService);
 		hub.addRegistryShutdownListener(cayenneService);
 		return cayenneService;
 	}

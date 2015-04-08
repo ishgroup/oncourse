@@ -120,8 +120,8 @@ public class SearchTestModule {
 	}
 
 	@EagerLoad
-	public static ICayenneService buildCayenneService(ICacheService cacheService, RegistryShutdownHub hub, IWebSiteService webSiteService) {
-		CayenneService cayenneService = new CayenneService(cacheService, webSiteService);
+	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
+		CayenneService cayenneService = new CayenneService(webSiteService);
 		hub.addRegistryShutdownListener(cayenneService);
 		return cayenneService;
 	}
