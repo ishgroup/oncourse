@@ -10,7 +10,10 @@ import ish.oncourse.model.ProductItem;
  */
 public abstract class _Article extends ProductItem {
 
+    private static final long serialVersionUID = 1L; 
+
 
     public static final String ID_PK_COLUMN = "id";
+
 
 }

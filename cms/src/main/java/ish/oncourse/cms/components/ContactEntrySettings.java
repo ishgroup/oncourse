@@ -256,7 +256,7 @@ public class ContactEntrySettings {
 
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 
-		College college = (College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
+		College college = context.localObject(webSiteService.getCurrentCollege());
 
 		if (college != null) {
 			college.setRequiresAvetmiss(this.avetmissQuestionsEnabled);

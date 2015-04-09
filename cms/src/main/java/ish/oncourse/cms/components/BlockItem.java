@@ -77,7 +77,7 @@ public class BlockItem {
 		ObjectContext ctx = cayenneService.newContext();
 		WebContent blockToDelete = webContentService.findById(Long.parseLong(id));
 		if (blockToDelete != null && !isBlockAssigned(blockToDelete)) {
-			blockToDelete = (WebContent) ctx.localObject(blockToDelete.getObjectId(), null);
+			blockToDelete = ctx.localObject(blockToDelete);
 			ctx.deleteObject(blockToDelete);
 			ctx.commitChanges();
 		} else {

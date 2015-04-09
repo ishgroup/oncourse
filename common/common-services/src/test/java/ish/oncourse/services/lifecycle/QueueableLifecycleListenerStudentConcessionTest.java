@@ -49,14 +49,14 @@ public class QueueableLifecycleListenerStudentConcessionTest extends ServiceTest
 
 		StudentConcession studentConcession = newContext.newObject(StudentConcession.class);
 		College college = student.getCollege();
-		studentConcession.setCollege((College) newContext.localObject(college.getObjectId(), college));
+		studentConcession.setCollege(newContext.localObject(college));
 
 		ConcessionType concessionType = Cayenne.objectForPK(newContext, ConcessionType.class, 1);
-		studentConcession.setConcessionType((ConcessionType) newContext.localObject(concessionType.getObjectId(), concessionType));
+		studentConcession.setConcessionType(newContext.localObject(concessionType));
 
 		studentConcession.setConcessionNumber("2");
 		studentConcession.setExpiresOn(new Date());
-		studentConcession.setStudent((Student) newContext.localObject(student.getObjectId(), student));
+		studentConcession.setStudent(newContext.localObject(student));
 
 		newContext.commitChanges();
 

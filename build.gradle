@@ -1,4 +1,8 @@
 buildscript {
+	ext {
+		cayenneVersion = '4.0.M2'
+	}
+
 	repositories {
 		//mavenCentral()
 
@@ -10,7 +14,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath 'org.apache.cayenne:cayenne-tools:3.1'
+		classpath "org.apache.cayenne:cayenne-tools:$cayenneVersion"
 		classpath 'au.com.ish.gradle:release:2.2.2'
 		classpath 'com.github.ben-manes:gradle-versions-plugin:0.7'
 		classpath 'org.gradle.plugins:gradle-compass:1.0.10'

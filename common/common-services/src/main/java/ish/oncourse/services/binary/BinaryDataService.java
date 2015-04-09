@@ -63,7 +63,7 @@ public class BinaryDataService implements IBinaryDataService {
 	private Expression getCollegeQualifier(boolean hidePrivateAttachments) {
 		College currentCollege = webSiteService.getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Document.COLLEGE_PROPERTY, cayenneService.sharedContext()
-				.localObject(currentCollege.getObjectId(), null));
+				.localObject(currentCollege));
 		if (hidePrivateAttachments) {
 			if (isStudentLoggedIn()) {
 				qualifier = qualifier.andExp(ExpressionFactory.noMatchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PRIVATE));

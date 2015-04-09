@@ -3,9 +3,6 @@ package ish.oncourse.listeners;
 import ish.oncourse.model.Module;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
-
-import java.util.Map;
-
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.annotation.PostAdd;
 import org.apache.cayenne.annotation.PrePersist;
@@ -13,7 +10,9 @@ import org.apache.cayenne.annotation.PreUpdate;
 import org.apache.cayenne.lifecycle.changeset.ChangeSet;
 import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
 import org.apache.cayenne.lifecycle.changeset.PropertyChange;
-import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang3.ObjectUtils;
+
+import java.util.Map;
 
 public class IshVersionListener {
 

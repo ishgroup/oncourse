@@ -75,7 +75,7 @@ public class Preferences {
 		ObjectContext context = cayenneService.newContext();
 			
 		if (isNew) {
-			College college = (College) context.localObject(this.college.getObjectId(), null);
+			College college = context.localObject(this.college);
 			if (college != null && StringUtils.trimToNull(newPreferenceKey) != null 
 					&& StringUtils.trimToNull(newPreferenceValue) != null) {
 				PreferenceUtil.createPreference(context, college, newPreferenceKey, newPreferenceValue);
@@ -83,7 +83,7 @@ public class Preferences {
 		}
 		else {
 			for (Preference pref : college.getPreferences()) {
-				Preference p = (Preference) context.localObject(pref.getObjectId(), null);
+				Preference p = context.localObject(pref);
 				
 				if (p != null) {
 					p.setValueString(preferences.get(p.getName()));
@@ -99,7 +99,7 @@ public class Preferences {
 		
 		Map<String, String> prefs = new TreeMap<>();
 		
-		College college = (College) context.localObject(this.college.getObjectId(), null);
+		College college = context.localObject(this.college);
 		
 		SelectQuery q = new SelectQuery(Preference.class, ExpressionFactory.matchExp(
 				Preference.COLLEGE_PROPERTY, college));

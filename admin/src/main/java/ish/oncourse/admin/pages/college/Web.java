@@ -291,7 +291,7 @@ public class Web {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
 		WillowUser user = context.newObject(WillowUser.class);
-		user.setCollege((College) context.localObject(college.getObjectId(), null));
+		user.setCollege(context.localObject(college));
 		user.setEmail(newUserEmailValue);
 		final String hashedPassword = SecurityUtil.hashPassword(newUserPasswordValue);
 		user.setPassword(newUserPasswordValue);//TODO: migrate when found logic which will update old passwords

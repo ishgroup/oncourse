@@ -1,5 +1,6 @@
 package ish.oncourse.services.persistence;
 
+import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 
 /**
@@ -23,4 +24,7 @@ public interface ICayenneService {
 	 * @return
 	 */
 	ObjectContext newNonReplicatingContext();
+
+
+	ObjectContext newContext(DataChannel parentChannel);
 }

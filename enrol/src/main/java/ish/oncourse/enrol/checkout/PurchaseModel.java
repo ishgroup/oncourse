@@ -404,7 +404,7 @@ public class PurchaseModel {
         if (objectForLocalize.getObjectContext().equals(objectContext)) {
             return objectForLocalize;
         } else {
-            return (T) objectContext.localObject(objectForLocalize.getObjectId(), null);
+            return (T) objectContext.localObject(objectForLocalize);
         }
     }
 
@@ -414,7 +414,7 @@ public class PurchaseModel {
             if (t.getObjectContext().equals(objectContext)) {
                 list.add(t);
             } else {
-                list.add((T) objectContext.localObject(t.getObjectId(), null));
+                list.add((T) objectContext.localObject(t));
             }
         }
         return list;

@@ -9,6 +9,7 @@ import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.pages.internal.Page;
@@ -91,7 +92,9 @@ public class PageOptions {
     @Inject
     private IWebNodeService webNodeService;
 
-	@SuppressWarnings("all")
+	@Inject
+	private ICayenneService cayenneService;
+
 	@Persist
 	@Property
 	private ListSelectModel<WebNodeType> pageTypeModel;
@@ -152,7 +155,7 @@ public class PageOptions {
 		if (node.getPersistenceState() == PersistenceState.NEW) {
 			this.editNode = node;
 		} else {
-            ObjectContext ctx = node.getObjectContext().createChildContext();
+            ObjectContext ctx = cayenneService.newContext(node.getObjectContext());
 			this.editNode = ctx.localObject(node);
 		}
 		refreshThemes();
@@ -348,7 +351,7 @@ public class PageOptions {
 	public void refreshThemes() {
 		List<WebNodeType> webNodeTypes = new ArrayList<>();
 		for (WebNodeType t : webNodeTypeService.getWebNodeTypes()) {
-			webNodeTypes.add((WebNodeType) editNode.getObjectContext().localObject(t.getObjectId(), null));
+			webNodeTypes.add(editNode.getObjectContext().localObject(t));
 		}
 
 		this.pageTypeModel = new ListSelectModel<>(webNodeTypes, WebNodeType.NAME_PROPERTY, access);

@@ -142,7 +142,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 						continue;
 					}
 
-					record = (QueuedRecord) ctx.localObject(record);
+					record = ctx.localObject(record);
 
 					int numberAttempts = (record.getNumberOfAttempts() != null) ? record.getNumberOfAttempts() : 0;
 					record.setNumberOfAttempts(numberAttempts + 1);

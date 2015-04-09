@@ -365,7 +365,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		try {
 			Queueable objectToUpdate = atomicContext.newObject(getEntityClass(atomicContext,
 					EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier())));
-			College currentCollege = (College) atomicContext.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
+			College currentCollege = atomicContext.localObject(webSiteService.getCurrentCollege());
 			objectToUpdate.setCollege(currentCollege);
 			willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl());
 			return objectToUpdate;

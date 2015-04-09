@@ -5,7 +5,6 @@ package ish.oncourse.webservices.replication.builders;
 
 import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.v6.builders.*;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
@@ -24,12 +23,6 @@ public class AllV6StubBuildersTest extends AbstractAllStubBuildersTest {
 	@Test
 	public void testAttendanceStubBuilder() {
 		this.testStubBuilder(Attendance.class, new AttendanceStubBuilder());
-	}
-	//Deprecated
-	@Ignore
-	@Test
-	public void testBinaryDataStubBuilder() {
-		this.testStubBuilder(BinaryData.class, new BinaryDataStubBuilder());
 	}
 
 	@Test

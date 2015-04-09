@@ -1,9 +1,5 @@
 package ish.oncourse.services.persistence;
 
-import java.security.SecureRandom;
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
@@ -11,6 +7,10 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.ObjectStore;
 import org.apache.cayenne.graph.GraphDiff;
 import org.apache.commons.codec.digest.DigestUtils;
+
+import java.security.SecureRandom;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * 
@@ -31,6 +31,8 @@ public class ISHObjectContext extends DataContext {
 	 * context.
 	 */
 	private Deque<String> transactionKeyStack = new ArrayDeque<>();
+
+	private ISHObjectContext parentContext;
 
 	public ISHObjectContext(DataChannel channel, ObjectStore objectStore) {
 		super(channel, objectStore);

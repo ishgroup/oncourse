@@ -68,7 +68,7 @@ public abstract class AConcessionDelegate extends ADelegate implements Concessio
 		else
 		{
 			ConcessionType concessionType = getConcessionTypes().get(concessionTypeIndex);
-			getStudentConcession().setConcessionType((ConcessionType) objectContext.localObject(concessionType.getObjectId(),concessionType));
+			getStudentConcession().setConcessionType(objectContext.localObject(concessionType));
 		}
 	}
 

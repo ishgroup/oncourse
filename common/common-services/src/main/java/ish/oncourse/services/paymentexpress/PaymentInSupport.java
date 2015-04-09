@@ -74,7 +74,7 @@ public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTrans
     public PaymentTransaction createTransaction() {
         ObjectContext newObjectContext = cayenneService.newNonReplicatingContext();
         currentTransaction = newObjectContext.newObject(PaymentTransaction.class);
-        PaymentIn local = (PaymentIn) newObjectContext.localObject(paymentIn.getObjectId(), null);
+        PaymentIn local = newObjectContext.localObject(paymentIn);
         currentTransaction.setPayment(local);
         return currentTransaction;
     }

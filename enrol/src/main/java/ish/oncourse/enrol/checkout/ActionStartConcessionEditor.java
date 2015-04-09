@@ -10,8 +10,8 @@ public class ActionStartConcessionEditor extends APurchaseAction {
 	@Override
 	protected void makeAction() {
 		ConcessionEditorController concessionEditorController = new ConcessionEditorController();
-		concessionEditorController.setObjectContext(this.getModel().getObjectContext().createChildContext());
-		concessionEditorController.setContact((Contact) concessionEditorController.getObjectContext().localObject(contact.getObjectId(), null));
+		concessionEditorController.setObjectContext(getController().getCayenneService().newContext(this.getModel().getObjectContext()));
+		concessionEditorController.setContact(concessionEditorController.getObjectContext().localObject(contact));
 		concessionEditorController.setPurchaseController(getController());
 		getController().setConcessionEditorController(concessionEditorController);
 		getController().setState(editConcession);

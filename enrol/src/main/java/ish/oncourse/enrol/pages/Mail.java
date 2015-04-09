@@ -7,7 +7,6 @@ import ish.oncourse.enrol.components.MailingListBox;
 import ish.oncourse.enrol.components.checkout.contact.ContactEditorFieldSet;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.waitinglist.MailingListController;
-import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -101,7 +100,7 @@ public class Mail {
                 controller.setObjectContext(context);
                 controller.setMessages(messages);
                 controller.setTagService(tagService);
-                controller.setCollege((College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null));
+                controller.setCollege(context.localObject(webSiteService.getCurrentCollege()));
                 controller.init();
                 refererUrl = request.getHeader("referer");
             }

@@ -11,19 +11,13 @@ import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.services.template.WillowMessagingTemplateEngine;
 import ish.oncourse.services.template.WillowMessagingTemplateResponder;
 import ish.persistence.CommonPreferenceController;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
+
+import java.util.*;
 
 /**
  * Job for sending SMS
@@ -71,7 +65,7 @@ public class SMSJob implements Job {
 
 			for (MessagePerson p : smsMessages) {
 
-				MessagePerson smsMessage = (MessagePerson) objectContext.localObject(p.getObjectId(), null);
+				MessagePerson smsMessage = objectContext.localObject(p);
 
 				College aCollege = smsMessage.getCollege();
 
@@ -155,7 +149,7 @@ public class SMSJob implements Job {
 	 * Contacts sms gateway and initiates session.
 	 * 
 	 * @return session id
-	 * @throws JobExecutionException
+	 * @throws Exception
 	 *             if can not contact gateway or empty session id.
 	 */
 	private String getSessionId() throws Exception {

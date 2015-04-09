@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<domain project-version="6">
+<domain project-version="7">
 	<property name="cayenne.DataDomain.dataContextFactory" value="ish.oncourse.model.access.ISHDataContextFactory"/>
 
 	<map name="oncourse"/>

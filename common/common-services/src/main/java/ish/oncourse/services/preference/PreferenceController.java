@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -121,7 +120,7 @@ public class PreferenceController extends CommonPreferenceController {
 			context = cayenneService.newContext();
 
 			college = webSiteService.getCurrentCollege();
-			college = (College) context.localObject(college.getObjectId(), null);
+			college = context.localObject(college);
 		} else {
 			context = cayenneService.newNonReplicatingContext();
 		}
@@ -130,7 +129,7 @@ public class PreferenceController extends CommonPreferenceController {
 			pref = context.newObject(Preference.class);
 			pref.setName(key);
 		} else {
-			pref = (Preference) context.localObject(pref.getObjectId(), null);
+			pref = context.localObject(pref);
 		}
 
 		pref.setCollege(college);
@@ -166,7 +165,7 @@ public class PreferenceController extends CommonPreferenceController {
 			pref = context.newObject(Preference.class);
 			pref.setName(key);
 		} else {
-			pref = (Preference) context.localObject(pref.getObjectId(), null);
+			pref = context.localObject(pref);
 		}
 
 		pref.setValue(serializeObject(value));

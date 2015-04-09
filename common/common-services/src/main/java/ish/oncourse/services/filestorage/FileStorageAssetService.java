@@ -1,8 +1,6 @@
 package ish.oncourse.services.filestorage;
 
 import ish.oncourse.model.DocumentVersion;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
@@ -63,8 +61,7 @@ public class FileStorageAssetService implements IFileStorageAssetService {
      */
     public void delete(DocumentVersion documentVersion) {
 
-        Expression exp = ExpressionFactory.matchDbExp(DocumentVersion.FILE_PATH_PROPERTY, documentVersion.getFilePath());
-        SelectQuery selectQuery = new SelectQuery(DocumentVersion.class, exp);
+        SelectQuery selectQuery = new SelectQuery(DocumentVersion.class, DocumentVersion.FILE_PATH.eq( documentVersion.getFilePath()));
         selectQuery.setPageSize(1);
 
         @SuppressWarnings("unchecked")

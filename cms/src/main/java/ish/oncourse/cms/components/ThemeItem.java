@@ -61,8 +61,7 @@ public class ThemeItem {
 		ObjectContext ctx = cayenneService.newContext();
 		WebNodeType themeToDelete = webNodeTypeService.findById(Long.parseLong(id));
 		if (themeToDelete != null) {
-			themeToDelete = (WebNodeType) ctx.localObject(
-					themeToDelete.getObjectId(), null);
+			themeToDelete = ctx.localObject(themeToDelete);
 			if (themeToDelete.isThemeUsedInPages()) {
 				return new TextStreamResponse("text/json", "{status: 'FAILED',themeName:'" + themeToDelete.getName() + "'}");
 			} else {

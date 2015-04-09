@@ -1,11 +1,20 @@
+configurations {
+	cayenneTools
+}
+
+
+dependencies {
+	cayenneTools "org.apache.cayenne:cayenne-tools:$cayenneVersion"
+}
+
 dependencies {
     compile ('ish.oncourse.willow:waCommon:5.1.69') {
         //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
-    compile 'org.apache.cayenne:cayenne-server:3.1'
-	compile 'org.apache.cayenne:cayenne-lifecycle:3.1'
+    compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
+	compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	compile 'joda-time:joda-time:1.6.2'
 	compile 'commons-lang:commons-lang:2.6'
 	compile 'opensymphony:oscache:2.4.1'
@@ -28,3 +37,17 @@ dependencies {
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 }
+
+task cayenne << {
+	ant.taskdef(resource: 'org/apache/cayenne/tools/antlib.xml', classpath: project.configurations.cayenneTools.asPath)
+
+	ant.cgen(map: file("${projectDir}/src/main/resources/oncourse.map.xml"),
+			superPkg: "ish.oncourse.model.auto",
+			destDir: file("${projectDir}/src/main/java"),
+			makepairs: true,
+			mode: 'all',
+			overwrite: true
+	)
+}
+
+compileJava.dependsOn(cayenne)

@@ -3,7 +3,6 @@ package ish.oncourse.services.tutor;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.services.BaseService;
-import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
@@ -62,8 +61,7 @@ public class TutorService extends BaseService<Tutor> implements ITutorService {
 	 */
 	@Override
 	public Tutor findByAngelId(Long angelId) {
-		return (Tutor) DataObjectUtils.objectForQuery(
-				getCayenneService().sharedContext(),
+		return (Tutor) getCayenneService().sharedContext().performQuery(
 				new SelectQuery(Tutor.class, ExpressionFactory.matchExp(Tutor.ANGEL_ID_PROPERTY,
 						angelId).andExp(getSiteQualifier())));
 	}

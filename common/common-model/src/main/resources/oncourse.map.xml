@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<data-map xmlns="http://cayenne.apache.org/schema/3.0/modelMap"
+<data-map xmlns="http://cayenne.apache.org/schema/7/modelMap"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
-	 project-version="6">
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/7/modelMap http://cayenne.apache.org/schema/7/modelMap.xsd"
+	 project-version="7">
 	<property name="defaultPackage" value="ish.oncourse.model"/>
-	<db-entity name="Application" catalog="willow_college">
+	<db-entity name="Application">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
@@ -19,7 +19,7 @@
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="Attendance" catalog="willow_college">
+	<db-entity name="Attendance">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="attendanceType" type="INTEGER" length="10"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -32,7 +32,7 @@
 		<db-attribute name="sessionId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="BinaryInfo" catalog="willow_college">
+	<db-entity name="BinaryInfo">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="byteSize" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -48,7 +48,7 @@
 		<db-attribute name="pixelWidth" type="INTEGER" length="10"/>
 		<db-attribute name="referenceNumber" type="INTEGER" length="10"/>
 	</db-entity>
-	<db-entity name="BinaryInfoRelation" catalog="willow_college">
+	<db-entity name="BinaryInfoRelation">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="binaryInfoId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -62,7 +62,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="specialType" type="INTEGER"/>
 	</db-entity>
-	<db-entity name="Certificate" catalog="willow_college">
+	<db-entity name="Certificate">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="certificateNumber" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -81,7 +81,7 @@
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="studentLastName" type="VARCHAR" length="100"/>
 	</db-entity>
-	<db-entity name="CertificateOutcome" catalog="willow_college">
+	<db-entity name="CertificateOutcome">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="certificateId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -90,7 +90,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="outcomeId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="College" catalog="willow_college">
+	<db-entity name="College">
 		<db-attribute name="angelVersion" type="VARCHAR" length="40"/>
 		<db-attribute name="billingCode" type="VARCHAR" length="16"/>
 		<db-attribute name="communication_key" type="BIGINT"/>
@@ -112,7 +112,7 @@
 		<db-attribute name="timeZone" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="webServicesSecurityCode" type="VARCHAR" length="16"/>
 	</db-entity>
-	<db-entity name="ConcessionType" catalog="willow_college">
+	<db-entity name="ConcessionType">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -126,7 +126,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="256"/>
 		<db-attribute name="requiresCredentialCheck" type="BIT"/>
 	</db-entity>
-	<db-entity name="Contact" catalog="willow_college">
+	<db-entity name="Contact">
 		<db-attribute name="abn" type="VARCHAR" length="50"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="businessPhoneNumber" type="VARCHAR" length="32"/>
@@ -203,7 +203,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
-	<db-entity name="Country" catalog="willow_reference">
+	<db-entity name="Country">
 		<db-attribute name="asccssCode" type="VARCHAR" length="10"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -215,7 +215,7 @@
 		<db-attribute name="name" type="VARCHAR" length="64"/>
 		<db-attribute name="saccCode" type="INTEGER" length="10"/>
 	</db-entity>
-	<db-entity name="Course" catalog="willow_college">
+	<db-entity name="Course">
 		<db-attribute name="allowWaitingList" type="BIT"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="code" type="VARCHAR" length="50"/>
@@ -235,7 +235,7 @@
 		<db-attribute name="qualificationId" type="BIGINT" length="19"/>
 		<db-attribute name="searchText" type="LONGVARCHAR" length="65535"/>
 	</db-entity>
-	<db-entity name="CourseClass" catalog="willow_college">
+	<db-entity name="CourseClass">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="attendanceType" type="INTEGER"/>
 		<db-attribute name="censusDate" type="TIMESTAMP"/>
@@ -285,7 +285,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
-	<db-entity name="CourseModule" catalog="willow_college">
+	<db-entity name="CourseModule">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>
@@ -317,7 +317,7 @@
 		<db-attribute name="requireForMailingList" type="VARCHAR" length="20"/>
 		<db-attribute name="requireForWaitingList" type="VARCHAR" length="20"/>
 	</db-entity>
-	<db-entity name="Discount" catalog="willow_college">
+	<db-entity name="Discount">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="code" type="VARCHAR" length="32"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -344,7 +344,7 @@
 		<db-attribute name="validFrom" type="TIMESTAMP" length="19"/>
 		<db-attribute name="validTo" type="TIMESTAMP" length="19"/>
 	</db-entity>
-	<db-entity name="DiscountConcessionType" catalog="willow_college">
+	<db-entity name="DiscountConcessionType">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="concessionTypeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -353,7 +353,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
-	<db-entity name="DiscountCourseClass" catalog="willow_college">
+	<db-entity name="DiscountCourseClass">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
@@ -446,7 +446,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="subject" type="LONGVARCHAR" length="16777215"/>
 	</db-entity>
-	<db-entity name="Enrolment" catalog="willow_college">
+	<db-entity name="Enrolment">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
@@ -496,7 +496,7 @@
 		<db-attribute name="name" type="VARCHAR" length="255"/>
 		<db-attribute name="value" type="VARCHAR" length="1024"/>
 	</db-entity>
-	<db-entity name="Invoice" catalog="willow_college">
+	<db-entity name="Invoice">
 		<db-attribute name="amountOwing" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="billToAddress" type="LONGVARCHAR" length="16777215"/>
@@ -529,7 +529,7 @@
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
-	<db-entity name="InvoiceLine" catalog="willow_college">
+	<db-entity name="InvoiceLine">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT"/>
@@ -547,7 +547,7 @@
 		<db-attribute name="title" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="unit" type="VARCHAR" length="50"/>
 	</db-entity>
-	<db-entity name="InvoiceLine_Discount" catalog="willow_college">
+	<db-entity name="InvoiceLine_Discount">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -556,7 +556,7 @@
 		<db-attribute name="invoiceLineId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
-	<db-entity name="Language" catalog="willow_reference">
+	<db-entity name="Language">
 		<db-attribute name="absCode" type="VARCHAR" length="10"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -565,7 +565,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
 	</db-entity>
-	<db-entity name="LicenseFee" catalog="willow_college">
+	<db-entity name="LicenseFee">
 		<db-attribute name="billingMonth" type="INTEGER"/>
 		<db-attribute name="college_id" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="fee" type="DECIMAL" isMandatory="true" length="10" scale="3"/>
@@ -578,7 +578,7 @@
 		<db-attribute name="valid_until" type="DATE" length="10"/>
 		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
 	</db-entity>
-	<db-entity name="Log" catalog="willow_college">
+	<db-entity name="Log">
 		<db-attribute name="action" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -587,7 +587,7 @@
 		<db-attribute name="page" type="VARCHAR" length="64"/>
 		<db-attribute name="userId" type="BIGINT" length="19"/>
 	</db-entity>
-	<db-entity name="Message" catalog="willow_college">
+	<db-entity name="Message">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -597,7 +597,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="smsText" type="LONGVARCHAR" length="16777215"/>
 	</db-entity>
-	<db-entity name="MessagePerson" catalog="willow_college">
+	<db-entity name="MessagePerson">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
@@ -614,7 +614,7 @@
 		<db-attribute name="tutorId" type="BIGINT" length="19"/>
 		<db-attribute name="type" type="INTEGER" length="10"/>
 	</db-entity>
-	<db-entity name="MessageTemplate" catalog="willow_college">
+	<db-entity name="MessageTemplate">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -624,7 +624,7 @@
 		<db-attribute name="name" type="VARCHAR" length="64"/>
 		<db-attribute name="subject" type="VARCHAR" length="512"/>
 	</db-entity>
-	<db-entity name="Module" catalog="willow_reference">
+	<db-entity name="Module">
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="disciplineCode" type="VARCHAR" length="8"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="8"/>
@@ -636,7 +636,7 @@
 		<db-attribute name="title" type="VARCHAR" length="256"/>
 		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
 	</db-entity>
-	<db-entity name="NotificationTemplate" catalog="willow_college">
+	<db-entity name="NotificationTemplate">
 		<db-attribute name="allowWebobjectsTags" type="BIT"/>
 		<db-attribute name="allowedInTextileTags" type="BIT"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -662,7 +662,7 @@
 		<db-attribute name="tradingName" type="VARCHAR" length="512"/>
 		<db-attribute name="webAddress" type="VARCHAR" length="256"/>
 	</db-entity>
-	<db-entity name="Outcome" catalog="willow_college">
+	<db-entity name="Outcome">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -677,7 +677,7 @@
 		<db-attribute name="startDate" type="TIMESTAMP" length="19"/>
 		<db-attribute name="status" type="INTEGER" length="10"/>
 	</db-entity>
-	<db-entity name="PaymentIn" catalog="willow_college">
+	<db-entity name="PaymentIn">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -701,7 +701,7 @@
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 		<db-attribute name="type" type="SMALLINT"/>
 	</db-entity>
-	<db-entity name="PaymentInLine" catalog="willow_college">
+	<db-entity name="PaymentInLine">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
@@ -711,7 +711,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="paymentInId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="PaymentOut" catalog="willow_college">
+	<db-entity name="PaymentOut">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
@@ -729,7 +729,7 @@
 		<db-attribute name="statusNotes" type="VARCHAR" length="100"/>
 		<db-attribute name="totalAmount" type="DECIMAL" length="14" scale="2"/>
 	</db-entity>
-	<db-entity name="PaymentOutTransaction" catalog="willow_college">
+	<db-entity name="PaymentOutTransaction">
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isFinalised" type="BIT"/>
@@ -739,7 +739,7 @@
 		<db-attribute name="soapResponse" type="VARCHAR" length="8192"/>
 		<db-attribute name="txnReference" type="VARCHAR" length="64"/>
 	</db-entity>
-	<db-entity name="PaymentTransaction" catalog="willow_college">
+	<db-entity name="PaymentTransaction">
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isFinalised" type="BIT"/>
@@ -749,7 +749,7 @@
 		<db-attribute name="soapResponse" type="VARCHAR" length="8192"/>
 		<db-attribute name="txnReference" type="VARCHAR" length="64"/>
 	</db-entity>
-	<db-entity name="Preference" catalog="willow_college">
+	<db-entity name="Preference">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -802,7 +802,7 @@
 		<db-attribute name="value" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="valueOnPurchase" type="DECIMAL" length="10" scale="2"/>
 	</db-entity>
-	<db-entity name="Qualification" catalog="willow_reference">
+	<db-entity name="Qualification">
 		<db-attribute name="anzsco" type="VARCHAR" length="256"/>
 		<db-attribute name="asco" type="VARCHAR" length="64"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -821,7 +821,7 @@
 		<db-attribute name="title" type="VARCHAR" length="256"/>
 		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
 	</db-entity>
-	<db-entity name="QueuedRecord" catalog="willow_college">
+	<db-entity name="QueuedRecord">
 		<db-attribute name="action" type="VARCHAR" isMandatory="true" length="25"/>
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -848,7 +848,7 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="transactionKey" type="VARCHAR" length="100"/>
 	</db-entity>
-	<db-entity name="Room" catalog="willow_college">
+	<db-entity name="Room">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="capacity" type="INTEGER" length="10"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -877,7 +877,7 @@
 		<db-attribute name="script" type="LONGVARCHAR" isMandatory="true" length="16777215"/>
 		<db-attribute name="triggerType" type="INTEGER" isMandatory="true"/>
 	</db-entity>
-	<db-entity name="Session" catalog="willow_college">
+	<db-entity name="Session">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT" length="19"/>
@@ -901,7 +901,7 @@
 		<db-attribute name="moduleId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="sessionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
-	<db-entity name="SessionTutor" catalog="willow_college">
+	<db-entity name="SessionTutor">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -911,7 +911,7 @@
 		<db-attribute name="tutorId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="type" type="INTEGER" length="10"/>
 	</db-entity>
-	<db-entity name="Site" catalog="willow_college">
+	<db-entity name="Site">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="countryId" type="BIGINT" length="19"/>
@@ -935,7 +935,7 @@
 		<db-attribute name="suburb" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="64"/>
 	</db-entity>
-	<db-entity name="Student" catalog="willow_college">
+	<db-entity name="Student">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="chessn" type="VARCHAR" length="10"/>
 		<db-attribute name="citizenship" type="INTEGER"/>
@@ -962,7 +962,7 @@
 		<db-attribute name="usiStatus" type="INTEGER"/>
 		<db-attribute name="yearSchoolCompleted" type="INTEGER" length="10"/>
 	</db-entity>
-	<db-entity name="StudentConcession" catalog="willow_college">
+	<db-entity name="StudentConcession">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="authorisationExpiresOn" type="TIMESTAMP" length="19"/>
 		<db-attribute name="authorisedOn" type="TIMESTAMP" length="19"/>
@@ -976,7 +976,7 @@
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="32"/>
 	</db-entity>
-	<db-entity name="SupportPassword" catalog="willow_college">
+	<db-entity name="SupportPassword">
 		<db-attribute name="contactId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="expiresOn" type="TIMESTAMP" isMandatory="true"/>
@@ -1019,7 +1019,7 @@
 		<db-attribute name="token" type="VARCHAR" length="16"/>
 		<db-attribute name="tokenScratchCodes" type="LONGVARCHAR" length="16777215"/>
 	</db-entity>
-	<db-entity name="Tag" catalog="willow_college">
+	<db-entity name="Tag">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -1036,7 +1036,7 @@
 		<db-attribute name="specialType" type="INTEGER"/>
 		<db-attribute name="weighting" type="INTEGER" length="10"/>
 	</db-entity>
-	<db-entity name="TagGroupRequirement" catalog="willow_college">
+	<db-entity name="TagGroupRequirement">
 		<db-attribute name="allowsMultipleTags" type="BIT"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -1047,7 +1047,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="tagId" type="BIGINT" length="19"/>
 	</db-entity>
-	<db-entity name="Taggable" catalog="willow_college">
+	<db-entity name="Taggable">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -1057,7 +1057,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
-	<db-entity name="TaggableTag" catalog="willow_college">
+	<db-entity name="TaggableTag">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -1066,7 +1066,7 @@
 		<db-attribute name="tagId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="taggableId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="TrainingPackage" catalog="willow_reference">
+	<db-entity name="TrainingPackage">
 		<db-attribute name="copyrightCategory" type="VARCHAR" length="64"/>
 		<db-attribute name="copyrightContact" type="VARCHAR" length="64"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -1081,7 +1081,7 @@
 		<db-attribute name="title" type="VARCHAR" length="256"/>
 		<db-attribute name="type" type="VARCHAR" length="32"/>
 	</db-entity>
-	<db-entity name="Tutor" catalog="willow_college">
+	<db-entity name="Tutor">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
@@ -1092,7 +1092,7 @@
 		<db-attribute name="resume_textile" type="LONGVARCHAR" length="2147483647"/>
 		<db-attribute name="startDate" type="TIMESTAMP" length="19"/>
 	</db-entity>
-	<db-entity name="TutorRole" catalog="willow_college">
+	<db-entity name="TutorRole">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmedDate" type="TIMESTAMP" length="19"/>
@@ -1125,7 +1125,7 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="voucherProductId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="WaitingList" catalog="willow_college">
+	<db-entity name="WaitingList">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>
@@ -1136,14 +1136,14 @@
 		<db-attribute name="potentialStudents" type="INTEGER" length="10"/>
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 	</db-entity>
-	<db-entity name="WaitingListSite" catalog="willow_college">
+	<db-entity name="WaitingListSite">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="siteId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="waitingListId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="WebContent" catalog="willow_college">
+	<db-entity name="WebContent">
 		<db-attribute name="content" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="content_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
@@ -1152,7 +1152,7 @@
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
-	<db-entity name="WebContentVisibility" catalog="willow_college">
+	<db-entity name="WebContentVisibility">
 		<db-attribute name="WebContentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="WebNodeId" type="BIGINT" length="19"/>
 		<db-attribute name="WebNodeTypeId" type="BIGINT" length="19"/>
@@ -1160,7 +1160,7 @@
 		<db-attribute name="regionKey" type="VARCHAR" isMandatory="true" length="24"/>
 		<db-attribute name="weight" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
-	<db-entity name="WebHostName" catalog="willow_college">
+	<db-entity name="WebHostName">
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -1168,7 +1168,7 @@
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="WebMenu" catalog="willow_college">
+	<db-entity name="WebMenu">
 		<db-attribute name="URL" type="LONGVARCHAR" length="65535"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -1179,7 +1179,7 @@
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="weight" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
-	<db-entity name="WebNode" catalog="willow_college">
+	<db-entity name="WebNode">
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isPublished" type="BIT" isMandatory="true"/>
@@ -1189,7 +1189,7 @@
 		<db-attribute name="webNodeTypeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
-	<db-entity name="WebNodeType" catalog="willow_college">
+	<db-entity name="WebNodeType">
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="layoutKey" type="VARCHAR" isMandatory="true" length="50"/>
@@ -1197,7 +1197,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
-	<db-entity name="WebSite" catalog="willow_college">
+	<db-entity name="WebSite">
 		<db-attribute name="SSLhostNameId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="coursesRootTagName" type="VARCHAR" length="256"/>
@@ -1229,7 +1229,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 	</db-entity>
-	<db-entity name="WebURLAlias" catalog="willow_college">
+	<db-entity name="WebURLAlias">
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isDefault" type="BIT" isMandatory="true"/>
@@ -1239,7 +1239,7 @@
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
-	<db-entity name="WillowUser" catalog="willow_college">
+	<db-entity name="WillowUser">
 		<db-attribute name="collegeId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="email" type="VARCHAR" isMandatory="true" length="128"/>
@@ -1253,7 +1253,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="16"/>
 	</db-entity>
-	<db-entity name="postcode" catalog="willow_reference">
+	<db-entity name="postcode">
 		<db-attribute name="BSPname" type="VARCHAR" isMandatory="true" length="60"/>
 		<db-attribute name="BSPnumber" type="SMALLINT" isMandatory="true" length="5"/>
 		<db-attribute name="category" type="VARCHAR" isMandatory="true" length="60"/>
@@ -1266,7 +1266,7 @@
 		<db-attribute name="presortIndicator" type="SMALLINT" isMandatory="true" length="5"/>
 		<db-attribute name="state" type="CHAR" isMandatory="true" length="3"/>
 	</db-entity>
-	<db-entity name="postcode_db" catalog="willow_reference">
+	<db-entity name="postcode_db">
 		<db-attribute name="dc" type="VARCHAR" isMandatory="true" length="45"/>
 		<db-attribute name="lat" type="DOUBLE" isMandatory="true"/>
 		<db-attribute name="lon" type="DOUBLE" isMandatory="true"/>

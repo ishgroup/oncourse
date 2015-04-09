@@ -24,7 +24,6 @@ private Map<String, IWillowStubBuilder> builderMap;
 	public void initMap() {
 		getBuilderMap().clear();
 		builderMap.put(getEntityName(Attendance.class), new AttendanceStubBuilder());
-		builderMap.put(getEntityName(BinaryData.class), new BinaryDataStubBuilder());
 		builderMap.put(getEntityName(BinaryInfo.class), new BinaryInfoStubBuilder());
 		builderMap.put(getEntityName(ConcessionType.class), new ConcessionTypeStubBuilder());
 		builderMap.put(getEntityName(CourseClass.class), new CourseClassStubBuilder());

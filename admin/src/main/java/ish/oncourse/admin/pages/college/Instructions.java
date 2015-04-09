@@ -73,7 +73,7 @@ public class Instructions {
 		this.entitySelectModel = new StringSelectModel(entitiesArray);
 
 		ObjectContext context = cayenneService.sharedContext();
-		College college = (College) context.localObject(this.college.getObjectId(), null);
+		College college = context.localObject(this.college);
 		if (college != null) {
 			Expression exp = ExpressionFactory.matchExp(Instruction.COLLEGE_PROPERTY, college);
 			SelectQuery query = new SelectQuery(Instruction.class, exp);
@@ -113,7 +113,7 @@ public class Instructions {
 	private void createInstruction(String message) {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 
-		College college = (College) context.localObject(this.college.getObjectId(), null);
+		College college = context.localObject(this.college);
 		if (college != null) {
 			Date now = new Date();
 

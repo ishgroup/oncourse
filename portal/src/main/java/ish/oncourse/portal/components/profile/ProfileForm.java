@@ -171,7 +171,7 @@ public class ProfileForm {
         if (country == null) {
             validateHandler.getErrors().put(FieldDescriptor.country.name(), messageBy(Contact.COUNTRY_PROPERTY));
         } else {
-            contact.setCountry((Country) contact.getObjectContext().localObject(country.getObjectId(), country));
+            contact.setCountry(contact.getObjectContext().localObject(country));
         }
     }
 

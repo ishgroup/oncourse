@@ -1,9 +1,5 @@
 package ish.oncourse.admin.pages.college;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
-
 import com.amazonaws.services.identitymanagement.model.AccessKey;
 import ish.oncourse.admin.utils.AUSKeyUtil;
 import ish.oncourse.admin.utils.PreferenceUtil;
@@ -13,7 +9,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.system.ICollegeService;
-
 import ish.oncourse.webservices.usi.crypto.CryptoUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -34,6 +29,10 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.apache.tapestry5.util.TextStreamResponse;
 import org.bouncycastle.util.encoders.Base64;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class Overview {
 	
@@ -113,7 +112,7 @@ public class Overview {
 	Object onActionFromDisableCollege() {
 		
 		ObjectContext context = cayenneService.newContext();
-		College college = (College) context.localObject(this.college.getObjectId(), null);
+		College college = context.localObject(this.college);
 		
 		disableCollege(context, college);
 		

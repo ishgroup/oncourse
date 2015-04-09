@@ -53,7 +53,7 @@ public class PasswordRecovery {
 		if (user != null) {
 			ObjectContext newContext = cayenneService.newContext();
 
-			this.contact = (Contact) newContext.localObject(user.getObjectId(), null);
+			this.contact = newContext.localObject(user);
 
 			Date today = new Date();
 

@@ -1,17 +1,15 @@
 package ish.oncourse.model;
 
-import java.util.Date;
-import java.util.List;
-
-import org.apache.cayenne.DataObjectUtils;
+import ish.oncourse.model.auto._WebNodeType;
+import ish.oncourse.model.visitor.IVisitor;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
-import ish.oncourse.model.auto._WebNodeType;
-import ish.oncourse.model.visitor.IVisitor;
+import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class WebNodeType extends _WebNodeType {
@@ -39,7 +37,7 @@ public class WebNodeType extends _WebNodeType {
 		SelectQuery q = new SelectQuery(WebNodeType.class);
 		q.andQualifier(ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY,
 				name));
-		return (WebNodeType) DataObjectUtils.objectForQuery(ctx, q);
+		return (WebNodeType) ctx.performQuery(q);
 	}
 
 	@SuppressWarnings("unchecked")

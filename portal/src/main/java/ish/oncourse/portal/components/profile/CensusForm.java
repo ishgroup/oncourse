@@ -166,8 +166,8 @@ public class CensusForm {
             validateHandler.getErrors().put(Student.COUNTRY_OF_BIRTH_PROPERTY, messageBy(Student.COUNTRY_OF_BIRTH_PROPERTY));
         } else {
             contact.getStudent().setCountryOfBirth(
-                    (Country) contact.getObjectContext().localObject(
-                            country.getObjectId(), country));
+                    contact.getObjectContext().localObject(
+                            country));
         }
     }
 
@@ -188,8 +188,7 @@ public class CensusForm {
             validateHandler.getErrors().put(Student.LANGUAGE_HOME_PROPERTY, messageBy(Student.LANGUAGE_HOME_PROPERTY));
         } else {
             contact.getStudent().setLanguageHome(
-                    (Language) contact.getObjectContext().localObject(
-                            language.getObjectId(), language));
+                   contact.getObjectContext().localObject(language));
         }
     }
 

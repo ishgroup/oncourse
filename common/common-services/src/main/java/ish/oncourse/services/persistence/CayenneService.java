@@ -4,6 +4,7 @@ import ish.math.MoneyType;
 import ish.oncourse.listeners.IshVersionListener;
 import ish.oncourse.services.lifecycle.*;
 import ish.oncourse.services.site.IWebSiteService;
+import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
@@ -53,10 +54,14 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 	 * @see ICayenneService#newContext()
 	 */
 	public ObjectContext newContext() {
-		return cayenneRuntime.getContext();
+		return cayenneRuntime.newContext();
 	}
 
-	
+
+	public ObjectContext newContext(DataChannel parentChannel) {
+		return cayenneRuntime.newContext(parentChannel);
+	}
+
 	/**
 	 * @see ICayenneService#newNonReplicatingContext()
 	 */

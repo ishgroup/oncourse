@@ -1,10 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.common.types.ConfirmationStatus;
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.ProductType;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -516,7 +512,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         assertEquals(new Money("840.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-        ObjectContext cContext = context.createChildContext();
+        ObjectContext cContext = purchaseController.getCayenneService().newContext(context);
         ConcessionType ct = Cayenne.objectForPK(cContext, ConcessionType.class, 1);
         StudentConcession sc = createStudentConcession(cContext,
                 cContext.localObject(model.getPayer().getStudent()),
@@ -547,10 +543,10 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         assertEquals(new Money("840.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-        ObjectContext cContext = context.createChildContext();
+        ObjectContext cContext = purchaseController.getCayenneService().newContext(context);
         ConcessionType ct = Cayenne.objectForPK(cContext, ConcessionType.class, 1);
-        StudentConcession sc = createStudentConcession(cContext, (Student) cContext.localObject(model.getPayer().getStudent()),
-                ct, (College) cContext.localObject(model.getPayer().getCollege()));
+        StudentConcession sc = createStudentConcession(cContext, cContext.localObject(model.getPayer().getStudent()),
+                ct, cContext.localObject(model.getPayer().getCollege()));
 
         addConcession(sc);
 

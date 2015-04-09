@@ -13,9 +13,7 @@ import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DataRowStore;
 import org.apache.cayenne.access.ObjectStore;
 import org.apache.cayenne.cache.QueryCache;
-import org.apache.cayenne.configuration.ObjectStoreFactory;
 import org.apache.cayenne.configuration.server.DataContextFactory;
-import org.apache.cayenne.di.Inject;
 import org.apache.cayenne.di.Key;
 
 import java.util.HashMap;
@@ -25,9 +23,6 @@ import java.util.HashMap;
  * @author marek
  */
 public class ISHObjectContextFactory extends DataContextFactory {
-
-	@Inject
-	private ObjectStoreFactory objectStoreFactory;
 
 	public static final String QUERY_CACHE_INJECTION_KEY = "local";
 
@@ -46,6 +41,7 @@ public class ISHObjectContextFactory extends DataContextFactory {
 
 		context.setValidatingObjectsOnCommit(parent.isValidatingObjectsOnCommit());
 		context.setUsingSharedSnapshotCache(parent.isUsingSharedSnapshotCache());
+		context.setTransactionFactory(transactionFactory);
 
 		QueryCache queryCache = injector.getInstance(Key.get(QueryCache.class, QUERY_CACHE_INJECTION_KEY));
 		context.setQueryCache(queryCache);
@@ -65,6 +61,7 @@ public class ISHObjectContextFactory extends DataContextFactory {
 	private void fillContext(ISHObjectContext context, DataDomain parent) {
 		context.setUsingSharedSnapshotCache(ContextUtil.isObjectCacheEnabled() && parent.isSharedCacheEnabled());
 		context.setValidatingObjectsOnCommit(parent.isValidatingObjectsOnCommit());
+		context.setTransactionFactory(transactionFactory);
 
 		QueryCache queryCache = injector.getInstance(Key.get(QueryCache.class, QUERY_CACHE_INJECTION_KEY));
 		context.setQueryCache(queryCache);

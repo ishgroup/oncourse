@@ -4,6 +4,7 @@ import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.content.IWebContentService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.ui.pages.internal.Page;
@@ -47,6 +48,9 @@ public class ContentStructure {
 
 	@Inject
 	private ITextileConverter textileConverter;
+
+	@Inject
+	private ICayenneService cayenneService;
 
 	@Inject
 	private Block editorBlock;
@@ -101,7 +105,7 @@ public class ContentStructure {
 			LOGGER.debug(String.format("Edit region with id: %s", id));
 		}
 
-		ObjectContext ctx = node.getObjectContext().createChildContext();
+		ObjectContext ctx = cayenneService.newContext(node.getObjectContext());
 		WebContent regionForEdit = webContentService.findById(Long.parseLong(id));
 		if (regionForEdit == null) {
 			return page.getReloadPageBlock();

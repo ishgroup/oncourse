@@ -57,8 +57,8 @@ public class BlockEdit {
 
 	@SetupRender
 	public void beforeRender() {
-		editBlock = block.getPersistenceState() == PersistenceState.NEW ? block : (WebContent) cayenneService
-				.newContext().localObject(block.getObjectId(), block);
+		editBlock = block.getPersistenceState() == PersistenceState.NEW ? block : cayenneService
+				.newContext().localObject(block);
 	}
 	//#14616
 	//if the session expired or the context for edit block were detached, we need to leave the page without process of required action.

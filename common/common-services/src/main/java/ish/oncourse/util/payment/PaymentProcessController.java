@@ -73,7 +73,7 @@ public class PaymentProcessController {
     }
     
     public void setPaymentIn(PaymentIn paymentIn) {
-        this.paymentIn = (PaymentIn) objectContext.localObject(paymentIn.getObjectId(), null);
+        this.paymentIn = objectContext.localObject(paymentIn);
     }
 
     public void setObjectContext(ObjectContext objectContext) {

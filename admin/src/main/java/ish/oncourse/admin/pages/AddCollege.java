@@ -7,7 +7,6 @@ import ish.oncourse.model.College;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.system.ICollegeService;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
@@ -55,7 +54,7 @@ public class AddCollege {
 	Object newCollege() {
 		ObjectContext context = cayenneService.newContext();
 		
-		College college = (College) context.localObject(collegeService.findById(collegeId).getObjectId(), null);
+		College college = context.localObject(collegeService.findById(collegeId));
 		if (college != null) {
 			college.setBillingCode(billingCode);
 			college.setCommunicationKey(null);

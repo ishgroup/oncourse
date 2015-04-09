@@ -178,7 +178,7 @@ private static final Logger LOGGER = Logger.getLogger(TagServiceTest.class);
 
         ObjectContext context = cayenneService.newNonReplicatingContext();
 		final Student student = context.newObject(Student.class);
-        College college =  (College) context.localObject(this.college.getObjectId(), null);
+        College college = context.localObject(this.college);
 		student.setCollege(college);
 		
 		final Contact contact = context.newObject(Contact.class);
