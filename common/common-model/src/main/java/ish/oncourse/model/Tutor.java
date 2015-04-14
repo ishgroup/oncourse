@@ -5,7 +5,8 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class Tutor extends _Tutor implements Queueable {
 	private static final long serialVersionUID = 6926881335601111383L;
-	private static final Logger logger = Logger.getLogger(Tutor.class);
+	private static final Logger logger = LogManager.getLogger();
 			
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
@@ -22,7 +23,7 @@ public class Tutor extends _Tutor implements Queueable {
 	public String getFullName() {
 		
 		if(getContact()==null){
-			logger.error("The tutor with id:"+getId()+" doesn't have the contact!");
+			logger.error("The tutor with id:{} doesn't have the contact!", getId());
 			return "";
 		}
 		

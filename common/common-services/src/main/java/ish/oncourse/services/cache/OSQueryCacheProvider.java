@@ -1,14 +1,12 @@
 package ish.oncourse.services.cache;
 
+import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import ish.oncourse.util.ContextUtil;
-
-import java.util.Properties;
-
 import org.apache.cayenne.ConfigurationException;
 import org.apache.cayenne.cache.OSQueryCache;
 import org.apache.cayenne.di.Provider;
 
-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
+import java.util.Properties;
 
 public class OSQueryCacheProvider implements Provider<OSQueryCache> {
 	

@@ -1,25 +1,25 @@
 package ish.oncourse.ui.pages;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ish.oncourse.linktransform.PageIdentifier;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.voucher.IVoucherService;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Products {
 	@Inject
 	@Property
 	private Request request;
 	
-	static final Logger LOGGER = Logger.getLogger(Products.class);
+	static final Logger logger = LogManager.getLogger();
 	private static final int START_DEFAULT = 0;
 	private static final int ROWS_DEFAULT = 10;
 	

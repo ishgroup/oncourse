@@ -1,11 +1,11 @@
 package ish.oncourse.services.format;
 
+import org.apache.commons.collections.Factory;
+
 import java.text.Format;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-
-import org.apache.commons.collections.Factory;
 
 public class FormatService implements IFormatService {
 

@@ -6,16 +6,9 @@ package ish.oncourse.enrol.checkout;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
-import ish.common.types.ProductType;
 import ish.oncourse.enrol.checkout.contact.AddContactController;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.ProductItem;
-import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.*;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -30,13 +23,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static ish.common.types.ProductType.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static ish.common.types.ProductType.VOUCHER;
+import static org.junit.Assert.*;
 
 
 public class ActionAddCompanyPayerTest extends ACheckoutTest {

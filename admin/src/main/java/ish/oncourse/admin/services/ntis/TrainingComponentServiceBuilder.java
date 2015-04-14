@@ -1,9 +1,7 @@
 package ish.oncourse.admin.services.ntis;
 
-import java.util.Map;
-
-import javax.xml.ws.BindingProvider;
-
+import au.gov.training.services.trainingcomponent.ITrainingComponentService;
+import au.gov.training.services.trainingcomponent.TrainingComponentService;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -14,8 +12,8 @@ import org.apache.cxf.ws.security.SecurityConstants;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
 
-import au.gov.training.services.trainingcomponent.ITrainingComponentService;
-import au.gov.training.services.trainingcomponent.TrainingComponentService;
+import javax.xml.ws.BindingProvider;
+import java.util.Map;
 
 public class TrainingComponentServiceBuilder implements ServiceBuilder<ITrainingComponentService> {
 

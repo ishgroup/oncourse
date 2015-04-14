@@ -3,7 +3,8 @@
  */
 package ish.oncourse.cms.webdav;
 
-import io.milton.http.*;
+import io.milton.http.Auth;
+import io.milton.http.Range;
 import io.milton.http.exceptions.BadRequestException;
 import io.milton.http.exceptions.ConflictException;
 import io.milton.http.exceptions.NotAuthorizedException;
@@ -13,7 +14,8 @@ import io.milton.resource.FolderResource;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
 
 public abstract class DirectoryResource extends AbstractResource implements FolderResource {
 	

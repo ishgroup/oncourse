@@ -1,7 +1,5 @@
 package ish.oncourse.services.resource;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
@@ -9,14 +7,15 @@ import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ResourceServiceTest extends Assert {
 

@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.Contact;
+
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addContact;
 
 public class ActionInit extends APurchaseAction {

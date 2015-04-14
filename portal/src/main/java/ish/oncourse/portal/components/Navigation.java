@@ -10,7 +10,8 @@ import ish.oncourse.portal.services.PCourseClass;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class Navigation {
 
-    private static final Logger logger = Logger.getLogger(Navigation.class);
+    private static final Logger logger = LogManager.getLogger();
 
     @Parameter
     private String activeMenu;

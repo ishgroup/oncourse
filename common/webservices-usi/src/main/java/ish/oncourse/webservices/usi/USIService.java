@@ -10,7 +10,8 @@ import ish.common.types.USIFieldStatus;
 import ish.common.types.USIVerificationRequest;
 import ish.common.types.USIVerificationResult;
 import ish.common.types.USIVerificationStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
@@ -19,7 +20,7 @@ import java.util.GregorianCalendar;
 
 public class USIService {
 	
-	private static final Logger logger = Logger.getLogger(USIService.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private IUSIService endpoint;
 	
@@ -54,7 +55,7 @@ public class USIService {
 
 			return result;
 		} catch (Exception e) {
-			logger.error(String.format("Unable to verify USI code for %s %s.", request.getStudentFirstName(), request.getStudentLastName()), e);
+			logger.error("Unable to verify USI code for {} {}.", request.getStudentFirstName(), request.getStudentLastName(), e);
 			
 			throw new RuntimeException("Error verifying USI.", e);
 		}

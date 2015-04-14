@@ -7,8 +7,8 @@ package ish.oncourse.cms.webdav.jscompiler;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileReader;
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 public class JSSourceParser {
 
-    private static final Logger LOGGER = LogManager.getLogger(JSSourceParser.class);
+    private static final Logger logger = LogManager.getLogger();
 
     //the file contains dependencies for default java scripts
     private static final String DEFAULT_BASE_JS = "base.js";
@@ -59,7 +59,7 @@ public class JSSourceParser {
     public void parse() {
         init();
         if (!fileJS.exists()) {
-            errorHandler.logError(LOGGER, String.format("File %s does not exist", fileJS.getFile().getAbsolutePath()));
+            errorHandler.logError(logger, String.format("File %s does not exist", fileJS.getFile().getAbsolutePath()));
             return;
         }
 
@@ -74,7 +74,7 @@ public class JSSourceParser {
         try {
             fileIterator.run();
         } catch (IOException e) {
-            errorHandler.logError(LOGGER, e);
+            errorHandler.logError(logger, e);
         }
     }
 
@@ -112,7 +112,7 @@ public class JSSourceParser {
 
             if (!source.exists())
             {
-                errorHandler.logError(LOGGER, String.format("File %s does not exist", source.getFile()));
+                errorHandler.logError(logger, String.format("File %s does not exist", source.getFile()));
             }
             return true;
         }
@@ -138,7 +138,7 @@ public class JSSourceParser {
         Verify verify = verify(source);
         if (verify.theSame != null)
         {
-            errorHandler.logError(LOGGER, String.format("File %s is included in more then once. Usages:\n%s\n%s",
+            errorHandler.logError(logger, String.format("File %s is included in more then once. Usages:\n%s\n%s",
                     source.getFile(),
                     verify.theSame.getPath(),
                     source.getPath()));
@@ -155,7 +155,7 @@ public class JSSourceParser {
         try {
             fileIterator.run();
         } catch (IOException e) {
-            errorHandler.logError(LOGGER, e);
+            errorHandler.logError(logger, e);
         }
     }
 

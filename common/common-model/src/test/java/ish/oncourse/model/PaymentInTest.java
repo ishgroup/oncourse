@@ -1,10 +1,6 @@
 package ish.oncourse.model;
 
-import ish.common.types.CourseEnrolmentType;
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.test.ContextUtils;
 import org.apache.cayenne.ObjectContext;

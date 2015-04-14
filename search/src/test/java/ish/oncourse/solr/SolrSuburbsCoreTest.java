@@ -1,11 +1,6 @@
 package ish.oncourse.solr;
 
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.util.Arrays;
-
 import ish.oncourse.services.search.SolrQueryBuilder;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -14,6 +9,10 @@ import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.SolrParams;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.Arrays;
 
 public class SolrSuburbsCoreTest extends CustomizedAbstractSolrTestCase {
 	private static final String SUBURBS_CORE_NAME = "suburbs";

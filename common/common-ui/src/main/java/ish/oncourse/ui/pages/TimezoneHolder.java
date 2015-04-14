@@ -2,8 +2,8 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.services.cookies.CookiesService;
 import ish.oncourse.services.cookies.ICookiesService;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -14,7 +14,7 @@ public class TimezoneHolder {
 	private static final String STATUS_OK_RESPONSE = "{status: 'OK'}";
 	private static final String JSON_RESPONSE_TYPE = "text/json";
 	private static final String OFFSET_PARAMETER = "offset";
-	private static final Logger LOGGER = Logger.getLogger(TimezoneHolder.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	@Inject
 	private Request request;
@@ -33,7 +33,7 @@ public class TimezoneHolder {
 					cookiesService.writeCookieValue(CookiesService.CLIENT_TIMEZONE_NAME, value);
 					break;
 				default:
-					LOGGER.error(String.format("Unexpected param %s with value %s for timezone holder passed", parameter, value));
+					logger.error("Unexpected param {} with value {} for timezone holder passed", parameter, value);
 					break;
 			}
 		}

@@ -8,9 +8,9 @@ import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.utils.StringUtilities;
-import org.apache.cayenne.PersistenceState;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.M
 
 public class PaymentEditorController implements PaymentEditorDelegate {
 
-	private static final Logger LOGGER = Logger.getLogger(PaymentEditorController.class);
+	private static final Logger logger = LogManager.getLogger();
 
     private PurchaseController purchaseController;
     private PaymentProcessController paymentProcessController;
@@ -241,7 +241,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 				}
 			}
 		} catch (Exception e) {
-			LOGGER.error("Cannot create Analytics Transaction.", e);
+			logger.error("Cannot create Analytics Transaction.", e);
 		}
 		return null;
     }

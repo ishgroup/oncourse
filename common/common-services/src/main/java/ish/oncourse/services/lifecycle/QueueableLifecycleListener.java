@@ -14,7 +14,8 @@ import org.apache.cayenne.graph.GraphDiff;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.Query;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -29,7 +30,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
     /**
      * Logger
      */
-    private static final Logger LOGGER = Logger.getLogger(QueueableLifecycleListener.class);
+    private static final Logger logger = LogManager.getLogger();
 
     /**
      * Cayenne service.
@@ -89,7 +90,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
             }
             catch (Throwable e)
             {
-                LOGGER.error("QueueableLifecycleListener thrown an exception", e);
+                logger.error("QueueableLifecycleListener thrown an exception", e);
                 throw new RuntimeException(e);
             }
             finally {
@@ -105,7 +106,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         }
         catch (Throwable e)
         {
-            LOGGER.error("QueueableLifecycleListener thrown an exception", e);
+            logger.error("QueueableLifecycleListener thrown an exception", e);
             throw new RuntimeException(e);
         }
         finally {
@@ -192,22 +193,19 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
 				boolean isAsyncReplicationAllowed = q.isAsyncReplicationAllowed();
 				boolean replicatedContext = recordContext.getIsRecordQueueingEnabled();
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug(String.format("Post %s entered with %s %s %s with ID : %s %s", action,
-							(replicatedContext ? "replication context " : "non-replication context "),
-							(isAsyncReplicationAllowed ? "async replication allowed for this object ":"async replication not allowed for this object"),
+				if (logger.isDebugEnabled()) {
+					logger.debug("Post {} entered with {} context {} allowed for this object {} with ID : {} {}", action,
+							(replicatedContext ? "replication" : "non-replication"),
+							(isAsyncReplicationAllowed ? "async replication" : "async replication not"),
 							q.getClass().getSimpleName(),
 							q.getObjectId(),
-							traceObjectInfo(q)));
+							traceObjectInfo(q));
 				}
 				if (!replicatedContext) {
 					return;
 				}
 				if (isAsyncReplicationAllowed) {
-					LOGGER.debug(String.format("Post %s event on : Entity: %s  with ID : %s",
-							action,
-							q.getClass().getSimpleName(),
-							q.getObjectId()));
+					logger.debug("Post {} event on : Entity: {} with ID: {}", action, q.getClass().getSimpleName(), q.getObjectId());
 					enqueue(q, action);
 				}
 			}
@@ -222,7 +220,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         if (entity instanceof Queueable) {
             Queueable q = (Queueable) entity;
             if (q.isAsyncReplicationAllowed()) {
-                LOGGER.debug("Post Remove event on : Entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId());
+                logger.debug("Post Remove event on : Entity: {} with ID: {}", q.getClass().getSimpleName(), q.getObjectId());
                 College college = objectIdCollegeMap.remove(q.getObjectId());
                 if (college != null) {
                     q.setCollege(college);
@@ -311,8 +309,8 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         Long entityId = entity.getId();
         Long angelId = entity.getAngelId();
 
-        LOGGER.debug(String.format("Creating QueuedRecord<id:%s, entityName:%s, action:%s, transactionKey:%s>", entityId, entityName,
-                action, transactionKey));
+        logger.debug("Creating QueuedRecord<id: {}, entityName: {}, action: {}, transactionKey: {}>", entityId, entityName,
+		        action, transactionKey);
 
         QueuedRecord qr = currentContext.newObject(QueuedRecord.class);
         qr.setCollege(college);

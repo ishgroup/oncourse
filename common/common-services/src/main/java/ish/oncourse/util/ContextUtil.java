@@ -1,6 +1,7 @@
 package ish.oncourse.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -13,7 +14,7 @@ import javax.naming.NamingException;
  */
 public class ContextUtil {
 	
-	private static final Logger LOGGER = Logger.getLogger(ContextUtil.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	public static final String CACHE_ENABLED_PROPERTY_KEY = "cache.enabled";
 	public static final String OSCACHE_CAPACITY_PROPERTY_KEY = "oscache.cache.capacity";
@@ -39,7 +40,7 @@ public class ContextUtil {
             ctx = (Context) context.lookup("java:comp/env");
         } catch (NamingException e) {
             ctx = context;
-            LOGGER.warn(e);
+            logger.warn(e);
         }
         return ctx.lookup(path);
     }
@@ -55,7 +56,7 @@ public class ContextUtil {
     		
     		return cacheEnabled;
     	} catch (Exception e) {
-    		LOGGER.warn("cache.enabled option is not configured in context.xml, query caching will be enabled for the app.");
+    		logger.warn("cache.enabled option is not configured in context.xml, query caching will be enabled for the app.");
     		return true;
     	}
     }
@@ -71,7 +72,7 @@ public class ContextUtil {
     		
     		return cacheCapacity;
     	} catch (Exception e) {
-    		LOGGER.warn("oscache.cache.capacity option is not configured in context.xml, using default from oscache.properties configuration file.");
+    		logger.warn("oscache.cache.capacity option is not configured in context.xml, using default from oscache.properties configuration file.");
     		return null;
     	}
     }
@@ -80,7 +81,7 @@ public class ContextUtil {
 		try {
 			return (String) lookup(STORAGE_ACCESS_ID_PROPERTY_KEY);
 		} catch (Exception e) {
-			LOGGER.warn("storage.access.id is not configured in context.xml, S3 operations won't be available.");
+			logger.warn("storage.access.id is not configured in context.xml, S3 operations won't be available.");
 			return null;
 		}
 	}
@@ -89,7 +90,7 @@ public class ContextUtil {
 		try {
 			return (String) lookup(STORAGE_ACCESS_KEY_PROPERTY_KEY);
 		} catch (Exception e) {
-			LOGGER.warn("storage.access.key is not configured in context.xml, S3 operations won't be available.");
+			logger.warn("storage.access.key is not configured in context.xml, S3 operations won't be available.");
 			return null;
 		}
 	}
@@ -98,7 +99,7 @@ public class ContextUtil {
 		try {
 			return (String) lookup(S_ROOT);
 		} catch (Exception e) {
-			LOGGER.warn("s.root is not configured in context.xml, webdav functionality will not be available.");
+			logger.warn("s.root is not configured in context.xml, webdav functionality will not be available.");
 			return null;
 		}
 	}
@@ -107,7 +108,7 @@ public class ContextUtil {
 		try {
 			return (String) lookup(CMS_EDIT_SCRIPT_PATH);
 		} catch (Exception e) {
-			LOGGER.warn("cms.script.edit is not configured in context.xml, webdav resource editing will not function properly.");
+			logger.warn("cms.script.edit is not configured in context.xml, webdav resource editing will not function properly.");
 			return null;
 		}
 	}
@@ -116,7 +117,7 @@ public class ContextUtil {
 		try {
 			return (String) lookup(CMS_DEPLOY_SCRIPT_PATH);
 		} catch (Exception e) {
-			LOGGER.warn("cms.script.deploy is not configured in context.xml, cms won't be able to deploy resources.");
+			logger.warn("cms.script.deploy is not configured in context.xml, cms won't be able to deploy resources.");
 			return null;
 		}
 	}

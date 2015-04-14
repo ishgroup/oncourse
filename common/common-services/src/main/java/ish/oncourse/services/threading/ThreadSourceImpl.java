@@ -53,7 +53,7 @@ public class ThreadSourceImpl implements ThreadSource {
 	/** default exception handler that writes exception to the log */
 	private final TaskExceptionHandler defaultTaskExceptionHandler = new TaskExceptionHandler() {
 		public void exceptionThrown(Object task, Throwable exception) {
-			logger.error("Task failed :" + task, exception);
+			logger.error("Task failed: {}", task, exception);
 		}
 	};
 }

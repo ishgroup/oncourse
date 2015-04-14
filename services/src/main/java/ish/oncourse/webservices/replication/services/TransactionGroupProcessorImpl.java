@@ -21,7 +21,8 @@ import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.reflect.ArcProperty;
 import org.apache.cayenne.reflect.ClassDescriptor;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.sql.SQLException;
@@ -45,7 +46,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
     /**
 	 * Logger
 	 */
-	private static final Logger logger = Logger.getLogger(TransactionGroupProcessorImpl.class);
+	private static final Logger logger = LogManager.getLogger();
 
     /**
 	 * WebSiteService
@@ -208,8 +209,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 */
 	private Queueable processStub(GenericReplicationStub currentStub) {
 
-		logger.info(String.format("Process stub for %s with angelId:%s and willowId:%s.", currentStub.getEntityIdentifier(),
-				currentStub.getAngelId(), currentStub.getWillowId()));
+		logger.info("Process stub for {} with angelId: {} and willowId: {}.", currentStub.getEntityIdentifier(),
+				currentStub.getAngelId(), currentStub.getWillowId());
 
 		GenericReplicatedRecord replRecord = getReplicatedRecordForStub(currentStub);
 

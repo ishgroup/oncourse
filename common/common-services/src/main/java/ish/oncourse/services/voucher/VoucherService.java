@@ -15,14 +15,15 @@ import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.*;
 
 public class VoucherService implements IVoucherService {
 	private static final String OBJECT_RELATIONSHIP_SEPARATOR_STRING = ".";
-	private static final Logger LOGGER = Logger.getLogger(VoucherService.class);
+	private static final Logger logger = LogManager.getLogger();
 	private final String VOUCHER_OWNER_RELATION = Voucher.INVOICE_LINE_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING + InvoiceLine.INVOICE_PROPERTY
 			+ OBJECT_RELATIONSHIP_SEPARATOR_STRING + Invoice.PAYMENT_IN_LINES_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING
 			+ PaymentInLine.PAYMENT_IN_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING + PaymentIn.STUDENT_PROPERTY
@@ -72,9 +73,11 @@ public class VoucherService implements IVoucherService {
 	public Product loadAvailableVoucherProductBySKU(String sku) {
 		College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Product.COLLEGE_PROPERTY, currentCollege)
+				.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
 				.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE))
 				.andExp(ExpressionFactory.matchExp(Product.SKU_PROPERTY, sku));
 		SelectQuery query = new SelectQuery(Product.class, qualifier);
+		@SuppressWarnings("unchecked")
 		List<Product> results = cayenneService.sharedContext().performQuery(query);
 		return !results.isEmpty() ? results.get(0) : null;
 	}
@@ -124,10 +127,9 @@ public class VoucherService implements IVoucherService {
 
 
         List<Voucher> results = cayenneService.sharedContext().performQuery(new SelectQuery(Voucher.class, exp));
-		LOGGER.info(String.format("%s found for code %s for college %s", results.size(), code, currentCollege.getId()));
+		logger.info("{} found for code {} for college {}", results.size(), code, currentCollege.getId());
 		if (results.size() > 1) {
-			LOGGER.warn(String.format("%s vouchers found for code %s for college %s. Maybe we need to enlarge the code size?", results.size(), code,
-					currentCollege.getId()));
+			logger.warn("{} vouchers found for code {} for college {}. Maybe we need to enlarge the code size?", results.size(), code, currentCollege.getId());
 		}
 		return results.isEmpty() ? null : results.get(0);
 	}

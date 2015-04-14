@@ -1,13 +1,12 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Product;
-
-import java.util.List;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.List;
 
 public class ProductsList {
 	@Inject

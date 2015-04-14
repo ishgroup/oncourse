@@ -5,11 +5,10 @@ import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class PreferenceControllerFactory {
 	

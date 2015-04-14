@@ -4,7 +4,6 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.SetupRender;

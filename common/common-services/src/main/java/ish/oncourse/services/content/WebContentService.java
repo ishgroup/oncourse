@@ -10,14 +10,15 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.*;
 
 public class WebContentService extends BaseService<WebContent> implements IWebContentService {
 
-	private static final Logger LOGGER = Logger.getLogger(BaseService.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -136,8 +137,8 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 			return;
 		}
 		if (position > contentVisibilities.size()) {
-			LOGGER.error(String.format("JS try to set the higher position %s to visibility then list contains %s. Changed to last available position %s.", 
-				position, contentVisibilities.size(), contentVisibilities.size()), new Exception());
+			logger.error("JS try to set the higher position {} to visibility then list contains {}. Changed to last available position {}.",
+					position, contentVisibilities.size(), contentVisibilities.size(), new Exception());
 			position = contentVisibilities.size();
 		}
 		

@@ -5,7 +5,8 @@ import ish.oncourse.model.visitor.IVisitor;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
@@ -20,7 +21,7 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 	/**
 	 * Logger
 	 */
-	private static final Logger LOG = Logger.getLogger(WebContent.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
@@ -58,13 +59,13 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 	 * @return visibility
 	 */
 	public WebContentVisibility getWebContentVisibility(WebNodeType webNodeType) {
-		LOG.debug(String.format("Searching webVisibility for webContent:%s with webNodeType:%s", this.getId(), webNodeType.getId()));
+		logger.debug(String.format("Searching webVisibility for webContent:%s with webNodeType:%s", this.getId(), webNodeType.getId()));
 		SelectQuery q = new SelectQuery(WebContentVisibility.class);
 		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_CONTENT_PROPERTY, this));
 		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_NODE_TYPE_PROPERTY, webNodeType));
 		@SuppressWarnings("unchecked")
 		List<WebContentVisibility> list = getObjectContext().performQuery(q);
-		LOG.debug(String.format("The number of found visibilities: %s", list.size()));
+		logger.debug(String.format("The number of found visibilities: %s", list.size()));
 		return list.isEmpty() ? null : list.get(0);
 
 	}
@@ -75,13 +76,13 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 	 * @return visibility
 	 */
 	public WebContentVisibility getWebContentVisibility(WebNode webNode) {
-		LOG.debug(String.format("Searching webVisibility for webNode:%s and webContent:%s", webNode.getId(), this.getId()));
+		logger.debug(String.format("Searching webVisibility for webNode:%s and webContent:%s", webNode.getId(), this.getId()));
 		SelectQuery q = new SelectQuery(WebContentVisibility.class);
 		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_NODE_PROPERTY, webNode));
 		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_CONTENT_PROPERTY, this));
 		@SuppressWarnings("unchecked")
 		List<WebContentVisibility> list = getObjectContext().performQuery(q);
-		LOG.debug(String.format("The number of found visibilities: %s", list.size()));
+		logger.debug(String.format("The number of found visibilities: %s", list.size()));
 		
 		return list.isEmpty() ? null : list.get(0);
 	}

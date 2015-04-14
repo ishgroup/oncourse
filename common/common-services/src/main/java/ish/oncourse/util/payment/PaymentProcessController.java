@@ -11,7 +11,8 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessS
 
 public class PaymentProcessController {
 
-    private static final Logger LOGGER = Logger.getLogger(PaymentProcessController.class);
+    private static final Logger logger = LogManager.getLogger();
 
     /**
      * Can be null. in this way payment gateway processing will be run form the same thread.
@@ -140,7 +141,7 @@ public class PaymentProcessController {
         
         if (!isProcessFinished() && startWatcher) {
         	//we should not fire watchdog in case if payment already success or canceled for any reasons.
-        	stackedPaymentMonitorFuture = parallelExecutor.invoke(new StackedPaymentMonitor(this));
+        	stackedPaymentMonitorFuture = parallelExecutor.invoke(new StuckPaymentMonitor(this));
         }
     }
 
@@ -166,7 +167,7 @@ public class PaymentProcessController {
 		PaymentIn paymentIn = Cayenne.objectForPK(tempContext, PaymentIn.class, this.paymentIn.getId());
 
 
-		LOGGER.info(String.format("PaymentAction = %s, PaymentProcessController.state = %s; PaymentIn.status = %s; DB.PaymentIn.status = %s",action, currentState, this.paymentIn.getStatus(), paymentIn.getStatus()));
+		logger.info("PaymentAction = {}, PaymentProcessController.state = {}; PaymentIn.status = {}; DB.PaymentIn.status = {}", action, currentState, this.paymentIn.getStatus(), paymentIn.getStatus());
 
 		switch (action) {
 			case INIT_PAYMENT:
@@ -201,11 +202,11 @@ public class PaymentProcessController {
             } else {
                 changeProcessState(FAILED);
             }
-            LOGGER.info(String.format("Payment gateway processing has been finished with status %s", paymentIn.getStatus()));
+            logger.info("Payment gateway processing has been finished with status {}", paymentIn.getStatus());
         } catch (InterruptedException | ExecutionException e) {
             setThrowable(e);
         } catch (TimeoutException e) {
-            LOGGER.info("Payment is processed yet");
+            logger.info("Payment is processed yet");
         }
 
     }
@@ -302,7 +303,7 @@ public class PaymentProcessController {
     public synchronized void setThrowable(Throwable throwable) {
         this.currentState = ERROR;
         this.throwable = throwable;
-        LOGGER.error("Unexpected error", throwable);
+        logger.error("Unexpected error", throwable);
     }
 
     public synchronized boolean isIllegalState() {

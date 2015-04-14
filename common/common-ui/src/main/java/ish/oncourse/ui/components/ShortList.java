@@ -8,7 +8,8 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.util.FormatUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -66,7 +67,7 @@ public class ShortList {
 	@Inject
 	private Messages messages;
 
-	static final Logger LOGGER = Logger.getLogger(ShortList.class);
+	static final Logger logger = LogManager.getLogger();
 
 	@SetupRender
 	void beforeRender() {

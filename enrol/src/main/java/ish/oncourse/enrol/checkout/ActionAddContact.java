@@ -1,10 +1,5 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Product;
-
-import java.util.List;
-
 public class ActionAddContact extends AAddContactAction {
 
     @Override

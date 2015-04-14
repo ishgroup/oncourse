@@ -9,7 +9,8 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class ResourceService implements IResourceService {
@@ -20,8 +21,7 @@ public class ResourceService implements IResourceService {
 	private IWebSiteVersionService siteVersionService;
 	private ICayenneService cayenneService;
 
-	private static final Logger LOGGER = Logger
-			.getLogger(ResourceService.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	public ResourceService(	@Inject IWebSiteService siteService, 
 			@Inject ICayenneService cayenneService, @Inject IWebSiteVersionService siteVersionService) {

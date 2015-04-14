@@ -16,7 +16,8 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
@@ -30,7 +31,7 @@ import java.util.Set;
  */
 public class CollegeService implements ICollegeService {
 
-	private static final Logger LOGGER = Logger.getLogger(CollegeService.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -73,17 +74,13 @@ public class CollegeService implements ICollegeService {
 		List<College> records = objectContext.performQuery(q);
 
 		if ((records == null) || records.isEmpty()) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("No College found for 'security code': '" + securityCode + "'");
-			}
+			logger.debug("No College found for security code: {}", securityCode);
+
 		} else if (records.size() == 1) {
 			college = records.get(0);
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("College with ID: '" + college.getId() + "' found for 'security code': '" + securityCode
-						+ "'");
-			}
+			logger.debug("College with ID: {} found for security code: {}", college.getId(), securityCode);
 		} else {
-			LOGGER.error("Multiple Colleges found for 'security code': '" + securityCode + "'");
+			logger.error("Multiple Colleges found for security code: {}", securityCode);
 		}
 
 		return college;
@@ -185,7 +182,7 @@ public class CollegeService implements ICollegeService {
             context.performGenericQuery(template);
             context.commitChanges();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 

@@ -6,13 +6,15 @@ package ish.oncourse.model.liquibase;
 import liquibase.database.Database;
 import liquibase.exception.CustomChangeException;
 import liquibase.statement.SqlStatement;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.*;
 
 
 public class FixUnreplicatedStudentConcession extends ACustomSqlChange {
 
-	private static final Logger LOGGER = Logger.getLogger(FixUnreplicatedStudentConcession.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private static final String SELECT_Duplicate_Concession = "select c1.id from  StudentConcession c1 \n" +
 			"inner join StudentConcession c2  on c1.studentId = c2.studentId  and c1.concessionTypeId = c2.concessionTypeId and c1.id != c2.id\n" +
@@ -46,7 +48,7 @@ public class FixUnreplicatedStudentConcession extends ACustomSqlChange {
 
 			
 		} catch (Throwable e) {
-			LOGGER.error(e);
+			logger.catching(e);
 		} finally {
 			if (connection != null)
 				try {
@@ -64,7 +66,7 @@ public class FixUnreplicatedStudentConcession extends ACustomSqlChange {
 			alterStatement.executeUpdate();
 			alterStatement.close();
 		} catch (SQLException e) {
-			LOGGER.error(e);
+			logger.catching(e);
 		} finally {
 			try {
 				if (alterStatement != null)
@@ -94,7 +96,7 @@ public class FixUnreplicatedStudentConcession extends ACustomSqlChange {
 
 			
 		} catch (SQLException e) {
-			LOGGER.error(e);
+			logger.error(e);
 		} finally {
 			try {
 				if (deleteStatement != null)
@@ -146,7 +148,7 @@ public class FixUnreplicatedStudentConcession extends ACustomSqlChange {
 			}
 
 		} catch (SQLException e) {
-			LOGGER.error(e);
+			logger.error(e);
 		} finally {
 			try {
 				if (resultSet != null)

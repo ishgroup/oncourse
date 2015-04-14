@@ -1,16 +1,17 @@
 package ish.oncourse.utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.log4j.Logger;
-
 public class SessionIdGenerator {
 
-	private static Logger log = Logger.getLogger(SessionIdGenerator.class);
+	private static Logger log = LogManager.getLogger();
 
 	/**
 	 * Queue of random number generator objects to be used when creating session

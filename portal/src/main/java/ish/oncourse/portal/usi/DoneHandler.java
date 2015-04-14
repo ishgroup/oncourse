@@ -1,6 +1,5 @@
 package ish.oncourse.portal.usi;
 
-import java.util.Collections;
 import java.util.Map;
 
 import static ish.oncourse.portal.usi.UsiController.Step.step2;

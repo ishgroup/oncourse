@@ -4,9 +4,6 @@ import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.cache.ICacheService;
-import ish.oncourse.services.cache.NoopCacheService;
-import ish.oncourse.services.cache.OSCacheService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.content.WebContentService;
 import ish.oncourse.services.cookies.CookiesService;
@@ -69,7 +66,6 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
-import ish.oncourse.test.TestContextUtil;
 import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
@@ -100,12 +96,6 @@ import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 public class PaymentServiceTestModule {
 	public static void bind(ServiceBinder binder) {
 
-		// Tapestry and environment specific services
-		if (TestContextUtil.isQueryCacheEnabled()) {
-			binder.bind(ICacheService.class, OSCacheService.class);
-		} else {
-			binder.bind(ICacheService.class, NoopCacheService.class);
-		}
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(IEnvironmentService.class, EnvironmentService.class);

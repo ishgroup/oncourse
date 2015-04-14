@@ -1,8 +1,8 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.ui.services.DbEnabledTestModule;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.ui.services.DbEnabledTestModule;
 import ish.oncourse.ui.services.TestModule;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;

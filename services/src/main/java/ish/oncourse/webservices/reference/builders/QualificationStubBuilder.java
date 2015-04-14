@@ -5,13 +5,12 @@
 
 package ish.oncourse.webservices.reference.builders;
 
-import java.util.Date;
-
 import ish.common.types.QualificationType;
-import org.apache.commons.lang.StringUtils;
-
 import ish.oncourse.model.Qualification;
 import ish.oncourse.webservices.v4.stubs.reference.QualificationStub;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.Date;
 
 /**
  *

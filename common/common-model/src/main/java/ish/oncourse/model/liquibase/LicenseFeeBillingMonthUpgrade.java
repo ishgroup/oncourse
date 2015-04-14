@@ -1,5 +1,17 @@
 package ish.oncourse.model.liquibase;
 
+import liquibase.change.custom.CustomSqlChange;
+import liquibase.database.Database;
+import liquibase.exception.CustomChangeException;
+import liquibase.exception.SetupException;
+import liquibase.exception.ValidationErrors;
+import liquibase.resource.ResourceAccessor;
+import liquibase.statement.SqlStatement;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,19 +21,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
-import liquibase.change.custom.CustomSqlChange;
-import liquibase.database.Database;
-import liquibase.exception.CustomChangeException;
-import liquibase.exception.SetupException;
-import liquibase.exception.ValidationErrors;
-import liquibase.resource.ResourceAccessor;
-import liquibase.statement.SqlStatement;
 
 public class LicenseFeeBillingMonthUpgrade implements CustomSqlChange {
 	

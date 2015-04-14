@@ -1,9 +1,6 @@
 package ish.oncourse.selectutils;
 
 import ish.common.util.DisplayableExtendedEnumeration;
-
-import java.util.List;
-
 import org.apache.tapestry5.OptionGroupModel;
 import org.apache.tapestry5.OptionModel;
 import org.apache.tapestry5.internal.OptionModelImpl;
@@ -12,6 +9,8 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.util.AbstractSelectModel;
 import org.apache.tapestry5.util.EnumSelectModel;
+
+import java.util.List;
 
 /**
  * Customized Tapestry Select Model that processes enum values and displays the

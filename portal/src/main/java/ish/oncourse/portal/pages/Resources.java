@@ -11,7 +11,8 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
@@ -24,7 +25,7 @@ import java.util.TimeZone;
 
 public class Resources {
 
-    private static final Logger logger = Logger.getLogger(Resources.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private static final String KEY_selfPacedMessage = "selfPacedMessage";
     private static final String KEY_classNotHaveSessionsMessage = "classNotHaveSessionsMessage";

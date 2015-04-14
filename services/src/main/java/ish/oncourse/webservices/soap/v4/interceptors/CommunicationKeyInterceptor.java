@@ -11,7 +11,8 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.service.model.BindingOperationInfo;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,7 +24,7 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 	private static final String METHOD_logout = "logout";
 	private static final String METHOD_confirmExecution = "confirmExecution";
 	private static final String METHOD_authenticate = "authenticate";
-	private static final Logger logger = Logger.getLogger(CommunicationKeyInterceptor.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	@Autowired

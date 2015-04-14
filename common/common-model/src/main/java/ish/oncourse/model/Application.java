@@ -4,8 +4,6 @@ import ish.common.types.ConfirmationStatus;
 import ish.oncourse.model.auto._Application;
 import ish.oncourse.utils.QueueableObjectUtils;
 
-import java.util.Date;
-
 public class Application extends _Application implements Queueable {
 
 	@Override

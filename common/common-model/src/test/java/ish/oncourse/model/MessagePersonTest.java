@@ -1,14 +1,12 @@
 package ish.oncourse.model;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import ish.common.types.MessageStatus;
 import ish.oncourse.test.ContextUtils;
-
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class MessagePersonTest {
 	private ObjectContext context;

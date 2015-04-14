@@ -5,7 +5,8 @@ import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.util.URLUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -43,17 +44,17 @@ public abstract class APage {
     @Inject
     private IFacebookMetaProvider facebookMetaProvider;
 
-    private static final Logger logger = Logger.getLogger(Page.class);
+    private static final Logger logger = LogManager.getLogger();
 
     @SetupRender
     public boolean beforeRender() throws IOException {
         node = webNodeService.getCurrentNode();
         if (node == null || !node.isPublished()) {
-            logger.warn(String.format("CurrentNode \"%s\" is %s in %s/%s",
+            logger.warn("CurrentNode {} is {} in {}/{}",
                     node == null ? "undefined" : webNodeService.getPath(node),
                     node == null ? "null" : "unpublished",
                     request.getServerName(),
-                    request.getPath()));
+                    request.getPath());
 
             HttpServletResponse httpServletResponse = requestGlobals.getHTTPServletResponse();
             httpServletResponse.setContentType("text/html;charset=UTF-8");

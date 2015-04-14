@@ -7,7 +7,6 @@ import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 

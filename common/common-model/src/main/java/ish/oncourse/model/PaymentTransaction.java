@@ -1,8 +1,8 @@
 package ish.oncourse.model;
 
-import java.util.Date;
-
 import ish.oncourse.model.auto._PaymentTransaction;
+
+import java.util.Date;
 
 public class PaymentTransaction extends _PaymentTransaction {
 	private static final long serialVersionUID = -3879382348217850073L;

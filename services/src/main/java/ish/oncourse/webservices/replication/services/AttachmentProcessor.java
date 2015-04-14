@@ -12,11 +12,12 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class AttachmentProcessor {
 
-    private static Logger logger = Logger.getLogger(AttachmentProcessor.class);
+    private static Logger logger = LogManager.getLogger();
 
     private IFileStorageAssetService fileStorageAssetService;
 	private IWebSiteService webSiteService;
@@ -33,14 +34,14 @@ public class AttachmentProcessor {
 
     public Queueable processBinaryDataStub(GenericBinaryDataStub currentStub, RelationShipCallback callback) {
 
-        logger.info(String.format("AttachmentProcessor.processBinaryDataStub with parameters: stub = %s", currentStub));
+        logger.info("AttachmentProcessor.processBinaryDataStub with parameters: stub = {}", currentStub);
 		
 		// before trying to get uncommitted DocumentVersion record instance we need to force BinaryInfoUpdater execution
 		// so that correspondent DocumentVersion record will be created by the moment we will need to get hold of it
 		callback.updateRelationShip(getBinaryInfoId(currentStub), BinaryInfo.class);
 		
 		DocumentVersion documentVersion = callback.updateRelationShip(getBinaryInfoId(currentStub), DocumentVersion.class);
-		logger.info(String.format("AttachmentProcessor.processBinaryDataStub fileStorageAssetService.put for binaryDataStub %s and binaryInfo %s", currentStub, documentVersion));
+		logger.info("AttachmentProcessor.processBinaryDataStub fileStorageAssetService.put for binaryDataStub {} and binaryInfo {}", currentStub, documentVersion);
 		
         fileStorageAssetService.put(currentStub.getContent(), documentVersion);
         return null;
@@ -48,7 +49,7 @@ public class AttachmentProcessor {
 
     public Queueable deletedBinaryDataBy(BinaryInfo binaryInfo)
     {
-        logger.info(String.format("AttachmentProcessor.deletedBinaryDataBy with parameters: binaryInfo=%s",binaryInfo));
+        logger.info("AttachmentProcessor.deletedBinaryDataBy with parameters: binaryInfo {}",binaryInfo);
 		
 		DocumentVersion documentVersion = getDocumentVersionByBinaryInfo(binaryInfo);
 		

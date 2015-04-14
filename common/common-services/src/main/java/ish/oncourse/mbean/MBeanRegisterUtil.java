@@ -1,27 +1,28 @@
 package ish.oncourse.mbean;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.management.*;
 import java.lang.management.ManagementFactory;
 
 public class MBeanRegisterUtil {
-	private static Logger LOGGER = Logger.getLogger(MBeanRegisterUtil.class);
+	private static Logger logger = LogManager.getLogger();
 	
 	public static void registerMbeanService(final Object mBean, final ObjectName name) {
 		final MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 		try {
-			LOGGER.info(String.format("Register MBean with name %s started.", name.getCanonicalName()));
+			logger.info("Register MBean with name {} started.", name.getCanonicalName());
 			if (!isRegisteredMBean(name)) {
 				mBeanServer.registerMBean(mBean, name);
-				LOGGER.info(String.format("Register MBean with name %s done.", name.getCanonicalName()));
+				logger.info("Register MBean with name {} done.", name.getCanonicalName());
 			} else {
 				throw new Exception(String.format("Instance with the same name %s already registered!" , name.getCanonicalName()));
 			}
 		} catch (InstanceAlreadyExistsException | NotCompliantMBeanException | MBeanRegistrationException e) {
-			LOGGER.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		}
 	}
 	
@@ -38,9 +39,9 @@ public class MBeanRegisterUtil {
 				throw new Exception(String.format("Instance with the same name %s already unregistered!" , name.getCanonicalName()));
 			}
 		} catch (MBeanRegistrationException e) {
-			LOGGER.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		}
 	}
 }

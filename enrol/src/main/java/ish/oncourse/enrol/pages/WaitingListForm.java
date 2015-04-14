@@ -19,7 +19,8 @@ import ish.oncourse.util.ValidateHandler;
 import ish.oncourse.utils.StringUtilities;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
@@ -44,7 +45,7 @@ import static ish.oncourse.services.preference.PreferenceController.ContactFiled
 public class WaitingListForm {
     private static final int MAX_PARAMETERS_AMOUNT = 10;
 
-	private static final Logger LOGGER = Logger.getLogger(WaitingListForm.class);
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	public static final String KEY_ERROR_potentialStudent = "message-potentialStudent";
 

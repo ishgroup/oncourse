@@ -10,7 +10,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jws.WebMethod;
-import javax.jws.WebParam;
 import javax.jws.WebService;
 
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v8.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType",

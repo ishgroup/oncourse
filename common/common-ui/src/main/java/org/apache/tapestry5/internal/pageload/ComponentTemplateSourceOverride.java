@@ -9,7 +9,8 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.TapestryConstants;
 import org.apache.tapestry5.internal.event.InvalidationEventHubImpl;
 import org.apache.tapestry5.internal.parser.ComponentTemplate;
@@ -41,7 +42,7 @@ import java.util.Map;
 public final class ComponentTemplateSourceOverride extends InvalidationEventHubImpl implements ComponentTemplateSource, UpdateListener {
 
 	private Request request;
-	private static final Logger LOGGER = Logger.getLogger(ComponentTemplateSourceOverride.class);
+	private static final Logger logger = LogManager.getLogger();
 	private static final String PACKAGE = "ish.oncourse";
 
 	private IResourceService resourceService;
@@ -194,9 +195,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 
 		String componentName = model.getComponentClassName();
 
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Retrieve template for component class name : " + componentName + ", if starts with : " + PACKAGE);
-		}
+		logger.debug("Retrieve template for component class name: {}, if starts with: {}", componentName, PACKAGE);
 		
 		boolean isErrorPage = false;
 		
@@ -205,7 +204,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 			isErrorPage = ExceptionReporter.class.isAssignableFrom(componentClass);
 		}
 		catch (ClassNotFoundException e) {
-			LOGGER.warn("Component class not found.", e);
+			logger.warn("Component class not found.", e);
 		}
 
 		if (componentName.startsWith(PACKAGE) && !isErrorPage) {
@@ -218,15 +217,13 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 			if (layoutKey != null) {
 
                 Resource resource = null;
-                if (ctd != null && model.getComponentClassName().endsWith(ctd.getTemplateClassName()))
-                {
-                    LOGGER.debug(String.format("Try to load user defined template %s override for %s.",ctd.getTemplateFileName(),
-                            templateFile));
+                if (ctd != null && model.getComponentClassName().endsWith(ctd.getTemplateClassName())) {
+                    logger.debug("Try to load user defined template {} override for {}.", ctd.getTemplateFileName(), templateFile);
                     resource = resourceService.getDbTemplateResource(layoutKey, ctd.getTemplateFileName());
                 }
 
                 if (resource == null || !resource.exists()) {
-                    LOGGER.debug("Try to load template override for: " + templateFile);
+                    logger.debug("Try to load template override for: {}", templateFile);
                     resource = resourceService.getDbTemplateResource(layoutKey, templateFile);
                 }
 
@@ -234,7 +231,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 					return resource;
 				}
 
-				LOGGER.debug("Template override: " + templateFile + " doesn't exist.");
+				logger.debug("Template override: {} doesn't exist.", templateFile);
 			}
 		}
 

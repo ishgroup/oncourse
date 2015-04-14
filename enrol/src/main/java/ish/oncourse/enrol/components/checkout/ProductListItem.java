@@ -9,7 +9,8 @@ import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MoneyFormatter;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
@@ -23,7 +24,7 @@ import java.text.ParseException;
 import java.util.List;
 
 public class ProductListItem {
-	private static final Logger LOGGER = Logger.getLogger(ProductListItem.class);
+	private static final Logger logger = LogManager.getLogger();
 	@Parameter(required = true)
 	private PurchaseController purchaseController;
 

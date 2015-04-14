@@ -2,7 +2,6 @@ package ish.oncourse.services.textile.validator;
 
 import ish.oncourse.model.Document;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.AttachmentTextileAttributes;
@@ -14,11 +13,9 @@ import java.util.Map;
 public class AttachmentTextileValidator extends AbstractTextileValidator {
 	
 	private IBinaryDataService binaryDataService;
-    private IFileStorageAssetService fileStorageAssetService;
 
-    public AttachmentTextileValidator(IBinaryDataService binaryDataService, IFileStorageAssetService fileStorageAssetService) {
+    public AttachmentTextileValidator(IBinaryDataService binaryDataService) {
 		this.binaryDataService = binaryDataService;
-        this.fileStorageAssetService = fileStorageAssetService;
     }
 	
 	@Override
@@ -28,7 +25,7 @@ public class AttachmentTextileValidator extends AbstractTextileValidator {
 	
 	@Override
 	protected void specificTextileValidate(String tag, ValidationErrors errors) {
-		Document result = null;
+		Document result;
 		
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
 		String name = tagParams.get(AttachmentTextileAttributes.ATTACHMENT_PARAM_NAME.getValue());

@@ -17,7 +17,8 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -31,7 +32,7 @@ import java.util.List;
 
 public class Billing {
 
-	private static final Logger logger = Logger.getLogger(Billing.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@InjectComponent
 	@Property

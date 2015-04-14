@@ -7,7 +7,8 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.TextileUtil;
 import org.apache.commons.validator.EmailValidator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class TextileForm {
 
-	private final static Logger LOGGER = Logger.getLogger(TextileForm.class);
+	private final static Logger logger = LogManager.getLogger();
 
 	private static final String CONTENT_TYPE = "text/json";
 
@@ -120,13 +121,13 @@ public class TextileForm {
 					emailValue += "_" + encryptedBytes[i];
 				}
 			} catch (Exception e) {
-				LOGGER.error("Problem with processing email", e);
+				logger.error("Problem with processing email", e);
 			}
 		} else {
-			LOGGER.error(String.format("The email for this form is not defined.Host: %s. Path %s",
-                    request != null? request.getServerName():"undefined",
-                    request != null? request.getPath():"undefined"
-                    ));
+			logger.error("The email for this form is not defined.Host: {}. Path {}",
+					request != null ? request.getServerName() : "undefined",
+					request != null ? request.getPath() : "undefined"
+			);
 		}
 
 		afterFieldsMarkUp = (String) request.getAttribute(TextileUtil.TEXTILE_FORM_PAGE_AFTER_FIELDS_PARAM);
@@ -184,8 +185,7 @@ public class TextileForm {
 											parameter2Index = Integer.parseInt(splittedParam2[0]);
 											return parameter1Index.compareTo(parameter2Index);
 										} catch (Exception e) {
-											LOGGER.error(String.format("Failed to parse request parameter index on pagepath = %s", pagePathProperty),
-												e);
+											logger.error("Failed to parse request parameter index on pagepath = {}", pagePathProperty, e);
 											return 0;
 										}
 									} else {
@@ -212,11 +212,11 @@ public class TextileForm {
 							}
 							subject.append(formName).append(" [submitted from website]");
 							if (!mailService.sendMail(null, email, subject.toString(), body.toString())) {
-								LOGGER.error("Failed to send mail");
+								logger.error("Failed to send mail");
 								return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
 							}
 						} else {
-							LOGGER.error("Recipient email is not valid:" + email);
+							logger.error("Recipient email is not valid: {}", email);
 							return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
 						}
 					}
@@ -226,7 +226,7 @@ public class TextileForm {
 							+ webSiteService.getCurrentCollege().getName() + ".");
 				}
 			} catch (Exception e) {
-				LOGGER.error("Failed to send mail with exception " + e.getMessage());
+				logger.catching(e);
 				return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
 			}
 

@@ -8,7 +8,8 @@ import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
     public static final String DATA_NOT_CORRECT = "Input data is not correct.";
     public static final String NUMBER_ERROR = "Invalid credit card number.";
 
-    private static final Logger LOG = Logger.getLogger(TestPaymentGatewayService.class);
+    private static final Logger LOG = LogManager.getLogger();
     private ICayenneService cayenneService;
 
 

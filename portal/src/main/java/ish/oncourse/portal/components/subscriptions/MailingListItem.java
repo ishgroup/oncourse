@@ -1,7 +1,10 @@
 package ish.oncourse.portal.components.subscriptions;
 
 import ish.oncourse.model.Tag;
-import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.annotations.InjectContainer;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 
 
 public class MailingListItem {

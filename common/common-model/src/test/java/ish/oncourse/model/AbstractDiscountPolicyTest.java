@@ -1,8 +1,8 @@
 package ish.oncourse.model;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import ish.math.Money;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,8 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Contains fields and tests common for {@link PotentialDiscountsPolicyTest} and {@link RealDiscountsPolicyTest}

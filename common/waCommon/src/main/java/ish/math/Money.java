@@ -5,7 +5,8 @@
 
 package ish.math;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,7 +22,7 @@ import java.text.NumberFormat;
 public class Money extends Number implements Comparable<Money> {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = Logger.getLogger(Money.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	public static final RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
 	public static final int DEFAULT_SCALE = 2;

@@ -7,15 +7,12 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.StudentConcession;
-
-
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.validation.ValidationException;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class ConcessionDelegateTest extends ACheckoutTest{
 

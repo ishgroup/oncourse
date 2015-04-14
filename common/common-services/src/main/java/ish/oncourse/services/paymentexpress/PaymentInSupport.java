@@ -8,11 +8,12 @@ import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.util.CreditCardUtil;
 import org.apache.cayenne.ObjectContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTransaction>{
 
-    private static final Logger LOGGER = Logger.getLogger(PaymentInSupport.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private PaymentIn paymentIn;
     private ICayenneService cayenneService;
@@ -65,7 +66,7 @@ public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTrans
         details.setTxnType(PaymentExpressUtil.PAYMENT_EXPRESS_TXN_TYPE);
         transactionDetails.append(", transaction type: ").append(details.getTxnType());
 
-        LOGGER.debug(transactionDetails.toString());
+        logger.debug(transactionDetails);
 
         return details;
     }

@@ -9,7 +9,8 @@ import ish.oncourse.webservices.exception.StackTraceUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.ws.WebServiceContext;
@@ -17,7 +18,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class AuthenticateServiceImpl implements IAuthenticateService {
-	private final static Logger LOGGER = Logger.getLogger(AuthenticateServiceImpl.class);
+	private final static Logger logger = LogManager.getLogger();
 	
 	private ICayenneService cayenneService;
 	
@@ -59,12 +60,12 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 		try {
 			@SuppressWarnings("unused")
 			HttpServletRequest request = (HttpServletRequest) takeWebServiceContext().getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
-			LOGGER.info(String.format("Got college request with securityCode:%s, lastCommKey:%s.", webServicesSecurityCode, lastCommKey));
+			logger.info("Got college request with securityCode: {}, lastCommKey: {}.", webServicesSecurityCode, lastCommKey);
 			College college = takeCollegeService().findBySecurityCode(webServicesSecurityCode);
 			if (college == null) {
 				String message = String.format("No college found for 'security code':%s.", webServicesSecurityCode);
 				InternalAuthenticationException ex = new InternalAuthenticationException(message, InternalErrorCode.INVALID_SECURITY_CODE);
-				LOGGER.error(message, ex);
+				logger.error(message, ex);
 				throw ex;
 			}
 			//we need the code to reset cached college's properties
@@ -80,7 +81,7 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 				} else {
 					InternalAuthenticationException ex = new InternalAuthenticationException(String.format("Invalid communication key:%s", lastCommKey), 
 							InternalErrorCode.INVALID_COMMUNICATION_KEY);
-					LOGGER.error(String.format("Communication key is null for college:%s, when received key is %s.", college.getId(), lastCommKey), ex);
+					logger.error("Communication key is null for college: {}, when received key is {}.", college.getId(), lastCommKey, ex);
 					putCollegeInHaltState(college);
 					throw ex;
 				}
@@ -90,7 +91,7 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 					// attempt.
 					InternalAuthenticationException ex = new InternalAuthenticationException(String.format("Communication key:%s in a HALT state.", 
 						lastCommKey), InternalErrorCode.HALT_COMMUNICATION_KEY);
-					LOGGER.debug(String.format("Communication key:%s for college:%s in a HALT state.", lastCommKey, college.getId()), ex);
+					logger.debug("Communication key: {} for college: {} in a HALT state.", lastCommKey, college.getId(), ex);
 					throw ex;
 				}
 				if (lastCommKey == currentKey) {
@@ -99,8 +100,7 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 				} else {
 					InternalAuthenticationException ex = new InternalAuthenticationException(String.format("Invalid communication key: %s.", lastCommKey), 
 						InternalErrorCode.INVALID_COMMUNICATION_KEY);
-					LOGGER.warn(String.format("Invalid communication key:%s, for college:%s, expected:%s.", lastCommKey, college.getId(),
-							currentKey), ex);
+					logger.warn("Invalid communication key: {}, for college: {}, expected: {}.", lastCommKey, college.getId(), currentKey, ex);
 					putCollegeInHaltState(college);
 					// TODO: !!!!! Here should be exception, since we're in HALT state !!!!!!
 					return generateNewKey(college);// throw ex;
@@ -110,7 +110,7 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 			if (e instanceof InternalAuthenticationException) {
 				throw (InternalAuthenticationException) e;
 			} else {
-				LOGGER.error("Unable to authenticate. Generic exception.", e);
+				logger.error("Unable to authenticate. Generic exception.", e);
 				String message = String.format("Unable to authenticate. Willow generic exception: %s", StackTraceUtils.stackTraceAsString(e));
 				throw new InternalAuthenticationException(message);
 			}
@@ -141,7 +141,7 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 
 	@Override
 	public void putCollegeInHaltState(College college) {
-		LOGGER.warn(String.format("Putting college:%s into HALT state.", college.getId()));
+		logger.warn("Putting college: {} into HALT state.", college.getId());
 		/*
 		 * college.setCommunicationKeyStatus(KeyStatus.HALT);
 		 * college.getObjectContext().commitChanges();

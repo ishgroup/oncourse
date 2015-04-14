@@ -11,14 +11,15 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectIdQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueable {
 
 	private static final long serialVersionUID = 8361159336001022666L;
-	private static final Logger LOG = Logger.getLogger(Enrolment.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	/**
 	 * Statuses for which the class place is considered to be occupied.
@@ -127,7 +128,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 			}
 			InvoiceLine originalInvoiceLine = invoices.first();
 			if (originalInvoiceLine.getFinalPriceToPayIncTax().isLessThan(Money.ZERO)) {
-				LOG.error(String.format("Negative invoiceLine with id = %s used as original for enrolment with id = %s", originalInvoiceLine.getId(), getId()));
+				logger.error(String.format("Negative invoiceLine with id = %s used as original for enrolment with id = %s", originalInvoiceLine.getId(), getId()));
 			}
 			return originalInvoiceLine;
 		}

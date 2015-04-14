@@ -1,17 +1,17 @@
 package ish.oncourse.services.textile.validator;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
-
 import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class AbstractTextileValidator implements IValidator{
-	protected static final Logger logger = Logger.getLogger(AbstractTextileValidator.class);
+	protected static final Logger logger = LogManager.getLogger();
 	protected TextileType textileType;
 	
 	protected abstract void initValidator();

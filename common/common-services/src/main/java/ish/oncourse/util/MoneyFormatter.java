@@ -5,6 +5,7 @@ package ish.oncourse.util;
 
 import ish.math.Country;
 import ish.math.Money;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;

@@ -1,13 +1,12 @@
 package ish.oncourse.ui.pages;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class FormTextilePageWithTwoForms {
 

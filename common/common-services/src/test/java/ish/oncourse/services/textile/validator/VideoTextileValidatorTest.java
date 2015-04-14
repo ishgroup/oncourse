@@ -1,15 +1,15 @@
 package ish.oncourse.services.textile.validator;
 
-import static org.junit.Assert.*;
-
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.VideoTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class VideoTextileValidatorTest extends CommonValidatorTest {
 

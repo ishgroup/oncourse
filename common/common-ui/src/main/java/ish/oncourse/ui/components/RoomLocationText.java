@@ -1,7 +1,6 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Room;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 

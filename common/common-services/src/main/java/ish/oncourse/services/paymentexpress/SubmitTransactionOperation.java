@@ -3,13 +3,14 @@ package ish.oncourse.services.paymentexpress;
 import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import com.paymentexpress.stubs.TransactionDetails;
 import com.paymentexpress.stubs.TransactionResult2;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.rmi.RemoteException;
 
 public class SubmitTransactionOperation {
 
-    private static final Logger LOGGER = Logger.getLogger(SubmitTransactionOperation.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private final String postUsername;
     private final String postPassword;
@@ -28,7 +29,7 @@ public class SubmitTransactionOperation {
         try {
             return paymentExpressSoapStub.submitTransaction(postUsername, postPassword, transactionDetails);
         } catch (RemoteException e) {
-            LOGGER.warn(String.format("Cannot submitTransaction for payment with txnRef: %s", transactionDetails.getTxnRef()),e);
+            logger.warn("Cannot submitTransaction for payment with txnRef: {}", transactionDetails.getTxnRef(), e);
             /**
              * Define status of the transaction:
              */

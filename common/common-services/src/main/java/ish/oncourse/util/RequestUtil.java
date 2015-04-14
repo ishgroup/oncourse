@@ -1,11 +1,12 @@
 package ish.oncourse.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class RequestUtil {
-	private static final Logger LOG = Logger.getLogger(RequestUtil.class); 
+	private static final Logger logger = LogManager.getLogger();
 
     private static final String MSIE = "MSIE";
 
@@ -20,7 +21,7 @@ public class RequestUtil {
 			try {
 				versionNumber = Integer.parseInt(userAgent.substring(versionPosition, versionPosition + 1));
 			} catch (Throwable t) {
-				LOG.info("Incorrect or corrupted userAgent received " + userAgent, t);
+				logger.info("Incorrect or corrupted userAgent received {}", userAgent, t);
 				return StringUtils.EMPTY;
 			}
 			switch (versionNumber) {

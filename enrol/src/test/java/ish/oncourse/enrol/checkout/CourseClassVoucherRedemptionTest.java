@@ -21,7 +21,6 @@ import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.State.paymentProgress;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class CourseClassVoucherRedemptionTest extends ACheckoutTest{
 	

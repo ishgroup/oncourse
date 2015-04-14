@@ -5,8 +5,8 @@ import ish.oncourse.webservices.exception.StackTraceUtils;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.common.util.SOAPConstants;
 import org.apache.cxf.message.Message;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
 public class InterceptorErrorHandle {
 

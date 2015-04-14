@@ -2,7 +2,6 @@ package ish.oncourse.services.textile.validator;
 
 import ish.oncourse.model.Document;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
@@ -14,11 +13,9 @@ import java.util.Map;
 public class ImageTextileValidator extends AbstractTextileValidator {
 
 	private IBinaryDataService binaryDataService;
-    private IFileStorageAssetService fileStorageAssetService;
 
-	public ImageTextileValidator(IBinaryDataService binaryDataService, IFileStorageAssetService fileStorageAssetService) {
+	public ImageTextileValidator(IBinaryDataService binaryDataService) {
 		this.binaryDataService = binaryDataService;
-        this.fileStorageAssetService = fileStorageAssetService;
     }
 
 	@Override

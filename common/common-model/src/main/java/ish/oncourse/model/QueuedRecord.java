@@ -2,22 +2,22 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._QueuedRecord;
 import ish.oncourse.utils.QueueableObjectUtils;
-
-import java.util.Date;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Date;
 
 public class QueuedRecord extends _QueuedRecord {
 
 	/**
 	 * Logger
 	 */
-	private static final Logger logger = Logger.getLogger(QueuedRecord.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	/**
 	 * Serial UID.
@@ -89,8 +89,8 @@ public class QueuedRecord extends _QueuedRecord {
 	public void setErrorMessage(String errorMessage) {
 		super.setErrorMessage(StringUtils.abbreviate(errorMessage, 1024));
 		if (QueuedRecord.MAX_NUMBER_OF_RETRY.equals(getNumberOfAttempts())) {
-			logger.error(String.format("Max number of retries has been reached for QueuedRecord entityIdentifier:%s and willowId:%s in transaction:\"%s\" \n with errorMessage:%s",
-					getEntityIdentifier(), getEntityWillowId(), getQueuedTransaction().getObjectId(), errorMessage));
+			logger.error("Max number of retries has been reached for QueuedRecord entityIdentifier: {} and willowId: {} in transaction: {} with errorMessage: {}",
+					getEntityIdentifier(), getEntityWillowId(), getQueuedTransaction().getObjectId(), errorMessage);
 		}
 	}
 }

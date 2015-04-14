@@ -1,11 +1,11 @@
 package ish.oncourse.util.payment;
 
-import static org.junit.Assert.assertFalse;
+import org.apache.tapestry5.ioc.Invokable;
+import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
 import java.util.concurrent.Future;
 
-import org.apache.tapestry5.ioc.Invokable;
-import org.apache.tapestry5.ioc.services.ParallelExecutor;
+import static org.junit.Assert.assertFalse;
 
 public class MockParallelExecutor implements ParallelExecutor {
 	private PaymentProcessController paymentProcessController;
@@ -32,7 +32,7 @@ public class MockParallelExecutor implements ParallelExecutor {
 		if (invocable instanceof ProcessPaymentInvokable) {
 			invocable.invoke();
 		}
-		if (invocable instanceof StackedPaymentMonitor) {
+		if (invocable instanceof StuckPaymentMonitor) {
 			assertFalse("We should fire and re-fire the watchdog to abandon the payments only when the processing not finished", isProcessFinished());
 		}
 		return null;

@@ -2,7 +2,6 @@ package ish.oncourse.admin.pages;
 
 import ish.oncourse.model.College;
 import ish.oncourse.services.system.ICollegeService;
-
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;

@@ -13,7 +13,8 @@ import ish.oncourse.common.ExportJurisdiction;
 import ish.util.Maps;
 import ish.util.SecurityUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.io.*;
@@ -31,7 +32,7 @@ import java.util.regex.Pattern;
  */
 public abstract class CommonPreferenceController {
 
-	private static final Logger logger = Logger.getLogger(CommonPreferenceController.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private static final Preferences FILE_PREFS = Preferences.userNodeForPackage(CommonPreferenceController.class);
 	public static final Pattern NO_WHITESPACE_PATTERN = Pattern.compile("^[^\\s]+$");

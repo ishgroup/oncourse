@@ -1,20 +1,21 @@
 package ish.oncourse.services.textile.validator;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.textile.attrs.PageTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PageTextileValidatorTest extends CommonValidatorTest {

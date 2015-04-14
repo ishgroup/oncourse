@@ -6,7 +6,8 @@ import org.apache.cayenne.DataRow;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SQLTemplate;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.RequestGlobals;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 public class ISHHealthCheck {
 
-    private static final Logger LOGGER = Logger.getLogger(ISHHealthCheck.class);
+    private static final Logger logger = LogManager.getLogger();
     @Inject
     private ICayenneService cayenneService;
 
@@ -47,7 +48,7 @@ public class ISHHealthCheck {
                 httpResponse.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "DB TEST FAILED");
             }
         } catch (Exception e) {
-            LOGGER.warn(e);
+            logger.catching(e);
             httpResponse.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "DB TEST FAILED");
         }
         return true;

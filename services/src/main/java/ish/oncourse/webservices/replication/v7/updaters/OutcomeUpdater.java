@@ -9,10 +9,11 @@ import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v7.stubs.replication.OutcomeStub;
 import org.apache.cayenne.Cayenne;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> {
-	private static final Logger logger = Logger.getLogger(OutcomeUpdater.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Override
 	protected void updateEntity(OutcomeStub stub, Outcome entity, RelationShipCallback callback) {
@@ -25,7 +26,7 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 		if (enrolment != null) {
 			entity.setEnrolment(enrolment);
 		} else {
-			logger.error(String.format("Can not find enrolment by angelId:%s", stub.getEnrolmentId()));
+			logger.error("Can not find enrolment by angelId: {}", stub.getEnrolmentId());
 		}
 		entity.setFundingSource(stub.getFundingSource());
 		if (stub.getModuleId() != null) {

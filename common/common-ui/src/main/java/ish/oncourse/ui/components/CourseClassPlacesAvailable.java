@@ -1,12 +1,11 @@
 package ish.oncourse.ui.components;
 
-import java.text.DecimalFormat;
-import java.text.Format;
-
 import ish.oncourse.model.CourseClass;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+
+import java.text.DecimalFormat;
+import java.text.Format;
 
 public class CourseClassPlacesAvailable {
 

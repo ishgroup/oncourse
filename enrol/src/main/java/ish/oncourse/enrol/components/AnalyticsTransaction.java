@@ -4,7 +4,6 @@ import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.site.IWebSiteService;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;

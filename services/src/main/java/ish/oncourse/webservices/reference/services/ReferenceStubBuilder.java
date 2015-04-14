@@ -1,25 +1,14 @@
 package ish.oncourse.webservices.reference.services;
 
-import ish.oncourse.model.Country;
-import ish.oncourse.model.Language;
-import ish.oncourse.model.Module;
-import ish.oncourse.model.Qualification;
-import ish.oncourse.model.TrainingPackage;
+import ish.oncourse.model.*;
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
-import ish.oncourse.webservices.reference.builders.CountryStubBuilder;
-import ish.oncourse.webservices.reference.builders.IReferenceStubBuilder;
-import ish.oncourse.webservices.reference.builders.LanguageStubBuilder;
-import ish.oncourse.webservices.reference.builders.ModuleStubBuilder;
-import ish.oncourse.webservices.reference.builders.QualificationStubBuilder;
-import ish.oncourse.webservices.reference.builders.TrainingPackageStubBuilder;
+import ish.oncourse.webservices.reference.builders.*;
 import ish.oncourse.webservices.util.GenericReferenceStub;
+import org.apache.cayenne.Persistent;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.cayenne.Persistent;
-
-@SuppressWarnings("rawtypes")
 public class ReferenceStubBuilder {
 
 	private Map<String, IReferenceStubBuilder> builders = new HashMap<>();
@@ -32,13 +21,6 @@ public class ReferenceStubBuilder {
 		builders.put(getClassName(TrainingPackage.class), new TrainingPackageStubBuilder());
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param record
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
 	public GenericReferenceStub convert(Persistent record) {
 		String key = record.getObjectId().getEntityName();
 		IReferenceStubBuilder builder = builders.get(key);

@@ -1,12 +1,12 @@
 package ish.oncourse.services.format;
 
+import org.apache.commons.collections.Factory;
+
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ListResourceBundle;
-
-import org.apache.commons.collections.Factory;
 
 /**
  * A format ResourceBundle based on default locale. If format localization is

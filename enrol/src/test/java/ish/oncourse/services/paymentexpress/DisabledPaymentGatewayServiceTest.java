@@ -1,15 +1,15 @@
 package ish.oncourse.services.paymentexpress;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
 import ish.oncourse.model.PaymentIn;
-import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 /**
  * Test for the {@link DisabledPaymentGatewayService}.

@@ -6,14 +6,7 @@ package ish.oncourse.enrol.checkout;
 import ish.common.types.ApplicationStatus;
 import ish.common.types.ConfirmationStatus;
 import ish.common.types.EnrolmentStatus;
-import ish.oncourse.model.Application;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.Student;
+import ish.oncourse.model.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -25,13 +18,8 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Message.applicationAlreadyApplyed;
-import static ish.oncourse.enrol.checkout.PurchaseController.Message.applicationReceived;
-import static ish.oncourse.enrol.checkout.PurchaseController.Message.noEnabledItemForPurchase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
+import static org.junit.Assert.*;
 
 public class ApplicationProcessTest extends ACheckoutTest {
 	

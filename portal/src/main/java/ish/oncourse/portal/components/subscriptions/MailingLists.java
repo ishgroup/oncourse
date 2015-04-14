@@ -10,7 +10,8 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -19,7 +20,7 @@ import java.util.*;
 
 public class MailingLists {
 
-	private static final Logger LOGGER = Logger.getLogger(MailingLists.class);
+	private static final Logger logger = LogManager.getLogger();
 
 
 
@@ -202,7 +203,7 @@ public class MailingLists {
 	 */
 	public Object onException(Throwable cause) throws Throwable{
 		if (mailingLists == null) {
-			LOGGER.warn("Persist properties have been cleared.", cause);
+			logger.warn("Persist properties have been cleared.", cause);
 		} else {
 			throw cause;
 		}

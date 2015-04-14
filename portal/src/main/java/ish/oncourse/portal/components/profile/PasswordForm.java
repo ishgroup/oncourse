@@ -1,19 +1,10 @@
 package ish.oncourse.portal.components.profile;
 
 import ish.oncourse.model.Contact;
-import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.pages.Timetable;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.ContactFieldHelper;
-import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.ValidateHandler;
-import org.apache.cayenne.ObjectContext;
-import org.apache.tapestry5.Field;
-import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
-import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 

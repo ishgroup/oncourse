@@ -5,8 +5,11 @@ import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v6.stubs.replication.BinaryInfoRelationStub;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoRelationStub, BinaryInfoRelation> {
+	private static final Logger logger = LogManager.getLogger();
 
 	@Override
 	public void updateEntity(BinaryInfoRelationStub stub, BinaryInfoRelation entity, RelationShipCallback callback) {
@@ -53,7 +56,7 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 		} else {
 			String message = String.format("Unexpected related entity with type %s and angelid %s",
 				stub.getEntityName(), stub.getEntityAngelId());
-			LOG.error(message);
+			logger.error(message);
 			throw new UpdaterException(message);
 		}
 		if (entityObject != null && entityObject.getId() != null) {
@@ -62,7 +65,7 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 			String message = String.format(
 				"Unable to load related entity %s for angelid %s or this entity have null willowId",
 					stub.getEntityName(), stub.getEntityAngelId());
-			LOG.error(message);
+			logger.error(message);
 			throw new UpdaterException(message);
 		}
 	}

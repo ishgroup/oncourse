@@ -3,11 +3,6 @@ package ish.oncourse.solr;
 import ish.oncourse.services.search.SearchParams;
 import ish.oncourse.services.search.SearchParamsParser;
 import ish.oncourse.services.search.SolrQueryBuilder;
-
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.util.Arrays;
-import java.util.Calendar;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -17,6 +12,11 @@ import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.SolrParams;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.Arrays;
+import java.util.Calendar;
 
 public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
 	private static final String COURSES_CORE_NAME = "courses";

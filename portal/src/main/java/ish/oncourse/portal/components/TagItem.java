@@ -4,17 +4,12 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
-
-import java.util.List;
-
-import org.apache.tapestry5.annotations.AfterRender;
-import org.apache.tapestry5.annotations.AfterRenderBody;
-import org.apache.tapestry5.annotations.BeforeRenderBody;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.List;
 
 public class TagItem {
 

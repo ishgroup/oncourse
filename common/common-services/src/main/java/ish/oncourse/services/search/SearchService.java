@@ -8,7 +8,8 @@ import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -32,7 +33,7 @@ public class SearchService implements ISearchService {
 	static final String SPACE_PATTERN = "[\\s]+";
 	static final String LIKE_CHARACTER = "%";
 
-	private static final Logger logger = Logger.getLogger(SearchService.class);
+	private static final Logger logger = LogManager.getLogger();
 
     /**
      * Maximum km distance for geo-searches, 19910 lead to Bad request for distance calculation.
@@ -129,9 +130,8 @@ public class SearchService implements ISearchService {
     /**
      * The method logs stacktraces every exception from hierarchy. I have added it to see full stack trace of a exception.
      */
-    private QueryResponse handleException(Throwable throwable, SolrQuery solrQuery, int count)
-    {
-        logger.warn(String.format("Cannot execute query: %s with attempt %d",solrQueryToString(solrQuery),count), throwable);
+    private QueryResponse handleException(Throwable throwable, SolrQuery solrQuery, int count) {
+        logger.warn("Cannot execute query: {} with attempt {}",solrQueryToString(solrQuery),count, throwable);
 
         if (throwable instanceof SolrServerException &&
                 throwable.getCause() instanceof SolrException &&
@@ -149,9 +149,8 @@ public class SearchService implements ISearchService {
             String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
             SolrQuery q = applyCourseRootTag(new SolrQueryBuilder(params, collegeId, start, rows).create());
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(String.format("Solr query:%s", solrQueryToString(q)));
-            }
+            logger.debug("Solr query: {}", solrQueryToString(q));
+
             return query(q, SolrCore.courses);
         } catch (Exception e) {
             throw new SearchException("Unable to find courses.", e);

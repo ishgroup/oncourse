@@ -1,7 +1,8 @@
 package ish.oncourse.portal.services.pageload;
 
-import java.util.Map;
-
+import ish.oncourse.util.GetStrResponseWrapper;
+import ish.oncourse.util.IComponentPageResponseRenderer;
+import ish.oncourse.util.IPageRenderer;
 import org.apache.tapestry5.dom.MarkupModel;
 import org.apache.tapestry5.internal.services.PageLoader;
 import org.apache.tapestry5.internal.structure.Page;
@@ -11,9 +12,7 @@ import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
 
-import ish.oncourse.util.GetStrResponseWrapper;
-import ish.oncourse.util.IComponentPageResponseRenderer;
-import ish.oncourse.util.IPageRenderer;
+import java.util.Map;
 
 public class PortalPageRenderer implements IPageRenderer {
 	

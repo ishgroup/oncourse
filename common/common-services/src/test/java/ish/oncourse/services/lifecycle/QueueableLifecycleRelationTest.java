@@ -1,19 +1,9 @@
 package ish.oncourse.services.lifecycle;
 
-import static org.junit.Assert.assertTrue;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.WaitingList;
-import ish.oncourse.model.WaitingListSite;
+import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-
-import java.io.InputStream;
-
-import javax.sql.DataSource;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.dbunit.database.DatabaseConnection;
@@ -23,6 +13,11 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.io.InputStream;
+
+import static org.junit.Assert.assertTrue;
 
 public class QueueableLifecycleRelationTest extends ServiceTest {
 

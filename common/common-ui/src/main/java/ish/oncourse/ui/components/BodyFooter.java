@@ -1,12 +1,11 @@
 package ish.oncourse.ui.components;
 
-import java.util.Date;
-
-import org.apache.tapestry5.ioc.annotations.Inject;
-
-import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.format.FormatName;
 import ish.oncourse.services.format.IFormatService;
+import ish.oncourse.services.site.IWebSiteService;
+import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.Date;
 
 
 public class BodyFooter {

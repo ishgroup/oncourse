@@ -36,7 +36,8 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import org.apache.tapestry5.json.JSONArray;
@@ -57,7 +58,7 @@ import static ish.oncourse.services.preference.PreferenceController.ContactFiled
  */
 public class PortalService implements IPortalService {
 
-    private static final Logger logger = Logger.getLogger(PortalService.class);
+    private static final Logger logger = LogManager.getLogger();
 
     @Inject
     private IAuthenticationService authenticationService;

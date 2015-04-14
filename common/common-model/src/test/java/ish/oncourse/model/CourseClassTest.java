@@ -5,13 +5,15 @@
 
 package ish.oncourse.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
 import ish.oncourse.test.ContextUtils;
+import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -19,12 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.ObjectContext;
-import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Test for {@link CourseClass} methods.

@@ -16,15 +16,15 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.*;
 
-@SuppressWarnings("unchecked")
 public class CourseClassService implements ICourseClassService {
 
-    private static final Logger logger = Logger.getLogger(CourseClassService.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private final ICayenneService cayenneService;
 
@@ -155,7 +155,7 @@ public class CourseClassService implements ICourseClassService {
 
 
         if (contact.getStudent() == null && contact.getTutor() == null) {
-            logger.warn(String.format("Contact with ID:%s is neither Student nor Tutor.", contact.getId()));
+            logger.warn("Contact with ID: {} is neither Student nor Tutor.", contact.getId());
             return Collections.emptyList();
         }
 
@@ -205,7 +205,7 @@ public class CourseClassService implements ICourseClassService {
            * for classes item we should show ALL ACTIVE classes  (not canceled)
            */
         if (contact.getStudent() == null && contact.getTutor() == null) {
-            logger.warn(String.format("Contact with ID:%s is neither Student nor Tutor.", contact.getId()));
+            logger.warn("Contact with ID: {} is neither Student nor Tutor.", contact.getId());
             return Collections.emptyList();
         }
 

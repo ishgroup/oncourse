@@ -1,15 +1,16 @@
 package ish.oncourse.util.payment;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.Invokable;
 
-public class StackedPaymentMonitor implements Invokable<Boolean> {
-    private static final Logger LOGGER = Logger.getLogger(StackedPaymentMonitor.class);
+public class StuckPaymentMonitor implements Invokable<Boolean> {
+    private static final Logger logger = LogManager.getLogger();
     public static final long TIMEOUT = 10 * 60 * 1000;//10 minutes
 
     private final PaymentProcessController paymentProcessController;
 
-    public StackedPaymentMonitor(PaymentProcessController paymentProcessController) {
+    public StuckPaymentMonitor(PaymentProcessController paymentProcessController) {
         this.paymentProcessController = paymentProcessController;
     }
 
@@ -19,7 +20,7 @@ public class StackedPaymentMonitor implements Invokable<Boolean> {
     @Override
     public Boolean invoke() {
         try {
-            LOGGER.info("Wait for next state ....");
+            logger.info("Wait for next state...");
             Thread.sleep(TIMEOUT);
             synchronized (paymentProcessController)
             {
@@ -27,7 +28,7 @@ public class StackedPaymentMonitor implements Invokable<Boolean> {
             }
             return Boolean.TRUE;
         } catch (InterruptedException e) {
-            LOGGER.info("StackedPaymentMonitor watchdog was interrupted", e);
+            logger.info("StackedPaymentMonitor watchdog was interrupted", e);
             return Boolean.FALSE;
         }
     }

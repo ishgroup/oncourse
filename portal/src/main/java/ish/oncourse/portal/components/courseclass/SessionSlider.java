@@ -3,7 +3,6 @@ package ish.oncourse.portal.components.courseclass;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;

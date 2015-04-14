@@ -13,7 +13,8 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -27,7 +28,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	private static final String NEW_PAGE_WEB_NODE_NAME = "New Page";
 	private static final String DOT_CHARACTER = ".";
 	private static final String LEFT_SLASH_CHARACTER = "/";
-	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
+	private static final Logger logger = LogManager.getLogger();
 
     private static final String PAGE_PATH_TEMPLATE = "/page/%s";
 
@@ -96,12 +97,10 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		@SuppressWarnings("unchecked")
 		List<WebNode> nodes = cayenneService.sharedContext().performQuery(q);
 
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Found " + nodes.size() + " nodes for expr : " + expr);
-		}
+		logger.debug("Found {} nodes for expr: {}", nodes.size(), expr);
 
 		if (nodes.size() > 1) {
-			LOGGER.error("Expected one WebNode record, found " + nodes.size() + " for query : " + expr);
+			logger.error("Expected one WebNode record, found {} for query: {}", nodes.size() , expr);
 		}
 
 		return (nodes.size() == 1) ? nodes.get(0) : null;
@@ -133,7 +132,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 			try {
 				nodeNumber = Integer.parseInt(nodeNumberString);
 			} catch (NumberFormatException e) {
-				LOGGER.debug("Can not parse nodeNumber.", e);
+				logger.debug("Can not parse nodeNumber.", e);
 			}
 
 			if (nodeNumber != null) {

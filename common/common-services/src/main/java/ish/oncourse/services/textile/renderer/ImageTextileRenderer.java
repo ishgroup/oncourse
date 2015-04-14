@@ -1,7 +1,6 @@
 package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
 import ish.oncourse.services.textile.validator.ImageTextileValidator;
@@ -14,10 +13,10 @@ public class ImageTextileRenderer extends AbstractRenderer {
 
 	private IPageRenderer pageRenderer;
 
-	public ImageTextileRenderer(IBinaryDataService binaryDataService, IFileStorageAssetService fileStorageAssetService,
+	public ImageTextileRenderer(IBinaryDataService binaryDataService,
 								IPageRenderer pageRenderer) {
 		this.pageRenderer = pageRenderer;
-		validator = new ImageTextileValidator(binaryDataService, fileStorageAssetService);
+		validator = new ImageTextileValidator(binaryDataService);
 	}
 
 	@Override

@@ -11,7 +11,8 @@ import ish.oncourse.admin.services.ntis.NTISResult;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ReferenceService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public abstract class AbstractTrainingComponentNTISUpdater extends AbstractComponentNTISUpdater {
 
-	private static final Logger LOGGER = Logger.getLogger(AbstractTrainingComponentNTISUpdater.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	protected static final String QUALIFICATION = "Qualification";
 	protected static final String TRAINING_PACKAGE = "TrainingPackage";
@@ -134,7 +135,7 @@ public abstract class AbstractTrainingComponentNTISUpdater extends AbstractCompo
 			return result;
 
 		} catch (Exception e) {
-			LOGGER.info("NTIS Qualifications update failed with exception.", e);
+			logger.info("NTIS Qualifications update failed with exception.", e);
 			throw new NTISException(e);
 		}
 

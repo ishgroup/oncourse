@@ -1,15 +1,15 @@
 package ish.oncourse.services.encrypt;
 
-import java.security.Key;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import java.security.Key;
 
 public class EncryptionService {
-	private final static Logger LOGGER = Logger.getLogger(EncryptionService.class);
+	private final static Logger logger = LogManager.getLogger();
 	private Key key;
 	private Cipher cipher;
 
@@ -20,7 +20,7 @@ public class EncryptionService {
 
 	public byte[] encrypt(String input) throws Exception {
 		if (key == null || cipher == null) {
-			LOGGER.error("Some problem with encryption init");
+			logger.error("Some problem with encryption init");
 			return null;
 		}
 		byte[] inputBytes = input.getBytes("UTF-8");
@@ -34,7 +34,7 @@ public class EncryptionService {
 
 	public String decrypt(byte[] encryptionBytes) throws Exception {
 		if (key == null || cipher == null) {
-			LOGGER.error("Some problem with encryption init");
+			logger.error("Some problem with encryption init");
 			return null;
 		}
 

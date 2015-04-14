@@ -14,7 +14,8 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.ui.utils.CourseItemModel;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
 public class CourseItem {
 
 	private static final int COURSE_DETAILS_LENGTH = 490;
-	private static final Logger LOGGER = Logger.getLogger(CourseItem.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Property
 	private CourseClass courseClass;
@@ -53,6 +54,7 @@ public class CourseItem {
 	private PreferenceController preferenceController;
 	
 	@Property
+	//@InjectComponent
 	private Zone modulesZone;
 	
 	@SuppressWarnings("all")

@@ -1,14 +1,13 @@
 package ish.oncourse.admin.services.billing;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.WebSite;
+import org.apache.commons.lang.time.DateUtils;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
-
-import ish.oncourse.model.WebSite;
-import org.apache.commons.lang.time.DateUtils;
 
 public abstract class PlanExportLineBuilder extends AbstractExportLineBuilder {
 

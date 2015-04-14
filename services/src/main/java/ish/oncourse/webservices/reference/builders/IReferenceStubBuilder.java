@@ -6,7 +6,6 @@
 package ish.oncourse.webservices.reference.builders;
 
 import ish.oncourse.webservices.util.GenericReferenceStub;
-
 import org.apache.cayenne.Persistent;
 
 /**

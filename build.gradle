@@ -1,6 +1,7 @@
 buildscript {
 	ext {
 		cayenneVersion = '4.0.M2'
+		log4j2Version = '2.2'
 	}
 
 	repositories {
@@ -66,6 +67,10 @@ allprojects {
 		}
 	}
 
+	configurations.all {
+		exclude module: 'slf4j-log4j12'
+	}
+
 	repositories {
 		//mavenCentral()
 		maven {
@@ -81,9 +86,13 @@ allprojects {
 		testCompile 'dbunit:dbunit:2.4.8'
 		testCompile 'org.mockito:mockito-core:1.10.19'
 
-		compile 'log4j:log4j:1.2.17'
-
-		deployerJars 'org.apache.maven.wagon:wagon-http:2.8'
+        compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
+        compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
+        compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
+        compile "org.apache.logging.log4j:log4j-web:$log4j2Version"
+        compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
+        
+        deployerJars 'org.apache.maven.wagon:wagon-http:2.8'
 	}
 
 	uploadArchives.dependsOn install

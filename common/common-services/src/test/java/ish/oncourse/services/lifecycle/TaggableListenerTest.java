@@ -1,21 +1,20 @@
 package ish.oncourse.services.lifecycle;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.Date;
-
 import ish.common.types.CourseEnrolmentType;
-import org.apache.cayenne.ObjectContext;
-import org.junit.Before;
-import org.junit.Test;
-
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import org.apache.cayenne.ObjectContext;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TaggableListenerTest extends ServiceTest {
 	

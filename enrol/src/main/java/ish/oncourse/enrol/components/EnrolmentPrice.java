@@ -2,28 +2,21 @@ package ish.oncourse.enrol.components;
 
 import ish.math.Country;
 import ish.math.Money;
-import ish.oncourse.model.Application;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.RealDiscountsPolicy;
+import ish.oncourse.model.*;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.Format;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.util.List;
+import java.util.Locale;
 
 public class EnrolmentPrice {
 

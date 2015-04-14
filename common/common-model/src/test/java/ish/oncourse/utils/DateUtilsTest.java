@@ -1,12 +1,13 @@
 package ish.oncourse.utils;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DateUtilsTest {
 	

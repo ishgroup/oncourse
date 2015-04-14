@@ -3,8 +3,6 @@
  */
 package ish.oncourse.cms.services.access;
 
-import static org.junit.Assert.*;
-
 import ish.oncourse.cms.services.CmsTestModule;
 import ish.oncourse.services.access.AuthenticationStatus;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -18,6 +16,8 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+
+import static org.junit.Assert.assertEquals;
 
 public class AuthenticationServiceTest extends ServiceTest {
 

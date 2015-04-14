@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.soap;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -12,7 +12,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class RandomValueFieldPopulator {
-    private static final Logger LOGGER = LogManager.getLogger(RandomValueFieldPopulator.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private static final Random random = new Random();
 
@@ -64,7 +64,7 @@ public class RandomValueFieldPopulator {
             Object[] enumValues = fieldType.getEnumConstants();
             return enumValues[random.nextInt(enumValues.length)];
         } else {
-            LOGGER.debug(String.format("Cannot create value of class %s", fieldType));
+            logger.debug("Cannot create value of class {}", fieldType);
             return null;
         }
     }

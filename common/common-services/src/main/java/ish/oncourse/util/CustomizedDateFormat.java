@@ -1,11 +1,11 @@
 package ish.oncourse.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-
-import org.apache.commons.lang.StringUtils;
 
 public class CustomizedDateFormat extends SimpleDateFormat {
 	private static final long serialVersionUID = -4933085840547588217L;

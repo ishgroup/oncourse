@@ -32,8 +32,6 @@ public class ISHObjectContext extends DataContext {
 	 */
 	private Deque<String> transactionKeyStack = new ArrayDeque<>();
 
-	private ISHObjectContext parentContext;
-
 	public ISHObjectContext(DataChannel channel, ObjectStore objectStore) {
 		super(channel, objectStore);
 	}

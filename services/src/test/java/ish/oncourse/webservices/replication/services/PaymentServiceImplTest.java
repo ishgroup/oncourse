@@ -1,6 +1,6 @@
 package ish.oncourse.webservices.replication.services;
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.College;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.soap.v4.ReplicationPortTypeTest;

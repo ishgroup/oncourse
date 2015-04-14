@@ -13,7 +13,8 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 		IWebUrlAliasService {
 
-	private static final Logger LOGGER = Logger.getLogger(WebUrlAliasService.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -42,13 +43,10 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 				.performQuery(query);
 
 		int size = aliases.size();
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Found " + size + " aliases for query : " + query);
-		}
+		logger.debug("Found {} aliases for query: {}", size, query);
 
 		if (size > 1) {
-			LOGGER.error("Expected one WebUrlAlias record, found " + size
-					+ " for query : " + query);
+			logger.error("Expected one WebUrlAlias record, found {} for query: {}", size, query);
 		}
 
 		return (aliases.isEmpty()) ? null : aliases.get(0);

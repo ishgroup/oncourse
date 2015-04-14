@@ -1,9 +1,12 @@
 package ish.oncourse.services.filestorage;
 
 import ish.oncourse.model.DocumentVersion;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -11,9 +14,10 @@ import javax.naming.NamingException;
 import java.io.File;
 import java.util.List;
 
+@Deprecated
 public class FileStorageAssetService implements IFileStorageAssetService {
 
-    private static final Logger LOGGER = Logger.getLogger(FileStorageAssetService.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private FileStorageService fileStorageService;
 
@@ -27,23 +31,22 @@ public class FileStorageAssetService implements IFileStorageAssetService {
      * @param documentVersion - binary info, not null
      */
     public void put(byte[] data, DocumentVersion documentVersion) {
-        LOGGER.debug(String.format("Start FileStorageAssetService.put with parameters: data.length: %s, documentVersion: %s",
-                data != null ?data.length:0, documentVersion));
+        logger.debug("Start FileStorageAssetService.put with parameters: data.length: {}, documentVersion: {}",
+		        data != null ? data.length : 0, documentVersion);
 		
         String relatedPath = getPathBy(data, documentVersion);
         /**
          * delete old file if new path is not the same as old
          */
-        if (documentVersion.getFilePath() != null && !relatedPath.equals(documentVersion.getFilePath()))
-        {
+        if (documentVersion.getFilePath() != null && !relatedPath.equals(documentVersion.getFilePath())) {
             delete(documentVersion);
         }
         if (!getFileStorageService().contains(relatedPath)) {
             getFileStorageService().put(data, relatedPath);
         }
         documentVersion.setFilePath(relatedPath);
-        LOGGER.debug(String.format("Finish FileStorageAssetService.put with parameters: data.length: %s, documentVersion: %s",
-                data != null ?data.length:0, documentVersion));
+        logger.debug("Finish FileStorageAssetService.put with parameters: data.length: {}, documentVersion: {}",
+		        data != null ? data.length : 0, documentVersion);
     }
 
     /**
@@ -61,7 +64,8 @@ public class FileStorageAssetService implements IFileStorageAssetService {
      */
     public void delete(DocumentVersion documentVersion) {
 
-        SelectQuery selectQuery = new SelectQuery(DocumentVersion.class, DocumentVersion.FILE_PATH.eq( documentVersion.getFilePath()));
+        Expression exp = ExpressionFactory.matchDbExp(DocumentVersion.FILE_PATH_PROPERTY, documentVersion.getFilePath());
+        SelectQuery selectQuery = new SelectQuery(DocumentVersion.class, exp);
         selectQuery.setPageSize(1);
 
         @SuppressWarnings("unchecked")
@@ -107,7 +111,7 @@ public class FileStorageAssetService implements IFileStorageAssetService {
             this.fileStorageService = fileStorageService;
 
         } catch (Exception e) {
-            LOGGER.error(e);
+            logger.error(e);
             throw new IllegalArgumentException(e);
         }
     }
@@ -119,7 +123,7 @@ public class FileStorageAssetService implements IFileStorageAssetService {
             ctx = (Context) context.lookup("java:comp/env");
         } catch (NamingException e) {
             ctx = context;
-            LOGGER.warn(e);
+            logger.warn(e);
         }
         return ctx.lookup(path);
     }

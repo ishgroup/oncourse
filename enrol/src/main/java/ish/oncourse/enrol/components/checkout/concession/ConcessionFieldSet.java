@@ -6,7 +6,8 @@ import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidateHandler;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -16,7 +17,7 @@ import java.text.ParseException;
 
 public class ConcessionFieldSet {
 
-	private static final Logger LOGGER = Logger.getLogger(ConcessionEditor.class);
+	private static final Logger logger = LogManager.getLogger();
 	@Parameter(required = true)
 	@Property
 	private ConcessionDelegate delegate;
@@ -79,7 +80,7 @@ public class ConcessionFieldSet {
             DateFormat format = FormatUtils.getDateFormat(Constants.DATE_FIELD_PARSE_FORMAT,getStudent().getCollege().getTimeZone());
 			getStudentConcession().setExpiresOn(value != null ? format.parse(value): null);
 		} catch (ParseException e) {
-			LOGGER.warn(e);
+			logger.warn(e);
 		}
 	}
 

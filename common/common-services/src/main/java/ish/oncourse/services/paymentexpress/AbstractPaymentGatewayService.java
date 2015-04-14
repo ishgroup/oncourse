@@ -3,7 +3,8 @@ package ish.oncourse.services.paymentexpress;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentOutTransaction;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	/**
 	 * Logger for service.
 	 */
-	protected static final Logger LOG = Logger.getLogger(PaymentExpressGatewayService.class);
+	protected static final Logger LOG = LogManager.getLogger();
 
 	/**
 	 * {@inheritDoc}

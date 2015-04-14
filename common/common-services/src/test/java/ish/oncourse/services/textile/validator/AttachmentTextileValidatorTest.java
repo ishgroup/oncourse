@@ -3,7 +3,6 @@ package ish.oncourse.services.textile.validator;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.attrs.AttachmentTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import org.junit.Test;
@@ -28,9 +27,6 @@ public class AttachmentTextileValidatorTest extends CommonValidatorTest {
 	@Mock
 	private IBinaryDataService binaryDataService;
 
-    @Mock
-    private IFileStorageAssetService fileStorageAssetService;
-
 	@Mock
 	private Document document;
 	
@@ -44,11 +40,10 @@ public class AttachmentTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	public void init() {
-		validator = new AttachmentTextileValidator(binaryDataService,fileStorageAssetService);
+		validator = new AttachmentTextileValidator(binaryDataService);
 		errors = new ValidationErrors();
 
 		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, TEST_ATTACHMENT_NAME)).thenReturn(document);
-        when(fileStorageAssetService.contains(documentVersion)).thenReturn(Boolean.TRUE);
 
         when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, NOT_EXISTING_ATTACHMENT_NAME)).thenReturn(null);
 		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, EMPTY_BINARY_INFO_ATTACHMENT_NAME)).thenReturn(emptyDocument);

@@ -14,7 +14,8 @@ import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.v8.stubs.replication.VoucherProductStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ import static org.junit.Assert.assertTrue;
  * Time: 17:11
  */
 public class VoucherProductUpdaterTest extends ServiceTest {
-	private static Logger logger = Logger.getLogger(VoucherProductUpdaterTest.class.getName());
+	private static Logger logger = LogManager.getLogger();
 
 	@Before
 	public void setupDataSet() throws Exception {

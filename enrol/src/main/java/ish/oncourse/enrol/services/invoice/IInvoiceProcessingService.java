@@ -1,9 +1,9 @@
 package ish.oncourse.enrol.services.invoice;
 
-import java.util.List;
-
 import ish.math.Money;
 import ish.oncourse.model.*;
+
+import java.util.List;
 
 /**
  * The service for manipulating with invoice-related services: Invoice, InvoiceLine

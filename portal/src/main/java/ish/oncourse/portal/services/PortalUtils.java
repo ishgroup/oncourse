@@ -8,7 +8,8 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 import ish.persistence.CommonPreferenceController;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -56,7 +57,7 @@ public class PortalUtils {
     public static final String DATE_FORMAT_EEEE_dd_MMMMM_h_mma = "EEEE dd MMMMM h:mma";
 
 
-    private final static Logger LOGGER = Logger.getLogger(PortalUtils.class);
+    private final static Logger logger = LogManager.getLogger();
 
     /**
      * Build url for course details.
@@ -76,7 +77,7 @@ public class PortalUtils {
             domainName = domainName.substring(domainName.lastIndexOf("://") + 3);
 
         if (domainName.endsWith("/")) {
-            LOGGER.error(String.format("Incorrect domain name %s", domainName));
+            logger.error("Incorrect domain name {}", domainName);
             domainName = domainName.substring(0, domainName.length()-1);
         }
         return domainName;

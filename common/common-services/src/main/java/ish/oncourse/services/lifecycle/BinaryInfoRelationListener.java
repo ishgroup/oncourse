@@ -3,7 +3,6 @@ package ish.oncourse.services.lifecycle;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.site.IWebSiteService;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.annotation.PrePersist;

@@ -2,7 +2,8 @@ package ish.oncourse.services.paymentexpress;
 
 import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import com.paymentexpress.stubs.TransactionResult2;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.rmi.RemoteException;
 
@@ -10,7 +11,7 @@ import static ish.oncourse.services.paymentexpress.PaymentExpressGatewayService.
 import static ish.oncourse.services.paymentexpress.PaymentExpressGatewayService.RETRY_INTERVAL;
 
 public class GetStatusOperation {
-    private static final Logger LOGGER = Logger.getLogger(GetStatusOperation.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private final String postUsername;
     private final String postPassword;
@@ -30,11 +31,11 @@ public class GetStatusOperation {
             try {
                 return paymentExpressSoapStub.getStatus(this.postUsername, this.postPassword, this.txnRef);
             } catch (RemoteException e) {
-                LOGGER.warn(String.format("Cannot get status for transaction with txnRef: %s",this.txnRef),e);
+                logger.warn("Cannot get status for transaction with txnRef: {}", this.txnRef, e);
                 try {
                     Thread.sleep(RETRY_INTERVAL);
                 } catch (InterruptedException e1) {
-                    LOGGER.warn(String.format("InterruptedException is thrown on getting status for transaction with txnRef: %s",this.txnRef), e1);
+                    logger.warn("InterruptedException is thrown on getting status for transaction with txnRef: {}", this.txnRef, e1);
                 }
             }
             numberOfAttempts++;

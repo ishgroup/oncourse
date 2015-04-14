@@ -1,12 +1,11 @@
 package ish.oncourse.services.enrol;
 
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.services.persistence.ICayenneService;
 
 public class EnrolmentServiceImpl implements IEnrolmentService {
 

@@ -4,10 +4,6 @@ import ish.oncourse.model.Site;
 import ish.oncourse.model.SystemUser;
 import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v7.stubs.replication.SystemUserStub;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
-
-import java.util.List;
 
 public class SystemUserStubBuilder extends AbstractWillowStubBuilder<SystemUser, SystemUserStub> {
 

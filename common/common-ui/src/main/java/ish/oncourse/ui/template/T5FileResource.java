@@ -1,11 +1,11 @@
 package ish.oncourse.ui.template;
 
+import org.apache.tapestry5.ioc.Resource;
+import org.apache.tapestry5.ioc.internal.util.AbstractResource;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.apache.tapestry5.ioc.Resource;
-import org.apache.tapestry5.ioc.internal.util.AbstractResource;
 
 public class T5FileResource extends AbstractResource {
 

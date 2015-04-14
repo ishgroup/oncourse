@@ -1,11 +1,10 @@
 package ish.oncourse.listeners;
 
-import static org.junit.Assert.*;
-
-import java.io.InputStream;
-
-import javax.sql.DataSource;
-
+import ish.oncourse.model.Qualification;
+import ish.oncourse.model.TrainingPackage;
+import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.dbunit.database.DatabaseConnection;
@@ -15,11 +14,10 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.oncourse.model.Qualification;
-import ish.oncourse.model.TrainingPackage;
-import ish.oncourse.services.ServiceModule;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import javax.sql.DataSource;
+import java.io.InputStream;
+
+import static org.junit.Assert.*;
 
 public class IshVersionListenerTest extends ServiceTest {
 	

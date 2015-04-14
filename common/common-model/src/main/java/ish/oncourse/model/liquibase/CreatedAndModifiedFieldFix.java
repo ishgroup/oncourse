@@ -3,7 +3,8 @@ package ish.oncourse.model.liquibase;
 import liquibase.database.Database;
 import liquibase.exception.CustomChangeException;
 import liquibase.statement.SqlStatement;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -11,7 +12,7 @@ import java.util.GregorianCalendar;
 
 public class CreatedAndModifiedFieldFix extends ACustomSqlChange {
 
-    private static final Logger LOGGER = Logger.getLogger(CreatedAndModifiedFieldFix.class);
+    private static final Logger logger = LogManager.getLogger();
     //entities to update
     private static final String[] ENTITIES =
             {
@@ -60,7 +61,7 @@ public class CreatedAndModifiedFieldFix extends ACustomSqlChange {
                 UpdateNullCreatedAndModifiedColumns(connection, entity, SELECT_NullCreated_NullModified_Columns);
             }
         } catch (Throwable e) {
-            LOGGER.error(e);
+            logger.error(e);
         } finally {
             if (connection != null)
                 try {
@@ -88,7 +89,7 @@ public class CreatedAndModifiedFieldFix extends ACustomSqlChange {
                 updateStatement.executeUpdate();
             }
         } catch (SQLException sqle) {
-            LOGGER.error(sqle);
+            logger.error(sqle);
         } finally {
             try {
                 if (updateStatement != null) {
@@ -124,7 +125,7 @@ public class CreatedAndModifiedFieldFix extends ACustomSqlChange {
                 updateStatement.executeUpdate();
             }
         } catch (SQLException sqle) {
-            LOGGER.error(sqle);
+            logger.error(sqle);
         } finally {
             try {
                 if (updateStatement != null) {

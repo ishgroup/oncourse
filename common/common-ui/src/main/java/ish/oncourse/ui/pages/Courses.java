@@ -11,7 +11,8 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -40,7 +41,7 @@ public class Courses {
 	@Property
 	private Request request;
 
-	private static final Logger LOGGER = Logger.getLogger(Courses.class);
+	private static final Logger logger = LogManager.getLogger();
 	private static final int START_DEFAULT = 0;
 	private static final int ROWS_DEFAULT = 10;
 	private static final String SOLR_DOCUMENT_ID_FIELD = "id";
@@ -127,7 +128,7 @@ public class Courses {
 					if (id.matches("\\d+")) {
 						loadedCoursesIds.add(Long.valueOf(id));
 					} else {
-						LOGGER.warn(String.format("Incorrect loadedCoursesIds parameter passed. Unable to convert %s to long", id));
+						logger.warn("Incorrect loadedCoursesIds parameter passed. Unable to convert {} to long", id);
 					}
 				}
 			}
@@ -152,7 +153,7 @@ public class Courses {
 		try {
 			this.courses = searchCourses();
 		} catch (SearchException e) {
-			LOGGER.error("Unexpected search exception: " + e.getMessage(), e);
+			logger.catching(e);
 			this.isException = true;
 			this.courses = courseService.getCourses(start, ROWS_DEFAULT);
 			this.coursesCount = courseService.getCoursesCount();
@@ -264,7 +265,7 @@ public class Courses {
 	private List<Course> searchCourses(int start, int rows) {
 		QueryResponse results = searchService.searchCourses(searchParams, start, rows);
 		SolrDocumentList list = results.getResults() != null ? results.getResults() : new SolrDocumentList();
-		LOGGER.info(String.format("The number of courses found: %s", list.size()));
+		logger.info("The number of courses found: {}", list.size());
 		if (coursesCount == null) {
 			coursesCount = ((Number) list.getNumFound()).intValue();
 		}

@@ -1,7 +1,7 @@
 apply plugin: 'war'
 
 dependencies {
-	providedCompile 'javax.servlet:servlet-api:2.5'
+    providedCompile 'javax.servlet:servlet-api:3.0'
 
 	compile project(':common:common-model')
 	compile (project(':common:common-services')) {
@@ -9,7 +9,7 @@ dependencies {
 	}
     compile project(':common:webservices-usi')
 
-	compile ('ish.oncourse.willow:webservices-client:5.1.69')
+	compile ('ish.oncourse.willow:webservices-client:5.1.71')
 	{
 		//we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
 		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
@@ -19,7 +19,9 @@ dependencies {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 	compile 'org.apache.tapestry:tapestry-spring:5.2.6'
-	compile 'org.apache.tapestry:tapestry-ioc:5.2.6'
+	compile ('org.apache.tapestry:tapestry-ioc:5.2.6') {
+		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+	}
 	compile 'org.springframework:spring-core:3.0.5.RELEASE'
 	compile 'org.springframework:spring-beans:3.0.5.RELEASE'
 	compile 'org.springframework:spring-context:3.0.5.RELEASE'

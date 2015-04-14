@@ -25,9 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static ish.oncourse.enrol.services.Constants.EVENT_changePayerEvent;
-import static ish.oncourse.enrol.services.Constants.EVENT_addPersonPayerEvent;
-import static ish.oncourse.enrol.services.Constants.EVENT_addCompanyPayerEvent;
+import static ish.oncourse.enrol.services.Constants.*;
 
 public class PaymentEditor implements IPaymentControlDelegate {
 

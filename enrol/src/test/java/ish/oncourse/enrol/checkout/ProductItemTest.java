@@ -8,7 +8,6 @@ import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.model.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.junit.Before;
@@ -21,8 +20,6 @@ import java.util.List;
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.duplicatedMembership;
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.enterVoucherPrice;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 /**

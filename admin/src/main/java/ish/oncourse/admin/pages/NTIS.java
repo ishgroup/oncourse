@@ -5,7 +5,8 @@ import ish.oncourse.admin.services.ntis.NTISTask;
 import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.threading.ThreadSource;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
@@ -22,7 +23,7 @@ import java.util.Date;
 
 public class NTIS {
 
-	private static final Logger LOGGER = Logger.getLogger(NTIS.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private static final String NTIS_DATA_ATTR = "NTISData";
 	private static final String NTIS_UPDATE_STARTED_ATTR = "isNTISStarted";

@@ -8,7 +8,8 @@ import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -22,7 +23,7 @@ public class CookiesService implements ICookiesService {
 	public static final String COOKIES_DICTIONARY_REQUEST_ATTR = "cookiesDictionary";
 	private static final String COOKIES_COLLECTION_SEPARATOR = "%";
 	private static final String COOKIES_COLLECTION_SEPARATOR_REGEXP = "[" + COOKIES_COLLECTION_SEPARATOR + "]";
-	private static final Logger LOGGER = Logger.getLogger(CookiesService.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	private Request request;
@@ -99,7 +100,7 @@ public class CookiesService implements ICookiesService {
 					}
 				}
 			} catch (Exception e) {
-				LOGGER.debug("Exception while converting IDs", e);
+				logger.debug("Exception while converting IDs", e);
 			}
 		}
 		return listResult;
@@ -261,7 +262,7 @@ public class CookiesService implements ICookiesService {
 				String url = schema + request.getServerName() + request.getContextPath() + path;
 				return new URL(url);
 			} catch (MalformedURLException e) {
-				LOGGER.warn(e);
+				logger.warn(e);
 			}
 		}
 

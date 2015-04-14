@@ -4,7 +4,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.CustomField;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet;

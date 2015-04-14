@@ -15,14 +15,15 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
 import java.util.List;
 
 public class QualificationNTISUpdater extends AbstractTrainingComponentNTISUpdater {
 
-	private static final Logger LOGGER = Logger.getLogger(QualificationNTISUpdater.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	public QualificationNTISUpdater(
 			ITrainingComponentService trainingService,
@@ -108,7 +109,7 @@ public class QualificationNTISUpdater extends AbstractTrainingComponentNTISUpdat
 			}
 
 			if (!QualificationType.SKILLSET_TYPE.equals(q.getIsAccreditedCourse()) && q.getLevelCode() == null) {
-				LOGGER.error("Skipping qualification record without level of education code. National code is " + q.getNationalCode());
+				logger.error("Skipping qualification record without level of education code. National code is {}", q.getNationalCode());
 				context.deleteObjects(q);
 			}
 		}

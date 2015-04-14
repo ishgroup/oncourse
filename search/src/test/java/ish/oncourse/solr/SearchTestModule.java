@@ -4,8 +4,6 @@ import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.cache.ICacheService;
-import ish.oncourse.services.cache.NoopCacheService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.content.WebContentService;
 import ish.oncourse.services.cookies.CookiesService;
@@ -71,7 +69,6 @@ import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 
 public class SearchTestModule {
 	public static void bind(ServiceBinder binder) {
-		binder.bind(ICacheService.class, NoopCacheService.class);
 
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);

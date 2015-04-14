@@ -1,6 +1,7 @@
 package ish.oncourse.linktransform;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -105,7 +106,7 @@ public enum PageIdentifier
 	private Matcher matcher;
 	private String pageName;
 
-	private static final Logger LOGGER = Logger.getLogger(PageIdentifier.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private PageIdentifier(String pattern, String pageName) {
 		this.matcher = new ExactMatcher(pattern);
@@ -156,7 +157,7 @@ public enum PageIdentifier
 		try {
 			path = URLDecoder.decode(path,"UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			LOGGER.warn(e.getMessage(),e);
+			logger.catching(e);
 		}
 
 		for (PageIdentifier pageIdentifier : sortedValues) {

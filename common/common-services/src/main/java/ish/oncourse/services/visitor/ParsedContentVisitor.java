@@ -7,7 +7,8 @@ import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationException;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,7 +17,7 @@ public class ParsedContentVisitor extends BaseVisitor<String> {
 
 	private ITextileConverter textileConverter;
 	private ValidationErrors errors;
-	private static final Logger LOGGER = Logger.getLogger(ParsedContentVisitor.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	public ParsedContentVisitor(ITextileConverter textileConverter) {
 		this.textileConverter = textileConverter;
@@ -43,8 +44,9 @@ public class ParsedContentVisitor extends BaseVisitor<String> {
 				errors = new ValidationErrors();
 				text = textileConverter.convertCustomTextile(text, errors);
 
-				if (errors.hasFailures())
-					LOGGER.debug("Validation errors on Textile cnversion", new ValidationException(errors));
+				if (errors.hasFailures()) {
+					logger.debug("Validation errors on Textile cnversion", new ValidationException(errors));
+				}
 				text = StringEscapeUtils.unescapeHtml(text).replaceAll("(&amp;nbsp;)", " ");
 			}
 		}

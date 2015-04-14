@@ -5,7 +5,8 @@
 
 package ish.oncourse.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
 public class DateFormatter extends DefaultFormatter {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger logger = Logger.getLogger(DateFormatter.class);
+    private static final Logger logger = LogManager.getLogger();
     private static final long ONE_DAY_MILLISECONDS = 24 * 60 * 60 * 1000L;
     /**
      * For the parser we need to split the input string around most punctuation: " ", "/", "\", ":", ".", ",", "|" We also match "-" but only if it is not
@@ -241,7 +242,7 @@ public class DateFormatter extends DefaultFormatter {
      */
     public static Calendar parseDateToCal(String inputString, TimeZone tz) {
         inputString = inputString.trim().toLowerCase();
-        if (inputString == null || inputString.equals("")) {
+        if (inputString.equals("")) {
             return null;
         }
 
@@ -275,7 +276,7 @@ public class DateFormatter extends DefaultFormatter {
             return resultDate;
         }
         String[] elements = DATE_PARSE_PTN.split(inputString, 0);
-        logger.debug("date parsing split count: " + elements.length);
+        logger.debug("date parsing split count: {}", elements.length);
 
         String hint = "day";
         for (String element : elements) {

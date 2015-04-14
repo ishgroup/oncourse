@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.services.student;
 
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.Student;
 
 import java.util.List;
 

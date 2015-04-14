@@ -4,14 +4,13 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SiteDetailsComponent {
 

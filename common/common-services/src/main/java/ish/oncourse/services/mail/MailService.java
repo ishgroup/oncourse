@@ -3,7 +3,8 @@ package ish.oncourse.services.mail;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.commons.validator.EmailValidator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import javax.mail.Message;
@@ -18,7 +19,7 @@ import java.util.Properties;
 public class MailService implements IMailService {
 
 	public static final String SYSTEM_PROPERTY_SMTP_HOST = "mail.smtp.host";
-	private final static Logger LOGGER = Logger.getLogger(MailService.class);
+	private final static Logger logger = LogManager.getLogger();
 	@Inject
 	private PreferenceController preferenceController;
 	@Inject
@@ -33,19 +34,19 @@ public class MailService implements IMailService {
 			from = preferenceController.getEmailFromAddress();
 
 			if (from == null || !validator.isValid(from)) {
-				LOGGER.error("The email.from preference is not configured for the college"
+				logger.error("The email.from preference is not configured for the college"
 						+ webSiteService.getCurrentCollege().getName());
 				return false;
 			}
 
 		}
 		if (to == null || !validator.isValid(to)) {
-			LOGGER.error("Bad recipient address");
+			logger.error("Bad recipient address");
 			return false;
 		}
 		Properties props = System.getProperties();
 		if (!props.containsKey("mail.smtp.host")) {
-			LOGGER.error("SMPT host is not defined!");
+			logger.error("SMPT host is not defined!");
 		}
 		Session session = Session.getDefaultInstance(props, null);
 		// -- Create a new message --
@@ -62,7 +63,7 @@ public class MailService implements IMailService {
 			// -- Send the message --
 			Transport.send(msg);
 		} catch (Exception e) {
-			LOGGER.error("Exception on sending mail:" + e.getMessage());
+			logger.catching(e);
 			return false;
 		}
 		return true;
@@ -77,7 +78,7 @@ public class MailService implements IMailService {
 			Session session = getSession();
 			message = email.toMessage(session);
 		} catch (MessagingException e) {
-			LOGGER.warn("Failed to prepare message", e);
+			logger.warn("Failed to prepare message", e);
 			return false;
 		}
 
@@ -101,10 +102,10 @@ public class MailService implements IMailService {
 	private boolean doSend(Message message) {
 		try {
 			Transport.send(message);
-			LOGGER.debug("Email sent successfully");
+			logger.debug("Email sent successfully");
 			return true;
 		} catch (MessagingException e) {
-			LOGGER.warn("Error sending email.", e);
+			logger.warn("Error sending email.", e);
 			return false;
 		}
 	}
@@ -112,7 +113,7 @@ public class MailService implements IMailService {
 	private Session getSession() {
 		Properties props = System.getProperties();
 		if (!props.containsKey(SYSTEM_PROPERTY_SMTP_HOST)) {
-			LOGGER.error("SMPT host is not defined!");
+			logger.error("SMTP host is not defined!");
 		}
 		return Session.getDefaultInstance(props, null);
 	}

@@ -1,14 +1,14 @@
 package ish.oncourse.ui.pages;
 
-import static org.junit.Assert.*;
 import ish.oncourse.ui.services.TestModule;
-
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.test.PageTester;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class TimelineDataTest {
 

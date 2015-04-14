@@ -5,12 +5,11 @@
 
 package ish.oncourse.services.reference;
 
-import java.util.List;
-
+import ish.oncourse.model.Country;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
-import ish.oncourse.model.Country;
+import java.util.List;
 
 /**
  * Implementation of the Country Service.

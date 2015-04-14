@@ -2,9 +2,9 @@ package ish.oncourse.portal.components.courseclass;
 
 
 import ish.common.types.AttendanceType;
-import ish.oncourse.model.*;
+import ish.oncourse.model.Attendance;
+import ish.oncourse.model.Student;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;

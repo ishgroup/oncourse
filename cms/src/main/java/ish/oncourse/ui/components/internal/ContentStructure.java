@@ -12,7 +12,8 @@ import ish.oncourse.ui.utils.EmptyRenderable;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.*;
@@ -25,7 +26,7 @@ public class ContentStructure {
 	private static final String UPDATED_ZONE_NAME = "updatedZone";
 	private static final String EDITOR_ZONE_NAME = "editorZone";
 	private static final String ZONE_PREFIX = "z_";
-	private static final Logger LOGGER = Logger.getLogger(ContentStructure.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Parameter
 	@Property
@@ -73,9 +74,9 @@ public class ContentStructure {
 	public void beforeRender() {
 		for(WebContentVisibility visibility: node.getWebContentVisibility()){
 			if(visibility == null){
-				LOGGER.error(String.format("The visibility is null in node %s in site %s in college %s", node.getName(), 
-						node.getWebSiteVersion().getWebSite().getName(), 
-						node.getWebSiteVersion().getWebSite().getCollege().getName()));
+				logger.error("The visibility is null in node {} in site {} in college {}", node.getName(),
+						node.getWebSiteVersion().getWebSite().getName(),
+						node.getWebSiteVersion().getWebSite().getCollege().getName());
 			}
 		}
 	}
@@ -100,10 +101,8 @@ public class ContentStructure {
 		if(!request.isXHR()){
             return page.getReloadPageBlock();
 		}
-
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug(String.format("Edit region with id: %s", id));
-		}
+		
+		logger.debug("Edit region with id: {}", id);
 
 		ObjectContext ctx = cayenneService.newContext(node.getObjectContext());
 		WebContent regionForEdit = webContentService.findById(Long.parseLong(id));

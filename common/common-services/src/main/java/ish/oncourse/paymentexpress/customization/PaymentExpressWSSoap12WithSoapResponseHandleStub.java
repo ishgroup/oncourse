@@ -1,11 +1,8 @@
 package ish.oncourse.paymentexpress.customization;
 
-import java.net.URL;
-import java.rmi.RemoteException;
-
-import javax.xml.namespace.QName;
-import javax.xml.rpc.Service;
-
+import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
+import com.paymentexpress.stubs.TransactionDetails;
+import com.paymentexpress.stubs.TransactionResult2;
 import org.apache.axis.AxisEngine;
 import org.apache.axis.AxisFault;
 import org.apache.axis.NoEndPointException;
@@ -13,9 +10,10 @@ import org.apache.axis.client.Call;
 import org.apache.axis.soap.SOAPConstants;
 import org.apache.axis.utils.JavaUtils;
 
-import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
-import com.paymentexpress.stubs.TransactionDetails;
-import com.paymentexpress.stubs.TransactionResult2;
+import javax.xml.namespace.QName;
+import javax.xml.rpc.Service;
+import java.net.URL;
+import java.rmi.RemoteException;
 
 /**
  * Customization of PaymentExpressWSSoap12Stub used to receive soap response and be able to save it.

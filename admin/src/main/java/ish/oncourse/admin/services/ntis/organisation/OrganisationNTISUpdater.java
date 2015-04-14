@@ -5,7 +5,6 @@
 package ish.oncourse.admin.services.ntis.organisation;
 
 import au.gov.training.services.organisation.*;
-import au.gov.training.services.organisation.ObjectFactory;
 import ish.oncourse.admin.services.ntis.AbstractComponentNTISUpdater;
 import ish.oncourse.admin.services.ntis.NTISException;
 import ish.oncourse.admin.services.ntis.NTISResult;
@@ -17,7 +16,8 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
 import java.util.Date;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class OrganisationNTISUpdater extends AbstractComponentNTISUpdater {
 
-	private static final Logger LOGGER = Logger.getLogger(OrganisationNTISUpdater.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	protected IOrganisationService organisationService;
 
@@ -101,7 +101,7 @@ public class OrganisationNTISUpdater extends AbstractComponentNTISUpdater {
 			return result;
 
 		} catch (Exception e) {
-			LOGGER.info("NTIS Qualifications update failed with exception.", e);
+			logger.info("NTIS Qualifications update failed with exception.", e);
 			throw new NTISException(e);
 		}
 	}

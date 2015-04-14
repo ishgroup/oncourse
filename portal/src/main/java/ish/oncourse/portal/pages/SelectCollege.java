@@ -6,7 +6,8 @@ import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.Messages;
@@ -19,7 +20,7 @@ import java.util.Set;
 
 public class SelectCollege {
 
-    private static final Logger LOGGER = Logger.getLogger(SelectCollege.class);
+    private static final Logger logger = LogManager.getLogger();
 
 	@Property
 	@Persist
@@ -127,7 +128,7 @@ public class SelectCollege {
      */
     public Object onException(Throwable cause){
         if (collegesWithDuplicates == null || users == null) {
-            LOGGER.warn("Persist properties have been cleared.", cause);
+            logger.warn("Persist properties have been cleared.", cause);
         } else {
             throw new IllegalArgumentException(cause);
         }

@@ -27,7 +27,8 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -43,7 +44,7 @@ import java.util.regex.Pattern;
 
 public class TemplateResourceFactory implements ResourceFactory {
 	
-	private static final Logger logger = Logger.getLogger(TemplateResourceFactory.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private static final String TEMPLATE_DIR_NAME = "templates";
 	private static final String DEFAULT_TEMPLATES_PACKAGE = "ish.oncourse.ui";

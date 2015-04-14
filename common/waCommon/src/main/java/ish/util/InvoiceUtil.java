@@ -13,7 +13,8 @@ import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
  * Gathered methods for calculating invoice/payment related values, which should never be different between client and server.
  */
 public final class InvoiceUtil {
-	private static final Logger logger = Logger.getLogger(InvoiceUtil.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	/**
 	 * standard private constructor for utility class
@@ -40,7 +41,7 @@ public final class InvoiceUtil {
 		if (payable.getContact() == null) {
 			// commented out because of the fact that sometimes existing invoices with no contact related to them are found
 			// payable.setAmountOwing(Money.ZERO);
-			logger.info("found payable (probably an invoice) with no contact attached to it : " + payable);
+			logger.info("found payable (probably an invoice) with no contact attached to it: {}", payable);
 		} else {
 			List<PaymentLineInterface> paymentLines = getSuccessfulPaymentLines(payable);
 			Money totalCredit = sumPaymentLines(paymentLines, PaymentInterface.TYPE_IN, true);
@@ -48,15 +49,13 @@ public final class InvoiceUtil {
 			Money totalInvoiced = InvoiceUtil.sumInvoiceLines(payable.getPayableLines());
 			Money paymentsBalance = totalCredit.subtract(totalDebit);
 			Money totalOwing = totalInvoiced.subtract(paymentsBalance);
-
-			if (logger.isDebugEnabled()) {
-				logger.debug("calculate amount owing for invoice :" + payable);
-				logger.debug("paymentsBalance :" + paymentsBalance);
-				logger.debug("totalDebit :" + totalDebit);
-				logger.debug("totalCredit :" + totalCredit);
-				logger.debug("total invoice lines :" + totalInvoiced);
-				logger.debug("owing :" + totalOwing);
-			}
+			
+			logger.debug("calculate amount owing for invoice: {}", payable);
+			logger.debug("paymentsBalance: {}", paymentsBalance);
+			logger.debug("totalDebit: {}", totalDebit);
+			logger.debug("totalCredit: {}", totalCredit);
+			logger.debug("total invoice lines: {}", totalInvoiced);
+			logger.debug("owing: {}", totalOwing);
 
 			payable.setAmountOwing(totalOwing);
 		}
@@ -223,11 +222,8 @@ public final class InvoiceUtil {
 		if (!paymentLines.contains(pLine)) {
 			paymentLines.add(pLine);
 		}
-
-		if (logger.isDebugEnabled()) {
-			logger.debug("invoice no: " + invoice.getInvoiceNumber() + ", amount owing:" + invoice.getAmountOwing() + ", amount to allocate:" +
-					amountToAllocate);
-		}
+		
+		logger.debug("invoice no: {}, amount owing: {}, amount to allocate:{}", invoice.getInvoiceNumber(), invoice.getAmountOwing(), amountToAllocate);
 
 		Money amount = Money.ZERO;
 		if (allocateAll) {
@@ -264,10 +260,8 @@ public final class InvoiceUtil {
 		} else {
 			throw new IllegalStateException("Failed to allocate money to an invoice");
 		}
-
-		if (logger.isDebugEnabled()) {
-			logger.debug("\tAllocating :" + amount);
-		}
+		
+		logger.debug("\tAllocating: {}", amount);
 
 		// finalise the payment in line values
 		pLine.setAmount(amount);

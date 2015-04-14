@@ -9,7 +9,8 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class PreferenceController extends CommonPreferenceController {
 
-	private static final Logger LOGGER = Logger.getLogger(PreferenceController.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private static final String NTIS_LAST_UPDATE = "ntis.lastupdate";
 	private static final String POSTCODES_LAST_UPDATE = "postcodes.lastupdate";
@@ -113,7 +114,7 @@ public class PreferenceController extends CommonPreferenceController {
 
 		Preference pref = getPreferenceByKey(key);
 
-		ObjectContext context = null;
+		ObjectContext context;
 		College college = null;
 
 		if (webSiteService.getCurrentCollege() != null) {
@@ -135,9 +136,7 @@ public class PreferenceController extends CommonPreferenceController {
 		pref.setCollege(college);
 		pref.setValueString(value);
 
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("committing changes to prefs:" + context.uncommittedObjects());
-		}
+		logger.debug("committing changes to prefs: {}", context.uncommittedObjects());
 
 		context.commitChanges();
 
@@ -165,14 +164,11 @@ public class PreferenceController extends CommonPreferenceController {
 			pref = context.newObject(Preference.class);
 			pref.setName(key);
 		} else {
-			pref = context.localObject(pref);
+			pref = (Preference) context.localObject(pref);
 		}
 
 		pref.setValue(serializeObject(value));
-
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("committing changes to prefs:" + context.uncommittedObjects());
-		}
+		logger.debug("committing changes to prefs: {}", context.uncommittedObjects());
 
 		context.commitChanges();
 	}
@@ -573,7 +569,7 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return Boolean.parseBoolean(getValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false));
 		} catch (Exception e) {
-			LOGGER.error(String.format("Cannot get property %s", PAYMENT_GATEWAY_TYPE), e);
+			logger.error("Cannot get property {}", PAYMENT_GATEWAY_TYPE, e);
 			return false;
 		}
 	}
@@ -594,7 +590,7 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS, false));
 		} catch (Exception e) {
-			LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS), e);
+			logger.error("Cannot get property {}", ENABLE_SOCIAL_MEDIA_LINKS, e);
 			return false;
 		}
 	}
@@ -607,7 +603,7 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false));
 		} catch (Exception e) {
-			LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS_COURSE), e);
+			logger.error("Cannot get property {}", ENABLE_SOCIAL_MEDIA_LINKS_COURSE, e);
 			return false;
 		}
 	}
@@ -620,7 +616,7 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false));
 		} catch (Exception e) {
-			LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE), e);
+			logger.error("Cannot get property {}", ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, e);
 			return false;
 		}
 	}
@@ -641,7 +637,7 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return PaymentGatewayType.valueOf(getValue(PAYMENT_GATEWAY_TYPE, false));
 		} catch (Exception e) {
-			LOGGER.error(String.format("Cannot get property %s", PAYMENT_GATEWAY_TYPE), e);
+			logger.error("Cannot get property {}", PAYMENT_GATEWAY_TYPE, e);
 			return PaymentGatewayType.DISABLED;
 		}
 	}
@@ -660,7 +656,7 @@ public class PreferenceController extends CommonPreferenceController {
 		if (value != null && StringUtils.isNumeric(value)) {
 			return Integer.valueOf(value);
 		} else {
-			LOGGER.debug(String.format("Cannot get property %s", ENROLMENT_MIN_AGE));
+			logger.debug("Cannot get property {}", ENROLMENT_MIN_AGE);
 			return 0;
 		}
 	}

@@ -9,7 +9,8 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.paymentexpress.customization.PaymentExpressWSLocatorWithSoapResponseHandle;
 import ish.oncourse.services.persistence.ICayenneService;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Scope;
 
@@ -45,7 +46,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
     /**
      * Logger for service.
      */
-    private static final Logger LOGGER = Logger.getLogger(PaymentExpressGatewayService.class);
+    private static final Logger logger = LogManager.getLogger();
 
     /**
      * Cayenne service
@@ -92,9 +93,9 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
                     .append(", retry:").append(tr.getRetry()).append(", settlementDate:").append(tr.getDateSettlement())
                     .append(", statusRequired:").append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
                     .append(", transactionRef:").append(tr.getDpsTxnRef());
-            LOGGER.debug(resultDetails.toString());
+            logger.debug(resultDetails);
         } catch (Exception e) {
-            LOGGER.error(String.format("PaymentIn id:%s failed with exception.", payment.getId()), e);
+            logger.error("PaymentIn id: {} failed with exception.", payment.getId(), e);
             payment.setStatusNotes("PaymentIn failed with exception.");
             payment.failPayment();
         }
@@ -139,10 +140,10 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
                 paymentOut.failed();
             }
 
-            LOGGER.debug(resultDetails.toString());
+            logger.debug(resultDetails);
 
         } catch (Exception e) {
-            LOGGER.error(String.format("PaymentOut id:%s failed with exception.", paymentOut.getId()), e);
+            logger.error("PaymentOut id: {} failed with exception.", paymentOut.getId(), e);
             paymentOut.setStatusNotes("PaymentOut failed with exception.");
             paymentOut.failed();
         }
@@ -165,7 +166,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
         String password = paymentSupport.getCollege().getPaymentGatewayPass();
 
 
-        LOGGER.debug(String.format("Submitting payment to paymentexpress, gatewayAccount: %s gatewayPassword: %s", username, password));
+        logger.debug("Submitting payment to paymentexpress, gatewayAccount: {} gatewayPassword: {}", username, password);
 
         int n = 0;
 
@@ -193,7 +194,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
                     try {
                         Thread.sleep(RETRY_INTERVAL);
                     } catch (InterruptedException e) {
-                        LOGGER.warn(String.format("InterruptedException is thrown on SubmitTransaction for payment with id: %d", paymentSupport.getPayment().getId()), e);
+                        logger.warn("InterruptedException is thrown on SubmitTransaction for payment with id: {}", paymentSupport.getPayment().getId(), e);
                     }
                 } else {
                     if (PaymentExpressUtil.translateFlag(result.getAuthorized())) {

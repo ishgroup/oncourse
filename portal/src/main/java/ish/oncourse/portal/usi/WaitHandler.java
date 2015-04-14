@@ -6,7 +6,8 @@ import ish.common.types.USIVerificationResult;
 import ish.common.types.UsiStatus;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -21,7 +22,7 @@ public class WaitHandler extends AbstractStepHandler {
 
     private static final long USI_SERVICE_TIMEOUT = 1000 * 60;
 
-    private static final Logger LOGGER = Logger.getLogger(WaitHandler.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private AtomicReference<Step> nextStep = new AtomicReference<>(step1);
 
@@ -112,7 +113,7 @@ public class WaitHandler extends AbstractStepHandler {
 
         } catch (Exception e) {
             contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
-            LOGGER.error(e.getMessage(), e);
+            logger.catching(e);
             nextStep.set(step1);
             getUsiController().getValidationResult().addError("message-usiServiceUnexpectedException");
         }

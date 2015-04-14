@@ -1,11 +1,11 @@
 package ish.oncourse.selectutils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.ioc.services.PropertyAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListValueEncoder<T> implements ValueEncoder<T> {
 

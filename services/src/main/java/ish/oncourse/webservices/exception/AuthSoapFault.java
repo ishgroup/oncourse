@@ -1,8 +1,8 @@
 package ish.oncourse.webservices.exception;
 
-import javax.xml.namespace.QName;
-
 import org.apache.cxf.binding.soap.SoapFault;
+
+import javax.xml.namespace.QName;
 
 @SuppressWarnings("serial")
 public class AuthSoapFault extends SoapFault {

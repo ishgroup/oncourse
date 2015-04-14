@@ -1,10 +1,11 @@
 package ish.oncourse.services.environment;
 
 import ish.oncourse.services.site.IWebSiteService;
-import java.io.InputStream;
-import java.util.jar.Manifest;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationGlobals;
+
+import java.io.InputStream;
+import java.util.jar.Manifest;
 
 public class EnvironmentService implements IEnvironmentService {
 

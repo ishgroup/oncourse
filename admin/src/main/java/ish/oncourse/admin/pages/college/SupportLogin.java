@@ -5,7 +5,6 @@ package ish.oncourse.admin.pages.college;
 
 import ish.oncourse.admin.pages.Index;
 import ish.oncourse.model.College;
-
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.SupportPassword;
 import ish.oncourse.services.persistence.ICayenneService;

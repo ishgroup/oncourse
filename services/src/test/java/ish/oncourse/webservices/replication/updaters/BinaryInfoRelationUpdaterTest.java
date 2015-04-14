@@ -8,7 +8,8 @@ import ish.oncourse.webservices.v6.stubs.replication.BinaryInfoRelationStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -23,7 +24,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class BinaryInfoRelationUpdaterTest extends ServiceTest {
-	private static Logger logger = Logger.getLogger(BinaryInfoRelationUpdaterTest.class.getName());
+	private static Logger logger = LogManager.getLogger();
 
 	@Before
 	public void setupDataSet() throws Exception {
@@ -75,7 +76,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -122,7 +123,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -169,7 +170,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -216,7 +217,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -263,7 +264,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -310,7 +311,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -357,7 +358,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -404,7 +405,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -451,7 +452,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -498,7 +499,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -545,7 +546,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			assertNotNull("Binary info id should not be empty", entity.getBinaryInfo().getId());
 			assertNotNull("Entity willowid should not be empty", entity.getEntityWillowId());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -718,7 +719,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			updater.updateEntity(stub, entity, returnDummyRelationShipCallback(objectContext));
 			assertTrue("Updater should throw and exception for invalid data",false);
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.catching(e);
 			assertTrue(e.getMessage().equalsIgnoreCase("Unexpected related entity with type PaymentOut and angelid 1"));
 		} finally {
 			objectContext.rollbackChanges();

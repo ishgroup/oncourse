@@ -3,6 +3,19 @@ package ish.oncourse.portal.pages;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import net.fortuna.ical4j.data.CalendarOutputter;
+import net.fortuna.ical4j.model.Dur;
+import net.fortuna.ical4j.model.TimeZone;
+import net.fortuna.ical4j.model.TimeZoneRegistry;
+import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.property.*;
+import net.fortuna.ical4j.util.UidGenerator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tapestry5.StreamResponse;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -10,31 +23,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.fortuna.ical4j.data.CalendarOutputter;
-import net.fortuna.ical4j.model.Dur;
-import net.fortuna.ical4j.model.TimeZone;
-import net.fortuna.ical4j.model.TimeZoneRegistry;
-import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
-import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.model.property.CalScale;
-import net.fortuna.ical4j.model.property.Description;
-import net.fortuna.ical4j.model.property.ProdId;
-import net.fortuna.ical4j.model.property.Uid;
-import net.fortuna.ical4j.model.property.Version;
-import net.fortuna.ical4j.model.property.XProperty;
-import net.fortuna.ical4j.util.UidGenerator;
-
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.StreamResponse;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.util.TextStreamResponse;
-
 /*
  URL:/contact/6giVOgEbBEBhAWjZ.ics, where 6giVOgEbBEBhAWjZ is uniqueCode of contact
  */
 public class Calendar {
 
-	private static final Logger logger = Logger.getLogger(Calendar.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private static final Pattern NAME_PATTERN = Pattern.compile("(.*)\\.ics");
 

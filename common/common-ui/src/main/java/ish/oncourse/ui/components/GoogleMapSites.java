@@ -1,12 +1,11 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Site;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 
 import java.util.Collection;
 import java.util.Map;
-
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
 
 public class GoogleMapSites {
 

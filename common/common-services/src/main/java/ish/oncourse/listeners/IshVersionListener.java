@@ -10,7 +10,7 @@ import org.apache.cayenne.annotation.PreUpdate;
 import org.apache.cayenne.lifecycle.changeset.ChangeSet;
 import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
 import org.apache.cayenne.lifecycle.changeset.PropertyChange;
-import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang.ObjectUtils;
 
 import java.util.Map;
 

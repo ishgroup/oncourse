@@ -2,7 +2,8 @@ package ish.oncourse.webservices.soap.v9;
 
 import ish.oncourse.test.InitialContextFactoryMock;
 import ish.oncourse.util.ContextUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.bio.SocketConnector;
@@ -15,7 +16,7 @@ public class TestServer {
 	static final String DEFAULT_WEB_PATH = "src/test/webapp/WEB-INF";
 	static final String DEFAULT_CONTEXT_PATH = "/services";
 	static final int DEFAULT_SERVER_PORT = 9091;
-	private static Logger LOGGER = Logger.getLogger(TestServer.class);
+	private static Logger logger = LogManager.getLogger();
     private transient Server server;
     private int port;
     //private int stopPort = 9092;
@@ -74,8 +75,8 @@ public class TestServer {
             server.destroy();
             throw new RuntimeException(e);
         }
-        LOGGER.info("[start] Started Server @ " + host + ":" + port);
-        LOGGER.info("[start] Server Ready & Running - " + server.isRunning());
+        logger.info("[start] Started Server @ {}:{}", host, port);
+        logger.info("[start] Server Ready & Running - {}", server.isRunning());
 
         Runnable runnable = new Runnable() {
             @Override

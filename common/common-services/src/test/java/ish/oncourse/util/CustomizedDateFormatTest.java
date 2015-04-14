@@ -1,14 +1,14 @@
 package ish.oncourse.util;
 
-import static org.junit.Assert.*;
+import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
 
 import java.text.Format;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class CustomizedDateFormatTest {
 	

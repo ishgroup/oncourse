@@ -1,15 +1,14 @@
 package ish.oncourse.services.textile;
 
-import static org.junit.Assert.assertEquals;
 import ish.oncourse.services.html.IPlainTextExtractor;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CoreTextileConverterTest {
@@ -49,7 +48,7 @@ public class CoreTextileConverterTest {
 		when(extractor.compactHtmlTags(TEST7)).thenReturn(TEST7);
 		when(extractor.compactHtmlTags(TEST8)).thenReturn(TEST8);
 		when(extractor.compactHtmlTags(TEST9)).thenReturn(TEST9);
-		textileConverter = new TextileConverter(extractor);
+		textileConverter = new TextileConverter();
 	}
 
 	@Test

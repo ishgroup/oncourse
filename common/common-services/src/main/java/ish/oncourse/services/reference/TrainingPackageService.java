@@ -1,9 +1,10 @@
 package ish.oncourse.services.reference;
 
 import ish.oncourse.model.TrainingPackage;
-import java.util.List;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+
+import java.util.List;
 
 
 /**

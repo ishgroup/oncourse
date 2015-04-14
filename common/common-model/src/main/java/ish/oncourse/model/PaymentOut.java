@@ -5,11 +5,12 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.auto._PaymentOut;
 import ish.oncourse.utils.QueueableObjectUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PaymentOut extends _PaymentOut implements Queueable {
 	private static final long serialVersionUID = -8918491908161700718L;
-	private static final Logger LOG = Logger.getLogger(PaymentOut.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
@@ -30,7 +31,7 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 	public boolean validateBeforeSend() {
 		// TotalAmount - mandatory field
 		if (this.getTotalAmount() == null) {
-			LOG.warn(String.format("The payment amount cannot be empty PaymentOut angelId:%s.", this.getAngelId()));
+			logger.warn(String.format("The payment amount cannot be empty PaymentOut angelId:%s.", this.getAngelId()));
 			return false;
 		}
 

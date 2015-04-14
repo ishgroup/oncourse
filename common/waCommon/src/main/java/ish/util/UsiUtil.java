@@ -3,8 +3,8 @@
  */
 package ish.util;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 
@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public class UsiUtil {
 
-	private static final Logger logger = LogManager.getLogger(UsiUtil.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private static final char[] validChars = {'2', '3', '4', '5', '6', '7', '8', '9',
 			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
@@ -39,7 +39,7 @@ public class UsiUtil {
 		for (int i = keyToUpper.length() - 1; i>= 0; i--) {
 			int codePoint = Arrays.binarySearch(validChars, keyToUpper.charAt(i));
 			if (codePoint < 0) {
-				logger.warn(String.format("invalid Char for USI: %s", keyToUpper.charAt(i)));
+				logger.warn("invalid Char for USI: {}", keyToUpper.charAt(i));
 				return false;
 			}
 			int addend = factor * codePoint;

@@ -1,9 +1,9 @@
 package ish.oncourse.model;
 
-import java.util.Date;
-
 import ish.oncourse.model.auto._Module;
 import ish.oncourse.utils.QueueableObjectUtils;
+
+import java.util.Date;
 
 public class Module extends _Module{
 	private static final long serialVersionUID = 4023705295199575681L;

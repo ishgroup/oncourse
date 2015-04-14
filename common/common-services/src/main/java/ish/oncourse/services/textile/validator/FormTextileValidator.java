@@ -8,12 +8,11 @@ import ish.oncourse.services.textile.attrs.RadioListTextileAttributes;
 import ish.oncourse.services.textile.attrs.TextTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
+import org.apache.commons.validator.EmailValidator;
 
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.validator.EmailValidator;
 
 public class FormTextileValidator extends AbstractTextileValidator {
 

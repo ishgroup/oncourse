@@ -1,11 +1,12 @@
 package ish.oncourse.services.html;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 import static org.junit.Assert.*;
 
 public class JerichoPlainTextExtractorTest {

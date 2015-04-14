@@ -5,11 +5,11 @@ package ish.oncourse.enrol.services.linktransform;
 
 import ish.oncourse.linktransform.PageIdentifier;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.Site;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.EmptyEventContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class EnrolPageLinkTransformer implements PageRenderLinkTransformer {
 
-	private static final Logger LOGGER = Logger.getLogger(EnrolPageLinkTransformer.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	RequestGlobals requestGlobals;
@@ -35,7 +35,7 @@ public class EnrolPageLinkTransformer implements PageRenderLinkTransformer {
 	
 	@Override
 	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
-		LOGGER.info("Rewrite OutBound: path is: " + defaultLink.getBasePath());
+		logger.info("Rewrite OutBound: path is: {}", defaultLink.getBasePath());
 
 		return defaultLink;
 	}
@@ -60,7 +60,7 @@ public class EnrolPageLinkTransformer implements PageRenderLinkTransformer {
 			String courseId = path.substring(path.lastIndexOf('/') + 1);
 			//check that courseId is number, else abort WaitingListForm rendering
 			if (!courseId.matches("\\d+")) {
-				LOGGER.warn("Wrong attribute:courseId for WaitingList Form, it should be correct course ID");
+				logger.warn("Wrong attribute:courseId for WaitingList Form, it should be correct course ID");
 				return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(), new EmptyEventContext(), false);
 			} 
 		}

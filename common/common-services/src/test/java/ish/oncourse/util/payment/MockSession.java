@@ -1,12 +1,11 @@
 package ish.oncourse.util.payment;
 
 import ish.oncourse.model.College;
-
-import javax.servlet.http.HttpSession;
-
 import org.apache.tapestry5.internal.services.SessionImpl;
 import org.apache.tapestry5.services.Session;
 import org.apache.tapestry5.services.SessionPersistedObjectAnalyzer;
+
+import javax.servlet.http.HttpSession;
 
 public class MockSession extends SessionImpl implements Session {
 	private Long collegeAttribute;

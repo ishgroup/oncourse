@@ -2,6 +2,8 @@ package ish.oncourse.services.sms;
 
 import ish.common.types.MessageStatus;
 import ish.oncourse.model.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,14 +14,12 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-
 /**
  * Default implementation of SMS service.
  */
 public class DefaultSMSService implements ISMSService {
 
-	private static final Logger logger = Logger.getLogger(DefaultSMSService.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private static final String EncodeType = "UTF-8";
 
@@ -49,10 +49,8 @@ public class DefaultSMSService implements ISMSService {
 
 				URL authenticationURL = new URL(smsGatewayURL + "auth?api_id=" + smsGatewayApiId + "&user=" + smsGatewayUser + "&password="
 						+ smsGatewayPass);
-
-				if (logger.isDebugEnabled()) {
-					logger.debug("authenticationURL:" + authenticationURL.toString());
-				}
+				
+				logger.debug("authenticationURL: {}", authenticationURL);
 
 				BufferedReader in = new BufferedReader(new InputStreamReader(authenticationURL.openStream()));
 				// the response should be one line ERR: errorCode,
@@ -61,17 +59,14 @@ public class DefaultSMSService implements ISMSService {
 				// anything else is wrong.
 				String str = in.readLine();
 				in.close();
-
-				if (logger.isDebugEnabled()) {
-					logger.debug("auth response:" + str);
-				}
+				logger.debug("auth response: {}", str);
 
 				if (str == null || str.equals("")) {
 					logger.error("SMS gateway authentication error : no response from server");
 					return null;
 				} else if (str.startsWith("ERR:")) {
 					String errorString = str.substring(str.indexOf(":") + 1, str.length()).trim();
-					logger.error("SMS gateway authentication error " + errorString);
+					logger.error("SMS gateway authentication error {}", errorString);
 					return null;
 				} else if (str.startsWith("OK:")) {
 					String sessionString = str.substring(str.indexOf(":") + 1, str.length()).trim();
@@ -119,7 +114,7 @@ public class DefaultSMSService implements ISMSService {
 			String str = in.readLine();
 			in.close();
 
-			logger.debug("response:" + str);
+			logger.debug("response: {}", str);
 
 			if (str == null || str.isEmpty()) {
 				aResponse = "no response from gateway";

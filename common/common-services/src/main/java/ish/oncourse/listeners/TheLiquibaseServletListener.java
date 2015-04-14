@@ -11,29 +11,26 @@ import liquibase.resource.FileSystemResourceAccessor;
 import liquibase.resource.ResourceAccessor;
 import liquibase.util.NetUtil;
 import liquibase.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Enumeration;
 
-//import javax.servlet.ServletContextListener;
+public class TheLiquibaseServletListener implements ServletContextListener {
 
-public class TheLiquibaseServletListener extends OverrideLog4JListener {
-
-	private static final Logger logger = Logger.getLogger(TheLiquibaseServletListener.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-		super.contextDestroyed(arg0);
 	}
 
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		//override the logger.
-		super.contextInitialized(servletContextEvent);
 		//start to init the liquibase
 		String hostName;
 		try {

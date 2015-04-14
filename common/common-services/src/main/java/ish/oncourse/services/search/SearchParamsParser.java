@@ -6,17 +6,13 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.services.Request;
 
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SimpleTimeZone;
-import java.util.TimeZone;
+import java.util.*;
 
 public class SearchParamsParser
 {
@@ -31,7 +27,7 @@ public class SearchParamsParser
 
     public static final String PATTERN_PRICE = "[$]?(\\d)+[$]?";
 
-    private static final Logger LOGGER = Logger.getLogger(SearchParamsParser.class);
+    private static final Logger logger = LogManager.getLogger();
     private final Request request;
     private final ISearchService searchService;
     private ITagService tagService;
@@ -113,7 +109,7 @@ public class SearchParamsParser
                     	value = searchParams.getDebugQuery();
                     	break;
                     default:
-                        LOGGER.warn(String.format("Parser is not defined for SearchParam \"%s\"", name));
+                        logger.warn("Parser is not defined for SearchParam {}", name);
                 }
             }
             if (parameter != null && value == null)
@@ -146,7 +142,7 @@ public class SearchParamsParser
         		Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, clientTimezone).parse(parameter);
         		return parsedDate;
         	} else {
-        		LOGGER.error(String.format("Unexpected client timezone param %s", clientTimezone));
+        		logger.error("Unexpected client timezone param {}", clientTimezone);
         		paramsInError.put(paramName, parameter);
         		return null;
         	}

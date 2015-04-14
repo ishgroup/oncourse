@@ -9,7 +9,8 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,7 +37,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentExpressGatewayServiceTest {
 
-	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayServiceTest.class);
+	private static final Logger LOG = LogManager.getLogger();
 	
 	private static final String PAYMENT_REF = "W111";
 

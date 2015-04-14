@@ -1,13 +1,13 @@
 package ish.oncourse.admin.pages;
 
-import java.util.List;
-
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 import org.apache.tapestry5.util.TextStreamResponse;
+
+import java.util.List;
 
 public class NTISJson {
 	

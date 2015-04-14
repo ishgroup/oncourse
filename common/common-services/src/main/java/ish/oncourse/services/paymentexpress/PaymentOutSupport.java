@@ -7,7 +7,8 @@ import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentOutTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public class PaymentOutSupport implements IPaymentSupport<PaymentOut, PaymentOut
     /**
      * Logger for service.
      */
-    private static final Logger LOGGER = Logger.getLogger(PaymentOutSupport.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private PaymentOut paymentOut;
     private ICayenneService cayenneService;
@@ -53,7 +54,7 @@ public class PaymentOutSupport implements IPaymentSupport<PaymentOut, PaymentOut
         details.setTxnRef(ref);
         details.setTxnType(PaymentExpressUtil.PAYMENT_EXPRESS_TXN_TYPE_REFUND);
 
-        LOGGER.debug(transactionDetails.toString());
+        logger.debug(transactionDetails);
 
         return details;
     }

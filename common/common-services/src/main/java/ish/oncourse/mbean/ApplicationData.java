@@ -1,7 +1,15 @@
 package ish.oncourse.mbean;
 
 import ish.oncourse.model.PaymentIn;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tapestry5.services.ApplicationGlobals;
 
+import javax.management.AttributeChangeNotification;
+import javax.management.MBeanNotificationInfo;
+import javax.management.NotificationBroadcasterSupport;
+import javax.sql.DataSource;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,15 +18,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.jar.Manifest;
-
-import javax.management.AttributeChangeNotification;
-import javax.management.MBeanNotificationInfo;
-import javax.management.NotificationBroadcasterSupport;
-import javax.sql.DataSource;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.services.ApplicationGlobals;
 
 public class ApplicationData extends NotificationBroadcasterSupport implements ApplicationDataMBean {
 	private static final String ESCAPE_QUERY_STRING = "';";
@@ -37,7 +36,7 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 	private static final String SELECT_ENROLMENTS_BY_STATUS_STRING = "select count(*) from Enrolment where status=%s;";
 	private static final String MANIFEST_FILE_PATH = "/META-INF/MANIFEST.MF";
 	private static final String HUDSON_RELEASE_VERSION = "Implementation-Version";
-	private static Logger LOGGER = Logger.getLogger(ApplicationData.class);	
+	private static Logger logger = LogManager.getLogger();	
 	private final String version;
 	private final String application;
 	private final ApplicationGlobals applicationGlobals;
@@ -66,10 +65,10 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 					}
 				}
 			} catch (Exception e) {
-				LOGGER.error("Failed to load build version", e);
+				logger.error("Failed to load build version", e);
 			}
 		} else {
-			LOGGER.error("No application globals or servlet context available to get the Ci version.");
+			logger.error("No application globals or servlet context available to get the Ci version.");
 		}
 		return ciVersion;
 	}
@@ -133,11 +132,11 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 			if (connection != null && !connection.isClosed()) {
 				statement = connection.createStatement();
 			} else {
-				LOGGER.warn("Failed to evaluate enrolment count because connection already closed or pool limit reached.");
+				logger.warn("Failed to evaluate enrolment count because connection already closed or pool limit reached.");
 				return null;
 			}
 			if (statement == null) {
-				LOGGER.warn("Failed to evaluate enrolment count because not able to create statement.");
+				logger.warn("Failed to evaluate enrolment count because not able to create statement.");
 				return null;
 			}
 			ResultSet result = null;
@@ -155,21 +154,21 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 				}
 			}
 		} catch (SQLException e) {
-			LOGGER.warn("Failed to evaluate enrolment count because connection already closed", e);
+			logger.warn("Failed to evaluate enrolment count because connection already closed", e);
 		} finally {
 			try {
 				if (statement != null && !statement.isClosed()) {
 					statement.close();
 				}
 			} catch (SQLException e) {
-				LOGGER.warn("Exception occurs when try to close the statement", e);
+				logger.warn("Exception occurs when try to close the statement", e);
 			}
 			try {
 				if (connection != null && !connection.isClosed()) {
 					connection.close();
 				}
 			} catch (SQLException e) {
-				LOGGER.warn("Exception occurs when try to close the connection", e);
+				logger.warn("Exception occurs when try to close the connection", e);
 			}
 		}
 		return null;

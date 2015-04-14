@@ -11,7 +11,8 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class ProductItem {
 	private static final int DETAILS_LENGTH = 490;
-	private static final Logger LOGGER = Logger.getLogger(ProductItem.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	@Parameter
 	@Property
@@ -137,7 +138,7 @@ public class ProductItem {
 			if (isVoucherProduct()) {
 				price = Money.ZERO;
 			} else {
-				LOGGER.error(String.format("Empty price for product with name %s and sku %s", product.getName(), product.getSku()));
+				logger.error("Empty price for product with name {} and sku {}", product.getName(), product.getSku());
 				throw new IllegalStateException(String.format("Empty price for product with name %s and sku %s", product.getName(), product.getSku()));
 				//priceExTax = Money.ZERO;
 				//TODO: here we should throw the exception but till the data replication not finished we need only log the error.

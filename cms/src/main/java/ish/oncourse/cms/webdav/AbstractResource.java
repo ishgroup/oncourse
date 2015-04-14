@@ -3,7 +3,8 @@
  */
 package ish.oncourse.cms.webdav;
 
-import io.milton.http.*;
+import io.milton.http.Auth;
+import io.milton.http.Request;
 import io.milton.http.SecurityManager;
 import io.milton.resource.Resource;
 

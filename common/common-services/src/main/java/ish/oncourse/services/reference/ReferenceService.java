@@ -1,12 +1,12 @@
 package ish.oncourse.services.reference;
 
+import org.apache.cayenne.Persistent;
+import org.apache.tapestry5.ioc.annotations.Inject;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.apache.cayenne.Persistent;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 /**
  * The services which combines the results across all individual reference service.

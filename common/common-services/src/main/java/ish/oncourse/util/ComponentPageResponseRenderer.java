@@ -1,8 +1,5 @@
 package ish.oncourse.util;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import org.apache.tapestry5.ContentType;
 import org.apache.tapestry5.MarkupWriter;
 import org.apache.tapestry5.RenderSupport;
@@ -13,15 +10,13 @@ import org.apache.tapestry5.internal.services.RenderQueueImpl;
 import org.apache.tapestry5.internal.structure.Page;
 import org.apache.tapestry5.ioc.LoggerSource;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.ClientBehaviorSupport;
-import org.apache.tapestry5.services.Environment;
-import org.apache.tapestry5.services.Heartbeat;
-import org.apache.tapestry5.services.MarkupWriterFactory;
-import org.apache.tapestry5.services.RequestGlobals;
+import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.slf4j.Logger;
 
-@SuppressWarnings("deprecation")
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class ComponentPageResponseRenderer implements IComponentPageResponseRenderer {
 	
 	@Inject

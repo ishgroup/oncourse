@@ -3,7 +3,8 @@ package ish.oncourse.enrol.pages;
 import ish.oncourse.enrol.checkout.ACheckoutTest;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.cookies.ICookiesService;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.internal.test.TestableResponse;
 import org.junit.Before;
@@ -12,7 +13,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class MailGUITest extends ACheckoutTest {
-	private static final Logger LOGGER = Logger.getLogger(MailGUITest.class);
+	private static final Logger logger = LogManager.getLogger();
 	@Before
 	public void setup() throws Exception {
 		setup("ish/oncourse/enrol/pages/CheckoutGUITest.xml");
@@ -31,8 +32,7 @@ public class MailGUITest extends ACheckoutTest {
 	}
 
 	private void assertResponse(TestableResponse response) {
-		if (LOGGER.isDebugEnabled())
-			LOGGER.debug(response.getRenderedDocument());
+		logger.debug(response.getRenderedDocument());
 		assertEquals(200, response.getStatus());
 		assertNull("Not Error500 page", response.getRenderedDocument().getElementById("exception"));
 

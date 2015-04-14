@@ -5,15 +5,14 @@ import ish.oncourse.model.InstructionParameter;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.util.*;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class InstructionServiceImpl implements IInstructionService {
 	

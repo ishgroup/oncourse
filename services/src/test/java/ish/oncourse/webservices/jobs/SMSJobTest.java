@@ -1,11 +1,5 @@
 package ish.oncourse.webservices.jobs;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import ish.common.types.MessageStatus;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.Pair;
@@ -15,13 +9,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.test.ServiceTest;
-
-import java.io.InputStream;
-import java.util.Date;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.dbunit.database.DatabaseConnection;
@@ -31,6 +18,16 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SMSJobTest extends ServiceTest {
 

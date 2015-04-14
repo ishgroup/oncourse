@@ -4,7 +4,8 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.Invokable;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TimeoutExpireQEPaymentTest{
-	private static final Logger LOGGER = Logger.getLogger(TimeoutExpireQEPaymentTest.class);
+	private static final Logger logger = LogManager.getLogger();
 	private ThreadPoolExecutor executorService;
 	
 	@Mock
@@ -190,7 +191,7 @@ public class TimeoutExpireQEPaymentTest{
                     return invocable.invoke();
                 }
                 finally {
-                	LOGGER.info("Invokable invokation finished.");
+                	logger.info("Invokable invokation finished.");
                 }
             }
         };

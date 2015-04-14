@@ -7,20 +7,19 @@ import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchException;
-import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuickSearchView {
 
@@ -32,7 +31,7 @@ public class QuickSearchView {
 
 	private static final String SOLR_DOCUMENT_DOCTYPE_FIELD = "doctype";
 
-	private static final Logger LOGGER = Logger.getLogger(QuickSearchView.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private static final String SOLR_DOCUMENT_ID_FIELD = "id";
 
@@ -92,12 +91,11 @@ public class QuickSearchView {
 				setupMatchingCourseList();
 				setupCourseList();
 			} catch (SearchException e) {
-				LOGGER.error("search exception ocurred at " + request.getServerName() + ": " + e.getMessage());
+				logger.error("search exception occurred at {}", request.getServerName(), e);
 				nullifySearch();
 			}
 		} else {
-			LOGGER.error("quick search plugin invoked in application.js works incorrectly for "
-					+ request.getServerName() + " (request brings empty text parameter)");
+			logger.error("quick search plugin invoked in application.js works incorrectly for {} (request brings empty text parameter)", request.getServerName());
 			nullifySearch();
 		}
 	}

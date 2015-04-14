@@ -6,7 +6,8 @@ import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.ValidateHandler;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -15,7 +16,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.Collections;
 
 public class ConcessionEditor {
-	private static final Logger LOGGER = Logger.getLogger(ConcessionEditor.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Parameter(required = true)
 	private ConcessionDelegate delegate;

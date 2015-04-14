@@ -7,7 +7,8 @@ import liquibase.exception.SetupException;
 import liquibase.exception.ValidationErrors;
 import liquibase.resource.ResourceAccessor;
 import liquibase.statement.SqlStatement;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -24,7 +25,7 @@ import java.util.regex.Pattern;
  */
 public class ReplaceId2NameForImageTag implements CustomSqlChange {
 
-	private static final Logger LOGGER = Logger.getLogger(ReplaceId2NameForImageTag.class);
+	private static final Logger logger = LogManager.getLogger();
 	private static final String SELECT_webContents = "select wc.id, ws.collegeid, wc.content, wc.content_textile from WebContent wc inner join WebSite ws on wc.webSiteId = ws.id where content_textile like '%{image id:%'";
 	private static final String SELECT_binaryInfo = "select id, referenceNumber, name from BinaryInfo bi where bi.referenceNumber = ? and bi.collegeId = ?";
 	private static final String UPDATE_webContent = "update WebContent set content=?, content_textile=? where id = ?";
@@ -65,7 +66,7 @@ public class ReplaceId2NameForImageTag implements CustomSqlChange {
 				adjust(wc, connection);
 			}
 		} catch (Throwable e) {
-			LOGGER.error(e);
+			logger.error(e);
 		} finally {
 			if (connection != null)
 				try {
@@ -100,7 +101,7 @@ public class ReplaceId2NameForImageTag implements CustomSqlChange {
 					ncts = String.format("{image name:\"%s", bi.name);
 					ncs = String.format("{image name:&#8220;%s", bi.name);
 				} else {
-					LOGGER.error(String.format("Cannot find BinaryInfo by referenceNumber: %s and collegeId: %s", referenceNumber, wc.collegeid));
+					logger.error("Cannot find BinaryInfo by referenceNumber: {} and collegeId: {}", referenceNumber, wc.collegeid);
 
 					ncts = String.format("{image name:\"%s", referenceNumber);
 					ncs = String.format("{image name:&#8220;%s", referenceNumber);
@@ -112,7 +113,7 @@ public class ReplaceId2NameForImageTag implements CustomSqlChange {
 
 				updateWebContent(wc, connection);
 			} catch (Throwable e) {
-				LOGGER.error(String.format("Cannot update WebContent with id: %d", wc.id), e);
+				logger.error("Cannot update WebContent with id: {}", wc.id, e);
 			}
 		}
 	}
@@ -153,7 +154,7 @@ public class ReplaceId2NameForImageTag implements CustomSqlChange {
 				return result;
 			}
 		} catch (SQLException e) {
-			LOGGER.error(e);
+			logger.error(e);
 		} finally {
 			if (statement != null)
 				try {
@@ -182,7 +183,7 @@ public class ReplaceId2NameForImageTag implements CustomSqlChange {
 				result.add(webContent);
 			}
 		} catch (SQLException e) {
-			LOGGER.error(e);
+			logger.error(e);
 		} finally {
 			if (statement != null)
 				statement.getConnection();

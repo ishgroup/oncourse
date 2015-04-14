@@ -1,29 +1,22 @@
 package ish.oncourse.portal.service;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.AppModule;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.courseclass.ICourseClassService;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestFilter;
-import org.apache.tapestry5.services.RequestGlobals;
-import org.apache.tapestry5.services.RequestHandler;
-import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.services.*;
+
+import java.io.IOException;
+import java.util.Arrays;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SubModule(AppModule.class)
 public class TestModule {

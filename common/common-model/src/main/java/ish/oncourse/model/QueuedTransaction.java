@@ -1,11 +1,10 @@
 package ish.oncourse.model;
 
-import java.util.List;
-
+import ish.oncourse.model.auto._QueuedTransaction;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 
-import ish.oncourse.model.auto._QueuedTransaction;
+import java.util.List;
 
 public class QueuedTransaction extends _QueuedTransaction {
 	

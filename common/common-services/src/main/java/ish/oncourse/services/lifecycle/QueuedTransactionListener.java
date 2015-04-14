@@ -32,7 +32,6 @@ public class QueuedTransactionListener {
 		
 		SelectQuery q = new SelectQuery(QueuedRecord.class);
 		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.QUEUED_TRANSACTION_PROPERTY, t));
-		@SuppressWarnings("unchecked")
 		List<QueuedRecord> list = t.getObjectContext().performQuery(q);
 
 		if (list.isEmpty()) {

@@ -3,12 +3,13 @@ package ish.oncourse.util;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
 public class CommonUtils {
 
-	private static final Logger LOGGER = Logger.getLogger(CommonUtils.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	public static final String VERSION_development = "development";
 	public static final String VERSION_trunk_SNAPSHOT = "trunk-SNAPSHOT";
@@ -41,7 +42,7 @@ public class CommonUtils {
         }
 		if (VERSION_development.equalsIgnoreCase(version1) ||
 				VERSION_trunk_SNAPSHOT.equalsIgnoreCase(version1)) {
-			LOGGER.info("pass the gradle development and trunk-SNAPSHOT version");
+			logger.info("pass the gradle development and trunk-SNAPSHOT version");
 			return 1;
 		}
 

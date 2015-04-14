@@ -10,7 +10,8 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class StudentService implements IStudentService {
 
-	private static final Logger LOGGER = Logger.getLogger(StudentService.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -44,8 +45,7 @@ public class StudentService implements IStudentService {
 		@SuppressWarnings("unchecked")
 		List<Contact> results = cayenneService.sharedContext().performQuery(query);
 		if (results.size() > 1) {
-			LOGGER.error("Duplicate student contact exists for name = " + firstName + " with lastname = " + lastName + " and email = " + email +
-					" contact with id = " + results.get(0).getId() + " used for this query.");
+			logger.error("Duplicate student contact exists for {} {} ( {} ) with id {} used for this query.", firstName, lastName, email, results.get(0).getId());
 		}
 		return results.isEmpty() ? null : results.get(0);
 	}

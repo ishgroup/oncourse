@@ -1,16 +1,15 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.WebMenu;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import ish.oncourse.services.menu.IWebMenuService;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Menu {
 

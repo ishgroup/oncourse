@@ -3,7 +3,8 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ExceptionReporter;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 public class Error500 implements ExceptionReporter {
 
-	private static final Logger logger = Logger.getLogger(Error500.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Property
 	private Throwable exception;

@@ -1,9 +1,9 @@
 package ish.oncourse.model;
 
-import static ish.oncourse.utils.DiscountUtils.hasAnyFiltering;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static ish.oncourse.utils.DiscountUtils.hasAnyFiltering;
 
 /**
  * Use this policy to get the "potentially applicable" discounts: when student

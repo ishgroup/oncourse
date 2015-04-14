@@ -1,20 +1,20 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.oncourse.model.QueuedRecord;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
-
 public class DFADedupper implements Comparable<DFADedupper> {
 
 	/**
 	 * Logger
 	 */
-	private static final Logger logger = Logger.getLogger(DFADedupper.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	/**
 	 * Transaction keys
@@ -87,8 +87,8 @@ public class DFADedupper implements Comparable<DFADedupper> {
 		case DFA_UPDATE:
 			switch (record.getAction()) {
 			case CREATE:
-				logger.warn(String.format("Accept second CREATE event for entity:%s with id:%s for college:%s.", record.getEntityIdentifier(),
-						record.getEntityWillowId(), record.getCollege().getId()));
+				logger.warn("Accept second CREATE event for entity: {} with id: {} for college: {}.", record.getEntityIdentifier(),
+						record.getEntityWillowId(), record.getCollege().getId());
 				break;
 			case UPDATE:
 				break;

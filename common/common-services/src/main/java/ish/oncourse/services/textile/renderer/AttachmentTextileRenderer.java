@@ -1,7 +1,6 @@
 package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.AttachmentTextileAttributes;
 import ish.oncourse.services.textile.validator.AttachmentTextileValidator;
@@ -14,10 +13,10 @@ public class AttachmentTextileRenderer extends AbstractRenderer {
 
 	private IPageRenderer pageRenderer;
 
-	public AttachmentTextileRenderer(IBinaryDataService binaryDataService, IFileStorageAssetService fileStorageAssetService,
+	public AttachmentTextileRenderer(IBinaryDataService binaryDataService,
 									 IPageRenderer pageRenderer) {
 		this.pageRenderer = pageRenderer;
-		validator = new AttachmentTextileValidator(binaryDataService, fileStorageAssetService);
+		validator = new AttachmentTextileValidator(binaryDataService);
 	}
 
 	@Override

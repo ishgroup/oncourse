@@ -1,9 +1,9 @@
 package ish.oncourse.model;
 
-import java.util.Date;
-
 import ish.oncourse.model.auto._Qualification;
 import ish.oncourse.utils.QueueableObjectUtils;
+
+import java.util.Date;
 
 public class Qualification extends _Qualification {
 	private static final long serialVersionUID = 5408403857605726093L;

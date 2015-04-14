@@ -19,7 +19,8 @@ import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.EmptyEventContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -53,7 +54,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(PageLinkTransformer.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	
 	/**
@@ -136,7 +137,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			request.setAttribute(Contact.STUDENT_PROPERTY, studentUniqCode);
 		}
 
-        LOGGER.info("Rewrite InBound: path is: " + path);
+        logger.info("Rewrite InBound: path is: {}", path);
 
 		PageIdentifier pageIdentifier = PageIdentifier.getPageIdentifierByPath(path);
 
@@ -171,9 +172,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			String tagsPath = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
 					.replaceFirst(isCMSCoursesSearch ? CMS_PATH + COURSES_PATH : COURSES_PATH, StringUtils.EMPTY);
 			
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug(String.format("tagsPath:%s", tagsPath));
-			}
+			logger.debug("tagsPath: {}", tagsPath);
 			
 			if (!tagsPath.startsWith(CMS_PATH)) {
 				if (tagsPath.startsWith(LEFT_SLASH_CHARACTER)) {
@@ -364,7 +363,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
     }
 
     public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
-		LOGGER.info("Rewrite OutBound: path is: " + defaultLink.getBasePath());
+		logger.info("Rewrite OutBound: path is: {}", defaultLink.getBasePath());
 
 		return defaultLink;
 	}

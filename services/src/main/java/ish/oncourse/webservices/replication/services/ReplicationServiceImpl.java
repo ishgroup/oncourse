@@ -12,7 +12,8 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.*;
@@ -29,7 +30,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 	/**
 	 * Logger
 	 */
-	private static final Logger logger = Logger.getLogger(ReplicationServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	/**
 	 * Maximum transaction number allowed to be sent to angel.
@@ -151,7 +152,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 					GenericTransactionGroup group = null;
 
-					logger.debug(String.format("Deduper spans %s transactions.", deduper.getTransactionKeys().size()));
+					logger.debug("Deduper spans {} transactions.", deduper.getTransactionKeys().size());
 
 					for (String transactionKey : deduper.getTransactionKeys()) {
 						group = groupMap.get(transactionKey);
@@ -182,8 +183,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 						}
 
 					} catch (Exception se) {
-						logger.error(String.format("Unable to build stub for queuedRecord with id:%s. Skipping record.", record.getId()),
-								se);
+						logger.error("Unable to build stub for queuedRecord with id: {}. Skipping record.", record.getId(), se);
 					}
 				}
 			}

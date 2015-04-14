@@ -13,7 +13,8 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.*;
@@ -31,7 +32,7 @@ import java.util.TreeSet;
 
 public class PageTypeEdit {
 
-	private static final Logger logger = Logger.getLogger(PageTypeEdit.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	private Request request;

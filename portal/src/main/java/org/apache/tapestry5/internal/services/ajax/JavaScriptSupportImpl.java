@@ -14,15 +14,9 @@
 
 package org.apache.tapestry5.internal.services.ajax;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.FieldFocusPriority;
-import org.apache.tapestry5.func.F;
-import org.apache.tapestry5.func.Worker;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.internal.services.DocumentLinker;
 import org.apache.tapestry5.internal.services.javascript.JavaScriptStackPathConstructor;
@@ -31,11 +25,11 @@ import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.ioc.util.IdAllocator;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
-import org.apache.tapestry5.services.javascript.InitializationPriority;
-import org.apache.tapestry5.services.javascript.JavaScriptStack;
-import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
-import org.apache.tapestry5.services.javascript.JavaScriptSupport;
-import org.apache.tapestry5.services.javascript.StylesheetLink;
+import org.apache.tapestry5.services.javascript.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class JavaScriptSupportImpl implements JavaScriptSupport
 {

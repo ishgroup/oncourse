@@ -7,7 +7,8 @@ import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.utils.SessionIdGenerator;
 import org.apache.cayenne.ObjectContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -18,7 +19,7 @@ import java.util.Calendar;
 
 public class ForgotPassword {
 
-    private static final Logger LOGGER = Logger.getLogger(ForgotPassword.class);
+    private static final Logger logger = LogManager.getLogger();
 
 	/**
 	 * Recover link live time 24 hours.
@@ -96,7 +97,7 @@ public class ForgotPassword {
      */
     public Object onException(Throwable cause){
         if (user == null) {
-            LOGGER.warn("Persist properties have been cleared.", cause);
+            logger.warn("Persist properties have been cleared.", cause);
         } else {
             throw new IllegalArgumentException(cause);
         }

@@ -4,13 +4,12 @@ import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.visitor.BaseVisitor;
-
-import java.util.Date;
-
 import org.joda.time.DateTime;
 import org.joda.time.DurationFieldType;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
+
+import java.util.Date;
 
 
 public class LastEditedVisitor extends BaseVisitor<String> {

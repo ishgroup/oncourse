@@ -1,16 +1,18 @@
 package ish.oncourse.services.filestorage;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+@Deprecated
 public class FileStorageService {
 
-    private static final Logger LOGGER = Logger.getLogger(FileStorageService.class);
+    private static final Logger logger = LogManager.getLogger();
 
     public final static String ENV_NAME_fileStorageRoot = "asset.fileStorageRoot";
 
@@ -35,9 +37,8 @@ public class FileStorageService {
     public void put(byte[] data, String relatedPath)
     {
         File targetFile = new File(getRootDir(),relatedPath);
-        LOGGER.debug(String.format("Start FileStorageService.put with parameters: data.length = %s, relatedPath = %s.",data != null ? data.length: 0, targetFile.getAbsolutePath()));
-        if (!targetFile.getParentFile().exists())
-        {
+        logger.debug("Start FileStorageService.put with parameters data.length: {}, relatedPath: {}.", data != null ? data.length : 0, targetFile.getAbsolutePath());
+        if (!targetFile.getParentFile().exists()) {
             boolean result = targetFile.getParentFile().mkdirs();
             if (!result)
                 throw new IllegalArgumentException(String.format("Cannot create dir %s", targetFile.getParentFile().getAbsolutePath()));
@@ -52,7 +53,7 @@ public class FileStorageService {
         } finally {
             if (outputStream != null)
             IOUtils.closeQuietly(outputStream);
-            LOGGER.debug(String.format("Finish FileStorageService.put with parameters: data.length = %s, relatedPath = %s.",data != null ? data.length: 0, targetFile.getAbsolutePath()));
+            logger.debug("Finish FileStorageService.put with parameters data.length: {}, relatedPath: {}.", data != null ? data.length : 0, targetFile.getAbsolutePath());
         }
     }
 
@@ -88,7 +89,7 @@ public class FileStorageService {
         }
         if (!result)
         {
-            LOGGER.warn(String.format("File %s cannot be deleted", sourceFile.getAbsolutePath()), exception);
+            logger.warn("File {} cannot be deleted", sourceFile.getAbsolutePath(), exception);
         }
     }
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" monitorInterval="30">
+    <Properties>
+        <Property name="name">search</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="FILE" fileName="${sys:catalina.base}/logs/${name}.log" filePattern="${sys:catalina.base}/logs/${name}.log.%i">
+            <PatternLayout>
+                <Pattern>[%d{dd/MMM/yyyy:HH:mm:ss}] %t %x %-5p %c{1}: %m%n</Pattern>
+            </PatternLayout>
+            <SizeBasedTriggeringPolicy size="10M"/>
+            <DefaultRolloverStrategy/>
+        </RollingFile>
+        <RollingFile name="FILE_ERROR" fileName="${sys:catalina.base}/logs/${name}-error.log" filePattern="${sys:catalina.base}/logs/${name}-error.log.%i">
+            <PatternLayout>
+                <Pattern>[%d{dd/MMM/yyyy:HH:mm:ss}] %t %x %-5p %c{1}: %m%n</Pattern>
+            </PatternLayout>
+            <SizeBasedTriggeringPolicy size="10M"/>
+            <DefaultRolloverStrategy/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="warn">
+            <AppenderRef ref="FILE_ERROR" level="error"/>
+            <AppenderRef ref="FILE" level="warn"/>
+        </Root>
+    </Loggers>
+</Configuration>

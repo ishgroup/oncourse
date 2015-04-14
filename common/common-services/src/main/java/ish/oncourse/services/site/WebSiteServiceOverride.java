@@ -5,10 +5,11 @@ import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.access.SessionToken;
 import ish.oncourse.services.system.ICollegeService;
-import java.util.List;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
+
+import java.util.List;
 
 public class WebSiteServiceOverride implements IWebSiteService {
 

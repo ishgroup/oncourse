@@ -1,16 +1,15 @@
 package ish.oncourse.services.room;
 
-import java.util.List;
-
+import ish.oncourse.model.Room;
+import ish.oncourse.model.Site;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Site;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.site.IWebSiteService;
+import java.util.List;
 
 public class RoomService implements IRoomService {
 

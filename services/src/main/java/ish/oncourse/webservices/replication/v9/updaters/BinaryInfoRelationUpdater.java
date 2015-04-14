@@ -7,8 +7,12 @@ import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v9.stubs.replication.BinaryInfoRelationStub;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoRelationStub, BinaryInfoRelation> {
+
+	private static final Logger logger = LogManager.getLogger();
 
 	@Override
 	public void updateEntity(BinaryInfoRelationStub stub, BinaryInfoRelation entity, RelationShipCallback callback) {
@@ -49,12 +53,10 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Tutor.class);
 		} else if (TAG_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
 			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Tag.class);
-		} else if (APPLICATION_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
-			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Application.class);
 		} else {
 			String message = String.format("Unexpected related entity with type %s and angelid %s",
 				stub.getEntityName(), stub.getEntityAngelId());
-			LOG.error(message);
+			logger.error(message);
 			throw new UpdaterException(message);
 		}
 		if (entityObject != null && entityObject.getId() != null) {
@@ -63,7 +65,7 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 			String message = String.format(
 				"Unable to load related entity %s for angelid %s or this entity have null willowId",
 					stub.getEntityName(), stub.getEntityAngelId());
-			LOG.error(message);
+			logger.error(message);
 			throw new UpdaterException(message);
 		}
 	}

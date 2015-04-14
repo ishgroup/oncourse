@@ -1,16 +1,13 @@
 package ish.oncourse.admin.services.ntis;
 
+import au.gov.training.services.trainingcomponent.ITrainingComponentService;
 import ish.oncourse.admin.services.AdminTestModule;
 import ish.oncourse.test.ServiceTest;
-
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import au.gov.training.services.trainingcomponent.ITrainingComponentService;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 public class TrainingComponentServiceTest extends ServiceTest {
 	

@@ -2,17 +2,17 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._PaymentInLine;
 import ish.oncourse.utils.QueueableObjectUtils;
-
 import org.apache.cayenne.validation.ValidationResult;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 
 public class PaymentInLine extends _PaymentInLine implements Queueable {
 
 	private static final long serialVersionUID = -6157950790523998485L;
-	@SuppressWarnings("unused")
-	private static final Logger LOG = Logger.getLogger(PaymentInLine.class);
+
+	private static final Logger logger = LogManager.getLogger();
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);

@@ -1,7 +1,5 @@
 package ish.oncourse.services.textile.validator;
 
-import java.util.Map;
-
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
@@ -11,6 +9,8 @@ import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.CourseTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
+
+import java.util.Map;
 
 public class CourseTextileValidator extends AbstractTextileValidator {
 

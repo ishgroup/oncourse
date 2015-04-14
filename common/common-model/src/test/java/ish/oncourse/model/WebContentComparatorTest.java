@@ -2,9 +2,10 @@ package ish.oncourse.model;
 
 import org.apache.cayenne.ObjectId;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertEquals;
 
 public class WebContentComparatorTest {
 	

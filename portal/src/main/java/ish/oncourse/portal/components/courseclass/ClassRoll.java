@@ -1,9 +1,8 @@
 package ish.oncourse.portal.components.courseclass;
 
-import ish.oncourse.model.*;
-
-
-
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Student;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;

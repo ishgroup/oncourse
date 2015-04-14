@@ -11,8 +11,8 @@ import org.apache.commons.compress.compressors.CompressorOutputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class JSCompiler {
-    private static final Logger LOGGER = LogManager.getLogger(JSCompiler.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private static final String RESULT_FILE_NAME = "all.js";
     private static final String GZ_RESULT_FILE_NAME = "all.js.gz";
@@ -111,7 +111,7 @@ public class JSCompiler {
         if (!errorHandler.getErrors().isEmpty())
             return;
         if (inputFiles.isEmpty()) {
-            errorHandler.logError(LOGGER, "Nothing to compile. Input js files is empty");
+            errorHandler.logError(logger, "Nothing to compile. Input js files is empty");
             return;
         }
 
@@ -120,13 +120,13 @@ public class JSCompiler {
             if (!compiler.hasErrors()) {
                 saveResult(compiler);
                 gzResult();
-                LOGGER.debug("jsCombiner success");
+                logger.debug("jsCombiner success");
             } else {
-                errorHandler.logError(LOGGER, errorsOutputStream.toString());
-                LOGGER.error(String.format("jsCombiner failed: %s", StringUtils.join(errorHandler.getErrors(), "\n")));
+                errorHandler.logError(logger, errorsOutputStream.toString());
+                logger.error("jsCombiner failed: {}", StringUtils.join(errorHandler.getErrors(), "\n"));
             }
         } catch (Exception e) {
-            errorHandler.logError(LOGGER, e);
+            errorHandler.logError(logger, e);
         } finally {
             IOUtils.closeQuietly(errorsOutputStream);
         }
@@ -145,7 +145,7 @@ public class JSCompiler {
                     .createCompressorOutputStream(CompressorStreamFactory.GZIP, fos);
             IOUtils.copy(fis, gos);
         } catch (Exception e) {
-            errorHandler.logError(LOGGER, e);
+            errorHandler.logError(logger, e);
         } finally {
             IOUtils.closeQuietly(gos);
             IOUtils.closeQuietly(fos);
@@ -160,7 +160,7 @@ public class JSCompiler {
             outputFile = new FileWriter(result);
             outputFile.write(compiler.toSource());
         } catch (IOException e) {
-            errorHandler.logError(LOGGER, e);
+            errorHandler.logError(logger, e);
         } finally {
             IOUtils.closeQuietly(outputFile);
         }

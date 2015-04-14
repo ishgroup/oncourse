@@ -1,9 +1,5 @@
 package ish.oncourse.model;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-
 import ish.common.types.CourseEnrolmentType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
@@ -12,6 +8,10 @@ import ish.oncourse.test.ContextUtils;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 

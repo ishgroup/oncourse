@@ -10,13 +10,14 @@ import ish.oncourse.webservices.util.GenericTransactionGroup;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class QueuedStatisticProcessor {
 
-    private static final Logger logger = Logger.getLogger(TransactionGroupProcessorImpl.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private IWebSiteService webSiteService;
     private IWillowUpdater willowUpdater;

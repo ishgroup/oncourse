@@ -2,12 +2,11 @@ package ish.oncourse.ui.services.locale;
 
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.util.Locale;
-
 import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
+
+import java.util.Locale;
 
 /**
  * A {@link ThreadLocale} implementation that enforces locale variant that is

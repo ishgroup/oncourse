@@ -91,7 +91,8 @@ import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -109,17 +110,17 @@ import org.apache.tapestry5.services.LibraryMapping;
 public class ServiceModule {
 
 	public static final String APP_TEST_MODE = "application.test";
-	private static Logger LOGGER = Logger.getLogger(ServiceModule.class);
+	private static Logger logger = LogManager.getLogger();
 
 	public static void bind(ServiceBinder binder) {
 
 		boolean isInTestMode = "true".equalsIgnoreCase(System.getProperty(APP_TEST_MODE));
 
 		if (isInTestMode) {
-			LOGGER.warn("This application is in TEST MODE. SMS and credit card processing is disabled.");
+			logger.warn("This application is in TEST MODE. SMS and credit card processing is disabled.");
 		}
 
-		LOGGER.info("Registering Willow Common Services");
+		logger.info("Registering Willow Common Services");
 
 		// Tapestry and environment specific services
 		binder.bind(ReferenceService.class);
@@ -218,7 +219,7 @@ public class ServiceModule {
 			 * The catch was intruduce to exclude runtime exception for junits:
 			 * java.lang.RuntimeException: Exception constructing service 'ServiceOverride': Construction of service 'ServiceOverride' has failed due to recursion: the service depends on itself in some way. Please check org.apache.tapestry5.ioc.internal.services.ServiceOverrideImpl(Map) (at ServiceOverrideImpl.java:31) via org.apache.tapestry5.ioc.services.TapestryIOCModule.bind(ServiceBinder) (at TapestryIOCModule.java:49) for references to another service that is itself dependent on service 'ServiceOverride'.
 			 */
-			LOGGER.debug("Unexpected exception.",e);
+			logger.debug("Unexpected exception.", e);
 		}
 		/**
 		 * The configuration property is set to avoid adding

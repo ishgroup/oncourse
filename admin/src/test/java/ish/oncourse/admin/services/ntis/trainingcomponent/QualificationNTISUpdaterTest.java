@@ -1,10 +1,8 @@
 package ish.oncourse.admin.services.ntis.trainingcomponent;
 
 import ish.oncourse.model.Qualification;
-
-import org.junit.Test;
-
 import junit.framework.TestCase;
+import org.junit.Test;
 
 public class QualificationNTISUpdaterTest extends TestCase {
 	

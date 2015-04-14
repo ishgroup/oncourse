@@ -4,23 +4,23 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WebSiteService implements IWebSiteService {
 
 	private static final String CURRENT_COLLEGE = "currentCollege";
 
-	private final static Logger LOGGER = Logger.getLogger(WebSiteService.class);
+	private final static Logger logger = LogManager.getLogger();
 
 	private static final Pattern TECHNICAL_SITES_DOMAIN_PATTERN = Pattern
 			.compile("([a-z,-]+)([.].+[.]oncourse[.]net[.]au)");
@@ -93,10 +93,7 @@ public class WebSiteService implements IWebSiteService {
 		// }
 
 		if (collegeDomain != null) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Request server name: " + request.getServerName() + " for Request #" + request.hashCode()
-						+ " ; returning domain object with " + collegeDomain.getName());
-			}
+			logger.debug("Request server name: {} for Request #{} ; returning domain object with {}", request.getServerName(), request.hashCode(), collegeDomain.getName());
 		}
 
 		return collegeDomain;

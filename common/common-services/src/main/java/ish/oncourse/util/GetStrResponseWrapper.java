@@ -1,11 +1,11 @@
 package ish.oncourse.util;
 
+import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.util.ResponseWrapper;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import org.apache.tapestry5.services.Response;
-import org.apache.tapestry5.util.ResponseWrapper;
 
 public class GetStrResponseWrapper extends ResponseWrapper {
 

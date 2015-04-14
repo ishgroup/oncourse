@@ -4,7 +4,8 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.ui.components.internal.PageStructure;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -16,7 +17,7 @@ import org.apache.tapestry5.services.Session;
 import java.io.IOException;
 
 public class Page extends APage{
-    private static final Logger logger = Logger.getLogger(Page.class);
+    private static final Logger logger = LogManager.getLogger();
 
 
     @Persist
@@ -43,9 +44,9 @@ public class Page extends APage{
             setNode(this.editNode);
             getRequest().setAttribute(IWebNodeService.CURRENT_WEB_NODE_LAYOUT,  this.editNode.getWebNodeType().getLayoutKey());
         } else {
-            logger.error(String.format("CurrentNode is null in %s/%s",
+            logger.error("CurrentNode is null in {}/{}",
                     getRequest().getServerName(),
-                    getRequest().getPath()));
+                    getRequest().getPath());
             this.editNode = null;
             //we need set the same value for node property in APage parent.
             this.setNode(null);

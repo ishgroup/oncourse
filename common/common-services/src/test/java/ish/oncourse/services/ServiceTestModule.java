@@ -7,7 +7,8 @@ import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.cache.*;
+import ish.oncourse.services.cache.IRequestCacheService;
+import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.content.WebContentService;
 import ish.oncourse.services.cookies.CookiesImplOverride;
@@ -69,7 +70,6 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
-import ish.oncourse.test.TestContextUtil;
 import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
@@ -86,12 +86,6 @@ public class ServiceTestModule {
 	
 	public static void bind(ServiceBinder binder) {
 
-		// Tapestry and environment specific services
-		if (TestContextUtil.isQueryCacheEnabled()) {
-			binder.bind(ICacheService.class, OSCacheService.class);
-		} else {
-			binder.bind(ICacheService.class, NoopCacheService.class);
-		}
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(ICookiesOverride.class, CookiesImplOverride.class);

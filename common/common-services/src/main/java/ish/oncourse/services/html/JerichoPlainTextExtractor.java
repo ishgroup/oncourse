@@ -1,13 +1,13 @@
 package ish.oncourse.services.html;
 
-import org.apache.log4j.Logger;
-
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.SourceCompactor;
 import net.htmlparser.jericho.TextExtractor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class JerichoPlainTextExtractor implements IPlainTextExtractor {
-	private final static Logger LOGGER = Logger.getLogger(JerichoPlainTextExtractor.class);
+	private final static Logger logger = LogManager.getLogger();
 
 	@Override
 	public String extractFromHtml(String html) {
@@ -60,9 +60,7 @@ public class JerichoPlainTextExtractor implements IPlainTextExtractor {
 			return null;
 		}
 		if (content.length() < currentIndex) {
-			LOGGER.error("Something unexpected during the compacting html from the rich text. Content \"" + content
-					+ "\" with length \"" + content.length() + "\" has current index \"" + currentIndex
-					+ "\". Result in buffer: \"" + resultBuffer.toString() + "\"");
+			logger.error("Something unexpected during the compacting html from the rich text. Content {} with length {} has current index {}. Result in buffer: {}", content, content.length(), currentIndex, resultBuffer);
 			return null;
 		}
 		int startOfTag = content.indexOf("<", currentIndex);

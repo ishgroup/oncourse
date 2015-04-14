@@ -1,24 +1,18 @@
 package ish.oncourse.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.auto._Discount;
 import ish.oncourse.test.ContextUtils;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import org.apache.cayenne.ObjectContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.math.BigDecimal;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * Test for {@link RealDiscountsPolicy}.

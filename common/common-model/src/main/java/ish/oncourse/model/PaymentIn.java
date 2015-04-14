@@ -9,7 +9,8 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.CreditCardUtil;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -20,7 +21,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	/**
 	 * Logger
 	 */
-	private static final Logger LOG = Logger.getLogger(PaymentIn.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	/**
 	 * Payment processed session attribute.
@@ -115,7 +116,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		Money amount = getAmount();
 		boolean isValid = amount != null && amount.compareTo(Money.ZERO) != -1;
 		if (!isValid) {
-			LOG.warn("The payment amount cannot be negative:" + amount);
+			logger.warn("The payment amount cannot be negative:" + amount);
 		}
 		return isValid;
 	}
@@ -129,7 +130,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		CreditCardType creditCardType = getCreditCardType();
 		boolean isValid = creditCardType != null;
 		if (!isValid) {
-			LOG.warn("The credit card type " + creditCardType + " is invalid");
+			logger.warn("The credit card type " + creditCardType + " is invalid");
 		}
 		return isValid;
 	}
@@ -143,7 +144,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		String creditCardName = getCreditCardName();
 		boolean isValid = creditCardName != null && !creditCardName.equals("");
 		if (!isValid) {
-			LOG.warn("The credit card name " + creditCardName + " is invalid");
+			logger.warn("The credit card name " + creditCardName + " is invalid");
 		}
 		return isValid;
 	}
@@ -172,7 +173,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	public String validateCCNumber() {
 		String creditCardNumber = getCreditCardNumber();
 		if (creditCardNumber == null || creditCardNumber.equals("")) {
-			LOG.warn("The credit card number is invalid blank");
+			logger.warn("The credit card number is invalid blank");
 			return "The credit card number cannot be blank.";
 		}
 
@@ -194,12 +195,12 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	public boolean validateCCExpiry() {
 		String creditCardExpiry = getCreditCardExpiry();
 		if (creditCardExpiry == null || creditCardExpiry.equals("")) {
-			LOG.warn("The credit card expiry date cannot be empty");
+			logger.warn("The credit card expiry date cannot be empty");
 			return false;
 		}
 		String[] dateParts = creditCardExpiry.split("/");
 		if (dateParts.length != 2 || !dateParts[0].matches("\\d{1,2}") && !dateParts[0].matches("\\d{4}")) {
-			LOG.warn("The credit card expiry date " + creditCardExpiry + " has invalid format");
+			logger.warn("The credit card expiry date " + creditCardExpiry + " has invalid format");
 			return false;
 		}
 		int ccExpiryMonth = Integer.parseInt(dateParts[0]) - 1;
@@ -210,7 +211,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		cal.set(Calendar.YEAR, ccExpiryYear);
 
 		if (cal.getTime().before(today.getTime())) {
-			LOG.warn("The credit card has expired: the date " + creditCardExpiry + " is in past");
+			logger.warn("The credit card has expired: the date " + creditCardExpiry + " is in past");
 			return false;
 		}
 		return true;
@@ -290,7 +291,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
                 paymentInLinesToRefund.size() > 0) {
 			// Creating refund invoice
 			Invoice refundInvoice = invoiceToRefund.createRefundInvoice();
-			LOG.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
+			logger.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
 					invoiceToRefund.getId()));
 
             PaymentIn internalPayment = this.makeShallowCopy();
@@ -386,10 +387,10 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			if (invoiceToRefund != null) {
 				return createRefundInvoice(invoiceToRefund);
 			} else {
-				LOG.error(String.format("Can not find invoice to refund on paymentIn:%s.", getId()));
+				logger.error(String.format("Can not find invoice to refund on paymentIn:%s.", getId()));
 			}
 		} else {
-			LOG.error(String.format("Can not abandon paymentIn:%s, since it doesn't have paymentInLines.", getId()));
+			logger.error(String.format("Can not abandon paymentIn:%s, since it doesn't have paymentInLines.", getId()));
 		}
 		return Collections.emptyList();
 	}

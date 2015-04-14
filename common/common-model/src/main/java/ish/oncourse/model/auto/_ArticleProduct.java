@@ -1,5 +1,7 @@
 package ish.oncourse.model.auto;
 
+import org.apache.cayenne.exp.Property;
+
 import ish.oncourse.model.Product;
 
 /**

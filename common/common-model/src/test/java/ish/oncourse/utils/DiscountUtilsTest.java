@@ -1,21 +1,18 @@
 package ish.oncourse.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
 import ish.common.types.DiscountType;
 import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.Discount;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Test for the {@link DiscountUtils}.

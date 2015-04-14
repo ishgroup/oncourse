@@ -1,14 +1,10 @@
 package ish.oncourse.ui.components;
 
-import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.TutorRole;
-import ish.oncourse.services.application.IApplicationService;
-import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -26,7 +22,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.text.Format;
 import java.util.*;

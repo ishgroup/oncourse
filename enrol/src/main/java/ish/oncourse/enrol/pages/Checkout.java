@@ -25,7 +25,8 @@ import ish.oncourse.ui.pages.Courses;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.HTMLUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
@@ -38,7 +39,7 @@ import java.text.Format;
 @Secure // this anatation is important. The page should use secure handling allways
 public class Checkout {
 
-    public static final Logger LOGGER = Logger.getLogger(Checkout.class);
+    public static final Logger logger = LogManager.getLogger();
 
     @Inject
     private ICookiesService cookiesService;
@@ -230,7 +231,7 @@ public class Checkout {
 
 		if (handler.isUnexpected()) {
 			purchaseController = null;
-            LOGGER.error(cause.getMessage(), cause);
+            logger.error(cause.getMessage(), cause);
 			throw new IllegalArgumentException(cause);
 		}
 

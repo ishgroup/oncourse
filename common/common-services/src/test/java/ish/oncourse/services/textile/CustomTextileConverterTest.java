@@ -5,7 +5,6 @@ import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.course.Sort;
-import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.IPageRenderer;
@@ -79,9 +78,6 @@ public class CustomTextileConverterTest {
 	@Mock
 	private Document document;
 
-    @Mock
-    private IFileStorageAssetService fileStorageAssetService;
-
 	private ITextileConverter textileConverter;
 
 
@@ -99,7 +95,7 @@ public class CustomTextileConverterTest {
 
 		when(tagService.getSubjectsTag()).thenReturn(mock(Tag.class));
 		textileConverter = new TextileConverter(binaryDataService, webContentService, courseService, pageRenderer,
-				webNodeService, tagService,fileStorageAssetService);
+				webNodeService, tagService);
 	}
 
 	/**
@@ -110,7 +106,6 @@ public class CustomTextileConverterTest {
 	public void smokeAttachmentConvertTest() {
 		when(document.getName()).thenReturn(TEST_ATTACHMENT_NAME);
 		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, TEST_ATTACHMENT_NAME)).thenReturn(document);
-        when(fileStorageAssetService.contains(documentVersion)).thenReturn(Boolean.TRUE);
         String successfulResult = "successfully rendered attachment block";
 		testPageRenderParams(ATTACHMENT_BY_NAME, TextileUtil.TEXTILE_ATTACHMENT_PAGE, successfulResult);
 	}
@@ -141,7 +136,6 @@ public class CustomTextileConverterTest {
 		when(webContentService.getWebContent(WebContent.NAME_PROPERTY, TEST_BLOCK_NAME)).thenReturn(webContent);
 		reset(binaryDataService);
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_BINARYINFO_NAME)).thenReturn(document);
-        when(fileStorageAssetService.contains(documentVersion)).thenReturn(Boolean.TRUE);
 
 		String successfulResult = "successfully rendered image block";
 

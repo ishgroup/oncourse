@@ -1,15 +1,15 @@
 package ish.oncourse.services.persistence;
 
-import static org.junit.Assert.*;
-
+import ish.oncourse.services.ServiceTestModule;
+import ish.oncourse.services.cache.NoopQueryCache;
+import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.TestContextUtil;
 import org.apache.cayenne.cache.OSQueryCache;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.oncourse.services.ServiceTestModule;
-import ish.oncourse.test.TestContextUtil;
-import ish.oncourse.services.cache.NoopQueryCache;
-import ish.oncourse.test.ServiceTest;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ISHObjectContextTest extends ServiceTest {
 	

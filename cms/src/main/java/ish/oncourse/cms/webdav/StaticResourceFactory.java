@@ -21,7 +21,8 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.ContextUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +34,7 @@ import java.util.regex.Pattern;
 
 public class StaticResourceFactory implements ResourceFactory {
 
-    private static final Logger logger = Logger.getLogger(StaticResourceFactory.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private static final int EDIT_FILE_SCRIPT_WAIT_TIMEOUT = 15;
 
@@ -156,7 +157,7 @@ public class StaticResourceFactory implements ResourceFactory {
         ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand);
 
         try {
-            logger.debug(String.format("Starting script '%s' for file '%s'", scriptPath, filePath));
+            logger.debug("Starting script '{}' for file '{}'", scriptPath, filePath);
             long time = System.currentTimeMillis();
             final Process process = processBuilder.start();
 
@@ -169,9 +170,9 @@ public class StaticResourceFactory implements ResourceFactory {
 
             scriptCallFuture.get(EDIT_FILE_SCRIPT_WAIT_TIMEOUT, TimeUnit.SECONDS);
             time = Math.round( (System.currentTimeMillis() - time) / 1000.0);
-            logger.debug(String.format("script '%s' for file '%s' is finished. Time: '%d' sec", scriptPath, filePath, time));
+            logger.debug("script '{}' for file '{}' is finished. Time: '{}' sec", scriptPath, filePath, time);
         } catch (Exception e) {
-            logger.error(String.format("Error executing script '%s' for file '%s'", scriptPath, filePath), e);
+            logger.error("Error executing script '{}' for file '{}'", scriptPath, filePath, e);
         }
     }
 
@@ -251,16 +252,7 @@ public class StaticResourceFactory implements ResourceFactory {
 			super(host, factory, dir, contentService);
 		}
 
-        @Override
-        public CollectionResource createCollection(String name) {
-            CollectionResource resource = super.createCollection(name);
-            if (resource instanceof FsDirectoryResource) {
-                compileResources(((FsDirectoryResource) resource).getFile());
-            }
-            return resource;
-        }
-
-        @Override
+		@Override
 		public Resource createNew(String name, InputStream in, Long length, String contentType) throws IOException {
 			FsResource resource = (FsResource) super.createNew(name, in, length, contentType);
 

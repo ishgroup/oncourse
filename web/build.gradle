@@ -1,7 +1,7 @@
 apply plugin: 'war'
 
 dependencies {
-	providedCompile 'javax.servlet:servlet-api:2.5'
+    providedCompile 'javax.servlet:servlet-api:3.0'
 
 	compile project(':common:common-model')
 	compile project(':common:common-ui')

@@ -1,6 +1,7 @@
 package ish.oncourse.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.services.*;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ public class UIRequestExceptionHandler implements RequestExceptionHandler {
 	public static final String DEFAULT_ERROR_PAGE = "ErrorPage";
 	public static final String ERROR_500_PAGE = "ui/Error500";
 	public static final String APPLICATION_ROOT_PAGE = "/";
-    private static final Logger LOGGER = Logger.getLogger(UIRequestExceptionHandler.class);
+    private static final Logger logger = LogManager.getLogger();
     private final ResponseRenderer renderer;
     private final Response response;
     private final ComponentSource componentSource;
@@ -34,13 +35,12 @@ public class UIRequestExceptionHandler implements RequestExceptionHandler {
     	if (TAPESTRY_2563_POST_VALIDATION_MESSAGE.equals(exception.getMessage())) {
             //this is Tapestry 5 validation to prevent hack attempts https://issues.apache.org/jira/browse/TAPESTRY-2563
             //we may ignore it
-            LOGGER.warn("Unexpected runtime exception: " + exception.getMessage(), exception);
+            logger.warn(exception);
             if (response != null && redirectOnInvalidPostRequest) {
                 response.sendRedirect(redirectPage);
             }
         } else {
-    		LOGGER.error(String.format("Unexpected runtime exception. Request: %s",
-                        toString(request)) , exception);
+    		logger.error("Unexpected runtime exception. Request: {}", toString(request), exception);
     	}
     	final String errorPage = getErrorPageName(exception);
     	ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(errorPage);

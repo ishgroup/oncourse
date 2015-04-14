@@ -1,13 +1,13 @@
 package ish.oncourse.ui.components;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import ish.oncourse.model.Course;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class CourseRelations {
 	

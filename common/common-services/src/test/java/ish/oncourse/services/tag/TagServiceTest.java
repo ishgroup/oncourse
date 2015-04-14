@@ -10,7 +10,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +34,7 @@ private static final String LEFT_SLASH_CHARACTER = "/";
 
 private static final String UTF_8_ENCODING = "UTF-8";
 
-private static final Logger LOGGER = Logger.getLogger(TagServiceTest.class);
+private static final Logger logger = LogManager.getLogger();
 
 	private static final String TAG_NAME = "tag";
 	private static final String TAG_NAME_2 = "tag2";
@@ -117,7 +118,7 @@ private static final Logger LOGGER = Logger.getLogger(TagServiceTest.class);
 
 	@Test
 	public void getSubjectsTagTest() {
-		LOGGER.info("check getSubjectsTag() method");
+		logger.info("check getSubjectsTag() method");
 		Tag tag = tagService.getSubjectsTag();
 		assertNotNull(tag);
 		assertEquals(Tag.SUBJECTS_TAG_NAME, tag.getName());
@@ -137,7 +138,7 @@ private static final Logger LOGGER = Logger.getLogger(TagServiceTest.class);
 	 */
 	@Test
 	public void getTagByFullPathTest() throws UnsupportedEncodingException {
-		LOGGER.info("check getTagByFullPath() method");
+		logger.info("check getTagByFullPath() method");
 		//try to find by encoded and not encoded names
 		Tag tag = tagService.getTagByFullPath(Tag.SUBJECTS_TAG_NAME + LEFT_SLASH_CHARACTER + URLEncoder.encode(TAG_GROUP_NAME, UTF_8_ENCODING) + LEFT_SLASH_CHARACTER + 
 			TAG_NAME);

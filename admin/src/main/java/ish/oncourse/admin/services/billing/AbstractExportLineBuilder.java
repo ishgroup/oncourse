@@ -1,7 +1,8 @@
 package ish.oncourse.admin.services.billing;
 
-import static ish.oncourse.admin.services.billing.Constants.DATE_MONTH_FORMAT;
 import ish.oncourse.model.College;
+import ish.oncourse.model.WebSite;
+import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -11,8 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-import ish.oncourse.model.WebSite;
-import org.apache.commons.lang.StringUtils;
+import static ish.oncourse.admin.services.billing.Constants.DATE_MONTH_FORMAT;
 
 public abstract class AbstractExportLineBuilder implements MWExportLineBuilder {
 

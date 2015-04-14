@@ -11,7 +11,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessControllerBuilder;
 import ish.oncourse.webservices.components.PaymentForm;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
@@ -29,11 +30,9 @@ import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.U
 
 @Import(stylesheet = "css/screen.css")
 public class Payment {
-    private static final Logger logger = Logger.getLogger(Payment.class);
-
     public static final String PAYMENT_PAGE_NAME = "/Payment/";
     public static final String SESSION_ID_ATTRIBUTE = "sessionId";
-    private static final Logger LOGGER = Logger.getLogger(Payment.class);
+    private static final Logger logger = LogManager.getLogger();
     private static final String PAYMENT_AMOUNT_FORMAT = "###,##0.00";
     public static final String HTTPS_PROTOCOL = "https://";
 
@@ -87,7 +86,7 @@ public class Payment {
      * Clears all the properties with the @Persist annotation.
      */
     public void clearPersistedProperties() {
-        LOGGER.info("Persisted Properties are being cleared");
+        logger.info("Persisted Properties are being cleared");
         componentResources.discardPersistentFieldChanges();
     }
 
@@ -147,13 +146,13 @@ public class Payment {
         for (PaymentIn paymentIn : payments) {
             if (paymentIn.getStatus() == PaymentStatus.CARD_DETAILS_REQUIRED) {
                 errorMessage = messages.format("payment.already.processed", sessionId);
-                logger.warn(String.format("collegeId: %s, %s", payments.get(0).getCollege().getId(), errorMessage));
+                logger.warn("collegeId: {}, {}", payments.get(0).getCollege().getId(), errorMessage);
                 return null;
             }
         }
 
         errorMessage = messages.format("payment.has.finalstatus", sessionId);
-        logger.warn(String.format("collegeId: %s, %s", payments.get(0).getCollege().getId(), errorMessage));
+        logger.warn("collegeId: {}, {}", payments.get(0).getCollege().getId(), errorMessage);
         return null;
     }
 

@@ -1,7 +1,6 @@
 package ish.oncourse.webservices.pages;
 
 import ish.oncourse.services.environment.IEnvironmentService;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 

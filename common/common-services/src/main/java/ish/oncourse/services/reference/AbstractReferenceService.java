@@ -5,18 +5,18 @@
 
 package ish.oncourse.services.reference;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import ish.oncourse.services.BaseService;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SQLTemplate;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import ish.oncourse.services.BaseService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of the Reference Service.
@@ -25,7 +25,7 @@ import ish.oncourse.services.BaseService;
  */
 public abstract class AbstractReferenceService<T extends Persistent> extends BaseService<T> implements IReferenceService<T> {
 
-	private static final Logger LOGGER = Logger.getLogger(AbstractReferenceService.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	/**
 	 * Ish version property name.
@@ -52,7 +52,7 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 			try {
 				records = (List<T>) getCayenneService().sharedContext().performQuery(query);
 			} catch (Exception e) {
-				LOGGER.error("Query resulted in Exception thrown", e);
+				logger.error("Query resulted in Exception thrown", e);
 			}
 		}
 
@@ -86,7 +86,7 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 			try {
 				max = (Long) results.get(0).get("MAXV");
 			} catch (Exception e) {
-				LOGGER.error("Error while attempting to convert ish_version", e);
+				logger.error("Error while attempting to convert ish_version", e);
 				throw new RuntimeException("Error while attempting to convert ish_version", e);
 			}
 		}
@@ -112,8 +112,8 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 			try {
 				number = (Long) results.get(0).get("number");
 			} catch (Exception e) {
-				LOGGER.error(String.format("Unable to read the number of records for entity %s and ishVersion %s", getEntityClass()
-						.getSimpleName(), ishVersion), e);
+				logger.error("Unable to read the number of records for entity {} and ishVersion {}", getEntityClass()
+						.getSimpleName(), ishVersion, e);
 			}
 		}
 

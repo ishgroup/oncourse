@@ -3,8 +3,6 @@ package ish.oncourse.webservices.soap.v8;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.soap.v8.PaymentPortType;
-import ish.oncourse.webservices.soap.v8.ReplicationPortType;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v8.stubs.replication.TransactionGroup;

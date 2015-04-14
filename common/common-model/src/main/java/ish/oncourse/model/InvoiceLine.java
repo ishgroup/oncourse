@@ -1,14 +1,12 @@
 package ish.oncourse.model;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import ish.common.payable.TaxInterface;
 import ish.math.Money;
 import ish.oncourse.model.auto._InvoiceLine;
 import ish.oncourse.utils.QueueableObjectUtils;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 public class InvoiceLine extends _InvoiceLine implements Queueable {
 

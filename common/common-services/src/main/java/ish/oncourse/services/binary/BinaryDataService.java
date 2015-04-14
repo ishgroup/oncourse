@@ -6,7 +6,6 @@ import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Document;
-import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.s3.IS3Service;
@@ -16,7 +15,8 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
 
@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class BinaryDataService implements IBinaryDataService {
 
-	private static final Logger LOGGER = Logger.getLogger(BinaryDataService.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	public static final String NAME_PROFILE_PICTURE = "Profile picture";
 	public static final String CONTEXT_PATH_TEMPLATE = "/a/%s/%s.%s";
@@ -42,9 +42,6 @@ public class BinaryDataService implements IBinaryDataService {
 	@Inject
 	private ApplicationStateManager applicationStateManager;
 
-    @Inject
-    private IFileStorageAssetService fileStorageAssetService;
-	
 	@Inject
 	private PreferenceController preferenceController;
 	
@@ -92,10 +89,7 @@ public class BinaryDataService implements IBinaryDataService {
 				query.setFetchOffset(random);
 				query.setFetchLimit(1);
 				randomResult = (Document) Cayenne.objectForQuery(sharedContext, query);
-
-				if (LOGGER.isInfoEnabled()) {
-					LOGGER.info(String.format("Fetched random image: %s", randomResult));
-				}
+				logger.info("Fetched random image: {}", randomResult);
 			}
 		}
 

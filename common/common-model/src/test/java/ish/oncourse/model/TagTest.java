@@ -1,13 +1,13 @@
 package ish.oncourse.model;
 
-import static org.junit.Assert.*;
 import ish.oncourse.test.ContextUtils;
-
-import java.util.Date;
-
 import org.apache.cayenne.ObjectContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
 
 public class TagTest {
 	public static final String TEST_TAG_NAME = "test\\tag";

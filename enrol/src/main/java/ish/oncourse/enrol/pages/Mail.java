@@ -17,7 +17,8 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.ObjectContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -30,7 +31,7 @@ import static ish.oncourse.services.preference.PreferenceController.ContactFiled
 @Secure // this anatation is important. The page should use secure handling allways
 public class Mail {
 
-    private static final Logger LOGGER = Logger.getLogger(Mail.class);
+    private static final Logger logger = LogManager.getLogger();
 
     @Property
     private Tag currentMailingList;
@@ -168,7 +169,7 @@ public class Mail {
 
     public Object onException(Throwable cause) {
         if (controller == null) {
-            LOGGER.warn("", cause);
+            logger.warn("", cause);
             expired = true;
         } else {
             resetPersistProperties();

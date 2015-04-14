@@ -1,11 +1,9 @@
 package ish.oncourse.services.format;
 
-import ish.oncourse.services.format.FormatName;
-import ish.oncourse.services.format.FormatService;
-import java.text.Format;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.text.Format;
 
 public class FormatServiceTest extends Assert {
 

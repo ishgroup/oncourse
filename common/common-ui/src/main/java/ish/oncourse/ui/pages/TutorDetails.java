@@ -1,7 +1,6 @@
 package ish.oncourse.ui.pages;
 
 import ish.common.types.AttachmentInfoVisibility;
-import ish.oncourse.linktransform.PageIdentifier;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
@@ -9,13 +8,11 @@ import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.util.ValidationErrors;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.internal.EmptyEventContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.PageRenderLinkSource;
-import org.apache.tapestry5.services.PageRenderRequestParameters;
 import org.apache.tapestry5.services.Request;
 
 import java.util.List;
@@ -41,7 +38,7 @@ public class TutorDetails {
 	@Property
 	private TutorRole role;
 	
-	private static final Logger logger = Logger.getLogger(TutorDetails.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private static final String TUTOR_ATTRIBUTE = "tutor";
 	

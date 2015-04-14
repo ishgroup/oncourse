@@ -12,18 +12,16 @@ import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSitePublisher;
 import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import javax.naming.Context;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +34,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 
 	private static final int KEEP_AT_LEAST = 4;
 	
-	private static final Logger logger = Logger.getLogger(CMSWebSiteVersionService.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	@Inject
 	private IWebSiteVersionService webSiteVersionService;
@@ -207,7 +205,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 		try {
 			processBuilder.start();
 		} catch (Exception e) {
-			logger.error(String.format("Error executing script '%s'", scriptPath), e);
+			logger.error("Error executing script '{}'", scriptPath, e);
 		}
 	}
 	

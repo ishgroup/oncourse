@@ -1,11 +1,11 @@
 package ish.oncourse.services.cache;
 
-import java.util.List;
-
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.cache.QueryCacheEntryFactory;
 import org.apache.cayenne.query.QueryMetadata;
+
+import java.util.List;
 
 /**
  * {@link QueryCache} implementation which performs no caching.

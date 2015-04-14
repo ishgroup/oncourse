@@ -2,22 +2,14 @@ package ish.oncourse.utils;
 
 import ish.common.types.DiscountType;
 import ish.math.Money;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.DiscountConcessionType;
-import ish.oncourse.model.DiscountCourseClass;
-import ish.oncourse.model.DiscountMembership;
+import ish.oncourse.model.*;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Util class for calculating discounts applying results.

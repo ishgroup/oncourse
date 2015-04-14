@@ -9,7 +9,8 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.services.RegistryShutdownListener;
 
 
@@ -18,11 +19,11 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 	private ServerRuntime cayenneRuntime;
 	private ObjectContext sharedContext;
 	
-	private static final Logger LOGGER = Logger.getLogger(CayenneService.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	public CayenneService(IWebSiteService webSiteService) {
 		
-		LOGGER.info("Starting CayenneService....");
+		logger.info("Starting CayenneService....");
 		
 		try {
 			this.cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new ISHModule());
@@ -31,7 +32,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 			throw new RuntimeException("Error loading Cayenne stack", e);
 		}
 		
-		this.sharedContext = cayenneRuntime.getContext();
+		this.sharedContext = cayenneRuntime.newContext();
 		
 		QueueableLifecycleListener listener = new QueueableLifecycleListener(this);
 		cayenneRuntime.getDataDomain().addFilter(listener);
@@ -46,7 +47,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
 		}
 		
-		LOGGER.info("CayenneService starting SUCCESS.");
+		logger.info("CayenneService starting SUCCESS.");
 		
 	}
 	
@@ -91,10 +92,10 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 	public void registryDidShutdown() {
 		
 		if (cayenneRuntime != null) {
-			LOGGER.info("Shutting down CayenneService...");
+			logger.info("Shutting down CayenneService...");
 			cayenneRuntime.shutdown();
 			cayenneRuntime = null;
-			LOGGER.info("CayenneService shutting down SUCESS.");			
+			logger.info("CayenneService shutting down SUCCESS.");			
 		}
 		
 	}

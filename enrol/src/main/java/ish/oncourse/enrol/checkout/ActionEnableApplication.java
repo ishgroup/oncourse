@@ -4,6 +4,7 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.model.Application;
+
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.applicationReceived;
 
 

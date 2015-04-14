@@ -4,15 +4,14 @@
  */
 package ish.oncourse.model;
 
-import java.math.BigDecimal;
-
-import org.apache.cayenne.CayenneDataObject;
-
 import ish.common.payable.EnrolmentInterface;
 import ish.common.payable.IInvoiceLineInterface;
 import ish.common.payable.InvoicePayableLineWrapper;
 import ish.common.payable.TaxInterface;
 import ish.math.Money;
+import org.apache.cayenne.CayenneDataObject;
+
+import java.math.BigDecimal;
 
 /**
  * the superclass for the cayenne-generated _InvoiceLine. Includes the behavior implemented in InvoicePayableLineWrapper

@@ -20,8 +20,8 @@ import ish.oncourse.services.templates.IWebTemplateService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class WebTemplateResource extends AbstractResource implements CopyableResource, DeletableResource, GetableResource, MoveableResource, PropFindableResource, ReplaceableResource {
 
-    private static final Logger LOGGER = LogManager.getLogger(WebTemplateResource.class);
+    private static final Logger logger = LogManager.getLogger();
 
 	private WebTemplate webTemplate;
 
@@ -100,7 +100,7 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
 	@Override
 	public Long getContentLength() {
 		if (webTemplate != null) {
-            //we should retrun amount of bytes (not chars)
+            //we should return number of bytes (not chars)
 			return (long) webTemplate.getContent().getBytes().length;
 		}
         else
@@ -109,7 +109,7 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
             try {
                 return (long) is.available();
             } catch (IOException e) {
-                LOGGER.debug(e.getMessage(), e);
+                logger.catching(e);
                 return null;
             } finally {
                 IOUtils.closeQuietly(is);
@@ -126,7 +126,7 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
             try {
                 classPathContent = getClassPathContent(name);
             } catch (IOException e) {
-                LOGGER.error(e);
+                logger.error(e);
             }
 
             ObjectContext context = cayenneService.newContext();
@@ -197,7 +197,7 @@ public class WebTemplateResource extends AbstractResource implements CopyableRes
                 try {
                     classPathContent = getClassPathContent(templateName);
                 } catch (IOException e) {
-                    LOGGER.error(e);
+                    logger.error(e);
                 }
 
                 ObjectContext context = cayenneService.newContext();

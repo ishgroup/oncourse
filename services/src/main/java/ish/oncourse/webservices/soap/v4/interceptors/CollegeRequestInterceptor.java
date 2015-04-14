@@ -9,7 +9,8 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.service.model.BindingOperationInfo;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,7 +33,7 @@ import java.util.Date;
  */
 public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 
-	private static final Logger LOGGER = Logger.getLogger(CollegeRequestInterceptor.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	@Autowired
@@ -70,20 +71,20 @@ public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 				if (college != null) {
 					collegeName = college.getName();
 				} else {
-					new InterceptorErrorHandle(message, LOGGER).handle("College could not be found or created");
+					new InterceptorErrorHandle(message, logger).handle("College could not be found or created");
 					// TODO: Should the request be interrupted at this point?
 				}
 			} else {
-				new InterceptorErrorHandle(message, LOGGER).handle("No security code sent by remote!");
+				new InterceptorErrorHandle(message, logger).handle("No security code sent by remote!");
 				// TODO: This is probably an error condition that should result in an
 				// exception being thrown to the client.
 			}
 
-			LOGGER.info(String.format("Invoked %s by %s from %s with version %s at %s.", boi.getName(), collegeName, ip, version, time));
+			logger.info("Invoked {} by {} from {} with version {} at {}.", boi.getName(), collegeName, ip, version, time);
 			
 		}
 		catch (Exception e) {
-			new InterceptorErrorHandle(message, LOGGER).handle(e);
+			new InterceptorErrorHandle(message, logger).handle(e);
 		}
 	}
 }

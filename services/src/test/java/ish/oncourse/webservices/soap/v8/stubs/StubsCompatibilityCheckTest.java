@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.soap.v8.stubs;
 
-import ish.common.types.ConfirmationStatus;
-import ish.math.Money;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v8.stubs.replication.*;

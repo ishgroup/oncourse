@@ -3,19 +3,15 @@
  */
 package ish.oncourse.utils;
 
-import ish.common.types.ApplicationStatus;
-import ish.common.types.CourseEnrolmentType;
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.ProductStatus;
+import ish.common.types.*;
 import ish.oncourse.model.*;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -24,7 +20,7 @@ import java.util.*;
  */
 public class PaymentInUtil {
 
-	private static final Logger logger = Logger.getLogger(PaymentInUtil.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private static boolean hasSuccessEnrolments(PaymentIn payment) {
 		Expression paymentIdMatchExpression = ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, payment.getId());
@@ -50,7 +46,7 @@ public class PaymentInUtil {
 
 	public static void abandonPayment(PaymentIn payment, boolean reverseInvoice) {
 		try {
-			logger.info(String.format("Canceling paymentIn with id:%s, created:%s and status:%s.", payment.getId(), payment.getCreated(), payment.getStatus()));
+			logger.info("Canceling paymentIn with id:{}, created:%s and status:{}.", payment.getId(), payment.getCreated(), payment.getStatus());
 
 			if (reverseInvoice && !hasSuccessEnrolments(payment) && !hasSuccessProductItems(payment)) {
 				payment.abandonPayment();
@@ -59,7 +55,7 @@ public class PaymentInUtil {
 			}
 			payment.getObjectContext().commitChanges();
 		} catch (final CayenneRuntimeException ce) {
-			logger.debug(String.format("Unable to cancel payment with id:%s and status:%s.", payment.getId(), payment.getStatus()), ce);
+			logger.debug("Unable to cancel payment with id:{} and status:{}.", payment.getId(), payment.getStatus(), ce);
 			payment.getObjectContext().rollbackChanges();
 		}
 	}

@@ -33,7 +33,8 @@ import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
 import org.joda.time.DateTime;
@@ -53,7 +54,7 @@ import static java.util.Arrays.asList;
  */
 public class PurchaseController {
 
-	protected static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
+	protected static final Logger logger = LogManager.getLogger();
 
     /**
      * If performing action is one from the list and current state is editPayment

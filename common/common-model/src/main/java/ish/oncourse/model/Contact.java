@@ -14,7 +14,8 @@ import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.EmailValidator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -26,7 +27,7 @@ public class Contact extends _Contact implements Queueable {
 	
 	private static final long serialVersionUID = -7158531319889954101L;
 	protected static final String INVALID_EMAIL_MESSAGE = "The email address does not appear to be valid.";
-	private static final Logger LOG = Logger.getLogger(Contact.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	public static final String FULL_NAME_PROPERTY = "fullName";
 

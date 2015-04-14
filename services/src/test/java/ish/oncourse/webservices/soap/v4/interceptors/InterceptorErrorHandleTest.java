@@ -6,7 +6,8 @@ import org.apache.cxf.binding.soap.Soap12;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.common.util.SOAPConstants;
 import org.apache.cxf.message.Message;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -18,7 +19,7 @@ public class InterceptorErrorHandleTest {
 	private static final String TEST_MESSAGE_1 = "(SoapAction: SOAPAction; basePath: org.apache.cxf.message.Message.BASE_PATH; requestUrl: org.apache.cxf.request.url)";
 	private static final String TEST_MESSAGE_2 = "java.lang.IllegalArgumentException";
 
-	private static final Logger logger = Logger.getLogger(InterceptorErrorHandleTest.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private InterceptorErrorHandle createHandle() {
 		SoapMessage message = new SoapMessage(Soap12.getInstance());

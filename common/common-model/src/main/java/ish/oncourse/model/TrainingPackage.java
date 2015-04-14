@@ -1,9 +1,9 @@
 package ish.oncourse.model;
 
-import java.util.Date;
-
 import ish.oncourse.model.auto._TrainingPackage;
 import ish.oncourse.utils.QueueableObjectUtils;
+
+import java.util.Date;
 
 public class TrainingPackage extends _TrainingPackage {
 	private static final long serialVersionUID = -9132949626628478915L;

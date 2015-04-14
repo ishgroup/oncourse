@@ -6,7 +6,8 @@ import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.preference.PreferenceController;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,7 +20,7 @@ public class NTISTask implements Runnable {
 	private static final String EMAIL_FROM = "support@ish.com.au";
 	private static final String EMAIL_TO = "support@ish.com.au";
 	private static final String EMAIL_SUBJECT = "NTIS Data Update";
-	private static Logger LOGGER = Logger.getLogger(NTISTask.class);
+	private static Logger logger = LogManager.getLogger();
 	protected List<String> ntisData;
 	private Date from;
 	private Date to;
@@ -59,42 +60,27 @@ public class NTISTask implements Runnable {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 			String message = String.format("Updating records from %s to %s", dateFormat.format(fromDate), dateFormat.format(toDate));
-			LOGGER.debug(message);
+			logger.debug(message);
 			ntisData.add(message);
 
 			try {
 
 				NTISResult trainingPackageResult = ntisUpdater.doUpdate(fromDate, toDate, TrainingPackage.class);
-
-				LOGGER.debug("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, " + trainingPackageResult.getNumberOfUpdated()
-						+ " updated.");
-
-				ntisData.add("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, " + trainingPackageResult.getNumberOfUpdated()
-						+ " updated.");
+				ntisData.add("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, " + trainingPackageResult.getNumberOfUpdated() + " updated.");
 
 				NTISResult moduleResult = ntisUpdater.doUpdate(fromDate, toDate, Module.class);
-
-				LOGGER.debug("Modules: " + moduleResult.getNumberOfNew() + " new, " + moduleResult.getNumberOfUpdated() + " updated.");
 				ntisData.add("Modules: " + moduleResult.getNumberOfNew() + " new, " + moduleResult.getNumberOfUpdated() + " updated.");
 
 				NTISResult qualificationResult = ntisUpdater.doUpdate(fromDate, toDate, Qualification.class);
-
-				LOGGER.debug("Qualifications: " + qualificationResult.getNumberOfNew() + " new, " + qualificationResult.getNumberOfUpdated() + " updated.");
-
 				ntisData.add("Qualifications: " + qualificationResult.getNumberOfNew() + " new, " + qualificationResult.getNumberOfUpdated() + " updated.");
 
 				NTISResult organisationResult = ntisUpdater.doUpdate(fromDate, toDate, Organisation.class);
-
-				String organisationResultString = String.format(
-						"Organisations: %d new, %d updated.", organisationResult.getNumberOfNew(), organisationResult.getNumberOfUpdated());
-
-				LOGGER.debug(organisationResultString);
-				ntisData.add(organisationResultString);
+				ntisData.add(String.format("Organisations: %d new, %d updated.", organisationResult.getNumberOfNew(), organisationResult.getNumberOfUpdated()));
 
 				preferenceController.setNTISLastUpdate(dateFormat.format(toDate));
 
 			} catch (Exception e) {
-				LOGGER.error("NTIS update failed with exception.", e);
+				logger.error("NTIS update failed with exception.", e);
 				ntisData.add(String.format("NTIS update failed with exception:%s", e.getMessage()));
 
 				// error occured stop advancing dates and report failure.

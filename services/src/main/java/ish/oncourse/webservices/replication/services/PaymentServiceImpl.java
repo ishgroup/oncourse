@@ -20,7 +20,8 @@ import ish.oncourse.webservices.replication.services.IReplicationService.Interna
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
 	public static final String MESSAGE_activeEnrolmentExists = "Student %s already has an enrollment in transaction for class %s and he/she cannot be enrolled twice.";
 
-	private static final Logger logger = Logger.getLogger(PaymentServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	private final ITransactionGroupProcessor groupProcessor;
 
@@ -161,7 +162,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 				List<Enrolment> validEnrolments = clazz.getValidEnrolments();
 				int availPlaces = clazz.getMaximumPlaces() - validEnrolments.size();
 				if (availPlaces < 0) {
-					logger.info(String.format("No places available for courseClass:%s.", clazz.getId()));
+					logger.info("No places available for courseClass: {}.", clazz.getId());
 					isPlacesAvailable = false;
 					break;
 				}
@@ -204,7 +205,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			return response;
 			
 		} catch (Exception e) {
-			logger.error(String.format("Exception happened after paymentIn:%s was saved. ", paymentIn.getId()), e);
+			logger.error("Exception happened after paymentIn: {} was saved. ", paymentIn.getId(), e);
 			return plainPaymentEnrolmentResponse(paymentIn, enrolments, PortHelper.getVersionByTransactionGroup(transaction));
 		}
 	}

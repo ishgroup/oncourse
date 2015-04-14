@@ -7,16 +7,12 @@
 //
 package ish.oncourse.services.template;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
 
 /**
  * This engine uses a call-back methodology to discover the values to replace
@@ -38,7 +34,7 @@ public class WillowMessagingTemplateEngine {
 	public static final String CLASS_ITEM_TEMPLATE = "ClassListItem.messagingtemplate";
 	public static final String ENROLMENT_CONFIRMATION_MESSAGE = "Enrolment confirmation";
 
-	private static final Logger LOG = Logger.getLogger(WillowMessagingTemplateEngine.class);
+	private static final Logger logger = LogManager.getLogger();
 	public static final String PAYMENT_CLASS_ITEM_TEMPLATE = "ItemisedClassListItem.messagingtemplate";
 	public static final String PAYMENT_CONFIRMATION_MESSAGE = "Payment succeeded";
 	public static final String PAYMENT_FAILED_MESSAGE = "Payment failed";
@@ -71,12 +67,12 @@ public class WillowMessagingTemplateEngine {
 		Map<String, String> results = new HashMap<>(2);
 		for (Map.Entry<String, String> entry : input.entrySet()) {
 			Set<String> keyPaths = keyPathsForTemplate(entry.getValue());
-			if (LOG.isDebugEnabled())
-				LOG.debug("keyPaths for template:" + keyPaths);
+			if (logger.isDebugEnabled())
+				logger.debug("keyPaths for template:" + keyPaths);
 			if (keyPaths.size() > 0) {
 				Map<String, Object> keyValues = responder.templateValuesForKeys(keyPaths);
-				if (LOG.isDebugEnabled())
-					LOG.debug("keyValues:" + keyValues);
+				if (logger.isDebugEnabled())
+					logger.debug("keyValues:" + keyValues);
 				if (!keyPaths.equals(keyValues.keySet()))
 					throw new IllegalArgumentException("keyValues keys do not match keys of the given template: "
 							+ ((Object) responder).getClass().getName());
@@ -138,19 +134,19 @@ public class WillowMessagingTemplateEngine {
 			Object value = keyValues.get(keyPath);
 			String pattern = "<[ ]*" + keyPath + "[ ]*>";
 
-			if (LOG.isDebugEnabled())
-				LOG.debug("translated keyPath:" + keyPath + " value:" + value);
+			if (logger.isDebugEnabled())
+				logger.debug("translated keyPath:" + keyPath + " value:" + value);
 
 			if (value != null) {
 				if (value instanceof WillowMessagingTemplateResponder) {
-					LOG.debug("translated templateResponder...start");
+					logger.debug("translated templateResponder...start");
 					Map<String, String> parsedValue = generateResponseForTemplateResponder((WillowMessagingTemplateResponder) value);
 					value = parsedValue.get("message");
-					LOG.debug("translated templateResponder...end");
+					logger.debug("translated templateResponder...end");
 				}
 				value = quoteReplacement(value.toString());
-				if (LOG.isDebugEnabled())
-					LOG.debug("transated quoted:" + value);
+				if (logger.isDebugEnabled())
+					logger.debug("transated quoted:" + value);
 				result = result.replaceAll(pattern, value.toString());
 			} else
 				result = result.replaceAll(pattern, "");

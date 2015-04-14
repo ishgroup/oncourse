@@ -7,11 +7,12 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class FacebookMetaProvider implements IFacebookMetaProvider {
-	private static final Logger LOGGER = Logger.getLogger(FacebookMetaProvider.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	private ITextileConverter textileConverter;
@@ -56,7 +57,7 @@ public class FacebookMetaProvider implements IFacebookMetaProvider {
                     return plainText;
 			}
 		} catch (Exception e) {
-			LOGGER.warn(e.getMessage(), e);
+			logger.catching(e);
 		}
 		return StringUtils.EMPTY;
 	}

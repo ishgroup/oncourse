@@ -2,7 +2,7 @@ apply plugin: 'war'
 apply plugin: 'compass'
 
 dependencies {
-	providedCompile 'javax.servlet:servlet-api:2.5'
+	providedCompile 'javax.servlet:servlet-api:3.0'
 
 	compile project(':common:common-model')
 	compile (project(':common:common-services'))  {
@@ -15,7 +15,6 @@ dependencies {
 		exclude group: 'ish.oncourse.willow'
 	}
 
-	//compile ('org.apache.cxf:cxf-bundle:2.6.2') {
 	compile ('org.apache.cxf:cxf-rt-frontend-jaxws:2.6.6') {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'

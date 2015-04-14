@@ -1,22 +1,20 @@
 package ish.oncourse.services.textile.validator;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import ish.oncourse.model.WebContent;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.BlockTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
-
-import static org.mockito.Mockito.*;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BlockTextileValidatorTest extends CommonValidatorTest {

@@ -12,7 +12,8 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -30,7 +31,7 @@ import java.util.*;
 
 public class PaymentInExpireJob implements Job {
 
-	private static final Logger logger = Logger.getLogger(PaymentInExpireJob.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private static final int FETCH_LIMIT = 500;
 
@@ -62,7 +63,7 @@ public class PaymentInExpireJob implements Job {
 			List<PaymentIn> notCompletedList = getNotCompletedPaymentsFromDate(newContext, cal.getTime());
 			expiredPayments.addAll(notCompletedList);
 
-			logger.debug(String.format("The number of payments to expire:%s.", expiredPayments.size()));
+			logger.debug("The number of payments to expire: {}.", expiredPayments.size());
 
 			for (PaymentIn p : expiredPayments) {
                 processPayment(p);
@@ -70,7 +71,7 @@ public class PaymentInExpireJob implements Job {
 			logger.debug("PaymentInExpireJob finished.");
 
 		} catch (Exception e) {
-			logger.error("Error in PaymentInExpireJob.", e);
+			logger.catching(e);
 		}
 	}
 
@@ -86,7 +87,7 @@ public class PaymentInExpireJob implements Job {
                 PaymentInUtil.abandonPayment(p, shouldReverseInvoice);
             }
         } catch (Exception e) {
-            logger.error("Error in PaymentInExpireJob.", e);
+	        logger.catching(e);
         }
     }
 
@@ -120,10 +121,10 @@ public class PaymentInExpireJob implements Job {
 		notCompletedQuery.setFetchLimit(FETCH_LIMIT);
 
 		List<PaymentIn> notCompletedPayments = newContext.performQuery(notCompletedQuery);
-		logger.info(String.format("<getNotCompletedPaymentsFromDate> the number of expired PaymentIn:%s", notCompletedPayments.size()));
+		logger.info("<getNotCompletedPaymentsFromDate> the number of expired PaymentIn: {}", notCompletedPayments.size());
 		
 		for (PaymentIn p : notCompletedPayments) {
-			logger.info(String.format("<getNotCompletedPaymentsFromDate> found expired PaymentIn id:%s status:%s type:%s", p.getId(), p.getStatus(), p.getType()));
+			logger.info("<getNotCompletedPaymentsFromDate> found expired PaymentIn id: {} status: {} type: {}", p.getId(), p.getStatus(), p.getType());
 		}
 		
 		return notCompletedPayments;

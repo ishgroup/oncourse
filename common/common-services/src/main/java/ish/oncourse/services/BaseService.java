@@ -6,7 +6,8 @@ import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -32,7 +33,7 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
     @Inject
     private Request request;
 	
-	private static final Logger LOGGER = Logger.getLogger(BaseService.class);
+	private static final Logger logger = LogManager.getLogger();
 
 
 	@SuppressWarnings("unchecked")
@@ -67,11 +68,11 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 				if (results.size() == 1) {
 					record = results.get(0);
 				} else {
-					LOGGER.error("Query returned multiple results where only one expected");
+					logger.error("Query returned multiple results where only one expected. willowId: {}", willowId);
 					//TODO: Should an exception be thrown to indicate the condition to the client?
 				}
 			} catch (Exception e) {
-				LOGGER.error("Query resulted in Exception thrown", e);
+				logger.error("Query resulted in Exception thrown. willowId: {}", willowId, e);
 				//TODO: Should the exception be rethrown to indicate error condition to the client code?
 			}
 		}
@@ -90,7 +91,7 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 		try {
 			results = (List<T>) getCayenneService().sharedContext().performQuery(query);
 		} catch (Exception e) {
-			LOGGER.error("Query resulted in Exception thrown", e);
+			logger.error("Query resulted in Exception thrown. Query: {}", query, e);
 			//TODO: Should the exception be rethrown to indicate error condition to the client code?
 		}
 
@@ -99,8 +100,8 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 		}
 
 		if (results.isEmpty()) {
-			if (LOGGER.isInfoEnabled()) {
-				LOGGER.info("Query returned no results: " + query);
+			if (logger.isInfoEnabled()) {
+				logger.info("Query returned no results: {}", query);
 			}
 		}
 

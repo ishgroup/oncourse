@@ -5,10 +5,10 @@
 
 package ish.oncourse.webservices.reference.builders;
 
-import java.util.Date;
-
 import ish.oncourse.model.Module;
 import ish.oncourse.webservices.v4.stubs.reference.ModuleStub;
+
+import java.util.Date;
 
 /**
  *

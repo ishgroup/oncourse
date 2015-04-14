@@ -3,7 +3,6 @@ package ish.oncourse.services.paymentexpress;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
-
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class PaymentGatewayServiceBuilder implements IPaymentGatewayServiceBuilder {

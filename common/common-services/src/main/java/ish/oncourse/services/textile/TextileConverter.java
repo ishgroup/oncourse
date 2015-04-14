@@ -3,8 +3,6 @@ package ish.oncourse.services.textile;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
-import ish.oncourse.services.filestorage.IFileStorageAssetService;
-import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.tag.ITagService;
@@ -18,7 +16,8 @@ import net.java.textilej.parser.builder.HtmlDocumentBuilder;
 import net.java.textilej.parser.markup.textile.TextileDialect;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.io.StringWriter;
@@ -27,7 +26,7 @@ import java.util.regex.Pattern;
 
 public class TextileConverter implements ITextileConverter {
 
-	private final static Logger LOGGER = Logger.getLogger(TextileConverter.class);
+	private final static Logger logger = LogManager.getLogger();
 
 	@Inject
 	private IBinaryDataService binaryDataService;
@@ -47,20 +46,10 @@ public class TextileConverter implements ITextileConverter {
 	@Inject
 	private ITagService tagService;
 
-    @Inject
-    private IFileStorageAssetService fileStorageAssetService;
-
-	@Inject
-	private IPlainTextExtractor extractor;
-
 	@Inject
 	private ISearchService searchService;
 
 	public TextileConverter() {
-	}
-
-	public TextileConverter(IPlainTextExtractor extractor) {
-		this.extractor = extractor;
 	}
 
     /**
@@ -68,14 +57,13 @@ public class TextileConverter implements ITextileConverter {
      */
 	TextileConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
 			ICourseService courseService, IPageRenderer pageRenderer, IWebNodeService webNodeService,
-			ITagService tagService, IFileStorageAssetService fileStorageAssetService) {
+			ITagService tagService) {
 		this.binaryDataService = binaryDataService;
 		this.webContentService = webContentService;
 		this.courseService = courseService;
 		this.pageRenderer = pageRenderer;
 		this.webNodeService = webNodeService;
 		this.tagService = tagService;
-        this.fileStorageAssetService = fileStorageAssetService;
 	}
 
 	public String convertCoreTextile(String content) {
@@ -123,7 +111,7 @@ public class TextileConverter implements ITextileConverter {
 				replacement = renderer.render(tag);
 				errors.appendErrors(renderer.getErrors());
 			} catch (Exception e) {
-				LOGGER.warn(e.getMessage(),e);
+				logger.warn(e.getMessage(), e);
 				errors.addFailure(e, ValidationFailureType.SYNTAX);
 			}
 			result += replacement;
@@ -131,7 +119,7 @@ public class TextileConverter implements ITextileConverter {
 		result += content;
 		result = clearGenerated(result);
 		if (errors.hasFailures()) {
-			LOGGER.debug(errors.toString());
+			logger.debug(errors);
 		}
 		return result;
 	}
@@ -164,7 +152,7 @@ public class TextileConverter implements ITextileConverter {
 	private IRenderer createRendererForType(TextileType type) {
 		switch (type) {
 		case IMAGE:
-			return new ImageTextileRenderer(binaryDataService, fileStorageAssetService, pageRenderer);
+			return new ImageTextileRenderer(binaryDataService, pageRenderer);
 		case BLOCK:
 			return new BlockTextileRenderer(webContentService, this);
 		case VIDEO:
@@ -180,7 +168,7 @@ public class TextileConverter implements ITextileConverter {
 		case FORM:
 			return new FormTextileRenderer(pageRenderer);
 		case ATTACHMENT:
-			return new AttachmentTextileRenderer(binaryDataService, fileStorageAssetService, pageRenderer);
+			return new AttachmentTextileRenderer(binaryDataService, pageRenderer);
 		default:
 			throw new IllegalArgumentException(String.format("Type $s is not supported", type));
 		}

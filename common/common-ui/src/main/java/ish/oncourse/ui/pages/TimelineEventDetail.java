@@ -2,13 +2,12 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Session;
 import ish.oncourse.util.FormatUtils;
-
-import java.text.Format;
-
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.text.Format;
 
 public class TimelineEventDetail {
 	@Inject

@@ -5,10 +5,11 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.SupportedVersions;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends GenericReplicationStub> implements IWillowStubBuilder {
-	protected static final Logger logger = Logger.getLogger(AbstractWillowStubBuilder.class);
+	protected static final Logger logger = LogManager.getLogger();
 
 	/**
 	 * @see IWillowStubBuilder#convert(ish.oncourse.model.QueuedRecord, ish.oncourse.webservices.util.SupportedVersions) 

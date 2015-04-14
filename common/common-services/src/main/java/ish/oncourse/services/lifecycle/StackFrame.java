@@ -1,10 +1,9 @@
 package ish.oncourse.services.lifecycle;
 
 import ish.oncourse.model.QueuedTransaction;
+import org.apache.cayenne.ObjectContext;
 
 import java.util.Map;
-
-import org.apache.cayenne.ObjectContext;
 
 /**
  * Used primary in case of nested commitChanges() calls on ObjectContext. In case of nested calls of commitChanges() 

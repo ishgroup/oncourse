@@ -9,8 +9,9 @@ import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class SecurityCodeInterceptor extends AbstractSoapInterceptor {
 
-	private static final Logger logger = Logger.getLogger(SecurityCodeInterceptor.class);
+	private static final Logger logger = LogManager.getLogger();
 
 	static final String ERROR_TEMPLATE_emptySecurityCode = "empty securityCode from ip = %s with angel server version = %s .";
 	static final String ERROR_TEMPLATE_invalidSecurityCode = "Invalid security code: %s from ip = %s with angel server version = %s .";

@@ -10,7 +10,8 @@ import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.v8.stubs.replication.MessagePersonStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class MessagePersonUpdaterTest extends ServiceTest {
-	private static Logger logger = Logger.getLogger(MessagePersonUpdaterTest.class.getName());
+	private static Logger logger = LogManager.getLogger();
 	
 	@Before
     public void setupDataSet() throws Exception {
