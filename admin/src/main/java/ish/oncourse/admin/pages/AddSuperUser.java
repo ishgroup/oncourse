@@ -3,16 +3,12 @@ package ish.oncourse.admin.pages;
 import ish.oncourse.model.WillowUser;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.util.SecurityUtil;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;

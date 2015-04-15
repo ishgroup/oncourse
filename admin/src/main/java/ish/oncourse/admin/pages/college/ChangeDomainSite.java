@@ -3,7 +3,6 @@ package ish.oncourse.admin.pages.college;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.StreamResponse;

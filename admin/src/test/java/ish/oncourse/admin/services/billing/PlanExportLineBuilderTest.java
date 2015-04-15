@@ -1,15 +1,13 @@
 package ish.oncourse.admin.services.billing;
 
-import java.math.BigDecimal;
-import java.util.*;
-
+import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;
 import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.oncourse.model.College;
+import java.math.BigDecimal;
+import java.util.*;
 
 public class PlanExportLineBuilderTest extends TestCase {
 	
