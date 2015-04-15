@@ -13,8 +13,8 @@ import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -123,9 +123,8 @@ public class Billing {
 		Expression collegeFeesExp = ExpressionFactory.matchExp(LicenseFee.WEB_SITE_PROPERTY, null);
 		this.collegeLicenseFees = collegeFeesExp.filterObjects(college.getLicenseFees());
 		Ordering.orderList(collegeLicenseFees, Arrays.asList(new Ordering(LicenseFee.KEY_CODE_PROPERTY, SortOrder.ASCENDING)));
-
-		Expression exp = ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, college);
-		List<Preference> prefs = context.performQuery(new SelectQuery(Preference.class, exp));
+		
+		List<Preference> prefs = ObjectSelect.query(Preference.class).where(Preference.COLLEGE.eq(college)).select(context);
 		for (Preference p : prefs) {
 			if (CommonPreferenceController.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
 				this.amexEnabled = Boolean.parseBoolean(p.getValueString());

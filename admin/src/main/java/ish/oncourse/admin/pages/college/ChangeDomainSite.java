@@ -5,9 +5,7 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -28,13 +26,13 @@ public class ChangeDomainSite {
 		
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
-		Expression exp = ExpressionFactory.matchExp(WebHostName.NAME_PROPERTY, domainName);
-		SelectQuery query = new SelectQuery(WebHostName.class, exp);
-		WebHostName domain = (WebHostName) Cayenne.objectForQuery(context, query);
+		WebHostName domain = ObjectSelect.query(WebHostName.class).
+				where(WebHostName.NAME.eq(domainName)).
+				selectOne(context);
 		
-		exp = ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, siteKey);
-		query = new SelectQuery(WebSite.class, exp);
-		WebSite selectedSite = (WebSite) Cayenne.objectForQuery(context, query);
+		WebSite selectedSite = ObjectSelect.query(WebSite.class).
+				where(WebSite.SITE_KEY.eq(siteKey)).
+				selectOne(context);
 		
 		if (domain != null && selectedSite != null) {
 			domain.setWebSite(selectedSite);

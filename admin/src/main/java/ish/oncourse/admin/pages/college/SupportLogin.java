@@ -11,8 +11,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
@@ -128,12 +128,13 @@ public class SupportLogin {
 			context.commitChanges();
 
 			/**
-			 *  we are removing all SupportPassword with expires-property lesses  or equels current time. 
+			 *  we are removing all SupportPassword which have already expired 
 			 */
-			SelectQuery query = new SelectQuery(SupportPassword.class);
-			query.andQualifier(ExpressionFactory.lessOrEqualExp(SupportPassword.EXPIRES_ON_PROPERTY, new Date()));
+			List<SupportPassword> oldPasswords = ObjectSelect.query(SupportPassword.class).
+					where(SupportPassword.EXPIRES_ON.lte(new Date())).
+					select(context);
 
-			context.deleteObjects(context.performQuery(query));
+			context.deleteObjects(oldPasswords);
 			context.commitChanges();
 			
 		}
@@ -141,24 +142,21 @@ public class SupportLogin {
 	
 	@OnEvent(component = "loginForm", value = "validate")
 	void validate() {
-		
+		ObjectContext context = cayenneService.sharedContext();
+				
 		supportPassword = null;
 		contact = null;
 		loginForm.clearErrors();
 		
-		SelectQuery query = new SelectQuery(Contact.class);
-
-		query.andQualifier(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email));
+		Expression exp = Contact.EMAIL_ADDRESS.eq(email).andExp(Contact.COLLEGE.eq(college));
 		if (isCompany) {
-			query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, companyName));
+			exp = exp.andExp(Contact.FAMILY_NAME.eq(companyName));
 		} else {
-			query.andQualifier(ExpressionFactory.matchExp(Contact.GIVEN_NAME_PROPERTY, firstName));
-			query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, lastName));
+			exp = exp.andExp(Contact.GIVEN_NAME.eq(firstName));
+			exp = exp.andExp(Contact.FAMILY_NAME.eq(lastName));
 		}
 
-		query.andQualifier(ExpressionFactory.matchExp(Contact.COLLEGE_PROPERTY, college));
-
-		List<Contact> users = cayenneService.sharedContext().performQuery(query);
+		List<Contact> users = ObjectSelect.query(Contact.class).where(exp).select(context);
 		
 		if ( users == null || users.isEmpty()) {
 			loginForm.recordError(String.format(CONTACT_NOT_EXIST_MESSAGE, college.getName()));

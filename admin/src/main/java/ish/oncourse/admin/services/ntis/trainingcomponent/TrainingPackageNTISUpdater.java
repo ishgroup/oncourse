@@ -11,11 +11,8 @@ import au.gov.training.services.trainingcomponent.TrainingComponentTypeFilter;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ReferenceService;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
 public class TrainingPackageNTISUpdater extends AbstractTrainingComponentNTISUpdater {
@@ -45,11 +42,9 @@ public class TrainingPackageNTISUpdater extends AbstractTrainingComponentNTISUpd
 		String type = summary.getComponentType().get(0);
 
 		if (TRAINING_PACKAGE.equals(type)) {
-			SelectQuery query = new SelectQuery(TrainingPackage.class);
-			Expression exp = ExpressionFactory.matchExp("nationalISC", summary.getCode().getValue());
-			query.setQualifier(exp);
-
-			TrainingPackage tp = (TrainingPackage) Cayenne.objectForQuery(context, query);
+			TrainingPackage tp = ObjectSelect.query(TrainingPackage.class).
+					where(TrainingPackage.NATIONAL_ISC.eq(summary.getCode().getValue())).
+					selectOne(context);
 			if (tp == null) {
 				tp = context.newObject(TrainingPackage.class);
 				isNewRecord = true;
@@ -65,13 +60,12 @@ public class TrainingPackageNTISUpdater extends AbstractTrainingComponentNTISUpd
 
 	@Override
 	protected void deleteRecord(ObjectContext context, DeletedTrainingComponent component) {
-		SelectQuery query = new SelectQuery(TrainingPackage.class);
-		Expression exp = ExpressionFactory.matchExp("nationalISC", component.getNationalCode().getValue());
-		query.setQualifier(exp);
-
-		TrainingPackage r = (TrainingPackage) Cayenne.objectForQuery(context, query);
-		if (r != null) {
-			context.deleteObjects(r);
+		TrainingPackage trainingPackage = ObjectSelect.query(TrainingPackage.class).
+				where(TrainingPackage.NATIONAL_ISC.eq(component.getNationalCode().getValue())).
+				selectOne(context);
+		
+		if (trainingPackage != null) {
+			context.deleteObjects(trainingPackage);
 		}
 	}
 }

@@ -5,9 +5,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -16,13 +14,14 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
 public class AddSuperUser {
 	
-	@SuppressWarnings("all")
 	@Property
 	private List<WillowUser> cmsSuperUsers;
 	
-	@SuppressWarnings("all")
 	@Property
 	private WillowUser currentUser;
 	
@@ -41,13 +40,13 @@ public class AddSuperUser {
 	@Inject
 	private ICayenneService cayenneService;
 	
-	@SuppressWarnings("unchecked")
 	@SetupRender
 	void setupRender() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
-		Expression exp = ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, null);
-		this.cmsSuperUsers = context.performQuery(new SelectQuery(WillowUser.class, exp));
+		this.cmsSuperUsers = ObjectSelect.query(WillowUser.class).
+				where(WillowUser.COLLEGE.isNull()).
+				select(context);
 	}
 	
 	@OnEvent(component="cmsUsersForm", value="success")
@@ -67,10 +66,10 @@ public class AddSuperUser {
 	
 	Object onActionFromDeleteUser(String email) {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		
-		Expression exp = ExpressionFactory.matchDbExp(WillowUser.EMAIL_PROPERTY, email);
-		SelectQuery query = new SelectQuery(WillowUser.class, exp);
-		WillowUser user = (WillowUser) Cayenne.objectForQuery(context, query);
+
+		WillowUser user = ObjectSelect.query(WillowUser.class).
+				where(WillowUser.EMAIL.eq(email)).
+				selectOne(context);
 		context.deleteObject(user);
 		context.commitChanges();
 		

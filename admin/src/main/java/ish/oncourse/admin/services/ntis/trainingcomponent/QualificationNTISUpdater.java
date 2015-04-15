@@ -10,11 +10,8 @@ import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ReferenceService;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
@@ -49,12 +46,10 @@ public class QualificationNTISUpdater extends AbstractTrainingComponentNTISUpdat
 
 		if (QUALIFICATION.equals(type) || ACCREDITED_COURSE.equals(type) || SKILL_SET.equals(type)) {
 
-			SelectQuery query = new SelectQuery(Qualification.class);
-			Expression exp = ExpressionFactory.matchExp("nationalCode", summary.getCode().getValue());
-			query.setQualifier(exp);
-
-			Qualification q = (Qualification) Cayenne.objectForQuery(context, query);
-
+			Qualification q = ObjectSelect.query(Qualification.class).
+					where(Qualification.NATIONAL_CODE.eq(summary.getCode().getValue())).
+					selectFirst(context);
+			
 			if (q == null) {
 				q = context.newObject(Qualification.class);
 				isNewRecord = true;
@@ -98,11 +93,11 @@ public class QualificationNTISUpdater extends AbstractTrainingComponentNTISUpdat
 			}
 
 			if (component.getParentCode() != null) {
-				Expression e = ExpressionFactory.matchExp(TrainingPackage.NATIONAL_ISC_PROPERTY,
-						component.getParentCode().getValue());
-				SelectQuery queryParent = new SelectQuery(TrainingPackage.class, e);
-
-				TrainingPackage parent = (TrainingPackage) Cayenne.objectForQuery(context, queryParent);
+				
+				TrainingPackage parent = ObjectSelect.query(TrainingPackage.class).
+						where(TrainingPackage.NATIONAL_ISC.eq(component.getParentCode().getValue())).
+						selectFirst(context);
+						
 				if (parent != null) {
 					q.setTrainingPackageId(parent.getId());
 				}
@@ -131,14 +126,12 @@ public class QualificationNTISUpdater extends AbstractTrainingComponentNTISUpdat
 
 	@Override
 	protected void deleteRecord(ObjectContext context, DeletedTrainingComponent component) {
-		SelectQuery query = new SelectQuery(Qualification.class);
-		Expression exp = ExpressionFactory.matchExp("nationalCode", component.getNationalCode().getValue());
-		query.setQualifier(exp);
-
-		Qualification r = (Qualification) Cayenne.objectForQuery(context, query);
-
-		if (r != null) {
-			context.deleteObjects(r);
+		Qualification q = ObjectSelect.query(Qualification.class).
+				where(Qualification.NATIONAL_CODE.eq(component.getNationalCode().getValue())).
+				selectOne(context);
+		
+		if (q != null) {
+			context.deleteObjects(q);
 		}
 	}
 

@@ -12,10 +12,8 @@ import ish.util.SecurityUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -144,24 +142,23 @@ public class Web {
 		
 		College college = context.localObject(this.college);
 		
-		Expression sitesExp = ExpressionFactory.matchExp(WebSite.COLLEGE_PROPERTY, college);
-		Expression domainsExp = ExpressionFactory.matchExp(WebHostName.COLLEGE_PROPERTY, college);
-		Expression cmsUsersExp = ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, college);
-		
-		SelectQuery sitesQuery = new SelectQuery(WebSite.class, sitesExp);
-		SelectQuery domainsQuery = new SelectQuery(WebHostName.class, domainsExp);
-		SelectQuery cmsUsersQuery = new SelectQuery(WillowUser.class, cmsUsersExp);
-		
-		sitesQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
-		domainsQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
-		cmsUsersQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
-		
-		List<WebSite> sites = context.performQuery(sitesQuery);
+		List<WebSite> sites = ObjectSelect.query(WebSite.class).
+				where(WebSite.COLLEGE.eq(college)).
+				cacheStrategy(QueryCacheStrategy.NO_CACHE).
+				select(context);
 		for (WebSite site : sites) {
 			this.sites.put(site.getSiteKey(), site);
 		}
-		this.domains = context.performQuery(domainsQuery);
-		this.cmsUsers = context.performQuery(cmsUsersQuery);
+		
+		this.domains = ObjectSelect.query(WebHostName.class).
+				where(WebHostName.COLLEGE.eq(college)).
+				cacheStrategy(QueryCacheStrategy.NO_CACHE).
+				select(context);
+		
+		this.cmsUsers = ObjectSelect.query(WillowUser.class).
+				where(WillowUser.COLLEGE.eq(college)).
+				cacheStrategy(QueryCacheStrategy.NO_CACHE).
+				select(context);
 		
 		String[] siteKeys = new String[sites.size()];
 		int i = 0;
@@ -183,10 +180,10 @@ public class Web {
 		
 		WebHostName domain = context.newObject(WebHostName.class);
 		domain.setCollege(context.localObject(college));
-		
-		Expression exp = ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, newDomainSite);
-		SelectQuery query = new SelectQuery(WebSite.class, exp);
-		WebSite site = (WebSite) Cayenne.objectForQuery(context, query);
+
+		WebSite site = ObjectSelect.query(WebSite.class).
+				where(WebSite.SITE_KEY.eq(newDomainSite)).
+				selectOne(context);
 		
 		domain.setWebSite(site);
 		domain.setName(newDomainValue);
@@ -328,10 +325,10 @@ public class Web {
 	Object onActionFromDeleteSite(String siteKey) {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
-		Expression exp = ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, siteKey);
-		SelectQuery query = new SelectQuery(WebSite.class, exp);
-		WebSite site = (WebSite) Cayenne.objectForQuery(context, query);
-
+		WebSite site = ObjectSelect.query(WebSite.class).
+				where(WebSite.SITE_KEY.eq(siteKey)).
+				selectOne(context);
+		
 		try {
 
 			for (WebSiteVersion version : site.getVersions()) {
@@ -381,11 +378,12 @@ public class Web {
 	
 	Object onActionFromDeleteUser(String email) {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		
-		Expression exp = ExpressionFactory.matchDbExp(WillowUser.EMAIL_PROPERTY, email)
-				.andExp(ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, college));
-		SelectQuery query = new SelectQuery(WillowUser.class, exp);
-		WillowUser user = (WillowUser) Cayenne.objectForQuery(context, query);
+
+		WillowUser user = ObjectSelect.query(WillowUser.class).
+				where(WillowUser.EMAIL.eq(email).
+						andExp(WillowUser.COLLEGE.eq(college))).
+				selectOne(context);
+
 		context.deleteObjects(user);
 		context.commitChanges();
 		

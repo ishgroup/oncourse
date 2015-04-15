@@ -6,9 +6,8 @@ import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -101,10 +100,10 @@ public class Preferences {
 		
 		College college = context.localObject(this.college);
 		
-		SelectQuery q = new SelectQuery(Preference.class, ExpressionFactory.matchExp(
-				Preference.COLLEGE_PROPERTY, college));
-		q.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
-		List<Preference> prefList = context.performQuery(q); 
+		List<Preference> prefList = ObjectSelect.query(Preference.class).
+				where(Preference.COLLEGE.eq(college)).
+				cacheStrategy(QueryCacheStrategy.NO_CACHE).				
+				select(context);
 		
 		for (Preference pref : prefList) {
 			if (pref.getName() != null) {

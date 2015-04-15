@@ -11,11 +11,8 @@ import ish.oncourse.admin.services.ntis.NTISResult;
 import ish.oncourse.model.Organisation;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ReferenceService;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
@@ -111,21 +108,19 @@ public class OrganisationNTISUpdater extends AbstractComponentNTISUpdater {
 
 		boolean isNewRecord = false;
 
-		SelectQuery query = new SelectQuery(ish.oncourse.model.Organisation.class);
-		Expression exp = ExpressionFactory.matchExp(Organisation.CODE_PROPERTY, item.getCode().getValue());
-		query.setQualifier(exp);
-
-		Organisation organisation = (Organisation) Cayenne.objectForQuery(context, query);
-
-		if (organisation == null) {
-			organisation = context.newObject(Organisation.class);
+		Organisation o = ObjectSelect.query(Organisation.class).
+				where(Organisation.CODE.eq(item.getCode().getValue())).
+				selectOne(context);
+		
+		if (o == null) {
+			o = context.newObject(Organisation.class);
 			isNewRecord = true;
 		}
 
-		organisation.setCode(item.getCode().getValue());
-		organisation.setHasActiveRegistration(item.isHasActiveRegistration());
+		o.setCode(item.getCode().getValue());
+		o.setHasActiveRegistration(item.isHasActiveRegistration());
 
-		fillRecordDetails(organisation);
+		fillRecordDetails(o);
 
 		return isNewRecord;
 	}
@@ -175,12 +170,10 @@ public class OrganisationNTISUpdater extends AbstractComponentNTISUpdater {
 	}
 
 	protected void deleteRecord(ObjectContext context, DeletedOrganisation organisation) {
-		SelectQuery query = new SelectQuery(Organisation.class);
-		Expression exp = ExpressionFactory.matchExp(Organisation.CODE_PROPERTY, organisation.getOrganisationCode().getValue());
-		query.setQualifier(exp);
-
-		Organisation o = (Organisation) Cayenne.objectForQuery(context, query);
-
+		Organisation o = ObjectSelect.query(Organisation.class).
+				where(Organisation.CODE.eq(organisation.getOrganisationCode().getValue())).
+				selectOne(context);
+		
 		if (o != null) {
 			context.deleteObjects(o);
 		}

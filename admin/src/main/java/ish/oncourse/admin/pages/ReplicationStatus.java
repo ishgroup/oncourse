@@ -7,10 +7,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -67,7 +65,11 @@ public class ReplicationStatus {
 		}
 		return "";
 	}
-	
+
+	/**
+	 * Number of records in the queue for this college older than one hour
+	 * @return
+	 */
 	public String getNumberOfRecordsInQueue() {
 		ObjectContext context = cayenneService.sharedContext();
 		
@@ -75,15 +77,12 @@ public class ReplicationStatus {
 		if (college != null) {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.HOUR, -1);
-			Date oneHourBefore = cal.getTime();
-
-			Expression exp = ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, college).andExp(
-					ExpressionFactory.lessExp(
-							QueuedRecord.QUEUED_TRANSACTION_PROPERTY + "." + QueuedTransaction.CREATED_PROPERTY,
-							oneHourBefore));
-			SelectQuery query = new SelectQuery(QueuedRecord.class, exp);
+			Date oneHourAgo = cal.getTime();
 			
-			List<QueuedRecord> records = context.performQuery(query);
+			List<QueuedRecord> records = ObjectSelect.query(QueuedRecord.class).
+					where(QueuedRecord.COLLEGE.eq(college).
+							andExp(QueuedRecord.QUEUED_TRANSACTION.dot(QueuedTransaction.CREATED).lt(oneHourAgo))).
+					select(context);
 			return String.valueOf(records.size());
 		}
 		return "0";
@@ -94,14 +93,12 @@ public class ReplicationStatus {
 		
 		College college = context.localObject(currentCollege);
 		if (college != null) {
-			Expression exp = ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, college);
-			SelectQuery query = new SelectQuery(QueuedRecord.class, exp);
-			query.addOrdering(QueuedRecord.LAST_ATTEMPT_TIMESTAMP_PROPERTY, SortOrder.DESCENDING);
-			query.setFetchLimit(1);
-			
-			QueuedRecord record = (QueuedRecord) Cayenne.objectForQuery(context, query);
-			
-			return record;
+
+			return ObjectSelect.query(QueuedRecord.class).
+					where(QueuedRecord.COLLEGE.eq(college)).
+					orderBy(QueuedRecord.LAST_ATTEMPT_TIMESTAMP.desc()).
+					limit(1).
+					selectFirst(context);
 		}
 		return null;
 	}
@@ -111,14 +108,11 @@ public class ReplicationStatus {
 		
 		College college = context.localObject(currentCollege);
 		if (college != null) {
-			Expression exp = ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, college);
-			SelectQuery query = new SelectQuery(QueuedRecord.class, exp);
-			query.addOrdering(QueuedRecord.LAST_ATTEMPT_TIMESTAMP_PROPERTY, SortOrder.ASCENDING);
-			query.setFetchLimit(1);
-			
-			QueuedRecord record = (QueuedRecord) Cayenne.objectForQuery(context, query);
-			
-			return record;
+			return ObjectSelect.query(QueuedRecord.class).
+					where(QueuedRecord.COLLEGE.eq(college)).
+					orderBy(QueuedRecord.LAST_ATTEMPT_TIMESTAMP.asc()).
+					limit(1).
+					selectFirst(context);
 		}
 		return null;
 	}

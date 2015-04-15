@@ -23,6 +23,14 @@ buildscript {
 	}
 }
 
+apply plugin: 'idea'
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
 allprojects {
 	apply plugin: 'com.github.ben-manes.versions' // adds the task 'dependencyUpdates -Drevision=release'
 	apply plugin: 'java'

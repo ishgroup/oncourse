@@ -9,11 +9,8 @@ import ish.oncourse.model.Module;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ReferenceService;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
 import java.util.List;
@@ -54,12 +51,10 @@ public class ModuleNTISUpdater extends AbstractTrainingComponentNTISUpdater {
 
 		if (MODULE.equals(type) || UNIT.equals(type)) {
 
-			SelectQuery query = new SelectQuery(Module.class);
-			Expression exp = ExpressionFactory.matchExp("nationalCode", summary.getCode().getValue());
-			query.setQualifier(exp);
-
-			Module m = (Module) Cayenne.objectForQuery(context, query);
-
+			Module m = ObjectSelect.query(Module.class).
+					where(Module.NATIONAL_CODE.eq(summary.getCode().getValue())).
+					selectOne(context);
+			
 			if (m == null) {
 				m = context.newObject(Module.class);
 				isNewRecord = true;
@@ -84,11 +79,10 @@ public class ModuleNTISUpdater extends AbstractTrainingComponentNTISUpdater {
 			}
 
 			if (component.getParentCode() != null) {
-				Expression e = ExpressionFactory.matchExp(TrainingPackage.NATIONAL_ISC_PROPERTY,
-						component.getParentCode().getValue());
-				SelectQuery queryParent = new SelectQuery(TrainingPackage.class, e);
-
-				TrainingPackage parent = (TrainingPackage) Cayenne.objectForQuery(context, queryParent);
+				TrainingPackage parent = ObjectSelect.query(TrainingPackage.class).
+						where(TrainingPackage.NATIONAL_ISC.eq(component.getParentCode().getValue())).
+						selectOne(context);
+				
 				if (parent != null) {
 					m.setTrainingPackageId(parent.getId());
 				}
@@ -100,14 +94,12 @@ public class ModuleNTISUpdater extends AbstractTrainingComponentNTISUpdater {
 
 	@Override
 	protected void deleteRecord(ObjectContext context, DeletedTrainingComponent component) {
-		SelectQuery query = new SelectQuery(Module.class);
-		Expression exp = ExpressionFactory.matchExp("nationalCode", component.getNationalCode().getValue());
-		query.setQualifier(exp);
-
-		Module r = (Module) Cayenne.objectForQuery(context, query);
-
-		if (r != null) {
-			context.deleteObjects(r);
+		Module m = ObjectSelect.query(Module.class).
+				where(Module.NATIONAL_CODE.eq(component.getNationalCode().getValue())).
+				selectOne(context);
+		
+		if (m != null) {
+			context.deleteObjects(m);
 		}
 	}
 }

@@ -8,11 +8,8 @@ import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.map.ObjEntity;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -75,12 +72,11 @@ public class Instructions {
 		ObjectContext context = cayenneService.sharedContext();
 		College college = context.localObject(this.college);
 		if (college != null) {
-			Expression exp = ExpressionFactory.matchExp(Instruction.COLLEGE_PROPERTY, college);
-			SelectQuery query = new SelectQuery(Instruction.class, exp);
-			query.addOrdering(Instruction.CREATED_PROPERTY, SortOrder.DESCENDING);
-			query.setFetchLimit(5);
-
-			lastInstructions = context.performQuery(query);
+			lastInstructions = ObjectSelect.query(Instruction.class).
+					where(Instruction.COLLEGE.eq(college)).
+					orderBy(Instruction.CREATED.desc()).
+					limit(5).
+					select(context);
 		}
 	}
 

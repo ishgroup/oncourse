@@ -10,11 +10,8 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.usi.crypto.CryptoUtils;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,6 +30,9 @@ import org.bouncycastle.util.encoders.Base64;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 public class Overview {
@@ -42,18 +42,18 @@ public class Overview {
 	private static final String BUCKET_NAME_PARAMETER = "bucket_name";
 	private static final String USER_NAME_PARAMETER = "user_name";
 	
-	private static final String[] LICENSE_KEYS = new String[] {
-		PreferenceController.LICENSE_ACCESS_CONTROL,
-		PreferenceController.LICENSE_LDAP,
-		PreferenceController.LICENSE_BUDGET,
-		PreferenceController.LICENSE_EXTENRNAL_DB,
-		PreferenceController.LICENSE_SSL,
-		PreferenceController.LICENSE_SMS,
-		PreferenceController.LICENSE_CC_PROCESSING,
-		PreferenceController.LICENSE_PAYROLL,
-		PreferenceController.LICENSE_WEBSITE,
-		PreferenceController.LICENSE_VOUCHER
-	};
+	private static final Collection<String> LICENSE_KEYS = new HashSet<>(Arrays.asList(new String[]{
+			PreferenceController.LICENSE_ACCESS_CONTROL,
+			PreferenceController.LICENSE_LDAP,
+			PreferenceController.LICENSE_BUDGET,
+			PreferenceController.LICENSE_EXTENRNAL_DB,
+			PreferenceController.LICENSE_SSL,
+			PreferenceController.LICENSE_SMS,
+			PreferenceController.LICENSE_CC_PROCESSING,
+			PreferenceController.LICENSE_PAYROLL,
+			PreferenceController.LICENSE_WEBSITE,
+			PreferenceController.LICENSE_VOUCHER
+	}));
 	
 	@Inject
 	private ICollegeService collegeService;
@@ -214,22 +214,19 @@ public class Overview {
 	
 	private void disableCollege(ObjectContext context, College college) {
 		college.setBillingCode(null);
-		
-		Expression licensePrefsExp = ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, college)
-				.andExp(ExpressionFactory.inExp(Preference.NAME_PROPERTY, (Object[]) LICENSE_KEYS));
-		Expression replicationPrefExp = ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, college)
-				.andExp(ExpressionFactory.matchExp(Preference.NAME_PROPERTY, PreferenceController.REPLICATION_ENABLED));
-		
-		SelectQuery licenseQuery = new SelectQuery(Preference.class, licensePrefsExp);
-		List<Preference> licensePrefs = context.performQuery(licenseQuery);
-		
+
+		List<Preference> licensePrefs = ObjectSelect.query(Preference.class).
+				where(Preference.COLLEGE.eq(college).
+						andExp(Preference.NAME.in(LICENSE_KEYS))).
+				select(context);
 		for (Preference pref : licensePrefs) {
 			pref.setValueString(Boolean.toString(false));
 		}
 		
-		SelectQuery relicationPrefQuery = new SelectQuery(Preference.class, replicationPrefExp);
-		Preference replicationPref = (Preference) Cayenne.objectForQuery(context, relicationPrefQuery);
-		
+		Preference replicationPref = ObjectSelect.query(Preference.class).
+				where(Preference.COLLEGE.eq(college).
+						andExp(Preference.NAME.eq(PreferenceController.REPLICATION_ENABLED))).
+				selectFirst(context);
 		if (replicationPref != null) {
 			replicationPref.setValueString(Boolean.toString(false));
 		}
