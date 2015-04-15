@@ -11,7 +11,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
@@ -148,15 +147,16 @@ public class SupportLogin {
 		contact = null;
 		loginForm.clearErrors();
 		
-		Expression exp = Contact.EMAIL_ADDRESS.eq(email).andExp(Contact.COLLEGE.eq(college));
+		ObjectSelect<Contact> query = ObjectSelect.query(Contact.class).
+				where(Contact.EMAIL_ADDRESS.eq(email)).
+				and(Contact.COLLEGE.eq(college));
 		if (isCompany) {
-			exp = exp.andExp(Contact.FAMILY_NAME.eq(companyName));
+			query = query.and(Contact.FAMILY_NAME.eq(companyName));
 		} else {
-			exp = exp.andExp(Contact.GIVEN_NAME.eq(firstName));
-			exp = exp.andExp(Contact.FAMILY_NAME.eq(lastName));
+			query = query.and(Contact.GIVEN_NAME.eq(firstName));
+			query = query.and(Contact.FAMILY_NAME.eq(lastName));
 		}
-
-		List<Contact> users = ObjectSelect.query(Contact.class).where(exp).select(context);
+		List<Contact> users = query.select(context);
 		
 		if ( users == null || users.isEmpty()) {
 			loginForm.recordError(String.format(CONTACT_NOT_EXIST_MESSAGE, college.getName()));
