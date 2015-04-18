@@ -21,10 +21,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.templates.IWebTemplateService;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -134,16 +132,12 @@ public class TemplateResourceFactory implements ResourceFactory {
 	
 	private List<DirectoryResource> listLayouts() {
 		ObjectContext context = cayenneService.newContext();
-
-		SelectQuery query = new SelectQuery(WebSiteLayout.class);
 		
-		query.andQualifier(ExpressionFactory.matchExp(WebSiteLayout.WEB_SITE_VERSION_PROPERTY,
-                context.localObject(webSiteVersionService.getCurrentVersion())));
+		List<WebSiteLayout> layouts = ObjectSelect.query(WebSiteLayout.class).
+				where(WebSiteLayout.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion())).
+				select(context);
 		
 		List<DirectoryResource> directoryResources = new ArrayList<>();
-		
-		List<WebSiteLayout> layouts = context.performQuery(query);
-		
 		for (WebSiteLayout layout : layouts) {
 			directoryResources.add(new LayoutDirectoryResource(layout.getLayoutKey(), layout, securityManager));
 		}
@@ -177,13 +171,10 @@ public class TemplateResourceFactory implements ResourceFactory {
 	private WebSiteLayout getLayoutByName(String name) {
 		ObjectContext context = cayenneService.newContext();
 
-		SelectQuery query = new SelectQuery(WebSiteLayout.class);
-
-		query.andQualifier(ExpressionFactory.matchExp(WebSiteLayout.WEB_SITE_VERSION_PROPERTY,
-                context.localObject(webSiteVersionService.getCurrentVersion())));
-		query.andQualifier(ExpressionFactory.matchExp(WebSiteLayout.LAYOUT_KEY_PROPERTY, name));
-
-		return  (WebSiteLayout) Cayenne.objectForQuery(context, query);
+		return ObjectSelect.query(WebSiteLayout.class).
+				where(WebSiteLayout.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion())).
+				and(WebSiteLayout.LAYOUT_KEY.eq(name)).
+				selectOne(context);
 	}
 	
 	private WebSiteLayout createLayout(String name) {

@@ -8,8 +8,7 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.security.AuthenticationUtil;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -68,13 +67,11 @@ public class AuthenticationService implements IAuthenticationService {
 	private AuthenticationStatus authenticateWillowUser(String userName, String password) {
 		College college = siteService.getCurrentCollege();
 
-		SelectQuery query = new SelectQuery(WillowUser.class);
-		query.andQualifier(ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, college));
-		query.orQualifier(ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, null));
 
-		query.andQualifier(ExpressionFactory.matchExp(WillowUser.EMAIL_PROPERTY, userName));
-
-		final List<WillowUser> users = cayenneService.newContext().performQuery(query);
+		List<WillowUser> users = ObjectSelect.query(WillowUser.class).
+				where(SystemUser.COLLEGE.eq(college).orExp(SystemUser.COLLEGE.isNull())).
+				and(SystemUser.EMAIL.eq(userName)).
+				select(cayenneService.newContext());
 
 		if (users.isEmpty()) {
 			return AuthenticationStatus.NO_MATCHING_USER;
@@ -96,11 +93,11 @@ public class AuthenticationService implements IAuthenticationService {
 	private AuthenticationStatus authenticateByEmail(String email, String password) {
 
 		College college = siteService.getCurrentCollege();
-
-		SelectQuery systemUserEmailQuery = new SelectQuery(SystemUser.class);
-		systemUserEmailQuery.andQualifier(ExpressionFactory.matchExp(SystemUser.COLLEGE_PROPERTY, college));
-		systemUserEmailQuery.andQualifier(ExpressionFactory.matchExp(SystemUser.EMAIL_PROPERTY, email));
-		List<SystemUser> systemUsers = cayenneService.newContext().performQuery(systemUserEmailQuery);
+		
+		List<SystemUser> systemUsers = ObjectSelect.query(SystemUser.class).
+				where(SystemUser.COLLEGE.eq(college)).
+				and(SystemUser.EMAIL.eq(email)).
+				select(cayenneService.newContext());
 
 		if (systemUsers.isEmpty()) {
 			return AuthenticationStatus.NO_MATCHING_USER;
@@ -123,11 +120,12 @@ public class AuthenticationService implements IAuthenticationService {
 
 		College college = siteService.getCurrentCollege();
 
-		SelectQuery systemUserLoginQuery = new SelectQuery(SystemUser.class);
-		systemUserLoginQuery.andQualifier(ExpressionFactory.matchExp(SystemUser.COLLEGE_PROPERTY, college));
-		systemUserLoginQuery.andQualifier(ExpressionFactory.matchExp(SystemUser.LOGIN_PROPERTY, login));
-		List<SystemUser> systemUsers = cayenneService.newContext().performQuery(systemUserLoginQuery);
 
+		List<SystemUser> systemUsers = ObjectSelect.query(SystemUser.class).
+				where(SystemUser.COLLEGE.eq(college)).
+				and(SystemUser.LOGIN.eq(login)).
+				select(cayenneService.newContext());
+		
 		if (systemUsers.isEmpty()) {
 			return AuthenticationStatus.NO_MATCHING_USER;
 		}

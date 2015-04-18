@@ -10,7 +10,8 @@ import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.SelectById;
 import org.apache.commons.lang.time.DateUtils;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -24,8 +25,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class CMSWebSiteVersionServiceTest extends ServiceTest {
 
@@ -61,23 +61,23 @@ public class CMSWebSiteVersionServiceTest extends ServiceTest {
 		WebSiteVersion currentVersion = webSiteVersionService.getCurrentVersion();
 
 		//case 1 always to keep at least 5 revisions, even if they are older than 60 days
-		SelectQuery selectQuery = new SelectQuery(WebSite.class, ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, 1));
-		List<WebSite> webSites = context.performQuery(selectQuery);
-		assertEquals(1, webSites.size());
-		WebSite siteToDelete = webSites.get(0);
-
-		selectQuery = new SelectQuery(WebSiteVersion.class, ExpressionFactory.matchExp(WebSiteVersion.WEB_SITE_PROPERTY, siteToDelete));
-		List<WebSiteVersion> allVersions = context.performQuery(selectQuery);
-
+		WebSite siteToDelete = SelectById.query(WebSite.class, 1).selectOne(context);
+		assertNotNull(siteToDelete);
+		
+		List<WebSiteVersion> allVersions = ObjectSelect.query(WebSiteVersion.class).
+				where(WebSiteVersion.WEB_SITE.eq(siteToDelete)).
+				select(context);
 		assertEquals(12, allVersions.size());
 		//number of revisions which younger than 60 days
-		assertEquals(3, ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
+		assertEquals(3, WebSiteVersion.DEPLOYED_ON.gt(DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
 		//unpublished revisions yet (always one)
-		assertEquals(1, ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null).filterObjects(allVersions).size());
+		assertEquals(1, WebSiteVersion.DEPLOYED_ON.isNull().filterObjects(allVersions).size());
 
 		webSiteVersionService.removeOldWebSiteVersions(siteToDelete);
 
-		allVersions = context.performQuery(selectQuery);
+		allVersions = ObjectSelect.query(WebSiteVersion.class).
+				where(WebSiteVersion.WEB_SITE.eq(siteToDelete)).
+				select(context);
 
 		//the number of remaining
 		assertEquals(5, allVersions.size());
@@ -90,30 +90,31 @@ public class CMSWebSiteVersionServiceTest extends ServiceTest {
 
 
 		//case 2 delete all revisions older than 60 days (number of revisions which younger than 60 days more than 5)
-		selectQuery = new SelectQuery(WebSite.class, ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, 2));
-		webSites = context.performQuery(selectQuery);
-		assertEquals(1, webSites.size());
-		siteToDelete = webSites.get(0);
+		siteToDelete = SelectById.query(WebSite.class, 2).selectOne(context);
+		assertNotNull(siteToDelete);
 
-		selectQuery = new SelectQuery(WebSiteVersion.class, ExpressionFactory.matchExp(WebSiteVersion.WEB_SITE_PROPERTY, siteToDelete));
-		allVersions = context.performQuery(selectQuery);
+		allVersions = ObjectSelect.query(WebSiteVersion.class).
+				where(WebSiteVersion.WEB_SITE.eq(siteToDelete)).
+				select(context);
 
 		assertEquals(12, allVersions.size());
 		//number of revisions which younger than 60 days
-		assertEquals(7, ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
+		assertEquals(7, WebSiteVersion.DEPLOYED_ON.gt(DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
 		//unpublished revisions yet (always one)
-		assertEquals(1, ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null).filterObjects(allVersions).size());
+		assertEquals(1, WebSiteVersion.DEPLOYED_ON.isNull().filterObjects(allVersions).size());
 
 		webSiteVersionService.removeOldWebSiteVersions(siteToDelete);
 
-		allVersions = context.performQuery(selectQuery);
+		allVersions = ObjectSelect.query(WebSiteVersion.class).
+				where(WebSiteVersion.WEB_SITE.eq(siteToDelete)).
+				select(context);
 
 		//the number of remaining
 		assertEquals(8, allVersions.size());
 		//including number of revisions younger than 60 days (currently deployed too)
-		assertEquals(7, ExpressionFactory.greaterExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
+		assertEquals(7, WebSiteVersion.DEPLOYED_ON.gt(DateUtils.addDays(new Date(), -60)).filterObjects(allVersions).size());
 		//unpublished revisions yet 
-		assertEquals(1, ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null).filterObjects(allVersions).size());
+		assertEquals(1, WebSiteVersion.DEPLOYED_ON.isNull().filterObjects(allVersions).size());
 
 	}
 
@@ -122,10 +123,9 @@ public class CMSWebSiteVersionServiceTest extends ServiceTest {
 	public void testDeleteWebSiteVersion() {
 		ObjectContext context = cayenneService.newContext();
 
-		SelectQuery selectQuery = new SelectQuery(WebSiteVersion.class, ExpressionFactory.matchDbExp(WebSiteVersion.ID_PK_COLUMN, 3));
-		List<WebSiteVersion> list = context.performQuery(selectQuery);
-		assertEquals(1,list.size());
-		WebSiteVersion versionToDelete = list.get(0);
+		WebSiteVersion versionToDelete = SelectById.query(WebSiteVersion.class, 3).selectOne(context);
+		
+		assertNotNull(versionToDelete);
 
 		checkCountOfObjectBeforeMethod(context, versionToDelete);
 
@@ -135,27 +135,16 @@ public class CMSWebSiteVersionServiceTest extends ServiceTest {
 	}
 
 	private void checkCountOfObjectBeforeMethod(ObjectContext context, WebSiteVersion versionToDelete) {
-		SelectQuery selectQuery1 = new SelectQuery(WebSite.class);
-		SelectQuery selectQuery2 = new SelectQuery(WebSiteVersion.class);
-		SelectQuery selectQuery3 = new SelectQuery(WebSiteLayout.class);
-		SelectQuery selectQuery4 = new SelectQuery(WebTemplate.class);
-		SelectQuery selectQuery5 = new SelectQuery(WebNodeType.class);
-		SelectQuery selectQuery6 = new SelectQuery(WebNode.class);
-		SelectQuery selectQuery7 = new SelectQuery(WebUrlAlias.class);
-		SelectQuery selectQuery8 = new SelectQuery(WebContent.class);
-		SelectQuery selectQuery9 = new SelectQuery(WebContentVisibility.class);
-		SelectQuery selectQuery0 = new SelectQuery(WebMenu.class);
-
-		List<WebSite> list1 = context.performQuery(selectQuery1);
-		List<WebSiteVersion> list2 = context.performQuery(selectQuery2);
-		List<WebSiteLayout> list3 = context.performQuery(selectQuery3);
-		List<WebTemplate> list4 = context.performQuery(selectQuery4);
-		List<WebNodeType> list5 = context.performQuery(selectQuery5);
-		List<WebNode> list6 = context.performQuery(selectQuery6);
-		List<WebUrlAlias> list7 = context.performQuery(selectQuery7);
-		List<WebContent> list8 = context.performQuery(selectQuery8);
-		List<WebContentVisibility> list9 = context.performQuery(selectQuery9);
-		List<WebMenu> list0 = context.performQuery(selectQuery0);
+		List<WebSite> list1 = ObjectSelect.query(WebSite.class).select(context);
+		List<WebSiteVersion> list2 = ObjectSelect.query(WebSiteVersion.class).select(context);
+		List<WebSiteLayout> list3 = ObjectSelect.query(WebSiteLayout.class).select(context);
+		List<WebTemplate> list4 = ObjectSelect.query(WebTemplate.class).select(context);
+		List<WebNodeType> list5 = ObjectSelect.query(WebNodeType.class).select(context);
+		List<WebNode> list6 = ObjectSelect.query(WebNode.class).select(context);
+		List<WebUrlAlias> list7 = ObjectSelect.query(WebUrlAlias.class).select(context);
+		List<WebContent> list8 = ObjectSelect.query(WebContent.class).select(context);
+		List<WebContentVisibility> list9 = ObjectSelect.query(WebContentVisibility.class).select(context);
+		List<WebMenu> list0 = ObjectSelect.query(WebMenu.class).select(context);
 
 		assertEquals(2, list1.size());
 		assertEquals(24, list2.size());
@@ -168,14 +157,14 @@ public class CMSWebSiteVersionServiceTest extends ServiceTest {
 		assertEquals(16, list9.size());
 		assertEquals(16, list0.size());
 
-		List<WebSiteLayout> webSiteLayouts = ExpressionFactory.matchExp(WebSiteLayout.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list3);
-		List<WebTemplate> webTemplates = ExpressionFactory.matchExp(WebTemplate.LAYOUT_PROPERTY, webSiteLayouts).filterObjects(list4);
-		List<WebNodeType> webNodeTypes = ExpressionFactory.matchExp(WebNodeType.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list5);
-		List<WebNode> webNodes = ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list6);
-		List<WebUrlAlias> webUrlAliases = ExpressionFactory.matchExp(WebUrlAlias.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list7);
-		List<WebContent> webContents = ExpressionFactory.matchExp(WebContent.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list8);
-		List<WebContentVisibility> webContentVisibilities = ExpressionFactory.matchExp(WebContentVisibility.WEB_CONTENT_PROPERTY, webContents).filterObjects(list9);
-		List<WebMenu> menuList = ExpressionFactory.matchExp(WebMenu.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list0);
+		List<WebSiteLayout> webSiteLayouts = WebSiteLayout.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list3);
+		List<WebTemplate> webTemplates = WebTemplate.LAYOUT.in(webSiteLayouts).filterObjects(list4);
+		List<WebNodeType> webNodeTypes = WebNodeType.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list5);
+		List<WebNode> webNodes = WebNode.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list6);
+		List<WebUrlAlias> webUrlAliases = WebUrlAlias.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list7);
+		List<WebContent> webContents = WebContent.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list8);
+		List<WebContentVisibility> webContentVisibilities = WebContentVisibility.WEB_CONTENT.in(webContents).filterObjects(list9);
+		List<WebMenu> menuList = WebMenu.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list0);
 
 		assertEquals(4, webSiteLayouts.size());
 		assertEquals(18, webTemplates.size());
@@ -188,27 +177,16 @@ public class CMSWebSiteVersionServiceTest extends ServiceTest {
 	}
 
 	private void checkCountOfObjectAfterMethod(ObjectContext context, WebSiteVersion versionToDelete) {
-		SelectQuery selectQuery1 = new SelectQuery(WebSite.class);
-		SelectQuery selectQuery2 = new SelectQuery(WebSiteVersion.class);
-		SelectQuery selectQuery3 = new SelectQuery(WebSiteLayout.class);
-		SelectQuery selectQuery4 = new SelectQuery(WebTemplate.class);
-		SelectQuery selectQuery5 = new SelectQuery(WebNodeType.class);
-		SelectQuery selectQuery6 = new SelectQuery(WebNode.class);
-		SelectQuery selectQuery7 = new SelectQuery(WebUrlAlias.class);
-		SelectQuery selectQuery8 = new SelectQuery(WebContent.class);
-		SelectQuery selectQuery9 = new SelectQuery(WebContentVisibility.class);
-		SelectQuery selectQuery0 = new SelectQuery(WebMenu.class);
-
-		List<WebSite> list1 = context.performQuery(selectQuery1);
-		List<WebSiteVersion> list2 = context.performQuery(selectQuery2);
-		List<WebSiteLayout> list3 = context.performQuery(selectQuery3);
-		List<WebTemplate> list4 = context.performQuery(selectQuery4);
-		List<WebNodeType> list5 = context.performQuery(selectQuery5);
-		List<WebNode> list6 = context.performQuery(selectQuery6);
-		List<WebUrlAlias> list7 = context.performQuery(selectQuery7);
-		List<WebContent> list8 = context.performQuery(selectQuery8);
-		List<WebContentVisibility> list9 = context.performQuery(selectQuery9);
-		List<WebMenu> list0 = context.performQuery(selectQuery0);
+		List<WebSite> list1 = ObjectSelect.query(WebSite.class).select(context);
+		List<WebSiteVersion> list2 = ObjectSelect.query(WebSiteVersion.class).select(context);
+		List<WebSiteLayout> list3 = ObjectSelect.query(WebSiteLayout.class).select(context);
+		List<WebTemplate> list4 = ObjectSelect.query(WebTemplate.class).select(context);
+		List<WebNodeType> list5 = ObjectSelect.query(WebNodeType.class).select(context);
+		List<WebNode> list6 = ObjectSelect.query(WebNode.class).select(context);
+		List<WebUrlAlias> list7 = ObjectSelect.query(WebUrlAlias.class).select(context);
+		List<WebContent> list8 = ObjectSelect.query(WebContent.class).select(context);
+		List<WebContentVisibility> list9 = ObjectSelect.query(WebContentVisibility.class).select(context);
+		List<WebMenu> list0 = ObjectSelect.query(WebMenu.class).select(context);
 
 		assertEquals(2, list1.size());
 		assertEquals(23, list2.size());
@@ -221,14 +199,14 @@ public class CMSWebSiteVersionServiceTest extends ServiceTest {
 		assertEquals(9, list9.size());
 		assertEquals(6, list0.size());
 
-		List<WebSiteLayout> webSiteLayouts = ExpressionFactory.matchExp(WebSiteLayout.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list3);
-		List<WebTemplate> webTemplates = ExpressionFactory.matchExp(WebTemplate.LAYOUT_PROPERTY, webSiteLayouts).filterObjects(list4);
-		List<WebNodeType> webNodeTypes = ExpressionFactory.matchExp(WebNodeType.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list5);
-		List<WebNode> webNodes = ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list6);
-		List<WebUrlAlias> webUrlAliases = ExpressionFactory.matchExp(WebUrlAlias.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list7);
-		List<WebContent> webContents = ExpressionFactory.matchExp(WebContent.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list8);
-		List<WebContentVisibility> webContentVisibilities = ExpressionFactory.matchExp(WebContentVisibility.WEB_CONTENT_PROPERTY, webContents).filterObjects(list9);
-		List<WebMenu> menuList = ExpressionFactory.matchExp(WebMenu.WEB_SITE_VERSION_PROPERTY, versionToDelete).filterObjects(list0);
+		List<WebSiteLayout> webSiteLayouts = WebSiteLayout.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list3);
+		List<WebTemplate> webTemplates = WebTemplate.LAYOUT.in(webSiteLayouts).filterObjects(list4);
+		List<WebNodeType> webNodeTypes = WebNodeType.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list5);
+		List<WebNode> webNodes = WebNode.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list6);
+		List<WebUrlAlias> webUrlAliases = WebUrlAlias.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list7);
+		List<WebContent> webContents = WebContent.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list8);
+		List<WebContentVisibility> webContentVisibilities = WebContentVisibility.WEB_CONTENT.in(webContents).filterObjects(list9);
+		List<WebMenu> menuList = WebMenu.WEB_SITE_VERSION.eq(versionToDelete).filterObjects(list0);
 
 		assertEquals(0, webSiteLayouts.size());
 		assertEquals(0, webTemplates.size());

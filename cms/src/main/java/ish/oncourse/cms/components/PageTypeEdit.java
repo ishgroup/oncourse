@@ -11,7 +11,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -169,9 +169,9 @@ public class PageTypeEdit {
 
 	private String[] readAvailableLayouts() {
 
-		Expression expression = ExpressionFactory.matchExp(WebSiteLayout.WEB_SITE_VERSION_PROPERTY, editPageType.getWebSiteVersion());
-		SelectQuery query = new SelectQuery(WebSiteLayout.class, expression);
-		List<WebSiteLayout> layouts = cayenneService.sharedContext().performQuery(query);
+		List<WebSiteLayout> layouts = ObjectSelect.query(WebSiteLayout.class).
+				where(WebSiteLayout.WEB_SITE_VERSION.eq(editPageType.getWebSiteVersion())).
+				select(cayenneService.sharedContext());
 		
 		String[] availableLayouts = new String[layouts.size()];
 		for (int i = 0; i < layouts.size(); i++) {

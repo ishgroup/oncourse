@@ -9,11 +9,11 @@ import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSitePublisher;
 import ish.oncourse.services.system.ICollegeService;
 import ish.util.SecurityUtil;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SelectById;
 import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -278,7 +278,7 @@ public class Web {
 	void setMainDomainEvent(Long domainId)
 	{
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		WebHostName webHostName = Cayenne.objectForPK(context, WebHostName.class, domainId);
+		WebHostName webHostName = SelectById.query(WebHostName.class, domainId).selectOne(context);
 		webHostName.getWebSite().setToWebHostName(webHostName);
 		context.commitChanges();
 	}
@@ -301,7 +301,7 @@ public class Web {
 	Object onActionFromDeleteDomain(Long id) {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
-		WebHostName domain = Cayenne.objectForPK(context,WebHostName.class, id);
+		WebHostName domain = SelectById.query(WebHostName.class, id).selectOne(context);
 		WebSite webSite = domain.getWebSite();
 
 		WebHostName mainDomain = webSite.getToWebHostName();

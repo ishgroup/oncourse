@@ -11,11 +11,8 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSitePublisher;
 import ish.oncourse.util.ContextUtil;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
@@ -56,12 +53,10 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	}
 	
 	private WebSiteVersion getDraftVersion(WebSite webSite) {
-		SelectQuery query = new SelectQuery(WebSiteVersion.class);
-
-		query.andQualifier(ExpressionFactory.matchExp(WebSiteVersion.WEB_SITE_PROPERTY, webSite));
-		query.andQualifier(ExpressionFactory.matchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null));
-
-		return (WebSiteVersion) Cayenne.objectForQuery(webSite.getObjectContext(), query);
+		return ObjectSelect.query(WebSiteVersion.class).
+				where(WebSiteVersion.WEB_SITE.eq(webSite)).
+				and(WebSiteVersion.DEPLOYED_ON.isNull()).
+				selectOne(webSite.getObjectContext());
 	}
 
 	@Override
@@ -141,30 +136,28 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	}
 
 
-	//delete all revisions older than 60 days, but always to keep at least 5 revisions, even if they are older
+	/**
+		delete all revisions older than 60 days, but always keep at least 5 revisions, even if they are older
+	 */
 	@Override
 	public void removeOldWebSiteVersions(WebSite webSite) {
 		ObjectContext context = cayenneService.newContext();
-		//delete all revisions older than 60 days
-		Date deleteBeforeDate = DateUtils.addDays(new Date(), -60);
 
-		SelectQuery query = new SelectQuery(WebSiteVersion.class);
-		query.andQualifier(ExpressionFactory.matchExp(WebSiteVersion.WEB_SITE_PROPERTY, webSite));
-		//exclude unpublished revisions yet
-		query.andQualifier(ExpressionFactory.noMatchExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, null));
-		query.addOrdering(WebSiteVersion.DEPLOYED_ON_PROPERTY, SortOrder.DESCENDING);
-
-		List<WebSiteVersion> allVersions = context.performQuery(query);
+		List<WebSiteVersion> allVersions = ObjectSelect.query(WebSiteVersion.class).
+				where(WebSiteVersion.WEB_SITE.eq(webSite)).
+				and(WebSiteVersion.DEPLOYED_ON.isNotNull()).  //exclude unpublished revisions
+				orderBy(WebSiteVersion.DEPLOYED_ON.desc()).
+				select(context);
 
 		//if number of revisions less than 5 (4 + 1 unpublished) - nothing to delete 
 		if (allVersions.size() > KEEP_AT_LEAST) {
-		
-			List<WebSiteVersion> versionsToDelete = new ArrayList<>();
 
 			//don't delete the last few
-			versionsToDelete = allVersions.subList(KEEP_AT_LEAST, allVersions.size());
+			List<WebSiteVersion> versionsToDelete = allVersions.subList(KEEP_AT_LEAST, allVersions.size());
+			
 			//delete all revisions older than 60 days
-			versionsToDelete = ExpressionFactory.lessExp(WebSiteVersion.DEPLOYED_ON_PROPERTY, deleteBeforeDate).filterObjects(versionsToDelete);
+			Date deleteBeforeDate = DateUtils.addDays(new Date(), -60);
+			versionsToDelete = WebSiteVersion.DEPLOYED_ON.lt(deleteBeforeDate).filterObjects(versionsToDelete);
 
 			for (WebSiteVersion version : versionsToDelete) {
 				delete(version);
