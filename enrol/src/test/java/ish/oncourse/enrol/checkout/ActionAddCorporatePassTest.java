@@ -6,7 +6,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
 import org.apache.cayenne.PersistenceState;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,8 +45,7 @@ public class ActionAddCorporatePassTest extends ACheckoutTest {
 		purchaseController.performAction(actionParameter);
 
 		assertTrue(purchaseController.getPaymentEditorDelegate().isCorporatePass());
-		SelectQuery query = new SelectQuery(PaymentIn.class);
-		assertEquals(0, purchaseController.getModel().getObjectContext().performQuery(query).size());
+		assertEquals(0, ObjectSelect.query(PaymentIn.class).select(purchaseController.getModel().getObjectContext()).size());
 
 		List<Enrolment> enrolments = purchaseController.getModel().getAllEnabledEnrolments();
 		for (Enrolment enrolment : enrolments) {
@@ -67,8 +66,7 @@ public class ActionAddCorporatePassTest extends ACheckoutTest {
 		purchaseController.performAction(actionParameter);
 
 		assertTrue(purchaseController.getPaymentEditorDelegate().isCorporatePass());
-		SelectQuery query = new SelectQuery(PaymentIn.class);
-		assertEquals(0, purchaseController.getModel().getObjectContext().performQuery(query).size());
+		assertEquals(0, ObjectSelect.query(PaymentIn.class).select(purchaseController.getModel().getObjectContext()).size());
 
 		List<Enrolment> enrolments = purchaseController.getModel().getAllEnabledEnrolments();
 		for (Enrolment enrolment : enrolments) {

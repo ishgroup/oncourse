@@ -11,12 +11,14 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
 import static org.junit.Assert.*;
@@ -181,10 +183,12 @@ public class ApplicationProcessTest extends ACheckoutTest {
 		
 		assertEquals(ApplicationStatus.ACCEPTED, application.getStatus());
 		
-		Expression expression = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, enabledEnrolment.getStudent())
-				.andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, enabledEnrolment.getCourseClass()))
-				.andExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
+		List<Enrolment> enrolments = ObjectSelect.query(Enrolment.class).
+				where(Enrolment.STUDENT.eq(enabledEnrolment.getStudent())).
+				and(Enrolment.COURSE_CLASS.eq(enabledEnrolment.getCourseClass())).
+				and(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS)).
+				select(context);
 		
-		assertEquals(1, context.performQuery(new SelectQuery(Enrolment.class, expression)).size());
+		assertEquals(1, enrolments.size());
 	}
 }

@@ -8,8 +8,7 @@ import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.model.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -235,9 +234,11 @@ public class ProductItemTest extends ACheckoutTest {
 		assertEquals(ProductStatus.ACTIVE ,model.getAllEnabledProductItems().get(0).getStatus());
 		assertEquals(PaymentStatus.SUCCESS, purchaseController.getPaymentEditorDelegate().getPaymentIn().getStatus());
 
-		ObjectContext objectContext = purchaseController.getModel().getObjectContext();
-		SelectQuery selectQuery = new SelectQuery(QueuedRecord.class, ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Article"));
-		List list = objectContext.performQuery(selectQuery);
+		ObjectContext context = purchaseController.getModel().getObjectContext();
+		List list = ObjectSelect.query(QueuedRecord.class).
+				where(QueuedRecord.ENTITY_IDENTIFIER.eq("Article")).
+				select(context);
+		
 		assertFalse("QueuedRecords for article entity should exist in the queue", list.isEmpty());
 	}
 

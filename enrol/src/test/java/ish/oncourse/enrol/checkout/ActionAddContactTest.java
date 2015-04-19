@@ -6,9 +6,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.time.DateUtils;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.junit.Before;
@@ -112,11 +110,12 @@ public class ActionAddContactTest extends ACheckoutTest {
         contactCredentials = createContactCredentialsBy("Child1", "Parent1", "Child1@Parent1.net");
         parameter.setValue(contactCredentials);
         performAction(parameter);
-
-        SelectQuery selectQuery = new SelectQuery(QueuedTransaction.class);
-        selectQuery.addOrdering(new Ordering(QueuedTransaction.CREATED_PROPERTY, SortOrder.ASCENDING));
-        ObjectContext objectContext = cayenneService.newContext();
-        List<QueuedTransaction> queuedTransactions = objectContext.performQuery(selectQuery);
+	    
+        ObjectContext context = cayenneService.newContext();
+        List<QueuedTransaction> queuedTransactions = ObjectSelect.query(QueuedTransaction.class).
+		        orderBy(QueuedTransaction.CREATED.asc()).
+		        select(context);
+	    
         //five transaction: preference, preference, Student-Contact, Student-Contact, Contact-ContactRelation-Contact
         assertEquals(5, queuedTransactions.size());
 

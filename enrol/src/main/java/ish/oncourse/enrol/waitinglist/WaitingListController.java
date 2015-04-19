@@ -5,9 +5,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CustomField;
 import ish.oncourse.model.WaitingList;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.List;
 
@@ -73,14 +71,14 @@ public class WaitingListController extends AContactController {
 	}
 
 	private boolean alreadyAdded() {
-		if (getContact().getStudent().getObjectId().isTemporary())
+		if (getContact().getStudent().getObjectId().isTemporary()) {
 			return false;
-		SelectQuery selectQuery = new SelectQuery(WaitingList.class);
-
-		Expression exp = ExpressionFactory.matchExp(WaitingList.STUDENT_PROPERTY, getContact().getStudent());
-		exp = exp.andExp(ExpressionFactory.matchExp(WaitingList.COURSE_PROPERTY, course));
-		selectQuery.setQualifier(exp);
-		List<WaitingList> waitingLists = getObjectContext().performQuery(selectQuery);
+		}
+		List<WaitingList> waitingLists = ObjectSelect.query(WaitingList.class).
+				where(WaitingList.STUDENT.eq(getContact().getStudent())).
+				and(WaitingList.COURSE.eq(course)).
+				select(getObjectContext());
+				
 		return !waitingLists.isEmpty();
 	}
 

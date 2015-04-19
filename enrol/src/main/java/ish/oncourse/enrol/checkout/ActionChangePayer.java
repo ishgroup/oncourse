@@ -5,8 +5,7 @@ import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.Calendar;
 import java.util.List;
@@ -30,7 +29,7 @@ public class ActionChangePayer extends APurchaseAction {
     }
 
     /**
-     * Check if there are in_transaction payments on enroling contact. If finds any it abandons them.
+     * Check if there are in_transaction payments on enrolling contact. If finds any it abandons them.
 	 *
      */
     private boolean validateAndCompleteInTransactionPayments() {
@@ -38,9 +37,17 @@ public class ActionChangePayer extends APurchaseAction {
             return true;
         ObjectContext context = getController().getCayenneService().newContext();
 
-		List<PaymentIn> payments = context.performQuery(getPaymentsSelectQuery());
-
-        PaymentIn current = getModel().getPayment();
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
+	    
+		List<PaymentIn> payments = ObjectSelect.query(PaymentIn.class).
+				where(PaymentIn.STATUS.in(PaymentStatus.IN_TRANSACTION, PaymentStatus.CARD_DETAILS_REQUIRED)).
+	            and(PaymentIn.CONTACT.eq(contact)).
+	            and(PaymentIn.SOURCE.eq(PaymentSource.SOURCE_WEB)).
+				and(PaymentIn.CREATED.gt(calendar.getTime())).
+				select(context);
+	    
+	    PaymentIn current = getModel().getPayment();
 
         for (PaymentIn p : payments) {
             if (!current.getObjectId().isTemporary() &&
@@ -61,21 +68,6 @@ public class ActionChangePayer extends APurchaseAction {
         context.commitChanges();
 		return true;
     }
-
-	public SelectQuery getPaymentsSelectQuery()
-	{
-		SelectQuery q = new SelectQuery(PaymentIn.class);
-		q.andQualifier(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.IN_TRANSACTION, PaymentStatus.CARD_DETAILS_REQUIRED));
-		q.andQualifier(ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, contact));
-		q.andQualifier(ExpressionFactory.matchExp(PaymentIn.SOURCE_PROPERTY, PaymentSource.SOURCE_WEB));
-
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
-		q.andQualifier(ExpressionFactory.greaterExp(PaymentIn.CREATED_PROPERTY, calendar.getTime()));
-
-		return  q;
-	}
 
     @Override
     protected void makeAction() {

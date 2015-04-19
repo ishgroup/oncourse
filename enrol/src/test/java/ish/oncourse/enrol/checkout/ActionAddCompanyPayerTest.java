@@ -13,9 +13,8 @@ import ish.oncourse.services.preference.PreferenceController;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -78,19 +77,17 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 			assertEquals(EnrolmentStatus.SUCCESS, e.getStatus());
 		}
 
-		ObjectContext objectContext = purchaseController.getModel().getObjectContext();
-		SelectQuery selectQuery = new SelectQuery(PaymentIn.class, ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, company));
-		List<PaymentIn> list = objectContext.performQuery(selectQuery);
-		
+		ObjectContext context = purchaseController.getModel().getObjectContext();
+		List<PaymentIn> list = ObjectSelect.query(PaymentIn.class).
+				where(PaymentIn.CONTACT.eq(company)).
+				select(context);
 		
 		//3 payments should be created for payer: failed, revert, and success
 		assertEquals(3, list.size());
 		
 		//get success payment and check it
-		Expression expression = ExpressionFactory.matchExp(PaymentIn.STATUS_PROPERTY,PaymentStatus.SUCCESS)
-				.andExp(ExpressionFactory.matchExp(PaymentIn.TYPE_PROPERTY, PaymentType.CREDIT_CARD));
-		
-		list = expression.filterObjects(list);
+		list = PaymentIn.STATUS.eq(PaymentStatus.SUCCESS)
+				.andExp(PaymentIn.TYPE.eq(PaymentType.CREDIT_CARD)).filterObjects(list);
 		
 		assertEquals(1, list.size());
 		PaymentIn payment = list.get(0);
