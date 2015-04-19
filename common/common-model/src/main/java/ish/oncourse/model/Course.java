@@ -65,6 +65,7 @@ public class Course extends _Course implements Queueable {
 		return list;
 	}
 
+	// TODO: (ari) what is this entire method doing here. It looks like it is just an anti-optimisation method
 	public List<Module> getModules() {
 		final List<Module> result = new ArrayList<>();
 		for (final CourseModule courseModule : getCourseModules()) {
@@ -77,6 +78,7 @@ public class Course extends _Course implements Queueable {
 				module = null;
 			}
 			if (module != null && module.getPersistenceState() == PersistenceState.HOLLOW) {
+				
 				final SelectQuery moduleQuery = new SelectQuery(Module.class);
 				moduleQuery.andQualifier(ExpressionFactory.matchDbExp(Module.ID_PK_COLUMN, module.getId()));
 				@SuppressWarnings("unchecked")
@@ -94,6 +96,7 @@ public class Course extends _Course implements Queueable {
 		return result;
 	}
 
+	// TODO: (ari) what is this entire method doing here. It looks like it is just an anti-optimisation method
 	@Override
 	public Qualification getQualification() {
 		Qualification qualification = null;
