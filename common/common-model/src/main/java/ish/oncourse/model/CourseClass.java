@@ -8,7 +8,6 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
 import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.*;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
@@ -132,29 +131,15 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * 
 	 * @return list of valid enrolments.
 	 */
-	@SuppressWarnings("all")
 	public List<Enrolment> getValidEnrolments() {
-		SelectQuery query = new SelectQuery(Enrolment.class, ExpressionFactory.matchExp(
-				Enrolment.COURSE_CLASS_PROPERTY, this).andExp(
-				ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, Arrays.asList(Enrolment.VALID_ENROLMENTS))));
-		return getObjectContext().performQuery(query);
+		return ObjectSelect.query(Enrolment.class).
+				where(Enrolment.COURSE_CLASS.eq(this)).
+				and(Enrolment.STATUS.in(Enrolment.VALID_ENROLMENTS)).
+				select(getObjectContext());
 	}
-
-	public Long getRecordId() {
-		return (Long) readProperty(ID_PK_COLUMN);
-	}
-
+	
 	public String getUniqueIdentifier() {
 		return getCourse().getCode() + "-" + getCode();
-	}
-
-	public boolean isHasAnyTimelineableSessions() {
-		for (Session session : getSessions()) {
-			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public TimeZone getClassTimeZone() {
@@ -277,7 +262,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 			classSessions = getSessions();
 		}
 		else {
-			Expression expr = ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY, this);
+			Expression expr = Session.COURSE_CLASS.eq(this);
 			SelectQuery q = new SelectQuery(Session.class, expr);
 			/**
 			 * we use CACHE LOCAL_CACHE  Strategy to reduce db requests.
@@ -323,12 +308,11 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Discount> getDiscounts() {
-		SelectQuery query = new SelectQuery(Discount.class, ExpressionFactory.matchExp(
-				Discount.DISCOUNT_COURSE_CLASSES_PROPERTY + "." + DiscountCourseClass.COURSE_CLASS_PROPERTY, this)
-				.andExp(ExpressionFactory.matchExp(Discount.IS_AVAILABLE_ON_WEB_PROPERTY, true))
-				.andExp(Discount.getCurrentDateFilter()));
-
-		return getObjectContext().performQuery(query);
+		return ObjectSelect.query(Discount.class).
+				where(Discount.IS_AVAILABLE_ON_WEB.isTrue()).
+				and(Discount.DISCOUNT_COURSE_CLASSES.dot(DiscountCourseClass.COURSE_CLASS).eq(this)).
+				and(Discount.getCurrentDateFilter()).
+				select(getObjectContext());
 	}
 
 	/**
@@ -339,8 +323,8 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 */
 	public List<Discount> getConcessionDiscounts() {
 
-		List<Discount> availableDiscountsWithoutCode = (ExpressionFactory.matchExp(Discount.CODE_PROPERTY, null))
-				.orExp(ExpressionFactory.matchExp(Discount.CODE_PROPERTY, StringUtils.EMPTY)).filterObjects(getDiscounts());
+		List<Discount> availableDiscountsWithoutCode = (Discount.CODE.isNull())
+				.orExp(Discount.CODE.eq(StringUtils.EMPTY)).filterObjects(getDiscounts());
 
 		List<Discount> discounts = new ArrayList<>(availableDiscountsWithoutCode.size());
 		for (Discount discount : availableDiscountsWithoutCode) {

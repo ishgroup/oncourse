@@ -3,7 +3,6 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._Discount;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,10 +27,8 @@ public class Discount extends _Discount implements Queueable {
 	public static Expression getCurrentDateFilter() {
 		Date now = new Date();
 
-		Expression e = ExpressionFactory.greaterExp(Discount.VALID_TO_PROPERTY, now).orExp(
-				ExpressionFactory.matchExp(Discount.VALID_TO_PROPERTY, null));
-		e = e.andExp(ExpressionFactory.lessExp(Discount.VALID_FROM_PROPERTY, now).orExp(
-				ExpressionFactory.matchExp(Discount.VALID_FROM_PROPERTY, null)));
+		Expression e = Discount.VALID_TO.gt(now).orExp(Discount.VALID_TO.isNull());
+		e = e.andExp(Discount.VALID_FROM.lt(now).orExp(Discount.VALID_FROM.isNull()));
 		return e;
 	}
 

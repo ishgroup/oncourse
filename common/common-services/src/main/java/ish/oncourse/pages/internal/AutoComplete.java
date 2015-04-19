@@ -4,9 +4,7 @@ import ish.oncourse.model.Country;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -70,13 +68,12 @@ public class AutoComplete {
 		String term = StringUtils.trimToNull(request.getParameter(REQUEST_PARAM_term));
 		final JSONArray array = new JSONArray();
 
-		if (term != null)
-		{
+		if (term != null) {
 			ObjectContext context = cayenneService.sharedContext();
-			SelectQuery query = new SelectQuery(Country.class);
-			Expression exp = ExpressionFactory.likeExp(Country.NAME_PROPERTY,"%"+term+"%");
-			query.setQualifier(exp);
-			List<Country> countries = context.performQuery(query);
+			List<Country> countries = ObjectSelect.query(Country.class).
+					where(Country.NAME.likeIgnoreCase("%"+term+"%")).
+					select(context);
+					
 			for (Country country : countries) {
 				JSONObject obj = new JSONObject();
 				obj.put("id", country.getName());

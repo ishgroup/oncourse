@@ -2,11 +2,7 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._College;
 import ish.oncourse.utils.QueueableObjectUtils;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,13 +44,11 @@ public class College extends _College {
 	 * Returns college sites which marked as web visible.
 	 * @return list of sites
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Site> getWebVisibleSites() {
-		Expression expr = ExpressionFactory.matchExp(Site.COLLEGE_PROPERTY, this);
-		expr = expr.andExp(ExpressionFactory.matchExp(Site.IS_WEB_VISIBLE_PROPERTY, true));
-		SelectQuery q = new SelectQuery(Site.class, expr);
-		Ordering order=new Ordering(Site.NAME_PROPERTY, SortOrder.ASCENDING);
-		q.addOrdering(order);
-		return getObjectContext().performQuery(q);
+		return ObjectSelect.query(Site.class).
+				where(Site.COLLEGE.eq(this)).
+				and(Site.IS_WEB_VISIBLE.isTrue()).
+				orderBy(Site.NAME.asc()).
+				select(getObjectContext());
 	}
 }

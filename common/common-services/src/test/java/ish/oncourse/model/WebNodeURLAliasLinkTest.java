@@ -5,8 +5,7 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SelectById;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -126,9 +125,9 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 	}
 	
 	private WebNode createWebNode(ObjectContext context) {
-		College college = (College) context.performQuery(new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l))).get(0);
+		College college = SelectById.query(College.class, 1).selectOne(context);
 		assertNotNull("College should not be null", college);
-		WebSite webSite = (WebSite) context.performQuery(new SelectQuery(WebSite.class, ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, 1l))).get(0);
+		WebSite webSite = SelectById.query(WebSite.class, 1).selectOne(context);
 		assertNotNull("WebSite should not be null", webSite);
 		
 		WebSiteVersion siteVersion = webSite.getVersions().get(0);
