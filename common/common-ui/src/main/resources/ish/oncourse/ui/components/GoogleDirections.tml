@@ -41,7 +41,14 @@
 
 			jQuery(document).ready(function() {
 				if (jQuery('#gmapCanvas').length) {
-					loadMap();
+					if (typeof google === 'object') {
+						if (typeof google.maps === 'object') {
+							initialize();
+						}
+					}
+					else {
+						loadMap();
+					}
 				}
 			});
 		</script>
