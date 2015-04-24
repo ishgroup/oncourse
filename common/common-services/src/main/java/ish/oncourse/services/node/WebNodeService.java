@@ -128,19 +128,15 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 			String nodeNumberString = request.getParameter(NODE_NUMBER_PARAMETER) != null ? request
 					.getParameter(NODE_NUMBER_PARAMETER) : (String) request
 					.getAttribute(NODE_NUMBER_PARAMETER);
-			Integer nodeNumber = null;
 			try {
-				nodeNumber = Integer.parseInt(nodeNumberString);
+                Integer nodeNumber = Integer.parseInt(nodeNumberString);
+                node = getNodeForNodeNumber(nodeNumber);
 			} catch (NumberFormatException e) {
 				logger.debug("Can not parse nodeNumber.", e);
 			}
+		}
 
-			if (nodeNumber != null) {
-				node = getNodeForNodeNumber(nodeNumber);
-			}
-
-		} else if (request.getAttribute(PAGE_PATH_PARAMETER) != null) {
-
+		if (node == null && request.getAttribute(PAGE_PATH_PARAMETER) != null) {
 			String pagePath = (String) request.getAttribute(PAGE_PATH_PARAMETER);
 			node = getNodeForNodePath(pagePath);
 		}
