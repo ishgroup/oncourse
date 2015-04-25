@@ -49,49 +49,6 @@
 		            });
 		          });
 			});
-			
-			function showDeleteBlockConfirmation(id) {
-			jQuery("#deleteBlockModal"+id).dialog({
-			 	resizable: false,
-				height:140,
-				width:380,
-				modal: true,
-				buttons: {
-					"Delete": function() {
-						jQuery(this).dialog("close");
-						jQuery("a[id='dBlock_"+id+"']").trigger('click');
-					},
-					Cancel: function() {
-						jQuery(this).dialog("close");
-					}
-				}
-			});
-			};
-			
-			function fireDeleteBlock(elementId) {
-				var actionId = elementId.substring(7);
-				var actionLink = jQuery("a[clientId='deleteBlock"+actionId+"']");
-				var actionHref = actionLink.attr("href");
-				jQuery.ajax({
-					type: "POST",
-					data: "id="+actionId,
-					url: actionHref,
-					complete: function(data){
-						if(data.responseText=="{status: 'OK'}"){
-							var id = this.data.substring(3);
-							jQuery("tr[id='block_row_"+id+"']").remove();
-						} else if(data.responseText=="{status: 'session timeout'}"){
-							window.location.reload();
-						} else if(data.responseText=="{status: 'FAILED'}") {
-							alert("This block cannot be deleted since it is has been used by a theme(s).");
-						}else{
-							alert("The block cannot be removed due some exception.");
-						}
-					}, 
-					async:true
-				});
-				return false;
-			};
 		</script>
 	
 	</t:zone>

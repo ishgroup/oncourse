@@ -60,6 +60,8 @@
 		</span>
 	</li>
 	<script type="text/javascript">
+		jQuery.noConflict();
+
 		jQuery(function(){
 			jQuery.menubuilder(${suggestResults});
 		});
@@ -89,43 +91,6 @@
 	          });
 			
 		});
-		
-		function showDeleteMenuConfirmation(id) {
-			jQuery("#deleteMenuModal"+id).dialog({
-			 	resizable: false,
-				height:140,
-				width:380,
-				modal: true,
-				buttons: {
-					"Delete": function() {
-						jQuery(this).dialog("close");
-						fireDeleteMenu(id);
-					},
-					Cancel: function() {
-						jQuery(this).dialog("close");
-					}
-				}
-			});
-		};
-
-		function fireDeleteMenu(elemID) {
-			jQuery.ajax({
-				type: "POST",
-				data: "id="+elemID,
-				url: '/ma.remove',
-				complete: function(data){
-					if(data.responseText=="{status: 'OK'}"){
-						jQuery(".cms_navmenu_list #m_" + elemID).remove();
-					}else if(data.responseText=="{status: 'session timeout'}"){
-						window.location.reload();
-					} else{
-						alert("The node with children cannot be removed.");
-					}
-				}, 
-				async:true
-			});
-			return false;
-		}
 	</script>
 	
 </t:container>

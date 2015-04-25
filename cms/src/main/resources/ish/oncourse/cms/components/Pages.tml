@@ -70,53 +70,6 @@
 	          });
 			
 		});
-		
-		function showDeletePageConfirmation(id) {
-			 jQuery("#deleteModal"+id).dialog({
-			 	resizable: false,
-				height:140,
-				width:380,
-				modal: true,
-				buttons: {
-					"Delete": function() {
-						jQuery(this).dialog("close");
-						jQuery("a[id='dPage_"+id+"']").trigger('click');
-					},
-					Cancel: function() {
-						jQuery(this).dialog("close");
-					}
-				}
-			});
-		}
-		
-		function fireDeletePage(elementId) {
-			var actionId = elementId.substring(6);
-			var actionLink = jQuery("a[clientId='deletePage"+actionId+"']");
-			var actionHref = actionLink.attr("href");
-			jQuery.ajax({
-				type: "POST",
-                dataType: "json",
-				data: "id="+actionId,
-				url: actionHref,
-				complete: function(data){
-                    var json = jQuery.parseJSON(data.responseText);
-					if(json.status == 'OK'){
-						var id = this.data.substring(3);
-						jQuery("tr[id='page_row_"+id+"']").remove();
-						if (window.location.pathname == ("/page/"+id)) {
-							var oldPath = "/page/"+id;
-							var newHref = window.location.href.replace(oldPath,"/");
-							window.location = newHref;
-							return false;
-						}
-					} else if(json.status == 'ERROR' || json.status == 'WARNING'){
-                        window.location.reload();
-					}
-				}, 
-				async:true
-			});
-			return false;
-		}
 	</script>
 	
 </t:container>

@@ -178,20 +178,23 @@ public class MA {
 
 		ObjectContext ctx = cayenneService.newContext();
 
-		WebMenu menu = ctx.localObject(webMenuService.findById(Long.parseLong(id)));
-		if (!menu.getChildrenMenus().isEmpty()) {
-			return new TextStreamResponse("text/json", "{status: 'FAILED'}");
-		}
-		WebMenu parentWebMenu = menu.getParentWebMenu();
-		parentWebMenu.removeFromChildrenMenus(menu);
-		List<WebMenu> webMenus = parentWebMenu.getWebMenus();
-		//update weights for the rest of menus
-		if (!webMenus.isEmpty()) {
-			webMenus.get(0).updateWeight(0, parentWebMenu);
-		}
-		ctx.deleteObjects(menu);
+		WebMenu menu = webMenuService.findById(Long.parseLong(id));
+		if (menu != null) {
+			menu = ctx.localObject(menu);
+			if (!menu.getChildrenMenus().isEmpty()) {
+				return new TextStreamResponse("text/json", "{status: 'FAILED'}");
+			}
+			WebMenu parentWebMenu = menu.getParentWebMenu();
+			parentWebMenu.removeFromChildrenMenus(menu);
+			List<WebMenu> webMenus = parentWebMenu.getWebMenus();
+			//update weights for the rest of menus
+			if (!webMenus.isEmpty()) {
+				webMenus.get(0).updateWeight(0, parentWebMenu);
+			}
+			ctx.deleteObjects(menu);
 
-		ctx.commitChanges();
+			ctx.commitChanges();
+		}
 
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}

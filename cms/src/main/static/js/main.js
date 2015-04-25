@@ -509,3 +509,45 @@ jQuery(window).resize(function() {
     wrapHeight();
 });
 
+/**
+ * the function is used to show modal dialog when an user tries to delete page,block, menu or theme
+ * it was introduced as a workaround for jquery jquery-1.11.1.js and jquery-ui-1.9.1.min.js combination
+ * it should be delete after the application will be migrated to new version of  jquery-ui
+ */
+function deleteDialog(id, htmlId, title, callback)
+{
+    var element = jQuery(htmlId);
+    element.dialog({
+        autoOpen: false,
+        resizable: false,
+        width:420,
+        modal: true,
+        title: title,
+        buttons: {
+            "Delete": function() {
+                if (element.dialog('isOpen') === true)
+                {
+                    element.dialog("close");
+                    callback(id);
+                }
+            },
+            Cancel: function() {
+                if (jQuery("#deleteMenuModal"+id).dialog('isOpen') === true)
+                {
+                    element.dialog("close");
+                }
+            }
+        }
+    });
+
+    var buttons = element.dialog().next().children().children('button');
+    jQuery.each(buttons, function(i, b)
+    {
+        if (jQuery(b).attr('text'))
+        {
+            jQuery(b).children('span').text(jQuery(b).attr('text'));
+        }
+    });
+    element.dialog("open");
+}
+

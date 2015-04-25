@@ -160,4 +160,139 @@ function initAddNewPage() {
         });
     });
 }
+
+function fireDeleteMenu(elemID) {
+    jQuery.ajax({
+        type: "POST",
+        data: "id="+elemID,
+        url: '/ma.remove',
+        complete: function(data){
+            if(data.responseText=="{status: 'OK'}"){
+                jQuery(".cms_navmenu_list #m_" + elemID).remove();
+            }else if(data.responseText=="{status: 'session timeout'}"){
+                window.location.reload();
+            } else{
+                alert("The node with children cannot be removed.");
+            }
+        },
+        async:true
+    });
+    return false;
+}
+
+function showDeleteMenuConfirmation(id) {
+    deleteDialog(id, "#deleteMenuModal"+id, 'Are you sure you wish to delete this item?', fireDeleteMenu);
+}
+
+function fireDeleteBlock(elementId) {
+    var actionId = elementId.substring(7);
+    var actionLink = jQuery("a[clientId='deleteBlock"+actionId+"']");
+    var actionHref = actionLink.attr("href");
+    jQuery.ajax({
+        type: "POST",
+        data: "id="+actionId,
+        url: actionHref,
+        complete: function(data){
+            if(data.responseText=="{status: 'OK'}"){
+                var id = this.data.substring(3);
+                jQuery("tr[id='block_row_"+id+"']").remove();
+            } else if(data.responseText=="{status: 'session timeout'}"){
+                window.location.reload();
+            } else if(data.responseText=="{status: 'FAILED'}") {
+                alert("This block cannot be deleted since it is has been used by a theme(s).");
+            }else{
+                alert("The block cannot be removed due some exception.");
+            }
+        },
+        async:true
+    });
+    return false;
+}
+
+function showDeleteBlockConfirmation(id) {
+    deleteDialog(id, "#deleteBlockModal"+id, 'Are you sure you wish to delete this item?', function()
+    {
+        jQuery("a[id='dBlock_"+id+"']").trigger('click');
+    });
+}
+
+
+
+function fireDeletePage(elementId) {
+    var actionId = elementId.substring(6);
+    var actionLink = jQuery("a[clientId='deletePage"+actionId+"']");
+    var actionHref = actionLink.attr("href");
+    jQuery.ajax({
+        type: "POST",
+        dataType: "json",
+        data: "id="+actionId,
+        url: actionHref,
+        complete: function(data){
+            var json = jQuery.parseJSON(data.responseText);
+            if(json.status == 'OK'){
+                var id = this.data.substring(3);
+                jQuery("tr[id='page_row_"+id+"']").remove();
+                if (window.location.pathname == ("/page/"+id)) {
+                    var oldPath = "/page/"+id;
+                    var newHref = window.location.href.replace(oldPath,"/");
+                    window.location = newHref;
+                    return false;
+                }
+            } else if(json.status == 'ERROR' || json.status == 'WARNING'){
+                window.location.reload();
+            }
+        },
+        async:true
+    });
+    return false;
+}
+
+function showDeletePageConfirmation(id) {
+    deleteDialog(id, "#deleteModal" + id, 'Are you sure you wish to delete this item?', function () {
+        jQuery("a[id='dPage_" + id + "']").trigger('click');
+    });
+}
+
+function fireDeleteTheme(elementId) {
+    var actionId = elementId.substring(7);
+    var actionLink = jQuery("a[clientId='deleteTheme"+actionId+"']");
+    var actionHref = actionLink.attr("href");
+    jQuery.ajax({
+        type: "POST",
+        data: "id="+actionId,
+        url: actionHref,
+        complete: function(data){
+            if(data.responseText=="{status: 'OK'}"){
+                var id = this.data.substring(3);
+                jQuery("tr[id='theme_row_"+id+"']").remove();
+            } else if(data.responseText=="{status: 'session timeout'}"){
+                window.location.reload();
+            } else if(data.responseText.split(',').length==2) {
+                var splittedData = data.responseText.split(',');
+                if (splittedData[0] == "{status: 'FAILED'") {
+                    alert("This theme cannot be deleted since it is has been used by a page.");
+                } else {
+                    alert("The theme cannot be removed due some exception.");
+                }
+            } else{
+                alert("The theme cannot be removed due some exception.");
+            }
+        },
+        async:true
+    });
+    return false;
+}
+
+function showDeleteThemeConfirmation(id) {
+    deleteDialog(id, "#deleteThemeModal" + id, 'Are you sure you wish to delete this item?', function () {
+        jQuery("a[id='dTheme_"+id+"']").trigger('click');
+    });
+}
+
+
+
+
+
+
+
 		
