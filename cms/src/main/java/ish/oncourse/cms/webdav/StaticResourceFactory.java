@@ -37,6 +37,7 @@ public class StaticResourceFactory implements ResourceFactory {
     private static final Logger logger = LogManager.getLogger();
 
     private static final int EDIT_FILE_SCRIPT_WAIT_TIMEOUT = 15;
+    private String defaultJsStackPath;
 
     private static final String[] readOnlyFolders = new String[]
             {
@@ -72,6 +73,7 @@ public class StaticResourceFactory implements ResourceFactory {
         this.fsResourceFactory = new FileSystemResourceFactory(new File(sRoot), securityManager, sRoot);
 
         this.executorService = Executors.newCachedThreadPool();
+        this.defaultJsStackPath = JSCompiler.class.getClassLoader().getResource("ish/oncourse/cms/js").getFile();
     }
 
 	@Override
@@ -102,7 +104,7 @@ public class StaticResourceFactory implements ResourceFactory {
     }
 
     private void compileJavaScript(File file) {
-        JSCompiler compiler = JSCompiler.valueOf(sRoot, webSiteService.getCurrentWebSite());
+        JSCompiler compiler = JSCompiler.valueOf(sRoot, defaultJsStackPath, webSiteService.getCurrentWebSite());
         compiler.compile();
         if (!compiler.hasErrors())
         {

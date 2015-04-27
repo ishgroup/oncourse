@@ -19,7 +19,7 @@ dependencies {
     compile 'io.milton:milton-server-ce:2.6.0.1'
     compile 'org.reflections:reflections:0.9.8'
 
-    compile 'com.google.javascript:closure-compiler:v20140814'
+    compile 'com.google.javascript:closure-compiler:v20150315'
 
 	testCompile 'org.apache.tapestry:tapestry-test:5.2.6'
 

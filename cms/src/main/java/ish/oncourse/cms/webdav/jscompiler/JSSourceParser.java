@@ -36,9 +36,9 @@ public class JSSourceParser {
     private JSCompilerErrorHandler errorHandler;
 
     //full path to default/js folder
-    private String defaultJSPath;
+    private File defaultJSPath;
     //full path to custom/js folder
-    private String customJSPath;
+    private File customJSPath;
 
 
     //internal
@@ -52,6 +52,7 @@ public class JSSourceParser {
     private void init() {
         fileJS = JSSource.valueOf(CUSTOM_SITE_JS, new File(getCustomJSPath(), CUSTOM_SITE_JS), null);
         if (!fileJS.exists()) {
+
             fileJS = JSSource.valueOf(DEFAULT_BASE_JS, new File(getDefaultJSPath(), DEFAULT_BASE_JS), null);
         }
     }
@@ -182,19 +183,19 @@ public class JSSourceParser {
         }
     }
 
-    public String getDefaultJSPath() {
+    public File getDefaultJSPath() {
         return defaultJSPath;
     }
 
-    public void setDefaultJSPath(String defaultJSPath) {
+    public void setDefaultJSPath(File defaultJSPath) {
         this.defaultJSPath = defaultJSPath;
     }
 
-    public String getCustomJSPath() {
+    public File getCustomJSPath() {
         return customJSPath;
     }
 
-    public void setCustomJSPath(String customJSPath) {
+    public void setCustomJSPath(File customJSPath) {
         this.customJSPath = customJSPath;
     }
 

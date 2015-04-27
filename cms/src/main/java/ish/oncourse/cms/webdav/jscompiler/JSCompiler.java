@@ -54,9 +54,9 @@ public class JSCompiler {
     private String siteKey;
 
     //full path to default/js folder
-    private String defaultJSPath;
+    private File defaultJSPath;
     //full path to custom/js folder
-    private String customJSPath;
+    private File customJSPath;
 
     private Compiler compiler;
     private CompilerOptions compilerOptions;
@@ -88,8 +88,7 @@ public class JSCompiler {
     }
 
     private void initFileSystem() {
-        customJSPath = String.format("%s/%s/js", sRoot, siteKey);
-        defaultJSPath = String.format("%s/default/js", sRoot);
+        customJSPath = new File(String.format("%s/%s/js", sRoot, siteKey));
 
         result = new File(customJSPath, RESULT_FILE_NAME);
         gzResult = new File(customJSPath, GZ_RESULT_FILE_NAME);
@@ -105,6 +104,7 @@ public class JSCompiler {
         } else {
             CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(compilerOptions);
         }
+        compiler.initOptions(compilerOptions);
     }
 
     public void compile() {
@@ -190,9 +190,10 @@ public class JSCompiler {
         return emailBuilder;
     }
 
-    public static JSCompiler valueOf(String sRoot, WebSite webSite) {
+    public static JSCompiler valueOf(String sRoot, String defaultJSPath, WebSite webSite) {
         JSCompiler javaScriptCompiler = new JSCompiler();
         javaScriptCompiler.sRoot = sRoot;
+        javaScriptCompiler.defaultJSPath = new File(defaultJSPath);
         javaScriptCompiler.siteKey = webSite.getSiteKey();
         javaScriptCompiler.init();
         return javaScriptCompiler;

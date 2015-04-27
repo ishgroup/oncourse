@@ -1,0 +1,1 @@
+var file = 'default/sub1/file2.js';
