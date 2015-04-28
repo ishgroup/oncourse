@@ -15,14 +15,32 @@ public class JSCompilerTest {
     private JSCompiler jsCompiler;
 
     @Test
-    public void test()
+    public void testV1()
     {
         jsCompiler = JSCompiler.valueOf(String.format("%s/src/test/resources/ish/oncourse/cms/webdav/jscompiler", System.getProperty("user.dir")),
-                String.format("%s/src/test/resources/ish/oncourse/cms/webdav/jscompiler/default/js", System.getProperty("user.dir")),
+                String.format("%s/src/test/resources/ish/oncourse/cms/webdav/jscompiler/js", System.getProperty("user.dir")),
                 new WebSite() {
                     @Override
                     public String getSiteKey() {
                         return "site1";
+                    }
+                }
+        );
+        jsCompiler.compile();
+        assertFalse("Errors is not empty", jsCompiler.hasErrors());
+        assertTrue("result file exists", jsCompiler.getResult().exists());
+        assertTrue("gz result file exists", jsCompiler.getGzResult().exists());
+    }
+
+    @Test
+    public void testV2()
+    {
+        jsCompiler = JSCompiler.valueOf(String.format("%s/src/test/resources/ish/oncourse/cms/webdav/jscompiler", System.getProperty("user.dir")),
+                String.format("%s/src/test/resources/ish/oncourse/cms/webdav/jscompiler/js", System.getProperty("user.dir")),
+                new WebSite() {
+                    @Override
+                    public String getSiteKey() {
+                        return "siteV2";
                     }
                 }
         );

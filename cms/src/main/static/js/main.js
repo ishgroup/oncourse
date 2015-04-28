@@ -520,7 +520,7 @@ function deleteDialog(id, htmlId, title, callback)
     element.dialog({
         autoOpen: false,
         resizable: false,
-        width:420,
+        width: 420,
         modal: true,
         title: title,
         buttons: {

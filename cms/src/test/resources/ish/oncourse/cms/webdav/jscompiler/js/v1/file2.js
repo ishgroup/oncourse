@@ -1,0 +1,1 @@
+var file = 'v1/file2.js';

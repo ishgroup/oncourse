@@ -59,7 +59,8 @@ function initPublish() {
                 {
                     text: "OK",
                     click: function () {
-                        jQuery(this).dialog("close");
+
+                        jQuery("#cms-publish-dialog").dialog("close");
                         location.reload();
                     },
                     'class': "cms-btn"

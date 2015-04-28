@@ -52,7 +52,6 @@ public class JSSourceParser {
     private void init() {
         fileJS = JSSource.valueOf(CUSTOM_SITE_JS, new File(getCustomJSPath(), CUSTOM_SITE_JS), null);
         if (!fileJS.exists()) {
-
             fileJS = JSSource.valueOf(DEFAULT_BASE_JS, new File(getDefaultJSPath(), DEFAULT_BASE_JS), null);
         }
     }
@@ -103,8 +102,11 @@ public class JSSourceParser {
             if (source.exists()) {
                 parseSource(source, isOverride);
             //
-            } else if (fileName.equals(DEFAULT_BASE_JS)){
+            } else if (fileName.endsWith(DEFAULT_BASE_JS)){
                 file = new File(defaultJSPath, fileName);
+                if (!file.exists()) {
+                    file = new File(defaultJSPath, String.format("v1/%s", fileName));
+                }
                 if (file.exists()) {
                     source = JSSource.valueOf(fileName, file, parentJS);
                     parseSource(source, isOverride);
