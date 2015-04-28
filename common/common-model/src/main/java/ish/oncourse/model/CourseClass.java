@@ -142,6 +142,15 @@ public class CourseClass extends _CourseClass implements Queueable {
 		return getCourse().getCode() + "-" + getCode();
 	}
 
+	public boolean isHasAnyTimelineableSessions() {
+		for (Session session : getSessions()) {
+			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public TimeZone getClassTimeZone() {
 		if (getTimeZone() == null) {
 			return null;
