@@ -21,6 +21,10 @@ public class PortHelper {
 		return (ish.oncourse.webservices.v9.stubs.replication.ReplicationRecords) replicationRecords;
 	}
 
+	public static ish.oncourse.webservices.v10.stubs.replication.ReplicationRecords getV10ReplicationRecords(final GenericReplicationRecords replicationRecords) {
+		return (ish.oncourse.webservices.v10.stubs.replication.ReplicationRecords) replicationRecords;
+	}
+
 	public static ish.oncourse.webservices.v6.stubs.replication.TransactionGroup getV6TransactionGroup(final GenericTransactionGroup transactionGroup) {
 		return (ish.oncourse.webservices.v6.stubs.replication.TransactionGroup) transactionGroup;
 	}
@@ -37,6 +41,9 @@ public class PortHelper {
 		return (ish.oncourse.webservices.v9.stubs.replication.TransactionGroup) transactionGroup;
 	}
 
+	public static ish.oncourse.webservices.v10.stubs.replication.TransactionGroup getV10TransactionGroup(final GenericTransactionGroup transactionGroup) {
+		return (ish.oncourse.webservices.v10.stubs.replication.TransactionGroup) transactionGroup;
+	}
 
 	public static ish.oncourse.webservices.v6.stubs.replication.ReplicationResult getV6ReplicationResult(final GenericReplicationResult replicationResult) {
 		return (ish.oncourse.webservices.v6.stubs.replication.ReplicationResult) replicationResult;
@@ -53,6 +60,10 @@ public class PortHelper {
 	public static ish.oncourse.webservices.v9.stubs.replication.ReplicationResult getV9ReplicationResult(final GenericReplicationResult replicationResult) {
 		return (ish.oncourse.webservices.v9.stubs.replication.ReplicationResult) replicationResult;
 	}
+
+	public static ish.oncourse.webservices.v10.stubs.replication.ReplicationResult getV10ReplicationResult(final GenericReplicationResult replicationResult) {
+		return (ish.oncourse.webservices.v10.stubs.replication.ReplicationResult) replicationResult;
+	}
 	
 	public static GenericReplicationResult createReplicationResult(final GenericReplicationRecords replicationRecords) {
 		if (replicationRecords instanceof ish.oncourse.webservices.v6.stubs.replication.ReplicationRecords) {
@@ -63,6 +74,8 @@ public class PortHelper {
 			return new ish.oncourse.webservices.v8.stubs.replication.ReplicationResult();
 		} else if (replicationRecords instanceof ish.oncourse.webservices.v9.stubs.replication.ReplicationRecords) {
 			return new ish.oncourse.webservices.v9.stubs.replication.ReplicationResult();
+		} else if (replicationRecords instanceof ish.oncourse.webservices.v10.stubs.replication.ReplicationRecords) {
+			return new ish.oncourse.webservices.v10.stubs.replication.ReplicationResult();
 		}
 		return null;
 	}
@@ -77,6 +90,8 @@ public class PortHelper {
 				return new ish.oncourse.webservices.v8.stubs.replication.TransactionGroup();
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.TransactionGroup();
+			case V10:
+				return new ish.oncourse.webservices.v10.stubs.replication.TransactionGroup();
 			default:
 				return null;
 		}
@@ -91,6 +106,8 @@ public class PortHelper {
 			return SupportedVersions.V8;
 		} else if (group instanceof ish.oncourse.webservices.v9.stubs.replication.TransactionGroup) {
 			return SupportedVersions.V9;
+		} else if (group instanceof ish.oncourse.webservices.v10.stubs.replication.TransactionGroup) {
+			return SupportedVersions.V10;
 		}
 		return null;
 	}
@@ -104,6 +121,8 @@ public class PortHelper {
 			return SupportedVersions.V8;
 		} else if (stub instanceof ish.oncourse.webservices.v9.stubs.replication.ReplicationStub) {
 			return SupportedVersions.V9;
+		} else if (stub instanceof ish.oncourse.webservices.v10.stubs.replication.ReplicationStub) {
+			return SupportedVersions.V10;
 		}
 		return null;
 	}
@@ -117,6 +136,8 @@ public class PortHelper {
 			return SupportedVersions.V8;
 		} else if (stub instanceof ish.oncourse.webservices.v9.stubs.replication.InstructionStub) {
 			return SupportedVersions.V9;
+		} else if (stub instanceof ish.oncourse.webservices.v10.stubs.replication.InstructionStub) {
+			return SupportedVersions.V10;
 		}
 		
 		throw new IllegalArgumentException("This version of InstructionStub is not supported.");
@@ -131,6 +152,8 @@ public class PortHelper {
 			return SupportedVersions.V8;
 		} else if (record instanceof ish.oncourse.webservices.v9.stubs.replication.ReplicatedRecord) {
 			return SupportedVersions.V9;
+		} else if (record instanceof ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord) {
+			return SupportedVersions.V10;
 		}
 		
 		throw new IllegalArgumentException("This version of ReplicatedRecord is not supported.");
@@ -145,6 +168,8 @@ public class PortHelper {
 			return SupportedVersions.V8;
 		} else if (parametersMap instanceof ish.oncourse.webservices.v9.stubs.replication.ParametersMap) {
 			return SupportedVersions.V9;
+		} else if (parametersMap instanceof ish.oncourse.webservices.v10.stubs.replication.ParametersMap) {
+			return SupportedVersions.V10;
 		}
 		
 		throw new IllegalArgumentException("This version of ParametersMap is not supported");
@@ -164,6 +189,8 @@ public class PortHelper {
 			return new ish.oncourse.webservices.v8.stubs.replication.DeletedStub();
 		case V9:
 			return new ish.oncourse.webservices.v9.stubs.replication.DeletedStub();
+		case V10:
+				return new ish.oncourse.webservices.v10.stubs.replication.DeletedStub();
 		default:
 			return null;
 		}
@@ -179,6 +206,8 @@ public class PortHelper {
 				return new ish.oncourse.webservices.v8.stubs.replication.ReplicationRecords();
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.ReplicationRecords();
+			case V10:
+				return new ish.oncourse.webservices.v10.stubs.replication.ReplicationRecords();
 			default:
 				return null;
 		}
@@ -194,6 +223,8 @@ public class PortHelper {
 				return new ish.oncourse.webservices.v8.stubs.replication.ReplicationResult();
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.ReplicationResult();
+			case V10:
+				return new ish.oncourse.webservices.v10.stubs.replication.ReplicationResult();
 			default:
 				return null;
 		}
@@ -209,6 +240,8 @@ public class PortHelper {
 				return new ish.oncourse.webservices.v8.stubs.replication.InstructionStub();
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.InstructionStub();
+			case V10:
+				return new ish.oncourse.webservices.v10.stubs.replication.InstructionStub();
 			default:
 				return null;
 		}
@@ -224,6 +257,8 @@ public class PortHelper {
 				return new ish.oncourse.webservices.v8.stubs.replication.ParametersMap();
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.ParametersMap();
+			case V10:
+				return new ish.oncourse.webservices.v10.stubs.replication.ParametersMap();
 			default:
 				return null;
 		}
@@ -239,6 +274,8 @@ public class PortHelper {
 				return new ish.oncourse.webservices.v8.stubs.replication.ParameterEntry();
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.ParameterEntry();
+			case V10:
+				return new ish.oncourse.webservices.v10.stubs.replication.ParameterEntry();
 			default:
 				return null;
 		}
@@ -285,6 +322,17 @@ public class PortHelper {
 		for (GenericInstructionStub stub : list) {
 			if (stub instanceof ish.oncourse.webservices.v9.stubs.replication.InstructionStub) {
 				result.add((ish.oncourse.webservices.v9.stubs.replication.InstructionStub) stub);
+			} else {
+				throw new IllegalArgumentException("Incorrect convertV6InstructionsList usage");
+			}
+		}
+		return result;
+	}
+	public static List<ish.oncourse.webservices.v10.stubs.replication.InstructionStub> convertV10InstructionsList(final List<GenericInstructionStub> list) {
+		final List<ish.oncourse.webservices.v10.stubs.replication.InstructionStub> result = new ArrayList<>(list.size());
+		for (GenericInstructionStub stub : list) {
+			if (stub instanceof ish.oncourse.webservices.v10.stubs.replication.InstructionStub) {
+				result.add((ish.oncourse.webservices.v10.stubs.replication.InstructionStub) stub);
 			} else {
 				throw new IllegalArgumentException("Incorrect convertV6InstructionsList usage");
 			}
