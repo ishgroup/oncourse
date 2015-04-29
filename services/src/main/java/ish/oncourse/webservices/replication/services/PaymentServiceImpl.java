@@ -77,6 +77,11 @@ public class PaymentServiceImpl implements InternalPaymentService {
 		this.prefsFactory = prefsFactory;
 		this.idGenerator = new SessionIdGenerator();
 	}
+	
+	@Override
+	public GenericTransactionGroup processPayment(GenericTransactionGroup transaction, GenericParametersMap parametersMap) throws InternalReplicationFault {
+		return processPayment(transaction);
+	}
 
 	/**
 	 * Process paymentIn and enrolments. Firstly, saves paymentIn and related

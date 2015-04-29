@@ -6,6 +6,7 @@ import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.SupportedVersions;
 
 public interface InternalPaymentService {
+	public GenericTransactionGroup processPayment(GenericTransactionGroup transaction, GenericParametersMap parametersMap) throws InternalReplicationFault;
 	public GenericTransactionGroup processPayment(GenericTransactionGroup transaction) throws InternalReplicationFault;
 	public GenericTransactionGroup processRefund(GenericTransactionGroup paymentOut) throws InternalReplicationFault;
 	public GenericTransactionGroup getPaymentStatus(String sessionId, final SupportedVersions version) throws InternalReplicationFault;
