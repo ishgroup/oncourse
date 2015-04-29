@@ -16,6 +16,8 @@ public class PaymentInModel {
 
 	private List<Invoice> invoices = new ArrayList<>();
 	private List<Enrolment> enrolments = new ArrayList<>();
+	private List<PaymentIn> relatedVoucherPayments = new ArrayList<>();
+	
 	
 	public void setPaymentIn(PaymentIn paymentIn) {
 		this.paymentIn = paymentIn;
@@ -31,6 +33,10 @@ public class PaymentInModel {
 
 	public List<Enrolment> getEnrolments() {
 		return enrolments;
+	}
+
+	public List<PaymentIn> getRelatedVoucherPayments() {
+		return relatedVoucherPayments;
 	}
 
 	
