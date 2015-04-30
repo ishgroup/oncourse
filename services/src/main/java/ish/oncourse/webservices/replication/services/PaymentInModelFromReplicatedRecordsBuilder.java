@@ -9,7 +9,7 @@ import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.StubUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.Comparator;
 import java.util.List;
@@ -29,12 +29,13 @@ public class PaymentInModelFromReplicatedRecordsBuilder {
 
     private <T extends Queueable> T getEntity(Class<T> entityCalss, GenericReplicatedRecord r) {
         if (ReplicationUtils.getEntityName(entityCalss).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
-            SelectQuery selectQuery = new SelectQuery(entityCalss, ExpressionFactory.matchDbExp("id", r.getStub().getWillowId()));
-            T result = (T) objectContext.performQuery(selectQuery);
-            if (result == null) {
-                throw new IllegalArgumentException(String.format("Cannot find entity %s with willowId %s, angelid %s", r.getStub().getEntityIdentifier(), r.getStub().getWillowId(), r.getStub().getAngelId()));
+            T result = ObjectSelect.query(entityCalss).where(ExpressionFactory.matchDbExp("id", r.getStub().getWillowId())).selectOne(objectContext);
+            if (result != null) {
+                return result;
             }
-
+            else {
+                throw new IllegalArgumentException(String.format("Cannot find entity %s with willowId %s, angelId %s", r.getStub().getEntityIdentifier(), r.getStub().getWillowId(), r.getStub().getAngelId()));
+            }
         }
         return null;
     }
@@ -44,6 +45,7 @@ public class PaymentInModelFromReplicatedRecordsBuilder {
             PaymentIn paymentIn = getEntity(PaymentIn.class, r);
             if (paymentIn != null && !PaymentType.VOUCHER.equals(paymentIn.getType())) {
                 model.setPaymentIn(paymentIn);
+                break;
             }
         }
 
