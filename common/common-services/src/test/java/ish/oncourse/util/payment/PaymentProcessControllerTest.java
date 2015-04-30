@@ -270,11 +270,12 @@ public class PaymentProcessControllerTest extends ServiceTest {
         String sessionId = "SESSIONID";
         Session session = new MockSession();
         PaymentIn paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
+		PaymentInModel model = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, paymentIn.getObjectContext()).build().getModel();
         final PaymentProcessController paymentProcessController = new PaymentProcessControllerBuilder(new MockParallelExecutor(), null, cayenneService, 
         	paymentService, session) {
 			@Override
 			public IPaymentGatewayService receivePaymentGatewayService() {return paymentGatewayService;}
-        }.build(paymentIn);
+        }.build(model);
         //update parallel executor because unable to finally init them for test on startup
         paymentProcessController.setParallelExecutor(new MockParallelExecutor(paymentProcessController));
         

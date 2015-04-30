@@ -61,12 +61,14 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		PaymentProcessControllerBuilder builder = new PaymentProcessControllerBuilder(new MockParallelExecutor(), paymentGatewayServiceBuilder, cayenneService, 
 			paymentService, request.getSession(false));
         PaymentIn paymentIn = paymentService.currentPaymentInBySessionId("illegalSessionId");
+		PaymentInModel model;
 		assertNull("paymentIn is null for case when payment not found", paymentIn);
 
 		//test valid sessionid without valid session
 		try {
             paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
-            PaymentProcessController paymentProcessController = builder.build(paymentIn);
+			model = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, paymentIn.getObjectContext()).build().getModel();
+            PaymentProcessController paymentProcessController = builder.build(model);
 			assertFalse("Builder should throw an exception for cases when session is null", true);
 		} catch (Throwable t) {
 			assertTrue("Builder should throw an Illegal argument exception for cases when session is null", 
@@ -81,7 +83,8 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		assertTrue("PaymentGatewayType may be only disabled before builder.build(sessionId) call", 
 				builder.receivePaymentGatewayService() instanceof DisabledPaymentGatewayService);
         paymentIn = paymentService.currentPaymentInBySessionId(sessionId);
-        PaymentProcessController paymentProcessController = builder.build(paymentIn);
+		model = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, paymentIn.getObjectContext()).build().getModel();
+        PaymentProcessController paymentProcessController = builder.build(model);
 		assertNotNull("build of paymentProcessController should return not null result for case when payment found", paymentProcessController);
 		//update parallel executor because unable to finally init them for test on startup
 		paymentProcessController.setParallelExecutor(new MockParallelExecutor(paymentProcessController));
@@ -106,7 +109,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		preferences.get(0).setValueString(null/*"DISABLED"*/);
 		content.commitChanges();
 		try {
-			paymentProcessController = builder.build(paymentIn);
+			paymentProcessController = builder.build(model);
 			assertFalse("illegal state exception should throws when college have not preference allow to use payment express", true);
 		} catch (Throwable t) {
 			assertTrue("Builder should throw an Illegal state exception for cases when college have not preference allow to use payment express", 

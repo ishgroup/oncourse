@@ -16,11 +16,9 @@ public class PaymentInModelFromSessionIdBuilder {
     private ObjectContext context;
     private String sessionId;
 
-    private PaymentInModel model;
+    private PaymentInModel model = new PaymentInModel();
 
-    private PaymentInModelFromSessionIdBuilder build() {
-
-        PaymentInModel model = new PaymentInModel();
+    public PaymentInModelFromSessionIdBuilder build() {
 
         PaymentIn paymentIn = ObjectSelect.query(PaymentIn.class).where(PaymentIn.SESSION_ID.eq(sessionId)).selectOne(context);
         model.setPaymentIn(paymentIn);
