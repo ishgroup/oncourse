@@ -6,6 +6,9 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.payment.PaymentInFail;
+import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInSucceed;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -119,14 +122,15 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
      * Success if payment information matches with testing credit cards,
      * fail otherwise.
      *
-     * @see ish.oncourse.services.paymentexpress.IPaymentGatewayService#performGatewayOperation(ish.oncourse.model.PaymentIn)
+     * @see ish.oncourse.services.paymentexpress.IPaymentGatewayService#performGatewayOperation(ish.oncourse.util.payment.PaymentInModel)
      */
-    public void performGatewayOperation(PaymentIn payment) {
+    public void performGatewayOperation(PaymentInModel model) {
 
+		PaymentIn payment = model.getPaymentIn();
         ObjectContext context = cayenneService.newNonReplicatingContext();
 
         if (payment.isZeroPayment()) {
-            payment.succeed();
+			PaymentInSucceed.valueOf(model).perform();
         } else {
 
             PaymentTransaction paymentTransaction = context.newObject(PaymentTransaction.class);
@@ -153,14 +157,14 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
                 payment.setStatusNotes(SUCCESS_PAYMENT_IN);
                 payment.setGatewayReference(paymentTransaction.getTxnReference());
 
-                payment.succeed();
+				PaymentInSucceed.valueOf(model).perform();
 
             } else {
                 paymentTransaction.setResponse(result.getStatusNotes());
                 payment.setStatusNotes(FAILED_PAYMENT_IN);
                 payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
 
-                payment.failPayment();
+				PaymentInFail.valueOf(model).perform();
             }
 
             paymentTransaction.setIsFinalised(true);

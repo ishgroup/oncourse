@@ -1,7 +1,6 @@
 package ish.oncourse.util.payment;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
@@ -27,13 +26,13 @@ public class PaymentProcessControllerBuilder {
 		this.session = session;
 	}
 
-	public PaymentProcessController build(PaymentIn paymentIn) {
+	public PaymentProcessController build(PaymentInModel model) {
 		PaymentProcessController controller = new PaymentProcessController();
 		if (session == null) {
 			throw new IllegalArgumentException("PaymentProcessControllerBuilder can't build the PaymentProcessController without valid session!");
 		}
 		//need to setup the session value for WebSiteService for correct execution of PaymentGatewayService
-        session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, paymentIn.getCollege().getId());
+        session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, model.getPaymentIn().getCollege().getId());
 		controller.setObjectContext(cayenneService.newContext());
 		controller.setParallelExecutor(parallelExecutor);
 		IPaymentGatewayService paymentGatewayService = receivePaymentGatewayService();
@@ -44,7 +43,7 @@ public class PaymentProcessControllerBuilder {
 		controller.setCayenneService(cayenneService);
 		controller.setPaymentService(paymentService);
 		
-		controller.setPaymentIn(paymentIn);
+		controller.setPaymentInModel(model);
 		controller.processAction(PaymentAction.INIT_PAYMENT);
 		return controller;
 	}
