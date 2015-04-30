@@ -164,13 +164,6 @@ public class PaymentInModelBuilder {
 		}
 	}
 
-	public static PaymentInModelBuilder valueOf(ObjectContext context, List<GenericReplicatedRecord> replicatedRecords) {
-		PaymentInModelBuilder builder = new PaymentInModelBuilder();
-		builder.setContext(context);
-		builder.setReplicatedRecords(replicatedRecords);
-		return builder;
-	}
-
 	public static PaymentInModelBuilder valueOf(ObjectContext context, List<GenericReplicatedRecord> replicatedRecords, GenericParametersMap parametersMap) {
 		PaymentInModelBuilder builder = new PaymentInModelBuilder();
 		builder.setContext(context);
