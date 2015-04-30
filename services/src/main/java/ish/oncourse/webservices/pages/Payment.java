@@ -9,10 +9,10 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInModelFromSessionIdBuilder;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessControllerBuilder;
 import ish.oncourse.webservices.components.PaymentForm;
-import ish.oncourse.webservices.replication.services.PaymentInModelBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ComponentResources;
@@ -127,7 +127,7 @@ public class Payment {
                 PaymentIn payment = validateSessionId(sessionId);
                 if (payment != null)
                 {
-					PaymentInModel model = PaymentInModelBuilder.valueOf(payment.getObjectContext(), sessionId).build();
+					PaymentInModel model = PaymentInModelFromSessionIdBuilder.valueOf(sessionId,payment.getObjectContext()).build().getModel();
                     paymentProcessController = new PaymentProcessControllerBuilder(parallelExecutor, paymentGatewayServiceBuilder, cayenneService, paymentService,
                             request.getSession(true)).build(model);
                     initProperties();

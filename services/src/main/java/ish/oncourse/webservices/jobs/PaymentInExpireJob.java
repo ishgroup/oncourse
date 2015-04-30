@@ -9,8 +9,8 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.payment.PaymentInAbandon;
 import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInModelFromSessionIdBuilder;
 import ish.oncourse.utils.PaymentInUtil;
-import ish.oncourse.webservices.replication.services.PaymentInModelBuilder;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -96,7 +96,7 @@ public class PaymentInExpireJob implements Job {
 					PaymentInUtil.abandonPayment(p, true);
 				} else {
 					try {
-						PaymentInModel model = PaymentInModelBuilder.valueOf(p.getObjectContext(), p.getSessionId()).build();
+						PaymentInModel model = PaymentInModelFromSessionIdBuilder.valueOf(p.getSessionId(), p.getObjectContext()).build().getModel();
 						PaymentInAbandon.valueOf(model, true).perform();
 						p.getObjectContext().commitChanges();
 					} catch (final CayenneRuntimeException ce) {

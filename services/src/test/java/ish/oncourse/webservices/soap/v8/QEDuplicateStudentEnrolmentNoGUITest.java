@@ -1,11 +1,23 @@
 package ish.oncourse.webservices.soap.v8;
 
-import ish.common.types.*;
+import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentSource;
+import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
+import ish.common.types.TypesUtil;
 import ish.math.Money;
 import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
-import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v8.stubs.replication.*;
+import ish.oncourse.webservices.replication.services.PaymentInModelValidator;
+import ish.oncourse.webservices.util.GenericEnrolmentStub;
+import ish.oncourse.webservices.util.GenericInvoiceStub;
+import ish.oncourse.webservices.util.GenericPaymentInStub;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.v8.stubs.replication.EnrolmentStub;
+import ish.oncourse.webservices.v8.stubs.replication.InvoiceLineStub;
+import ish.oncourse.webservices.v8.stubs.replication.InvoiceStub;
+import ish.oncourse.webservices.v8.stubs.replication.PaymentInLineStub;
+import ish.oncourse.webservices.v8.stubs.replication.PaymentInStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.beanutils.BeanUtils;
@@ -160,7 +172,7 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 					assertEquals("This should be 100$ amount cash payment", PaymentType.CASH.getDatabaseValue(), paymentInStub.getType());
 					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(paymentInStub.getStatus(), PaymentStatus.class);
 					assertEquals("Payment status should be failed", PaymentStatus.FAILED, status);
-					assertEquals("Payment status should be failed", BeanUtils.getProperty(paymentInStub, "privateNotes"), String.format(PaymentServiceImpl.MESSAGE_activeEnrolmentExists, "Vladimir Putin", "AAV-1"));
+					assertEquals("Payment status should be failed", BeanUtils.getProperty(paymentInStub, "privateNotes"), String.format(PaymentInModelValidator.Error.activeEnrolmentExists.getMessage(), "Vladimir Putin", "AAV-1"));
 
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s angelid=%s and status= %s found in a queue",
