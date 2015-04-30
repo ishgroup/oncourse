@@ -71,7 +71,7 @@ public class PaymentInAbandon {
 
     public PaymentInAbandon perform()
     {
-        logger.info("Canceling paymentIn with id:{}, created:%s and status:{}.", model.getPaymentIn().getId(),
+        logger.info("Canceling paymentIn with id:{}, created:{} and status:{}.", model.getPaymentIn().getId(),
                 model.getPaymentIn().getCreated(),
                 model.getPaymentIn().getStatus());
         switch (model.getPaymentIn().getStatus()) {

@@ -7,6 +7,9 @@ import ish.common.types.CreditCardType;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
+import ish.oncourse.util.payment.PaymentInSucceed;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -224,7 +227,7 @@ public class PaymentExpressGatewayServiceTest {
 	}
 
 	/**
-	 * Emulates the successful payment processing, {@link PaymentIn#succeed()}
+	 * Emulates the successful payment processing, {@link PaymentInSucceed#perform()}
 	 * should be invoked.
 	 * 
 	 * @throws Exception
@@ -234,8 +237,8 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
-		gatewayService.processGateway(payment);
-		verify(payment).succeed();
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
+		gatewayService.performGatewayOperation(model);
 		assertTrue("PaymentTransaction should exist", !payment.getPaymentTransactions().isEmpty() && payment.getPaymentTransactions().size() == 1);
 		verify(paymentTransaction).setSoapResponse(anyString());
 	}
@@ -276,7 +279,8 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardNumber()).thenReturn(DECLINED_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
-		gatewayService.processGateway(payment);
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
+		gatewayService.performGatewayOperation(model);
 		verify(payment).failPayment();
 		assertTrue("PaymentTransaction should exist", !payment.getPaymentTransactions().isEmpty() && payment.getPaymentTransactions().size() == 1);
 		verify(paymentTransaction).setSoapResponse(anyString());
@@ -299,7 +303,7 @@ public class PaymentExpressGatewayServiceTest {
 	}
 
 	/**
-	 * Emulates the successful payment, {@link PaymentIn#succeed()} should be
+	 * Emulates the successful payment, {@link PaymentInSucceed#perform()} should be
 	 * invoked.
 	 * 
 	 * @throws Exception
@@ -315,8 +319,10 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardName()).thenReturn(CARD_HOLDER_NAME);
 		when(payment.getCreditCardExpiry()).thenReturn(VALID_EXPIRY_DATE_STR);
 
-		gatewayService.performGatewayOperation(payment);
-		verify(payment).succeed();
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
+
+		gatewayService.performGatewayOperation(model);
+		verify(PaymentInSucceed.valueOf(model)).perform();
 	}
 
 	/**
@@ -332,7 +338,9 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardType()).thenReturn(CreditCardType.VISA, CreditCardType.VISA);
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 
-		gatewayService.performGatewayOperation(payment);
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
+
+		gatewayService.performGatewayOperation(model);
 		verify(payment).failPayment();
 	}
 
@@ -349,7 +357,10 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardType()).thenReturn(null);
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 
-		gatewayService.performGatewayOperation(payment);
+
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
+
+		gatewayService.performGatewayOperation(model);
 		verify(payment).failPayment();
 	}
 
@@ -370,7 +381,9 @@ public class PaymentExpressGatewayServiceTest {
 		// invoke first time to reset value from @BeforeClassMethod
 		payment.getCreditCardName();
 
-		gatewayService.performGatewayOperation(payment);
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
+
+		gatewayService.performGatewayOperation(model);
 		verify(payment).failPayment();
 	}
 
@@ -388,7 +401,9 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardType()).thenReturn(CreditCardType.VISA, CreditCardType.VISA);
 		when(payment.getCreditCardNumber()).thenReturn(INVALID_CARD_NUMBER);
 
-		gatewayService.performGatewayOperation(payment);
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
+
+		gatewayService.performGatewayOperation(model);
 		verify(payment).failPayment();
 	}
 
@@ -412,8 +427,10 @@ public class PaymentExpressGatewayServiceTest {
 		// invoke first time to reset value from @BeforeClassMethod
 		payment.getCreditCardExpiry();
 
-		gatewayService.performGatewayOperation(payment);
-		gatewayService.performGatewayOperation(payment);
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
+
+		gatewayService.performGatewayOperation(model);
+		gatewayService.performGatewayOperation(model);
 
 		verify(payment, times(2)).failPayment();
 	}

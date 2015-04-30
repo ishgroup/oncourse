@@ -10,6 +10,9 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.PaymentInSupport;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.payment.PaymentInFail;
+import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -57,8 +60,9 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		ObjectContext objectContext = cayenneService.newContext();
 
 		PaymentIn p = Cayenne.objectForPK(objectContext, PaymentIn.class, 2000);
-		p.failPayment();
-		
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(p).build().getModel();
+		PaymentInFail.valueOf(model).perform();
+
 		PaymentIn newCopy = p.makeCopy();
 		newCopy.setStatus(PaymentStatus.IN_TRANSACTION);
 		newCopy.getObjectContext().commitChanges();

@@ -4,6 +4,9 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
+import ish.oncourse.util.payment.PaymentInAbandon;
+import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
@@ -62,7 +65,8 @@ public class ActionChangePayer extends APurchaseAction {
 
             if (!getController().getWarnings().containsKey(PurchaseController.Message.payerHadUnfinishedPayment.name()))
                 getController().addWarning(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
-            p.abandonPayment();
+            PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(p).build().getModel();
+            PaymentInAbandon.valueOf(model, false);
         }
 
         context.commitChanges();

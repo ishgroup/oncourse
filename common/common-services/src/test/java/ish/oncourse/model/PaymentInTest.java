@@ -2,7 +2,10 @@ package ish.oncourse.model;
 
 import ish.common.types.*;
 import ish.math.Money;
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.payment.*;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,18 +18,21 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class PaymentInTest {
+public class PaymentInTest extends ServiceTest{
 
 	private ObjectContext context;
 	private Calendar calendar;
 	private College college;
 	private Course course;
 	private CourseClass courseClass;
+	private ICayenneService cayenneService;
 
 	@Before
 	public void setup() throws Exception {
-		ContextUtils.setupDataSources();
-		this.context = ContextUtils.createObjectContext();
+		initTest("ish.oncourse.services", "service", ServiceModule.class);
+		this.cayenneService = getService(ICayenneService.class);
+
+		this.context = cayenneService.newContext();
 		this.calendar = Calendar.getInstance();
 
 		this.college = context.newObject(College.class);
@@ -141,7 +147,9 @@ public class PaymentInTest {
 		context.commitChanges();
 		boolean isSuccedCorrect = true;
 		try {
-			paymentIn.succeed();
+			PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+			PaymentInSucceed.valueOf(model).perform();
+			assertTrue(model.getPaymentIn().getStatus() == PaymentStatus.SUCCESS);
 			context.commitChanges();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -240,7 +248,9 @@ public class PaymentInTest {
 		context.commitChanges();
 		boolean isSuccedCorrect = true;
 		try {
-			paymentIn.succeed();
+			PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+			PaymentInSucceed.valueOf(model).perform();
+			assertTrue(model.getPaymentIn().getStatus() == PaymentStatus.SUCCESS);
 			context.commitChanges();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -339,7 +349,9 @@ public class PaymentInTest {
 		context.commitChanges();
 		boolean isSuccedCorrect = true;
 		try {
-			paymentIn.failPayment();
+			PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+			PaymentInFail.valueOf(model).perform();
+			assertTrue(model.getPaymentIn().getStatus() == PaymentStatus.FAILED);
 			context.commitChanges();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -438,7 +450,9 @@ public class PaymentInTest {
 		context.commitChanges();
 		boolean isSuccedCorrect = true;
 		try {
-			paymentIn.failPayment();
+			PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+			PaymentInFail.valueOf(model).perform();
+			assertTrue(model.getPaymentIn().getStatus() == PaymentStatus.FAILED);
 			context.commitChanges();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -542,7 +556,8 @@ public class PaymentInTest {
 		paymentIn.addToPaymentInLines(pLine2);
 
 		context.commitChanges();
-		Collection<PaymentIn> payments = paymentIn.abandonPayment();
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+		Collection<PaymentIn> payments = PaymentInAbandon.valueOf(model, false).perform().getRefundPayments();
 		assertEquals(2, payments.size());
 		PaymentIn inversePayment = null;
 		PaymentIn directPayment = null;

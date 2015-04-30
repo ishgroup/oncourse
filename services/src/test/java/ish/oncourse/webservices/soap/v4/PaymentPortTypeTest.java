@@ -8,6 +8,9 @@ import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.payment.PaymentInAbandon;
+import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
 import ish.oncourse.webservices.replication.services.InternalPaymentService;
 import ish.oncourse.webservices.util.*;
@@ -664,7 +667,9 @@ public class PaymentPortTypeTest extends ServiceTest {
 		
 		assertTrue(attendanceCount != 0);
 		
-		PaymentIn inversePayment = payment.abandonPayment().iterator().next();
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).getModel();
+		PaymentIn inversePayment =
+				PaymentInAbandon.valueOf(model, false).perform().getRefundPayments().iterator().next();
 		context.commitChanges();
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", inversePayment.getSessionId(), payment.getSessionId());
 		assertEquals("Expecting that attendances remain in the database. Will be deleted later from Angel.", attendanceCount, dbUnitConnection.getRowCount("Attendance"));

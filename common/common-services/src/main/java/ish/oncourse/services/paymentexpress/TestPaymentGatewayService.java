@@ -146,6 +146,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {
+                LOG.debug(e);
             }
 
             result = verifyPayment(payment);
@@ -209,7 +210,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
         }
 
         public void addStatusNote(String note) {
-            statusNotes = new StringBuffer(statusNotes).append(note).append("\n").toString();
+            statusNotes = statusNotes + note + "\n";
         }
     }
 

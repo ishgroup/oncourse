@@ -8,6 +8,7 @@ import ish.math.Money;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.payment.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.EJBQLQuery;
@@ -54,25 +55,29 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	@Test
 	public void testPaymentSuccess() throws Exception {
 		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2000);
-		paymentIn.succeed();
+
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+		PaymentInSucceed.valueOf(model).perform();
+		assertTrue(model.getPaymentIn().getStatus() == PaymentStatus.SUCCESS);
+
 		paymentIn.getObjectContext().commitChanges();
 		
 		//check replication queue, 
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
-		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select transactionId from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000"));
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord","select transactionId from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
 		BigInteger transactionId = (BigInteger) actualData.getValue(0, "transactionId");
 		assertNotNull("Transaction id not null", transactionId);
 		assertEquals("1 Invoice in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 InvoiceLine in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000");
 		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
 		
 		assertEquals("Payment status success.", PaymentStatus.SUCCESS, paymentIn.getStatus());
@@ -100,21 +105,21 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 
 		calendar.add(Calendar.DAY_OF_MONTH, 5);
 
-		Contact contact1 = (Contact) context.newObject(Contact.class);
+		Contact contact1 = context.newObject(Contact.class);
 		contact1.setGivenName("Test_Payer");
 		contact1.setFamilyName("Test_Payer");
 		contact1.setCollege(college);
 		
-		Student student1 = (Student) context.newObject(Student.class);
+		Student student1 = context.newObject(Student.class);
 		student1.setCollege(college);
 		student1.setContact(contact1);
 		
-		Contact contact2 = (Contact) context.newObject(Contact.class);
+		Contact contact2 = context.newObject(Contact.class);
 		contact2.setGivenName("Test_Payer2");
 		contact2.setFamilyName("Test_Payer2");
 		contact2.setCollege(college);
 		
-		Student student2 = (Student) context.newObject(Student.class);
+		Student student2 = context.newObject(Student.class);
 		student2.setCollege(college);
 		student2.setContact(contact1);
 		
@@ -178,28 +183,31 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 
 		//check replication queue
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
-		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentIn'"));
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentIn'");
 		assertEquals("zero PaymentIn in the queue.", 0, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine'"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentInLine'");
 		assertEquals("zero PaymentInLine in the queue.", 0, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Invoice'"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Invoice'");
 		// invoice ant its lines should not go to the queue until one of its payments is in final state (this is needed for 2.1.x email notifications to work properly)
 		assertEquals("no Invoices should be in the queue.", 0, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine'"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='InvoiceLine'");
 		assertEquals("no InvoiceLines in the queue.", 0, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Enrolment'"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Enrolment'");
 		assertEquals("zero Enrolment in the queue.", 0, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Contact'"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Contact'");
 		assertEquals("2 Contacts in the queue.", 2, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Student'"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Student'");
 		assertEquals("2 Students in the queue.", 2, actualData.getRowCount());
 		
 		//clean up QueuedRecords
 		context.performQuery(new EJBQLQuery("delete from QueuedRecord"));
 		context.performQuery(new EJBQLQuery("delete from QueuedTransaction"));
 		context.commitChanges();
-		
-		paymentIn.succeed();
+
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+		PaymentInSucceed.valueOf(model).perform();
+		assertTrue(model.getPaymentIn().getStatus() == PaymentStatus.SUCCESS);
+
 		context.commitChanges();
 		
 		dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
@@ -229,25 +237,27 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	@Test
 	public void testPaymentFail() throws Exception {
 		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2000);
-		paymentIn.failPayment();
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+
+		PaymentInFail.valueOf(model).perform();
 		paymentIn.getObjectContext().commitChanges();
 		
 		//check replication queue
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
-		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000"));
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
 		BigInteger transactionId = (BigInteger) actualData.getValue(0, "transactionId");
 		assertNotNull("Transaction id not null", transactionId);
 		assertEquals("1 Invoice in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 InvoiceLine in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000");
 		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
 		
 		assertEquals("Payment status success.", PaymentStatus.FAILED, paymentIn.getStatus());
@@ -260,18 +270,18 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	public void testPaymentAbandon() throws Exception {
 		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2000);
         PaymentIn reversePayment = null;
-        PaymentIn directPayment = null;
-        Collection<PaymentIn> paymentIns = paymentIn.abandonPayment();
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+		Collection<PaymentIn> paymentIns = PaymentInAbandon.valueOf(model, false).perform().getRefundPayments();
+
         assertEquals("we should get only 2 payments: one direct and one reverse", 2, paymentIns.size());
         for (PaymentIn next : paymentIns) {
             if (next.getType() == PaymentType.REVERSE) {
                 assertNull("REVERSE payment should be only one", reversePayment);
                 reversePayment = next;
             }
-            else
-                directPayment = next;
         }
 
+		assertTrue(reversePayment != null);
 		paymentIn.getObjectContext().commitChanges();
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", reversePayment.getSessionId(), paymentIn.getSessionId());
 		
@@ -280,14 +290,14 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		
 		//check replication queue
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
-		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000"));
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
 		BigInteger transactionId = (BigInteger) actualData.getValue(0, "transactionId");
 		assertNotNull("Transaction id not null", transactionId);
 		assertEquals("1 Invoice in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 InvoiceLine in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		
@@ -295,10 +305,10 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 inverse PaymentIn in the queue.", 1, actualData.getRowCount());
 		
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000");
 		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
 		
 		assertEquals("Payment status success.", PaymentStatus.FAILED, paymentIn.getStatus());
@@ -310,25 +320,26 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	@Test
 	public void testPaymentAbandonKeepInvoice() throws Exception {
 		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2000);
-		paymentIn.abandonPaymentKeepInvoice();
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+		PaymentInAbandon.valueOf(model,true).perform();
 		paymentIn.getObjectContext().commitChanges();
 		
 		//check replication queue
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
-		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000"));
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord","select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
 		BigInteger transactionId = (BigInteger) actualData.getValue(0, "transactionId");
 		assertNotNull("Transaction id not null", transactionId);
 		assertEquals("1 Invoice in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 InvoiceLine in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord","select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000"));
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000");
 		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
 		
 		assertEquals("Payment status success.", PaymentStatus.FAILED, paymentIn.getStatus());

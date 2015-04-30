@@ -4,6 +4,9 @@ import ish.common.types.CreditCardType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
+import ish.oncourse.util.payment.PaymentInSucceed;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,9 +60,9 @@ public class TestPaymentGatewayServiceTest {
 
     /**
      * Test for
-     * {@link TestPaymentGatewayService#performGatewayOperation(PaymentIn)}.
+     * {@link TestPaymentGatewayService#performGatewayOperation(PaymentInModel)}.
      * Emulates the situation when the payment passes through the gateway
-     * successfully. The {@link PaymentIn#succeed()} should be invoked.
+     * successfully. The {@link PaymentInSucceed#perform()} should be invoked.
      */
 
     @Test
@@ -68,12 +71,13 @@ public class TestPaymentGatewayServiceTest {
 
         processCreditCard(creditCart);
 
-        verify(payment).succeed();
+        PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
+        verify(PaymentInSucceed.valueOf(model)).perform();
     }
 
     /**
      * Test for
-     * {@link TestPaymentGatewayService#performGatewayOperation(PaymentIn)}.
+     * {@link TestPaymentGatewayService#performGatewayOperation(PaymentInModel)}.
      * Emulates the situation when the payment passes through the gateway with
      * failed result. The {@link PaymentIn#failPayment()} should be invoked.
      */
@@ -165,7 +169,11 @@ public class TestPaymentGatewayServiceTest {
         when(payment.getCreditCardName()).thenReturn(creditCart.getName());
         when(payment.getCreditCardCVV()).thenReturn(creditCart.getCvv());
 
-        gatewayService.performGatewayOperation(payment);
+        PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
+        gatewayService.performGatewayOperation(model);
+
+
+        gatewayService.performGatewayOperation(model);
     }
 
 }
