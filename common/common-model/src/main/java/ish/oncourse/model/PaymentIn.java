@@ -224,6 +224,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * Invoked when the payment gateway processing is succeed.
 	 *
 	 */
+	@Deprecated //@see  ish.oncourse.util.payment.PaymentInSucceed
 	public void succeed() {
 		setStatus(PaymentStatus.SUCCESS);
 
@@ -400,6 +401,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	/**
 	 * Fails payment but makes invoice and enrolment sucess.
 	 */
+	@Deprecated //@see ish.oncourse.webservices.replication.service.PaymentInAbandon
 	public void abandonPaymentKeepInvoice() {
 
 		switch (getStatus()) {
@@ -431,6 +433,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * Fails payment, but does not override state if already FAILED. Refreshes
 	 * all the statuses of dependent entities to allow user to reuse them.
 	 */
+	@Deprecated //@see ish.oncourse.util.payment.PaymentInFail
 	public void failPayment() {
 
 		switch (getStatus()) {

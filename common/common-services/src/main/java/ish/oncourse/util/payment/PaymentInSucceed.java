@@ -1,5 +1,6 @@
 package ish.oncourse.util.payment;
 
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
@@ -13,6 +14,14 @@ import java.util.List;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
+ */
+
+/**
+ * Sets the status of payment to {@link PaymentStatus#SUCCESS}, and sets the
+ * success statuses to the related invoice and enrolment ( {@link EnrolmentStatus#SUCCESS} ).
+ *
+ * Invoked when the payment gateway processing is succeed.
+ *
  */
 public class PaymentInSucceed {
     private static final Logger logger = LogManager.getLogger();
