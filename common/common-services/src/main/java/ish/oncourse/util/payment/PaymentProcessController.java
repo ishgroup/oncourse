@@ -82,7 +82,7 @@ public class PaymentProcessController {
     }
 
     private boolean keepInvoice() {
-       return PaymentInUtil.hasSuccessEnrolments(paymentInModel.getPaymentIn()) || PaymentInUtil.hasSuccessProductItems(paymentInModel.getPaymentIn();
+       return PaymentInUtil.hasSuccessEnrolments(paymentInModel.getPaymentIn()) || PaymentInUtil.hasSuccessProductItems(paymentInModel.getPaymentIn());
     }
 
 
@@ -171,7 +171,8 @@ public class PaymentProcessController {
 		PaymentIn paymentIn = Cayenne.objectForPK(tempContext, PaymentIn.class, this.paymentInModel.getPaymentIn().getId());
 
 
-		logger.info("PaymentAction = {}, PaymentProcessController.state = {}; PaymentIn.status = {}; DB.PaymentIn.status = {}", action, currentState, this.paymentIn.getStatus(), paymentIn.getStatus());
+		logger.info("PaymentAction = {}, PaymentProcessController.state = {}; PaymentIn.status = {}; DB.PaymentIn.status = {}", 
+				action, currentState, this.paymentInModel.getPaymentIn().getStatus(), this.paymentInModel.getPaymentIn().getStatus());
 
 		switch (action) {
 			case INIT_PAYMENT:
@@ -269,11 +270,11 @@ public class PaymentProcessController {
 
 
     public synchronized Money getAmount() {
-        return paymentInModel.getPaymentIn()..getAmount();
+        return paymentInModel.getPaymentIn().getAmount();
     }
 
     public Contact getContact() {
-        return paymentInModel.getPaymentIn()..getContact();
+        return paymentInModel.getPaymentIn().getContact();
     }
 
     public PaymentIn performGatewayOperation() {

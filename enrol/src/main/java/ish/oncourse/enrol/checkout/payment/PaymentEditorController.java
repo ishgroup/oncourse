@@ -6,6 +6,7 @@ import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.*;
+import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.utils.StringUtilities;
 import org.apache.commons.lang.StringUtils;
@@ -138,9 +139,15 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 			}
 			
 		};
+		
+		PaymentInModel model = new PaymentInModel();
+		model.setPaymentIn(purchaseController.getModel().getPayment());
+		model.getInvoices().add(purchaseController.getModel().getInvoice());
+		model.getEnrolments().addAll(purchaseController.getModel().getAllEnabledEnrolments());
+		
 		paymentProcessController.setStartWatcher(false);
 		paymentProcessController.setObjectContext(purchaseController.getModel().getObjectContext());
-		paymentProcessController.setPaymentIn(purchaseController.getModel().getPayment());
+		paymentProcessController.setPaymentInModel(model);
 		paymentProcessController.setCayenneService(purchaseController.getCayenneService());
 		paymentProcessController.setPaymentGatewayService(purchaseController.getPaymentGatewayServiceBuilder().buildService());
 		paymentProcessController.setParallelExecutor(purchaseController.getParallelExecutor());

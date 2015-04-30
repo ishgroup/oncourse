@@ -1,7 +1,7 @@
 package ish.oncourse.services.paymentexpress;
 
-import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
+import ish.oncourse.util.payment.PaymentInModel;
 
 /**
  * Service for payment gateway processing.
@@ -16,11 +16,11 @@ public interface IPaymentGatewayService {
 	public static final String FAILED_PAYMENT_OUT = "PaymentOut failed. Declined by paymentExpress.";
 	public static final String FAILED_PAYMENT_OUT_NULL_RESPONSE ="PaymentOut failed with null transaction response.";
 	/**
-	 * Performs the gateway processing on the given payment, 
+	 * Performs the gateway processing on the given paymentModel, 
 	 * depending on processing results, sets the appropriate statuses to the payment-related entities.
-	 * @param payment the given payment for processing.
+	 * @param model the given paymentModel for processing.
 	 */
-	void performGatewayOperation(PaymentIn payment);
+	void performGatewayOperation(PaymentInModel model);
 	
 	void performGatewayOperation(PaymentOut paymentOut);
 }

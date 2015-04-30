@@ -3,6 +3,9 @@ package ish.oncourse.services.paymentexpress;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentOutTransaction;
+import ish.oncourse.util.payment.PaymentInFail;
+import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInSucceed;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,20 +28,21 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see ish.oncourse.services.paymentexpress.IPaymentGatewayService#performGatewayOperation(ish.oncourse.model.PaymentIn)
+	 * @see ish.oncourse.services.paymentexpress.IPaymentGatewayService#performGatewayOperation(ish.oncourse.util.payment.PaymentInModel)
 	 */
 	@Override
-	public void performGatewayOperation(PaymentIn payment) {
+	public void performGatewayOperation(ish.oncourse.util.payment.PaymentInModel model) {
+		PaymentIn payment = model.getPaymentIn();
 		if (payment.isZeroPayment()) {
-			payment.succeed();
+			PaymentInSucceed.valueOf(model).perform();
 		} else {
 			if (performPaymentValidation(payment)) {
 				LOG.debug("Payment details validation succeed.");
-				processGateway(payment);
+				processGateway(model);
 			} else {
 				LOG.debug("Payment details validation failed.");
 				payment.setStatusNotes("Validation failed");
-				payment.failPayment();
+				PaymentInFail.valueOf(model).perform();
 			}
 		}	
 	}
@@ -65,7 +69,7 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 * 
 	 * @param payment
 	 */
-	protected abstract void processGateway(PaymentIn payment);
+	protected abstract void processGateway(PaymentInModel payment);
 
 	/**
 	 * Performs actual gateway process if the validation method

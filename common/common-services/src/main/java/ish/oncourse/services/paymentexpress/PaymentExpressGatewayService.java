@@ -9,6 +9,9 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.paymentexpress.customization.PaymentExpressWSLocatorWithSoapResponseHandle;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.payment.PaymentInFail;
+import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInSucceed;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -62,11 +65,11 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
     /**
      * {@inheritDoc} Performs Payment Express gateway.
      *
-     * @see AbstractPaymentGatewayService#processGateway(ish.oncourse.model.PaymentIn)
+     * @see AbstractPaymentGatewayService#processGateway(ish.oncourse.util.payment.PaymentInModel)
      */
     @Override
-    protected void processGateway(PaymentIn payment) {
-
+    protected void processGateway(PaymentInModel model) {
+		PaymentIn payment = model.getPaymentIn();
         try {
             TransactionResult2 tr = doTransaction(payment);
 
@@ -75,13 +78,13 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
             if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
                 resultDetails.append(SUCCESS_PAYMENT_IN);
                 payment.setStatusNotes(SUCCESS_PAYMENT_IN);
-                payment.succeed();
+				PaymentInSucceed.valueOf(model).perform();
                 payment.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getDateSettlement()));
             } else {
                 resultDetails.append(FAILED_PAYMENT_IN);
                 payment.setStatusNotes(FAILED_PAYMENT_IN);
                 payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
-                payment.failPayment();
+				PaymentInFail.valueOf(model).perform();
             }
 
             resultDetails.append(" authCode:").append(tr.getAuthCode()).append(", authorized:").append(tr.getAuthorized())
@@ -97,7 +100,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
         } catch (Exception e) {
             logger.error("PaymentIn id: {} failed with exception.", payment.getId(), e);
             payment.setStatusNotes("PaymentIn failed with exception.");
-            payment.failPayment();
+			PaymentInFail.valueOf(model).perform();
         }
     }
 
