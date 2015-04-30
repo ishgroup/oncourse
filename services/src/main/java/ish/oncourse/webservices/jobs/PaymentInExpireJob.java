@@ -11,6 +11,7 @@ import ish.oncourse.util.payment.PaymentInAbandon;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.utils.PaymentInUtil;
 import ish.oncourse.webservices.replication.services.PaymentInModelBuilder;
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -94,8 +95,14 @@ public class PaymentInExpireJob implements Job {
 				if (isWebSourse) {
 					PaymentInUtil.abandonPayment(p, true);
 				} else {
-					PaymentInModel model = PaymentInModelBuilder.valueOf(p.getObjectContext(), p.getSessionId()).build();
-					PaymentInAbandon.valueOf(model, PaymentInUtil.hasSuccessEnrolments(p) || PaymentInUtil.hasSuccessProductItems(p));
+					try {
+						PaymentInModel model = PaymentInModelBuilder.valueOf(p.getObjectContext(), p.getSessionId()).build();
+						PaymentInAbandon.valueOf(model, true).perform();
+						p.getObjectContext().commitChanges();
+					} catch (final CayenneRuntimeException ce) {
+						logger.debug("Unable to cancel payment with id:{} and status:{}.", p.getId(), p.getStatus(), ce);
+						p.getObjectContext().rollbackChanges();
+					}
 				}
             }
         } catch (Exception e) {
