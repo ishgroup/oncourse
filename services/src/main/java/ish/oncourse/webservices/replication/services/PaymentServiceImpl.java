@@ -34,48 +34,48 @@ import static ish.oncourse.webservices.replication.services.ReplicationUtils.GEN
 
 public class PaymentServiceImpl implements InternalPaymentService {
 
-	private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
-	private final ITransactionGroupProcessor groupProcessor;
+    private final ITransactionGroupProcessor groupProcessor;
 
-	private final IPaymentGatewayService paymentGatewayService;
+    private final IPaymentGatewayService paymentGatewayService;
 
-	private final ICayenneService cayenneService;
+    private final ICayenneService cayenneService;
 
-	private final IPaymentService paymentInService;
+    private final IPaymentService paymentInService;
 
-	private final IVoucherService voucherService;
+    private final IVoucherService voucherService;
 
-	private final IEnrolmentService enrolService;
-	
-	private final IUSIVerificationService usiVerificationService;
+    private final IEnrolmentService enrolService;
 
-	private final ITransactionStubBuilder transactionBuilder;
+    private final IUSIVerificationService usiVerificationService;
 
-	private final SessionIdGenerator idGenerator;
-	
-	private final IWillowStubBuilder stubBuilder;
-	
-	private final PreferenceControllerFactory prefsFactory;
+    private final ITransactionStubBuilder transactionBuilder;
 
-	@Inject
-	public PaymentServiceImpl(ITransactionGroupProcessor groupProcessor, IPaymentGatewayService paymentGatewayService,
-			ICayenneService cayenneService, IPaymentService paymentInService, IEnrolmentService enrolService, IVoucherService voucherService,
-			IUSIVerificationService usiVerificationService, ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder, 
-			PreferenceControllerFactory prefsFactory) {
-		super();
-		this.groupProcessor = groupProcessor;
-		this.paymentGatewayService = paymentGatewayService;
-		this.cayenneService = cayenneService;
-		this.paymentInService = paymentInService;
-		this.enrolService = enrolService;
-		this.voucherService = voucherService;
-		this.usiVerificationService = usiVerificationService;
-		this.transactionBuilder = transactionBuilder;
-		this.stubBuilder = stubBuilder;
-		this.prefsFactory = prefsFactory;
-		this.idGenerator = new SessionIdGenerator();
-	}
+    private final SessionIdGenerator idGenerator;
+
+    private final IWillowStubBuilder stubBuilder;
+
+    private final PreferenceControllerFactory prefsFactory;
+
+    @Inject
+    public PaymentServiceImpl(ITransactionGroupProcessor groupProcessor, IPaymentGatewayService paymentGatewayService,
+                              ICayenneService cayenneService, IPaymentService paymentInService, IEnrolmentService enrolService, IVoucherService voucherService,
+                              IUSIVerificationService usiVerificationService, ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder,
+                              PreferenceControllerFactory prefsFactory) {
+        super();
+        this.groupProcessor = groupProcessor;
+        this.paymentGatewayService = paymentGatewayService;
+        this.cayenneService = cayenneService;
+        this.paymentInService = paymentInService;
+        this.enrolService = enrolService;
+        this.voucherService = voucherService;
+        this.usiVerificationService = usiVerificationService;
+        this.transactionBuilder = transactionBuilder;
+        this.stubBuilder = stubBuilder;
+        this.prefsFactory = prefsFactory;
+        this.idGenerator = new SessionIdGenerator();
+    }
 
     @Override
     public GenericTransactionGroup processPayment(GenericTransactionGroup transaction, GenericParametersMap parametersMap) throws InternalReplicationFault {
@@ -86,7 +86,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
             newContext = cayenneService.newContext();
 
-            paymentInModel = null;
+            paymentInModel = PaymentInModelBuilder.valueOf(newContext, replicatedRecords, parametersMap).build();
         } catch (Exception e) {
             logger.error("Unable to process payment in.", e);
             throw new InternalReplicationFault("Unable to process payment in.", GENERIC_EXCEPTION,
@@ -113,8 +113,14 @@ public class PaymentServiceImpl implements InternalPaymentService {
         PaymentInModelValidator validator = PaymentInModelValidator.valueOf(paymentInModel, prefsFactory).validate();
 
         if (validator.getError() == null) {
-            if (paymentInModel.getPaymentIn().getType() != PaymentType.CREDIT_CARD ||
-                    paymentInModel.getPaymentIn().getAmount().compareTo(Money.ZERO) == 0) {
+            if (paymentInModel.getPaymentIn().getType() == PaymentType.CREDIT_CARD &&
+                    paymentInModel.getPaymentIn().getAmount().compareTo(Money.ZERO) != 0) {
+                String sessionId = idGenerator.generateSessionId();
+                paymentInModel.getPaymentIn().setSessionId(sessionId);
+                for (Invoice invoice: paymentInModel.getInvoices()) {
+                    invoice.setSessionId(sessionId);
+                }
+            } else {
                 paymentInModel.getPaymentIn().succeed();
             }
         } else {
@@ -142,161 +148,162 @@ public class PaymentServiceImpl implements InternalPaymentService {
         return response;
     }
 
-	/**
-	 * Process paymentIn and enrolments. Firstly, saves paymentIn and related
-	 * objects, then check available enrolment places. If no places available
-	 * abandons payment, generates session id for credit card payments.
-	 */
-	@Override
-	public GenericTransactionGroup processPayment(GenericTransactionGroup transaction) throws InternalReplicationFault {
+    /**
+     * Process paymentIn and enrolments. Firstly, saves paymentIn and related
+     * objects, then check available enrolment places. If no places available
+     * abandons payment, generates session id for credit card payments.
+     */
+    @Override
+    public GenericTransactionGroup processPayment(GenericTransactionGroup transaction) throws InternalReplicationFault {
         return processPayment(transaction, null);
-	}
+    }
 
-	/**
-	 * Processes refunds.
-	 */
-	@Override
-	public GenericTransactionGroup processRefund(GenericTransactionGroup refundGroup) throws InternalReplicationFault {
-		try {
-			// check if paymentOut group is empty
-			if (refundGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo() == null
-					|| refundGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-				throw new Exception("Got an empty paymentOut transaction group from angel.");
-			}
+    /**
+     * Processes refunds.
+     */
+    @Override
+    public GenericTransactionGroup processRefund(GenericTransactionGroup refundGroup) throws InternalReplicationFault {
+        try {
+            // check if paymentOut group is empty
+            if (refundGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo() == null
+                    || refundGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+                throw new Exception("Got an empty paymentOut transaction group from angel.");
+            }
 
-			// save payment out to database
-			List<GenericReplicatedRecord> replicatedRecords = groupProcessor.processGroup(refundGroup);
+            // save payment out to database
+            List<GenericReplicatedRecord> replicatedRecords = groupProcessor.processGroup(refundGroup);
 
-			if (!StubUtils.hasSuccessStatus(replicatedRecords.get(0))) {
-				throw new Exception("Willow was unable to save paymentOut transaction group.");
-			}
-			
-			GenericReplicatedRecord paymentOutRecord = ReplicationUtils.replicatedPaymentOutRecord(replicatedRecords);
-			PaymentOut paymentOutToProcess = paymentInService.paymentOutByAngelId(paymentOutRecord.getStub().getAngelId());
+            if (!StubUtils.hasSuccessStatus(replicatedRecords.get(0))) {
+                throw new Exception("Willow was unable to save paymentOut transaction group.");
+            }
 
-			if (paymentOutToProcess == null) {
-				throw new Exception("The paymentOut record with angelId \"" + paymentOutRecord.getStub().getAngelId()
-						+ "\" wasn't saved during the refund group processing.");
-			}
+            GenericReplicatedRecord paymentOutRecord = ReplicationUtils.replicatedPaymentOutRecord(replicatedRecords);
+            PaymentOut paymentOutToProcess = paymentInService.paymentOutByAngelId(paymentOutRecord.getStub().getAngelId());
 
-			ObjectContext context = cayenneService.newNonReplicatingContext();
-			PaymentOut paymentOut = context.localObject(paymentOutToProcess);
+            if (paymentOutToProcess == null) {
+                throw new Exception("The paymentOut record with angelId \"" + paymentOutRecord.getStub().getAngelId()
+                        + "\" wasn't saved during the refund group processing.");
+            }
 
-			paymentGatewayService.performGatewayOperation(paymentOut);
+            ObjectContext context = cayenneService.newNonReplicatingContext();
+            PaymentOut paymentOut = context.localObject(paymentOutToProcess);
 
-			// commit modifications to payment in nonreplicating context and immediatelly send transaction group back to angel
+            paymentGatewayService.performGatewayOperation(paymentOut);
 
-			context.commitChanges();
+            // commit modifications to payment in nonreplicating context and immediatelly send transaction group back to angel
 
-			GenericTransactionGroup group = PortHelper.createTransactionGroup(refundGroup);
-			group.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createRefundTransaction(paymentOut, 
-				PortHelper.getVersionByTransactionGroup(refundGroup)));
+            context.commitChanges();
 
-			return group;
-		} catch (Exception e) {
-			logger.error("Unable to process refund.", e);
-			throw new InternalReplicationFault("Unable to process refund.", GENERIC_EXCEPTION,
-				String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
-		}
-	}
+            GenericTransactionGroup group = PortHelper.createTransactionGroup(refundGroup);
+            group.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createRefundTransaction(paymentOut,
+                    PortHelper.getVersionByTransactionGroup(refundGroup)));
 
-	/**
-	 * Looks for paymentIn by sessionId, if payment is completed success/failed,
-	 * then returns soap stubs for paymentIn and related objects. Returns an
-	 * empty result otherwise.
-	 */
-	@Override
-	public GenericTransactionGroup getPaymentStatus(String sessionId, final SupportedVersions version) throws InternalReplicationFault {
-		try {
-			GenericTransactionGroup tGroup = PortHelper.createTransactionGroup(version);
+            return group;
+        } catch (Exception e) {
+            logger.error("Unable to process refund.", e);
+            throw new InternalReplicationFault("Unable to process refund.", GENERIC_EXCEPTION,
+                    String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
+        }
+    }
 
-			List<PaymentIn> pList = paymentInService.getPaymentsBySessionId(sessionId);
-			List<PaymentIn> voucherPaymentsList = new ArrayList<PaymentIn>();
+    /**
+     * Looks for paymentIn by sessionId, if payment is completed success/failed,
+     * then returns soap stubs for paymentIn and related objects. Returns an
+     * empty result otherwise.
+     */
+    @Override
+    public GenericTransactionGroup getPaymentStatus(String sessionId, final SupportedVersions version) throws InternalReplicationFault {
+        try {
+            GenericTransactionGroup tGroup = PortHelper.createTransactionGroup(version);
 
-			boolean shouldWait = false;
+            List<PaymentIn> pList = paymentInService.getPaymentsBySessionId(sessionId);
+            List<PaymentIn> voucherPaymentsList = new ArrayList<PaymentIn>();
 
-			for (PaymentIn p : pList) {
-				if (!p.isAsyncReplicationAllowed()) {
-					shouldWait = true;
-					break;
-				} else {
-					voucherPaymentsList.addAll(PaymentInUtil.getRelatedVoucherPayments(p));
-				}
-			}
+            boolean shouldWait = false;
 
-			if (!shouldWait) {
-				//we should also add the voucher payments in this list
-				pList.addAll(voucherPaymentsList);
-				tGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createPaymentInTransaction(pList, version));
-			}
+            for (PaymentIn p : pList) {
+                if (!p.isAsyncReplicationAllowed()) {
+                    shouldWait = true;
+                    break;
+                } else {
+                    voucherPaymentsList.addAll(PaymentInUtil.getRelatedVoucherPayments(p));
+                }
+            }
 
-			return tGroup;
-		} catch (Exception e) {
-			logger.error("Unable to get payment status.", e);
-			throw new InternalReplicationFault("Unable to get payment status.", GENERIC_EXCEPTION,
-				String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
-		}
-	}
+            if (!shouldWait) {
+                //we should also add the voucher payments in this list
+                pList.addAll(voucherPaymentsList);
+                tGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createPaymentInTransaction(pList, version));
+            }
 
-	/**
-	 * Retrieves vouchers matching voucher stubs received in request from willow db and returns back transaction group
-	 * consisting of voucher stubs generated for these freshly fetched stubs to enable angel to check if vouchers
-	 * being redeemed there are in consistent state with willow data. Vouchers which are currently in use by willow
-	 * (have linked payments in non final state) are not included into response transaction group.
-	 *
-	 * @throws InternalReplicationFault
-	 */
-	@Override
-	public GenericTransactionGroup getVouchers(GenericTransactionGroup transactionGroup, SupportedVersions version) throws InternalReplicationFault {
-		try {
-			List<Long> voucherIds = new ArrayList<>();
-			for (GenericReplicationStub stub : transactionGroup.getReplicationStub()) {
-				if (ReplicationUtils.getEntityName(Voucher.class).equalsIgnoreCase(stub.getEntityIdentifier())) {
-					voucherIds.add(stub.getWillowId());
-				}
-			}
+            return tGroup;
+        } catch (Exception e) {
+            logger.error("Unable to get payment status.", e);
+            throw new InternalReplicationFault("Unable to get payment status.", GENERIC_EXCEPTION,
+                    String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
+        }
+    }
 
-			List<ProductItem> vouchers = voucherService.loadProductItemsByIds(voucherIds);
+    /**
+     * Retrieves vouchers matching voucher stubs received in request from willow db and returns back transaction group
+     * consisting of voucher stubs generated for these freshly fetched stubs to enable angel to check if vouchers
+     * being redeemed there are in consistent state with willow data. Vouchers which are currently in use by willow
+     * (have linked payments in non final state) are not included into response transaction group.
+     *
+     * @throws InternalReplicationFault
+     */
+    @Override
+    public GenericTransactionGroup getVouchers(GenericTransactionGroup transactionGroup, SupportedVersions version) throws InternalReplicationFault {
+        try {
+            List<Long> voucherIds = new ArrayList<>();
+            for (GenericReplicationStub stub : transactionGroup.getReplicationStub()) {
+                if (ReplicationUtils.getEntityName(Voucher.class).equalsIgnoreCase(stub.getEntityIdentifier())) {
+                    voucherIds.add(stub.getWillowId());
+                }
+            }
 
-			GenericTransactionGroup response = PortHelper.createTransactionGroup(version);
+            List<ProductItem> vouchers = voucherService.loadProductItemsByIds(voucherIds);
 
-			for (ProductItem productItem : vouchers) {
-				Voucher voucher = (Voucher) productItem;
-				if (!voucher.isInUse()) {
-					response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(voucher, version));
-				}
-			}
+            GenericTransactionGroup response = PortHelper.createTransactionGroup(version);
 
-			return response;
-		} catch (Exception e) {
-			logger.error("Unable to get voucher info.", e);
-			throw new InternalReplicationFault("Unable to get voucher info.", GENERIC_EXCEPTION,
-					String.format("Unable to get voucher info. Willow exception: %s", e.getMessage()));
-		}
-	}
-	
-	/**
-	 * Transaction group which contains paymentIn and related enrolments only.
-	 * @param model
-	 * @return
-	 */
-	private GenericTransactionGroup plainPaymentEnrolmentResponse(PaymentInModel model, final SupportedVersions version) {
-		GenericTransactionGroup response = PortHelper.createTransactionGroup(version);
-		response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(model.getPaymentIn(), version));
-		for (Enrolment enrl : model.getEnrolments()) {
-			response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(enrl, version));
-		}
-		return response;
-	}
+            for (ProductItem productItem : vouchers) {
+                Voucher voucher = (Voucher) productItem;
+                if (!voucher.isInUse()) {
+                    response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(voucher, version));
+                }
+            }
 
-	@Override
-	public GenericParametersMap verifyUSI(GenericParametersMap parametersMap) throws InternalReplicationFault {
-		USIVerificationRequest request = USIVerificationUtil.parseVerificationRequest(parametersMap);
-		
-		USIVerificationResult result = usiVerificationService.verifyUsi(request);
-		
-		SupportedVersions version = PortHelper.getVersionByParametersMap(parametersMap);
-		
-		return USIVerificationUtil.createVerificationResultParametersMap(result, version);
-	}
+            return response;
+        } catch (Exception e) {
+            logger.error("Unable to get voucher info.", e);
+            throw new InternalReplicationFault("Unable to get voucher info.", GENERIC_EXCEPTION,
+                    String.format("Unable to get voucher info. Willow exception: %s", e.getMessage()));
+        }
+    }
+
+    /**
+     * Transaction group which contains paymentIn and related enrolments only.
+     *
+     * @param model
+     * @return
+     */
+    private GenericTransactionGroup plainPaymentEnrolmentResponse(PaymentInModel model, final SupportedVersions version) {
+        GenericTransactionGroup response = PortHelper.createTransactionGroup(version);
+        response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(model.getPaymentIn(), version));
+        for (Enrolment enrl : model.getEnrolments()) {
+            response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(enrl, version));
+        }
+        return response;
+    }
+
+    @Override
+    public GenericParametersMap verifyUSI(GenericParametersMap parametersMap) throws InternalReplicationFault {
+        USIVerificationRequest request = USIVerificationUtil.parseVerificationRequest(parametersMap);
+
+        USIVerificationResult result = usiVerificationService.verifyUsi(request);
+
+        SupportedVersions version = PortHelper.getVersionByParametersMap(parametersMap);
+
+        return USIVerificationUtil.createVerificationResultParametersMap(result, version);
+    }
 }
