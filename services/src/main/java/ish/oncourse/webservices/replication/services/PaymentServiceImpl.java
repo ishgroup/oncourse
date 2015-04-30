@@ -1,13 +1,15 @@
 package ish.oncourse.webservices.replication.services;
 
-import ish.common.types.*;
+import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
+import ish.common.types.USIVerificationRequest;
+import ish.common.types.USIVerificationResult;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.enrol.IEnrolmentService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.services.voucher.IVoucherService;
@@ -19,7 +21,6 @@ import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -32,8 +33,6 @@ import java.util.Set;
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.GENERIC_EXCEPTION;
 
 public class PaymentServiceImpl implements InternalPaymentService {
-
-	public static final String MESSAGE_activeEnrolmentExists = "Student %s already has an enrollment in transaction for class %s and he/she cannot be enrolled twice.";
 
 	private static final Logger logger = LogManager.getLogger();
 
@@ -77,11 +76,71 @@ public class PaymentServiceImpl implements InternalPaymentService {
 		this.prefsFactory = prefsFactory;
 		this.idGenerator = new SessionIdGenerator();
 	}
-	
-	@Override
-	public GenericTransactionGroup processPayment(GenericTransactionGroup transaction, GenericParametersMap parametersMap) throws InternalReplicationFault {
-		return processPayment(transaction);
-	}
+
+    @Override
+    public GenericTransactionGroup processPayment(GenericTransactionGroup transaction, GenericParametersMap parametersMap) throws InternalReplicationFault {
+        ObjectContext newContext = null;
+        PaymentInModel paymentInModel = null;
+        try {
+            List<GenericReplicatedRecord> replicatedRecords = groupProcessor.processGroup(transaction);
+
+            newContext = cayenneService.newContext();
+
+            paymentInModel = null;
+        } catch (Exception e) {
+            logger.error("Unable to process payment in.", e);
+            throw new InternalReplicationFault("Unable to process payment in.", GENERIC_EXCEPTION,
+                    String.format("Unable to process payment in. Willow exception: %s", e.getMessage()));
+        }
+
+        try {
+            List<PaymentIn> updatedPayments = processModel(paymentInModel);
+
+            newContext.commitChanges();
+
+            return createResponse(transaction, updatedPayments);
+        } catch (Exception e) {
+            logger.error("Exception happened after paymentIn: {} was saved. ", paymentInModel.getPaymentIn().getId(), e);
+            return plainPaymentEnrolmentResponse(paymentInModel, PortHelper.getVersionByTransactionGroup(transaction));
+        }
+    }
+
+    private List<PaymentIn> processModel(PaymentInModel paymentInModel) {
+        List<PaymentIn> updatedPayments = new LinkedList<>();
+        updatedPayments.add(paymentInModel.getPaymentIn());
+        updatedPayments.addAll(PaymentInUtil.getRelatedVoucherPayments(paymentInModel.getPaymentIn()));
+
+        PaymentInModelValidator validator = PaymentInModelValidator.valueOf(paymentInModel, prefsFactory).validate();
+
+        if (validator.getError() == null) {
+            if (paymentInModel.getPaymentIn().getType() != PaymentType.CREDIT_CARD ||
+                    paymentInModel.getPaymentIn().getAmount().compareTo(Money.ZERO) == 0) {
+                paymentInModel.getPaymentIn().succeed();
+            }
+        } else {
+            switch (validator.getError()) {
+                case activeEnrolmentExists:
+                case noLicenseCCProcessing:
+                    paymentInModel.getPaymentIn().setStatus(PaymentStatus.FAILED);
+                    break;
+                case noPlacesAvailable:
+                    paymentInModel.getPaymentIn().setStatus(PaymentStatus.FAILED_NO_PLACES);
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
+            paymentInModel.getPaymentIn().setStatusNotes(validator.getErrorMessage());
+            updatedPayments.addAll(paymentInModel.getPaymentIn().abandonPayment());
+        }
+        return updatedPayments;
+    }
+
+    private GenericTransactionGroup createResponse(GenericTransactionGroup transaction, List<PaymentIn> updatedPayments) {
+        GenericTransactionGroup response = PortHelper.createTransactionGroup(transaction);
+        Set<GenericReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments, PortHelper.getVersionByTransactionGroup(transaction));
+        response.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(updatedStubs);
+        return response;
+    }
 
 	/**
 	 * Process paymentIn and enrolments. Firstly, saves paymentIn and related
@@ -90,129 +149,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	 */
 	@Override
 	public GenericTransactionGroup processPayment(GenericTransactionGroup transaction) throws InternalReplicationFault {
-
-		List<GenericReplicatedRecord> replicatedRecords = new ArrayList<>();
-		List<Enrolment> enrolments = new ArrayList<>();
-		PaymentIn paymentIn = null;
-		boolean isCreditCardPayment = false;
-
-		ObjectContext newContext = cayenneService.newContext();
-
-		try {
-			// check if group from angel is empty
-			if (transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo() == null
-					|| transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-				throw new Exception("Got an empty paymentIn transaction group from angel.");
-			}
-
-			isCreditCardPayment = ReplicationUtils.isCreditCardPayment(transaction);
-			replicatedRecords = groupProcessor.processGroup(transaction);
-
-			GenericReplicatedRecord record = replicatedRecords.get(0);
-			// check if records were saved successfully
-			if (!StubUtils.hasSuccessStatus(replicatedRecords.get(0))) {
-				// records wasn't saved, immediately return to angel.
-				throw new Exception(String.format("Willow was unable to save paymentIn transaction group. ReplicationRecord error: %s",record.getMessage()));
-			}
-
-			for (GenericReplicatedRecord r : replicatedRecords) {
-
-				if (ReplicationUtils.getEntityName(Enrolment.class).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
-
-					Enrolment enrolment = newContext.localObject(enrolService.loadById(r.getStub().getWillowId()));
-					// this case deny check for enrollments which active via QE with case Abandon payment keep invoice
-					if (!EnrolmentStatus.SUCCESS.equals(enrolment.getStatus())) {
-						enrolments.add(enrolment);
-					}
-
-				} else if (ReplicationUtils.getEntityName(PaymentIn.class).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
-
-					PaymentIn p = paymentInService.paymentInByWillowId(r.getStub().getWillowId());
-
-					if (p == null) {
-						throw new Exception(String.format(
-								"The paymentIn record with angelId:%s willowId: %s wasn't saved during the payment group processing.", r.getStub()
-								.getAngelId(),r.getStub().getWillowId()));
-					}
-
-					// ignore voucher payments here since further processing is based on money payment
-					if (!PaymentType.VOUCHER.equals(p.getType())) {
-						paymentIn = newContext.localObject(p);
-					}
-				}
-			}
-
-		} catch (Exception e) {
-			logger.error("Unable to process payment in.", e);
-			throw new InternalReplicationFault("Unable to process payment in.", GENERIC_EXCEPTION,
-				String.format("Unable to process payment in. Willow exception: %s", e.getMessage()));
-		}
-
-		// payment is saved at this point, that means that we should return
-		// response with status of original payment not matter what happens.
-
-		try {
-			GenericTransactionGroup response = PortHelper.createTransactionGroup(transaction);
-			List<PaymentIn> updatedPayments = new LinkedList<>();
-			updatedPayments.add(paymentIn);
-			updatedPayments.addAll(PaymentInUtil.getRelatedVoucherPayments(paymentIn));
-
-			// check places
-			boolean isPlacesAvailable = true;
-
-			Enrolment activeEnrolment = null;
-
-			for (Enrolment enrolment : enrolments) {
-				CourseClass clazz = enrolment.getCourseClass();
-				List<Enrolment> validEnrolments = clazz.getValidEnrolments();
-				int availPlaces = clazz.getMaximumPlaces() - validEnrolments.size();
-				if (availPlaces < 0) {
-					logger.info("No places available for courseClass: {}.", clazz.getId());
-					isPlacesAvailable = false;
-					break;
-				}
-				//check that no duplicated enrolments exist
-				List<Enrolment> studentEnrolments = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, enrolment.getStudent()).filterObjects(validEnrolments);
-				//we use this flag also to say about duplicated student enrolments
-				//see 18618
-				if (studentEnrolments.size() > 1) {
-					activeEnrolment = enrolments.get(0);
-					break;
-				}
-			}
-
-			PreferenceController prefsController = prefsFactory.getPreferenceController(paymentIn.getCollege());
-
-			if (isCreditCardPayment && !prefsController.getLicenseCCProcessing()) {
-				updatedPayments.addAll(paymentIn.abandonPayment());
-			} else if (!isPlacesAvailable) {
-				paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
-				updatedPayments.addAll(paymentIn.abandonPayment());
-			} else if (activeEnrolment != null) {
-				paymentIn.setStatus(PaymentStatus.FAILED);
-				updatedPayments.addAll(paymentIn.abandonPayment());
-				String message = String.format(MESSAGE_activeEnrolmentExists, activeEnrolment.getStudent().getFullName(), activeEnrolment.getCourseClass().getUniqueIdentifier());
-				paymentIn.setStatusNotes(message);
-				logger.info(message);
-			} else {
-				// if credit card and not-zero payment, generate sessionId.
-				if (isCreditCardPayment && paymentIn.getAmount().compareTo(Money.ZERO) != 0) {
-					paymentIn.setSessionId(idGenerator.generateSessionId());
-				} else {
-					paymentIn.succeed();
-				}
-			}
-			
-			newContext.commitChanges();
-			
-			Set<GenericReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments, PortHelper.getVersionByTransactionGroup(transaction));
-			response.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(updatedStubs);
-			return response;
-			
-		} catch (Exception e) {
-			logger.error("Exception happened after paymentIn: {} was saved. ", paymentIn.getId(), e);
-			return plainPaymentEnrolmentResponse(paymentIn, enrolments, PortHelper.getVersionByTransactionGroup(transaction));
-		}
+        return processPayment(transaction, null);
 	}
 
 	/**
@@ -340,14 +277,13 @@ public class PaymentServiceImpl implements InternalPaymentService {
 	
 	/**
 	 * Transaction group which contains paymentIn and related enrolments only.
-	 * @param paymentIn
-	 * @param enrolments
+	 * @param model
 	 * @return
 	 */
-	private GenericTransactionGroup plainPaymentEnrolmentResponse(PaymentIn paymentIn, List<Enrolment> enrolments, final SupportedVersions version) {
+	private GenericTransactionGroup plainPaymentEnrolmentResponse(PaymentInModel model, final SupportedVersions version) {
 		GenericTransactionGroup response = PortHelper.createTransactionGroup(version);
-		response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(paymentIn, version));
-		for (Enrolment enrl : enrolments) {
+		response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(model.getPaymentIn(), version));
+		for (Enrolment enrl : model.getEnrolments()) {
 			response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(enrl, version));
 		}
 		return response;

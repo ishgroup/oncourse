@@ -105,6 +105,13 @@ public class Payment {
         }
     }
 
+    void onActivate() {
+        if (paymentProcessController != null) {
+            resetOldSessionController(paymentProcessController.getPaymentIn().getSessionId());
+            initProperties();
+        }
+    }
+
     /**
      * Finds and init payment and payment transaciton by referenceId.
      *
