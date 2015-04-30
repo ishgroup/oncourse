@@ -3324,4 +3324,17 @@
 		
 	</changeSet>
 	
+	<changeSet id="213" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Invoice" columnName="sessionId"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Invoice ADD COLUMN sessionId VARCHAR(100);
+		</sql>
+		<createIndex tableName="Invoice" indexName="Invoice_sessionId">
+			<column name="sessionId"/>
+		</createIndex>
+	</changeSet>
 </databaseChangeLog>
