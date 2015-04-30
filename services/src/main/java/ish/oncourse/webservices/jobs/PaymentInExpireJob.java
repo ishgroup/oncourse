@@ -7,7 +7,10 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.payment.PaymentInAbandon;
+import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.utils.PaymentInUtil;
+import ish.oncourse.webservices.replication.services.PaymentInModelBuilder;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -15,7 +18,11 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Job to abandon (means fail enrolments and creating refunds) not
@@ -82,9 +89,14 @@ public class PaymentInExpireJob implements Job {
             // do not fail payments for which we haven't got final transaction response from gateway
             if (paymentService.isProcessedByGateway(p)) {
                 //web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.
-                boolean shouldReverseInvoice = PaymentSource.SOURCE_WEB.equals(p.getSource());
+                boolean isWebSourse = PaymentSource.SOURCE_WEB.equals(p.getSource());
                 p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
-                PaymentInUtil.abandonPayment(p, shouldReverseInvoice);
+				if (isWebSourse) {
+					PaymentInUtil.abandonPayment(p, true);
+				} else {
+					PaymentInModel model = PaymentInModelBuilder.valueOf(p.getObjectContext(), p.getSessionId()).build();
+					PaymentInAbandon.valueOf(model, PaymentInUtil.hasSuccessEnrolments(p) || PaymentInUtil.hasSuccessProductItems(p));
+				}
             }
         } catch (Exception e) {
 	        logger.catching(e);
