@@ -280,6 +280,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
      * One of payment lines is linked to direct invoice and has the same amount as direct invoice,
      * other one is linked to reverse invoice and has negative amount.
      */
+	@Deprecated
     private Collection<PaymentIn> createRefundInvoice(Invoice invoiceToRefund) {
 		invoiceToRefund.updateAmountOwing();
 
@@ -336,6 +337,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * statuses to the related invoice and enrolment ( {@link EnrolmentStatus#FAILED} ).
 	 * Creates the refund invoice.
 	 */
+	@Deprecated //@see ish.oncourse.webservices.replication.service.PaymentInAbandon
 	public Collection<PaymentIn> abandonPayment() {
 
 		switch (getStatus()) {

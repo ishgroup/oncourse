@@ -136,7 +136,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
                     throw new IllegalArgumentException();
             }
             paymentInModel.getPaymentIn().setStatusNotes(validator.getErrorMessage());
-            updatedPayments.addAll(paymentInModel.getPaymentIn().abandonPayment());
+            updatedPayments.addAll(PaymentInAbandon.valueOf(paymentInModel).perform().getRefundPayments());
         }
         return updatedPayments;
     }
