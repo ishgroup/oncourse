@@ -22,28 +22,27 @@ public class PaymentInUtil {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private static boolean hasSuccessEnrolments(PaymentIn payment) {
+	public static boolean hasSuccessEnrolments(PaymentIn payment) {
 		Expression paymentIdMatchExpression = ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, payment.getId());
-		Expression enrollmentExpression = ExpressionFactory.matchExp(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "." +
-			PaymentInLine.INVOICE_PROPERTY + "." + Invoice.INVOICE_LINES_PROPERTY + "." +
-			InvoiceLine.ENROLMENT_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS);
+		Expression enrollmentExpression = PaymentIn.PAYMENT_IN_LINES.dot(PaymentInLine.INVOICE)
+				.dot(Invoice.INVOICE_LINES).dot(InvoiceLine.ENROLMENT).dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS);
 		SelectQuery checkQuery = new SelectQuery(PaymentIn.class, paymentIdMatchExpression.andExp(enrollmentExpression));
 
 		List<PaymentIn> result = payment.getObjectContext().performQuery(checkQuery);
 		return !result.isEmpty();
 	}
 
-	private static boolean hasSuccessProductItems(PaymentIn payment) {
+	public static boolean hasSuccessProductItems(PaymentIn payment) {
 		Expression paymentIdMatchExpression = ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, payment.getId());
-		Expression productItemExpression = ExpressionFactory.matchExp(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "." +
-			PaymentInLine.INVOICE_PROPERTY + "." + Invoice.INVOICE_LINES_PROPERTY + "." +
-			InvoiceLine.PRODUCT_ITEMS_PROPERTY + "." + ProductItem.STATUS_PROPERTY, ProductStatus.ACTIVE);
+		Expression productItemExpression = 	PaymentIn.PAYMENT_IN_LINES.dot(PaymentInLine.INVOICE)
+				.dot(Invoice.INVOICE_LINES).dot(InvoiceLine.PRODUCT_ITEMS).dot(ProductItem.STATUS).eq(ProductStatus.ACTIVE);
 		SelectQuery checkQuery = new SelectQuery(PaymentIn.class, paymentIdMatchExpression.andExp(productItemExpression));
 
 		List<PaymentIn> result = payment.getObjectContext().performQuery(checkQuery);
 		return !result.isEmpty();
 	}
 
+	@Deprecated //@see ish.oncourse.util.payment.PaymentInAbandon
 	public static void abandonPayment(PaymentIn payment, boolean reverseInvoice) {
 		try {
 			logger.info("Canceling paymentIn with id:{}, created:%s and status:{}.", payment.getId(), payment.getCreated(), payment.getStatus());

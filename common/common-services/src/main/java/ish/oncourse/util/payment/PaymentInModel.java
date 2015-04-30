@@ -39,5 +39,15 @@ public class PaymentInModel {
 		return relatedVoucherPayments;
 	}
 
+	public static PaymentInModel valueOf(PaymentInModel model) {
+		PaymentInModel result = new PaymentInModel();
+		PaymentIn paymentIn = model.getPaymentIn().makeCopy();
+		result.paymentIn = paymentIn;
+		result.invoices = new ArrayList<>(model.invoices);
+		result.enrolments = new ArrayList<>(model.enrolments);
+		result.relatedVoucherPayments = new ArrayList<>(model.getRelatedVoucherPayments());
+		return  result;
+	}
+
 	
 }

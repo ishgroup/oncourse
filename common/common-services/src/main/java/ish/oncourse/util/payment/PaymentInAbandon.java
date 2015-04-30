@@ -19,23 +19,34 @@ public class PaymentInAbandon {
     private static final Logger logger = LogManager.getLogger();
 
     private PaymentInModel model;
+    private boolean keepInvoice = true;
 
     private Set<PaymentIn> refundPayments = new HashSet<>();
 
     private PaymentInAbandon() {
     }
 
-    public PaymentInAbandon perform()
+    /**
+     * Fails payment but makes invoice, enrolments and products items success.
+     */
+    private void abandonKeepInvoice()
     {
-        switch (model.getPaymentIn().getStatus()) {
-            case FAILED:
-            case FAILED_CARD_DECLINED:
-            case FAILED_NO_PLACES:
-                break;
-            default:
-                model.getPaymentIn().setStatus(PaymentStatus.FAILED);
+        for (PaymentIn voucherPayment : model.getRelatedVoucherPayments()) {
+            if (!PaymentStatus.STATUSES_FINAL.contains(voucherPayment.getStatus())) {
+                PaymentInUtil.reverseVoucherPayment(voucherPayment);
+            }
         }
 
+        Date today = new Date();
+
+        for (Invoice invoice: model.getInvoices()) {
+            invoice.setModified(today);
+            PaymentInUtil.makeSuccess(invoice.getInvoiceLines());
+        }
+    }
+
+    private void abandon()
+    {
         for (PaymentIn voucherPayment : model.getRelatedVoucherPayments()) {
             if (!PaymentStatus.STATUSES_FINAL.contains(voucherPayment.getStatus())) {
                 PaymentInUtil.reverseVoucherPayment(voucherPayment);
@@ -48,6 +59,27 @@ public class PaymentInAbandon {
         for (Invoice invoice : model.getInvoices()) {
             invoice.updateAmountOwing();
             addRefundInvoice(invoice);
+        }
+    }
+
+    public PaymentInAbandon perform()
+    {
+        logger.info("Canceling paymentIn with id:{}, created:%s and status:{}.", model.getPaymentIn().getId(),
+                model.getPaymentIn().getCreated(),
+                model.getPaymentIn().getStatus());
+        switch (model.getPaymentIn().getStatus()) {
+            case FAILED:
+            case FAILED_CARD_DECLINED:
+            case FAILED_NO_PLACES:
+                break;
+            default:
+                model.getPaymentIn().setStatus(PaymentStatus.FAILED);
+        }
+
+        if (keepInvoice) {
+            abandonKeepInvoice();
+        } else {
+            abandon();
         }
         return this;
     }
@@ -106,10 +138,11 @@ public class PaymentInAbandon {
     }
 
 
-    public static PaymentInAbandon valueOf(PaymentInModel model)
+    public static PaymentInAbandon valueOf(PaymentInModel model, boolean keepInvoice)
     {
         PaymentInAbandon paymentInAbandon = new PaymentInAbandon();
         paymentInAbandon.model = model;
+        paymentInAbandon.keepInvoice = keepInvoice;
         return paymentInAbandon;
     }
 }

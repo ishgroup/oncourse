@@ -157,21 +157,6 @@ public class PaymentInModelBuilder {
 		}
 	}
 
-	public static PaymentInModelBuilder valueOf(ObjectContext context, List<GenericReplicatedRecord> replicatedRecords, GenericParametersMap parametersMap) {
-		PaymentInModelBuilder builder = new PaymentInModelBuilder();
-		builder.setContext(context);
-		builder.setReplicatedRecords(replicatedRecords);
-		builder.setParametersMap(parametersMap);
-		return builder;
-	}
-	
-	public static PaymentInModelBuilder valueOf(ObjectContext context, String sessionId) {
-		PaymentInModelBuilder builder = new PaymentInModelBuilder();
-		builder.setContext(context);
-		builder.setSessionId(sessionId);
-		return builder;
-	}
-
 	private void setParametersMap(GenericParametersMap parametersMap) {
 		this.parametersMap = parametersMap;
 	}
@@ -187,4 +172,20 @@ public class PaymentInModelBuilder {
 	private void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
+
+	public static PaymentInModelBuilder valueOf(ObjectContext context, List<GenericReplicatedRecord> replicatedRecords, GenericParametersMap parametersMap) {
+		PaymentInModelBuilder builder = new PaymentInModelBuilder();
+		builder.setContext(context);
+		builder.setReplicatedRecords(replicatedRecords);
+		builder.setParametersMap(parametersMap);
+		return builder;
+	}
+
+	public static PaymentInModelBuilder valueOf(ObjectContext context, String sessionId) {
+		PaymentInModelBuilder builder = new PaymentInModelBuilder();
+		builder.setContext(context);
+		builder.setSessionId(sessionId);
+		return builder;
+	}
+
 }

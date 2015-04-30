@@ -2,20 +2,20 @@ package ish.oncourse.util.payment;
 
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
-import ish.oncourse.model.*;
+import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.Invoice;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.utils.PaymentInUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SortOrder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -36,7 +36,7 @@ public class PaymentProcessController {
 	private ICayenneService cayenneService;
 	private IPaymentService paymentService;
 	
-    private PaymentIn paymentIn;
+    private PaymentInModel paymentInModel;
     private ObjectContext objectContext;
 
     private Throwable throwable;
@@ -70,15 +70,19 @@ public class PaymentProcessController {
     }
 
     public PaymentIn getPaymentIn() {
-        return paymentIn;
+        return paymentInModel.getPaymentIn();
     }
     
-    public void setPaymentIn(PaymentIn paymentIn) {
-        this.paymentIn = objectContext.localObject(paymentIn);
+    public void setPaymentInModel(PaymentInModel paymentInModel) {
+        this.paymentInModel = paymentInModel;
     }
 
     public void setObjectContext(ObjectContext objectContext) {
         this.objectContext = objectContext;
+    }
+
+    private boolean keepInvoice() {
+       return PaymentInUtil.hasSuccessEnrolments(paymentInModel.getPaymentIn()) || PaymentInUtil.hasSuccessProductItems(paymentInModel.getPaymentIn();
     }
 
 
@@ -93,12 +97,12 @@ public class PaymentProcessController {
 		if (!validateDatabaseState(action))
 		{
 			setThrowable(new IllegalStateException(String.format("paymentIn id: %s, sessionId: %s, status: %s, state: %s  has been changed by another process.",
-					paymentIn.getId(), paymentIn.getSessionId(), paymentIn.getStatus(), currentState)));
+                    paymentInModel.getPaymentIn().getId(), paymentInModel.getPaymentIn().getSessionId(), paymentInModel.getPaymentIn().getStatus(), currentState)));
 			return;
 		}
 		switch (action) {
         	case INIT_PAYMENT:
-                paymentIn.setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
+                paymentInModel.getPaymentIn().setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
                 objectContext.commitChanges();
                 changeProcessState(FILL_PAYMENT_DETAILS);
         		break;
@@ -110,17 +114,17 @@ public class PaymentProcessController {
                 break;
             case ABANDON_PAYMENT:
             case CANCEL_PAYMENT:
-            	abandonPayment(action, true);
+            	abandonPayment(action, keepInvoice());
                 break;
 		    case EXPIRE_PAYMENT:
-		    	if (paymentService.isProcessedByGateway(paymentIn)) {
-					paymentIn.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
+		    	if (paymentService.isProcessedByGateway(paymentInModel.getPaymentIn())) {
+                    paymentInModel.getPaymentIn().setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
 		    		//if the payment expire by timeout we need to keep invoice
-		    		abandonPayment(action, false);
+		    		abandonPayment(action, true);
 		    	}
                 break;
             case ABANDON_PAYMENT_KEEP_INVOICE:
-				abandonPayment(action, false);
+				abandonPayment(action, true);
                 break;
             case UPDATE_PAYMENT_GATEWAY_STATUS:
                 updatePaymentGatewayStatus();
@@ -164,7 +168,7 @@ public class PaymentProcessController {
 	private  boolean validateDatabaseState(PaymentAction action) {
 
 		ObjectContext tempContext = cayenneService.newNonReplicatingContext();
-		PaymentIn paymentIn = Cayenne.objectForPK(tempContext, PaymentIn.class, this.paymentIn.getId());
+		PaymentIn paymentIn = Cayenne.objectForPK(tempContext, PaymentIn.class, this.paymentInModel.getPaymentIn().getId());
 
 
 		logger.info("PaymentAction = {}, PaymentProcessController.state = {}; PaymentIn.status = {}; DB.PaymentIn.status = {}", action, currentState, this.paymentIn.getStatus(), paymentIn.getStatus());
@@ -197,12 +201,12 @@ public class PaymentProcessController {
         try {
         	if(paymentProcessFuture != null)
         		paymentProcessFuture.get(100, TimeUnit.MILLISECONDS);
-            if (paymentIn.getStatus().equals(PaymentStatus.SUCCESS)) {
+            if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.SUCCESS)) {
                 changeProcessState(SUCCESS);
             } else {
                 changeProcessState(FAILED);
             }
-            logger.info("Payment gateway processing has been finished with status {}", paymentIn.getStatus());
+            logger.info("Payment gateway processing has been finished with status {}", paymentInModel.getPaymentIn().getStatus());
         } catch (InterruptedException | ExecutionException e) {
             setThrowable(e);
         } catch (TimeoutException e) {
@@ -217,9 +221,10 @@ public class PaymentProcessController {
      * @return abandon payment message block
      * @throws java.net.MalformedURLException
      */
-    private void abandonPayment(PaymentAction action, boolean reverseInvoice) {
+    private void abandonPayment(PaymentAction action, boolean keepInvoice) {
         changeProcessState(PROCESSING_ABANDON);
-        PaymentInUtil.abandonPayment(paymentIn, reverseInvoice);
+        PaymentInAbandon.valueOf(paymentInModel, keepInvoice).perform();
+        objectContext.commitChanges();
 		switch (action)
 		{
 			case ABANDON_PAYMENT:
@@ -244,8 +249,8 @@ public class PaymentProcessController {
      */
     private void tryOtherCard() {
         changeProcessState(PROCESSING_TRY_OTHER_CARD);
-        this.paymentIn = paymentIn.makeCopy();
-        this.paymentIn.setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
+        this.paymentInModel = PaymentInModel.valueOf(this.paymentInModel);
+        this.paymentInModel.getPaymentIn().setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
         objectContext.commitChanges();
         changeProcessState(FILL_PAYMENT_DETAILS);
     }
@@ -255,37 +260,27 @@ public class PaymentProcessController {
     }
 
     public synchronized List<Invoice> getInvoices() {
-        if (invoices == null) {
-            invoices = new ArrayList<>();
-            for (PaymentInLine paymentLine : paymentIn.getPaymentInLines()) {
-                this.invoices.add(paymentLine.getInvoice());
-            }
-            Ordering ordering = new Ordering(Invoice.INVOICE_NUMBER_PROPERTY, SortOrder.ASCENDING);
-            ordering.orderList(this.invoices);
-        }
-        return invoices;
+        return paymentInModel.getInvoices();
     }
 
     public synchronized College getCollege() {
-        return paymentIn.getCollege();
+        return  paymentInModel.getPaymentIn().getCollege();
     }
 
 
     public synchronized Money getAmount() {
-        return paymentIn.getAmount();
+        return paymentInModel.getPaymentIn()..getAmount();
     }
 
     public Contact getContact() {
-        return paymentIn.getContact();
+        return paymentInModel.getPaymentIn()..getContact();
     }
 
     public PaymentIn performGatewayOperation() {
-    	//synchronized (this) {//TODO: this is one of WA for 15839
-    		paymentGatewayService.performGatewayOperation(paymentIn);
-    		if (paymentIn.getStatus().equals(PaymentStatus.SUCCESS))
+    		paymentGatewayService.performGatewayOperation(paymentInModel);
+    		if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.SUCCESS))
     			commitChanges();
-    		return paymentIn;
-    	//}
+    		return paymentInModel.getPaymentIn();
     }
 
 

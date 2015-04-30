@@ -138,10 +138,16 @@ public class PaymentServiceImpl implements InternalPaymentService {
                     throw new IllegalArgumentException();
             }
             paymentInModel.getPaymentIn().setStatusNotes(validator.getErrorMessage());
-            updatedPayments.addAll(PaymentInAbandon.valueOf(paymentInModel).perform().getRefundPayments());
+            updatedPayments.addAll(PaymentInAbandon.valueOf(paymentInModel,
+                    keepInvoice(paymentInModel.getPaymentIn())).perform().getRefundPayments());
         }
         return updatedPayments;
     }
+
+    private boolean keepInvoice(PaymentIn paymentIn) {
+        return PaymentInUtil.hasSuccessEnrolments(paymentIn) || PaymentInUtil.hasSuccessProductItems(paymentIn);
+    }
+
 
     private GenericTransactionGroup createResponse(GenericTransactionGroup transaction, List<PaymentIn> updatedPayments) {
         GenericTransactionGroup response = PortHelper.createTransactionGroup(transaction);
