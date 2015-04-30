@@ -59,15 +59,14 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		//test invalid sessionid withot valid session
 		PaymentProcessControllerBuilder builder = new PaymentProcessControllerBuilder(new MockParallelExecutor(), paymentGatewayServiceBuilder, cayenneService, 
 			paymentService, request.getSession(false));
+        PaymentInModel paymentInModel = PaymentInModelFromSessionIdBuilder.valueOf("illegalSessionId", cayenneService.newContext()).build().getModel();
+
+		assertNull("paymentIn is null for case when payment not found", paymentInModel.getPaymentIn());
 
 		//test valid sessionid without valid session
 		try {
-			PaymentInModel model = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
-			assertNull("paymentIn is null for case when payment not found", model.getPaymentIn());
-			assertFalse("invoices is empty", model.getInvoices().isEmpty());
-			assertFalse("enrolments is empty", model.getEnrolments().isEmpty());
-
-			PaymentProcessController paymentProcessController = builder.build(model);
+			paymentInModel = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
+            PaymentProcessController paymentProcessController = builder.build(paymentInModel);
 			assertFalse("Builder should throw an exception for cases when session is null", true);
 		} catch (Throwable t) {
 			assertTrue("Builder should throw an Illegal argument exception for cases when session is null", 
@@ -81,9 +80,8 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		assertNotNull("Correctly inited builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
 		assertTrue("PaymentGatewayType may be only disabled before builder.build(sessionId) call",
 				builder.receivePaymentGatewayService() instanceof DisabledPaymentGatewayService);
-
-		PaymentInModel model = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
-        PaymentProcessController paymentProcessController = builder.build(model);
+		paymentInModel = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
+        PaymentProcessController paymentProcessController = builder.build(paymentInModel);
 		assertNotNull("build of paymentProcessController should return not null result for case when payment found", paymentProcessController);
 		//update parallel executor because unable to finally init them for test on startup
 		paymentProcessController.setParallelExecutor(new MockParallelExecutor(paymentProcessController));
@@ -107,8 +105,10 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		assertEquals("Preferense should be unique ", 1, preferences.size());
 		preferences.get(0).setValueString(null/*"DISABLED"*/);
 		content.commitChanges();
+		paymentInModel = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
+
 		try {
-			paymentProcessController = builder.build(model);
+			paymentProcessController = builder.build(paymentInModel);
 			assertFalse("illegal state exception should throws when college have not preference allow to use payment express", true);
 		} catch (Throwable t) {
 			assertTrue("Builder should throw an Illegal state exception for cases when college have not preference allow to use payment express", 
