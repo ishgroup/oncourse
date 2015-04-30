@@ -1,15 +1,12 @@
 package ish.oncourse.services.payment;
 
-import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.List;
@@ -24,10 +21,9 @@ public class PaymentService implements IPaymentService {
 
 	@Override
 	public PaymentIn paymentInByWillowId(Long willowId) {
-		SelectQuery q = new SelectQuery(PaymentIn.class);
-		q.andQualifier(ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, willowId));
-		q.andQualifier(ExpressionFactory.matchExp(PaymentIn.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
-		return (PaymentIn) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
+		return ObjectSelect.query(PaymentIn.class)
+				.where(ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, willowId)
+						.andExp(PaymentIn.COLLEGE.eq(webSiteService.getCurrentCollege()))).selectOne(cayenneService.sharedContext());
 	}
 
 	/**
@@ -35,37 +31,19 @@ public class PaymentService implements IPaymentService {
 	 */
 	@Override
 	public PaymentIn paymentInByAngelId(Long angelId) {
-		SelectQuery q = new SelectQuery(PaymentIn.class);
-		q.andQualifier(ExpressionFactory.matchExp(PaymentIn.ANGEL_ID_PROPERTY, angelId));
-		q.andQualifier(ExpressionFactory.matchExp(PaymentIn.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
-		return (PaymentIn) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
+		return ObjectSelect.query(PaymentIn.class)
+				.where(PaymentIn.ANGEL_ID.eq(angelId).andExp(PaymentIn.COLLEGE.eq(webSiteService.getCurrentCollege())))
+				.selectOne(cayenneService.sharedContext());
 	}
 
 	/**
-	 * @see IPaymentService#paymentOutByAngelId(String)
+	 * @see IPaymentService#paymentOutByAngelId(Long)
 	 */
 	@Override
 	public PaymentOut paymentOutByAngelId(Long angelId) {
-		SelectQuery q = new SelectQuery(PaymentOut.class);
-		q.andQualifier(ExpressionFactory.matchExp(PaymentOut.ANGEL_ID_PROPERTY, angelId));
-		q.andQualifier(ExpressionFactory.matchExp(PaymentOut.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
-		return (PaymentOut) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
-	}
-
-	/**
-	 * @see IPaymentService#currentPaymentInBySessionId(String)
-	 */
-	@Override
-	public PaymentIn currentPaymentInBySessionId(String sessionId) {
-
-		Expression expr = ExpressionFactory.matchExp(PaymentIn.SESSION_ID_PROPERTY, sessionId);
-		expr = expr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.IN_TRANSACTION));
-
-		SelectQuery q = new SelectQuery(PaymentIn.class, expr);
-		q.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY);
-		q.addPrefetch(PaymentIn.PAYMENT_TRANSACTIONS_PROPERTY);
-
-		return (PaymentIn) Cayenne.objectForQuery(cayenneService.newContext(), q);
+		return ObjectSelect.query(PaymentOut.class)
+				.where(PaymentIn.ANGEL_ID.eq(angelId).andExp(PaymentOut.COLLEGE.eq(webSiteService.getCurrentCollege())))
+				.selectOne(cayenneService.sharedContext());
 	}
 
 	/**
@@ -74,10 +52,11 @@ public class PaymentService implements IPaymentService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<PaymentIn> getPaymentsBySessionId(String sessionId) {
-		SelectQuery q = new SelectQuery(PaymentIn.class, ExpressionFactory.matchExp(PaymentIn.SESSION_ID_PROPERTY, sessionId));
-		q.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY);
-		q.addPrefetch(PaymentIn.PAYMENT_TRANSACTIONS_PROPERTY);
-		return cayenneService.newContext().performQuery(q);
+		return ObjectSelect.query(PaymentIn.class)
+				.where(PaymentIn.SESSION_ID.eq(sessionId).andExp(PaymentOut.COLLEGE.eq(webSiteService.getCurrentCollege())))
+				.prefetch(PaymentIn.PAYMENT_IN_LINES.joint())
+				.prefetch(PaymentIn.PAYMENT_TRANSACTIONS.joint())
+				.select(cayenneService.sharedContext());
 	}
 
 	/**
@@ -85,7 +64,7 @@ public class PaymentService implements IPaymentService {
 	 */
 	@Override
 	public boolean isProcessedByGateway(PaymentIn payment) {
-		return ExpressionFactory.noMatchExp(PaymentTransaction.IS_FINALISED_PROPERTY, true)
+		return PaymentTransaction.IS_FINALISED.eq(true)
 				.filterObjects(payment.getPaymentTransactions()).isEmpty();
 	}
 	

@@ -6,6 +6,7 @@ package ish.oncourse.util.payment;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
+import org.apache.cayenne.ObjectContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,10 @@ public class PaymentInModel {
 		return voucherPayments;
 	}
 
+	public ObjectContext getObjectContext() {
+		return paymentIn.getObjectContext();
+	}
+
 	public static PaymentInModel valueOf(PaymentInModel model) {
 		PaymentInModel result = new PaymentInModel();
 		PaymentIn paymentIn = model.getPaymentIn().makeCopy();
@@ -49,5 +54,5 @@ public class PaymentInModel {
 		return  result;
 	}
 
-	
+
 }

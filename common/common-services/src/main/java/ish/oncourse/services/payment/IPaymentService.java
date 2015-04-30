@@ -30,13 +30,6 @@ public interface IPaymentService {
 	PaymentOut paymentOutByAngelId(Long angelId);
 
 	/**
-	 * Finds current payment, which means statuses IN_TRANSACTION required.
-	 * @param sessionId sesion id
-	 * @return payment in
-	 */
-	PaymentIn currentPaymentInBySessionId(String sessionId);
-	
-	/**
 	 * Finds payment in objects by session id.
 	 * @param sessionId session id
 	 * @return list of payment in

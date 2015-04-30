@@ -124,10 +124,8 @@ public class Payment {
             //firstly check that there is no controller with expired session
             resetOldSessionController(sessionId);
             if (paymentProcessController == null) {
-                PaymentIn payment = validateSessionId(sessionId);
-                if (payment != null)
-                {
-					PaymentInModel model = PaymentInModelFromSessionIdBuilder.valueOf(sessionId,payment.getObjectContext()).build().getModel();
+                PaymentInModel model = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
+                if (validateModel(model, sessionId)) {
                     paymentProcessController = new PaymentProcessControllerBuilder(parallelExecutor, paymentGatewayServiceBuilder, cayenneService, paymentService,
                             request.getSession(true)).build(model);
                     initProperties();
@@ -141,29 +139,31 @@ public class Payment {
         }
     }
 
-    private PaymentIn validateSessionId(String sessionId) {
-        List<PaymentIn> payments = paymentService.getPaymentsBySessionId(sessionId);
-        if (payments.size() == 1 && payments.get(0).getStatus() == PaymentStatus.IN_TRANSACTION) {
-            return payments.get(0);
-        }
-
-        if (payments.size() == 0) {
+    private boolean validateModel(PaymentInModel model, String sessionId) {
+        if (model.getPaymentIn() == null) {
             errorMessage = messages.format("payment.not.found", sessionId);
             logger.error(errorMessage);
-            return null;
+            return false;
         }
 
-        for (PaymentIn paymentIn : payments) {
-            if (paymentIn.getStatus() == PaymentStatus.CARD_DETAILS_REQUIRED) {
-                errorMessage = messages.format("payment.already.processed", sessionId);
-                logger.warn("collegeId: {}, {}", payments.get(0).getCollege().getId(), errorMessage);
-                return null;
+        List<PaymentIn> payments = paymentService.getPaymentsBySessionId(sessionId);
+        if (payments.size() > 1) {
+            for (PaymentIn paymentIn : payments) {
+                if (paymentIn.getStatus() == PaymentStatus.CARD_DETAILS_REQUIRED) {
+                    errorMessage = messages.format("payment.already.processed", sessionId);
+                    logger.warn("collegeId: {}, {}", payments.get(0).getCollege().getId(), errorMessage);
+                    return false;
+                }
             }
         }
 
+        if (model.getPaymentIn().getStatus() == PaymentStatus.IN_TRANSACTION) {
+            return true;
+        }
+
         errorMessage = messages.format("payment.has.finalstatus", sessionId);
-        logger.warn("collegeId: {}, {}", payments.get(0).getCollege().getId(), errorMessage);
-        return null;
+        logger.warn("collegeId: {}, {}", model.getPaymentIn().getCollege().getId(), errorMessage);
+        return false;
     }
 
 

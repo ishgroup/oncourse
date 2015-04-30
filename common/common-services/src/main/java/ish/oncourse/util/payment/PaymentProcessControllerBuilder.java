@@ -33,7 +33,7 @@ public class PaymentProcessControllerBuilder {
 		}
 		//need to setup the session value for WebSiteService for correct execution of PaymentGatewayService
         session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, model.getPaymentIn().getCollege().getId());
-		controller.setObjectContext(cayenneService.newContext());
+		controller.setObjectContext(model.getObjectContext());
 		controller.setParallelExecutor(parallelExecutor);
 		IPaymentGatewayService paymentGatewayService = receivePaymentGatewayService();
 		if (paymentGatewayService instanceof DisabledPaymentGatewayService) {
