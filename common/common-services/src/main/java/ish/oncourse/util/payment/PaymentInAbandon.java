@@ -1,5 +1,6 @@
 package ish.oncourse.util.payment;
 
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.math.Money;
@@ -45,6 +46,12 @@ public class PaymentInAbandon {
         }
     }
 
+    /**
+     * Fails payment, but does not override state if already FAILED.Sets the
+     * status of payment to {@link PaymentStatus#FAILED}, and sets the failed
+     * statuses to the related invoice and enrolment ( {@link EnrolmentStatus#FAILED} ).
+     * Creates the refund invoice.
+     */
     private void abandon()
     {
         for (PaymentIn voucherPayment : model.getRelatedVoucherPayments()) {
