@@ -5,11 +5,8 @@ package ish.oncourse.webservices.replication.services;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentType;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.*;
+import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.utils.PaymentInUtil;
 import ish.oncourse.webservices.util.GenericParameterEntry;
 import ish.oncourse.webservices.util.GenericParametersMap;
@@ -19,11 +16,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class PaymentInModelBuilder {
 	

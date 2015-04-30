@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.replication.services;
+package ish.oncourse.util.payment;
 
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;

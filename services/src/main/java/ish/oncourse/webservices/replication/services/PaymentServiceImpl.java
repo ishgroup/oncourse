@@ -13,6 +13,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.util.payment.PaymentInAbandon;
+import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.utils.PaymentInUtil;
 import ish.oncourse.utils.SessionIdGenerator;
 import ish.oncourse.webservices.ITransactionGroupProcessor;

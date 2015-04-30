@@ -1,7 +1,7 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.webservices.replication.services;
+package ish.oncourse.util.payment;
 
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
