@@ -50,7 +50,7 @@ public class CourseClassVoucherRedemptionTest extends ACheckoutTest{
 		assertTrue(purchaseController.isFinished());
 		assertModel();
 		
-		//chekc voucher
+		//check voucher
 		assertVoucher();
 	
 	}

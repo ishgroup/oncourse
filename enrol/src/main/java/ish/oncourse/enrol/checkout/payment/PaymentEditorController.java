@@ -118,6 +118,15 @@ public class PaymentEditorController implements PaymentEditorDelegate {
         if (errors.isEmpty()) {
             PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
             purchaseController.performAction(actionParameter);
+
+			//we need initialize PaymentInModel before starting the process because VoucherPayments are recreated every enrol action
+			PaymentInModel model = new PaymentInModel();
+			model.setPaymentIn(purchaseController.getModel().getPayment());
+			model.getInvoices().add(purchaseController.getModel().getInvoice());
+			model.getEnrolments().addAll(purchaseController.getModel().getAllEnabledEnrolments());
+			model.getVoucherPayments().addAll(purchaseController.getModel().getVoucherPayments());
+			paymentProcessController.setPaymentInModel(model);
+
             if (purchaseController.getErrors().isEmpty() &&
 					!purchaseController.isPaymentResult()) {
 				if (paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.INIT)
@@ -140,14 +149,8 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 			
 		};
 		
-		PaymentInModel model = new PaymentInModel();
-		model.setPaymentIn(purchaseController.getModel().getPayment());
-		model.getInvoices().add(purchaseController.getModel().getInvoice());
-		model.getEnrolments().addAll(purchaseController.getModel().getAllEnabledEnrolments());
-		
 		paymentProcessController.setStartWatcher(false);
 		paymentProcessController.setObjectContext(purchaseController.getModel().getObjectContext());
-		paymentProcessController.setPaymentInModel(model);
 		paymentProcessController.setCayenneService(purchaseController.getCayenneService());
 		paymentProcessController.setPaymentGatewayService(purchaseController.getPaymentGatewayServiceBuilder().buildService());
 		paymentProcessController.setParallelExecutor(purchaseController.getParallelExecutor());

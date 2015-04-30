@@ -18,7 +18,7 @@ public class PaymentInModel {
 	private List<Invoice> invoices = new ArrayList<>();
 	private List<Enrolment> enrolments = new ArrayList<>();
 	private List<PaymentIn> voucherPayments = new ArrayList<>();
-	
+
 	
 	public void setPaymentIn(PaymentIn paymentIn) {
 		this.paymentIn = paymentIn;
