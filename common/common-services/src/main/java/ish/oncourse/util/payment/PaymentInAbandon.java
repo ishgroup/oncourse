@@ -32,7 +32,7 @@ public class PaymentInAbandon {
      */
     private void abandonKeepInvoice()
     {
-        for (PaymentIn voucherPayment : model.getRelatedVoucherPayments()) {
+        for (PaymentIn voucherPayment : model.getVoucherPayments()) {
             if (!PaymentStatus.STATUSES_FINAL.contains(voucherPayment.getStatus())) {
                 PaymentInUtil.reverseVoucherPayment(voucherPayment);
             }
@@ -54,7 +54,7 @@ public class PaymentInAbandon {
      */
     private void abandon()
     {
-        for (PaymentIn voucherPayment : model.getRelatedVoucherPayments()) {
+        for (PaymentIn voucherPayment : model.getVoucherPayments()) {
             if (!PaymentStatus.STATUSES_FINAL.contains(voucherPayment.getStatus())) {
                 PaymentInUtil.reverseVoucherPayment(voucherPayment);
             }

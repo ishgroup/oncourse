@@ -16,7 +16,7 @@ public class PaymentInModel {
 
 	private List<Invoice> invoices = new ArrayList<>();
 	private List<Enrolment> enrolments = new ArrayList<>();
-	private List<PaymentIn> relatedVoucherPayments = new ArrayList<>();
+	private List<PaymentIn> voucherPayments = new ArrayList<>();
 	
 	
 	public void setPaymentIn(PaymentIn paymentIn) {
@@ -35,8 +35,8 @@ public class PaymentInModel {
 		return enrolments;
 	}
 
-	public List<PaymentIn> getRelatedVoucherPayments() {
-		return relatedVoucherPayments;
+	public List<PaymentIn> getVoucherPayments() {
+		return voucherPayments;
 	}
 
 	public static PaymentInModel valueOf(PaymentInModel model) {
@@ -45,7 +45,7 @@ public class PaymentInModel {
 		result.paymentIn = paymentIn;
 		result.invoices = new ArrayList<>(model.invoices);
 		result.enrolments = new ArrayList<>(model.enrolments);
-		result.relatedVoucherPayments = new ArrayList<>(model.getRelatedVoucherPayments());
+		result.voucherPayments = new ArrayList<>(model.getVoucherPayments());
 		return  result;
 	}
 

@@ -35,7 +35,7 @@ public class PaymentInSucceed {
         model.getPaymentIn().setStatus(PaymentStatus.SUCCESS);
 
         // succeed all related voucher payments
-        for (PaymentIn voucherPayment : model.getRelatedVoucherPayments()) {
+        for (PaymentIn voucherPayment : model.getVoucherPayments()) {
             if (!PaymentStatus.STATUSES_FINAL.contains(voucherPayment.getStatus())) {
                 voucherPayment.setStatus(PaymentStatus.SUCCESS);
 

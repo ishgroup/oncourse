@@ -11,6 +11,7 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.util.payment.PaymentInAbandon;
@@ -61,11 +62,15 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
     private final PreferenceControllerFactory prefsFactory;
 
+    private final IWebSiteService webSiteService;
+
     @Inject
     public PaymentServiceImpl(ITransactionGroupProcessor groupProcessor, IPaymentGatewayService paymentGatewayService,
                               ICayenneService cayenneService, IPaymentService paymentInService, IEnrolmentService enrolService, IVoucherService voucherService,
                               IUSIVerificationService usiVerificationService, ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder,
-                              PreferenceControllerFactory prefsFactory) {
+                              PreferenceControllerFactory prefsFactory,
+                              IWebSiteService webSiteService
+                              ) {
         super();
         this.groupProcessor = groupProcessor;
         this.paymentGatewayService = paymentGatewayService;
@@ -78,6 +83,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
         this.stubBuilder = stubBuilder;
         this.prefsFactory = prefsFactory;
         this.idGenerator = new SessionIdGenerator();
+        this.webSiteService = webSiteService;
     }
 
     @Override
@@ -89,7 +95,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
             newContext = cayenneService.newContext();
 
-            paymentInModel = PaymentInModelBuilder.valueOf(newContext, replicatedRecords, parametersMap).build();
+            paymentInModel = parametersMap == null ? PaymentInModelFromReplicatedRecordsBuilder.valueOf(replicatedRecords, newContext).build().getModel():
+                    PaymentInModelFromParametersMapBuilder.valueOf(parametersMap, replicatedRecords, webSiteService.getCurrentCollege(), newContext).build().getModel();
         } catch (Exception e) {
             logger.error("Unable to process payment in.", e);
             throw new InternalReplicationFault("Unable to process payment in.", GENERIC_EXCEPTION,
