@@ -119,12 +119,8 @@ public class PaymentEditorController implements PaymentEditorDelegate {
             PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
             purchaseController.performAction(actionParameter);
 
-			//we need initialize PaymentInModel before starting the process because VoucherPayments are recreated every enrol action
-			PaymentInModel model = new PaymentInModel();
-			model.setPaymentIn(purchaseController.getModel().getPayment());
-			model.getInvoices().add(purchaseController.getModel().getInvoice());
-			model.getEnrolments().addAll(purchaseController.getModel().getAllEnabledEnrolments());
-			model.getVoucherPayments().addAll(purchaseController.getModel().getVoucherPayments());
+			//we need refresh PaymentInModel before starting the process because VoucherPayments are recreated every enrol action
+			PaymentInModel model = getPaymentInModel();
 			paymentProcessController.setPaymentInModel(model);
 
             if (purchaseController.getErrors().isEmpty() &&
@@ -135,6 +131,15 @@ public class PaymentEditorController implements PaymentEditorDelegate {
             }
         }
     }
+
+	private PaymentInModel getPaymentInModel() {
+		PaymentInModel model = new PaymentInModel();
+		model.setPaymentIn(purchaseController.getModel().getPayment());
+		model.getInvoices().add(purchaseController.getModel().getInvoice());
+		model.getEnrolments().addAll(purchaseController.getModel().getAllEnabledEnrolments());
+		model.getVoucherPayments().addAll(purchaseController.getModel().getVoucherPayments());
+		return model;
+	}
 
 	private void initPaymentProcessController()
 	{
@@ -148,7 +153,8 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 			}
 			
 		};
-		
+
+		paymentProcessController.setPaymentInModel(getPaymentInModel());
 		paymentProcessController.setStartWatcher(false);
 		paymentProcessController.setObjectContext(purchaseController.getModel().getObjectContext());
 		paymentProcessController.setCayenneService(purchaseController.getCayenneService());
