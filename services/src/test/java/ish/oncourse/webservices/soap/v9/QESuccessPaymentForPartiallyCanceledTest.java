@@ -37,7 +37,7 @@ public class QESuccessPaymentForPartiallyCanceledTest extends QEPaymentProcess8C
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 13 records.", 13, queuedRecords.size());
+		assertEquals("Queue should contain 14 records.", 14, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0,
 			enrolmentsFound = 0, membershipsFound = 0, vouchersFound = 0, articlesFound = 0;
 		for (QueuedRecord record : queuedRecords) {
@@ -63,7 +63,7 @@ public class QESuccessPaymentForPartiallyCanceledTest extends QEPaymentProcess8C
 		}
 		assertEquals("Not all PaymentIns found in a queue", 1, paymentsFound);
 		assertEquals("Not all PaymentInLines found in a queue", 1, paymentLinesFound);
-		assertEquals("Not all Invoices found in a queue", 1, invoicesFound);
+		assertEquals("Not all Invoices found in a queue", 2, invoicesFound);
 		assertEquals("Not all InvoiceLines found in a  queue", 5, invoiceLinesFound);
 		assertEquals("Not all Enrolments found in a  queue", 2, enrolmentsFound);
 		assertEquals("Membership not found in a queue", 1, membershipsFound);
