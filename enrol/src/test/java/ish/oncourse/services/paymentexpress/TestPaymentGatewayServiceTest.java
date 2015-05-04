@@ -143,12 +143,16 @@ public class TestPaymentGatewayServiceTest {
         creditCart =new CreditCart(VISA);
         creditCart.setType(CreditCardType.BANKCARD);
 
+        PaymentInFail paymentInFail = mock(PaymentInFail.class);
+
         PowerMockito.mockStatic(PaymentInFail.class);
-        when(PaymentInFail.valueOf(any(PaymentInModel.class))).thenReturn(mock(PaymentInFail.class));
+        when(PaymentInFail.valueOf(any(PaymentInModel.class))).thenReturn(paymentInFail);
 
         processCreditCard(creditCart);
         PowerMockito.verifyStatic(times(1));
         PaymentInFail.valueOf(any(PaymentInModel.class));
+
+        verify(paymentInFail).perform();
 
         assertEquals(gatewayService.getResult().getStatusNotes(), NOT_SUPPORTED + "\n");
     }
