@@ -667,7 +667,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		
 		assertTrue(attendanceCount != 0);
 		
-		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).getModel();
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
 		PaymentIn inversePayment =
 				PaymentInAbandon.valueOf(model, false).perform().getRefundPayments().iterator().next();
 		context.commitChanges();

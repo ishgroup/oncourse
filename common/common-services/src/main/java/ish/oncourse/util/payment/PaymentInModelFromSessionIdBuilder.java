@@ -3,6 +3,7 @@ package ish.oncourse.util.payment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.utils.PaymentInUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
@@ -29,8 +30,15 @@ public class PaymentInModelFromSessionIdBuilder {
                 model.getEnrolments().add(invoiceLine.getEnrolment());
             }
         }
+		initVoucherPayments();
         return this;
     }
+
+	private void initVoucherPayments() {
+		for (PaymentIn voucherPayment : PaymentInUtil.getRelatedVoucherPayments(model.getPaymentIn())) {
+			model.getVoucherPayments().add(voucherPayment);
+		}
+	}
 
 
     public PaymentInModel getModel() {
