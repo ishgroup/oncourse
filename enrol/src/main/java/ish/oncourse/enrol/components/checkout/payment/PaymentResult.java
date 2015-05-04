@@ -66,11 +66,6 @@ public class PaymentResult {
 		return paymentPage;
 	}
 
-	public String getMessageThanksForEnrolment()
-	{
-		return messages.format("message-thanksForEnrolment", delegate.getCollege().getName());
-	}
-
 	public String getMessageEnrolmentFailed()
 	{
 		return messages.format("message-enrolmentFailed", delegate.getCollege().getName());
