@@ -179,7 +179,7 @@ public class Mail {
     }
 
     public String getRedirectLink() {
-        return (refererUrl != null) ? refererUrl : String.format("%s%s", HTMLUtils.HTTP_PROTOCOL, request.getServerName());
+        return (refererUrl != null) ? refererUrl : String.format("%s%s", HTMLUtils.HTTPS_PROTOCOL, request.getServerName());
     }
 
     public ValidationResult getValidationResult()

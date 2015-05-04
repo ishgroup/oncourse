@@ -12,17 +12,17 @@ public class HTMLUtils {
     public static final String USER_AGENT_HEADER = "User-Agent";
 
     public static final String VALUE_on = "on";
-	public static final String HTTP_PROTOCOL = "http://";
+	public static final String HTTPS_PROTOCOL = "https://";
 
 	public static String getUrlBy(String serverName, Class pageClass)
 	{
-		return String.format("%s%s/%s", HTMLUtils.HTTP_PROTOCOL, serverName, pageClass.getSimpleName());
+		return String.format("%s%s/%s", HTMLUtils.HTTPS_PROTOCOL, serverName, pageClass.getSimpleName());
 	}
 
 
 	public static String getUrlBy(Request request, Class pageClass)
 	{
-		return String.format("%s%s/%s/%s", HTMLUtils.HTTP_PROTOCOL, request.getServerName(), request.getContextPath(), pageClass.getSimpleName());
+		return String.format("%s%s/%s/%s", HTMLUtils.HTTPS_PROTOCOL, request.getServerName(), request.getContextPath(), pageClass.getSimpleName());
 	}
 
 	public static boolean parserBooleanValue(String value)
@@ -37,21 +37,21 @@ public class HTMLUtils {
 
 	public static String getCanonicalLinkPathFor(Course course, Request request)
 	{
-		  return HTMLUtils.HTTP_PROTOCOL + request.getServerName() +
+		  return HTMLUtils.HTTPS_PROTOCOL + request.getServerName() +
 				String.format("%s/course/%s", request.getContextPath(), course.getCode());
 
 	}
 
 	public static String getCanonicalLinkPathFor(Product product, Request request)
 	{
-		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() +
+		return HTMLUtils.HTTPS_PROTOCOL + request.getServerName() +
 				String.format("%s/product/%s", request.getContextPath(), product.getSku());
 	}
 
 
 	public static String getCanonicalLinkPathForCourses(Request request, Tag browseTag)
 	{
-		return HTMLUtils.HTTP_PROTOCOL + request.getServerName() + request.getContextPath() + (browseTag == null ? request.getPath(): browseTag.getLink());
+		return HTMLUtils.HTTPS_PROTOCOL + request.getServerName() + request.getContextPath() + (browseTag == null ? request.getPath(): browseTag.getLink());
 
 	}
 

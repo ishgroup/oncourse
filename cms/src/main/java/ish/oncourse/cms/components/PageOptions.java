@@ -341,7 +341,7 @@ public class PageOptions {
      *
      */
 	public String getSiteUrl() {
-		return HTMLUtils.HTTP_PROTOCOL + request.getServerName();
+		return HTMLUtils.HTTPS_PROTOCOL + request.getServerName();
 	}
 
 	public Zone getOptionsZone() {

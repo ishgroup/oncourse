@@ -50,7 +50,7 @@ public class CmsNavigation {
 
     public void onActionFromLogout() throws Exception {
         authenticationService.logout();
-        response.sendRedirect(HTMLUtils.HTTP_PROTOCOL + request.getServerName());
+        response.sendRedirect(HTMLUtils.HTTPS_PROTOCOL + request.getServerName());
     }
 
     public Object onActionFromPages() {
