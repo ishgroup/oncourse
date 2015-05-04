@@ -16,9 +16,11 @@ import org.apache.tapestry5.internal.test.TestableResponse;
 import org.apache.tapestry5.services.Session;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Use cases described in squish task
@@ -324,7 +326,11 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 	}
 
 	protected final void checkQueueAfterProcessing(ObjectContext context) {
-		assertTrue("Queue should be empty after processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
+		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
+
+		//Set up sessionId for Invoice.
+		//only Invoices can be added to replication queue
+		assertEquals("Invoice is not found in a queue", queuedRecords.size(), QueuedRecord.ENTITY_IDENTIFIER.eq(INVOICE_IDENTIFIER).filterObjects(queuedRecords).size());
 	}
 
 	protected final GenericTransactionGroup getPaymentStatus(String sessionId) throws Exception {
