@@ -1,15 +1,21 @@
 package ish.oncourse.services.paymentexpress;
 
 import ish.common.types.CreditCardType;
+import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.payment.PaymentInFail;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
 import ish.oncourse.util.payment.PaymentInSucceed;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static ish.oncourse.services.paymentexpress.TestPaymentGatewayService.*;
 import static org.junit.Assert.assertEquals;
@@ -24,7 +30,8 @@ import static org.mockito.Mockito.*;
  */
 
 
-
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(PaymentInFail.class)
 public class TestPaymentGatewayServiceTest {
 
     private CreditCart creditCart;
@@ -131,19 +138,24 @@ public class TestPaymentGatewayServiceTest {
     }
 
     @Test
-    public void gatewayTypeFailedTest() {
+    public void gatewayTypeFailedTest() throws Exception {
 
         creditCart =new CreditCart(VISA);
         creditCart.setType(CreditCardType.BANKCARD);
 
-        processCreditCard(creditCart);
+        PowerMockito.mockStatic(PaymentInFail.class);
+        when(PaymentInFail.valueOf(any(PaymentInModel.class))).thenReturn(mock(PaymentInFail.class));
 
-        verify(payment).failPayment();
-        assertEquals(gatewayService.getResult().getStatusNotes(), NOT_SUPPORTED+"\n");
+        processCreditCard(creditCart);
+        PowerMockito.verifyStatic(times(1));
+        PaymentInFail.valueOf(any(PaymentInModel.class));
+
+        assertEquals(gatewayService.getResult().getStatusNotes(), NOT_SUPPORTED + "\n");
     }
 
     @Test
     public void gatewayNotCorreFailedTest() {
+
 
          creditCart = new CreditCart(CreditCardType.MASTERCARD,
                 "5105105105105100",
@@ -168,11 +180,9 @@ public class TestPaymentGatewayServiceTest {
         when(payment.getCreditCardNumber()).thenReturn(creditCart.getNumber());
         when(payment.getCreditCardName()).thenReturn(creditCart.getName());
         when(payment.getCreditCardCVV()).thenReturn(creditCart.getCvv());
+        when(payment.getStatus()).thenReturn(PaymentStatus.FAILED_CARD_DECLINED);
 
         PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
-        gatewayService.performGatewayOperation(model);
-
-
         gatewayService.performGatewayOperation(model);
     }
 
