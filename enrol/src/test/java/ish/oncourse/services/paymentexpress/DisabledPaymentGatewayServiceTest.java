@@ -9,12 +9,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Test for the {@link DisabledPaymentGatewayService}.
@@ -22,7 +27,8 @@ import static org.mockito.Mockito.verify;
  * @author ksenia
  * 
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(value = {PaymentInFail.class, PaymentInSucceed.class})
 public class DisabledPaymentGatewayServiceTest {
 
 	/**
@@ -52,6 +58,14 @@ public class DisabledPaymentGatewayServiceTest {
 	 */
 	@Test
 	public void performGatewayOperationTest() {
+		PaymentInSucceed paymentInSucceed = mock(PaymentInSucceed.class);
+		PaymentInFail paymentInFail = mock(PaymentInFail.class);
+		
+		PowerMockito.mockStatic(PaymentInSucceed.class, PaymentInFail.class);
+		
+		when(PaymentInSucceed.valueOf(any(PaymentInModel.class))).thenReturn(paymentInSucceed);
+		when(PaymentInFail.valueOf(any(PaymentInModel.class))).thenReturn(paymentInFail);
+		
 		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
 
 		boolean illegalThrown = false;
@@ -62,7 +76,13 @@ public class DisabledPaymentGatewayServiceTest {
 			illegalThrown=true;
 		}
 		assertTrue("DisabledPaymentGatewayService should throw an exception for this call", illegalThrown);
-		verify(PaymentInSucceed.valueOf(any(PaymentInModel.class)), never()).perform();
-		verify(PaymentInFail.valueOf(any(PaymentInModel.class)), never()).perform();
+
+		PowerMockito.verifyStatic(times(0));
+		
+		PaymentInSucceed.valueOf(any(PaymentInModel.class));
+		PaymentInFail.valueOf(any(PaymentInModel.class));
+		
+		verify(paymentInSucceed, never()).perform();
+		verify(paymentInFail, never()).perform();
 	}
 }
