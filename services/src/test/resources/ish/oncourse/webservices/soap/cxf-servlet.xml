@@ -42,6 +42,10 @@
 
 	<bean id="v9_paymentPortType" class="ish.oncourse.webservices.soap.v9.TestPaymentPortTypeImpl" />
 
+	<bean id="v10_replicationPortType" class="ish.oncourse.webservices.soap.v10.TestReplicationPortTypeImpl" />
+
+	<bean id="v10_paymentPortType" class="ish.oncourse.webservices.soap.v10.TestPaymentPortTypeImpl" />
+
 	<cxf:bus>
 		<cxf:features>
 			<ref bean="gzipFeature" />
@@ -119,4 +123,21 @@
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v10_replication" implementor="#v10_replicationPortType"
+					address="/v10/replication">
+		<jaxws:inInterceptors>
+			<ref bean="v4_communicationKeyInterceptor" />
+			<ref bean="v4_collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v10_payment" implementor="#v10_paymentPortType"
+					address="/v10/payment">
+		<jaxws:inInterceptors>
+			<ref bean="v4_securityCodeInterceptor" />
+			<ref bean="v4_collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+	
 </beans>
