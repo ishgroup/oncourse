@@ -30,7 +30,11 @@ public class PaymentInModelFromSessionIdBuilder {
                 model.getEnrolments().add(invoiceLine.getEnrolment());
             }
         }
-		initVoucherPayments();
+		
+		if (model.getPaymentIn() != null) {
+			initVoucherPayments();
+		}
+		
         return this;
     }
 
