@@ -64,7 +64,7 @@ public class PaymentService implements IPaymentService {
 	 */
 	@Override
 	public boolean isProcessedByGateway(PaymentIn payment) {
-		return PaymentTransaction.IS_FINALISED.eq(true)
+		return PaymentTransaction.IS_FINALISED.ne(true)
 				.filterObjects(payment.getPaymentTransactions()).isEmpty();
 	}
 	
