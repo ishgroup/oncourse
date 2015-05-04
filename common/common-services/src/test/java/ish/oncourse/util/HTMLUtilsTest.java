@@ -14,7 +14,7 @@ public class HTMLUtilsTest {
 
 	@Test
 	public void test_getUrlBy() {
-		String expected = "http://localhost.localdomain/HTMLUtilsTest";
+		String expected = "https://localhost.localdomain/HTMLUtilsTest";
 		String actual = HTMLUtils.getUrlBy("localhost.localdomain", HTMLUtilsTest.class);
 		assertEquals(expected, actual);
 	}
@@ -22,7 +22,7 @@ public class HTMLUtilsTest {
 	@Test
 	public void test_getUrlBy_Request() {
 
-		String expected = "http://localhost.localdomain/context/HTMLUtilsTest";
+		String expected = "https://localhost.localdomain/context/HTMLUtilsTest";
 		 Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("localhost.localdomain");
 		when(request.getContextPath()).thenReturn("context");
@@ -42,7 +42,7 @@ public class HTMLUtilsTest {
 
 	@Test
 	public void test_getCanonicalLinkPathFor() {
-		String expected = "http://localhost.localdomain/context/course/course1";
+		String expected = "https://localhost.localdomain/context/course/course1";
 		Request request = createRequest();
 
 		Course course = mock(Course.class);
@@ -60,7 +60,7 @@ public class HTMLUtilsTest {
 
 	@Test
 	public void test_getCanonicalLinkPathForCourses() {
-		String expected = "http://localhost.localdomain/context/courses/tag1.name/tag2.sname1+tag2.sname2";
+		String expected = "https://localhost.localdomain/context/courses/tag1.name/tag2.sname1+tag2.sname2";
 		Tag tag1 = mock(Tag.class);
 		when(tag1.getName()).thenReturn("tag1.name");
 		when(tag1.getShortName()).thenReturn(null);
