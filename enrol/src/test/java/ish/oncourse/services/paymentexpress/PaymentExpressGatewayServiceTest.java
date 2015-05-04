@@ -4,15 +4,9 @@ import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import com.paymentexpress.stubs.TransactionDetails;
 import com.paymentexpress.stubs.TransactionResult2;
 import ish.common.types.CreditCardType;
-import ish.common.types.PaymentStatus;
 import ish.math.Money;
-import ish.oncourse.model.College;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentOut;
-import ish.oncourse.model.PaymentOutTransaction;
-import ish.oncourse.model.PaymentTransaction;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.util.payment.PaymentInFail;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
 import ish.oncourse.util.payment.PaymentInSucceed;
@@ -25,26 +19,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.xml.rpc.ServiceException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.mockito.Mockito.*;
 
 /**
  * Test for the {@link PaymentExpressGatewayService}.
@@ -53,8 +37,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
  * @author ksenia
  * 
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(value = {PaymentInFail.class, PaymentInSucceed.class})
+@RunWith(MockitoJUnitRunner.class)
 public class PaymentExpressGatewayServiceTest {
 
 	private static final Logger LOG = LogManager.getLogger();
@@ -336,19 +319,10 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardName()).thenReturn(CARD_HOLDER_NAME);
 		when(payment.getCreditCardExpiry()).thenReturn(VALID_EXPIRY_DATE_STR);
 
-		PaymentInSucceed paymentInSucceed = Mockito.mock(PaymentInSucceed.class);
-
-		PowerMockito.mockStatic(PaymentInSucceed.class);
-		when(PaymentInSucceed.valueOf(any(PaymentInModel.class))).thenReturn(paymentInSucceed);
-
 		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
 
 		gatewayService.performGatewayOperation(model);
-
-		PowerMockito.verifyStatic(times(1));
-		PaymentInSucceed.valueOf(any(PaymentInModel.class));
-
-		verify(paymentInSucceed).perform();
+		verify(PaymentInSucceed.valueOf(model)).perform();
 	}
 
 	/**
@@ -363,21 +337,11 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getAmount()).thenReturn(new Money(BigDecimal.TEN.negate()));
 		when(payment.getCreditCardType()).thenReturn(CreditCardType.VISA, CreditCardType.VISA);
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
-		when(payment.getStatus()).thenReturn(PaymentStatus.FAILED);
-
-		PaymentInFail paymentInFail = mock(PaymentInFail.class);
-
-		PowerMockito.mockStatic(PaymentInFail.class);
-		when(PaymentInFail.valueOf(any(PaymentInModel.class))).thenReturn(paymentInFail);
 
 		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
 
 		gatewayService.performGatewayOperation(model);
-
-		PowerMockito.verifyStatic(times(1));
-		PaymentInFail.valueOf(any(PaymentInModel.class));
-
-		verify(paymentInFail).perform();
+		verify(payment).failPayment();
 	}
 
 	/**
@@ -392,21 +356,12 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(payment.getCreditCardType()).thenReturn(null);
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
-		when(payment.getStatus()).thenReturn(PaymentStatus.FAILED);
 
-		PaymentInFail paymentInFail = mock(PaymentInFail.class);
-
-		PowerMockito.mockStatic(PaymentInFail.class);
-		when(PaymentInFail.valueOf(any(PaymentInModel.class))).thenReturn(paymentInFail);
 
 		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
 
 		gatewayService.performGatewayOperation(model);
-
-		PowerMockito.verifyStatic(times(1));
-		PaymentInFail.valueOf(any(PaymentInModel.class));
-
-		verify(paymentInFail).perform();
+		verify(payment).failPayment();
 	}
 
 	/**
@@ -422,24 +377,14 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardType()).thenReturn(CreditCardType.VISA, CreditCardType.VISA);
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 		when(payment.getCreditCardName()).thenReturn("");
-		when(payment.getStatus()).thenReturn(PaymentStatus.FAILED);
-		
+
 		// invoke first time to reset value from @BeforeClassMethod
 		payment.getCreditCardName();
-
-		PaymentInFail paymentInFail = mock(PaymentInFail.class);
-
-		PowerMockito.mockStatic(PaymentInFail.class);
-		when(PaymentInFail.valueOf(any(PaymentInModel.class))).thenReturn(paymentInFail);
 
 		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
 
 		gatewayService.performGatewayOperation(model);
-
-		PowerMockito.verifyStatic(times(1));
-		PaymentInFail.valueOf(any(PaymentInModel.class));
-
-		verify(paymentInFail).perform();
+		verify(payment).failPayment();
 	}
 
 	/**
@@ -455,21 +400,11 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(payment.getCreditCardType()).thenReturn(CreditCardType.VISA, CreditCardType.VISA);
 		when(payment.getCreditCardNumber()).thenReturn(INVALID_CARD_NUMBER);
-		when(payment.getStatus()).thenReturn(PaymentStatus.FAILED);
-
-		PaymentInFail paymentInFail = mock(PaymentInFail.class);
-
-		PowerMockito.mockStatic(PaymentInFail.class);
-		when(PaymentInFail.valueOf(any(PaymentInModel.class))).thenReturn(paymentInFail);
 
 		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
 
 		gatewayService.performGatewayOperation(model);
-
-		PowerMockito.verifyStatic(times(1));
-		PaymentInFail.valueOf(any(PaymentInModel.class));
-
-		verify(paymentInFail).perform();
+		verify(payment).failPayment();
 	}
 
 	/**
@@ -488,24 +423,16 @@ public class PaymentExpressGatewayServiceTest {
 				CreditCardType.VISA);
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER, VALID_CARD_NUMBER);
 		when(payment.getCreditCardExpiry()).thenReturn(INVALID_FORMAT_EXPIRY_DATE_STR, EXPIRED_DATE_STR);
-		when(payment.getStatus()).thenReturn(PaymentStatus.FAILED);
 
 		// invoke first time to reset value from @BeforeClassMethod
 		payment.getCreditCardExpiry();
 
-		PaymentInFail paymentInFail = mock(PaymentInFail.class);
-
-		PowerMockito.mockStatic(PaymentInFail.class);
-		when(PaymentInFail.valueOf(any(PaymentInModel.class))).thenReturn(paymentInFail);
-
 		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().getModel();
 
 		gatewayService.performGatewayOperation(model);
+		gatewayService.performGatewayOperation(model);
 
-		PowerMockito.verifyStatic(times(1));
-		PaymentInFail.valueOf(any(PaymentInModel.class));
-
-		verify(paymentInFail).perform();
+		verify(payment, times(2)).failPayment();
 	}
 
 	/**
