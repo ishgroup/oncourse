@@ -6,7 +6,6 @@ import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.util.CommonUtils;
 import ish.util.ProductUtil;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.exp.Expression;
@@ -193,12 +192,6 @@ public class VoucherService implements IVoucherService {
 		}
 		SelectQuery q = new SelectQuery(ProductItem.class, ExpressionFactory.inDbExp(ProductItem.ID_PK_COLUMN, ids));
 		return cayenneService.sharedContext().performQuery(q);
-	}
-
-	@Override
-	public boolean isAbleToPurchaseProductsOnline() {
-		String angelVersion = takeWebSiteService().getCurrentCollege().getAngelVersion();
-		return CommonUtils.compare(angelVersion, CommonUtils.VERSION_5_0) >= 0;
 	}
 
     @Override

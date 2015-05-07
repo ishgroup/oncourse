@@ -1,6 +1,5 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.linktransform.PageIdentifier;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.logging.log4j.LogManager;
@@ -49,10 +48,6 @@ public class Products {
 	
 	private static int getIntParam(String s, int def) {
 		return (s != null && s.matches("\\d+")) ? Integer.parseInt(s) : def;
-	}
-	
-	Object onActivate() {
-		return voucherService.isAbleToPurchaseProductsOnline() ? null : PageIdentifier.PageNotFound.getPageName();
 	}
 	
 	@SetupRender

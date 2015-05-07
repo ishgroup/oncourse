@@ -27,8 +27,5 @@ public interface IVoucherService {
 
 	Product loadAvailableVoucherProductById(Long id);
 
-    @Deprecated //TODO: the method should be delete after all colleges will be upgrated to version 5.0
-	boolean isAbleToPurchaseProductsOnline();
-
     boolean isVoucherWithoutPrice(VoucherProduct product);
 }

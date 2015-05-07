@@ -17,7 +17,6 @@ import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
-import ish.oncourse.util.CommonUtils;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -119,13 +118,6 @@ public class DbEnabledTestModule {
 		@Override
 		public List<Product> getAvailableProducts(Integer startDefault, Integer rowsDefault) {
 			return Collections.EMPTY_LIST;
-		}
-
-
-		@Override
-		public boolean isAbleToPurchaseProductsOnline() {
-			String angelVersion = System.getProperty(TestModule.TEST_COLLEGE_ANGEL_VERSION_PROPERTY);
-			return CommonUtils.compare(angelVersion, CommonUtils.VERSION_5_0) >= 0;
 		}
 	}
 }
