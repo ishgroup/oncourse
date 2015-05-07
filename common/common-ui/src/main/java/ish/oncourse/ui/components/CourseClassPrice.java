@@ -18,7 +18,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.math.BigDecimal;
-import java.text.Format;
+import java.text.*;
 import java.util.*;
 
 public class CourseClassPrice {
@@ -218,5 +218,15 @@ public class CourseClassPrice {
 
 	}
 
+
+	public String format(Money money, String pattern) {
+		NumberFormat format = new DecimalFormat(pattern);
+		return format.format(money);
+	}
+
+	public String format(Date date, String pattern) {
+		DateFormat format = new SimpleDateFormat(pattern);
+		return format.format(date);
+	}
 
 }
