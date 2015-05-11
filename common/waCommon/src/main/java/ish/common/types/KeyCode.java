@@ -563,7 +563,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Database value: 96
 	 * @PublicApi
 	 */
-	EDIT_NOTES(96, "Edit Notes", Mask.ALL - Mask.VIEW);
+	SPECIAL_EDIT_NOTES(96, "Edit/Delete Notes", Mask.ALL - Mask.VIEW);
 	
 
 	private int value;
