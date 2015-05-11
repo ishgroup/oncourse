@@ -554,7 +554,16 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Database value: 95
 	 * @PublicApi
 	 */
-	PAYMENT_PLAN(95, "Payment plan");
+	PAYMENT_PLAN(95, "Payment plan"),
+
+	/**
+	 * Ability to edit notes
+	 * Special single option.
+	 *
+	 * Database value: 96
+	 * @PublicApi
+	 */
+	EDIT_NOTES(96, "Edit Notes", Mask.ALL - Mask.VIEW);
 	
 
 	private int value;
