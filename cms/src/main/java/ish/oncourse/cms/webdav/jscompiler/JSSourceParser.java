@@ -104,8 +104,10 @@ public class JSSourceParser {
             //
             } else if (fileName.endsWith(DEFAULT_BASE_JS)){
                 file = new File(defaultJSPath, fileName);
+                logger.warn("base.js file path: %s", file);
                 if (!file.exists()) {
                     file = new File(defaultJSPath, String.format("v1/%s", fileName));
+                    logger.warn("base.js file path: %s", file);
                 }
                 if (file.exists()) {
                     source = JSSource.valueOf(fileName, file, parentJS);
