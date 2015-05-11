@@ -227,7 +227,8 @@ function toolTips() {
 }
 
 function modals(formId) {
-    jQuery("#dialog").dialog({
+    var element = jQuery("#dialog");
+    element.dialog({
         autoOpen: false,
         modal : true,
 	    resizable: true,
@@ -238,20 +239,26 @@ function modals(formId) {
             {
                 text : "Cancel",
                 click : function() {
-                    jQuery(this).dialog("close");
+                    if (element.dialog('isOpen') === true) {
+                        jQuery(this).dialog("close");
+                    }
                 },
                 'class' : "cms-btn"
             },
             {
                 text : "Save",
                 click : function() {
-                    jQuery(this).dialog("close");
-                    $(formId).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+                    if (element.dialog('isOpen') === true) {
+                        jQuery(this).dialog("close");
+                        $(formId).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+                    }
                 },
                 'class' : "cms-btn cms-btn-primary"
             }
         ]
-    }).dialog('open');
+    });
+    element.dialog('open');
+    fixDialogButtons(element);
     jQuery('.cms-close-popup').click(function() {
         jQuery(this).parents('.cms-popup-edit').dialog('close');
     });
@@ -532,15 +539,19 @@ function deleteDialog(id, htmlId, title, callback)
                 }
             },
             Cancel: function() {
-                if (jQuery("#deleteMenuModal"+id).dialog('isOpen') === true)
+                if (element.dialog('isOpen') === true)
                 {
                     element.dialog("close");
                 }
             }
         }
     });
+    fixDialogButtons(element)
+    element.dialog("open");
+}
 
-    var buttons = element.dialog().next().children().children('button');
+function fixDialogButtons(element) {
+    var buttons = element.dialog().nextAll('.ui-dialog-buttonpane').children().children('button');
     jQuery.each(buttons, function(i, b)
     {
         if (jQuery(b).attr('text'))
@@ -548,6 +559,5 @@ function deleteDialog(id, htmlId, title, callback)
             jQuery(b).children('span').text(jQuery(b).attr('text'));
         }
     });
-    element.dialog("open");
 }
 
