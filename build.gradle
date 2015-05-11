@@ -190,20 +190,6 @@ allprojects {
     }
 }
 
-apply plugin: "sonar-runner"
-sonarRunner {
-	sonarProperties {
-		property "sonar.host.url", "http://sonar.ish.com.au"
-		property "sonar.jdbc.url", "jdbc:mysql://delish.ish.com.au:3306/sonar"
-		property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-		property "sonar.jdbc.username", 'sonar'
-		property "sonar.jdbc.password", sonarPassword // sonar password comes from users gradle.properties file
-		property "sonar.links.scm", "https://svn.ish.com.au/ish/willow/trunk"
-		property "sonar.links.ci", "http://build.ish.com.au/job/willow-sonar"
-		property "sonar.links.issue", "https://squish.ish.com.au"
-	}
-}
-
 task wrapper(type: Wrapper) {
-	gradleVersion = "2.3"
+	gradleVersion = "2.4"
 }
