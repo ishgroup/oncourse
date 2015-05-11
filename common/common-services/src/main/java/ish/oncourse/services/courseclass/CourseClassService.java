@@ -2,7 +2,6 @@ package ish.oncourse.services.courseclass;
 
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
-import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -302,7 +301,7 @@ public class CourseClassService implements ICourseClassService {
     private static void appyCourseClassCacheSettings(SelectQuery q) {
 
         q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-        q.setCacheGroups(CacheGroup.COURSES.name());
+        q.setCacheGroups(CourseClass.class.getSimpleName());
 
         q.addPrefetch(CourseClass.ROOM_PROPERTY);
         q.addPrefetch(CourseClass.SESSIONS_PROPERTY);

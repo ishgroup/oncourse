@@ -9,7 +9,6 @@ import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.pages.usi.Usi;
 import ish.oncourse.portal.usi.UsiController;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -257,7 +256,7 @@ public class PortalService implements IPortalService {
 
             SelectQuery q = new SelectQuery(CourseClass.class, expr);
             q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-            q.setCacheGroups(CacheGroup.COURSES.name());
+            q.setCacheGroups(CourseClass.class.getSimpleName());
             q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
 
             List<CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
@@ -282,7 +281,7 @@ public class PortalService implements IPortalService {
         if (contact.getTutor() != null) {
             SelectQuery q = new SelectQuery(CourseClass.class, getTutorClassesExpression());
             q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-            q.setCacheGroups(CacheGroup.COURSES.name());
+            q.setCacheGroups(CourseClass.class.getSimpleName());
             q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
 
             List<CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);

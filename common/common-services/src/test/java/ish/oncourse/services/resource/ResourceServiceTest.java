@@ -44,8 +44,7 @@ public class ResourceServiceTest extends Assert {
 		IWebSiteService webSiteService1 = mockWebSiteService("scc");
 		ILookupService lookupService = mock(ILookupService.class);
 		
-		ResourceService resourceService = new ResourceService(
-				webSiteService1, null, null);
+		ResourceService resourceService = new ResourceService(null, null);
 
 		Resource r1 = resourceService.getWebResource("x/some.css");
 		assertNotNull(r1);

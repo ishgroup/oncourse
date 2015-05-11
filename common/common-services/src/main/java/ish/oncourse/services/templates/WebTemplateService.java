@@ -5,10 +5,8 @@ package ish.oncourse.services.templates;
 
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebTemplate;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.List;
 
@@ -16,14 +14,9 @@ public class WebTemplateService implements IWebTemplateService {
 
 	@Override
 	public WebTemplate getTemplateByName(String name, WebSiteLayout layout) {
-		ObjectContext context = layout.getObjectContext();
-
-		SelectQuery query = new SelectQuery(WebTemplate.class);
-
-		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.LAYOUT_PROPERTY, layout));
-		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.NAME_PROPERTY, name));
-
-		return (WebTemplate) Cayenne.objectForQuery(context, query);
+		return ObjectSelect.query(WebTemplate.class)
+				.where(WebTemplate.LAYOUT.eq(layout).andExp(WebTemplate.NAME.eq(name)))
+				.selectOne(layout.getObjectContext());
 	}
 
 	@Override
@@ -40,11 +33,8 @@ public class WebTemplateService implements IWebTemplateService {
 
 	@Override
 	public List<WebTemplate> getTemplatesForLayout(WebSiteLayout layout) {
-		ObjectContext context = layout.getObjectContext();
-		
-		SelectQuery query = new SelectQuery(WebTemplate.class);
-		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.LAYOUT_PROPERTY, layout));
-		
-		return context.performQuery(query);
+		return ObjectSelect.query(WebTemplate.class)
+				.where(WebTemplate.LAYOUT.eq(layout))
+				.select(layout.getObjectContext());
 	}
 }

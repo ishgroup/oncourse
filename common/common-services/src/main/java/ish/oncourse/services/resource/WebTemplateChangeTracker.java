@@ -47,7 +47,8 @@ public class WebTemplateChangeTracker {
 		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.LAYOUT_PROPERTY + "." + WebSiteLayout.WEB_SITE_VERSION_PROPERTY, webSiteVersion));
 		query.andQualifier(ExpressionFactory.greaterExp(WebTemplate.MODIFIED_PROPERTY, new Date(lastCheckTimestamp)));
 		query.setFetchLimit(1);
-		
+
+		query.setCacheGroups(WebTemplate.class.getSimpleName());
 		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		
 		return !cayenneService.sharedContext().performQuery(query).isEmpty();

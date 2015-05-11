@@ -3,13 +3,11 @@ package ish.oncourse.services.content;
 import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -21,9 +19,6 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
-	private IWebSiteService webSiteService;
-
-	@Inject
 	private ICayenneService cayenneService;
 	
 	@Inject
@@ -31,96 +26,72 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 
 	@Override
 	public WebContent getWebContent(String searchProperty, Object value) {
-		Expression qualifier = ExpressionFactory.matchExp(
-				WebContent.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion());
+		ObjectSelect<WebContent> query = ObjectSelect.query(WebContent.class).
+				and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()));
 		if (searchProperty != null) {
-			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
+			query.and(ExpressionFactory.matchExp(
 					searchProperty, value));
 		}
-		
-		SelectQuery query = new SelectQuery(WebContent.class, qualifier);
-		List<WebContent> results = cayenneService.sharedContext().performQuery(query);
-		
-		if (!results.isEmpty()) {
-			return results.get(0);
-		}
-
-		return null;
+		return query.selectOne(cayenneService.sharedContext());
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType,
 			RegionKey regionKey) {
-		if (webNodeType != null && webNodeType.getObjectId().isTemporary() && !RegionKey.unassigned.equals(regionKey)) {
+		assert webNodeType != null;
+
+		if (webNodeType.getObjectId().isTemporary() && !RegionKey.unassigned.equals(regionKey)) {
 			throw new IllegalArgumentException("Illegal params for WebContentService#getBlocksForRegionKey() call");
 		}
-		SelectQuery q = new SelectQuery(WebContent.class);
 
-		Expression siteQualifier = ExpressionFactory.matchExp(
-				WebContent.WEB_SITE_VERSION_PROPERTY,
-				webSiteVersionService.getCurrentVersion());
-		q.andQualifier(siteQualifier);
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
-						+ WebContentVisibility.WEB_NODE_PROPERTY, null));
+		ObjectSelect<WebContent> query = ObjectSelect.query(WebContent.class)
+				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
+				.and(ExpressionFactory.matchExp(WebContent.WEB_CONTENT_VISIBILITIES.getName() + "+."
+						+ WebContentVisibility.WEB_NODE.getName(), null));
 
 		List<WebContentVisibility> webContentVisibilities = webNodeType
 				.getWebContentVisibilities();
+
 		List<Long> nodeIds = new ArrayList<>(webContentVisibilities.size());
 		List<Long> visibilityIds = new ArrayList<>(
 				webContentVisibilities.size());
+
 		for (WebContentVisibility webContentVisibility : webContentVisibilities) {
 			visibilityIds.add(webContentVisibility.getId());
 			nodeIds.add(webContentVisibility.getWebContent().getId());
 		}
 
-		Expression regionKeyQualifier = null;
+		Expression regionKeyQualifier;
 		if (regionKey != null && regionKey != RegionKey.unassigned) {
 			regionKeyQualifier = ExpressionFactory.inDbExp(
-					WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
-							+ WebContentVisibility.ID_PK_COLUMN, visibilityIds);
-			regionKeyQualifier = regionKeyQualifier.andExp(ExpressionFactory
-					.matchExp(WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY
-							+ "+." + WebContentVisibility.REGION_KEY_PROPERTY,
-							regionKey));
+					WebContent.WEB_CONTENT_VISIBILITIES.getName() + "+."
+							+ WebContentVisibility.ID_PK_COLUMN, visibilityIds)
+					.andExp(ExpressionFactory
+							.matchExp(WebContent.WEB_CONTENT_VISIBILITIES.getName()
+											+ "+." + WebContentVisibility.REGION_KEY.getName(),
+									regionKey));
 		} else {
 			regionKeyQualifier = ExpressionFactory.notInDbExp(
-					WebContent.ID_PK_COLUMN, nodeIds);
-			regionKeyQualifier = regionKeyQualifier.orExp(ExpressionFactory
-					.matchDbExp(WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY
-							+ "+." + WebContentVisibility.ID_PK_COLUMN, null));
+					WebContent.ID_PK_COLUMN, nodeIds)
+					.andExp(ExpressionFactory
+							.matchDbExp(WebContent.WEB_CONTENT_VISIBILITIES
+									+ "+." + WebContentVisibility.ID_PK_COLUMN, null));
 		}
 
-		q.andQualifier(regionKeyQualifier);
+		query = query.and(regionKeyQualifier);
+
 		TreeSet<WebContent> treeSet = new TreeSet<>(new WebContentComparator(webNodeType));
-		treeSet.addAll(webNodeType.getObjectContext().performQuery(q));
+		treeSet.addAll(query.select(webNodeType.getObjectContext()));
 		return treeSet;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<WebContent> getBlocks() {
-
-		SelectQuery q = new SelectQuery(WebContent.class);
-		q.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_VERSION_PROPERTY,
-				webSiteVersionService.getCurrentVersion()));
-
-		Expression expr = ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
-						+ WebContentVisibility.WEB_NODE_PROPERTY, null);
-
-		expr = expr.orExp(ExpressionFactory.matchDbExp(
-				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
-						+ WebContentVisibility.ID_PK_COLUMN, null));
-
-		q.andQualifier(expr);
-
-		q.addOrdering(new Ordering(WebContent.MODIFIED_PROPERTY,
-				SortOrder.DESCENDING));
-
-		return cayenneService.sharedContext().performQuery(q);
-
+		return ObjectSelect.query(WebContent.class)
+				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
+				.and(getBlockQualifier())
+				.orderBy(WebContent.MODIFIED.desc())
+				.select(cayenneService.sharedContext());
 	}
 	
 	@Override
@@ -172,7 +143,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public List<WebContentVisibility> getBlockVisibilityForRegionKey(WebNodeType webNodeType, RegionKey regionKey) {
 		if (regionKey == null || regionKey == RegionKey.unassigned) {
-			// there con't be visibility for the unassigned block
+			// there cannot be visibility for the unassigned block
 			return null;
 		}
 		List<WebContentVisibility> result = new ArrayList<>();
@@ -190,52 +161,37 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 
 
 	@Override
-		 public WebContent getBlockByName(String webContentName) {
-		WebContent webContent = null;
-		SelectQuery selectQuery = new SelectQuery(WebContent.class);
-		selectQuery.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_VERSION_PROPERTY,
-				webSiteVersionService.getCurrentVersion()));
-		Expression expression = ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
-						+ WebContentVisibility.WEB_NODE_PROPERTY, null);
-		expression = expression.orExp(ExpressionFactory.matchDbExp(
-				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
-						+ WebContentVisibility.ID_PK_COLUMN, null));
-		selectQuery.andQualifier(expression);
-		selectQuery.andQualifier(ExpressionFactory.matchExp(WebContent.NAME_PROPERTY, webContentName));
-		List<WebContent> list = cayenneService.sharedContext().performQuery(selectQuery);
-		if(!list.isEmpty()){
-			webContent=list.get(0);
-		}
-		return webContent;
+	public WebContent getBlockByName(String webContentName) {
+		return ObjectSelect.query(WebContent.class)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroups(WebContent.class.getSimpleName())
+				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
+				.and(WebContent.NAME.eq(webContentName))
+				.and(getBlockQualifier())
+				.selectOne(cayenneService.sharedContext());
+	}
+
+	private Expression getBlockQualifier() {
+		return ExpressionFactory.matchExp(
+				WebContent.WEB_CONTENT_VISIBILITIES.getName() + "+."
+						+ WebContentVisibility.WEB_NODE.getName(), null)
+				.orExp(ExpressionFactory.matchDbExp(
+						WebContent.WEB_CONTENT_VISIBILITIES.getName() + "+."
+								+ WebContentVisibility.ID_PK_COLUMN, null));
 	}
 
 	@Override
 	public WebNode getWebNodeByName(String webNodeName) {
-		WebNode webNode = null;
-		SelectQuery selectQuery = new SelectQuery(WebNode.class);
-		selectQuery.andQualifier(ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION_PROPERTY,
-				webSiteVersionService.getCurrentVersion()));
-		selectQuery.andQualifier(ExpressionFactory.matchExp(WebNode.NAME_PROPERTY, webNodeName));
-		List<WebNode> list = cayenneService.sharedContext().performQuery(selectQuery);
-		if(!list.isEmpty()){
-			webNode=list.get(0);
-		}
-		return webNode;
+		return ObjectSelect.query(WebNode.class)
+				.and(WebNode.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
+				.and(WebNode.NAME.eq(webNodeName))
+				.selectOne(cayenneService.sharedContext());
 	}
 
 	@Override
 	public WebNodeType getWebNodeTypeByName(String webNodeTypeName) {
-		WebNodeType webNodeType = null;
-		Expression expression = ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY, webNodeTypeName);
-		expression = expression.andExp(ExpressionFactory.matchExp(WebNodeType.WEB_SITE_VERSION_PROPERTY, 
-				webSiteVersionService.getCurrentVersion()));
-
-		SelectQuery selectQuery = new SelectQuery(WebNodeType.class, expression);
-		List<WebNodeType> list = cayenneService.sharedContext().performQuery(selectQuery);
-		if (!list.isEmpty()){
-			webNodeType=list.get(0);
-		}
-		return webNodeType;
+		return ObjectSelect.query(WebNodeType.class)
+				.and(WebNodeType.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
+				.and(WebNodeType.NAME.eq(webNodeTypeName)).selectOne(cayenneService.sharedContext());
 	}
 }

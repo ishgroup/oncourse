@@ -126,6 +126,9 @@ public class WebNodeResource extends AbstractResource implements CopyableResourc
 			webContent.setContent(getWebContent().getContent());
 			
 			context.deleteObjects(context.localObject(webNode));
+			//we should delete not only temporary webNode but also and whole structure of the content
+			context.deleteObjects(context.localObject(webNode.getWebContentVisibility().get(0)));
+			context.deleteObjects(context.localObject(webNode.getWebContentVisibility().get(0).getWebContent()));
 		}
 		
 		context.commitChanges();
