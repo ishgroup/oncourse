@@ -6,7 +6,7 @@ import ish.oncourse.services.BaseService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.Date;
 import java.util.List;
@@ -61,9 +61,9 @@ public class TutorService extends BaseService<Tutor> implements ITutorService {
 	 */
 	@Override
 	public Tutor findByAngelId(Long angelId) {
-		return (Tutor) getCayenneService().sharedContext().performQuery(
-				new SelectQuery(Tutor.class, ExpressionFactory.matchExp(Tutor.ANGEL_ID_PROPERTY,
-						angelId).andExp(getSiteQualifier())));
+		return ObjectSelect.query(Tutor.class)
+				.and(Tutor.ANGEL_ID.eq(angelId))
+				.and(getSiteQualifier()).selectOne(getCayenneService().sharedContext());
 	}
 
     public boolean isActiveTutor(Tutor tutor)
