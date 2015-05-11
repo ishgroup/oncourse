@@ -19,6 +19,8 @@ import ish.oncourse.services.mail.EmailBuilder;
 import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.ContextUtil;
+import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -73,7 +75,11 @@ public class StaticResourceFactory implements ResourceFactory {
         this.fsResourceFactory = new FileSystemResourceFactory(new File(sRoot), securityManager, sRoot);
 
         this.executorService = Executors.newCachedThreadPool();
-        this.defaultJsStackPath = JSCompiler.class.getClassLoader().getResource("ish/oncourse/cms/js").getFile();
+        try {
+            this.defaultJsStackPath = URIUtil.decode(JSCompiler.class.getClassLoader().getResource("ish/oncourse/cms/js").getFile());
+        } catch (URIException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 	@Override
