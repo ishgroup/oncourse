@@ -16,7 +16,6 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.apache.cayenne:cayenne-tools:$cayenneVersion"
-		classpath 'au.com.ish.gradle:release:2.2.2'
 		classpath 'com.github.ben-manes:gradle-versions-plugin:0.7'
 		classpath 'org.gradle.plugins:gradle-compass:1.0.10'
 		classpath 'com.eriwen:gradle-js-plugin:1.12.1'
@@ -35,7 +34,6 @@ allprojects {
 	apply plugin: 'com.github.ben-manes.versions' // adds the task 'dependencyUpdates -Drevision=release'
 	apply plugin: 'java'
 	apply plugin: 'maven'
-	apply plugin: 'release'
 	apply plugin: 'jacoco'
     apply plugin: 'compass'
     apply plugin: 'com.eriwen.gradle.js'
@@ -51,20 +49,8 @@ allprojects {
         options.encoding = 'UTF-8'
     }
 
-    release {
-		//use subversion scm, unless otherwise specified in with -PscmFlavour= or in users gradle properties
-		scm = project.hasProperty('scmFlavour') ? project.scmFlavour:'svn'
-		failOnSnapshotDependencies = true
-
-		//properties for svn access
-		username = project.hasProperty('username') ? project.username : ''
-		password = project.hasProperty('password') ? project.password : ''
-
-		//the following two params have to be converted from string to boolean
-		releaseDryRun = project.hasProperty('releaseDryRun') ? project.releaseDryRun=='true' : ''
-		allowLocalModifications = project.hasProperty('allowLocalModifications') ? project.allowLocalModifications='true' : ''
-	}
-	version = release.projectVersion
+	// get the version from the command line properties
+	version = project.releaseVersion ? project.releaseVersion : "SNAPSHOT"
 
 	sourceCompatibility = 1.7
 	targetCompatibility = 1.7
