@@ -19,6 +19,8 @@
 
 	<bean id="v4_referencePortTypeBean" class="ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl" />
 
+	<bean id="v5_referencePortTypeBean" class="ish.oncourse.webservices.soap.v5.ReferencePortTypeImpl" />
+	
 	<bean id="v4_securityCodeInterceptor" class="ish.oncourse.webservices.soap.v4.interceptors.SecurityCodeInterceptor" />
 
 	<bean id="v4_communicationKeyInterceptor" class="ish.oncourse.webservices.soap.v4.interceptors.CommunicationKeyInterceptor" />
@@ -58,6 +60,13 @@
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
     </jaxws:endpoint>
+
+	<jaxws:endpoint id="v5_reference" implementor="#v5_referencePortTypeBean"
+					address="/v5/reference">
+		<jaxws:inInterceptors>
+			<ref bean="v4_collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
 
     <jaxws:endpoint id="v6_replication" implementor="#v6_replicationPortType"
                     address="/v6/replication">

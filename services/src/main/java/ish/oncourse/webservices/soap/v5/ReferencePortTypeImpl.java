@@ -1,11 +1,14 @@
-package ish.oncourse.webservices.soap.v4;
+/*
+ * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
+ */
+package ish.oncourse.webservices.soap.v5;
 
-import ish.oncourse.services.reference.ReferenceService;
+
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.util.GenericReferenceStub;
 import ish.oncourse.webservices.util.SupportedVersions;
-import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
+import ish.oncourse.webservices.v5.stubs.reference.ReferenceResult;
 import org.apache.cayenne.Persistent;
 import org.apache.cxf.annotations.EndpointProperty;
 import org.apache.log4j.Logger;
@@ -16,7 +19,6 @@ import javax.jws.WebService;
 import javax.ws.rs.WebApplicationException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * The ReferencePortType defines the API for one-way (Willow to Angel)
@@ -52,23 +54,23 @@ import java.util.List;
  *
  * @author Marek Wawrzyczny
  */
-@WebService(endpointInterface = "ish.oncourse.webservices.soap.v4.ReferencePortType",
-			serviceName = "ReferenceService",
-			portName = "ReferencePort", targetNamespace="http://ref.v4.soap.webservices.oncourse.ish/")
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.v5.ReferencePortType",
+		serviceName = "ReferenceService",
+		portName = "ReferencePort", targetNamespace="http://ref.v5.soap.webservices.oncourse.ish/")
 @EndpointProperty(key = "soap.no.validate.parts", value = "true")
 public class ReferencePortTypeImpl implements ReferencePortType {
 
 	@Inject
 	@Autowired
-	private ReferenceService referenceService;
-	
+	private ish.oncourse.services.reference.ReferenceService referenceService;
+
 	@Inject
 	@Autowired
 	private ReferenceStubBuilder stubBuilder;
 
 	private static final Logger LOGGER = Logger.getLogger(ReferencePortTypeImpl.class);
 
-	
+
 	/**
 	 * Call to find out the most recent version of Reference Data - note that
 	 * this is shared across tables.
@@ -78,7 +80,7 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	public long getMaximumVersion() {
 		return referenceService.findMaxIshVersion();
 	}
-	
+
 	/**
 	 * Call to get all records for this version.
 	 *
@@ -90,12 +92,12 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	public ReferenceResult getRecords(long ishVersion) {
 
 		List<GenericReferenceStub> stubs = new ArrayList<GenericReferenceStub>();
-		
+
 		List<Persistent> records = referenceService.getForReplication(ishVersion);
-		
+
 		for (Persistent p: records) {
 			try {
-				GenericReferenceStub stub = stubBuilder.convert(p, SupportedVersions.V4);
+				GenericReferenceStub stub = stubBuilder.convert(p, SupportedVersions.V5);
 				stubs.add(stub);
 			} catch (BuilderNotFoundException e) {
 				LOGGER.error("Exception while converting records to stubs", e);
@@ -103,7 +105,7 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 				throw new WebApplicationException();
 			}
 		}
-		
+
 		ReferenceResult result = new ReferenceResult();
 		result.getGenericCountryOrLanguageOrModule().addAll(stubs);
 		return result;

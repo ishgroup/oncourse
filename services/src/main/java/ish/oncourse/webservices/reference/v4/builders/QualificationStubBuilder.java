@@ -3,10 +3,11 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices.reference.builders;
+package ish.oncourse.webservices.reference.v4.builders;
 
 import ish.common.types.QualificationType;
 import ish.oncourse.model.Qualification;
+import ish.oncourse.webservices.reference.services.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.QualificationStub;
 import org.apache.commons.lang.StringUtils;
 

@@ -1,7 +1,6 @@
 package ish.oncourse.services.reference;
 
 
-import ish.common.types.QualificationType;
 import ish.oncourse.model.Qualification;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -21,13 +20,5 @@ public class QualificationService extends AbstractReferenceService<Qualification
 				Qualification.TITLE_PROPERTY, QualificationName);
 		List<Qualification> results = findByQualifier(qualifier);
 		return results.isEmpty() ? null : results.get(0);
-	}
-
-	@Override
-	protected Expression getQueryQualifier(Long ishVersion) {
-		return super.getQueryQualifier(ishVersion)
-				.andExp(ExpressionFactory.noMatchExp(
-						Qualification.IS_ACCREDITED_COURSE_PROPERTY,
-						QualificationType.SKILLSET_TYPE));
 	}
 }

@@ -3,9 +3,10 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices.reference.builders;
+package ish.oncourse.webservices.reference.v4.builders;
 
 import ish.oncourse.model.TrainingPackage;
+import ish.oncourse.webservices.reference.services.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.TrainingPackageStub;
 
 /**

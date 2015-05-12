@@ -3,10 +3,11 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices.reference.builders;
+package ish.oncourse.webservices.reference.v5.builders;
 
 import ish.oncourse.model.Language;
-import ish.oncourse.webservices.v4.stubs.reference.LanguageStub;
+import ish.oncourse.webservices.reference.services.IReferenceStubBuilder;
+import ish.oncourse.webservices.v5.stubs.reference.LanguageStub;
 
 /**
  * 

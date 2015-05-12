@@ -24,19 +24,33 @@ import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.builders.TransactionStubBuilderImpl;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderImpl;
-import ish.oncourse.webservices.replication.services.*;
+import ish.oncourse.webservices.replication.services.IReplicationService;
+import ish.oncourse.webservices.replication.services.IWillowQueueService;
+import ish.oncourse.webservices.replication.services.InternalPaymentService;
+import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
+import ish.oncourse.webservices.replication.services.ReplicationServiceImpl;
+import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
+import ish.oncourse.webservices.replication.services.WillowQueueService;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
-import ish.oncourse.webservices.soap.v4.ReferencePortType;
-import ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl;
 import ish.oncourse.webservices.usi.USIVerificationService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.IOCSymbols;
+import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.ScopeConstants;
+import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.ServiceBuilder;
+import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
-import org.apache.tapestry5.services.*;
+import org.apache.tapestry5.services.ApplicationGlobals;
+import org.apache.tapestry5.services.ComponentSource;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.RequestExceptionHandler;
+import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.services.ResponseRenderer;
 
 /**
  * @author marek
@@ -62,7 +76,7 @@ public class AppModule {
 			}
 		}).scope(ScopeConstants.PERTHREAD);
 
-		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
+//		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId(WEB_SITE_SERVICE_OVERRIDE_NAME);
