@@ -58,11 +58,8 @@ public class WebContentServiceTest extends ServiceTest {
 		List<WebNodeType> webnodes = context.performQuery(new SelectQuery(WebNodeType.class));
 		context.deleteObjects(webnodes);
 		context.commitChanges();
-		
-		WebNodeType webNodeType = context.newObject(WebNodeType.class);
-		webNodeType.setName("test name");
-		webNodeType.setLayoutKey("test key");
-		webNodeType.setWebSiteVersion(webSiteVersion);
+
+		WebNodeType webNodeType = createWebNoteType(context, webSiteVersion);
 		context.commitChanges();
 		assertTrue("Empty list should be returned if no data linked with region", 
 			service.getBlockVisibilityForRegionKey(webNodeType, RegionKey.content).isEmpty());
@@ -103,11 +100,9 @@ public class WebContentServiceTest extends ServiceTest {
 		List<WebNodeType> webnodes = context.performQuery(new SelectQuery(WebNodeType.class));
 		context.deleteObjects(webnodes);
 		context.commitChanges();
-		
-		WebNodeType webNodeType = context.newObject(WebNodeType.class);
-		webNodeType.setName("test name");
-		webNodeType.setLayoutKey("test key");
-		webNodeType.setWebSiteVersion(webSiteVersion);
+
+		WebNodeType webNodeType = createWebNoteType(context, webSiteVersion);
+
 		WebContent webContent = context.newObject(WebContent.class);
         webContent.setName("Default");
         webContent.setWebSiteVersion(webSiteVersion);
@@ -196,6 +191,31 @@ public class WebContentServiceTest extends ServiceTest {
 		assertEquals("Visibility should be the first element in the list with weight 0", 0, 
 			service.getBlockVisibilityForRegionKey(webNodeType, RegionKey.content).get(0).getWeight().intValue());
 		context.commitChanges();
+	}
+
+	private WebNodeType createWebNoteType(ObjectContext context, WebSiteVersion webSiteVersion) {
+		WebNodeType webNodeType = context.newObject(WebNodeType.class);
+		webNodeType.setName("test name");
+		webNodeType.setLayoutKey("test key");
+		webNodeType.setWebSiteVersion(context.localObject(webSiteVersion));
+		return webNodeType;
+	}
+
+
+	@Test
+	public void test_getBlocksForRegionKey() {
+		ObjectContext context = cayenneService.newContext();
+
+		WebSite website = webSiteService.getCurrentWebSite();
+		WebSiteVersion webSiteVersion = website.getVersions().get(0);
+
+		WebNodeType webNodeType = createWebNoteType(context, webSiteVersion);
+
+		RegionKey[] keys = RegionKey.values();
+		for (RegionKey key : keys) {
+			service.getBlockVisibilityForRegionKey(webNodeType, key);
+		}
+		service.getBlockVisibilityForRegionKey(webNodeType, null);
 	}
 
 }

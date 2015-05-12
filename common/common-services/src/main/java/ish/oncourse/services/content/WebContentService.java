@@ -73,8 +73,8 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		} else {
 			regionKeyQualifier = ExpressionFactory.notInDbExp(
 					WebContent.ID_PK_COLUMN, nodeIds)
-					.andExp(ExpressionFactory
-							.matchDbExp(WebContent.WEB_CONTENT_VISIBILITIES
+					.orExp(ExpressionFactory
+							.matchDbExp(WebContent.WEB_CONTENT_VISIBILITIES.getName()
 									+ "+." + WebContentVisibility.ID_PK_COLUMN, null));
 		}
 
