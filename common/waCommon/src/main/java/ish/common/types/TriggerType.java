@@ -8,7 +8,8 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum TriggerType implements DisplayableExtendedEnumeration<Integer> {
 	
 	CRON(1, "Cron"),
-	ENTITY_EVENT(2, "Entity event");
+	ENTITY_EVENT(2, "Entity event"),
+	ONCOURSE_EVENT(3, "onCourse event");
 
 	private int value;
 	private String displayName;
