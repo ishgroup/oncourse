@@ -50,7 +50,7 @@ allprojects {
     }
 
 	// get the version from the command line properties
-	version = project.releaseVersion ? project.releaseVersion : "SNAPSHOT"
+	version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
 
 	sourceCompatibility = 1.7
 	targetCompatibility = 1.7
