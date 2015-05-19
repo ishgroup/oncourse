@@ -36,7 +36,7 @@ import org.apache.tapestry5.services.Response;
 
 import java.text.Format;
 
-@Secure // this anatation is important. The page should use secure handling allways
+@Secure // this annotation is important. The page should use secure handling always
 public class Checkout {
 
     public static final Logger logger = LogManager.getLogger();
@@ -269,6 +269,11 @@ public class Checkout {
 	public boolean isExpired() {
 		return expired;
 	}
+
+    public boolean isAddCodePanelVisible() {
+        return !purchaseController.getModel().getInvoice().getAmountOwing().isZero();
+    }
+
 
     public Format moneyFormat(Money money) {
         return FormatUtils.chooseMoneyFormat(money);
