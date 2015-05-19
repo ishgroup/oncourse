@@ -3,7 +3,7 @@
 
     <t:block t:id="proceedToPayment">
         <t:eventlink t:id="proceedToPaymentEvent" id="proceedToPaymentEvent" class="btn btn-primary">
-            <t:if test="isZeroPayment()">Proceed<p:else>Proceed to Payment</p:else></t:if>
+            <t:if test="isZeroInvoice()">Proceed<p:else>Proceed to Payment</p:else></t:if>
         </t:eventlink>
     </t:block>
 

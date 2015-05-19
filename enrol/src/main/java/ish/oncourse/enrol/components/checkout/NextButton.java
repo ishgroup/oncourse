@@ -53,7 +53,7 @@ public class NextButton {
         }
     }
 
-    public boolean isZeroPayment() {
-        return checkout.getPurchaseController().getModel().getPayment().isZeroPayment();
+    public boolean isZeroInvoice() {
+        return checkout.getPurchaseController().getModel().getInvoice().getAmountOwing().isZero();
     }
 }

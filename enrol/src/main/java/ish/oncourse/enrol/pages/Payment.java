@@ -162,6 +162,6 @@ public class Payment {
 	}
 
 	public boolean isAddCodePanelVisible() {
-		return !paymentEditor.isZeroPayment();
+		return checkoutPage.isAddCodePanelVisible();
 	}
 }
