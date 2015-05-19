@@ -52,4 +52,8 @@ public class NextButton {
            return addGuardian;
         }
     }
+
+    public boolean isZeroPayment() {
+        return checkout.getPurchaseController().getModel().getPayment().isZeroPayment();
+    }
 }

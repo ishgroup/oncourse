@@ -160,4 +160,8 @@ public class Payment {
 	public boolean isPaymentPanelVisible() {
 		return getPurchaseController().isEditCorporatePass() || !paymentEditor.isZeroPayment();
 	}
+
+	public boolean isAddCodePanelVisible() {
+		return !paymentEditor.isZeroPayment();
+	}
 }

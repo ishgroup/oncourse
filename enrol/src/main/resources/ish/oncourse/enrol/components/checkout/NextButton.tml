@@ -1,8 +1,10 @@
 <t:container
-        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
     <t:block t:id="proceedToPayment">
-		<t:eventlink t:id="proceedToPaymentEvent" id="proceedToPaymentEvent" class="btn btn-primary">Proceed to Payment</t:eventlink>
+        <t:eventlink t:id="proceedToPaymentEvent" id="proceedToPaymentEvent" class="btn btn-primary">
+            <t:if test="isZeroPayment()">Proceed<p:else>Proceed to Payment</p:else></t:if>
+        </t:eventlink>
     </t:block>
 
     <t:block t:id="addGuardian">

@@ -48,7 +48,9 @@
             </tbody>
         </table>
         <div class="amount-container">
-            <span t:type="checkout/addcode" purchaseController="purchaseController" blockToRefresh="checkoutBlock"/>
+			<t:if test="isAddCodePanelVisible()">
+				<span t:type="checkout/addcode" purchaseController="purchaseController" blockToRefresh="checkoutBlock"/>
+			</t:if>
             <span t:type="checkout/amount" purchaseController="purchaseController" blockToRefresh="checkoutBlock" showPayerFields="false"/>
             <!-- the code need to clear the floats.-->
             <div class="clearboth"></div>
