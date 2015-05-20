@@ -141,6 +141,20 @@ public class ContactFieldHelper {
 	}
 
 
+	public boolean hasVisibleFields(Contact contact) {
+
+		FieldDescriptor[] fields = FieldDescriptor.values();
+
+		for (FieldDescriptor field : fields) {
+			String preferenceValue = preferenceController.getValue(field.getPreferenceNameBy(contactFiledsSet), false);
+			if ((VALUE_Required.equals(preferenceValue) || VALUE_Show.equals(preferenceValue))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 	public boolean isAllRequiredFieldFilled(Contact contact) {
 
 		FieldDescriptor[] fields = FieldDescriptor.values();
