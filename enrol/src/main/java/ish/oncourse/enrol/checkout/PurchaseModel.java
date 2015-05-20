@@ -553,7 +553,7 @@ public class PurchaseModel {
                 Money amountOwing = InvoiceUtils.amountOwingForPayer(getPayer());
                 /**
                  * we should not subtract current invoice value when the invoice is not committed.
-                 * Because InvoiceUtils.amountOwingForPayer loads invoices from database and this loadded list
+                 * Because InvoiceUtils.amountOwingForPayer loads invoices from database and this loaded list
                  * does not contain this invoice
                  */
                 if (!getInvoice().getObjectId().isTemporary()) {

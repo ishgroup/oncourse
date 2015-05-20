@@ -271,7 +271,7 @@ public class Checkout {
 	}
 
     public boolean isAddCodePanelVisible() {
-        return !purchaseController.getModel().getInvoice().getAmountOwing().isZero();
+        return !purchaseController.getModel().getInvoice().getTotalExGst().isZero();
     }
 
 
