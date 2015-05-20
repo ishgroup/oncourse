@@ -75,8 +75,12 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 		contact = contactCredentialsEncoder.getContact();
 
 		if (contact.getObjectId().isTemporary()) {
-			visibleFields = contactFieldHelper.getVisibleFields(contact, false);
-			state = State.EDIT_CONTACT;
+			if (contactFieldHelper.hasVisibleFields(contact)) {
+				visibleFields = contactFieldHelper.getVisibleFields(contact, false);
+				state = State.EDIT_CONTACT;
+			} else {
+				saveContact();
+			}
 		} else {
 			isFillRequiredProperties = !(contactFieldHelper.isAllRequiredFieldFilled(contact));
 			if (isFillRequiredProperties) {

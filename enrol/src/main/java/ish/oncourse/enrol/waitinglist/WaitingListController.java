@@ -50,8 +50,12 @@ public class WaitingListController extends AContactController {
 
 
 		if (getContact().getObjectId().isTemporary()) {
-			setVisibleFields(getContactFieldHelper().getVisibleFields(contact, false));
-			setState(State.EDIT_CONTACT);
+			if (getContactFieldHelper().hasVisibleFields(contact)) {
+				setVisibleFields(getContactFieldHelper().getVisibleFields(contact, false));
+				setState(State.EDIT_CONTACT);
+			} else {
+				saveContact();
+			}
 		} else {
 			if (alreadyAdded()) {
 				addError(KEY_ERROR_alreadyAdded, getMessages().format(KEY_ERROR_alreadyAdded, contact.getFullName(), course.getName()));
