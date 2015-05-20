@@ -10,7 +10,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
@@ -18,11 +17,10 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static ish.oncourse.services.preference.ContactFieldHelper.*;
-import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.*;
+import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.*;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 
 public class ContactEntrySettings {
@@ -66,6 +64,9 @@ public class ContactEntrySettings {
 
 	@Property
 	private String enrolmentSpecialNeedsState;
+
+	@Property
+	private String enrolmentAbnState;
 
 	@Property
 	private String waitingListAddressState;
@@ -132,7 +133,7 @@ public class ContactEntrySettings {
 	
 	@Property
 	private String mailingListSpecialNeedsState;
-	
+
 	@Property
 	@Persist
 	private List<CustomFieldType> customFieldTypes;
@@ -194,6 +195,7 @@ public class ContactEntrySettings {
 		this.enrolmentCountryState = preferenceController.getRequireContactField(enrolment, country);
 		this.enrolmentMinAge = preferenceController.getEnrolmentMinAge().toString();
 		this.enrolmentSpecialNeedsState = preferenceController.getRequireContactField(enrolment, specialNeeds);
+		this.enrolmentAbnState = preferenceController.getRequireContactField(enrolment, abn);
 
 		this.waitingListAddressState = preferenceController.getRequireContactField(waitinglist, street);
 		this.waitingListSuburbState = preferenceController.getRequireContactField(waitinglist, suburb);
@@ -226,8 +228,7 @@ public class ContactEntrySettings {
 		this.customFieldTypes = college.getCustomFieldTypes();
 
 		// order custom field types alphabetically by name
-		Ordering.orderList(customFieldTypes, 
-				Arrays.asList(new Ordering(CustomFieldType.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE)));
+		Ordering.orderList(customFieldTypes, CustomFieldType.NAME.ascInsensitives());
 	}
 	
 	public CustomFieldType getCurrentField() {
@@ -289,6 +290,7 @@ public class ContactEntrySettings {
 		this.enrolmentDateOfBirthState = preferenceController.getRequireContactField(enrolment, dateOfBirth);
 		preferenceController.setRequireContactField(enrolment, country, this.enrolmentCountryState);
 		preferenceController.setRequireContactField(enrolment, specialNeeds, this.enrolmentSpecialNeedsState);
+		preferenceController.setRequireContactField(enrolment, abn, this.enrolmentAbnState);
 
 		preferenceController.setRequireContactField(waitinglist, street, this.waitingListAddressState);
 		preferenceController.setRequireContactField(waitinglist, suburb, this.waitingListSuburbState);

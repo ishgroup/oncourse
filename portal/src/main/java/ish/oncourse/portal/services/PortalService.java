@@ -48,7 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static ish.oncourse.portal.services.PortalUtils.*;
-import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
+import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
 
 /**
  * User: artem

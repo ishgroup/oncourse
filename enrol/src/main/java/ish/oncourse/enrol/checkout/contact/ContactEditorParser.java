@@ -47,7 +47,7 @@ public class ContactEditorParser {
 	public void parse() {
 		parseContactFields();
 		validateContactFields();
-		Boolean value = parseBooleanParameter(Contact.IS_MALE_PROPERTY);
+		Boolean value = parseBooleanParameter(Contact.IS_MALE.getName());
 		if (value != null)
 			contact.setIsMale(value);
 		parseMarketingFields();
@@ -65,11 +65,11 @@ public class ContactEditorParser {
 
 
 	void parseMarketingFields() {
-		Boolean value = parseBooleanParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY);
+		Boolean value = parseBooleanParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED.getName());
 		contact.setIsMarketingViaEmailAllowed(value == null ? Boolean.TRUE: value);
-		value = parseBooleanParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY);
+		value = parseBooleanParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED.getName());
 		contact.setIsMarketingViaPostAllowed(value == null ? Boolean.TRUE: value);
-		value = parseBooleanParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY);
+		value = parseBooleanParameter(Contact.IS_MARKETING_VIA_SMSALLOWED.getName());
 		contact.setIsMarketingViaSMSAllowed(value == null ? Boolean.TRUE: value);
 	}
 
@@ -90,7 +90,7 @@ public class ContactEditorParser {
             Object value = stringValue;
 
 			if (stringValue == null) {
-				if (contactFieldHelper.isRequiredField(fieldDescriptor))
+				if (contactFieldHelper.isRequiredField(fieldDescriptor, contact))
 					errors.put(fieldDescriptor.name(), getRequiredMessage(fieldDescriptor));
 			} else if (fieldDescriptor.propertyClass == Date.class) {
 				try {
@@ -234,8 +234,10 @@ public class ContactEditorParser {
 				return null;
 			case specialNeeds:
 				return null;
+			case abn:
+				return null;
 			default:
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException(String.format("Field descriptor %s is not supported", fieldDescriptor));
 		}
 	}
 

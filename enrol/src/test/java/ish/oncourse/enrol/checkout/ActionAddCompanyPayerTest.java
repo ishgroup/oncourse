@@ -9,7 +9,7 @@ import ish.common.types.PaymentType;
 import ish.oncourse.enrol.checkout.contact.AddContactController;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.model.*;
-import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -18,9 +18,7 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static ish.common.types.ProductType.VOUCHER;
 import static org.junit.Assert.*;
@@ -127,8 +125,8 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 		assertEquals(company.getPersistenceState(), PersistenceState.NEW);
 
 		// make sure that company fiedlset is displayed correctly
-		for (PreferenceController.FieldDescriptor field: PreferenceController.FieldDescriptor.COMPANY_FIELDS) {
-			assertTrue(delegate.getVisibleFields().contains(field.name()));
+		for (FieldDescriptor field: FieldDescriptor.values()) {
+			assertTrue(field.isForCompany() && delegate.getVisibleFields().contains(field.name()));
 		}
 		
 		// ignore this step and press 'OK' button (no required field here)
@@ -143,7 +141,7 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 	}
 	
 	private void prepareModel() {
-		init(Arrays.asList(1002L), Arrays.asList(7L, 8L, 9L), Collections.EMPTY_LIST, false);
+		init(Collections.singletonList(1002L), Arrays.asList(7L, 8L, 9L), new ArrayList<Long>(), false);
 
 		contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001L);
 
@@ -204,7 +202,7 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 		assertEquals(3, purchaseController.getModel().getAllProductItems(company).size());
 		//but voucher products should be ticked 
 		for (ProductItem productItem : purchaseController.getModel().getAllProductItems(company)) {
-			if (VOUCHER.getDatabaseValue() == productItem.getType()) {
+			if (Objects.equals(VOUCHER.getDatabaseValue(), productItem.getType())) {
 				assertTrue(purchaseController.getModel().isProductItemEnabled(productItem));
 			} else {
 				assertFalse(purchaseController.getModel().isProductItemEnabled(productItem));

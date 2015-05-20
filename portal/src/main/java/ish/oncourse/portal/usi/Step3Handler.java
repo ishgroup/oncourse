@@ -38,7 +38,8 @@ public class Step3Handler extends AbstractStepHandler {
     }
 
     private boolean isRequiredField(String key) {
-        return getUsiController().getContactFieldHelper().isRequiredField(PreferenceController.FieldDescriptor.valueOf(key));
+        return getUsiController().getContactFieldHelper().isRequiredField(PreferenceController.FieldDescriptor.valueOf(key),
+                getUsiController().getContact());
     }
 
     @Override

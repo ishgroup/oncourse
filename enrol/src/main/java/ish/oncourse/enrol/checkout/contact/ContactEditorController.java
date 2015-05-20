@@ -8,7 +8,7 @@ import org.apache.cayenne.ObjectContext;
 
 import java.util.List;
 
-import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet;
+import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet;
 
 public class ContactEditorController extends ADelegate implements ContactEditorDelegate {
 
@@ -22,7 +22,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	private ContactFieldHelper contactFieldHelper;
 
-	private ContactFiledsSet contactFiledsSet;
+	private ContactFieldSet contactFieldSet;
 
 	private AConcessionDelegate concessionDelegate;
 
@@ -70,7 +70,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	public ContactFieldHelper getContactFieldHelper() {
 		if (contactFieldHelper == null) {
-			contactFieldHelper = new ContactFieldHelper(getPurchaseController().getPreferenceController(),contactFiledsSet);
+			contactFieldHelper = new ContactFieldHelper(getPurchaseController().getPreferenceController(), contactFieldSet);
 		}
 		return contactFieldHelper;
 	}
@@ -87,12 +87,12 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 		this.objectContext = objectContext;
 	}
 
-	public ContactFiledsSet getContactFiledsSet() {
-		return contactFiledsSet;
+	public ContactFieldSet getContactFieldSet() {
+		return contactFieldSet;
 	}
 
-	public void setContactFiledsSet(ContactFiledsSet contactFiledsSet) {
-		this.contactFiledsSet = contactFiledsSet;
+	public void setContactFieldSet(ContactFieldSet contactFieldSet) {
+		this.contactFieldSet = contactFieldSet;
 	}
 
 	@Override

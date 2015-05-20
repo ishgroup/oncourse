@@ -15,7 +15,7 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
-import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.*;
+import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.*;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -84,9 +84,9 @@ public class PreferenceControllerTest extends ServiceTest {
 		
 		prefController.setAvetmissPostcode("12345");
 		assertEquals("Check avetmiss post code", prefController.getAvetmissPostcode(), "12345");
-		
-		prefController.setLicenseEmail(true);
-		assertTrue("Check license email.", prefController.getLicenseEmail());
+
+		prefController.setLicenseSms(true);
+		assertTrue("Check license sms.", prefController.getLicenseSms());
 	}
 
 	@Test

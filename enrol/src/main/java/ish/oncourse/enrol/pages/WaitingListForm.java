@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.waitinglist;
+import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.waitinglist;
 
 /**
  * Java class for WaitingListForm.tml.
@@ -41,7 +41,7 @@ import static ish.oncourse.services.preference.PreferenceController.ContactFiled
  * @author ksenia
  */
 
-@Secure // this anatation is important. The page should use secure handling allways
+@Secure // this annotation is important. The page should use secure handling always
 public class WaitingListForm {
     private static final int MAX_PARAMETERS_AMOUNT = 10;
 
@@ -156,7 +156,7 @@ public class WaitingListForm {
 
 				ObjectContext context = cayenneService.newContext();
 				controller = new WaitingListController();
-				controller.setContactFiledsSet(waitinglist);
+				controller.setContactFieldSet(waitinglist);
 				controller.setPreferenceController(preferenceController);
 				controller.setStudentService(studentService);
 				controller.setObjectContext(context);

@@ -98,7 +98,7 @@ public class ProfileForm {
         }
 
         if (contactFieldHelper == null) {
-            contactFieldHelper = new ContactFieldHelper(preferenceController, PreferenceController.ContactFiledsSet.enrolment);
+            contactFieldHelper = new ContactFieldHelper(preferenceController, PreferenceController.ContactFieldSet.enrolment);
         }
 
     }
@@ -115,7 +115,7 @@ public class ProfileForm {
     }
 
     public boolean required(String fieldName) {
-        return contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.valueOf(fieldName));
+        return contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.valueOf(fieldName), contact);
     }
 
 	private String getRequiredMessage(PreferenceController.FieldDescriptor fieldDescriptor) {
@@ -185,7 +185,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getSuburb()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.suburb)) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.suburb, contact)) {
 				errors.putIfAbsent(FieldDescriptor.suburb.name(), getRequiredMessage(FieldDescriptor.suburb));
 			}
 		} else {
@@ -197,7 +197,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getPostcode()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.postcode)) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.postcode, contact)) {
 				errors.putIfAbsent(FieldDescriptor.postcode.name(), getRequiredMessage(FieldDescriptor.postcode));
 			}
 		} else {
@@ -208,7 +208,7 @@ public class ProfileForm {
 		}
 		
 		if (StringUtils.trimToNull(contact.getState()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.state)) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.state, contact)) {
 				errors.putIfAbsent(FieldDescriptor.state.name(), getRequiredMessage(FieldDescriptor.state));
 			}
 		} else {
@@ -220,7 +220,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getHomePhoneNumber()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.homePhoneNumber)) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.homePhoneNumber, contact)) {
 				errors.putIfAbsent(FieldDescriptor.homePhoneNumber.name(), getRequiredMessage(FieldDescriptor.homePhoneNumber));
 			}
 		} else {
@@ -232,7 +232,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getMobilePhoneNumber()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.mobilePhoneNumber)) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.mobilePhoneNumber, contact)) {
 				errors.putIfAbsent(FieldDescriptor.mobilePhoneNumber.name(), getRequiredMessage(FieldDescriptor.mobilePhoneNumber));
 			}
 		} else {
@@ -244,7 +244,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getBusinessPhoneNumber()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.businessPhoneNumber)) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.businessPhoneNumber, contact)) {
 				errors.putIfAbsent(FieldDescriptor.businessPhoneNumber.name(), getRequiredMessage(FieldDescriptor.businessPhoneNumber));
 			}
 		} else {
@@ -256,7 +256,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getFaxNumber()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.faxNumber)) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.faxNumber, contact)) {
 				errors.putIfAbsent(FieldDescriptor.faxNumber.name(), getRequiredMessage(FieldDescriptor.faxNumber));
 			}
 		} else {
@@ -268,7 +268,7 @@ public class ProfileForm {
 		}
 
 		if (contact.getDateOfBirth() == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.dateOfBirth)) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.dateOfBirth, contact)) {
 				errors.putIfAbsent(FieldDescriptor.dateOfBirth.name(), getRequiredMessage(FieldDescriptor.dateOfBirth));
 			}
 		} else {
@@ -280,13 +280,13 @@ public class ProfileForm {
 		}
 
 		if (contact.getCountry() == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.country)) {
+			if (contactFieldHelper.isRequiredField(FieldDescriptor.country, contact)) {
 				errors.putIfAbsent(FieldDescriptor.country.name(), getRequiredMessage(FieldDescriptor.country));
 			}
 		}
 		
 		if (contact.getStudent() != null && StringUtils.trimToNull(contact.getStudent().getSpecialNeeds()) == null) {
-			if (contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.specialNeeds)) {
+			if (contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.specialNeeds, contact)) {
 				errors.putIfAbsent(FieldDescriptor.specialNeeds.name(), getRequiredMessage(FieldDescriptor.specialNeeds));
 			}
 		}

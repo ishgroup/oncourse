@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<t:if test="${delegate.visibleFields.contains('street')}">
 		<p>
@@ -127,7 +127,6 @@
 			</t:if>
 		</t:loop>
 
-	<t:if test="delegate.contact.isCompany" negate="true">
 		<t:if test="${delegate.visibleFields.contains('specialNeeds')}">
 			<p>
 				<label for="specialNeeds">${label('specialNeeds')}<t:if test="required('specialNeeds')"><em title="${message:message-required}">*</em> </t:if></label>
@@ -137,5 +136,14 @@
 				</span>
 			</p>
 		</t:if>
-	</t:if>
+
+		<t:if test="${delegate.visibleFields.contains('abn')}">
+			<p>
+				<label for="abn">${label('abn')}<t:if test="required('abn')"><em title="${message:message-required}">*</em></t:if></label>
+			<span class="${validateHandler.validateClass('abn')}">
+				<t:textfield  t:id="abn" value="delegate.contact.abn" class="abn input-fixed ${validateHandler.errorClass('abn')}"/>
+				<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('abn')}" hint="${hint('abn')}"/>
+			</span>
+			</p>
+		</t:if>
 </t:container>

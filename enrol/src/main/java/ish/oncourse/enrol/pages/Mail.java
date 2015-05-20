@@ -26,9 +26,9 @@ import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
-import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.mailinglist;
+import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.mailinglist;
 
-@Secure // this anatation is important. The page should use secure handling allways
+@Secure // this annotation is important. The page should use secure handling always
 public class Mail {
 
     private static final Logger logger = LogManager.getLogger();
@@ -95,7 +95,7 @@ public class Mail {
             if (controller == null) {
                 ObjectContext context = cayenneService.newContext();
                 controller = new MailingListController();
-				controller.setContactFiledsSet(mailinglist);
+				controller.setContactFieldSet(mailinglist);
                 controller.setPreferenceController(preferenceController);
                 controller.setStudentService(studentService);
                 controller.setObjectContext(context);

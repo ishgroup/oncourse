@@ -62,7 +62,7 @@ public class ContactEditorFieldSet {
 	}
 
 	public boolean required(String fieldName) {
-		return getContactFieldHelper().isRequiredField(FieldDescriptor.valueOf(fieldName));
+		return getContactFieldHelper().isRequiredField(FieldDescriptor.valueOf(fieldName), delegate.getContact());
 	}
 
 	public boolean customFieldRequired(CustomField field) {

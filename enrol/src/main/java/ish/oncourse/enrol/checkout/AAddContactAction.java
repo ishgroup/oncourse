@@ -13,7 +13,7 @@ import static ish.oncourse.enrol.checkout.PurchaseController.Action.changePayer;
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.contactAlreadyAdded;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.addContact;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.editContact;
-import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
+import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
 
 public abstract class AAddContactAction extends APurchaseAction {
     private Contact contact;
@@ -82,7 +82,7 @@ public abstract class AAddContactAction extends APurchaseAction {
         contactEditorController.setPurchaseController(getController());
         contactEditorController.setContact(contact);
         contactEditorController.setObjectContext(contact.getObjectContext());
-        contactEditorController.setContactFiledsSet(enrolment);
+        contactEditorController.setContactFieldSet(enrolment);
         contactEditorController.setAddAction(getAddAction());
         contactEditorController.setCancelAction(getCancelAction());
         if (!contact.getObjectId().isTemporary() && fillRequiredProperties)

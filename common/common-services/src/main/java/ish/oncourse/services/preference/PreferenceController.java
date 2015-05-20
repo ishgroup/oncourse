@@ -5,17 +5,14 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class PreferenceController extends CommonPreferenceController {
 
@@ -42,24 +39,6 @@ public class PreferenceController extends CommonPreferenceController {
     private static final String ENROLMENT_collectParentDetails = "enrolment.collectParentDetails";
     private static final String ENROLMENT_contactAgeWhenNeedParent = "enrolment.contactAgeWhenNeedParent";
     public static final int DEFAULT_contactAgeWhenNeedParent = 18;
-
-
-
-	//deprecated part
-	@Deprecated
-	public static final String LICENSE_AVETMISS_UPDATES = "license.avetmiss.updates";
-	@Deprecated
-	public static final String LICENSE_EMAIL = "license.email";
-	@Deprecated
-	public static final String LICENSE_WEBSITE_TUTOR_PORTAL = "license.website.tutor.portal";
-	@Deprecated
-	public static final String LICENSE_WEBSITE_ONLINE_ENROLMENTS = "license.website.online.enrolments";
-	@Deprecated
-	public static final String LICENSE_WEBSITE_PLAN_NAME = "license.website.plan.name";
-	@Deprecated
-	public static final String LICENSE_SUPPORT_PLAN_NAME = "license.support.plan.name";
-	@Deprecated
-	public static final String LICENSE_SUPPORT_PLAN_EXPIRY = "license.support.plan.expiry";
 
     @Inject
 	private ICayenneService cayenneService;
@@ -88,21 +67,6 @@ public class PreferenceController extends CommonPreferenceController {
 
 		Preference pref = getPreferenceByKey(key);
 		return (pref != null) ? pref.getValueString() : null;
-	}
-
-	/**
-	 * Deprecated now should use {@link PreferenceController#getValue(String, boolean)} instead
-	 */
-	@Deprecated
-	protected Object getBinaryValue(String key, boolean isUserPref) {
-
-		if (isUserPref) {
-			throw new IllegalArgumentException("Cannot fetch a user preference in willow.");
-		}
-
-		Preference pref = getPreferenceByKey(key);
-
-		return (pref != null) ? deserializeObject(pref.getValue()) : null;
 	}
 
 	@Override
@@ -142,54 +106,10 @@ public class PreferenceController extends CommonPreferenceController {
 
 	}
 
-	/**
-	 * Deprecated now should use {@link PreferenceController#setValue(String, boolean, String)} instead
-	 *
-	 * @param key
-	 * @param isUserPref
-	 * @param value
-	 */
-	@Deprecated
-	protected void setBinaryValue(String key, boolean isUserPref, Object value) {
-
-		if (isUserPref) {
-			throw new IllegalArgumentException("Cannot fetch a user preference in willow.");
-		}
-
-		Preference pref = getPreferenceByKey(key);
-
-		ObjectContext context = cayenneService.newContext();
-
-		if (pref == null) {
-			pref = context.newObject(Preference.class);
-			pref.setName(key);
-		} else {
-			pref = (Preference) context.localObject(pref);
-		}
-
-		pref.setValue(serializeObject(value));
-		logger.debug("committing changes to prefs: {}", context.uncommittedObjects());
-
-		context.commitChanges();
-	}
-
 	private Preference getPreferenceByKey(String key) {
-
-		SelectQuery query = new SelectQuery(Preference.class, ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
-				ExpressionFactory.matchExp(Preference.NAME_PROPERTY, key)));
-		query.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
-
-		List<Preference> results = cayenneService.sharedContext().performQuery(query);
-
-		return results.isEmpty() ? null : results.get(0);
-	}
-
-	public  void setLicenseAvetmissUpdates(boolean value) {
-		setValue(LICENSE_AVETMISS_UPDATES, false, Boolean.toString(value));
-	}
-
-	public  boolean getLicenseAvetmissUpdates() {
-		return Boolean.valueOf(getValue(LICENSE_AVETMISS_UPDATES, false));
+		return ObjectSelect.query(Preference.class)
+				.and(Preference.COLLEGE.eq(webSiteService.getCurrentCollege()))
+				.and(Preference.NAME.eq(key)).cacheStrategy(QueryCacheStrategy.NO_CACHE).selectOne(cayenneService.sharedContext());
 	}
 
 	public  void setLicenseAccessControl(boolean value) {
@@ -212,14 +132,6 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(LICENSE_SSL, false, Boolean.toString(value));
 	}
 
-	public  void setLicenseEmail(boolean value) {
-		setValue(LICENSE_EMAIL, false, Boolean.toString(value));
-	}
-
-	public  boolean getLicenseEmail() {
-		return Boolean.valueOf(getValue(LICENSE_EMAIL, false));
-	}
-
 	public  void setLicenseSms(boolean value) {
 		setValue(LICENSE_SMS, false, Boolean.toString(value));
 	}
@@ -236,46 +148,6 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(LICENSE_WEBSITE, false, Boolean.toString(value));
 	}
 
-	public  void setLicenseWebsiteOnlineEnrolments(boolean value) {
-		setValue(LICENSE_WEBSITE_ONLINE_ENROLMENTS, false, Boolean.toString(value));
-	}
-
-	public  boolean getLicenseWebsiteOnlineEnrolments() {
-		return Boolean.valueOf(getValue(LICENSE_WEBSITE_ONLINE_ENROLMENTS, false));
-	}
-
-	public  void setLicenseWebsiteTutorPortal(boolean value) {
-		setValue(LICENSE_WEBSITE_TUTOR_PORTAL, false, Boolean.toString(value));
-	}
-
-	public  boolean getLicenseWebsiteTutorPortal() {
-		return Boolean.valueOf(getValue(LICENSE_WEBSITE_TUTOR_PORTAL, false));
-	}
-
-	public  void setWebsitePlanName(String value) {
-		setValue(LICENSE_WEBSITE_PLAN_NAME, false, value);
-	}
-
-	public  boolean getWebsitePlanName() {
-		return Boolean.valueOf(getValue(LICENSE_WEBSITE_PLAN_NAME, false));
-	}
-
-	public  void setSupportPlanName(String value) {
-		setValue(LICENSE_SUPPORT_PLAN_NAME, false, value);
-	}
-
-	public  boolean getSupportPlanName() {
-		return Boolean.valueOf(getValue(LICENSE_SUPPORT_PLAN_NAME, false));
-	}
-
-	public  void setSupportPlanExpiry(String value) {
-		setValue(LICENSE_SUPPORT_PLAN_EXPIRY, false, value);
-	}
-
-	public  boolean getSupportPlanExpiry() {
-		return Boolean.valueOf(getValue(LICENSE_SUPPORT_PLAN_EXPIRY, false));
-	}
-
 	public  String getNTISLastUpdate() {
 		return getValue(NTIS_LAST_UPDATE, false);
 	}
@@ -290,279 +162,6 @@ public class PreferenceController extends CommonPreferenceController {
 
 	public  void setPostcodesLastUpdate(String value) {
 		setValue(POSTCODES_LAST_UPDATE, false, value);
-	}
-
-
-	@Deprecated
-	public  String getRequireContactAddressWaitingList() {
-		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.street);
-	}
-
-	@Deprecated
-	public  void setRequireContactAddressWaitingList(String value) {
-		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.street, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactSuburbWaitingList() {
-		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.suburb);
-	}
-
-	@Deprecated
-	public  void setRequireContactSuburbWaitingList(String value) {
-		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.suburb, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactStateWaitingList() {
-		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.state);
-	}
-
-	@Deprecated
-	public  void setRequireContactStateWaitingList(String value) {
-		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.state, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactPostcodeWaitingList() {
-		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.postcode);
-	}
-
-	@Deprecated
-	public  void setRequireContactPostcodeWaitingList(String value) {
-		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.postcode, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactHomePhoneWaitingList() {
-		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.homePhoneNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactHomePhoneWaitingList(String value) {
-		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.homePhoneNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactBusinessPhoneWaitingList() {
-		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.businessPhoneNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactBusinessPhoneWaitingList(String value) {
-		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.businessPhoneNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactFaxWaitingList() {
-		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.faxNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactFaxWaitingList(String value) {
-		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.faxNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactMobileWaitingList() {
-		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.mobilePhoneNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactMobileWaitingList(String value) {
-		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.mobilePhoneNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactDateOfBirthWaitingList() {
-		return getRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.dateOfBirth);
-	}
-
-	@Deprecated
-	public  void setRequireContactDateOfBirthWaitingList(String value) {
-		setRequireContactField(ContactFiledsSet.waitinglist, FieldDescriptor.dateOfBirth, value);
-	}
-
-	//mailing list
-	@Deprecated
-	public  String getRequireContactAddressMailingList() {
-		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.street);
-	}
-
-	@Deprecated
-	public  void setRequireContactAddressMailingList(String value) {
-		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.street, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactSuburbMailingList() {
-		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.suburb);
-	}
-
-	@Deprecated
-	public  void setRequireContactSuburbMailingList(String value) {
-		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.suburb, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactStateMailingList() {
-		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.state);
-	}
-
-	@Deprecated
-	public  void setRequireContactStateMailingList(String value) {
-		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.state, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactPostcodeMailingList() {
-		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.postcode);
-	}
-
-	@Deprecated
-	public  void setRequireContactPostcodeMailingList(String value) {
-		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.postcode, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactHomePhoneMailingList() {
-		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.homePhoneNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactHomePhoneMailingList(String value) {
-		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.homePhoneNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactBusinessPhoneMailingList() {
-		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.businessPhoneNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactBusinessPhoneMailingList(String value) {
-		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.businessPhoneNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactFaxMailingList() {
-		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.faxNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactFaxMailingList(String value) {
-		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.faxNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactMobileMailingList() {
-		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.mobilePhoneNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactMobileMailingList(String value) {
-		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.mobilePhoneNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactDateOfBirthMailingList() {
-		return getRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.dateOfBirth);
-	}
-
-	@Deprecated
-	public  void setRequireContactDateOfBirthMailingList(String value) {
-		setRequireContactField(ContactFiledsSet.mailinglist, FieldDescriptor.dateOfBirth, value);
-	}
-
-	//enrolment
-	@Deprecated
-	public  String getRequireContactAddressEnrolment() {
-		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.street);
-	}
-
-	@Deprecated
-	public  void setRequireContactAddressEnrolment(String value) {
-		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.street, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactSuburbEnrolment() {
-		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.suburb);
-	}
-
-	@Deprecated
-	public  void setRequireContactSuburbEnrolment(String value) {
-		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.suburb, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactStateEnrolment() {
-		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.state);
-	}
-
-	@Deprecated
-	public  void setRequireContactStateEnrolment(String value) {
-		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.state, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactPostcodeEnrolment() {
-		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.postcode);
-	}
-
-	@Deprecated
-	public  void setRequireContactPostcodeEnrolment(String value) {
-		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.postcode, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactHomePhoneEnrolment() {
-		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.homePhoneNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactHomePhoneEnrolment(String value) {
-		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.homePhoneNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactBusinessPhoneEnrolment() {
-		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.businessPhoneNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactBusinessPhoneEnrolment(String value) {
-		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.businessPhoneNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactFaxEnrolment() {
-		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.faxNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactFaxEnrolment(String value) {
-		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.faxNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactMobileEnrolment() {
-		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.mobilePhoneNumber);
-	}
-
-	@Deprecated
-	public  void setRequireContactMobileEnrolment(String value) {
-		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.mobilePhoneNumber, value);
-	}
-
-	@Deprecated
-	public  String getRequireContactDateOfBirthEnrolment() {
-		return getRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.dateOfBirth);
-	}
-
-	@Deprecated
-	public  void setRequireContactDateOfBirthEnrolment(String value) {
-		setRequireContactField(ContactFiledsSet.enrolment, FieldDescriptor.dateOfBirth, value);
 	}
 
 	public  boolean getHideStudentDetailsFromTutor() {
@@ -664,22 +263,22 @@ public class PreferenceController extends CommonPreferenceController {
 	public  void setEnrolmentMinAge(Integer age) {
 		setValue(ENROLMENT_MIN_AGE, false, age.toString());
 	}
-	
+
 	public  String getRefundPolicyUrl() {
 		return getValue(REFUND_POLICY_URL, false);
 	}
-	
+
 	public  void setRefundPolicyUrl(String value) {
 		setValue(REFUND_POLICY_URL, false, value);
 	}
 
-	public String getRequireContactField(ContactFiledsSet contactFiledsSet, FieldDescriptor field) {
-		return getValue(field.getPreferenceNameBy(contactFiledsSet), false);
+	public String getRequireContactField(ContactFieldSet contactFieldSet, FieldDescriptor field) {
+		return getValue(field.getPreferenceNameBy(contactFieldSet), false);
 	}
 
 
-	public void setRequireContactField(ContactFiledsSet contactFiledsSet, FieldDescriptor field, String value) {
-		setValue(field.getPreferenceNameBy(contactFiledsSet), false, value);
+	public void setRequireContactField(ContactFieldSet contactFieldSet, FieldDescriptor field, String value) {
+		setValue(field.getPreferenceNameBy(contactFieldSet), false, value);
 	}
 
 	public boolean isCorporatePassPaymentEnabled() {
@@ -727,41 +326,52 @@ public class PreferenceController extends CommonPreferenceController {
         setValue(ENROLMENT_collectParentDetails, false, Boolean.toString(value));
     }
 
-    public static enum ContactFiledsSet {
+    public enum ContactFieldSet {
 		enrolment,
 		waitinglist,
 		mailinglist,
 	}
 
 
-	public static enum FieldDescriptor {
-		street("address", Contact.STREET_PROPERTY, String.class),
-		suburb("suburb", Contact.SUBURB_PROPERTY, String.class),
-		postcode("postcode", Contact.POSTCODE_PROPERTY, String.class),
-		state("state", Contact.STATE_PROPERTY, String.class),
-		country("country", Contact.COUNTRY_PROPERTY, Country.class),
-		homePhoneNumber("homephone", Contact.HOME_PHONE_NUMBER_PROPERTY, String.class),
-		businessPhoneNumber("businessphone", Contact.BUSINESS_PHONE_NUMBER_PROPERTY, String.class),
-		faxNumber("fax", Contact.FAX_NUMBER_PROPERTY, String.class),
-		mobilePhoneNumber("mobile", Contact.MOBILE_PHONE_NUMBER_PROPERTY, String.class),
-		dateOfBirth("birth", Contact.DATE_OF_BIRTH_PROPERTY, Date.class),
-		specialNeeds("specialneeds", Contact.STUDENT_PROPERTY + "." + Student.SPECIAL_NEEDS_PROPERTY, String.class);
-
-		public static final List<FieldDescriptor> COMPANY_FIELDS = Arrays.asList(street,suburb,postcode,state,country,businessPhoneNumber,faxNumber);
+	public enum FieldDescriptor {
+		street("address", Contact.STREET.getName(), String.class, true, true),
+		suburb("suburb", Contact.SUBURB.getName(), String.class, true, true),
+		postcode("postcode", Contact.POSTCODE.getName(), String.class, true, true),
+		state("state", Contact.STATE.getName(), String.class, true, true),
+		country("country", Contact.COUNTRY.getName(), Country.class, true, true),
+		homePhoneNumber("homephone", Contact.HOME_PHONE_NUMBER.getName(), String.class, false, true),
+		businessPhoneNumber("businessphone", Contact.BUSINESS_PHONE_NUMBER.getName(), String.class, true, true),
+		faxNumber("fax", Contact.FAX_NUMBER.getName(), String.class, true, true),
+		mobilePhoneNumber("mobile", Contact.MOBILE_PHONE_NUMBER.getName(), String.class, false, true),
+		dateOfBirth("birth", Contact.DATE_OF_BIRTH.getName(), Date.class, false, true),
+		specialNeeds("specialneeds", Contact.STUDENT.getName() + "." + Student.SPECIAL_NEEDS.getName(), String.class, false, true),
+		abn("abn", Contact.ABN.getName(), String.class, true, false);
 
 		private final String preferenceName;
 		public final String propertyName;
 		public final Class propertyClass;
+        private boolean forCompany;
+        private boolean forPerson;
 
-		private FieldDescriptor(String preferenceName, String propertyName, Class propertyClass) {
+        FieldDescriptor(String preferenceName, String propertyName, Class propertyClass, boolean forCompany, boolean forPerson) {
 			this.preferenceName = preferenceName;
 			this.propertyName = propertyName;
 			this.propertyClass = propertyClass;
+            this.forCompany = forCompany;
+            this.forPerson = forPerson;
+        }
+
+		public String getPreferenceNameBy(ContactFieldSet contactFieldSet) {
+			return String.format("%s.contact.%s.required", contactFieldSet.name(), this.preferenceName);
 		}
 
-		public String getPreferenceNameBy(ContactFiledsSet contactFiledsSet) {
-			return String.format("%s.contact.%s.required", contactFiledsSet.name(), this.preferenceName);
-		}
-	}
+        public boolean isForCompany() {
+            return forCompany;
+        }
+
+        public boolean isForPerson() {
+            return forPerson;
+        }
+    }
 
 }

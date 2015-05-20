@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet.enrolment;
+import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.

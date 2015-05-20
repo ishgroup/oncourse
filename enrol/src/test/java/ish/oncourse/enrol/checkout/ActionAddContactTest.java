@@ -63,7 +63,7 @@ public class ActionAddContactTest extends ACheckoutTest {
         assertNotNull(purchaseController.getContactEditorDelegate().getContact());
         assertFalse(purchaseController.getContactEditorDelegate().isFillRequiredProperties());
         assertFalse(purchaseController.getContactEditorDelegate().getVisibleFields().isEmpty());
-        assertEquals(PreferenceController.ContactFiledsSet.enrolment, ((ContactEditorController) purchaseController.getContactEditorDelegate()).getContactFiledsSet());
+        assertEquals(PreferenceController.ContactFieldSet.enrolment, ((ContactEditorController) purchaseController.getContactEditorDelegate()).getContactFieldSet());
         assertNotNull(purchaseController.getContactEditorDelegate().getConcessionDelegate());
 
         assertTrue(purchaseController.isEditContact());

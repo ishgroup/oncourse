@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ish.oncourse.services.preference.PreferenceController.ContactFiledsSet;
+import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet;
 
 
 public abstract class AContactController implements AddContactDelegate, ContactEditorDelegate {
@@ -28,7 +28,7 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 	private ObjectContext objectContext;
 	private PreferenceController preferenceController;
 	private ContactFieldHelper contactFieldHelper;
-	private ContactFiledsSet contactFiledsSet;
+	private ContactFieldSet contactFieldSet;
 
 	private College college;
 
@@ -93,7 +93,7 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 	}
 
 	public void init() {
-		contactFieldHelper = new ContactFieldHelper(preferenceController, contactFiledsSet);
+		contactFieldHelper = new ContactFieldHelper(preferenceController, contactFieldSet);
 		state = State.ADD_CONTACT;
 	}
 
@@ -229,12 +229,12 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 		return studentService;
 	}
 
-	public ContactFiledsSet getContactFiledsSet() {
-		return contactFiledsSet;
+	public ContactFieldSet getContactFieldSet() {
+		return contactFieldSet;
 	}
 
-	public void setContactFiledsSet(ContactFiledsSet contactFiledsSet) {
-		this.contactFiledsSet = contactFiledsSet;
+	public void setContactFieldSet(ContactFieldSet contactFieldSet) {
+		this.contactFieldSet = contactFieldSet;
 	}
 
 	@Override
