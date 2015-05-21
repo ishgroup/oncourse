@@ -11,27 +11,8 @@ buildscript {
 	dependencies {
 		classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
 		classpath 'com.github.ben-manes:gradle-versions-plugin:0.8'
-        classpath 'au.com.ish.gradle:release:2.2.2'
 		classpath 'org.apache.cayenne:cayenne-tools:4.0.M2'
 	}
-}
-
-apply plugin: 'release'
-release {
-	//use scm, specified in with -PscmFlavour= or in users gradle properties. otherwise try to establish if svn of git is used
-	scm = project.hasProperty('scmFlavour') ? project.scmFlavour: file("$rootDir/.svn").exists()?'svn':file("$rootDir/.git").exists()?'git':""
-	assert scm.length() > 0
-
-	failOnSnapshotDependencies = true
-
-	//properties for svn access
-	username = project.hasProperty('username') ? project.username : ''
-	password = project.hasProperty('password') ? project.password : ''
-	
-	//the following two params have to be converted from string to boolean
-	releaseDryRun = project.hasProperty('releaseDryRun') ? project.releaseDryRun=='true' : ''
-	allowLocalModifications = project.hasProperty('allowLocalModifications') ? project.allowLocalModifications='true' : ''
-
 }
 
 apply plugin: 'com.github.ben-manes.versions' // adds the task 'dependencyUpdates'
@@ -45,6 +26,9 @@ allprojects {
     apply plugin: 'idea' //adds tasks cleanIdeaModule and ideaModule
     apply plugin: 'appBundler'
 
+    // get the version from the command line properties
+    version = project.releaseVersion ? project.releaseVersion : "SNAPSHOT"
+    
 	sourceCompatibility = 1.7
 	targetCompatibility = 1.7
 
