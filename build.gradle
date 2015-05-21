@@ -18,8 +18,6 @@ buildscript {
 apply plugin: 'com.github.ben-manes.versions' // adds the task 'dependencyUpdates'
 
 allprojects {
-	version = release.projectVersion
-	
 	apply plugin: 'java'
 	apply plugin: 'maven'
 	apply plugin: 'jacoco' // adds the task 'jacocoTestReport'
@@ -57,8 +55,7 @@ allprojects {
 	}
 
 	ext.sharedManifest = manifest {
-		attributes 'SCM-Revision': project.release.scmVersion,
-			'Release-Version': version,
+		attributes 'Release-Version': version,
 			'Built-Date': System.getProperty('build_number') ? new Date(): new Date().format("yy-MMM-dd"),
 			'Built-JDK': System.getProperty('java.version'),
 			'Built-Gradle': gradle.gradleVersion,
