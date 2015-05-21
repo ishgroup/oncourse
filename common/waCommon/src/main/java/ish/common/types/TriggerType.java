@@ -9,7 +9,8 @@ public enum TriggerType implements DisplayableExtendedEnumeration<Integer> {
 	
 	CRON(1, "Cron"),
 	ENTITY_EVENT(2, "Entity event"),
-	ONCOURSE_EVENT(3, "onCourse event");
+	ONCOURSE_EVENT(3, "onCourse event"),
+	ON_DEMAND(4, "on Demand");
 
 	private int value;
 	private String displayName;
