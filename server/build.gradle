@@ -6,7 +6,7 @@ sourceSets.main.groovy.srcDir 'src/main/java'
 
 
 dependencies {
-	def jettyVersion = '8.1.16.v20140903'
+	def jettyVersion = '8.1.17.v20150415'
 
 	compile project(':common')
 	compile ('ish.oncourse.willow:webservices-client:5.1.77') {
@@ -67,10 +67,10 @@ dependencies {
 	compile 'net.sf.saxon:Saxon-HE:9.6.0-3'
 	compile 'org.quartz-scheduler:quartz:2.2.1'
     //log4j2 to slf4j1.7 bridge
-    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.0.2'
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.3'
 
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
-    compile ('net.sf.jasperreports:jasperreports:6.0.3') {
+    compile ('net.sf.jasperreports:jasperreports:6.0.4') {
         exclude group: 'org.apache.poi', module: 'poi-ooxml'
 
         exclude group:'org.codehaus.castor'
