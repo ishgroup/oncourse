@@ -9,7 +9,7 @@ dependencies {
 	def jettyVersion = '8.1.17.v20150415'
 
 	compile project(':common')
-	compile ('ish.oncourse.willow:webservices-client:5.1.79') {
+	compile ('ish.oncourse.willow:webservices-client:5.1.80') {
 
         exclude group: 'javax.xml.soap'
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-ws-metadata_2.0_spec'
@@ -119,7 +119,7 @@ configurations {
 }
 
 dependencies {
-	apiDocs 'ish.oncourse.willow:waCommon:5.1.79:sources'
+	apiDocs 'ish.oncourse.willow:waCommon:5.1.80:sources'
 }
 
 configurations.all {
