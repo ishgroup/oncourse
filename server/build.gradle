@@ -70,7 +70,7 @@ dependencies {
     compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.3'
 
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
-    compile ('net.sf.jasperreports:jasperreports:6.0.3') {
+    compile ('net.sf.jasperreports:jasperreports:6.0.4') {
         exclude group: 'org.apache.poi', module: 'poi-ooxml'
 
         exclude group:'org.codehaus.castor'
@@ -78,6 +78,7 @@ dependencies {
         exclude group:'org.apache.lucene'
         exclude group:'org.olap4j'
     }
+	compile 'com.lowagie:itext:2.1.7'
 	
     compile ('org.bouncycastle:bctsp-jdk14:1.46') {
     	exclude group: 'org.bouncycastle', module: 'bcmail-jdk14'
