@@ -1405,6 +1405,7 @@ public abstract class CommonPreferenceController {
 	public static final String QEVIEW_DIVIDER = "qeview.divider.";
 	public static final String EULA_AGREEMENT = "eula.agreement.";
 	public static final String TOOLBAR_ACTIVE_TAB = "toolbar.tab.active";
+	public static final String LISTVIEW_FILTERS_COLLAPSING = "listview.filters.collapsing.";
 
 	public synchronized String getToolbarActiveTab() {
 		return getValue(TOOLBAR_ACTIVE_TAB, true);
@@ -1515,6 +1516,15 @@ public abstract class CommonPreferenceController {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public synchronized void setFilterCollapsingState(String filterIdentifier, boolean value) {
+		setValue(LISTVIEW_FILTERS_COLLAPSING + filterIdentifier, true, String.valueOf(value));
+	}
+
+
+	public synchronized boolean getFilterCollapsingState(String filterIdentifier) {
+		return Boolean.parseBoolean(getValue(LISTVIEW_FILTERS_COLLAPSING + filterIdentifier, true));
 	}
 
 	// **************************************
