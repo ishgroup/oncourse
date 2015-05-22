@@ -4,6 +4,7 @@ import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.model.*;
 import ish.util.InvoiceUtil;

@@ -6,6 +6,7 @@ import ish.oncourse.enrol.checkout.contact.AddContactController;
 import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorController;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;

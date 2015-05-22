@@ -8,6 +8,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentType;
 import ish.common.types.ProductStatus;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Voucher;

@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import org.junit.Before;
 import org.junit.Test;
 

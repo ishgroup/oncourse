@@ -4,6 +4,7 @@ import ish.common.types.CreditCardType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.services.EnrolTestModule;
 import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;

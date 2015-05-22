@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.model.*;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import org.apache.cayenne.ObjectContext;

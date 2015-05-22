@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.services.payment;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
-import ish.oncourse.enrol.checkout.PurchaseModel;
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 
 public interface IPurchaseControllerBuilder {
 

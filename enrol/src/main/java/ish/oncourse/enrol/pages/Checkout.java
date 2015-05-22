@@ -4,7 +4,7 @@ import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
-import ish.oncourse.enrol.checkout.PurchaseModel;
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.services.PageExceptionHandler;
 import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;

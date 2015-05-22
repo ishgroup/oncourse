@@ -5,6 +5,7 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.ProductStatus;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.model.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;

@@ -1,5 +1,7 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
+
 public abstract class APurchaseAction {
 	private PurchaseController controller;
 	private PurchaseController.ActionParameter parameter;

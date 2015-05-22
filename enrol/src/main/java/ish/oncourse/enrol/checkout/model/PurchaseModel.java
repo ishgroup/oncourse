@@ -1,4 +1,4 @@
-package ish.oncourse.enrol.checkout;
+package ish.oncourse.enrol.checkout.model;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
@@ -131,13 +131,13 @@ public class PurchaseModel {
         return payment;
     }
 
-    void deletePayment() {
+    public void deletePayment() {
         List<PaymentInLine> paymentInLines = payment.getPaymentInLines();
         objectContext.deleteObjects(paymentInLines);
         objectContext.deleteObjects(payment);
     }
-	
-	void deleteInvoice() {
+
+	public void deleteInvoice() {
 		objectContext.deleteObject(invoice);
 	}
 
@@ -160,7 +160,7 @@ public class PurchaseModel {
         return totalDiscountAmountIncTax;
     }
 
-    void setTotalDiscountAmountIncTax(Money totalDiscountAmountIncTax) {
+    public void setTotalDiscountAmountIncTax(Money totalDiscountAmountIncTax) {
         this.totalDiscountAmountIncTax = totalDiscountAmountIncTax;
     }
 
@@ -284,7 +284,7 @@ public class PurchaseModel {
         return getContactNode(contact).getAllEnrolments();
     }
 
-    Enrolment getEnrolmentBy(Contact contact, CourseClass courseClass) {
+    public Enrolment getEnrolmentBy(Contact contact, CourseClass courseClass) {
         List<Enrolment> enrolments = getContactNode(contact).getAllEnrolments();
         for (Enrolment enrolment : enrolments) {
             if (enrolment.getCourseClass().getId().equals(courseClass.getId()))
@@ -293,7 +293,7 @@ public class PurchaseModel {
         return null;
     }
 
-    ProductItem getProductItemBy(Contact contact, Product product) {
+    public ProductItem getProductItemBy(Contact contact, Product product) {
         List<ProductItem> productItems = getContactNode(contact).getAllProductItems();
         for (ProductItem productItem : productItems) {
             if (productItem.getProduct().getId().equals(product.getId()))
@@ -302,7 +302,7 @@ public class PurchaseModel {
         return null;
     }
 	
-	Application getApplicationBy(Contact contact, Course course) {
+	public Application getApplicationBy(Contact contact, Course course) {
 		List<Application> applications = getContactNode(contact).getAllApplications();
 		for (Application application : applications) {
 			if (application.getCourse().getId().equals(course.getId())) {
@@ -444,21 +444,21 @@ public class PurchaseModel {
     }
 
 
-    void deleteDisabledProductItems(Contact contact) {
+    private void deleteDisabledProductItems(Contact contact) {
         List<ProductItem> productItems = new ArrayList<>(getDisabledProductItems(contact));
         for (ProductItem productItem : productItems) {
             removeProductItem(contact, productItem);
         }
     }
 
-    void deleteDisabledEnrollments(Contact contact) {
+    private void deleteDisabledEnrollments(Contact contact) {
         List<Enrolment> enrolments = new ArrayList<>(getDisabledEnrolments(contact));
         for (Enrolment enrolment : enrolments) {
             removeEnrolment(enrolment);
         }
     }
-	
-	void deleteDisabledApplications(Contact contact) {
+
+	private void deleteDisabledApplications(Contact contact) {
 		List<Application> applications = new ArrayList<>(getDisabledApplications(contact));
 		for (Application application : applications) {
 			removeApplication(application);

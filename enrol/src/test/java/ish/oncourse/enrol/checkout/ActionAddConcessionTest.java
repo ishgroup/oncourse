@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;

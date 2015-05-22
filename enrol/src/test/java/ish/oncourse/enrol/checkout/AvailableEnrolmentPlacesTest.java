@@ -4,6 +4,7 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.model.*;
 import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;

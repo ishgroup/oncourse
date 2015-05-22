@@ -5,6 +5,7 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.ProductType;
 import ish.math.Money;
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Product;

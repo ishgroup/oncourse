@@ -8,6 +8,7 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.common.types.ProductStatus;
 import ish.math.Money;
+import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.model.*;
 import org.apache.cayenne.Cayenne;
