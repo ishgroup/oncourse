@@ -78,8 +78,7 @@ dependencies {
         exclude group:'org.apache.lucene'
         exclude group:'org.olap4j'
     }
-	compile 'com.lowagie:itext:2.1.7'
-	
+
     compile ('org.bouncycastle:bctsp-jdk14:1.46') {
     	exclude group: 'org.bouncycastle', module: 'bcmail-jdk14'
     }
@@ -121,6 +120,11 @@ configurations {
 
 dependencies {
 	apiDocs 'ish.oncourse.willow:waCommon:5.1.79:sources'
+}
+
+configurations.all {
+	// this is the last MPL version of iText, so we can't go past this
+	resolutionStrategy.force 'com.lowagie:itext:2.1.7.js2'
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
