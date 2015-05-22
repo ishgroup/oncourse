@@ -53,9 +53,9 @@ public enum AccountType implements DisplayableExtendedEnumeration<Integer> {
 	 */
 	EXPENSE(6, "expense");
 
-	public static final List<AccountType> DEBIT_TYPES = Arrays.asList(ASSET, COS, EQUITY);
+	public static final List<AccountType> DEBIT_TYPES = Arrays.asList(ASSET, COS, EQUITY, EXPENSE);
 
-	public static final List<AccountType> CREDIT_TYPES = Arrays.asList(LIABILITY, INCOME, EXPENSE);
+	public static final List<AccountType> CREDIT_TYPES = Arrays.asList(LIABILITY, INCOME);
 
 	private String displayName;
 	private int value;
