@@ -126,7 +126,9 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 
 		// make sure that company fiedlset is displayed correctly
 		for (FieldDescriptor field: FieldDescriptor.values()) {
-			assertTrue(field.isForCompany() && delegate.getVisibleFields().contains(field.name()));
+			if (field.isForCompany()) {
+				assertTrue(String.format("%s is not visible", field), delegate.getVisibleFields().contains(field.name()));
+			}
 		}
 		
 		// ignore this step and press 'OK' button (no required field here)
