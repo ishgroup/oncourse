@@ -1,4 +1,7 @@
 buildscript {
+    ext {
+        waCommonWebservicesClientVersion = '5.1.81'
+    }
 	repositories {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/public'
