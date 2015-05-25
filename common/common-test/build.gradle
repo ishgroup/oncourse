@@ -1,6 +1,6 @@
 dependencies {
 
-    testCompile ("ish.oncourse.willow:$waCommonWebservicesClientVersion") {
+    testCompile ("ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion") {
         //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
