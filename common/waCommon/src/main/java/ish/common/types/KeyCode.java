@@ -468,7 +468,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Database value: 84
 	 * @PublicApi
 	 */
-	SPECIAL_OVERRIDE_TUTOR_PAYRATE(84, "Override tutor payrate", Mask.ALL - Mask.EDIT),
+	SPECIAL_OVERRIDE_TUTOR_PAYRATE(84, "Override tutor"),
 
 	/**
 	 * Always enabled: view
