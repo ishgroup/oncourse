@@ -563,7 +563,16 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Database value: 96
 	 * @PublicApi
 	 */
-	SPECIAL_EDIT_NOTES(96, "Edit/Delete Notes", Mask.ALL - Mask.VIEW);
+	SPECIAL_EDIT_NOTES(96, "Edit/Delete Notes", Mask.ALL - Mask.VIEW),
+
+	/**
+	 * Ability to edit notes
+	 * Special single option.
+	 *
+	 * Database value: 96
+	 * @PublicApi
+	 */
+	SPECIAL_TWO_FACTOR_AUTHENTICATION(96, "Require two factor authentication", Mask.ALL - Mask.VIEW);
 	
 
 	private int value;
