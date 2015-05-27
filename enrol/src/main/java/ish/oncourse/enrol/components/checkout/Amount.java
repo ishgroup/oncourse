@@ -1,10 +1,14 @@
 package ish.oncourse.enrol.components.checkout;
 
 import ish.math.Money;
+import ish.oncourse.enrol.checkout.ActionChangePayNow;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.MoneyFormatter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
@@ -17,8 +21,11 @@ import java.net.URL;
 import java.text.Format;
 
 public class Amount {
+    private static final Logger logger = LogManager.getLogger();
 
     public static final String FIELD_PASSWORD = "password";
+    public static final String FIELD_PAYNOW = "payNow";
+
     @Property
     @Parameter(required = true)
     private PurchaseController purchaseController;
@@ -47,6 +54,22 @@ public class Amount {
         PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.creditAccess);
         actionParameter.setValue(password);
         purchaseController.performAction(actionParameter);
+        return blockToRefresh;
+    }
+
+    @OnEvent(value = "payNowEvent")
+    public Object payNow() {
+        String value = StringUtils.trimToEmpty(request.getParameter(FIELD_PAYNOW));
+        Money amount  = Money.ZERO;
+        try {
+            MoneyFormatter formatter = MoneyFormatter.getInstance();
+            amount = (Money) formatter.stringToValue(value);
+        } catch (Exception e) {
+            logger.error("Wrong playNow value: {}", value, e);
+        }
+        ActionChangePayNow action = PurchaseController.Action.changePayNow.createAction(purchaseController);
+        action.setPayNow(amount);
+        purchaseController.performAction(PurchaseController.Action.changePayNow.createAction(purchaseController), PurchaseController.Action.changePayNow);
         return blockToRefresh;
     }
 

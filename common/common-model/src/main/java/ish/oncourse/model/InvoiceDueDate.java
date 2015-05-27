@@ -12,6 +12,6 @@ public class InvoiceDueDate extends _InvoiceDueDate implements Queueable{
 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
-		return true;
+		return getInvoice().isAsyncReplicationAllowed();
 	}
 }

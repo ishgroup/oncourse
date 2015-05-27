@@ -5,6 +5,7 @@ import ish.math.Money;
 import ish.oncourse.analytics.Item;
 import ish.oncourse.analytics.Transaction;
 import ish.oncourse.enrol.checkout.PurchaseController;
+import ish.oncourse.enrol.checkout.model.InvoiceNode;
 import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentProcessController;
@@ -135,7 +136,13 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 	private PaymentInModel getPaymentInModel() {
 		PaymentInModel model = new PaymentInModel();
 		model.setPaymentIn(purchaseController.getModel().getPayment());
-		model.getInvoices().add(purchaseController.getModel().getInvoice());
+
+		if (!purchaseController.getModel().getInvoice().getInvoiceLines().isEmpty()) {
+			model.getInvoices().add(purchaseController.getModel().getInvoice());
+		}
+		for (InvoiceNode invoiceNode: purchaseController.getModel().getPaymentPlanInvoices()) {
+			model.getInvoices().add(invoiceNode.getInvoice());
+		}
 		model.getEnrolments().addAll(purchaseController.getModel().getAllEnabledEnrolments());
 		model.getVoucherPayments().addAll(purchaseController.getModel().getVoucherPayments());
 		return model;

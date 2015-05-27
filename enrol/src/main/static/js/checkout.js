@@ -234,6 +234,15 @@ function initPaymentEditorsHandle()
     });
 }
 
+function initPayNow() {
+	$j("input[id=payNow]").blur(function() {
+		var actionLink = $j(this).next('a').attr('href') ;
+		var f = $j("[name=payNow]")[0];
+		var data = $j(f).serialize();
+		sendAjaxWithData(actionLink,data);
+	})
+}
+
 function sendAjaxWithData(actionLink,data)
 {
 	sendAjaxWithDataAndRefreshId(actionLink,data,null,true);
@@ -294,6 +303,7 @@ function initHandles()
 	initPaymentEditorsHandle();
 	initCorporatePassHandle();
     initRedeemedVoucherHandle();
+	initPayNow();
 }
 
 

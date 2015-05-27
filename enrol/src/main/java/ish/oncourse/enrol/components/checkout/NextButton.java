@@ -54,6 +54,6 @@ public class NextButton {
     }
 
     public boolean isZeroInvoice() {
-        return checkout.getPurchaseController().getModel().getInvoice().getTotalExGst().isZero();
+        return checkout.getPurchaseController().getModel().getTotalGst().isZero();
     }
 }

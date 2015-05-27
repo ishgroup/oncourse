@@ -101,8 +101,8 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 	}
 	
 	/**
-	 * Get the original enrollment invoice line. 
-	 * This is a workaround to detect which invoice line should be linked with enrollment as "original". 
+	 * Get the original enrollment invoice line.
+	 * This is a workaround to detect which invoice line should be linked with enrollment as "original".
 	 * Currently not-negative invoice line with lowest create date used for this cases.
 	 * If negative (reverse invoice line) linked with enrollment they should not be used as "original".
 	 * @return the original enrollment invoice line
@@ -160,7 +160,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 				}
 			}
 			return false;
-		}		
+		}
 		return isAsyncReplicationAllowedByStatusCheck();
 	}
 	

@@ -6,7 +6,10 @@ import ish.oncourse.enrol.checkout.contact.AddContactController;
 import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
+import ish.oncourse.enrol.checkout.model.GetAmounts;
+import ish.oncourse.enrol.checkout.model.InvoiceNode;
 import ish.oncourse.enrol.checkout.model.PurchaseModel;
+import ish.oncourse.enrol.checkout.model.UpdateInvoiceAmount;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorController;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
@@ -25,7 +28,6 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.InvoiceUtils;
-import ish.util.InvoiceUtil;
 import ish.util.ProductUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -135,14 +137,14 @@ public class PurchaseController {
 	}
 
 	public  Money getTotalPayment() {
-		return getModel().getInvoice().getTotalGst();
+		return getModel().getTotalGst();
 	}
 
 	public  Money getPreviousOwing() {
 		return model.getPreviousOwing();
 	}
 
-	public  Money getMinimumPayableNow() {
+	public  Money getPayNow() {
 		return getModel().getPayment().getAmount();
 	}
 
@@ -609,59 +611,31 @@ public class PurchaseController {
         }
     }
 
-	public Money updateTotalIncGst() {
+	public void updateTotalIncGst() {
         updateVoucherPayments();
 
-		Money result = Money.ZERO;
-		for (Contact contact : getModel().getContacts()) {
-			for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
-				for (InvoiceLine invoiceLine : enabledEnrolment.getInvoiceLines()) {
-					result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
-				}
-			}
-			for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
-				InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
-				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
-			}
-		}
-
-		if (isApplyPrevOwing()) {
-			Money previousOwing = getPreviousOwing();
-			result = result.add(previousOwing);
-		}
-
-
-		if (isEditCorporatePass())
-			result = Money.ZERO;
-		else
-			result = (result.isLessThan(Money.ZERO) ? Money.ZERO : result);
-
-        List<PaymentIn> paymentIns = getModel().getVoucherPayments();
-        for (PaymentIn paymentIn : paymentIns) {
-            result = result.subtract(paymentIn.getAmount());
-            result = (result.isLessThan(Money.ZERO) ? Money.ZERO : result);
-        }
+		GetAmounts amounts = GetAmounts.valueOf(this).get();
 
 		/**
 		 * we need to set payment type to internal when amount is zero because admin application
 		 * billing logic uses this type to define which payments were sent to DPS and which were not sent.
 		 */
-		if (result.isZero())
+		if (amounts.getTotalAmount().isZero())
 			getModel().getPayment().setType(PaymentType.INTERNAL);
 		else
 			getModel().getPayment().setType(PaymentType.CREDIT_CARD);
 
+		getModel().getPayment().setAmount(amounts.getTotalAmount());
 
+		getModel().getInvoice().getPaymentInLines().get(0).setAmount(amounts.getDefaultInvoiceAmount());
 
-		getModel().getPayment().setAmount(result);
-		getModel().getPayment().getPaymentInLines().get(0).setAmount(result);
+		List<InvoiceNode> invoiceNodes = getModel().getPaymentPlanInvoices();
+		for (InvoiceNode invoiceNode : invoiceNodes) {
+			invoiceNode.getPaymentInLine().setAmount(invoiceNode.getPaymentAmount());
+			UpdateInvoiceAmount.valueOf(invoiceNode.getInvoice(), getModel().getCorporatePass()).update();
+		}
 
-		Money totalGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), true);
-		Money totalExGst = InvoiceUtil.sumInvoiceLines(getModel().getInvoice().getInvoiceLines(), false);
-		getModel().getInvoice().setTotalExGst(totalExGst);
-		getModel().getInvoice().setTotalGst(totalGst);
-		getModel().getInvoice().setCorporatePassUsed(getModel().getCorporatePass());
-		return result;
+		UpdateInvoiceAmount.valueOf(getModel().getInvoice(), getModel().getCorporatePass()).update();
 	}
 
 
@@ -830,13 +804,21 @@ public class PurchaseController {
 		}
 	}
 
-	public static enum State {
+	public boolean isSupportPaymentPlan() {
+		return true;
+	}
+
+	public boolean hasPaymentPlanInvoices() {
+		return getModel().getPaymentPlanInvoices().size() > 0;
+	}
+
+	public enum State {
 		init(Action.init, Action.addContact),
-		editCheckout(COMMON_ACTIONS, addCode, selectVoucher, deselectVoucher, removeDiscount, proceedToPayment, addCourseClass, addProduct),
+		editCheckout(COMMON_ACTIONS, addCode, selectVoucher, deselectVoucher, removeDiscount, proceedToPayment, addCourseClass, addProduct, changePayNow),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian),
 		editContact(Action.addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian),
-		editPayment(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor),
+		editPayment(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor, changePayNow),
 		editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
 		paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment, showPaymentResult);
@@ -885,6 +867,7 @@ public class PurchaseController {
 		cancelAddPayer(ActionCancelAddPayer.class),
 		creditAccess(ActionCreditAccess.class, String.class),
 		owingApply(ActionOwingApply.class),
+		changePayNow(ActionChangePayNow.class),
 		proceedToPayment(ActionProceedToPayment.class),
 		makePayment(ActionMakePayment.class),
 		showPaymentResult(ActionShowPaymentResult.class),
@@ -981,7 +964,7 @@ public class PurchaseController {
 		}
 	}
 
-	public static enum Message {
+	public enum Message {
 		noSelectedItemForPurchase,
 		noEnabledItemForPurchase,
 		contactAlreadyAdded,
@@ -1031,7 +1014,7 @@ public class PurchaseController {
         courseClassIsNotVisible,
 		applicationReceived,
 		applicationAlreadyApplyed,
-		applicationAlreadyInTransaction;
+		applicationAlreadyInTransaction, payNowWrong;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);

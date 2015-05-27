@@ -5,6 +5,7 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceDueDate;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.utils.PaymentInUtil;
@@ -99,6 +100,10 @@ public class PaymentInAbandon {
      */
     private void addRefundInvoice(Invoice invoiceToRefund) {
         invoiceToRefund.updateAmountOwing();
+        //the code needs to be sure that invoiceDueDates will be put to the replication
+        for (InvoiceDueDate invoiceDueDate: invoiceToRefund.getInvoiceDueDates()) {
+            invoiceDueDate.setModified(new Date());
+        }
 
         List<PaymentInLine> paymentInLinesToRefund = new ArrayList<>(invoiceToRefund.getPaymentInLines());
 

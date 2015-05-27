@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.common.types.CreditCardType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
+import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
@@ -16,6 +17,7 @@ import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -25,10 +27,7 @@ import org.dbunit.operation.DatabaseOperation;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.State.paymentProgress;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.paymentResult;
@@ -38,7 +37,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 	protected ICayenneService cayenneService;
 	IPurchaseControllerBuilder purchaseControllerBuilder;
-    PurchaseController purchaseController;
+    protected PurchaseController purchaseController;
 
 	protected void setup(String dbResource) throws Exception {
 		InitialContext context = new InitialContext();
@@ -57,6 +56,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 
             ReplacementDataSet rDataSet;
             rDataSet = new ReplacementDataSet(dataSet);
+
 
             configDataSet(rDataSet);
 
@@ -123,21 +123,30 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 	void createPurchaseController(PurchaseModel purchaseModel) {
 		purchaseController = purchaseControllerBuilder.build(purchaseModel);
-		purchaseController.performAction(new PurchaseController.ActionParameter(PurchaseController.Action.init));
+		purchaseController.performAction(new PurchaseController.ActionParameter(Action.init));
 		assertPurchaseController();
 	}
 
-	CourseClass createPurchaseController(long courseClassId)
+	protected List<CourseClass> createPurchaseController(long... courseClassId)
 	{
 		ObjectContext context = cayenneService.newContext();
-		CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, courseClassId);
-		PurchaseModel model = createModel(context, Arrays.asList(courseClass), Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+		ArrayList<CourseClass> courseClasses = new ArrayList<>();
+		for (long id : courseClassId) {
+			CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, id);
+			courseClasses.add(courseClass);
+		}
+		PurchaseModel model = createModel(context, courseClasses, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
 		createPurchaseController(model);
-		return courseClass;
+		return courseClasses;
 
 	}
 
-	Contact addFirstContact(long contactId)
+	protected CourseClass createPurchaseController(long courseClassId)
+	{
+		return createPurchaseController(new long[]{courseClassId}).get(0);
+	}
+
+	protected Contact addFirstContact(long contactId)
 	{
 		Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, contactId);
 		addFirstContact(contact);
@@ -145,10 +154,10 @@ public abstract class ACheckoutTest extends ServiceTest {
 	}
 
 	void addFirstContact(Contact contact) {
-        PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
+        PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(Action.addContact);
         purchaseController.performAction(actionParameter);
 
-        actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
+        actionParameter = new PurchaseController.ActionParameter(Action.addContact);
 		ContactCredentials contactCredentials = createContactCredentialsBy(contact);
 		actionParameter.setValue(contactCredentials);
 		purchaseController.performAction(actionParameter);
@@ -158,10 +167,10 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 
 	void addContact(Contact newContact) {
-		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
+		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(Action.addContact);
 		performAction(param);
 
-		param = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
+		param = new PurchaseController.ActionParameter(Action.addContact);
 		param.setValue(createContactCredentialsBy(newContact));
 
 		performAction(param);
@@ -176,7 +185,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 
     Contact addPayer(long contactId) {
         Contact newPayer = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, contactId);
-        PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addPersonPayer);
+        PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(Action.addPersonPayer);
         performAction(actionParameter);
 
         ContactCredentials credential =  purchaseController.getAddContactDelegate().getContactCredentials();
@@ -189,16 +198,16 @@ public abstract class ACheckoutTest extends ServiceTest {
     }
 
 
-    void proceedToPayment() {
+    protected void proceedToPayment() {
         assertNull(purchaseController.getPaymentEditorDelegate());
-		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
+		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(Action.proceedToPayment);
 		param.setValue(purchaseController.getModel().getPayment());
 		performAction(param);
 	}
 	
 	
 
-	void makeInvalidPayment() throws InterruptedException {
+	protected void makeInvalidPayment() throws InterruptedException {
 		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
 		delegate.getPaymentIn().setCreditCardCVV("1111");
 		delegate.getPaymentIn().setCreditCardExpiry("12/2020");
@@ -212,7 +221,7 @@ public abstract class ACheckoutTest extends ServiceTest {
         updatePaymentStatus();
     }
 
-	void makeValidPayment() throws InterruptedException {
+	protected void makeValidPayment() throws InterruptedException {
 		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
 		delegate.getPaymentIn().setCreditCardCVV(TestPaymentGatewayService.VISA.getCvv());
 		delegate.getPaymentIn().setCreditCardExpiry(TestPaymentGatewayService.VISA.getExpiry());
@@ -234,9 +243,14 @@ public abstract class ACheckoutTest extends ServiceTest {
         assertTrue(purchaseController.isPaymentResult());
     }
 
+	protected void performAction(APurchaseAction purchaseAction, Action action) {
+		purchaseController.performAction(purchaseAction, action);
+		assertFalse("State is illegal", purchaseController.isIllegalState());
+		assertFalse("Model is invalid", purchaseController.isIllegalModel());
+	}
 
 
-	void performAction(PurchaseController.ActionParameter param) {
+	protected void performAction(PurchaseController.ActionParameter param) {
 		purchaseController.performAction(param);
 		assertFalse("State is illegal", purchaseController.isIllegalState());
 		assertFalse("Model is invalid", purchaseController.isIllegalModel());
@@ -264,13 +278,13 @@ public abstract class ACheckoutTest extends ServiceTest {
         assertEquals(EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
     }
 
-    void assertDisabledEnrolment(Enrolment enrolment) {
+    protected void assertDisabledEnrolment(Enrolment enrolment) {
         assertTrue(enrolment.getObjectId().isTemporary());
         assertTrue("Enrolment should not be linked with invoicelines", enrolment.getInvoiceLines().isEmpty());
         assertEquals(EnrolmentStatus.NEW, enrolment.getStatus());
     }
 
-    void assertEnabledEnrolments(Contact contact, int count, boolean commited) {
+    protected void assertEnabledEnrolments(Contact contact, int count, boolean commited) {
         List<Enrolment> enrolments = purchaseController.getModel().getAllEnrolments(contact);
         assertEquals(count, enrolments.size());
         for (Enrolment enrolment : enrolments) {
@@ -321,7 +335,7 @@ public abstract class ACheckoutTest extends ServiceTest {
             discounts.add(Cayenne.objectForPK(context, Discount.class, id));
 
 
-        PurchaseModel model = createModel(context,
+	    PurchaseModel model = createModel(context,
                 courseClasses,
                 products,
                 discounts);
@@ -343,10 +357,63 @@ public abstract class ACheckoutTest extends ServiceTest {
 
     public PurchaseController addCode(String code)
     {
-        PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.addCode);
+        PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(Action.addCode);
         param.setValue(code);
         performAction(param);
         return purchaseController;
     }
+
+	protected void assertQueuedRecord(List<QueuedRecord> records, Queueable entity) {
+		for (QueuedRecord queuedRecord : records) {
+			if (queuedRecord.getLinkedRecord().getObjectId().equals(entity.getObjectId())) {
+				assertTrue(Boolean.TRUE);
+				return;
+			}
+		}
+		assertTrue(String.format("QueuedRecord for %s does not exist", entity), Boolean.FALSE);
+	}
+
+	protected void assertQueuedRecords(Queueable... queueables) {
+		List<QueuedRecord> records = ObjectSelect.query(QueuedRecord.class).orderBy(QueuedRecord.ENTITY_IDENTIFIER.asc()).select(getModel().getObjectContext());
+		assertEquals(queueables.length, records.size());
+		for (Queueable queueable : queueables) {
+			assertQueuedRecord(records, queueable);
+		}
+	}
+
+	protected PurchaseModel getModel() {
+		return purchaseController.getModel();
+	}
+
+	protected Set<Queueable> getInvoiceTransaction(Invoice rInvoice) {
+		Set<Queueable> queueables = new HashSet<>();
+		queueables.add(rInvoice);
+		queueables.addAll(rInvoice.getInvoiceDueDates());
+		queueables.addAll(rInvoice.getRefundedInvoices());
+		queueables.addAll(rInvoice.getPaymentInLines());
+		queueables.add(rInvoice.getContact());
+		for (PaymentInLine line: rInvoice.getPaymentInLines()) {
+			queueables.add(line.getPaymentIn());
+			queueables.add(line.getPaymentIn().getContact());
+		}
+
+		queueables.addAll(rInvoice.getInvoiceLines());
+		for (InvoiceLine line: rInvoice.getInvoiceLines()) {
+			if (line.getEnrolment() != null) {
+				queueables.add(line.getEnrolment());
+				queueables.add(line.getEnrolment().getStudent());
+				queueables.add(line.getEnrolment().getStudent().getContact());
+			}
+		}
+
+		for (Invoice invoice: rInvoice.getRefundedInvoices()) {
+			queueables.addAll(invoice.getInvoiceLines());
+			queueables.addAll(invoice.getPaymentInLines());
+			queueables.addAll(invoice.getInvoiceLines());
+			queueables.addAll(invoice.getPaymentInLines());
+			queueables.add(invoice.getPaymentInLines().get(0).getPaymentIn());
+		}
+		return queueables;
+	}
 
 }

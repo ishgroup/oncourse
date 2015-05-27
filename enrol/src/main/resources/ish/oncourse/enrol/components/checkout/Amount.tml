@@ -11,8 +11,14 @@
 		</span></p>
 		<t:delegate to="block:vouchers"/>
 		<t:delegate to="block:discount"/>
-		<p><label>Minimum Payable Now</label> <span>
-			<t:output value="purchaseController.minimumPayableNow" format="moneyFormat(purchaseController.minimumPayableNow)"/>
+		<p><label>Pay Now</label> <span>
+			<t:if test="purchaseController.hasPaymentPlanInvoices()">
+				<input id="payNow" type="text" name="payNow" class="payNow" value="${moneyFormat(purchaseController.payNow).format(purchaseController.payNow)}"/>
+				<t:eventlink t:id="payNowEvent" style="{display:none}"/>
+				<p:else>
+					<t:output value="purchaseController.payNow" format="moneyFormat(purchaseController.payNow)"/>
+				</p:else>
+			</t:if>
 		</span></p>
 
         <t:delegate to="block:accessPasswordPopup"/>

@@ -3,6 +3,7 @@ package ish.oncourse.util.payment;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceDueDate;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.VoucherPaymentIn;
 import ish.oncourse.utils.PaymentInUtil;
@@ -53,6 +54,10 @@ public class PaymentInSucceed {
 
         for (Invoice invoice: model.getInvoices()) {
             invoice.setModified(today);
+            //the code needs to be sure that invoiceDueDates will be pit to the replication
+            for (InvoiceDueDate invoiceDueDate: invoice.getInvoiceDueDates()) {
+                invoiceDueDate.setModified(new Date());
+            }
             PaymentInUtil.makeSuccess(invoice.getInvoiceLines());
         }
        return this;

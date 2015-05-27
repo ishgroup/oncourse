@@ -62,11 +62,12 @@ public class PurchaseControllerTest extends ACheckoutTest {
         actions.add(proceedToPayment);
         actions.add(addCourseClass);
         actions.add(addProduct);
+        actions.add(changePayNow);
         assertEquals(State.editCheckout.getAllowedActions(), actions);
         assertEquals(State.editConcession.getAllowedActions(), Arrays.asList(addConcession, removeConcession, cancelConcessionEditor));
         assertEquals(State.addContact.getAllowedActions(), Arrays.asList(addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian));
         assertEquals(State.editContact.getAllowedActions(), Arrays.asList(addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian));
-        assertEquals(State.editPayment.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor));
+        assertEquals(State.editPayment.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor, changePayNow));
         assertEquals(State.editCorporatePass.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout,  addCorporatePass, selectCardEditor));
         assertEquals(State.paymentProgress.getAllowedActions(), Arrays.asList(showPaymentResult));
         assertEquals(State.paymentResult.getAllowedActions(), Arrays.asList(proceedToPayment, showPaymentResult));
@@ -244,7 +245,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
     public void testErrorNoSelectedItemForPurchase() {
         ObjectContext context = cayenneService.newContext();
         PurchaseModel model = createModel(context, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
-        PurchaseController purchaseController = purchaseControllerBuilder.build(model);
+        purchaseController = purchaseControllerBuilder.build(model);
         purchaseController.performAction(new ActionParameter(Action.init));
         assertEquals(State.paymentResult, purchaseController.getState());
         assertNotNull(purchaseController.getErrors().get(PurchaseController.Message.noSelectedItemForPurchase.name()));

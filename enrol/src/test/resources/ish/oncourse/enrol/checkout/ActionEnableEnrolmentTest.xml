@@ -164,8 +164,22 @@
                  maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
                  feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"
                  minStudentAge="18" maxStudentAge="25"/>
+	<!-- PaymentPlan class -->
+	<CourseClass id="1008" collegeId="1" code="8" courseId="1003"
+				 roomId="1" angelId="1003" startDate="[class1008_startDate]"
+				 endDate="[class1008_endDate]" isWebVisible="1" isCancelled="0"  isActive="1"
+				 created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+				 maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
+				 feeExGst="100.00" feeGst="10.00" isDistantLearningCourse="0"/>
 
-    <Enrolment id="1001" source="O" collegeId="1" courseClassId="1001"
+	<CourseClassPaymentPlanLine id="1" angelId="1" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+								courseClassId = "1008" amount="50"/>
+
+	<CourseClassPaymentPlanLine id="2" angelId="1" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+								courseClassId = "1008" dayOffset="2" amount="60"/>
+
+
+	<Enrolment id="1001" source="O" collegeId="1" courseClassId="1001"
                studentId="1001" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
                status="2" confirmationStatus="1" feehelpamount="0"/>
 

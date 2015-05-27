@@ -16,35 +16,53 @@ public class ActionMakePayment extends APurchaseAction {
 	@Override
 	protected void makeAction() {
 		if (getController().isEditCorporatePass()) {
-			getModel().deletePayment();
-			getController().setState(PurchaseController.State.paymentResult);
-			List<Enrolment> enrolments = getController().getModel().getAllEnabledEnrolments();
-			for (Enrolment enrolment : enrolments) {
-				enrolment.setStatus(EnrolmentStatus.SUCCESS);
-			}
-			List<ProductItem> productItems = getController().getModel().getAllEnabledProductItems();
-			for (ProductItem productItem : productItems) {
-				productItem.setStatus(ProductStatus.ACTIVE);
-			}
-			getController().setConfirmationStatus(ConfirmationStatus.NOT_SENT);
-			getController().commitApplications();
+			makeCorporatePass();
 		} else if (getController().isEditPayment()) {
-			//check that student don't make any purchase or enrolments here, also check that no amount owing and credit nodes applied
-			if (getModel().getInvoice().getInvoiceLines().isEmpty() && getController().getPaymentEditorDelegate().isZeroPayment()) {
-				getModel().deletePayment();
-				getModel().deleteInvoice();
-				getController().setState(PurchaseController.State.paymentResult);
-				getController().setConfirmationStatus(ConfirmationStatus.NOT_SENT);
-				getController().commitApplications();
-			} else {
-				getController().setState(PurchaseController.State.paymentProgress);
-			}
+			makePayment();
 		} else
 			throw new IllegalArgumentException();
 
 		adjustSortOrder();
         getModel().deleteDisabledItems();
 		getModel().getObjectContext().commitChanges();
+	}
+
+	private void makeCorporatePass() {
+		getModel().deletePayment();
+		getController().setState(PurchaseController.State.paymentResult);
+		List<Enrolment> enrolments = getController().getModel().getAllEnabledEnrolments();
+		for (Enrolment enrolment : enrolments) {
+			enrolment.setStatus(EnrolmentStatus.SUCCESS);
+		}
+		List<ProductItem> productItems = getController().getModel().getAllEnabledProductItems();
+		for (ProductItem productItem : productItems) {
+			productItem.setStatus(ProductStatus.ACTIVE);
+		}
+		getController().setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+		getController().commitApplications();
+	}
+
+	private void makePayment() {
+		//check that student don't make any purchase or enrolments here, also check that no amount owing and credit nodes applied
+		if (isApplicationOnly()) {
+			getModel().deletePayment();
+			getModel().deleteInvoice();
+			getController().setState(PurchaseController.State.paymentResult);
+			getController().setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+			getController().commitApplications();
+		} else {
+			if (getModel().getInvoice().getInvoiceLines().isEmpty()) {
+				getModel().getObjectContext().deleteObjects(getModel().getInvoice().getPaymentInLines());
+				getModel().deleteInvoice();
+			}
+			getController().setState(PurchaseController.State.paymentProgress);
+		}
+	}
+
+	private boolean isApplicationOnly() {
+		return !getModel().getAllEnabledApplications().isEmpty() &&
+				getModel().getInvoice().getInvoiceLines().isEmpty() &&
+				getController().getPaymentEditorDelegate().isZeroPayment();
 	}
 
 	private void adjustSortOrder() {

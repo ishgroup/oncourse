@@ -1,6 +1,8 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
+import ish.oncourse.enrol.checkout.model.CreatePaymentPlanInvoiceNode;
+import ish.oncourse.enrol.checkout.model.InvoiceNode;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 
@@ -11,9 +13,15 @@ public class ActionEnableEnrolment extends APurchaseAction {
     @Override
     protected void makeAction() {
         getModel().enableEnrolment(enrolment);
-        InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForEnrolment(enrolment, getModel().getDiscounts());
-        il.setInvoice(getModel().getInvoice());
-        il.setEnrolment(getEnrolment());
+
+        if (enrolment.getCourseClass().getPaymentPlanLines().isEmpty() || !getController().isSupportPaymentPlan()) {
+            InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForEnrolment(enrolment, getModel().getDiscounts());
+            il.setInvoice(getModel().getInvoice());
+            il.setEnrolment(getEnrolment());
+        } else {
+            InvoiceNode invoiceNode = CreatePaymentPlanInvoiceNode.valueOf(enrolment, getController()).create();
+            getController().getModel().addPaymentPlanInvoice(invoiceNode);
+        }
         //we set status IN_TRANSACTION for enable enrolment in transaction to consider the enrolment in places check
         enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
     }
