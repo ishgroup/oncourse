@@ -31,6 +31,7 @@
 	<t:block t:id="paymentSuccess">
 		<t:if test="delegate.isCorporatePass()" negate="true">
 			<h2>Payment <span>&#187;</span> Successful</h2>
+			<p>${messageThanksForEnrolment}</p>
 			<p>Your payment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentIn.id}</strong>.</p>
 			<p:else>
 				<h2>CorporatePass <span>&#187;</span> Successful</h2>
