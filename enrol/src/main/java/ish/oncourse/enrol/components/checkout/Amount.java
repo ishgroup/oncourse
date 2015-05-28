@@ -69,7 +69,7 @@ public class Amount {
         }
         ActionChangePayNow action = PurchaseController.Action.changePayNow.createAction(purchaseController);
         action.setPayNow(amount);
-        purchaseController.performAction(PurchaseController.Action.changePayNow.createAction(purchaseController), PurchaseController.Action.changePayNow);
+        purchaseController.performAction(action, PurchaseController.Action.changePayNow);
         return blockToRefresh;
     }
 

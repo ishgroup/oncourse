@@ -753,21 +753,30 @@ public class PurchaseController {
 
     public Cart getCart()
     {
-        LinkedList list = new LinkedList();
-        list.addAll(getModel().getAllEnabledEnrolments());
-        list.addAll(getModel().getAllEnabledProductItems());
+	    try {
+		    LinkedList list = new LinkedList();
+		    list.addAll(getModel().getAllEnabledEnrolments());
+		    list.addAll(getModel().getAllEnabledProductItems());
 
-        if (list.isEmpty())
-            return null;
+		    if (list.isEmpty())
+		        return null;
 
-        Cart cart = dataLayerFactory.build(list);
-        if (isFinished() &&
-                getPaymentEditorDelegate() != null &&
-                getPaymentEditorDelegate().isPaymentSuccess())
-        {
-            cart.id = getModel().getInvoice().getId().toString();
-        }
-        return cart;
+		    Cart cart = dataLayerFactory.build(list);
+		    if (isFinished() &&
+		            getPaymentEditorDelegate() != null &&
+		            getPaymentEditorDelegate().isPaymentSuccess())
+		    {
+			    if (getModel().getInvoice() != null && getModel().getInvoice().getId() != null) {
+				    cart.id = getModel().getInvoice().getId().toString();
+			    } else if (getModel().getPaymentPlanInvoices().size() > 0){
+				    cart.id = getModel().getPaymentPlanInvoices().get(0).getInvoice().getId().toString();
+			    }
+		    }
+		    return cart;
+	    } catch (Exception e) {
+		    logger.error("Unexpected exception", e);
+		    return null;
+	    }
     }
 
 	public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {

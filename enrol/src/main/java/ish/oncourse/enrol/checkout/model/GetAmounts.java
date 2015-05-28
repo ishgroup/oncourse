@@ -15,10 +15,14 @@ public class GetAmounts {
 	private PurchaseModel model;
 
 	private Money defaultInvoiceAmount = Money.ZERO;
+
 	private Money paymentPlansAmount = Money.ZERO;
 	private Money minPaymentPlansAmount = Money.ZERO;
+	private Money maxPaymentPlansAmount = Money.ZERO;
+
 	private Money totalAmount = Money.ZERO;
 	private Money minTotalAmount = Money.ZERO;
+	private Money maxTotalAmount = Money.ZERO;
 
 
 	public GetAmounts get() {
@@ -46,6 +50,7 @@ public class GetAmounts {
 
 		totalAmount = defaultInvoiceAmount.add(paymentPlansAmount);
 		minTotalAmount = defaultInvoiceAmount.add(minPaymentPlansAmount);
+		maxTotalAmount = defaultInvoiceAmount.add(maxPaymentPlansAmount);
 		return this;
 	}
 
@@ -62,6 +67,7 @@ public class GetAmounts {
 				InvoiceNode node = model.getPaymentPlanInvoiceBy(enabledEnrolment);
 				paymentPlansAmount = paymentPlansAmount.add(node.getPaymentAmount());
 				minPaymentPlansAmount = minPaymentPlansAmount.add(node.getMinPaymentAmount());
+				maxPaymentPlansAmount = maxPaymentPlansAmount.add(node.getInvoice().getTotalGst());
 			}
 			else {
 				for (InvoiceLine invoiceLine : enabledEnrolment.getInvoiceLines()) {
@@ -92,6 +98,13 @@ public class GetAmounts {
 		return minTotalAmount;
 	}
 
+	public Money getMaxPaymentPlansAmount() {
+		return maxPaymentPlansAmount;
+	}
+
+	public Money getMaxTotalAmount() {
+		return maxTotalAmount;
+	}
 
 
 	public static GetAmounts valueOf(PurchaseController purchaseController) {

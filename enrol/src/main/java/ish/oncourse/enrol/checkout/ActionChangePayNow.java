@@ -42,10 +42,10 @@ public class ActionChangePayNow extends APurchaseAction {
 	@Override
 	protected boolean validate() {
 		GetAmounts amounts = GetAmounts.valueOf(getController()).get();
-		if (payNow == null || payNow.isGreaterThan(getModel().getTotalGst()) || payNow.isLessThan(amounts.getMinTotalAmount())) {
+		if (payNow == null || payNow.isGreaterThan(amounts.getMaxTotalAmount()) || payNow.isLessThan(amounts.getMinTotalAmount())) {
 			MoneyFormatter moneyFormatter = MoneyFormatter.getInstance();
-			getController().addError(PurchaseController.Message.payNowWrong, moneyFormatter.valueToString(amounts.getTotalAmount()) ,
-					moneyFormatter.valueToString(getModel().getTotalGst()));
+			getController().addError(PurchaseController.Message.payNowWrong, moneyFormatter.valueToString(amounts.getMinTotalAmount()) ,
+					moneyFormatter.valueToString(amounts.getMaxTotalAmount()));
 			return false;
 		}
 		return true;
