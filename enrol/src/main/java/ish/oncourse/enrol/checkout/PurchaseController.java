@@ -601,6 +601,9 @@ public class PurchaseController {
             }
 
             voucherRedemptionHelper.addInvoiceLines(getModel().getInvoice().getInvoiceLines());
+	        for (InvoiceNode node: getModel().getPaymentPlanInvoices()) {
+		        voucherRedemptionHelper.addInvoiceLines(node.getInvoice().getInvoiceLines());
+	        }
 
             if (isApplyPrevOwing())
                 voucherRedemptionHelper.addPreviousOwingInvoices(InvoiceUtils.getOwingInvoices(getModel().getPayer()));
