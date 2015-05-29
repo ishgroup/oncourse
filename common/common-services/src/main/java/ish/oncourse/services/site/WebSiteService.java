@@ -112,6 +112,7 @@ public class WebSiteService implements IWebSiteService {
 		} else {
 			query.andQualifier(ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, currentDomain.getWebSite().getId()));
 		}
+		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		site = (WebSite) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
 		request.setAttribute(CURRENT_WEB_SITE, site);
 		return site;
@@ -126,6 +127,7 @@ public class WebSiteService implements IWebSiteService {
 		College college = null;
 		SelectQuery query = new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, site
 				.getCollege().getId()));
+		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 
 		college = (College) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
 		request.setAttribute(CURRENT_COLLEGE, college);

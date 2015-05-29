@@ -13,6 +13,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -278,10 +279,11 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	    Value<WebUrlAlias> value = requestCacheService.getFromRequest(WebUrlAlias.class, "defaultWebURLAlias_" + webNode.getId());
 	    if (value == null) {
-            ObjectContext context = cayenneService.newContext();
+            ObjectContext context = cayenneService.sharedContext();
             Expression expression = ExpressionFactory.matchExp(WebUrlAlias.WEB_NODE_PROPERTY, context.localObject(webNode));
             expression = expression.andExp(ExpressionFactory.matchExp(WebUrlAlias.DEFAULT_PROPERTY, true));
             SelectQuery query = new SelectQuery(WebUrlAlias.class, expression);
+		    query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 	        WebUrlAlias alias = (WebUrlAlias) Cayenne.objectForQuery(context,query);
             requestCacheService.putToRequest("defaultWebURLAlias_" + webNode.getId(), alias);
 	        return alias;

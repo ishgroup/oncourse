@@ -16,6 +16,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.util.HashSet;
 import java.util.List;
 
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
+
 public class WebMenuService extends BaseService<WebMenu> implements IWebMenuService {
 
 
@@ -74,6 +76,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 
 		SelectQuery query = new SelectQuery(WebMenu.class, siteQualifier()
 				.andExp(rootMenuExp));
+		query.setCacheStrategy(LOCAL_CACHE);
 
 		query.addPrefetch(WebMenu.PARENT_WEB_MENU_PROPERTY);
 		query.addPrefetch(WebMenu.CHILDREN_MENUS_PROPERTY);

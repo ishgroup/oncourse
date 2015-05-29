@@ -43,6 +43,7 @@ public class CollegeService implements ICollegeService {
 	public College findById(Long collegeId) {
 		Expression expr = ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, collegeId);
 		SelectQuery q = new SelectQuery(College.class, expr);
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		return (College) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
 

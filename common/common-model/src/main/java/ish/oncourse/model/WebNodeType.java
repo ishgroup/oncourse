@@ -5,6 +5,7 @@ import ish.oncourse.model.visitor.IVisitor;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
@@ -42,7 +43,7 @@ public class WebNodeType extends _WebNodeType {
 	@SuppressWarnings("unchecked")
 	public List<WebContent> getContentForRegionKey(String regionKey) {
 		SelectQuery q = new SelectQuery(WebContent.class);
-
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		q.andQualifier(ExpressionFactory.matchExp(
 				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "."
 						+ WebContentVisibility.WEB_NODE_TYPE_PROPERTY, this));

@@ -5,6 +5,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -86,6 +87,7 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 
 		List<T> results = null;
 		SelectQuery query = new SelectQuery(getEntityClass());
+		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		query.andQualifier(qualifier);
 
 		try {
