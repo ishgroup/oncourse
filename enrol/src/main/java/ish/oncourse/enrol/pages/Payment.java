@@ -43,8 +43,11 @@ public class Payment {
 		 */
 		if (request.isXHR())
 			return null;
-		if (isInitRequest())
-			return Checkout.class.getSimpleName();
+
+		if (isInitRequest()) {
+			checkoutPage.initPurchaseController();
+			return checkoutPage.getPurchaseController().isPaymentResult() ? null: Checkout.class.getSimpleName();
+		}
 		else if (getPurchaseController().isEditCheckout()) {
 			getPurchaseController().addError(PurchaseController.Message.illegalState);
 			return Checkout.class.getSimpleName();

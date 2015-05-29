@@ -3,6 +3,7 @@ package ish.oncourse.services.node;
 import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.cache.IRequestCacheService;
+import ish.oncourse.services.cache.Value;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -275,16 +276,19 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
         if (webNode.getObjectId().isTemporary())
             return null;
 
-        WebUrlAlias alias = requestCacheService.getFromRequest(WebUrlAlias.class, "defaultWebURLAlias_" + webNode.getId());
-        if (alias == null) {
+	    Value<WebUrlAlias> value = requestCacheService.getFromRequest(WebUrlAlias.class, "defaultWebURLAlias_" + webNode.getId());
+	    if (value == null) {
             ObjectContext context = cayenneService.newContext();
             Expression expression = ExpressionFactory.matchExp(WebUrlAlias.WEB_NODE_PROPERTY, context.localObject(webNode));
             expression = expression.andExp(ExpressionFactory.matchExp(WebUrlAlias.DEFAULT_PROPERTY, true));
             SelectQuery query = new SelectQuery(WebUrlAlias.class, expression);
-            alias = (WebUrlAlias) Cayenne.objectForQuery(context,query);
+	        WebUrlAlias alias = (WebUrlAlias) Cayenne.objectForQuery(context,query);
             requestCacheService.putToRequest("defaultWebURLAlias_" + webNode.getId(), alias);
+	        return alias;
+        } else {
+	        return null;
         }
-        return alias;
+
     }
 
 	@Override

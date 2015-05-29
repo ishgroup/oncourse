@@ -817,7 +817,7 @@ public class PurchaseController {
 	}
 
 	public boolean isSupportPaymentPlan() {
-		return true;
+		return false;
 	}
 
 	public boolean hasPaymentPlanInvoices() {

@@ -121,16 +121,17 @@ public class Checkout {
 			return null;
 
 		if (isInitRequest()) {
-			purchaseController = buildPaymentController();
+            initPurchaseController();
 			if (purchaseController.isPaymentResult())
 				//redirect if init data is not correct , for example: course classes are not selected
 				return Payment.class.getSimpleName();
 		} else if (purchaseController.isPaymentState() && !purchaseController.adjustState(Action.enableEnrolment)) {
 			//browser back-button handle
 			return Payment.class.getSimpleName();
-		} else if (purchaseController.isEditCheckout())
-			//add new items from shopping basket
-			updatePurchaseItems();
+		} else if (purchaseController.isEditCheckout()) {
+            //add new items from shopping basket
+            updatePurchaseItems();
+        }
         pageStructure.setCart(purchaseController.getCart());
         return null;
 
@@ -139,6 +140,10 @@ public class Checkout {
 	private boolean isInitRequest() {
 		return purchaseController == null && request.getPath().toLowerCase().equals("/checkout");
 	}
+
+    void initPurchaseController() {
+        purchaseController = buildPaymentController();
+    }
 
     public PurchaseController getPurchaseController() {
         return purchaseController;

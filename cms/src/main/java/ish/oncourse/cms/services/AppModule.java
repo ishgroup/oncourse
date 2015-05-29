@@ -8,7 +8,6 @@ import ish.oncourse.linktransform.PageLinkTransformer;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
-import ish.oncourse.services.cache.RequestCached;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.node.IWebNodeService;
@@ -25,15 +24,16 @@ import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.MethodAdviceReceiver;
+import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.Dispatcher;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
-
-import java.lang.reflect.Method;
 
 /**
  * The module that is automatically included as part of the Tapestry IoC
@@ -120,56 +120,30 @@ public class AppModule {
     @Advise(serviceInterface=IWebNodeService.class)
     public static void adviceWebNodeService(final MethodAdviceReceiver receiver, @Inject final IRequestCacheService requestCacheService)
     {
-        applyRequestCachedAdvice(receiver, requestCacheService);
+	    requestCacheService.applyRequestCachedAdvice(receiver);
     }
 
     @Advise(serviceInterface=IWebNodeTypeService.class)
     public static void adviceWebNodeTypeService(final MethodAdviceReceiver receiver, @Inject final IRequestCacheService requestCacheService)
     {
-        applyRequestCachedAdvice(receiver, requestCacheService);
+	    requestCacheService.applyRequestCachedAdvice(receiver);
     }
 
     @Advise(serviceInterface=IWebSiteService.class)
     public static void adviceWebSiteService(final MethodAdviceReceiver receiver, @Inject final IRequestCacheService requestCacheService)
     {
-        applyRequestCachedAdvice(receiver, requestCacheService);
+	    requestCacheService.applyRequestCachedAdvice(receiver);
     }
 
     @Advise(serviceInterface=IWebSiteVersionService.class)
     public static void adviceWebSiteVersionService(final MethodAdviceReceiver receiver, @Inject final IRequestCacheService requestCacheService)
     {
-        applyRequestCachedAdvice(receiver, requestCacheService);
+	    requestCacheService.applyRequestCachedAdvice(receiver);
     }
 
     @Advise(serviceInterface=ITagService.class)
     public static void adviceTagService(final MethodAdviceReceiver receiver, @Inject final IRequestCacheService requestCacheService)
     {
-        applyRequestCachedAdvice(receiver, requestCacheService);
-    }
-
-    private static void applyRequestCachedAdvice(final MethodAdviceReceiver receiver, final IRequestCacheService requestCacheService) {
-        MethodAdvice advice = new MethodAdvice()
-        {
-            public void advise(Invocation invocation)
-            {
-                String key = receiver.getInterface().getName() + '.' + invocation.getMethodName();
-
-                Object result = requestCacheService.getFromRequest(invocation.getResultType(), key);
-                if (result == null) {
-                    invocation.proceed();
-                    requestCacheService.putToRequest(key, invocation.getResult());
-                }
-                else {
-                    invocation.overrideResult(result);
-                }
-
-            }
-        };
-
-        for (Method m : receiver.getInterface().getMethods())
-        {
-            if (m.getAnnotation(RequestCached.class) != null)
-                receiver.adviseMethod(m, advice);
-        }
+	    requestCacheService.applyRequestCachedAdvice(receiver);
     }
 }
