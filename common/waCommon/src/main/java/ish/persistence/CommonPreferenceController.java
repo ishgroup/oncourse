@@ -1047,6 +1047,7 @@ public abstract class CommonPreferenceController {
 	public static final String AVETMISS_FAX = "avetmiss.fax";
 	public static final String AVETMISS_EMAIL = "avetmiss.email";
 	public static final String AVETMISS_CERT_SIGNATORY_NAME = "avetmiss.certificate.signatory.name";
+	public static final String AVETMISS_QLD_IDENTIFIER = "avetmiss.qld.identifier";
 
 	public synchronized boolean getShowRTOGUI() {
 		String aPref = getValue(AVETMISS_SHOW_GUI, false);
@@ -1220,6 +1221,14 @@ public abstract class CommonPreferenceController {
 
 	public synchronized void setAvetmissCertSignatoryName(String value) {
 		setValue(AVETMISS_CERT_SIGNATORY_NAME, false, value);
+	}
+
+	public synchronized String getAvetmissQldIdentifier() {
+		return getValue(AVETMISS_QLD_IDENTIFIER, false);
+	}
+
+	public synchronized void setAvetmissQldIdentifier(String value) {
+		setValue(AVETMISS_QLD_IDENTIFIER, false, value);
 	}
 
 	// **************************************
@@ -1972,6 +1981,8 @@ public abstract class CommonPreferenceController {
 			return getAvetmissEmail();
 		} else if (AVETMISS_CERT_SIGNATORY_NAME.equals(key)) {
 			return getAvetmissCertSignatoryName();
+		} else if (AVETMISS_QLD_IDENTIFIER.equals(key)) {
+			return getAvetmissQldIdentifier();
 		} else if (DEFAULT_REPORT_OVERLAY.equals(key)) {
 			return getDefaultReportOverlay();
 		} else if (TOOLBAR_COLLAPSE_STATE.equals(key)) {
@@ -2182,6 +2193,8 @@ public abstract class CommonPreferenceController {
 			setAvetmissEmail((String) value);
 		} else if (AVETMISS_CERT_SIGNATORY_NAME.equals(key)) {
 			setAvetmissCertSignatoryName((String) value);
+		} else if (AVETMISS_QLD_IDENTIFIER.equals(key)) {
+			setAvetmissQldIdentifier((String) value);
 		} else if (DEFAULT_REPORT_OVERLAY.equals(key)) {
 			setDefaultReportOverlay((Long) value);
 		} else if (TOOLBAR_COLLAPSE_STATE.equals(key)) {
