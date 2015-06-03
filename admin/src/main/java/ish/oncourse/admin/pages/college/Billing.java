@@ -88,7 +88,6 @@ public class Billing {
 	@Inject
 	private PreferenceControllerFactory prefsFactory;
 	
-	@Persist
 	private PreferenceController preferenceController;
 
     @InjectPage
@@ -96,13 +95,17 @@ public class Billing {
 	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
+	Object onActivate() {
+		this.preferenceController = prefsFactory.getPreferenceController(college);
+		return null;
+	}
+
 	@SetupRender
 	void setupRender() {
+
 		ObjectContext context = cayenneService.newContext();
 
 		this.college = context.localObject(college);
-
-		this.preferenceController = prefsFactory.getPreferenceController(college);
 
 		if (!PaymentGatewayType.PAYMENT_EXPRESS.equals(preferenceController.getPaymentGatewayType())) {
 			this.webPaymentEnabled = false;

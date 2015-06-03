@@ -5,6 +5,8 @@ import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.threading.ThreadSource;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -98,6 +100,8 @@ public class UpdatePostcode {
 	}
 	
 	static class UpdatePostcodesTask implements Runnable {
+		private static final Logger logger = LogManager.getLogger();
+
 		private static final String POST_CODE_UPDATED_DATE_FORMAT = "dd/MM/yyyy";
 		private static final String AUSTRALIA_SEARCH_COUNTRY_POSTFIX = ",Australia&sensor=false";
 		private static final String GOOGLE_MAPS_API_GEOCODE_ADDRESS = "http://maps.googleapis.com/maps/api/geocode/xml?address=";
@@ -152,12 +156,12 @@ public class UpdatePostcode {
 							postcode.getObjectContext().commitChanges();
 						}
 					} catch (Throwable e) {
-						e.printStackTrace();
+						logger.error("Unexpected exception", e);
 					}
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
-						//e.printStackTrace();
+						logger.warn("UpdatePostcodesTask has been interrupted",e);
 					}
 					processed++;
 					synchronized (session) {

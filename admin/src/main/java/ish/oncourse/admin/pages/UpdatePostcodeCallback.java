@@ -16,7 +16,7 @@ public class UpdatePostcodeCallback {
 	@Inject
 	private PreferenceController preferenceController;
 	
-public StreamResponse onActivate() {
+	public StreamResponse onActivate() {
 		Session session = request.getSession(false);
 		Boolean updateInProgress = (Boolean) session.getAttribute(UpdatePostcode.IS_POSTCODE_UPDATE_STARTED_FLAG);
 		final JSONArray jsonSession = new JSONArray();

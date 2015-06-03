@@ -6,11 +6,12 @@ import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.internal.OptionModelImpl;
 import org.apache.tapestry5.util.AbstractSelectModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StringSelectModel extends AbstractSelectModel implements
-		ValueEncoder<String> {
+		ValueEncoder<String>, Serializable {
 
 	private String[] labels;
 
