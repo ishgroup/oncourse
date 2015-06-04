@@ -236,6 +236,8 @@ public class ContactEditorParser {
 				return null;
 			case abn:
 				return null;
+			case isMale:
+				return null;
 			default:
 				throw new IllegalArgumentException(String.format("Field descriptor %s is not supported", fieldDescriptor));
 		}
