@@ -101,20 +101,19 @@
 		</p>
 	</t:if>
 
-	<t:if test="delegate.contact.isCompany" negate="true">
-		<t:if test="delegate.fillRequiredProperties" negate="true">
-			<p>
-				<label>Gender</label>
-				<span class="radio-list">
-					<t:radiogroup t:id="isMale" t:value="delegate.contact.isMale">
-						<input type="radio" t:type="radio" t:value="true"/> Male
-						<input type="radio" t:type="radio" t:value="false"/> Female
-					</t:radiogroup>
-				</span>
-			</p>
-		</t:if>
+	<t:if test="${delegate.visibleFields.contains('isMale')}">
+		<p>
+			<label for="isMale">${label('isMale')}<t:if test="required('isMale')"><em title="${message:message-required}">*</em></t:if></label>
+			<span class="radio-list">
+				<t:radiogroup t:id="isMale" t:value="delegate.contact.isMale" class="${validateHandler.errorClass('isMale')}">
+					<input type="radio" t:type="radio" t:value="true"/> Male
+					<input type="radio" t:type="radio" t:value="false"/> Female
+				</t:radiogroup>
+				<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('isMale')}" hint="${hint('isMale')}"/>
+			</span>
+		</p>
 	</t:if>
-		
+
 		<t:loop source="customFieldNames" value="customFieldName">
 			<t:if test="${delegate.contactFieldHelper.isCustomFieldVisible(getCustomFieldByName(customFieldName))}">
 				<p>

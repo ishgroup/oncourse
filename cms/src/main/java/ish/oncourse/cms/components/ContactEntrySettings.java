@@ -69,6 +69,9 @@ public class ContactEntrySettings {
 	private String enrolmentAbnState;
 
 	@Property
+	private String enrolmentIsMale;
+
+	@Property
 	private String waitingListAddressState;
 
 	@Property
@@ -102,6 +105,9 @@ public class ContactEntrySettings {
 	private String waitingListSpecialNeedsState;
 
 	@Property
+	private String waitingListIsMale;
+
+	@Property
 	private String mailingListAddressState;
 
 	@Property
@@ -133,6 +139,9 @@ public class ContactEntrySettings {
 	
 	@Property
 	private String mailingListSpecialNeedsState;
+
+	@Property
+	private String mailingListIsMale;
 
 	@Property
 	@Persist
@@ -196,6 +205,7 @@ public class ContactEntrySettings {
 		this.enrolmentMinAge = preferenceController.getEnrolmentMinAge().toString();
 		this.enrolmentSpecialNeedsState = preferenceController.getRequireContactField(enrolment, specialNeeds);
 		this.enrolmentAbnState = preferenceController.getRequireContactField(enrolment, abn);
+		this.enrolmentIsMale = preferenceController.getRequireContactField(enrolment, isMale);
 
 		this.waitingListAddressState = preferenceController.getRequireContactField(waitinglist, street);
 		this.waitingListSuburbState = preferenceController.getRequireContactField(waitinglist, suburb);
@@ -208,6 +218,7 @@ public class ContactEntrySettings {
 		this.waitingListDateOfBirthState = preferenceController.getRequireContactField(waitinglist, dateOfBirth);
 		this.waitingListCountryState = preferenceController.getRequireContactField(waitinglist, country);
 		this.waitingListSpecialNeedsState = preferenceController.getRequireContactField(waitinglist, specialNeeds);
+		this.waitingListIsMale = preferenceController.getRequireContactField(waitinglist, isMale);
 
 		this.mailingListAddressState = preferenceController.getRequireContactField(mailinglist, street);
 		this.mailingListSuburbState = preferenceController.getRequireContactField(mailinglist, suburb);
@@ -220,6 +231,7 @@ public class ContactEntrySettings {
 		this.mailingListDateOfBirthState = preferenceController.getRequireContactField(mailinglist, dateOfBirth);
 		this.mailingListCountryState = preferenceController.getRequireContactField(mailinglist, country);
 		this.mailingListSpecialNeedsState = preferenceController.getRequireContactField(mailinglist, specialNeeds);
+		this.mailingListIsMale = preferenceController.getRequireContactField(mailinglist, isMale);
 
         //we need to use new context to be sure that we always get actual data from db.
         ObjectContext objectContext = cayenneService.newContext();
@@ -291,6 +303,7 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(enrolment, country, this.enrolmentCountryState);
 		preferenceController.setRequireContactField(enrolment, specialNeeds, this.enrolmentSpecialNeedsState);
 		preferenceController.setRequireContactField(enrolment, abn, this.enrolmentAbnState);
+		preferenceController.setRequireContactField(enrolment, isMale, this.enrolmentIsMale);
 
 		preferenceController.setRequireContactField(waitinglist, street, this.waitingListAddressState);
 		preferenceController.setRequireContactField(waitinglist, suburb, this.waitingListSuburbState);
@@ -303,6 +316,8 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(waitinglist, dateOfBirth, this.waitingListDateOfBirthState);
 		preferenceController.setRequireContactField(waitinglist, country, this.waitingListCountryState);
 		preferenceController.setRequireContactField(waitinglist, specialNeeds, this.waitingListSpecialNeedsState);
+		preferenceController.setRequireContactField(waitinglist, isMale, this.waitingListIsMale);
+
 
 		preferenceController.setRequireContactField(mailinglist, street, this.mailingListAddressState);
 		preferenceController.setRequireContactField(mailinglist, suburb, this.mailingListSuburbState);
@@ -315,8 +330,9 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(mailinglist, dateOfBirth, this.mailingListDateOfBirthState);
 		preferenceController.setRequireContactField(mailinglist, country, this.mailingListCountryState);
 		preferenceController.setRequireContactField(mailinglist, specialNeeds, this.mailingListSpecialNeedsState);
+		preferenceController.setRequireContactField(waitinglist, isMale, this.mailingListIsMale);
 
-        collectParentContactField.save();
+		collectParentContactField.save();
 	}
 
 	public Zone getSettingsZone() {

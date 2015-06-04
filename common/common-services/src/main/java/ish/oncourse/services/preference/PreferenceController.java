@@ -345,7 +345,8 @@ public class PreferenceController extends CommonPreferenceController {
 		mobilePhoneNumber("mobile", Contact.MOBILE_PHONE_NUMBER.getName(), String.class, false, true),
 		dateOfBirth("birth", Contact.DATE_OF_BIRTH.getName(), Date.class, false, true),
 		specialNeeds("specialneeds", Contact.STUDENT.getName() + "." + Student.SPECIAL_NEEDS.getName(), String.class, false, true),
-		abn("abn", Contact.ABN.getName(), String.class, true, false);
+		abn("abn", Contact.ABN.getName(), String.class, true, false),
+		isMale("isMale", Contact.IS_MALE.getName(), Boolean.class, false, true);
 
 		private final String preferenceName;
 		public final String propertyName;

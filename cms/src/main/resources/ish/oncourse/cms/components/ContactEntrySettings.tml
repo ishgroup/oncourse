@@ -283,7 +283,27 @@
 						blankOption="never" value="mailingListDateOfBirthState" class="cms-span2" />
 				</div>
 			</div>
-			
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">Gender</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+							  blankOption="never" value="enrolmentIsMale" class="cms-span2" />
+				</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+							  blankOption="never" value="waitingListIsMale" class="cms-span2" />
+				</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+							  blankOption="never" value="mailingListIsMale" class="cms-span2" />
+				</div>
+			</div>
+
+
 			<div class="cms-set-container">
 				<div class="cms-set-name">Special needs</div>
 				
