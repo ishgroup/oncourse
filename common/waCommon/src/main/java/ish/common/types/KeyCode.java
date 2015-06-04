@@ -571,7 +571,15 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Database value: 97
 	 * @PublicApi
 	 */
-	SPECIAL_TWO_FACTOR_AUTHENTICATION(97, "Require two factor authentication", Mask.ALL - Mask.VIEW);
+	SPECIAL_TWO_FACTOR_AUTHENTICATION(97, "Require two factor authentication", Mask.ALL - Mask.VIEW),
+
+	/**
+	 * Ability to create payment methods for payments
+	 * 
+	 * Database value: 98
+	 * @PublicApi
+	 */
+	PAYMENT_METHOD(98, "Payment Method");
 	
 
 	private int value;
