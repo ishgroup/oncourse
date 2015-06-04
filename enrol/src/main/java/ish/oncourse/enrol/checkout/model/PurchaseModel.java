@@ -132,6 +132,7 @@ public class PurchaseModel {
 	}
 
 	public void deleteInvoice() {
+		objectContext.deleteObjects(invoice.getPaymentInLines());
 		objectContext.deleteObject(invoice);
 	}
 

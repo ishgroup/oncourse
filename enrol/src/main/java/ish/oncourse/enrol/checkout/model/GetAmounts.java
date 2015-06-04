@@ -36,12 +36,6 @@ public class GetAmounts {
 			defaultInvoiceAmount = defaultInvoiceAmount.add(previousOwing);
 		}
 
-
-		if (purchaseController.isEditCorporatePass())
-			defaultInvoiceAmount = Money.ZERO;
-		else
-			defaultInvoiceAmount = (defaultInvoiceAmount.isLessThan(Money.ZERO) ? Money.ZERO : defaultInvoiceAmount);
-
 		List<PaymentIn> paymentIns = model.getVoucherPayments();
 		for (PaymentIn paymentIn : paymentIns) {
 			defaultInvoiceAmount = defaultInvoiceAmount.subtract(paymentIn.getAmount());
@@ -51,6 +45,15 @@ public class GetAmounts {
 		totalAmount = defaultInvoiceAmount.add(paymentPlansAmount);
 		minTotalAmount = defaultInvoiceAmount.add(minPaymentPlansAmount);
 		maxTotalAmount = defaultInvoiceAmount.add(maxPaymentPlansAmount);
+
+		if (purchaseController.isEditCorporatePass()) {
+			defaultInvoiceAmount = Money.ZERO;
+			paymentPlansAmount  = Money.ZERO;
+			totalAmount = Money.ZERO;
+		}
+		else {
+			defaultInvoiceAmount = (defaultInvoiceAmount.isLessThan(Money.ZERO) ? Money.ZERO : defaultInvoiceAmount);
+		}
 		return this;
 	}
 

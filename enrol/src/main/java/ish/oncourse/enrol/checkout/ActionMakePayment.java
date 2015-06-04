@@ -29,6 +29,9 @@ public class ActionMakePayment extends APurchaseAction {
 
 	private void makeCorporatePass() {
 		getModel().deletePayment();
+		if (getModel().getInvoice().getInvoiceLines().isEmpty()) {
+			getModel().deleteInvoice();
+		}
 		getController().setState(PurchaseController.State.paymentResult);
 		List<Enrolment> enrolments = getController().getModel().getAllEnabledEnrolments();
 		for (Enrolment enrolment : enrolments) {
@@ -52,7 +55,6 @@ public class ActionMakePayment extends APurchaseAction {
 			getController().commitApplications();
 		} else {
 			if (getModel().getInvoice().getInvoiceLines().isEmpty()) {
-				getModel().getObjectContext().deleteObjects(getModel().getInvoice().getPaymentInLines());
 				getModel().deleteInvoice();
 			}
 			getController().setState(PurchaseController.State.paymentProgress);
@@ -62,6 +64,7 @@ public class ActionMakePayment extends APurchaseAction {
 	private boolean isApplicationOnly() {
 		return !getModel().getAllEnabledApplications().isEmpty() &&
 				getModel().getInvoice().getInvoiceLines().isEmpty() &&
+				getModel().getPaymentPlanInvoices().isEmpty() &&
 				getController().getPaymentEditorDelegate().isZeroPayment();
 	}
 

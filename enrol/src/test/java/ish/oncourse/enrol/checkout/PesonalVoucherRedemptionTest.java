@@ -5,7 +5,6 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentType;
 import ish.common.types.ProductStatus;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.model.PurchaseModel;
@@ -19,8 +18,8 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCorporatePassEditor;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PesonalVoucherRedemptionTest extends ACheckoutTest {
 
@@ -49,22 +48,6 @@ public class PesonalVoucherRedemptionTest extends ACheckoutTest {
 		purchaseController.getAddContactDelegate().addContact();
 
 		assertTrue(purchaseController.isEditPayment());
-	}
-
-	private void selectCorporatePassEditor() {
-		PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(selectCorporatePassEditor);
-		performAction(parameter);
-		assertEquals(PaymentType.INTERNAL, purchaseController.getModel().getPayment().getType());
-		assertTrue(purchaseController.getModel().getPayment().isZeroPayment());
-		assertTrue(purchaseController.isEditCorporatePass());
-	}
-
-	private void addCorporatePass(String corporatePass) {
-		PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addCorporatePass);
-		parameter.setValue(corporatePass);
-		purchaseController.performAction(parameter);
-		assertNotNull(purchaseController.getModel().getInvoice().getCorporatePassUsed());
-		assertPayer(purchaseController.getModel().getCorporatePass().getContact());
 	}
 
 	private void makePayment() {

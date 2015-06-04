@@ -3,8 +3,10 @@ package ish.oncourse.enrol.checkout;
 import ish.common.types.CreditCardType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
+import ish.common.types.PaymentType;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
+import ish.oncourse.enrol.checkout.model.InvoiceNode;
 import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.services.EnrolTestModule;
@@ -17,6 +19,7 @@ import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ReplacementDataSet;
@@ -29,6 +32,8 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.*;
 
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCardEditor;
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.selectCorporatePassEditor;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.paymentProgress;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.paymentResult;
 import static org.junit.Assert.*;
@@ -380,6 +385,56 @@ public abstract class ACheckoutTest extends ServiceTest {
 			assertQueuedRecord(records, queueable);
 		}
 	}
+
+	protected void selectCorporatePassEditor() {
+		PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(selectCorporatePassEditor);
+		performAction(parameter);
+
+		assertEquals(PaymentType.INTERNAL, purchaseController.getModel().getPayment().getType());
+		assertTrue(purchaseController.getModel().getPayment().isZeroPayment());
+		assertTrue(purchaseController.isEditCorporatePass());
+	}
+
+	protected void addCorporatePass(String corporatePass) {
+		PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(Action.addCorporatePass);
+		parameter.setValue(corporatePass);
+		purchaseController.performAction(parameter);
+		assertNotNull(purchaseController.getModel().getInvoice().getCorporatePassUsed());
+
+		List<InvoiceNode> invoiceNodes = purchaseController.getModel().getPaymentPlanInvoices();
+		for (InvoiceNode invoiceNode : invoiceNodes) {
+			assertNotNull(invoiceNode.getInvoice().getCorporatePassUsed());
+		}
+
+		assertPayer(purchaseController.getModel().getCorporatePass().getContact());
+	}
+
+	protected void selectCardEditor() {
+		PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(selectCardEditor);
+		performAction(parameter);
+		assertEquals(PaymentType.CREDIT_CARD, purchaseController.getModel().getPayment().getType());
+		assertFalse(purchaseController.getModel().getPayment().isZeroPayment());
+		assertTrue(purchaseController.isEditPayment());
+		assertNull(purchaseController.getModel().getInvoice().getCorporatePassUsed());
+
+		Contact contact = purchaseController.getModel().getContacts().get(0);
+		assertPayer(contact);
+	}
+
+	protected void makeCorporatePass() {
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(Action.makePayment);
+		purchaseController.performAction(actionParameter);
+
+		assertTrue(purchaseController.getPaymentEditorDelegate().isCorporatePass());
+		assertEquals(0, ObjectSelect.query(PaymentIn.class).select(purchaseController.getModel().getObjectContext()).size());
+
+		List<Enrolment> enrolments = purchaseController.getModel().getAllEnabledEnrolments();
+		for (Enrolment enrolment : enrolments) {
+			assertEquals(EnrolmentStatus.SUCCESS, enrolment.getStatus());
+			assertEquals(PersistenceState.COMMITTED , enrolment.getPersistenceState());
+		}
+	}
+
 
 	protected PurchaseModel getModel() {
 		return purchaseController.getModel();

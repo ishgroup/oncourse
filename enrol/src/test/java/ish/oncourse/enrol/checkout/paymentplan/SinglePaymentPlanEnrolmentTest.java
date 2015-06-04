@@ -47,7 +47,7 @@ public class SinglePaymentPlanEnrolmentTest extends ACheckoutTest {
 
 
 	@Test
-	public void test() throws Exception {
+	public void testCreditCardPayment() throws Exception {
 		initEnrolment();
 
 
@@ -70,6 +70,43 @@ public class SinglePaymentPlanEnrolmentTest extends ACheckoutTest {
 
 		makeValidPayment();
 	}
+
+	@Test
+	public void testCorporatePass() throws Exception {
+		initEnrolment();
+
+
+		Enrolment enrolment = purchaseController.getModel().getEnabledEnrolments(purchaseController.getModel().getPayer()).get(0);
+
+		disableEnrolment(enrolment);
+		enableEnrolment(enrolment);
+
+		payNowLessThanRequired();
+		payNowMoreThanRequired();
+		payNowWrongValue();
+		payNowCorrect();
+
+		proceedToPayment();
+
+		selectCorporatePassEditor();
+		addCorporatePass("password");
+		makeCorporatePass();
+
+		assertEquals(PersistenceState.TRANSIENT, model.getInvoice().getPersistenceState());
+		assertQueuedRecords(model.getPaymentPlanInvoices().get(0).getInvoice()
+				, model.getPaymentPlanInvoices().get(0).getInvoiceLine()
+				, model.getPaymentPlanInvoices().get(0).getEnrolment()
+				, model.getPaymentPlanInvoices().get(0).getEnrolment().getCourseClass()
+				, model.getPaymentPlanInvoices().get(0).getEnrolment().getStudent()
+				, model.getPaymentPlanInvoices().get(0).getInvoice().getInvoiceDueDates().get(0)
+				, model.getPaymentPlanInvoices().get(0).getInvoice().getInvoiceDueDates().get(1)
+				, model.getPayer()
+				, model.getCorporatePass()
+				, model.getCorporatePass().getContact()
+		);
+
+	}
+
 
 	protected void makeValidPayment() throws InterruptedException {
 		super.makeValidPayment();

@@ -39,6 +39,15 @@
 		isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
 		isMarketingViaSMSAllowed="1" />
 
+	<Contact id="2001" collegeId="1"
+			 countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+			 isCompany="1" isMale="1" familyName="Company1" givenName="Company1"
+			 emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1" />
+	<CorporatePass id="2001" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
+				   contactId="2001" password="password"/>
+
 	<Course id="1001" collegeId="1" angelId="1001" code="AAV"
 		isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
 		created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
