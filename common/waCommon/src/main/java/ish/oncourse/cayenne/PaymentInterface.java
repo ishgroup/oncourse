@@ -60,7 +60,7 @@ public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 	public static final Map<String, String> paymentTypes = Maps.asLinkedMap(new String[] { "In", "Out" }, new String[] { TYPE_IN, TYPE_OUT });
 	public static final String CREATED_ON_PROPERTY = "createdOn";
 	public static final String SOURCE_PROPERTY = "source";
-	public static final String TYPE_PROPERTY = "type";
+	public static final String METHOD_PROPERTY = "method";
 	public static final String AMOUNT_PROPERTY = "amount";
 	public static final String DISPLAYABLE_AMOUNT_PROPERTY = "displayableAmount";
 	public static final String DATE_BANKED_PROPERTY = "dateBanked";
@@ -73,9 +73,9 @@ public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 	public String getTypeOfPayment();
 
 	/**
-	 * @return type of payment as integer
+	 * @return method of payment 
 	 */
-	public PaymentType getType();
+	public PaymentMethodInterface getPaymentMethod();
 
 	/**
 	 * @return creation date
