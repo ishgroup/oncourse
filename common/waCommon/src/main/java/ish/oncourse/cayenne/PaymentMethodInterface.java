@@ -12,4 +12,8 @@ public interface PaymentMethodInterface extends PersistentObjectI  {
 	 * @return name
 	 */
 	public String getName();
+
+	public Boolean getRealTimeCreditCard();
+	
+	public Boolean getActive();
 }
