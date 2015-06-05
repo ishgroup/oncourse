@@ -303,11 +303,11 @@ public class CourseClassService implements ICourseClassService {
         q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
         q.setCacheGroups(CourseClass.class.getSimpleName());
 
-        q.addPrefetch(CourseClass.ROOM_PROPERTY);
-        q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
-        q.addPrefetch(CourseClass.TUTOR_ROLES_PROPERTY);
-        q.addPrefetch(CourseClass.DISCOUNT_COURSE_CLASSES_PROPERTY);
-        q.addPrefetch(CourseClass.DISCUSSIONS_PROPERTY);
+        q.addPrefetch(CourseClass.ROOM.getName());
+        q.addPrefetch(CourseClass.SESSIONS.getName());
+        q.addPrefetch(CourseClass.TUTOR_ROLES.getName());
+        q.addPrefetch(CourseClass.DISCOUNT_COURSE_CLASSES.getName());
+        q.addPrefetch(CourseClass.DISCUSSIONS.getName());
     }
 
 

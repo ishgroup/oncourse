@@ -9,9 +9,8 @@ import ish.oncourse.model.WebTemplate;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
-import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
 
 import java.util.Date;
 
@@ -41,17 +40,12 @@ public class WebTemplateChangeTracker {
 			return false;
 		}
 		WebSiteVersion webSiteVersion = webSiteVersionService.getCurrentVersion();
-		
-		SelectQuery query = new SelectQuery(WebTemplate.class);
-		
-		query.andQualifier(ExpressionFactory.matchExp(WebTemplate.LAYOUT_PROPERTY + "." + WebSiteLayout.WEB_SITE_VERSION_PROPERTY, webSiteVersion));
-		query.andQualifier(ExpressionFactory.greaterExp(WebTemplate.MODIFIED_PROPERTY, new Date(lastCheckTimestamp)));
-		query.setFetchLimit(1);
-
-		query.setCacheGroups(WebTemplate.class.getSimpleName());
-		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		
-		return !cayenneService.sharedContext().performQuery(query).isEmpty();
+		return (ObjectSelect.query(WebTemplate.class)
+				.and(WebTemplate.LAYOUT.dot(WebSiteLayout.WEB_SITE_VERSION).eq(webSiteVersion))
+				.and(WebTemplate.MODIFIED.gt(new Date(lastCheckTimestamp)))
+				.limit(1)
+				.cacheGroups(WebTemplate.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).selectFirst(cayenneService.sharedContext()) != null);
 	}
 
 }
