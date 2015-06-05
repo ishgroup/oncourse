@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.checkout.model;
 
 import ish.math.Money;
-import ish.oncourse.enrol.checkout.PaymentPlanBuilder;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.model.*;

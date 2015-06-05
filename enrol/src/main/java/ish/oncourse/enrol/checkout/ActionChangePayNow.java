@@ -18,6 +18,8 @@ public class ActionChangePayNow extends APurchaseAction {
 		}
 
 		Money left = payNow.subtract(getModel().getInvoice().getTotalGst());
+		left = left.subtract(getModel().getPreviousOwing());
+
 		for (InvoiceNode invoiceNode: getModel().getPaymentPlanInvoices()) {
 			left = left.subtract(invoiceNode.getMinPaymentAmount());
 		}

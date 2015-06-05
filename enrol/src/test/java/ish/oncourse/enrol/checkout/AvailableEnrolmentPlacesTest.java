@@ -87,13 +87,13 @@ public class AvailableEnrolmentPlacesTest extends ACheckoutTest {
 
         //add first contact
         Contact contact = addFirstContact(1001);
-        assertEnabledEnrolments(contact, 1, true);
+        assertEnabledEnrolments(contact, 1);
         assertEquals(1, purchaseController.getModel().getAllEnabledEnrolments().size());
 
         //add second contact
         contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1002);
         addContact(contact);
-        assertEnabledEnrolments(contact, 1, true);
+        assertEnabledEnrolments(contact, 1);
         assertEquals(2, purchaseController.getModel().getAllEnabledEnrolments().size());
 
         proceedToPayment();

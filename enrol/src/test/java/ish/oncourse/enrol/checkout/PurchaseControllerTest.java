@@ -13,7 +13,6 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -469,7 +468,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(new Money("730.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
     }
 
-    @Ignore //todo the test is not compatable for current version of VoucherRedemptionHelper
+    @Test
     public void testAddVoucherCode() {
         PurchaseController purchaseController = init();
         PurchaseModel model = purchaseController.getModel();
@@ -506,7 +505,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(new Money("100.0"), paidByVoucher);
     }
 
-    @Test //TODO add/remove concession should be adjusted
+    @Test
     public void testAddConcession() {
         PurchaseController purchaseController = init();
         PurchaseModel model = purchaseController.getModel();
@@ -537,7 +536,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         performAction(param);
     }
 
-    @Ignore
+    @Test
     public void testRemoveConcession() {
         PurchaseController purchaseController = init();
         PurchaseModel model = purchaseController.getModel();

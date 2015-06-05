@@ -200,7 +200,7 @@ public class PaymentPlanAndRegularEnrolmentTest extends ACheckoutTest {
 	private void assertEnableEnrolmnets() {
 		assertEquals(2, purchaseController.getModel().getEnabledEnrolments(contact).size());
 		assertEquals(0, purchaseController.getModel().getDisabledEnrolments(contact).size());
-		assertEnabledEnrolments(contact, 2, true);
+		assertEnabledEnrolments(contact, 2);
 
 		//assert paymentPlan Enrolmnet
 		//assert Enrolment

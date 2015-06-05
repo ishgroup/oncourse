@@ -131,7 +131,7 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 		model.setWebSite(model.localizeObject(webSiteService.getCurrentWebSite()));
 		model.setDiscounts(discounts);
-		model.setAllowToUsePrevOwing(true);
+		model.setAllowToUsePrevOwing(false);
 		return model;
 	}
 

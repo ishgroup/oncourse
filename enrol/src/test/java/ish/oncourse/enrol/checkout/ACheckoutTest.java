@@ -276,11 +276,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 
 	void assertEnabledEnrolment(Enrolment enrolment) {
-		for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
-			assertNotNull(invoiceLine);
-		}
-		assertFalse("Enrolment should be linked with at least 1 invoiceline", enrolment.getInvoiceLines().isEmpty());
-        assertEquals(EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
+		AssertEnabledEnrolment.valueOf(enrolment).assertValue();
     }
 
     protected void assertDisabledEnrolment(Enrolment enrolment) {
@@ -289,13 +285,8 @@ public abstract class ACheckoutTest extends ServiceTest {
         assertEquals(EnrolmentStatus.NEW, enrolment.getStatus());
     }
 
-    protected void assertEnabledEnrolments(Contact contact, int count, boolean commited) {
-        List<Enrolment> enrolments = purchaseController.getModel().getAllEnrolments(contact);
-        assertEquals(count, enrolments.size());
-        for (Enrolment enrolment : enrolments) {
-            assertEquals(commited, enrolment.getObjectId().isTemporary());
-            assertEnabledEnrolment(enrolment);
-        }
+    protected void assertEnabledEnrolments(Contact contact, int count) {
+	    AssertEnabledEnrolments.valueOf(contact, count, purchaseController);
     }
 
     void assertDisabledEnrolments(Contact contact, int count) {

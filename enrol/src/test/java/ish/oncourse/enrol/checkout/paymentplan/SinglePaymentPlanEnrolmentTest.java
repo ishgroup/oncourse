@@ -1,6 +1,5 @@
 package ish.oncourse.enrol.checkout.paymentplan;
 
-import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.ACheckoutTest;
 import ish.oncourse.enrol.checkout.ActionChangePayNow;
@@ -219,61 +218,15 @@ public class SinglePaymentPlanEnrolmentTest extends ACheckoutTest {
 		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
 		param.setValue(enrolment);
 		performAction(param);
-		assertEnableEnrolmnet(enrolment);
+		AssertPaymentPlanEnrolment.valueOf(enrolment, purchaseController, model).assertValue();
 	}
 
 	private Contact initEnrolment() {
 		CourseClass courseClass = createPurchaseController(1001);
 		model = getModel();
 		Contact contact = addFirstContact(1001);
-		assertEnableEnrolmnet(model.getEnrolmentBy(contact, courseClass));
+		AssertPaymentPlanEnrolment.valueOf(model.getEnrolmentBy(contact, courseClass), purchaseController, model);
 		return contact;
-	}
-
-	private void assertEnableEnrolmnet(Enrolment enrolment) {
-		CourseClass courseClass = enrolment.getCourseClass();
-		Contact contact = enrolment.getStudent().getContact();
-
-		//assert Enrolment
-		assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact).size());
-		assertEquals(0, purchaseController.getModel().getDisabledEnrolments(contact).size());
-		assertEnabledEnrolments(contact, 1, true);
-
-		//assert Invoices
-		InvoiceNode invoiceNode = purchaseController.getModel().getPaymentPlanInvoiceBy(enrolment);
-		assertNotNull(invoiceNode);
-		assertNotNull(invoiceNode.getEnrolment());
-		assertEquals(contact, invoiceNode.getEnrolment().getStudent().getContact());
-
-		assertNotNull(invoiceNode.getInvoiceLine());
-		assertEquals(courseClass.getFeeIncGst(), invoiceNode.getInvoiceLine().getPriceTotalIncTax());
-
-		assertNotNull(invoiceNode.getInvoice());
-		assertEquals(contact, invoiceNode.getInvoice().getContact());
-		//assertEquals(courseClass.getFeeIncGst(), invoiceNode.getInvoice().getAmountOwing());
-		assertEquals(courseClass.getFeeIncGst(), invoiceNode.getInvoice().getTotalGst());
-
-		assertEquals(1, invoiceNode.getSelectedDueDates().size());
-		Money amountDueDates = invoiceNode.getSelectedDueDates().get(0).getAmount();
-
-		//assert PaymentLine
-		assertNotNull(invoiceNode.getPaymentInLine());
-		assertEquals(courseClass.getFeeIncGst(), invoiceNode.getInvoiceLine().getPriceTotalIncTax());
-		assertEquals(2, model.getPayment().getPaymentInLines().size());
-		for (PaymentInLine paymentInLine : purchaseController.getModel().getPayment().getPaymentInLines()) {
-			if (paymentInLine == invoiceNode.getPaymentInLine()) {
-				assertEquals("PaymentPlan paymentInLine", amountDueDates, paymentInLine.getAmount());
-			} else {
-				assertEquals("default paymentInLine", Money.ZERO, paymentInLine.getAmount());
-			}
-		}
-
-		//assert paymentIn
-		assertEquals("Payment amount equals the dueDates's amount", amountDueDates, model.getPayment().getAmount());
-		assertEquals(PaymentType.CREDIT_CARD, model.getPayment().getType());
-
-		assertEquals(courseClass.getFeeIncGst(), model.getTotalGst());
-		assertEquals(amountDueDates, purchaseController.getPayNow());
 	}
 
 	private void disableEnrolment(Enrolment enrolment) {

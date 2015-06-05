@@ -80,7 +80,7 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
 
         assertNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
         assertEquals(0, purchaseController.getModel().getDisabledEnrolments(contact).size());
-        assertEnabledEnrolments(contact, 1, true);
+        assertEnabledEnrolments(contact, 1);
         assertEquals(1, purchaseController.getModel().getAllEnabledEnrolments().size());
         Enrolment enrolment = purchaseController.getModel().getAllEnabledEnrolments().get(0);
         for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
@@ -103,7 +103,7 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         addContact(contact);
         assertNull(purchaseController.getModel().getErrorBy(purchaseController.getModel().getEnrolmentBy(contact, courseClass)));
         assertEquals(0, purchaseController.getModel().getDisabledEnrolments(contact).size());
-        assertEnabledEnrolments(contact, 1, true);
+        assertEnabledEnrolments(contact, 1);
         assertEquals(2, purchaseController.getModel().getAllEnabledEnrolments().size());
 
         //add third contact
@@ -128,25 +128,25 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         assertEquals("Expect to have only 1 invoiceline for enabled enrollment", 1, 
         	purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getInvoiceLines().size());
         assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getOriginalInvoiceLine().getInvoiceLineDiscounts().size());
-        assertEnabledEnrolments(contact1, 1, true);
+        assertEnabledEnrolments(contact1, 1);
 
         Contact contact2 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1002);
         assertEquals("Expect to have only 1 invoiceline for enabled enrollment", 1, 
             	purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getInvoiceLines().size());
         assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getOriginalInvoiceLine().getInvoiceLineDiscounts().size());
-        assertEnabledEnrolments(contact2, 1, true);
+        assertEnabledEnrolments(contact2, 1);
 
         Contact contact3 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1003);
-        assertEnabledEnrolments(contact3, 0, false);
+        assertEnabledEnrolments(contact3, 0);
 
         //emulate back button
         purchaseController.adjustState(PurchaseController.Action.enableEnrolment);
         assertEquals("Expect to have only 1 invoiceline for enabled enrollment", 1, 
             	purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getInvoiceLines().size());
         assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact1).get(0).getOriginalInvoiceLine().getInvoiceLineDiscounts().size());
-        assertEnabledEnrolments(contact1, 1, true);
+        assertEnabledEnrolments(contact1, 1);
 
-        assertEnabledEnrolments(contact2, 1, true);
+        assertEnabledEnrolments(contact2, 1);
         assertEquals("Expect to have only 1 invoiceline for enabled enrollment", 1, 
             	purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getInvoiceLines().size());
         assertEquals(1, purchaseController.getModel().getEnabledEnrolments(contact2).get(0).getOriginalInvoiceLine().getInvoiceLineDiscounts().size());

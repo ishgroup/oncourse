@@ -49,8 +49,6 @@ public class PurchaseModel {
 	private Boolean allowToUsePrevOwing = false;
 	private CorporatePass corporatePass;
 
-	private Money payNow;
-
 	public void addDiscount(Discount discount) {
 		discounts.add(discount);
 	}
@@ -566,14 +564,14 @@ public class PurchaseModel {
 	 * We apply the owing/credit when this flag is true.
 	 */
 	public boolean isApplyPrevOwing() {
-		return applyPrevOwing;
+		return applyPrevOwing && allowToUsePrevOwing;
 	}
 
 	public void setApplyPrevOwing(boolean applyPrevOwing) {
 		this.applyPrevOwing = applyPrevOwing;
 	}
 
-	public Boolean getAllowToUsePrevOwing() {
+	public boolean isAllowToUsePrevOwing() {
 		return allowToUsePrevOwing;
 	}
 
@@ -720,15 +718,6 @@ public class PurchaseModel {
 		}
 		return money;
 	}
-
-	public Money getPayNow() {
-		return payNow;
-	}
-
-	public void setPayNow(Money payNow) {
-		this.payNow = payNow;
-	}
-
 
 	public class VoucherNode {
         private boolean selected = false;
