@@ -235,12 +235,19 @@ function initPaymentEditorsHandle()
 }
 
 function initPayNow() {
+	var valueChanged = false;
 	$j("input[id=payNow]").blur(function() {
-		var actionLink = $j(this).next('a').attr('href') ;
-		var f = $j("[name=payNow]")[0];
-		var data = $j(f).serialize();
-		sendAjaxWithData(actionLink,data);
-	})
+		if (valueChanged) {
+			var actionLink = $j(this).next('a').attr('href') ;
+			var f = $j("[name=payNow]")[0];
+			var data = $j(f).serialize();
+			sendAjaxWithData(actionLink,data);
+			valueChanged = false;
+		}
+	});
+	$j("input[id=payNow]").on('input', function() {
+		valueChanged = true;
+	});
 }
 
 function sendAjaxWithData(actionLink,data)
