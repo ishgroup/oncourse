@@ -8,9 +8,8 @@ import java.util.Date;
 
 public interface PaymentMethodInterface extends PersistentObjectI  {
 
-	/**
-	 * @return name
-	 */
+	public static final String REAL_TIME_CREDIT_CARD_PROPERTY = "realTimeCreditCard";
+	
 	public String getName();
 
 	public Boolean getRealTimeCreditCard();
