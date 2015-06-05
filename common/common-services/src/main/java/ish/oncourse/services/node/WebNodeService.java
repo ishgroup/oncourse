@@ -3,7 +3,6 @@ package ish.oncourse.services.node;
 import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.cache.IRequestCacheService;
-import ish.oncourse.services.cache.Value;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -13,6 +12,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
@@ -274,36 +274,25 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
     }
 
     public WebUrlAlias getDefaultWebURLAlias(WebNode webNode) {
-        if (webNode.getObjectId().isTemporary())
-            return null;
+	    List<WebUrlAlias> result = WebUrlAlias.DEFAULT.eq(true).filterObjects(webNode.getWebUrlAliases());
+	    if (!result.isEmpty()) {
+		    return result.get(0);
+	    }
 
-	    Value<WebUrlAlias> value = requestCacheService.getFromRequest(WebUrlAlias.class, "defaultWebURLAlias_" + webNode.getId());
-	    if (value == null) {
-            ObjectContext context = cayenneService.sharedContext();
-            Expression expression = ExpressionFactory.matchExp(WebUrlAlias.WEB_NODE_PROPERTY, context.localObject(webNode));
-            expression = expression.andExp(ExpressionFactory.matchExp(WebUrlAlias.DEFAULT_PROPERTY, true));
-            SelectQuery query = new SelectQuery(WebUrlAlias.class, expression);
-		    query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-	        WebUrlAlias alias = (WebUrlAlias) Cayenne.objectForQuery(context,query);
-            requestCacheService.putToRequest("defaultWebURLAlias_" + webNode.getId(), alias);
-	        return alias;
-        } else {
-	        return null;
-        }
+	    if (webNode.getObjectId().isTemporary()) {
+		    return null;
+	    }
 
+	    ObjectContext context = cayenneService.sharedContext();
+	    return ObjectSelect.query(WebUrlAlias.class)
+			    .and(WebUrlAlias.WEB_NODE.eq(webNode))
+			    .and(WebUrlAlias.DEFAULT.eq(true))
+			    .cacheGroups(WebUrlAlias.class.getSimpleName())
+			    .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH).selectOne(context);
     }
 
 	@Override
 	public WebNode getNodeForName(String nodeName) {
-		SelectQuery q = new SelectQuery(WebNode.class, siteQualifier()
-				.andExp(ExpressionFactory.matchExp(WebNode.NAME_PROPERTY, nodeName)));
-
-		List<WebNode> pages = cayenneService.sharedContext().performQuery(q);
-
-		if (!pages.isEmpty()) {
-			return pages.get(0);
-		}
-
-		return null;
+		return ObjectSelect.query(WebNode.class).and(siteQualifier()).and(WebNode.NAME.eq(nodeName)).selectOne(cayenneService.sharedContext());
 	}
 }
