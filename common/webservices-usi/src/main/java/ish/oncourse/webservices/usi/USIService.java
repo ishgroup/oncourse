@@ -13,11 +13,6 @@ import ish.common.types.USIVerificationStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.GregorianCalendar;
-
 public class USIService {
 	
 	private static final Logger logger = LogManager.getLogger();
@@ -30,21 +25,22 @@ public class USIService {
 	}
 	
 	public USIVerificationResult verifyUsi(USIVerificationRequest request) {
+		USIVerificationResult result = sendRequest(VerifyUSITypeBuilder.valueOf(request, false).build());
+		if (needSendSingleNameRequest(request, result)) {
+			return sendRequest(VerifyUSITypeBuilder.valueOf(request, true).build());
+		} else {
+			return result;
+		}
+	}
+
+	private boolean needSendSingleNameRequest(USIVerificationRequest request, USIVerificationResult result) {
+		return (result.getFirstNameStatus() == USIFieldStatus.NO_MATCH || result.getLastNameStatus() == USIFieldStatus.NO_MATCH) &&
+		request.getStudentFirstName().equalsIgnoreCase(request.getStudentLastName());
+	}
+
+	private USIVerificationResult sendRequest(VerifyUSIType verifyUSIType) {
 		try {
-			VerifyUSIType verifyUSI = new VerifyUSIType();
-
-			GregorianCalendar cal = new GregorianCalendar();
-			cal.setTime(request.getStudentBirthDate());
-			XMLGregorianCalendar xmlBirthDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
-			xmlBirthDate.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
-
-			verifyUSI.setFirstName(request.getStudentFirstName());
-			verifyUSI.setFamilyName(request.getStudentLastName());
-			verifyUSI.setDateOfBirth(xmlBirthDate);
-			verifyUSI.setOrgCode(request.getOrgCode());
-			verifyUSI.setUSI(request.getUsiCode());
-
-			VerifyUSIResponseType response = endpoint.verifyUSI(verifyUSI);
+			VerifyUSIResponseType response = endpoint.verifyUSI(verifyUSIType);
 
 			USIVerificationResult result = new USIVerificationResult();
 
@@ -55,8 +51,8 @@ public class USIService {
 
 			return result;
 		} catch (Exception e) {
-			logger.error("Unable to verify USI code for {} {}.", request.getStudentFirstName(), request.getStudentLastName(), e);
-			
+			logger.error("Unable to verify USI code for {} {}.", verifyUSIType.getFirstName(), verifyUSIType.getFamilyName(), e);
+
 			throw new RuntimeException("Error verifying USI.", e);
 		}
 	}
