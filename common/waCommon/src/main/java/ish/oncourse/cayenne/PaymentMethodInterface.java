@@ -3,17 +3,16 @@
  */
 package ish.oncourse.cayenne;
 
-
-import java.util.Date;
-
 public interface PaymentMethodInterface extends PersistentObjectI  {
 
 	public static final String REAL_TIME_CREDIT_CARD_PROPERTY = "realTimeCreditCard";
 	public static final String NAME_PROPERTY = "name";
 
-	public String getName();
+	String getName();
 
-	public Boolean getRealTimeCreditCard();
+	Boolean getRealTimeCreditCard();
 	
-	public Boolean getActive();
+	Boolean getActive();
+	
+	Boolean getReconcilable();
 }
