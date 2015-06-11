@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * Interface to host both payment in and out, for both client and server side.
- * 
+ *
  * @author marcin, ldeck
  */
 public interface PaymentInterface extends PrintableObject, PersistentObjectI {
@@ -85,11 +85,6 @@ public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 	public Date getCreatedOn();
 
 	/**
-	 * @param dateBanked
-	 */
-	public void setDateBanked(Date dateBanked);
-
-	/**
 	 * @return date banked
 	 */
 	public Date getDateBanked();
@@ -121,4 +116,8 @@ public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 	public ContactInterface getContact();
 
 	public void setAccount(AccountInterface account);
+
+	public BankingInterface getBanking();
+
+	public void setBanking(BankingInterface banking);
 }
