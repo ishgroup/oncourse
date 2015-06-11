@@ -11,6 +11,7 @@ jar {
 
 
 configurations {
+    all*.exclude group: 'org.apache.logging.log4j', module: 'log4j-web'
     ws
 }
  
