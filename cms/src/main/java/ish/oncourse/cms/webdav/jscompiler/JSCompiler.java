@@ -5,6 +5,10 @@ package ish.oncourse.cms.webdav.jscompiler;
 
 import com.google.javascript.jscomp.*;
 import com.google.javascript.jscomp.Compiler;
+import ish.oncourse.cms.webdav.ErrorEmailTemplate;
+import ish.oncourse.cms.webdav.GetEmailBuilder;
+import ish.oncourse.cms.webdav.GzipFile;
+import ish.oncourse.cms.webdav.ICompiler;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.mail.EmailBuilder;
 import org.apache.commons.compress.compressors.CompressorOutputStream;
@@ -19,33 +23,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class JSCompiler {
+public class JSCompiler implements ICompiler {
     private static final Logger logger = LogManager.getLogger();
 
     private static final String RESULT_FILE_NAME = "all.js";
     private static final String GZ_RESULT_FILE_NAME = "all.js.gz";
 
-
-    private static final String EMAIL_FROM = "support@ish.com.au";
-    private static final String EMAIL_SUBJECT = "[onCourse Website] JSP Combiner error";
-    private static final String EMAIL_BODY_TEMPLATE = "Hi %s,\n" +
-            "\n" +
-            "\n" +
-            "\n" +
-            "This is the onCourse Website: %s\n" +
-            "\n" +
-            "\n" +
-            "\n" +
-            "I've found a problem with the JS file you uploaded. This means that the JS will not be updated until you fix this error.\n" +
-            "\n" +
-            "\n" +
-            "\n" +
-            "File: %s\n" +
-            "\n" +
-            "\n" +
-            "\n" +
-            "Error:\n" +
-            "%s";
+    public static final ErrorEmailTemplate ERROR_EMAIL_TEMPLATE = ErrorEmailTemplate.valueOf("support@ish.com.au",
+            "[onCourse Website] JSP Combiner error",
+            "Hi %s,\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "This is the onCourse Website: %s\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "I've found a problem with the JS file you uploaded. This means that the JS will not be updated until you fix this error.\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "File: %s\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "Error:\n" +
+                    "%s");
 
 
     //full path to s-folder
@@ -133,25 +136,11 @@ public class JSCompiler {
     }
 
     private void gzResult() {
-        FileInputStream fis = null;
-        FileOutputStream fos = null;
-        CompressorOutputStream gos = null;
-
         try {
-            fis = new FileInputStream(result);
-            fos = new FileOutputStream(gzResult);
-
-            gos = new CompressorStreamFactory()
-                    .createCompressorOutputStream(CompressorStreamFactory.GZIP, fos);
-            IOUtils.copy(fis, gos);
+            GzipFile.valueOf(result, gzResult).gzip();
         } catch (Exception e) {
             errorHandler.logError(logger, e);
-        } finally {
-            IOUtils.closeQuietly(gos);
-            IOUtils.closeQuietly(fos);
-            IOUtils.closeQuietly(fis);
         }
-
     }
 
     private void saveResult(Compiler compiler) {
@@ -178,16 +167,13 @@ public class JSCompiler {
         return gzResult;
     }
 
+    public List<String> getErrors() {
+        return errorHandler.getErrors();
+    }
 
-    public EmailBuilder buildErrorMail(String emailTo, String fileName) {
-        EmailBuilder emailBuilder = new EmailBuilder();
-        emailBuilder.setFromEmail(EMAIL_FROM);
-        emailBuilder.setToEmails(emailTo);
-        emailBuilder.setSubject(EMAIL_SUBJECT);
-        //we should replace all line breaks to <p> because our MailService sends mail as html
-        emailBuilder.setBody(String.format(EMAIL_BODY_TEMPLATE, emailTo, siteKey, fileName, StringUtils.join(errorHandler.getErrors(), "\n"))
-                .replace("\n", "<p>"));
-        return emailBuilder;
+    @Override
+    public ErrorEmailTemplate getErrorEmailTemplate() {
+        return ERROR_EMAIL_TEMPLATE;
     }
 
     public static JSCompiler valueOf(String sRoot, String defaultJSPath, WebSite webSite) {

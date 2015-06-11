@@ -15,22 +15,23 @@ import io.milton.resource.CollectionResource;
 import io.milton.resource.Resource;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.cms.webdav.jscompiler.JSCompiler;
+import ish.oncourse.cms.webdav.scss.SCSSCompiler;
 import ish.oncourse.services.mail.EmailBuilder;
 import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.util.ContextUtil;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.*;
 import java.util.regex.Pattern;
 
@@ -38,8 +39,8 @@ public class StaticResourceFactory implements ResourceFactory {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static final int EDIT_FILE_SCRIPT_WAIT_TIMEOUT = 15;
     private String defaultJsStackPath;
+    private String defaultScssPath;
 
     private static final String[] readOnlyFolders = new String[]
             {
@@ -49,6 +50,7 @@ public class StaticResourceFactory implements ResourceFactory {
                     "/s/js/",
             };
 
+    private static final String SCSS_FILE_PATTERN = "^%s/stylesheets/src/(.*)\\.scss$";
     private static final String JS_FILE_PATTERN = "^%s/js/(.*)\\.js$";
     private static final String JS_TEMP_FILE_PATTERN = "^%s/js/(.*)\\.js\\.(.*)$";
 
@@ -57,6 +59,7 @@ public class StaticResourceFactory implements ResourceFactory {
     private IWebSiteService webSiteService;
     private IAuthenticationService authenticationService;
     private ExecutorService executorService;
+    private ScriptEngine scriptEngine;
 
     private FileSystemResourceFactory fsResourceFactory;
     private String sRoot;
@@ -76,10 +79,12 @@ public class StaticResourceFactory implements ResourceFactory {
 
         this.executorService = Executors.newCachedThreadPool();
         try {
-            this.defaultJsStackPath = URIUtil.decode(JSCompiler.class.getClassLoader().getResource("ish/oncourse/cms/js").getFile());
+            this.defaultJsStackPath = URIUtil.decode(getClass().getClassLoader().getResource("ish/oncourse/cms/js").getFile());
+            this.defaultScssPath = URIUtil.decode(getClass().getClassLoader().getResource("ish/oncourse/cms/stylesheets/src").getFile());
         } catch (URIException e) {
             throw new RuntimeException(e);
         }
+        scriptEngine = new ScriptEngineManager().getEngineByName("jruby");
     }
 
 	@Override
@@ -99,90 +104,67 @@ public class StaticResourceFactory implements ResourceFactory {
      */
     private void compileResources(File file) {
 
-        if (isJavaScript(file))
-        {
-            compileJavaScript(file);
-        }
-        else
-        {
+        ICompiler compiler = getCompiler(file);
+
+        if (compiler != null) {
+            compiler.compile();
+            if (compiler.getErrors().isEmpty())
+            {
+                runEditScript(file);
+                runEditScript(compiler.getResult());
+                runEditScript(compiler.getGzResult());
+            }
+            else
+            {
+                runEditScript(file);
+                String userEmail = authenticationService.getUserEmail();
+                if (userEmail != null)
+                {
+                    EmailBuilder emailBuilder = GetEmailBuilder.valueOf(compiler.getErrorEmailTemplate(),
+                            userEmail,
+                            userEmail,
+                            webSiteService.getCurrentWebSite().getSiteKey(),
+                            file.getAbsolutePath(),
+                            StringUtils.join(compiler.getErrors(), "\n")).get();
+                    mailService.sendEmail(emailBuilder, true);
+                }
+            }
+        } else {
             runEditScript(file);
         }
     }
 
-    private void compileJavaScript(File file) {
-        JSCompiler compiler = JSCompiler.valueOf(sRoot, defaultJsStackPath, webSiteService.getCurrentWebSite());
-        compiler.compile();
-        if (!compiler.hasErrors())
-        {
-            runEditScript(file);
-            runEditScript(compiler.getResult());
-            runEditScript(compiler.getGzResult());
+    @Nullable
+    private ICompiler getCompiler(File file) {
+        if (isJavaScript(file)) {
+            return JSCompiler.valueOf(sRoot, defaultJsStackPath, webSiteService.getCurrentWebSite());
+        } if (isSCSSFile(file)) {
+            return SCSSCompiler.valueOf(scriptEngine,
+                    new File(defaultScssPath),
+                    new File(String.format("%s/%s", sRoot, webSiteService.getCurrentWebSite().getSiteKey())));
+        } else {
+            return null;
         }
-        else
-        {
-            runEditScript(file);
-            String userEmail = authenticationService.getUserEmail();
-            if (userEmail != null)
-            {
-                EmailBuilder emailBuilder = compiler.buildErrorMail(userEmail, file.getAbsolutePath());
-                mailService.sendEmail(emailBuilder, true);
-            }
-        }
+    }
+
+    private void runEditScript(File file) {
+        RunEditScript.valueOf(file, authenticationService, executorService).run();
+    }
+
+    private boolean isSCSSFile(File file) {
+        String filePath = file.getAbsolutePath();
+        //java script file path looks like /var/onCourse/s-draft/sitekey/stylesheets/src/**/*
+        Pattern pattern = Pattern.compile(String.format(SCSS_FILE_PATTERN, fsResourceFactory.getRoot().getAbsolutePath()));
+        return pattern.matcher(filePath).matches();
     }
 
     private boolean isJavaScript(File file) {
         String filePath = file.getAbsolutePath();
         //java script file path looks like /var/onCourse/s-draft/sitekey/js/**/*
-        Pattern pattern = Pattern.compile(String.format(String.format(JS_FILE_PATTERN, fsResourceFactory.getRoot().getAbsolutePath())));
+        Pattern pattern = Pattern.compile(String.format(JS_FILE_PATTERN, fsResourceFactory.getRoot().getAbsolutePath()));
         return pattern.matcher(filePath).matches();
     }
 
-
-
-    private void runEditScript(File file) {
-        String scriptPath = ContextUtil.getCmsEditScriptPath();
-
-        if (StringUtils.trimToNull(scriptPath) == null) {
-            logger.error("Edit file script is not defined! Resources haven't been updated!");
-            return;
-        }
-
-        List<String> scriptCommand = new ArrayList<>();
-
-        String filePath = file.getAbsolutePath();
-
-        scriptCommand.add(scriptPath);
-        scriptCommand.add("-p");
-        scriptCommand.add(String.format("\"%s\"", filePath));
-
-        String userEmail = authenticationService.getUserEmail();
-
-        if (userEmail != null) {
-            scriptCommand.add("-e");
-            scriptCommand.add(userEmail);
-        }
-
-        ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand);
-
-        try {
-            logger.debug("Starting script '{}' for file '{}'", scriptPath, filePath);
-            long time = System.currentTimeMillis();
-            final Process process = processBuilder.start();
-
-            Future<Integer> scriptCallFuture = executorService.submit(new Callable<Integer>() {
-                @Override
-                public Integer call() throws Exception {
-                    return process.waitFor();
-                }
-            });
-
-            scriptCallFuture.get(EDIT_FILE_SCRIPT_WAIT_TIMEOUT, TimeUnit.SECONDS);
-            time = Math.round( (System.currentTimeMillis() - time) / 1000.0);
-            logger.debug("script '{}' for file '{}' is finished. Time: '{}' sec", scriptPath, filePath, time);
-        } catch (Exception e) {
-            logger.error("Error executing script '{}' for file '{}'", scriptPath, filePath, e);
-        }
-    }
 
     private Resource getFsResource(String host, String url) {
 		url = stripContext(url);
