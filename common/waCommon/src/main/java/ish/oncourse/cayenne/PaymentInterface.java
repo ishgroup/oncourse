@@ -77,6 +77,8 @@ public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 	 */
 	public PaymentMethodInterface getPaymentMethod();
 
+	public void setPaymentMethod(PaymentMethodInterface method);
+
 	/**
 	 * @return creation date
 	 */
@@ -118,4 +120,5 @@ public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 
 	public ContactInterface getContact();
 
+	public void setAccount(AccountInterface account);
 }
