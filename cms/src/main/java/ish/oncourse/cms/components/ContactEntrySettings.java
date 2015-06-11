@@ -330,7 +330,7 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(mailinglist, dateOfBirth, this.mailingListDateOfBirthState);
 		preferenceController.setRequireContactField(mailinglist, country, this.mailingListCountryState);
 		preferenceController.setRequireContactField(mailinglist, specialNeeds, this.mailingListSpecialNeedsState);
-		preferenceController.setRequireContactField(waitinglist, isMale, this.mailingListIsMale);
+		preferenceController.setRequireContactField(mailinglist, isMale, this.mailingListIsMale);
 
 		collectParentContactField.save();
 	}
