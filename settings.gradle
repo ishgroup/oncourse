@@ -1,5 +1,5 @@
 rootProject.name = 'Willow'
-include 'admin',
+include 'admin', 'common:common-jruby',
 	'common:common-model',
 	'common:common-services',
 	'common:common-test',
