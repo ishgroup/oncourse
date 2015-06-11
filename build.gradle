@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        waCommonWebservicesClientVersion = '5.1.91'
+        waCommonWebservicesClientVersion = '5.1.92'
     }
 	repositories {
 		maven {
@@ -37,6 +37,7 @@ allprojects {
 		deployerJars {
 			description = 'Jars needed for doing deployment to JBoss Nexus repo'
 		}
+		all*.exclude group: 'org.apache.logging.log4j', module: 'log4j-web'
 	}
 
 	repositories {
