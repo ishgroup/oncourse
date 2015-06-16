@@ -1,3 +1,5 @@
+$img: /s/img;
+
 @mixin general-gradient {
 	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
 	background-image: -webkit-linear-gradient(top, #08C, #04C);
@@ -20,9 +22,141 @@ div.clearboth {
 	cursor: help;
 }
 
-#checkout {
+#checkout,#waitingListForm {
+  label {
+	display: inline-block;
+	text-align: right;
+	max-width: 180px;
+	width:26%;
+	padding-right: 20px;
+	vertical-align: middle;
+	font-weight: bold;
+  }
 
-	.enrolmentsSelected {
+  .conditions label {
+	display:block;
+	width:auto;
+	max-width:100%;
+	text-align:left;
+	margin-left:26%;
+	padding-left:20px;
+	font-weight:normal;
+  }
+
+  span {
+	display: inline-block;
+	vertical-align: top;
+	position:relative;
+
+
+	&.validate-text {
+	  position: absolute;
+	  z-index:1;
+	  font-size: 11px;
+	  margin-left:20px;
+	  max-width:220px;
+	  left: 120px;
+	  margin-left: 20px;
+	  top:0;
+
+	  .reason {
+		position:relative;
+		display:block;
+		padding: 3px;
+		background-color: #FEF0F0;
+		border: 1px solid #FCC5C5;
+		font-weight:bold;
+	  }
+
+	  .reason-pointer {
+		display: block;
+		height: 15px;
+		left: -12px;
+		position: absolute;
+		top: 2px;
+		width: 12px;
+		background: {
+		  image:url($img + "/message-pointers.gif");
+		  position: right top;
+		  repeat: no-repeat;
+		}
+	  }
+
+	  .hint {
+		background-color: #FDF6D6;
+		border: 1px solid #F9E99C;
+		font-weight:bold;
+		position:relative;
+		display:block;
+		padding: 3px;
+	  }
+
+	  .hint-pointer {
+		display: block;
+		height: 15px;
+		left: -12px;
+		position: absolute;
+		top: 2px;
+		width: 12px;
+		background: {
+		  image:url($img + "/message-pointers.gif");
+		  position: -13px top;
+		  repeat: no-repeat;
+		}
+	  }
+
+	  .hidden-text {
+		display:none;
+	  }
+	}
+  }
+
+  input {
+
+	border:1px solid #ddd;
+	font-size:11px;
+
+	&[type="text"],
+	&[type="password"] {
+	  padding:3px;
+	  background-color:whiteSmoke;
+	  width:120px;
+	}
+
+	&:hover {
+	  border-color: #aaaaaa;
+	}
+
+	&:focus {
+	  outline: none;
+	  border-color: #000;
+	}
+
+	&.t-error {
+	  font-style:normal;
+	  background-color: #FEF0F0;
+	}
+
+  }
+
+  textarea {
+	padding:3px;
+	background-color:whiteSmoke;
+	border:1px solid #ddd;
+	font-size:11px;
+	height:150px;
+	width: 44%;
+  }
+
+  img.t-error-icon {
+	display:none;
+	vertical-align: text-top;
+	position: relative;
+	top: -10px;
+	left: -14px;
+  }
+
+  .enrolmentsSelected {
 		.form-controls {
 			margin-bottom: 10px;
 			margin-left: 260px;
@@ -903,128 +1037,4 @@ span.ended
 }
 
 
-.payments {
-
-  label {
-	display: inline-block;
-	text-align: right;
-	max-width: 180px;
-	width:26%;
-	padding-right: 20px;
-	vertical-align: middle;
-	font-weight: bold;
-  }
-
-  .conditions label {
-	display:block;
-	width:auto;
-	max-width:100%;
-	text-align:left;
-	margin-left:26%;
-	padding-left:20px;
-	font-weight:normal;
-  }
-
-  span {
-	display: inline-block;
-	vertical-align: top;
-	position:relative;
-
-
-	&.validate-text {
-	  position: absolute;
-	  z-index:1;
-	  font-size: 11px;
-	  margin-left:20px;
-	  max-width:220px;
-	  left: 120px;
-	  margin-left: 20px;
-	  top:0;
-
-	  .reason {
-		position:relative;
-		display:block;
-		padding: 3px;
-		background-color: #FEF0F0;
-		border: 1px solid #FCC5C5;
-		font-weight:bold;
-	  }
-
-	  .hint {
-		background-color: #FDF6D6;
-		border: 1px solid #F9E99C;
-		font-weight:bold;
-		position:relative;
-		display:block;
-		padding: 3px;
-	  }
-
-	  .hidden-text {
-		display:none;
-	  }
-	}
-  }
-
-  input {
-
-	border:1px solid #ddd;
-	font-size:11px;
-
-	&[type="text"],
-	&[type="password"] {
-	  padding:3px;
-	  background-color:whiteSmoke;
-	  width:120px;
-	}
-
-	&:hover {
-	  border-color: #aaaaaa;
-	}
-
-	&:focus {
-	  outline: none;
-	  border-color: #000;
-	}
-
-	&.t-error {
-	  font-style:normal;
-	  background-color: #FEF0F0;
-	}
-
-  }
-
-  textarea {
-	padding:3px;
-	background-color:whiteSmoke;
-	border:1px solid #ddd;
-	font-size:11px;
-	height:150px;
-	width: 44%;
-  }
-
-  img.t-error-icon {
-	display:none;
-	vertical-align: text-top;
-	position: relative;
-	top: -10px;
-	left: -14px;
-  }
-
-  .radio-list,
-  .fieldset-intro {
-	margin-left: 26%;
-	font-weight: bold;
-	padding-left: 20px;
-	max-width: 180px;
-  }
-
-  .radio-list {
-	position:relative;
-	top:-37px;
-	font-weight:normal;
-  }
-
-
-
-}
 
