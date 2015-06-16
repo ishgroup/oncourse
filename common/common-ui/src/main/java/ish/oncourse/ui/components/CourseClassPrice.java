@@ -219,12 +219,12 @@ public class CourseClassPrice {
 	}
 
 
-	public String format(Money money, String pattern) {
+	public String formatMoney(Money money, String pattern) {
 		NumberFormat format = new DecimalFormat(pattern);
 		return format.format(money);
 	}
 
-	public String format(Date date, String pattern) {
+	public String formatDate(Date date, String pattern) {
 		DateFormat format = new SimpleDateFormat(pattern);
 		return format.format(date);
 	}
