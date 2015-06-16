@@ -431,7 +431,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Database value: 79
 	 * @PublicApi
 	 */
-	SPECIAL_CANCEL_ENROLMENTS(79, "Enrolment cancellation", Mask.ALL - Mask.VIEW),
+	SPECIAL_CANCEL_TRANSFER_ENROLMENTS(79, "Enrolment cancellation and transferring", Mask.ALL - Mask.VIEW),
 
 	/**
 	 * Export AVETMISS.
