@@ -70,6 +70,10 @@ public abstract class APageStructure {
 
     @Property
     @Parameter
+    private String canonicalRelativeLinkPath;
+
+    @Property
+    @Parameter
     private String metaDescription;
 
     /**

@@ -46,6 +46,10 @@ public class PageHead {
 
 	@Property
 	@Parameter
+	private String canonicalRelativeLinkPath;
+
+	@Property
+	@Parameter
 	private String metaDescription;
 
 	/**

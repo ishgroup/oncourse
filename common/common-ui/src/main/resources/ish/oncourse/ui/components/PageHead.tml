@@ -6,6 +6,10 @@
     	<link rel="canonical" href="${canonicalLinkPath}"></link>
 	</t:if>
 
+	<t:if test="canonicalRelativeLinkPath">
+		<link rel="canonical" href="${canonicalRelativeLinkPath}"></link>
+	</t:if>
+
 	<t:if test="metaDescription">
 		<meta content="${metaDescription}" name="description" property="og:description"/>
 	</t:if>

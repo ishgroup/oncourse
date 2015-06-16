@@ -329,4 +329,8 @@ public class Courses {
 	public String getCanonicalLinkPath() {
 		return HTMLUtils.getCanonicalLinkPathForCourses(request, tagService.getBrowseTag());
 	}
+
+	public String getCanonicalRelativeLinkPath() {
+		return HTMLUtils.getCanonicalRelativeLinkPathForCourses(request, tagService.getBrowseTag());
+	}
 }

@@ -35,25 +35,27 @@ public class HTMLUtils {
 		return Boolean.valueOf(value);
 	}
 
-	public static String getCanonicalLinkPathFor(Course course, Request request)
-	{
-		  return HTMLUtils.HTTPS_PROTOCOL + request.getServerName() +
-				String.format("%s/course/%s", request.getContextPath(), course.getCode());
-
+	public static String getCanonicalRelativeLinkPath(Course course, Request request) {
+		return String.format("%s/course/%s", request.getContextPath(), course.getCode());
 	}
 
-	public static String getCanonicalLinkPathFor(Product product, Request request)
-	{
+	public static String getCanonicalLinkPathFor(Course course, Request request) {
+		  return HTMLUtils.HTTPS_PROTOCOL + request.getServerName() + getCanonicalRelativeLinkPath(course, request);
+	}
+
+	public static String getCanonicalLinkPathFor(Product product, Request request) {
 		return HTMLUtils.HTTPS_PROTOCOL + request.getServerName() +
 				String.format("%s/product/%s", request.getContextPath(), product.getSku());
 	}
 
-
-	public static String getCanonicalLinkPathForCourses(Request request, Tag browseTag)
-	{
-		return HTMLUtils.HTTPS_PROTOCOL + request.getServerName() + request.getContextPath() + (browseTag == null ? request.getPath(): browseTag.getLink());
-
+	public static String getCanonicalRelativeLinkPathForCourses(Request request, Tag browseTag) {
+		return request.getContextPath() + (browseTag == null ? request.getPath() : browseTag.getLink());
 	}
+
+	public static String getCanonicalLinkPathForCourses(Request request, Tag browseTag) {
+		return HTMLUtils.HTTPS_PROTOCOL + request.getServerName() + getCanonicalRelativeLinkPathForCourses(request, browseTag);
+	}
+
 
 	public static String getMetaGeneratorContent(IEnvironmentService environmentService) {
 		StringBuilder buff = new StringBuilder(

@@ -1,5 +1,6 @@
 <html t:type="ui/internal/pagestructure"
 	  canonicalLinkPath="${canonicalLinkPath}"
+	  canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
 	  metaDescription="${metaDescription}"
 	  title="${courseDetailsTitle}"
 	  bodyId="literal:DetailsPage"

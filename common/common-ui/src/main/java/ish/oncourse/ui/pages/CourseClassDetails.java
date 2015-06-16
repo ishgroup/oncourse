@@ -136,6 +136,9 @@ public class CourseClassDetails {
 		return HTMLUtils.getCanonicalLinkPathFor(courseClass.getCourse(), request);
 	}
 
+	public String getCanonicalRelativeLinkPath() {
+		return HTMLUtils.getCanonicalRelativeLinkPath(courseClass.getCourse(), request);
+	}
 
 	public String getMetaDescription() {
 		return facebookMetaProvider.getDescriptionContent(courseClass);

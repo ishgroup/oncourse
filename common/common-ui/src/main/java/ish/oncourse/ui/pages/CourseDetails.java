@@ -34,6 +34,10 @@ public class CourseDetails {
 		return HTMLUtils.getCanonicalLinkPathFor(course, request);
 	}
 
+	public String getCanonicalRelativeLinkPath() {
+		return HTMLUtils.getCanonicalRelativeLinkPath(course, request);
+	}
+
 	public String getCourseDetailsTitle() {
 		if (course == null) {
 			return "Course Not Found";

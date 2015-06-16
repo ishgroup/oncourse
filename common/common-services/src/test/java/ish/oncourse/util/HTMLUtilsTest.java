@@ -49,6 +49,10 @@ public class HTMLUtilsTest {
 		when(course.getCode()).thenReturn("course1");
 		String actual = HTMLUtils.getCanonicalLinkPathFor(course, request);
 		assertEquals(expected, actual);
+
+		actual = HTMLUtils.getCanonicalRelativeLinkPath(course, request);
+		assertEquals("/context/course/course1", actual);
+
 	}
 
 	private Request createRequest() {
@@ -78,6 +82,9 @@ public class HTMLUtilsTest {
 		when(request.getPath()).thenReturn("/tag1.name/tag2.name");
 		String actual = HTMLUtils.getCanonicalLinkPathForCourses(request,tag2);
 		assertEquals(expected, actual);
+
+		actual = HTMLUtils.getCanonicalRelativeLinkPathForCourses(request,tag2);
+		assertEquals("/context/courses/tag1.name/tag2.sname1+tag2.sname2", actual);
 
 	}
 }

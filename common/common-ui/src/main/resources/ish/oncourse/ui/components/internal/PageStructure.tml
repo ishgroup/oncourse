@@ -10,6 +10,7 @@
 			<meta http-equiv="Cache-control" content="cacheMeta"/>
 			<span t:type="ui/pagehead" pageName="pageName" webNode="webNode"
 				  canonicalLinkPath="canonicalLinkPath"
+				  canonicalRelativeLinkPath="canonicalRelativeLinkPath"
 				  metaDescription="metaDescription"/>
 		</head>
 		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
