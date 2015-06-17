@@ -227,7 +227,7 @@ appBundler {
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.server.AngelServer"
     iconFile = new File(projectDir, "src/packaging/macosx/onCourseServer.icns")
-    jarFile = new File(libsDir, "${project.name}-${project.version}-all.jar")
+    jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
     keychain = project.osxKeychain
     certIdentity = project.osxKeychainIdentity
 
@@ -250,7 +250,7 @@ appBundler {
     ]
 }
 
-task installer_osx(dependsOn: [fatJar, prepareKeychains, codeSign], type: au.com.ish.DmgTask) {
+task installer_osx(dependsOn: [prepareKeychains, codeSign], type: au.com.ish.DmgTask) {
     description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
