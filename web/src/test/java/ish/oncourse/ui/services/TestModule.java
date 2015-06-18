@@ -278,7 +278,6 @@ public class TestModule {
 	public IWebMenuService buildIWebMenuServiceOverride() {
 		IWebMenuService mock = mock(IWebMenuService.class);
 		WebMenu webMenu = mock(WebMenu.class);
-		when(webMenu.getNavigableChildMenus()).thenReturn(Collections.EMPTY_LIST);
 		when(mock.getRootMenu()).thenReturn(webMenu);
 		return mock;
 	}

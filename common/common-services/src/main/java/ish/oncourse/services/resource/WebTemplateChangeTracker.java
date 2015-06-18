@@ -44,8 +44,9 @@ public class WebTemplateChangeTracker {
 				.and(WebTemplate.LAYOUT.dot(WebSiteLayout.WEB_SITE_VERSION).eq(webSiteVersion))
 				.and(WebTemplate.MODIFIED.gt(new Date(lastCheckTimestamp)))
 				.limit(1)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
 				.cacheGroups(WebTemplate.class.getSimpleName())
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).selectFirst(cayenneService.sharedContext()) != null);
+				.selectFirst(cayenneService.sharedContext()) != null);
 	}
 
 }

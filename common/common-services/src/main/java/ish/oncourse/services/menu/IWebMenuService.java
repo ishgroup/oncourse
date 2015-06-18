@@ -4,6 +4,8 @@ import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.IBaseService;
 
+import java.util.List;
+
 public interface IWebMenuService {
 	/**
 	 * Returns top level menu item.
@@ -29,4 +31,10 @@ public interface IWebMenuService {
 	 * @return null or WebMenu if it exists with this name
 	 */
 	WebMenu getMenuByNameAndParentMenu(String name, WebMenu parentMenu);
+
+	List<WebMenu> getChildrenBy(WebMenu parent);
+
+	List<WebMenu> getNavigableChildrenBy(WebMenu parent);
+
+	void updateWeight(WebMenu menu, int weight, WebMenu oldParent);
 }

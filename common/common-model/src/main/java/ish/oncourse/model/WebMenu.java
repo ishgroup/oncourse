@@ -5,6 +5,8 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.PrefetchTreeNode;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 
@@ -29,34 +31,17 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 	/**
 	 * @return all child menus including not navigable.
 	 */
-	public List<WebMenu> getWebMenus() {
+	@Deprecated //IWebMenuService.getChildrenBy should be used
+	private List<WebMenu> getWebMenus() {
 		List<WebMenu> children = getChildrenMenus();
 		Collections.sort(children);
 		return children;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<WebMenu> getChildrenMenus() {
-		
-		if (!getObjectId().isTemporary()) {
-			Expression expr = ExpressionFactory.matchExp(WebMenu.PARENT_WEB_MENU_PROPERTY, this);
-			SelectQuery q = new SelectQuery(WebMenu.class, expr);
-			/**
-			 * we use CACHE LOCAL_CACHE  Strategy to reduce db requests.
-			 */
-			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-			q.addPrefetch(WebMenu.PARENT_WEB_MENU_PROPERTY);
-			q.addPrefetch(WebMenu.CHILDREN_MENUS_PROPERTY);
-			return getObjectContext().performQuery(q);
-		}
-
-		return super.getChildrenMenus();
 	}
 
 	/**
 	 * @return All child menus with published nodes for this menu.
 	 */
+	@Deprecated //IWebMenuService.getNavigableChildrenBy should be used
 	public List<WebMenu> getNavigableChildMenus() {
 
 		Expression expr = ExpressionFactory
@@ -96,51 +81,5 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 
 	public int compareTo(WebMenu o) {
 		return this.getWeight() - o.getWeight();
-	}
-
-	public synchronized void updateWeight(int weight, WebMenu oldParent) {
-
-		Integer oldWeight = getWeight();
-		setWeight(weight);
-		List<WebMenu> siblings = getParentWebMenu().getWebMenus();
-		if (oldWeight == null) {
-			oldWeight = siblings.size();
-		}
-		// if we drag menu from another parent, we should update the weights in
-		// old tree
-		if (oldParent != null && !oldParent.getId().equals(getParentWebMenu().getId())) {
-			List<WebMenu> oldSiblings = oldParent.getWebMenus();
-			for (int i = 0; i < oldSiblings.size(); i++) {
-				oldSiblings.get(i).setWeight(i);
-			}
-			oldWeight = siblings.size();
-		}
-
-		for (int i = 0; i < siblings.size(); i++) {
-			WebMenu m = siblings.get(i);
-			if (m.getPersistenceState() != PersistenceState.NEW && !m.getId().equals(getId())) {
-				if (m.getWeight() == weight) {
-					if (i < weight) {
-						if (oldWeight > weight) {
-							m.setWeight(i + 1);
-						} else {
-							m.setWeight(i);
-						}
-					} else {
-						if (i == weight) {
-							if (oldWeight > weight) {
-								m.setWeight(i + 1);
-							} else {
-								m.setWeight(i - 1);
-							}
-						} else {
-							m.setWeight(i);
-						}
-					}
-				} else {
-					m.setWeight(i);
-				}
-			}
-		}
 	}
 }

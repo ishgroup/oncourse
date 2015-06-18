@@ -1,6 +1,7 @@
 package ish.oncourse.services.menu;
 
 import ish.oncourse.model.WebMenu;
+import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.BaseService;
@@ -8,11 +9,17 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.PrefetchTreeNode;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -45,56 +52,108 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		if (!childrenMenus.isEmpty()) {
 			size = childrenMenus.size();
 		}
-		menu.updateWeight(size, null);
-		
+		updateWeight(menu, size, null);
 		setUniqueWebMenuName(menu);
+//		refreshMenus();
 		return menu;
+	}
+
+	private void refreshMenus() {
+		ObjectSelect.query(WebMenu.class)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebMenu.class.getSimpleName());
+	}
+
+	public List<WebMenu> getChildrenBy(WebMenu parent) {
+		List<WebMenu> result = new ArrayList<>();
+		result.addAll(parent.getChildrenMenus());
+		Collections.sort(result);
+		return result;
+	}
+
+
+	/**
+	 * @return All child menus with published nodes for this menu.
+	 */
+	public List<WebMenu> getNavigableChildrenBy(WebMenu parent) {
+		List<WebMenu> childrent = getChildrenBy(parent);
+		return WebMenu.WEB_NODE.dot(WebNode.PUBLISHED).eq(true)
+				.orExp(
+						WebMenu.WEB_NODE.isNull()
+								.andExp(WebMenu.URL.isNotNull()))
+				.filterObjects(childrent);
 	}
 
 	@Override
 	public WebMenu getMenuByNameAndParentMenu(String name, WebMenu parentMenu) {
-		WebMenu webMenu = null;
 		ObjectContext ctx = cayenneService.sharedContext();
 
-		SelectQuery selectQuery = new SelectQuery(WebMenu.class);
-		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.NAME_PROPERTY, name));
-		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.WEB_SITE_VERSION_PROPERTY, 
-				webSiteVersionService.getCurrentVersion()));
-		selectQuery.andQualifier(ExpressionFactory.matchExp(WebMenu.PARENT_WEB_MENU_PROPERTY, parentMenu));
-		
-		List<WebMenu> menuList = ctx.performQuery(selectQuery);
-		if (!menuList.isEmpty()) {
-			webMenu = menuList.get(0);
-		}
-		return webMenu;
+		return ObjectSelect.query(WebMenu.class).and(WebMenu.NAME.eq(name))
+				.and(WebMenu.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
+				.and(WebMenu.PARENT_WEB_MENU.eq(parentMenu)).selectOne(ctx);
 	}
 
 	@Override
 	public WebMenu getRootMenu() {
-		Expression rootMenuExp = ExpressionFactory.matchExp(
-				WebMenu.PARENT_WEB_MENU_PROPERTY, null);
+		return ObjectSelect.query(WebMenu.class)
+				.and(siteQualifier())
+				.and(WebMenu.PARENT_WEB_MENU.isNull())
+				.cacheStrategy(LOCAL_CACHE)
+				.cacheGroups(WebMenu.class.getSimpleName())
+				.selectOne(cayenneService.sharedContext());
+	}
 
-		SelectQuery query = new SelectQuery(WebMenu.class, siteQualifier()
-				.andExp(rootMenuExp));
-		query.setCacheStrategy(LOCAL_CACHE);
 
-		query.addPrefetch(WebMenu.PARENT_WEB_MENU_PROPERTY);
-		query.addPrefetch(WebMenu.CHILDREN_MENUS_PROPERTY);
+	public void updateWeight(WebMenu menu, int weight, WebMenu oldParent) {
 
-		@SuppressWarnings("unchecked")
-		List<WebMenu> results = cayenneService.sharedContext().performQuery(
-				query);
+		Integer oldWeight = menu.getWeight();
+		menu.setWeight(weight);
 
-		return results.isEmpty() ? null : results.get(0);
+		List<WebMenu> siblings = getChildrenBy(menu.getParentWebMenu());
+		if (oldWeight == null) {
+			oldWeight = siblings.size();
+		}
+		// if we drag menu from another parent, we should update the weights in
+		// old tree
+		if (oldParent != null && !oldParent.getId().equals(menu.getParentWebMenu().getId())) {
+			List<WebMenu> oldSiblings = getChildrenBy(oldParent);
+			for (int i = 0; i < oldSiblings.size(); i++) {
+				oldSiblings.get(i).setWeight(i);
+			}
+			oldWeight = siblings.size();
+		}
+
+		for (int i = 0; i < siblings.size(); i++) {
+			WebMenu m = siblings.get(i);
+			if (m.getPersistenceState() != PersistenceState.NEW && !m.getId().equals(menu.getId())) {
+				if (m.getWeight() == weight) {
+					if (i < weight) {
+						if (oldWeight > weight) {
+							m.setWeight(i + 1);
+						} else {
+							m.setWeight(i);
+						}
+					} else {
+						if (i == weight) {
+							if (oldWeight > weight) {
+								m.setWeight(i + 1);
+							} else {
+								m.setWeight(i - 1);
+							}
+						} else {
+							m.setWeight(i);
+						}
+					}
+				} else {
+					m.setWeight(i);
+				}
+			}
+		}
 	}
 
 	private Expression siteQualifier() {
 		WebSite site = webSiteService.getCurrentWebSite();
-		Expression expression = (site == null) ? ExpressionFactory.matchExp(
-				WebMenu.WEB_SITE_VERSION_PROPERTY + "." + WebSiteVersion.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
-				webSiteService.getCurrentCollege()) : ExpressionFactory
-				.matchExp(WebMenu.WEB_SITE_VERSION_PROPERTY, webSiteVersionService.getCurrentVersion());
-
+		Expression expression = (site == null) ? WebMenu.WEB_SITE_VERSION.dot(WebSiteVersion.WEB_SITE).dot(WebSite.COLLEGE).eq(webSiteService.getCurrentCollege()):
+				WebMenu.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion());
 		return expression;
 	}
 
@@ -103,9 +162,8 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 
 		ObjectContext ctx = menu.getObjectContext();
 
-		Expression expression = ExpressionFactory.likeIgnoreCaseExp(WebMenu.NAME_PROPERTY, defaultName + "%");
-		SelectQuery selectQuery = new SelectQuery(WebMenu.class, expression);
-		List<WebMenu> menuList = ctx.performQuery(selectQuery);
+		List<WebMenu> menuList = ObjectSelect.query(WebMenu.class).and(WebMenu.NAME.like(defaultName + "%")).select(ctx);
+
 		//check list content
 		if (!menuList.isEmpty()) {
 			menu.setName(defaultName);
@@ -125,4 +183,6 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		}
 		menu.setName(defaultName);
 	}
+
+
 }

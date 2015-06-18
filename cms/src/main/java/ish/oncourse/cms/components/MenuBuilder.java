@@ -1,8 +1,10 @@
 package ish.oncourse.cms.components;
 
+import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.services.alias.IWebUrlAliasService;
+import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -11,6 +13,8 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
+
+import java.util.List;
 
 public class MenuBuilder extends ish.oncourse.ui.components.Menu {
 	
@@ -32,6 +36,15 @@ public class MenuBuilder extends ish.oncourse.ui.components.Menu {
 	
 	@Inject
 	private IWebSiteVersionService webSiteVersionService;
+
+	@Inject
+	private IWebMenuService webMenuService;
+
+
+	public List<WebMenu> getChildren() {
+		return webMenuService.getChildrenBy(webMenuService.getRootMenu());
+	}
+
 
 	public String getSuggestResults() {
 

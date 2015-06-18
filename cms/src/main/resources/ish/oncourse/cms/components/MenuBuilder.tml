@@ -20,7 +20,7 @@
 
 		<ul class="cms-menu-pages cms_navmenu_list cms_draggable cms_sortable">
  
-            <t:loop source="rootMenu.webMenus" value="currentMenu">
+            <t:loop source="children" value="currentMenu">
 				<t:delegate to="menuItem"/>
 			</t:loop>
 		

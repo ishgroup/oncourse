@@ -2,6 +2,7 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
@@ -27,6 +28,9 @@ public class MenuItem {
     @Inject
     private IWebNodeService webNodeService;
 
+	@Inject
+	private IWebMenuService webMenuService;
+
 	@SetupRender
 	boolean setup() {
 		// prevents rending with the menu parameter is null.
@@ -48,7 +52,7 @@ public class MenuItem {
 	}
 
 	protected List<WebMenu> getChildren() {
-		return menu.getNavigableChildMenus();
+		return webMenuService.getNavigableChildrenBy(menu);
 	}
 
 	@AfterRenderBody

@@ -287,8 +287,9 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	    return ObjectSelect.query(WebUrlAlias.class)
 			    .and(WebUrlAlias.WEB_NODE.eq(webNode))
 			    .and(WebUrlAlias.DEFAULT.eq(true))
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH)
 			    .cacheGroups(WebUrlAlias.class.getSimpleName())
-			    .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH).selectOne(context);
+			    .selectOne(context);
     }
 
 	@Override

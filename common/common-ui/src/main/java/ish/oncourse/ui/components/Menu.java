@@ -9,6 +9,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Menu {
@@ -35,7 +36,6 @@ public class Menu {
 		if (rootMenu == null) {
 			rootMenu = webMenuService.getRootMenu();
 		}
-		
 		return rootMenu != null;
 	}
 
@@ -48,6 +48,10 @@ public class Menu {
 			childPositions.put(menu, 0);
 		}
 		this.currentMenu = menu;
+	}
+
+	public List<WebMenu> getChildrent() {
+		return webMenuService.getNavigableChildrenBy(rootMenu);
 	}
 
 	public int getCurrentChildPosition() {

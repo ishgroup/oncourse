@@ -87,6 +87,7 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 
 		List<T> results = null;
 		SelectQuery query = new SelectQuery(getEntityClass());
+		query.setCacheGroups(getEntityClass().getSimpleName());
 		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		query.andQualifier(qualifier);
 

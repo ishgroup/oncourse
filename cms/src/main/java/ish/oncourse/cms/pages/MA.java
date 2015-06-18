@@ -69,7 +69,7 @@ public class MA {
 			return new TextStreamResponse("text/json", obj.toString());
 		}
 
-		ObjectContext ctx = cayenneService.newContext();
+		ObjectContext ctx = cayenneService.sharedContext();
 		WebSite webSite = ctx.localObject(webSiteService.getCurrentWebSite());
 		WebMenu menu = webMenuService.createMenu(webSite);
 		ctx.commitChanges();
@@ -111,7 +111,7 @@ public class MA {
 			value = agregatedValue.toString();
 		}
 
-		WebMenu menu = cayenneService.newContext().localObject(webMenuService.findById(Long.parseLong(id[1])));
+		WebMenu menu = cayenneService.sharedContext().localObject(webMenuService.findById(Long.parseLong(id[1])));
 
 		switch (OPER.valueOf(id[0])) {
 			case n:
@@ -176,7 +176,7 @@ public class MA {
 
 		String id = request.getParameter(MENU_ELEMENT_ID_PARAMETER);
 
-		ObjectContext ctx = cayenneService.newContext();
+		ObjectContext ctx = cayenneService.sharedContext();
 
 		WebMenu menu = webMenuService.findById(Long.parseLong(id));
 		if (menu != null) {
@@ -185,12 +185,12 @@ public class MA {
 				return new TextStreamResponse("text/json", "{status: 'FAILED'}");
 			}
 			WebMenu parentWebMenu = menu.getParentWebMenu();
-			parentWebMenu.removeFromChildrenMenus(menu);
-			List<WebMenu> webMenus = parentWebMenu.getWebMenus();
+			List<WebMenu> webMenus = webMenuService.getChildrenBy(parentWebMenu);
 			//update weights for the rest of menus
 			if (!webMenus.isEmpty()) {
-				webMenus.get(0).updateWeight(0, parentWebMenu);
+				webMenuService.updateWeight(webMenus.get(0), 0, null);
 			}
+			parentWebMenu.removeFromChildrenMenus(menu);
 			ctx.deleteObjects(menu);
 
 			ctx.commitChanges();
@@ -218,7 +218,7 @@ public class MA {
 
 		int weight = Integer.parseInt(request.getParameter("w"));
 
-		ObjectContext ctx = cayenneService.newContext();
+		ObjectContext ctx = cayenneService.sharedContext();
 
 		WebMenu item = ctx.localObject(webMenuService.findById(Long.parseLong(id)));
 		WebMenu pItem = ctx.localObject(pid.equals("null") ? webMenuService.getRootMenu()
@@ -227,8 +227,7 @@ public class MA {
 		if (menu == null || menu.getObjectId().equals(item.getObjectId())) {
 			WebMenu oldParent = item.getParentWebMenu();
 			item.setParentWebMenu(pItem);
-			item.updateWeight(weight, oldParent);
-
+			webMenuService.updateWeight(item, weight, oldParent);
 			ctx.commitChanges();
 			return new TextStreamResponse("text/json", "{status: 'OK'}");
 		} else {
