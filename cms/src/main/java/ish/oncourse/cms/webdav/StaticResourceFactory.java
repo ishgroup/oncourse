@@ -242,7 +242,14 @@ public class StaticResourceFactory implements ResourceFactory {
 			super(host, factory, dir, contentService);
 		}
 
-		@Override
+        @Override
+        public CollectionResource createCollection(String name) {
+            FsDirectoryResource resource = (FsDirectoryResource) super.createCollection(name);
+            compileResources(resource.getFile());
+            return resource;
+        }
+
+        @Override
 		public Resource createNew(String name, InputStream in, Long length, String contentType) throws IOException {
 			FsResource resource = (FsResource) super.createNew(name, in, length, contentType);
 
