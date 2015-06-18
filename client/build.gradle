@@ -90,9 +90,9 @@ project.ext.webstartFiles = copySpec {
 	}
 }
 
-task bundle_win(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
+task bundle_win(dependsOn: jar, type: au.com.ish.Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
-	jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
+	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
 	exeFile = file("${distsDir}/windows/onCourse.exe")
 
