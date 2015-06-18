@@ -227,12 +227,15 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			break;
 		case Page:
 			String nodeNumber = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
-			if (nodeNumber != null) {
+			WebNode webNode;
+			if (StringUtils.isNumeric(nodeNumber)) {
 				request.setAttribute(IWebNodeService.NODE_NUMBER_PARAMETER, nodeNumber);
-				if (webNodeService.getCurrentNode() == null) {
-					pageIdentifier = PageIdentifier.PageNotFound;
-				}
+				webNode = webNodeService.getCurrentNode();
 			} else {
+				request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, path);
+				webNode = webNodeService.getNodeForNodePath(path);
+			}
+			if (webNode == null) {
 				pageIdentifier = PageIdentifier.PageNotFound;
 			}
 			break;
