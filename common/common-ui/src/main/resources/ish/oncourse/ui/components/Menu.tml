@@ -1,5 +1,5 @@
 <ul xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<t:loop source="childrent" value="currentMenu">
+	<t:loop source="children" value="currentMenu">
 		<t:delegate to="menuItem" />
 	</t:loop>
 	<t:block>

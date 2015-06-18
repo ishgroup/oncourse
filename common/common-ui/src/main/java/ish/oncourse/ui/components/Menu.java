@@ -50,7 +50,7 @@ public class Menu {
 		this.currentMenu = menu;
 	}
 
-	public List<WebMenu> getChildrent() {
+	public List<WebMenu> getChildren() {
 		return webMenuService.getNavigableChildrenBy(rootMenu);
 	}
 
