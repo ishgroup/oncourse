@@ -1,5 +1,6 @@
 apply plugin: 'cayenne'
 apply plugin: 'groovy'
+apply plugin: 'war'
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
@@ -105,6 +106,18 @@ jar {
 		from sharedManifest
 		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
 	}
+}
+
+war {
+	manifest {
+		from sharedManifest
+		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
+	}
+
+    from("$buildDir/classes/main/ish/oncourse/server/") {
+        include 'AngelServer.class'
+        into '/ish/oncourse/server/'
+    }
 }
 
 sourceSets {
