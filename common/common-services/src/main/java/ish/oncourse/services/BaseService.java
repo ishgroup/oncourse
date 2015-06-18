@@ -1,10 +1,12 @@
 package ish.oncourse.services;
 
+import ish.oncourse.model.Queueable;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
@@ -51,6 +53,10 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 	@Override
 	public Class<T> getEntityClass() {
 		return entityClass;
+	}
+
+	public T refresh(Long willowId) {
+		return 	ObjectSelect.query(getEntityClass(), ExpressionFactory.matchDbExp(IBaseService.ID_PK_COLUMN, willowId)).selectOne(getCayenneService().newContext());
 	}
 
 	@Override

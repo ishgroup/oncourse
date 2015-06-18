@@ -48,7 +48,8 @@ public class BlockItem {
 		return isBlockAssigned(block);
 	}
 	
-	static boolean isBlockAssigned(WebContent block) {
+	private boolean isBlockAssigned(WebContent block) {
+		block = webContentService.refresh(block.getId());
 		List<WebContentVisibility> visibilities = block.getWebContentVisibilities();
 		if (visibilities.size() > 0) {
 			for (WebContentVisibility visibility : visibilities) {

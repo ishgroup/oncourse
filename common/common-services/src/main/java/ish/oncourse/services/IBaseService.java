@@ -40,5 +40,7 @@ public interface IBaseService<T extends Persistent> {
 	 * @return Records matching the qualifier or empty list otherwise
 	 */
 	List<T> findByQualifier(Expression qualifier);
+
+	T refresh(Long willowId);
 	
 }

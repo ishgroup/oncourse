@@ -1,11 +1,12 @@
 package ish.oncourse.services.content;
 
 import ish.oncourse.model.*;
+import ish.oncourse.services.IBaseService;
 
 import java.util.List;
 import java.util.SortedSet;
 
-public interface IWebContentService {
+public interface IWebContentService extends IBaseService<WebContent>{
 
 	/**
 	 * 
@@ -15,13 +16,6 @@ public interface IWebContentService {
 	 */
 
 	WebContent getWebContent(String searchProperty, Object value);
-
-    /**
-     * 
-     * @param willowId
-     * @return
-     */
-	WebContent findById(Long willowId);
 
 	/**
 	 * Gets blocks for location key for given web node type, sorted by weight property.
