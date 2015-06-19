@@ -92,10 +92,14 @@
                     <p><strong>Unassigned</strong> blocks<br/>
                         (drag them to the layout on the left)
                     </p>
-
 					<div id="scrollTheme" class="cms-theme-modules">
-                        <span class="cms-theme-modul-u buttons prev"></span>
-
+                        <div class="scrollbar">
+                            <div class="track">
+                                <div class="thumb">
+                                    <div class="end"/>
+                                </div>
+                            </div>
+                        </div>
                         <div class="viewport">
                         	<ul id="b_unassigned" class="overview sortableThemes">
 									<t:loop source="unassignedBlocks" value="block" formState="none">
@@ -103,11 +107,7 @@
 									</t:loop>
 								</ul>
                         </div>
-
-
-                        <span class="cms-theme-modul-d buttons next"></span>
                     </div>
-
                 </div>
 
             </div>

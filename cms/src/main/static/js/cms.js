@@ -1,7 +1,5 @@
 goog.provide('cms');
 
-
-goog.require('tinyscrollbar');
 goog.require('iphoneStyleChckbx');
 goog.require('RedirectsSettings');
 
@@ -29,15 +27,6 @@ jQuery(document).ready(
         initPublish();
         initAddNewPage();
     });
-
-function customForms() {
-    jQuery('.cms-onoff').iphoneStyle();
-    jQuery("select, input:checkbox, input:radio, input:file").uniform();
-
-    if (isChrome() != true) {
-        jQuery('#scrollbar1').tinyscrollbar();
-    }
-}
 
 function initPublish() {
 
