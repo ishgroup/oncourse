@@ -126,7 +126,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	
 	//recursively remove all childrenMenus then remove parent
 	private void deleteChildrenMenus(List<WebMenu> webMenus, ObjectContext context) {
-		List<WebMenu> copyList = webMenus;
+		List<WebMenu> copyList = new ArrayList<>(webMenus);
 		for (WebMenu webMenu : copyList) {
 			if (!webMenu.getChildrenMenus().isEmpty()) {
 				deleteChildrenMenus(webMenu.getChildrenMenus(), context);
