@@ -4,10 +4,7 @@ import ish.oncourse.model.auto._WebNodeType;
 import ish.oncourse.model.visitor.IVisitor;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.*;
 
 import java.util.Date;
 import java.util.List;
@@ -42,21 +39,12 @@ public class WebNodeType extends _WebNodeType {
 
 	@SuppressWarnings("unchecked")
 	public List<WebContent> getContentForRegionKey(String regionKey) {
-		SelectQuery q = new SelectQuery(WebContent.class);
-		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "."
-						+ WebContentVisibility.WEB_NODE_TYPE_PROPERTY, this));
-
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "."
-						+ WebContentVisibility.REGION_KEY_PROPERTY, RegionKey.valueOf(regionKey.toLowerCase())));
-
-		q.addOrdering(new Ordering(WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY
-				+ "." + WebContentVisibility.WEIGHT_PROPERTY,
-				SortOrder.ASCENDING));
-
-		return getObjectContext().performQuery(q);
+		return ObjectSelect.query(WebContent.class)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroups(WebContent.class.getSimpleName())
+				.and(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.WEB_NODE_TYPE).eq(this))
+				.and(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.REGION_KEY).eq(RegionKey.valueOf(regionKey.toLowerCase())))
+				.orderBy(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.WEIGHT).asc()).select(getObjectContext());
 	}
 	
 	public boolean isDefaultPageTheme(){
