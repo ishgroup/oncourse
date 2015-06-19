@@ -132,7 +132,7 @@ public class DiscountUtils {
 		Collections.sort(discounts, new Comparator<DiscountInterface>() {
 			@Override
 			public int compare(DiscountInterface o1, DiscountInterface o2) {
-				return o1.getRounding().getDatabaseValue().compareTo(o2.getRounding().getDatabaseValue());
+				return o2.getRounding().getDatabaseValue().compareTo(o1.getRounding().getDatabaseValue());
 
 			}
 		});
