@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug" monitorInterval="30">
+<Configuration status="warn" monitorInterval="30">
     <Properties>
         <Property name="name">enrol</Property>
     </Properties>
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout>
-                <Pattern>[%d{dd/MMM/yyyy:HH:mm:ss}] %t %x %-5p %c{1}: %m%n</Pattern>
-            </PatternLayout>
-        </Console>
         <RollingFile name="FILE" fileName="${sys:catalina.base}/logs/${name}.log" filePattern="${sys:catalina.base}/logs/${name}.log.%i">
             <PatternLayout>
                 <Pattern>[%d{dd/MMM/yyyy:HH:mm:ss}] %t %x %-5p %c{1}: %m%n</Pattern>
@@ -25,9 +20,9 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <Root level="warn">
             <AppenderRef ref="FILE_ERROR" level="error"/>
-            <AppenderRef ref="FILE" level="info"/>
+            <AppenderRef ref="FILE" level="warn"/>
         </Root>
     </Loggers>
 </Configuration>
