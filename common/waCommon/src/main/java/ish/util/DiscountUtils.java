@@ -10,7 +10,6 @@ import ish.math.MoneyRounding;
 import ish.oncourse.cayenne.DiscountInterface;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -24,7 +23,7 @@ public class DiscountUtils {
 	 * @param taxRate
 	 * @param taxAdjustments
 	 */
-	public static void applyDiscounts(List<DiscountInterface> discounts, IInvoiceLineInterface invoiceLine, BigDecimal taxRate, Money taxAdjustments) {		
+	public static void applyDiscounts(List<? extends DiscountInterface> discounts, IInvoiceLineInterface invoiceLine, BigDecimal taxRate, Money taxAdjustments) {		
 		
 		Money discountValue = discountValue(discounts, invoiceLine.getPriceEachExTax(), taxRate);
 		// In case there are multiple discounts rounding modes we should be the broadest one and use it
@@ -48,9 +47,9 @@ public class DiscountUtils {
 	 * @param taxRate
 	 * @return
 	 */
-	public static Money getDiscountedFee(List<DiscountInterface> discounts, Money priceExTax,  BigDecimal taxRate) {
+	public static Money getDiscountedFee(List<? extends DiscountInterface> discounts, Money priceExTax,  BigDecimal taxRate) {
 		if (discounts == null || discounts.isEmpty() || priceExTax == null || priceExTax.isZero()) {
-			return Money.ZERO;
+			return priceExTax;
 		}
 		if (taxRate == null) {
 			taxRate = new BigDecimal(0);
@@ -63,7 +62,7 @@ public class DiscountUtils {
 		}
 
 		if (discountAmount.compareTo(priceExTax) >= 0) {
-			return discountAmount;
+			return  Money.ZERO;
 		}
 
 		// In case there are multiple discounts rounding modes we should be the broadest one and use it
@@ -80,7 +79,7 @@ public class DiscountUtils {
 	 * @param taxRate
 	 * @return
 	 */
-	public static Money discountValue(List<DiscountInterface> discounts, Money priceExTax, BigDecimal taxRate) {
+	public static Money discountValue(List<? extends DiscountInterface> discounts, Money priceExTax, BigDecimal taxRate) {
 		Money total = getDiscountedFee(discounts, priceExTax, taxRate);
 		return priceExTax.subtract(total.divide(BigDecimal.ONE.add(taxRate)));
 	}
@@ -128,14 +127,22 @@ public class DiscountUtils {
 		return discountValue;
 	}
 	
-	private static MoneyRounding getBroadestRounding(List<DiscountInterface> discounts) {
+	private static MoneyRounding getBroadestRounding(List<? extends DiscountInterface> discounts) {
 		Collections.sort(discounts, new Comparator<DiscountInterface>() {
 			@Override
 			public int compare(DiscountInterface o1, DiscountInterface o2) {
+				if (o2.getRounding() == null && o1.getRounding() == null) {
+					return 0;
+				} else if (o2.getRounding() == null) {
+					return -1;
+				} else if (o1.getRounding() == null) {
+					return 1;
+				}
+				
 				return o2.getRounding().getDatabaseValue().compareTo(o1.getRounding().getDatabaseValue());
 
 			}
 		});
-		return discounts.get(0).getRounding();
+		return discounts.get(0).getRounding() != null ? discounts.get(0).getRounding() : MoneyRounding.ROUNDING_NONE;
 	}
 }
