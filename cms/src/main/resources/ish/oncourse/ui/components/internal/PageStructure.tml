@@ -10,6 +10,7 @@
 		<meta http-equiv="Cache-control" content="no-cache"/>
         <span t:type="ui/pagehead" pageName="pageName" webNode="webNode"
               canonicalLinkPath="canonicalLinkPath"
+              canonicalRelativeLinkPath="canonicalRelativeLinkPath"
               metaDescription="metaDescription"/>
         <t:delegate to="block:cmsHead"/>
 	</head>
