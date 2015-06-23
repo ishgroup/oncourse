@@ -1,8 +1,9 @@
 package ish.oncourse.model;
 
 import ish.math.Money;
-import ish.oncourse.utils.DiscountUtils;
+import ish.oncourse.utils.WebDiscountUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,12 +47,12 @@ public abstract class DiscountPolicy {
 	 * @param feeExGst 
 	 * @return filtered discounts.
 	 */
-	public List<Discount> filterDiscounts(List<Discount> discounts, Money feeExGst) {
+	public List<Discount> filterDiscounts(List<Discount> discounts, Money feeExGst, BigDecimal taxRate) {
 		List<Discount> result = new ArrayList<>();
 
 		result = getApplicableByPolicy(discounts);
 
-		result = DiscountUtils.chooseBestDiscountsVariant(result, feeExGst);
+		result = WebDiscountUtils.chooseBestDiscountsVariant(result, feeExGst, taxRate);
 
 		return result;
 	}

@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	public void filterDiscountsSmokeTest() {
 		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
-				singleDiscountWithRateMin), FEE_EX_GST);
+				singleDiscountWithRateMin), FEE_EX_GST, new BigDecimal(0.1));
 		assertFalse(filteredDiscounts.isEmpty());
 		assertEquals(1, filteredDiscounts.size());
 		assertEquals(singleDiscountWithRate, filteredDiscounts.get(0));

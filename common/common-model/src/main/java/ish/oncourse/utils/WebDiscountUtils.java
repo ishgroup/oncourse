@@ -1,8 +1,8 @@
 package ish.oncourse.utils;
 
-import ish.common.types.DiscountType;
 import ish.math.Money;
 import ish.oncourse.model.*;
+import ish.util.DiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -17,7 +17,7 @@ import java.util.*;
  * @author ksenia
  * 
  */
-public class DiscountUtils {
+public class WebDiscountUtils {
 	private static final String SPACE_CHARACTER = " ";
 	private static final String WITH_POSCODES_CONDITION_TEXT = " with poscodes: ";
 	private static final String WITH_MEMBERSHIPS_CONDITION_TEXT = " with memberships:";
@@ -27,83 +27,6 @@ public class DiscountUtils {
 	private static final String ENROLLED_WITHIN_CONDITION_TEXT = "enrolled within ";
 	private static final String CONDITION_SEPARATOR_STRING = "; ";
 	private static final String FOR_STUDENTS_START_STRING = "for students: ";
-
-	/**
-	 * Returns the discount value for the given price if apply the given
-	 * discount.
-	 * 
-	 * @param discount
-	 *            - the given discount.
-	 * @param price
-	 *            - the price for discount
-	 * @return the discount value
-	 */
-	public static Money discountValue(Discount discount, Money price) {
-		if (price.isZero()) {
-			return price;
-		}
-		Money discountValue = Money.ZERO;
-		BigDecimal discountRate = discount.getDiscountRate();
-		DiscountType discountType = discount.getDiscountType();
-
-		if (discountType == null) {
-			if (discountRate == null) {
-				discountValue = discount.getDiscountAmount();
-			} else {
-				discountValue = price.multiply(discountRate);
-			}
-		} else {
-			switch (discountType) {
-			case FEE_OVERRIDE:
-				discountValue = price.subtract(discount.getDiscountAmount());
-				break;
-			case DOLLAR:
-				discountValue = discount.getDiscountAmount();
-				break;
-			case PERCENT:
-				discountValue = price.multiply(discountRate);
-				discountValue = discountValue.round(discount.getRoundingMode());
-				break;
-			}
-		}
-
-		Money maximumDiscount = discount.getMaximumDiscount();
-		if (Money.ZERO.isLessThan(maximumDiscount) && discountValue.compareTo(maximumDiscount) > 0) {
-			discountValue = maximumDiscount;
-		} else {
-			Money minimumDiscount = discount.getMinimumDiscount();
-			if (Money.ZERO.isLessThan(minimumDiscount) && discountValue.compareTo(minimumDiscount) < 0) {
-				discountValue = minimumDiscount;
-			}
-		}
-		if (price.compareTo(discountValue) < 0) {
-			return price;
-		}
-		return discountValue;
-	}
-
-	/**
-	 * Returns the discount value for the given price if apply the discounts
-	 * from the given list(doesn't check the applicability, just calculate).
-	 * 
-	 * @param discounts
-	 *            - a collection of discounts to apply.
-	 * @param price
-	 *            - the price for discount
-	 * @return the discount value
-	 */
-	public static Money discountValueForList(List<Discount> discounts, Money price) {
-		Money result = Money.ZERO;
-		if (discounts != null) {
-			for (Discount d : discounts) {
-				result = result.add(discountValue(d, price));
-			}
-		}
-		if (price.compareTo(result) < 0) {
-			return price;
-		}
-		return result;
-	}
 
 	/**
 	 * Chooses the best option (the max discount value) from the proposed
@@ -117,7 +40,7 @@ public class DiscountUtils {
 	 * @return
 	 */
 
-	public static List<Discount> chooseBestDiscountsVariant(List<Discount> discounts, Money feeExGst) {
+	public static List<Discount> chooseBestDiscountsVariant(List<Discount> discounts, Money feeExGst, BigDecimal taxRate) {
 		Vector<Discount> chosenDiscounts = new Vector<>();
 		if (discounts != null && !discounts.isEmpty()) {
 			// figure out the best deal for the customer.
@@ -128,10 +51,10 @@ public class DiscountUtils {
 
 			Money maxDiscount = Money.ZERO;
 			Discount bestDeal = null;
-			maxDiscount = DiscountUtils.discountValueForList(discountsToCombine, feeExGst);
+			maxDiscount = DiscountUtils.discountValue(discountsToCombine, feeExGst, taxRate);
 
 			for (Discount d : discountsNotToCombine) {
-				Money val = DiscountUtils.discountValue(d, feeExGst);
+				Money val = DiscountUtils.discountValue(Arrays.asList(d), feeExGst, taxRate);
 
 				if (val.compareTo(maxDiscount) > 0) {
 					bestDeal = d;
@@ -190,7 +113,7 @@ public class DiscountUtils {
 	 * is just a one discount send, just returns its eligibility condition. If
 	 * no contact filter is defined, returns null;
 	 * 
-	 * @param discounts
+	 * @param applicableDiscounts
 	 * @return
 	 */
 	public static String getEligibilityConditions(List<Discount> applicableDiscounts) {

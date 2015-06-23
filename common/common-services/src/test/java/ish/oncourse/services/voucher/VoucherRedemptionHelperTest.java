@@ -7,11 +7,13 @@ package ish.oncourse.services.voucher;
 import ish.common.types.PaymentType;
 import ish.common.types.ProductStatus;
 import ish.math.Money;
+import ish.oncourse.cayenne.DiscountInterface;
 import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.utils.DiscountUtils;
+import ish.oncourse.utils.WebDiscountUtils;
+import ish.util.DiscountUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -121,7 +123,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 
 		InvoiceLine il = Cayenne.objectForPK(context, InvoiceLine.class, 2);
 
-		il.setDiscountEachExTax(DiscountUtils.discountValue(discount, cc.getFeeExGst()));
+		DiscountUtils.applyDiscounts(Arrays.asList(discount), il, cc.getTaxRate(), Money.ZERO);
 
 		Voucher courseVoucher = Cayenne.objectForPK(context, Voucher.class, 1);
 

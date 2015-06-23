@@ -2,11 +2,13 @@ package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
+import ish.oncourse.cayenne.DiscountInterface;
 import ish.oncourse.model.auto._CourseClass;
-import ish.oncourse.utils.DiscountUtils;
+import ish.oncourse.utils.WebDiscountUtils;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
+import ish.util.DiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.*;
 import org.apache.commons.lang.StringUtils;
@@ -352,7 +354,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * @return
 	 */
 	public List<Discount> getDiscountsToApply(DiscountPolicy policy) {
-		return policy.filterDiscounts(getDiscounts(), getFeeExGst());
+		return policy.filterDiscounts(getDiscounts(), getFeeExGst(), getTaxRate());
 	}
 
 	/**
@@ -363,7 +365,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * @return
 	 */
 	public Money getDiscountAmountExTax(List<Discount> selectedDiscounts) {
-		return DiscountUtils.discountValueForList(selectedDiscounts, getFeeExGst());
+		return DiscountUtils.discountValue(selectedDiscounts, getFeeExGst(), getTaxRate());
 	}
 
 	/**
@@ -374,8 +376,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * @return
 	 */
 	public Money getDiscountAmountIncTax(List<Discount> selectedDiscounts) {
-		Money discountAmountForFee = getDiscountAmountExTax(selectedDiscounts);
-		return discountAmountForFee.add(discountAmountForFee.multiply(getTaxRate()));
+		return getFeeIncGst().subtract(getDiscountedFeeIncTax(selectedDiscounts));
 	}
 
 	/**
@@ -386,7 +387,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * @return
 	 */
 	public Money getDiscountedTax(List<Discount> selectedDiscounts) {
-		return getDiscountedFee(selectedDiscounts).multiply(getTaxRate());
+		return getDiscountedFeeIncTax(selectedDiscounts).subtract(getDiscountedFee(selectedDiscounts));
 	}
 
 	/**
@@ -397,8 +398,10 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * @return
 	 */
 	public Money getDiscountedFeeIncTax(List<Discount> selectedDiscounts) {
-		Money discountedFee = getDiscountedFee(selectedDiscounts);
-		return discountedFee.add(discountedFee.multiply(getTaxRate()));
+		if (selectedDiscounts.isEmpty()) {
+			return getFeeIncGst();
+		}
+		return DiscountUtils.getDiscountedFee(selectedDiscounts, getFeeExGst(), getTaxRate());
 	}
 
 	/**

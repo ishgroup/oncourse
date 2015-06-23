@@ -4,6 +4,7 @@ import ish.common.types.DiscountType;
 import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.Discount;
+import ish.util.DiscountUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * Test for the {@link DiscountUtils}.
+ * Test for the {@link WebDiscountUtils}.
  * 
  * @author ksenia
  * 
@@ -98,65 +99,65 @@ public class DiscountUtilsTest {
 	}
 
 	/**
-	 * Test for {@link DiscountUtils#discountValue(Discount, Money)}. Emulates
+	 * Test for {@link DiscountUtils#discountValue}. Emulates
 	 * the situation when the discount with amount is applied to
 	 * {@value DiscountUtilsTest#PRICE} price, then to zero price, then to price
 	 * that is less than discountAmount.
 	 */
 	@Test
 	public void discountValueSmokeTest() {
-		Money discountValue = DiscountUtils.discountValue(combDiscountWithAmount, PRICE);
+		Money discountValue = DiscountUtils.discountValue(Arrays.asList(combDiscountWithAmount), PRICE, new BigDecimal(0));
 		assertEquals(new Money("10"), discountValue);
 
-		discountValue = DiscountUtils.discountValue(combDiscountWithAmount, Money.ZERO);
+		discountValue =  DiscountUtils.discountValue(Arrays.asList(combDiscountWithAmount), Money.ZERO, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValue);
 
-		discountValue = DiscountUtils.discountValue(combDiscountWithAmount, new Money("9"));
+		discountValue = DiscountUtils.discountValue(Arrays.asList(combDiscountWithAmount), new Money("9"), new BigDecimal(0));
 		assertEquals(new Money("9"), discountValue);
 
-		discountValue = DiscountUtils.discountValue(dollarDiscount, PRICE);
+		discountValue = DiscountUtils.discountValue(Arrays.asList(dollarDiscount), PRICE, new BigDecimal(0));
 		assertEquals(new Money("10"), discountValue);
 
-		discountValue = DiscountUtils.discountValue(percentDiscount, PRICE);
+		discountValue = DiscountUtils.discountValue(Arrays.asList(percentDiscount), PRICE, new BigDecimal(0));
 		assertEquals(new Money("20"), discountValue);
 
-		discountValue = DiscountUtils.discountValue(feeOverrideDiscount, PRICE);
+		discountValue =  DiscountUtils.discountValue(Arrays.asList(feeOverrideDiscount), PRICE, new BigDecimal(0));
 		assertEquals(new Money("90"), discountValue);
 
 		// discount with DiscountTypes (dollar, percent and feeOverride) with
 		// zero price
 
-		discountValue = DiscountUtils.discountValue(dollarDiscount, Money.ZERO);
+		discountValue = DiscountUtils.discountValue(Arrays.asList(dollarDiscount), Money.ZERO, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValue);
 
-		discountValue = DiscountUtils.discountValue(percentDiscount, Money.ZERO);
+		discountValue =DiscountUtils.discountValue(Arrays.asList(percentDiscount), Money.ZERO, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValue);
 
-		discountValue = DiscountUtils.discountValue(feeOverrideDiscount, Money.ZERO);
+		discountValue = DiscountUtils.discountValue(Arrays.asList(feeOverrideDiscount), Money.ZERO, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValue);
 	}
 
 	/**
-	 * Test for {@link DiscountUtils#discountValue(Discount, Money)}. Tests the
+	 * Test for {@link DiscountUtils#discountValue}. Tests the
 	 * behavior when there are different amount restrictions(min,max).
 	 */
 	@Test
 	public void discountValueRateWithRestrictionsTest() {
 		// Zero restrictions
-		Money discountValue = DiscountUtils.discountValue(singleDiscountWithRate, PRICE);
+		Money discountValue = DiscountUtils.discountValue(Arrays.asList(singleDiscountWithRate), PRICE, new BigDecimal(0));
 		assertEquals(new Money("20"), discountValue);
 		// Max restricted
-		discountValue = DiscountUtils.discountValue(combDiscountWithRateMax, PRICE);
+		discountValue = DiscountUtils.discountValue(Arrays.asList(combDiscountWithRateMax), PRICE, new BigDecimal(0));
 		assertTrue(PRICE.multiply(combDiscountWithRateMax.getDiscountRate()).compareTo(combDiscountWithRateMax.getMaximumDiscount()) > 0);
 		assertEquals(combDiscountWithRateMax.getMaximumDiscount(), discountValue);
 		// Min restricted
-		discountValue = DiscountUtils.discountValue(singleDiscountWithRateMin, PRICE);
+		discountValue = DiscountUtils.discountValue(Arrays.asList(singleDiscountWithRateMin), PRICE, new BigDecimal(0));
 		assertTrue(PRICE.multiply(singleDiscountWithRateMin.getDiscountRate()).compareTo(singleDiscountWithRateMin.getMinimumDiscount()) < 0);
 		assertEquals(singleDiscountWithRateMin.getMinimumDiscount(), discountValue);
 	}
 
 	/**
-	 * Test for {@link DiscountUtils#discountValueForList(List, Money)}.
+	 * Test for {@link DiscountUtils#discountValue}.
 	 * Emulates the situations when there is a filled list of discounts and
 	 * positive price, when there is a filled list of discounts and the price
 	 * that is less that discount value, when there is a null list of discounts
@@ -167,39 +168,38 @@ public class DiscountUtilsTest {
 	public void discountValueForListTest() {
 		List<Discount> discounts = Arrays.asList(combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
 				singleDiscountWithRateMin);
-		Money discountValueForList = DiscountUtils.discountValueForList(discounts, PRICE);
+		Money discountValueForList = DiscountUtils.discountValue(discounts, PRICE, new BigDecimal(0));
 		assertEquals(new Money("55"), discountValueForList);
-		discountValueForList = DiscountUtils.discountValueForList(Arrays.asList(combDiscountWithAmount, singleDiscountWithRate), new Money(
-				"10"));
+		discountValueForList =DiscountUtils.discountValue(Arrays.asList(combDiscountWithAmount, singleDiscountWithRate), new Money("10"), new BigDecimal(0));
 		assertEquals(new Money("10"), discountValueForList);
-		discountValueForList = DiscountUtils.discountValueForList(null, PRICE);
+		discountValueForList = DiscountUtils.discountValue(null, PRICE, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValueForList);
-		discountValueForList = DiscountUtils.discountValueForList(Collections.EMPTY_LIST, PRICE);
+		discountValueForList = DiscountUtils.discountValue(Collections.EMPTY_LIST, PRICE, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValueForList);
-		discountValueForList = DiscountUtils.discountValueForList(discounts, Money.ZERO);
+		discountValueForList = DiscountUtils.discountValue(discounts, Money.ZERO, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValueForList);
 	}
 
 	/**
-	 * Test for {@link DiscountUtils#chooseBestDiscountsVariant(List)}. Emulates
+	 * Test for {@link WebDiscountUtils#chooseBestDiscountsVariant(List,Money,BigDecimal)}. Emulates
 	 * the situations when the discounts list parameter is null and empty.
 	 */
 	@Test
 	public void chooseBestDiscountsVariantEmptyTest() {
-		List<Discount> chosenDiscounts = DiscountUtils.chooseBestDiscountsVariant(null, PRICE);
+		List<Discount> chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(null, PRICE, new BigDecimal(0));
 		assertTrue(chosenDiscounts.isEmpty());
-		chosenDiscounts = DiscountUtils.chooseBestDiscountsVariant(Collections.EMPTY_LIST, PRICE);
+		chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(Collections.EMPTY_LIST, PRICE, new BigDecimal(0));
 		assertTrue(chosenDiscounts.isEmpty());
 	}
 
 	/**
-	 * Test for {@link DiscountUtils#chooseBestDiscountsVariant(List)}. Emulates
+	 * Test for {@link WebDiscountUtils#chooseBestDiscountsVariant(List,Money,BigDecimal)}. Emulates
 	 * the situation when the combined result is the best.
 	 */
 	@Test
 	public void chooseBestDiscountsVariantCombResultTest() {
-		List<Discount> chosenDiscounts = DiscountUtils.chooseBestDiscountsVariant(
-				Arrays.asList(combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin), PRICE);
+		List<Discount> chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(
+				Arrays.asList(combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin), PRICE, new BigDecimal(0));
 		assertFalse(chosenDiscounts.isEmpty());
 		assertTrue(chosenDiscounts.size() == 2);
 		assertEquals(combDiscountWithAmount, chosenDiscounts.get(0));
@@ -207,20 +207,20 @@ public class DiscountUtilsTest {
 	}
 
 	/**
-	 * Test for {@link DiscountUtils#chooseBestDiscountsVariant(List)}. Emulates
+	 * Test for {@link WebDiscountUtils#chooseBestDiscountsVariant(List,Money,BigDecimal)}. Emulates
 	 * the situation when the single-discount result is the best.
 	 */
 	@Test
 	public void chooseBestDiscountsVariantSingleResultTest() {
-		List<Discount> chosenDiscounts = DiscountUtils.chooseBestDiscountsVariant(
-				Arrays.asList(singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin), PRICE);
+		List<Discount> chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(
+				Arrays.asList(singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin), PRICE, new BigDecimal(0));
 		assertFalse(chosenDiscounts.isEmpty());
 		assertTrue(chosenDiscounts.size() == 1);
 		assertEquals(singleDiscountWithRate, chosenDiscounts.get(0));
 	}
 
 	/**
-	 * Test for {@link DiscountUtils#chooseBestDiscountsVariant(List)}. Check
+	 * Test for {@link WebDiscountUtils#chooseBestDiscountsVariant(List,Money,BigDecimal)}. Check
 	 * situation when fee override is greater than course class price.
 	 */
 	@Test
@@ -231,21 +231,21 @@ public class DiscountUtilsTest {
 		feeOverride.setDiscountAmount(new Money(new BigDecimal(200)));
 		feeOverride.setDiscountType(DiscountType.FEE_OVERRIDE);
 
-		List<Discount> chosenDiscounts = DiscountUtils.chooseBestDiscountsVariant(Arrays.asList(feeOverride), PRICE);
+		List<Discount> chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(Arrays.asList(feeOverride), PRICE, new BigDecimal(0));
 
 		assertNotNull("Checking that list is not null.", chosenDiscounts);
 		assertTrue("Checking that discount isn't selected as it's larger than course price.", chosenDiscounts.isEmpty());
 
-		chosenDiscounts = DiscountUtils.chooseBestDiscountsVariant(
-				Arrays.asList(singleDiscountWithRate, feeOverride, singleDiscountWithRateMin), PRICE);
+		chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(
+				Arrays.asList(singleDiscountWithRate, feeOverride, singleDiscountWithRateMin), PRICE, new BigDecimal(0));
 
 		assertEquals("Expecting one discount.", 1, chosenDiscounts.size());
 		assertEquals("Expecting singleDiscountWithRate.", singleDiscountWithRate, chosenDiscounts.get(0));
 
 		feeOverride.setDiscountAmount(new Money(new BigDecimal(60)));
 
-		chosenDiscounts = DiscountUtils.chooseBestDiscountsVariant(
-				Arrays.asList(singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin, feeOverride), PRICE);
+		chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(
+				Arrays.asList(singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin, feeOverride), PRICE, new BigDecimal(0));
 
 		assertEquals("Expecting one discount.", 1, chosenDiscounts.size());
 		assertEquals("Expecting feeOverride.", feeOverride, chosenDiscounts.get(0));
@@ -259,18 +259,22 @@ public class DiscountUtilsTest {
 		
 		discount.setRoundingMode(MoneyRounding.ROUNDING_NONE);
 		
-		assertEquals(new Money("96.25"), DiscountUtils.discountValue(discount, new Money("875.00")));
+		assertEquals(new Money("856.63"), DiscountUtils.getDiscountedFee(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("96.25"), DiscountUtils.discountValue(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
 		
 		discount.setRoundingMode(MoneyRounding.ROUNDING_10C);
 		
-		assertEquals(new Money("96.30"), DiscountUtils.discountValue(discount, new Money("875.00")));
+		assertEquals(new Money("856.60"), DiscountUtils.getDiscountedFee(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("96.27"), DiscountUtils.discountValue(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
 		
 		discount.setRoundingMode(MoneyRounding.ROUNDING_50C);
 		
-		assertEquals(new Money("96.50"), DiscountUtils.discountValue(discount, new Money("875.00")));
+		assertEquals(new Money("856.50"),DiscountUtils.getDiscountedFee(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("96.36"), DiscountUtils.discountValue(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
 		
 		discount.setRoundingMode(MoneyRounding.ROUNDING_1D);
 		
-		assertEquals(new Money("96.00"), DiscountUtils.discountValue(discount, new Money("875.00")));
+		assertEquals(new Money("857.00"), DiscountUtils.getDiscountedFee(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("95.91"), DiscountUtils.discountValue(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
 	}
 }

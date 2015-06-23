@@ -8,7 +8,7 @@ import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.utils.DiscountFeeComparator;
-import ish.oncourse.utils.DiscountUtils;
+import ish.oncourse.utils.WebDiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
@@ -69,7 +69,7 @@ public class CourseClassPrice {
 		applicableDiscounts = courseClass.getDiscountsToApply(new PotentialDiscountsPolicy(promotions));
 		discountedFee = courseClass.getDiscountedFeeIncTax(applicableDiscounts);
 		discountValue = courseClass.getDiscountAmountIncTax(applicableDiscounts);
-		discountExpiryDate = DiscountUtils.earliestExpiryDate(applicableDiscounts);
+		discountExpiryDate = WebDiscountUtils.earliestExpiryDate(applicableDiscounts);
 		fillAppliedDiscountsTooltip();
 	}
 	
@@ -95,7 +95,7 @@ public class CourseClassPrice {
 	
 	private void fillPosibleDiscounts() {
 		Expression notHiddenDiscounts = ExpressionFactory.matchExp(Discount.HIDE_ON_WEB_PROPERTY, false);
-		List<Discount> potentialDiscounts = notHiddenDiscounts.filterObjects(DiscountUtils.getFilteredDiscounts(courseClass));
+		List<Discount> potentialDiscounts = notHiddenDiscounts.filterObjects(WebDiscountUtils.getFilteredDiscounts(courseClass));
 		Collections.sort(potentialDiscounts, new DiscountFeeComparator(courseClass));
 
 		Money money = null;

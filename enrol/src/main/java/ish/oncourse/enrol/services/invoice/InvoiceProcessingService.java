@@ -7,6 +7,7 @@ import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.util.DiscountUtils;
 import ish.util.InvoiceUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -141,9 +142,13 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		CourseClass courseClass = enrolment.getCourseClass();
 		List<Discount> enrolmentDiscounts = enrolment.getCourseClass().getDiscountsToApply(
 				new RealDiscountsPolicy(actualPromotions, enrolment.getStudent()));
-		InvoiceUtil.fillInvoiceLine(invoiceLine, invoiceLine.getPriceEachExTax(), courseClass.getDiscountAmountExTax(enrolmentDiscounts),
-				courseClass.getTaxRate(), calculateTaxAdjustment(courseClass));
-		createInvoiceLineDiscounts(invoiceLine, enrolmentDiscounts, objectContext);
+		if (!enrolmentDiscounts.isEmpty()) {
+			DiscountUtils.applyDiscounts(enrolmentDiscounts, invoiceLine, courseClass.getTaxRate(), calculateTaxAdjustment(courseClass));
+			createInvoiceLineDiscounts(invoiceLine, enrolmentDiscounts, objectContext);
+		} else {
+			InvoiceUtil.fillInvoiceLine(invoiceLine, invoiceLine.getPriceEachExTax(), Money.ZERO,
+					courseClass.getTaxRate(), calculateTaxAdjustment(courseClass));
+		}
 	}
 
 	/**

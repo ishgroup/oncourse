@@ -3,7 +3,7 @@ package ish.oncourse.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ish.oncourse.utils.DiscountUtils.hasAnyFiltering;
+import static ish.oncourse.utils.WebDiscountUtils.hasAnyFiltering;
 
 /**
  * Use this policy to get the "potentially applicable" discounts: when student
