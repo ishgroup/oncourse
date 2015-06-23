@@ -23,7 +23,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.text.Format;
+import java.text.*;
 import java.util.*;
 
 import static ish.oncourse.utils.SessionUtils.StartEndTime;
@@ -103,6 +103,9 @@ public class CourseClassItem {
 	@Parameter
 	@Property
 	private Money feeOverride;
+
+	@Property
+	private String ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZZ";
 	
 	@SetupRender
 	public void beforeRender() {
@@ -342,5 +345,14 @@ public class CourseClassItem {
 		Date date = session != null ? session.getStartDate():null;
 		return date == null || date.compareTo(new Date()) < 0 ? CLASS_NAME_classCommenced: StringUtils.EMPTY;
 	}
-	
+
+	public String formatMoney(Money money, String pattern) {
+		NumberFormat format = new DecimalFormat(pattern);
+		return format.format(money);
+	}
+
+	public String formatDate(Date date, String pattern) {
+		DateFormat format = new SimpleDateFormat(pattern);
+		return format.format(date);
+	}
 }
