@@ -9,12 +9,12 @@ import ish.oncourse.services.usi.IUSIVerificationService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class USIVerificationService implements IUSIVerificationService {
-	
+
+	@Inject
 	private USIService usiService;
 	
 	@Inject
 	public USIVerificationService() {
-		this.usiService = new USIService();
 	}
 
 	@Override

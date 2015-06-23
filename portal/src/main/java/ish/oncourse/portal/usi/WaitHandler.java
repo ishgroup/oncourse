@@ -80,17 +80,17 @@ public class WaitHandler extends AbstractStepHandler {
                     boolean match = true;
                     if (verificationResult.getLastNameStatus() == USIFieldStatus.NO_MATCH) {
                         match = false;
-                        result.addValue(Value.valueOf(Contact.FAMILY_NAME_PROPERTY, contact.getFamilyName(), getUsiController().getMessages().format("message-fieldNotMatch")));
+                        result.addValue(Value.valueOf(Contact.FAMILY_NAME.getName(), contact.getFamilyName(), getUsiController().getMessages().format("message-fieldNotMatch")));
                     }
                     if (verificationResult.getFirstNameStatus() == USIFieldStatus.NO_MATCH) {
                         match = false;
                         result.addValue(
-                                Value.valueOf(Contact.GIVEN_NAME_PROPERTY, contact.getGivenName(), getUsiController().getMessages().format("message-fieldNotMatch")));
+                                Value.valueOf(Contact.GIVEN_NAME.getName(), contact.getGivenName(), getUsiController().getMessages().format("message-fieldNotMatch")));
                     }
                     if (verificationResult.getDateOfBirthStatus() == USIFieldStatus.NO_MATCH) {
                         match = false;
                         result.addValue(
-                                Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, contact.getDateOfBirth(), getUsiController().getMessages().format("message-fieldNotMatch")));
+                                Value.valueOf(Contact.DATE_OF_BIRTH.getName(), contact.getDateOfBirth(), getUsiController().getMessages().format("message-fieldNotMatch")));
                     }
                     if (match) {
                         contact.getStudent().setUsiStatus(UsiStatus.VERIFIED);

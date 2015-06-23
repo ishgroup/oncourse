@@ -15,10 +15,11 @@ import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteVersionService;
-import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.UIRequestExceptionHandler;
+import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
+import ish.oncourse.webservices.usi.USIService;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
@@ -37,8 +38,6 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 @SubModule({ModelModule.class, ServiceModule.class, TextileModule.class})
 public class AppModule {
 
-    public static final String SYSPROP_USE_TEST_USI_SERVICE = "ish.oncourse.portal.useTestUSIService";
-
     private static final String EXCEPTION_REDIRECT_PAGE = "login";
 
     private static final String HMAC_PASSPHRASE = "T88LkO4uVSAH72BSU85FzhI6e3O31N6J";
@@ -54,10 +53,16 @@ public class AppModule {
         binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
         binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
         binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
-        if (System.getProperty(SYSPROP_USE_TEST_USI_SERVICE) != null && System.getProperty(SYSPROP_USE_TEST_USI_SERVICE).equals("true"))
-            binder.bind(IUSIVerificationService.class, TestUSISevice.class);
-        else
-            binder.bind(IUSIVerificationService.class, PortalUSIService.class);
+    }
+
+    @EagerLoad
+    public static USIService buildUSIService() {
+        if (System.getProperty(ServiceModule.APP_TEST_MODE) != null && System.getProperty(ServiceModule.APP_TEST_MODE).equals("true")) {
+            return USIService.valueOf(new TestUSIServiceEndpoint());
+        } else {
+            au.gov.usi._2013.ws.servicepolicy.USIService service = new au.gov.usi._2013.ws.servicepolicy.USIService();
+            return USIService.valueOf(service.getWS2007FederationHttpBindingIUSIService());
+        }
     }
 
     @EagerLoad

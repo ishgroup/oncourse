@@ -10,12 +10,12 @@ import ish.oncourse.webservices.usi.USIService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class PortalUSIService implements IUSIVerificationService {
-	
-	USIService usiService;
+
+	@Inject
+	private USIService usiService;
 	
 	@Inject
-	public PortalUSIService() {
-		this.usiService = new USIService();
+	public PortalUSIService(){
 	}
 
 	@Override

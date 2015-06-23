@@ -19,9 +19,7 @@ public class USIService {
 	
 	private IUSIService endpoint;
 	
-	public USIService() {
-		au.gov.usi._2013.ws.servicepolicy.USIService service = new au.gov.usi._2013.ws.servicepolicy.USIService();
-		this.endpoint = service.getWS2007FederationHttpBindingIUSIService();
+	private USIService() {
 	}
 	
 	public USIVerificationResult verifyUsi(USIVerificationRequest request) {
@@ -45,9 +43,15 @@ public class USIService {
 			USIVerificationResult result = new USIVerificationResult();
 
 			result.setUsiStatus(USIVerificationStatus.fromString(response.getUSIStatus()));
-			result.setFirstNameStatus(USIFieldStatus.fromString(response.getFirstName().value()));
-			result.setLastNameStatus(USIFieldStatus.fromString(response.getFamilyName().value()));
 			result.setDateOfBirthStatus(USIFieldStatus.fromString(response.getDateOfBirth().value()));
+
+			if (verifyUSIType.getSingleName() != null) {
+				result.setFirstNameStatus(USIFieldStatus.fromString(response.getSingleName().value()));
+				result.setLastNameStatus(USIFieldStatus.fromString(response.getSingleName().value()));
+			} else {
+				result.setFirstNameStatus(response.getFirstName() != null ? USIFieldStatus.fromString(response.getFirstName().value()) : USIFieldStatus.NO_MATCH);
+				result.setLastNameStatus(response.getFirstName() != null ? USIFieldStatus.fromString(response.getFamilyName().value()) : USIFieldStatus.NO_MATCH);
+			}
 
 			return result;
 		} catch (Exception e) {
@@ -55,5 +59,11 @@ public class USIService {
 
 			throw new RuntimeException("Error verifying USI.", e);
 		}
+	}
+
+	public static USIService valueOf(IUSIService endpoint) {
+		USIService usiService = new USIService();
+		usiService.endpoint = endpoint;
+		return usiService;
 	}
 }

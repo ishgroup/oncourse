@@ -33,6 +33,8 @@ import ish.oncourse.webservices.replication.services.TransactionGroupProcessorIm
 import ish.oncourse.webservices.replication.services.WillowQueueService;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
+import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
+import ish.oncourse.webservices.usi.USIService;
 import ish.oncourse.webservices.usi.USIVerificationService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.IOCSymbols;
@@ -84,6 +86,16 @@ public class AppModule {
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
+	}
+
+	@EagerLoad
+	public static USIService buildUSIService() {
+		if (System.getProperty(ServiceModule.APP_TEST_MODE) != null && System.getProperty(ServiceModule.APP_TEST_MODE).equals("true")) {
+			return USIService.valueOf(new TestUSIServiceEndpoint());
+		} else {
+			au.gov.usi._2013.ws.servicepolicy.USIService service = new au.gov.usi._2013.ws.servicepolicy.USIService();
+			return USIService.valueOf(service.getWS2007FederationHttpBindingIUSIService());
+		}
 	}
 		
 	/**
