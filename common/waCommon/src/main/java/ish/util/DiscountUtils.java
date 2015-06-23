@@ -48,11 +48,11 @@ public class DiscountUtils {
 	 * @return
 	 */
 	public static Money getDiscountedFee(List<? extends DiscountInterface> discounts, Money priceExTax,  BigDecimal taxRate) {
-		if (discounts == null || discounts.isEmpty() || priceExTax == null || priceExTax.isZero()) {
-			return priceExTax;
-		}
 		if (taxRate == null) {
 			taxRate = new BigDecimal(0);
+		}
+		if (discounts == null || discounts.isEmpty() || priceExTax.isZero()) {
+			return priceExTax.multiply(BigDecimal.ONE.add(taxRate));
 		}
 
 		Money discountAmount = Money.ZERO;
@@ -80,6 +80,9 @@ public class DiscountUtils {
 	 * @return
 	 */
 	public static Money discountValue(List<? extends DiscountInterface> discounts, Money priceExTax, BigDecimal taxRate) {
+		if (discounts == null || discounts.isEmpty()) {
+			return  Money.ZERO;
+		}
 		Money total = getDiscountedFee(discounts, priceExTax, taxRate);
 		return priceExTax.subtract(total.divide(BigDecimal.ONE.add(taxRate)));
 	}
@@ -143,6 +146,7 @@ public class DiscountUtils {
 
 			}
 		});
-		return discounts.get(0).getRounding() != null ? discounts.get(0).getRounding() : MoneyRounding.ROUNDING_NONE;
+		
+		return !discounts.isEmpty() && discounts.get(0).getRounding() != null ? discounts.get(0).getRounding() : MoneyRounding.ROUNDING_NONE;
 	}
 }
