@@ -4,6 +4,7 @@ import ish.common.types.UsiStatus;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.portal.services.AppModule;
+import ish.oncourse.services.ServiceModule;
 import ish.oncourse.util.FormatUtils;
 import ish.util.UsiUtil;
 
@@ -23,12 +24,12 @@ public class Step1Handler extends AbstractStepHandler {
         if (result.isEmpty()) {
             Date date = getUsiController().getContact().getDateOfBirth();
             Student student = getUsiController().getContact().getStudent();
-            addValue(Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (date != null ?
+            addValue(Value.valueOf(Contact.DATE_OF_BIRTH.getName(), (date != null ?
                     FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, getUsiController().getContact().getCollege().getTimeZone()).format(date) :
                     null)));
-            addValue(Value.valueOf(Student.USI_PROPERTY,
+            addValue(Value.valueOf(Student.USI.getName(),
                     student.getUsi()));
-            addValue(Value.valueOf(Student.USI_STATUS_PROPERTY, student.getUsiStatus() != null ? student.getUsiStatus().name() : UsiStatus.DEFAULT_NOT_SUPPLIED));
+            addValue(Value.valueOf(Student.USI_STATUS.getName(), student.getUsiStatus() != null ? student.getUsiStatus().name() : UsiStatus.DEFAULT_NOT_SUPPLIED));
         }
         return result;
     }
@@ -40,7 +41,7 @@ public class Step1Handler extends AbstractStepHandler {
 
     public Step1Handler handle(Map<String, Value> input) {
         this.inputValues = input;
-        handleDateOfBirth(Contact.DATE_OF_BIRTH_PROPERTY);
+        handleDateOfBirth(Contact.DATE_OF_BIRTH.getName());
         handleUsi();
         return this;
     }
@@ -58,13 +59,11 @@ public class Step1Handler extends AbstractStepHandler {
     private void handleUsi()
     {
         Student student = getUsiController().getContact().getStudent();
-        handleRequiredValue(getUsiController().getContact().getStudent(), Student.USI_PROPERTY);
-        if (result.getValue().get(Student.USI_PROPERTY).getError() == null
-                && !Boolean.valueOf(System.getProperty(AppModule.SYSPROP_USE_TEST_USI_SERVICE)))
-        {
-            if (!UsiUtil.validateKey(student.getUsi()))
-            {
-                result.addValue(Value.valueOf(Student.USI_PROPERTY, student.getUsi(), getUsiController().getMessages().format("message-invalidUsiError")));
+        handleRequiredValue(getUsiController().getContact().getStudent(), Student.USI.getName());
+        if (result.getValue().get(Student.USI.getName()).getError() == null
+                && !ServiceModule.useTestUSIEndpoint()) {
+            if (!UsiUtil.validateKey(student.getUsi())) {
+                result.addValue(Value.valueOf(Student.USI.getName(), student.getUsi(), getUsiController().getMessages().format("message-invalidUsiError")));
                 result.setHasErrors(true);
             }
         }

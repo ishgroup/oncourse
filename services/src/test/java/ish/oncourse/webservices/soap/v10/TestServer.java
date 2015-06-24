@@ -35,7 +35,6 @@ public class TestServer {
     }
     
     public TestServer(int port, String contextPath, String webPath, String host, String resourseBase, String webXmlFilePath) {
-        System.getProperties().put(ServiceModule.APP_TEST_MODE, "true");
         this.port = port;
 		this.contextPath = contextPath;
 		this.webPath = webPath;

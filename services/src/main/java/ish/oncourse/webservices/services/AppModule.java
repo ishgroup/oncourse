@@ -90,7 +90,7 @@ public class AppModule {
 
 	@EagerLoad
 	public static USIService buildUSIService() {
-		if (System.getProperty(ServiceModule.APP_TEST_MODE) != null && System.getProperty(ServiceModule.APP_TEST_MODE).equals("true")) {
+		if (ServiceModule.useTestUSIEndpoint()) {
 			return USIService.valueOf(new TestUSIServiceEndpoint());
 		} else {
 			au.gov.usi._2013.ws.servicepolicy.USIService service = new au.gov.usi._2013.ws.servicepolicy.USIService();
