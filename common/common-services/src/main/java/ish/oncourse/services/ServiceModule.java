@@ -110,13 +110,8 @@ import org.apache.tapestry5.services.LibraryMapping;
 public class ServiceModule {
 
 	public static final String APP_TEST_MODE = "application.test";
-	private static final String USI_TEST_MODE = "test.usi.endpoint";
 
 	private static Logger logger = LogManager.getLogger();
-
-	public static boolean useTestUSIEndpoint() {
-		return "true".equalsIgnoreCase(System.getProperty(USI_TEST_MODE));
-	}
 
 	public static void bind(ServiceBinder binder) {
 
