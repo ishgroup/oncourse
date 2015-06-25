@@ -113,8 +113,10 @@ public class PaymentProcessController {
                 tryOtherCard();
                 break;
             case ABANDON_PAYMENT:
+                abandonPayment(action, keepInvoice());
+                break;
             case CANCEL_PAYMENT:
-            	abandonPayment(action, keepInvoice());
+            	abandonPayment(action, true);
                 break;
 		    case EXPIRE_PAYMENT:
 		    	if (paymentService.isProcessedByGateway(paymentInModel.getPaymentIn())) {
