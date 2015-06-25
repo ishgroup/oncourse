@@ -3,6 +3,7 @@ package ish.oncourse.webservices.soap.v10;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.test.InitialContextFactoryMock;
 import ish.oncourse.util.ContextUtil;
+import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.Connector;
@@ -35,6 +36,7 @@ public class TestServer {
     }
     
     public TestServer(int port, String contextPath, String webPath, String host, String resourseBase, String webXmlFilePath) {
+        System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
         this.port = port;
 		this.contextPath = contextPath;
 		this.webPath = webPath;

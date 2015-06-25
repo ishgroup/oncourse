@@ -13,7 +13,7 @@ import ish.oncourse.services.usi.IUSIVerificationService;
  */
 public class TestUSIServiceEndpoint implements IUSIService {
 
-    private static final String USI_TEST_MODE = "test.usi.endpoint";
+    public static final String USI_TEST_MODE = "test.usi.endpoint";
 
     public static boolean useTestUSIEndpoint() {
         return "true".equalsIgnoreCase(System.getProperty(USI_TEST_MODE));
