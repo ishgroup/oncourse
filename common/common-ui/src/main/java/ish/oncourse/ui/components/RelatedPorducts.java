@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Product;
 import ish.oncourse.ui.utils.CourseItemModel;
 import org.apache.tapestry5.annotations.Parameter;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class RelatedPorducts {
+public class RelatedPorducts extends ISHCommon {
     @Property
     @Parameter(required = true)
     private CourseItemModel model;

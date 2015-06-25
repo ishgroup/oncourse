@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Discount;
 import ish.oncourse.services.discount.IDiscountService;
 import org.apache.tapestry5.Block;
@@ -16,7 +17,7 @@ import java.util.List;
  *
  * @author ksenia
  */
-public class AddDiscount {
+public class AddDiscount extends ISHCommon {
 
 	/**
 	 * The service to manipulate with discounts.

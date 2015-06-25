@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -7,7 +8,7 @@ import org.apache.tapestry5.annotations.Property;
 import java.text.DecimalFormat;
 import java.text.Format;
 
-public class CourseClassPlacesAvailable {
+public class CourseClassPlacesAvailable extends ISHCommon {
 
 	@Parameter
 	@Property

@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.services.cookies.CookiesService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.logging.log4j.LogManager;
@@ -9,7 +10,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
-public class TimezoneHolder {
+public class TimezoneHolder extends ISHCommon {
 	private static final String TIMEZONE_NAME_PARAMETER = "timezoneName";
 	private static final String STATUS_OK_RESPONSE = "{status: 'OK'}";
 	private static final String JSON_RESPONSE_TYPE = "text/json";

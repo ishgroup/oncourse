@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.SearchParams;
@@ -12,7 +13,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.Collections;
 import java.util.List;
 
-public class CoursesList {
+public class CoursesList extends ISHCommon {
 	@Inject
 	private ICourseService courseService;
 

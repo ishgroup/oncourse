@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +14,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Products {
+public class Products extends ISHCommon {
 	@Inject
 	@Property
 	private Request request;

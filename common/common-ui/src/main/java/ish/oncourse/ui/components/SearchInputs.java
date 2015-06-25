@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.URLUtils;
@@ -13,7 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
-public class SearchInputs {
+public class SearchInputs extends ISHCommon {
 
     private static final String URL_PATH_SEARCH_PATTERN = "/courses?s=%s" +
             "%s" +

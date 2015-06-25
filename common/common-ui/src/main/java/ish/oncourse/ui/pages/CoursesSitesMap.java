@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.sites.ISitesService;
 import org.apache.tapestry5.annotations.Property;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CoursesSitesMap {
+public class CoursesSitesMap extends ISHCommon {
 	@Inject
 	private Request request;
 

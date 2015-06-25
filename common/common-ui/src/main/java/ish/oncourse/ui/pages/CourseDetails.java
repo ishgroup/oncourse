@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
@@ -9,7 +10,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-public class CourseDetails {
+public class CourseDetails extends ISHCommon {
 	@Inject
 	private ICourseService courseService;
 

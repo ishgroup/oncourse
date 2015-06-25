@@ -2,6 +2,7 @@ package ish.oncourse.ui.components;
 
 import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.contact.IContactService;
@@ -27,7 +28,7 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CourseItem {
+public class CourseItem extends ISHCommon {
 
 	private static final int COURSE_DETAILS_LENGTH = 490;
 	private static final Logger logger = LogManager.getLogger();

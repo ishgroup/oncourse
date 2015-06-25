@@ -1,6 +1,7 @@
 package ish.oncourse.ui.pages;
 
 import ish.common.types.AttachmentInfoVisibility;
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
@@ -17,7 +18,7 @@ import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
-public class TutorDetails {
+public class TutorDetails extends ISHCommon {
 
 	@Inject
 	private IBinaryDataService binaryDataService;

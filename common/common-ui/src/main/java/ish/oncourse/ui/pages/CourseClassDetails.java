@@ -2,6 +2,7 @@ package ish.oncourse.ui.pages;
 
 import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Application;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
@@ -23,7 +24,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class CourseClassDetails {
+public class CourseClassDetails extends ISHCommon {
 
 	@Inject
 	private ITextileConverter textileConverter;

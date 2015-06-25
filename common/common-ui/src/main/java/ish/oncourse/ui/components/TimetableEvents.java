@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -15,7 +16,7 @@ import java.text.Format;
 import java.util.List;
 import java.util.TimeZone;
 
-public class TimetableEvents {
+public class TimetableEvents extends ISHCommon {
 
 	@Inject
 	private ICookiesService cookiesService;

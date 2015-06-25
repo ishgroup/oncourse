@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -11,7 +12,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.List;
 
-public class BlockDisplay {
+public class BlockDisplay extends ISHCommon {
 
 	@Parameter
 	private WebNodeType webNodeType;

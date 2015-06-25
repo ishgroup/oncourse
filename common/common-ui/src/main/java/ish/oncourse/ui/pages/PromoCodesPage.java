@@ -1,5 +1,7 @@
 package ish.oncourse.ui.pages;
 
-public class PromoCodesPage {
+import ish.oncourse.components.ISHCommon;
+
+public class PromoCodesPage extends ISHCommon {
 
 }

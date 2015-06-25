@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Document;
 import ish.oncourse.services.binary.IBinaryDataService;
 import org.apache.tapestry5.annotations.Parameter;
@@ -11,7 +12,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Attachments {
+public class Attachments extends ISHCommon {
 
     @Inject
     private IBinaryDataService binaryDataService;

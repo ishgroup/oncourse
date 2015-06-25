@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages.internal;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.linktransform.PageLinkTransformer;
 import ish.oncourse.ui.pages.PageNotFound;
 import ish.oncourse.ui.services.HttpStatusCode;
@@ -20,7 +21,7 @@ import static ish.oncourse.util.URLUtils.buildURL;
 /**
  * the class handels 'redirect 301' functionality.
  */
-public class Redirect301 {
+public class Redirect301 extends ISHCommon {
     private static final Logger logger = LogManager.getLogger();
 
     @Inject

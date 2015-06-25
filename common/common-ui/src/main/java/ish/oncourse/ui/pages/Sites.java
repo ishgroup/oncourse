@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.tapestry5.annotations.Property;
@@ -8,7 +9,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.List;
 
-public class Sites {
+public class Sites extends ISHCommon {
 
 	@Property
 	private List<Site> sites;

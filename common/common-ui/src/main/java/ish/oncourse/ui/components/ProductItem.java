@@ -1,6 +1,7 @@
 package ish.oncourse.ui.components;
 
 import ish.math.Money;
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.VoucherProduct;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ProductItem {
+public class ProductItem extends ISHCommon {
 	private static final int DETAILS_LENGTH = 490;
 	private static final Logger logger = LogManager.getLogger();
 	

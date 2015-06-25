@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
@@ -20,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 @Meta("tapestry.response-content-type=text/xml")
-public class SitemapXML {
+public class SitemapXML extends ISHCommon {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 

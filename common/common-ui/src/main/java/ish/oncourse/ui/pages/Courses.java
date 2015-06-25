@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
@@ -35,7 +36,7 @@ import java.util.*;
  * @author ksenia
  */
 
-public class Courses {
+public class Courses extends ISHCommon {
 
 	@Inject
 	@Property

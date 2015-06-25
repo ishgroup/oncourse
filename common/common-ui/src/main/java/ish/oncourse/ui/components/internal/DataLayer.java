@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components.internal;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -26,7 +27,7 @@ import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
  * The class is tapestry component class for DataLayer.tml template which creates dataLayer javascript object
  * for Google TagManager functionality
  */
-public class DataLayer {
+public class DataLayer extends ISHCommon {
 
 	@Inject
 	private Request request;

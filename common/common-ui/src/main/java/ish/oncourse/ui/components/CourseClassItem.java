@@ -1,6 +1,7 @@
 package ish.oncourse.ui.components;
 
 import ish.math.Money;
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
@@ -27,7 +28,7 @@ import java.text.*;
 import java.util.*;
 
 import static ish.oncourse.utils.SessionUtils.StartEndTime;
-public class CourseClassItem {
+public class CourseClassItem extends ISHCommon {
 
     private static final String VALUE_yes = "yes";
     private static final String VALUE_no = "no";
@@ -104,9 +105,6 @@ public class CourseClassItem {
 	@Property
 	private Money feeOverride;
 
-	@Property
-	private String ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZZ";
-	
 	@SetupRender
 	public void beforeRender() {
 		timetableLabels = new ArrayList<>();
@@ -344,15 +342,5 @@ public class CourseClassItem {
 		Session session = courseClass.getFirstSession();
 		Date date = session != null ? session.getStartDate():null;
 		return date == null || date.compareTo(new Date()) < 0 ? CLASS_NAME_classCommenced: StringUtils.EMPTY;
-	}
-
-	public String formatMoney(Money money, String pattern) {
-		NumberFormat format = new DecimalFormat(pattern);
-		return format.format(money);
-	}
-
-	public String formatDate(Date date, String pattern) {
-		DateFormat format = new SimpleDateFormat(pattern);
-		return format.format(date);
 	}
 }

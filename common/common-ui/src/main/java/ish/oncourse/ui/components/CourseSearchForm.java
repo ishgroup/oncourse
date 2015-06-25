@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Tag;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
@@ -18,7 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class CourseSearchForm {
+public class CourseSearchForm extends ISHCommon {
 
     private static final String URL_PATH_SEARCH_PATTERN = "/courses?s=%s" +
             "&subject=%s" +

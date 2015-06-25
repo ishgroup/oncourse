@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -27,7 +28,7 @@ import java.util.List;
  * @author ksenia
  * 
  */
-public class ShortList {
+public class ShortList extends ISHCommon {
 
 	@Parameter
 	@Property

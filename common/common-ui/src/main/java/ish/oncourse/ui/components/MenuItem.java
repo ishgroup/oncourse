@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.menu.IWebMenuService;
@@ -11,7 +12,7 @@ import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
-public class MenuItem {
+public class MenuItem extends ISHCommon {
 
 	@Parameter(required = true, cache = false)
 	private WebMenu menu;

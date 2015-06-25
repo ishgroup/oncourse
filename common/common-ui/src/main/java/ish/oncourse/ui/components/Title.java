@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.WebNode;
@@ -9,7 +10,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class Title {
+public class Title extends ISHCommon {
 
     @Parameter
     @Property

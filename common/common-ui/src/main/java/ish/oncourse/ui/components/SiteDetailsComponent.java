@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -12,7 +13,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SiteDetailsComponent {
+public class SiteDetailsComponent extends ISHCommon {
 
 	@Inject
 	private ITextileConverter textileConverter;

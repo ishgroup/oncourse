@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Module;
 import ish.oncourse.model.Qualification;
@@ -8,7 +9,7 @@ import org.apache.tapestry5.annotations.Property;
 
 import java.util.List;
 
-public class CourseModules {
+public class CourseModules extends ISHCommon {
 
     @Property
     private Module module;

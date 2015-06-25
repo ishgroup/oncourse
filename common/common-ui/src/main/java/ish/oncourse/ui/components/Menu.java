@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.services.menu.IWebMenuService;
 import org.apache.tapestry5.annotations.Component;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Menu {
+public class Menu extends ISHCommon {
 
 	@Property
 	@Parameter

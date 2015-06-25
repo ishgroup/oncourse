@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Discount;
 import ish.oncourse.services.discount.IDiscountService;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author ksenia
  * 
  */
-public class PromoCodesView {
+public class PromoCodesView extends ISHCommon {
 
 	@Inject
 	private Request request;

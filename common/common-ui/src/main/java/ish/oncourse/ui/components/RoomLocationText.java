@@ -1,11 +1,12 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Room;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 
 
-public class RoomLocationText {
+public class RoomLocationText extends ISHCommon {
 
 	@Parameter(required = true)
 	@Property

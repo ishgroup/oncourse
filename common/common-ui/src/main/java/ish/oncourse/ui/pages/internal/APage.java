@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages.internal;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.html.IFacebookMetaProvider;
@@ -19,7 +20,7 @@ import java.io.IOException;
  * IMPORTANT NOTE:
  * AFTER SOME CHANGES ARE ADDED TO APage WE NEED TO REVIEW cms:PageStructure.java, cms:PageStructure.tml, common-ui:PageStructure.tml
  */
-public abstract class APage {
+public abstract class APage extends ISHCommon {
 
     private static final String INTERNAL_PAGE_BODY_CLASS = "internal-page";
 

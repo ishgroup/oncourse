@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.commons.lang.StringUtils;
@@ -11,7 +12,7 @@ import org.apache.tapestry5.services.ExceptionReporter;
 
 import java.util.ArrayList;
 
-public class Error500 implements ExceptionReporter {
+public class Error500 extends ISHCommon implements ExceptionReporter {
 
 	private static final Logger logger = LogManager.getLogger();
 

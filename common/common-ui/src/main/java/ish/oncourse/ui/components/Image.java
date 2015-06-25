@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Document;
 import ish.oncourse.services.binary.IBinaryDataService;
 import org.apache.tapestry5.annotations.Parameter;
@@ -10,7 +11,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class Image {
+public class Image extends ISHCommon {
     @Inject
     private IBinaryDataService binaryDataService;
 

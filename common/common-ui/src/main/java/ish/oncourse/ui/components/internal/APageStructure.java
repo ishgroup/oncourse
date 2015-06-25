@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components.internal;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.html.ICacheMetaProvider;
@@ -22,7 +23,7 @@ import static ish.oncourse.util.HTMLUtils.USER_AGENT_HEADER;
  * IMPORTANT NOTE:
  * AFTER SOME CHANGES ARE ADDED TO APageStructure WE NEED TO REVIEW cms:PageStructure.java, cms:PageStructure.tml, common-ui:PageStructure.tml
  */
-public abstract class APageStructure {
+public abstract class APageStructure extends ISHCommon {
 
     @Inject
     private IWebNodeTypeService webNodeTypeService;

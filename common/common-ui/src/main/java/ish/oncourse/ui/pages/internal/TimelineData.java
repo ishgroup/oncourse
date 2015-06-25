@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages.internal;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Meta("tapestry.response-content-type=text/xml")
-public class TimelineData {
+public class TimelineData extends ISHCommon {
 
 	@Inject
 	private ICourseClassService courseClassService;

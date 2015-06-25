@@ -1,5 +1,7 @@
 package ish.oncourse.ui.pages;
 
-public class Cvv {
+import ish.oncourse.components.ISHCommon;
+
+public class Cvv extends ISHCommon {
 
 }

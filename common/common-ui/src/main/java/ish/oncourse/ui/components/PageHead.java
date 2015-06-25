@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.environment.IEnvironmentService;
@@ -14,7 +15,7 @@ import org.apache.tapestry5.services.Request;
 
 import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
 
-public class PageHead {
+public class PageHead extends ISHCommon {
 
 	@Inject
 	private IEnvironmentService environmentService;

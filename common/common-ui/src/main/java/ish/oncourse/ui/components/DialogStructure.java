@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 
@@ -8,7 +9,7 @@ import org.apache.tapestry5.annotations.Property;
  * @author ksenia
  *
  */
-public class DialogStructure {
+public class DialogStructure extends ISHCommon {
 	/**
 	 * Page(and popup) title.
 	 */

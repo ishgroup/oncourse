@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.PostcodeDb;
 import ish.oncourse.model.Tag;
@@ -21,7 +22,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuickSearchView {
+public class QuickSearchView extends ISHCommon {
 
 	private static final String TAG_DOCTYPE = "tag";
 

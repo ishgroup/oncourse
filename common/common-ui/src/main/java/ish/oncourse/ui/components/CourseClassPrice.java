@@ -1,6 +1,7 @@
 package ish.oncourse.ui.components;
 
 import ish.math.Money;
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.PotentialDiscountsPolicy;
@@ -21,7 +22,7 @@ import java.math.BigDecimal;
 import java.text.*;
 import java.util.*;
 
-public class CourseClassPrice {
+public class CourseClassPrice extends ISHCommon {
 
 	@Inject
 	private IDiscountService discountService;
@@ -217,16 +218,4 @@ public class CourseClassPrice {
 		}
 
 	}
-
-
-	public String formatMoney(Money money, String pattern) {
-		NumberFormat format = new DecimalFormat(pattern);
-		return format.format(money);
-	}
-
-	public String formatDate(Date date, String pattern) {
-		DateFormat format = new SimpleDateFormat(pattern);
-		return format.format(date);
-	}
-
 }

@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.components.internal.DataLayer;
 import org.apache.commons.lang.StringUtils;
@@ -15,7 +16,7 @@ import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
  * The component inits google tag mananger script and sends dataLayer object
  * if google tag manager account is set for this web site.
  */
-public class GoogleTagmanager {
+public class GoogleTagmanager extends ISHCommon {
 	@Inject
 	private IWebSiteService siteService;
 

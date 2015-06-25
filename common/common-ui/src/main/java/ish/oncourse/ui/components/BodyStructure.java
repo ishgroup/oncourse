@@ -1,5 +1,6 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNodeType;
@@ -12,7 +13,7 @@ import org.apache.tapestry5.annotations.SupportsInformalParameters;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 @SupportsInformalParameters
-public class BodyStructure {
+public class BodyStructure extends ISHCommon {
 
 	@Inject
 	private IWebMenuService webMenuService;
