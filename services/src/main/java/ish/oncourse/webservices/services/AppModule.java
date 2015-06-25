@@ -18,6 +18,7 @@ import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
+import ish.oncourse.webservices.jobs.UpdateAmountOwingJob;
 import ish.oncourse.webservices.pages.PaymentNotFound;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
@@ -86,6 +87,7 @@ public class AppModule {
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
+		binder.bind(UpdateAmountOwingJob.class);
 	}
 
 	@EagerLoad

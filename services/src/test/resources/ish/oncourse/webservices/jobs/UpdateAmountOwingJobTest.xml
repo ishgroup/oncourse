@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<College id="1" name="Sydney Community College"
+		webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+		communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+		timezone="Australia/Sydney" 
+		requiresAvetmiss="0"/>
+
+	<Site id="2000" collegeId="1" angelId="200" isWebVisible="0"
+		created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
+		
+	<Room id="2000" collegeId="1" siteId="2000" angelId="200"
+		capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+		name="TestRoom" />
+
+	<Student id="2000" collegeId="1" angelId="200"
+		created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+		disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+		indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+		priorEducationCode="0" labourForceType="0" />
+
+	<Contact id="2000" collegeId="1" studentId="2000"
+		angelId="3" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+		isMale="1" familyName="Ledger" givenName="Alex" emailAddress="av@noname.by"
+		dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+		isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+		isMarketingViaSMSAllowed="1" />
+
+	<Student id="2001" collegeId="1" angelId="2001"
+			 created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+			 disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+			 indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+			 priorEducationCode="0" labourForceType="0" />
+
+	<Contact id="2001" collegeId="1" studentId="2001"
+			 angelId="2001" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+			 isMale="1" familyName="Ledger" givenName="Alex" emailAddress="av@noname.by"
+			 dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1" />
+
+
+	<Course id="2000" collegeId="1" angelId="202" code="PPO"
+		isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+		created="2011-09-12 00:59:38.0" modified="2011-09-12 01:02:00.0"
+		allowWaitingList="1" name="Adobe Photoshop essentials"
+		enrolmentType="1"/>
+
+	<CourseClass id="2000" collegeId="1" code="1" courseId="2000"
+		roomId="2000" angelId="200" startDate="2011-10-12 00:55:59.0"
+		endDate="2011-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
+		created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+		maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
+		deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+
+	<PaymentIn id="2000" amount="100" angelId="22" collegeId="1"
+		contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
+		source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
+
+	<Invoice id="2000" source="O" amountOwing="100.00" contactId="2000" angelId="2000"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<Enrolment id="2000" source="O" collegeId="1" courseClassId="2000"
+			   studentId="2000" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+			   status="3" confirmationStatus="1" feehelpamount="0"/>
+
+	<PaymentInLine id="2000" amount="100" angelId="23"
+		collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="2000"
+		modified="2011-09-12 00:17:21.0" paymentInId="2000" />
+
+	<InvoiceLine id="2000" collegeId="1" enrolmentId="2000"
+				 invoiceId="2000" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<PaymentIn id="2001" amount="100" angelId="2001" collegeId="1"
+			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
+			   source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
+
+	<Invoice id="2001" source="O" amountOwing="0.00" contactId="2001" angelId="2001"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<Enrolment id="2001" source="O" collegeId="1" courseClassId="2000"
+			   studentId="2001" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+			   status="3" confirmationStatus="1" feehelpamount="0"/>
+
+	<PaymentInLine id="2001" amount="100" angelId="23"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="2001"
+				   modified="2011-09-12 00:17:21.0" paymentInId="2000" />
+
+	<InvoiceLine id="2001" collegeId="1" enrolmentId="2001"
+				 invoiceId="2001" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<Preference id="1" collegeId="1" name="license.ccprocessing"
+		value_string="true" />
+</dataset>
