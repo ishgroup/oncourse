@@ -243,6 +243,20 @@ public class StaticResourceFactory implements ResourceFactory {
 		}
 
         @Override
+        public void moveTo(CollectionResource newParent, String newName) {
+            File oldFile = getFile();
+            super.moveTo(newParent, newName);
+            compileResources(getFile());
+            compileResources(oldFile);
+        }
+
+        @Override
+        protected void doCopy(File dest) {
+            super.doCopy(dest);
+            compileResources(dest);
+        }
+
+        @Override
         public CollectionResource createCollection(String name) {
             FsDirectoryResource resource = (FsDirectoryResource) super.createCollection(name);
             compileResources(resource.getFile());
