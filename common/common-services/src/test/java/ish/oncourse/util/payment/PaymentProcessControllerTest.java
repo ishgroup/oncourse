@@ -113,7 +113,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
         assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
         assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.FAILED, paymentProcessController.getPaymentIn().getStatus());
         Invoice invoice = paymentProcessController.getPaymentIn().getPaymentInLines().get(0).getInvoice();
-        assertTrue("Amount owing should be empty", Money.isZeroOrEmpty(invoice.getAmountOwing()));
+        assertFalse("Amount owing should be not ZERO", Money.isZeroOrEmpty(invoice.getAmountOwing()));
         assertInvalidActionsForCANCEL(paymentProcessController);
     }
 
