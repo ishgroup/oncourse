@@ -6,6 +6,7 @@ import ish.oncourse.model.Student;
 import ish.oncourse.portal.services.AppModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import ish.util.UsiUtil;
 
 import java.util.Date;
@@ -61,7 +62,7 @@ public class Step1Handler extends AbstractStepHandler {
         Student student = getUsiController().getContact().getStudent();
         handleRequiredValue(getUsiController().getContact().getStudent(), Student.USI.getName());
         if (result.getValue().get(Student.USI.getName()).getError() == null
-                && !ServiceModule.useTestUSIEndpoint()) {
+                && !TestUSIServiceEndpoint.useTestUSIEndpoint()) {
             if (!UsiUtil.validateKey(student.getUsi())) {
                 result.addValue(Value.valueOf(Student.USI.getName(), student.getUsi(), getUsiController().getMessages().format("message-invalidUsiError")));
                 result.setHasErrors(true);
