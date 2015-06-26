@@ -1,6 +1,7 @@
 package ish.oncourse.portal.pages;
 
 import ish.oncourse.portal.service.TestModule;
+import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.test.PageTester;
 import org.junit.After;
@@ -29,7 +30,7 @@ public class LoginTest {
 	
 	@Before
 	public void setup() {
-
+		System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
 	}
 
 	@After

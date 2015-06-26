@@ -3,6 +3,7 @@ package ish.oncourse.portal.services;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class PortalUtilsTest {
 	
 	@Before
 	public void setup() throws Exception {
-
+        System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
 	}
 	
 	@After
