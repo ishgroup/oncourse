@@ -1,11 +1,15 @@
-package ish.oncourse.webservices.soap.v8;
+package ish.oncourse.webservices.soap.v9;
 
-import ish.common.types.*;
+import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
+import ish.common.types.ProductStatus;
+import ish.common.types.TypesUtil;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v8.stubs.replication.VoucherStub;
+import ish.oncourse.webservices.v9.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Test;
 
@@ -14,7 +18,7 @@ import java.math.BigDecimal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends QECourseVoucherRedeemWithMoneyPaymentTest {
+public class QECourseVoucherRedeemWithMoneyPaymentKeepInvoiceGUITest extends QECourseVoucherRedeemWithMoneyPaymentTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceDataSet.xml";
 
 	@Override
@@ -31,7 +35,7 @@ public class QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends 
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("25 elements should be replicated for this payment", 25, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("19 elements should be replicated for this payment", 19, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		int reversePaymentCount = 0;
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
@@ -64,7 +68,7 @@ public class QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends 
 			} else if (stub instanceof GenericEnrolmentStub) {
 				if (stub.getAngelId() == 1l || stub.getAngelId() == 2l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
-					assertEquals("Oncourse enrollment should be failed", EnrolmentStatus.FAILED, status);
+					assertEquals("Oncourse enrollment should be active", EnrolmentStatus.SUCCESS, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
 							((GenericEnrolmentStub)stub).getStatus()), true);

@@ -156,7 +156,7 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentPro
 	}
 	
 	@Test
-	public void testQEReverseInvoice() throws Exception {
+	public void testQEKeepInvoice() throws Exception {
 		//check that empty queuedRecords
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		checkQueueBeforeProcessing(context);
