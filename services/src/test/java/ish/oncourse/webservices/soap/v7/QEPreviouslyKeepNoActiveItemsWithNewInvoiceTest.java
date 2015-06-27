@@ -27,7 +27,7 @@ public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentPr
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("26 elements should be replicated for this payment", 26, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("18 elements should be replicated for this payment", 18, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
@@ -46,24 +46,24 @@ public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentPr
 						((GenericEnrolmentStub)stub).getStatus()), true);
 			} else if (stub instanceof VoucherStub) {
 				if (stub.getAngelId().equals(2l)) {
-					assertEquals("Voucher status should be canceled",
-						ProductStatus.CANCELLED.getDatabaseValue(), ((VoucherStub) stub).getStatus());
+					assertEquals("Voucher status should be ACTIVE",
+						ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Voucher with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((VoucherStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof ArticleStub) {
 				if (stub.getAngelId().equals(3l)) {
-					assertEquals("Article status should be canceled",
-						ProductStatus.CANCELLED.getDatabaseValue(), ((ArticleStub) stub).getStatus());
+					assertEquals("Article status should be ACTIVE",
+						ProductStatus.ACTIVE.getDatabaseValue(), ((ArticleStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Article with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((ArticleStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof MembershipStub) {
 				if (stub.getAngelId().equals(1l)) {
-					assertEquals("Membership status should be canceled",
-						ProductStatus.CANCELLED.getDatabaseValue(), ((MembershipStub) stub).getStatus());
+					assertEquals("Membership status should be ACTIVE",
+						ProductStatus.ACTIVE.getDatabaseValue(), ((MembershipStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Membership with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((MembershipStub) stub).getStatus()), true);
@@ -78,7 +78,7 @@ public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentPr
 		@SuppressWarnings("unchecked")
 		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 21 records.", 21, queuedRecords.size());
+		assertEquals("Queue should contain 11 records.", 11, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0,
 				membershipsFound = 0, vouchersFound = 0, articlesFound = 0, contactsFound = 0, studentsFound = 0;
 		for (QueuedRecord record : queuedRecords) {
@@ -107,12 +107,10 @@ public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentPr
 			}
 		}
 
-		assertEquals("Not all PaymentIns found in a queue", 2, paymentsFound);
-		assertEquals("Not all PaymentInLines found in a queue", 4, paymentLinesFound);
-		assertEquals("Not all Invoices found in a queue", 2, invoicesFound);
-		assertEquals("Not all InvoiceLines found in a  queue", 8, invoiceLinesFound);
-		assertEquals("Contact not found in a queue", 1, contactsFound);
-		assertEquals("Student not found in a queue", 1, studentsFound);
+		assertEquals("Not all PaymentIns found in a queue", 1, paymentsFound);
+		assertEquals("Not all PaymentInLines found in a queue", 2, paymentLinesFound);
+		assertEquals("Not all Invoices found in a queue", 1, invoicesFound);
+		assertEquals("Not all InvoiceLines found in a  queue", 4, invoiceLinesFound);
 		assertEquals("Membership not found in a queue", 1, membershipsFound);
 		assertEquals("Voucher not found in a queue", 1, vouchersFound);
 		assertEquals("Article not found in a queue", 1, articlesFound);
@@ -147,7 +145,7 @@ public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentPr
 	}
 
 	@Test
-	public void testQEReverseInvoice() throws Exception {
+	public void testQEKeepInvoice() throws Exception {
 		//check that empty queuedRecords
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		checkQueueBeforeProcessing(context);
