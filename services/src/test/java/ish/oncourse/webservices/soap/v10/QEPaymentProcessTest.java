@@ -106,11 +106,11 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		//fire reverse invoice
 		Element paymentResultForm = doc.getElementById("paymentResultForm");
 		assertNotNull("Payment result form should be visible ", paymentResultForm);
-		Element reverseInvoiceButton = paymentResultForm.getElementById("abandonReverse");
-		assertNotNull("Payment result form reverse invoice submit should be available", reverseInvoiceButton);
+		Element keepInvoiceButton = paymentResultForm.getElementById("abandonAndKeep");
+		assertNotNull("Payment result form reverse invoice submit should be available", keepInvoiceButton);
 
 		//submit the data
-		response = tester.clickSubmitAndReturnResponse(reverseInvoiceButton, new HashMap<String, String>());
+		response = tester.clickSubmitAndReturnResponse(keepInvoiceButton, new HashMap<String, String>());
 		assertNotNull("response should not be empty", response);
 		System.out.println(response.getRedirectURL());
 
