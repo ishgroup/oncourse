@@ -14,8 +14,8 @@ import java.math.BigDecimal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends QEMoneyVoucherRedeemWithMoneyPaymentTest {
-	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceDataSet.xml";
+public class QECourseVoucherRedeemWithMoneyPaymentKeepInvoiceGUITest extends QECourseVoucherRedeemWithMoneyPaymentTest {
+	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemWithMoneyPaymentReverseInvoiceDataSet.xml";
 
 	@Override
 	protected String getDataSetFile() {
@@ -24,14 +24,14 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends Q
 
 	@Override
 	protected GenericTransactionGroup prepareStubsForReplication(GenericTransactionGroup transaction) {
-		return preparePaymentStructureForMoneyVoucherAndMoneyPayment(transaction);
+		return preparePaymentStructureForCourseVoucherAndMoneyPayment(transaction);
 	}
 
 	@Override
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
-			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("25 elements should be replicated for this payment", 25, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+		assertEquals("19 elements should be replicated for this payment", 19, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		int reversePaymentCount = 0;
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
@@ -48,7 +48,7 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends Q
 						assertEquals("Payment status should be success", PaymentStatus.FAILED, status);
 					} else {
 						assertFalse(String.format("Unexpected PaymentIn with id= %s angelid=%s and status= %s found in a queue",
-							stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
+								stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
 					}
 				} else {
 					if (reversePaymentCount == 0) {
@@ -64,14 +64,20 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends Q
 			} else if (stub instanceof GenericEnrolmentStub) {
 				if (stub.getAngelId() == 1l || stub.getAngelId() == 2l) {
 					EnrolmentStatus status = EnrolmentStatus.valueOf(((GenericEnrolmentStub) stub).getStatus());
-					assertEquals("Oncourse enrollment should be failed", EnrolmentStatus.FAILED, status);
+					assertEquals("Oncourse enrollment should be SUCCESS", EnrolmentStatus.SUCCESS, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
 							((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			} else if (stub instanceof VoucherStub) {
+				switch (((VoucherStub) stub).getRedeemedCoursesCount()) {
+					case 0 :
+						assertEquals("Check of voucher redemption value failed", ((VoucherStub) stub).getRedemptionValue(), new BigDecimal("10.00"));
+						break;
+					default:
+						assertFalse("Unexpected voucher redeemed course count", true);
+				}
 				assertEquals("Check of voucher status failed", ((VoucherStub) stub).getStatus(), ProductStatus.ACTIVE.getDatabaseValue());
-				assertEquals("Value on purchase should not change", new BigDecimal("200.00"), ((VoucherStub) stub).getValueOnPurchase());
 			}
 		}
 	}
@@ -90,5 +96,4 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceGUITest extends Q
 	protected void checkAsyncReplication(ObjectContext context) {
 		checkAsyncReplicationForVoucherAndCreditCardReverseInvoicePayment(context);
 	}
-
 }
