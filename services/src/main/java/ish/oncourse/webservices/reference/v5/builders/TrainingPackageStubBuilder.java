@@ -7,7 +7,7 @@ package ish.oncourse.webservices.reference.v5.builders;
 
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.webservices.reference.services.IReferenceStubBuilder;
-import ish.oncourse.webservices.v4.stubs.reference.TrainingPackageStub;
+import ish.oncourse.webservices.v5.stubs.reference.TrainingPackageStub;
 
 /**
  *
