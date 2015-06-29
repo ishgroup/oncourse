@@ -8,7 +8,7 @@
         <tbody><tr>
             <td width="50%"></td>
             <td width="50%" class="text-right" valign="top">
-                ${controller.avetmissCollegeName}<br/>
+                ${invoice.college.name}<br/>
                 ${controller.avetmissAddress1}  ${controller.avetmissAddress2}<br/>
                 ${controller.avetmissSuburb} ${controller.avetmissStateName} ${controller.avetmissPostcode}<br/>
                 <t:if test="${controller.collegeABN}">
