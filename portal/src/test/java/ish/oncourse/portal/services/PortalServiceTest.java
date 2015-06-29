@@ -228,4 +228,18 @@ public class PortalServiceTest extends ServiceTest {
 		
 		assertTrue(service.getResourcesBy(notEnrolledIntoClass).isEmpty());
 	}
+
+
+    @Test
+    public void testHasResults() {
+        ICayenneService cayenneService = getService(ICayenneService.class);
+        IPortalService service = getService(IPortalService.class);
+        IAuthenticationService authenticationService = getService(IAuthenticationService.class);
+        ObjectContext objectContext = cayenneService.sharedContext();
+
+        Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 3);
+        authenticationService.storeCurrentUser(contact);
+
+        assertTrue(service.hasResults());
+    }
 }

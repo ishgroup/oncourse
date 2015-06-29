@@ -651,7 +651,7 @@ public class PortalService implements IPortalService {
 
     @Override
     public boolean hasResults() {
-        return getContact().getStudent() != null && !getStudentCourseClasses(getContact(), CourseClassFilter.CURRENT).isEmpty();
+        return getContact().getStudent() != null && !getStudentCourseClasses(getContact(), CourseClassFilter.ALL).isEmpty();
     }
 
 
