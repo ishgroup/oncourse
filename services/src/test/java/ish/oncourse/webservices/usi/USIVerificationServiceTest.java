@@ -9,7 +9,10 @@ import ish.oncourse.webservices.soap.v10.ReplicationFault;
 import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.util.USIVerificationUtil;
 import ish.oncourse.webservices.v10.stubs.replication.ParametersMap;
+import ish.util.UrlUtil;
+import ish.util.UsiUtil;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -21,6 +24,9 @@ import java.util.Date;
 public class USIVerificationServiceTest extends RealWSTransportTest {
     @Test
     public void testUSI() throws Exception {
+
+        UrlUtil.createPortalUsiLink("LtLrTbSpCeSdn3Sw", DateUtils.addMonths(new Date(), 1), "kRJNAhJy69YGp5kX");
+
         authenticate();
 
         testWrongUSI();

@@ -38,6 +38,10 @@
         </div>
         <t:errors banner="literal:"  class="literal:validation alert alert-danger"/>
         <div class="form-group">
+            <label for="citizenship" class="control-label">Citizenship</label>
+            <t:select value="contact.student.citizenship" class ="form-control" model="citizenshipSelectModel" blankOption="NEVER"/>
+        </div>
+        <div class="form-group">
             <label for="countryOfBirth" class="control-label">In which country were you born?</label>
             <div class="${validateHandler.validateClass('countryOfBirth')}">
                 <t:textfield value="countryOfBirthName" t:id="countryOfBirth" class="form-control ${validateHandler.errorClass('countryOfBirth')}"/>

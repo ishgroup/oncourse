@@ -35,26 +35,27 @@ public class Step2Handler extends AbstractStepHandler {
             Student student = getUsiController().getContact().getStudent();
             Country country = student.getCountryOfBirth();
             if (country != null) {
-                addValue(Value.valueOf(Student.COUNTRY_OF_BIRTH_PROPERTY, country.getName()));
+                addValue(Value.valueOf(COUNTRY_OF_BIRTH.getName(), country.getName()));
             }
 
             Language language = student.getLanguageHome();
             if (language != null) {
-                addValue(Value.valueOf(Student.LANGUAGE_HOME_PROPERTY, language.getName()));
+                addValue(Value.valueOf(LANGUAGE_HOME.getName(), language.getName()));
             }
 
             Integer year = student.getYearSchoolCompleted();
             if (year != null) {
-                addValue(Value.valueOf(Student.YEAR_SCHOOL_COMPLETED_PROPERTY, year));
+                addValue(Value.valueOf(YEAR_SCHOOL_COMPLETED.getName(), year));
             }
 
-            addValue(getEnumValue(student, ENGLISH_PROFICIENCY_PROPERTY));
-            addValue(getEnumValue(student, INDIGENOUS_STATUS_PROPERTY));
-            addValue(getEnumValue(student, HIGHEST_SCHOOL_LEVEL_PROPERTY));
-            addValue(getEnumValue(student, PRIOR_EDUCATION_CODE_PROPERTY));
+            addValue(getEnumValue(student, ENGLISH_PROFICIENCY.getName()));
+            addValue(getEnumValue(student, INDIGENOUS_STATUS.getName()));
+            addValue(getEnumValue(student, HIGHEST_SCHOOL_LEVEL.getName()));
+            addValue(getEnumValue(student, PRIOR_EDUCATION_CODE.getName()));
             addValue(getEnumValue(student, LABOUR_FORCE_STATUS_PROPERTY));
-            addValue(getEnumValue(student, DISABILITY_TYPE_PROPERTY));
-            addValue(getBooleanSelectionValue(student, IS_STILL_AT_SCHOOL_PROPERTY));
+            addValue(getEnumValue(student, DISABILITY_TYPE.getName()));
+            addValue(getBooleanSelectionValue(student, IS_STILL_AT_SCHOOL.getName()));
+            addValue(getEnumValue(student, CITIZENSHIP.getName()));
 
             List<Enrolment> enrolments = getUsiController().getVETEnrolments();
             for (Enrolment enrolment : enrolments) {
@@ -103,12 +104,14 @@ public class Step2Handler extends AbstractStepHandler {
         Set<String> keys = inputValues.keySet();
         for (String key : keys) {
             switch (key) {
+                case CERTIFICATES_PROPERTY:
                 case ENGLISH_PROFICIENCY_PROPERTY:
                 case INDIGENOUS_STATUS_PROPERTY:
                 case HIGHEST_SCHOOL_LEVEL_PROPERTY:
                 case PRIOR_EDUCATION_CODE_PROPERTY:
                 case LABOUR_FORCE_STATUS_PROPERTY:
                 case DISABILITY_TYPE_PROPERTY:
+                case CITIZENSHIP_PROPERTY:
                     handleEnumValue(student, key);
                     break;
                 case IS_STILL_AT_SCHOOL_PROPERTY:

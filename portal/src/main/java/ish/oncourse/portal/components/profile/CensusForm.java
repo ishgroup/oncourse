@@ -97,6 +97,9 @@ public class CensusForm {
     @Property
     private ISHEnumSelectModel priorEducationSelectModel;
 
+    @Property
+    private ISHEnumSelectModel citizenshipSelectModel;
+
     @Persist
     @Property
     private ValidateHandler validateHandler;
@@ -129,6 +132,7 @@ public class CensusForm {
                 AvetmissStudentSchoolLevel.class, getAvetmissMessages());
         priorEducationSelectModel = new ISHEnumSelectModel(
                 AvetmissStudentPriorEducation.class, getAvetmissMessages());
+        citizenshipSelectModel = new ISHEnumSelectModel(StudentCitizenship.class, getAvetmissMessages());
     }
 
     @AfterRender

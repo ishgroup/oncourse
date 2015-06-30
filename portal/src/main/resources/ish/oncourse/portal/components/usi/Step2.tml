@@ -40,6 +40,17 @@
                         </div>
                     </t:loop>
 
+                    <div class="form-group">
+                        <label class=" control-label" for="citizenship">Citizenship</label>
+
+                        <div class="field-holder">
+                            <select id="citizenship" name="citizenship" class="form-control">
+                            </select>
+                        </div>
+                        <small class="help-block"></small>
+                    </div>
+
+
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="countryOfBirth">Country of birth</label>
 

@@ -11,6 +11,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean2;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.apache.tapestry5.internal.TapestryInternalUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 
@@ -118,7 +119,13 @@ public abstract class AbstractStepHandler implements StepHandler {
             for (int i = 0; i < enumValues.length; i++) {
                 Enum enumValue = enumValues[i];
                 if (enumValue instanceof DisplayableExtendedEnumeration) {
-                    options[i] = Value.valueOf(enumValue.name(), ((DisplayableExtendedEnumeration) enumValue).getDisplayName());
+                    String displayValue =  ((DisplayableExtendedEnumeration) enumValue).getDisplayName();
+
+                    String messageKey = enumClass.getSimpleName() + "."  + enumValue.name();
+                    if (avetmissMessages.contains(messageKey) || avetmissMessages.contains(enumValue.name())) {
+                        displayValue = TapestryInternalUtils.getLabelForEnum(avetmissMessages, enumClass.getSimpleName(), enumValue);
+                    }
+                    options[i] = Value.valueOf(enumValue.name(), displayValue);
                 }
             }
             return Value.valueOf(key, value, null, options);
