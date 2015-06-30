@@ -162,7 +162,7 @@ public class Login {
 		if (value != null)
 			this.lastName = value;
 
-		value = StringUtils.trimToNull(request.getParameter(PARAMETER_lastName));
+		value = StringUtils.trimToNull(request.getParameter(PARAMETER_emailAddress));
 		if (value != null)
 			this.email = value;
 	}
