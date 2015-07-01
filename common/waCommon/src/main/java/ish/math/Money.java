@@ -350,7 +350,7 @@ public class Money extends Number implements Comparable<Money> {
 	 * @PublicApi
 	 */
 	public String toPlainString() {
-		return new NumberFormatter().valueToString(this, DEFAULT_SCALE);
+		return new MoneyDecimalFormatter().valueToString(this, DEFAULT_SCALE);
 	}
 
 	//
