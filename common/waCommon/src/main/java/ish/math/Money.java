@@ -342,6 +342,16 @@ public class Money extends Number implements Comparable<Money> {
 
 		return NumberFormat.getCurrencyInstance().format(doubleValue());
 	}
+	
+	/**
+	 *
+	 * @return a string representation skipping currency sign
+	 * $25 -> "25.00"
+	 * @PublicApi
+	 */
+	public String toPlainString() {
+		return new NumberFormatter().valueToString(this, DEFAULT_SCALE);
+	}
 
 	//
 	// Implement required Number methods

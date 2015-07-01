@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MoneyTest {
 	Money[][] list = new Money[][] {
@@ -274,5 +275,26 @@ public class MoneyTest {
 		Money money5 = money.divide(new BigDecimal(13), true);
 		assertEquals("1d rounding failed for value " + money3, new Money("-1.00"), money5);
 		
+	}
+
+	@Test
+	public void testNumberFormatter() {
+		Money money = new Money("5.00");
+		assertEquals("5.00", money.toPlainString());
+		
+		money = new Money("-5.00");
+		assertEquals("-5.00", money.toPlainString());
+
+		money = new Money("-005.55");
+		assertEquals("-5.55", money.toPlainString());
+		
+		money = Money.valueOf(new BigDecimal(-34.5555));
+		assertEquals("-34.56", money.toPlainString());
+
+		money = Money.valueOf(new BigDecimal(1892.5555));
+		assertEquals("1892.56", money.toPlainString());
+
+		money = Money.ZERO;
+		assertEquals("0.00", money.toPlainString());
 	}
 }
