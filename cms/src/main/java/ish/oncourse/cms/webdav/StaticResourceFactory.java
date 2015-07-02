@@ -84,7 +84,6 @@ public class StaticResourceFactory implements ResourceFactory {
         } catch (URIException e) {
             throw new RuntimeException(e);
         }
-        scriptEngine = new ScriptEngineManager().getEngineByName("jruby");
     }
 
 	@Override
@@ -107,7 +106,9 @@ public class StaticResourceFactory implements ResourceFactory {
         ICompiler compiler = getCompiler(file);
 
         if (compiler != null) {
+            long time = System.currentTimeMillis();
             compiler.compile();
+            logger.warn("Compilation finished. file: {}, time: {}", file, (System.currentTimeMillis() - time));
             if (compiler.getErrors().isEmpty())
             {
                 runEditScript(file);
@@ -138,10 +139,10 @@ public class StaticResourceFactory implements ResourceFactory {
     private ICompiler getCompiler(File file) {
         if (isJavaScript(file)) {
             return JSCompiler.valueOf(sRoot, defaultJsStackPath, webSiteService.getCurrentWebSite());
-        } if (isSCSSFile(file)) {
-            return SCSSCompiler.valueOf(scriptEngine,
-                    new File(defaultScssPath),
-                    new File(String.format("%s/%s", sRoot, webSiteService.getCurrentWebSite().getSiteKey())));
+//        } if (isSCSSFile(file)) {
+//            return SCSSCompiler.valueOf(scriptEngine,
+//                    new File(defaultScssPath),
+//                    new File(String.format("%s/%s", sRoot, webSiteService.getCurrentWebSite().getSiteKey())));
         } else {
             return null;
         }
