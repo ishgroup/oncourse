@@ -1,5 +1,7 @@
 apply plugin: 'war'
 
+configurations { tapestryTest }
+
 dependencies {
     providedCompile 'javax.servlet:servlet-api:3.0'
 
@@ -43,11 +45,19 @@ dependencies {
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
-	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
+	testCompile (project(path: ':common:common-test', configuration: 'testFixtures')) {
+		exclude group: 'org.apache.tapestry', module: 'tapestry-test'
+	}
 
 	compile 'org.apache.poi:poi:3.11-beta3'
 	compile 'org.apache.poi:poi-ooxml:3.11-beta3'
+
+	tapestryTest ('org.apache.tapestry:tapestry-test:5.2.6')
 }
+
+//workaround: put org.apache.tapestry:tapestry-test to end of test classpath
+sourceSets.test.compileClasspath = sourceSets.test.compileClasspath + configurations.tapestryTest
+sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath + configurations.tapestryTest
 
 war {
 	archiveName = 'services.war'
