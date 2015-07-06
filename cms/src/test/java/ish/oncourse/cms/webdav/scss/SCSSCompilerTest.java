@@ -1,6 +1,7 @@
 package ish.oncourse.cms.webdav.scss;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.script.ScriptEngine;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class SCSSCompilerTest {
 
-	@Test
+	@Ignore
 	public void testSite1() throws Exception {
 
 		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("jruby");
@@ -39,7 +40,7 @@ public class SCSSCompilerTest {
 		assertTrue(value.contains("#site2"));
 	}
 
-	@Test
+	@Ignore
 	public void testSite2() throws Exception {
 
 		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("jruby");
