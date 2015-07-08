@@ -173,8 +173,8 @@ task scriptApiDocs(type: Javadoc) {
 
 task createResourceManifests {
 	doLast {
-		def sources = ["resources/schema/referenceData/exportTemplates",
-					   "resources/schema/referenceData/reports",
+		def sources = ["resources/oncourse-scripts/export",
+					   "resources/oncourse-scripts/reports",
 					   "resources/oncourse-scripts/scripts",
 					   "resources/oncourse-scripts/email"]
 		sources.each { s ->
