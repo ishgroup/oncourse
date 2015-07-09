@@ -37,4 +37,9 @@ public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
 	public void removeOldWebSiteVersions(WebSite webSite) {
 		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from CMS.");
 	}
+
+	@Override
+	public WebSiteVersion getDeployedVersion(WebSite webSite) {
+		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from CMS.");
+	}
 }

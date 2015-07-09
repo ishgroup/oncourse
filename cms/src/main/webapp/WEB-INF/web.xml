@@ -41,6 +41,16 @@
 		<url-pattern>/webdav/*</url-pattern>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>RestAPI</filter-name>
+		<filter-class>ish.oncourse.cms.rest.RestAPIFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>RestAPI</filter-name>
+		<url-pattern>/api/*</url-pattern>
+	</filter-mapping>
+
 	<welcome-file-list>
 		<welcome-file>/</welcome-file>
 	</welcome-file-list>

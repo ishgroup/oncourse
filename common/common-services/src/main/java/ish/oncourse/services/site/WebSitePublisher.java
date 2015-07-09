@@ -5,111 +5,61 @@
 package ish.oncourse.services.site;
 
 import ish.oncourse.model.*;
+import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class WebSitePublisher {
+
+    private static final Logger logger = LogManager.getLogger();
+
+    private ObjectContext context;
+    private SystemUser systemUser;
+    private String userEmail;
     private WebSiteVersion draftVersion;
     private WebSiteVersion publishedVersion;
+
+    private Map<WebNodeType, WebNodeType> webNodeTypeMap = new HashMap<>();
+    private Map<WebNode, WebNode> webNodeMap = new HashMap<>();
+    private Map<WebMenu, WebMenu> webMenuMap = new HashMap<>();
 
 
     //create new published version as copy of draftVersion
     public void publish()
     {
-        ObjectContext context = draftVersion.getObjectContext();
+        initPublishedVersion();
 
-        publishedVersion = context.newObject(WebSiteVersion.class);
-        publishedVersion.setWebSite(draftVersion.getWebSite());
-        publishedVersion.setDeployedOn(new Date());
+        copyLayouts();
 
-        for (WebSiteLayout oldLayout : draftVersion.getLayouts()) {
+        copyWebNodeTypes();
 
-            WebSiteLayout newLayout = context.newObject(WebSiteLayout.class);
+        copyWebNodes();
 
-            newLayout.setLayoutKey(oldLayout.getLayoutKey());
-            newLayout.setWebSiteVersion(publishedVersion);
+        copyWebUrlAliases();
 
-            for (WebTemplate template : oldLayout.getTemplates()) {
-                WebTemplate newTemplate = context.newObject(WebTemplate.class);
+        copyWebContents();
 
-                newTemplate.setLayout(newLayout);
-                newTemplate.setName(template.getName());
-                newTemplate.setContent(template.getContent());
+        copyWebMenus();
 
-                // need to change modified date of every template to make
-                // tapestry rendering logic to reload them
-                template.setModified(new Date());
-            }
+        context.commitChanges();
+
+        executeDeployScript(publishedVersion);
+    }
+
+    private void updateParentMenus() {
+        // ... then once we duplicated all the menus we can set up child-parent relations between them
+        for (WebMenu menu : webMenuMap.keySet()) {
+            WebMenu newMenu = webMenuMap.get(menu);
+
+            newMenu.setParentWebMenu(webMenuMap.get(menu.getParentWebMenu()));
         }
+    }
 
-        Map<WebNodeType, WebNodeType> webNodeTypeMap = new HashMap<>();
-
-        for (WebNodeType webNodeType : draftVersion.getWebNodeTypes()) {
-            WebNodeType newWebNodeType = context.newObject(WebNodeType.class);
-
-            newWebNodeType.setCreated(webNodeType.getCreated());
-            newWebNodeType.setModified(webNodeType.getModified());
-            newWebNodeType.setLayoutKey(webNodeType.getLayoutKey());
-            newWebNodeType.setName(webNodeType.getName());
-            newWebNodeType.setWebSiteVersion(publishedVersion);
-
-            webNodeTypeMap.put(webNodeType, newWebNodeType);
-        }
-
-        Map<WebNode, WebNode> webNodeMap = new HashMap<>();
-
-        for (WebNode node : draftVersion.getWebNodes()) {
-            WebNode newNode = context.newObject(WebNode.class);
-
-            newNode.setCreated(node.getCreated());
-            newNode.setModified(node.getModified());
-            newNode.setName(node.getName());
-            newNode.setNodeNumber(node.getNodeNumber());
-            newNode.setPublished(node.isPublished());
-            newNode.setWebNodeType(webNodeTypeMap.get(node.getWebNodeType()));
-            newNode.setWebSiteVersion(publishedVersion);
-
-            webNodeMap.put(node, newNode);
-        }
-
-        for (WebUrlAlias webUrlAlias : draftVersion.getWebURLAliases()) {
-            WebUrlAlias newWebUrlAlias = context.newObject(WebUrlAlias.class);
-
-            newWebUrlAlias.setCreated(webUrlAlias.getCreated());
-            newWebUrlAlias.setModified(webUrlAlias.getModified());
-            newWebUrlAlias.setUrlPath(webUrlAlias.getUrlPath());
-            newWebUrlAlias.setDefault(webUrlAlias.isDefault());
-            newWebUrlAlias.setWebNode(webNodeMap.get(webUrlAlias.getWebNode()));
-            newWebUrlAlias.setWebSiteVersion(publishedVersion);
-            newWebUrlAlias.setRedirectTo(webUrlAlias.getRedirectTo());
-        }
-
-        for (WebContent content : draftVersion.getContents()) {
-            WebContent newContent = context.newObject(WebContent.class);
-
-            newContent.setCreated(content.getCreated());
-            newContent.setModified(content.getModified());
-            newContent.setName(content.getName());
-            newContent.setContent(content.getContent());
-            newContent.setContentTextile(content.getContentTextile());
-            newContent.setWebSiteVersion(publishedVersion);
-
-            for (WebContentVisibility visibility : content.getWebContentVisibilities()) {
-                WebContentVisibility newVisibility = context.newObject(WebContentVisibility.class);
-
-                newVisibility.setRegionKey(visibility.getRegionKey());
-                newVisibility.setWeight(visibility.getWeight());
-                newVisibility.setWebContent(newContent);
-                newVisibility.setWebNode(webNodeMap.get(visibility.getWebNode()));
-                newVisibility.setWebNodeType(webNodeTypeMap.get(visibility.getWebNodeType()));
-            }
-        }
-
-        Map<WebMenu, WebMenu> webMenuMap = new HashMap<>();
-
+    private void copyWebMenus() {
         // first duplicate all the existing WebMenu records...
         for (WebMenu menu : draftVersion.getMenus()) {
 
@@ -126,32 +76,168 @@ public class WebSitePublisher {
             webMenuMap.put(menu, newMenu);
         }
 
-        // ... then once we duplicated all the menus we can set up child-parent relations between them
-        for (WebMenu menu : webMenuMap.keySet()) {
-            WebMenu newMenu = webMenuMap.get(menu);
+        updateParentMenus();
+    }
 
-            newMenu.setParentWebMenu(webMenuMap.get(menu.getParentWebMenu()));
+    private void copyWebContents() {
+        for (WebContent content : draftVersion.getContents()) {
+            WebContent newContent = context.newObject(WebContent.class);
+
+            newContent.setCreated(content.getCreated());
+            newContent.setModified(content.getModified());
+            newContent.setName(content.getName());
+            newContent.setContent(content.getContent());
+            newContent.setContentTextile(content.getContentTextile());
+            newContent.setWebSiteVersion(publishedVersion);
+
+            copyWebContentVisibilities(content, newContent);
+        }
+    }
+
+    private void copyWebContentVisibilities(WebContent oldContent, WebContent newContent) {
+        for (WebContentVisibility visibility : oldContent.getWebContentVisibilities()) {
+            WebContentVisibility newVisibility = context.newObject(WebContentVisibility.class);
+
+            newVisibility.setRegionKey(visibility.getRegionKey());
+            newVisibility.setWeight(visibility.getWeight());
+            newVisibility.setWebContent(newContent);
+            newVisibility.setWebNode(webNodeMap.get(visibility.getWebNode()));
+            newVisibility.setWebNodeType(webNodeTypeMap.get(visibility.getWebNodeType()));
+        }
+    }
+
+    private void copyWebUrlAliases() {
+        for (WebUrlAlias webUrlAlias : draftVersion.getWebURLAliases()) {
+            WebUrlAlias newWebUrlAlias = context.newObject(WebUrlAlias.class);
+
+            newWebUrlAlias.setCreated(webUrlAlias.getCreated());
+            newWebUrlAlias.setModified(webUrlAlias.getModified());
+            newWebUrlAlias.setUrlPath(webUrlAlias.getUrlPath());
+            newWebUrlAlias.setDefault(webUrlAlias.isDefault());
+            newWebUrlAlias.setWebNode(webNodeMap.get(webUrlAlias.getWebNode()));
+            newWebUrlAlias.setWebSiteVersion(publishedVersion);
+            newWebUrlAlias.setRedirectTo(webUrlAlias.getRedirectTo());
+        }
+    }
+
+    private void copyWebNodes() {
+        for (WebNode node : draftVersion.getWebNodes()) {
+            WebNode newNode = context.newObject(WebNode.class);
+
+            newNode.setCreated(node.getCreated());
+            newNode.setModified(node.getModified());
+            newNode.setName(node.getName());
+            newNode.setNodeNumber(node.getNodeNumber());
+            newNode.setPublished(node.isPublished());
+            newNode.setWebNodeType(webNodeTypeMap.get(node.getWebNodeType()));
+            newNode.setWebSiteVersion(publishedVersion);
+
+            webNodeMap.put(node, newNode);
+        }
+    }
+
+    private void copyWebNodeTypes() {
+        for (WebNodeType webNodeType : draftVersion.getWebNodeTypes()) {
+            WebNodeType newWebNodeType = context.newObject(WebNodeType.class);
+
+            newWebNodeType.setCreated(webNodeType.getCreated());
+            newWebNodeType.setModified(webNodeType.getModified());
+            newWebNodeType.setLayoutKey(webNodeType.getLayoutKey());
+            newWebNodeType.setName(webNodeType.getName());
+            newWebNodeType.setWebSiteVersion(publishedVersion);
+
+            webNodeTypeMap.put(webNodeType, newWebNodeType);
+        }
+    }
+
+    private void copyLayouts() {
+        for (WebSiteLayout oldLayout : draftVersion.getLayouts()) {
+
+            WebSiteLayout newLayout = context.newObject(WebSiteLayout.class);
+
+            newLayout.setLayoutKey(oldLayout.getLayoutKey());
+            newLayout.setWebSiteVersion(publishedVersion);
+
+            copyTemplates(oldLayout, newLayout);
+        }
+    }
+
+    private void copyTemplates(WebSiteLayout oldLayout, WebSiteLayout newLayout) {
+        for (WebTemplate template : oldLayout.getTemplates()) {
+            WebTemplate newTemplate = context.newObject(WebTemplate.class);
+
+            newTemplate.setLayout(newLayout);
+            newTemplate.setName(template.getName());
+            newTemplate.setContent(template.getContent());
+
+            // need to change modified date of every template to make
+            // tapestry rendering logic to reload them
+            template.setModified(new Date());
+        }
+    }
+
+    private void initPublishedVersion() {
+        publishedVersion = context.newObject(WebSiteVersion.class);
+        publishedVersion.setWebSite(draftVersion.getWebSite());
+        publishedVersion.setDeployedOn(new Date());
+        if (systemUser != null) {
+            publishedVersion.setDeployedBy(context.localObject(systemUser));
+        }
+    }
+
+    /**
+     * Executes deploySite.sh script passing specified file as a parameter.
+     * E.g.:
+     * 		/var/onCourse/scripts/deploySite.sh -s {siteVersion.getId()} -c {site.getSiteKey()}
+     */
+    private void executeDeployScript(WebSiteVersion siteVersion) {
+        String scriptPath = ContextUtil.getCmsDeployScriptPath();
+
+        if (StringUtils.trimToNull(scriptPath) == null) {
+            logger.error("Deploy site script is not defined! Resources have not been deployed!");
+            return;
         }
 
+        List<String> scriptCommand = new ArrayList<>();
+
+        scriptCommand.add(scriptPath);
+        scriptCommand.add("-s");
+        scriptCommand.add(String.valueOf(siteVersion.getId()));
+        scriptCommand.add("-c");
+        scriptCommand.add(siteVersion.getWebSite().getSiteKey());
+
+        if (userEmail != null) {
+            scriptCommand.add("-e");
+            scriptCommand.add(userEmail);
+        }
+
+        ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand);
+
+        try {
+            processBuilder.start();
+        } catch (Exception e) {
+            logger.error("Error executing script '{}'", scriptPath, e);
+        }
     }
 
-    public void setDraftVersion(WebSiteVersion draftVersion) {
-        this.draftVersion = draftVersion;
-    }
-
-    public WebSiteVersion getDraftVersion()
-    {
-        return this.draftVersion;
-    }
-
-    public WebSiteVersion getPublishedVersion() {
-        return publishedVersion;
-    }
-
-    public static WebSitePublisher valueOf(WebSiteVersion webSiteVersion)
+    public static WebSitePublisher valueOf(WebSiteVersion webSiteVersion, SystemUser systemUser, String userEmail, ObjectContext objectContext)
     {
         WebSitePublisher publisher = new WebSitePublisher();
-        publisher.setDraftVersion(webSiteVersion);
+        publisher.context = objectContext;
+        publisher.draftVersion = objectContext.localObject(webSiteVersion);
+        if (systemUser != null) {
+            publisher.systemUser = objectContext.localObject(systemUser);
+        }
+        publisher.userEmail = userEmail;
         return publisher;
     }
+
+    public static WebSitePublisher valueOf(WebSiteVersion webSiteVersion, ObjectContext objectContext)
+    {
+        WebSitePublisher publisher = new WebSitePublisher();
+        publisher.context = objectContext;
+        publisher.draftVersion = objectContext.localObject(webSiteVersion);
+        return publisher;
+    }
+
 }

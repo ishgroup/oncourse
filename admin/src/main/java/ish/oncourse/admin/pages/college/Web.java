@@ -269,9 +269,8 @@ public class Web {
 
 		context.commitChanges();
 
-        WebSitePublisher publisher = WebSitePublisher.valueOf(stagedVersion);
+        WebSitePublisher publisher = WebSitePublisher.valueOf(stagedVersion, context);
         publisher.publish();
-        context.commitChanges();
 	}
 
 	@OnEvent(value = "setMainDomainEvent")

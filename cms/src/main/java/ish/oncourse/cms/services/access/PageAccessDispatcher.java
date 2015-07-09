@@ -12,7 +12,7 @@ public class PageAccessDispatcher implements Dispatcher {
 
 	private static final String LOGIN_PAGE = "/login";
 
-	public static String[] NON_REDIRECTABLE_PATHS = new String[] { LOGIN_PAGE, "/assets", "/ui/", "/ma.", "/webdav" };
+	public static String[] NON_REDIRECTABLE_PATHS = new String[] { LOGIN_PAGE, "/assets", "/ui/", "/ma.", "/webdav", "/api"};
 
 	@Inject
 	private IAuthenticationService authenticationService;

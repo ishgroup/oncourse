@@ -29,4 +29,6 @@ public interface IWebSiteVersionService {
 	 * delete all revisions older than 60 days, but always to keep at least 5 revisions, even if they are older
 	 */
 	void removeOldWebSiteVersions(WebSite webSite);
+
+	WebSiteVersion getDeployedVersion(WebSite webSite);
 }

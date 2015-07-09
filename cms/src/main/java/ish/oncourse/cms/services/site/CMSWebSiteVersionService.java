@@ -6,13 +6,15 @@ package ish.oncourse.cms.services.site;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.site.AbstractWebSiteVersionService;
-import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.site.IWebSiteVersionService;
-import ish.oncourse.services.site.WebSitePublisher;
+import ish.oncourse.services.site.*;
 import ish.oncourse.util.ContextUtil;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
@@ -29,12 +31,7 @@ import java.util.List;
  */
 public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 
-	private static final int KEEP_AT_LEAST = 4;
-	
 	private static final Logger logger = LogManager.getLogger();
-	
-	@Inject
-	private IWebSiteVersionService webSiteVersionService;
 	
 	@Inject
 	private ICayenneService cayenneService;
@@ -61,145 +58,35 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 
 	@Override
 	public void publish() {
-		ObjectContext context = cayenneService.newContext();
-
-		WebSiteVersion draft = context.localObject(webSiteVersionService.getCurrentVersion());
-
-        WebSitePublisher publisher = WebSitePublisher.valueOf(draft);
-        publisher.publish();
-        WebSiteVersion published = publisher.getPublishedVersion();
-
-        SystemUser systemUser = authenticationService.getSystemUser();
-        if (systemUser != null) {
-            published.setDeployedBy(context.localObject(systemUser));
-        }
-
-		context.commitChanges();
-
-		executeDeployScript(published);
+        WebSitePublisher.valueOf(getCurrentVersion(),
+				authenticationService.getSystemUser(),
+				authenticationService.getUserEmail(),
+				cayenneService.newContext()).publish();
 	}
 
 	@Override
 	public void delete(WebSiteVersion webSiteVersionToDelte) {
-		
-		if (getCurrentVersion().getId().equals(webSiteVersionToDelte.getId())
-				|| getDeployedVersion(webSiteService.getCurrentWebSite()).getId().equals(webSiteVersionToDelte.getId())) {
-			// prevent the deletion of the current live site or the draft site!
-			throw new RuntimeException("Attempt to delete current live site or the draft site version");
-		}
-
-		ObjectContext context = cayenneService.newContext();
-		WebSiteVersion versionToDelete = context.localObject(webSiteVersionToDelte);
-
-		for (WebSiteLayout layoutToDelete : versionToDelete.getLayouts()) {
-			context.deleteObjects(layoutToDelete.getTemplates());
-		}
-		context.deleteObjects(versionToDelete.getLayouts());
-
-		for (WebContent contentToDelete : versionToDelete.getContents()) {
-			context.deleteObjects(contentToDelete.getWebContentVisibilities());
-		}
-		context.deleteObjects(versionToDelete.getContents());
-
-		
-		//find root menu for entry in menus tree
-		if (!versionToDelete.getMenus().isEmpty()) {
-			WebMenu rootMenu = versionToDelete.getMenus().get(0);
-			while (rootMenu.getParentWebMenu() != null) {
-				rootMenu = rootMenu.getParentWebMenu();
-			}
-			
-			deleteChildrenMenus(rootMenu.getChildrenMenus(), context);
-			context.deleteObject(rootMenu);
-		}
-
-		context.deleteObjects(versionToDelete.getMenus());
-
-		context.deleteObjects(versionToDelete.getWebURLAliases());
-		context.deleteObjects(versionToDelete.getWebNodes());
-		context.deleteObjects(versionToDelete.getWebNodeTypes());
-
-		context.deleteObjects(versionToDelete);
-
-		context.commitChanges();
+		WebSiteVersionDelete.valueOf(webSiteVersionToDelte,
+				getCurrentVersion(),
+				getDeployedVersion(webSiteService.getCurrentWebSite()),
+				cayenneService.newContext()).delete();
 	}
 	
-	//recursively remove all childrenMenus then remove parent
-	private void deleteChildrenMenus(List<WebMenu> webMenus, ObjectContext context) {
-		List<WebMenu> copyList = new ArrayList<>(webMenus);
-		for (WebMenu webMenu : copyList) {
-			if (!webMenu.getChildrenMenus().isEmpty()) {
-				deleteChildrenMenus(webMenu.getChildrenMenus(), context);
-			}
-			context.deleteObject(webMenu);
-		}
-	}
-
-
 	/**
 		delete all revisions older than 60 days, but always keep at least 5 revisions, even if they are older
 	 */
 	@Override
 	public void removeOldWebSiteVersions(WebSite webSite) {
-		ObjectContext context = cayenneService.newContext();
-
-		List<WebSiteVersion> allVersions = ObjectSelect.query(WebSiteVersion.class).
-				where(WebSiteVersion.WEB_SITE.eq(webSite)).
-				and(WebSiteVersion.DEPLOYED_ON.isNotNull()).  //exclude unpublished revisions
-				orderBy(WebSiteVersion.DEPLOYED_ON.desc()).
-				select(context);
-
-		//if number of revisions less than 5 (4 + 1 unpublished) - nothing to delete 
-		if (allVersions.size() > KEEP_AT_LEAST) {
-
-			//don't delete the last few
-			List<WebSiteVersion> versionsToDelete = allVersions.subList(KEEP_AT_LEAST, allVersions.size());
-			
-			//delete all revisions older than 60 days
-			Date deleteBeforeDate = DateUtils.addDays(new Date(), -60);
-			versionsToDelete = WebSiteVersion.DEPLOYED_ON.lt(deleteBeforeDate).filterObjects(versionsToDelete);
-
-			for (WebSiteVersion version : versionsToDelete) {
-				delete(version);
-			}
-		}
+		WebSiteVersionsDelete.valueOf(webSite,
+				getCurrentVersion(),
+				getDeployedVersion(webSiteService.getCurrentWebSite()),
+				cayenneService.newContext()).delete();
 	}
 
-	/**
-	 * Executes deploySite.sh script passing specified file as a parameter.
-	 * E.g.:
-	 * 		/var/onCourse/scripts/deploySite.sh -s {siteVersion.getId()} -c {site.getSiteKey()}
-	 */
-	private void executeDeployScript(WebSiteVersion siteVersion) {
-		String scriptPath = ContextUtil.getCmsDeployScriptPath();
-		
-		if (StringUtils.trimToNull(scriptPath) == null) {
-			logger.error("Deploy site script is not defined! Resources have not been deployed!");
-			return;
-		}
-
-		List<String> scriptCommand = new ArrayList<>();
-		
-		scriptCommand.add(scriptPath);
-		scriptCommand.add("-s");
-		scriptCommand.add(String.valueOf(siteVersion.getId()));
-		scriptCommand.add("-c");
-		scriptCommand.add(siteVersion.getWebSite().getSiteKey());
-		
-		String userEmail = authenticationService.getUserEmail();
-		
-		if (userEmail != null) {
-			scriptCommand.add("-e");
-			scriptCommand.add(userEmail);
-		}
-		
-		ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand);
-		
-		try {
-			processBuilder.start();
-		} catch (Exception e) {
-			logger.error("Error executing script '{}'", scriptPath, e);
-		}
+	public WebSiteVersion getDeployedVersion(WebSite webSite) {
+		return ObjectSelect.query(WebSiteVersion.class)
+				.and(WebSiteVersion.WEB_SITE.eq(webSite))
+				.addOrderBy(WebSiteVersion.DEPLOYED_ON.desc())
+				.limit(1).selectFirst(webSite.getObjectContext());
 	}
-	
 }
