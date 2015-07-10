@@ -13,6 +13,8 @@ dependencies {
 
 	testCompile 'dbunit:dbunit:2.4.8'
     testCompile 'org.mockito:mockito-core:1.10.17'
+	testCompile 'org.apache.poi:poi:3.12-beta1'
+	testCompile 'org.apache.poi:poi-ooxml:3.12-beta1'
 	testCompile project(':server')
 }
 
