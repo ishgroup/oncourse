@@ -4,6 +4,7 @@ import ish.common.types.CourseEnrolmentType;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.services.courseclass.CheckClassAge;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -53,7 +54,10 @@ public class EnrolmentValidator {
                     enrolment.getCourseClass().getCourse().getCode());
             return false;
         }
-        if (enrolment.getCourseClass().hasEnded()) {
+        if (!new CheckClassAge()
+                        .courseClass(enrolment.getCourseClass())
+                        .classAge(purchaseController.getPreferenceController().getStopWebEnrolmentsAge())
+                        .check()) {
             publishError(courseClassEnded, showErrors, purchaseController.getClassName(enrolment.getCourseClass()),
                     enrolment.getCourseClass().getCourse().getCode());
             return false;

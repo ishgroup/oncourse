@@ -2,6 +2,7 @@ package ish.oncourse.textile.pages;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.textile.TextileUtil;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -32,6 +33,9 @@ public class TextileCourse {
 	@Inject
 	private Request request;
 
+	@Inject
+	private ICourseClassService courseClassService;
+
 	@Property
 	private Course course;
 
@@ -48,7 +52,7 @@ public class TextileCourse {
 	}
 
 	public List<CourseClass> getClassesToShow() {
-		return CURRENT_CLASS_QUALIFIER.filterObjects(course.getEnrollableClasses());
+		return CURRENT_CLASS_QUALIFIER.filterObjects(courseClassService.getEnrollableClasses(course));
 	}
 
 	public Format getDateFormat() {

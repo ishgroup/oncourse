@@ -3,6 +3,7 @@ package ish.oncourse.ui.components;
 import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.search.SearchParams;
 import ish.oncourse.ui.utils.CourseItemModel;
 import org.apache.tapestry5.annotations.Parameter;
@@ -16,6 +17,9 @@ import java.util.List;
 public class CoursesList extends ISHCommon {
 	@Inject
 	private ICourseService courseService;
+
+	@Inject
+	private ICourseClassService courseClassService;
 
 	@Inject
 	@Property
@@ -55,7 +59,7 @@ public class CoursesList extends ISHCommon {
 
     public CourseItemModel getCourseItemModel()
     {
-        return CourseItemModel.valueOf(course, searchParams, courseService);
+        return CourseItemModel.valueOf(course, searchParams, courseService, courseClassService);
     }
 
 	@SuppressWarnings("unchecked")

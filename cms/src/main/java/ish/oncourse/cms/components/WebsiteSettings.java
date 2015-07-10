@@ -1,5 +1,8 @@
 package ish.oncourse.cms.components;
 
+import ish.oncourse.selectutils.ListSelectModel;
+import ish.oncourse.services.courseclass.ClassAge;
+import ish.oncourse.services.courseclass.ClassAgeType;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -8,8 +11,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.util.EnumSelectModel;
 
 public class WebsiteSettings {
 	
@@ -21,18 +26,33 @@ public class WebsiteSettings {
 	
 	@Property
 	private boolean enableForWebPage;
-	
+
+	@Property
+	private EnumSelectModel hideClassOnWebsiteTypes;
+
+	@Property
+	private EnumSelectModel stopWebEnrolmentsTypes;
+
 	@Property
 	private String addthisProfileId;
 	
 	@SuppressWarnings("all")
 	@Property
 	private boolean saved;
-	
+
+	@Inject
+	private Messages messages;
+
 	@InjectComponent
 	@Property
 	private Form websiteSettingsForm;
-	
+
+	@InjectComponent (value = "hideClassOnWebsite")
+	private ClassAgeField hideClassOnWebsite;
+
+	@InjectComponent (value = "stopWebEnrolments")
+	private ClassAgeField stopWebEnrolments;
+
 	@Component
 	private Zone websiteSettingsZone;
 	
@@ -40,6 +60,7 @@ public class WebsiteSettings {
 	private Request request;
 	
 	@Inject
+	@Property
 	private PreferenceController preferenceController;
 	
 	@Inject
@@ -63,6 +84,13 @@ public class WebsiteSettings {
 		else {
 			addthisProfileId = "";
 		}
+
+		hideClassOnWebsiteTypes = new EnumSelectModel(ClassAgeType.class, messages);
+		stopWebEnrolmentsTypes = new EnumSelectModel(ClassAgeType.class, messages,
+				new ClassAgeType[]{ClassAgeType.afterClassStarts,
+				ClassAgeType.beforeClassStarts,
+				ClassAgeType.beforeClassEnds});
+
 	}
 	
 	@AfterRender
@@ -83,7 +111,10 @@ public class WebsiteSettings {
 		if (StringUtils.trimToNull(addthisProfileId) != null) {
 			preferenceController.setAddThisProfileId(addthisProfileId);
 		}
-		
+
+		preferenceController.setHideClassOnWebsiteAge(ClassAge.valueOf(hideClassOnWebsite.getDays(), hideClassOnWebsite.getType()));
+		preferenceController.setStopWebEnrolmentsAge(ClassAge.valueOf(stopWebEnrolments.getDays(), stopWebEnrolments.getType()));
+
 		saved = true;
 		
 		return websiteSettingsZone.getBody();

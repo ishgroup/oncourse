@@ -24,6 +24,7 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,7 +109,7 @@ public class CourseItem extends ISHCommon {
 	}
 	
 	public String getAvailMsg() {
-		int numberOfClasses = courseItemModel.getCourse().getEnrollableClasses().size();
+		int numberOfClasses = courseItemModel.getEnrollableClasses().size();
 		String msg;
 
 		if (numberOfClasses <= 0) {
@@ -172,7 +173,7 @@ public class CourseItem extends ISHCommon {
 
     public boolean isHasMoreAvailablePlaces() {
         int places = 0;
-        for (CourseClass courseClass : courseItemModel.getCourse().getEnrollableClasses()) {
+        for (CourseClass courseClass : courseItemModel.getEnrollableClasses()) {
             places += courseClass.getAvailableEnrolmentPlaces();
         }
         return places > 0;

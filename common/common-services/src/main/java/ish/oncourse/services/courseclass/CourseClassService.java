@@ -4,7 +4,9 @@ import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.utils.TimestampUtilities;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -30,6 +32,9 @@ public class CourseClassService implements ICourseClassService {
     private final IWebSiteService webSiteService;
 
 	private final ICookiesService cookiesService;
+
+    @Inject
+    private PreferenceController preferenceController;
 
     @Inject
 	public CourseClassService(ICayenneService cayenneService, IWebSiteService webSiteService, ICookiesService cookiesService) {
@@ -343,4 +348,47 @@ public class CourseClassService implements ICourseClassService {
 		}
 		return timezone;
 	}
+
+    public List<CourseClass> getEnrollableClasses(Course course) {
+        List<CourseClass> currentClasses = getCurrentClasses(course);
+        List<CourseClass> list = new ArrayList<>();
+
+        for (CourseClass courseClass : currentClasses) {
+            if (courseClass.isHasAvailableEnrolmentPlaces() &&
+                    new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge()).courseClass(courseClass).check()) {
+                list.add(courseClass);
+            }
+        }
+
+        return list;
+    }
+
+    public List<CourseClass> getCurrentClasses(Course course) {
+        List<CourseClass> courseClasses = course.getCourseClasses();
+        List<CourseClass> list = new ArrayList<>();
+
+        for (CourseClass courseClass : courseClasses) {
+            if (Boolean.TRUE.equals(courseClass.getIsWebVisible())
+                    && !courseClass.isCancelled()
+                    && new CheckClassAge().classAge(preferenceController.getHideClassOnWebsiteAge()).courseClass(courseClass).check()) {
+                list.add(courseClass);
+            }
+
+        }
+
+        return list;
+    }
+
+    public List<CourseClass> getFullClasses(Course course) {
+        List<CourseClass> currentClasses = getCurrentClasses(course);
+        List<CourseClass> list = new ArrayList<>();
+
+        for (CourseClass courseClass : currentClasses) {
+            if (!courseClass.isHasAvailableEnrolmentPlaces()) {
+                list.add(courseClass);
+            }
+        }
+
+        return list;
+    }
 }

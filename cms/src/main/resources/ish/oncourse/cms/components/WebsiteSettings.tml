@@ -48,22 +48,41 @@
 			</div>
             <br />
             <div class="cms-set-ops">
-            					<h5 class="cms-block-sub-title">Enable for these pages:</h5>
-            					<ul class="cms-sub-options">
-            						<li>
-                                        <label class="cms-checkbox">
-                                        <t:checkbox t:id="enableForCourseCheckbox" class="sm-checkbox" value="enableForCourse"/> Course
-                                            </label>
+				<h5 class="cms-block-sub-title">Enable for these pages:</h5>
+				<ul class="cms-sub-options">
+					<li>
+						<label class="cms-checkbox">
+							<t:checkbox t:id="enableForCourseCheckbox" class="sm-checkbox" value="enableForCourse"/> Course
+						</label>
 
-                                    </li>
-            						<li>
-                                        <label class="cms-checkbox">
-                                        <t:checkbox t:id="enableForWebPageCheckbox" class="sm-checkbox" value="enableForWebPage"/> Web page
-                                            </label>
-                                           </li>
-            					</ul>
-            				</div>
-			
+					</li>
+					<li>
+						<label class="cms-checkbox">
+							<t:checkbox t:id="enableForWebPageCheckbox" class="sm-checkbox" value="enableForWebPage"/> Web page
+						</label>
+				    </li>
+				</ul>
+			</div>
+
+			<br />
+			<div class="cms-set-ops">
+				<ul class="cms-sub-options">
+					<li>
+						<t:classagefield t:id="hideClassOnWebsite"
+										 label="literal:Hide class on website:"
+										 value="preferenceController.hideClassOnWebsiteAge"
+										 types="hideClassOnWebsiteTypes"/>
+					</li>
+					<li>
+						<t:classagefield t:id="stopWebEnrolments"
+										 label="literal:Stop web enrolments:"
+										 value="preferenceController.stopWebEnrolmentsAge"
+										 types="stopWebEnrolmentsTypes"/>
+					</li>
+				</ul>
+			</div>
+
+
 			<div class="cms-btns">
 				<t:submit id="save" class="cms-btn cms-btn-primary cms-settings-button" value="Save"/>
 			</div>

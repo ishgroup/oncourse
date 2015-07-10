@@ -4,6 +4,7 @@ import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.search.*;
 import ish.oncourse.services.site.IWebSiteService;
@@ -61,6 +62,8 @@ public class Courses extends ISHCommon {
 	private IWebSiteService webSiteService;
 	@Inject
 	private IFacebookMetaProvider facebookMetaProvider;
+	@Inject
+	private ICourseClassService courseClassService;
 
 	@Property
 	private List<Course> courses;
@@ -199,7 +202,7 @@ public class Courses extends ISHCommon {
 
 
 		for (Course course : courses) {
-			for (CourseClass courseClass : course.getEnrollableClasses()) {
+			for (CourseClass courseClass : courseClassService.getEnrollableClasses(course)) {
 				Room room = courseClass.getRoom();
 				if (room != null) {
 					Site site = room.getSite();

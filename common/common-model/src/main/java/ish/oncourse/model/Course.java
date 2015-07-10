@@ -22,6 +22,7 @@ public class Course extends _Course implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Deprecated //use ICourseClassService.getEnrollableClasses
 	public List<CourseClass> getEnrollableClasses() {
 		List<CourseClass> currentClasses = getCurrentClasses();
 		List<CourseClass> list = new ArrayList<>();
@@ -35,6 +36,7 @@ public class Course extends _Course implements Queueable {
 		return list;
 	}
 
+	@Deprecated //use ICourseClassService.getCurrentClasses
 	public List<CourseClass> getCurrentClasses() {
 		List<CourseClass> courseClasses = getCourseClasses();
 		List<CourseClass> list = new ArrayList<>();
@@ -52,6 +54,7 @@ public class Course extends _Course implements Queueable {
 		return list;
 	}
 
+	@Deprecated //use ICourseClassService.getFullClasses
 	public List<CourseClass> getFullClasses() {
 		List<CourseClass> currentClasses = getCurrentClasses();
 		List<CourseClass> list = new ArrayList<>();

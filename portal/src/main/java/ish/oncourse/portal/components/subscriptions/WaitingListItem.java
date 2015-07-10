@@ -4,6 +4,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -36,6 +37,9 @@ public class WaitingListItem {
 
     @Inject
     private IPlainTextExtractor plainTextExtractor;
+
+    @Inject
+    private ICourseClassService courseClassService;
 
     @InjectContainer
     private WaitingLists waitingListsPage;
@@ -70,7 +74,7 @@ public class WaitingListItem {
 
     @SetupRender
     void setupRender() {
-        classes = waitingList.getCourse().getEnrollableClasses();
+        classes = courseClassService.getEnrollableClasses(waitingList.getCourse());
     }
 
     @OnEvent(value="delete")

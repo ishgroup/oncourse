@@ -67,25 +67,29 @@ public interface ICourseClassService {
 	 * @param contact willow contact
 	 * @return courseClass list
 	 */
-	public List<CourseClass> getContactCourseClasses(Contact contact);
+	List<CourseClass> getContactCourseClasses(Contact contact);
 
-    public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter period);
+	List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter period);
 
     Attendance loadAttendanceById(Object ids);
 
 	/**
 	 * Returns all surveys  for this tutor
 	 */
-	public List<Survey> getSurveysFor(Tutor tutor);
+	List<Survey> getSurveysFor(Tutor tutor);
 
 	/**
 	 * Returns all surveys  for this courseClass
 	 */
-	public List<Survey> getSurveysFor(CourseClass courseClass);
+	List<Survey> getSurveysFor(CourseClass courseClass);
 
 
 	/**
 	 * Returns client time zone for CourseClass
 	 */
-	public TimeZone getClientTimeZone(CourseClass courseClass);
+	TimeZone getClientTimeZone(CourseClass courseClass);
+
+	List<CourseClass> getFullClasses(Course course);
+	List<CourseClass> getCurrentClasses(Course course);
+	List<CourseClass> getEnrollableClasses(Course course);
 }

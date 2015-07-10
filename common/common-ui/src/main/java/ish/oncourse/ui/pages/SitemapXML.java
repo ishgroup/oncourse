@@ -3,6 +3,7 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
@@ -45,6 +46,9 @@ public class SitemapXML extends ISHCommon {
 	
 	@Inject
 	private ITagService tagService;
+
+	@Inject
+	private ICourseClassService courseClassService;
 
 	@Property
 	private String hostName;
@@ -140,4 +144,8 @@ public class SitemapXML extends ISHCommon {
     {
         return tutorService.isActiveTutor(tutor);
     }
+
+	public List<CourseClass> getCurrentClasses() {
+		return courseClassService.getCurrentClasses(course);
+	}
 }

@@ -1,6 +1,8 @@
 package ish.oncourse.services.preference;
 
 import ish.oncourse.services.ServiceTestModule;
+import ish.oncourse.services.courseclass.ClassAge;
+import ish.oncourse.services.courseclass.ClassAgeType;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.ServiceTest;
@@ -18,6 +20,7 @@ import java.io.InputStream;
 import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.*;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class PreferenceControllerTest extends ServiceTest {
@@ -122,8 +125,37 @@ public class PreferenceControllerTest extends ServiceTest {
 		assertEquals(dateOfBirth.getPreferenceNameBy(waitinglist),REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST);
 	}
 
+	@Test
+	public void testClassAge() throws Exception {
+		ClassAge hideClassOnWebsiteAge = prefController.getHideClassOnWebsiteAge();
+		assertNotNull(hideClassOnWebsiteAge);
+		assertEquals(0, hideClassOnWebsiteAge.getDays());
+		assertEquals(ClassAgeType.beforeClassEnds, hideClassOnWebsiteAge.getType());
 
-	@After
+
+		ClassAge stopWebEnrolmentsAge = prefController.getStopWebEnrolmentsAge();
+		assertNotNull(stopWebEnrolmentsAge);
+		assertEquals(0, stopWebEnrolmentsAge.getDays());
+		assertEquals(ClassAgeType.beforeClassEnds, stopWebEnrolmentsAge.getType());
+
+
+		prefController.setHideClassOnWebsiteAge(ClassAge.valueOf(1, ClassAgeType.afterClassEnds));
+		hideClassOnWebsiteAge = prefController.getHideClassOnWebsiteAge();
+		assertNotNull(hideClassOnWebsiteAge);
+		assertEquals(1, hideClassOnWebsiteAge.getDays());
+		assertEquals(ClassAgeType.afterClassEnds, hideClassOnWebsiteAge.getType());
+
+
+		prefController.setStopWebEnrolmentsAge(ClassAge.valueOf(2, ClassAgeType.beforeClassStarts));
+		stopWebEnrolmentsAge = prefController.getStopWebEnrolmentsAge();
+		assertNotNull(stopWebEnrolmentsAge);
+		assertEquals(2, stopWebEnrolmentsAge.getDays());
+		assertEquals(ClassAgeType.beforeClassStarts, stopWebEnrolmentsAge.getType());
+	}
+
+
+
+		@After
 	public void tearDown() throws Exception {
 		prefController = null;
 	}

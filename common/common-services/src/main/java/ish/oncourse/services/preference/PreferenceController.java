@@ -1,6 +1,7 @@
 package ish.oncourse.services.preference;
 
 import ish.oncourse.model.*;
+import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.persistence.CommonPreferenceController;
@@ -39,6 +40,13 @@ public class PreferenceController extends CommonPreferenceController {
     private static final String ENROLMENT_collectParentDetails = "enrolment.collectParentDetails";
     private static final String ENROLMENT_contactAgeWhenNeedParent = "enrolment.contactAgeWhenNeedParent";
     public static final int DEFAULT_contactAgeWhenNeedParent = 18;
+
+	private static final String HIDE_CLASS_ON_WEB_AGE = "hide.class.on.web.age";
+	private static final String HIDE_CLASS_ON_WEB_AGE_TYPE = "hide.class.on.web.age.type";
+
+	private static final String STOP_WEB_ENROLMENTS_AGE = "stop.web.enrolments.age";
+	private static final String STOP_WEB_ENROLMENTS_AGE_TYPE = "stop.web.enrolments.age.type";
+
 
     @Inject
 	private ICayenneService cayenneService;
@@ -325,6 +333,28 @@ public class PreferenceController extends CommonPreferenceController {
     {
         setValue(ENROLMENT_collectParentDetails, false, Boolean.toString(value));
     }
+
+	public void setHideClassOnWebsiteAge(ClassAge classAge) {
+		setValue(HIDE_CLASS_ON_WEB_AGE, false, String.valueOf(classAge.getDays()));
+		setValue(HIDE_CLASS_ON_WEB_AGE_TYPE, false, String.valueOf(classAge.getType().name()));
+	}
+
+	public ClassAge getHideClassOnWebsiteAge() {
+		return ClassAge.valueOf(getValue(HIDE_CLASS_ON_WEB_AGE, false),
+				getValue(HIDE_CLASS_ON_WEB_AGE_TYPE, false));
+	}
+
+	public void setStopWebEnrolmentsAge(ClassAge classAge) {
+		setValue(STOP_WEB_ENROLMENTS_AGE, false, String.valueOf(classAge.getDays()));
+		setValue(STOP_WEB_ENROLMENTS_AGE_TYPE, false, String.valueOf(classAge.getType().name()));
+	}
+
+	public ClassAge getStopWebEnrolmentsAge() {
+		return ClassAge.valueOf(getValue(STOP_WEB_ENROLMENTS_AGE, false),
+				getValue(STOP_WEB_ENROLMENTS_AGE_TYPE, false));
+	}
+
+
 
     public enum ContactFieldSet {
 		enrolment,

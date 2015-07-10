@@ -1,6 +1,7 @@
 package ish.oncourse.services.course;
 
 import ish.oncourse.model.*;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParams;
@@ -39,6 +40,9 @@ public class CourseService implements ICourseService {
 
 	@Inject
 	private ISearchService searchService;
+
+	@Inject
+	private ICourseClassService courseClassService;
 
 	/**
 	 * @see ICourseService#getCourses(Integer, Integer)
@@ -262,7 +266,7 @@ public class CourseService implements ICourseService {
 				Calendar cal = Calendar.getInstance();
 				cal.add(Calendar.YEAR, 5);
 				Date start1 = cal.getTime();
-				for (CourseClass cc : o1.getCurrentClasses()) {
+				for (CourseClass cc : courseClassService.getCurrentClasses(o1)) {
 					Date startDate = cc.getStartDate();
 					if (startDate != null && startDate.before(start1)) {
 						start1 = startDate;
@@ -270,7 +274,7 @@ public class CourseService implements ICourseService {
 				}
 
 				Date start2 = cal.getTime();
-				for (CourseClass cc : o2.getCurrentClasses()) {
+				for (CourseClass cc : courseClassService.getCurrentClasses(o2)) {
 					Date startDate = cc.getStartDate();
 					if (startDate != null && startDate.before(start2)) {
 						start2 = startDate;
@@ -284,18 +288,18 @@ public class CourseService implements ICourseService {
 		});
 	}
 
-	private static void sortByAvailability(final Boolean isAscending, List<Course> result) {
+	private void sortByAvailability(final Boolean isAscending, List<Course> result) {
 		Collections.sort(result, new Comparator<Course>() {
 
 			@Override
 			public int compare(Course o1, Course o2) {
 				Integer places1 = 0;
-				for (CourseClass cc : o1.getCurrentClasses()) {
+				for (CourseClass cc : courseClassService.getCurrentClasses(o1)) {
 					places1 += cc.getAvailableEnrolmentPlaces();
 				}
 
 				Integer places2 = 0;
-				for (CourseClass cc : o2.getCurrentClasses()) {
+				for (CourseClass cc : courseClassService.getCurrentClasses(o2)) {
 					places2 += cc.getAvailableEnrolmentPlaces();
 				}
 				if (isAscending) {

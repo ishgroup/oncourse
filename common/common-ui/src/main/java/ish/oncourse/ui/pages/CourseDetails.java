@@ -3,6 +3,7 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.ui.utils.CourseItemModel;
 import ish.oncourse.util.HTMLUtils;
@@ -20,15 +21,19 @@ public class CourseDetails extends ISHCommon {
 	@Inject
 	private IFacebookMetaProvider facebookMetaProvider;
 
+	@Inject
+	private ICourseClassService courseClassService;
+
 	@Property
 	private Course course;
+
 
 	void beginRender() {
 		course = (Course) request.getAttribute(Course.class.getSimpleName());
 	}
 
 	public CourseItemModel getCourseItemModel() {
-		return CourseItemModel.valueOf(course, courseService);
+		return CourseItemModel.valueOf(course, courseService, courseClassService);
 	}
 
 	public String getCanonicalLinkPath() {
