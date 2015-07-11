@@ -59,10 +59,11 @@ allprojects {
 
 	ext.sharedManifest = manifest {
 		attributes 'Release-Version': version,
-			'Built-Date': System.getProperty('build_number') ? new Date(): new Date().format("yy-MMM-dd"),
+			'Built-Date': new Date().format("dd-MMM-yyy"),
 			'Built-JDK': System.getProperty('java.version'),
 			'Built-Gradle': gradle.gradleVersion,
-			'Implementation-Version': System.getProperty('build_number') ?: 'local',
+			'Implementation-Version': System.getProperty('build_number') ?: 'local', 
+            'SCM-Revision': System.getProperty('svn_revision') ?: 'development',
 			'Permissions': 'all-permissions',
 			'Codebase': '*',
 			'Application-Name': 'onCourse',
