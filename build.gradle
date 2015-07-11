@@ -167,9 +167,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	installer.dependsOn {
 		project.tasks.findAll { it.name.startsWith('installer_') }
 	}
-    appBundle.dependsOn {
-        project.fatJar
-    }
     codeSign.dependsOn {
         project.prepareKeychains
     }
