@@ -14,6 +14,7 @@ import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
@@ -45,6 +46,8 @@ public class ContactEditorFieldSet {
 	
 	@Property
 	private String customFieldName;
+
+	private String specialNeeds;
 
 	@Inject
 	private Messages messages;
@@ -151,5 +154,19 @@ public class ContactEditorFieldSet {
 		}
 		
 		return null;
+	}
+
+	public String getSpecialNeeds() {
+		return this.specialNeeds;
+	}
+
+	public void setSpecialNeeds(String specialNeeds) {
+		this.specialNeeds = StringUtils.trimToNull(specialNeeds);
+		ArrayList<String> result = new ArrayList<>();
+		result.add(StringUtils.trimToNull(delegate.getContact().getStudent().getSpecialNeeds()));
+		if (this.specialNeeds != null) {
+			result.add(specialNeeds);
+		}
+		delegate.getContact().getStudent().setSpecialNeeds(StringUtils.join(result, "\n"));
 	}
 }
