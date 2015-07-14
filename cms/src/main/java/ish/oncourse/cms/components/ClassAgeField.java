@@ -1,6 +1,5 @@
 package ish.oncourse.cms.components;
 
-import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.courseclass.ClassAgeType;
 import org.apache.tapestry5.SelectModel;

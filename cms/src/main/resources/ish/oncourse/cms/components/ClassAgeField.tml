@@ -3,7 +3,7 @@
              lang="en">
 
     <h5 class="cms-block-sub-title">${label}</h5>
-    <t:textfield class="cms-age" value="days" t:validate="required,maxlength=2,regexp=^[0-9]+$" />
-    <t:select class="cms-agetype" value="type" model="types" blankOption="NEVER"/>
+    <t:textfield class="cms-age" t:id="cmsAgeField" value="days" t:validate="required,maxlength=2,regexp=^[0-9]+$" /> days
+    <t:select class="cms-agetype" t:id="cmsAgeTypeSelect" value="type" model="types" blankOption="NEVER"/>
 
 </t:container>
