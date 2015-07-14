@@ -45,6 +45,8 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 
 	private Messages messages;
 
+	private String specialNeeds;
+
 	/**
 	 * AddContactDelegate implementation
 	 */
@@ -73,6 +75,7 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 		contactCredentialsEncoder.setStudentService(studentService);
 		contactCredentialsEncoder.encode();
 		contact = contactCredentialsEncoder.getContact();
+		specialNeeds = contact.getStudent() != null ? contact.getStudent().getSpecialNeeds(): null;
 
 		if (contact.getObjectId().isTemporary()) {
 			if (contactFieldHelper.hasVisibleFields(contact)) {
@@ -110,6 +113,7 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 
 	protected void setContact(Contact contact) {
 		this.contact = contact;
+		this.specialNeeds = this.contact.getStudent() != null ? this.getContact().getStudent().getSpecialNeeds(): null;
 	}
 
 	@Override
@@ -245,6 +249,10 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 	@Override
 	public ConcessionDelegate getConcessionDelegate() {
 		return null;
+	}
+
+	public String getSpecialNeeds() {
+		return specialNeeds;
 	}
 
 	public static enum State {

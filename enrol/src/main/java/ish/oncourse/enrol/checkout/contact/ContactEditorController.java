@@ -30,6 +30,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
     private PurchaseController.Action cancelAction;
 
+	private String specialNeeds;
 
 	@Override
 	public Contact getContact() {
@@ -38,6 +39,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	public void setContact(Contact contact) {
 		this.contact = contact;
+		this.specialNeeds = this.contact.getStudent() != null ? this.getContact().getStudent().getSpecialNeeds(): null;
 	}
 
 	@Override
@@ -131,5 +133,10 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 	@Override
 	public List<CustomField> getCustomFields() {
 		return contact.getCustomFields();
+	}
+
+	@Override
+	public String getSpecialNeeds() {
+		return specialNeeds;
 	}
 }

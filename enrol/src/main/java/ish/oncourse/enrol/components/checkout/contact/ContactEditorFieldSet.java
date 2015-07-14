@@ -166,11 +166,20 @@ public class ContactEditorFieldSet {
 
 	public void setSpecialNeeds(String specialNeeds) {
 		this.specialNeeds = StringUtils.trimToNull(specialNeeds);
-		ArrayList<String> result = new ArrayList<>();
-		result.add(StringUtils.trimToNull(delegate.getContact().getStudent().getSpecialNeeds()));
-		if (this.specialNeeds != null) {
-			result.add(specialNeeds);
+
+		StringBuilder result = new StringBuilder();
+		String prevValue = StringUtils.trimToNull(delegate.getSpecialNeeds());
+		if (prevValue != null) {
+			result.append(prevValue);
 		}
-		delegate.getContact().getStudent().setSpecialNeeds(StringUtils.join(result, "\n"));
+		if (this.specialNeeds != null) {
+			if (result.length() > 0) {
+				result.append("\n");
+			}
+			result.append(String.format("%s - %s",
+							FormatUtils.getShortDateFormat(delegate.getContact().getCollege().getTimeZone()).format(new Date()),
+							specialNeeds));
+		}
+		delegate.getContact().getStudent().setSpecialNeeds(result.toString());
 	}
 }
