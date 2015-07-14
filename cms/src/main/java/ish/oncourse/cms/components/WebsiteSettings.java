@@ -71,7 +71,15 @@ public class WebsiteSettings {
 	
 	@InjectPage
 	private Page page;
-	
+
+	private void init() {
+		hideClassOnWebsiteTypes = new EnumSelectModel(ClassAgeType.class, messages);
+		stopWebEnrolmentsTypes = new EnumSelectModel(ClassAgeType.class, messages,
+				new ClassAgeType[]{ClassAgeType.afterClassStarts,
+						ClassAgeType.beforeClassStarts,
+						ClassAgeType.beforeClassEnds});
+	}
+
 	@SetupRender
 	void beforeRender() {
 		this.enableSocialMedia = preferenceController.getEnableSocialMediaLinks();
@@ -84,13 +92,7 @@ public class WebsiteSettings {
 		else {
 			addthisProfileId = "";
 		}
-
-		hideClassOnWebsiteTypes = new EnumSelectModel(ClassAgeType.class, messages);
-		stopWebEnrolmentsTypes = new EnumSelectModel(ClassAgeType.class, messages,
-				new ClassAgeType[]{ClassAgeType.afterClassStarts,
-				ClassAgeType.beforeClassStarts,
-				ClassAgeType.beforeClassEnds});
-
+		init();
 	}
 	
 	@AfterRender
@@ -116,7 +118,7 @@ public class WebsiteSettings {
 		preferenceController.setStopWebEnrolmentsAge(ClassAge.valueOf(stopWebEnrolments.getDays(), stopWebEnrolments.getType()));
 
 		saved = true;
-		
+		init();
 		return websiteSettingsZone.getBody();
 	}
 	
