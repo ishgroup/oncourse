@@ -119,7 +119,7 @@
 				<p>
 					<t:label for="customField">${customFieldName}<t:if test="customFieldRequired(getCustomFieldByName(customFieldName))"><em title="${message:message-required}">*</em></t:if></t:label>
 					<span class="${validateHandler.validateClass(customFieldName)}">
-						<t:textfield t:id="customField" value="currentCustomFieldValue" class="customField input-fixed ${validateHandler.errorClass(customFieldName)}"/>
+						<t:textfield t:id="customField" value="currentCustomFieldValue" class="customField input-fixed ${validateHandler.errorClass(customFieldName)}" data-default="${defaultCustomFieldValue}"/>
 						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error(customFieldName)}"/>
 					</span>
 				</p>

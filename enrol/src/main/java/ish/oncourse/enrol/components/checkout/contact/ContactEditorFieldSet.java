@@ -141,7 +141,11 @@ public class ContactEditorFieldSet {
 	public String getCurrentCustomFieldValue() {
 		return getCustomFieldByName(customFieldName).getValue();
 	}
-	
+
+	public String getDefaultCustomFieldValue() {
+		return getCustomFieldByName(customFieldName).getCustomFieldType().getDefaultValue();
+	}
+
 	public void setCurrentCustomFieldValue(String value) {
 		getCustomFieldByName(customFieldName).setValue(value);
 	}

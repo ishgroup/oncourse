@@ -59,7 +59,9 @@ public class ContactCredentialsEncoder {
 				customField.setCustomFieldType(customFieldType);
 				
 				customField.setRelatedObject(contact);
-				customField.setValue(customFieldType.getDefaultValue());
+				if (customFieldType.getDefaultValue() != null && !customFieldType.getDefaultValue().contains(";")) {
+					customField.setValue(customFieldType.getDefaultValue());
+				}
 			}
 		}
 	}

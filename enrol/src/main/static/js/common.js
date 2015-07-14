@@ -27,6 +27,20 @@ function initContactEditorHandle()
     }
 }
 
+function initCustomFieldHandle() {
+    if ($j(".customField") && $j(".customField").data('default')) {
+        var values = $j(".customField").data('default').split(';');
+        if (values.length > 0) {
+            $j(".customField").autocomplete({
+                source: values,
+                minLength: 0
+            }).focus(function() {
+                $j(this).autocomplete('search', "")
+            });
+        }
+    }
+}
+
 function initCountryAutoCompleteHandle()
 {
     $j("[id*=countryOfBirth]").autocomplete({source: '/ish/internal/autocomplete.country', minLength: 2});
@@ -64,4 +78,5 @@ $j(document).ready(function() {
     initHints();
     initContactEditorHandle();
 	initCountryAutoCompleteHandle();
+    initCustomFieldHandle();
 });
