@@ -37,6 +37,7 @@ allprojects {
 		deployerJars {
 			description = 'Jars needed for doing deployment to JBoss Nexus repo'
 		}
+		all*.exclude group: 'org.apache.logging.log4j', module: 'log4j-web'
 	}
 
 	repositories {
