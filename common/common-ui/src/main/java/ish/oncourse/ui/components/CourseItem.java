@@ -14,7 +14,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.ui.utils.CourseItemModel;
 import ish.oncourse.util.ValidationErrors;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
@@ -147,7 +147,8 @@ public class CourseItem extends ISHCommon {
 
 		if (isList) {
 			String plainText = extractor.extractFromHtml(detail);
-			String result = StringUtils.abbreviate(plainText, COURSE_DETAILS_LENGTH);
+			String abbreviatePattern = String.format("(?<=.{%d})\\b.*", COURSE_DETAILS_LENGTH);
+			String result = plainText.replaceAll(abbreviatePattern, "...");
 			return result;
 		} else {
 			return detail;
