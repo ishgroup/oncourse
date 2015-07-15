@@ -1,6 +1,6 @@
 package ish.oncourse.utils;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -220,6 +220,9 @@ public class StringUtilities extends Object {
 		return str.replaceAll("\\p{C}", StringUtils.EMPTY);
 	}
 
+	public static String abbreviate(String fullText, int maxWidth) {
+		return fullText.length() > maxWidth ? StringUtils.abbreviate(fullText, maxWidth).replaceAll("\\s+\\S*$", "..."):fullText;
+	}
 
 	private StringUtilities() {
 	}

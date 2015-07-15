@@ -51,4 +51,22 @@ public class StringUtilitiesTest {
 		assertEquals(StringUtils.EMPTY, StringUtilities.cutToEmpty(buffer.toString()));
 	}
 
+	@Test
+	public void testAbbreviate() {
+		String text = "1234 6789 1234\n" +
+				"1234 6789 1234\n" +
+				"1234 6789\t 1234";
+
+		String result = StringUtilities.abbreviate(text, 11);
+		assertEquals("1234...", result);
+
+		result = StringUtilities.abbreviate(text, 25);
+		assertEquals("1234 6789 1234\n" + "1234...", result);
+
+		result = StringUtilities.abbreviate(text, text.length());
+		assertEquals(text, result);
+	}
+
+
+
 }
