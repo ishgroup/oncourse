@@ -385,7 +385,7 @@ public class CourseClassService implements ICourseClassService {
 
         for (CourseClass courseClass : currentClasses) {
             if (!courseClass.isHasAvailableEnrolmentPlaces()
-                    && !new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge()).courseClass(courseClass).check()) {
+                    || !new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge()).courseClass(courseClass).check()) {
                 list.add(courseClass);
             }
         }

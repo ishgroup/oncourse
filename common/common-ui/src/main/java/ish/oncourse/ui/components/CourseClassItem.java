@@ -7,6 +7,7 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -254,7 +255,9 @@ public class CourseClassItem extends ISHCommon {
 	}
 	
 	public boolean isHasAvailableEnrolmentPlaces() {
-		return courseClass != null && courseClass.isHasAvailableEnrolmentPlaces();
+		return courseClass != null &&
+				courseClass.isHasAvailableEnrolmentPlaces() &&
+				new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge()).courseClass(courseClass).check();
 	}
 	
 	public boolean isPaymentGatewayEnabled() {
