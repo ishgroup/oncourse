@@ -106,6 +106,9 @@ public class CourseClassItem extends ISHCommon {
 	@Property
 	private Money feeOverride;
 
+	@Property
+	private List<TutorRole> visibleTutorRoles;
+
 	@SetupRender
 	public void beforeRender() {
 		timetableLabels = new ArrayList<>();
@@ -125,6 +128,7 @@ public class CourseClassItem extends ISHCommon {
 			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
 
 		sessionDays = SessionUtils.getSessionDays(courseClass.getTimelineableSessions());
+		initVisibleTutorRoles();
 	}
 
 	public boolean isHasSessionsInTheSameDay() {
@@ -144,14 +148,14 @@ public class CourseClassItem extends ISHCommon {
 		return detail == null ? StringUtils.EMPTY : detail;
 	}
 	
-	public List<TutorRole> getVisibleTutorRoles() {
-		final List<TutorRole> visibleRoles = new ArrayList<>();
+	private List<TutorRole> initVisibleTutorRoles() {
+		visibleTutorRoles = new ArrayList<>();
 		for (TutorRole role : courseClass.getTutorRoles()) {
 			if (role.getInPublicity() && tutorService.isActiveTutor(role.getTutor())) {
-				visibleRoles.add(role);
+				visibleTutorRoles.add(role);
 			}
 		}
-		return visibleRoles;
+		return visibleTutorRoles;
 	}
 
 	public boolean isHasTutorRoles() {
@@ -242,7 +246,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public boolean isLastIndex() {
-		return index == courseClass.getTutorRoles().size() - 1;
+		return index == visibleTutorRoles.size() - 1;
 	}
 
 	public boolean isCurrentClass() {
