@@ -20,6 +20,7 @@ public class SearchParams {
     private Date after;
     private Date before;
     private List<Suburb> suburbs;
+    private Long siteId;
     private Boolean debugQuery = Boolean.FALSE;
     private TimeZone clientTimezone;
 	private List<Tag> tags = new ArrayList<>();
@@ -129,5 +130,13 @@ public class SearchParams {
             }
         }
         return suburbs;
+    }
+
+    public Long getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(Long siteId) {
+        this.siteId = siteId;
     }
 }

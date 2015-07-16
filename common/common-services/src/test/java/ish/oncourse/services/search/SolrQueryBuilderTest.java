@@ -26,7 +26,7 @@ public class SolrQueryBuilderTest {
 		"&fq=(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)" +
 		"&fq=(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)&q={!boost b=$boostfunction v=$qq}" +
 		"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) " +
-		"AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z])" +
+		"AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z] AND siteId:1000)" +
 		"&sort=score desc,startDate asc,name asc&debugQuery=false";
 	private static final String EXPECTED_AFTER_REPLACEMENT_S_PARAM = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19";
 	private static final String DIGITS_SEPARATED_BY_ALL_REPLACED_SOLR_SYNTAX_CHARACTERS = "1!2^3(4)5{6}7[8]9:10\"11?12+13~14*15|16&17;18\\19";
@@ -92,6 +92,7 @@ public class SolrQueryBuilderTest {
         searchParams.setPrice(1999.99d);
         searchParams.setDay("DAY");
         searchParams.setTime("TIME");
+		searchParams.setSiteId(1000L);
         searchParams.setSubject(new Tag(){
             @Override
             public Long getId() {

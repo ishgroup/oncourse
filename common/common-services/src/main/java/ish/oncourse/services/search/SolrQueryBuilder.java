@@ -48,6 +48,7 @@ public class SolrQueryBuilder {
     static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
     static final String FILTER_TEMPLATE_when = "when:%s";
     static final String FILTER_TEMPLATE_tagId = "tagId:%d";
+    static final String FILTER_TEMPLATE_siteId = "siteId:%d";
     static final String FILTER_TEMPLATE_between = FIELD_class_start  + ":[%s TO %s]";
 	
     static final String FILTER_TEMPLATE_geofilt = "{!score=distance}%s:\"Intersects(Circle(%s %s=%s))\"";
@@ -108,6 +109,9 @@ public class SolrQueryBuilder {
 		appendFilterStartBetween(filters);
         appendAnd(filters);
 
+        appendFilterSiteId(filters);
+        appendAnd(filters);
+
 		appendFilterTag(q);
 
         appendFilterSubject(q);
@@ -124,7 +128,14 @@ public class SolrQueryBuilder {
         q.setShowDebugInfo(params.getDebugQuery());
         return q;
     }
-    
+
+    void appendFilterSiteId(ArrayList<String> filters) {
+        if (params.getSiteId() != null) {
+            Long siteId = params.getSiteId();
+            filters.add(String.format(FILTER_TEMPLATE_siteId, siteId));
+        }
+    }
+
     public static SolrQuery createSearchSuburbByLocationQuery(String location) {
     	location = location.trim();
         int separator = location.lastIndexOf(" ");

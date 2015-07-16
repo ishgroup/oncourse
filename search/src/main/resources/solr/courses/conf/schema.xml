@@ -205,6 +205,9 @@
 		<field name="course_postcode" type="string" indexed="true"
 			omitNorms="false" stored="true" multiValued="true"/>
 
+		<field name="siteId" type="long" indexed="true"
+			   omitNorms="false" stored="true" multiValued="true" omitTermFreqAndPositions="true"/>
+
 		<field name="price" type="sfloat" indexed="true" stored="true"
 			multiValued="true" omitNorms="false"/>
 

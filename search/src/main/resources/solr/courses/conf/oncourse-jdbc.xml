@@ -357,19 +357,19 @@
 				</entity>
 				
 				<entity name="site" dataSource="onCourseDS" pk="id"
-					query="select s.id as id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+					query="select s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
             	        inner join Room r on r.siteId=s.id
                 	    inner join CourseClass cc on cc.roomId=r.id
                     	where s.isWebVisible=1 and cc.id='${courseClass.id}'
                   		group by s.suburb, s.postcode
             		  union
-            			select s.id as id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+            			select s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
 		            	inner join Room r on r.siteId=s.id
 			            inner join Session ss on ss.roomId=r.id
 			            inner join CourseClass cc on cc.id=ss.courseClassId
 			            where s.isWebVisible=1 and cc.id='${courseClass.id}'
 		    	        group by s.suburb, s.postcode"
-					deltaImportQuery="select s.id as id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+					deltaImportQuery="select s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
 					    where s.id='${dataimporter.delta.id}'"
 					deltaQuery="select id from Site where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'" 
 					parentDeltaQuery="select cc.id from Site s 
@@ -384,6 +384,7 @@
 				  	where s.id='${site.id}'" processor="SqlEntityProcessor">
 				  	
 					<field name="id" column="id"/>
+					<field mame="siteId" column="siteId"/>
 					<field name="course_loc" column="loc" />
 					<field name="course_postcode" column="pc" />
 					<field name="course_suburb" column="sb" />

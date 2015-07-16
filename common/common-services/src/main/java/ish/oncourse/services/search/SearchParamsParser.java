@@ -5,7 +5,7 @@ import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.FormatUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.common.SolrDocumentList;
@@ -108,6 +108,9 @@ public class SearchParamsParser
                     	searchParams.setDebugQuery(Boolean.valueOf(parameter));
                     	value = searchParams.getDebugQuery();
                     	break;
+                    case site:
+                        searchParams.setSiteId(parseLong(parameter));
+                        value = searchParams.getSiteId();
                     default:
                         logger.warn("Parser is not defined for SearchParam {}", name);
                 }
@@ -125,6 +128,13 @@ public class SearchParamsParser
                 searchParams.setSubject(browseTag);
             }
         }
+    }
+
+    private Long parseLong(String parameter) {
+        if (StringUtils.isNumeric(parameter)) {
+            return Long.valueOf(parameter);
+        }
+        return null;
     }
 
     private Date parseDate(String parameter, SearchParam paramName) {
