@@ -324,7 +324,7 @@ task installer_unix(dependsOn: fatJar, type: Copy) {
 		ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@project.name@", 		value: "${project.name}")
 		ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
 
-		ant.tar(basedir: "${distsDir}/unix/", destfile: "${distsDir}/unix/onCourseServer.tar", exclude: "${distsDir}/unix/onCourseServer.tar.gz")
+		ant.tar(basedir: "${distsDir}/unix/", destfile: "${distsDir}/unix/onCourseServer.tar", excludes: "${distsDir}/unix/onCourseServer.tar.gz")
 		ant.gzip(zipfile: "${distsDir}/unix/onCourseServer.tar.gz", src:"${distsDir}/unix/onCourseServer.tar")
 
         //delete temporary files from this distribution dir
