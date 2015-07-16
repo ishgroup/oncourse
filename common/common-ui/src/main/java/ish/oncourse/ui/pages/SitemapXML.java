@@ -33,6 +33,7 @@ public class SitemapXML extends ISHCommon {
 	private ICourseService courseService;
 
 	@Inject
+	@Property
 	private IWebNodeService webNodeService;
 
 	@Inject
