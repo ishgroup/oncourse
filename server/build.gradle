@@ -267,15 +267,6 @@ task installer_osx(dependsOn: [prepareKeychains, codeSign], type: au.com.ish.Dmg
     description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
-project.ext.unixAppFiles = copySpec {
-	into('.') {
-		from("${projectDir}/src/packaging/unix/")
-		include ("*")
-
-		from("${libsDir}/${project.name}-${version}-all.jar")
-	}
-}
-
 task bundle_win(dependsOn: jar, type: au.com.ish.Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
 	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
@@ -312,24 +303,24 @@ task bundle_winService64(dependsOn: jar, type: au.com.ish.Exe4JTask) {
 	}
 }
 
-task installer_unix(dependsOn: fatJar, type: Copy) {
+task installer_unix(dependsOn: jar, type: Zip) {
 	description "Create the Unix/Linux package (zip)."
 	doFirst {
 		logger.lifecycle("Creating the unix application executable for $project.name")
 	}
-	with unixAppFiles
-	into file("${distsDir}/unix")
-	doLast {
-		ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@version@", 			value: "${project.version}")
-		ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@project.name@", 		value: "${project.name}")
-		ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
 
-		ant.tar(basedir: "${distsDir}/unix/", destfile: "${distsDir}/unix/onCourseServer.tar", excludes: "${distsDir}/unix/onCourseServer.tar.gz")
-		ant.gzip(zipfile: "${distsDir}/unix/onCourseServer.tar.gz", src:"${distsDir}/unix/onCourseServer.tar")
-
-        //delete temporary files from this distribution dir
-        delete fileTree(dir: "${distsDir}/unix", exclude: "onCourseServer.tar.gz")
+	from (configurations.runtime) {
+		into 'onCourseServer/classes'
 	}
+	from (configurations.runtime.artifacts.files) {
+		into 'onCourseServer'
+	}
+	from (file("src/packaging/unix/")) {
+		into 'onCourseServer'
+	}
+
+	baseName "onCourseServer"
+	destinationDir file("${distsDir}/unix")
 }
 
 task installer_win(dependsOn: [bundle_win, prepareKeychains], type: au.com.ish.NsisTask) {
