@@ -105,6 +105,10 @@ jar {
 	manifest {
 		from sharedManifest
 		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
+
+		def pathValues = configurations.runtime.collect { "classes/" + it.name }.join(' ')
+		attributes 'Class-Path': pathValues
+		logger.lifecycle("Class-Path of manifest:\n $pathValues")
 	}
 }
 
