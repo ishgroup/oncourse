@@ -12,7 +12,6 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
 		classpath 'com.github.ben-manes:gradle-versions-plugin:0.9'
 		classpath 'org.apache.cayenne:cayenne-tools:4.0.M2'
 	}
@@ -95,35 +94,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 
 	project.ext {
 		appName = getProject().name == 'server' ? "onCourseServer" : "onCourse"
-	}
-
-	apply plugin: 'eu.appsatori.fatjar'
-
-	fatJarPrepareFiles {
-		doLast {
-			//copy few extra files, the fatjar plugin does not work with project fileset
-			// the plugin's configurable 'include' is just a filter on the default fileset
-			logger.lifecycle("copying generated sources")
-			copy {
-				into "$buildDir/tmp/fatjar-stage"
-				from "$buildDir/generated-resources/main"
-			}
-		}
-	}
-
-	fatJar {
-		// use the same manifest as normal jar
-		manifest {
-			from project.jar.manifest
-		}
-
-		// add a classifier to distinguish farjar from normal jar
-		classifier = 'all'
-
-		// do not include the certificate files
-		exclude 'META-INF/*.SF'
-		exclude 'META-INF/*.DSA'
-		exclude 'META-INF/*.RSA'
 	}
 
 	task prepareKeychains {
