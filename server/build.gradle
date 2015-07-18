@@ -1,6 +1,5 @@
 apply plugin: 'cayenne'
 apply plugin: 'groovy'
-apply plugin: 'war'
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
@@ -105,23 +104,8 @@ jar {
 	manifest {
 		from sharedManifest
 		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
-
-		def pathValues = configurations.runtime.collect { "classes/" + it.name }.join(' ')
-		attributes 'Class-Path': pathValues
-		logger.lifecycle("Class-Path of manifest:\n $pathValues")
+		attributes 'Class-Path': configurations.runtime.collect { "lib/" + it.name }.join(' ')
 	}
-}
-
-war {
-	manifest {
-		from sharedManifest
-		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
-	}
-
-    from("$buildDir/classes/main/ish/oncourse/server/") {
-        include 'AngelServer.class'
-        into '/ish/oncourse/server/'
-    }
 }
 
 sourceSets {
@@ -314,7 +298,7 @@ task installer_unix(dependsOn: jar, type: Zip) {
 	}
 
 	from (configurations.runtime) {
-		into 'onCourseServer/classes'
+		into 'onCourseServer/lib'
 	}
 	from (configurations.runtime.artifacts.files) {
 		into 'onCourseServer'
@@ -323,7 +307,7 @@ task installer_unix(dependsOn: jar, type: Zip) {
 		into 'onCourseServer'
 	}
 
-	baseName "onCourseServer"
+	archiveName "onCourseServer.zip"
 	destinationDir file("${distsDir}/unix")
 }
 
