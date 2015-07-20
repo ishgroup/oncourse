@@ -53,6 +53,8 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Tutor.class);
 		} else if (TAG_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
 			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Tag.class);
+		} else if (APPLICATION_ENTITY_NAME.equalsIgnoreCase(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Application.class);
 		} else {
 			String message = String.format("Unexpected related entity with type %s and angelid %s",
 				stub.getEntityName(), stub.getEntityAngelId());
