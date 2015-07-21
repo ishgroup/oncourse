@@ -1,7 +1,12 @@
+configurations { providedCompile }
+
+
 dependencies {
+	providedCompile 'javax.servlet:servlet-api:3.0'
+
 	compile project(':common:common-model')
 
-    compile 'commons-validator:commons-validator:1.4.0'
+	compile 'commons-validator:commons-validator:1.4.0'
 	compile 'commons-collections:commons-collections:3.2.1'
 	compile 'commons-logging:commons-logging:1.1.1'
 	compile 'commons-lang:commons-lang:2.6'
@@ -27,3 +32,7 @@ dependencies {
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 }
+
+sourceSets.main.compileClasspath += configurations.providedCompile
+sourceSets.test.compileClasspath += configurations.providedCompile
+sourceSets.test.runtimeClasspath += configurations.providedCompile

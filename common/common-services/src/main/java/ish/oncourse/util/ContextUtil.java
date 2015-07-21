@@ -17,7 +17,7 @@ public class ContextUtil {
 	private static final Logger logger = LogManager.getLogger();
 	
 	public static final String CACHE_ENABLED_PROPERTY_KEY = "cache.enabled";
-	public static final String OSCACHE_CAPACITY_PROPERTY_KEY = "oscache.cache.capacity";
+	public static final String CACHE_CAPACITY_PROPERTY_KEY = "cache.capacity";
 	
 	public static final String STORAGE_ACCESS_ID_PROPERTY_KEY = "storage.access.id";
 	public static final String STORAGE_ACCESS_KEY_PROPERTY_KEY = "storage.access.key";
@@ -66,9 +66,9 @@ public class ContextUtil {
      * 
      * @return OSCache capacity value defined in context.xml
      */
-    public static Integer getOSCacheCapacity() {
+    public static Integer getCacheCapacity() {
     	try {
-    		Integer cacheCapacity = (Integer) lookup(OSCACHE_CAPACITY_PROPERTY_KEY);
+    		Integer cacheCapacity = (Integer) lookup(CACHE_CAPACITY_PROPERTY_KEY);
     		
     		return cacheCapacity;
     	} catch (Exception e) {
