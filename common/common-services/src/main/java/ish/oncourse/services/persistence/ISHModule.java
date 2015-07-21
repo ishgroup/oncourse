@@ -2,6 +2,7 @@ package ish.oncourse.services.persistence;
 
 import ish.oncourse.services.cache.EHQueryCacheProvider;
 import ish.oncourse.util.ContextUtil;
+import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.management.ManagementService;
 import org.apache.cayenne.cache.QueryCache;
@@ -9,11 +10,15 @@ import org.apache.cayenne.configuration.ObjectContextFactory;
 import org.apache.cayenne.di.Binder;
 import org.apache.cayenne.di.Key;
 import org.apache.cayenne.di.Module;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.management.MBeanServer;
 import java.lang.management.ManagementFactory;
 
 public class ISHModule implements Module {
+	private static final Logger logger = LogManager.getLogger();
+
 	@Override
 	public void configure(Binder binder) {
 		binder.bind(ObjectContextFactory.class).to(ISHObjectContextFactory.class);
@@ -32,8 +37,12 @@ public class ISHModule implements Module {
 		if (cacheCapacity != null) {
 			cacheManager.getConfiguration().getDefaultCacheConfiguration().setMaxEntriesLocalHeap(cacheCapacity);
 		}
-		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-		ManagementService.registerMBeans(cacheManager, mBeanServer, true, true, true, true);
+		try {
+			MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+			ManagementService.registerMBeans(cacheManager, mBeanServer, true, true, true, true);
+		} catch (Exception e) {
+			logger.error("Cannot register MBeans for  cacheManager \"{}\".",cacheManager.getName(), e);
+		}
 		return cacheManager;
 	}
 
