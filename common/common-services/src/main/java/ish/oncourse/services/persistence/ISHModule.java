@@ -25,7 +25,7 @@ public class ISHModule implements Module {
 	}
 
 	private CacheManager buildCacheManager() {
-		CacheManager cacheManager = new CacheManager(ISHModule.class.getClassLoader().getResource("ehcache.xml"));
+		CacheManager cacheManager = CacheManager.create(ISHModule.class.getClassLoader().getResource("ehcache.xml"));
 
 		Integer cacheCapacity = ContextUtil.getCacheCapacity();
 
