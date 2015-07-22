@@ -579,7 +579,15 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Database value: 98
 	 * @PublicApi
 	 */
-	PAYMENT_METHOD(98, "Payment Method");
+	PAYMENT_METHOD(98, "Payment Method"),
+
+	/**
+	 * Ability to view messages
+	 *
+	 * Database value: 99
+	 * @PublicApi
+	 */
+	MESSAGE(99, "Message");
 	
 
 	private int value;
