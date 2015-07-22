@@ -5,6 +5,8 @@ import ish.oncourse.enrol.components.checkout.payment.CorporatePassEditor;
 import ish.oncourse.enrol.components.checkout.payment.PaymentEditor;
 import ish.oncourse.ui.components.internal.PageStructure;
 import ish.oncourse.util.FormatUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -105,8 +107,9 @@ public class Payment {
 		} else if (getPurchaseController().isEditCorporatePass()) {
 			corporatePassEditor.makePayment();
 			return this;
-		} else
-			throw new IllegalArgumentException();
+		} else {
+			return this;
+		}
 	}
 
 	public String getCorporatePassTabClass() {
