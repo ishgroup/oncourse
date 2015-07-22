@@ -26,10 +26,6 @@ public class PageHead extends ISHCommon {
 	@Inject
 	private ITagService tagService;
 	
-	@Parameter
-    @Deprecated //we should use pageName instead of title
-	private String title;
-
     @Parameter
     @Property
     private String pageName;
@@ -53,41 +49,9 @@ public class PageHead extends ISHCommon {
 	@Parameter
 	private String metaDescription;
 
-	/**
-	 * Google tag mananger event name.
-	 */
-	@Property
-	@Parameter
-    @Deprecated //TODO: we don't use GoogleTagManager component in PageHead. We use the componnent in PageStructure.
-    // This property can be deleted after all custom template will be updated
-	private String eventName;
-
-	@Property
-	@Parameter
-    @Deprecated //TODO: we don't use GoogleTagManager component in PageHead. We use the componnent in PageStructure.
-    // This property can be deleted after all custom template will be updated
-	private Cart cart;
-
     @SetupRender
-    public void  setupRender()
-    {
-        //TODO: the code can be removed after all custom templates will be adjusted to use Title component
-        if (pageName != null && title == null)
-            title = pageName;
-        if (title != null && pageName == null)
-            pageName = title;
+    public void  setupRender() {
     }
-
-
-    @Deprecated //all custome template should be adjusted to use Title component
-	public String getTitle() {
-		String collegeName = siteService.getCurrentCollege().getName();
-		
-		if (title != null) {
-			return title + " " + collegeName;
-		}
-		return collegeName;
-	}
 
 	public String getMetaGeneratorContent() {
 		return HTMLUtils.getMetaGeneratorContent(environmentService);
