@@ -92,7 +92,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @return college name
 	 */
-	public synchronized String getCollegeName() {
+	public String getCollegeName() {
 		return getValue(COLLEGE_NAME, false);
 	}
 
@@ -101,7 +101,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param value college name
 	 */
-	public synchronized void setCollegeName(String value) {
+	public void setCollegeName(String value) {
 		setValue(COLLEGE_NAME, false, value);
 	}
 
@@ -110,7 +110,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @return ABN
 	 */
-	public synchronized String getCollegeABN() {
+	public String getCollegeABN() {
 		return getValue(COLLEGE_ABN, false);
 	}
 
@@ -119,7 +119,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param value ABN
 	 */
-	public synchronized void setCollegeABN(String value) {
+	public void setCollegeABN(String value) {
 		setValue(COLLEGE_ABN, false, value);
 	}
 
@@ -128,7 +128,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @return URL string
 	 */
-	public synchronized String getCollegeURL() {
+	public String getCollegeURL() {
 		return getValue(COLLEGE_URL, false);
 	}
 
@@ -137,7 +137,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param value URL string
 	 */
-	public synchronized void setCollegeURL(String value) {
+	public void setCollegeURL(String value) {
 		setValue(COLLEGE_URL, false, value);
 	}
 
@@ -146,7 +146,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @return URL string
 	 */
-	public synchronized String getPaymentInfo() {
+	public String getPaymentInfo() {
 		return getValue(COLLEGE_PAYMENT_INFO, false);
 	}
 
@@ -155,7 +155,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param value URL string
 	 */
-	public synchronized void setPaymentInfo(String value) {
+	public void setPaymentInfo(String value) {
 		setValue(COLLEGE_PAYMENT_INFO, false, value);
 	}
 
@@ -164,7 +164,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @return URL string
 	 */
-	public synchronized String getEnrolSuccessUrl() {
+	public String getEnrolSuccessUrl() {
 		return getValue(COLLEGE_ENROL_SUCCESS_URL, false);
 	}
 
@@ -173,7 +173,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param value URL string
 	 */
-	public synchronized void setEnrolSuccessUrl(String value) {
+	public void setEnrolSuccessUrl(String value) {
 		setValue(COLLEGE_ENROL_SUCCESS_URL, false, value);
 	}
 
@@ -200,14 +200,14 @@ public abstract class CommonPreferenceController {
 	/**
 	 * @return the timezone ID or null
 	 */
-	public synchronized String getOncourseServerDefaultTimezone() {
+	public String getOncourseServerDefaultTimezone() {
 		return getValue(ONCOURSE_SERVER_DEFAULT_TZ, false);
 	}
 
 	/**
 	 * @param timezoneID the timezone ID to set as the default timezone for onCourse
 	 */
-	public synchronized void setOncourseServerDefaultTimezone(String timezoneID) {
+	public void setOncourseServerDefaultTimezone(String timezoneID) {
 		setValue(ONCOURSE_SERVER_DEFAULT_TZ, false, timezoneID);
 	}
 
@@ -230,48 +230,48 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param value a random key
 	 */
-	public synchronized void setServicesSecurityKey(String value) {
+	public void setServicesSecurityKey(String value) {
 		setValue(SERVICES_SECURITYKEY, false, value);
 	}
 
-	public synchronized boolean getServicesLdapAuthentication() {
+	public boolean getServicesLdapAuthentication() {
 		return Boolean.parseBoolean(getValue(SERVICES_LDAP_AUTHENTICATION, false));
 	}
 
-	public synchronized void setServicesLdapAuthentication(boolean value) {
+	public void setServicesLdapAuthentication(boolean value) {
 		setValue(SERVICES_LDAP_AUTHENTICATION, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getServicesLdapAuthorisation() {
+	public boolean getServicesLdapAuthorisation() {
 		return Boolean.parseBoolean(getValue(SERVICES_LDAP_AUTHORISATION, false));
 	}
 
-	public synchronized void setServicesLdapAuthorisation(boolean value) {
+	public void setServicesLdapAuthorisation(boolean value) {
 		setValue(SERVICES_LDAP_AUTHORISATION, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getServicesCCEnabled() {
+	public boolean getServicesCCEnabled() {
 		return Boolean.parseBoolean(getValue(SERVICES_CC_ENABLED, false));
 	}
 
-	public synchronized void setServicesCCEnabled(boolean value) {
+	public void setServicesCCEnabled(boolean value) {
 		setValue(SERVICES_CC_ENABLED, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getServicesAmexEnabled() {
+	public boolean getServicesAmexEnabled() {
 		return Boolean.parseBoolean(getValue(SERVICES_CC_AMEX_ENABLED, false));
 	}
 
-	public synchronized BigInteger getReplicationRequeueId() {
+	public BigInteger getReplicationRequeueId() {
 		String value = getValue(SERVICES_REPLICATION_REQUEUE_ID, false);
 		return value == null ? null : new BigInteger(value);
 	}
 
-	public synchronized void setReplicationRequeueId(BigInteger value) {
+	public void setReplicationRequeueId(BigInteger value) {
 		setValue(SERVICES_REPLICATION_REQUEUE_ID, false, value.toString());
 	}
 
-	public synchronized int getDataSVN() {
+	public int getDataSVN() {
 		String result = getValue(DATA_SVNVERSION, false);
 		if (result == null) {
 			return -1;
@@ -279,20 +279,20 @@ public abstract class CommonPreferenceController {
 		return Integer.parseInt(result);
 	}
 
-	public synchronized void setDataSVN(int value) {
+	public void setDataSVN(int value) {
 		setValue(DATA_SVNVERSION, false, Integer.toString(value));
 	}
 
 	/** this is not a wed version anymore, but I dont wanna change the preferences. marcin **/
-	public synchronized String getDataVersion() {
+	public String getDataVersion() {
 		return getValue(DATA_WED_VERSION, false);
 	}
 
-	public synchronized void setDataVersion(String value) {
+	public void setDataVersion(String value) {
 		setValue(DATA_WED_VERSION, false, value);
 	}
 
-	public synchronized Long getReferenceDataVersion() {
+	public Long getReferenceDataVersion() {
 		String result = getValue(SERVICES_INFO_REPLICATION_VERSION, false);
 		if (result == null) {
 			return -1L;
@@ -300,11 +300,11 @@ public abstract class CommonPreferenceController {
 		return Long.parseLong(result);
 	}
 
-	public synchronized void setReferenceDataVersion(long value) {
+	public void setReferenceDataVersion(long value) {
 		setValue(SERVICES_INFO_REPLICATION_VERSION, false, Long.toString(value));
 	}
 
-	public synchronized Date getDedupeLastRun() {
+	public Date getDedupeLastRun() {
 		try {
 			return dateFormat.parse(getValue(DEDUPE_LASTRUN, false));
 		} catch (ParseException e) {
@@ -312,11 +312,11 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setDedupeLastRun(Date value) {
+	public void setDedupeLastRun(Date value) {
 		setValue(DEDUPE_LASTRUN, false, dateFormat.format(value));
 	}
 
-	public synchronized Date getInfoReplicationLastRun() {
+	public Date getInfoReplicationLastRun() {
 		if (getValue(SERVICES_ANGEL_REPLICATION_LASTRUN, false) == null) {
 			return null;
 		}
@@ -327,11 +327,11 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setInfoReplicationLastRun(Date value) {
+	public void setInfoReplicationLastRun(Date value) {
 		setValue(SERVICES_INFO_REPLICATION_LASTRUN, false, dateFormat.format(value));
 	}
 
-	public synchronized Date getAngelReplicationLastRun() {
+	public Date getAngelReplicationLastRun() {
 		if (getValue(SERVICES_ANGEL_REPLICATION_LASTRUN, false) == null) {
 			return null;
 		}
@@ -342,7 +342,7 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setAngelReplicationLastRun(Date value) {
+	public void setAngelReplicationLastRun(Date value) {
 		setValue(SERVICES_ANGEL_REPLICATION_LASTRUN, false, dateFormat.format(value));
 	}
 
@@ -367,38 +367,38 @@ public abstract class CommonPreferenceController {
 	
 	public static boolean LICENSE_BYPASS_MODE = false;
 
-	public synchronized boolean getLicenseAccessControl() {
+	public boolean getLicenseAccessControl() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_ACCESS_CONTROL, false));
 	}
 
-	public synchronized void setLicenseAccessControl(boolean value) {
+	public void setLicenseAccessControl(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_ACCESS_CONTROL, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicenseLdap() {
+	public boolean getLicenseLdap() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_LDAP, false));
 	}
 
-	public synchronized void setLicenseLdap(boolean value) {
+	public void setLicenseLdap(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_LDAP, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicenseBudget() {
+	public boolean getLicenseBudget() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_BUDGET, false));
 	}
 
-	public synchronized void setLicenseBudget(boolean value) {
+	public void setLicenseBudget(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_BUDGET, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicenseExternalDB() {
+	public boolean getLicenseExternalDB() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_EXTENRNAL_DB, false));
 	}
 
-	public synchronized void setLicenseExternalDB(boolean value) {
+	public void setLicenseExternalDB(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_EXTENRNAL_DB, false, Boolean.toString(value));
 	}
@@ -407,7 +407,7 @@ public abstract class CommonPreferenceController {
 	 * @deprecated - not used since angel 4.1
 	 */
 	@Deprecated
-	public synchronized boolean getLicenseSSL() {
+	public boolean getLicenseSSL() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_SSL, false));
 	}
 
@@ -415,80 +415,80 @@ public abstract class CommonPreferenceController {
 	 * @deprecated - not used since angel 4.1
 	 */
 	@Deprecated
-	public synchronized void setLicenseSSL(boolean value) {
+	public void setLicenseSSL(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_SSL, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicenseSms() {
+	public boolean getLicenseSms() {
 		return Boolean.parseBoolean(getValue(LICENSE_SMS, false));
 	}
 
-	public synchronized void setLicenseSms(boolean value) {
+	public void setLicenseSms(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_SMS, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicenseCCProcessing() {
+	public boolean getLicenseCCProcessing() {
 		return Boolean.parseBoolean(getValue(LICENSE_CC_PROCESSING, false));
 	}
 
-	public synchronized void setLicenseCCProcessing(boolean value) {
+	public void setLicenseCCProcessing(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_CC_PROCESSING, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicensePayroll() {
+	public boolean getLicensePayroll() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_PAYROLL, false));
 	}
 
-	public synchronized void setLicensePayroll(boolean value) {
+	public void setLicensePayroll(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_WEBSITE, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getLicenseWebsite() {
+	public boolean getLicenseWebsite() {
 		return Boolean.parseBoolean(getValue(LICENSE_WEBSITE, false));
 	}
 
-	public synchronized void setLicenseWebsite(boolean value) {
+	public void setLicenseWebsite(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_WEBSITE, false, Boolean.toString(value));
 	}
 	
-	public synchronized boolean getLicenseVoucher() {
+	public boolean getLicenseVoucher() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_VOUCHER, false));
 	}
 	
-	public synchronized void setLicenseVoucher(boolean value) {
+	public void setLicenseVoucher(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
 
-	public synchronized boolean getLicenseMembership() {
+	public boolean getLicenseMembership() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_MEMBERSHIP, false));
 	}
 
-	public synchronized void setLicenseMembership(boolean value) {
+	public void setLicenseMembership(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
 
-	public synchronized boolean getLicenseAttendance() {
+	public boolean getLicenseAttendance() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_ATTENDANCE, false));
 	}
 
-	public synchronized void setLicenseAttendance(boolean value) {
+	public void setLicenseAttendance(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
 	
-	public synchronized boolean getLicenseScripting() {
+	public boolean getLicenseScripting() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_SCRIPTING, false));
 	}
 	
-	public synchronized boolean getLicenseFeeHelpExport () {
+	public boolean getLicenseFeeHelpExport () {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_FEE_HELP_EXPORT, false));
 	}
 	
-	public synchronized void setLicenseScripting(boolean value) {
+	public void setLicenseScripting(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
 
@@ -511,35 +511,35 @@ public abstract class CommonPreferenceController {
 	public static final String SMTP_START_TLS = "mail.smtp.starttls.enable";
 	public static final String SMTP_PORT = "mail.smtp.port";
 
-	public synchronized String getEmailSMTPHost() {
+	public String getEmailSMTPHost() {
 		return getValue(EMAIL_SMTPHOST, false);
 	}
 
-	public synchronized void setEmailSMTPHost(String value) {
+	public void setEmailSMTPHost(String value) {
 		setValue(EMAIL_SMTPHOST, false, value);
 	}
 
-	public synchronized String getEmailAdminAddress() {
+	public String getEmailAdminAddress() {
 		return getValue(EMAIL_ADMIN_ADDRESS, false);
 	}
 
-	public synchronized void setEmailAdminAddress(String value) {
+	public void setEmailAdminAddress(String value) {
 		setValue(EMAIL_ADMIN_ADDRESS, false, value);
 	}
 
-	public synchronized String getEmailFromAddress() {
+	public String getEmailFromAddress() {
 		return getValue(EMAIL_FROM_ADDRESS, false);
 	}
 
-	public synchronized void setEmailFromAddress(String value) {
+	public void setEmailFromAddress(String value) {
 		setValue(EMAIL_FROM_ADDRESS, false, value);
 	}
 
-	public synchronized String getEmailFromName() {
+	public String getEmailFromName() {
 		return getValue(EMAIL_FROM_NAME, false);
 	}
 
-	public synchronized void setEmailFromName(String value) {
+	public void setEmailFromName(String value) {
 		setValue(EMAIL_FROM_NAME, false, value);
 	}
 
@@ -552,67 +552,67 @@ public abstract class CommonPreferenceController {
 		return Boolean.parseBoolean(aPref);
 	}
 
-	public synchronized void setEmailBounceEnabled(boolean value) {
+	public void setEmailBounceEnabled(boolean value) {
 		setValue(EMAIL_BOUNCE_ENABLED, false, Boolean.toString(value));
 	}
 
-	public synchronized String getEmailPOP3Host() {
+	public String getEmailPOP3Host() {
 		return getValue(EMAIL_POP3HOST, false);
 	}
 
-	public synchronized void setEmailPOP3Host(String value) {
+	public void setEmailPOP3Host(String value) {
 		setValue(EMAIL_POP3HOST, false, value);
 	}
 
-	public synchronized String getEmailBounceAddress() {
+	public String getEmailBounceAddress() {
 		return getValue(EMAIL_BOUNCEADDRESS, false);
 	}
 
-	public synchronized void setEmailBounceAddress(String value) {
+	public void setEmailBounceAddress(String value) {
 		setValue(EMAIL_BOUNCEADDRESS, false, value);
 	}
 
-	public synchronized String getEmailPOP3Account() {
+	public String getEmailPOP3Account() {
 		return getValue(EMAIL_POP3ACCOUNT, false);
 	}
 
-	public synchronized void setEmailPOP3Account(String value) {
+	public void setEmailPOP3Account(String value) {
 		setValue(EMAIL_POP3ACCOUNT, false, value);
 	}
 
-	public synchronized String getEmailPOP3Password() {
+	public String getEmailPOP3Password() {
 		return getValue(EMAIL_POP3PASSWORD, false);
 	}
 
-	public synchronized void setEmailPOP3Password(String value) {
+	public void setEmailPOP3Password(String value) {
 		setValue(EMAIL_POP3PASSWORD, false, value);
 	}
 
-	public synchronized String getSMSFromAddress() {
+	public String getSMSFromAddress() {
 		return getValue(SMS_FROM_ADDRESS, false);
 	}
 
-	public synchronized void setSMSFromAddress(String value) {
+	public void setSMSFromAddress(String value) {
 		setValue(SMS_FROM_ADDRESS, false, value);
 	}
 
-	public synchronized String getSMTPUsername() {
+	public String getSMTPUsername() {
 		return getValue(SMTP_USERNAME, false);
 	}
 
-	public synchronized void setSMTPUsername(String value) {
+	public void setSMTPUsername(String value) {
 		setValue(SMTP_USERNAME, false, value);
 	}
 
-	public synchronized String getSMTPPassword() {
+	public String getSMTPPassword() {
 		return getValue(SMTP_PASSWORD, false);
 	}
 
-	public synchronized void setSMTPPassword(String value) {
+	public void setSMTPPassword(String value) {
 		setValue(SMTP_PASSWORD, false, value);
 	}
 
-	public synchronized boolean getSMTPStartTLS() {
+	public boolean getSMTPStartTLS() {
 		String aPref = getValue(SMTP_START_TLS, false);
 		if (aPref == null) {
 			setSMTPStartTLS(false);
@@ -621,7 +621,7 @@ public abstract class CommonPreferenceController {
 		return Boolean.parseBoolean(aPref);
 	}
 
-	public synchronized void setSMTPStartTLS(boolean value) {
+	public void setSMTPStartTLS(boolean value) {
 		setValue(SMTP_START_TLS, false, Boolean.toString(value));
 	}
 
@@ -635,7 +635,7 @@ public abstract class CommonPreferenceController {
 		return Integer.parseInt(port);
 	}
 
-	public synchronized void setSMTPPort(int value) {
+	public void setSMTPPort(int value) {
 		setValue(SMTP_PORT, false, Integer.valueOf(value).toString());
 	}
 
@@ -673,21 +673,21 @@ public abstract class CommonPreferenceController {
 			"Simple Authentication (unencrypted connection)",
 			"SASL Authentication (secure connection)" }, new String[] { LDAP_SIMPLE_AUTHENTICATION, LDAP_SASL_AUTHENTICATION });
 
-	public synchronized String getLdapHost() {
+	public String getLdapHost() {
 		return getValue(LDAP_HOST, false);
 	}
 
-	public synchronized void setLdapHost(String value) {
+	public void setLdapHost(String value) {
 		setValue(LDAP_HOST, false, value);
 	}
 
 	@Deprecated
-	public synchronized String getLdapDomain() {
+	public String getLdapDomain() {
 		return getValue(LDAP_DOMAIN, false);
 	}
 
 	@Deprecated
-	public synchronized void setLdapDomain(String value) {
+	public void setLdapDomain(String value) {
 		setValue(LDAP_DOMAIN, false, value);
 	}
 
@@ -701,7 +701,7 @@ public abstract class CommonPreferenceController {
 		return Integer.parseInt(port);
 	}
 
-	public synchronized void setLdapServerport(int value) {
+	public void setLdapServerport(int value) {
 		setValue(LDAP_SERVERPORT, false, Integer.valueOf(value).toString());
 	}
 
@@ -717,27 +717,27 @@ public abstract class CommonPreferenceController {
 	}
 
 	@Deprecated
-	public synchronized void setLdapSecurity(String value) {
+	public void setLdapSecurity(String value) {
 		setValue(LDAP_SECURITY, false, value);
 	}
 
-	public synchronized String getLdapBindUserDn() {
+	public String getLdapBindUserDn() {
 		return getValue(LDAP_BIND_USER_DN, false);
 	}
 
-	public synchronized void setLdapBindUserDn(String value) {
+	public void setLdapBindUserDn(String value) {
 		setValue(LDAP_BIND_USER_DN, false, value);
 	}
 
-	public synchronized String getLdapBindUserPass() {
+	public String getLdapBindUserPass() {
 		return getValue(LDAP_BIND_USER_PASS, false);
 	}
 
-	public synchronized void setLdapBindUserPass(String value) {
+	public void setLdapBindUserPass(String value) {
 		setValue(LDAP_BIND_USER_PASS, false, value);
 	}
 
-	public synchronized Boolean getLdapSSL() {
+	public Boolean getLdapSSL() {
 		try {
 			return Boolean.parseBoolean(getValue(LDAP_SSL, false));
 		} catch (Exception e) {
@@ -745,43 +745,43 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setLdapSSL(Boolean value) {
+	public void setLdapSSL(Boolean value) {
 		setValue(LDAP_BIND_USER_DN, false, String.valueOf(value));
 	}
 
-	public synchronized String getLdapBaseDN() {
+	public String getLdapBaseDN() {
 		return getValue(LDAP_BASE_DN, false);
 	}
 
-	public synchronized void setLdapBaseDN(String value) {
+	public void setLdapBaseDN(String value) {
 		setValue(LDAP_BASE_DN, false, value);
 	}
 
-	public synchronized String getLdapGroupSearchFilter() {
+	public String getLdapGroupSearchFilter() {
 		return getValue(LDAP_GROUP_SEARCH_FILTER, false);
 	}
 
-	public synchronized void setLdapGroupSearchFilter(String value) {
+	public void setLdapGroupSearchFilter(String value) {
 		setValue(LDAP_GROUP_SEARCH_FILTER, false, value);
 	}
 
-	public synchronized String getLdapGroupAttribute() {
+	public String getLdapGroupAttribute() {
 		return getValue(LDAP_GROUP_ATTRIBUTE, false);
 	}
 
-	public synchronized void setLdapGroupAttribute(String value) {
+	public void setLdapGroupAttribute(String value) {
 		setValue(LDAP_GROUP_ATTRIBUTE, false, value);
 	}
 
-	public synchronized String getLdapGroupMemberAttribute() {
+	public String getLdapGroupMemberAttribute() {
 		return getValue(LDAP_GROUP_MEMBER_ATTRIBUTE, false);
 	}
 
-	public synchronized void setLdapGroupMemberAttribute(String value) {
+	public void setLdapGroupMemberAttribute(String value) {
 		setValue(LDAP_GROUP_MEMBER_ATTRIBUTE, false, value);
 	}
 
-	public synchronized Boolean getLdapGroupPosixStyle() {
+	public Boolean getLdapGroupPosixStyle() {
 		try {
 			return Boolean.parseBoolean(getValue(LDAP_GROUP_POSIX_STYLE, false));
 		} catch (Exception e) {
@@ -789,23 +789,23 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setLdapGroupPosixStyle(Boolean value) {
+	public void setLdapGroupPosixStyle(Boolean value) {
 		setValue(LDAP_GROUP_POSIX_STYLE, false, String.valueOf(value));
 	}
 
-	public synchronized String getLdapUserSearchFilter() {
+	public String getLdapUserSearchFilter() {
 		return getValue(LDAP_USER_SEARCH_FILTER, false);
 	}
 
-	public synchronized void setLdapUserSearchFilter(String value) {
+	public void setLdapUserSearchFilter(String value) {
 		setValue(LDAP_USER_SEARCH_FILTER, false, value);
 	}
 
-	public synchronized String getLdapUsernameAttribute() {
+	public String getLdapUsernameAttribute() {
 		return getValue(LDAP_USERNAME_ATTRIBUTE, false);
 	}
 
-	public synchronized void setLdapUsernameAttribute(String value) {
+	public void setLdapUsernameAttribute(String value) {
 		setValue(LDAP_USERNAME_ATTRIBUTE, false, value);
 	}
 
@@ -842,11 +842,11 @@ public abstract class CommonPreferenceController {
 		return Boolean.parseBoolean(aPref);
 	}
 
-	public synchronized void setBackupEnabled(boolean value) {
+	public void setBackupEnabled(boolean value) {
 		setValue(BACKUP_ENABLED, false, Boolean.toString(value));
 	}
 
-	public synchronized Integer getBackupOnMinuteOfDay() {
+	public Integer getBackupOnMinuteOfDay() {
 		try {
 			return Integer.parseInt(getValue(BACKUP_TIMEOFDAY, false));
 		} catch (Exception e) {
@@ -854,11 +854,11 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setBackupOnMinuteOfDay(int value) {
+	public void setBackupOnMinuteOfDay(int value) {
 		setValue(BACKUP_TIMEOFDAY, false, String.valueOf(value));
 	}
 
-	public synchronized boolean getLogoutEnabled() {
+	public boolean getLogoutEnabled() {
 		String aPref = getValue(LOGOUT_ENABLED, false);
 		if (aPref == null) {
 			return false;
@@ -867,7 +867,7 @@ public abstract class CommonPreferenceController {
 
 	}
 
-	public synchronized void setLogoutEnabled(boolean value) {
+	public void setLogoutEnabled(boolean value) {
 		setValue(LOGOUT_ENABLED, false, Boolean.toString(value));
 	}
 
@@ -876,7 +876,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @return seconds before logout due to inactivity
 	 */
-	public synchronized long getLogoutTimeout() {
+	public long getLogoutTimeout() {
 		String timeout = getValue(LOGOUT_TIMEOUT, false);
 		if (timeout == null || timeout.length() == 0) {
 			return 0l;
@@ -893,11 +893,11 @@ public abstract class CommonPreferenceController {
 		return time;
 	}
 
-	public synchronized void setLogoutTimeout(String value) {
+	public void setLogoutTimeout(String value) {
 		setValue(LOGOUT_TIMEOUT, false, value);
 	}
 
-	public synchronized String getBackupDir() {
+	public String getBackupDir() {
 		return getValue(BACKUP_DIR, false);
 	}
 
@@ -906,15 +906,15 @@ public abstract class CommonPreferenceController {
 		setBackupDirWarning(""); // clear warning message
 	}
 
-	public synchronized String getBackupDirWarning() {
+	public String getBackupDirWarning() {
 		return getValue(BACKUP_DIR_WARNING, false);
 	}
 
-	public synchronized void setBackupDirWarning(String message) {
+	public void setBackupDirWarning(String message) {
 		setValue(BACKUP_DIR_WARNING, false, message);
 	}
 
-	public synchronized Integer getBackupNextNumber() {
+	public Integer getBackupNextNumber() {
 		try {
 			return Integer.parseInt(getValue(BACKUP_NEXT_NUMBER, false));
 		} catch (Exception e) {
@@ -922,11 +922,11 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setBackupNextNumber(int value) {
+	public void setBackupNextNumber(int value) {
 		setValue(BACKUP_NEXT_NUMBER, false, String.valueOf(value));
 	}
 
-	public synchronized Integer getBackupMaxNumber() {
+	public Integer getBackupMaxNumber() {
 		try {
 			return Integer.parseInt(getValue(BACKUP_MAX_HISTORY, false));
 		} catch (Exception e) {
@@ -934,15 +934,15 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setBackupMaxNumber(int value) {
+	public void setBackupMaxNumber(int value) {
 		setValue(BACKUP_MAX_HISTORY, false, String.valueOf(value));
 	}
 
-	public synchronized String getDatabaseUsed() {
+	public String getDatabaseUsed() {
 		return getValue(DATABASE_USED, false);
 	}
 
-	public synchronized void setDatabaseUsed(String value) {
+	public void setDatabaseUsed(String value) {
 		setValue(DATABASE_USED, false, value);
 	}
 
@@ -959,7 +959,7 @@ public abstract class CommonPreferenceController {
 	public static final String ACCOUNT_PREPAID_FEES_POST_AT_EVERY_SESSION = "everySession";
 	public static final String ACCOUNT_PREPAID_FEES_POST_AT_FIRST_SESSION = "firstSession";
 
-	public synchronized Long getDefaultAccountId(String preferenceName) {
+	public Long getDefaultAccountId(String preferenceName) {
 		String value = getValue(preferenceName, false);
 		if (value == null) {
 			return null;
@@ -967,12 +967,12 @@ public abstract class CommonPreferenceController {
 		return Long.valueOf(value);
 	}
 
-	public synchronized void setDefaultAccountId(String preferenceName, Long value) {
+	public void setDefaultAccountId(String preferenceName, Long value) {
 		setValue(preferenceName, false, String.valueOf(value));
 	}
 
 
-	public synchronized Country getCountry() {
+	public Country getCountry() {
 		String result = getValue(ACCOUNT_CURRENCY, false);
 		if (result == null) {
 			return Country.AUSTRALIA;
@@ -980,11 +980,11 @@ public abstract class CommonPreferenceController {
 		return Country.forCurrencySymbol(result);
 	}
 
-	public synchronized void setCountry(Country value) {
+	public void setCountry(Country value) {
 		setValue(ACCOUNT_CURRENCY, false, value.currencySymbol());
 	}
 
-	public synchronized Long getTaxPK() {
+	public Long getTaxPK() {
 		String result = getValue(ACCOUNT_TAXPK, false);
 		if (result == null) {
 			return null;
@@ -992,7 +992,7 @@ public abstract class CommonPreferenceController {
 		return Long.valueOf(result);
 	}
 
-	public synchronized void setTaxPK(Long value) {
+	public void setTaxPK(Long value) {
 		setValue(ACCOUNT_TAXPK, false, value.toString());
 	}
 
@@ -1009,11 +1009,11 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setPayPeriodDays(int value) {
+	public void setPayPeriodDays(int value) {
 		setValue(PAY_PERIOD_DAYS, false, String.valueOf(value));
 	}
 
-	public synchronized String getAccountPrepaidFeesPostAt() {
+	public String getAccountPrepaidFeesPostAt() {
 		String value = getValue(ACCOUNT_PREPAID_FEES_POST_AT, false);
 		if (value == null) {
 			setAccountPrepaidFeesPostAt(ACCOUNT_PREPAID_FEES_POST_AT_EVERY_SESSION);
@@ -1022,7 +1022,7 @@ public abstract class CommonPreferenceController {
 		return value;
 	}
 
-	public synchronized void setAccountPrepaidFeesPostAt(String value) {
+	public void setAccountPrepaidFeesPostAt(String value) {
 		setValue(ACCOUNT_PREPAID_FEES_POST_AT, false, value);
 	}
 
@@ -1049,7 +1049,7 @@ public abstract class CommonPreferenceController {
 	public static final String AVETMISS_CERT_SIGNATORY_NAME = "avetmiss.certificate.signatory.name";
 	public static final String AVETMISS_QLD_IDENTIFIER = "avetmiss.qld.identifier";
 
-	public synchronized boolean getShowRTOGUI() {
+	public boolean getShowRTOGUI() {
 		String aPref = getValue(AVETMISS_SHOW_GUI, false);
 		if (aPref == null) {
 			return false;
@@ -1058,19 +1058,19 @@ public abstract class CommonPreferenceController {
 
 	}
 
-	public synchronized void setShowRTOGUI(boolean value) {
+	public void setShowRTOGUI(boolean value) {
 		setValue(AVETMISS_SHOW_GUI, false, Boolean.toString(value));
 	}
 
-	public synchronized String getAvetmissID() {
+	public String getAvetmissID() {
 		return getValue(AVETMISS_ID, false);
 	}
 
-	public synchronized void setAvetmissID(String value) {
+	public void setAvetmissID(String value) {
 		setValue(AVETMISS_ID, false, value);
 	}
 
-	public synchronized ExportJurisdiction getAvetmissJurisdiction() {
+	public ExportJurisdiction getAvetmissJurisdiction() {
 		String s = getValue(AVETMISS_JURISDICTION, false);
 		if (s == null) {
 			return ExportJurisdiction.PLAIN;
@@ -1086,27 +1086,27 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized String getAvetmissCollegeName() {
+	public String getAvetmissCollegeName() {
 		return getValue(AVETMISS_COLLEGENAME, false);
 	}
 
-	public synchronized void setAvetmissCollegeName(String value) {
+	public void setAvetmissCollegeName(String value) {
 		setValue(AVETMISS_COLLEGENAME, false, value);
 	}
 
-	public synchronized String getAvetmissCollegeShortName() {
+	public String getAvetmissCollegeShortName() {
 		return getValue(AVETMISS_COLLEGESHORTNAME, false);
 	}
 
-	public synchronized void setAvetmissCollegeShortName(String value) {
+	public void setAvetmissCollegeShortName(String value) {
 		setValue(AVETMISS_COLLEGESHORTNAME, false, value);
 	}
 
-	public synchronized String getAvetmissType() {
+	public String getAvetmissType() {
 		return getValue(AVETMISS_TYPE, false);
 	}
 
-	public synchronized void setAvetmissType(String value) {
+	public void setAvetmissType(String value) {
 		setValue(AVETMISS_TYPE, false, value);
 	}
 
@@ -1119,15 +1119,15 @@ public abstract class CommonPreferenceController {
 		return result;
 	}
 
-	public synchronized void setAvetmissAddress1(String value) {
+	public void setAvetmissAddress1(String value) {
 		setValue(AVETMISS_ADDRESS1, false, value);
 	}
 
-	public synchronized String getAvetmissAddress2() {
+	public String getAvetmissAddress2() {
 		return getValue(AVETMISS_ADDRESS2, false);
 	}
 
-	public synchronized void setAvetmissAddress2(String value) {
+	public void setAvetmissAddress2(String value) {
 		setValue(AVETMISS_ADDRESS2, false, value);
 	}
 
@@ -1140,15 +1140,15 @@ public abstract class CommonPreferenceController {
 		return result;
 	}
 
-	public synchronized void setAvetmissSuburb(String value) {
+	public void setAvetmissSuburb(String value) {
 		setValue(AVETMISS_SUBURB, false, value);
 	}
 
-	public synchronized String getAvetmissState() {
+	public String getAvetmissState() {
 		return getValue(AVETMISS_STATE, false);
 	}
 
-	public synchronized String getAvetmissStateName() {
+	public String getAvetmissStateName() {
 		String stateID = getAvetmissState();
 		if (stateID != null) {
 			for (String name : AddressStates.keySet()) {
@@ -1161,11 +1161,11 @@ public abstract class CommonPreferenceController {
 		return "";
 	}
 
-	public synchronized void setAvetmissState(String value) {
+	public void setAvetmissState(String value) {
 		setValue(AVETMISS_STATE, false, value);
 	}
 
-	public synchronized String getAvetmissPostcode() {
+	public String getAvetmissPostcode() {
 		String result = getValue(AVETMISS_POSTCODE, false);
 		if (result == null) {
 			setAvetmissPostcode("");
@@ -1174,39 +1174,39 @@ public abstract class CommonPreferenceController {
 		return result;
 	}
 
-	public synchronized void setAvetmissPostcode(String value) {
+	public void setAvetmissPostcode(String value) {
 		setValue(AVETMISS_POSTCODE, false, value);
 	}
 
-	public synchronized String getAvetmissContactName() {
+	public String getAvetmissContactName() {
 		return getValue(AVETMISS_CONTACTNAME, false);
 	}
 
-	public synchronized void setAvetmissContactName(String value) {
+	public void setAvetmissContactName(String value) {
 		setValue(AVETMISS_CONTACTNAME, false, value);
 	}
 
-	public synchronized String getAvetmissPhone() {
+	public String getAvetmissPhone() {
 		return getValue(AVETMISS_PHONE, false);
 	}
 
-	public synchronized void setAvetmissPhone(String value) {
+	public void setAvetmissPhone(String value) {
 		setValue(AVETMISS_PHONE, false, value);
 	}
 
-	public synchronized String getAvetmissFax() {
+	public String getAvetmissFax() {
 		return getValue(AVETMISS_FAX, false);
 	}
 
-	public synchronized void setAvetmissFax(String value) {
+	public void setAvetmissFax(String value) {
 		setValue(AVETMISS_FAX, false, value);
 	}
 
-	public synchronized String getAvetmissEmail() {
+	public String getAvetmissEmail() {
 		return getValue(AVETMISS_EMAIL, false);
 	}
 
-	public synchronized void setAvetmissEmail(String value) {
+	public void setAvetmissEmail(String value) {
 		setValue(AVETMISS_EMAIL, false, value);
 	}
 
@@ -1219,15 +1219,15 @@ public abstract class CommonPreferenceController {
 		return result;
 	}
 
-	public synchronized void setAvetmissCertSignatoryName(String value) {
+	public void setAvetmissCertSignatoryName(String value) {
 		setValue(AVETMISS_CERT_SIGNATORY_NAME, false, value);
 	}
 
-	public synchronized String getAvetmissQldIdentifier() {
+	public String getAvetmissQldIdentifier() {
 		return getValue(AVETMISS_QLD_IDENTIFIER, false);
 	}
 
-	public synchronized void setAvetmissQldIdentifier(String value) {
+	public void setAvetmissQldIdentifier(String value) {
 		setValue(AVETMISS_QLD_IDENTIFIER, false, value);
 	}
 
@@ -1238,11 +1238,11 @@ public abstract class CommonPreferenceController {
 	public static final String DEFAULT_REPORT_OVERLAY = "report_overlay_default";
 
 
-	public synchronized void setDefaultReportOverlay(Long overlayId) {
+	public void setDefaultReportOverlay(Long overlayId) {
 		setValue(DEFAULT_REPORT_OVERLAY, false, overlayId==null? null : overlayId.toString());
 	}
 
-	public synchronized Long getDefaultReportOverlay() {
+	public Long getDefaultReportOverlay() {
 		String value = getValue(DEFAULT_REPORT_OVERLAY, false);
 		if (value != null) {
 			return Long.valueOf(value);
@@ -1259,7 +1259,7 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized Long getReportOverlay(String reportKey) {
+	public Long getReportOverlay(String reportKey) {
 		if (reportKey == null) {
 			// defualt value
 			return getDefaultReportOverlay();
@@ -1295,7 +1295,7 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setCourseClassDefaultMinimumPlaces(Integer value) {
+	public void setCourseClassDefaultMinimumPlaces(Integer value) {
 		setValue(CLASS_DEFAULTS_MINIMUM_PLACES, false, String.valueOf(value));
 	}
 
@@ -1312,11 +1312,11 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setCourseClassDefaultMaximumPlaces(Integer value) {
+	public void setCourseClassDefaultMaximumPlaces(Integer value) {
 		setValue(CLASS_DEFAULTS_MAXIMUM_PLACES, false, String.valueOf(value));
 	}
 
-	public synchronized DeliveryMode getCourseClassDefaultDeliveryMode() {
+	public DeliveryMode getCourseClassDefaultDeliveryMode() {
 		String s = getValue(CLASS_DEFAULTS_DELIVERY_MODE, false);
 		if (s == null) {
 			return DeliveryMode.CLASSROOM;
@@ -1332,7 +1332,7 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized ClassFundingSource getCourseClassDefaultFundingSource() {
+	public ClassFundingSource getCourseClassDefaultFundingSource() {
 		String s = getValue(CLASS_DEFAULTS_FUNDING_SOURCE, false);
 		if (s == null) {
 			return ClassFundingSource.DOMESTIC_FULL_FEE;
@@ -1357,13 +1357,13 @@ public abstract class CommonPreferenceController {
 
 	public static final String GRAVATAR = "gravatar.enabled";
 
-	public synchronized boolean getQEDefaultsToZeroPayment() {
+	public boolean getQEDefaultsToZeroPayment() {
 		String aPref = getValue(QE_DEFAULTS_TO_ZERO, false);
 		return aPref != null && Boolean.parseBoolean(aPref);
 
 	}
 
-	public synchronized void setQEDefaultsToZeroPayment(boolean value) {
+	public void setQEDefaultsToZeroPayment(boolean value) {
 		setValue(QE_DEFAULTS_TO_ZERO, false, Boolean.toString(value));
 	}
 
@@ -1377,7 +1377,7 @@ public abstract class CommonPreferenceController {
 		return result;
 	}
 
-	public synchronized void setDefaultQEEnrolmentReportKeycode(String value) {
+	public void setDefaultQEEnrolmentReportKeycode(String value) {
 		setValue(QE_DEFAULT_REPORT_ENROLMENT_KEYCODE, false, value);
 	}
 
@@ -1391,11 +1391,11 @@ public abstract class CommonPreferenceController {
 		return result;
 	}
 
-	public synchronized void setDefaultQEInvoiceReportKeycode(String value) {
+	public void setDefaultQEInvoiceReportKeycode(String value) {
 		setValue(QE_DEFAULT_REPORT_INVOICE_KEYCODE, false, value);
 	}
 
-	public synchronized boolean getGravatarEnabled() {
+	public boolean getGravatarEnabled() {
 		String value = getValue(GRAVATAR, false);
 		if (StringUtils.isEmpty(value)) {
 			return Boolean.TRUE;
@@ -1416,23 +1416,23 @@ public abstract class CommonPreferenceController {
 	public static final String TOOLBAR_ACTIVE_TAB = "toolbar.tab.active";
 	public static final String LISTVIEW_FILTERS_COLLAPSING = "listview.filters.collapsing.";
 
-	public synchronized String getToolbarActiveTab() {
+	public String getToolbarActiveTab() {
 		return getValue(TOOLBAR_ACTIVE_TAB, true);
 	}
 
-	public synchronized void setToolbarActiveTab(String toolbarActiveTab) {
+	public void setToolbarActiveTab(String toolbarActiveTab) {
 		setValue(TOOLBAR_ACTIVE_TAB, true, toolbarActiveTab);
 	}
 
-	public synchronized String getEulaAgreement(String userLogin) {
+	public String getEulaAgreement(String userLogin) {
 		return getValue(EULA_AGREEMENT + userLogin, true);
 	}
 
-	public synchronized void setEulaAgreement(String userLogin, String revision) {
+	public void setEulaAgreement(String userLogin, String revision) {
 		setValue(EULA_AGREEMENT + userLogin, true, revision);
 	}
 
-	public synchronized Rectangle getFramePosition(String frameIdentifier) {
+	public Rectangle getFramePosition(String frameIdentifier) {
 		String pref = getValue(FRAME_BOUNDS + frameIdentifier, true);
 		if (pref != null && !pref.equals("")) {
 			String[] elements = commaExplode.split(pref);
@@ -1447,12 +1447,12 @@ public abstract class CommonPreferenceController {
 		return null;
 	}
 
-	public synchronized void setFramePosition(String frameIdentifier, Rectangle value) {
+	public void setFramePosition(String frameIdentifier, Rectangle value) {
 		String prefValue = (int) value.getX() + "," + (int) value.getY() + "," + (int) value.getWidth() + "," + (int) value.getHeight();
 		setValue(FRAME_BOUNDS + frameIdentifier, true, prefValue);
 	}
 
-	public synchronized boolean getToolbarCollapsed() {
+	public boolean getToolbarCollapsed() {
 		String value = getValue(TOOLBAR_COLLAPSE_STATE, true);
 		if (value == null) {
 			return false;
@@ -1460,7 +1460,7 @@ public abstract class CommonPreferenceController {
 		return Boolean.parseBoolean(value);
 	}
 
-	public synchronized void setToolbarCollapsed(boolean value) {
+	public void setToolbarCollapsed(boolean value) {
 		setValue(TOOLBAR_COLLAPSE_STATE, true, Boolean.toString(value));
 	}
 
@@ -1470,7 +1470,7 @@ public abstract class CommonPreferenceController {
 	 * @param frameIdentifier a unique string identifier for this view
 	 * @return this is a map of column property keys and widths (in pixels)
 	 */
-	public synchronized Map<String, Integer> getListViewColumns(String frameIdentifier) {
+	public Map<String, Integer> getListViewColumns(String frameIdentifier) {
 		String pref = getValue(LISTVIEW_COLUMNS + frameIdentifier, true);
 		// data is stored like this "COLKEY1:12,COLKEY2:13"
 
@@ -1494,7 +1494,7 @@ public abstract class CommonPreferenceController {
 	 * @param frameIdentifier a unique string identifier for this view
 	 * @param value this is a map of column property keys and widths (in pixels)
 	 */
-	public synchronized void setListViewColumns(String frameIdentifier, Map<String, Integer> value) {
+	public void setListViewColumns(String frameIdentifier, Map<String, Integer> value) {
 		StringBuilder prefValue = new StringBuilder();
 		for (Map.Entry<String, Integer> col : value.entrySet()) {
 			prefValue.append(col.getKey()).append(":").append(col.getValue()).append(",");
@@ -1503,11 +1503,11 @@ public abstract class CommonPreferenceController {
 		setValue(LISTVIEW_COLUMNS + frameIdentifier, true, prefValue.toString());
 	}
 
-	public synchronized void setListViewDividerPosition(String frameIdentifier, int value) {
+	public void setListViewDividerPosition(String frameIdentifier, int value) {
 		setValue(LISTVIEW_DIVIDER + frameIdentifier, true, String.valueOf(value));
 	}
 
-	public synchronized Integer getListViewDividerPosition(String frameIdentifier) {
+	public Integer getListViewDividerPosition(String frameIdentifier) {
 		try {
 			return Integer.parseInt(getValue(LISTVIEW_DIVIDER + frameIdentifier, true));
 		} catch (Exception e) {
@@ -1515,11 +1515,11 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setQEViewDividerPosition(String frameIdentifier, int value) {
+	public void setQEViewDividerPosition(String frameIdentifier, int value) {
 		setValue(QEVIEW_DIVIDER + frameIdentifier, true, String.valueOf(value));
 	}
 
-	public synchronized Integer getQEViewDividerPosition(String frameIdentifier) {
+	public Integer getQEViewDividerPosition(String frameIdentifier) {
 		try {
 			return Integer.parseInt(getValue(QEVIEW_DIVIDER + frameIdentifier, true));
 		} catch (Exception e) {
@@ -1527,12 +1527,12 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setFilterCollapsingState(String filterIdentifier, boolean value) {
+	public void setFilterCollapsingState(String filterIdentifier, boolean value) {
 		setValue(LISTVIEW_FILTERS_COLLAPSING + filterIdentifier, true, String.valueOf(value));
 	}
 
 
-	public synchronized boolean getFilterCollapsingState(String filterIdentifier) {
+	public boolean getFilterCollapsingState(String filterIdentifier) {
 		return Boolean.parseBoolean(getValue(LISTVIEW_FILTERS_COLLAPSING + filterIdentifier, true));
 	}
 
@@ -1549,7 +1549,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @return host name
 	 */
-	public synchronized static String getLastLoginServerHost() {
+	public static String getLastLoginServerHost() {
 		return getFilePreference(LASTLOGIN_SERVER_HOST, "localhost");
 	}
 
@@ -1558,7 +1558,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param value host name
 	 */
-	public synchronized static void setLastLoginServerHost(String value) {
+	public static void setLastLoginServerHost(String value) {
 		setFilePreference(LASTLOGIN_SERVER_HOST, value);
 	}
 
@@ -1567,7 +1567,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @return TCP port
 	 */
-	public synchronized static int getLastLoginServerPort() {
+	public static int getLastLoginServerPort() {
 		String value = getFilePreference(LASTLOGIN_SERVER_PORT, "8181");
 		if (value == null) {
 			return 0;
@@ -1580,14 +1580,14 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param value TCP port
 	 */
-	public synchronized static void setLastLoginServerPort(int value) {
+	public static void setLastLoginServerPort(int value) {
 		setFilePreference(LASTLOGIN_SERVER_PORT, Integer.toString(value));
 	}
 
 	/**
 	 * Returns weather the last connection to the server was a secure one (SSL)
 	 */
-	public synchronized static Boolean getLastLoginServerIsSsl() {
+	public static Boolean getLastLoginServerIsSsl() {
 		String value = getFilePreference(LASTLOGIN_SERVER_ISSSL, "false");
 		if (value == null) {
 			return false;
@@ -1595,7 +1595,7 @@ public abstract class CommonPreferenceController {
 		return Boolean.parseBoolean(value);
 	}
 
-	public synchronized static void setLastLoginServerIsSsl(Boolean value) {
+	public static void setLastLoginServerIsSsl(Boolean value) {
 		setFilePreference(LASTLOGIN_SERVER_ISSSL, String.valueOf(value));
 	}
 
@@ -1604,7 +1604,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @return user name
 	 */
-	public synchronized static String getLastLoginServerUserName() {
+	public static String getLastLoginServerUserName() {
 		return getFilePreference(LASTLOGIN_USERNAME, "");
 	}
 
@@ -1613,15 +1613,15 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param value user name
 	 */
-	public synchronized static void setLastLoginServerUserName(String value) {
+	public static void setLastLoginServerUserName(String value) {
 		setFilePreference(LASTLOGIN_USERNAME, value);
 	}
 
-	public synchronized static String getSHA1Fingerprint(String host) {
+	public static String getSHA1Fingerprint(String host) {
 		return getFilePreference(host, "");
 	}
 
-	public synchronized static void setSHA1Fingerprint(String host, String value) {
+	public static void setSHA1Fingerprint(String host, String value) {
 		setFilePreference(host, value);
 	}
 
@@ -1637,7 +1637,7 @@ public abstract class CommonPreferenceController {
 
 	public static final String DOCUMENT_IMPORT_PATH = "document.lastpath";
 
-	public synchronized File getExportMailingListDestination() {
+	public File getExportMailingListDestination() {
 		String dir = getFilePreference(MAILINGLIST_EXPORT_FOLDER, null);
 		if (dir == null || dir.length() == 0) {
 			dir = System.getProperty("user.dir");
@@ -1645,11 +1645,11 @@ public abstract class CommonPreferenceController {
 		return new File(dir);
 	}
 
-	public synchronized void setExportMailingListDestination(File value) {
+	public void setExportMailingListDestination(File value) {
 		setFilePreference(MAILINGLIST_EXPORT_FOLDER, value.getAbsolutePath());
 	}
 
-	public synchronized File getExportPdfDestination() {
+	public File getExportPdfDestination() {
 		String dir = getFilePreference(REPORT_PDF_FOLDER, null);
 		if (dir == null || dir.length() == 0) {
 			dir = System.getProperty("user.dir");
@@ -1657,11 +1657,11 @@ public abstract class CommonPreferenceController {
 		return new File(dir);
 	}
 
-	public synchronized void setExportPdfDestination(File value) {
+	public void setExportPdfDestination(File value) {
 		setFilePreference(REPORT_PDF_FOLDER, value.getAbsolutePath());
 	}
 
-	public synchronized File getExportExcelDestination() {
+	public File getExportExcelDestination() {
 		String dir = getFilePreference(REPORT_XLS_FOLDER, null);
 		if (dir == null || dir.length() == 0) {
 			dir = System.getProperty("user.dir");
@@ -1669,11 +1669,11 @@ public abstract class CommonPreferenceController {
 		return new File(dir);
 	}
 
-	public synchronized void setExportExcelDestination(File value) {
+	public void setExportExcelDestination(File value) {
 		setFilePreference(REPORT_XLS_FOLDER, value.getAbsolutePath());
 	}
 
-	public synchronized File getReportImportSource() {
+	public File getReportImportSource() {
 		String dir = getFilePreference(REPORT_IMPORT_FOLDER, null);
 		if (dir == null || dir.length() == 0) {
 			dir = System.getProperty("user.dir");
@@ -1681,11 +1681,11 @@ public abstract class CommonPreferenceController {
 		return new File(dir);
 	}
 
-	public synchronized void setReportImportSource(File value) {
+	public void setReportImportSource(File value) {
 		setFilePreference(REPORT_IMPORT_FOLDER, value.getAbsolutePath());
 	}
 
-	public synchronized File getExportTemplateImportSource() {
+	public File getExportTemplateImportSource() {
 		String dir = getFilePreference(EXPORTTEMPLATE_IMPORT_FOLDER, null);
 		if (dir == null || dir.length() == 0) {
 			dir = System.getProperty("user.dir");
@@ -1693,11 +1693,11 @@ public abstract class CommonPreferenceController {
 		return new File(dir);
 	}
 
-	public synchronized void setExportTemplateImportSource(File value) {
+	public void setExportTemplateImportSource(File value) {
 		setFilePreference(EXPORTTEMPLATE_IMPORT_FOLDER, value.getAbsolutePath());
 	}
 
-	public synchronized File getAvetmissExportPath() {
+	public File getAvetmissExportPath() {
 		String dir = getFilePreference(AVETMISS_EXPORT_PATH, null);
 		if (dir == null || dir.length() == 0) {
 			dir = System.getProperty("user.dir");
@@ -1705,11 +1705,11 @@ public abstract class CommonPreferenceController {
 		return new File(dir);
 	}
 
-	public synchronized void setAvetmissExportPath(File value) {
+	public void setAvetmissExportPath(File value) {
 		setFilePreference(AVETMISS_EXPORT_PATH, value.getAbsolutePath());
 	}
 
-	public synchronized File getDocumentImportPath() {
+	public File getDocumentImportPath() {
 		String dir = getFilePreference(DOCUMENT_IMPORT_PATH, null);
 		if (dir == null || dir.length() == 0) {
 			dir = System.getProperty("user.dir");
@@ -1717,7 +1717,7 @@ public abstract class CommonPreferenceController {
 		return new File(dir);
 	}
 
-	public synchronized void setDocumentImportPath(File value) {
+	public void setDocumentImportPath(File value) {
 		setFilePreference(DOCUMENT_IMPORT_PATH, value.getAbsolutePath());
 	}
 	
@@ -1728,31 +1728,31 @@ public abstract class CommonPreferenceController {
 	public static final String STORAGE_ACCESS_ID = "storage.access.id";
 	public static final String STORAGE_ACCESS_KEY = "storage.access.key";
 
-	public synchronized void setStorageBucketName(String value) {
+	public void setStorageBucketName(String value) {
 		setValue(STORAGE_BUCKET_NAME, false, value);
 	}
 
-	public synchronized String getStorageBucketName() {
+	public String getStorageBucketName() {
 		return getValue(STORAGE_BUCKET_NAME, false);
 	}
 
-	public synchronized void setStorageAccessId(String value) {
+	public void setStorageAccessId(String value) {
 		setValue(STORAGE_ACCESS_ID, false, value);
 	}
 
-	public synchronized String getStorageAccessId() {
+	public String getStorageAccessId() {
 		return getValue(STORAGE_ACCESS_ID, false);
 	}
 
-	public synchronized void setStorageAccessKey(String value) {
+	public void setStorageAccessKey(String value) {
 		setValue(STORAGE_ACCESS_KEY, false, value);
 	}
 
-	public synchronized String getStorageAccessKey() {
+	public String getStorageAccessKey() {
 		return getValue(STORAGE_ACCESS_KEY, false);
 	}
 
-	public synchronized boolean isUsingExternalStorage() {
+	public boolean isUsingExternalStorage() {
 		return StringUtils.trimToNull(getStorageAccessId()) != null;
 	}
 
@@ -1764,35 +1764,35 @@ public abstract class CommonPreferenceController {
 	public static final String AUSKEY_PRIVATE_KEY = "auskey.privatekey";
 	public static final String AUSKEY_SALT = "auskey.salt";
 	
-	public synchronized void setAuskeyPassword(String value) {
+	public void setAuskeyPassword(String value) {
 		setValue(AUSKEY_PASSWORD, false, value);
 	}
 	
-	public synchronized String getAuskeyPassword() {
+	public String getAuskeyPassword() {
 		return getValue(AUSKEY_PASSWORD, false);
 	}
 	
-	public synchronized void setAuskeyCertificate(String value) {
+	public void setAuskeyCertificate(String value) {
 		setValue(AUSKEY_CERTIFICATE, false, value);
 	}
 	
-	public synchronized String getAuskeyCertificate() {
+	public String getAuskeyCertificate() {
 		return getValue(AUSKEY_CERTIFICATE, false);
 	}
 	
-	public synchronized void setAuskeyPrivateKey(String value) {
+	public void setAuskeyPrivateKey(String value) {
 		setValue(AUSKEY_PRIVATE_KEY, false, value);
 	}
 	
-	public synchronized String getAuskeyPrivateKey() {
+	public String getAuskeyPrivateKey() {
 		return getValue(AUSKEY_PRIVATE_KEY, false);
 	}
 	
-	public synchronized void setAuskeySalt(String value) {
+	public void setAuskeySalt(String value) {
 		setValue(AUSKEY_SALT, false, value);
 	}
 	
-	public synchronized String getAuskeySalt() {
+	public String getAuskeySalt() {
 		return getValue(AUSKEY_SALT, false);
 	}
 	
@@ -1802,15 +1802,15 @@ public abstract class CommonPreferenceController {
 	public static final String USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS = "use.offered.qualifications.only";
 	public static final String MYOB_LAST_EXPORT_DATE = "myob.last.export.date";
 
-	public synchronized boolean getUseOnlyOfferedModulesAndQualifications() {
+	public boolean getUseOnlyOfferedModulesAndQualifications() {
 		return Boolean.parseBoolean(getValue(USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS, false));
 	}
 
-	public synchronized void setUseOnlyOfferedModulesAndQualifications(boolean value) {
+	public void setUseOnlyOfferedModulesAndQualifications(boolean value) {
 		setValue(USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS, false, "" + value);
 	}
 
-	public synchronized Date getMYOBLastExportDate() {
+	public Date getMYOBLastExportDate() {
 		if (getValue(MYOB_LAST_EXPORT_DATE, false) == null) {
 			return null;
 		}
@@ -1821,13 +1821,13 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public synchronized void setMYOBLastExportDate(Date value) {
+	public void setMYOBLastExportDate(Date value) {
 		setValue(MYOB_LAST_EXPORT_DATE, false, dateFormat.format(value));
 	}
 	/*
 	 * Utility methods
 	 */
-	public synchronized boolean hasEmailBeenConfigured() {
+	public boolean hasEmailBeenConfigured() {
 		String smtpHost = getEmailSMTPHost();
 		String fromAddress = getEmailFromAddress();
 		if (smtpHost == null || fromAddress == null || smtpHost.length() == 0 || fromAddress.length() == 0) {
@@ -1836,7 +1836,7 @@ public abstract class CommonPreferenceController {
 		return true;
 	}
 
-	public synchronized boolean hasSMSBeenConfigured() {
+	public boolean hasSMSBeenConfigured() {
 		boolean enableSMSDelivery = getLicenseSms();
 		String smsFrom = getSMSFromAddress();
 		if (enableSMSDelivery && smsFrom != null && NO_WHITESPACE_PATTERN.matcher(smsFrom).matches()) {
@@ -1851,7 +1851,7 @@ public abstract class CommonPreferenceController {
 	 * @param key - the property/attribute key
 	 * @return the human readable version
 	 */
-	public synchronized Object getValueForKey(String key) {
+	public Object getValueForKey(String key) {
 
 		if (USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS.equals(key)) {
 			return getUseOnlyOfferedModulesAndQualifications();
@@ -2059,7 +2059,7 @@ public abstract class CommonPreferenceController {
 		throw new IllegalArgumentException("Key not found. (" + key + ")");
 	}
 
-	public synchronized void setValueForKey(String key, Object value) {
+	public void setValueForKey(String key, Object value) {
 
 		if (EMAIL_ADMIN_ADDRESS.equals(key) || EMAIL_FROM_ADDRESS.equals(key) || EMAIL_BOUNCEADDRESS.equals(key)) {
 			if (((String) value).startsWith("\"") && ((String) value).endsWith("\"")) {
@@ -2270,17 +2270,19 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @return communication key
 	 */
-	public synchronized Long getCommunicationKey() {
-		String value = getValue(SERVICES_COMMUNICATION_KEY, false);
+	public Long getCommunicationKey() {
+		synchronized (this) {
+			String value = getValue(SERVICES_COMMUNICATION_KEY, false);
 
-		if (value == null) {
-			Random randomGen = new Random();
-			long newCommunicationKey = ((long) randomGen.nextInt(63) << 59) + System.currentTimeMillis();
-			setCommunicationKey(newCommunicationKey);
-			return newCommunicationKey;
+			if (value == null) {
+				Random randomGen = new Random();
+				long newCommunicationKey = ((long) randomGen.nextInt(63) << 59) + System.currentTimeMillis();
+				setCommunicationKey(newCommunicationKey);
+				return newCommunicationKey;
+			}
+
+			return Long.valueOf(value);
 		}
-
-		return Long.valueOf(value);
 	}
 
 	/**
@@ -2288,14 +2290,14 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param communicationKey
 	 */
-	public synchronized void setCommunicationKey(Long communicationKey) {
+	public void setCommunicationKey(Long communicationKey) {
 		setValue(SERVICES_COMMUNICATION_KEY, false, String.valueOf(communicationKey));
 	}
 
 	/**
 	 * Shows if replication should be performed for college.
 	 */
-	public synchronized boolean getReplicationEnabled() {
+	public boolean getReplicationEnabled() {
 		return Boolean.parseBoolean(getValue(REPLICATION_ENABLED, false));
 	}
 
@@ -2304,7 +2306,7 @@ public abstract class CommonPreferenceController {
 	 * 
 	 * @param value
 	 */
-	public synchronized void setReplicationEnabled(boolean value) {
+	public void setReplicationEnabled(boolean value) {
 		setValue(REPLICATION_ENABLED, false, Boolean.toString(value));
 	}
 
@@ -2312,27 +2314,27 @@ public abstract class CommonPreferenceController {
 	public static final String FEATURE_CONCESSION_USERS_CREATE = "feature.concession.existing.users.create";
 	public static final String FEATURE_ENROLMENT_DISCLOSURE = "feature.enrolmentDisclosure";
 
-	public synchronized boolean getFeatureConcessionsInEnrolment() {
+	public boolean getFeatureConcessionsInEnrolment() {
 		return Boolean.parseBoolean(getValue(FEATURE_CONCESSIONS_IN_ENROLMENT, false));
 	}
 
-	public synchronized void setFeatureConcessionsInEnrolment(boolean value) {
+	public void setFeatureConcessionsInEnrolment(boolean value) {
 		setValue(FEATURE_CONCESSIONS_IN_ENROLMENT, false, Boolean.toString(value));
 	}
 
-	public synchronized void setFeatureConcessionsUsersCreate(boolean value) {
+	public void setFeatureConcessionsUsersCreate(boolean value) {
 		setValue(FEATURE_CONCESSION_USERS_CREATE, false, Boolean.toString(value));
 	}
 
-	public synchronized boolean getFeatureConcessionsUsersCreate() {
+	public boolean getFeatureConcessionsUsersCreate() {
 		return Boolean.parseBoolean(getValue(FEATURE_CONCESSION_USERS_CREATE, false));
 	}
 
-	public synchronized String getFeatureEnrolmentDisclosure() {
+	public String getFeatureEnrolmentDisclosure() {
 		return getValue(FEATURE_ENROLMENT_DISCLOSURE, false);
 	}
 
-	public synchronized void setFeatureEnrolmentDisclosure(String value) {
+	public void setFeatureEnrolmentDisclosure(String value) {
 		setValue(FEATURE_ENROLMENT_DISCLOSURE, false, value);
 	}
 
@@ -2364,7 +2366,7 @@ public abstract class CommonPreferenceController {
 	 * @param data
 	 * @return the deserialized object
 	 */
-	public synchronized static Object deserializeObject(byte[] data) {
+	public static Object deserializeObject(byte[] data) {
 		Object object = null;
 		if (data != null && data.length > 0) {
 			try {
@@ -2386,7 +2388,7 @@ public abstract class CommonPreferenceController {
 	 * @param object
 	 * @return the bytes representing the serialized object
 	 */
-	public synchronized static byte[] serializeObject(Object object) {
+	public static byte[] serializeObject(Object object) {
 		byte[] data = null;
 		logger.debug("serializeObject:" + object);
 		if (object != null) {
@@ -2421,7 +2423,7 @@ public abstract class CommonPreferenceController {
 	 * @param valueIfNull
 	 * @return the preference stored on local disk as string
 	 */
-	private synchronized static String getFilePreference(String key, String valueIfNull) {
+	private static String getFilePreference(String key, String valueIfNull) {
 		return FILE_PREFS.get(key, valueIfNull);
 	}
 
@@ -2431,11 +2433,11 @@ public abstract class CommonPreferenceController {
 	 * @param key
 	 * @param value
 	 */
-	private synchronized static void setFilePreference(String key, String value) {
+	private static void setFilePreference(String key, String value) {
 		FILE_PREFS.put(key, value);
 	}
 
-	public synchronized static CommonPreferenceController getController() {
+	public static CommonPreferenceController getController() {
 		return sharedController;
 	}
 
@@ -2446,19 +2448,19 @@ public abstract class CommonPreferenceController {
 	public static final String PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE = "portal.hideClassRollContactPhone";
 	public static final String PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL = "portal.hideClassRollContactEmail";
 
-	public synchronized String getPortalHideClassRollContactPhone() {
+	public String getPortalHideClassRollContactPhone() {
 		return getValue(PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE, false);
 	}
 
-	public synchronized void setPortalHideClassRollContactPhone(String value) {
+	public void setPortalHideClassRollContactPhone(String value) {
 		setValue(PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE, false, value);
 	}
 
-	public synchronized String getPortalHideClassRollContactEmail() {
+	public String getPortalHideClassRollContactEmail() {
 		return getValue(PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL, false);
 	}
 
-	public synchronized void setPortalHideClassRollContactEmail(String value) {
+	public void setPortalHideClassRollContactEmail(String value) {
 		setValue(PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL, false, value);
 	}
 }
