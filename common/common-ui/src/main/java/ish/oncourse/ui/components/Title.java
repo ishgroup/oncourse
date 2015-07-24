@@ -1,16 +1,19 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.components.ISHCommon;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.WebNode;
+import ish.oncourse.model.*;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class Title extends ISHCommon {
+
+    @Inject
+    @Property
+    private Request request;
 
     @Parameter
     @Property
@@ -34,5 +37,25 @@ public class Title extends ISHCommon {
 
     public College getCollege() {
         return webSiteService.getCurrentCollege();
+    }
+
+    public Product getProduct() {
+        return (Product) request.getAttribute(Product.class.getSimpleName());
+    }
+
+    public Course getCourse() {
+        return (Course) request.getAttribute(Course.class.getSimpleName());
+    }
+
+    public CourseClass getCourseClass() {
+        return (CourseClass) request.getAttribute(CourseClass.class.getSimpleName());
+    }
+
+    public Site getSite() {
+        return (Site) request.getAttribute(Site.class.getSimpleName());
+    }
+
+    public Room getRoom() {
+        return (Room) request.getAttribute(Room.class.getSimpleName());
     }
 }
