@@ -38,24 +38,4 @@ public class Title extends ISHCommon {
     public College getCollege() {
         return webSiteService.getCurrentCollege();
     }
-
-    public Product getProduct() {
-        return (Product) request.getAttribute(Product.class.getSimpleName());
-    }
-
-    public Course getCourse() {
-        return (Course) request.getAttribute(Course.class.getSimpleName());
-    }
-
-    public CourseClass getCourseClass() {
-        return (CourseClass) request.getAttribute(CourseClass.class.getSimpleName());
-    }
-
-    public Site getSite() {
-        return (Site) request.getAttribute(Site.class.getSimpleName());
-    }
-
-    public Room getRoom() {
-        return (Room) request.getAttribute(Room.class.getSimpleName());
-    }
 }
