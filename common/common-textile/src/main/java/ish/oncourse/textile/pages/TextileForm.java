@@ -200,7 +200,7 @@ public class TextileForm {
 
 							for (String name : parameterNames) {
 								if (name.endsWith("_input")) {
-									body.append(name.split("_")[1]).append(": ").append(request.getParameter(name)).append("\n");
+									body.append(name.split("_")[1]).append(":\n").append(request.getParameter(name)).append("\n\n");
 								}
 							}
 							//separate the parameters and break-line
