@@ -6,6 +6,7 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
@@ -77,12 +78,10 @@ public class WebSiteService implements IWebSiteService {
 			// there's not domain for technical site
 			return null;
 		} else {
-			SelectQuery query = new SelectQuery(WebHostName.class);
-			query.andQualifier(ExpressionFactory.matchExp(WebHostName.NAME_PROPERTY, serverName));
-			query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-			query.setCacheGroups(COLLEGE_DOMAIN_CACHE_GROUP);
-
-			collegeDomain = (WebHostName) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
+			collegeDomain = ObjectSelect.query(WebHostName.class)
+					.and(WebHostName.NAME.eq(serverName))
+					.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebHostName.class.getSimpleName())
+					.selectFirst(cayenneService.sharedContext());
 		}
 
 		// commented as seems to be useless - uncomment if it will cause

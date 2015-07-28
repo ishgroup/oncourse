@@ -39,4 +39,10 @@
            timeToLiveSeconds="60"
            overflowToDisk="false">
     </cache>
+    <cache name="WebNodeType"
+           maxElementsInMemory="500"
+           eternal="false"
+           timeToLiveSeconds="60"
+           overflowToDisk="false">
+    </cache>
 </ehcache>
