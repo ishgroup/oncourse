@@ -168,6 +168,26 @@ task installer_win(dependsOn: [bundle_win, prepareKeychains], type: au.com.ish.N
 	}
 }
 
+task installer_unix(dependsOn: jar, type: Zip) {
+	description "Create the Unix/Linux package (zip)."
+	doFirst {
+		logger.lifecycle("Creating the unix application executable for $project.name")
+	}
+
+	from (configurations.runtime) {
+		into 'onCourseClient/lib'
+	}
+	from (configurations.runtime.artifacts.files) {
+		into 'onCourseClient'
+	}
+	from (file("src/packaging/unix/")) {
+		into 'onCourseClient'
+	}
+
+	archiveName "onCourseClient.zip"
+	destinationDir file("${distsDir}/unix")
+}
+
 // for help on webstart see src/packaging/webstart/devHowTo.txt
 task webstartRun(dependsOn: bundle_webstart, type: Exec) {
 	executable 'javaws'
