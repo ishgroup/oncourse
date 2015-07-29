@@ -14,6 +14,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.pages.internal.Page;
 import ish.oncourse.util.HTMLUtils;
+import ish.oncourse.util.ISHUrlValidator;
 import ish.oncourse.utils.ResourceNameValidator;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -248,6 +249,12 @@ public class PageOptions {
 		if (!urlPath.startsWith("/")) {
 			urlPath = "/" + urlPath;
 		}
+		
+		if (!new ISHUrlValidator().isValidOnlyPath(urlPath)) {
+			urlForm.recordError(urlAlias, "URL path is not valid");
+			return;
+		}
+		
 		WebUrlAlias alias = aliasService.getAliasByPath(urlPath);
 		if (alias == null) {
 			for (Object o : editNode.getObjectContext().uncommittedObjects()) {
