@@ -147,7 +147,7 @@ public class SearchService implements ISearchService {
 
         try {
             String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
-            SolrQuery q = applyCourseRootTag(new SolrQueryBuilder(params, collegeId, start, rows).create());
+            SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId, start, rows).build());
 
             logger.debug("Solr query: {}", solrQueryToString(q));
 

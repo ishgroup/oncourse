@@ -28,25 +28,14 @@ public class SearchParamsParser
     public static final String PATTERN_PRICE = "[$]?(\\d)+[$]?";
 
     private static final Logger logger = LogManager.getLogger();
-    private final Request request;
-    private final ISearchService searchService;
+    private Request request;
+    private ISearchService searchService;
     private ITagService tagService;
 
     private Map<SearchParam, String> paramsInError = new HashMap<>();
 
     private SearchParams searchParams = new SearchParams();
     private TimeZone clientTimezone;
-
-    public SearchParamsParser(Request request, ISearchService searchService, ITagService tagService) {
-    	this(request, searchService, tagService, null);
-    }
-        
-	public SearchParamsParser(Request request, ISearchService searchService, ITagService tagService, TimeZone clientTimezone) {
-		this.request = request;
-		this.searchService = searchService;
-		this.tagService = tagService;
-		this.clientTimezone = clientTimezone;
-	}
 
 	public void parse() {
         Tag browseTag = null, tag = null;
@@ -97,11 +86,11 @@ public class SearchParamsParser
                         value = searchParams.getKm();
                         break;
                     case after:
-                        searchParams.setAfter(parseDate(parameter, SearchParam.after));
+                        searchParams.setAfter(DateParser.valueOf(parameter, clientTimezone).parse());
                         value = searchParams.getAfter();
                         break;
                     case before:
-                        searchParams.setBefore(parseDate(parameter, SearchParam.before));
+                        searchParams.setBefore(DateParser.valueOf(parameter, clientTimezone).parse());
                         value = searchParams.getBefore();
                         break;
                     case debugQuery:
@@ -137,47 +126,6 @@ public class SearchParamsParser
         return null;
     }
 
-    private Date parseDate(String parameter, SearchParam paramName) {
-        try {
-        	if (clientTimezone == null) {
-        		Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, FormatUtils.TIME_ZONE_UTC).parse(parameter);
-        		return parsedDate;
-        	} else if (clientTimezone instanceof SimpleTimeZone) {
-        		Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, FormatUtils.TIME_ZONE_UTC).parse(parameter);
-            	Calendar calendar = Calendar.getInstance();
-            	calendar.setTime(parsedDate);
-            	calendar.add(Calendar.MILLISECOND, -clientTimezone.getRawOffset());
-            	return calendar.getTime();
-        	} else if (clientTimezone instanceof TimeZone) {
-        		Date parsedDate = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, clientTimezone).parse(parameter);
-        		return parsedDate;
-        	} else {
-        		logger.error("Unexpected client timezone param {}", clientTimezone);
-        		paramsInError.put(paramName, parameter);
-        		return null;
-        	}
-        } catch (ParseException e) {
-            return null;
-        }
-    }
-
-    public static Double parseKm(String parameter) {
-    	if (StringUtils.isNumeric(parameter)) {
-    		Double km = Double.valueOf(parameter);
-    		if (km != null) {
-    			if (SearchService.MAX_DISTANCE < km) {
-    				//check for higher distance
-    				km = SearchService.MAX_DISTANCE;
-    			} else if (km < SearchService.MIN_DISTANCE) {
-    				//check for lower distance
-    				km = SearchService.MIN_DISTANCE;
-    			}
-    		}
-    		return km;
-    	}
-    	return null;
-    }
-
     private String parseTime(String parameter) {
         return (parameter.equalsIgnoreCase(PARAM_VALUE_daytime) || parameter.equalsIgnoreCase(PARAM_VALUE_evening)) ? parameter:null;
     }
@@ -190,15 +138,6 @@ public class SearchParamsParser
         return parameter.matches(PATTERN_PRICE) ? Double.valueOf(parameter.replaceAll("[$]", StringUtils.EMPTY)) : null;
     }
     
-    public static String convertPostcodeParameterToLong(String parameter) {
-    	//the workaround is for #17051. Till postcode stored as the long in db and indexed as is we need to call String-to-Long and back conversion 
-    	//to be able found the postcodes which starts from 0
-    	if (StringUtils.isNumeric(parameter)) {
-    		parameter = Long.valueOf(parameter).toString();
-    	}
-    	return parameter;
-    }
-
     private SolrDocumentList parseNear(String parameter) {
         SolrDocumentList solrSuburbs = searchService.searchSuburb(convertPostcodeParameterToLong(parameter));
         return solrSuburbs != null && !solrSuburbs.isEmpty() ? solrSuburbs:null;
@@ -215,4 +154,44 @@ public class SearchParamsParser
     public Map<SearchParam, String> getParamsInError() {
         return paramsInError;
     }
+
+    public static SearchParamsParser valueOf(Request request,
+                                             ISearchService searchService,
+                                             ITagService tagService,
+                                             TimeZone clientTimezone) {
+        SearchParamsParser result = new SearchParamsParser();
+        result.request = request;
+        result.searchService = searchService;
+        result.tagService = tagService;
+        result.clientTimezone = clientTimezone;
+        return result;
+    }
+
+    public static Double parseKm(String parameter) {
+        if (StringUtils.isNumeric(parameter)) {
+            Double km = Double.valueOf(parameter);
+            if (km != null) {
+                if (SearchService.MAX_DISTANCE < km) {
+                    //check for higher distance
+                    km = SearchService.MAX_DISTANCE;
+                } else if (km < SearchService.MIN_DISTANCE) {
+                    //check for lower distance
+                    km = SearchService.MIN_DISTANCE;
+                }
+            }
+            return km;
+        }
+        return null;
+    }
+
+    public static String convertPostcodeParameterToLong(String parameter) {
+        //the workaround is for #17051. Till postcode stored as the long in db and indexed as is we need to call String-to-Long and back conversion
+        //to be able found the postcodes which starts from 0
+        if (StringUtils.isNumeric(parameter)) {
+            parameter = Long.valueOf(parameter).toString();
+        }
+        return parameter;
+    }
+
+
 }

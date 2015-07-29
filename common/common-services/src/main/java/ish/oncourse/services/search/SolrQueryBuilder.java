@@ -67,28 +67,10 @@ public class SolrQueryBuilder {
 
     private SearchParams params;
     private String collegeId;
-    private final Integer start;
-    private final Integer rows;
+    private Integer start;
+    private Integer rows;
 
-	/**
-	 * @param params cannot be null
-	 * @param collegeId cannot be null
-	 * @param start can be null
-	 * @param rows can be null
-	 */
-    public SolrQueryBuilder(
-                            SearchParams params,
-                            String collegeId,
-                            Integer start,
-                            Integer rows) {
-        this.params = params;
-        this.collegeId = collegeId;
-        this.start = start;
-        this.rows = rows;
-    }
-
-
-    public SolrQuery create() {
+    public SolrQuery build() {
         SolrQuery q = new SolrQuery();
 
         fillCommons(q);
@@ -286,8 +268,29 @@ public class SolrQueryBuilder {
     String convert(List<String> filters) {
         return StringUtils.join(filters.toArray(), QUERY_DELIMITER);
     }
-    
-	public static String replaceSOLRSyntaxisCharacters(String original) {
+
+
+    /**
+     * @param params cannot be null
+     * @param collegeId cannot be null
+     * @param start can be null
+     * @param rows can be null
+     */
+    public static SolrQueryBuilder valueOf(
+            SearchParams params,
+            String collegeId,
+            Integer start,
+            Integer rows) {
+        SolrQueryBuilder builder = new SolrQueryBuilder();
+        builder.params = params;
+        builder.collegeId = collegeId;
+        builder.start = start;
+        builder.rows = rows;
+        return builder;
+    }
+
+
+    public static String replaceSOLRSyntaxisCharacters(String original) {
     	return original.replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, SPACE_REPLACEMENT_CHARACTER);
     }
 
