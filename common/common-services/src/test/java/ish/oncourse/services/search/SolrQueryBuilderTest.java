@@ -71,16 +71,16 @@ public class SolrQueryBuilderTest {
 		searchParams.setNear(solrSuburbs);
 		assertFalse("1 suburb should be inside", searchParams.getSuburbs().isEmpty());
 		
-		SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(searchParams,"2",5,10);
-		String value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
+		SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "2", 5, 10);
+		String value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
 		assertEquals("Commons parameters", GEOFILTER_QUERY, value);
 	}
 	
 	@Test
     public void testCreate() throws UnsupportedEncodingException, ParseException {
         SearchParams searchParams = new SearchParams();
-        SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(searchParams,"1",0,100);
-        String value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
+        SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", 0, 100);
+        String value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
 
         assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
         	"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
@@ -165,7 +165,7 @@ public class SolrQueryBuilderTest {
 			}
 		});
 
-        solrQueryBuilder = new SolrQueryBuilder(searchParams,"1",0,100);
+        solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", 0, 100);
         ArrayList<String> filters = new ArrayList<>();
 
         solrQueryBuilder.appendFilterS(filters);
@@ -208,14 +208,14 @@ public class SolrQueryBuilderTest {
         assertEquals("Test filters.size for filter SearchParam.after",1,filters.size());
         assertEquals("Test filters.get(0) for filter SearchParam.after", "class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]",filters.get(0));
 
-        value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
+        value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
         String expectedValue = String.format(EXPECTED_RESULT_VALUE, EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM, 
         	EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM);
         assertEquals("Query parameters", expectedValue, value);
 
 		//check that if tag1 or tag2 not specified everuthing works too
 		searchParams.getTags().remove(0);
-		solrQueryBuilder = new SolrQueryBuilder(searchParams, "1", 0, 100);
+		solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", 0, 100);
 		q = new SolrQuery();
 		solrQueryBuilder.appendFilterTag(q);
 		assertEquals("Test filter query length for filter SearchParam.tag2", 1, q.getFilterQueries().length);
@@ -224,7 +224,7 @@ public class SolrQueryBuilderTest {
 				q.getFilterQueries()[0]);
 
 		searchParams.getTags().remove(0);
-		solrQueryBuilder = new SolrQueryBuilder(searchParams, "1", 0, 100);
+		solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", 0, 100);
 		q = new SolrQuery();
 		solrQueryBuilder.appendFilterTag(q);
 		assertNull("Test filter query length for empty filter SearchParam.tag1 and tag2", q.getFilterQueries());
@@ -233,8 +233,8 @@ public class SolrQueryBuilderTest {
 	@Test
 	public void testNulls() throws UnsupportedEncodingException, ParseException {
 		SearchParams searchParams = new SearchParams();
-		SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(searchParams,"1",null,null);
-		String value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
+		SolrQueryBuilder solrQueryBuilder =  SolrQueryBuilder.valueOf(searchParams,"1",null,null);
+		String value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
 
 		assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
 				"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
