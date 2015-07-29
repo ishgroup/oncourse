@@ -7,6 +7,7 @@ import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.utils.ResourceNameValidator;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.StreamResponse;
@@ -115,6 +116,14 @@ public class MA {
 
 		switch (OPER.valueOf(id[0])) {
 			case n:
+
+				String warnMessage = new ResourceNameValidator().validate(value);
+				if (warnMessage != null) {
+					warning.append(warnMessage);
+					value = menu.getName();
+					break;
+				}
+				
 				WebMenu webMenu = webMenuService.getMenuByNameAndParentMenu(value, menu.getParentWebMenu());
 				if (webMenu == null || webMenu.getObjectId().equals(menu.getObjectId())) {
 					menu.setName(StringUtils.trimToEmpty(value));
