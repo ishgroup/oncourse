@@ -182,7 +182,7 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 	main = 'ish.oncourse.server.AngelServer'
 	classpath = sourceSets.main.runtimeClasspath
 	args 'DEBUG=true'
-	jvmArgs '-Xmx1024m', '-XX:MaxPermSize=128M', '-XX:+HeapDumpOnOutOfMemoryError'
+	jvmArgs '-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError'
 }
 
 test {
@@ -246,8 +246,7 @@ appBundler {
             "-DJFileChooser.packageIsTraversable=true",
             "-Dapple.awt.antialiasing=true",
             "-Dapple.awt.showGrowBox=true",
-            "-Xmx${project.maxmemoryServer}",
-            "-XX:MaxPermSize=${project.maxpermgenServer}"
+            "-Xmx${project.maxmemoryServer}"
     ]
 }
 

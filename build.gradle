@@ -72,7 +72,6 @@ allprojects {
 	test {
 		systemProperties 'java.awt.headless': 'true'
 		maxHeapSize = '1024m'
-		jvmArgs "-XX:MaxPermSize=256m"
 
         // max number of parallel test executors, default to 4
         maxParallelForks = project.hasProperty('maxParallelForks') ? project.maxParallelForks.toInteger() : 4
