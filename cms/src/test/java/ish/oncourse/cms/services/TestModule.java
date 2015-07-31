@@ -135,7 +135,10 @@ public class TestModule {
         IWebNodeTypeService mockService = mock(IWebNodeTypeService.class);
 
         WebNodeType type = mock(WebNodeType.class);
-        when(type.getLayoutKey()).thenReturn("default");
+		WebSiteLayout layout = mock(WebSiteLayout.class);
+		when(layout.getLayoutKey()).thenReturn("default");
+
+		when(type.getWebSiteLayout()).thenReturn(layout);
         when(type.getName()).thenReturn("page");
 
         when(mockService.getDefaultWebNodeType()).thenReturn(type);

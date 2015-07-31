@@ -1193,9 +1193,9 @@
 	<db-entity name="WebNodeType">
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="layoutKey" type="VARCHAR" isMandatory="true" length="50"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="webSiteLayoutId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="WebSite">
@@ -2281,7 +2281,6 @@
 	</obj-entity>
 	<obj-entity name="WebNodeType" className="ish.oncourse.model.WebNodeType" dbEntityName="WebNodeType">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="layoutKey" type="java.lang.String" db-attribute-path="layoutKey"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<post-add method-name="onPostAdd"/>
@@ -3458,6 +3457,9 @@
 	<db-relationship name="webNode" source="WebNodeType" target="WebNode" toMany="true">
 		<db-attribute-pair source="id" target="webNodeTypeId"/>
 	</db-relationship>
+	<db-relationship name="webSiteLayout" source="WebNodeType" target="WebSiteLayout" toMany="false">
+		<db-attribute-pair source="webSiteLayoutId" target="id"/>
+	</db-relationship>
 	<db-relationship name="webSiteVersion" source="WebNodeType" target="WebSiteVersion" toMany="false">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
@@ -3481,6 +3483,9 @@
 	</db-relationship>
 	<db-relationship name="templates" source="WebSiteLayout" target="WebTemplate" toMany="true">
 		<db-attribute-pair source="id" target="layoutId"/>
+	</db-relationship>
+	<db-relationship name="webNodeTypes" source="WebSiteLayout" target="WebNodeType" toMany="true">
+		<db-attribute-pair source="id" target="webSiteLayoutId"/>
 	</db-relationship>
 	<db-relationship name="webSiteVersion" source="WebSiteLayout" target="WebSiteVersion" toMany="false">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
@@ -3882,6 +3887,7 @@
 	<obj-relationship name="webUrlAliases" source="WebNode" target="WebUrlAlias" deleteRule="Cascade" db-relationship-path="webUrlAliases"/>
 	<obj-relationship name="webContentVisibilities" source="WebNodeType" target="WebContentVisibility" deleteRule="Cascade" db-relationship-path="webContentVisibilities"/>
 	<obj-relationship name="webNodes" source="WebNodeType" target="WebNode" deleteRule="Deny" db-relationship-path="webNode"/>
+	<obj-relationship name="webSiteLayout" source="WebNodeType" target="WebSiteLayout" deleteRule="Nullify" db-relationship-path="webSiteLayout"/>
 	<obj-relationship name="webSiteVersion" source="WebNodeType" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
 	<obj-relationship name="college" source="WebSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="collegeDomains" source="WebSite" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
@@ -3890,6 +3896,7 @@
 	<obj-relationship name="toWebHostName" source="WebSite" target="WebHostName" deleteRule="Nullify" db-relationship-path="toWebHostName"/>
 	<obj-relationship name="versions" source="WebSite" target="WebSiteVersion" deleteRule="Deny" db-relationship-path="versions"/>
 	<obj-relationship name="templates" source="WebSiteLayout" target="WebTemplate" deleteRule="Deny" db-relationship-path="templates"/>
+	<obj-relationship name="webNodeTypes" source="WebSiteLayout" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>
 	<obj-relationship name="webSiteVersion" source="WebSiteLayout" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
 	<obj-relationship name="contents" source="WebSiteVersion" target="WebContent" deleteRule="Deny" db-relationship-path="contents"/>
 	<obj-relationship name="deployedBy" source="WebSiteVersion" target="SystemUser" deleteRule="Nullify" db-relationship-path="deployedBy"/>

@@ -132,9 +132,13 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 		
 		WebSiteVersion siteVersion = webSite.getVersions().get(0);
 		
+		WebSiteLayout webSiteLayout = context.newObject(WebSiteLayout.class);
+		webSiteLayout.setLayoutKey(WebNodeType.DEFAULT_LAYOUT_KEY);
+		webSiteLayout.setWebSiteVersion(siteVersion);
+		
 		WebNodeType webNodeType = context.newObject(WebNodeType.class);
 		webNodeType.setName(WebNodeType.PAGE);
-		webNodeType.setLayoutKey(WebNodeType.DEFAULT_LAYOUT_KEY);
+		webNodeType.setWebSiteLayout(webSiteLayout);
 		webNodeType.setWebSiteVersion(siteVersion);
 		
 		WebNode webNode = context.newObject(WebNode.class);

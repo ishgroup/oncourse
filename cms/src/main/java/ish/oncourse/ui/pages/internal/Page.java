@@ -42,7 +42,7 @@ public class Page extends APage{
             this.editNode = cayenneService.newContext().localObject(currentNode);
             //we need set the same value for node property in APage parent.
             setNode(this.editNode);
-            getRequest().setAttribute(IWebNodeService.CURRENT_WEB_NODE_LAYOUT,  this.editNode.getWebNodeType().getLayoutKey());
+            getRequest().setAttribute(IWebNodeService.CURRENT_WEB_NODE_LAYOUT,  this.editNode.getWebNodeType().getWebSiteLayout().getLayoutKey());
         } else {
             logger.error("CurrentNode is null in {}/{}",
                     getRequest().getServerName(),

@@ -256,10 +256,10 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 		WebNode webNode = getCurrentNode();
 		if (webNode != null) {
-			layoutKey = webNode.getWebNodeType().getLayoutKey();
+			layoutKey = webNode.getWebNodeType().getWebSiteLayout().getLayoutKey();
 		}
 		else if (webNodeTypeService.getDefaultWebNodeType() != null) {
-			layoutKey = webNodeTypeService.getDefaultWebNodeType().getLayoutKey();
+			layoutKey = webNodeTypeService.getDefaultWebNodeType().getWebSiteLayout().getLayoutKey();
 		}
 
 		return layoutKey;

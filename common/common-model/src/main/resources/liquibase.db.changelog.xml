@@ -3337,4 +3337,20 @@
 			<column name="sessionId"/>
 		</createIndex>
 	</changeSet>
+
+	<changeSet id="214" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebNodeType" columnName="webSiteLayoutId"/>
+			</not>
+		</preConditions>
+
+		<sql> ALTER TABLE WebNodeType ADD COLUMN webSiteLayoutId BIGINT; 
+			ALTER TABLE WebNodeType ADD FOREIGN KEY (webSiteLayoutId) REFERENCES WebSiteLayout(id);
+			UPDATE WebNodeType nt SET webSiteLayoutId = (SELECT id FROM WebSiteLayout l WHERE l.layoutKey = nt.layoutKey AND l.webSiteVersionId= nt.webSiteVersionId);
+			ALTER TABLE WebNodeType MODIFY webSiteLayoutId BIGINT NOT NULL;
+			ALTER TABLE WebNodeType DROP COLUMN layoutKey;
+		</sql>
+	</changeSet>
+	
 </databaseChangeLog>

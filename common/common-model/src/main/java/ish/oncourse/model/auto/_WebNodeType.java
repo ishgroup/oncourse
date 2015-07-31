@@ -8,6 +8,7 @@ import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebSiteVersion;
 
 /**
@@ -23,8 +24,6 @@ public abstract class _WebNodeType extends CayenneDataObject {
     @Deprecated
     public static final String CREATED_PROPERTY = "created";
     @Deprecated
-    public static final String LAYOUT_KEY_PROPERTY = "layoutKey";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
     @Deprecated
     public static final String NAME_PROPERTY = "name";
@@ -33,16 +32,18 @@ public abstract class _WebNodeType extends CayenneDataObject {
     @Deprecated
     public static final String WEB_NODES_PROPERTY = "webNodes";
     @Deprecated
+    public static final String WEB_SITE_LAYOUT_PROPERTY = "webSiteLayout";
+    @Deprecated
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
 
     public static final String ID_PK_COLUMN = "id";
 
     public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> LAYOUT_KEY = new Property<String>("layoutKey");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<String> NAME = new Property<String>("name");
     public static final Property<List<WebContentVisibility>> WEB_CONTENT_VISIBILITIES = new Property<List<WebContentVisibility>>("webContentVisibilities");
     public static final Property<List<WebNode>> WEB_NODES = new Property<List<WebNode>>("webNodes");
+    public static final Property<WebSiteLayout> WEB_SITE_LAYOUT = new Property<WebSiteLayout>("webSiteLayout");
     public static final Property<WebSiteVersion> WEB_SITE_VERSION = new Property<WebSiteVersion>("webSiteVersion");
 
     public void setCreated(Date created) {
@@ -50,13 +51,6 @@ public abstract class _WebNodeType extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setLayoutKey(String layoutKey) {
-        writeProperty("layoutKey", layoutKey);
-    }
-    public String getLayoutKey() {
-        return (String)readProperty("layoutKey");
     }
 
     public void setModified(Date modified) {
@@ -94,6 +88,15 @@ public abstract class _WebNodeType extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<WebNode> getWebNodes() {
         return (List<WebNode>)readProperty("webNodes");
+    }
+
+
+    public void setWebSiteLayout(WebSiteLayout webSiteLayout) {
+        setToOneTarget("webSiteLayout", webSiteLayout, true);
+    }
+
+    public WebSiteLayout getWebSiteLayout() {
+        return (WebSiteLayout)readProperty("webSiteLayout");
     }
 
 

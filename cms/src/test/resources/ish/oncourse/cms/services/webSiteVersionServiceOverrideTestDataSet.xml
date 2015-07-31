@@ -78,12 +78,12 @@
 	<WebTemplate id="34" layoutId="10" name="testTemplate33.tml" content="sample_content" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00"/>
 	
 
-	<WebNodeType id="1" webSiteVersionId="1" name="page" layoutKey="default" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00"/>
-	<WebNodeType id="2" webSiteVersionId="2" name="page" layoutKey="default" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00"/>
-	<WebNodeType id="3" webSiteVersionId="2" name="page" layoutKey="default_a" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00"/>
-	<WebNodeType id="4" webSiteVersionId="3" name="page" layoutKey="default" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00"/>
-	<WebNodeType id="5" webSiteVersionId="3" name="page" layoutKey="default_a" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00"/>
-	<WebNodeType id="6" webSiteVersionId="3" name="page" layoutKey="default_b" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00"/>
+	<WebNodeType id="1" webSiteVersionId="1" name="page" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00" webSiteLayoutId="1"/>
+	<WebNodeType id="2" webSiteVersionId="2" name="page" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00" webSiteLayoutId="2"/>
+	<WebNodeType id="3" webSiteVersionId="2" name="page" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00" webSiteLayoutId="3"/>
+	<WebNodeType id="4" webSiteVersionId="3" name="page" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00" webSiteLayoutId="4"/>
+	<WebNodeType id="5" webSiteVersionId="3" name="page" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00" webSiteLayoutId="5"/>
+	<WebNodeType id="6" webSiteVersionId="3" name="page" created="2014-09-24 09:00:00" modified="2014-09-24 09:00:00" webSiteLayoutId="6"/>
 
 	<WebNode id="1" webSiteVersionId="1" webNodeTypeId="1" name="webNode1" nodeNumber="1" isPublished="1"/>
 	<WebNode id="2" webSiteVersionId="1" webNodeTypeId="1" name="webNode1" nodeNumber="1" isPublished="1"/>

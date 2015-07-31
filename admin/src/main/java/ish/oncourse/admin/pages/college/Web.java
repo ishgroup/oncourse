@@ -241,7 +241,7 @@ public class Web {
 		page.setName(WebNodeType.PAGE);
 		page.setCreated(now);
 		page.setModified(now);
-		page.setLayoutKey(WebNodeType.DEFAULT_LAYOUT_KEY);
+		page.setWebSiteLayout(webSiteLayout);
 		page.setWebSiteVersion(stagedVersion);
 
         WebNode node = webNodeService.createNewNodeBy(stagedVersion, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1);

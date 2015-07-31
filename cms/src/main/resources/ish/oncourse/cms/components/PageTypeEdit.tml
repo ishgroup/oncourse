@@ -27,7 +27,7 @@
                     <label>Layout key</label>
 
                     <div class="cms-theme-key-wr">
-                        <t:select t:id="layoutKey" name="layoutKey" model="layoutSelectModel" encoder="layoutSelectModel" value="editPageType.layoutKey"/>
+                        <t:select t:id="layoutKey" name="layoutKey" model="layoutSelectModel" encoder="layoutEncoder" value="editPageType.webSiteLayout"/>
                     </div>
                 </div>
 				

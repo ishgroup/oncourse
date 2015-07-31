@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
+import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.model.WebTemplate;
 
@@ -23,12 +24,15 @@ public abstract class _WebSiteLayout extends CayenneDataObject {
     @Deprecated
     public static final String TEMPLATES_PROPERTY = "templates";
     @Deprecated
+    public static final String WEB_NODE_TYPES_PROPERTY = "webNodeTypes";
+    @Deprecated
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
 
     public static final String ID_PK_COLUMN = "id";
 
     public static final Property<String> LAYOUT_KEY = new Property<String>("layoutKey");
     public static final Property<List<WebTemplate>> TEMPLATES = new Property<List<WebTemplate>>("templates");
+    public static final Property<List<WebNodeType>> WEB_NODE_TYPES = new Property<List<WebNodeType>>("webNodeTypes");
     public static final Property<WebSiteVersion> WEB_SITE_VERSION = new Property<WebSiteVersion>("webSiteVersion");
 
     public void setLayoutKey(String layoutKey) {
@@ -47,6 +51,18 @@ public abstract class _WebSiteLayout extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<WebTemplate> getTemplates() {
         return (List<WebTemplate>)readProperty("templates");
+    }
+
+
+    public void addToWebNodeTypes(WebNodeType obj) {
+        addToManyTarget("webNodeTypes", obj, true);
+    }
+    public void removeFromWebNodeTypes(WebNodeType obj) {
+        removeToManyTarget("webNodeTypes", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<WebNodeType> getWebNodeTypes() {
+        return (List<WebNodeType>)readProperty("webNodeTypes");
     }
 
 

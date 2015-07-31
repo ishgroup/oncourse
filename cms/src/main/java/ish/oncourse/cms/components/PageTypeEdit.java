@@ -1,7 +1,8 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.model.*;
-import ish.oncourse.selectutils.StringSelectModel;
+import ish.oncourse.selectutils.ListSelectModel;
+import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.resource.IResourceService;
@@ -15,13 +16,13 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
@@ -59,7 +60,15 @@ public class PageTypeEdit {
 	@SuppressWarnings("all")
 	@Property
 	@Persist
-	private SelectModel layoutSelectModel;
+	private ListSelectModel<WebSiteLayout> layoutSelectModel;
+
+	@SuppressWarnings("all")
+	@Property
+	@Persist
+	private ListValueEncoder<WebSiteLayout> layoutEncoder;
+
+	@Inject
+	private PropertyAccess access;
 
 	@Inject
 	private IResourceService resourceService;
@@ -167,29 +176,22 @@ public class PageTypeEdit {
 		}
 	}
 
-	private String[] readAvailableLayouts() {
-
-		List<WebSiteLayout> layouts = ObjectSelect.query(WebSiteLayout.class).
-				where(WebSiteLayout.WEB_SITE_VERSION.eq(editPageType.getWebSiteVersion())).
-				select(cayenneService.sharedContext());
-		
-		String[] availableLayouts = new String[layouts.size()];
-		for (int i = 0; i < layouts.size(); i++) {
-			availableLayouts[i] = layouts.get(i).getLayoutKey();
-		}
-		return availableLayouts;
-		
-	}
-
 	@SetupRender
 	public void beforeRender() {
 		editPageType = pageType.getPersistenceState() == PersistenceState.NEW ? pageType :
                 Cayenne.objectForPK(cayenneService.newContext(), WebNodeType.class, pageType.getId());
-		String[] availableLayouts = readAvailableLayouts();
-		if (availableLayouts == null || availableLayouts.length == 0) {
+		
+		
+		List<WebSiteLayout> layouts = ObjectSelect.query(WebSiteLayout.class).
+				where(WebSiteLayout.WEB_SITE_VERSION.eq(editPageType.getWebSiteVersion())).
+				select(editPageType.getObjectContext());
+		
+		if (layouts == null || layouts.size() == 0) {
 			logger.error("The layout directory is empty!");
 		}
-		layoutSelectModel = new StringSelectModel(availableLayouts);
+
+		this.layoutSelectModel = new ListSelectModel<>(layouts, WebSiteLayout.LAYOUT_KEY.getName(), access);
+		this.layoutEncoder = new ListValueEncoder<>(layouts, "id", access);
 	}
 	
 	private boolean isSessionAndEntityValid() {
@@ -253,7 +255,7 @@ public class PageTypeEdit {
 			pageTypeEditForm.recordError(messages.get("message-duplicatePageTypeName"));
 		}
 
-        if (StringUtils.trimToNull(editPageType.getLayoutKey()) == null)
+        if (editPageType.getWebSiteLayout() == null)
         {
             pageTypeEditForm.recordError(messages.get("message-layoutKeyNotDefined"));
         }

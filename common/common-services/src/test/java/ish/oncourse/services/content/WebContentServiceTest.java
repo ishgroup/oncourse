@@ -195,8 +195,11 @@ public class WebContentServiceTest extends ServiceTest {
 
 	private WebNodeType createWebNoteType(ObjectContext context, WebSiteVersion webSiteVersion) {
 		WebNodeType webNodeType = context.newObject(WebNodeType.class);
+		WebSiteLayout webSiteLayout = context.newObject(WebSiteLayout.class);
+		webSiteLayout.setLayoutKey("test key");
+		webSiteLayout.setWebSiteVersion(context.localObject(webSiteVersion));
 		webNodeType.setName("test name");
-		webNodeType.setLayoutKey("test key");
+		webNodeType.setWebSiteLayout(webSiteLayout);
 		webNodeType.setWebSiteVersion(context.localObject(webSiteVersion));
 		return webNodeType;
 	}

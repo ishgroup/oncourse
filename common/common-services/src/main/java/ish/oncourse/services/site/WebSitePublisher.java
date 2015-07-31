@@ -142,7 +142,7 @@ public class WebSitePublisher {
 
             newWebNodeType.setCreated(webNodeType.getCreated());
             newWebNodeType.setModified(webNodeType.getModified());
-            newWebNodeType.setLayoutKey(webNodeType.getLayoutKey());
+            newWebNodeType.setWebSiteLayout(webNodeType.getWebSiteLayout());
             newWebNodeType.setName(webNodeType.getName());
             newWebNodeType.setWebSiteVersion(publishedVersion);
 
