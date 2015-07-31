@@ -98,8 +98,8 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
 		searchParams.setNear(solrSuburbs);
 		
 		//check distance filtering
-		SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(searchParams, ((Integer) document.getFieldValue(COLLEGE_ID_FIELD_NAME)).toString(), 0, 5);
-		SolrParams params = solrQueryBuilder.create();
+		SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, document.getFieldValue(COLLEGE_ID_FIELD_NAME).toString(), 0, 5);
+		SolrParams params = solrQueryBuilder.build();
 		String value = URLDecoder.decode(params.toString(), "UTF-8");
         System.out.println(value);
         
@@ -125,8 +125,8 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
 		solrSuburbs.add(suburb);
 		searchParams.setNear(solrSuburbs);
 		
-		solrQueryBuilder = new SolrQueryBuilder(searchParams, ((Integer) document.getFieldValue(COLLEGE_ID_FIELD_NAME)).toString(), 0, 5);
-		params = solrQueryBuilder.create();
+		solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, document.getFieldValue(COLLEGE_ID_FIELD_NAME).toString(), 0, 5);
+		params = solrQueryBuilder.build();
         value = URLDecoder.decode(params.toString(), "UTF-8");
         System.out.println(value);
         
@@ -138,9 +138,8 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
     public void testRealWebSiteSearch() throws SolrServerException, IOException {
     	SolrInputDocument document = prepareInitCourseDocument();
     	//test the real calls
-        SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(new SearchParams(), 
-        	((Integer) document.getFieldValue(COLLEGE_ID_FIELD_NAME)).toString(), 0, 100);
-        SolrParams params = solrQueryBuilder.create();
+        SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(new SearchParams(), document.getFieldValue(COLLEGE_ID_FIELD_NAME).toString(), 0, 100);
+        SolrParams params = solrQueryBuilder.build();
         String value = URLDecoder.decode(params.toString(), "UTF-8");
         assertEquals("Commons parameters",  EXPECTED_GENERATED_QUERY_STRING, value);
         
