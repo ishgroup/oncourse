@@ -5,6 +5,7 @@ import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.cms.services.access.PageAccessDispatcher;
 import ish.oncourse.cms.services.site.CMSWebSiteVersionService;
 import ish.oncourse.linktransform.PageLinkTransformer;
+import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
@@ -106,12 +107,12 @@ public class AppModule {
 				return original.getWebResource(fileName);
 			}
 
-			public org.apache.tapestry5.ioc.Resource getDbTemplateResource(String layoutKey, String fileName) {
+			public org.apache.tapestry5.ioc.Resource getDbTemplateResource(WebSiteLayout layout, String fileName) {
 				if (PAGE_TEMPLATE.equalsIgnoreCase(fileName) || PAGE_STRUCTURE_TEMPLATE.equalsIgnoreCase(fileName)
 						|| CONTENT_STRUCTURE_TEMPLATE.equalsIgnoreCase(fileName)) {
 					return null;
 				}
-				return original.getDbTemplateResource(layoutKey, fileName);
+				return original.getDbTemplateResource(layout, fileName);
 			}
 		};
 	}

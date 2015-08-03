@@ -1,5 +1,6 @@
 package org.apache.tapestry5.internal.pageload;
 
+import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -125,7 +126,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
         //we need reset the attribute to exclude effect to other pages/components
         request.setAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION, null);
 
-		String layout = webNodeService.getLayoutKey();
+		String layout = webNodeService.getLayout().getLayoutKey();
         //we should use anouther key to cache Resource for component when user defines custom template
         MultiKey key = CustomTemplateDefinition.getMultiKeyBy(componentName, ctd, request.getServerName(), locale, layout);
 
@@ -212,19 +213,19 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 
 			String templatePath = templateBaseResource.getPath();
             String templateFile = templatePath.substring(templatePath.lastIndexOf("/") + 1);
-			String layoutKey = webNodeService.getLayoutKey();
+			WebSiteLayout layout = webNodeService.getLayout();
 			
-			if (layoutKey != null) {
+			if (layout != null) {
 
                 Resource resource = null;
                 if (ctd != null && model.getComponentClassName().endsWith(ctd.getTemplateClassName())) {
                     logger.debug("Try to load user defined template {} override for {}.", ctd.getTemplateFileName(), templateFile);
-                    resource = resourceService.getDbTemplateResource(layoutKey, ctd.getTemplateFileName());
+                    resource = resourceService.getDbTemplateResource(layout, ctd.getTemplateFileName());
                 }
 
                 if (resource == null || !resource.exists()) {
                     logger.debug("Try to load template override for: {}", templateFile);
-                    resource = resourceService.getDbTemplateResource(layoutKey, templateFile);
+                    resource = resourceService.getDbTemplateResource(layout, templateFile);
                 }
 
 				if (resource != null) {

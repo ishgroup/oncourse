@@ -35,7 +35,7 @@ public class PageSourceOverride implements PageSource, InvalidationListener {
 
 	public Page getPage(String canonicalPageName, Locale locale) {
 
-		String layout = webNodeService.getLayoutKey();
+		String layout = webNodeService.getLayout().getLayoutKey();
 		WebSite site = (WebSite) request.getAttribute(WebSiteService.CURRENT_WEB_SITE);
 
 		MultiKey key = new MultiKey(canonicalPageName,

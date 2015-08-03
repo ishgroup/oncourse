@@ -196,7 +196,7 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
     public ComponentAssembler getAssembler(String className, Locale locale)
     {
 		CustomTemplateDefinition ctd = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
-		String layout = webNodeService.getLayoutKey();
+		String layout = webNodeService.getLayout().getLayoutKey();
     	MultiKey key = CustomTemplateDefinition.getMultiKeyBy(className, ctd, request.getServerName(), locale, layout);
 
         ComponentAssembler result = cache.get(key);

@@ -15,6 +15,7 @@ import ish.oncourse.services.property.Property;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
@@ -288,7 +289,7 @@ public class TestModule {
     public IResourceService buildResourceServiceOverride()
     {
         IResourceService mock = mock(IResourceService.class);
-        when(mock.getDbTemplateResource(Matchers.anyString(), Matchers.anyString())).thenReturn(null);
+        when(mock.getDbTemplateResource(any(WebSiteLayout.class), Matchers.anyString())).thenReturn(null);
         return mock;
     }
 

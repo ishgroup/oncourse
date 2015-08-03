@@ -246,8 +246,8 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	}
 
 	@Override
-	public String getLayoutKey() {
-        String layoutKey = null;
+	public WebSiteLayout getLayout() {
+		WebSiteLayout layout = null;
 
 		//if the requested site is not exist - return null
 		if (webSiteService.getCurrentWebSite() == null) {
@@ -256,13 +256,13 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 		WebNode webNode = getCurrentNode();
 		if (webNode != null) {
-			layoutKey = webNode.getWebNodeType().getWebSiteLayout().getLayoutKey();
+			layout = webNode.getWebNodeType().getWebSiteLayout();
 		}
 		else if (webNodeTypeService.getDefaultWebNodeType() != null) {
-			layoutKey = webNodeTypeService.getDefaultWebNodeType().getWebSiteLayout().getLayoutKey();
+			layout = webNodeTypeService.getDefaultWebNodeType().getWebSiteLayout();
 		}
 
-		return layoutKey;
+		return layout;
 	}
 
 

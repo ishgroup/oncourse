@@ -2,6 +2,7 @@ package ish.oncourse.services.node;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
+import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.services.IBaseService;
@@ -70,7 +71,7 @@ public interface IWebNodeService {
 	WebNode getCurrentNode();
 
     @RequestCached
-	String getLayoutKey();
+	WebSiteLayout getLayout();
 	
 	/**
 	 * Return random webNode for the current website.
