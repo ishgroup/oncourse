@@ -26,7 +26,6 @@ public class WebSiteVersionDelete {
         for (WebSiteLayout layoutToDelete : deletingVersion.getLayouts()) {
             objectContext.deleteObjects(layoutToDelete.getTemplates());
         }
-        objectContext.deleteObjects(deletingVersion.getLayouts());
 
         for (WebContent contentToDelete : deletingVersion.getContents()) {
             objectContext.deleteObjects(contentToDelete.getWebContentVisibilities());
@@ -50,6 +49,7 @@ public class WebSiteVersionDelete {
         objectContext.deleteObjects(deletingVersion.getWebURLAliases());
         objectContext.deleteObjects(deletingVersion.getWebNodes());
         objectContext.deleteObjects(deletingVersion.getWebNodeTypes());
+		objectContext.deleteObjects(deletingVersion.getLayouts());
         objectContext.deleteObjects(deletingVersion.getContents());
 
         objectContext.deleteObjects(deletingVersion);
