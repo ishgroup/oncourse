@@ -1,5 +1,6 @@
 package org.apache.tapestry5.internal.pageload;
 
+import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
@@ -196,8 +197,8 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
     public ComponentAssembler getAssembler(String className, Locale locale)
     {
 		CustomTemplateDefinition ctd = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
-		String layout = webNodeService.getLayout().getLayoutKey();
-    	MultiKey key = CustomTemplateDefinition.getMultiKeyBy(className, ctd, request.getServerName(), locale, layout);
+		WebSiteLayout layout = webNodeService.getLayout();
+    	MultiKey key = CustomTemplateDefinition.getMultiKeyBy(className, ctd, request.getServerName(), locale,  layout != null ? layout.getLayoutKey() : null);
 
         ComponentAssembler result = cache.get(key);
 

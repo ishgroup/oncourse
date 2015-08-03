@@ -1,6 +1,7 @@
 package org.apache.tapestry5.internal.pageload;
 
 import ish.oncourse.model.WebSite;
+import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.site.WebSiteService;
 import org.apache.tapestry5.internal.services.PageLoader;
@@ -35,11 +36,11 @@ public class PageSourceOverride implements PageSource, InvalidationListener {
 
 	public Page getPage(String canonicalPageName, Locale locale) {
 
-		String layout = webNodeService.getLayout().getLayoutKey();
+		WebSiteLayout layout = webNodeService.getLayout();
 		WebSite site = (WebSite) request.getAttribute(WebSiteService.CURRENT_WEB_SITE);
 
 		MultiKey key = new MultiKey(canonicalPageName,
-				site != null ? site.getSiteKey() : request.getServerName(), layout);
+				site != null ? site.getSiteKey() : request.getServerName(), layout != null ? layout.getLayoutKey() : null);
 
 		if (!pageCache.containsKey(key)) {
 			// In rare race conditions, we may see the same page loaded multiple

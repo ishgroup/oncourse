@@ -126,9 +126,9 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
         //we need reset the attribute to exclude effect to other pages/components
         request.setAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION, null);
 
-		String layout = webNodeService.getLayout().getLayoutKey();
+		WebSiteLayout layout = webNodeService.getLayout();
         //we should use anouther key to cache Resource for component when user defines custom template
-        MultiKey key = CustomTemplateDefinition.getMultiKeyBy(componentName, ctd, request.getServerName(), locale, layout);
+        MultiKey key = CustomTemplateDefinition.getMultiKeyBy(componentName, ctd, request.getServerName(), locale, layout != null ? layout.getLayoutKey() : null);
 
         // First cache is key to resource.
 
