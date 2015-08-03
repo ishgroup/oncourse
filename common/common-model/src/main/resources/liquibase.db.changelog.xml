@@ -3348,8 +3348,7 @@
 		<sql> ALTER TABLE WebNodeType ADD COLUMN webSiteLayoutId BIGINT; 
 			ALTER TABLE WebNodeType ADD FOREIGN KEY (webSiteLayoutId) REFERENCES WebSiteLayout(id);
 			UPDATE WebNodeType nt SET webSiteLayoutId = (SELECT id FROM WebSiteLayout l WHERE l.layoutKey = nt.layoutKey AND l.webSiteVersionId= nt.webSiteVersionId);
-			ALTER TABLE WebNodeType MODIFY webSiteLayoutId BIGINT NOT NULL;
-			ALTER TABLE WebNodeType DROP COLUMN layoutKey;
+			ALTER TABLE WebNodeType MODIFY COLUMN layoutKey VARCHAR(50) null; 
 		</sql>
 	</changeSet>
 	
