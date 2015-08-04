@@ -3351,5 +3351,18 @@
 			ALTER TABLE WebNodeType MODIFY COLUMN layoutKey VARCHAR(50) null; 
 		</sql>
 	</changeSet>
+
+	<changeSet id="215" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="WebNodeType" columnName="webSiteLayoutId"/>
+				<columnExists tableName="WebNodeType" columnName="layoutKey"/>
+			</and>
+		</preConditions>
+
+		<sql>ALTER TABLE WebNodeType MODIFY webSiteLayoutId BIGINT NOT NULL;
+			ALTER TABLE WebNodeType DROP COLUMN layoutKey;
+		</sql>
+	</changeSet>
 	
 </databaseChangeLog>
