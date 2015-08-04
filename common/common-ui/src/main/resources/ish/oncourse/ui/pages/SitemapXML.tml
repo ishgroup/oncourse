@@ -19,7 +19,7 @@
 			<changefreq>daily</changefreq>
 			<priority>0.8</priority>
 		</url>
-		<t:loop source="course.currentClasses" value="courseClass">
+		<t:loop source="currentClasses" value="courseClass">
 			<url>
 				<loc>https://${hostName}/class/${courseClass.uniqueIdentifier}</loc>
 				<lastmod>

@@ -22,51 +22,6 @@ public class Course extends _Course implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
-	@Deprecated //use ICourseClassService.getEnrollableClasses
-	public List<CourseClass> getEnrollableClasses() {
-		List<CourseClass> currentClasses = getCurrentClasses();
-		List<CourseClass> list = new ArrayList<>();
-
-		for (CourseClass courseClass : currentClasses) {
-			if (courseClass.isHasAvailableEnrolmentPlaces()) {
-				list.add(courseClass);
-			}
-		}
-
-		return list;
-	}
-
-	@Deprecated //use ICourseClassService.getCurrentClasses
-	public List<CourseClass> getCurrentClasses() {
-		List<CourseClass> courseClasses = getCourseClasses();
-		List<CourseClass> list = new ArrayList<>();
-
-		for (CourseClass courseClass : courseClasses) {
-			if (Boolean.TRUE.equals(courseClass.getIsWebVisible())
-					&& !courseClass.isCancelled()
-					&& (courseClass.getEndDate() == null || courseClass.getEndDate().after(
-							TimestampUtilities.normalisedDate(new Date())))) {
-				list.add(courseClass);
-			}
-
-		}
-
-		return list;
-	}
-
-	@Deprecated //use ICourseClassService.getFullClasses
-	public List<CourseClass> getFullClasses() {
-		List<CourseClass> currentClasses = getCurrentClasses();
-		List<CourseClass> list = new ArrayList<>();
-
-		for (CourseClass courseClass : currentClasses) {
-			if (!courseClass.isHasAvailableEnrolmentPlaces()) {
-				list.add(courseClass);
-			}
-		}
-
-		return list;
-	}
 
 	// TODO: (ari) what is this entire method doing here. It looks like it is just an anti-optimisation method
 	public List<Module> getModules() {

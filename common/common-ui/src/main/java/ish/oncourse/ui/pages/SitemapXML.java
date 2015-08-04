@@ -9,6 +9,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tutor.ITutorService;
+import ish.oncourse.ui.utils.CourseItemModel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.Property;
