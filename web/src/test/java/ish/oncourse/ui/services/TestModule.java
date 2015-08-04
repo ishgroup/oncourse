@@ -136,7 +136,6 @@ public class TestModule {
 		IWebSiteService mockService = mock(IWebSiteService.class);
 
 		when(mockService.getCurrentCollege()).thenReturn(college);
-		when(mockService.getCurrentDomain()).thenReturn(host);
 		when(mockService.getCurrentWebSite()).thenReturn(webSite);
 
 		return mockService;

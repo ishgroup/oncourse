@@ -48,10 +48,5 @@ public class CmsTestModule {
 		public College getCurrentCollege() {
 			return collegeService.findBySecurityCode("345ttn44$%9");
 		}
-
-		@Override
-		public WebHostName getCurrentDomain() {
-			return getCurrentWebSite().getToWebHostName();
-		}
 	}
 }

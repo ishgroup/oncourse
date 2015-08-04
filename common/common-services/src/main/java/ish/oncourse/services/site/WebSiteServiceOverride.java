@@ -55,9 +55,4 @@ public class WebSiteServiceOverride implements IWebSiteService {
 		
 		return collegeService.findById(collegeId);
 	}
-
-	@Override
-	public WebHostName getCurrentDomain() {
-		return (getCurrentWebSite() != null) ? getCurrentWebSite().getToWebHostName() : null;
-	}
 }

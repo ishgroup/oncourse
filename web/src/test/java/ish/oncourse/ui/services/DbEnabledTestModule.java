@@ -88,12 +88,7 @@ public class DbEnabledTestModule {
 		@Override
 		public College getCurrentCollege() {
 			return collegeService.findBySecurityCode("345ttn44$%9");
-		}
-
-		@Override
-		public WebHostName getCurrentDomain() {
-			return getCurrentWebSite().getToWebHostName();
-		}
+		}	
 	}
 
 	public IVoucherService buildIVoucherServiceOverride(IWebSiteService webSiteService, ICayenneService cayenneService) {

@@ -272,15 +272,6 @@ public class Web {
         WebSitePublisher publisher = WebSitePublisher.valueOf(stagedVersion, context);
         publisher.publish();
 	}
-
-	@OnEvent(value = "setMainDomainEvent")
-	void setMainDomainEvent(Long domainId)
-	{
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		WebHostName webHostName = SelectById.query(WebHostName.class, domainId).selectOne(context);
-		webHostName.getWebSite().setToWebHostName(webHostName);
-		context.commitChanges();
-	}
 	
 	@OnEvent(component="cmsUsersForm", value="success")
 	void addUser() throws UnsupportedEncodingException {
@@ -302,22 +293,9 @@ public class Web {
 		
 		WebHostName domain = SelectById.query(WebHostName.class, id).selectOne(context);
 		WebSite webSite = domain.getWebSite();
-
-		WebHostName mainDomain = webSite.getToWebHostName();
-		//we should reset main domain property if we delete the same domain
-		if (mainDomain != null && mainDomain.getId().equals(domain.getId()))
-			webSite.setToWebHostName(null);
+		
 		context.deleteObjects(domain);
 		context.commitChanges();
-
-		//we should set other main domain.
-		List<WebHostName> webHostNames = webSite.getCollegeDomains();
-		if (webHostNames.size() > 0)
-		{
-			webSite.setToWebHostName(webHostNames.get(0));
-		}
-		context.commitChanges();
-
 		return null;
 	}
 	
@@ -395,11 +373,5 @@ public class Web {
 	
 	public WebSite getCurrentWebSite() {
 		return this.sites.get(currentSiteKey);
-	}
-
-	public boolean isMainDomain()
-	{
-		WebHostName mainDomain = currentDomain.getWebSite().getToWebHostName();
-		return mainDomain != null && currentDomain.getId().equals(mainDomain.getId());
 	}
 }

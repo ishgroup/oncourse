@@ -23,12 +23,4 @@ public interface IWebSiteService {
 	 */
     @RequestCached
 	College getCurrentCollege();
-
-	/**
-	 * Lookup the CollegeDomain for current request.
-	 *
-	 * @return domain
-	 */
-    @RequestCached
-	WebHostName getCurrentDomain();
 }

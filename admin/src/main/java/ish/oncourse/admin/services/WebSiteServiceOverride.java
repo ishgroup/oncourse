@@ -20,9 +20,4 @@ public class WebSiteServiceOverride implements IWebSiteService {
 	public College getCurrentCollege() {
 		return null;
 	}
-
-	@Override
-	public WebHostName getCurrentDomain() {
-		return null;
-	}
 }

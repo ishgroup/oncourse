@@ -70,7 +70,6 @@ public class ResourceServiceTest extends Assert {
 		IWebSiteService webSiteService = mock(IWebSiteService.class);
 
 		when(webSiteService.getCurrentCollege()).thenReturn(college);
-		when(webSiteService.getCurrentDomain()).thenReturn(host);
 		when(webSiteService.getCurrentWebSite()).thenReturn(webSite);
 		
 		return webSiteService;

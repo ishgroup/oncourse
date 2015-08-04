@@ -1,7 +1,6 @@
 package ish.oncourse.model.auto;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
@@ -29,8 +28,6 @@ public abstract class _WebHostName extends CayenneDataObject {
     public static final String COLLEGE_PROPERTY = "college";
     @Deprecated
     public static final String WEB_SITE_PROPERTY = "webSite";
-    @Deprecated
-    public static final String WEB_SITE_ARRAY_PROPERTY = "webSiteArray";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -39,7 +36,6 @@ public abstract class _WebHostName extends CayenneDataObject {
     public static final Property<String> NAME = new Property<String>("name");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<WebSite> WEB_SITE = new Property<WebSite>("webSite");
-    public static final Property<List<WebSite>> WEB_SITE_ARRAY = new Property<List<WebSite>>("webSiteArray");
 
     public void setCreated(Date created) {
         writeProperty("created", created);
@@ -77,18 +73,6 @@ public abstract class _WebHostName extends CayenneDataObject {
 
     public WebSite getWebSite() {
         return (WebSite)readProperty("webSite");
-    }
-
-
-    public void addToWebSiteArray(WebSite obj) {
-        addToManyTarget("webSiteArray", obj, true);
-    }
-    public void removeFromWebSiteArray(WebSite obj) {
-        removeToManyTarget("webSiteArray", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<WebSite> getWebSiteArray() {
-        return (List<WebSite>)readProperty("webSiteArray");
     }
 
 

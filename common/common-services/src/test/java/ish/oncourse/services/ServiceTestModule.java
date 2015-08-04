@@ -133,10 +133,6 @@ public class ServiceTestModule {
 						return collegeService.findBySecurityCode("345ttn44$%9");
 					}
 
-					@Override
-					public WebHostName getCurrentDomain() {
-						return getCurrentWebSite().getToWebHostName();
-					}
 				};
 
 				return webSiteService;

@@ -34,10 +34,6 @@ public class PreferenceControllerFactory {
 					return college;
 				}
 
-				@Override
-				public WebHostName getCurrentDomain() {
-					return (getCurrentWebSite() != null) ? getCurrentWebSite().getToWebHostName() : null;
-				}
 			});
 			
 			controllerMap.put(college.getId(), pref);

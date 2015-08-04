@@ -47,8 +47,6 @@ public abstract class _WebSite extends CayenneDataObject {
     @Deprecated
     public static final String LICENSE_FEES_PROPERTY = "licenseFees";
     @Deprecated
-    public static final String TO_WEB_HOST_NAME_PROPERTY = "toWebHostName";
-    @Deprecated
     public static final String VERSIONS_PROPERTY = "versions";
 
     public static final String ID_PK_COLUMN = "id";
@@ -65,7 +63,6 @@ public abstract class _WebSite extends CayenneDataObject {
     public static final Property<List<WebHostName>> COLLEGE_DOMAINS = new Property<List<WebHostName>>("collegeDomains");
     public static final Property<List<Invoice>> INVOICES = new Property<List<Invoice>>("invoices");
     public static final Property<List<LicenseFee>> LICENSE_FEES = new Property<List<LicenseFee>>("licenseFees");
-    public static final Property<WebHostName> TO_WEB_HOST_NAME = new Property<WebHostName>("toWebHostName");
     public static final Property<List<WebSiteVersion>> VERSIONS = new Property<List<WebSiteVersion>>("versions");
 
     public void setCoursesRootTagName(String coursesRootTagName) {
@@ -166,15 +163,6 @@ public abstract class _WebSite extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<LicenseFee> getLicenseFees() {
         return (List<LicenseFee>)readProperty("licenseFees");
-    }
-
-
-    public void setToWebHostName(WebHostName toWebHostName) {
-        setToOneTarget("toWebHostName", toWebHostName, true);
-    }
-
-    public WebHostName getToWebHostName() {
-        return (WebHostName)readProperty("toWebHostName");
     }
 
 

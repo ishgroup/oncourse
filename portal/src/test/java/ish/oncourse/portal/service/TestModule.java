@@ -49,7 +49,6 @@ public class TestModule {
 		PortalSiteService mockService = mock(PortalSiteService.class);
 
 		when(mockService.getCurrentCollege()).thenReturn(college);
-		when(mockService.getCurrentDomain()).thenReturn(host);
 		when(mockService.getCurrentWebSite()).thenReturn(webSite);
 		
 		return mockService;

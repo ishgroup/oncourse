@@ -45,23 +45,4 @@ public class PortalSiteService implements IWebSiteService {
             return authService.getUser().getCollege();
         }
 	}
-
-	@Override
-	public WebHostName getCurrentDomain() {
-		WebSite webSite = getCurrentWebSite();
-		if (webSite != null)
-		{
-			WebHostName mainDomain = webSite.getToWebHostName();
-			if (mainDomain == null)
-			{
-				//if main domain was not set we select the first domain form webSite domains list.
-				List<WebHostName> webHostNames = webSite.getCollegeDomains();
-				if (webHostNames.size() > 0)
-					mainDomain = webHostNames.get(0);
-			}
-			return mainDomain;
-		}
-		else
-			return null;
-	}
 }

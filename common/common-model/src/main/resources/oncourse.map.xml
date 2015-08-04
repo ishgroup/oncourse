@@ -1199,7 +1199,6 @@
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="WebSite">
-		<db-attribute name="SSLhostNameId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="coursesRootTagName" type="VARCHAR" length="256"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
@@ -3421,9 +3420,6 @@
 	<db-relationship name="webSite" source="WebHostName" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webSiteArray" source="WebHostName" target="WebSite" toMany="true">
-		<db-attribute-pair source="id" target="SSLhostNameId"/>
-	</db-relationship>
 	<db-relationship name="childrenMenus" source="WebMenu" target="WebMenu" toMany="true">
 		<db-attribute-pair source="id" target="webMenuParentId"/>
 	</db-relationship>
@@ -3474,9 +3470,6 @@
 	</db-relationship>
 	<db-relationship name="licenseFees" source="WebSite" target="LicenseFee" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
-	</db-relationship>
-	<db-relationship name="toWebHostName" source="WebSite" target="WebHostName" toMany="false">
-		<db-attribute-pair source="SSLhostNameId" target="id"/>
 	</db-relationship>
 	<db-relationship name="versions" source="WebSite" target="WebSiteVersion" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
@@ -3875,7 +3868,6 @@
 	<obj-relationship name="webNodeType" source="WebContentVisibility" target="WebNodeType" deleteRule="Nullify" db-relationship-path="webNodeType"/>
 	<obj-relationship name="college" source="WebHostName" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="webSite" source="WebHostName" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="webSiteArray" source="WebHostName" target="WebSite" deleteRule="Deny" db-relationship-path="webSiteArray"/>
 	<obj-relationship name="childrenMenus" source="WebMenu" target="WebMenu" deleteRule="Deny" db-relationship-path="childrenMenus"/>
 	<obj-relationship name="parentWebMenu" source="WebMenu" target="WebMenu" deleteRule="Nullify" db-relationship-path="parentWebMenu"/>
 	<obj-relationship name="webNode" source="WebMenu" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
@@ -3893,7 +3885,6 @@
 	<obj-relationship name="collegeDomains" source="WebSite" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
 	<obj-relationship name="invoices" source="WebSite" target="Invoice" deleteRule="Nullify" db-relationship-path="invoices"/>
 	<obj-relationship name="licenseFees" source="WebSite" target="LicenseFee" deleteRule="Deny" db-relationship-path="licenseFees"/>
-	<obj-relationship name="toWebHostName" source="WebSite" target="WebHostName" deleteRule="Nullify" db-relationship-path="toWebHostName"/>
 	<obj-relationship name="versions" source="WebSite" target="WebSiteVersion" deleteRule="Deny" db-relationship-path="versions"/>
 	<obj-relationship name="templates" source="WebSiteLayout" target="WebTemplate" deleteRule="Deny" db-relationship-path="templates"/>
 	<obj-relationship name="webNodeTypes" source="WebSiteLayout" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>
