@@ -9,11 +9,11 @@
                     <div class="date">
                         <a timezone="10" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline">
                             <abbr itemprop="startDate" class="dtstart" title="">
-                                <t:output format="dateFormat" value="firstSessionStartDate"/>
+                                <t:output format="startDateFormat" value="firstSessionStartDate"/>
                             </abbr>
 
                             <t:if t:test="showDateEnd"> - <abbr class="dtend" itemprop="endDate" title="">
-                                <t:output format="dateFormat" value="courseClass.endDate"/>
+                                <t:output format="endDateFormat" value="courseClass.endDate"/>
                             </abbr>
                             </t:if>
                         </a>

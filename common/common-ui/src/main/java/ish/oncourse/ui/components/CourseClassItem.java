@@ -17,8 +17,8 @@ import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -77,7 +77,10 @@ public class CourseClassItem extends ISHCommon {
 	private boolean linkToLocationsMap;
 
 	@Property
-	private Format dateFormat;
+	private Format startDateFormat;
+
+	@Property
+	private Format endDateFormat;
 
 	@Property
 	private Format timeFormat;
@@ -119,7 +122,11 @@ public class CourseClassItem extends ISHCommon {
 
         TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
 
-		dateFormat = FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
+
+		endDateFormat =  FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
+		startDateFormat = needFormatWithoutYear() ? FormatUtils.getDateFormat(FormatUtils.DATE_FORMAT_EEE_dd_MMM, timeZone) :
+				FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
+
 		timeFormat = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
 
 		if (timeZone.getRawOffset() == TimeZone.getTimeZone(courseClass.getCollege().getTimeZone()).getRawOffset())
@@ -349,5 +356,15 @@ public class CourseClassItem extends ISHCommon {
 		Session session = courseClass.getFirstSession();
 		Date date = session != null ? session.getStartDate():null;
 		return date == null || date.compareTo(new Date()) < 0 ? CLASS_NAME_classCommenced: StringUtils.EMPTY;
+	}
+
+	public Format getDateFormat() {
+		return endDateFormat;
+	}
+
+	private boolean needFormatWithoutYear() {
+		Date endDate = courseClass.getEndDate();
+		Date startDate = courseClass.getStartDate();
+		return startDate != null && endDate != null && DateUtils.truncate(endDate, Calendar.YEAR).equals(DateUtils.truncate(startDate, Calendar.YEAR));
 	}
 }
