@@ -3,46 +3,32 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
         updateCheck="false" name="cms">
+        
+    <!-- a short cache by default (for all the things edited in the CMS) -->
     <defaultCache
             maxElementsInMemory="500"
             eternal="false"
-            timeToLiveSeconds="600"
+            timeToLiveSeconds="60"
             overflowToDisk="false">
     </defaultCache>
+
     <cache name="CourseClass"
         maxElementsInMemory="500"
         eternal="false"
-        timeToLiveSeconds="60"
+        timeToLiveSeconds="600"
         overflowToDisk="false">
     </cache>
-    <cache name="WebContent"
-           maxElementsInMemory="500"
-           eternal="false"
-           timeToLiveSeconds="60"
-           overflowToDisk="false">
+    <cache name="Course"
+        maxElementsInMemory="500"
+        eternal="false"
+        timeToLiveSeconds="600"
+        overflowToDisk="false">
     </cache>
-    <cache name="WebTemplate"
-           maxElementsInMemory="500"
-           eternal="false"
-           timeToLiveSeconds="60"
-           overflowToDisk="false">
+    <cache name="Tag"
+        maxElementsInMemory="500"
+        eternal="false"
+        timeToLiveSeconds="600"
+        overflowToDisk="false">
     </cache>
-    <cache name="WebUrlAlias"
-           maxElementsInMemory="500"
-           eternal="false"
-           timeToLiveSeconds="60"
-           overflowToDisk="false">
-    </cache>
-    <cache name="WebMenu"
-           maxElementsInMemory="500"
-           eternal="false"
-           timeToLiveSeconds="60"
-           overflowToDisk="false">
-    </cache>
-    <cache name="WebNodeType"
-           maxElementsInMemory="500"
-           eternal="false"
-           timeToLiveSeconds="60"
-           overflowToDisk="false">
-    </cache>
+
 </ehcache>
