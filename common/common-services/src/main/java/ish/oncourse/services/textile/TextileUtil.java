@@ -46,6 +46,7 @@ public class TextileUtil {
 	public static final String TEXTILE_TAGS_PAGE_MAX_LEVEL_PARAM = "textileTagsMaxLevels";
 	public static final String TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM = "textileTagsHideTopLevel";
 	public static final String TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM = "textileTags";
+	public static final String TEXTILE_TAGS_PAGE_MULTISELECT_TAGS_PARAM = "multiselectTags";
 
 	public static final String TEXTILE_VIDEO_PAGE_PARAM = "videoParameters";
 

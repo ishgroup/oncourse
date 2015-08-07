@@ -60,6 +60,8 @@ public class TagsTextileRenderer extends AbstractRenderer {
 				.getValue());
 		String templateFileName = tagParams.get(TagsTextileAttributes.TAGS_TEMPLATE_FILE_NAME.getValue());
 
+		String multiSelectTags = tagParams.get(TagsTextileAttributes.TAGS_MULTI_SELECT.getValue());
+
 		Tag parentTag = null;
 		Tag rootTag = tagService.getSubjectsTag();
 		if (paramName != null) {
@@ -77,6 +79,14 @@ public class TagsTextileRenderer extends AbstractRenderer {
 					Boolean.valueOf(showDetails));
 			parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM,
 					Boolean.valueOf(hideTopLevel));
+
+			if (Boolean.valueOf(multiSelectTags)) {
+				CustomTemplateDefinition
+						ctd = new CustomTemplateDefinition();
+				ctd.setTemplateClassName("TagItem");
+				ctd.setTemplateFileName("MultiSelectTagItem.tml");
+				parameters.put(TextileUtil.CUSTOM_TEMPLATE_DEFINITION, ctd);
+			}
 
 			if (templateFileName != null) {
 				CustomTemplateDefinition

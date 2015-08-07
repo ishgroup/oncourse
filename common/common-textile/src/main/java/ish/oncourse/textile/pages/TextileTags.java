@@ -1,6 +1,8 @@
 package ish.oncourse.textile.pages;
 
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.textile.components.TagItem;
 import org.apache.tapestry5.annotations.Component;
@@ -23,12 +25,18 @@ public class TextileTags {
 	@Inject
 	private Messages messages;
 
+	@Inject
+	private ITagService tagService;
+
+	@Inject
+	private ISearchService searchService;
+
 	private String entityType;
 
 	@SuppressWarnings("all")
 	@Property
 	@Component(id = "childTag", parameters = { "tag=currentTag",
-			"childPosition=currentChildPosition", "maxLevels=maxLevelsForChild" })
+			"childPosition=currentChildPosition", "maxLevels=maxLevelsForChild", "counters=counters" })
 	private TagItem childTag;
 
 	private Tag currentTag;
@@ -43,6 +51,9 @@ public class TextileTags {
 	@Property
 	private Integer maxLevelsForChild;
 
+	@Property
+	private Map<Long, Long> counters;
+
 	@SetupRender
 	boolean beginRender() {
 		childPositions = new HashMap<>();
@@ -55,7 +66,9 @@ public class TextileTags {
 		
 		showTopLevel = !(Boolean) request
 				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM);
-		
+
+		counters = searchService.getCountersForTags();
+
 		return rootTag != null && (maxLevels == null || maxLevels > 0);
 	}
 

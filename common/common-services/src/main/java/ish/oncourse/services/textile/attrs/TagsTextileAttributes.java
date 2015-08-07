@@ -8,11 +8,12 @@ public enum TagsTextileAttributes {
 	TAGS_MAX_LEVELS_PARAM("maxLevels:"),
 	TAGS_SHOW_DETAIL_PARAM("showDetail:"),
 	TAGS_HIDE_TOP_LEVEL("hideTopLevel:"),
-    TAGS_TEMPLATE_FILE_NAME("template:");//user defined template file name for this textile
+    TAGS_TEMPLATE_FILE_NAME("template:"),//user defined template file name for this textile
+	TAGS_MULTI_SELECT("multiSelect:");
 
 	private String value;
 
-	private TagsTextileAttributes(String value) {
+	TagsTextileAttributes(String value) {
 		this.value = value;
 	}
 

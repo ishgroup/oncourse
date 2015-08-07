@@ -39,7 +39,10 @@ public class TagsTextileValidator extends AbstractTextileValidator {
 
 	public String getFormatErrorMessage(String tag) {
 		return "The {tags} tag '" + tag + "' doesn't match {tags maxLevels:\"digit\" "
-				+ "showDetail:\"true|false\" hideTopLevel:\"true|false\"" + " name:\"name\" }";
+				+ "showDetail:\"true|false\" hideTopLevel:\"true|false\""
+				+ " name:\"name\" "
+				+ " multiSelect:\"true|false\""
+				+ "}";
 	}
 
 	public String getTagNotFoundByName(String name) {

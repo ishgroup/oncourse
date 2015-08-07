@@ -2,6 +2,7 @@ package ish.oncourse.textile.components;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.search.GetCoursesCounter;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import org.apache.tapestry5.annotations.*;
@@ -10,11 +11,15 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.util.List;
+import java.util.Map;
 
 public class TagItem {
 
 	@Parameter(required = true, cache = false)
 	private Tag tag;
+
+	@Parameter
+	private Map<Long,Long> counters;
 
 	@Inject
 	private ITagService tagService;
@@ -132,4 +137,9 @@ public class TagItem {
 	public String getTagLink() {
 		return tag.getLink();
 	}
+
+	public Long getCoursesCounter() {
+		return GetCoursesCounter.valueOf(tag, counters).get();
+	}
+
 }

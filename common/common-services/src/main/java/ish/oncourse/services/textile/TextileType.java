@@ -43,8 +43,12 @@ public enum TextileType {
 
 	PAGE("\\{page([^}]*)}", "\\{page(.+?((code:" + DIGIT_IN_QUOTS + "))){0,1}}", PageTextileAttributes.getAttrValues()),
 
-	TAGS("\\{tags([^}]*)}", "\\{tags(.+?((maxLevels:" + DIGIT_IN_QUOTS + ")" + "|(showDetail:" + BOOLEAN_IN_QUOTS + ")"
-			+ "|(hideTopLevel:" + BOOLEAN_IN_QUOTS + ")" + "|(name:" + STR_WHITESPACE + "))){0,4}}",
+	TAGS("\\{tags([^}]*)}", "\\{tags(.+?((maxLevels:" + DIGIT_IN_QUOTS + ")"
+			+ "|(showDetail:" + BOOLEAN_IN_QUOTS + ")"
+			+ "|(hideTopLevel:" + BOOLEAN_IN_QUOTS + ")"
+			+ "|(multiSelect:"+ BOOLEAN_IN_QUOTS + ")"
+			+ "|(name:" + STR_WHITESPACE + ")" +
+			")){0,4}}",
 			TagsTextileAttributes.getAttrValues()), 
 	TEXT("\\{text([^}]*)}","\\{text(.+?((label:" + STR_WHITESPACE + ")|(required:" + YES_NO_IN_QUOTS
 					+ ")|(lines:((" + DIGIT_IN_QUOTS + ")|("+YES_NO_IN_QUOTS+")))|(maxlength:" + DIGIT_IN_QUOTS + "))){1,4}}", TextTextileAttributes.getAttrValues()),
