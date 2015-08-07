@@ -11,14 +11,18 @@ CoursesUrlFormat.prototype = {
         if (request.browseTag) {
             url += request.browseTag;
         }
-        if (request.tags.length > 0) {
+
+        var parameters = [];
+
+        $j.each(request.tags, function (index, tag) {
+            parameters.push("tag=" + tag);
+        });
+        $j.each(request.locations, function (index, location) {
+            parameters.push("near=" + location);
+        });
+        if (parameters.length > 0) {
             url += "?";
-            $j.each(request.tags, function (index, tag) {
-                if (index > 0) {
-                    url += "&"
-                }
-                url += "tag=" + tag;
-            });
+            url += parameters.join("&");
         }
         return url;
     },
@@ -26,7 +30,11 @@ CoursesUrlFormat.prototype = {
     parse: function (url) {
         var parser = document.createElement('a'),
             searchObject = {},
-            queries, split, i, browseTag, tags = [];
+            queries,
+            split,
+            browseTag,
+            tags = [],
+            locations = [];
         // Let the browser do the work
         parser.href = url;
         // Convert query string to object
@@ -36,6 +44,9 @@ CoursesUrlFormat.prototype = {
             switch (split[0]) {
                 case "tag":
                     tags.push(split[1]);
+                    break;
+                case "near":
+                    locations.push(split[1]);
                     break;
                 default :
                     if (searchObject[split[0]] == null) {
@@ -57,7 +68,8 @@ CoursesUrlFormat.prototype = {
             tags: tags,
             searchObject: searchObject,
             hash: parser.hash,
-            browseTag: browseTag
+            browseTag: browseTag,
+            locations: locations
         };
     }
 };
@@ -66,7 +78,7 @@ CoursesUrlFormat.prototype = {
 CoursesFilter = function () {
     this.optionClass = ".courses-filter-option"
     this.clearAllClass = ".courses-filter-clear-all";
-    this.clearClass = ".courses-filter-clear";
+    this.clearOptionClass = ".courses-filter-clear-option";
     this.updateHtmlBlockId = "#courses-list";
     this.currentLocation = window.location;
     this.request = null;
@@ -82,8 +94,19 @@ CoursesFilter.prototype = {
         this.addControlListeners();
     },
 
+    getControlBy: function (path) {
+        return $j(this.optionClass + "[data-path='" + path + "']");
+    },
+
     addControlListeners: function () {
         var self = this;
+
+        $j("body").on('click', this.clearOptionClass, function(e) {
+            e.preventDefault();
+            var control = self.getControlBy($j(this).data("path"));
+            control.prop('checked', false);
+            self.changeFilter(control)
+        });
 
         $j("body").on('click', this.clearAllClass, function (e) {
             e.preventDefault();
@@ -103,9 +126,9 @@ CoursesFilter.prototype = {
     updateControlValues: function () {
         var self = this;
         if (this.request.pathname.startsWith('/courses')) {
-            $j(this.optionClass + "[data-path='" + this.request.browseTag + "']").prop('checked', true);
+            this.getControlBy(this.request.browseTag).prop('checked', true);
             $j.each(this.request.tags, function (index, tag) {
-                $j(self.optionClass + "[data-path='" + tag + "']").prop('checked', true);
+                self.getControlBy(tag).prop('checked', true);
             });
         }
     },
@@ -115,7 +138,7 @@ CoursesFilter.prototype = {
         if (index > -1) {
             this.request.tags.splice(index, 1);
         }
-        $j(this.optionClass + "[data-path='" + tag + "']").prop('checked', false);
+        this.getControlBy(tag).prop('checked', false);
     },
 
 
@@ -138,7 +161,7 @@ CoursesFilter.prototype = {
         var tag = $j(control).data('path');
         if (this.request.browseTag) {
             if (this.isParentTag(this.request.browseTag, tag)) {
-                $j(this.optionClass + "[data-path='" + this.request.browseTag + "']").prop('checked', false);
+                this.getControlBy(this.request.browseTag).prop('checked', false);
                 this.request.browseTag = tag;
                 var currentTags = this.request.tags.slice();
                 $j.each(currentTags, function (index, currentTag) {
