@@ -3,16 +3,11 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
         updateCheck="false" name="services">
+        <!-- disable the cache completely for the services application. We always want fresh data -->
     <defaultCache
-            maxElementsInMemory="500"
+            maxElementsInMemory="0"
             eternal="false"
-            timeToLiveSeconds="600"
+            timeToLiveSeconds="0"
             overflowToDisk="false">
     </defaultCache>
-    <cache name="CourseClass"
-        maxElementsInMemory="500"
-        eternal="false"
-        timeToLiveSeconds="60"
-        overflowToDisk="false">
-    </cache>
 </ehcache>
