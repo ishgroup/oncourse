@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * Scripts can be triggered on one of these events from any Cayenne entity.
  */
-public enum EntityEvent  implements DisplayableExtendedEnumeration<Integer> {
+public enum EntityEvent implements DisplayableExtendedEnumeration<Integer> {
 
 	CREATE(1, "Create", LifecycleEvent.POST_PERSIST),
 	UPDATE(2, "Update", LifecycleEvent.POST_UPDATE),
-	REMOVE(3, "Remove", LifecycleEvent.POST_REMOVE),
+	REMOVE(3, "Remove", LifecycleEvent.PRE_REMOVE),
 	CREATE_OR_UPDATE(4, "Create or update", LifecycleEvent.POST_PERSIST, LifecycleEvent.POST_UPDATE);
 
 	private int value;
