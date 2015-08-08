@@ -3,6 +3,7 @@ package ish.oncourse.services.site;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -14,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +37,9 @@ public class WebSiteService implements IWebSiteService {
 
 	@Inject
 	private ICayenneService cayenneService;
+
+	@Inject
+	private ICookiesService cookiesService;
 
 	/**
 	 * Default constructor for Tapestry ioc injection.
@@ -131,5 +136,16 @@ public class WebSiteService implements IWebSiteService {
 		college = (College) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
 		request.setAttribute(CURRENT_COLLEGE, college);
 		return college;
+	}
+
+	public TimeZone getTimezone() {
+		TimeZone timezone = cookiesService.getClientTimezone();
+		if (timezone == null) {
+			timezone = cookiesService.getSimpleClientTimezone();
+			if (timezone == null) {
+				timezone = TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
+			}
+		}
+		return timezone;
 	}
 }

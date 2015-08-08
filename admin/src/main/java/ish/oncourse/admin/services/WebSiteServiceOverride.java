@@ -5,6 +5,8 @@ import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.util.TimeZone;
+
 public class WebSiteServiceOverride implements IWebSiteService {
 	
 	public WebSiteServiceOverride() {
@@ -18,6 +20,11 @@ public class WebSiteServiceOverride implements IWebSiteService {
 
 	@Override
 	public College getCurrentCollege() {
+		return null;
+	}
+
+	@Override
+	public TimeZone getTimezone() {
 		return null;
 	}
 }

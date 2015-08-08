@@ -5,6 +5,8 @@ import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.cache.RequestCached;
 
+import java.util.TimeZone;
+
 
 public interface IWebSiteService {
 
@@ -23,4 +25,8 @@ public interface IWebSiteService {
 	 */
     @RequestCached
 	College getCurrentCollege();
+
+
+	@RequestCached
+	TimeZone getTimezone();
 }

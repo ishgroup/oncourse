@@ -28,6 +28,7 @@ import org.apache.tapestry5.services.*;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.TimeZone;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -89,6 +90,11 @@ public class DbEnabledTestModule {
 		public College getCurrentCollege() {
 			return collegeService.findBySecurityCode("345ttn44$%9");
 		}	
+
+		@Override
+		public TimeZone getTimezone() {
+			return TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
+		}
 	}
 
 	public IVoucherService buildIVoucherServiceOverride(IWebSiteService webSiteService, ICayenneService cayenneService) {

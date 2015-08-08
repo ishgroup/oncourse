@@ -11,6 +11,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
 import java.util.List;
+import java.util.TimeZone;
 
 public class PortalSiteService implements IWebSiteService {
 
@@ -44,5 +45,10 @@ public class PortalSiteService implements IWebSiteService {
         else {
             return authService.getUser().getCollege();
         }
+	}
+
+	@Override
+	public TimeZone getTimezone() {
+		return TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
 	}
 }

@@ -20,6 +20,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 
+import java.util.TimeZone;
+
 @SubModule({ ModelModule.class, ServiceModule.class })
 public class CmsTestModule {
 
@@ -47,6 +49,11 @@ public class CmsTestModule {
 		@Override
 		public College getCurrentCollege() {
 			return collegeService.findBySecurityCode("345ttn44$%9");
+		}
+
+		@Override
+		public TimeZone getTimezone() {
+			return null;
 		}
 	}
 }

@@ -82,6 +82,8 @@ import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 
+import java.util.TimeZone;
+
 public class ServiceTestModule {
 	
 	public static void bind(ServiceBinder binder) {
@@ -133,6 +135,11 @@ public class ServiceTestModule {
 						return collegeService.findBySecurityCode("345ttn44$%9");
 					}
 
+
+					@Override
+					public TimeZone getTimezone() {
+						return TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
+					}
 				};
 
 				return webSiteService;

@@ -10,6 +10,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
 import java.util.List;
+import java.util.TimeZone;
 
 public class WebSiteServiceOverride implements IWebSiteService {
 
@@ -54,5 +55,10 @@ public class WebSiteServiceOverride implements IWebSiteService {
 		}
 		
 		return collegeService.findById(collegeId);
+	}
+
+	@Override
+	public TimeZone getTimezone() {
+		return TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
 	}
 }

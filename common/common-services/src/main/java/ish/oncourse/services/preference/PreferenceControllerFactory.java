@@ -9,6 +9,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class PreferenceControllerFactory {
 	
@@ -34,6 +35,11 @@ public class PreferenceControllerFactory {
 					return college;
 				}
 
+
+				@Override
+				public TimeZone getTimezone() {
+					return TimeZone.getTimeZone(college.getTimeZone());
+				}
 			});
 			
 			controllerMap.put(college.getId(), pref);
