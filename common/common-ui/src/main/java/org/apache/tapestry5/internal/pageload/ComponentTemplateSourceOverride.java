@@ -22,6 +22,7 @@ import org.apache.tapestry5.internal.util.MultiKey;
 import org.apache.tapestry5.ioc.Location;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.annotations.Primary;
+import org.apache.tapestry5.ioc.internal.util.ClasspathResource;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
 import org.apache.tapestry5.model.ComponentModel;
@@ -221,6 +222,10 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
                 if (ctd != null && model.getComponentClassName().endsWith(ctd.getTemplateClassName())) {
                     logger.debug("Try to load user defined template {} override for {}.", ctd.getTemplateFileName(), templateFile);
                     resource = resourceService.getDbTemplateResource(layout, ctd.getTemplateFileName());
+
+					if (resource == null) {
+						resource = new ClasspathResource(templatePath.replace(templateFile, ctd.getTemplateFileName()));
+					}
                 }
 
                 if (resource == null || !resource.exists()) {
