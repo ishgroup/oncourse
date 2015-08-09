@@ -14,7 +14,7 @@ public class TextileUtil {
     public static final String CUSTOM_TEMPLATE_DEFINITION = "customTemplateDefinition";
 
 
-    public static final String TEXTILE_REGEXP = "(\\{((block)|(course)|(courses)|(tags)|(page)|(video)|(image)|(attachment))([^}]*)})|(\\{form([^}]*)}.+?(((\\{text([^}]*)})|(\\{radiolist([^}]*)})|(\\{popuplist([^}]*)})).+?)*(\\{form}))";
+    public static final String TEXTILE_REGEXP = "(\\{((block)|(course)|(courses)|(tags)|(page)|(video)|(image)|(attachment)|(location))([^}]*)})|(\\{form([^}]*)}.+?(((\\{text([^}]*)})|(\\{radiolist([^}]*)})|(\\{popuplist([^}]*)})).+?)*(\\{form}))";
 	public static final String QUOT = "\"|&#8220;|&#8221;|\u201C|\u201D";
 	public static final String BOOLEAN_IN_QUOTS = inQuots("(true|false)", false);
 	public static final String YES_NO_IN_QUOTS = inQuots("(yes|no|true|false)", false);
@@ -34,6 +34,7 @@ public class TextileUtil {
 	public static final String TEXTILE_VIDEO_PAGE = "textile/TextileVideo";
 	public static final String TEXTILE_FORM_PAGE = "textile/TextileForm";
 	public static final String TEXTILE_ATTACHMENT_PAGE = "textile/TextileAttachment";
+	public static final String TEXTILE_LOCATION_PAGE = "textile/TextileLocation";
 
 	public static final String TEXTILE_COURSE_PAGE_PARAM = "course";
 	public static final String TEXTILE_COURSE_SHOW_CLASSES_PARAM = "showclasses";
@@ -55,7 +56,10 @@ public class TextileUtil {
 	public static final String TEXTILE_FORM_PAGE_FIELDS_PARAM = "fields";
 	public static final String TEXTILE_FORM_PAGE_AFTER_FIELDS_PARAM = "after_mark-up";
 	public static final String TEXTILE_FORM_PAGE_URL_PARAM = "url";
-	
+
+	public static final String TEXTILE_LOCATION_PAGE_PARAM = "additionalLocationParameters";
+
+
 	public static final String TEXTILE_ATTACHMENT_PAGE_PARAM = "attachmentParameters";
 
 	public static final String TEXTILE_UNEXPECTED_ERROR_PARAM = "textileUnexpectedError";

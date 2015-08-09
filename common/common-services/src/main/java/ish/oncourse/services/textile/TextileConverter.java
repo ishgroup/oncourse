@@ -26,153 +26,155 @@ import java.util.regex.Pattern;
 
 public class TextileConverter implements ITextileConverter {
 
-	private final static Logger logger = LogManager.getLogger();
+    private final static Logger logger = LogManager.getLogger();
 
-	@Inject
-	private IBinaryDataService binaryDataService;
+    @Inject
+    private IBinaryDataService binaryDataService;
 
-	@Inject
-	private IWebContentService webContentService;
+    @Inject
+    private IWebContentService webContentService;
 
-	@Inject
-	private ICourseService courseService;
+    @Inject
+    private ICourseService courseService;
 
-	@Inject
-	private IWebNodeService webNodeService;
+    @Inject
+    private IWebNodeService webNodeService;
 
-	@Inject
-	private IPageRenderer pageRenderer;
+    @Inject
+    private IPageRenderer pageRenderer;
 
-	@Inject
-	private ITagService tagService;
+    @Inject
+    private ITagService tagService;
 
-	@Inject
-	private ISearchService searchService;
+    @Inject
+    private ISearchService searchService;
 
-	public TextileConverter() {
-	}
+    public TextileConverter() {
+    }
 
     /**
-     *This constructor is used only for test
+     * This constructor is used only for test
      */
-	TextileConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
-			ICourseService courseService, IPageRenderer pageRenderer, IWebNodeService webNodeService,
-			ITagService tagService) {
-		this.binaryDataService = binaryDataService;
-		this.webContentService = webContentService;
-		this.courseService = courseService;
-		this.pageRenderer = pageRenderer;
-		this.webNodeService = webNodeService;
-		this.tagService = tagService;
-	}
+    TextileConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
+                     ICourseService courseService, IPageRenderer pageRenderer, IWebNodeService webNodeService,
+                     ITagService tagService) {
+        this.binaryDataService = binaryDataService;
+        this.webContentService = webContentService;
+        this.courseService = courseService;
+        this.pageRenderer = pageRenderer;
+        this.webNodeService = webNodeService;
+        this.tagService = tagService;
+    }
 
-	public String convertCoreTextile(String content) {
-		if (content == null) {
-			return null;
-		}
+    public String convertCoreTextile(String content) {
+        if (content == null) {
+            return null;
+        }
 
-		// commented as seems to be useless(brake the textile enclosed by html
-		// tag) - uncomment when this willl be solved and the extra <br> will
-		// spoil the life
-		// content = extractor.compactHtmlTags(content);
+        // commented as seems to be useless(brake the textile enclosed by html
+        // tag) - uncomment when this willl be solved and the extra <br> will
+        // spoil the life
+        // content = extractor.compactHtmlTags(content);
 
         content = TextileUtil.unicodeQuotesEncoding(content);
         StringWriter writer = new StringWriter();
 
-		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
-		// avoid the <html> and <body> tags
-		builder.setEmitAsDocument(false);
+        HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
+        // avoid the <html> and <body> tags
+        builder.setEmitAsDocument(false);
 
-		TextileDialect textileDialect = new TextileDialect();
+        TextileDialect textileDialect = new TextileDialect();
 
-		MarkupParser parser = new MarkupParser(textileDialect);
+        MarkupParser parser = new MarkupParser(textileDialect);
 
-		parser.setBuilder(builder);
-		parser.parse(content, false);
-		String result = writer.toString();
-		result = clearGenerated(result);
-		return result;
-	}
+        parser.setBuilder(builder);
+        parser.parse(content, false);
+        String result = writer.toString();
+        result = clearGenerated(result);
+        return result;
+    }
 
-	public String convertCustomTextile(String content, ValidationErrors errors) {
-		content = StringUtils.trimToEmpty(content);
+    public String convertCustomTextile(String content, ValidationErrors errors) {
+        content = StringUtils.trimToEmpty(content);
 
-		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);
-		Matcher matcher = pattern.matcher(content);
-		String result = StringUtils.EMPTY;
-		while (matcher.find()) {
-			String tag = matcher.group();
-			int startTag = content.indexOf(tag);
-			result += content.substring(0, startTag);
-			content = content.substring(startTag + tag.length());
-			String replacement = null;
-			try {
-				IRenderer renderer = getRendererForTag(tag);
-				replacement = renderer.render(tag);
-				errors.appendErrors(renderer.getErrors());
-			} catch (Exception e) {
-				logger.warn(e.getMessage(), e);
-				errors.addFailure(e, ValidationFailureType.SYNTAX);
-			}
-			result += replacement;
-		}
-		result += content;
-		result = clearGenerated(result);
-		if (errors.hasFailures()) {
-			logger.debug(errors);
-		}
-		return result;
-	}
+        Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(content);
+        String result = StringUtils.EMPTY;
+        while (matcher.find()) {
+            String tag = matcher.group();
+            int startTag = content.indexOf(tag);
+            result += content.substring(0, startTag);
+            content = content.substring(startTag + tag.length());
+            String replacement = null;
+            try {
+                IRenderer renderer = getRendererForTag(tag);
+                replacement = renderer.render(tag);
+                errors.appendErrors(renderer.getErrors());
+            } catch (Exception e) {
+                logger.warn(e.getMessage(), e);
+                errors.addFailure(e, ValidationFailureType.SYNTAX);
+            }
+            result += replacement;
+        }
+        result += content;
+        result = clearGenerated(result);
+        if (errors.hasFailures()) {
+            logger.debug(errors);
+        }
+        return result;
+    }
 
-	private String clearGenerated(String result) {
-		if (result.startsWith("<p>") && result.endsWith("</p>")) {
-			String cutted = result.substring(3);
-			if (!cutted.contains("<p>") || cutted.contains("<p>") && cutted.indexOf("</p>") > cutted.indexOf("<p>")) {
-				result = cutted.substring(0, cutted.lastIndexOf("</p>"));
-			}
-		}
-		return StringEscapeUtils.unescapeHtml(result).replaceAll("(&amp;nbsp;)", " ");
-	}
+    private String clearGenerated(String result) {
+        if (result.startsWith("<p>") && result.endsWith("</p>")) {
+            String cutted = result.substring(3);
+            if (!cutted.contains("<p>") || cutted.contains("<p>") && cutted.indexOf("</p>") > cutted.indexOf("<p>")) {
+                result = cutted.substring(0, cutted.lastIndexOf("</p>"));
+            }
+        }
+        return StringEscapeUtils.unescapeHtml(result).replaceAll("(&amp;nbsp;)", " ");
+    }
 
-	private IRenderer getRendererForTag(String tag) {
-		for (TextileType type : TextileType.BASE_TYPES) {
-			Pattern pattern = Pattern.compile(type.getRegexp(), Pattern.DOTALL);
-			Matcher matcher = pattern.matcher(tag);
-			if (matcher.find()) {
-					return createRendererForType(type);
-			}
-		}
-		return null;
-	}
+    private IRenderer getRendererForTag(String tag) {
+        for (TextileType type : TextileType.BASE_TYPES) {
+            Pattern pattern = Pattern.compile(type.getRegexp(), Pattern.DOTALL);
+            Matcher matcher = pattern.matcher(tag);
+            if (matcher.find()) {
+                return createRendererForType(type);
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * @param type
-	 * @return
-	 */
-	private IRenderer createRendererForType(TextileType type) {
-		switch (type) {
-		case IMAGE:
-			return new ImageTextileRenderer(binaryDataService, pageRenderer);
-		case BLOCK:
-			return new BlockTextileRenderer(webContentService, this);
-		case VIDEO:
-			return new VideoTextileRenderer(pageRenderer);
-		case COURSE:
-			return new CourseTextileRenderer(courseService, pageRenderer, tagService);
-		case COURSE_LIST:
-			return new CourseListTextileRenderer(courseService, pageRenderer, tagService, searchService);
-		case PAGE:
-			return new PageTextileRenderer(webNodeService, pageRenderer);
-		case TAGS:
-			return new TagsTextileRenderer(tagService, pageRenderer, this);
-		case FORM:
-			return new FormTextileRenderer(pageRenderer);
-		case ATTACHMENT:
-			return new AttachmentTextileRenderer(binaryDataService, pageRenderer);
-		default:
-			throw new IllegalArgumentException(String.format("Type $s is not supported", type));
-		}
+    /**
+     * @param type
+     * @return
+     */
+    private IRenderer createRendererForType(TextileType type) {
+        switch (type) {
+            case IMAGE:
+                return new ImageTextileRenderer(binaryDataService, pageRenderer);
+            case BLOCK:
+                return new BlockTextileRenderer(webContentService, this);
+            case VIDEO:
+                return new VideoTextileRenderer(pageRenderer);
+            case COURSE:
+                return new CourseTextileRenderer(courseService, pageRenderer, tagService);
+            case COURSE_LIST:
+                return new CourseListTextileRenderer(courseService, pageRenderer, tagService, searchService);
+            case PAGE:
+                return new PageTextileRenderer(webNodeService, pageRenderer);
+            case TAGS:
+                return new TagsTextileRenderer(tagService, pageRenderer, this);
+            case FORM:
+                return new FormTextileRenderer(pageRenderer);
+            case ATTACHMENT:
+                return new AttachmentTextileRenderer(binaryDataService, pageRenderer);
+            case LOCATION:
+                return new LocationTextileRenderer(pageRenderer);
+            default:
+                throw new IllegalArgumentException(String.format("Type $s is not supported", type));
+        }
 
-	}
+    }
 
 }
