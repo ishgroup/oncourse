@@ -138,7 +138,7 @@ public class TagItem {
 		return tag.getLink();
 	}
 
-	public Long getCoursesCounter() {
+	public Long getCounter() {
 		return GetCoursesCounter.valueOf(tag, counters).get();
 	}
 
