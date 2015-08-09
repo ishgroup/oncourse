@@ -69,6 +69,7 @@ public class SolrQueryBuilder {
     private String collegeId;
     private Integer start;
     private Integer rows;
+    private boolean appendFacet = false;
 
     public SolrQuery build() {
         SolrQuery q = new SolrQuery();
@@ -103,12 +104,23 @@ public class SolrQueryBuilder {
         if (filters.isEmpty())
             appendFilterAll(filters);
 
-        setFiltersTo(q,filters);
+        setFiltersTo(q, filters);
         q.addSort(FIELD_score, ORDER.desc);
         q.addSort(FIELD_startDate, ORDER.asc);
         q.addSort(FIELD_name, ORDER.asc);
         q.setShowDebugInfo(params.getDebugQuery());
+
+        if (appendFacet) {
+            appendFacet(q);
+        }
         return q;
+    }
+
+    private void appendFacet(SolrQuery q) {
+        q.setFacet(true);
+        for (String query: q.getFilterQueries()) {
+            q.addFacetQuery(query);
+        }
     }
 
     void appendFilterSiteId(ArrayList<String> filters) {

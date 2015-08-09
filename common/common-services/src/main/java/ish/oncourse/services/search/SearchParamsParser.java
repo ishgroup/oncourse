@@ -4,14 +4,12 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.services.Request;
 
-import java.text.ParseException;
 import java.util.*;
 
 public class SearchParamsParser
@@ -28,7 +26,7 @@ public class SearchParamsParser
     public static final String PATTERN_PRICE = "[$]?(\\d)+[$]?";
 
     private static final Logger logger = LogManager.getLogger();
-    private Request request;
+    private ParametersProvider provider;
     private ISearchService searchService;
     private ITagService tagService;
 
@@ -42,7 +40,7 @@ public class SearchParamsParser
 
         searchParams.setClientTimezone(clientTimezone);
         for (SearchParam name : SearchParam.values()) {
-            String parameter = StringUtils.trimToNull(request.getParameter(name.name()));
+            String parameter = StringUtils.trimToNull(provider.getParameter(name.name()));
             Object value = null;
             if (parameter != null) {
                 switch (name) {
@@ -68,7 +66,7 @@ public class SearchParamsParser
                         value = searchParams.getSubject();
                         break;
 					case tag:
-						String[] parameters = request.getParameters(name.name());
+						String[] parameters = provider.getParameters(name.name());
 						for (String tagParameter : parameters) {
 							tag = parseSubject(tagParameter);
 							if (tag != null) {
@@ -110,8 +108,8 @@ public class SearchParamsParser
             }
         }
 
-        if (browseTag == null && request.getParameter(SearchParam.subject.name()) == null) {
-            browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
+        if (browseTag == null && provider.getParameter(SearchParam.subject.name()) == null) {
+            browseTag = (Tag) provider.getAttribute(Course.COURSE_TAG);
             if (browseTag != null) {
                 //this code updated because getDefaultPath() return incorrect value for tag group which have aliases
                 searchParams.setSubject(browseTag);
@@ -155,19 +153,44 @@ public class SearchParamsParser
         return paramsInError;
     }
 
-    public static SearchParamsParser valueOf(Request request,
+    public static SearchParamsParser valueOf(final Request request,
+                                             ISearchService searchService,
+                                             ITagService tagService,
+                                             TimeZone clientTimezone) {
+        ParametersProvider provider = new ParametersProvider() {
+            @Override
+            public String getParameter(String name) {
+                return request.getParameter(name);
+            }
+
+            @Override
+            public String[] getParameters(String name) {
+                return request.getParameters(name);
+            }
+
+            @Override
+            public Object getAttribute(String name) {
+                return request.getAttribute(name);
+            }
+        };
+        return valueOf(provider, searchService, tagService, clientTimezone);
+    }
+
+
+    public static SearchParamsParser valueOf(ParametersProvider provider,
                                              ISearchService searchService,
                                              ITagService tagService,
                                              TimeZone clientTimezone) {
         SearchParamsParser result = new SearchParamsParser();
-        result.request = request;
+        result.provider = provider;
         result.searchService = searchService;
         result.tagService = tagService;
         result.clientTimezone = clientTimezone;
         return result;
     }
 
-    public static Double parseKm(String parameter) {
+
+        public static Double parseKm(String parameter) {
         if (StringUtils.isNumeric(parameter)) {
             Double km = Double.valueOf(parameter);
             if (km != null) {
@@ -193,5 +216,10 @@ public class SearchParamsParser
         return parameter;
     }
 
+    public interface ParametersProvider {
+        String getParameter(String name);
+        String[] getParameters(String name);
+        Object getAttribute(String name);
+    }
 
 }

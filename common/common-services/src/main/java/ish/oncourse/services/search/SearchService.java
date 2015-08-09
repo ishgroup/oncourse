@@ -14,6 +14,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrException;
@@ -22,6 +23,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SearchService implements ISearchService {
@@ -154,6 +156,27 @@ public class SearchService implements ISearchService {
             return query(q, SolrCore.courses);
         } catch (Exception e) {
             throw new SearchException("Unable to find courses.", e);
+        }
+    }
+
+    public Map<Long, Long> getCountersForTags() {
+        try {
+            SearchParams searchParams = new SearchParams();
+            String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
+            SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(searchParams, collegeId, 0, 0).build());
+            q.setFacet(true);
+            q.addFacetField("tagId");
+            QueryResponse response = query(q, SolrCore.courses);
+
+            HashMap<Long, Long> result = new HashMap<>();
+            FacetField field = response.getFacetField("tagId");
+            List<FacetField.Count> counts = field.getValues();
+            for (FacetField.Count count : counts) {
+                result.put(Long.valueOf(count.getName()), count.getCount());
+            }
+            return result;
+        } catch (SolrServerException e) {
+            throw new SearchException("Unable to get facet.", e);
         }
     }
 
