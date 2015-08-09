@@ -18,13 +18,17 @@ import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.Block;
+import org.apache.tapestry5.BlockNotFoundException;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Response;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Page component representing a Course list.
@@ -43,10 +47,16 @@ public class Courses extends ISHCommon {
 	@Property
 	private Request request;
 
+	@Inject
+	private Response response;
+
 	private static final Logger logger = LogManager.getLogger();
 	private static final int START_DEFAULT = 0;
 	private static final int ROWS_DEFAULT = 10;
 	private static final String SOLR_DOCUMENT_ID_FIELD = "id";
+
+
+	private static final String PARAM_UPDATE_COURSES_BY_FILTER = "updateCoursesByFilter";
 
 	@Inject
 	private ICourseService courseService;
@@ -103,6 +113,23 @@ public class Courses extends ISHCommon {
 	@Property
 	private String debugInfo;
 
+	@Property
+	private Block currentBlock;
+
+	@Inject
+	@Id("filteredCourses")
+	private Block filteredCoursesBlock;
+
+	@Inject
+	@Id("moreCourses")
+	private Block moreCoursesBlock;
+
+	@Inject
+	@Id("htmlCourses")
+	private Block htmlCoursesBlock;
+
+	private boolean isFilterRequest;
+
 	private List<Long> sitesIds;
 
 	private List<Long> loadedCoursesIds;
@@ -120,11 +147,15 @@ public class Courses extends ISHCommon {
 
 	@SetupRender
 	public void beforeRender() {
-		int start = getIntParam(request.getParameter("start"), START_DEFAULT);
+		this.itemIndex = getIntParam(request.getParameter("start"), START_DEFAULT);
+		this.isFilterRequest = Boolean.valueOf(request.getHeader(PARAM_UPDATE_COURSES_BY_FILTER));
+
+        initCurrentBlock();
+
 		sitesParameter = request.getParameter("sites");
 		sitesIds = new ArrayList<>();
 		loadedCoursesIds = new ArrayList<>();
-		if (isXHR() && start != 0) {
+		if (isXHR() && this.itemIndex != 0) {
 			String loadedCoursesIdsString = request.getParameter("loadedCoursesIds");
 			if (StringUtils.trimToNull(loadedCoursesIdsString) != null) {
 				String[] ids = loadedCoursesIdsString.split(",");
@@ -151,7 +182,6 @@ public class Courses extends ISHCommon {
 			}
 		}
 
-		this.itemIndex = start;
 		this.isException = false;
 
 		try {
@@ -159,13 +189,29 @@ public class Courses extends ISHCommon {
 		} catch (SearchException e) {
 			logger.catching(e);
 			this.isException = true;
-			this.courses = courseService.getCourses(start, ROWS_DEFAULT);
+			this.courses = courseService.getCourses(this.itemIndex, ROWS_DEFAULT);
 			this.coursesCount = courseService.getCoursesCount();
 			searchParams = null;
 			focusesForMapSites = null;
 		}
 		coursesIds = new ArrayList<>();
 		updateIdsAndIndexes();
+	}
+
+	private void initCurrentBlock() {
+		try {
+			if (isXHR()){
+                if (this.isFilterRequest) {
+                    this.currentBlock = filteredCoursesBlock;
+                } else {
+                    this.currentBlock = moreCoursesBlock;
+                }
+            } else {
+                this.currentBlock = htmlCoursesBlock;
+            }
+		} catch (BlockNotFoundException e) {
+			logger.warn("Template {} should be adjusted for the new implementation of Courses.class. College: {}:{}", "Courses.tml", webSiteService.getCurrentCollege().getName(),webSiteService.getCurrentCollege().getId(), e);
+		}
 	}
 
 	private void updateIdsAndIndexes() {
@@ -251,8 +297,6 @@ public class Courses extends ISHCommon {
 	}
 
 	private List<Course> searchCourses() {
-		int start = getIntParam(request.getParameter("start"), itemIndex);
-
 		searchParams = getCourseSearchParams();
 
 		if (searchParams.getSubject() != null) {
@@ -263,7 +307,7 @@ public class Courses extends ISHCommon {
 			coursesCount = 0;
 			return new ArrayList<>();
 		}
-		return searchCourses(start, ROWS_DEFAULT);
+		return searchCourses(itemIndex, ROWS_DEFAULT);
 	}
 
 	private List<Course> searchCourses(int start, int rows) {
@@ -296,21 +340,10 @@ public class Courses extends ISHCommon {
 	}
 
 	public SearchParams getCourseSearchParams() {
-		SearchParamsParser searchParamsParser = SearchParamsParser.valueOf(request, searchService, tagService, getClientTimezone());
+		SearchParamsParser searchParamsParser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
 		searchParamsParser.parse();
 		paramsInError = searchParamsParser.getParamsInError();
 		return searchParamsParser.getSearchParams();
-	}
-	
-	private TimeZone getClientTimezone() {
-		TimeZone timezone = cookiesService.getClientTimezone();
-		if (timezone == null) {
-			timezone = cookiesService.getSimpleClientTimezone();
-			if (timezone == null) {
-				timezone = TimeZone.getTimeZone(webSiteService.getCurrentCollege().getTimeZone());
-			}
-		}
-		return timezone;
 	}
 
 	public Tag getBrowseTag() {
@@ -322,7 +355,7 @@ public class Courses extends ISHCommon {
 	}
 
 	public String getMetaDescription() {
-		
+
 		if (getBrowseTag() !=null && getBrowseTag().getDetail() != null) {
 			return facebookMetaProvider.getDescriptionContent(getBrowseTag());
 		} else {
