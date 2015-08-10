@@ -1,11 +1,17 @@
 package ish.oncourse.textile.pages;
 
+import ish.oncourse.model.Site;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParamsParser;
+import ish.oncourse.services.search.SearchParamsParser.ParametersProvider;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.LocationTextileAttribute;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +22,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,8 +34,6 @@ import java.util.regex.Pattern;
  */
 public class TextileLocation {
     private final static Logger logger = LogManager.getLogger();
-
-    public static final Pattern NAME_PATTERN = Pattern.compile("(?<name>.+)\\:(?<subrb>.+)\\-(?<post>[0-9]+)\\/(?<dist>[0-9]+)");
 
     @Inject
     private Request request;
@@ -42,26 +47,24 @@ public class TextileLocation {
     @Inject
     private IWebSiteService webSiteService;
 
+    @Inject
+    private ICayenneService cayenneService;
+
+
     @Property
-    private String subrb;
+    private String display;
+
+    @Property
+    private String suburb;
 
     @Property
     private String postcode;
 
+    @Property
+    private String distance;
 
     @Property
-    private String name;
-
-    @Property
-    private String dist;
-
-
-
-    @Property
-    private String km;
-
-    @Property
-    private String near;
+    private String siteId;
 
     @Property
     private String identifier;
@@ -69,57 +72,36 @@ public class TextileLocation {
     @Property
     private Long counter;
 
+    @Property
+    private String path;
+
     @SetupRender
     public void setupRender() {
-        Map<String, String> parameters = ( Map<String, String>) request.getAttribute(TextileUtil.TEXTILE_LOCATION_PAGE_PARAM);
-        String value = StringUtils.trimToEmpty(parameters.get(LocationTextileAttribute.NAME.getValue()));
-        identifier = value.replaceAll("[^A-Za-z0-9]", "_");
-        Matcher matcher = NAME_PATTERN.matcher(value);
-        if (matcher.matches()){
-            name = matcher.group("name");
-            subrb = matcher.group("subrb");
-            postcode = matcher.group("post");
-            dist = matcher.group("dist");
-        }
-        near = String.format("%s %s", subrb, postcode);
-        km = dist;
+        Map<String, String> parameters = (Map<String, String>) request.getAttribute(TextileUtil.TEXTILE_LOCATION_PAGE_PARAM);
+        display = parameters.get(LocationTextileAttribute.DISPLAY.getValue());
+        suburb = parameters.get(LocationTextileAttribute.SUBURB.getValue());
+        postcode = parameters.get(LocationTextileAttribute.POSTCODE.getValue());
+        distance = parameters.get(LocationTextileAttribute.DISTANCE.getValue());
+        siteId = parameters.get(LocationTextileAttribute.SITE.getValue());
 
-        initCounter();
-    }
-
-    private void initCounter() {
-        SearchParamsParser.ParametersProvider provider = new SearchParamsParser.ParametersProvider() {
-            @Override
-            public String getParameter(String name) {
-                switch (name) {
-                    case "near":
-                        return near;
-                    case "km":
-                        return km;
-                    default:
-                        return null;
-                }
+        if (display != null) {
+            List<String> values = new ArrayList<>();
+            values.add(suburb);
+            if (postcode != null) {
+                values.add(postcode);
             }
-
-            @Override
-            public String[] getParameters(String name) {
-                return new String[0];
+            if (distance != null) {
+                values.add(distance);
             }
-
-            @Override
-            public Object getAttribute(String name) {
-                return null;
-            }
-        };
-
-        try {
-            SearchParamsParser parser = SearchParamsParser.valueOf(provider, searchService, tagService, webSiteService.getTimezone());
-            parser.parse();
-            QueryResponse response = searchService.searchCourses(parser.getSearchParams(), 0, 0);
-            counter = response.getResults().getNumFound();
-        } catch (Exception e) {
-            logger.error(e);
-            counter = 0L;
+            path = StringUtils.join(values, "/");
+            identifier = path.replaceAll("[^A-Za-z0-9]", "_");
+            path = "near=" + path;
+        } else if (siteId != null) {
+            ObjectContext objectContext = cayenneService.sharedContext();
+            Site site = ObjectSelect.query(Site.class).and(ExpressionFactory.inDbExp(Site.ID_PK_COLUMN, Long.valueOf(siteId))).selectFirst(objectContext);
+            display = site.getName();
+            path = "site=" + siteId;
+            identifier = siteId;
         }
     }
 }

@@ -1,10 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <div class="location-option">
         <input id="location_${identifier}" name="location_${identifier}" type="checkbox" class="courses-filter-option"
-               data-near="${near}"
-               data-km="${km}"
-               data-counter="${counter}"/>
-        <label class="checkbox location-label" for="location_${identifier}">${name}</label>
-        <span class="location-counter">${counter}</span>
+               data-path="${path}"/>
+        <label class="checkbox location-label" for="location_${identifier}">${display}</label>
+        <span class="location-counter">(${counter})</span>
     </div>
 </t:container>

@@ -4,6 +4,8 @@ import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.persistence.CayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.courseList.CourseListTextileRenderer;
@@ -48,6 +50,9 @@ public class TextileConverter implements ITextileConverter {
 
     @Inject
     private ISearchService searchService;
+
+    @Inject
+    private ICayenneService cayenneService;
 
     public TextileConverter() {
     }
@@ -170,7 +175,7 @@ public class TextileConverter implements ITextileConverter {
             case ATTACHMENT:
                 return new AttachmentTextileRenderer(binaryDataService, pageRenderer);
             case LOCATION:
-                return new LocationTextileRenderer(pageRenderer);
+                return new LocationTextileRenderer(pageRenderer, cayenneService);
             default:
                 throw new IllegalArgumentException(String.format("Type $s is not supported", type));
         }

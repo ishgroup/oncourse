@@ -62,7 +62,15 @@ public enum TextileType {
 	
 	ATTACHMENT("\\{attachment([^}]*)}", "\\{attachment(.+?name:" + STR_WHITESPACE + ")?}", AttachmentTextileAttributes.getAttrValues()),
 
-	LOCATION("\\{location([^}]*)}", "\\{location(.+?name:" + STR_WHITESPACE + ")?}", LocationTextileAttribute.getAttrValues());
+	LOCATION("\\{location([^}]*)}",
+			"\\{location(.+?(" +
+				"(display:" + STR_WHITESPACE + ")" +
+				"|(suburb:" + STR_WHITESPACE + ")" +
+				"|(postcode:" + DIGIT_IN_QUOTS + ")" +
+				"|(distance:" + DIGIT_IN_QUOTS + ")" +
+				"|(site:" + DIGIT_IN_QUOTS + ")" +
+				")){0,5}}",
+			LocationTextileAttribute.getAttrValues());
 
 	private String regexp;
 	private String detailedRegexp;
