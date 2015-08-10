@@ -40,12 +40,12 @@ public class SuburbParser {
 
             SolrDocumentList solrSuburbs;
             if (postcode != null) {
-                solrSuburbs = searchService.searchSuburb(postcode);
+                solrSuburbs = searchService.searchSuburb(String.format("%s %s", suburb, postcode));
             } else {
                 solrSuburbs = searchService.searchSuburb(suburb);
             }
 
-            if (solrSuburbs.getNumFound() > 0) {
+            if (solrSuburbs.size() > 0) {
                 result = Suburb.valueOf(solrSuburbs.get(0), distance);
             }
         }
