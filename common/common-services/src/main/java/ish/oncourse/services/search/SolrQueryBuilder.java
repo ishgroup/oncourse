@@ -254,7 +254,7 @@ public class SolrQueryBuilder {
     {
         List<Suburb> suburbs = params.getSuburbs();
         Suburb suburb = suburbs.get(0);
-        final String geoFilterQuery = String.format(FILTER_TEMPLATE_geofilt, PARAMETER_VALUE_sfield, suburb.getLocation(), PARAMETER_d, suburb.getDistance()/KM_IN_DEGREE_VALUE);
+        final String geoFilterQuery = String.format(FILTER_TEMPLATE_geofilt, PARAMETER_VALUE_sfield, suburb.getSuburb(), PARAMETER_d, suburb.getDistance()/KM_IN_DEGREE_VALUE);
         query.addFilterQuery(geoFilterQuery);
         query.setQuery(BOOST_STATEMENT);
         query.setParam(PARAMETER_BOOST_FUNCTION, GEO_LOCATION_BOOST_FUNCTION);

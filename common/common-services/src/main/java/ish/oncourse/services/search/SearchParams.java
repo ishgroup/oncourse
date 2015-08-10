@@ -11,15 +11,13 @@ import java.util.TimeZone;
 
 public class SearchParams {
     private String s;
-    private SolrDocumentList near;
     private Double price;
     private String day;
     private String time;
     private Tag subject;
-    private Double km;
     private Date after;
     private Date before;
-    private List<Suburb> suburbs;
+    private List<Suburb> suburbs = new ArrayList<>();
     private Long siteId;
     private Boolean debugQuery = Boolean.FALSE;
     private TimeZone clientTimezone;
@@ -57,14 +55,6 @@ public class SearchParams {
         this.s = s;
     }
 
-    public SolrDocumentList getNear() {
-        return near;
-    }
-
-    public void setNear(SolrDocumentList near) {
-        this.near = near;
-    }
-
     public Double getPrice() {
         return price;
     }
@@ -97,14 +87,6 @@ public class SearchParams {
         this.subject = subject;
     }
 
-    public Double getKm() {
-        return km;
-    }
-
-    public void setKm(Double km) {
-        this.km = km;
-    }
-
     public Date getAfter() {
         return after;
     }
@@ -122,13 +104,6 @@ public class SearchParams {
     }
 
     public List<Suburb> getSuburbs() {
-        if (suburbs == null) {
-            suburbs = new ArrayList<>();
-            if (near != null) {
-                for (SolrDocument solrDocument : near)
-                    suburbs.add(Suburb.valueOf(solrDocument, getKm()));
-            }
-        }
         return suburbs;
     }
 
@@ -138,5 +113,9 @@ public class SearchParams {
 
     public void setSiteId(Long siteId) {
         this.siteId = siteId;
+    }
+
+    public void addSuburb(Suburb suburb) {
+        this.suburbs.add(suburb);
     }
 }

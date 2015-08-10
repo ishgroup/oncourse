@@ -53,8 +53,9 @@ public class SearchParamsParser
                         value = searchParams.getDay();
                         break;
                     case near:
-                        searchParams.setNear(parseNear(parameter));
-                        value = searchParams.getNear();
+                        Suburb suburb = SuburbParser.valueOf(parameter, provider.getParameter(SearchParam.km.name()), searchService).parse();
+                        searchParams.addSuburb(suburb);
+                        value = suburb;
                         break;
                     case price:
                         searchParams.setPrice(parsePrice(parameter));
@@ -80,8 +81,7 @@ public class SearchParamsParser
                         value = searchParams.getTime();
                         break;
                     case km:
-                        searchParams.setKm(parseKm(parameter));
-                        value = searchParams.getKm();
+                        value = searchParams.getSuburbs().get(0);
                         break;
                     case after:
                         searchParams.setAfter(DateParser.valueOf(parameter, clientTimezone).parse());
@@ -136,11 +136,6 @@ public class SearchParamsParser
         return parameter.matches(PATTERN_PRICE) ? Double.valueOf(parameter.replaceAll("[$]", StringUtils.EMPTY)) : null;
     }
     
-    private SolrDocumentList parseNear(String parameter) {
-        SolrDocumentList solrSuburbs = searchService.searchSuburb(convertPostcodeParameterToLong(parameter));
-        return solrSuburbs != null && !solrSuburbs.isEmpty() ? solrSuburbs:null;
-    }
-
     private String parseDay(String parameter) {
         return parameter.equalsIgnoreCase(PARAM_VALUE_weekday) || parameter.equalsIgnoreCase(PARAM_VALUE_weekend)?parameter:null;
     }
@@ -187,33 +182,6 @@ public class SearchParamsParser
         result.tagService = tagService;
         result.clientTimezone = clientTimezone;
         return result;
-    }
-
-
-        public static Double parseKm(String parameter) {
-        if (StringUtils.isNumeric(parameter)) {
-            Double km = Double.valueOf(parameter);
-            if (km != null) {
-                if (SearchService.MAX_DISTANCE < km) {
-                    //check for higher distance
-                    km = SearchService.MAX_DISTANCE;
-                } else if (km < SearchService.MIN_DISTANCE) {
-                    //check for lower distance
-                    km = SearchService.MIN_DISTANCE;
-                }
-            }
-            return km;
-        }
-        return null;
-    }
-
-    public static String convertPostcodeParameterToLong(String parameter) {
-        //the workaround is for #17051. Till postcode stored as the long in db and indexed as is we need to call String-to-Long and back conversion
-        //to be able found the postcodes which starts from 0
-        if (StringUtils.isNumeric(parameter)) {
-            parameter = Long.valueOf(parameter).toString();
-        }
-        return parameter;
     }
 
     public interface ParametersProvider {

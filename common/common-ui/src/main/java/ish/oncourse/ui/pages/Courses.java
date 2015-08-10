@@ -287,7 +287,7 @@ public class Courses extends ISHCommon {
 	private boolean hasAnyFormValuesForFocus() {
 		return searchParams != null &&
 				(searchParams.getDay() != null ||
-						searchParams.getNear() != null ||
+						searchParams.getSuburbs().size() > 0 ||
 						searchParams.getPrice() != null ||
 						searchParams.getTime() != null);
 	}

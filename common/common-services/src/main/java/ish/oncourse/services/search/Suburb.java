@@ -12,7 +12,7 @@ public class Suburb{
 
     private Double distance;
 
-    private String location;
+    private String suburb;
 
 
     public String getPostcode() {
@@ -47,23 +47,33 @@ public class Suburb{
         this.distance = distance;
     }
 
-    public String getLocation()
+    public String getSuburb()
     {
-        if (location == null)
-            location = String.format("%s,%s", latitude,longitude);
-        return location;
+        if (suburb == null)
+            suburb = String.format("%s,%s", latitude,longitude);
+        return suburb;
     }
 
 
     public static Suburb valueOf(SolrDocument doc, Double distance)
     {
         Suburb suburb = new Suburb();
-        suburb.location = (String) doc.get(SolrQueryBuilder.PARAMETER_loc);
-        String[] points = suburb.location.split(",");
+        suburb.suburb = (String) doc.get(SolrQueryBuilder.PARAMETER_loc);
+        String[] points = suburb.suburb.split(",");
         suburb.latitude = Double.parseDouble(points[0]);
         suburb.longitude = Double.parseDouble(points[1]);
         suburb.postcode = (String) doc.get(SolrQueryBuilder.FIELD_postcode);
         suburb.distance = distance != null ? distance: SearchService.DEFAULT_DISTANCE;
         return suburb;
     }
+
+    public static Suburb valueOf(String suburb, String postcode , Double distance)
+    {
+        Suburb result = new Suburb();
+        result.suburb = suburb;
+        result.postcode = postcode;
+        result.distance = distance != null ? distance: SearchService.DEFAULT_DISTANCE;
+        return result;
+    }
+
 }

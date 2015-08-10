@@ -1,8 +1,6 @@
 package ish.oncourse.solr;
 
-import ish.oncourse.services.search.SearchParams;
-import ish.oncourse.services.search.SearchParamsParser;
-import ish.oncourse.services.search.SolrQueryBuilder;
+import ish.oncourse.services.search.*;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -88,14 +86,13 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
     	//prepare data for distance filtering
         SearchParams searchParams = new SearchParams();
         //set the default 100km distance for test
-		searchParams.setKm(SearchParamsParser.parseKm(null));
 		SolrDocumentList solrSuburbs = new SolrDocumentList();
 		SolrDocument suburb = new SolrDocument();
 		suburb.addField(SolrQueryBuilder.PARAMETER_loc, document.getFieldValues(COURSE_LOCATION_FIELD_NAME).iterator().next());
-		suburb.addField(SolrQueryBuilder.FIELD_postcode, 
-			SearchParamsParser.convertPostcodeParameterToLong((String) document.getFieldValue(COURSE_POSTCODE_FIELD_NAME)));
+		suburb.addField(SolrQueryBuilder.FIELD_postcode,
+				SuburbParser.convertPostcodeParameterToLong((String) document.getFieldValue(COURSE_POSTCODE_FIELD_NAME)));
 		solrSuburbs.add(suburb);
-		searchParams.setNear(solrSuburbs);
+		searchParams.addSuburb(Suburb.valueOf(solrSuburbs.get(0), null));
 		
 		//check distance filtering
 		SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, document.getFieldValue(COLLEGE_ID_FIELD_NAME).toString(), 0, 5);
@@ -108,22 +105,21 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
         SolrDocument result = response.getResults().get(0);
         assertNotNull("Result document should not be empty", result);
         assertEquals("Course id should be equal to original document", document.getFieldValue(ID_FIELD_NAME), result.getFieldValue(ID_FIELD_NAME));
-        assertEquals("Course name should be equal to original document", document.getFieldValue(NAME_FIELD_NAME), 
-        	result.getFieldValue(NAME_FIELD_NAME));
+        assertEquals("Course name should be equal to original document", document.getFieldValue(NAME_FIELD_NAME),
+				result.getFieldValue(NAME_FIELD_NAME));
         Float score = (Float) result.getFieldValue(SCORE_FIELD_NAME);
         System.out.println(String.format("Calculated score value = %s", score));
         assertEquals("Calculated score for distance filtering should be equal to 1.9999998", Float.valueOf(1.9999998f), score);
         
         //and now try again with updated location
         searchParams = new SearchParams();
-        searchParams.setKm(SearchParamsParser.parseKm("10"));
 		solrSuburbs = new SolrDocumentList();
 		suburb = new SolrDocument();
 		suburb.addField(SolrQueryBuilder.PARAMETER_loc, TEST_LOCATION_3);
-		suburb.addField(SolrQueryBuilder.FIELD_postcode, 
-			SearchParamsParser.convertPostcodeParameterToLong((String) document.getFieldValue(COURSE_POSTCODE_FIELD_NAME)));
+		suburb.addField(SolrQueryBuilder.FIELD_postcode,
+				SuburbParser.convertPostcodeParameterToLong((String) document.getFieldValue(COURSE_POSTCODE_FIELD_NAME)));
 		solrSuburbs.add(suburb);
-		searchParams.setNear(solrSuburbs);
+		searchParams.addSuburb(Suburb.valueOf(solrSuburbs.get(0), 10D));
 		
 		solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, document.getFieldValue(COLLEGE_ID_FIELD_NAME).toString(), 0, 5);
 		params = solrQueryBuilder.build();
