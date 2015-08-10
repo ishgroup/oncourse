@@ -65,8 +65,6 @@ public class CourseClassItem extends ISHCommon {
 	@Property
 	private int index;
 
-	private List<String> timetableLabels;
-
 	@SuppressWarnings("all")
 	@Parameter
 	@Property
@@ -114,11 +112,6 @@ public class CourseClassItem extends ISHCommon {
 
 	@SetupRender
 	public void beforeRender() {
-		timetableLabels = new ArrayList<>();
-		timetableLabels.add("When");
-		timetableLabels.add("Time");
-		timetableLabels.add("Where");
-        timetableLabels.add("Session Notes");
 
         TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
 
@@ -194,10 +187,6 @@ public class CourseClassItem extends ISHCommon {
 	public boolean isHasSiteName() {
 		return courseClass.isHasRoom() && courseClass.getRoom().getSite().getName() != null
 				&& !"online".equals(courseClass.getRoom().getSite().getName());
-	}
-
-	public List<String> getTimetableLabels() {
-		return timetableLabels;
 	}
 
 	public List<Session> getSortedTimelineableSessions() {

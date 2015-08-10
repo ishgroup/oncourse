@@ -44,8 +44,6 @@ public class CourseClassDetails extends ISHCommon {
 	@Property
 	private CourseClass courseClass;
 
-	private List<String> timetableLabels;
-
 	@Property
 	private boolean allowByAplication;
 
@@ -55,12 +53,6 @@ public class CourseClassDetails extends ISHCommon {
 	@SetupRender
 	public void beforeRender() {
 		courseClass = (CourseClass) request.getAttribute(CourseClass.class.getSimpleName());
-
-		timetableLabels = new ArrayList<>();
-		timetableLabels.add("When");
-		timetableLabels.add("Time");
-		timetableLabels.add("Where");
-        timetableLabels.add("Session Notes");
 		init();
 	}
 
@@ -87,10 +79,6 @@ public class CourseClassDetails extends ISHCommon {
 		 * this.showInlineTimetable;
 		 */
 		return true;
-	}
-
-	public List<String> getTimetableLabels() {
-		return timetableLabels;
 	}
 
 	public List<Session> getSortedTimelineableSessions() {

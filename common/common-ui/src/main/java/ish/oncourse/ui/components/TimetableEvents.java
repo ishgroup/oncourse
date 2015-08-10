@@ -10,9 +10,11 @@ import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.Format;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -34,8 +36,6 @@ public class TimetableEvents extends ISHCommon {
 	@Property
 	private Integer listIndex;
 
-	@Property
-	@Parameter
 	private List<String> headerLabels;
 
 	@Property
@@ -52,6 +52,19 @@ public class TimetableEvents extends ISHCommon {
 	@Property
 	@Parameter
 	private String cssOddRowClass;
+
+	@SetupRender
+	public void beforeRender() {
+		headerLabels = new ArrayList<>();
+		headerLabels.add("When");
+		headerLabels.add("Time");
+		headerLabels.add("Where");
+		headerLabels.add("Session Notes");
+	}
+	
+	public List<String> getHeaderLabels() {
+		return headerLabels;
+	}
 	
 	public String getCssRowClass() {
 		if (isOddRow()) {
