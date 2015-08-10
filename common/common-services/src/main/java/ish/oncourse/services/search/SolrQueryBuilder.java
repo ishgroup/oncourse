@@ -2,7 +2,7 @@ package ish.oncourse.services.search;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.util.FormatUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 
@@ -51,7 +51,10 @@ public class SolrQueryBuilder {
     static final String FILTER_TEMPLATE_siteId = "siteId:%d";
     static final String FILTER_TEMPLATE_between = FIELD_class_start  + ":[%s TO %s]";
 	
-    static final String FILTER_TEMPLATE_geofilt = "{!score=distance}%s:\"Intersects(Circle(%s %s=%s))\"";
+    static final String FILTER_TEMPLATE_geofilt = "{!score=distance}%s";
+
+    static final String FILTER_TEMPLATE_course_loc = "%s:\"Intersects(Circle(%s %s=%s))\"";
+
 
     public static final String FILTER_TEMPLATE_ALL = "*:*";
 
@@ -253,8 +256,12 @@ public class SolrQueryBuilder {
     void setFiltersAndNearTo(SolrQuery query,List<String> filters)
     {
         List<Suburb> suburbs = params.getSuburbs();
-        Suburb suburb = suburbs.get(0);
-        final String geoFilterQuery = String.format(FILTER_TEMPLATE_geofilt, PARAMETER_VALUE_sfield, suburb.getSuburb(), PARAMETER_d, suburb.getDistance()/KM_IN_DEGREE_VALUE);
+
+        ArrayList<String> intersects = new ArrayList<>();
+        for (Suburb suburb : suburbs) {
+            intersects.add(String.format(FILTER_TEMPLATE_course_loc, PARAMETER_VALUE_sfield, suburb.getSuburb(), PARAMETER_d, suburb.getDistance()/KM_IN_DEGREE_VALUE));
+        }
+        final String geoFilterQuery = String.format(FILTER_TEMPLATE_geofilt, StringUtils.join(intersects, " "));
         query.addFilterQuery(geoFilterQuery);
         query.setQuery(BOOST_STATEMENT);
         query.setParam(PARAMETER_BOOST_FUNCTION, GEO_LOCATION_BOOST_FUNCTION);

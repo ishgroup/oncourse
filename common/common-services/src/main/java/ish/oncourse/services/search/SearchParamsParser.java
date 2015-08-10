@@ -53,9 +53,12 @@ public class SearchParamsParser
                         value = searchParams.getDay();
                         break;
                     case near:
-                        Suburb suburb = SuburbParser.valueOf(parameter, provider.getParameter(SearchParam.km.name()), searchService).parse();
-                        searchParams.addSuburb(suburb);
-                        value = suburb;
+                        String[] nears = provider.getParameters(SearchParam.near.name());
+                        for (String near : nears) {
+                            Suburb suburb = SuburbParser.valueOf(near, provider.getParameter(SearchParam.km.name()), searchService).parse();
+                            searchParams.addSuburb(suburb);
+                            value = suburb;
+                        }
                         break;
                     case price:
                         searchParams.setPrice(parsePrice(parameter));
