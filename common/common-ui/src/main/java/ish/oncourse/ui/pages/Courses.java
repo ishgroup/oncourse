@@ -307,6 +307,10 @@ public class Courses extends ISHCommon {
 			coursesCount = 0;
 			return new ArrayList<>();
 		}
+		
+		if (request.getParameter(HTMLUtils.VIEW_ALL_PARAM) != null && Boolean.TRUE.toString().equals(request.getParameter(HTMLUtils.VIEW_ALL_PARAM))) {
+			return searchCourses(itemIndex, Integer.MAX_VALUE);
+		}
 		return searchCourses(itemIndex, ROWS_DEFAULT);
 	}
 

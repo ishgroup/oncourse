@@ -13,7 +13,9 @@ public class HTMLUtils {
 
     public static final String VALUE_on = "on";
 	public static final String HTTPS_PROTOCOL = "https://";
-
+	public static final String VIEW_ALL_PARAM = "view-all";
+	public static final String VIEW_ALL_URL_PARAM = "?" + VIEW_ALL_PARAM + "=true";
+			
 	public static String getUrlBy(String serverName, Class pageClass)
 	{
 		return String.format("%s%s/%s", HTMLUtils.HTTPS_PROTOCOL, serverName, pageClass.getSimpleName());
@@ -49,7 +51,7 @@ public class HTMLUtils {
 	}
 
 	public static String getCanonicalRelativeLinkPathForCourses(Request request, Tag browseTag) {
-		return request.getContextPath() + (browseTag == null ? request.getPath() : browseTag.getLink());
+		return request.getContextPath() + (browseTag == null ? request.getPath() : browseTag.getLink()) + VIEW_ALL_URL_PARAM;
 	}
 
 	public static String getCanonicalLinkPathForCourses(Request request, Tag browseTag) {
