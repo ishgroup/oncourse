@@ -26,7 +26,7 @@ public class WebSitePublisher {
     private Map<WebNodeType, WebNodeType> webNodeTypeMap = new HashMap<>();
     private Map<WebNode, WebNode> webNodeMap = new HashMap<>();
     private Map<WebMenu, WebMenu> webMenuMap = new HashMap<>();
-
+	private Map<WebSiteLayout, WebSiteLayout> layoutMap = new HashMap<>();
 
     //create new published version as copy of draftVersion
     public void publish()
@@ -142,7 +142,7 @@ public class WebSitePublisher {
 
             newWebNodeType.setCreated(webNodeType.getCreated());
             newWebNodeType.setModified(webNodeType.getModified());
-            newWebNodeType.setWebSiteLayout(webNodeType.getWebSiteLayout());
+            newWebNodeType.setWebSiteLayout(layoutMap.get(webNodeType.getWebSiteLayout()));
             newWebNodeType.setName(webNodeType.getName());
             newWebNodeType.setWebSiteVersion(publishedVersion);
 
@@ -159,6 +159,8 @@ public class WebSitePublisher {
             newLayout.setWebSiteVersion(publishedVersion);
 
             copyTemplates(oldLayout, newLayout);
+			
+			layoutMap.put(oldLayout, newLayout);
         }
     }
 
