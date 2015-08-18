@@ -259,7 +259,7 @@ public class SolrQueryBuilder {
 
         ArrayList<String> intersects = new ArrayList<>();
         for (Suburb suburb : suburbs) {
-            intersects.add(String.format(FILTER_TEMPLATE_course_loc, PARAMETER_VALUE_sfield, suburb.getSuburb(), PARAMETER_d, suburb.getDistance()/KM_IN_DEGREE_VALUE));
+            intersects.add(getSuburbQuery(suburb));
         }
         final String geoFilterQuery = String.format(FILTER_TEMPLATE_geofilt, StringUtils.join(intersects, " "));
         query.addFilterQuery(geoFilterQuery);
@@ -288,6 +288,10 @@ public class SolrQueryBuilder {
         return StringUtils.join(filters.toArray(), QUERY_DELIMITER);
     }
 
+
+    public static String getSuburbQuery(Suburb suburb) {
+        return String.format(FILTER_TEMPLATE_course_loc, PARAMETER_VALUE_sfield, suburb.getSuburb(), PARAMETER_d, suburb.getDistance()/KM_IN_DEGREE_VALUE);
+    }
 
     /**
      * @param params cannot be null

@@ -27,7 +27,7 @@ public class SearchParams {
 		return tags;
 	}
 
-	protected void addTag(Tag tag) {
+	public void addTag(Tag tag) {
 		tags.add(tag);
 	}
 

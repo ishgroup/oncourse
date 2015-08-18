@@ -1,6 +1,7 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
@@ -22,9 +23,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SearchService implements ISearchService {
 	private static final String TERMS_SEPARATOR_STRING = " || ";
@@ -159,11 +158,10 @@ public class SearchService implements ISearchService {
         }
     }
 
-    public Map<Long, Long> getCountersForTags() {
+    public Map<Long, Long> getCountersForTags(SearchParams params) {
         try {
-            SearchParams searchParams = new SearchParams();
             String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
-            SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(searchParams, collegeId, 0, 0).build());
+            SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId, 0, 0).build());
             q.setFacet(true);
             q.addFacetField("tagId");
             QueryResponse response = query(q, SolrCore.courses);
@@ -173,6 +171,37 @@ public class SearchService implements ISearchService {
             List<FacetField.Count> counts = field.getValues();
             for (FacetField.Count count : counts) {
                 result.put(Long.valueOf(count.getName()), count.getCount());
+            }
+            return result;
+        } catch (SolrServerException e) {
+            throw new SearchException("Unable to get facet.", e);
+        }
+    }
+
+    public Map<String, Count> getCountersForLocations(SearchParams params, List<Count> counts) {
+        try {
+            String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
+            SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId, 0, 0).build());
+            q.setFacet(true);
+
+            Map<String, Count> queries = new HashMap<>();
+            for (Count count : counts) {
+                Suburb suburb = SuburbParser.valueOf(count.getPath(), null, this).parse();
+                if (suburb != null) {
+                    String query = SolrQueryBuilder.getSuburbQuery(suburb);
+                    queries.put(query, count);
+                    q.addFacetQuery(query);
+                } else  {
+                    throw new SearchException("Unable to get facet.");
+                }
+            }
+            QueryResponse response = query(q, SolrCore.courses);
+
+            HashMap<String, Count> result = new HashMap<>();
+            Map<String, Integer> solrResult = response.getFacetQuery();
+            for (Map.Entry<String, Integer> query : solrResult.entrySet()) {
+                Count count = queries.get(query.getKey());
+                result.put(count.getId(), Count.valueOf(count.getId(), count.getPath(), query.getValue()));
             }
             return result;
         } catch (SolrServerException e) {

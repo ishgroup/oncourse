@@ -4,6 +4,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ISearchService {
@@ -15,5 +16,7 @@ public interface ISearchService {
 
     SolrDocumentList searchSuburb(String location);
 
-    Map<Long, Long> getCountersForTags();
+    Map<Long, Long> getCountersForTags(SearchParams searchParams);
+
+    Map<String, Count> getCountersForLocations(SearchParams params, List<Count> counts);
 }
