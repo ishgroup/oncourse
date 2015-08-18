@@ -1,4 +1,4 @@
-goog.provide('CoursesFilter');
+//goog.provide('CoursesFilter');
 
 var $j = jQuery.noConflict();
 
@@ -61,37 +61,39 @@ CoursesUrlFormat.prototype = {
         // Let the browser do the work
         parser.href = url;
         // Convert query string to object
-        queries = parser.search.replace(/^\?/, '').split('&');
-        $j.each(queries, function (index, query) {
-            split = query.split('=');
-            switch (split[0]) {
-                case "tag":
-                    tags.push(decodeURIComponent(split[1]));
-                    break;
-                case "near":
-                    locations.push(decodeURIComponent(split[1]));
-                    break;
-                case "km":
-                    km = split[1];
-                    break;
-                case "day":
-                    day = split[1];
-                    break;
-                case "time":
-                    time = split[1];
-                    break;
-                case "before":
-                    before = split[1];
-                    break;
-                default :
-                    if (searchObject[split[0]] == null) {
-                        searchObject[split[0]] = []
-                    }
-                    searchObject[split[0]].push(split[1]);
-                    break;
-            }
-        });
-        browseTag = parser.pathname.replace("/courses", "");
+        if (parser.pathname == "/courses") {
+            queries = parser.search.replace(/^\?/, '').split('&');
+            $j.each(queries, function (index, query) {
+                split = query.split('=');
+                switch (split[0]) {
+                    case "tag":
+                        tags.push(decodeURIComponent(split[1]));
+                        break;
+                    case "near":
+                        locations.push(decodeURIComponent(split[1]));
+                        break;
+                    case "km":
+                        km = split[1];
+                        break;
+                    case "day":
+                        day = split[1];
+                        break;
+                    case "time":
+                        time = split[1];
+                        break;
+                    case "before":
+                        before = split[1];
+                        break;
+                    default :
+                        if (searchObject[split[0]] == null) {
+                            searchObject[split[0]] = []
+                        }
+                        searchObject[split[0]].push(split[1]);
+                        break;
+                }
+            });
+            browseTag = parser.pathname.replace("/courses", "");
+        }
 
         return {
             protocol: parser.protocol,
@@ -321,25 +323,29 @@ CoursesFilter.prototype = {
     },
 
     loadCourses: function () {
+        var self = this;
         var url = this.format.format(this.request);
-        $j.ajax({
-            type: "GET",
-            url: url,
-            async: false,
-            //if the parameter is not set internet explorer loads content from cache
-            cache: false,
-            headers: {
-                updateCoursesByFilter: true
-            },
-            success: function (data) {
-                $j(self.updateHtmlBlockId).replaceWith(data);
-            },
-            error: function (data) {
-                console.log(data);
-            }
-        });
-        history.pushState(null, null, url);
-        this.updateCounters();
+        if (this.request.pathname == "/courses") {
+            $j.ajax({
+                type: "GET",
+                url: url,
+                async: false,
+                cache: false,
+                headers: {
+                    updateCoursesByFilter: true
+                },
+                success: function (data) {
+                    $j(self.updateHtmlBlockId).replaceWith(data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+            history.pushState(null, null, url);
+            this.updateCounters();
+        } else {
+            window.location.href = url;
+        }
     },
 
     updateCounters: function () {
