@@ -61,7 +61,7 @@ CoursesUrlFormat.prototype = {
         // Let the browser do the work
         parser.href = url;
         // Convert query string to object
-        if (parser.pathname == "/courses") {
+        if (parser.pathname.endsWith("/courses") || parser.pathname.startsWith("/courses/")) {
             queries = parser.search.replace(/^\?/, '').split('&');
             $j.each(queries, function (index, query) {
                 split = query.split('=');
@@ -117,7 +117,7 @@ CoursesUrlFormat.prototype = {
 
 
 CoursesFilter = function () {
-    this.optionClass = ".courses-filter-option";
+    this.optionClass = ".filter-option-control";
     this.clearAllClass = ".courses-filter-clear-all";
     this.clearOptionClass = ".courses-filter-clear-option";
     this.refineOptionId = "#courses-filter-refine-option";
@@ -189,22 +189,20 @@ CoursesFilter.prototype = {
 
     updateControlValues: function () {
         var self = this;
-        if (this.request.pathname.startsWith('/courses')) {
-            this.getControlBy(this.request.browseTag).prop('checked', true);
-            $j.each(this.request.tags, function (index, tag) {
-                self.getControlBy(tag).prop('checked', true);
-            });
-            $j.each(this.request.locations, function (index, path) {
-                self.getControlBy(path).prop('checked', true);
-            });
+        this.getControlBy(this.request.browseTag).prop('checked', true);
+        $j.each(this.request.tags, function (index, tag) {
+            self.getControlBy(tag).prop('checked', true);
+        });
+        $j.each(this.request.locations, function (index, path) {
+            self.getControlBy(path).prop('checked', true);
+        });
 
-            this.updateRefineControl();
-        }
+        this.updateRefineControl();
     },
 
     updateRefineControl: function () {
         if (this.request.before) {
-            $j(this.refineOptionId).val("cooming_soon");
+            $j(this.refineOptionId).val("coming_soon");
         } else if (this.request.day) {
             $j(this.refineOptionId).val(this.request.day);
         } else if (this.request.time) {
@@ -325,27 +323,27 @@ CoursesFilter.prototype = {
     loadCourses: function () {
         var self = this;
         var url = this.format.format(this.request);
-        if (this.request.pathname == "/courses") {
-            $j.ajax({
-                type: "GET",
-                url: url,
-                async: false,
-                cache: false,
-                headers: {
-                    updateCoursesByFilter: true
-                },
-                success: function (data) {
-                    $j(self.updateHtmlBlockId).replaceWith(data);
-                },
-                error: function (data) {
-                    console.log(data);
-                }
-            });
-            history.pushState(null, null, url);
-            this.updateCounters();
-        } else {
+        //if (this.request.pathname.endsWith("/courses") || this.request.pathname.startsWith("/courses/")) {
+        //    $j.ajax({
+        //        type: "GET",
+        //        url: url,
+        //        async: false,
+        //        cache: false,
+        //        headers: {
+        //            updateCoursesByFilter: true
+        //        },
+        //        success: function (data) {
+        //            $j(self.updateHtmlBlockId).replaceWith(data);
+        //        },
+        //        error: function (data) {
+        //            console.log(data);
+        //        }
+        //    });
+        //    history.pushState(null, null, url);
+        //    this.updateCounters();
+        //} else {
             window.location.href = url;
-        }
+        //}
     },
 
     updateCounters: function () {
