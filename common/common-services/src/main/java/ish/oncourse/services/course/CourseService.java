@@ -11,10 +11,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -316,15 +313,8 @@ public class CourseService implements ICourseService {
      * @param q course query
 	 */
 	private static void applyCourseCacheSettings(SelectQuery q) {
-
-		// TODO: uncomment when after upgrading to newer cayenne where
-		// https://issues.apache.org/jira/browse/CAY-1585 is fixed.
-
-		/**
-		 * q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		 * q.setCacheGroups(CacheGroup.COURSES.name());
-		 **/
-
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		q.setCacheGroups(Course.class.getSimpleName());
 		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY);
 		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.ROOM_PROPERTY);
 		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.SESSIONS_PROPERTY);
