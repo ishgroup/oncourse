@@ -84,7 +84,7 @@ public class SearchParamsParser
                         value = searchParams.getTime();
                         break;
                     case km:
-                        value = searchParams.getSuburbs().get(0);
+                        value = searchParams.getSuburbs().size() > 0 ? searchParams.getSuburbs().get(0): value;
                         break;
                     case after:
                         searchParams.setAfter(DateParser.valueOf(parameter, clientTimezone).parse());
