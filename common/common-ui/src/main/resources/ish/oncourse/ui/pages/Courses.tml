@@ -4,36 +4,37 @@
     <t:delegate to="currentBlock"/>
 
     <t:block t:id="filteredCourses">
-        <t:if t:test="hasInvalidSearchTerms">
-            <span t:type="ui/SearchTermsClarification" paramsInError="paramsInError"></span>
-            <p:else>
-                <span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"></span>
+        <span id="courses-list">
+            <t:if t:test="hasInvalidSearchTerms">
+                <span t:type="ui/SearchTermsClarification" paramsInError="paramsInError"></span>
+                <p:else>
+                    <span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"></span>
 
-                <div id="sitesMap">
-							<span t:type="ui/GoogleMapSites" sites="mapSites" focuses="focusesForMapSites"
-                                  collapsed="true" showLocationMap="false"></span>
-                </div>
+                    <div id="sitesMap">
+                                <span t:type="ui/GoogleMapSites" sites="mapSites" focuses="focusesForMapSites"
+                                      collapsed="true" showLocationMap="false"></span>
+                    </div>
 
-                <t:if test="browseTag">
-                    <t:if test="browseTag.hasDetails">
-                        <t:outputraw value="${browseTagDetail}"/>
+                    <t:if test="browseTag">
+                        <t:if test="browseTag.hasDetails">
+                            <t:outputraw value="${browseTagDetail}"/>
+                        </t:if>
                     </t:if>
-                </t:if>
 
-                <t:if t:test="isException">
-                    <h2>Because of an error in the search engine, all courses are
-                        being displayed. Our technical team is working to resolve this
-                        problem now.</h2>
-                </t:if>
-                <span t:type="ui/coursesfilter"/>
-                <t:if t:test="hasAnyItems" negate="true">
-                    <h2>No results</h2>
-                    <p:else>
-                        <t:delegate to="block:moreCourses"/>
-                    </p:else>
-                </t:if>
-            </p:else>
-        </t:if>
+                    <t:if t:test="isException">
+                        <h2>Because of an error in the search engine, all courses are
+                            being displayed. Our technical team is working to resolve this
+                            problem now.</h2>
+                    </t:if>
+                    <t:if t:test="hasAnyItems" negate="true">
+                        <h2>No results</h2>
+                        <p:else>
+                            <t:delegate to="block:moreCourses"/>
+                        </p:else>
+                    </t:if>
+                </p:else>
+            </t:if>
+        </span>
     </t:block>
 
     <t:block t:id="moreCourses">
