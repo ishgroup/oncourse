@@ -56,6 +56,6 @@ public class LocationTextileValidator extends AbstractTextileValidator {
     }
 
     public String getFormatErrorMessage(String tag) {
-        return "The location tag '" + tag + "' doesn't match {location name:\"name\"}";
+        return "The location tag '" + tag + "' doesn't match {location display:\"display\"}";
     }
 }
