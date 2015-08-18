@@ -279,6 +279,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 			 * we use CACHE LOCAL_CACHE  Strategy to reduce db requests.
 			 */
 			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+			q.setCacheGroups(Session.class.getSimpleName());
 			q.addPrefetch(Session.ROOM_PROPERTY);
 			q.addPrefetch(Session.ROOM_PROPERTY + "." + Room.SITE_PROPERTY);
 			classSessions = getObjectContext().performQuery(q);

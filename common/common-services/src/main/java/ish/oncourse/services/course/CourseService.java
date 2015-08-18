@@ -80,6 +80,8 @@ public class CourseService implements ICourseService {
 		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN,list).andExp(getSiteQualifier());
 
 		SelectQuery q = new SelectQuery(Course.class, expr);
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		q.setCacheGroups(Course.class.getSimpleName());
 
 		List<Course> result = cayenneService.sharedContext().performQuery(q);
 
@@ -247,6 +249,8 @@ public class CourseService implements ICourseService {
         SelectQuery query = new SelectQuery(CourseProductRelation.class,
                 ExpressionFactory.matchExp(CourseProductRelation.COURSE_PROPERTY, course)
                         .andExp(ExpressionFactory.matchExp(CourseProductRelation.PRODUCT_PROPERTY + "." + Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE)));
+		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		query.setCacheGroups(CourseProductRelation.class.getSimpleName());
         List<CourseProductRelation> relations = context.performQuery(query);
         ArrayList<Product> result = new ArrayList<>();
         for (CourseProductRelation relation : relations) {

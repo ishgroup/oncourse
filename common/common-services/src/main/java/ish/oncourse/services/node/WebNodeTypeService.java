@@ -7,6 +7,7 @@ import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -50,6 +51,8 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
         );
 
         SelectQuery selectQuery = new SelectQuery(WebNodeType.class, expression);
+        selectQuery.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+        selectQuery.setCacheGroups(WebNodeType.class.getSimpleName());
         selectQuery.addOrdering(WebNodeType.MODIFIED_PROPERTY, SortOrder.DESCENDING);
 
         return context.performQuery(selectQuery);

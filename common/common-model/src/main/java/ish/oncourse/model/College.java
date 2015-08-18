@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._College;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -46,6 +47,7 @@ public class College extends _College {
 	 */
 	public List<Site> getWebVisibleSites() {
 		return ObjectSelect.query(Site.class).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Site.class.getSimpleName()).
 				where(Site.COLLEGE.eq(this)).
 				and(Site.IS_WEB_VISIBLE.isTrue()).
 				orderBy(Site.NAME.asc()).

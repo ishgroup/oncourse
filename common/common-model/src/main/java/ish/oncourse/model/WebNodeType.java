@@ -9,6 +9,8 @@ import org.apache.cayenne.query.*;
 import java.util.Date;
 import java.util.List;
 
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
+
 public class WebNodeType extends _WebNodeType {
 	private static final long serialVersionUID = -1945260610761430515L;
 	public static final String PAGE = "page";
@@ -32,6 +34,9 @@ public class WebNodeType extends _WebNodeType {
 
 	public static WebNodeType forName(ObjectContext ctx, String name) {
 		SelectQuery q = new SelectQuery(WebNodeType.class);
+		q.setCacheStrategy(LOCAL_CACHE);
+		q.setCacheGroups(WebNodeType.class.getSimpleName());
+
 		q.andQualifier(ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY,
 				name));
 		return (WebNodeType) ctx.performQuery(q);
@@ -40,8 +45,7 @@ public class WebNodeType extends _WebNodeType {
 	@SuppressWarnings("unchecked")
 	public List<WebContent> getContentForRegionKey(String regionKey) {
 		return ObjectSelect.query(WebContent.class)
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
-				.cacheGroups(WebContent.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName())
 				.and(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.WEB_NODE_TYPE).eq(this))
 				.and(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.REGION_KEY).eq(RegionKey.valueOf(regionKey.toLowerCase())))
 				.orderBy(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.WEIGHT).asc()).select(getObjectContext());

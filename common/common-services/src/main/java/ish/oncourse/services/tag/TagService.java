@@ -9,6 +9,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -196,11 +197,15 @@ public class TagService extends BaseService<Tag> implements ITagService {
 				ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, NodeSpecialType.MAILING_LISTS));
 		qual = qual.andExp(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, null));
 		SelectQuery q = new SelectQuery(Tag.class, qual);
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		q.setCacheGroups(Tag.class.getSimpleName());
 
 		Tag parent = (Tag) Cayenne.objectForQuery(getCayenneService().sharedContext(), q);
 		if (parent != null) {
 			Expression childQual = getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, parent));
 			q = new SelectQuery(Tag.class, childQual);
+			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+			q.setCacheGroups(Tag.class.getSimpleName());
 			tags = getCayenneService().sharedContext().performQuery(q);
 		}
 
@@ -216,6 +221,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 				.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, currentCollege));
 
 		SelectQuery q = new SelectQuery(Taggable.class, qual);
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		q.setCacheGroups(Taggable.class.getSimpleName());
 		q.addPrefetch(Taggable.TAGGABLE_TAGS_PROPERTY);
 		@SuppressWarnings("unchecked")
 		List<Taggable> taggableList = getCayenneService().sharedContext().performQuery(q);
@@ -296,6 +303,9 @@ public class TagService extends BaseService<Tag> implements ITagService {
 					.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, contact.getCollege()))
 					.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, mailingList));
 			SelectQuery query = new SelectQuery(Taggable.class, qual);
+			query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+			query.setCacheGroups(Taggable.class.getSimpleName());
+
 			return context.performQuery(query);
 		}
 

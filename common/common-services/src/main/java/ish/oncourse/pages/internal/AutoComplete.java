@@ -1,10 +1,12 @@
 package ish.oncourse.pages.internal;
 
 import ish.oncourse.model.Country;
+import ish.oncourse.model.WebContent;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -71,7 +73,8 @@ public class AutoComplete {
 		if (term != null) {
 			ObjectContext context = cayenneService.sharedContext();
 			List<Country> countries = ObjectSelect.query(Country.class).
-					where(Country.NAME.likeIgnoreCase("%"+term+"%")).
+            cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName()).
+            where(Country.NAME.likeIgnoreCase("%"+term+"%")).
 					select(context);
 					
 			for (Country country : countries) {

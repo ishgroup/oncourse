@@ -1,11 +1,13 @@
 package ish.oncourse.services.sites;
 
+import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -26,6 +28,8 @@ public class SitesService implements ISitesService {
 		if (searchProperty != null) {
 			q.andQualifier(ExpressionFactory.matchExp(searchProperty, value));
 		}
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		q.setCacheGroups(Site.class.getSimpleName());
 		List<Site> result = cayenneService.sharedContext().performQuery(q);
 		return !result.isEmpty() ? result.get(0) : null;
 	}
@@ -56,6 +60,8 @@ public class SitesService implements ISitesService {
 	@Override
 	public List<Site> loadByIds(List<Long> ids) {
 		SelectQuery q = new SelectQuery(Site.class, ExpressionFactory.inDbExp(Site.ID_PK_COLUMN, ids));
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		q.setCacheGroups(Site.class.getSimpleName());
 		q.andQualifier(getSiteQualifier().andExp(getAvailabilityQualifier()));
 		return cayenneService.sharedContext().performQuery(q);
 	}

@@ -35,6 +35,7 @@ public class Tag extends _Tag implements Queueable {
 			q.andQualifier(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, this));
 			q.andQualifier(ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true));
 			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+			q.setCacheGroups(Tag.class.getSimpleName());
 			visibleTags = getObjectContext().performQuery(q);
 		}
 

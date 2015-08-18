@@ -6,6 +6,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -22,6 +23,8 @@ public class RoomService implements IRoomService {
 	@SuppressWarnings("unchecked")
 	public Room getRoom(String searchProperty, Object value) {
 		SelectQuery q = new SelectQuery(Room.class);
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		q.setCacheGroups(Room.class.getSimpleName());
 		q.andQualifier(getSiteQualifier());
 		if (searchProperty != null) {
 			q.andQualifier(ExpressionFactory.matchExp(searchProperty, value));

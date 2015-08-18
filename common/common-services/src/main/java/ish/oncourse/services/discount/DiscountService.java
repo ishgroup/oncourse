@@ -6,6 +6,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -85,6 +86,8 @@ public class DiscountService implements IDiscountService {
 		Expression qualifier = ExpressionFactory.matchExp(Discount.CODE_PROPERTY, code).andExp(
 				Discount.getCurrentDateFilter()).andExp(getCurrentCollegeFilter()).andExp(getAvailableOnWebFilter());
 		SelectQuery query = new SelectQuery(Discount.class, qualifier);
+		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		query.setCacheGroups(Discount.class.getSimpleName());
 		@SuppressWarnings("unchecked")
 		List<Discount> result = cayenneService.sharedContext().performQuery(query);
 		return result.isEmpty() ? null : result.get(0);

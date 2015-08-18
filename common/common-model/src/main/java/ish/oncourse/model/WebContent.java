@@ -4,12 +4,15 @@ import ish.oncourse.model.auto._WebContent;
 import ish.oncourse.model.visitor.IVisitor;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 public class WebContent extends _WebContent implements Comparable<WebContent> {
 	
@@ -61,6 +64,8 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 	public WebContentVisibility getWebContentVisibility(WebNodeType webNodeType) {
 		logger.debug(String.format("Searching webVisibility for webContent:%s with webNodeType:%s", this.getId(), webNodeType.getId()));
 		SelectQuery q = new SelectQuery(WebContentVisibility.class);
+		q.setCacheStrategy(LOCAL_CACHE);
+		q.setCacheGroups(WebContentVisibility.class.getSimpleName());
 		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_CONTENT_PROPERTY, this));
 		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_NODE_TYPE_PROPERTY, webNodeType));
 		@SuppressWarnings("unchecked")
@@ -78,6 +83,8 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 	public WebContentVisibility getWebContentVisibility(WebNode webNode) {
 		logger.debug(String.format("Searching webVisibility for webNode:%s and webContent:%s", webNode.getId(), this.getId()));
 		SelectQuery q = new SelectQuery(WebContentVisibility.class);
+		q.setCacheStrategy(LOCAL_CACHE);
+		q.setCacheGroups(WebContentVisibility.class.getSimpleName());
 		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_NODE_PROPERTY, webNode));
 		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_CONTENT_PROPERTY, this));
 		@SuppressWarnings("unchecked")

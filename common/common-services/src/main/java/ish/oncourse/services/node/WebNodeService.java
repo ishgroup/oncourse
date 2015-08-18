@@ -236,13 +236,8 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
     }
 
 	private void appyCacheSettings(SelectQuery query) {
-		// TODO: uncomment after we've properly configure JGroups or JMS, and
-		// fix https://issues.apache.org/jira/browse/CAY-1585
-
-		/*
-		 * query.setCacheGroups(CacheGroup.PAGES.name());
-		 * query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		 */
+		 query.setCacheGroups(WebNode.class.getSimpleName());
+		 query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 	}
 
 	@Override

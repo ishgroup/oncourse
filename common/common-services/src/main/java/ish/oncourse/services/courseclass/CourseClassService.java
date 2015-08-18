@@ -176,6 +176,8 @@ public class CourseClassService implements ICourseClassService {
                 expr = addingExpresion.andExp(expr);
             }
             SelectQuery q = new SelectQuery(Session.class, expr.andExp(startingExp).andExp(activeClassesExp));
+            q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+            q.setCacheGroups(Session.class.getSimpleName());
 
             sessions.addAll(cayenneService.sharedContext().performQuery(q));
         }
@@ -191,6 +193,8 @@ public class CourseClassService implements ICourseClassService {
                 expr = addingExpresion.andExp(expr);
             }
             SelectQuery q = new SelectQuery(Session.class, expr.andExp(startingExp).andExp(activeClassesExp));
+            q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+            q.setCacheGroups(Session.class.getSimpleName());
 
             sessions.addAll(cayenneService.sharedContext().performQuery(q));
         }
