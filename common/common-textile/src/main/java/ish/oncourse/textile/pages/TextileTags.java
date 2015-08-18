@@ -2,6 +2,9 @@ package ish.oncourse.textile.pages;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.search.SearchParamsParser;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.textile.components.TagItem;
@@ -30,6 +33,9 @@ public class TextileTags {
 
 	@Inject
 	private ISearchService searchService;
+
+	@Inject
+	private IWebSiteService webSiteService;
 
 	private String entityType;
 
@@ -67,7 +73,9 @@ public class TextileTags {
 		showTopLevel = !(Boolean) request
 				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM);
 
-		counters = searchService.getCountersForTags();
+		SearchParamsParser parser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
+		parser.parse();
+		counters = searchService.getCountersForTags(parser.getSearchParams());
 
 		return rootTag != null && (maxLevels == null || maxLevels > 0);
 	}

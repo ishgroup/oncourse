@@ -1,11 +1,11 @@
 <li xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-    <div class="tag-option">
-        <input id="tag_${tag.id}" name="tag_${tag.id}" type="checkbox" class="courses-filter-option"
+    <div class="filter-option">
+        <input id="tag_${tag.id}" name="tag_${tag.id}" type="checkbox" class="filter-option-control"
                data-id="${tag.id}"
                data-path="${tag.defaultPath}"
                data-counter="${counter}"/>
-        <label class="checkbox tag-option-label" for="tag_${tag.id}">${tag.name}</label>
-        <span class="tag-counter">(${counter})</span>
+        <label class="checkbox filter-option-label" for="tag_${tag.id}">${tag.name}</label>
+        <span class="filter-option-counter">(${counter})</span>
         <t:if test="showDetails">
             <div class="tag_detail"> ${tag.detail} </div>
         </t:if>
@@ -14,3 +14,4 @@
         </ul>
     </div>
 </li>
+

@@ -2,6 +2,7 @@ package ish.oncourse.textile.pages;
 
 import ish.oncourse.model.Site;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.search.Count;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParamsParser;
 import ish.oncourse.services.search.SearchParamsParser.ParametersProvider;
@@ -22,10 +23,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -70,7 +68,7 @@ public class TextileLocation {
     private String identifier;
 
     @Property
-    private Long counter;
+    private Long counter = 0l;
 
     @Property
     private String path;
@@ -95,7 +93,15 @@ public class TextileLocation {
             }
             path = StringUtils.join(values, "/");
             identifier = path.replaceAll("[^A-Za-z0-9]", "_");
-            path = "near=" + path;
+
+            SearchParamsParser parser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
+            parser.parse();
+            Map<String, Count> result = searchService.getCountersForLocations(parser.getSearchParams(),
+                    Collections.singletonList(Count.valueOf(identifier, path, 0)));
+            Count count = result.get(identifier);
+            if (count != null) {
+                counter = count.getCounter();
+            }
         } else if (siteId != null) {
             ObjectContext objectContext = cayenneService.sharedContext();
             Site site = ObjectSelect.query(Site.class).and(ExpressionFactory.inDbExp(Site.ID_PK_COLUMN, Long.valueOf(siteId))).selectFirst(objectContext);
