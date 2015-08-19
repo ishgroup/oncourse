@@ -86,6 +86,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 				ctd.setTemplateClassName("TagItem");
 				ctd.setTemplateFileName("MultiSelectTagItem.tml");
 				parameters.put(TextileUtil.CUSTOM_TEMPLATE_DEFINITION, ctd);
+				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_MULTISELECT_TAGS_PARAM, "true");
 			}
 
 			if (templateFileName != null) {

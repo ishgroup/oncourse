@@ -15,6 +15,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,9 +74,13 @@ public class TextileTags {
 		showTopLevel = !(Boolean) request
 				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM);
 
-		SearchParamsParser parser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
-		parser.parse();
-		counters = searchService.getCountersForTags(parser.getSearchParams());
+		if (request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_MULTISELECT_TAGS_PARAM) != null) {
+			SearchParamsParser parser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
+			parser.parse();
+			counters = searchService.getCountersForTags(parser.getSearchParams());
+		} else {
+			counters = Collections.emptyMap();
+		}
 
 		return rootTag != null && (maxLevels == null || maxLevels > 0);
 	}
