@@ -89,7 +89,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Get the name this college is known as.
-	 * 
+	 *
 	 * @return college name
 	 */
 	public String getCollegeName() {
@@ -98,7 +98,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Set a name for this college.
-	 * 
+	 *
 	 * @param value college name
 	 */
 	public void setCollegeName(String value) {
@@ -107,7 +107,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Get the college ABN (Australian Business Number)
-	 * 
+	 *
 	 * @return ABN
 	 */
 	public String getCollegeABN() {
@@ -116,7 +116,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Set the college ABN
-	 * 
+	 *
 	 * @param value ABN
 	 */
 	public void setCollegeABN(String value) {
@@ -125,7 +125,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Get the web site URL for this college. Does not include http://
-	 * 
+	 *
 	 * @return URL string
 	 */
 	public String getCollegeURL() {
@@ -134,7 +134,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Set the web site URL for this college. Do not include http://
-	 * 
+	 *
 	 * @param value URL string
 	 */
 	public void setCollegeURL(String value) {
@@ -143,7 +143,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Get the description to put on invoice and help to pay
-	 * 
+	 *
 	 * @return URL string
 	 */
 	public String getPaymentInfo() {
@@ -152,7 +152,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Set the description to put on invoice and help to pay
-	 * 
+	 *
 	 * @param value URL string
 	 */
 	public void setPaymentInfo(String value) {
@@ -161,7 +161,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Gets the url to redirect after the successful enrolment.
-	 * 
+	 *
 	 * @return URL string
 	 */
 	public String getEnrolSuccessUrl() {
@@ -170,7 +170,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Sets the url to redirect after the successful enrolment.
-	 * 
+	 *
 	 * @param value URL string
 	 */
 	public void setEnrolSuccessUrl(String value) {
@@ -213,7 +213,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * A randomly generated key which is unique for this data file.
-	 * 
+	 *
 	 * @return 16 character key
 	 */
 	public synchronized String getServicesSecurityKey() {
@@ -227,7 +227,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Set the security key. It should only be set by getServicesSecurityKey()
-	 * 
+	 *
 	 * @param value a random key
 	 */
 	public void setServicesSecurityKey(String value) {
@@ -364,7 +364,7 @@ public abstract class CommonPreferenceController {
 	public static final String LICENSE_ATTENDANCE = "license.attendance";
 	public static final String LICENSE_SCRIPTING = "license.scripting";
 	public static final String LICENSE_FEE_HELP_EXPORT = "license.feeHelpExport";
-	
+
 	public static boolean LICENSE_BYPASS_MODE = false;
 
 	public boolean getLicenseAccessControl() {
@@ -455,11 +455,11 @@ public abstract class CommonPreferenceController {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_WEBSITE, false, Boolean.toString(value));
 	}
-	
+
 	public boolean getLicenseVoucher() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_VOUCHER, false));
 	}
-	
+
 	public void setLicenseVoucher(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
@@ -479,15 +479,15 @@ public abstract class CommonPreferenceController {
 	public void setLicenseAttendance(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
-	
+
 	public boolean getLicenseScripting() {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_SCRIPTING, false));
 	}
-	
+
 	public boolean getLicenseFeeHelpExport () {
 		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_FEE_HELP_EXPORT, false));
 	}
-	
+
 	public void setLicenseScripting(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
@@ -873,7 +873,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * How long before the client logs out in seconds.
-	 * 
+	 *
 	 * @return seconds before logout due to inactivity
 	 */
 	public long getLogoutTimeout() {
@@ -1466,7 +1466,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Get the list view column order and sizing.
-	 * 
+	 *
 	 * @param frameIdentifier a unique string identifier for this view
 	 * @return this is a map of column property keys and widths (in pixels)
 	 */
@@ -1490,7 +1490,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Set the list view column order and sizing.
-	 * 
+	 *
 	 * @param frameIdentifier a unique string identifier for this view
 	 * @param value this is a map of column property keys and widths (in pixels)
 	 */
@@ -1546,7 +1546,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Get the server host name used for the last login of the client on this workstation.
-	 * 
+	 *
 	 * @return host name
 	 */
 	public static String getLastLoginServerHost() {
@@ -1555,7 +1555,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Set the server host name to be used for the next login of the client on this workstation.
-	 * 
+	 *
 	 * @param value host name
 	 */
 	public static void setLastLoginServerHost(String value) {
@@ -1564,7 +1564,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Get the server port used for the last login of the client on this workstation.
-	 * 
+	 *
 	 * @return TCP port
 	 */
 	public static int getLastLoginServerPort() {
@@ -1577,7 +1577,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Set the server port to be used for the next login of the client on this workstation.
-	 * 
+	 *
 	 * @param value TCP port
 	 */
 	public static void setLastLoginServerPort(int value) {
@@ -1601,7 +1601,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Get the user name used for the last login of the client on this workstation.
-	 * 
+	 *
 	 * @return user name
 	 */
 	public static String getLastLoginServerUserName() {
@@ -1610,7 +1610,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Set the user name to be used for the next login of the client on this workstation.
-	 * 
+	 *
 	 * @param value user name
 	 */
 	public static void setLastLoginServerUserName(String value) {
@@ -1720,7 +1720,7 @@ public abstract class CommonPreferenceController {
 	public void setDocumentImportPath(File value) {
 		setFilePreference(DOCUMENT_IMPORT_PATH, value.getAbsolutePath());
 	}
-	
+
 	// **************************************
 	// External storage preferences
 	// **************************************
@@ -1763,39 +1763,39 @@ public abstract class CommonPreferenceController {
 	public static final String AUSKEY_CERTIFICATE = "auskey.certificate";
 	public static final String AUSKEY_PRIVATE_KEY = "auskey.privatekey";
 	public static final String AUSKEY_SALT = "auskey.salt";
-	
+
 	public void setAuskeyPassword(String value) {
 		setValue(AUSKEY_PASSWORD, false, value);
 	}
-	
+
 	public String getAuskeyPassword() {
 		return getValue(AUSKEY_PASSWORD, false);
 	}
-	
+
 	public void setAuskeyCertificate(String value) {
 		setValue(AUSKEY_CERTIFICATE, false, value);
 	}
-	
+
 	public String getAuskeyCertificate() {
 		return getValue(AUSKEY_CERTIFICATE, false);
 	}
-	
+
 	public void setAuskeyPrivateKey(String value) {
 		setValue(AUSKEY_PRIVATE_KEY, false, value);
 	}
-	
+
 	public String getAuskeyPrivateKey() {
 		return getValue(AUSKEY_PRIVATE_KEY, false);
 	}
-	
+
 	public void setAuskeySalt(String value) {
 		setValue(AUSKEY_SALT, false, value);
 	}
-	
+
 	public String getAuskeySalt() {
 		return getValue(AUSKEY_SALT, false);
 	}
-	
+
 	/*
 	 * Other preferences
 	 */
@@ -1847,7 +1847,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Gets value for given key.
-	 * 
+	 *
 	 * @param key - the property/attribute key
 	 * @return the human readable version
 	 */
@@ -2049,6 +2049,8 @@ public abstract class CommonPreferenceController {
 			return getSMTPStartTLS();
 		} else if (SMTP_PORT.equals(key)) {
 			return getSMTPPort();
+		} else if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
+			return getOncourseServerDefaultTimezone();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -2255,6 +2257,8 @@ public abstract class CommonPreferenceController {
 			setSMTPStartTLS((Boolean) value);
 		} else if (SMTP_PORT.equals(key)) {
 			setSMTPPort((Integer) value);
+		} else if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
+			setOncourseServerDefaultTimezone((String) value);
 		}
 	}
 
@@ -2267,7 +2271,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Communication key using to track college sessions during replication to prevent copy of data being started to replicate.
-	 * 
+	 *
 	 * @return communication key
 	 */
 	public Long getCommunicationKey() {
@@ -2287,7 +2291,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Sets communicaiton key to being used during the next replication session.
-	 * 
+	 *
 	 * @param communicationKey
 	 */
 	public void setCommunicationKey(Long communicationKey) {
@@ -2303,7 +2307,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Enabled or disable replication. Should be used only in unit tests.
-	 * 
+	 *
 	 * @param value
 	 */
 	public void setReplicationEnabled(boolean value) {
@@ -2344,7 +2348,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Retrieve a preference value.
-	 * 
+	 *
 	 * @param isUserPref true if specific preference for the currently logged in user
 	 * @param key property key
 	 * @return String value of preference
@@ -2353,7 +2357,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Set a preference value.
-	 * 
+	 *
 	 * @param isUserPref true if specific preference for the currently logged in user
 	 * @param key property key
 	 * @param value value of the preference
@@ -2362,7 +2366,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Convenience method to deserialize byte[] to Object
-	 * 
+	 *
 	 * @param data
 	 * @return the deserialized object
 	 */
@@ -2384,7 +2388,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Convenience method to serialize Object to byte[]
-	 * 
+	 *
 	 * @param object
 	 * @return the bytes representing the serialized object
 	 */
@@ -2429,7 +2433,7 @@ public abstract class CommonPreferenceController {
 
 	/**
 	 * Sets a user's system preference value for the given key
-	 * 
+	 *
 	 * @param key
 	 * @param value
 	 */
