@@ -19,16 +19,6 @@
 			<changefreq>daily</changefreq>
 			<priority>0.8</priority>
 		</url>
-		<t:loop source="currentClasses" value="courseClass">
-			<url>
-				<loc>https://${hostName}/class/${courseClass.uniqueIdentifier}</loc>
-				<lastmod>
-					<t:output value="courseClass.modified" format="dateFormat" />
-				</lastmod>
-				<changefreq>daily</changefreq>
-				<priority>0.8</priority>
-			</url>
-		</t:loop>
 	</t:loop>
 	<t:loop source="sites" value="site">
 		<url>

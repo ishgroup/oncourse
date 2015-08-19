@@ -3,13 +3,11 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.course.ICourseService;
-import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tutor.ITutorService;
-import ish.oncourse.ui.utils.CourseItemModel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.Property;
@@ -49,9 +47,6 @@ public class SitemapXML extends ISHCommon {
 	@Inject
 	private ITagService tagService;
 
-	@Inject
-	private ICourseClassService courseClassService;
-
 	@Property
 	private String hostName;
 	
@@ -63,10 +58,7 @@ public class SitemapXML extends ISHCommon {
 	
 	@Property
 	private Course course;
-	
-	@Property
-	private CourseClass courseClass;
-	
+		
 	@Property
 	private List<Site>sites;
 	
@@ -146,8 +138,4 @@ public class SitemapXML extends ISHCommon {
     {
         return tutorService.isActiveTutor(tutor);
     }
-
-	public List<CourseClass> getCurrentClasses() {
-		return courseClassService.getCurrentClasses(course);
-	}
 }
