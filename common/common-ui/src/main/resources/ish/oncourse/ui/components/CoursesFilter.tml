@@ -24,7 +24,7 @@
             </div>
             <div class="courses-filter-refine-option">
                 <select id="courses-filter-refine-option" name="courses-filter-refine-option">
-                    <option value="no_refine">Refine search results</option>
+                    <option value="no_refine">Refine Search Results</option>
                     <option value="coming_soon">coming soon</option>
                     <option value="weekend">weekend</option>
                     <option value="weekday">weekday</option>
