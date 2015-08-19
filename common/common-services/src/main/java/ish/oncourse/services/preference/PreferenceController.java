@@ -117,7 +117,7 @@ public class PreferenceController extends CommonPreferenceController {
 	private Preference getPreferenceByKey(String key) {
 		return ObjectSelect.query(Preference.class)
 				.and(Preference.COLLEGE.eq(webSiteService.getCurrentCollege()))
-				.and(Preference.NAME.eq(key)).cacheStrategy(QueryCacheStrategy.NO_CACHE).selectOne(cayenneService.sharedContext());
+				.and(Preference.NAME.eq(key)).cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Preference.class.getSimpleName()).selectOne(cayenneService.sharedContext());
 	}
 
 	public  void setLicenseAccessControl(boolean value) {

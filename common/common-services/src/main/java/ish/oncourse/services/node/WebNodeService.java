@@ -280,15 +280,18 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	    ObjectContext context = cayenneService.sharedContext();
 	    return ObjectSelect.query(WebUrlAlias.class)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebUrlAlias.class.getSimpleName())
 			    .and(WebUrlAlias.WEB_NODE.eq(webNode))
 			    .and(WebUrlAlias.DEFAULT.eq(true))
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH)
-			    .cacheGroups(WebUrlAlias.class.getSimpleName())
 			    .selectOne(context);
     }
 
 	@Override
 	public WebNode getNodeForName(String nodeName) {
-		return ObjectSelect.query(WebNode.class).and(siteQualifier()).and(WebNode.NAME.eq(nodeName)).selectOne(cayenneService.sharedContext());
+		return ObjectSelect.query(WebNode.class)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebNode.class.getSimpleName())
+				.and(siteQualifier())
+				.and(WebNode.NAME.eq(nodeName))
+				.selectOne(cayenneService.sharedContext());
 	}
 }
