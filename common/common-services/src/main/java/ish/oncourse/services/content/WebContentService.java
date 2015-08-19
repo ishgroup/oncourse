@@ -27,6 +27,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public WebContent getWebContent(String searchProperty, Object value) {
 		ObjectSelect<WebContent> query = ObjectSelect.query(WebContent.class).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName()).
 				and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()));
 		if (searchProperty != null) {
 			query.and(ExpressionFactory.matchExp(
@@ -45,9 +46,11 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		}
 
 		ObjectSelect<WebContent> query = ObjectSelect.query(WebContent.class)
-				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
+			.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName())
+			.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(ExpressionFactory.matchExp(WebContent.WEB_CONTENT_VISIBILITIES.getName() + "+."
 						+ WebContentVisibility.WEB_NODE.getName(), null));
+
 
 		List<WebContentVisibility> webContentVisibilities = webNodeType
 				.getWebContentVisibilities();
@@ -79,7 +82,6 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		}
 
 		query = query.and(regionKeyQualifier);
-
 		TreeSet<WebContent> treeSet = new TreeSet<>(new WebContentComparator(webNodeType));
 		treeSet.addAll(query.select(webNodeType.getObjectContext()));
 		return treeSet;
