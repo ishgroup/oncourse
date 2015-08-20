@@ -64,7 +64,7 @@ public class HTMLUtilsTest {
 
 	@Test
 	public void test_getCanonicalLinkPathForCourses() {
-		String expected = "https://localhost.localdomain/context/courses/tag1.name/tag2.sname1+tag2.sname2?view-all=true";
+		String expected = "https://localhost.localdomain/context/courses/tag1.name/tag2.sname1+tag2.sname2";
 		Tag tag1 = mock(Tag.class);
 		when(tag1.getName()).thenReturn("tag1.name");
 		when(tag1.getShortName()).thenReturn(null);
@@ -84,7 +84,7 @@ public class HTMLUtilsTest {
 		assertEquals(expected, actual);
 
 		actual = HTMLUtils.getCanonicalRelativeLinkPathForCourses(request,tag2);
-		assertEquals("/context/courses/tag1.name/tag2.sname1+tag2.sname2?view-all=true", actual);
+		assertEquals("/context/courses/tag1.name/tag2.sname1+tag2.sname2", actual);
 
 	}
 }
