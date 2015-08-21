@@ -3,6 +3,7 @@ package ish.oncourse.cms.pages;
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebSite;
+import ish.oncourse.services.menu.GetMenuChildren;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -112,7 +113,7 @@ public class MA {
 			value = agregatedValue.toString();
 		}
 
-		WebMenu menu = cayenneService.sharedContext().localObject(webMenuService.findById(Long.parseLong(id[1])));
+		WebMenu menu = cayenneService.newContext().localObject(webMenuService.findById(Long.parseLong(id[1])));
 
 		switch (OPER.valueOf(id[0])) {
 			case n:
@@ -158,6 +159,7 @@ public class MA {
 		}
 
 		menu.getObjectContext().commitChanges();
+		GetMenuChildren.valueOf(menu.getParentWebMenu(), cayenneService.sharedContext(), false).get();
 
 		JSONObject obj = new JSONObject();
 		obj.put(MENU_ELEMENT_ID_PARAMETER, menu.getId());
@@ -203,6 +205,7 @@ public class MA {
 			ctx.deleteObjects(menu);
 
 			ctx.commitChanges();
+			GetMenuChildren.valueOf(parentWebMenu, cayenneService.sharedContext(), false).get();
 		}
 
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
@@ -238,6 +241,7 @@ public class MA {
 			item.setParentWebMenu(pItem);
 			webMenuService.updateWeight(item, weight, oldParent);
 			ctx.commitChanges();
+			GetMenuChildren.valueOf(pItem, cayenneService.sharedContext(), false).get();
 			return new TextStreamResponse("text/json", "{status: 'OK'}");
 		} else {
 			ctx.rollbackChanges();

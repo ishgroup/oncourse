@@ -1,6 +1,7 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebUrlAlias;
+import ish.oncourse.services.alias.GetRedirects;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -56,16 +57,17 @@ public class RedirectsSettings {
     public void deleteItem() {
         String id = request.getParameter(WebUrlAlias.ID_PK_COLUMN);
         if (StringUtils.isNumeric(id)) {
-            ObjectContext context = cayenneService.sharedContext();
+            ObjectContext context = cayenneService.newContext();
             WebUrlAlias webUrl = deserialize(context);
             context.deleteObjects(webUrl);
             context.commitChanges();
+            GetRedirects.valueOf(webSiteVersionService.getCurrentVersion(), cayenneService.sharedContext(), false).get();
         }
     }
 
     @OnEvent(value = "saveItem")
     public Object saveItem() throws Exception {
-        ObjectContext context = cayenneService.sharedContext();
+        ObjectContext context = cayenneService.newContext();
 
         WebUrlAlias webUrl = deserialize(context);
 
@@ -79,6 +81,7 @@ public class RedirectsSettings {
         } else {
             context.commitChanges();
             result.put(value.name(), getJSONWebUrl(webUrl));
+            GetRedirects.valueOf(webSiteVersionService.getCurrentVersion(), cayenneService.sharedContext(), false).get();
         }
         return new TextStreamResponse("text/json", result.toString());
     }

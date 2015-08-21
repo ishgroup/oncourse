@@ -55,9 +55,11 @@ public class MenuBuilder extends ish.oncourse.ui.components.Menu {
 
 			obj.append("value", alias.getUrlPath());
 			obj.append("label", alias.getUrlPath());
-			obj.append("title", alias.getWebNode() != null ? alias.getWebNode().getName(): alias.getRedirectTo());
-
-			array.put(obj);
+			String title =  alias.getWebNode() != null ? alias.getWebNode().getName(): alias.getRedirectTo();
+			if (title != null) {
+				obj.append("title", title);
+				array.put(obj);
+			}
 		}
 
 		for (WebNode node : webNodeService.getNodes()) {
