@@ -36,6 +36,8 @@ public abstract class CommonPreferenceController {
 
 	private static final Preferences FILE_PREFS = Preferences.userNodeForPackage(CommonPreferenceController.class);
 	public static final Pattern NO_WHITESPACE_PATTERN = Pattern.compile("^[^\\s]+$");
+	public static final Pattern WRAPPING_QUOTATION_MARKS =  Pattern.compile("^[\\\"].*[\\\"]$");
+
 	// use US locale so months in English
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss", Locale.US);
 	private static final Pattern commaExplode = Pattern.compile(",");
@@ -2064,8 +2066,9 @@ public abstract class CommonPreferenceController {
 	public void setValueForKey(String key, Object value) {
 
 		if (EMAIL_ADMIN_ADDRESS.equals(key) || EMAIL_FROM_ADDRESS.equals(key) || EMAIL_BOUNCEADDRESS.equals(key)) {
-			if (((String) value).startsWith("\"") && ((String) value).endsWith("\"")) {
-				value = ((String) value).replace('"', ' ');
+			String localValue = (String) value;
+			if (localValue != null && WRAPPING_QUOTATION_MARKS.matcher(localValue).matches()) {
+				value = localValue.replace('"', ' ');
 			}
 		}
 
