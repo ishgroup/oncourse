@@ -48,14 +48,21 @@ public enum ProductStatus implements DisplayableExtendedEnumeration<Integer> {
 	NEW(4, "New"),
 
 	/**
+	 * Database value: 5
 	 * @PublicApi
 	 */
-	EXPIRED(5, "Expired");
+	EXPIRED(5, "Expired"),
+
+	/**
+	 * Database value: 6
+	 * @PublicApi
+	 */
+	DELIVERED(6, "Delivered");
 	
 	private int value;
 	private String displayName;
 	
-	private ProductStatus(int value, String displayName) {
+	ProductStatus(int value, String displayName) {
 		this.value = value;
 		this.displayName = displayName;
 	}
