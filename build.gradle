@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        waCommonWebservicesClientVersion = '7.10.1'
+        waCommonWebservicesClientVersion = '7.10.2'
     }
 	repositories {
 		maven {
