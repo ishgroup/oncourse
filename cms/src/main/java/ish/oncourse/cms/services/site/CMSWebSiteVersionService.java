@@ -69,7 +69,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	public void delete(WebSiteVersion webSiteVersionToDelte) {
 		WebSiteVersionDelete.valueOf(webSiteVersionToDelte,
 				getCurrentVersion(),
-				getDeployedVersion(webSiteService.getCurrentWebSite()),
+				GetDeployedVersion.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), false).get(),
 				cayenneService.newContext()).delete();
 	}
 	
@@ -80,7 +80,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	public void removeOldWebSiteVersions(WebSite webSite) {
 		WebSiteVersionsDelete.valueOf(webSite,
 				getCurrentVersion(),
-				getDeployedVersion(webSiteService.getCurrentWebSite()),
+				GetDeployedVersion.valueOf(cayenneService.sharedContext(), webSite, false).get(),
 				cayenneService.newContext()).delete();
 	}
 
