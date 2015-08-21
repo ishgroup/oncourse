@@ -5,6 +5,7 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.lifecycle.cache.CacheGroups;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.PrefetchTreeNode;
 import org.apache.cayenne.query.QueryCacheStrategy;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+@CacheGroups("WebMenu")
 public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 	private static final long serialVersionUID = -6977235713134006203L;
 

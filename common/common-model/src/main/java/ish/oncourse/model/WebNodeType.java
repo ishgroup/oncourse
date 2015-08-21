@@ -4,6 +4,7 @@ import ish.oncourse.model.auto._WebNodeType;
 import ish.oncourse.model.visitor.IVisitor;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.lifecycle.cache.CacheGroups;
 import org.apache.cayenne.query.*;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
+@CacheGroups(value = {"WebNodeType", "WebNode", "WebContentVisibility", "WebContent"})
 public class WebNodeType extends _WebNodeType {
 	private static final long serialVersionUID = -1945260610761430515L;
 	public static final String PAGE = "page";

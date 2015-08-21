@@ -111,17 +111,13 @@ public class PreferenceController extends CommonPreferenceController {
 		logger.debug("committing changes to prefs: {}", context.uncommittedObjects());
 
 		context.commitChanges();
-		getPreferenceByKey(key, QueryCacheStrategy.LOCAL_CACHE_REFRESH);
 	}
 
 	private Preference getPreferenceByKey(String key) {
-		return getPreferenceByKey(key, QueryCacheStrategy.LOCAL_CACHE);
-	}
-
-	private Preference getPreferenceByKey(String key, QueryCacheStrategy strategy) {
 		return ObjectSelect.query(Preference.class)
 				.and(Preference.COLLEGE.eq(webSiteService.getCurrentCollege()))
-				.and(Preference.NAME.eq(key)).cacheStrategy(strategy, Preference.class.getSimpleName()).selectOne(cayenneService.sharedContext());
+				.and(Preference.NAME.eq(key)).localCache(Preference.class.getSimpleName())
+				.selectOne(cayenneService.sharedContext());
 	}
 
 

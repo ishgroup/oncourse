@@ -8,6 +8,7 @@ import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
+import org.apache.cayenne.lifecycle.cache.CacheInvalidationFilter;
 import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +37,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		
 		QueueableLifecycleListener listener = new QueueableLifecycleListener(this);
 		cayenneRuntime.getDataDomain().addFilter(listener);
+		cayenneRuntime.getDataDomain().addFilter(new CacheInvalidationFilter());
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addDefaultListener(listener);
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new IshVersionListener());
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new BinaryInfoRelationListener(webSiteService));

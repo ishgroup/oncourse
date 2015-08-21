@@ -61,7 +61,6 @@ public class RedirectsSettings {
             WebUrlAlias webUrl = deserialize(context);
             context.deleteObjects(webUrl);
             context.commitChanges();
-            GetRedirects.valueOf(webSiteVersionService.getCurrentVersion(), cayenneService.sharedContext(), false).get();
         }
     }
 
@@ -81,7 +80,6 @@ public class RedirectsSettings {
         } else {
             context.commitChanges();
             result.put(value.name(), getJSONWebUrl(webUrl));
-            GetRedirects.valueOf(webSiteVersionService.getCurrentVersion(), cayenneService.sharedContext(), false).get();
         }
         return new TextStreamResponse("text/json", result.toString());
     }

@@ -4,6 +4,7 @@ import ish.oncourse.model.auto._WebContent;
 import ish.oncourse.model.visitor.IVisitor;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.lifecycle.cache.CacheGroups;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
+@CacheGroups("WebContent")
 public class WebContent extends _WebContent implements Comparable<WebContent> {
 	
 	/**
