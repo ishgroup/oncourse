@@ -56,7 +56,7 @@ public class RedirectsSettings {
     public void deleteItem() {
         String id = request.getParameter(WebUrlAlias.ID_PK_COLUMN);
         if (StringUtils.isNumeric(id)) {
-            ObjectContext context = cayenneService.newContext();
+            ObjectContext context = cayenneService.sharedContext();
             WebUrlAlias webUrl = deserialize(context);
             context.deleteObjects(webUrl);
             context.commitChanges();
@@ -65,7 +65,7 @@ public class RedirectsSettings {
 
     @OnEvent(value = "saveItem")
     public Object saveItem() throws Exception {
-        ObjectContext context = cayenneService.newContext();
+        ObjectContext context = cayenneService.sharedContext();
 
         WebUrlAlias webUrl = deserialize(context);
 
@@ -96,8 +96,8 @@ public class RedirectsSettings {
 
     private WebUrlAlias deserialize(ObjectContext context) {
         String id = request.getParameter(WebUrlAlias.ID_PK_COLUMN);
-        String urlPath = request.getParameter(WebUrlAlias.URL_PATH_PROPERTY);
-        String redirectTo = request.getParameter(WebUrlAlias.REDIRECT_TO_PROPERTY);
+        String urlPath = request.getParameter(WebUrlAlias.URL_PATH.getName());
+        String redirectTo = request.getParameter(WebUrlAlias.REDIRECT_TO.getName());
 
         WebUrlAlias webUrl;
         if (StringUtils.isNumeric(id)) {
@@ -117,14 +117,14 @@ public class RedirectsSettings {
 
         ISHUrlValidator validator = URLUtils.HTTP_URL_VALIDATOR;
         if (!validator.isValidOnlyPath(webUrl.getUrlPath())) {
-            result.put(key.name(), WebUrlAlias.URL_PATH_PROPERTY);
+            result.put(key.name(), WebUrlAlias.URL_PATH.getName());
             result.put(message.name(), messages.format(MessageKey.invalidPath.getKey()));
             return result;
         }
 
         WebUrlAlias fWebUrl = webUrlAliasService.getAliasByPath(webUrl.getUrlPath());
         if (fWebUrl != null && !fWebUrl.getObjectId().equals(webUrl.getObjectId())) {
-            result.put(key.name(), WebUrlAlias.URL_PATH_PROPERTY);
+            result.put(key.name(), WebUrlAlias.URL_PATH.getName());
             if (fWebUrl.getWebNode() != null) {
                 result.put(message.name(), "To create redirects to pages within this CMS, go to that page and add an additional URL in the page options.");
             }
@@ -138,7 +138,7 @@ public class RedirectsSettings {
 
 
         if (!validator.isValid(webUrl.getRedirectTo()) && !validator.isValidOnlyPath(webUrl.getRedirectTo())) {
-            result.put(key.name(), WebUrlAlias.REDIRECT_TO_PROPERTY);
+            result.put(key.name(), WebUrlAlias.REDIRECT_TO.getName());
             result.put(message.name(), "The to address must be a valid URL or partial URL starting with /");
             return result;
         }
@@ -148,8 +148,8 @@ public class RedirectsSettings {
     private JSONObject getJSONWebUrl(WebUrlAlias webUrlAlias) {
         JSONObject jWebUrl = new JSONObject();
         jWebUrl.put(WebUrlAlias.ID_PK_COLUMN, webUrlAlias.getId());
-        jWebUrl.put(WebUrlAlias.URL_PATH_PROPERTY, webUrlAlias.getUrlPath());
-        jWebUrl.put(WebUrlAlias.REDIRECT_TO_PROPERTY, webUrlAlias.getRedirectTo());
+        jWebUrl.put(WebUrlAlias.URL_PATH.getName(), webUrlAlias.getUrlPath());
+        jWebUrl.put(WebUrlAlias.REDIRECT_TO.getName(), webUrlAlias.getRedirectTo());
         return jWebUrl;
     }
 

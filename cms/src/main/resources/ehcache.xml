@@ -2,45 +2,32 @@
 <ehcache
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-        updateCheck="false" name="cms">
+        name="cms">
 
     <!-- a short cache by default (for all the things edited in the CMS) -->
     <defaultCache
-            maxEntriesLocalHeap="500"
-            eternal="false"
-            timeToLiveSeconds="120"
-            overflowToDisk="false">
+            maxEntriesLocalHeap="10000"
+            timeToLiveSeconds="120">
     </defaultCache>
 
     <cache name="CourseClass"
-           maxEntriesLocalHeap="500"
-           eternal="false"
-           timeToLiveSeconds="600"
-           overflowToDisk="false">
+           maxEntriesLocalHeap="10000"
+           timeToLiveSeconds="600">
     </cache>
     <cache name="Course"
-           maxEntriesLocalHeap="500"
-           eternal="false"
-           timeToLiveSeconds="600"
-           overflowToDisk="false">
+           maxEntriesLocalHeap="10000"
+           timeToLiveSeconds="600">
     </cache>
     <cache name="Tag"
-           maxEntriesLocalHeap="500"
-           eternal="false"
-           timeToLiveSeconds="600"
-           overflowToDisk="false">
+           maxEntriesLocalHeap="10000"
+           timeToLiveSeconds="600">
     </cache>
     <cache name="Session"
-           maxEntriesLocalHeap="500"
-           eternal="false"
-           timeToLiveSeconds="600"
-           overflowToDisk="false">
+           maxEntriesLocalHeap="10000"
+           timeToLiveSeconds="600">
     </cache>
     <cache name="CourseProductRelation"
-           maxEntriesLocalHeap="500"
-           eternal="false"
-           timeToLiveSeconds="600"
-           overflowToDisk="false">
+           maxEntriesLocalHeap="10000"
+           timeToLiveSeconds="600">
     </cache>
-
 </ehcache>

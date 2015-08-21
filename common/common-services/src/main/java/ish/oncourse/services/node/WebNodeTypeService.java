@@ -44,7 +44,7 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
 
         WebSiteVersion version = webSiteVersionService.getCurrentVersion();
 
-        ObjectContext context = getCayenneService().newNonReplicatingContext();
+        ObjectContext context = getCayenneService().sharedContext();
 
         Expression expression = ExpressionFactory.matchExp(
                 WebNodeType.WEB_SITE_VERSION_PROPERTY, context.localObject(version)

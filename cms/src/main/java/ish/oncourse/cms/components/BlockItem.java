@@ -49,7 +49,6 @@ public class BlockItem {
 	}
 	
 	private boolean isBlockAssigned(WebContent block) {
-		block = webContentService.refresh(block.getId());
 		List<WebContentVisibility> visibilities = block.getWebContentVisibilities();
 		if (visibilities.size() > 0) {
 			for (WebContentVisibility visibility : visibilities) {
@@ -67,7 +66,7 @@ public class BlockItem {
 			return page.getReloadPageBlock();
 		}
 		Blocks parentComponent = (Blocks) componentResources.getContainer();
-		parentComponent.changeSelectedBlock(webContentService.findById(Long.parseLong(id)));
+		parentComponent.changeSelectedBlock(webContentService.refresh(Long.parseLong(id)));
 		return parentComponent.getEditBlock();
 	}
 	
@@ -76,7 +75,7 @@ public class BlockItem {
 			return new TextStreamResponse("text/json", "{status: 'session timeout'}");
 		}
 		ObjectContext ctx = cayenneService.newContext();
-		WebContent blockToDelete = webContentService.findById(Long.parseLong(id));
+		WebContent blockToDelete = webContentService.refresh(Long.parseLong(id));
 		if (blockToDelete != null && !isBlockAssigned(blockToDelete)) {
 			blockToDelete = ctx.localObject(blockToDelete);
 			ctx.deleteObject(blockToDelete);

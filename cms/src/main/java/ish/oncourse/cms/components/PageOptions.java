@@ -173,8 +173,7 @@ public class PageOptions {
 
     public WebUrlAlias getDefaultWebUrlAlias()
     {
-        Expression expression =  ExpressionFactory.matchExp(WebUrlAlias.DEFAULT_PROPERTY, true);
-        List<WebUrlAlias> result = expression.filterObjects(editNode.getWebUrlAliases());
+        List<WebUrlAlias> result = WebUrlAlias.DEFAULT.eq(true).filterObjects(editNode.getWebUrlAliases());
         return result.isEmpty() ? null : result.get(0);
     }
 

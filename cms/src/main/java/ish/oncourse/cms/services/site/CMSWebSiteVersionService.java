@@ -51,6 +51,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	
 	private WebSiteVersion getDraftVersion(WebSite webSite) {
 		return ObjectSelect.query(WebSiteVersion.class).
+				localCache(WebSiteVersion.class.getSimpleName()).
 				where(WebSiteVersion.WEB_SITE.eq(webSite)).
 				and(WebSiteVersion.DEPLOYED_ON.isNull()).
 				selectOne(webSite.getObjectContext());
@@ -85,6 +86,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 
 	public WebSiteVersion getDeployedVersion(WebSite webSite) {
 		return ObjectSelect.query(WebSiteVersion.class)
+				.localCache(WebSiteVersion.class.getSimpleName())
 				.and(WebSiteVersion.WEB_SITE.eq(webSite))
 				.addOrderBy(WebSiteVersion.DEPLOYED_ON.desc())
 				.limit(1).selectFirst(webSite.getObjectContext());

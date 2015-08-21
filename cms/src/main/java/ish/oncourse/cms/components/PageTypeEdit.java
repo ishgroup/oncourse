@@ -142,7 +142,7 @@ public class PageTypeEdit {
 		int regionPosition = Integer.parseInt(request.getParameter("w"));
 
 		ObjectContext ctx = editPageType.getObjectContext();
-		WebContent block = webContentService.findById(Long.valueOf(id));
+		WebContent block = webContentService.refresh(Long.valueOf(id));
 		block = ctx.localObject(block);
 		sort(editPageType, block, regionKey, regionPosition);
 		return new TextStreamResponse("text/json", "{status: 'OK'}");

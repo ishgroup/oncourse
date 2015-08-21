@@ -11,7 +11,7 @@ import ish.oncourse.services.cache.RequestCached;
 import java.util.Date;
 import java.util.List;
 
-public interface IWebNodeService {
+public interface IWebNodeService extends IBaseService<WebNode> {
 
 	public static final String CURRENT_WEB_NODE_LAYOUT = "CURRENT_WEB_NODE_LAYOUT";
 
@@ -23,11 +23,6 @@ public interface IWebNodeService {
 	 * @return next node number.
 	 */
 	 Integer getNextNodeNumber();
-	
-	/**
-	 * @see IBaseService#findById(Long)
-	 */
-	WebNode findById(Long willowId);
 	
 	/**
 	 * Returns all web nodes for the current site or current college.

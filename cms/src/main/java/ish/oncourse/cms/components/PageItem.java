@@ -102,8 +102,8 @@ public class PageItem {
         value = request.getParameter(WebNode.ID_PK_COLUMN);
         if (StringUtils.isNumeric(value)) {
             long id = Long.valueOf(value);
-            ObjectContext ctx = cayenneService.newContext();
-            WebNode node = Cayenne.objectForPK(ctx, WebNode.class, id);
+            ObjectContext ctx = cayenneService.sharedContext();
+            WebNode node = webNodeService.refresh(id);
             if (node != null) {
                 node.setPublished(published);
                 ctx.commitChanges();

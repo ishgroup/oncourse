@@ -56,7 +56,9 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 	}
 
 	public T refresh(Long willowId) {
-		return 	ObjectSelect.query(getEntityClass(), ExpressionFactory.matchDbExp(IBaseService.ID_PK_COLUMN, willowId)).selectOne(getCayenneService().newContext());
+		return 	ObjectSelect.query(getEntityClass(), ExpressionFactory.matchDbExp(IBaseService.ID_PK_COLUMN, willowId))
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH, getEntityClass().getSimpleName())
+				.selectOne(getCayenneService().sharedContext());
 	}
 
 	@Override

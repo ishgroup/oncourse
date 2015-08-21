@@ -105,7 +105,7 @@ public class ContentStructure {
 		logger.debug("Edit region with id: {}", id);
 
 		ObjectContext ctx = cayenneService.newContext(node.getObjectContext());
-		WebContent regionForEdit = webContentService.findById(Long.parseLong(id));
+		WebContent regionForEdit = webContentService.refresh(Long.parseLong(id));
 		if (regionForEdit == null) {
 			return page.getReloadPageBlock();
 		}

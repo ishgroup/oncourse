@@ -65,7 +65,12 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 
 	public List<WebMenu> getChildrenBy(WebMenu parent) {
 		List<WebMenu> result = new ArrayList<>();
-		result.addAll(parent.getChildrenMenus());
+		result.addAll(ObjectSelect.query(WebMenu.class).
+				localCache(WebMenu.class.getSimpleName())
+				.and(WebMenu.PARENT_WEB_MENU.eq(parent))
+				.addPrefetch(WebMenu.PARENT_WEB_MENU.disjoint())
+				.addPrefetch(WebMenu.WEB_NODE.disjoint())
+				.select(parent.getObjectContext()));
 		Collections.sort(result);
 		return result;
 	}
@@ -97,8 +102,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		return ObjectSelect.query(WebMenu.class)
 				.and(siteQualifier())
 				.and(WebMenu.PARENT_WEB_MENU.isNull())
-				.cacheStrategy(LOCAL_CACHE)
-				.cacheGroups(WebMenu.class.getSimpleName())
+				.localCache(WebMenu.class.getSimpleName())
 				.selectOne(cayenneService.sharedContext());
 	}
 

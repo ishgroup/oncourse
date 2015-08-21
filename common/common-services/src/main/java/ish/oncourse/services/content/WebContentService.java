@@ -36,6 +36,12 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		return query.selectOne(cayenneService.sharedContext());
 	}
 
+	/**
+	 * The method is used only in cms to edit theme and shouldn't use local cache
+	 * @param webNodeType
+	 * @param regionKey
+	 * @return
+	 */
 	@Override
 	public SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType,
 			RegionKey regionKey) {
@@ -46,7 +52,6 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		}
 
 		ObjectSelect<WebContent> query = ObjectSelect.query(WebContent.class)
-			.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName())
 			.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(ExpressionFactory.matchExp(WebContent.WEB_CONTENT_VISIBILITIES.getName() + "+."
 						+ WebContentVisibility.WEB_NODE.getName(), null));
@@ -90,8 +95,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public List<WebContent> getBlocks() {
 		return ObjectSelect.query(WebContent.class)
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
-				.cacheGroups(WebContent.class.getSimpleName())
+				.localCache(WebContent.class.getSimpleName())
 				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(getBlockQualifier())
 				.orderBy(WebContent.MODIFIED.desc())

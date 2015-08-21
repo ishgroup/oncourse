@@ -35,7 +35,7 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 		ObjectSelect<WebUrlAlias> query = ObjectSelect.query(WebUrlAlias.class)
 				.and(siteQualifier())
 				.and(WebUrlAlias.URL_PATH.eq(path))
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebUrlAlias.class.getSimpleName());
+				.localCache(WebUrlAlias.class.getSimpleName());
 
 		List<WebUrlAlias> aliases = query.select(cayenneService.sharedContext());
 		int size = aliases.size();
@@ -57,9 +57,10 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 
     @Override
     public List<WebUrlAlias> getRedirects() {
-        ObjectContext context = cayenneService.newContext();
+        ObjectContext context = cayenneService.sharedContext();
 
 		return ObjectSelect.query(WebUrlAlias.class)
+				.localCache(WebUrlAlias.class.getSimpleName())
 				.and(WebUrlAlias.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.addOrderBy(WebUrlAlias.MODIFIED.desc()).select(context);
     }
