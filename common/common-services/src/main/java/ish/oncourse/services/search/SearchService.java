@@ -158,19 +158,26 @@ public class SearchService implements ISearchService {
         }
     }
 
-    public Map<Long, Long> getCountersForTags(SearchParams params) {
+    public Map<Long, Long> getCountersForTags(SearchParams params, List<Tag> tags) {
         try {
             String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
             SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId, 0, 0).build());
             q.setFacet(true);
-            q.addFacetField("tagId");
+
+            HashMap<String, Tag> queries = new HashMap<>();
+
+            for (Tag tag : tags) {
+                String query = SolrQueryBuilder.getTagQuery(tag);
+                queries.put(query, tag);
+                q.addFacetQuery(query);
+            }
             QueryResponse response = query(q, SolrCore.courses);
 
             HashMap<Long, Long> result = new HashMap<>();
-            FacetField field = response.getFacetField("tagId");
-            List<FacetField.Count> counts = field.getValues();
-            for (FacetField.Count count : counts) {
-                result.put(Long.valueOf(count.getName()), count.getCount());
+            Map<String, Integer> solrResult = response.getFacetQuery();
+            for (Map.Entry<String, Integer> query : solrResult.entrySet()) {
+                Tag tag = queries.get(query.getKey());
+                result.put(tag.getId(), query.getValue().longValue());
             }
             return result;
         } catch (SolrServerException e) {

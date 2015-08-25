@@ -293,6 +293,16 @@ public class SolrQueryBuilder {
         return String.format(FILTER_TEMPLATE_course_loc, PARAMETER_VALUE_sfield, suburb.getSuburb(), PARAMETER_d, suburb.getDistance()/KM_IN_DEGREE_VALUE);
     }
 
+    public static String getTagQuery(Tag tag) {
+        ArrayList<String> tags = new ArrayList<>();
+        tags.add(String.format(FILTER_TEMPLATE_tagId, tag.getId()));
+        for (Tag subTag : tag.getAllWebVisibleChildren()) {
+            tags.add(SolrQueryBuilder.QUERY_OR);
+            tags.add(String.format(FILTER_TEMPLATE_tagId, subTag.getId()));
+        }
+        return tags.isEmpty() ? null : StringUtils.join(tags.toArray(), QUERY_DELIMITER);
+    }
+
     /**
      * @param params cannot be null
      * @param collegeId cannot be null
@@ -321,15 +331,9 @@ public class SolrQueryBuilder {
      * The helper method appends filter not only for the tag also for its childrent.
      */
     public static void appendFilterTag(SolrQuery query, Tag tag) {
-        ArrayList<String> tags = new ArrayList<>();
-        tags.add(String.format(FILTER_TEMPLATE_tagId, tag.getId()));
-        for (Tag subTag : tag.getAllWebVisibleChildren()) {
-            tags.add(SolrQueryBuilder.QUERY_OR);
-            tags.add(String.format(FILTER_TEMPLATE_tagId, subTag.getId()));
-        }
-        if (!tags.isEmpty()) {
-            query.addFilterQuery(String.format(QUERY_brackets, StringUtils.join(tags.toArray(), QUERY_DELIMITER)));
+        String sQuery = getTagQuery(tag);
+        if (sQuery != null) {
+            query.addFilterQuery(String.format(QUERY_brackets,sQuery));
         }
     }
-
 }

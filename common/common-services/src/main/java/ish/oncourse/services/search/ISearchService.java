@@ -1,5 +1,6 @@
 package ish.oncourse.services.search;
 
+import ish.oncourse.model.Tag;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -16,7 +17,7 @@ public interface ISearchService {
 
     SolrDocumentList searchSuburb(String location);
 
-    Map<Long, Long> getCountersForTags(SearchParams searchParams);
+    Map<Long, Long> getCountersForTags(SearchParams searchParams, List<Tag> counts);
 
     Map<String, Count> getCountersForLocations(SearchParams params, List<Count> counts);
 }

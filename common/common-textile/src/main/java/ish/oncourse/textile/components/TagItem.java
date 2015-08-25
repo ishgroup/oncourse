@@ -2,7 +2,6 @@ package ish.oncourse.textile.components;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
-import ish.oncourse.services.search.GetCoursesCounter;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import org.apache.tapestry5.annotations.*;
@@ -139,7 +138,7 @@ public class TagItem {
 	}
 
 	public Long getCounter() {
-		return GetCoursesCounter.valueOf(tag, counters).get();
+		return counters.get(tag.getId());
 	}
 
 }
