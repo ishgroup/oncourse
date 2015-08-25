@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static ish.oncourse.services.search.SearchParamsParser.DATE_FORMAT_FOR_AFTER_BEFORE;
@@ -23,8 +24,8 @@ public class SolrQueryBuilderTest {
     	"boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&" +
     	"qq=(*:*)&sort=score desc,startDate asc,name asc&debugQuery=false";
 	private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
-		"end:[NOW TO *]&fq=(tagId:10 || tagId:11 || tagId:12 || tagId:13 || tagId:14 || tagId:15)" +
-		"&fq=(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)" +
+		"end:[NOW TO *]&fq=%s" +
+		"&fq=%s" +
 		"&fq=(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)&q={!boost b=$boostfunction v=$qq}" +
 		"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) " +
 		"AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z] AND siteId:1000)" +
@@ -81,9 +82,9 @@ public class SolrQueryBuilderTest {
         SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", 0, 100);
         String value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
 
-        assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
-        	"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
-        	"&sort=score desc,startDate asc,name asc&debugQuery=false", value);
+        assertEquals("Commons parameters", "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
+				"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
+				"&sort=score desc,startDate asc,name asc&debugQuery=false", value);
 
         searchParams.setAfter(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, "UTC").parse("20120101"));
         searchParams.setBefore(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, "UTC").parse("20120101"));
@@ -92,29 +93,28 @@ public class SolrQueryBuilderTest {
         searchParams.setDay("DAY");
         searchParams.setTime("TIME");
 		searchParams.setSiteId(1000L);
-        searchParams.setSubject(new Tag(){
-            @Override
-            public Long getId() {
-                return 0L;
-            }
+        searchParams.setSubject(new Tag() {
+			@Override
+			public Long getId() {
+				return 0L;
+			}
 
-            @Override
-            public List<Tag> getAllWebVisibleChildren() {
-                ArrayList<Tag> list = new ArrayList<>();
-                for (int i = 0; i < 5; i++) {
-                    final long id = i+1;
-                    Tag tag = new Tag()
-                    {
-                        @Override
-                        public Long getId() {
-                            return id;
-                        }
-                    };
-                    list.add(tag);
-                }
-                return list;
-            }
-        });
+			@Override
+			public List<Tag> getAllWebVisibleChildren() {
+				ArrayList<Tag> list = new ArrayList<>();
+				for (int i = 0; i < 5; i++) {
+					final long id = i + 1;
+					Tag tag = new Tag() {
+						@Override
+						public Long getId() {
+							return id;
+						}
+					};
+					list.add(tag);
+				}
+				return list;
+			}
+		});
 
 		searchParams.addTag(new Tag() {
 			@Override
@@ -168,10 +168,10 @@ public class SolrQueryBuilderTest {
         ArrayList<String> filters = new ArrayList<>();
 
         solrQueryBuilder.appendFilterS(filters);
-        assertEquals("Test filters.size for filter SearchParam.s",1,filters.size());
-        assertEquals("Test filters.get(0) for filter SearchParam.s", String.format(SolrQueryBuilder.FILTER_TEMPLATE_s, 
-        	EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM, 
-        		EXPECTED_AFTER_REPLACEMENT_S_PARAM),filters.get(0));
+        assertEquals("Test filters.size for filter SearchParam.s", 1, filters.size());
+        assertEquals("Test filters.get(0) for filter SearchParam.s", String.format(SolrQueryBuilder.FILTER_TEMPLATE_s,
+				EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM,
+				EXPECTED_AFTER_REPLACEMENT_S_PARAM), filters.get(0));
 
         filters.clear();
         solrQueryBuilder.appendFilterPrice(filters);
@@ -180,13 +180,13 @@ public class SolrQueryBuilderTest {
 
         filters.clear();
         solrQueryBuilder.appendFilterDay(filters);
-        assertEquals("Test filters.size for filter SearchParam.day",1,filters.size());
-        assertEquals("Test filters.get(0) for filter SearchParam.day", String.format(SolrQueryBuilder.FILTER_TEMPLATE_when, "DAY"),filters.get(0));
+        assertEquals("Test filters.size for filter SearchParam.day", 1, filters.size());
+        assertEquals("Test filters.get(0) for filter SearchParam.day", String.format(SolrQueryBuilder.FILTER_TEMPLATE_when, "DAY"), filters.get(0));
 
         filters.clear();
         solrQueryBuilder.appendFilterTime(filters);
-        assertEquals("Test filters.size for filter SearchParam.time",1,filters.size());
-        assertEquals("Test filters.get(0) for filter SearchParam.time", String.format(SolrQueryBuilder.FILTER_TEMPLATE_when, "TIME"),filters.get(0));
+        assertEquals("Test filters.size for filter SearchParam.time", 1, filters.size());
+        assertEquals("Test filters.get(0) for filter SearchParam.time", String.format(SolrQueryBuilder.FILTER_TEMPLATE_when, "TIME"), filters.get(0));
 
         SolrQuery q = new SolrQuery();
         solrQueryBuilder.appendFilterSubject(q);
@@ -197,10 +197,9 @@ public class SolrQueryBuilderTest {
 		q = new SolrQuery();
 		solrQueryBuilder.appendFilterTag(q);
 		assertEquals("Test filter query length for filter SearchParam.tag1 and SearchParam.tag2", 2, q.getFilterQueries().length);
-		assertEquals("Test filter query first element for filter SearchParam.tag1",
-			"(tagId:10 || tagId:11 || tagId:12 || tagId:13 || tagId:14 || tagId:15)", q.getFilterQueries()[0]);
-		assertEquals("Test filter query first element for filter SearchParam.tag2",
-			"(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)", q.getFilterQueries()[1]);
+		List<String> tagQueries = Arrays.asList(q.getFilterQueries());
+		assertTrue("Test filter query first element for filter SearchParam.tag1", tagQueries.contains("(tagId:10 || tagId:11 || tagId:12 || tagId:13 || tagId:14 || tagId:15)"));
+		assertTrue("Test filter query first element for filter SearchParam.tag2", tagQueries.contains("(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)"));
 
         filters.clear();
         solrQueryBuilder.appendFilterStartBetween(filters);
@@ -208,11 +207,16 @@ public class SolrQueryBuilderTest {
         assertEquals("Test filters.get(0) for filter SearchParam.after", "class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]",filters.get(0));
 
         value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
-        String expectedValue = String.format(EXPECTED_RESULT_VALUE, EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM, 
-        	EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM);
+        String expectedValue = String.format( EXPECTED_RESULT_VALUE,
+				tagQueries.get(0),
+				tagQueries.get(1),
+				EXPECTED_AFTER_REPLACEMENT_S_PARAM,
+				EXPECTED_AFTER_REPLACEMENT_S_PARAM,
+        		EXPECTED_AFTER_REPLACEMENT_S_PARAM,
+				EXPECTED_AFTER_REPLACEMENT_S_PARAM);
         assertEquals("Query parameters", expectedValue, value);
 
-		//check that if tag1 or tag2 not specified everuthing works too
+		//check that if tag1 or tag2 not specified everything works too
 		searchParams.getTags().remove(0);
 		solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", 0, 100);
 		q = new SolrQuery();
