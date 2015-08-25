@@ -7,6 +7,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SolrQueryBuilder {
@@ -74,8 +75,12 @@ public class SolrQueryBuilder {
     private Integer rows;
     private boolean appendFacet = false;
 
+    private TagGroupsBuilder tagGroupsBuilder;
+
     public SolrQuery build() {
         SolrQuery q = new SolrQuery();
+        tagGroupsBuilder = TagGroupsBuilder.valueOf(params.getSubject(), params.getTags());
+        tagGroupsBuilder.build();
 
         fillCommons(q);
 
@@ -221,29 +226,24 @@ public class SolrQueryBuilder {
     }
 
 	void appendFilterTag(SolrQuery query) {
-		for (Tag tag : params.getTags()) {
-            appendFilterTag(query, tag);
-		}
+        List<List<Tag>> tags = tagGroupsBuilder.getTagGroups();
+        for (List<Tag> tagGroup : tags) {
+            query.addFilterQuery(getQueryByTagGroup(tagGroup));
+        }
 	}
 
     void appendFilterSubject(SolrQuery query) {
-        if (params.getSubject() != null) {
-            Object tagParameter = params.getSubject();
-            if (tagParameter instanceof Tag) {
-                Tag browseTag = (Tag) tagParameter;
-                ArrayList<String> tags = new ArrayList<>();
-                tags.add(String.format(FILTER_TEMPLATE_tagId, browseTag.getId()));
-                for (Tag t : browseTag.getAllWebVisibleChildren()) {
-                    tags.add(QUERY_OR);
-                    tags.add(String.format(FILTER_TEMPLATE_tagId, t.getId()));
-                }
-                query.addFilterQuery(String.format(QUERY_brackets, StringUtils.join(tags.toArray(), QUERY_DELIMITER)));
-            } else {
-                final String message = String.format("Illegal parameter detected with value = %s with type = %s  for college = %s",
-                        tagParameter, tagParameter != null ? tagParameter.getClass() : "undefined", collegeId);
-                throw new IllegalArgumentException(message);
-            }
+        if (tagGroupsBuilder.getSubjectTagGroup() != null) {
+            query.addFilterQuery(getQueryByTagGroup(tagGroupsBuilder.getSubjectTagGroup()));
         }
+    }
+
+    private String getQueryByTagGroup(List<Tag> tagGroup) {
+        ArrayList<String> queries = new ArrayList<>();
+        for (Tag tag: tagGroup) {
+            queries.addAll(getTagQueries(tag));
+        }
+        return String.format(QUERY_brackets, StringUtils.join(queries.toArray(), QUERY_DELIMITER + QUERY_OR + QUERY_DELIMITER));
     }
 
     private void appendFilterWhen(List<String> filters, String whenValue) {
@@ -291,6 +291,15 @@ public class SolrQueryBuilder {
 
     public static String getSuburbQuery(Suburb suburb) {
         return String.format(FILTER_TEMPLATE_course_loc, PARAMETER_VALUE_sfield, suburb.getSuburb(), PARAMETER_d, suburb.getDistance()/KM_IN_DEGREE_VALUE);
+    }
+
+    public static List<String> getTagQueries(Tag tag) {
+        ArrayList<String> tags = new ArrayList<>();
+        tags.add(String.format(FILTER_TEMPLATE_tagId, tag.getId()));
+        for (Tag subTag : tag.getAllWebVisibleChildren()) {
+            tags.add(String.format(FILTER_TEMPLATE_tagId, subTag.getId()));
+        }
+        return tags;
     }
 
     public static String getTagQuery(Tag tag) {

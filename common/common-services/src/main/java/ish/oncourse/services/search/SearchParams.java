@@ -5,10 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import javax.swing.text.html.HTML;
+import java.util.*;
 
 public class SearchParams {
     private String s;
