@@ -7,12 +7,20 @@
                 <t:loop source="tags" value="tag">
                     <li>
                         <span>${tag.name}</span>
-                        <a href="#" class="courses-filter-clear-option" data-id="${tag.id}" data-path="${tag.defaultPath}">
+                        <a href="#" class="courses-filter-clear-option" data-id="${tag.id}" data-path="${tag.defaultPath.toLowerCase()}">
                             <i class="fa fa-times"></i>
                         </a>
                     </li>
                 </t:loop>
-                <t:if test="tags.isEmpty()" negate="true">
+                <t:loop source="suburbs" value="suburb">
+                    <li>
+                        <span>${suburb.path}</span>
+                        <a href="#" class="courses-filter-clear-option" data-id="${suburb.identifier}" data-path="${suburb.path.toLowerCase()}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                </t:loop>
+                <t:if test="showClearAll()">
                     <li><a href="#" class="courses-filter-clear-all btn-link">Clear all</a></li>
                 </t:if>
             </ul>

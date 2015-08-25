@@ -59,7 +59,7 @@ CoursesUrlFormat.prototype = {
             before,
             km;
         // Let the browser do the work
-        parser.href = url;
+        parser.href = url.toLowerCase();
         // Convert query string to object
         if (parser.pathname.endsWith("/courses") || parser.pathname.startsWith("/courses/")) {
             queries = parser.search.replace(/^\?/, '').split('&');

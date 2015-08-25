@@ -10,6 +10,7 @@ public class SuburbParser {
     private String near;
     private String km;
 
+    private String identifier;
     private String suburb;
     private String postcode;
     private Double distance;
@@ -30,6 +31,7 @@ public class SuburbParser {
     private void parseLocation() {
         String[] values = near.split("/");
         if (values.length >= 1) {
+            identifier = near;
             suburb = values[0];
             if (values.length >= 2) {
                 postcode = values[1];
@@ -46,16 +48,17 @@ public class SuburbParser {
             }
 
             if (solrSuburbs.size() > 0) {
-                result = Suburb.valueOf(solrSuburbs.get(0), distance);
+                result = Suburb.valueOf(identifier, solrSuburbs.get(0), distance);
             }
         }
     }
 
     private void parseNear() {
+        identifier = near.replaceAll("[^A-Za-z0-9]", "_");
         SolrDocumentList solrSuburbs = searchService.searchSuburb(convertPostcodeParameterToLong(near));
 
         if (solrSuburbs.size() > 0)
-            result = Suburb.valueOf(solrSuburbs.get(0), parseKm(km));
+            result = Suburb.valueOf(identifier, solrSuburbs.get(0), parseKm(km));
     }
 
 

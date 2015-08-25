@@ -1,6 +1,7 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.Tag;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
@@ -117,5 +118,16 @@ public class SearchParams {
 
     public void addSuburb(Suburb suburb) {
         this.suburbs.add(suburb);
+    }
+
+    public boolean isEmpty() {
+        return tags.isEmpty() && suburbs.isEmpty() &&
+                StringUtils.trimToNull(s) == null &&
+                price == null &&
+                StringUtils.trimToNull(day) == null &&
+                StringUtils.trimToNull(time) == null &&
+                subject == null &&
+                after == null &&
+                before == null;
     }
 }

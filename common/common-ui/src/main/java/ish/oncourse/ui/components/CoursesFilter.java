@@ -4,6 +4,7 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParams;
 import ish.oncourse.services.search.SearchParamsParser;
+import ish.oncourse.services.search.Suburb;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.logging.log4j.LogManager;
@@ -42,13 +43,21 @@ public class CoursesFilter {
     private List<Tag> tags;
 
     @Property
+    private List<Suburb> suburbs;
+
+    @Property
+    private Suburb suburb;
+
+    @Property
     private Tag tag;
+
+    private SearchParams searchParams;
 
     @SetupRender
     public void setupRender() {
         SearchParamsParser parser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
         parser.parse();
-        SearchParams searchParams = parser.getSearchParams();
+        searchParams = parser.getSearchParams();
 
         tags = new ArrayList<>();
         Tag subject = searchParams.getSubject();
@@ -56,11 +65,18 @@ public class CoursesFilter {
             tags.add(subject);
         }
         tags.addAll(searchParams.getTags());
+
+        suburbs = new ArrayList<>(searchParams.getSuburbs());
+
         try {
             QueryResponse queryResponse = searchService.searchCourses(searchParams, 0, 0);
             counter = queryResponse.getResults().getNumFound();
         } catch (Exception e) {
             logger.error(e);
         }
+    }
+
+    public boolean showClearAll() {
+        return !searchParams.isEmpty();
     }
 }

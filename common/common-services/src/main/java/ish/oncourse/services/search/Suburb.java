@@ -3,6 +3,9 @@ package ish.oncourse.services.search;
 import org.apache.solr.common.SolrDocument;
 
 public class Suburb{
+    private String identifier;
+
+    private String path;
 
     private String postcode;
 
@@ -50,14 +53,23 @@ public class Suburb{
     public String getSuburb()
     {
         if (suburb == null)
-            suburb = String.format("%s,%s", latitude,longitude);
+            suburb = String.format("%s,%s", latitude, longitude);
         return suburb;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+    public String getPath() {
+        return path;
+    }
 
-    public static Suburb valueOf(SolrDocument doc, Double distance)
+
+    public static Suburb valueOf(String path, SolrDocument doc, Double distance)
     {
         Suburb suburb = new Suburb();
+        suburb.path = path;
+        suburb.identifier = path.replaceAll("[^A-Za-z0-9]", "_");
         suburb.suburb = (String) doc.get(SolrQueryBuilder.PARAMETER_loc);
         String[] points = suburb.suburb.split(",");
         suburb.latitude = Double.parseDouble(points[0]);
@@ -67,9 +79,11 @@ public class Suburb{
         return suburb;
     }
 
-    public static Suburb valueOf(String suburb, String postcode , Double distance)
+    public static Suburb valueOf(String path, String suburb, String postcode, Double distance)
     {
         Suburb result = new Suburb();
+        result.path = path;
+        result.identifier = path.replaceAll("[^A-Za-z0-9]", "_");
         result.suburb = suburb;
         result.postcode = postcode;
         result.distance = distance != null ? distance: SearchService.DEFAULT_DISTANCE;

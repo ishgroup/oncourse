@@ -1,6 +1,7 @@
 package ish.oncourse.solr;
 
 import ish.oncourse.services.search.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -92,7 +93,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
 		suburb.addField(SolrQueryBuilder.FIELD_postcode,
 				SuburbParser.convertPostcodeParameterToLong((String) document.getFieldValue(COURSE_POSTCODE_FIELD_NAME)));
 		solrSuburbs.add(suburb);
-		searchParams.addSuburb(Suburb.valueOf(solrSuburbs.get(0), null));
+		searchParams.addSuburb(Suburb.valueOf(StringUtils.EMPTY, solrSuburbs.get(0), null));
 		
 		//check distance filtering
 		SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, document.getFieldValue(COLLEGE_ID_FIELD_NAME).toString(), 0, 5);
@@ -119,7 +120,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
 		suburb.addField(SolrQueryBuilder.FIELD_postcode,
 				SuburbParser.convertPostcodeParameterToLong((String) document.getFieldValue(COURSE_POSTCODE_FIELD_NAME)));
 		solrSuburbs.add(suburb);
-		searchParams.addSuburb(Suburb.valueOf(solrSuburbs.get(0), 10D));
+		searchParams.addSuburb(Suburb.valueOf(StringUtils.EMPTY, solrSuburbs.get(0), 10D));
 		
 		solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, document.getFieldValue(COLLEGE_ID_FIELD_NAME).toString(), 0, 5);
 		params = solrQueryBuilder.build();
