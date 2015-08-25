@@ -179,11 +179,16 @@ public class CourseClassUtils {
 			    priceMatch = CourseClassUtils.focusMatchForPrice(courseClass, searchParams.getPrice().floatValue());
 			}
 
-			float nearMatch = 1.0f;
+			Float nearMatch = null;
             List<Suburb> suburbs = searchParams.getSuburbs();
-            Suburb suburb = suburbs.isEmpty() ? null:suburbs.get(0);
-			if (suburb != null) {
-				nearMatch = CourseClassUtils.focusMatchForNear(courseClass, suburb.getLatitude(), suburb.getLongitude(),suburb.getDistance());
+			for (Suburb suburb : suburbs) {
+				float value = CourseClassUtils.focusMatchForNear(courseClass, suburb.getLatitude(), suburb.getLongitude(),suburb.getDistance());
+				if (nearMatch != null && nearMatch < value) {
+					nearMatch = value;
+				}
+			}
+			if (nearMatch == null) {
+				nearMatch = 1.0f;
 			}
 
             float afterMatch = 1.0f;
