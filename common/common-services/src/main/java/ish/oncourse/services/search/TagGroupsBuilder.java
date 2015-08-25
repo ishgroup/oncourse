@@ -24,6 +24,9 @@ public class TagGroupsBuilder {
         for (Tag tag : tags) {
             updateTagGroup(tag);
         }
+        if (subjectTagGroup != null) {
+            mapping.remove(subject.getParent() != null && subject.getParent().getIsTagGroup() ? subject.getParent(): subject);
+        }
     }
 
     private List<Tag> updateTagGroup(Tag tag) {

@@ -7,7 +7,6 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SolrQueryBuilder {
@@ -79,8 +78,6 @@ public class SolrQueryBuilder {
 
     public SolrQuery build() {
         SolrQuery q = new SolrQuery();
-        tagGroupsBuilder = TagGroupsBuilder.valueOf(params.getSubject(), params.getTags());
-        tagGroupsBuilder.build();
 
         fillCommons(q);
 
@@ -328,6 +325,8 @@ public class SolrQueryBuilder {
         builder.collegeId = collegeId;
         builder.start = start;
         builder.rows = rows;
+        builder.tagGroupsBuilder = TagGroupsBuilder.valueOf(params.getSubject(), params.getTags());
+        builder.tagGroupsBuilder.build();
         return builder;
     }
 
