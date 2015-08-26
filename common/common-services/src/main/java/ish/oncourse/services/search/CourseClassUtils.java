@@ -183,7 +183,9 @@ public class CourseClassUtils {
             List<Suburb> suburbs = searchParams.getSuburbs();
 			for (Suburb suburb : suburbs) {
 				float value = CourseClassUtils.focusMatchForNear(courseClass, suburb.getLatitude(), suburb.getLongitude(),suburb.getDistance());
-				if (nearMatch != null && nearMatch < value) {
+				if (nearMatch == null) {
+					nearMatch = value;
+				} if (nearMatch < value) {
 					nearMatch = value;
 				}
 			}
