@@ -19,6 +19,12 @@ import static ish.oncourse.services.search.SearchParamsParser.DATE_FORMAT_FOR_AF
 import static org.junit.Assert.*;
 
 public class SolrQueryBuilderTest {
+
+	private static final String SUBJECT_QUERY = "(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)";
+	private static final String TAG1_QUERY = "(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)";
+	private static final String TAG2_QUERY = "(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)";
+
+
     private static final String GEOFILTER_QUERY = "qt=standard&fl=id,name,course_loc,score&start=5&rows=10&fq=+collegeId:2 +doctype:course end:[NOW TO *]&" +
     	"fq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&q={!boost b=$boostfunction v=$qq}&" +
     	"boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&" +
@@ -26,7 +32,7 @@ public class SolrQueryBuilderTest {
 	private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
 		"end:[NOW TO *]&fq=%s" +
 		"&fq=%s" +
-		"&fq=(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)&q={!boost b=$boostfunction v=$qq}" +
+		"&fq=%s&q={!boost b=$boostfunction v=$qq}" +
 		"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) " +
 		"AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z] AND siteId:1000)" +
 		"&sort=score desc,startDate asc,name asc&debugQuery=false";
@@ -126,9 +132,8 @@ public class SolrQueryBuilderTest {
 			public List<Tag> getAllWebVisibleChildren() {
 				ArrayList<Tag> list = new ArrayList<>();
 				for (int i = 10; i < 15; i++) {
-					final long id = i+1;
-					Tag tag = new Tag()
-					{
+					final long id = i + 1;
+					Tag tag = new Tag() {
 						@Override
 						public Long getId() {
 							return id;
@@ -188,18 +193,13 @@ public class SolrQueryBuilderTest {
         assertEquals("Test filters.size for filter SearchParam.time", 1, filters.size());
         assertEquals("Test filters.get(0) for filter SearchParam.time", String.format(SolrQueryBuilder.FILTER_TEMPLATE_when, "TIME"), filters.get(0));
 
-        SolrQuery q = new SolrQuery();
-        solrQueryBuilder.appendFilterSubject(q);
-        assertEquals("Test filter query length for filter SearchParam.subject", 1, q.getFilterQueries().length);
-        assertEquals("Test filter query first element for filter SearchParam.subject", "(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)", 
-        	q.getFilterQueries()[0]);
-
-		q = new SolrQuery();
+        SolrQuery q  = new SolrQuery();
 		solrQueryBuilder.appendFilterTag(q);
-		assertEquals("Test filter query length for filter SearchParam.tag1 and SearchParam.tag2", 2, q.getFilterQueries().length);
+		assertEquals("Test filter query length for filter SearchParam.tag1 and SearchParam.tag2 abd  SearchParam.subject", 3, q.getFilterQueries().length);
 		List<String> tagQueries = Arrays.asList(q.getFilterQueries());
-		assertTrue("Test filter query first element for filter SearchParam.tag1", tagQueries.contains("(tagId:10 || tagId:11 || tagId:12 || tagId:13 || tagId:14 || tagId:15)"));
-		assertTrue("Test filter query first element for filter SearchParam.tag2", tagQueries.contains("(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)"));
+		assertTrue("Test filter query first element for filter SearchParam.tag1", tagQueries.contains(TAG1_QUERY));
+		assertTrue("Test filter query first element for filter SearchParam.tag2", tagQueries.contains(TAG2_QUERY));
+		assertTrue("Test filter query first element for filter SearchParam.subject", tagQueries.contains(SUBJECT_QUERY));
 
         filters.clear();
         solrQueryBuilder.appendFilterStartBetween(filters);
@@ -210,6 +210,7 @@ public class SolrQueryBuilderTest {
         String expectedValue = String.format( EXPECTED_RESULT_VALUE,
 				tagQueries.get(0),
 				tagQueries.get(1),
+				tagQueries.get(2),
 				EXPECTED_AFTER_REPLACEMENT_S_PARAM,
 				EXPECTED_AFTER_REPLACEMENT_S_PARAM,
         		EXPECTED_AFTER_REPLACEMENT_S_PARAM,
@@ -221,16 +222,16 @@ public class SolrQueryBuilderTest {
 		solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", 0, 100);
 		q = new SolrQuery();
 		solrQueryBuilder.appendFilterTag(q);
-		assertEquals("Test filter query length for filter SearchParam.tag2", 1, q.getFilterQueries().length);
-		assertEquals("Test filter query first element for filter SearchParam.tag2",
-			"(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)",
-				q.getFilterQueries()[0]);
+		assertEquals("Test filter query length for filter SearchParam.tag2 and  SearchParam.subject", 2, q.getFilterQueries().length);
+		assertTrue("Test filter query has element for filter SearchParam.tag2", Arrays.asList(q.getFilterQueries()).contains(TAG2_QUERY));
+		assertTrue("Test filter query has element for filter SearchParam.subject", Arrays.asList(q.getFilterQueries()).contains(SUBJECT_QUERY));
 
 		searchParams.getTags().remove(0);
 		solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", 0, 100);
 		q = new SolrQuery();
 		solrQueryBuilder.appendFilterTag(q);
-		assertNull("Test filter query length for empty filter SearchParam.tag1 and tag2", q.getFilterQueries());
+		assertEquals("Test filter query length for empty filter SearchParam.tag1 and tag2, only subject tag", 1, q.getFilterQueries().length);
+		assertTrue("Test filter query has element for filter SearchParam.subject", Arrays.asList(q.getFilterQueries()).contains(SUBJECT_QUERY));
     }
 
 	@Test

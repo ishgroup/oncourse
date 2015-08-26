@@ -1,7 +1,6 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
@@ -15,7 +14,6 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrException;
@@ -161,23 +159,17 @@ public class SearchService implements ISearchService {
     public Map<Long, Long> getCountersForTags(SearchParams params, List<Tag> tags) {
         try {
             String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
-            SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId, 0, 0).build());
-            q.setFacet(true);
-
-            HashMap<String, Tag> queries = new HashMap<>();
+            HashMap<Long, Long> result = new HashMap<>();
 
             for (Tag tag : tags) {
+                TagGroups tagGroups = TagGroups.valueOf(params, tag);
+                SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, tagGroups, collegeId).build());
+                q.setFacet(true);
                 String query = SolrQueryBuilder.getTagQuery(tag);
-                queries.put(query, tag);
                 q.addFacetQuery(query);
-            }
-            QueryResponse response = query(q, SolrCore.courses);
-
-            HashMap<Long, Long> result = new HashMap<>();
-            Map<String, Integer> solrResult = response.getFacetQuery();
-            for (Map.Entry<String, Integer> query : solrResult.entrySet()) {
-                Tag tag = queries.get(query.getKey());
-                result.put(tag.getId(), query.getValue().longValue());
+                QueryResponse response = query(q, SolrCore.courses);
+                Map<String, Integer> solrResult = response.getFacetQuery();
+                result.put(tag.getId(), solrResult.get(query).longValue());
             }
             return result;
         } catch (SolrServerException e) {
@@ -188,7 +180,7 @@ public class SearchService implements ISearchService {
     public Map<String, Count> getCountersForLocations(SearchParams params, List<Count> counts) {
         try {
             String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
-            SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId, 0, 0).build());
+            SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId).build());
             q.setFacet(true);
 
             Map<String, Count> queries = new HashMap<>();
