@@ -61,7 +61,8 @@ CoursesUrlFormat.prototype = {
         // Let the browser do the work
         parser.href = url.toLowerCase();
         // Convert query string to object
-        if (parser.pathname.endsWith("/courses") || parser.pathname.startsWith("/courses/")) {
+        var paths = parser.pathname.split("/");
+        if (paths.length > 1 && paths[1] == "courses" ) {
             queries = parser.search.replace(/^\?/, '').split('&');
             $j.each(queries, function (index, query) {
                 split = query.split('=');
@@ -222,9 +223,9 @@ CoursesFilter.prototype = {
 
     getControlType: function(control) {
         var id = $j(control).attr("id");
-        if (id.startsWith("tag_")) {
+        if (id.indexOf("tag_") == 0) {
             return "tag"
-        } else  if (id.startsWith("location_")) {
+        } else  if (id.indexOf("location_") == 0) {
             return "location"
         }
     },
@@ -323,7 +324,8 @@ CoursesFilter.prototype = {
     loadCourses: function () {
         var self = this;
         var url = this.format.format(this.request);
-        //if (this.request.pathname.endsWith("/courses") || this.request.pathname.startsWith("/courses/")) {
+        //var paths = parser.pathname.split("/");
+        //if (paths.length > 1 && paths[1] == "courses" ) {
         //    $j.ajax({
         //        type: "GET",
         //        url: url,
