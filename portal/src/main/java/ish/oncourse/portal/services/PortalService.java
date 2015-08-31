@@ -354,14 +354,18 @@ public class PortalService implements IPortalService {
     private List<CourseClass> getUnconfirmedTutorClasses(List<CourseClass> courseClasses, Contact contact) {
         List<CourseClass> unconfirmed = new ArrayList<>();
 
+        List<CourseClass> currentClasses = getCurrentTutorClasses(courseClasses);
+
         for (CourseClass courseClass : courseClasses) {
             for (TutorRole tutorRole : courseClass.getTutorRoles()) {
-                if (tutorRole.getTutor().getId().equals(contact.getTutor().getId())
-                        && !tutorRole.getIsConfirmed()
-                        && getCurrentTutorClasses(courseClasses).contains(courseClass)) {
-
-                    unconfirmed.add(courseClass);
-
+                try {
+                    if (tutorRole.getTutor().getId().equals(contact.getTutor().getId())
+                            && !tutorRole.getIsConfirmed()
+                            && currentClasses.contains(courseClass)) {
+                        unconfirmed.add(courseClass);
+                    }
+                } catch (Exception e) {
+                    logger.error("Unexpected error. contactId: {}, courseClassId: {}, tutorRoleId: {}", contact.getId(), courseClass.getId(), tutorRole.getId(), e);
                 }
             }
         }
