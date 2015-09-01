@@ -93,7 +93,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
 		suburb.addField(SolrQueryBuilder.FIELD_postcode,
 				SuburbParser.convertPostcodeParameterToLong((String) document.getFieldValue(COURSE_POSTCODE_FIELD_NAME)));
 		solrSuburbs.add(suburb);
-		searchParams.addSuburb(Suburb.valueOf(StringUtils.EMPTY, solrSuburbs.get(0), null));
+		searchParams.addSuburb(Suburb.valueOf(StringUtils.EMPTY, null, solrSuburbs.get(0)));
 		
 		//check distance filtering
 		SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, document.getFieldValue(COLLEGE_ID_FIELD_NAME).toString(), 0, 5);
@@ -120,7 +120,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
 		suburb.addField(SolrQueryBuilder.FIELD_postcode,
 				SuburbParser.convertPostcodeParameterToLong((String) document.getFieldValue(COURSE_POSTCODE_FIELD_NAME)));
 		solrSuburbs.add(suburb);
-		searchParams.addSuburb(Suburb.valueOf(StringUtils.EMPTY, solrSuburbs.get(0), 10D));
+		searchParams.addSuburb(Suburb.valueOf(StringUtils.EMPTY, 10D, solrSuburbs.get(0)));
 		
 		solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, document.getFieldValue(COLLEGE_ID_FIELD_NAME).toString(), 0, 5);
 		params = solrQueryBuilder.build();

@@ -74,7 +74,7 @@ public class SolrQueryBuilderTest {
 		suburb.addField(SolrQueryBuilder.PARAMETER_loc, "-1.1,2.2");
 		suburb.addField(SolrQueryBuilder.FIELD_postcode, "224000");
 		solrSuburbs.add(suburb);
-		searchParams.addSuburb(Suburb.valueOf(StringUtils.EMPTY, solrSuburbs.get(0), null));
+		searchParams.addSuburb(Suburb.valueOf(StringUtils.EMPTY, null, solrSuburbs.get(0)));
 		assertFalse("1 suburb should be inside", searchParams.getSuburbs().isEmpty());
 		
 		SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "2", 5, 10);

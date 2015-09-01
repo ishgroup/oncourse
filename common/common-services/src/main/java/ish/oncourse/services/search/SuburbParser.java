@@ -1,6 +1,7 @@
 package ish.oncourse.services.search;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
 /*
@@ -48,7 +49,8 @@ public class SuburbParser {
             }
 
             if (solrSuburbs.size() > 0) {
-                result = Suburb.valueOf(identifier, solrSuburbs.get(0), distance);
+                SolrDocument doc = solrSuburbs.get(0);
+                result = Suburb.valueOf(identifier, suburb, postcode, distance, doc);
             }
         }
     }
@@ -58,7 +60,7 @@ public class SuburbParser {
         SolrDocumentList solrSuburbs = searchService.searchSuburb(convertPostcodeParameterToLong(near));
 
         if (solrSuburbs.size() > 0)
-            result = Suburb.valueOf(identifier, solrSuburbs.get(0), parseKm(km));
+            result = Suburb.valueOf(identifier, parseKm(km), solrSuburbs.get(0));
     }
 
 

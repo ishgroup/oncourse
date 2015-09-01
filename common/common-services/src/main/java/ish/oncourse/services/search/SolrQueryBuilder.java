@@ -268,7 +268,7 @@ public class SolrQueryBuilder {
 
 
     public static String getSuburbQuery(Suburb suburb) {
-        return String.format(FILTER_TEMPLATE_course_loc, PARAMETER_VALUE_sfield, suburb.getSuburb(), PARAMETER_d, suburb.getDistance() / KM_IN_DEGREE_VALUE);
+        return String.format(FILTER_TEMPLATE_course_loc, PARAMETER_VALUE_sfield, suburb.getCoordinates(), PARAMETER_d, suburb.getDistance() / KM_IN_DEGREE_VALUE);
     }
 
     public static List<String> getTagQueries(Tag tag) {
