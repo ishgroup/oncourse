@@ -48,12 +48,13 @@ public class TagGroups {
     private Tag getKeyTag(Tag tag) {
         Tag key;
         if (tag.getParent() != null && tag.getParent().getIsTagGroup()) {
-            key = tag.getParent();
+            key = getKeyTag(tag.getParent());
         } else {
             key = tag;
         }
         return key;
     }
+
 
     public static TagGroups valueOf(SearchParams params, Tag filterTag) {
         TagGroups result = new TagGroups();
