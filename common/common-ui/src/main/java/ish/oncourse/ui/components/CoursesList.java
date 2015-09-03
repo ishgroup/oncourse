@@ -69,9 +69,11 @@ public class CoursesList extends ISHCommon {
 		result.append("&sites=").append(sitesParameter);
 		for (String paramName : request.getParameterNames()) {
 			if (!"start".equals(paramName) && !"sites".equals(paramName) && !"loadedCoursesIds".equals(paramName)) {
-				result.append("&");
-				result.append(paramName).append("=");
-				result.append(request.getParameter(paramName));
+				String[] values = request.getParameters(paramName);
+				for (String value : values) {
+					result.append("&");
+					result.append(String.format("%s=%s", paramName, value));
+				}
 			}
 		}
 		if (loadedCoursesIds == null) {
