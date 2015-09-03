@@ -124,8 +124,9 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 
         //it reads templateFileName attribute to get user defined template.
         CustomTemplateDefinition ctd  = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
-        //we need reset the attribute to exclude effect to other pages/components
-        request.setAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION, null);
+		if (ctd != null && !componentName.endsWith(ctd.getTemplateClassName())) {
+			ctd = null;
+		}
 
 		WebSiteLayout layout = webNodeService.getLayout();
         //we should use anouther key to cache Resource for component when user defines custom template
