@@ -5,8 +5,10 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.HTMLUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -22,6 +24,9 @@ public class PageHead extends ISHCommon {
 
 	@Inject
 	private IWebSiteService siteService;
+
+	@Inject
+	private IWebSiteVersionService webSiteVersionService;
 
 	@Inject
 	private ITagService tagService;
@@ -52,6 +57,17 @@ public class PageHead extends ISHCommon {
     @SetupRender
     public void  setupRender() {
     }
+
+	public String getCiVersion()
+	{
+		String ciVersion = webSiteVersionService.getCurrentVersion().getId().toString();
+		if (!StringUtils.isEmpty(StringUtils.trimToEmpty(ciVersion))) {
+			return "r" + ciVersion;
+		} else {
+			return "development";
+		}
+	}
+
 
 	public String getMetaGeneratorContent() {
 		return HTMLUtils.getMetaGeneratorContent(environmentService);
