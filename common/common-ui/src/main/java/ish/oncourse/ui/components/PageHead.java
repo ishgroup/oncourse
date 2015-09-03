@@ -3,6 +3,7 @@ package ish.oncourse.ui.components;
 import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -60,9 +61,9 @@ public class PageHead extends ISHCommon {
 
 	public String getCiVersion()
 	{
-		String ciVersion = webSiteVersionService.getCurrentVersion().getId().toString();
-		if (!StringUtils.isEmpty(StringUtils.trimToEmpty(ciVersion))) {
-			return "r" + ciVersion;
+		WebSiteVersion currentVersion = webSiteVersionService.getCurrentVersion();
+		if (currentVersion != null) {
+			return "r" + currentVersion.getId().toString();
 		} else {
 			return "development";
 		}
