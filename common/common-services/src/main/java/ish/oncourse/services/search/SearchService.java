@@ -191,7 +191,7 @@ public class SearchService implements ISearchService {
                     queries.put(query, count);
                     q.addFacetQuery(query);
                 } else  {
-                    throw new SearchException("Unable to get facet.");
+                    throw new SearchException(String.format("Unable to get facet for location %s", count.getPath()));
                 }
             }
             QueryResponse response = query(q, SolrCore.courses);
