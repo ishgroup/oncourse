@@ -15,10 +15,10 @@
                 <ul class="list-unstyled result-list">
                     <t:loop source="enrolment.outcomes" value="outcome">
                         <li>
-                            <t:if test="hasModules">
+                            <t:if test="outcome.module">
                                 <span>${outcome.module.title} (<a href="http://training.gov.au/Training/Details/${outcome.module.nationalCode}" target="_blank">${outcome.module.nationalCode}</a>)</span>
                             </t:if>
-                            <t:unless test="hasModules">
+                            <t:unless test="outcome.module">
                                 <span>${courseClass.course.name}</span>
                             </t:unless>
                             <t:if test="needResult()">
