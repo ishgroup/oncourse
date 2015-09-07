@@ -50,6 +50,6 @@
 	</ul>
 </t:if>
     <t:unless test="hasAnyResources()">
-        <h3>We do not have any resources to show you.</h3>
+        <h3>No resources available.</h3>
     </t:unless>
 </html>

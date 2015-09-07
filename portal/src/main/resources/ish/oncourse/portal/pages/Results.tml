@@ -22,6 +22,6 @@
         </ul>
     </t:if>
     <t:unless test="hasAnyResults()">
-        <h3>We do not yet have any results to show you.</h3>
+        <h3>No results available.</h3>
     </t:unless>
 </html>

@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
     <t:if test="items" negate="true">
-         <div>We do not yet have any financial history to show you.</div>
+         <div>No financial history available.</div>
     </t:if>
 
 
