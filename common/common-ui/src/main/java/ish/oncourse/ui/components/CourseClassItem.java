@@ -265,7 +265,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 	
 	public boolean isHasManySessions() {
-		return courseClass != null && courseClass.isHasManySessions() && courseClass.isSessionsHaveDifferentTimes();
+		return sessionDays.size() > 1 && courseClass != null && courseClass.isHasManySessions() && courseClass.isSessionsHaveDifferentTimes();
 	}
 
 	public boolean isAddedClass() {
