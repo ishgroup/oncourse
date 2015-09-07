@@ -1,7 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 <t:if test = "isStudent">
-<t:if test = "isRequiresAvetmiss">
-
     <t:form  t:id="censusForm" class="form" clientValidation="literal:NONE">
 
         <div class="form-group">
@@ -100,6 +98,5 @@
         </div>
     </t:form>
 
-</t:if>
 </t:if>
 </t:container>

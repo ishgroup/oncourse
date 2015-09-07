@@ -60,7 +60,6 @@ public class Profile {
     }
 
     public boolean showCensusTab() {
-        return contact.getStudent() != null &&
-                contact.getCollege().getRequiresAvetmiss();
+        return contact.getStudent() != null;
     }
 }

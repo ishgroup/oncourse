@@ -278,11 +278,6 @@ public class CensusForm {
         return portalService.getContact().getStudent() != null;
     }
 
-    public boolean getIsRequiresAvetmiss() {
-        boolean isRequired = contact.getCollege().getRequiresAvetmiss();
-        return isRequired;
-    }
-
     public String messageBy(String fieldName) {
         return getAvetmissMessages().get(String.format(MessagesNamingConvention.MESSAGE_KEY_TEMPLATE, fieldName));
     }
