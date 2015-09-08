@@ -138,13 +138,12 @@ public class Web {
 		this.changeSiteUrl = response.encodeURL(request.getContextPath() + "/college/changeDomainSite");
 		this.sites = new HashMap<>();
 		
-		ObjectContext context = cayenneService.sharedContext();
+		ObjectContext context = cayenneService.newContext();
 		
 		College college = context.localObject(this.college);
 		
 		List<WebSite> sites = ObjectSelect.query(WebSite.class).
 				where(WebSite.COLLEGE.eq(college)).
-				cacheStrategy(QueryCacheStrategy.NO_CACHE).
 				select(context);
 		for (WebSite site : sites) {
 			this.sites.put(site.getSiteKey(), site);
@@ -152,7 +151,6 @@ public class Web {
 		
 		this.domains = ObjectSelect.query(WebHostName.class).
 				where(WebHostName.COLLEGE.eq(college)).
-				cacheStrategy(QueryCacheStrategy.NO_CACHE).
 				select(context);
 		
 		this.cmsUsers = ObjectSelect.query(WillowUser.class).

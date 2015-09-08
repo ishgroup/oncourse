@@ -4,7 +4,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.DataRow;
-import org.apache.cayenne.query.SQLTemplate;
+import org.apache.cayenne.query.SQLSelect;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.math.BigDecimal;
@@ -68,10 +68,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
 		Map<Long, Map<Long, Map<String, Object>>> data = createMap();
 
-		SQLTemplate query = new SQLTemplate(LicenseFee.class, SQL_LICENSE_FEE);
-		query.setFetchingDataRows(true);
-
-		List<DataRow> result = cayenneService.sharedContext().performQuery(query);
+		List<DataRow> result = SQLSelect.dataRowQuery(SQL_LICENSE_FEE).select(cayenneService.newContext());
 
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
@@ -101,55 +98,38 @@ public class BillingDataServiceImpl implements IBillingDataService {
 	public Map<Long, Map<Long, Map<String, Object>>> getBillingData(Date from, Date to) {
 
         Map<Long, Map<Long, Map<String, Object>>> data = createMap();
-		
-		// SMS
-		SQLTemplate query = new SQLTemplate(MessagePerson.class, SQL_SMS);
 
 		Map<String, Object> params = new HashMap<>();
 		params.put("from", from);
 		params.put("to", to);
-
-		query.setParameters(params);
-		query.setFetchingDataRows(true);
-
-		List<DataRow> result = cayenneService.sharedContext().performQuery(query);
+		
+		// SMS
+		List<DataRow> result = SQLSelect.dataRowQuery(SQL_SMS).params(params).select(cayenneService.newContext());
 
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
 			data.get(collegeId).get(null).put("sms", r.get("count"));
 		}
-
+		
 		// office transaction count
-		query = new SQLTemplate(PaymentIn.class, SQL_OFFICE_TRANSACTION_COUNT);
-		query.setParameters(params);
-		query.setFetchingDataRows(true);
-
-		result = cayenneService.sharedContext().performQuery(query);
+		result = SQLSelect.dataRowQuery(SQL_OFFICE_TRANSACTION_COUNT).params(params).select(cayenneService.newContext());
 
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
 			data.get(collegeId).get(null).put("ccOffice", r.get("count"));
 		}
-
+		
 		// web transaction count
-		query = new SQLTemplate(PaymentIn.class, SQL_WEB_TRANSACTION_COUNT);
-		query.setParameters(params);
-		query.setFetchingDataRows(true);
-
-		result = cayenneService.sharedContext().performQuery(query);
+		result = SQLSelect.dataRowQuery(SQL_WEB_TRANSACTION_COUNT).params(params).select(cayenneService.newContext());
 
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
 			Long webSiteId = (Long) r.get("webSiteId");
 			data.get(collegeId).get(webSiteId).put("ccWeb", r.get("count"));
 		}
-
+		
 		// web transaction value
-		query = new SQLTemplate(PaymentIn.class, SQL_WEB_TRANSACTION_VALUE);
-		query.setParameters(params);
-		query.setFetchingDataRows(true);
-
-		result = cayenneService.sharedContext().performQuery(query);
+		result =  SQLSelect.dataRowQuery(SQL_WEB_TRANSACTION_VALUE).params(params).select(cayenneService.newContext());
 
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
@@ -177,11 +157,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 				cal.add(Calendar.MONTH, -1);
 				tasmaniaParams.put("to", cal.getTime());
 				
-				query = new SQLTemplate(PaymentIn.class, SQL_TASMANIA_ECOMMERCE);
-				query.setParameters(tasmaniaParams);
-				query.setFetchingDataRows(true);
-				
-				result = cayenneService.sharedContext().performQuery(query);
+				result = SQLSelect.dataRowQuery(SQL_TASMANIA_ECOMMERCE).params(tasmaniaParams).select(cayenneService.newContext());
 				
 				BigDecimal value = (BigDecimal) result.get(0).get("value");
 				

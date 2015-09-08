@@ -13,6 +13,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.CommonUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.ejbql.parser.EJBQLSelect;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.*;
@@ -190,14 +191,13 @@ public class CollegeService implements ICollegeService {
 	/**
 	 * @see ICollegeService#allColleges()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<College> allColleges() {
-		Expression expr = ExpressionFactory.noMatchExp(College.BILLING_CODE_PROPERTY, null);
-		SelectQuery q = new SelectQuery(College.class, expr);
-		q.setPageSize(20);
-		q.addOrdering(new Ordering(College.NAME_PROPERTY, SortOrder.DESCENDING_INSENSITIVE));
-		return cayenneService.sharedContext().performQuery(q);
+		return ObjectSelect.query(College.class)
+				.where(College.BILLING_CODE.isNotNull())
+				.addOrderBy(College.NAME.descInsensitive())
+				.pageSize(20)
+				.select(cayenneService.newContext());
 	}
 
 	@Override

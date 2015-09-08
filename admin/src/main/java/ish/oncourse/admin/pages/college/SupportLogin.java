@@ -141,7 +141,7 @@ public class SupportLogin {
 	
 	@OnEvent(component = "loginForm", value = "validate")
 	void validate() {
-		ObjectContext context = cayenneService.sharedContext();
+		ObjectContext context = cayenneService.newContext();
 				
 		supportPassword = null;
 		contact = null;

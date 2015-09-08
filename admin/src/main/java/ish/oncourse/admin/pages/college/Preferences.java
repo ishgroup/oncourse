@@ -94,15 +94,14 @@ public class Preferences {
 	}
 	
 	private Map<String, String> initPreferences() {
-		ObjectContext context = cayenneService.sharedContext();
+		ObjectContext context = cayenneService.newContext();
 		
 		Map<String, String> prefs = new TreeMap<>();
 		
 		College college = context.localObject(this.college);
 		
 		List<Preference> prefList = ObjectSelect.query(Preference.class).
-				where(Preference.COLLEGE.eq(college)).
-				cacheStrategy(QueryCacheStrategy.NO_CACHE).				
+				where(Preference.COLLEGE.eq(college)).			
 				select(context);
 		
 		for (Preference pref : prefList) {
