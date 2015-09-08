@@ -71,10 +71,4 @@ public interface ICollegeService {
 	 * @return colleges
 	 */
 	List<College> allColleges();
-	
-	/**
-	 * Returns distinct existing site keys. 
-	 * @return site keys
-	 */
-	Set<String> allSiteKeys();
 }

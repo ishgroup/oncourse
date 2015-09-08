@@ -13,7 +13,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.CommonUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.ejbql.parser.EJBQLSelect;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.*;
@@ -22,9 +21,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 
@@ -196,15 +193,6 @@ public class CollegeService implements ICollegeService {
 		return ObjectSelect.query(College.class)
 				.where(College.BILLING_CODE.isNotNull())
 				.addOrderBy(College.NAME.descInsensitive())
-				.pageSize(20)
 				.select(cayenneService.newContext());
-	}
-
-	@Override
-	public Set<String> allSiteKeys() {
-		EJBQLQuery q = new EJBQLQuery("select distinct w.siteKey from WebSite w");
-		@SuppressWarnings("unchecked")
-		List<String> keys = cayenneService.sharedContext().performQuery(q);
-		return new HashSet<>(keys);
 	}
 }
