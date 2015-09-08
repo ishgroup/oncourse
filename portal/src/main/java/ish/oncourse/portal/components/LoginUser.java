@@ -30,7 +30,7 @@ public class LoginUser {
 	}
 	
 	public String getProfilePicturePath() {
-		return portalService.getProfilePicturePath(contact);
+		return portalService.getProfilePictureUrl(contact);
 	}
 
 }

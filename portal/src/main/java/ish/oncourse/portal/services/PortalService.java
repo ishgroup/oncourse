@@ -882,14 +882,14 @@ public class PortalService implements IPortalService {
     }
 
 
-	public String getProfilePicturePath(Contact contact) {
+	public String getProfilePictureUrl(Contact contact) {
 		//check profile pictype at first
 		if (binaryDataService.getProfilePicture(contact) != null) {
 			return binaryDataService.getUrl(binaryDataService.getProfilePicture(contact));
 		}
 		
 		if (contact.getEmailAddress() == null) {
-			return "portal/img/Fico-student-default.png";
+			return "https://" + request.getServerName() + "/portal/img/ico-student-default.png";
 		}
 		
 		//else finde avatar on gravatar servise - use special URL https://s.gravatar.com/avatar/hash?d=default_img_URL

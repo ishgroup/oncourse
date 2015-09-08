@@ -148,7 +148,7 @@ public interface IPortalService {
 	 * 
 	 * returns ico-student-default.png (see portal resourses) by default
 	 */
-	public String getProfilePicturePath(Contact contact);
+	public String getProfilePictureUrl(Contact contact);
 
     public UsiController getUsiController();
 }

@@ -46,7 +46,7 @@ public class ClassRollItem {
     public String getAvatarContextPath()
     {
 		if (isEnableDetails()){
-			return portalService.getProfilePicturePath(student.getContact());
+			return portalService.getProfilePictureUrl(student.getContact());
 		}
 		return null;
     }
