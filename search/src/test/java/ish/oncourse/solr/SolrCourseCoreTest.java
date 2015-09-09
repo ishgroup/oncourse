@@ -1,6 +1,9 @@
 package ish.oncourse.solr;
 
-import ish.oncourse.services.search.*;
+import ish.oncourse.services.search.SearchParams;
+import ish.oncourse.services.search.SolrQueryBuilder;
+import ish.oncourse.services.search.Suburb;
+import ish.oncourse.services.search.SuburbParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -45,7 +48,7 @@ public class SolrCourseCoreTest extends CustomizedAbstractSolrTestCase {
     }
 
     @Test
-    public void testEmptyIndex() throws SolrServerException {
+    public void testEmptyIndex() throws Exception {
         SolrParams params = new SolrQuery(SolrQueryBuilder.FILTER_TEMPLATE_ALL);
         QueryResponse response = server.query(params);
         assertEquals(0L, response.getResults().getNumFound());

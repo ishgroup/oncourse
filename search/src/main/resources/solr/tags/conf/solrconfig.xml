@@ -24,7 +24,7 @@
 		<lockType>simple</lockType>
 		<unlockOnStartup>true</unlockOnStartup>
 		
-		<termIndexInterval>128</termIndexInterval>
+		<!--<termIndexInterval>128</termIndexInterval>-->
 		
 		<reopenReaders>true</reopenReaders>
 		
@@ -401,8 +401,7 @@
 
   <!-- JSON update handler, loaded on demand -->
   <requestHandler name="/update/json" class="solr.JsonUpdateRequestHandler" startup="lazy" />
-  <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
-  
+
   <requestHandler name="/dataimport"
 		class="org.apache.solr.handler.dataimport.DataImportHandler">
 		<lst name="defaults">

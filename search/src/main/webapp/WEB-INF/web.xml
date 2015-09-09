@@ -14,6 +14,11 @@
 	<filter>
 		<filter-name>SolrRequestFilter</filter-name>
 		<filter-class>org.apache.solr.servlet.SolrDispatchFilter</filter-class>
+
+		<init-param>
+			<param-name>excludePatterns</param-name>
+			<param-value>/css/*,/js/*,/img/*,/tpl/*</param-value>
+		</init-param>
 	</filter>
 
 	<filter-mapping>
@@ -59,6 +64,15 @@
 		</init-param>
 	</servlet>
 
+	<servlet>
+		<servlet-name>SolrRestApi</servlet-name>
+		<servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
+		<init-param>
+			<param-name>org.restlet.application</param-name>
+			<param-value>org.apache.solr.rest.SolrSchemaRestApi</param-value>
+		</init-param>
+	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>RedirectOldAdminUI</servlet-name>
 		<url-pattern>/admin/</url-pattern>
@@ -85,6 +99,11 @@
 	<servlet-mapping>
 		<servlet-name>LoadAdminUI</servlet-name>
 		<url-pattern>/admin.html</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>SolrRestApi</servlet-name>
+		<url-pattern>/schema/*</url-pattern>
 	</servlet-mapping>
 
 	<mime-mapping>

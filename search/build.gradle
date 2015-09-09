@@ -6,16 +6,21 @@ dependencies {
 	compile project(':common:common-services')
 	//compile 'commons-lang:commons-lang:2.6'
 
-	compile 'org.apache.solr:solr:4.3.1@war'
-	compile 'org.apache.solr:solr-dataimporthandler:4.3.1'
+	compile ('org.apache.solr:solr-dataimporthandler:5.3.0') {
+		exclude group: 'org.apache.hadoop'
+		exclude group: 'org.eclipse.jetty'
+	}
 	compile 'com.vividsolutions:jts:1.13'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 	
-	testCompile 'org.apache.solr:solr-test-framework:4.3.1'
-	testCompile 'org.apache.lucene:lucene-test-framework:4.3.1'
+	testCompile ('org.apache.solr:solr-test-framework:5.3.0') {
+		exclude group: 'org.apache.hadoop'
+		exclude group: 'org.eclipse.jetty'
+	}
+	testCompile 'org.apache.lucene:lucene-test-framework:5.3.0'
 	//testCompile project(':common:common-services')
 }
 

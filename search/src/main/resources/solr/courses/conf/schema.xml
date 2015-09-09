@@ -3,7 +3,7 @@
 	<types>
 
 		<fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType" 
-			spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory" distErrPct="0.025" maxDistErr="0.000009" units="degrees"/>
+			spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory" distErrPct="0.025" maxDistErr="0.000009" distanceUnits="degrees"/>
 
 		<fieldType name="string" class="solr.StrField"
 			sortMissingLast="true" omitNorms="true" />
@@ -27,7 +27,7 @@
 		<fieldType name="date" class="solr.TrieDateField" omitNorms="true"
 			precisionStep="0" positionIncrementGap="0" />
 
-		<fieldType name="sfloat" class="solr.SortableFloatField"
+		<fieldType name="sfloat" class="solr.TrieFloatField"
 			sortMissingLast="true" omitNorms="true" />
 		
 		<fieldType name="exacttext" class="solr.StrField"

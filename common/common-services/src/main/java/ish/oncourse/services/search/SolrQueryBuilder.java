@@ -53,7 +53,7 @@ public class SolrQueryBuilder {
 
     static final String FILTER_TEMPLATE_geofilt = "{!score=distance}%s";
 
-    static final String FILTER_TEMPLATE_course_loc = "%s:\"Intersects(Circle(%s %s=%s))\"";
+    static final String FILTER_TEMPLATE_course_loc = "{!geofilt sfield=%s pt=%s d=%s}";
 
 
     public static final String FILTER_TEMPLATE_ALL = "*:*";
@@ -268,7 +268,7 @@ public class SolrQueryBuilder {
 
 
     public static String getSuburbQuery(Suburb suburb) {
-        return String.format(FILTER_TEMPLATE_course_loc, PARAMETER_VALUE_sfield, suburb.getCoordinates(), PARAMETER_d, suburb.getDistance() / KM_IN_DEGREE_VALUE);
+        return String.format(FILTER_TEMPLATE_course_loc, PARAMETER_VALUE_sfield, suburb.getCoordinates(), (suburb.getDistance() / KM_IN_DEGREE_VALUE));
     }
 
     public static List<String> getTagQueries(Tag tag) {

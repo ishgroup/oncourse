@@ -991,7 +991,6 @@
     </lst>
   </requestHandler>
   -->
-  <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
 
   <!-- ping/healthcheck -->
   <requestHandler name="/admin/ping" class="PingRequestHandler">

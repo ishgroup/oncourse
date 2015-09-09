@@ -29,7 +29,7 @@
 		<fieldType name="date" class="solr.TrieDateField" omitNorms="true"
 			precisionStep="0" positionIncrementGap="0" />
 
-		<fieldType name="sfloat" class="solr.SortableFloatField"
+		<fieldType name="sfloat" class="solr.TrieFloatField"
 			sortMissingLast="true" omitNorms="true" />
 
 		<!-- A general unstemmed text field - good if one does not know the language 

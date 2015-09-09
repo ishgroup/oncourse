@@ -1,7 +1,7 @@
 package ish.oncourse.solr;
 
 import org.apache.solr.SolrTestCaseJ4;
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.util.AbstractSolrTestCase;
@@ -22,7 +22,7 @@ public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCas
 	protected static final String TEST_LOCATION_1 = "-31.94777400,115.82577800";
 	
 	protected static String factoryProp;
-	protected SolrServer server;
+	protected SolrClient server;
 	
 	@After
     public void destroy() {
@@ -57,10 +57,7 @@ public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCas
     	ignoreException("ignore_exception");
     	factoryProp = System.getProperty("solr.directoryFactory");
     	if (factoryProp == null) {
-    		System.setProperty("solr.directoryFactory","solr.RAMDirectoryFactory");
-    	}
-    	if (dataDir == null) {
-    		createTempDir();
+    		System.setProperty("solr.directoryFactory", "solr.RAMDirectoryFactory");
     	}
     	// other  methods like starting a jetty instance need these too
     	System.setProperty("solr.test.sys.prop1", "propone");
@@ -75,7 +72,7 @@ public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCas
 	protected static void customCreateCore(final String coreName) {
     	assertNotNull(testSolrHome);
     	SolrTestCaseJ4.solrConfig = TestHarness.createConfig(testSolrHome, coreName, getSolrConfigFile());
-		h = new TestHarness(coreName, dataDir.getAbsolutePath(), SolrTestCaseJ4.solrConfig, getSchemaFile());
+		h = new TestHarness(coreName, SolrTestCaseJ4.solrConfig.getDataDir(), SolrTestCaseJ4.solrConfig, getSchemaFile());
     	lrf = h.getRequestFactory("standard", 0, 20, CommonParams.VERSION, "2.2");
     }
 }

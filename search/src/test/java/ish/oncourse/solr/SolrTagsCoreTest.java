@@ -24,7 +24,7 @@ public class SolrTagsCoreTest extends CustomizedAbstractSolrTestCase {
     }
 
     @Test
-    public void testEmptyIndex() throws SolrServerException {
+    public void testEmptyIndex() throws Exception {
         SolrParams params = new SolrQuery(SolrQueryBuilder.FILTER_TEMPLATE_ALL);
         QueryResponse response = server.query(params);
         assertEquals(0L, response.getResults().getNumFound());

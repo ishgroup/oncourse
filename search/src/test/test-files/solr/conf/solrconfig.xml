@@ -301,8 +301,6 @@
     <str>foo</str>
   </requestHandler>
 
-  <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
-
   <!-- test query parameter defaults -->
   <requestHandler name="defaults" class="solr.StandardRequestHandler">
     <lst name="defaults">

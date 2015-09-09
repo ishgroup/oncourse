@@ -10,10 +10,10 @@ import ish.oncourse.services.tag.ITagService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrException;
@@ -21,7 +21,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SearchService implements ISearchService {
 	private static final String TERMS_SEPARATOR_STRING = " || ";
@@ -64,15 +66,15 @@ public class SearchService implements ISearchService {
     @Inject
     private ITagService tagService;
     
-    private Map<SolrCore, SolrServer> solrServers = new HashMap<>();
+    private Map<SolrCore, SolrClient> solrClients = new HashMap<>();
 
-    private SolrServer getSolrServer(SolrCore core) {
-        SolrServer solrServer = null;
-        if (solrServers.keySet().contains(core)) {
-            solrServer = solrServers.get(core);
+    private SolrClient getSolrClient(SolrCore core) {
+        SolrClient solrClient = null;
+        if (solrClients.keySet().contains(core)) {
+            solrClient = solrClients.get(core);
         }
 
-        if (solrServer == null) {
+        if (solrClient == null) {
 
             try {
                 String solrURL = (String) lookupService.lookup(Property.SolrServer.value());
@@ -84,16 +86,16 @@ public class SearchService implements ISearchService {
                 if (solrURL == null) {
                     throw new IllegalStateException("Undefined property: " + Property.SolrServer);
                 }
-                HttpSolrServer httpSolrServer = new HttpSolrServer(solrURL + "/" + core.toString());
-                solrServer = httpSolrServer;
-                solrServers.put(core, solrServer);
+                HttpSolrClient httpSolrClient = new HttpSolrClient(solrURL + "/" + core.toString());
+                solrClient = httpSolrClient;
+                solrClients.put(core, solrClient);
 
             } catch (Exception e) {
                 throw new RuntimeException("Unable to connect to solr server.", e);
             }
 
         }
-        return solrServer;
+        return solrClient;
     }
 
     /**
@@ -102,13 +104,13 @@ public class SearchService implements ISearchService {
      * @return
      * @throws SolrServerException
      */
-    private QueryResponse query(SolrQuery q, SolrCore core) throws SolrServerException {
+    private QueryResponse query(SolrQuery q, SolrCore core) throws Exception {
         int count = 0;
-        SolrServerException exception = null;
+        Exception exception = null;
         while (count < 3) {
             try {
-                return getSolrServer(core).query(q);
-            } catch (SolrServerException e) {
+                return getSolrClient(core).query(q);
+            } catch (Exception e) {
                 exception = e;
                 count++;
                 QueryResponse result = handleException(e,q,count);
@@ -172,7 +174,7 @@ public class SearchService implements ISearchService {
                 result.put(tag.getId(), solrResult.get(query).longValue());
             }
             return result;
-        } catch (SolrServerException e) {
+        } catch (Exception e) {
             throw new SearchException("Unable to get facet.", e);
         }
     }
@@ -191,7 +193,7 @@ public class SearchService implements ISearchService {
                     queries.put(query, count);
                     q.addFacetQuery(query);
                 } else  {
-                    throw new SearchException(String.format("Unable to get facet for location %s", count.getPath()));
+                    logger.debug(String.format("Cannot find suburb %s", count.getPath()));
                 }
             }
             QueryResponse response = query(q, SolrCore.courses);
@@ -203,7 +205,7 @@ public class SearchService implements ISearchService {
                 result.put(count.getId(), Count.valueOf(count.getId(), count.getPath(), query.getValue()));
             }
             return result;
-        } catch (SolrServerException e) {
+        } catch (Exception e) {
             throw new SearchException("Unable to get facet.", e);
         }
     }
