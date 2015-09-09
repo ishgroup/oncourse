@@ -2,7 +2,7 @@
 
     <ul class="list-unstyled classes-content">
         <t:if test="!classes">
-            <div>You have no classes history.</div>
+            <div>No class history available.</div>
         </t:if>
 
         <t:loop source="classes" value="courseClass">
