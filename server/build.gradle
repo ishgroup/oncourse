@@ -161,6 +161,7 @@ task scriptApiDocs(type: Javadoc) {
 task createResourceManifests {
 	doLast {
 		def sources = ["resources/oncourse-scripts/export",
+					   "resources/oncourse-scripts/import",
 					   "resources/oncourse-scripts/reports",
 					   "resources/oncourse-scripts/scripts",
 					   "resources/oncourse-scripts/email"]
