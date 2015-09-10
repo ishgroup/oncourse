@@ -4,6 +4,8 @@ import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.portal.access.AccessController;
 import ish.oncourse.portal.access.AuthenticationService;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.application.IPortalApplicationService;
+import ish.oncourse.portal.services.application.PortalApplicationServiceImpl;
 import ish.oncourse.portal.services.discussion.DiscussionServiceImpl;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.portal.services.pageload.PortalPageRenderer;
@@ -52,6 +54,7 @@ public class AppModule {
         binder.bind(IPageRenderer.class, PortalPageRenderer.class).withId("PortalPageRenderer");
         //we set PERTHREAD scope for the service to be sure that we don't share any data between requests
         binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
+		binder.bind(IPortalApplicationService.class, PortalApplicationServiceImpl.class);
         binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
         binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
         binder.bind(IUSIVerificationService.class, PortalUSIService.class);

@@ -1,0 +1,35 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<li>
+		<p class="arrow-content">
+			<strong class="link-color">${application.course.name}</strong><small class="text-muted"> (${application.course.code}) </small>
+			<span t:type="applicationStatusComponent" application="application"/>
+			<t:if test="avalibleForEnrol">
+				<a href="#enrolnow" class="label label-primary">Enrol now</a>
+				<t:if test="application.reason">
+					<p>
+						${application.reason}
+					</p>
+				</t:if>
+				<t:if test="application.feeOverride">
+					<p>
+						Your fee: ${application.feeOverride} (ex GST)
+					</p>
+				</t:if>
+				<t:if test="application.enrolBy">
+					<p>
+						Enrol by: <t:output format="LITERAL:dd MMMM yyyy" value="application.enrolBy"/>
+					</p>
+				</t:if>
+				<p>
+					Click here to reject this offer.
+					<a href="#reject" class="label label-primary">Reject</a>
+				</p>
+			</t:if>
+			<t:unless test="!showReason()">
+				<p>
+					${application.reason}
+				</p>
+			</t:unless>
+		</p>
+	</li>
+</t:container>

@@ -1,0 +1,38 @@
+<t:container
+		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<!--<div data-spy="affix" data-offset-top="0" class="sidebar affix">-->
+	<t:if test="!applications.empty">
+		<div class="sidebar">
+			<ul class="nav sidenav">
+				<li class="expanded">
+					<a href="${request.contextPath}/history/applications">Applications
+						<span class="badge">${applications.size()}</span>
+					</a>
+					<ul class="list-unstyled applications-content">
+						<t:loop source="applications" value="application">
+							<li>
+								<t:delegate to="block:applicationInfo"/><br/>
+							</li>
+						</t:loop>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</t:if>
+
+	<t:block t:id="applicationInfo">
+		<p>
+			<strong class="link-color">${application.course.name}</strong>
+			<small class="text-muted">  (${application.course.code})</small> <br/>
+			<label>
+				<div t:type="applicationStatusComponent" application="application"/>
+
+				<t:if test="${needApprove()}">
+					<a href="${request.contextPath}/history/applications#${application.id}" class="label label-primary">Review now</a>
+				</t:if>
+			</label>
+		</p>
+
+	</t:block>
+
+</t:container>

@@ -19,7 +19,7 @@
 	
 }
 
-#enrolments-history > ul {
+#enrolments-history, #applications-history > ul {
   border-bottom: 1px solid $border-color;
 
   li {
@@ -412,7 +412,7 @@
 	
 	.expanded {
 		
-		.classes-content {
+		.applications-content, .classes-content {
 			border-bottom: 1px solid $border-color;
 		}
 	}
@@ -515,8 +515,8 @@
 		}
 	}
 
-	
-	.classes-content {
+
+  .applications-content, .classes-content {
 		overflow: auto;
 	
 		> li {
@@ -586,7 +586,7 @@
 	margin: 12px 0 0 10px;
 }
 
-.classes-content {
+.applications-content, .classes-content {
 	label {
 		margin: 0;
 		font-weight: normal;
@@ -655,6 +655,10 @@
 	position: relative;
 	top: 3px;
 	margin-right: 5px;
+}
+
+strong.link-color {
+  color: #f48824;
 }
 
 .sidebar-collapse{

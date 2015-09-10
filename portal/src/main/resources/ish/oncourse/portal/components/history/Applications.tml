@@ -1,0 +1,16 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<ul class="list-unstyled applications-content">
+		<t:if test="applications.empty">
+			<div>No applications history available.</div>
+		</t:if>
+
+		<t:loop source="applications" value="application">
+			<span id="${application.id}">
+				<t:history.applicationitem application="application"/>
+			</span>
+		</t:loop>
+	</ul>
+
+	
+</t:container>
