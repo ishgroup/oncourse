@@ -1,5 +1,7 @@
 goog.provide('application_handler');
 
+goog.require('initialise');
+
 var $j = jQuery.noConflict();
 
 
