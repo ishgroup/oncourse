@@ -26,8 +26,8 @@ public class SolrQueryBuilderTest {
 
 
     private static final String GEOFILTER_QUERY = "qt=standard&fl=id,name,course_loc,score&start=5&rows=10&fq=+collegeId:2 +doctype:course end:[NOW TO *]&" +
-    	"fq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&q={!boost b=$boostfunction v=$qq}&" +
-    	"boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}course_loc:\"Intersects(Circle(-1.1,2.2 d=0.9044289887579477))\"&" +
+    	"fq={!score=distance}{!geofilt sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&q={!boost b=$boostfunction v=$qq}&" +
+    	"boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}{!geofilt sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&" +
     	"qq=(*:*)&sort=score desc,startDate asc,name asc&debugQuery=false";
 	private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
 		"end:[NOW TO *]&fq=%s" +
