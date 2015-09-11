@@ -2,6 +2,20 @@
 
 var $j = jQuery.noConflict();
 
+function adjustPathName(pathname) {
+    var paths = pathname.split("/");
+
+    if (paths.length > 0 && paths[0] == "courses") {
+        return "/"+pathname;
+    }
+    return pathname;
+}
+
+function isCoursesPath(pathname) {
+    var paths = pathname.split("/");
+    return paths.length > 1 && paths[1] == "courses";
+}
+
 CoursesUrlFormat = function () {
 };
 
@@ -13,6 +27,10 @@ CoursesUrlFormat.prototype = {
         }
 
         var parameters = [];
+
+        if (request.s) {
+            parameters.push("s=" + request.s);
+        }
 
         $j.each(request.tags, function (index, tag) {
             parameters.push("tag=" + tag);
@@ -57,12 +75,11 @@ CoursesUrlFormat.prototype = {
             day,
             time,
             before,
-            km;
+            km, s;
         // Let the browser do the work
         parser.href = url.toLowerCase();
-        // Convert query string to object
-        var paths = parser.pathname.split("/");
-        if (paths.length > 1 && paths[1] == "courses" ) {
+        var pathname = adjustPathName(parser.pathname);
+        if (isCoursesPath(pathname)) {
             queries = parser.search.replace(/^\?/, '').split('&');
             $j.each(queries, function (index, query) {
                 split = query.split('=');
@@ -85,6 +102,9 @@ CoursesUrlFormat.prototype = {
                     case "before":
                         before = split[1];
                         break;
+                    case "s":
+                        s = split[1];
+                        break;
                     default :
                         if (searchObject[split[0]] == null) {
                             searchObject[split[0]] = []
@@ -93,7 +113,7 @@ CoursesUrlFormat.prototype = {
                         break;
                 }
             });
-            browseTag = parser.pathname.replace("/courses", "");
+            browseTag = pathname.replace("/courses", "");
         }
 
         return {
@@ -111,22 +131,29 @@ CoursesUrlFormat.prototype = {
             day: day,
             time: time,
             before: before,
-            km: km
+            km: km,
+            s: s
         };
     }
 };
 
 
 CoursesFilter = function () {
+    this.subjectOption = "#s";
+    this.subjectOptionButton = "#find";
+    this.subjectForm = "#search";
     this.optionClass = ".filter-option-control";
     this.clearAllClass = ".courses-filter-clear-all";
     this.clearOptionClass = ".courses-filter-clear-option";
     this.refineOptionId = "#courses-filter-refine-option";
     this.updateHtmlBlockId = "#courses-list";
+    this.disableZeroControls = true;
+
+
     this.currentLocation = window.location;
+    this.comingSoonPeriod = 30;
     this.request = null;
     this.format = new CoursesUrlFormat();
-
 };
 
 CoursesFilter.prototype = {
@@ -141,14 +168,54 @@ CoursesFilter.prototype = {
         return $j(this.optionClass + "[data-path='" + path + "']");
     },
 
+    addSearchFormListeners: function () {
+        var self = this;
+
+        $j("body").on('click', self.subjectOptionButton, function(e) {
+            e.preventDefault();
+            self.request.s = $j(self.subjectOption).val();
+            self.loadCourses();
+        });
+
+        $j("body").on('blur', self.subjectOption, function(e) {
+            e.preventDefault();
+            self.request.s = $j(self.subjectOption).val();
+        });
+
+        $j("body").on('submit', self.subjectForm, function(e) {
+            e.preventDefault();
+            self.request.s = $j(self.subjectOption).val();
+            self.loadCourses();
+        });
+    },
+
+    handleClearOptionClass: function(path) {
+        var control = this.getControlBy(path);
+        if (control.length > 0) {
+            control.prop('checked', false);
+            this.changeFilter(control)
+        } else {
+            var index = this.request.locations.indexOf(path);
+            if (index > -1) {
+                this.request.locations.splice(index, 1);
+            }
+            index = this.request.tags.indexOf(path);
+            if (index > -1) {
+                this.request.tags.splice(index, 1);
+            }
+            this.loadCourses();
+        }
+    },
+
     addControlListeners: function () {
         var self = this;
 
+        self.addSearchFormListeners();
+
         $j("body").on('click', this.clearOptionClass, function(e) {
             e.preventDefault();
-            var control = self.getControlBy($j(this).data("path"));
-            control.prop('checked', false);
-            self.changeFilter(control)
+            var path = $j(this).data("path");
+            self.handleClearOptionClass(path);
         });
 
         $j("body").on('click', this.clearAllClass, function (e) {
@@ -172,7 +239,7 @@ CoursesFilter.prototype = {
             var value = $j(this).val();
             switch (value) {
                 case "coming_soon":
-                    self.request.before = 10;
+                    self.request.before = self.comingSoonPeriod;
                     break;
                 case "weekend":
                     self.request.day = "weekend";
@@ -194,9 +261,17 @@ CoursesFilter.prototype = {
         $j.each(this.request.tags, function (index, tag) {
             self.getControlBy(tag).prop('checked', true);
         });
+
         $j.each(this.request.locations, function (index, path) {
-            self.getControlBy(path).prop('checked', true);
+            var control =  self.getControlBy(path);
+            control.prop('checked', true);
+            var tabid = self.getControlBy(path).parents("section [id^='loc']").data('tabid');
+            $j('#' + tabid).attr('checked', true)
         });
+
+        if (this.disableZeroControls) {
+            $j(this.optionClass + "[data-counter=0]").prop('disabled', true);
+        }
 
         this.updateRefineControl();
     },
@@ -308,7 +383,7 @@ CoursesFilter.prototype = {
     },
 
     isParentTag: function (currentTag, newTag) {
-        return currentTag.startsWith(newTag) || newTag.startsWith(currentTag);
+        return currentTag.indexOf(newTag) == 0 || newTag.indexOf(currentTag) == 0;
     },
 
     changeFilter: function (control) {
@@ -324,8 +399,7 @@ CoursesFilter.prototype = {
     loadCourses: function () {
         var self = this;
         var url = this.format.format(this.request);
-        //var paths = parser.pathname.split("/");
-        //if (paths.length > 1 && paths[1] == "courses" ) {
+        //if (isCoursesPath(this.parser.pathname)) {
         //    $j.ajax({
         //        type: "GET",
         //        url: url,
