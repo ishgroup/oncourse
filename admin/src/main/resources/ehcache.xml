@@ -2,17 +2,6 @@
 <ehcache
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-        updateCheck="false" name="admin">
-    <defaultCache
-            maxElementsInMemory="500"
-            eternal="false"
-            timeToLiveSeconds="600"
-            overflowToDisk="false">
-    </defaultCache>
-    <cache name="CourseClass"
-        maxElementsInMemory="500"
-        eternal="false"
-        timeToLiveSeconds="60"
-        overflowToDisk="false">
-    </cache>
+        updateCheck="false" name="admin" maxBytesLocalHeap="100M">
+    <defaultCache timeToLiveSeconds="120"/>
 </ehcache>

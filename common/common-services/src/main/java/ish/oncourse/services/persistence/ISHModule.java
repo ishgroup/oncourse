@@ -1,10 +1,9 @@
 package ish.oncourse.services.persistence;
 
 import ish.oncourse.services.cache.EHQueryCacheProvider;
+import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.util.ContextUtil;
-import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.hibernate.management.impl.EhcacheHibernateMbeanNames;
 import net.sf.ehcache.management.ManagementService;
 import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.configuration.ObjectContextFactory;
@@ -15,8 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 
 public class ISHModule implements Module {
@@ -26,10 +23,15 @@ public class ISHModule implements Module {
 	public void configure(Binder binder) {
 		binder.bind(ObjectContextFactory.class).to(ISHObjectContextFactory.class);
 
-		binder.bind(CacheManager.class).toInstance(buildCacheManager());
+		if (ContextUtil.isQueryCacheEnabled()) {
+			binder.bind(CacheManager.class).toInstance(buildCacheManager());
 
-		binder.bind(QueryCache.class).toProvider(EHQueryCacheProvider.class);
-		binder.bind(Key.get(QueryCache.class, ISHObjectContextFactory.QUERY_CACHE_INJECTION_KEY)).toProvider(EHQueryCacheProvider.class);
+			binder.bind(QueryCache.class).toProvider(EHQueryCacheProvider.class);
+			binder.bind(Key.get(QueryCache.class, ISHObjectContextFactory.QUERY_CACHE_INJECTION_KEY)).toProvider(EHQueryCacheProvider.class);
+		} else {
+			binder.bind(QueryCache.class).toInstance(new NoopQueryCache());
+			binder.bind(Key.get(QueryCache.class, ISHObjectContextFactory.QUERY_CACHE_INJECTION_KEY)).toInstance(new NoopQueryCache());
+		}
 	}
 
 	private CacheManager buildCacheManager() {

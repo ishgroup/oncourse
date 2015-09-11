@@ -15,7 +15,8 @@ import javax.naming.NamingException;
 public class ContextUtil {
 	
 	private static final Logger logger = LogManager.getLogger();
-	
+
+	public static final String QUERY_CACHE_ENABLED_PROPERTY_KEY = "query.cache.enabled";
 	public static final String CACHE_ENABLED_PROPERTY_KEY = "cache.enabled";
 	public static final String CACHE_CAPACITY_PROPERTY_KEY = "cache.capacity";
 	
@@ -44,8 +45,24 @@ public class ContextUtil {
         }
         return ctx.lookup(path);
     }
-    
-    /**
+
+	/**
+	 * Reads query.cache.enabled parameter from apps context.
+	 *
+	 * @return if cayenne cache should be enabled
+	 */
+	public static boolean isQueryCacheEnabled() {
+		try {
+			Boolean cacheEnabled = (Boolean) lookup(QUERY_CACHE_ENABLED_PROPERTY_KEY);
+
+			return cacheEnabled;
+		} catch (Exception e) {
+			logger.warn("query.cache.enabled option is not configured in context.xml, query caching will be enabled for the app.");
+			return true;
+		}
+	}
+
+	/**
      * Reads cache.enabled parameter from apps context.
      * 
      * @return if cayenne cache should be enabled
@@ -56,7 +73,7 @@ public class ContextUtil {
     		
     		return cacheEnabled;
     	} catch (Exception e) {
-    		logger.warn("cache.enabled option is not configured in context.xml, query caching will be enabled for the app.");
+    		logger.warn("cache.enabled option is not configured in context.xml, object caching will be enabled for the app.");
     		return true;
     	}
     }

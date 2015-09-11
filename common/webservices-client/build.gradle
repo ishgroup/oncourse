@@ -1,6 +1,8 @@
 dependencies {
     compile project(':common:waCommon')
-    compile 'org.apache.cxf:cxf-bundle:2.6.16'
+    compile ('org.apache.cxf:cxf-bundle:2.6.16') {
+        exclude group:'net.sf.ehcache', module: 'ehcache-core'
+    }
 }
 
 jar {

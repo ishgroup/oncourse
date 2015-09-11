@@ -7,4 +7,5 @@
     <Environment name="asset.syncScript" override="false" type="java.lang.String" value="/var/tomonCourse/scripts/assetSync.sh" />
     
     <Environment name="cache.enabled" override="false" type="java.lang.Boolean" value="true"/>
+    <Environment name="query.cache.enabled" override="false" type="java.lang.Boolean" value="true"/>
 </Context>

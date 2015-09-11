@@ -2,12 +2,7 @@
 <ehcache
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-        updateCheck="false" name="services">
-        <!-- disable the cache completely for the services application. We always want fresh data -->
-    <defaultCache
-            maxElementsInMemory="0"
-            eternal="false"
-            timeToLiveSeconds="0"
-            overflowToDisk="false">
-    </defaultCache>
+        updateCheck="false" name="services" maxBytesLocalHeap="1">
+    <defaultCache timeToLiveSeconds="1"/>
+    <cache name="CourseClass" timeToLiveSeconds="1"/>
 </ehcache>
