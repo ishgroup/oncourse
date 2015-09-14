@@ -1,17 +1,24 @@
-goog.provide('application_handler');
+goog.provide('application');
 
 goog.require('initialise');
 
 var $j = jQuery.noConflict();
-
+var target;
 
 $j(document).ready(function () {
+
+    
+    if (window.location.href.indexOf("/applications") > -1 && window.location.hash != "") {
+
+        target = window.location.hash;
+        window.location.hash = "";
+    }
 
     $j("a[href^='#reject']").click(function()
     {
 
-        var id = $j(this).closest('span').attr('id');
-        var blockId = '#' + id;
+        var id = $j(this).closest('span').attr('data');
+        var blockId = '#application-' + id;
         var actionLink = "/portal/history.applications:reject/" + id;
         $j.ajax({
             type: "GET",
@@ -30,8 +37,8 @@ $j(document).ready(function () {
     $j("a[href^='#enrolnow']").click(function()
     {
 
-        var id = $j(this).closest('span').attr('id');
-        var blockId = '#' + id;
+        var id = $j(this).closest('span').attr('data');
+        var blockId = '#application-' + id;
         var actionLink = "/portal/history.applications:enrolnow/" + id;
         $j.ajax({
             type: "GET",
@@ -47,4 +54,29 @@ $j(document).ready(function () {
             }
         });
     });
+
+
+    
+    $j("a[href^='/portal/history/applications#application-']").click(function(e) {
+        if (!$j("a[href^='#applications-history']").closest('li').hasClass('active')) {
+            location.reload();
+        } else {
+            e.preventDefault();
+            scrollToTarget(this.hash);
+        }
+    });
+    
+   
 });
+
+$j(window).load(function() {
+    scrollToTarget(target)
+});
+
+function scrollToTarget(hashTag) {
+    if (hashTag) {
+        $j('html, body').animate({
+            scrollTop: $j(hashTag).offset().top - $j('#header-holder').height()
+        }, 700, 'swing', function () {});
+    }
+}

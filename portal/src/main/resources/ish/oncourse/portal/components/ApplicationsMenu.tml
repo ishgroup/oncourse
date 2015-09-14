@@ -28,7 +28,7 @@
 				<div t:type="applicationStatusComponent" application="application"/>
 
 				<t:if test="${needApprove()}">
-					<a href="${request.contextPath}/history/applications#${application.id}" class="label label-primary">Review now</a>
+					<a href="${request.contextPath}/history/applications#application-${application.id}" class="label label-primary">Review now</a>
 				</t:if>
 			</label>
 		</p>

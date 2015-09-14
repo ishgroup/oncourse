@@ -6,7 +6,7 @@
 		</t:if>
 
 		<t:loop source="applications" value="application">
-			<span id="${application.id}">
+			<span id="application-${application.id}" data="${application.id}">
 				<t:history.applicationitem application="application"/>
 			</span>
 		</t:loop>
