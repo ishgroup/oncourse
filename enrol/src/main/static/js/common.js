@@ -28,17 +28,26 @@ function initContactEditorHandle()
 }
 
 function initCustomFieldHandle() {
-    if ($j(".customField") && $j(".customField").data('default')) {
-        var values = $j(".customField").data('default').split(';');
-        if (values.length > 0) {
-            $j(".customField").autocomplete({
-                source: values,
-                minLength: 0
-            }).focus(function() {
-                $j(this).autocomplete('search', "")
-            });
+    $j(".customField").each(function() {
+        if ($j(this).data('default')) {
+            var values = $j(this).data('default').split(';');
+            if (values.length > 0) {
+                $j(this).autocomplete({
+                    source: values,
+                    minLength: 0,
+                    messages: {
+                        noResults: '',
+                        results: function() {}
+                    }
+                }).focus(function() {
+                    $j(this).autocomplete('search', "")
+                });
+                if(!$j(this).val()) {
+                    $j(this).val(values[0])
+                }
+            }
         }
-    }
+    })
 }
 
 function initCountryAutoCompleteHandle()
