@@ -34,7 +34,7 @@ public class SolrQueryBuilderTest {
 		"&fq=%s" +
 		"&fq=%s&q={!boost b=$boostfunction v=$qq}" +
 		"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) " +
-		"AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z] AND siteId:1000)" +
+		"AND price:[* TO 1999.99] AND when:Monday AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z] AND siteId:1000)" +
 		"&sort=score desc,startDate asc,name asc&debugQuery=false";
 	private static final String EXPECTED_AFTER_REPLACEMENT_S_PARAM = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19";
 	private static final String DIGITS_SEPARATED_BY_ALL_REPLACED_SOLR_SYNTAX_CHARACTERS = "1!2^3(4)5{6}7[8]9:10\"11?12+13~14*15|16&17;18\\19";
@@ -96,7 +96,7 @@ public class SolrQueryBuilderTest {
         searchParams.setBefore(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, "UTC").parse("20120101"));
         searchParams.setS(DIGITS_SEPARATED_BY_ALL_REPLACED_SOLR_SYNTAX_CHARACTERS);
         searchParams.setPrice(1999.99d);
-        searchParams.setDay("DAY");
+        searchParams.setDay(DayOption.mon);
         searchParams.setTime("TIME");
 		searchParams.setSiteId(1000L);
         searchParams.setSubject(new Tag() {
@@ -186,7 +186,7 @@ public class SolrQueryBuilderTest {
         filters.clear();
         solrQueryBuilder.appendFilterDay(filters);
         assertEquals("Test filters.size for filter SearchParam.day", 1, filters.size());
-        assertEquals("Test filters.get(0) for filter SearchParam.day", String.format(SolrQueryBuilder.FILTER_TEMPLATE_when, "DAY"), filters.get(0));
+        assertEquals("Test filters.get(0) for filter SearchParam.day", String.format(SolrQueryBuilder.FILTER_TEMPLATE_when, DayOption.mon.getFullName()), filters.get(0));
 
         filters.clear();
         solrQueryBuilder.appendFilterTime(filters);
@@ -243,6 +243,27 @@ public class SolrQueryBuilderTest {
 		assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
 				"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
 				"&sort=score desc,startDate asc,name asc&debugQuery=false", value);
+	}
+
+
+	@Test
+	public void testDayParameter() throws UnsupportedEncodingException {
+		String template = "qt=standard&" +
+				"fl=id,name,course_loc,score&" +
+				"fq=+collegeId:1 +doctype:course end:[NOW TO *]&" +
+				"q={!boost b=$boostfunction v=$qq}&" +
+				"boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&" +
+				"qq=(when:%s)&" +
+				"sort=score desc,startDate asc,name asc&" +
+				"debugQuery=false";
+
+		SearchParams searchParams = new SearchParams();
+		for (DayOption dayOption:DayOption.values()){
+			searchParams.setDay(dayOption);
+			SolrQueryBuilder solrQueryBuilder =  SolrQueryBuilder.valueOf(searchParams,"1",null,null);
+			String value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
+			assertEquals(String.format(template, dayOption.getFullName()), value);
+		}
 	}
 
 }

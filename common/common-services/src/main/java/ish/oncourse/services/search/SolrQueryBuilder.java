@@ -208,7 +208,9 @@ public class SolrQueryBuilder {
     }
 
     void appendFilterDay(List<String> filters) {
-        appendFilterWhen(filters, params.getDay());
+        if (params.getDay() != null) {
+            appendFilterWhen(filters, params.getDay().getFullName());
+        }
     }
 
     void appendFilterTime(List<String> filters) {

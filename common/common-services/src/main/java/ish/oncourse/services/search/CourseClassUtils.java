@@ -3,13 +3,12 @@ package ish.oncourse.services.search;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
-import ish.oncourse.utils.TimestampUtilities;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static ish.oncourse.services.search.SearchParamsParser.*;
+import static ish.oncourse.services.search.SearchParamsParser.PARAM_VALUE_daytime;
+import static ish.oncourse.services.search.SearchParamsParser.PARAM_VALUE_evening;
 
 /**
  * Utility class s to evaluate course class 
@@ -129,31 +128,13 @@ public class CourseClassUtils {
 
 	}
 	
-	private static float focusMatchForDays(final CourseClass courseClass, final String searchDay) {
+	private static float focusMatchForDays(final CourseClass courseClass, DayOption searchDay) {
 		float result = 0.0f;
 
         if (courseClass.getIsDistantLearningCourse())
             return 1.0f;
 		if (courseClass.getDaysOfWeek() != null) {
-			List<String> uniqueDays = new ArrayList<>();
-			uniqueDays.addAll(courseClass.getDaysOfWeek());
-			for (String day : uniqueDays) {
-                if (PARAM_VALUE_weekday.equalsIgnoreCase(searchDay) && TimestampUtilities.DaysOfWorkingWeekNamesLowerCase.contains(day.toLowerCase()))
-                {
-                    result = 1.0f;
-                    break;
-                }
-                if (PARAM_VALUE_weekend.equalsIgnoreCase(searchDay) && TimestampUtilities.DaysOfWeekendNamesLowerCase.contains(day.toLowerCase()))
-                {
-                    result = 1.0f;
-                    break;
-                }
-                if (day.equalsIgnoreCase(searchDay))
-                {
-                    result = 1.0f;
-                    break;
-                }
-			}
+			result = FocusMatchForDays.valueOf(courseClass.getDaysOfWeek(), searchDay).match();
 		}
 		return result;
 	}

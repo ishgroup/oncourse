@@ -2,16 +2,16 @@ package ish.oncourse.services.search;
 
 import ish.oncourse.model.Tag;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
 
-import javax.swing.text.html.HTML;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 public class SearchParams {
     private String s;
     private Double price;
-    private String day;
+    private DayOption day;
     private String time;
     private Tag subject;
     private Date after;
@@ -62,11 +62,11 @@ public class SearchParams {
         this.price = price;
     }
 
-    public String getDay() {
+    public DayOption getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(DayOption day) {
         this.day = day;
     }
 
@@ -122,7 +122,7 @@ public class SearchParams {
         return tags.isEmpty() && suburbs.isEmpty() &&
                 StringUtils.trimToNull(s) == null &&
                 price == null &&
-                StringUtils.trimToNull(day) == null &&
+                day == null &&
                 StringUtils.trimToNull(time) == null &&
                 subject == null &&
                 after == null &&

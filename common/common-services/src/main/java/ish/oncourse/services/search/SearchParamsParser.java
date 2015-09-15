@@ -7,10 +7,11 @@ import ish.oncourse.services.tag.ITagService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.services.Request;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
 
 public class SearchParamsParser
 {
@@ -49,7 +50,7 @@ public class SearchParamsParser
                         value = searchParams.getS();
                         break;
                     case day:
-                        searchParams.setDay(parseDay(parameter));
+                        searchParams.setDay(DayParser.valueOf(parameter).parse());
                         value = searchParams.getDay();
                         break;
                     case near:
@@ -139,10 +140,6 @@ public class SearchParamsParser
         return parameter.matches(PATTERN_PRICE) ? Double.valueOf(parameter.replaceAll("[$]", StringUtils.EMPTY)) : null;
     }
     
-    private String parseDay(String parameter) {
-        return parameter.equalsIgnoreCase(PARAM_VALUE_weekday) || parameter.equalsIgnoreCase(PARAM_VALUE_weekend)?parameter:null;
-    }
-
     public SearchParams getSearchParams() {
         return searchParams;
     }
