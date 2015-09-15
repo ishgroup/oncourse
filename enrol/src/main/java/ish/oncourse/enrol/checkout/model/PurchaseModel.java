@@ -98,6 +98,10 @@ public class PurchaseModel {
 		this.payer = payer;
 		getInvoice().setContact(payer);
 		getInvoice().setBillToAddress(payer.getAddress());
+		for (InvoiceNode invoiceNode : getPaymentPlanInvoices()) {
+			invoiceNode.getInvoice().setContact(payer);
+			invoiceNode.getInvoice().setBillToAddress(payer.getAddress());
+		}
 		getPayment().setContact(payer);
 	}
 
