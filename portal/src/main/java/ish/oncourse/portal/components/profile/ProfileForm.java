@@ -3,6 +3,8 @@ package ish.oncourse.portal.components.profile;
 import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
+import ish.oncourse.model.CustomField;
+import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.portal.pages.Profile;
 import ish.oncourse.portal.pages.Timetable;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -23,7 +25,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
@@ -69,6 +73,11 @@ public class ProfileForm {
     @Parameter
     @Property
     private Contact contact;
+	
+	@Property
+	private String customFieldName;
+
+	private Map<String, String> customFieldContainer = new HashMap<>();
 
     /**
      * reset form method flag
@@ -100,7 +109,20 @@ public class ProfileForm {
         if (contactFieldHelper == null) {
             contactFieldHelper = new ContactFieldHelper(preferenceController, PreferenceController.ContactFieldSet.enrolment);
         }
-
+		
+		//collect all visible Custom field types provided by college
+		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
+			if (contactFieldHelper.isCustomFieldTypeVisible(fieldType)) {
+				customFieldContainer.put(fieldType.getName(), null);
+			}
+		}
+		
+		//fill values for fields which already predefined for contact
+		for (CustomField field : contact.getCustomFields()) {
+			if (contactFieldHelper.isCustomFieldVisible(field)) {
+				customFieldContainer.put(field.getCustomFieldType().getName(), field.getValue());
+			}
+		}
     }
 
     @AfterRender
@@ -109,6 +131,35 @@ public class ProfileForm {
 
     }
 
+	public String getDefaultValue() {
+		return getCustomFieldTypeByName(customFieldName).getDefaultValue();
+	}
+	
+	public String getCurrentCustomFieldValue() {
+		return customFieldContainer.get(customFieldName);
+	}
+
+	public void setCurrentCustomFieldValue(String value) {
+		customFieldContainer.put(customFieldName, value);
+	}
+	
+	public Set<String> getCustomFieldNames() {
+		return customFieldContainer.keySet();
+	}
+	
+	public boolean customFieldRequared(String customFieldName) {
+		return contactFieldHelper.isCustomFieldTypeRequired(getCustomFieldTypeByName(customFieldName));
+	}
+
+	public CustomFieldType getCustomFieldTypeByName(String name) {
+		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
+			if (fieldType.getName().equals(name)) {
+				return fieldType;
+			}
+		}
+
+		return null;
+	}
 
     public boolean visible(String fieldName) {
         return contactFieldHelper.getVisibleFields(contact, false).contains(fieldName);
@@ -178,6 +229,12 @@ public class ProfileForm {
 
     boolean validate() {
 		ConcurrentHashMap<String, String> errors = new ConcurrentHashMap<>(validateHandler.getErrors());
+		
+		for (Map.Entry<String, String> customFieldEntry : customFieldContainer.entrySet()) {
+			if (customFieldRequared(customFieldEntry.getKey()) && StringUtils.trimToNull(customFieldEntry.getValue()) == null) {
+				errors.putIfAbsent(customFieldEntry.getKey(), String.format("Field \"%s\" is required", customFieldEntry.getKey()));
+			}
+		}
 
 		String emailErrorMessage = contact.validateEmail();
 		if (emailErrorMessage != null) {
@@ -304,7 +361,30 @@ public class ProfileForm {
     Object submitted() {
         if (validate())
         {
-            contact.getObjectContext().commitChanges();
+			Map<String, CustomField> contactFields = new HashMap<>();
+			
+			//collect all custom field which was already defined for contact
+			for (CustomField field : contact.getCustomFields()) {
+				contactFields.put(field.getCustomFieldType().getName(), field);
+			}
+			
+			//iterate by all fields from form
+			for (Map.Entry<String, String> customFieldEntry : customFieldContainer.entrySet()) {
+				CustomField field = contactFields.get(customFieldEntry.getKey());
+				if (field != null) {
+					//reset value if field for such custom field type already exist for contact
+					field.setValue(customFieldEntry.getValue());
+				} else if (customFieldEntry.getValue() != null){
+					//create new custom field if value for such custom field type populated on form
+					CustomField newField = contact.getObjectContext().newObject(CustomField.class);
+					newField.setCustomFieldType(getCustomFieldTypeByName(customFieldEntry.getKey()));
+					newField.setValue(customFieldEntry.getValue());
+					newField.setRelatedObject(contact);
+					newField.setCollege(contact.getCollege());
+				}
+			}
+
+			contact.getObjectContext().commitChanges();
         }
         return profile;
     }

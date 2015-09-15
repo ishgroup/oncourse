@@ -139,6 +139,19 @@
                         </div>
                     </div>
                 </div>
+				<t:loop source="customFieldNames" value="customFieldName">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="customField" class="control-label">${customFieldName}<t:if test="customFieldRequared(customFieldName)"><em title="${message:required}">*</em></t:if></label>
+								<div class="${validateHandler.validateClass(customFieldName)}">
+									<t:textfield t:id="customField" value="currentCustomFieldValue" class="form-control ${validateHandler.errorClass(customFieldName)}" data-default="${defaultValue}"/>
+									<span t:type="HintComponent" validationMessage="${validateHandler.error(customFieldName)}"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</t:loop>
 				<t:if test="contact.student">
 					<div class="row">
 						<div class="col-sm-12">

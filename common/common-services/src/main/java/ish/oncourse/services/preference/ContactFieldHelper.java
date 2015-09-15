@@ -2,6 +2,7 @@ package ish.oncourse.services.preference;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CustomField;
+import ish.oncourse.model.CustomFieldType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,26 +113,35 @@ public class ContactFieldHelper {
 
 
 	public boolean isCustomFieldVisible(CustomField customField) {
+		return isCustomFieldTypeVisible(customField.getCustomFieldType());
+	}
+	
+	public boolean isCustomFieldTypeVisible(CustomFieldType customFieldType) {
 		switch (contactFieldSet) {
 			case enrolment:
-				return isShow(customField.getCustomFieldType().getRequireForEnrolment());
+				return isShow(customFieldType.getRequireForEnrolment());
 			case waitinglist:
-				return isShow(customField.getCustomFieldType().getRequireForWaitingList());
+				return isShow(customFieldType.getRequireForWaitingList());
 			case mailinglist:
-				return isShow(customField.getCustomFieldType().getRequireForMailingList());
+				return isShow(customFieldType.getRequireForMailingList());
 			default:
 				throw new IllegalArgumentException("Unknown field set type.");
 		}
 	}
-	
+
 	public boolean isCustomFieldRequired(CustomField customField) {
+		return isCustomFieldTypeRequired(customField.getCustomFieldType());
+	}
+
+
+	public boolean isCustomFieldTypeRequired(CustomFieldType customFieldType) {
 		switch (contactFieldSet) {
 			case enrolment:
-				return VALUE_Required.equals(customField.getCustomFieldType().getRequireForEnrolment());
+				return VALUE_Required.equals(customFieldType.getRequireForEnrolment());
 			case waitinglist:
-				return VALUE_Required.equals(customField.getCustomFieldType().getRequireForWaitingList());
+				return VALUE_Required.equals(customFieldType.getRequireForWaitingList());
 			case mailinglist:
-				return VALUE_Required.equals(customField.getCustomFieldType().getRequireForMailingList());
+				return VALUE_Required.equals(customFieldType.getRequireForMailingList());
 			default:
 				throw new IllegalArgumentException("Unknown field set type.");
 		}
