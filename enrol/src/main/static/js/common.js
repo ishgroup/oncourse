@@ -27,6 +27,11 @@ function initContactEditorHandle()
     }
 }
 
+/**
+ * Add default values popup for each custom field which displayed on 'edit contact' page.
+ * List of values provided through semicolon and located into 'data-default' attribute of input tag.
+ * Popup appears when focus hit on field.
+ */
 function initCustomFieldHandle() {
     $j(".customField").each(function() {
         if ($j(this).data('default')) {
