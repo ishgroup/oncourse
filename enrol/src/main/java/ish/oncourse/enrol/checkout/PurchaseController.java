@@ -974,6 +974,10 @@ public class PurchaseController {
 		public boolean hasValues() {
 			return !values.isEmpty();
 		}
+
+		public boolean hasValue(Class valueType) {
+			return values.get(valueType) != null;
+		}
 	}
 
 	public enum Message {

@@ -95,11 +95,9 @@ public abstract class AAddContactAction extends APurchaseAction {
 
 
     protected void commitContact() {
-		
-		CustomFieldHolder fieldHolder = getParameter().getValue(CustomFieldHolder.class);
 
-		if (fieldHolder != null) {
-			CustomFieldsBuilder.valueOf(fieldHolder, contact).build();
+		if (getParameter().hasValue(CustomFieldHolder.class)) {
+			CustomFieldsBuilder.valueOf(getParameter().getValue(CustomFieldHolder.class), contact).build();
 		}
 
         contact.getObjectContext().commitChanges();
