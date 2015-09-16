@@ -4,9 +4,12 @@ import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.AddContactController;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.contact.ContactEditorController;
+import ish.oncourse.enrol.checkout.contact.CustomFieldHolder;
+import ish.oncourse.enrol.checkout.contact.CustomFieldsBuilder;
 import ish.oncourse.model.*;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addCourseClass;
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.changePayer;
@@ -92,6 +95,12 @@ public abstract class AAddContactAction extends APurchaseAction {
 
 
     protected void commitContact() {
+		
+		CustomFieldHolder fieldHolder = getParameter().getValue(CustomFieldHolder.class);
+
+		if (fieldHolder != null) {
+			CustomFieldsBuilder.valueOf(fieldHolder, contact).build();
+		}
 
         contact.getObjectContext().commitChanges();
         tryToRelateToGuardian();

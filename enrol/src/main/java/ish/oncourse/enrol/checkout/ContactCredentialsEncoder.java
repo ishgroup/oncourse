@@ -51,18 +51,6 @@ public class ContactCredentialsEncoder {
 			contact.setIsMarketingViaEmailAllowed(true);
 			contact.setIsMarketingViaPostAllowed(true);
 			contact.setIsMarketingViaSMSAllowed(true);
-			
-			for (CustomFieldType customFieldType : localCollege.getCustomFieldTypes()) {
-				CustomField customField = objectContext.newObject(CustomField.class);
-
-				customField.setCollege(localCollege);
-				customField.setCustomFieldType(customFieldType);
-				
-				customField.setRelatedObject(contact);
-				if (customFieldType.getDefaultValue() != null && !customFieldType.getDefaultValue().contains(";")) {
-					customField.setValue(customFieldType.getDefaultValue());
-				}
-			}
 		}
 	}
 

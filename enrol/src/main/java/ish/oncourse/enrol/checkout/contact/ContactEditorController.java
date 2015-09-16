@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout.contact;
 import ish.oncourse.enrol.checkout.*;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CustomField;
+import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import org.apache.cayenne.ObjectContext;
 
@@ -31,6 +32,8 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
     private PurchaseController.Action cancelAction;
 
 	private String specialNeeds;
+	
+	private CustomFieldHolder customFieldHolder;
 
 	@Override
 	public Contact getContact() {
@@ -57,6 +60,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(addAction);
 		actionParameter.setErrors(getErrors());
 		actionParameter.setValue(contact);
+		actionParameter.setValue(customFieldHolder);
 		getPurchaseController().performAction(actionParameter);
 	}
 
@@ -131,8 +135,12 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
     }
 
 	@Override
-	public List<CustomField> getCustomFields() {
-		return contact.getCustomFields();
+	public CustomFieldHolder getCustomFieldHolder() {
+		if (customFieldHolder == null) {
+			customFieldHolder = new CustomFieldHolder(contactFieldHelper);
+			customFieldHolder.addAll(contact.getCollege().getCustomFieldTypes());
+		}
+		return customFieldHolder;
 	}
 
 	@Override

@@ -129,11 +129,6 @@ public class ContactFieldHelper {
 		}
 	}
 
-	public boolean isCustomFieldRequired(CustomField customField) {
-		return isCustomFieldTypeRequired(customField.getCustomFieldType());
-	}
-
-
 	public boolean isCustomFieldTypeRequired(CustomFieldType customFieldType) {
 		switch (contactFieldSet) {
 			case enrolment:

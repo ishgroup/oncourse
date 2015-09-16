@@ -115,15 +115,13 @@
 	</t:if>
 
 		<t:loop source="customFieldNames" value="customFieldName">
-			<t:if test="${delegate.contactFieldHelper.isCustomFieldVisible(getCustomFieldByName(customFieldName))}">
-				<p>
-					<t:label for="customField">${customFieldName}<t:if test="customFieldRequired(getCustomFieldByName(customFieldName))"><em title="${message:message-required}">*</em></t:if></t:label>
-					<span class="${validateHandler.validateClass(customFieldName)}">
-						<t:textfield t:id="customField" value="currentCustomFieldValue" class="customField input-fixed ${validateHandler.errorClass(customFieldName)}" data-default="${defaultCustomFieldValue}"/>
-						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error(customFieldName)}"/>
-					</span>
-				</p>
-			</t:if>
+			<p>
+				<t:label for="customField">${customFieldName}<t:if test="${isCustomFieldRequared()}"><em title="${message:message-required}">*</em></t:if></t:label>
+				<span class="${validateHandler.validateClass(customFieldName)}">
+					<t:textfield t:id="customField" value="currentCustomFieldValue" class="customField input-fixed ${validateHandler.errorClass(customFieldName)}" data-default="${defaultCustomFieldValue}"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error(customFieldName)}"/>
+				</span>
+			</p>
 		</t:loop>
 
 		<t:if test="${delegate.visibleFields.contains('specialNeeds')}">

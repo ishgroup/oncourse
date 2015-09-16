@@ -40,6 +40,8 @@ public class ContactEditorParser {
 	static final String KEY_ERROR_error_countryOfBirth = "message-countryOfBirth";
 
 	private List<String> visibleFields;
+	
+	private CustomFieldHolder customFieldHolder;
 
 	private Map<String, String> errors = new HashMap<>();
 
@@ -120,12 +122,11 @@ public class ContactEditorParser {
 		}
 		
 		// validate custom fields
-		for (CustomField customField : contact.getCustomFields()) {
-			String value = StringUtils.trimToNull(customField.getValue());
-			
-			if (value == null && contactFieldHelper.isCustomFieldRequired(customField)) {
-				errors.put(customField.getCustomFieldType().getName(), 
-						messages.format(KEY_ERROR_MESSAGE_fieldRequired, customField.getCustomFieldType().getName()));
+		for (String name : customFieldHolder.getCustomFieldNames()) {
+			if (customFieldHolder.isCustomFieldRequared(name) 
+					&& StringUtils.trimToNull(customFieldHolder.getCustomFieldValue(name)) == null) {
+				errors.put(name,
+						messages.format(KEY_ERROR_MESSAGE_fieldRequired, name));
 			}
 		}
 
@@ -187,6 +188,10 @@ public class ContactEditorParser {
 
 	public void setVisibleFields(List<String> visibleFields) {
 		this.visibleFields = visibleFields;
+	}
+
+	public void setCustomFieldHolder(CustomFieldHolder customFieldHolder) {
+		this.customFieldHolder = customFieldHolder;
 	}
 
 	/**

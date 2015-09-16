@@ -5,6 +5,8 @@ import ish.oncourse.enrol.checkout.ContactCredentialsEncoder;
 import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
+import ish.oncourse.enrol.checkout.contact.CustomFieldHolder;
+import ish.oncourse.enrol.checkout.contact.CustomFieldsBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -29,6 +31,7 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 	private PreferenceController preferenceController;
 	private ContactFieldHelper contactFieldHelper;
 	private ContactFieldSet contactFieldSet;
+	private CustomFieldHolder customFieldHolder;
 
 	private College college;
 
@@ -128,7 +131,8 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 
 	@Override
 	public void saveContact() {
-        applyMarketingValues();
+		CustomFieldsBuilder.valueOf(getCustomFieldHolder(), contact).build();
+		applyMarketingValues();
 		objectContext.commitChanges();
 		state = State.FINISHED;
 	}
@@ -253,6 +257,15 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 
 	public String getSpecialNeeds() {
 		return specialNeeds;
+	}
+
+	@Override
+	public CustomFieldHolder getCustomFieldHolder() {
+		if (customFieldHolder == null) {
+			customFieldHolder = new CustomFieldHolder(getContactFieldHelper());
+			customFieldHolder.addAll(getContact().getCollege().getCustomFieldTypes());
+		}
+		return customFieldHolder;
 	}
 
 	public static enum State {

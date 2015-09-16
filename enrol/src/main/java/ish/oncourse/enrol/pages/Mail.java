@@ -129,6 +129,7 @@ public class Mail {
             parser.setVisibleFields(controller.getVisibleFields());
             parser.setContactFieldHelper(controller.getContactFieldHelper());
             parser.setRequest(request);
+			parser.setCustomFieldHolder(controller.getCustomFieldHolder());
             parser.parse();
             controller.setErrors(parser.getErrors());
         }
