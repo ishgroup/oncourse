@@ -19,6 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -35,6 +36,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 	private Contact contact;
 	private ICountryService countryService;
 	private ContactFieldHelper contactFieldHelper;
+	private CustomFieldHolder customFieldHolder;
 	private Request request;
 	private Messages messages;
 
@@ -90,6 +92,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		parser.setContact(contact);
         parser.setRequest(request);
 		parser.setContactFieldHelper(contactFieldHelper);
+		parser.setCustomFieldHolder(customFieldHolder);
 		parser.setMessages(messages);
 
         FieldDescriptor[] fieldDescriptors =  FieldDescriptor.values();
@@ -167,6 +170,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 		when(contactFieldHelper.getPreferenceController()).thenReturn(preferenceController);
 		when(contactFieldHelper.isRequiredField(FieldDescriptor.street, contact)).thenReturn(true);
+		when(contactFieldHelper.isCustomFieldTypeVisible(customFieldType)).thenReturn(true);
 		when(preferenceController.getEnrolmentMinAge()).thenReturn(18);
 		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, 18))
 			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge);
@@ -174,6 +178,9 @@ public class ContactEditorParserTest extends ACheckoutTest{
 			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
 		when(messages.get(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old)).
 			thenReturn(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old);
+		customFieldHolder = new CustomFieldHolder(contactFieldHelper);
+		customFieldHolder.addAll(Arrays.asList(customFieldType));
+		customFieldHolder.setCustomFieldValue(customField.getCustomFieldType().getName(), customField.getValue());
 	}
 
 	@Test
@@ -186,6 +193,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		parser.setContact(contact);
 		parser.setRequest(request);
 		parser.setContactFieldHelper(contactFieldHelper);
+		parser.setCustomFieldHolder(customFieldHolder);
 		parser.setMessages(messages);
 		parser.setVisibleFields(Collections.singletonList(Contact.DATE_OF_BIRTH.getName()));
 
@@ -273,6 +281,8 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		ICountryService countryService = getService(ICountryService.class);
 
 		ContactFieldHelper contactFieldHelper = new ContactFieldHelper(preferenceController, enrolment);
+		CustomFieldHolder fieldHolder = new CustomFieldHolder(contactFieldHelper);
+		fieldHolder.addAll(contact.getCollege().getCustomFieldTypes());
 
 		Request request = mock(Request.class);
 		when(request.getParameter(Contact.DATE_OF_BIRTH.getName())).thenReturn("11/11/2011");
@@ -287,6 +297,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		parser.setContact(contact);
 		parser.setRequest(request);
 		parser.setContactFieldHelper(contactFieldHelper);
+		parser.setCustomFieldHolder(fieldHolder);
 		parser.setMessages(messages);
 
 		FieldDescriptor[] fieldDescriptors =  new FieldDescriptor[]{FieldDescriptor.dateOfBirth};

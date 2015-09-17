@@ -10,6 +10,7 @@ import ish.oncourse.enrol.checkout.contact.CustomFieldsBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.CustomField;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.cayenne.ObjectContext;
@@ -263,7 +264,12 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 	public CustomFieldHolder getCustomFieldHolder() {
 		if (customFieldHolder == null) {
 			customFieldHolder = new CustomFieldHolder(getContactFieldHelper());
-			customFieldHolder.addAll(getContact().getCollege().getCustomFieldTypes());
+			customFieldHolder.addAll(contact.getCollege().getCustomFieldTypes());
+			for (CustomField customField : contact.getCustomFields()) {
+				if (contactFieldHelper.isCustomFieldTypeVisible(customField.getCustomFieldType())) {
+					customFieldHolder.setCustomFieldValue(customField.getCustomFieldType().getName(), customField.getValue());
+				}
+			}
 		}
 		return customFieldHolder;
 	}

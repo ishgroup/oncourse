@@ -60,7 +60,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(addAction);
 		actionParameter.setErrors(getErrors());
 		actionParameter.setValue(contact);
-		actionParameter.setValue(customFieldHolder);
+		actionParameter.setValue(getCustomFieldHolder());
 		getPurchaseController().performAction(actionParameter);
 	}
 
@@ -139,6 +139,12 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 		if (customFieldHolder == null) {
 			customFieldHolder = new CustomFieldHolder(contactFieldHelper);
 			customFieldHolder.addAll(contact.getCollege().getCustomFieldTypes());
+			for (CustomField customField : contact.getCustomFields()) {
+				if (contactFieldHelper.isCustomFieldTypeVisible(customField.getCustomFieldType())) {
+					customFieldHolder.setCustomFieldValue(customField.getCustomFieldType().getName(), customField.getValue());
+				}
+			}
+			
 		}
 		return customFieldHolder;
 	}
