@@ -9,11 +9,11 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
-		<db-attribute name="enrolBy" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="enrolBy" type="TIMESTAMP"/>
 		<db-attribute name="feeOverride" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="reason" type="CLOB" length="32000"/>
 		<db-attribute name="source" type="CHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="10"/>
@@ -23,11 +23,11 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="attendanceType" type="INTEGER" length="10"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="durationMinutes" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="markerId" type="BIGINT" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="note" type="LONGVARCHAR"/>
 		<db-attribute name="sessionId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
@@ -36,13 +36,13 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="byteSize" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="filePath" type="VARCHAR" length="512"/>
 		<db-attribute name="fileUUID" type="VARCHAR" length="160"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isWebVisible" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="mimeType" type="VARCHAR" length="512"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" length="512"/>
 		<db-attribute name="pixelHeight" type="INTEGER" length="10"/>
 		<db-attribute name="pixelWidth" type="INTEGER" length="10"/>
@@ -52,31 +52,31 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="binaryInfoId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="documentId" type="BIGINT"/>
 		<db-attribute name="documentVersionId" type="BIGINT"/>
 		<db-attribute name="entityAngelId" type="BIGINT" length="19"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="entityWillowId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="specialType" type="INTEGER"/>
 	</db-entity>
 	<db-entity name="Certificate">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="certificateNumber" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="endDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="endDate" type="TIMESTAMP"/>
 		<db-attribute name="fundingSource" type="INTEGER" length="10"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isQualification" type="BIT"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="printedWhen" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="printedWhen" type="TIMESTAMP"/>
 		<db-attribute name="privateNotes" type="VARCHAR" length="1000"/>
 		<db-attribute name="publicNotes" type="VARCHAR" length="1000"/>
 		<db-attribute name="qualificationId" type="BIGINT" length="19"/>
-		<db-attribute name="revokedWhen" type="TIMESTAMP" length="19"/>
+		<db-attribute name="revokedWhen" type="TIMESTAMP"/>
 		<db-attribute name="studentFirstName" type="VARCHAR" length="100"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="studentLastName" type="VARCHAR" length="100"/>
@@ -85,9 +85,9 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="certificateId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="outcomeId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="College">
@@ -95,16 +95,16 @@
 		<db-attribute name="billingCode" type="VARCHAR" length="16"/>
 		<db-attribute name="communication_key" type="BIGINT"/>
 		<db-attribute name="communication_key_status" type="VARCHAR" length="20"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="firstRemoteAuthentication" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="firstRemoteAuthentication" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="ipAddress" type="VARCHAR" length="39"/>
 		<db-attribute name="isTestingWebServicePayments" type="BIT"/>
 		<db-attribute name="isTestingWebSitePayments" type="BIT"/>
 		<db-attribute name="isWebServicePaymentsEnabled" type="BIT"/>
 		<db-attribute name="isWebSitePaymentsEnabled" type="BIT"/>
-		<db-attribute name="lastRemoteAuthentication" type="TIMESTAMP" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="lastRemoteAuthentication" type="TIMESTAMP"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="paymentGatewayAccount" type="VARCHAR" length="32"/>
 		<db-attribute name="paymentGatewayPass" type="VARCHAR" length="16"/>
@@ -115,14 +115,14 @@
 	<db-entity name="ConcessionType">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="credentialExpiryDays" type="INTEGER" length="10"/>
 		<db-attribute name="hasConcessionNumber" type="BIT"/>
 		<db-attribute name="hasExpiryDate" type="BIT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isConcession" type="BIT"/>
 		<db-attribute name="isEnabled" type="BIT"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="256"/>
 		<db-attribute name="requiresCredentialCheck" type="BIT"/>
 	</db-entity>
@@ -133,7 +133,7 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="cookieHash" type="VARCHAR" length="64"/>
 		<db-attribute name="countryId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="dateOfBirth" type="DATE" length="10"/>
 		<db-attribute name="emailAddress" type="VARCHAR" length="512"/>
 		<db-attribute name="familyName" type="VARCHAR" length="256"/>
@@ -149,7 +149,7 @@
 		<db-attribute name="lastLoginTime" type="TIMESTAMP"/>
 		<db-attribute name="middleName" type="VARCHAR" length="128"/>
 		<db-attribute name="mobilePhoneNumber" type="VARCHAR" length="32"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="password" type="VARCHAR" length="16"/>
 		<db-attribute name="passwordHash" type="VARCHAR" length="16"/>
 		<db-attribute name="passwordRecoverExpire" type="TIMESTAMP"/>
@@ -205,13 +205,13 @@
 	</db-entity>
 	<db-entity name="Country">
 		<db-attribute name="asccssCode" type="VARCHAR" length="10"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="isoCodeAlpha2" type="CHAR" length="3"/>
 		<db-attribute name="isoCodeAlpha3" type="CHAR" length="3"/>
 		<db-attribute name="isoCodeNumeric" type="INTEGER" length="10"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" length="64"/>
 		<db-attribute name="saccCode" type="INTEGER" length="10"/>
 	</db-entity>
@@ -220,7 +220,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="code" type="VARCHAR" length="50"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="enrolmentType" type="INTEGER" isMandatory="true"/>
@@ -229,7 +229,7 @@
 		<db-attribute name="isSufficientForQualification" type="BIT"/>
 		<db-attribute name="isVETCourse" type="BIT"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="nominalHours" type="REAL"/>
 		<db-attribute name="qualificationId" type="BIGINT" length="19"/>
@@ -243,11 +243,11 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="countOfSessions" type="INTEGER" length="10"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="deliveryMode" type="INTEGER" length="10"/>
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="endDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="endDate" type="TIMESTAMP"/>
 		<db-attribute name="expectedHours" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="feeExGst" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="feeGst" type="DECIMAL" length="14" scale="2"/>
@@ -266,12 +266,12 @@
 		<db-attribute name="minStudentAge" type="INTEGER"/>
 		<db-attribute name="minimumPlaces" type="INTEGER" length="10"/>
 		<db-attribute name="minutesPerSession" type="INTEGER" length="10"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="reportingPeriod" type="INTEGER"/>
 		<db-attribute name="roomId" type="BIGINT" length="19"/>
 		<db-attribute name="sessionDetail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="sessionDetail_textile" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="startDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="startDate" type="TIMESTAMP"/>
 		<db-attribute name="startingMinutePerSession" type="INTEGER" length="10"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="32"/>
 	</db-entity>
@@ -280,18 +280,18 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="dayOffset" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="CourseModule">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="moduleId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="CustomField">
@@ -322,7 +322,7 @@
 		<db-attribute name="code" type="VARCHAR" length="32"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="combinationType" type="INTEGER" length="10"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="discountAmount" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="discountRate" type="DECIMAL" length="4" scale="2"/>
@@ -332,7 +332,7 @@
 		<db-attribute name="isAvailableOnWeb" type="SMALLINT"/>
 		<db-attribute name="maximumDiscount" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="minimumDiscount" type="DECIMAL" length="14" scale="2"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" length="512"/>
 		<db-attribute name="roundingMode" type="INTEGER" length="10"/>
 		<db-attribute name="studentAge" type="INTEGER" length="10"/>
@@ -341,26 +341,26 @@
 		<db-attribute name="studentPostcodes" type="LONGVARCHAR" length="65535"/>
 		<db-attribute name="studentsQualifier" type="LONGVARBINARY" length="16777215"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="64"/>
-		<db-attribute name="validFrom" type="TIMESTAMP" length="19"/>
-		<db-attribute name="validTo" type="TIMESTAMP" length="19"/>
+		<db-attribute name="validFrom" type="TIMESTAMP"/>
+		<db-attribute name="validTo" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="DiscountConcessionType">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="concessionTypeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="DiscountCourseClass">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="DiscountMembership">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -451,7 +451,7 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="creditFOEId" type="VARCHAR" length="4"/>
 		<db-attribute name="creditLevel" type="INTEGER"/>
 		<db-attribute name="creditOfferedValue" type="VARCHAR" length="4"/>
@@ -464,7 +464,7 @@
 		<db-attribute name="feeHelpStatus" type="INTEGER"/>
 		<db-attribute name="feeStatus" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="reasonForStudy" type="INTEGER" length="10"/>
 		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="25"/>
@@ -504,14 +504,14 @@
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="contactId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="corporatePassId" type="BIGINT"/>
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="customerReference" type="LONGVARCHAR" length="65535"/>
 		<db-attribute name="dateDue" type="DATE" isMandatory="true" length="10"/>
 		<db-attribute name="description" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceDate" type="DATE" isMandatory="true" length="10"/>
 		<db-attribute name="invoiceNumber" type="BIGINT" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="publicNotes" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="sessionId" type="VARCHAR" length="100"/>
 		<db-attribute name="shippingAddress" type="LONGVARCHAR" length="16777215"/>
@@ -524,23 +524,23 @@
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="dueDate" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="InvoiceLine">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT"/>
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="discountEachExTax" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="enrolmentId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="priceEachExTax" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="quantity" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="sortOrder" type="INTEGER" length="10"/>
@@ -551,19 +551,19 @@
 	<db-entity name="InvoiceLine_Discount">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceLineId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="Language">
 		<db-attribute name="absCode" type="VARCHAR" length="10"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isActive" type="TINYINT" isMandatory="true" length="3"/>
 		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
 	</db-entity>
 	<db-entity name="LicenseFee">
@@ -582,57 +582,57 @@
 	<db-entity name="Log">
 		<db-attribute name="action" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="page" type="VARCHAR" length="64"/>
 		<db-attribute name="userId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="Message">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="emailBody" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="emailSubject" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="smsText" type="LONGVARCHAR" length="16777215"/>
 	</db-entity>
 	<db-entity name="MessagePerson">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="destinationAddress" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="messageId" type="BIGINT" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="numberOfAttempts" type="INTEGER" length="10"/>
 		<db-attribute name="response" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="status" type="INTEGER" length="10"/>
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
-		<db-attribute name="timeOfDelivery" type="TIMESTAMP" length="19"/>
+		<db-attribute name="timeOfDelivery" type="TIMESTAMP"/>
 		<db-attribute name="tutorId" type="BIGINT" length="19"/>
 		<db-attribute name="type" type="INTEGER" length="10"/>
 	</db-entity>
 	<db-entity name="MessageTemplate">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="message" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" length="64"/>
 		<db-attribute name="subject" type="VARCHAR" length="512"/>
 	</db-entity>
 	<db-entity name="Module">
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="disciplineCode" type="VARCHAR" length="8"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="8"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isModule" type="TINYINT" isMandatory="true" length="3"/>
 		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="nationalCode" type="VARCHAR" isMandatory="true" length="16"/>
 		<db-attribute name="title" type="VARCHAR" length="256"/>
 		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
@@ -642,11 +642,11 @@
 		<db-attribute name="allowedInTextileTags" type="BIT"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="message" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="mimeType" type="VARCHAR" length="64"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" length="64"/>
 		<db-attribute name="subject" type="VARCHAR" length="512"/>
 	</db-entity>
@@ -666,16 +666,16 @@
 	<db-entity name="Outcome">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="deliveryMode" type="INTEGER" length="10"/>
-		<db-attribute name="endDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="endDate" type="TIMESTAMP"/>
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="fundingSource" type="INTEGER" length="10"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="moduleId" type="BIGINT" length="19"/>
 		<db-attribute name="reportableHours" type="DOUBLE"/>
-		<db-attribute name="startDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="startDate" type="TIMESTAMP"/>
 		<db-attribute name="status" type="INTEGER" length="10"/>
 	</db-entity>
 	<db-entity name="PaymentIn">
@@ -684,7 +684,7 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="creditCardCVV" type="VARCHAR" length="4"/>
 		<db-attribute name="creditCardExpiry" type="VARCHAR" length="16"/>
 		<db-attribute name="creditCardName" type="VARCHAR" length="64"/>
@@ -694,7 +694,7 @@
 		<db-attribute name="gatewayReference" type="VARCHAR" length="64"/>
 		<db-attribute name="gatewayResponse" type="CLOB" length="32000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="sessionId" type="VARCHAR" length="100"/>
 		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="25"/>
@@ -706,10 +706,10 @@
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="paymentInId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="PaymentOut">
@@ -717,13 +717,13 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="creditCardCVV" type="VARCHAR" length="4"/>
 		<db-attribute name="creditCardType" type="VARCHAR" length="8"/>
 		<db-attribute name="dateBanked" type="TIMESTAMP"/>
 		<db-attribute name="datePaid" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="paymentInTxnReference" type="VARCHAR" length="16"/>
 		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="10"/>
@@ -731,20 +731,20 @@
 		<db-attribute name="totalAmount" type="DECIMAL" length="14" scale="2"/>
 	</db-entity>
 	<db-entity name="PaymentOutTransaction">
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isFinalised" type="BIT"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="paymentOutId" type="BIGINT" length="19"/>
 		<db-attribute name="response" type="LONGVARCHAR" length="65535"/>
 		<db-attribute name="soapResponse" type="VARCHAR" length="8192"/>
 		<db-attribute name="txnReference" type="VARCHAR" length="64"/>
 	</db-entity>
 	<db-entity name="PaymentTransaction">
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isFinalised" type="BIT"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="paymentId" type="BIGINT" length="19"/>
 		<db-attribute name="response" type="LONGVARCHAR" length="65535"/>
 		<db-attribute name="soapResponse" type="VARCHAR" length="8192"/>
@@ -753,10 +753,10 @@
 	<db-entity name="Preference">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="explanation" type="VARCHAR" length="10000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="sqlType" type="INTEGER" length="10"/>
 		<db-attribute name="value" type="LONGVARBINARY" length="65535"/>
@@ -806,7 +806,7 @@
 	<db-entity name="Qualification">
 		<db-attribute name="anzsco" type="VARCHAR" length="256"/>
 		<db-attribute name="asco" type="VARCHAR" length="64"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="8"/>
 		<db-attribute name="fieldOfStudy" type="VARCHAR" length="4"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -814,7 +814,7 @@
 		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="level" type="VARCHAR" length="256"/>
 		<db-attribute name="levelCode" type="VARCHAR" length="3"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="nationalCode" type="VARCHAR" length="16"/>
 		<db-attribute name="newApprenticeship" type="VARCHAR" length="64"/>
 		<db-attribute name="nominalHours" type="REAL"/>
@@ -830,7 +830,7 @@
 		<db-attribute name="entityWillowId" type="BIGINT" length="19"/>
 		<db-attribute name="errorMessage" type="VARCHAR" length="1024"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="lastAttemptTimestamp" type="TIMESTAMP" length="19"/>
+		<db-attribute name="lastAttemptTimestamp" type="TIMESTAMP"/>
 		<db-attribute name="numberOfAttempts" type="INTEGER" length="10"/>
 		<db-attribute name="transactionId" type="BIGINT" length="255"/>
 	</db-entity>
@@ -853,25 +853,25 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="capacity" type="INTEGER" length="10"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="directions" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="directions_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="facilities" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="facilities_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="siteId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="Script">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="entityClass" type="VARCHAR" length="128"/>
 		<db-attribute name="entityEventType" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="result" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="schedule" type="VARCHAR" length="512"/>
@@ -882,15 +882,15 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="endDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="endDate" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="markerId" type="BIGINT" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="privateNotes" type="CLOB" length="32000"/>
 		<db-attribute name="publicNotes" type="CLOB" length="32000"/>
 		<db-attribute name="roomId" type="BIGINT" length="19"/>
-		<db-attribute name="startDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="startDate" type="TIMESTAMP"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="64"/>
 	</db-entity>
 	<db-entity name="SessionModule">
@@ -905,9 +905,9 @@
 	<db-entity name="SessionTutor">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="sessionId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="tutorId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="type" type="INTEGER" length="10"/>
@@ -916,7 +916,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="countryId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="drivingDirections" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="drivingDirections_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -924,7 +924,7 @@
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="latitude" type="DECIMAL" length="12" scale="8"/>
 		<db-attribute name="longitude" type="DECIMAL" length="12" scale="8"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="postcode" type="VARCHAR" length="16"/>
 		<db-attribute name="publicTransportDirections" type="LONGVARCHAR" length="16777215"/>
@@ -943,7 +943,7 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="concessionType" type="INTEGER" length="10"/>
 		<db-attribute name="countryOfBirthId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="disabilityType" type="INTEGER" length="10"/>
 		<db-attribute name="englishProficiency" type="INTEGER" length="10"/>
 		<db-attribute name="feeHelpEligible" type="SMALLINT"/>
@@ -954,7 +954,7 @@
 		<db-attribute name="isStillAtSchool" type="BIT"/>
 		<db-attribute name="labourForceType" type="INTEGER" length="10"/>
 		<db-attribute name="languageId" type="BIGINT" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="priorEducationCode" type="INTEGER" length="10"/>
 		<db-attribute name="specialNeeds" type="CLOB" length="32000"/>
 		<db-attribute name="specialNeedsAssistance" type="TINYINT"/>
@@ -965,15 +965,15 @@
 	</db-entity>
 	<db-entity name="StudentConcession">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="authorisationExpiresOn" type="TIMESTAMP" length="19"/>
-		<db-attribute name="authorisedOn" type="TIMESTAMP" length="19"/>
+		<db-attribute name="authorisationExpiresOn" type="TIMESTAMP"/>
+		<db-attribute name="authorisedOn" type="TIMESTAMP"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="concessionNumber" type="VARCHAR" length="32"/>
 		<db-attribute name="concessionTypeId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="expiresOn" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="expiresOn" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="32"/>
 	</db-entity>
@@ -1023,13 +1023,13 @@
 	<db-entity name="Tag">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isTagGroup" type="BIT"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" length="512"/>
 		<db-attribute name="nodeType" type="INTEGER" length="10"/>
 		<db-attribute name="parentId" type="BIGINT" length="19"/>
@@ -1041,42 +1041,42 @@
 		<db-attribute name="allowsMultipleTags" type="BIT"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" length="64"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isRequired" type="BIT"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="tagId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="Taggable">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="entityAngelId" type="BIGINT" length="19"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="entityWillowId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="TaggableTag">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="tagId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="taggableId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="TrainingPackage">
 		<db-attribute name="copyrightCategory" type="VARCHAR" length="64"/>
 		<db-attribute name="copyrightContact" type="VARCHAR" length="64"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="developer" type="VARCHAR" length="64"/>
-		<db-attribute name="endorsementFrom" type="TIMESTAMP" length="19"/>
-		<db-attribute name="endorsementTo" type="TIMESTAMP" length="19"/>
+		<db-attribute name="endorsementFrom" type="TIMESTAMP"/>
+		<db-attribute name="endorsementTo" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="nationalISC" type="VARCHAR" length="64"/>
 		<db-attribute name="purchaseFrom" type="VARCHAR" length="128"/>
 		<db-attribute name="title" type="VARCHAR" length="256"/>
@@ -1085,24 +1085,24 @@
 	<db-entity name="Tutor">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="finishDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="finishDate" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="resume" type="LONGVARCHAR" length="2147483647"/>
 		<db-attribute name="resume_textile" type="LONGVARCHAR" length="2147483647"/>
-		<db-attribute name="startDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="startDate" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="TutorRole">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="confirmedDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="confirmedDate" type="TIMESTAMP"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="inPublicity" type="BIT" isMandatory="true"/>
 		<db-attribute name="isConfirmed" type="BIT"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="tutorId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="VoucherPaymentIn">
@@ -1130,10 +1130,10 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="potentialStudents" type="INTEGER" length="10"/>
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 	</db-entity>
@@ -1147,9 +1147,9 @@
 	<db-entity name="WebContent">
 		<db-attribute name="content" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="content_textile" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
@@ -1163,17 +1163,17 @@
 	</db-entity>
 	<db-entity name="WebHostName">
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="WebMenu">
 		<db-attribute name="URL" type="LONGVARCHAR" length="65535"/>
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="webMenuParentId" type="BIGINT" length="19"/>
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
@@ -1181,19 +1181,19 @@
 		<db-attribute name="weight" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="WebNode">
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isPublished" type="BIT" isMandatory="true"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="nodeNumber" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="webNodeTypeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="WebNodeType">
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="webSiteLayoutId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
@@ -1230,10 +1230,10 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 	</db-entity>
 	<db-entity name="WebURLAlias">
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isDefault" type="BIT" isMandatory="true"/>
-		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="redirectTo" type="VARCHAR" length="512"/>
 		<db-attribute name="urlPath" type="VARCHAR" isMandatory="true" length="512"/>
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
@@ -1241,16 +1241,16 @@
 	</db-entity>
 	<db-entity name="WillowUser">
 		<db-attribute name="collegeId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="email" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="failedLoginCount" type="INTEGER" length="10"/>
 		<db-attribute name="firstName" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isActive" type="BIT"/>
-		<db-attribute name="lastFailedLogin" type="TIMESTAMP" length="19"/>
-		<db-attribute name="lastLogin" type="TIMESTAMP" length="19"/>
+		<db-attribute name="lastFailedLogin" type="TIMESTAMP"/>
+		<db-attribute name="lastLogin" type="TIMESTAMP"/>
 		<db-attribute name="lastName" type="VARCHAR" isMandatory="true" length="128"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="16"/>
 	</db-entity>
 	<db-entity name="postcode">
