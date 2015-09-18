@@ -21,7 +21,13 @@ dependencies {
 		exclude group: 'org.eclipse.jetty'
 	}
 	testCompile 'org.apache.lucene:lucene-test-framework:5.3.0'
+	testCompile 'mysql:mysql-connector-java:5.1.35'
 	//testCompile project(':common:common-services')
+}
+
+test {
+	systemProperty 'testDatabaseUri', searchTestDatabaseUri
+	systemProperty 'testDatabaseDriver', searchTestDatabaseDriver
 }
 
 war {
